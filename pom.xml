@@ -2,9 +2,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.springdoc</groupId>
+	<groupId>org.springdoc</groupId>
 	<artifactId>springdoc-openapi-v3</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+
+	<name>Spring openapi documentation generator</name>
+	<description>Spring openapi documentation generator</description>
+	<url>http://www.example.com/example-application</url>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -74,7 +78,7 @@
 	</dependencies>
 
 	<build>
-	    <pluginManagement>
+		<pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.springframework.boot</groupId>
@@ -84,5 +88,20 @@
 		</pluginManagement>
 	</build>
 
+	<developers>
+		<developer>
+			<name>Badr NASS</name>
+			<email>springdoc99@gmail.com</email>
+			<organization>BADR</organization>
+			<organizationUrl>https://springdoc.github.io/springdoc-openapi/</organizationUrl>
+		</developer>
+	</developers>
+
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
 
 </project>
