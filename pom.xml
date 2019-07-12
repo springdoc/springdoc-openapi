@@ -10,6 +10,28 @@
 	<description>Spring openapi documentation generator</description>
 	<url>http://www.example.com/example-application</url>
 
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Badr NASS</name>
+			<email>springdoc99@gmail.com</email>
+			<organization>BADR</organization>
+			<organizationUrl>https://springdoc.github.io/springdoc-openapi/</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com:springdoc/springdoc-openapi.git</connection>
+		<developerConnection>scm:git:ssh://github.com:springdoc/springdoc-openapi.git</developerConnection>
+		<url>https://github.com/springdoc/springdoc-openapi.git</url>
+	</scm>
+	
 	<properties>
 		<java.version>1.8</java.version>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
@@ -87,21 +109,5 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
-	<developers>
-		<developer>
-			<name>Badr NASS</name>
-			<email>springdoc99@gmail.com</email>
-			<organization>BADR</organization>
-			<organizationUrl>https://springdoc.github.io/springdoc-openapi/</organizationUrl>
-		</developer>
-	</developers>
-
-	<licenses>
-		<license>
-			<name>The Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-		</license>
-	</licenses>
 
 </project>
