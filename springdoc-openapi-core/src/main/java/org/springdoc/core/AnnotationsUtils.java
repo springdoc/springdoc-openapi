@@ -429,7 +429,7 @@ public abstract class AnnotationsUtils {
 			schemaObject.setMinLength(schema.minLength());
 		}
 		if (schema.multipleOf() != 0) {
-			schemaObject.setMultipleOf(new BigDecimal(schema.multipleOf()));
+			schemaObject.setMultipleOf(BigDecimal.valueOf(schema.multipleOf()));
 		}
 		if (NumberUtils.isNumber(schema.maximum())) {
 			String filteredMaximum = schema.maximum().replaceAll(Constants.COMMA, StringUtils.EMPTY);

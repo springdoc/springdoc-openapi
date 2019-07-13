@@ -42,6 +42,7 @@ public class ResponseBuilder {
 
 	private Map<String, ApiResponse> genericMapResponse;
 
+	@SuppressWarnings("rawtypes")
 	public ApiResponses build(Components components, RequestMappingInfo requestMappingInfo, HandlerMethod handlerMethod,
 			Operation operation, String[] classProduces, String[] methodProduces) throws ClassNotFoundException {
 
@@ -165,7 +166,8 @@ public class ResponseBuilder {
 						if (array != null)
 							mediaTypeEl.schema(array);
 						else
-							mediaTypeEl.schema(AnnotationsUtils.getSchema(contentdoc[i], components, null).get());
+							mediaTypeEl
+									.schema(AnnotationsUtils.getSchema(contentdoc[i], components, null).orElse(null));
 						contentElt.addMediaType(contentdoc[i].mediaType(), mediaTypeEl);
 					}
 					apiResponse1.content(contentElt);
@@ -195,7 +197,8 @@ public class ResponseBuilder {
 										.getArraySchema(contentdoc[i].array(), null);
 								arraySchema.ifPresent(mediaTypeEl::setSchema);
 							}
-							mediaTypeEl.schema(AnnotationsUtils.getSchema(contentdoc[i], components, null).get());
+							mediaTypeEl
+									.schema(AnnotationsUtils.getSchema(contentdoc[i], components, null).orElse(null));
 							contentElt.addMediaType(contentdoc[i].mediaType(), mediaTypeEl);
 						}
 						apiResponse1.content(contentElt);
@@ -381,7 +384,8 @@ public class ResponseBuilder {
 											.getArraySchema(contentdoc[i].array(), null);
 									arraySchema.ifPresent(mediaTypeEl::setSchema);
 								}
-								mediaTypeEl.schema(AnnotationsUtils.getSchema(contentdoc[i], components, null).get());
+								mediaTypeEl.schema(
+										AnnotationsUtils.getSchema(contentdoc[i], components, null).orElse(null));
 								contentElt.addMediaType(contentdoc[i].mediaType(), mediaTypeEl);
 							}
 							apiResponse1.content(contentElt);

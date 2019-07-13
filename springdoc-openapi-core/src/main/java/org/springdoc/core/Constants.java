@@ -11,13 +11,11 @@ public class Constants {
 	public static final String HEAD_METHOD = "head";
 	public static final String OPTIONS_METHOD = "options";
 
-	public static String QUERY_PARAM = "query";
-	public static String HEADER_PARAM = "header";
-	public static String COOKIE_PARAM = "cookie";
-	public static String PATH_PARAM = "path";
-	public static String FORM_PARAM = "form";
+	public static final String QUERY_PARAM = "query";
+	public static final String HEADER_PARAM = "header";
+	public static final String COOKIE_PARAM = "cookie";
+	public static final String PATH_PARAM = "path";
+	public static final String FORM_PARAM = "form";
 
 	public static final String DEFAULT_DESCRIPTION = "default response";
-	public static final String DEFAULT_OPERATION_DESCRIPTION = "default description";
-
 }

@@ -1,14 +1,15 @@
 package org.springdoc.sample2;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Home redirection to swagger api documentation 
  */
 @Controller
 public class HomeController {
-    @RequestMapping(value = "/")
+
+	@GetMapping(value = "/")
     public String index() {
         System.out.println("swagger-ui.html");
         return "redirect:swagger-ui.html";
