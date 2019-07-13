@@ -15,7 +15,7 @@ public class SwaggerWelcome {
 
 	@Value("${server.servlet.context-path:#{''}}")
 	private String contextPath2;
-	
+
 	@RequestMapping(value = "/swagger-ui.html", method = RequestMethod.GET)
 	public String redirectToUi() {
 		// return "redirect:/index.html?url=/openapi.json";
@@ -27,6 +27,13 @@ public class SwaggerWelcome {
 		else if (contextPath1 != null)
 			contextPath = contextPath1;
 
-		return "redirect:/webjars/swagger-ui/index.html?url=" + contextPath + "/openapi.json";
+		StringBuilder sbUrl = new StringBuilder();
+		sbUrl.append("redirect:/webjars/swagger-ui/index.html?url=");
+		if (contextPath.endsWith("/"))
+			sbUrl.append(contextPath.substring(0, contextPath.length() - 1));
+		else
+			sbUrl.append(contextPath);
+		sbUrl.append("/openapi.json");
+		return sbUrl.toString();
 	}
 }
