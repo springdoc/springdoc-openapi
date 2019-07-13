@@ -4,4 +4,7 @@ applications:
   random-route: true
   memory: 400m
   path: springdoc-openapi-test-app-0.0.2-20190713.142843-1.war
+  env:
+    JAVA_OPTS: '-XX:MaxMetaspaceSize=80780K -Xss512k -Xmx200M -XX:ReservedCodeCacheSize=16M -XX:MaxDirectMemorySize=16M'
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 1.8.0_212 } }'
   buildpack: java_buildpack
