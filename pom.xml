@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springdoc</groupId>
 	<artifactId>springdoc-openapi-v3</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 
 	<name>Spring openapi documentation generator</name>
 	<description>Spring openapi documentation generator</description>
@@ -244,7 +244,7 @@
 		<url>git@github.com:springdoc/springdoc-openapi.git</url>
 		<connection>scm:git:git@github.com:springdoc/springdoc-openapi.git</connection>
 		<developerConnection>scm:git:git@github.com:springdoc/springdoc-openapi.git</developerConnection>
-		<tag>v0.0.1</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
