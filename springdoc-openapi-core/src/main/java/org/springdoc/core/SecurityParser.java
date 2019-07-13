@@ -18,8 +18,8 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 public class SecurityParser {
 
 	public static class SecuritySchemePair {
-		public String key;
-		public SecurityScheme securityScheme;
+		String key;
+		SecurityScheme securityScheme;
 	}
 
 	public static Optional<List<SecurityRequirement>> getSecurityRequirements(

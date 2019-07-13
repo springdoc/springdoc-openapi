@@ -80,7 +80,6 @@ public class OpenApiResource {
 		// Info block
 		openAPI.setInfo(InfoBuilder.build());
 
-
 		Map<RequestMappingInfo, HandlerMethod> map = mappingHandler.getHandlerMethods();
 		Map<String, Object> findRestControllers1 = mappingHandler.getApplicationContext()
 				.getBeansWithAnnotation(RestController.class);
@@ -103,68 +102,68 @@ public class OpenApiResource {
 			HandlerMethod handlerMethod = entry.getValue();
 			String operationPath = requestMappingInfo.getPatternsCondition().toString();
 			if (operationPath != null && operationPath.contains("/")
-					&& findRestControllers.containsKey(handlerMethod.getBean().toString())) {
+					&& findRestControllers.containsKey(handlerMethod.getBean().toString())
+					&& requestMappingInfo.getPatternsCondition().getPatterns().stream().findFirst().isPresent())
 				operationPath = requestMappingInfo.getPatternsCondition().getPatterns().stream().findFirst().get();
-				Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
-				for (RequestMethod requestMethod : requestMethods) {
-					if (paths.containsKey(operationPath)) {
-						pathItemObject = paths.get(operationPath);
-					} else {
-						pathItemObject = new PathItem();
-					}
-
-					RequestMapping reqMappringClass = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
-							RequestMapping.class);
-
-					String[] classProduces = null;
-					String[] classConsumes = null;
-					if (reqMappringClass != null) {
-						classProduces = reqMappringClass.produces();
-						classConsumes = reqMappringClass.consumes();
-					}
-
-					RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
-							RequestMapping.class);
-
-					String[] methodProduces = null;
-					String[] methodConsumes = null;
-					if (reqMappringMethod != null) {
-						methodProduces = reqMappringMethod.produces();
-						methodConsumes = reqMappringMethod.consumes();
-					}
-
-					// skip hidden operations
-					io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
-							.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
-					if (apiOperation != null && apiOperation.hidden()) {
-						continue;
-					}
-
-					Operation operation = new Operation();
-
-					// compute tags
-					operation = tagbuiBuilder.build(handlerMethod, operation);
-
-					// requests
-					operation = requestBuilder.build(components, handlerMethod, requestMethod, requestMappingInfo,
-							operation, classConsumes, methodConsumes);
-
-					// responses
-					ApiResponses apiResponses = responseBuilder.build(components, requestMappingInfo, handlerMethod,
-							operation, classProduces, methodProduces);
-
-					operation.setResponses(apiResponses);
-					// Add documentation from operation annotation
-					operationParser.parse(components, handlerMethod, apiOperation, operation,
-							openAPI, classConsumes, methodConsumes, classProduces, methodProduces);
-
-					setPathItemOperation(pathItemObject, requestMethod, operation);
-					paths.addPathItem(operationPath, pathItemObject);
-					if (openAPI.getPaths() != null) {
-						paths.putAll(openAPI.getPaths());
-					}
-					openAPI.setPaths(paths);
+			Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
+			for (RequestMethod requestMethod : requestMethods) {
+				if (paths.containsKey(operationPath)) {
+					pathItemObject = paths.get(operationPath);
+				} else {
+					pathItemObject = new PathItem();
 				}
+
+				RequestMapping reqMappringClass = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
+						RequestMapping.class);
+
+				String[] classProduces = null;
+				String[] classConsumes = null;
+				if (reqMappringClass != null) {
+					classProduces = reqMappringClass.produces();
+					classConsumes = reqMappringClass.consumes();
+				}
+
+				RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
+						RequestMapping.class);
+
+				String[] methodProduces = null;
+				String[] methodConsumes = null;
+				if (reqMappringMethod != null) {
+					methodProduces = reqMappringMethod.produces();
+					methodConsumes = reqMappringMethod.consumes();
+				}
+
+				// skip hidden operations
+				io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
+						.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
+				if (apiOperation != null && apiOperation.hidden()) {
+					continue;
+				}
+
+				Operation operation = new Operation();
+
+				// compute tags
+				operation = tagbuiBuilder.build(handlerMethod, operation);
+
+				// requests
+				operation = requestBuilder.build(components, handlerMethod, requestMethod, requestMappingInfo,
+						operation, classConsumes, methodConsumes);
+
+				// responses
+				ApiResponses apiResponses = responseBuilder.build(components, requestMappingInfo, handlerMethod,
+						operation, classProduces, methodProduces);
+
+				operation.setResponses(apiResponses);
+				// Add documentation from operation annotation
+				operationParser.parse(components, handlerMethod, apiOperation, operation, openAPI, classConsumes,
+						methodConsumes, classProduces, methodProduces);
+
+				setPathItemOperation(pathItemObject, requestMethod, operation);
+				paths.addPathItem(operationPath, pathItemObject);
+				if (openAPI.getPaths() != null) {
+					paths.putAll(openAPI.getPaths());
+				}
+				openAPI.setPaths(paths);
 			}
 		}
 		LOGGER.info("Init duration for springdoc-openapi is: " + (System.currentTimeMillis() - start) + " ms");
