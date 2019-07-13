@@ -1,4 +1,4 @@
-package org.springdoc.core;
+package org.springdoc.api;
 
 import java.util.Map;
 import java.util.Set;
@@ -7,6 +7,11 @@ import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.InfoBuilder;
+import org.springdoc.core.OperationParser;
+import org.springdoc.core.RequestBuilder;
+import org.springdoc.core.ResponseBuilder;
+import org.springdoc.core.TagsBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
