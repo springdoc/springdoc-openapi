@@ -3,5 +3,5 @@ applications:
 - name: springdoc-openapi-v3 -rest-test
   random-route: true
   memory: 256M
-  path: $ARCHIVE_DIR/springdoc-openapi-v3-0.0.2-SNAPSHOT.jar
+  path: ((ARCHIVE_DIR))/springdoc-openapi-v3-0.0.2-SNAPSHOT.jar
   buildpack: java_buildpack
