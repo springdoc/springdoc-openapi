@@ -1,8 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springdoc</groupId>
 	<artifactId>springdoc-openapi-v3</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 
 	<name>Spring openapi documentation generator</name>
 	<description>Spring openapi documentation generator</description>
@@ -243,8 +245,7 @@
 		<connection>scm:git:git://github.com:springdoc/springdoc-openapi.git</connection>
 		<developerConnection>scm:git:ssh://github.com:springdoc/springdoc-openapi.git</developerConnection>
 		<url>https://github.com/springdoc/springdoc-openapi.git</url>
-	  <tag>springdoc-openapi-v3-0.0.1</tag>
-  </scm>
+	</scm>
 
 	<distributionManagement>
 		<snapshotRepository>
