@@ -26,12 +26,6 @@
 		</developer>
 	</developers>
 
-	<scm>
-		<connection>scm:git:git://github.com:springdoc/springdoc-openapi.git</connection>
-		<developerConnection>scm:git:ssh://github.com:springdoc/springdoc-openapi.git</developerConnection>
-		<url>https://github.com/springdoc/springdoc-openapi.git</url>
-	</scm>
-
 	<properties>
 		<java.version>1.8</java.version>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
@@ -47,7 +41,7 @@
 		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 		<maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-		<maven-release-plugin>2.5.3</maven-release-plugin>
+		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 		<jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
 		<resource.delimiter>@</resource.delimiter>
@@ -98,7 +92,6 @@
 			<scope>provided</scope>
 			<optional>true</optional>
 		</dependency>
-
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>swagger-ui</artifactId>
@@ -109,7 +102,6 @@
 			<artifactId>webjars-locator</artifactId>
 			<version>0.36</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -248,6 +240,13 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<scm>
+		<connection>scm:git:git://github.com:springdoc/springdoc-openapi.git</connection>
+		<developerConnection>scm:git:ssh://github.com:springdoc/springdoc-openapi.git</developerConnection>
+		<url>https://github.com/springdoc/springdoc-openapi.git</url>
+	</scm>
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -258,5 +257,4 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
-
 </project>
