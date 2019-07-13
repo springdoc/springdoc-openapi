@@ -1,3 +1,6 @@
+server:
+  servlet:
+    context-path: /
 management:
    endpoints:
       web:
