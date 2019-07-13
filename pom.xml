@@ -47,6 +47,7 @@
 		<maven-source-plugin.version>3.0.1</maven-source-plugin.version>
 		<maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+		<maven-release-plugin>2.5.3</maven-release-plugin>
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 		<jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
 		<resource.delimiter>@</resource.delimiter>
@@ -199,7 +200,6 @@
 						</execution>
 					</executions>
 				</plugin>
-
 				<plugin>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>${maven-javadoc-plugin.version}</version>
@@ -235,8 +235,28 @@
 						<autoReleaseAfterClose>true</autoReleaseAfterClose>
 					</configuration>
 				</plugin>
+				<plugin>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>${maven-release-plugin.version}</version>
+					<configuration>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<useReleaseProfile>false</useReleaseProfile>
+						<releaseProfiles>release</releaseProfiles>
+						<goals>deploy</goals>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 </project>
