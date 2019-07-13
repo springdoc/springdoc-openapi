@@ -3,5 +3,5 @@ applications:
 - name: springdoc-openapi-v3 -rest-test
   random-route: true
   memory: 256M
-  path: springdoc-openapi-test-app/target/springdoc-openapi-test-app.war
+  path: /home/pipeline/.m2/repository/org/springdoc/springdoc-openapi-test-app/0.0.2-SNAPSHOT/springdoc-openapi-test-app-0.0.2-SNAPSHOT.war
   buildpack: java_buildpack
