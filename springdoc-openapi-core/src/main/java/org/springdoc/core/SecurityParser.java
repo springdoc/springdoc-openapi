@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
+import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.models.security.OAuthFlow;
 import io.swagger.v3.oas.models.security.OAuthFlows;
