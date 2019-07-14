@@ -1,11 +1,6 @@
 ---
 layout: default
 ---
-
-Text can be **bold**, _italic_, or ~~strikethrough~~.
-
-
-
 # **Introduction**
 
 springdoc-openapi java library helps automating the generation of API documentation using spring boot projects.
