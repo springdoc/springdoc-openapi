@@ -23,6 +23,7 @@ import org.springframework.web.method.HandlerMethod;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import  io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.ParameterProcessor;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

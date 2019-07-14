@@ -79,7 +79,7 @@ public class RequestBuilder {
 				parameter.setIn(HEADER_PARAM);
 				if (requestHeader.required())
 					parameter.setRequired(Boolean.TRUE);
-				if (!"".equals(requestHeader.value())) {
+				if (StringUtils.isNotBlank(requestHeader.value())) {
 					parameter.setName(requestHeader.value());
 				}
 
@@ -92,7 +92,7 @@ public class RequestBuilder {
 				parameter.setIn(QUERY_PARAM);
 				if (requestParam.required())
 					parameter.setRequired(Boolean.TRUE);
-				if (!"".equals(requestParam.value())) {
+				if (StringUtils.isNotBlank(requestParam.value())) {
 					parameter.setName(requestParam.value());
 				}
 
@@ -103,27 +103,14 @@ public class RequestBuilder {
 			PathVariable pathVar = (PathVariable) AnnotationUtils.findAnnotation(parameters[i], PathVariable.class);
 			if (pathVar != null) {
 				// check if PATH PARAM
-				if (pathVar != null) {
-					parameter.setIn(PATH_PARAM);
-					if (!"".equals(pathVar.value())) {
-						parameter.setName(pathVar.value());
-					}
-					Schema<?> schema = org.springdoc.core.AnnotationsUtils.resolveSchemaFromType(parameters[i].getType(),
-							null, null);
-					parameter.setSchema(schema);
-				}
+				setParameter(PATH_PARAM, pathVar.value(), parameters[i].getType(), parameter);
 			}
 
 			// By default
 			if (RequestMethod.GET.equals(requestMethod)) {
 				if (parameter.getIn() == null) {
-					parameter.setIn(QUERY_PARAM);
-					Schema<?> schema = org.springdoc.core.AnnotationsUtils.resolveSchemaFromType(parameters[i].getType(),
-							null, null);
-					parameter.setSchema(schema);
-				}
-				if (parameter.getName() == null) {
-					parameter.setName(pNames[i]);
+					String name = (parameter.getName() == null) ? pNames[i] : parameter.getName();
+					setParameter(QUERY_PARAM, name, parameters[i].getType(), parameter);
 				}
 			}
 
@@ -241,6 +228,15 @@ public class RequestBuilder {
 		}
 
 		return operation;
+	}
+
+	private void setParameter(String param, String value, Class<?> type, Parameter parameter) {
+		parameter.setIn(param);
+		if (StringUtils.isNotBlank(value)) {
+			parameter.setName(value);
+		}
+		Schema<?> schema = org.springdoc.core.AnnotationsUtils.resolveSchemaFromType(type, null, null);
+		parameter.setSchema(schema);
 	}
 
 	private Schema<?> calculateSchema(Components components, java.lang.reflect.Parameter parameter) {
