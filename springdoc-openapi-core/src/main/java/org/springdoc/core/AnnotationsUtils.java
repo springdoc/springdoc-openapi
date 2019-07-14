@@ -54,6 +54,7 @@ import io.swagger.v3.oas.models.servers.ServerVariable;
 import io.swagger.v3.oas.models.servers.ServerVariables;
 import io.swagger.v3.oas.models.tags.Tag;
 
+@SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
 public abstract class AnnotationsUtils {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(AnnotationsUtils.class);
@@ -1224,7 +1225,6 @@ public abstract class AnnotationsUtils {
 							value = new HashMap<String, Object>();
 							map.put(key, value);
 						}
-						@SuppressWarnings("unchecked")
 						final Map<String, Object> mapValue = (Map<String, Object>) value;
 						if (propertyAsJson) {
 							try {

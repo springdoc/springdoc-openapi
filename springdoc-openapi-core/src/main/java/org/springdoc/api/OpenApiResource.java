@@ -52,8 +52,6 @@ public class OpenApiResource {
 	@Autowired
 	private OperationParser operationParser;
 
-	private OpenAPI openAPI;
-
 	@Autowired
 	private RequestMappingInfoHandlerMapping mappingHandler;
 
@@ -61,7 +59,7 @@ public class OpenApiResource {
 	@GetMapping(value = "/openapi.yaml", produces = "application/vnd.oai.openapi")
 	@ResponseBody
 	public String openapiYaml() throws Exception {
-		this.getOpenApi();
+		OpenAPI openAPI = this.getOpenApi();
 		return Yaml.mapper().writeValueAsString(openAPI);
 	}
 
@@ -69,14 +67,14 @@ public class OpenApiResource {
 	@GetMapping(value = "/openapi.json", produces = "application/json")
 	@ResponseBody
 	public String openapiJson() throws Exception {
-		this.getOpenApi();
+		OpenAPI openAPI = this.getOpenApi();
 		return Json.mapper().writeValueAsString(openAPI);
 	}
 
-	public void getOpenApi() throws Exception {
+	private OpenAPI getOpenApi() throws Exception {
 		// TODO GET URI INFO from http servlet request
 		long start = System.currentTimeMillis();
-		openAPI = new OpenAPI();
+		OpenAPI openAPI = new OpenAPI();
 		Components components = new Components();
 		openAPI.setComponents(components);
 		// Info block
@@ -95,10 +93,10 @@ public class OpenApiResource {
 		Map<String, Object> findControllerAdvice = mappingHandler.getApplicationContext()
 				.getBeansWithAnnotation(ControllerAdvice.class);
 
-		responseBuilder.build(components, findControllerAdvice);
+		// calculate generic responses
+		responseBuilder.buildGenericResponse(components, findControllerAdvice);
 
 		Paths paths = new Paths();
-		PathItem pathItemObject;
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
 			HandlerMethod handlerMethod = entry.getValue();
@@ -115,10 +113,12 @@ public class OpenApiResource {
 					&& findRestControllers.containsKey(handlerMethod.getBean().toString())) {
 				Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 				for (RequestMethod requestMethod : requestMethods) {
-					if (paths.containsKey(operationPath)) {
-						pathItemObject = paths.get(operationPath);
-					} else {
-						pathItemObject = new PathItem();
+
+					// skip hidden operations
+					io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
+							.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
+					if (apiOperation != null && apiOperation.hidden()) {
+						continue;
 					}
 
 					RequestMapping reqMappringClass = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
@@ -141,17 +141,14 @@ public class OpenApiResource {
 						methodConsumes = reqMappringMethod.consumes();
 					}
 
-					// skip hidden operations
-					io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
-							.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
-					if (apiOperation != null && apiOperation.hidden()) {
-						continue;
-					}
-
 					Operation operation = new Operation();
 
 					// compute tags
 					operation = tagbuiBuilder.build(handlerMethod, operation);
+
+					// Add documentation from operation annotation
+					operationParser.parse(components, handlerMethod, apiOperation, operation, openAPI, classConsumes,
+							methodConsumes, classProduces, methodProduces);
 
 					// requests
 					operation = requestBuilder.build(components, handlerMethod, requestMethod, requestMappingInfo,
@@ -162,11 +159,9 @@ public class OpenApiResource {
 							operation, classProduces, methodProduces);
 
 					operation.setResponses(apiResponses);
-					// Add documentation from operation annotation
-					operationParser.parse(components, handlerMethod, apiOperation, operation, openAPI, classConsumes,
-							methodConsumes, classProduces, methodProduces);
 
-					setPathItemOperation(pathItemObject, requestMethod, operation);
+
+					PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 					paths.addPathItem(operationPath, pathItemObject);
 					if (openAPI.getPaths() != null) {
 						paths.putAll(openAPI.getPaths());
@@ -176,9 +171,17 @@ public class OpenApiResource {
 			}
 		}
 		LOGGER.info("Init duration for springdoc-openapi is: " + (System.currentTimeMillis() - start) + " ms");
+		return openAPI;
 	}
 
-	private void setPathItemOperation(PathItem pathItemObject, RequestMethod requestMethod, Operation operation) {
+	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
+			Paths paths) {
+		PathItem pathItemObject;
+		if (paths.containsKey(operationPath)) {
+			pathItemObject = paths.get(operationPath);
+		} else {
+			pathItemObject = new PathItem();
+		}
 		switch (requestMethod) {
 		case POST:
 			pathItemObject.post(operation);
@@ -208,5 +211,6 @@ public class OpenApiResource {
 			// Do nothing here
 			break;
 		}
+		return pathItemObject;
 	}
 }
