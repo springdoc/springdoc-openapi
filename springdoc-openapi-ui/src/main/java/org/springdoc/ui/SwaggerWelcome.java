@@ -2,8 +2,7 @@ package org.springdoc.ui;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 
 // Redirect to access swagger UI via short URL from "/swagger-ui" to
 // "/swagger-ui/index.html?url=/api/swagger&validatorUrl="
@@ -17,9 +16,8 @@ public class SwaggerWelcome {
 	private String contextPath2;
 
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
-	@RequestMapping(value = "/swagger-ui.html", method = RequestMethod.GET)
+	@GetMapping(value = "/swagger-ui.html")
 	public String redirectToUi() {
-		// return "redirect:/index.html?url=/openapi.json";
 		String contextPath = "";
 		// spring-boot 2
 		if (contextPath2 != null)

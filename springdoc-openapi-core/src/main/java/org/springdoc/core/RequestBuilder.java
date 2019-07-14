@@ -29,12 +29,12 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -55,8 +55,7 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 public class RequestBuilder {
 
 	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
-			RequestMappingInfo requestMappingInfo, Operation operation, String[] classConsumes,
-			String[] methodConsumes) {
+			Operation operation, String[] classConsumes, String[] methodConsumes) {
 		// Documentation TODO
 		operation.setOperationId(handlerMethod.getMethod().getName());
 		// requests
@@ -100,7 +99,7 @@ public class RequestBuilder {
 				parameter.setSchema(schema);
 			}
 
-			PathVariable pathVar = (PathVariable) AnnotationUtils.findAnnotation(parameters[i], PathVariable.class);
+			PathVariable pathVar = AnnotationUtils.findAnnotation(parameters[i], PathVariable.class);
 			if (pathVar != null) {
 				// check if PATH PARAM
 				setParameter(PATH_PARAM, pathVar.value(), parameters[i].getType(), parameter);
@@ -116,10 +115,11 @@ public class RequestBuilder {
 
 			if (parameterDoc != null) {
 				if (parameterDoc.hidden()) {
-					return null;
+					continue;
 				}
 				if (StringUtils.isNotBlank(parameterDoc.ref())) {
 					parameter = new Parameter().$ref(parameterDoc.ref());
+					operationParameters.add(parameter);
 					continue;
 				}
 
@@ -170,8 +170,8 @@ public class RequestBuilder {
 				if (parameterDoc.extensions().length > 0) {
 					Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
 					if (extensionMap != null && extensionMap.size() > 0) {
-						for (String ext : extensionMap.keySet()) {
-							parameter.addExtension(ext, extensionMap.get(ext));
+						for (Map.Entry<String, Object> entry : extensionMap.entrySet()) {
+							parameter.addExtension(entry.getKey(), entry.getValue());
 						}
 					}
 				}
@@ -223,7 +223,7 @@ public class RequestBuilder {
 			}
 		}
 
-		if (operationParameters.size() > 0) {
+		if (!CollectionUtils.isEmpty(operationParameters)) {
 			operation.setParameters(operationParameters);
 		}
 
@@ -250,7 +250,7 @@ public class RequestBuilder {
 				@SuppressWarnings("rawtypes")
 				Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
 				if (schemaMap != null) {
-					schemaMap.forEach((key, schema) -> components.addSchemas(key, schema));
+					schemaMap.forEach(components::addSchemas);
 				}
 			}
 		} else {
@@ -271,7 +271,7 @@ public class RequestBuilder {
 			@SuppressWarnings("rawtypes")
 			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
 			if (schemaMap != null) {
-				schemaMap.forEach((key, schema) -> components.addSchemas(key, schema));
+				schemaMap.forEach(components::addSchemas);
 			}
 		}
 		return mediaType;

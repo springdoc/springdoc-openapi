@@ -14,14 +14,16 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -41,8 +43,8 @@ public class ResponseBuilder {
 
 	private Map<String, ApiResponse> genericMapResponse = new HashMap<String, ApiResponse>();
 
-	public ApiResponses build(Components components, RequestMappingInfo requestMappingInfo, HandlerMethod handlerMethod,
-			Operation operation, String[] classProduces, String[] methodProduces) {
+	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
+			String[] methodProduces) {
 		ApiResponses apiResponses = operation.getResponses();
 		if (apiResponses == null)
 			apiResponses = new ApiResponses();
@@ -120,7 +122,7 @@ public class ResponseBuilder {
 			}
 		} else {
 			// Use reponse parameters with no descirption filled
-			String httpCode = Utils.evaluateResponseStatus(method, method.getClass());
+			String httpCode = evaluateResponseStatus(method, method.getClass());
 			buildApiResponses(components, method, apiResponsesOp, methodProduces, httpCode, new ApiResponse());
 		}
 		return apiResponsesOp;
@@ -189,7 +191,7 @@ public class ResponseBuilder {
 			schemaN = resolvedSchema.schema;
 			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
 			if (schemaMap != null) {
-				schemaMap.forEach((key, schema) -> components.addSchemas(key, schema));
+				schemaMap.forEach(components::addSchemas);
 			}
 		}
 		return schemaN;
@@ -214,6 +216,21 @@ public class ResponseBuilder {
 			apiResponse.setDescription(DEFAULT_DESCRIPTION);
 		}
 		apiResponsesOp.addApiResponse(httpCode, apiResponse);
+	}
+
+	private String evaluateResponseStatus(Method method, Class<?> beanType) {
+		HttpStatus responseStatus = null;
+		ResponseStatus annotation = AnnotatedElementUtils.findMergedAnnotation(method, ResponseStatus.class);
+		if (annotation == null && beanType != null) {
+			annotation = AnnotatedElementUtils.findMergedAnnotation(beanType, ResponseStatus.class);
+		}
+		if (annotation != null) {
+			responseStatus = annotation.code();
+		}
+		if (annotation == null) {
+			responseStatus = HttpStatus.OK;
+		}
+		return responseStatus.toString();
 	}
 
 }

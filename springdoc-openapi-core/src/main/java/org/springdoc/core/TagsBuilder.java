@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 
 import io.swagger.v3.core.util.ReflectionUtils;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.Operation;
 
 @Component
@@ -27,9 +28,9 @@ public class TagsBuilder {
 
 		Set<String> tagsStr = new HashSet<String>();
 		if (!CollectionUtils.isEmpty(classTags))
-			tagsStr.addAll(classTags.stream().map(t -> t.name()).collect(Collectors.toSet()));
+			tagsStr.addAll(classTags.stream().map(Tag::name).collect(Collectors.toSet()));
 		if (!CollectionUtils.isEmpty(methodTags))
-			tagsStr.addAll(methodTags.stream().map(t -> t.name()).collect(Collectors.toSet()));
+			tagsStr.addAll(methodTags.stream().map(Tag::name).collect(Collectors.toSet()));
 
 		if (!CollectionUtils.isEmpty(tagsStr))
 			operation.setTags(new ArrayList<String>(tagsStr));
