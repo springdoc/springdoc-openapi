@@ -30,7 +30,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 
 @Component
-public class OperationParser {
+public class OperationBuilder {
 
 	public void parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation,
 			OpenAPI openAPI, String[] classConsumes, String[] methodConsumes, String[] classProduces,

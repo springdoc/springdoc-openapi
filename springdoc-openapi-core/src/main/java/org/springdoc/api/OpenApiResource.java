@@ -10,7 +10,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.InfoBuilder;
-import org.springdoc.core.OperationParser;
+import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.RequestBuilder;
 import org.springdoc.core.ResponseBuilder;
 import org.springdoc.core.TagsBuilder;
@@ -51,7 +51,10 @@ public class OpenApiResource {
 	private TagsBuilder tagbuiBuilder;
 
 	@Autowired
-	private OperationParser operationParser;
+	private OperationBuilder operationParser;
+
+	@Autowired
+	private InfoBuilder infoBuilder;
 
 	@Autowired
 	private RequestMappingInfoHandlerMapping mappingHandler;
@@ -79,7 +82,7 @@ public class OpenApiResource {
 		Components components = new Components();
 		openAPI.setComponents(components);
 		// Info block
-		openAPI.setInfo(InfoBuilder.build());
+		openAPI.setInfo(infoBuilder.build());
 
 		Map<RequestMappingInfo, HandlerMethod> map = mappingHandler.getHandlerMethods();
 		Map<String, Object> findRestControllers1 = mappingHandler.getApplicationContext()
