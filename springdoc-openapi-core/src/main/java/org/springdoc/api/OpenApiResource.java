@@ -156,11 +156,11 @@ public class OpenApiResource {
 
 					// requests
 					operation = requestBuilder.build(components, handlerMethod, requestMethod,
-							operation, classConsumes, methodConsumes);
+							operation, allConsumes);
 
 					// responses
 					ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation,
-							allConsumes);
+							allProduces);
 
 					operation.setResponses(apiResponses);
 

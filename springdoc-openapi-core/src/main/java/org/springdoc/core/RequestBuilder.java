@@ -24,6 +24,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -55,7 +56,7 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 public class RequestBuilder {
 
 	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
-			Operation operation, String[] classConsumes, String[] methodConsumes) {
+			Operation operation, String[] allConsumes) {
 		// Documentation TODO
 		operation.setOperationId(handlerMethod.getMethod().getName());
 		// requests
@@ -201,12 +202,8 @@ public class RequestBuilder {
 					mediaType = calculateSchema(components, returnType);
 				}
 
-				if (methodConsumes != null) {
-					for (String value : methodConsumes) {
-						setMediaTypeToContent(schema, content1, value);
-					}
-				} else if (classConsumes != null) {
-					for (String value : classConsumes) {
+				if (ArrayUtils.isNotEmpty(allConsumes)) {
+					for (String value : allConsumes) {
 						setMediaTypeToContent(schema, content1, value);
 					}
 				} else {
