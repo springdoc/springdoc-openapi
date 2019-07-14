@@ -2,12 +2,8 @@ package org.springdoc.core;
 
 import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,15 +11,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.ParameterProcessor;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -31,7 +24,6 @@ import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.headers.Header;
 import io.swagger.v3.oas.models.links.Link;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -39,8 +31,6 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 
 @Component
 public class OperationParser {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(OperationParser.class);
 
 	public void parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation,
 			OpenAPI openAPI, String[] classConsumes, String[] methodConsumes, String[] classProduces,
@@ -85,9 +75,6 @@ public class OperationParser {
 					});
 			AnnotationsUtils.getServers(apiOperation.servers())
 					.ifPresent(servers -> servers.forEach(operation::addServersItem));
-
-			getParametersListFromAnnotation(apiOperation.parameters(), classConsumes, methodConsumes, operation, null,
-					components).ifPresent(p -> p.forEach(operation::addParametersItem));
 
 			// security
 			Optional<List<SecurityRequirement>> requirementsObject = SecurityParser
@@ -243,41 +230,7 @@ public class OperationParser {
 		return Optional.of(apiResponsesObject);
 	}
 
-	private static Optional<List<Parameter>> getParametersListFromAnnotation(
-			io.swagger.v3.oas.annotations.Parameter[] parameters, String[] classConsumes, String[] methodConsumes,
-			Operation operation, JsonView jsonViewAnnotation, Components components) {
-		if (parameters == null) {
-			return Optional.empty();
-		}
-		List<Parameter> parametersObject = new ArrayList<>();
-		for (io.swagger.v3.oas.annotations.Parameter parameter : parameters) {
 
-			ResolvedParameter resolvedParameter = getParameters(ParameterProcessor.getParameterType(parameter),
-					Collections.singletonList(parameter), classConsumes, methodConsumes, jsonViewAnnotation,
-					components);
-			parametersObject.addAll(resolvedParameter.parameters);
-		}
-		if (CollectionUtils.isEmpty(parametersObject)) {
-			return Optional.empty();
-		}
-		return Optional.of(parametersObject);
-	}
-
-	private static ResolvedParameter getParameters(Type type, List<Annotation> annotations,
-			String[] classConsumes, String[] methodConsumes, JsonView jsonViewAnnotation, Components components) {
-		final Iterator<OpenAPIExtension> chain = OpenAPIExtensions.chain();
-		if (!chain.hasNext()) {
-			return new ResolvedParameter();
-		}
-		LOGGER.debug("getParameters for {}", type);
-		Set<Type> typesToSkip = new HashSet<>();
-		final OpenAPIExtension extension = chain.next();
-		LOGGER.debug("trying extension {}", extension);
-
-		final ResolvedParameter extractParametersResult = extension.extractParameters(annotations, type, typesToSkip,
-				components, classConsumes, methodConsumes, true, jsonViewAnnotation, chain);
-		return extractParametersResult;
-	}
 
 	private static Optional<List<String>> getStringListFromStringArray(String[] array) {
 		if (array == null) {
