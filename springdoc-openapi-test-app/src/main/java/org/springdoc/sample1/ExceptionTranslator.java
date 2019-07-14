@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ExceptionTranslator {
-	/**
-	 * logger of type Logger
-	 */
-	private static final Logger LOG = LoggerFactory.getLogger(ExceptionTranslator.class);
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionTranslator.class);
 
 	@ExceptionHandler({ Exception.class })
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

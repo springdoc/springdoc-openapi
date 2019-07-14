@@ -40,7 +40,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 @Component
 public class OperationParser {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(OperationParser.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(OperationParser.class);
 
 	public void parse(Components components, HandlerMethod handlerMethod,
 			io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation, OpenAPI openAPI,

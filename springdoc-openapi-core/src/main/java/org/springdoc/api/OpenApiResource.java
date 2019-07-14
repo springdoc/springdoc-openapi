@@ -38,7 +38,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 @RestController("/openapi")
 public class OpenApiResource {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(OpenApiResource.class);
+	private static final Logger LOGGER= LoggerFactory.getLogger(OpenApiResource.class);
 
 	@Autowired
 	private RequestBuilder requestBuilder;
