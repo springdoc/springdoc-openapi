@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +30,6 @@ import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
@@ -41,26 +39,23 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 @SuppressWarnings("rawtypes")
 public class ResponseBuilder {
 
-	private Map<String, ApiResponse> genericMapResponse;
+	private Map<String, ApiResponse> genericMapResponse = new HashMap<String, ApiResponse>();
 
 	public ApiResponses build(Components components, RequestMappingInfo requestMappingInfo, HandlerMethod handlerMethod,
-			Operation operation, String[] classProduces, String[] methodProduces) throws ClassNotFoundException {
-		ApiResponses apiResponses = new ApiResponses();
+			Operation operation, String[] classProduces, String[] methodProduces) {
+		ApiResponses apiResponses = operation.getResponses();
+		if (apiResponses == null)
+			apiResponses = new ApiResponses();
+		// Fill api Responses
+		computeResponse(components, handlerMethod.getMethod(), apiResponses, methodProduces);
 		// for each one build ApiResponse and add it to existing responses
-		if (!CollectionUtils.isEmpty(genericMapResponse)) {
-			for (Entry<String, ApiResponse> entry : genericMapResponse.entrySet()) {
-				apiResponses.addApiResponse(entry.getKey(), entry.getValue());
-			}
-		}
-		Map<String, ApiResponse> mapResponses = computeResponse(components, handlerMethod.getMethod());
-		for (Map.Entry<String, ApiResponse> entry : mapResponses.entrySet()) {
+		for (Entry<String, ApiResponse> entry : genericMapResponse.entrySet()) {
 			apiResponses.addApiResponse(entry.getKey(), entry.getValue());
 		}
 		return apiResponses;
 	}
 
-	public void build(Components components, Map<String, Object> findControllerAdvice) {
-		genericMapResponse = new HashMap<String, ApiResponse>();
+	public void buildGenericResponse(Components components, Map<String, Object> findControllerAdvice) {
 		// ControllerAdvice
 		List<Method> methods = new ArrayList<Method>();
 		for (Map.Entry<String, Object> entry : findControllerAdvice.entrySet()) {
@@ -79,7 +74,13 @@ public class ResponseBuilder {
 
 		// for each one build ApiResponse and add it to existing responses
 		for (Method method : methods) {
-			Map<String, ApiResponse> apiResponses = computeResponse(components, method);
+			RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(method, RequestMapping.class);
+			String[] methodProduces = null;
+			if (reqMappringMethod != null) {
+				methodProduces = reqMappringMethod.produces();
+			}
+			Map<String, ApiResponse> apiResponses = computeResponse(components, method, new ApiResponses(),
+					methodProduces);
 			for (Map.Entry<String, ApiResponse> entry : apiResponses.entrySet()) {
 				genericMapResponse.put(entry.getKey(), entry.getValue());
 			}
@@ -87,19 +88,46 @@ public class ResponseBuilder {
 
 	}
 
-	private Map<String, ApiResponse> computeResponse(Components components, Method method) {
-		Map<String, ApiResponse> apiResponses = new HashMap<String, ApiResponse>();
-		ApiResponse apiResponse = new ApiResponse();
-		Content content = new Content();
-		io.swagger.v3.oas.models.media.MediaType mediaType = new io.swagger.v3.oas.models.media.MediaType();
-
-		RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(method, RequestMapping.class);
-
-		String[] methodProduces = null;
-		if (reqMappringMethod != null) {
-			methodProduces = reqMappringMethod.produces();
+	private Map<String, ApiResponse> computeResponse(Components components, Method method, ApiResponses apiResponsesOp,
+			String[] methodProduces) {
+		// Parsing documentation, if present
+		io.swagger.v3.oas.annotations.responses.ApiResponses apiResponsesDoc = ReflectionUtils.getAnnotation(method,
+				io.swagger.v3.oas.annotations.responses.ApiResponses.class);
+		if (apiResponsesDoc != null) {
+			io.swagger.v3.oas.annotations.responses.ApiResponse[] responsesArray = apiResponsesDoc.value();
+			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponse2 : responsesArray) {
+				ApiResponse apiResponse1 = new ApiResponse();
+				apiResponse1.setDescription(apiResponse2.description());
+				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
+				Content contentElt = null;
+				for (int i = 0; i < contentdoc.length; i++) {
+					contentElt = new Content();
+					io.swagger.v3.oas.models.media.MediaType mediaTypeEl = new io.swagger.v3.oas.models.media.MediaType();
+					AnnotationsUtils.getSchema(contentdoc[i], components, null).orElse(null);
+					mediaTypeEl.schema(AnnotationsUtils.getSchema(contentdoc[i], components, null).orElse(null));
+					setContent(methodProduces, contentElt, mediaTypeEl);
+				}
+				apiResponse1.content(contentElt);
+				apiResponsesOp.addApiResponse(apiResponse2.responseCode(), apiResponse1);
+			}
 		}
 
+		if (!CollectionUtils.isEmpty(apiResponsesOp)) { // API Responses at operation and apiresposne annotation
+			for (Map.Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
+				String httpCode = entry.getKey();
+				ApiResponse apiResponse = entry.getValue();
+				buildApiResponses(components, method, apiResponsesOp, methodProduces, httpCode, apiResponse);
+			}
+		} else {
+			// Use reponse parameters with no descirption filled
+			String httpCode = Utils.evaluateResponseStatus(method, method.getClass());
+			buildApiResponses(components, method, apiResponsesOp, methodProduces, httpCode, new ApiResponse());
+		}
+		return apiResponsesOp;
+	}
+
+	private Content buildContent(Components components, Method method, String[] methodProduces) {
+		Content content = new Content();
 		// TODO JSON VIEW
 		Schema<?> schemaN = null;
 		Type returnType = method.getGenericReturnType();
@@ -107,37 +135,13 @@ public class ResponseBuilder {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
 			if (ResponseEntity.class.getName().contentEquals(parameterizedType.getRawType().getTypeName())) {
 				if (parameterizedType.getActualTypeArguments()[0] instanceof Class
-						&& !Void.class.getName().equals(parameterizedType.getActualTypeArguments()[0].getTypeName())) {
-					schemaN = AnnotationsUtils.resolveSchemaFromType(
-							(Class<?>) parameterizedType.getActualTypeArguments()[0], null, null);
-					if (schemaN.getType() == null) {
-						ResolvedSchema resolvedSchema = ModelConverters.getInstance().resolveAsResolvedSchema(
-								new AnnotatedType(parameterizedType.getActualTypeArguments()[0]).resolveAsRef(true));
-						if (resolvedSchema.schema != null) {
-							schemaN = resolvedSchema.schema;
-							Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
-							if (schemaMap != null) {
-								schemaMap.forEach((key, schema) -> components.addSchemas(key, schema));
-							}
-						}
-					}
+						&& !Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
+					schemaN = calculateSchema(components, parameterizedType);
 				} else if (parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType
-						&& !Void.class.getName().equals(parameterizedType.getActualTypeArguments()[0].getTypeName())) {
+						&& !Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
 					parameterizedType = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
-					schemaN = AnnotationsUtils.resolveSchemaFromType(
-							(Class<?>) parameterizedType.getActualTypeArguments()[0], null, null);
-					if (schemaN.getType() == null) {
-						ResolvedSchema resolvedSchema = ModelConverters.getInstance().resolveAsResolvedSchema(
-								new AnnotatedType(parameterizedType.getActualTypeArguments()[0]).resolveAsRef(true));
-						if (resolvedSchema.schema != null) {
-							schemaN = resolvedSchema.schema;
-							Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
-							if (schemaMap != null) {
-								schemaMap.forEach((key, schema) -> components.addSchemas(key, schema));
-							}
-						}
-					}
-				} else if (Void.class.getName().equals(parameterizedType.getActualTypeArguments()[0].getTypeName())) {
+					schemaN = calculateSchema(components, parameterizedType);
+				} else if (Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
 					// if void, no content
 					schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
 				}
@@ -145,20 +149,12 @@ public class ResponseBuilder {
 
 		} else if (returnType instanceof TypeVariable) {
 			schemaN = AnnotationsUtils.resolveSchemaFromType((Class<?>) returnType, null, null);
-		} else if (Void.class.getName().equals(returnType.getTypeName())) {
+		} else if (Void.TYPE.equals(returnType)) {
 			// if void, no content
 			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
 		}
 		if (schemaN == null) {
-			ResolvedSchema resolvedSchema = ModelConverters.getInstance()
-					.resolveAsResolvedSchema(new AnnotatedType(returnType).resolveAsRef(true));
-			if (resolvedSchema.schema != null) {
-				schemaN = resolvedSchema.schema;
-				Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
-				if (schemaMap != null) {
-					schemaMap.forEach((key, schema) -> components.addSchemas(key, schema));
-				}
-			}
+			schemaN = extractSchema(components, returnType);
 		}
 
 		if (schemaN == null && returnType instanceof Class) {
@@ -166,87 +162,58 @@ public class ResponseBuilder {
 		}
 
 		if (schemaN != null) {
+			io.swagger.v3.oas.models.media.MediaType mediaType = new io.swagger.v3.oas.models.media.MediaType();
 			mediaType.setSchema(schemaN);
-			if (content.size() == 0)
-				content.addMediaType(MediaType.ALL_VALUE, mediaType);
+			// Fill the content
+			setContent(methodProduces, content, mediaType);
+		}
+		return content;
+	}
 
-			if (ArrayUtils.isNotEmpty(methodProduces)) {
-				for (String mediaType2 : methodProduces) {
-					content.addMediaType(mediaType2, mediaType);
-				}
+	private void setContent(String[] methodProduces, Content content,
+			io.swagger.v3.oas.models.media.MediaType mediaType) {
+		if (ArrayUtils.isNotEmpty(methodProduces)) {
+			for (String mediaType2 : methodProduces) {
+				content.addMediaType(mediaType2, mediaType);
+			}
+		} else if (content.size() == 0) {
+			content.addMediaType(MediaType.ALL_VALUE, mediaType);
+		}
+	}
+
+	private Schema<?> extractSchema(Components components, Type returnType) {
+		Schema<?> schemaN = null;
+		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
+				.resolveAsResolvedSchema(new AnnotatedType(returnType).resolveAsRef(true));
+		if (resolvedSchema.schema != null) {
+			schemaN = resolvedSchema.schema;
+			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
+			if (schemaMap != null) {
+				schemaMap.forEach((key, schema) -> components.addSchemas(key, schema));
 			}
 		}
+		return schemaN;
+	}
+
+	private Schema<?> calculateSchema(Components components, ParameterizedType parameterizedType) {
+		Schema<?> schemaN;
+		schemaN = AnnotationsUtils.resolveSchemaFromType((Class<?>) parameterizedType.getActualTypeArguments()[0], null,
+				null);
+		if (schemaN.getType() == null) {
+			schemaN = this.extractSchema(components, parameterizedType.getActualTypeArguments()[0]);
+		}
+		return schemaN;
+	}
+
+	private void buildApiResponses(Components components, Method method, ApiResponses apiResponsesOp,
+			String[] methodProduces, String httpCode, ApiResponse apiResponse) {
+		Content content = buildContent(components, method, methodProduces);
 		apiResponse.setContent(content);
 
 		if (StringUtils.isBlank(apiResponse.getDescription())) {
 			apiResponse.setDescription(DEFAULT_DESCRIPTION);
 		}
-		String httpCode = Utils.evaluateResponseStatus(method, method.getClass());
-		apiResponses.put(httpCode, apiResponse);
-
-		// Parsing documentation
-		io.swagger.v3.oas.annotations.responses.ApiResponses apiResponsesDoc = ReflectionUtils.getAnnotation(method,
-				io.swagger.v3.oas.annotations.responses.ApiResponses.class);
-		if (apiResponsesDoc != null) {
-			io.swagger.v3.oas.annotations.responses.ApiResponse[] responsesArray = apiResponsesDoc.value();
-			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponse2 : responsesArray) {
-				ApiResponse apiResponse1 = apiResponses.get(apiResponse2.responseCode());
-				if (apiResponse1 == null) {
-					apiResponse1 = new ApiResponse();
-					apiResponse1.setDescription(apiResponse2.description());
-					mediaType = new io.swagger.v3.oas.models.media.MediaType();
-					io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
-					Content contentElt = new Content();
-					for (int i = 0; i < contentdoc.length; i++) {
-						io.swagger.v3.oas.models.media.MediaType mediaTypeEl = new io.swagger.v3.oas.models.media.MediaType();
-						ArraySchema array = AnnotationsUtils.getArraySchema(contentdoc[i].array(), components, null)
-								.orElse(null);
-						if (array != null)
-							mediaTypeEl.schema(array);
-						else
-							mediaTypeEl
-									.schema(AnnotationsUtils.getSchema(contentdoc[i], components, null).orElse(null));
-						contentElt.addMediaType(contentdoc[i].mediaType(), mediaTypeEl);
-					}
-					apiResponse1.content(contentElt);
-					apiResponses.put(apiResponse2.responseCode(), apiResponse1);
-				} // existing object
-				else {
-					if (StringUtils.isNotBlank(apiResponse2.description())) {
-						apiResponse1.setDescription(apiResponse2.description());
-					}
-					if (apiResponse2.content().length > 0) {
-						mediaType = new io.swagger.v3.oas.models.media.MediaType();
-						io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
-						Content contentElt = null;
-						if (apiResponse1.getContent() != null) {
-							contentElt = apiResponse1.getContent();
-						} else {
-							contentElt = new Content();
-						}
-
-						for (int i = 0; i < contentdoc.length; i++) {
-							io.swagger.v3.oas.models.media.MediaType mediaTypeEl = new io.swagger.v3.oas.models.media.MediaType();
-							Optional<Schema> schemaFromAnnotation = AnnotationsUtils
-									.getSchemaFromAnnotation(contentdoc[i].schema(), null);
-							schemaFromAnnotation.ifPresent(mediaTypeEl::setSchema);
-							if (!schemaFromAnnotation.isPresent()) {
-								Optional<ArraySchema> arraySchema = AnnotationsUtils
-										.getArraySchema(contentdoc[i].array(), null);
-								arraySchema.ifPresent(mediaTypeEl::setSchema);
-							}
-							mediaTypeEl
-									.schema(AnnotationsUtils.getSchema(contentdoc[i], components, null).orElse(null));
-							contentElt.addMediaType(contentdoc[i].mediaType(), mediaTypeEl);
-						}
-						apiResponse1.content(contentElt);
-						apiResponses.put(apiResponse2.responseCode(), apiResponse1);
-					}
-				}
-			}
-		}
-
-		return apiResponses;
+		apiResponsesOp.addApiResponse(httpCode, apiResponse);
 	}
 
 }
