@@ -23,7 +23,7 @@ public class ExceptionTranslator {
 
 
 	private ResponseEntity<ErrorMessage> error(HttpStatus status, Exception e) {
-		LOG.error("Exception : ", e);
+		LOGGER.error("Exception : ", e);
 		return ResponseEntity.status(status).body(new ErrorMessage(UUID.randomUUID().toString(), e.getMessage()));
     }
 }
