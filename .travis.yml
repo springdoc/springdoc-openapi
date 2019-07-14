@@ -13,7 +13,7 @@ addons:
       secure: $SONAR_TOKEN
 
 after_success:
-  - mvn clean deploy --settings settings.xml
+  - mvn clean package --settings settings.xml
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
   
   
