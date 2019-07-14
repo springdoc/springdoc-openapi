@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.InfoBuilder;
@@ -141,22 +142,25 @@ public class OpenApiResource {
 						methodConsumes = reqMappringMethod.consumes();
 					}
 
+					String[] allConsumes = ArrayUtils.addAll(methodConsumes, classConsumes);
+					String[] allProduces = ArrayUtils.addAll(methodProduces, classProduces);
+
 					Operation operation = new Operation();
 
 					// compute tags
 					operation = tagbuiBuilder.build(handlerMethod, operation);
 
 					// Add documentation from operation annotation
-					operationParser.parse(components, handlerMethod, apiOperation, operation, openAPI, classConsumes,
+					operationParser.parse(components, apiOperation, operation, openAPI, classConsumes,
 							methodConsumes, classProduces, methodProduces);
 
 					// requests
-					operation = requestBuilder.build(components, handlerMethod, requestMethod, requestMappingInfo,
+					operation = requestBuilder.build(components, handlerMethod, requestMethod,
 							operation, classConsumes, methodConsumes);
 
 					// responses
-					ApiResponses apiResponses = responseBuilder.build(components, requestMappingInfo, handlerMethod,
-							operation, classProduces, methodProduces);
+					ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation,
+							allConsumes);
 
 					operation.setResponses(apiResponses);
 

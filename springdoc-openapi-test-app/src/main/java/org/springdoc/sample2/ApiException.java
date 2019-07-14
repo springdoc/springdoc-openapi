@@ -1,6 +1,6 @@
 package org.springdoc.sample2;
 
-public class ApiException extends Exception{
+public final class ApiException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 	@SuppressWarnings("unused")

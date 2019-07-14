@@ -18,6 +18,10 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 
 public class SecurityParser {
 
+	private SecurityParser() {
+		super();
+	}
+
 	public static class SecuritySchemePair {
 		String key;
 		SecurityScheme securityScheme;
@@ -89,8 +93,8 @@ public class SecurityParser {
 		if (securityScheme.extensions().length > 0) {
 			Map<String, Object> extensions = AnnotationsUtils.getExtensions(securityScheme.extensions());
 			if (extensions != null) {
-				for (String ext : extensions.keySet()) {
-					securitySchemeObject.addExtension(ext, extensions.get(ext));
+				for (Map.Entry<String, Object> entry : extensions.entrySet()) {
+					securitySchemeObject.addExtension(entry.getKey(), entry.getValue());
 				}
 			}
 		}
@@ -111,8 +115,8 @@ public class SecurityParser {
 		if (oAuthFlows.extensions().length > 0) {
 			Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlows.extensions());
 			if (extensions != null) {
-				for (String ext : extensions.keySet()) {
-					oAuthFlowsObject.addExtension(ext, extensions.get(ext));
+				for (Map.Entry<String, Object> entry : extensions.entrySet()) {
+					oAuthFlowsObject.addExtension(entry.getKey(), entry.getValue());
 				}
 			}
 		}
@@ -141,8 +145,8 @@ public class SecurityParser {
 		if (oAuthFlow.extensions().length > 0) {
 			Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlow.extensions());
 			if (extensions != null) {
-				for (String ext : extensions.keySet()) {
-					oAuthFlowObject.addExtension(ext, extensions.get(ext));
+				for (Map.Entry<String, Object> entry : extensions.entrySet()) {
+					oAuthFlowObject.addExtension(entry.getKey(), entry.getValue());
 				}
 			}
 		}

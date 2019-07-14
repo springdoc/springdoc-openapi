@@ -14,11 +14,14 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.Schema;
 
 @SuppressWarnings({ "rawtypes" })
-public abstract class AnnotationsUtils {
+public class AnnotationsUtils {
 
-	public static final String COMPONENTS_REF = "#/components/schemas/";
+	private AnnotationsUtils() {
+		super();
+	}
 
-	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
+	static final String COMPONENTS_REF = "#/components/schemas/";
+	static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
 			JsonView jsonViewAnnotation) {
 		Schema schemaObject;
 		PrimitiveType primitiveType = PrimitiveType.fromType(schemaImplementation);

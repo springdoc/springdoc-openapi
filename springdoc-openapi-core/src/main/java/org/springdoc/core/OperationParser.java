@@ -19,11 +19,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.method.HandlerMethod;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import  io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.ParameterProcessor;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -43,9 +42,9 @@ public class OperationParser {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OperationParser.class);
 
-	public void parse(Components components, HandlerMethod handlerMethod,
-			io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation, OpenAPI openAPI,
-			String[] classConsumes, String[] methodConsumes, String[] classProduces, String[] methodProduces) {
+	public void parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation,
+			OpenAPI openAPI, String[] classConsumes, String[] methodConsumes, String[] classProduces,
+			String[] methodProduces) {
 		if (apiOperation != null) {
 			if (StringUtils.isNotBlank(apiOperation.summary())) {
 				operation.setSummary(apiOperation.summary());
@@ -103,15 +102,15 @@ public class OperationParser {
 			if (apiOperation != null && apiOperation.requestBody() != null && operation.getRequestBody() == null) {
 
 				getRequestBody(apiOperation.requestBody(), classConsumes, methodConsumes, components, null)
-						.ifPresent(requestBodyObject -> operation.setRequestBody(requestBodyObject));
+						.ifPresent(operation::setRequestBody);
 			}
 
 			// Extensions in Operation
 			if (apiOperation.extensions().length > 0) {
 				Map<String, Object> extensions = AnnotationsUtils.getExtensions(apiOperation.extensions());
 				if (extensions != null) {
-					for (String ext : extensions.keySet()) {
-						operation.addExtension(ext, extensions.get(ext));
+					for (Map.Entry<String, Object> entry : extensions.entrySet()) {
+						operation.addExtension(entry.getKey(), entry.getValue());
 					}
 				}
 			}
@@ -254,17 +253,17 @@ public class OperationParser {
 		for (io.swagger.v3.oas.annotations.Parameter parameter : parameters) {
 
 			ResolvedParameter resolvedParameter = getParameters(ParameterProcessor.getParameterType(parameter),
-					Collections.singletonList(parameter), operation, classConsumes, methodConsumes, jsonViewAnnotation,
+					Collections.singletonList(parameter), classConsumes, methodConsumes, jsonViewAnnotation,
 					components);
 			parametersObject.addAll(resolvedParameter.parameters);
 		}
-		if (parametersObject.size() == 0) {
+		if (CollectionUtils.isEmpty(parametersObject)) {
 			return Optional.empty();
 		}
 		return Optional.of(parametersObject);
 	}
 
-	private static ResolvedParameter getParameters(Type type, List<Annotation> annotations, Operation operation,
+	private static ResolvedParameter getParameters(Type type, List<Annotation> annotations,
 			String[] classConsumes, String[] methodConsumes, JsonView jsonViewAnnotation, Components components) {
 		final Iterator<OpenAPIExtension> chain = OpenAPIExtensions.chain();
 		if (!chain.hasNext()) {
@@ -325,8 +324,8 @@ public class OperationParser {
 		if (requestBody.extensions().length > 0) {
 			Map<String, Object> extensions = AnnotationsUtils.getExtensions(requestBody.extensions());
 			if (extensions != null) {
-				for (String ext : extensions.keySet()) {
-					requestBodyObject.addExtension(ext, extensions.get(ext));
+				for (Map.Entry<String, Object> entry : extensions.entrySet()) {
+					requestBodyObject.addExtension(entry.getKey(), entry.getValue());
 				}
 			}
 			isEmpty = false;
