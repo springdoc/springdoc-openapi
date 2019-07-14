@@ -2,7 +2,6 @@ package org.springdoc.core;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -1298,21 +1297,6 @@ public abstract class AnnotationsUtils {
 			}
 		}
 		return result.toArray(new Annotation[result.size()]);
-	}
-
-	public static void updateAnnotation(Class<?> clazz, io.swagger.v3.oas.annotations.media.Schema newAnnotation) {
-		try {
-			Field field = Class.class.getDeclaredField("annotations");
-			field.setAccessible(true);
-			Map<Class<? extends Annotation>, Annotation> annotations = (Map<Class<? extends Annotation>, Annotation>) field
-					.get(clazz);
-			annotations.put(io.swagger.v3.oas.annotations.media.Schema.class, newAnnotation);
-		} catch (NoSuchFieldException e) {
-			//
-		} catch (IllegalAccessException e) {
-			//
-		}
-
 	}
 
 	/*

@@ -16,6 +16,7 @@ public class SwaggerWelcome {
 	@Value("${server.servlet.context-path:#{''}}")
 	private String contextPath2;
 
+	@io.swagger.v3.oas.annotations.Operation(hidden = true)
 	@RequestMapping(value = "/swagger-ui.html", method = RequestMethod.GET)
 	public String redirectToUi() {
 		// return "redirect:/index.html?url=/openapi.json";
