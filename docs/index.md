@@ -39,27 +39,25 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 *   No additional configuration is needed.
 
 ```maven
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-core</artifactId>
-			<version>1.0</version>
-		</dependency>
+	<dependency>
+	   <groupId>org.springdoc</groupId>
+	   <artifactId>springdoc-openapi-core</artifactId>
+	   <version>1.0</version>
+	</dependency>
 ```
 
 ### Library for springdoc-openapi integration with swagger-ui 
 *   Automatically deploys swagger-ui to a spring-boot 2 application
-
+*   You just need to add the library to the list of your project dependencies (No additional configuration is needed)
 ```maven
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
-		</dependency>
+	<dependency>
+	   <groupId>org.springdoc</groupId>
+	   <artifactId>springdoc-openapi-ui</artifactId>
+	   <version>1.0</version>
+	</dependency>
 ```
 
-### Integration of the libray in a spring-boot 2 projet:
-*   You just need to add the library to the list of your project dependencies.
-*   No additional configuration is needed.
+![Branching](https://springdoc.github.io/springdoc-openapi/images/pets.png)
 
 ## Adding API Information documentation
   The library uses spring-boot application auto-configured packages to scan for annations: OpenAPIDefinition and Info.
@@ -77,7 +75,5 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 
 ![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
 
-### Large image
 
-![Branching](https://guides.github.com/activities/hello-world/branching.png)
 
