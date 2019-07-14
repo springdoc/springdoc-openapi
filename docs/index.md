@@ -49,7 +49,7 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 			<artifactId>springdoc-openapi-core</artifactId>
 			<version>1.0</version>
 		</dependency>
-
+```
 
 ### Library for springdoc-openapi integration with swagger-ui 
 *   Automatically deploys swagger-ui to a spring-boot 2 application
@@ -60,6 +60,7 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
+```
 
 ### Integration of the libray in a spring-boot 2 projet:
 *   You just need to add the library to the list of your project dependencies.
