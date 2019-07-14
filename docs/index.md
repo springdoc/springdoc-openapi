@@ -44,7 +44,7 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 	<dependency>
 	   <groupId>org.springdoc</groupId>
 	   <artifactId>springdoc-openapi-core</artifactId>
-	   <version>1.0</version>
+	   <version>1.0.0</version>
 	</dependency>
 ```
 
@@ -55,21 +55,19 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 	<dependency>
 	   <groupId>org.springdoc</groupId>
 	   <artifactId>springdoc-openapi-ui</artifactId>
-	   <version>1.0</version>
+	   <version>1.0.0</version>
 	</dependency>
 ```
 
 ![Branching](https://springdoc.github.io/springdoc-openapi/images/pets.png)
 
-## Example application
-*  https://springdoc-openapi-v3-rest-test-pipeline-nice-gecko.eu-de.mybluemix.net/
-[Link to another page](https://springdoc-openapi-v3-rest-test-pipeline-nice-gecko.eu-de.mybluemix.net/).
+## [Example application](https://springdoc-openapi-v3-rest-test-pipeline-nice-gecko.eu-de.mybluemix.net/).
 
 ## Adding API Information documentation
   The library uses spring-boot application auto-configured packages to scan for annations: OpenAPIDefinition and Info.
   These annotations declare, API Information: Title, version, licence, security, servers, tags, security and externalDocs
   
-## Support for documentation from property file lookup
+## Support for documentation from property file lookup (To be done in the future release)
 
 
 
