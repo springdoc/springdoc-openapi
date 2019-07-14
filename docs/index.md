@@ -1,10 +1,15 @@
 ---
 layout: default
 ---
+![Octocat](https://springdoc.github.io/springdoc-openapi/images/springdoc-openapi.png)
+
 # **Introduction**
 
 springdoc-openapi java library helps automating the generation of API documentation using spring boot projects.
 springdoc-openapi works by examining an application at runtime to infer API semantics based on spring configurations, class structure and various nnotations.
+
+Automatically generates basic documentation of APIs. 
+This documentation can be completed by comments using swagger-api annotations.
 
 This library supports:
 *  OpenAPI 3
@@ -12,9 +17,6 @@ This library supports:
 *  JSR-303, specifically for @NotNull, @Min, @Max, and @Size.
 *  Swagger-ui
 *  Oauth 2
-
-In order to use it
-
 
 # **Getting Started**
 ## Dependencies
@@ -59,21 +61,19 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 
 ![Branching](https://springdoc.github.io/springdoc-openapi/images/pets.png)
 
+## Example application
+*  https://springdoc-openapi-v3-rest-test-pipeline-nice-gecko.eu-de.mybluemix.net/
+[Link to another page](https://springdoc-openapi-v3-rest-test-pipeline-nice-gecko.eu-de.mybluemix.net/).
+
 ## Adding API Information documentation
   The library uses spring-boot application auto-configured packages to scan for annations: OpenAPIDefinition and Info.
   These annotations declare, API Information: Title, version, licence, security, servers, tags, security and externalDocs
-
-## Example application
-*  https://springdoc-openapi-v3-rest-test-pipeline-nice-gecko.eu-de.mybluemix.net/
-
-
+  
 ## Support for documentation from property file lookup
 
 
 
-### Small image
 
-![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
 
 
 
