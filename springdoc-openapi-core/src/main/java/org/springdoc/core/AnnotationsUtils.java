@@ -57,7 +57,7 @@ import io.swagger.v3.oas.models.tags.Tag;
 @SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
 public abstract class AnnotationsUtils {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(AnnotationsUtils.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AnnotationsUtils.class);
 	public static final String COMPONENTS_REF = "#/components/schemas/";
 
 	public static boolean hasSchemaAnnotation(io.swagger.v3.oas.annotations.media.Schema schema) {
