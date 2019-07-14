@@ -1,96 +1,77 @@
 ---
 layout: default
 ---
+# **Introduction**
 
-Text can be **bold**, _italic_, or ~~strikethrough~~.
+springdoc-openapi java library helps automating the generation of API documentation using spring boot projects.
+springdoc-openapi works by examining an application at runtime to infer API semantics based on spring configurations, class structure and various nnotations.
 
-[Link to another page](./another-page.html).
+This library supports:
+*  OpenAPI 3
+*  Spring-boot 2
+*  JSR-303, specifically for @NotNull, @Min, @Max, and @Size.
+*  Swagger-ui
+*  Oauth 2
 
-There should be whitespace between paragraphs.
+In order to use it
 
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
 
-# Header 1
+# **Getting Started**
+## Dependencies
 
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
+The springdoc-openapi libraries are hosted on maven central repository. 
+The artifacts can be viewed accessed at the following locations:
 
-## Header 2
+Release:
+https://oss.sonatype.org/content/groups/public/org/springdoc/
 
-> This is a blockquote following a header.
->
-> When something is important enough, you do it even if the odds are not in your favor.
 
-### Header 3
+Snapshot
+https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
+### Library for springdoc-openapi generator 
+*   Generates documentation in JSON and YAML format
+*   Documentation can be available at the following enpoint for json format: /openapi.json
+*   Documentation can be available at the following enpoint for YAML format: /openapi.yml
+
+### Integration of the libray in a spring-boot 2 projet:
+*   You just need to add the library to the list of your project dependencies.
+*   No additional configuration is needed.
+
+```maven
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-core</artifactId>
+			<version>1.0</version>
+		</dependency>
 ```
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
+### Library for springdoc-openapi integration with swagger-ui 
+*   Automatically deploys swagger-ui to a spring-boot 2 application
+
+```maven
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
 ```
 
-#### Header 4
+### Integration of the libray in a spring-boot 2 projet:
+*   You just need to add the library to the list of your project dependencies.
+*   No additional configuration is needed.
 
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
+## Adding API Information documentation
+  The library uses spring-boot application auto-configured packages to scan for annations: OpenAPIDefinition and Info.
+  These annotations declare, API Information: Title, version, licence, security, servers, tags, security and externalDocs
 
-##### Header 5
+## Example application
+*  https://springdoc-openapi-v3-rest-test-pipeline-nice-gecko.eu-de.mybluemix.net/
 
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
 
-###### Header 6
+## Support for documentation from property file lookup
 
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
 
-### There's a horizontal rule below this.
-
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
 
 ### Small image
 
@@ -100,24 +81,3 @@ end
 
 ![Branching](https://guides.github.com/activities/hello-world/branching.png)
 
-
-### Definition lists can be used with HTML syntax.
-
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
-
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
-
-```
-The final element.
-```
