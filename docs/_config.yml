@@ -1,4 +1,5 @@
 theme: jekyll-theme-architect
 title: springdoc-openapi
-description:  Reference Documentation
+description: Java library for OpenAPI 3 with spring-boot 2
 google_analytics: UA-143834491-1
+url: http://springdoc.org
