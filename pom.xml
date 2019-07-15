@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springdoc</groupId>
 	<artifactId>springdoc-openapi</artifactId>
@@ -170,64 +172,6 @@
 					</executions>
 				</plugin>
 				<plugin>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>${maven-source-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${maven-javadoc-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>attach-javadocs</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>${maven-gpg-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>sign-artifacts</id>
-							<phase>verify</phase>
-							<goals>
-								<goal>sign</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<version>${nexus-staging-maven-plugin}</version>
-					<extensions>true</extensions>
-					<configuration>
-						<serverId>ossrh</serverId>
-						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-						<autoReleaseAfterClose>true</autoReleaseAfterClose>
-					</configuration>
-				</plugin>
-				<plugin>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>${maven-release-plugin.version}</version>
-					<configuration>
-						<tagNameFormat>v@{project.version}</tagNameFormat>
-						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<useReleaseProfile>false</useReleaseProfile>
-						<releaseProfiles>release</releaseProfiles>
-						<goals>deploy</goals>
-					</configuration>
-				</plugin>
-				<plugin>
 					<artifactId>maven-war-plugin</artifactId>
 					<version>${maven-war-plugin.version}</version>
 					<configuration>
@@ -237,4 +181,75 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+
+	<profiles>
+		<profile>
+			<id>gpg</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>${maven-source-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>${maven-javadoc-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>${maven-gpg-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>${nexus-staging-maven-plugin}</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
+					</plugin>
+					<plugin>
+						<artifactId>maven-release-plugin</artifactId>
+						<version>${maven-release-plugin.version}</version>
+						<configuration>
+							<tagNameFormat>v@{project.version}</tagNameFormat>
+							<autoVersionSubmodules>true</autoVersionSubmodules>
+							<useReleaseProfile>false</useReleaseProfile>
+							<releaseProfiles>release</releaseProfiles>
+							<goals>deploy</goals>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
