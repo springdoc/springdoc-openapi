@@ -241,7 +241,7 @@
 							<tagNameFormat>v@{project.version}</tagNameFormat>
 							<autoVersionSubmodules>true</autoVersionSubmodules>
 							<useReleaseProfile>false</useReleaseProfile>
-							<releaseProfiles>gpp</releaseProfiles>
+							<releaseProfiles>gpg</releaseProfiles>
 							<goals>deploy</goals>
 						</configuration>
 					</plugin>
