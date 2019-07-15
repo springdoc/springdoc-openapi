@@ -44,7 +44,7 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 	<dependency>
 	   <groupId>org.springdoc</groupId>
 	   <artifactId>springdoc-openapi-core</artifactId>
-	   <version>1.0.0</version>
+	   <version>0.0.4</version>
 	</dependency>
 ```
 
@@ -55,7 +55,7 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 	<dependency>
 	   <groupId>org.springdoc</groupId>
 	   <artifactId>springdoc-openapi-ui</artifactId>
-	   <version>1.0.0</version>
+	   <version>0.0.4</version>
 	</dependency>
 ```
 
