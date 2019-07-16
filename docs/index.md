@@ -24,12 +24,11 @@ This library supports:
 The springdoc-openapi libraries are hosted on maven central repository. 
 The artifacts can be viewed accessed at the following locations:
 
-Release:
-https://oss.sonatype.org/content/groups/public/org/springdoc/
+Releases:
+* [https://oss.sonatype.org/content/groups/public/org/springdoc/](https://oss.sonatype.org/content/groups/public/org/springdoc/).
 
-
-Snapshot
-https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
+Snapshots:
+[https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/](https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/).
 
 ### Library for springdoc-openapi generator 
 *   Generates documentation in JSON and YAML format
@@ -54,11 +53,6 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
     * server: The server name or IP
     * port: The server port
     * context-path: The context path of the application
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
 
 *   Add the library to the list of your project dependencies (No additional configuration is needed)
 
