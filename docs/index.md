@@ -41,22 +41,28 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 *   No additional configuration is needed.
 
 ```maven
-	<dependency>
-	   <groupId>org.springdoc</groupId>
-	   <artifactId>springdoc-openapi-core</artifactId>
-	   <version>0.0.4</version>
-	</dependency>
+   <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-core</artifactId>
+      <version>0.0.4</version>
+   </dependency>
 ```
 
 ### Library for springdoc-openapi integration with swagger-ui 
 *   Automatically deploys swagger-ui to a spring-boot 2 application
-*   You just need to add the library to the list of your project dependencies (No additional configuration is needed)
+*   Documentation will be available at the following url: 
+*   The Swagger UI page should then be available at http://server:port/context-path/swagger-ui.html
+   * server: The server name or IP
+   * port: The server port
+   * context-path: The context path of the application
+
+*   Add the library to the list of your project dependencies (No additional configuration is needed)
 ```maven
-	<dependency>
-	   <groupId>org.springdoc</groupId>
-	   <artifactId>springdoc-openapi-ui</artifactId>
-	   <version>0.0.4</version>
-	</dependency>
+   <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <version>0.0.4</version>
+   </dependency>
 ```
 
 ![Branching](https://springdoc.github.io/springdoc-openapi/images/pets.png)
