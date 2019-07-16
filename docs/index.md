@@ -43,7 +43,7 @@ Snapshots:
 ### Integration of the libray in a spring-boot 2 projet:
 *   Add the library to the list of your project dependencies. (No additional configuration is needed)
 
-```java
+```maven
    <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-core</artifactId>
@@ -60,7 +60,7 @@ Snapshots:
 
 *   Add the library to the list of your project dependencies (No additional configuration is needed)
 
-```gradle
+```maven
    <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
