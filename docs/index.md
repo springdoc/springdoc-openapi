@@ -28,7 +28,7 @@ Releases:
 * [https://oss.sonatype.org/content/groups/public/org/springdoc/](https://oss.sonatype.org/content/groups/public/org/springdoc/).
 
 Snapshots:
-[https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/](https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/).
+* [https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/](https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/).
 
 ### Library for springdoc-openapi generator 
 *   Generates documentation in JSON and YAML format
