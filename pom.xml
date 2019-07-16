@@ -45,6 +45,7 @@
 		<module>springdoc-openapi-core</module>
 		<module>springdoc-openapi-ui</module>
 		<module>springdoc-openapi-test-app1</module>
+		<module>springdoc-openapi-test-app2</module>
 	</modules>
 
 	<properties>

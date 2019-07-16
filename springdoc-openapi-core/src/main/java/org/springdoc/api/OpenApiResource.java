@@ -36,7 +36,7 @@ import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 
-@RestController("/openapi")
+@RestController
 public class OpenApiResource {
 
 	private static final Logger LOGGER= LoggerFactory.getLogger(OpenApiResource.class);
@@ -60,7 +60,7 @@ public class OpenApiResource {
 	private RequestMappingInfoHandlerMapping mappingHandler;
 
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
-	@GetMapping(value = "/openapi.yaml", produces = "application/vnd.oai.openapi")
+	@GetMapping(value = "/v3/api-docs.yaml", produces = "application/vnd.oai.openapi")
 	@ResponseBody
 	public String openapiYaml() throws Exception {
 		OpenAPI openAPI = this.getOpenApi();
@@ -68,7 +68,7 @@ public class OpenApiResource {
 	}
 
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
-	@GetMapping(value = "/openapi.json", produces = "application/json")
+	@GetMapping(value = "/v3/api-docs", produces = "application/json")
 	@ResponseBody
 	public String openapiJson() throws Exception {
 		OpenAPI openAPI = this.getOpenApi();
