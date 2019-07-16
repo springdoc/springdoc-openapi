@@ -52,11 +52,12 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 *   Automatically deploys swagger-ui to a spring-boot 2 application
 *   Documentation will be available at the following url: 
 *   The Swagger UI page should then be available at http://server:port/context-path/swagger-ui.html
-   * server: The server name or IP
-   * port: The server port
-   * context-path: The context path of the application
+  - server: The server name or IP
+  - port: The server port
+  - context-path: The context path of the application
 
 *   Add the library to the list of your project dependencies (No additional configuration is needed)
+
 ```maven
    <dependency>
       <groupId>org.springdoc</groupId>
@@ -72,8 +73,7 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 ## Adding API Information documentation
   The library uses spring-boot application auto-configured packages to scan for annations: OpenAPIDefinition and Info.
   These annotations declare, API Information: Title, version, licence, security, servers, tags, security and externalDocs
-  
-## Support for documentation from property file lookup (To be done in the future release)
+ 
 
 
 
