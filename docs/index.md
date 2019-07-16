@@ -37,8 +37,7 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 *   Documentation can be available at the following enpoint for YAML format: /openapi.yml
 
 ### Integration of the libray in a spring-boot 2 projet:
-*   You just need to add the library to the list of your project dependencies.
-*   No additional configuration is needed.
+*   Add the library to the list of your project dependencies. (No additional configuration is needed)
 
 ```maven
    <dependency>
@@ -52,9 +51,14 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
 *   Automatically deploys swagger-ui to a spring-boot 2 application
 *   Documentation will be available at the following url: 
 *   The Swagger UI page should then be available at http://server:port/context-path/swagger-ui.html
-  - server: The server name or IP
-  - port: The server port
-  - context-path: The context path of the application
+    * server: The server name or IP
+    * port: The server port
+    * context-path: The context path of the application
+
+- level 1 item
+  - level 2 item
+  - level 2 item
+- level 1 item
 
 *   Add the library to the list of your project dependencies (No additional configuration is needed)
 
@@ -65,10 +69,10 @@ https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
       <version>0.0.4</version>
    </dependency>
 ```
+## [Example application](https://springdoc-openapi-v3-rest-test-pipeline-nice-gecko.eu-de.mybluemix.net/).
 
 ![Branching](https://springdoc.github.io/springdoc-openapi/images/pets.png)
 
-## [Example application](https://springdoc-openapi-v3-rest-test-pipeline-nice-gecko.eu-de.mybluemix.net/).
 
 ## Adding API Information documentation
   The library uses spring-boot application auto-configured packages to scan for annations: OpenAPIDefinition and Info.
