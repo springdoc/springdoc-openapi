@@ -32,8 +32,13 @@ Snapshots:
 
 ### Library for springdoc-openapi generator 
 *   Generates documentation in JSON and YAML format
-*   Documentation can be available at the following enpoint for json format: /openapi.json
-*   Documentation can be available at the following enpoint for YAML format: /openapi.yml
+*   Documentation can be available at the following enpoint for json format: /v3/api-docs
+*   Documentation can be available at the following enpoint for YAML format: /v3/api-docs.yml
+*   Documentation will be available at the following url: http://server:port/context-path/v3/api-docs
+    * server: The server name or IP
+    * port: The server port
+    * context-path: The context path of the application
+
 
 ### Integration of the libray in a spring-boot 2 projet:
 *   Add the library to the list of your project dependencies. (No additional configuration is needed)
@@ -48,7 +53,6 @@ Snapshots:
 
 ### Library for springdoc-openapi integration with swagger-ui 
 *   Automatically deploys swagger-ui to a spring-boot 2 application
-*   Documentation will be available at the following url: 
 *   The Swagger UI page should then be available at http://server:port/context-path/swagger-ui.html
     * server: The server name or IP
     * port: The server port
