@@ -47,7 +47,7 @@ Snapshots:
    <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-core</artifactId>
-      <version>0.0.4</version>
+      <version>0.0.5</version>
    </dependency>
 ```
 
@@ -64,7 +64,7 @@ Snapshots:
    <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
-      <version>0.0.4</version>
+      <version>0.0.5</version>
    </dependency>
 ```
 ## [Example application 1](https://springdoc-openapi-test-app2-silly-numbat.eu-de.mybluemix.net/swagger-ui.html).
