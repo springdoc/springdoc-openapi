@@ -187,8 +187,8 @@ public class OperationBuilder {
 			if (response.extensions().length > 0) {
 				Map<String, Object> extensions = AnnotationsUtils.getExtensions(response.extensions());
 				if (extensions != null) {
-					for (String ext : extensions.keySet()) {
-						apiResponseObject.addExtension(ext, extensions.get(ext));
+					for (Map.Entry<String, Object> entry : extensions.entrySet()) {
+						apiResponseObject.addExtension(entry.getKey(), entry.getValue());
 					}
 				}
 			}

@@ -57,7 +57,7 @@ public class RequestBuilder {
 
 	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, String[] allConsumes) {
-		// Documentation TODO
+		// Documentation
 		operation.setOperationId(handlerMethod.getMethod().getName());
 		// requests
 		LocalVariableTableParameterNameDiscoverer d = new LocalVariableTableParameterNameDiscoverer();
@@ -107,11 +107,9 @@ public class RequestBuilder {
 			}
 
 			// By default
-			if (RequestMethod.GET.equals(requestMethod)) {
-				if (parameter.getIn() == null) {
-					String name = (parameter.getName() == null) ? pNames[i] : parameter.getName();
-					setParameter(QUERY_PARAM, name, parameters[i].getType(), parameter);
-				}
+			if (RequestMethod.GET.equals(requestMethod) && parameter.getIn() == null) {
+				String name = (parameter.getName() == null) ? pNames[i] : parameter.getName();
+				setParameter(QUERY_PARAM, name, parameters[i].getType(), parameter);
 			}
 
 			if (parameterDoc != null) {
@@ -314,9 +312,7 @@ public class RequestBuilder {
 	private void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
 		Map<String, Annotation> annos = new HashMap<>();
 		if (annotations != null) {
-			annotations.forEach(annotation -> {
-				annos.put(annotation.annotationType().getName(), annotation);
-			});
+			annotations.forEach(annotation -> annos.put(annotation.annotationType().getName(), annotation));
 		}
 
 		if (annos.containsKey(NotNull.class.getName())) {

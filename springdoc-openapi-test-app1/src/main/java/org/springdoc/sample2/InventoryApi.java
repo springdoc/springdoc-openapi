@@ -12,9 +12,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +32,7 @@ public interface InventoryApi {
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "item created"),
 			@ApiResponse(responseCode = "400", description = "invalid input, object invalid"),
 			@ApiResponse(responseCode = "409", description = "an existing item already exists") })
-	@RequestMapping(value = "/inventory", consumes = { "application/json" }, method = RequestMethod.POST)
+	@PostMapping(value = "/inventory", consumes = { "application/json" })
 	ResponseEntity<Void> addInventory(
 			@Parameter(name = "Inventory item to add") @Valid @RequestBody InventoryItem body);
 
@@ -41,7 +41,7 @@ public interface InventoryApi {
 					@Parameter(description = "pass an optional search string for looking up inventory", name = "searchString") })
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "search results matching criteria"),
 			@ApiResponse(responseCode = "400", description = "bad input parameter") })
-	@RequestMapping(value = "/inventory", produces = { "application/json" }, method = RequestMethod.GET)
+	@GetMapping(value = "/inventory", produces = { "application/json" })
 	ResponseEntity<List<InventoryItem>> searchInventory(
 			@Valid @RequestParam(value = "searchString", required = false) String searchString,
 			@Min(0) @Parameter(name = "number of records to skip for pagination") @Valid @RequestParam(value = "skip", required = true) Integer skip,

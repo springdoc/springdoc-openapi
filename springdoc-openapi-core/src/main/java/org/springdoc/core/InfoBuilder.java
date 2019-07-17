@@ -32,7 +32,7 @@ public class InfoBuilder {
 		super();
 	}
 
-	public Info build() throws ClassNotFoundException {
+	public Info build() {
 		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
 		scanner.addIncludeFilter(new AnnotationTypeFilter(OpenAPIDefinition.class));
 		List<String> packagesToScan = AutoConfigurationPackages.get(context);

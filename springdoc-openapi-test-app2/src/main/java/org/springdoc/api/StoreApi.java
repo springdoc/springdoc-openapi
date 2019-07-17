@@ -13,10 +13,11 @@ import javax.validation.constraints.Min;
 
 import org.springdoc.model.Order;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -41,7 +42,7 @@ public interface StoreApi {
 	@Operation(summary = "Delete purchase order by ID", tags = { "store" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
 			@ApiResponse(responseCode = "404", description = "Order not found") })
-	@RequestMapping(value = "/store/order/{orderId}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/store/order/{orderId}")
 	default ResponseEntity<Void> deleteOrder(
 			@Parameter(description = "ID of the order that needs to be deleted", required = true) @PathVariable("orderId") String orderId) {
 		return getDelegate().deleteOrder(orderId);
@@ -51,7 +52,7 @@ public interface StoreApi {
 			@SecurityRequirement(name = "api_key") }, tags = { "store" })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Map.class)))) })
-	@RequestMapping(value = "/store/inventory", produces = { "application/json" }, method = RequestMethod.GET)
+	@GetMapping(value = "/store/inventory", produces = { "application/json" })
 	default ResponseEntity<Map<String, Integer>> getInventory() {
 		return getDelegate().getInventory();
 	}
@@ -61,8 +62,7 @@ public interface StoreApi {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Order.class))),
 			@ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
 			@ApiResponse(responseCode = "404", description = "Order not found") })
-	@RequestMapping(value = "/store/order/{orderId}", produces = { "application/xml",
-			"application/json" }, method = RequestMethod.GET)
+	@GetMapping(value = "/store/order/{orderId}", produces = { "application/xml", "application/json" })
 	default ResponseEntity<Order> getOrderById(
 			@Min(1L) @Max(5L) @Parameter(description = "ID of pet that needs to be fetched", required = true) @PathVariable("orderId") Long orderId) {
 		return getDelegate().getOrderById(orderId);
@@ -72,8 +72,8 @@ public interface StoreApi {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Order.class))),
 			@ApiResponse(responseCode = "400", description = "Invalid Order") })
-	@RequestMapping(value = "/store/order", produces = { "application/xml", "application/json" }, consumes = {
-			"application/json" }, method = RequestMethod.POST)
+	@PostMapping(value = "/store/order", produces = { "application/xml", "application/json" }, consumes = {
+			"application/json" })
 	default ResponseEntity<Order> placeOrder(
 			@Parameter(description = "order placed for purchasing the pet", required = true) @Valid @RequestBody Order order) {
 		return getDelegate().placeOrder(order);

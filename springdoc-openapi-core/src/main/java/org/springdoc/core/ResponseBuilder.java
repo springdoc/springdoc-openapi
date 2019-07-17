@@ -130,7 +130,6 @@ public class ResponseBuilder {
 
 	private Content buildContent(Components components, Method method, String[] methodProduces) {
 		Content content = new Content();
-		// TODO JSON VIEW
 		Schema<?> schemaN = null;
 		Type returnType = method.getGenericReturnType();
 		if (returnType instanceof ParameterizedType) {
