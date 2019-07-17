@@ -16,7 +16,10 @@ import org.springdoc.core.ResponseBuilder;
 import org.springdoc.core.TagsBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -134,14 +137,44 @@ public class OpenApiResource {
 						classConsumes = reqMappringClass.consumes();
 					}
 
-					RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
-							RequestMapping.class);
-
 					String[] methodProduces = null;
 					String[] methodConsumes = null;
-					if (reqMappringMethod != null) {
-						methodProduces = reqMappringMethod.produces();
-						methodConsumes = reqMappringMethod.consumes();
+
+					if (RequestMethod.GET.equals(requestMethod)) {
+						GetMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
+								GetMapping.class);
+						if (reqMappringMethod != null) {
+							methodProduces = reqMappringMethod.produces();
+							methodConsumes = reqMappringMethod.consumes();
+						}
+					} else if (RequestMethod.POST.equals(requestMethod)) {
+						PostMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
+								PostMapping.class);
+						if (reqMappringMethod != null) {
+							methodProduces = reqMappringMethod.produces();
+							methodConsumes = reqMappringMethod.consumes();
+						}
+					} else if (RequestMethod.PUT.equals(requestMethod)) {
+						PutMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
+								PutMapping.class);
+						if (reqMappringMethod != null) {
+							methodProduces = reqMappringMethod.produces();
+							methodConsumes = reqMappringMethod.consumes();
+						}
+					} else if (RequestMethod.DELETE.equals(requestMethod)) {
+						DeleteMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
+								DeleteMapping.class);
+						if (reqMappringMethod != null) {
+							methodProduces = reqMappringMethod.produces();
+							methodConsumes = reqMappringMethod.consumes();
+						}
+					} else {
+						RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
+								RequestMapping.class);
+						if (reqMappringMethod != null) {
+							methodProduces = reqMappringMethod.produces();
+							methodConsumes = reqMappringMethod.consumes();
+						}
 					}
 
 					String[] allConsumes = ArrayUtils.addAll(methodConsumes, classConsumes);
@@ -150,7 +183,7 @@ public class OpenApiResource {
 					Operation operation = new Operation();
 
 					// compute tags
-					operation = tagbuiBuilder.build(handlerMethod, operation);
+					operation = tagbuiBuilder.build(handlerMethod, operation, openAPI);
 
 					// Add documentation from operation annotation
 					operationParser.parse(components, apiOperation, operation, openAPI, classConsumes,
