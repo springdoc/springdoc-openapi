@@ -26,4 +26,9 @@ public final class Constants {
 	public static final String DEFAULT_PROPS_LOCATION = "/swagger.properties";
 	public static final String DEFAULT_LICENSE_VALUE = "Apache 2.0 License";
 	public static final String DEFAULT_LICENSE_URL = "http://www.apache.org/licenses/LICENSE-2.0.html";
+
+	private Constants() {
+		super();
+	}
+
 }

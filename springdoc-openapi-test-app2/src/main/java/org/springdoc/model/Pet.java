@@ -180,11 +180,11 @@ public class Pet {
 	 * @return status
 	 **/
 	@JsonProperty("status")
-	public String getStatus() {
+	public StatusEnum getStatus() {
 		if (status == null) {
 			return null;
 		}
-		return status.getValue();
+		return status;
 	}
 
 	public void setStatus(StatusEnum status) {

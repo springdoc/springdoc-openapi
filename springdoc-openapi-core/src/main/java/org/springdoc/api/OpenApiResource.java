@@ -76,7 +76,6 @@ public class OpenApiResource {
 	}
 
 	private OpenAPI getOpenApi() throws Exception {
-		// TODO GET URI INFO from http servlet request
 		long start = System.currentTimeMillis();
 		OpenAPI openAPI = new OpenAPI();
 		Components components = new Components();

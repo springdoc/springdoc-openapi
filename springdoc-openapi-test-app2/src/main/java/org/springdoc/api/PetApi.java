@@ -13,11 +13,13 @@ import javax.validation.constraints.NotNull;
 import org.springdoc.model.ModelApiResponse;
 import org.springdoc.model.Pet;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,7 +45,7 @@ public interface PetApi {
 	@Operation(summary = "Add a new pet to the store", description = "", security = {
 			@SecurityRequirement(name = "petstore_auth", scopes = { "write:pets", "read:pets" }) }, tags = { "pet" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "405", description = "Invalid input") })
-	@RequestMapping(value = "/pet", consumes = { "application/json", "application/xml" }, method = RequestMethod.POST)
+	@PostMapping(value = "/pet", consumes = { "application/json", "application/xml" })
 	default void addPet(
 			@Parameter(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody Pet pet) {
 		// return getDelegate().addPet(pet);
@@ -53,7 +55,7 @@ public interface PetApi {
 			@SecurityRequirement(name = "petstore_auth", scopes = { "write:pets", "read:pets" }) }, tags = { "pet" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
 			@ApiResponse(responseCode = "404", description = "Pet not found") })
-	@RequestMapping(value = "/pet/{petId}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/pet/{petId}")
 	default ResponseEntity<Void> deletePet(
 			@Parameter(description = "Pet id to delete", required = true) @PathVariable("petId") Long petId,
 			@Parameter(description = "") @RequestHeader(value = "api_key", required = false) String apiKey) {
@@ -65,8 +67,7 @@ public interface PetApi {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Pet.class)))),
 			@ApiResponse(responseCode = "400", description = "Invalid status value") })
-	@RequestMapping(value = "/pet/findByStatus", produces = { "application/xml",
-			"application/json" }, method = RequestMethod.GET)
+	@GetMapping(value = "/pet/findByStatus", produces = { "application/xml", "application/json" })
 	default ResponseEntity<List<Pet>> findPetsByStatus(
 			@NotNull @Parameter(description = "Status values that need to be considered for filter", required = true) @Valid @RequestParam(value = "status", required = true) List<String> status) {
 		return getDelegate().findPetsByStatus(status);
@@ -77,8 +78,7 @@ public interface PetApi {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Pet.class)))),
 			@ApiResponse(responseCode = "400", description = "Invalid tag value") })
-	@RequestMapping(value = "/pet/findByTags", produces = { "application/xml",
-			"application/json" }, method = RequestMethod.GET)
+	@GetMapping(value = "/pet/findByTags", produces = { "application/xml", "application/json" })
 	default ResponseEntity<List<Pet>> findPetsByTags(
 			@NotNull @Parameter(description = "Tags to filter by", required = true) @Valid @RequestParam(value = "tags", required = true) List<String> tags) {
 		return getDelegate().findPetsByTags(tags);
@@ -90,8 +90,7 @@ public interface PetApi {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Pet.class))),
 			@ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
 			@ApiResponse(responseCode = "404", description = "Pet not found") })
-	@RequestMapping(value = "/pet/{petId}", produces = { "application/xml",
-			"application/json" }, method = RequestMethod.GET)
+	@GetMapping(value = "/pet/{petId}", produces = { "application/xml", "application/json" })
 	default ResponseEntity<Pet> getPetById(
 			@Parameter(description = "ID of pet to return", required = true) @PathVariable("petId") Long petId) {
 		return getDelegate().getPetById(petId);
@@ -102,7 +101,7 @@ public interface PetApi {
 	@ApiResponses(value = { @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
 			@ApiResponse(responseCode = "404", description = "Pet not found"),
 			@ApiResponse(responseCode = "405", description = "Validation exception") })
-	@RequestMapping(value = "/pet", consumes = { "application/json", "application/xml" }, method = RequestMethod.PUT)
+	@PutMapping(value = "/pet", consumes = { "application/json", "application/xml" })
 	default ResponseEntity<Void> updatePet(
 			@Parameter(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody Pet pet) {
 		return getDelegate().updatePet(pet);
@@ -111,8 +110,7 @@ public interface PetApi {
 	@Operation(summary = "Updates a pet in the store with form data", description = "", security = {
 			@SecurityRequirement(name = "petstore_auth", scopes = { "write:pets", "read:pets" }) }, tags = { "pet" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "405", description = "Invalid input") })
-	@RequestMapping(value = "/pet/{petId}", consumes = {
-			"application/x-www-form-urlencoded" }, method = RequestMethod.POST)
+	@PostMapping(value = "/pet/{petId}", consumes = { "application/x-www-form-urlencoded" })
 	default ResponseEntity<Void> updatePetWithForm(
 			@Parameter(description = "ID of pet that needs to be updated", required = true) @PathVariable("petId") Long petId,
 			@Parameter(description = "Updated name of the pet") @RequestParam(value = "name", required = false) String name,
@@ -124,8 +122,8 @@ public interface PetApi {
 			@SecurityRequirement(name = "petstore_auth", scopes = { "write:pets", "read:pets" }) }, tags = { "pet" })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = ModelApiResponse.class))) })
-	@RequestMapping(value = "/pet/{petId}/uploadImage", produces = { "application/json" }, consumes = {
-			"multipart/form-data" }, method = RequestMethod.POST)
+	@PostMapping(value = "/pet/{petId}/uploadImage", produces = { "application/json" }, consumes = {
+			"multipart/form-data" })
 	default ResponseEntity<ModelApiResponse> uploadFile(
 			@Parameter(description = "ID of pet to update", required = true) @PathVariable("petId") Long petId,
 			@Parameter(description = "Additional data to pass to server") @RequestParam(value = "additionalMetadata", required = false) String additionalMetadata,
