@@ -48,12 +48,12 @@ public class ResponseBuilder {
 		ApiResponses apiResponses = operation.getResponses();
 		if (apiResponses == null)
 			apiResponses = new ApiResponses();
-		// Fill api Responses
-		computeResponse(components, handlerMethod.getMethod(), apiResponses, methodProduces);
 		// for each one build ApiResponse and add it to existing responses
 		for (Entry<String, ApiResponse> entry : genericMapResponse.entrySet()) {
 			apiResponses.addApiResponse(entry.getKey(), entry.getValue());
 		}
+		// Fill api Responses
+		computeResponse(components, handlerMethod.getMethod(), apiResponses, methodProduces);
 		return apiResponses;
 	}
 
