@@ -67,7 +67,7 @@ Snapshots:
       <version>0.0.4</version>
    </dependency>
 ```
-## [Example application 1](https://springdoc-openapi-test-app2-silly-numbat.eu-de.mybluemix.net/).
+## [Example application 1](https://springdoc-openapi-test-app2-silly-numbat.eu-de.mybluemix.net/swagger-ui.html).
 ## [Example application 2](https://springdoc-openapi-test-app1-courteous-puku.eu-de.mybluemix.net/).
 
 
