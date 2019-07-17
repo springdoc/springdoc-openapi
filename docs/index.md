@@ -67,7 +67,9 @@ Snapshots:
       <version>0.0.4</version>
    </dependency>
 ```
-## [Example application](https://springdoc-openapi-v3-rest-test-pipeline-nice-gecko.eu-de.mybluemix.net/).
+## [Example application 1](https://springdoc-openapi-test-app2-silly-numbat.eu-de.mybluemix.net/).
+## [Example application 2](https://springdoc-openapi-test-app1-courteous-puku.eu-de.mybluemix.net/).
+
 
 ![Branching](https://springdoc.github.io/springdoc-openapi/images/pets.png)
 
