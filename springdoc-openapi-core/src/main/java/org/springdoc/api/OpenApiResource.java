@@ -94,7 +94,7 @@ public class OpenApiResource {
 
 		Map<String, Object> findRestControllers = Stream.of(findRestControllers1, findRestControllers2)
 				.flatMap(mapEl -> mapEl.entrySet().stream())
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
 		Map<String, Object> findControllerAdvice = mappingHandler.getApplicationContext()
 				.getBeansWithAnnotation(ControllerAdvice.class);
