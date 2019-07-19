@@ -13,14 +13,13 @@ spring:
       period: 31536000
       cachecontrol:
         max-age: 31536000
-        must-revalidate: true
     chain:
       html-application-cache: true
       enabled: true
       strategy:
         content:
           enabled: true
-
+          paths: /webjars/swagger-ui/**.*
 management:
    endpoints:
       web:

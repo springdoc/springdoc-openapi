@@ -4,6 +4,7 @@ public final class Constants {
 
 	public static final String DEFAULT_API_DOCS_URL = "/v3/api-docs";
 	public static final String WEB_JARS_URL = "/webjars/swagger-ui/index.html?url=";
+	public static final String DEFAULT_VALIDATOR_URL = "&validatorUrl=";
 	public static final String SLASH = "/";
 	public static final String GET_METHOD = "get";
 	public static final String POST_METHOD = "post";
