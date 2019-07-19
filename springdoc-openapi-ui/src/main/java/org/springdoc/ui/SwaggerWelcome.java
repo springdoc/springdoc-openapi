@@ -1,6 +1,7 @@
 package org.springdoc.ui;
 
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL;
+import static org.springdoc.core.Constants.DEFAULT_VALIDATOR_URL;
 import static org.springdoc.core.Constants.SLASH;
 import static org.springdoc.core.Constants.WEB_JARS_URL;
 import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
@@ -38,6 +39,7 @@ public class SwaggerWelcome {
 		else
 			sbUrl.append(contextPath);
 		sbUrl.append(DEFAULT_API_DOCS_URL);
+		sbUrl.append(DEFAULT_VALIDATOR_URL);
 		return sbUrl.toString();
 	}
 }
