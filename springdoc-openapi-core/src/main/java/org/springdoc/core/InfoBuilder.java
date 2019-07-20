@@ -89,7 +89,7 @@ public class InfoBuilder {
 					return AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()),
 							OpenAPIDefinition.class);
 				} catch (ClassNotFoundException e) {
-					LOGGER.error("Class Not Found in classpath: {0}", e.getMessage());
+					LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
 				}
 			}
 		}

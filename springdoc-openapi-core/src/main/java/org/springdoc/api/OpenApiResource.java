@@ -168,7 +168,7 @@ public class OpenApiResource {
 				}
 			}
 		}
-		LOGGER.info("Init duration for springdoc-openapi is: {0}  ms", (System.currentTimeMillis() - start));
+		LOGGER.info("Init duration for springdoc-openapi is: {} ms", (System.currentTimeMillis() - start));
 		return openAPI;
 	}
 
