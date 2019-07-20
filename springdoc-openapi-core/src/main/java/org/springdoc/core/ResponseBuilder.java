@@ -135,19 +135,8 @@ public class ResponseBuilder {
 		if (returnType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
 			if (ResponseEntity.class.getName().contentEquals(parameterizedType.getRawType().getTypeName())) {
-				if (parameterizedType.getActualTypeArguments()[0] instanceof Class
-						&& !Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
-					schemaN = calculateSchema(components, parameterizedType);
-				} else if (parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType
-						&& !Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
-					parameterizedType = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
-					schemaN = calculateSchema(components, parameterizedType);
-				} else if (Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
-					// if void, no content
-					schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
-				}
+				schemaN = calculateSchemaParameterizedType(components, parameterizedType);
 			}
-
 		} else if (returnType instanceof TypeVariable) {
 			schemaN = AnnotationsUtils.resolveSchemaFromType((Class<?>) returnType, null, null);
 		} else if (Void.TYPE.equals(returnType)) {
@@ -169,6 +158,22 @@ public class ResponseBuilder {
 			setContent(methodProduces, content, mediaType);
 		}
 		return content;
+	}
+
+	private Schema<?> calculateSchemaParameterizedType(Components components, ParameterizedType parameterizedType) {
+		Schema<?> schemaN = null;
+		if (parameterizedType.getActualTypeArguments()[0] instanceof Class
+				&& !Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
+			schemaN = calculateSchema(components, parameterizedType);
+		} else if (parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType
+				&& !Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
+			parameterizedType = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
+			schemaN = calculateSchema(components, parameterizedType);
+		} else if (Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
+			// if void, no content
+			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
+		}
+		return schemaN;
 	}
 
 	private void setContent(String[] methodProduces, Content content,
