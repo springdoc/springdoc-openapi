@@ -42,7 +42,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 @RestController
 public class OpenApiResource {
 
-	private static final Logger LOGGER= LoggerFactory.getLogger(OpenApiResource.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiResource.class);
 
 	@Autowired
 	private RequestBuilder requestBuilder;
@@ -84,7 +84,7 @@ public class OpenApiResource {
 		Components components = new Components();
 		openAPI.setComponents(components);
 		// Info block
-		openAPI.setInfo(infoBuilder.build());
+		infoBuilder.build(openAPI);
 
 		Map<RequestMappingInfo, HandlerMethod> map = mappingHandler.getHandlerMethods();
 		Map<String, Object> findRestControllers1 = mappingHandler.getApplicationContext()
@@ -140,42 +140,7 @@ public class OpenApiResource {
 					String[] methodProduces = null;
 					String[] methodConsumes = null;
 
-					if (RequestMethod.GET.equals(requestMethod)) {
-						GetMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
-								GetMapping.class);
-						if (reqMappringMethod != null) {
-							methodProduces = reqMappringMethod.produces();
-							methodConsumes = reqMappringMethod.consumes();
-						}
-					} else if (RequestMethod.POST.equals(requestMethod)) {
-						PostMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
-								PostMapping.class);
-						if (reqMappringMethod != null) {
-							methodProduces = reqMappringMethod.produces();
-							methodConsumes = reqMappringMethod.consumes();
-						}
-					} else if (RequestMethod.PUT.equals(requestMethod)) {
-						PutMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
-								PutMapping.class);
-						if (reqMappringMethod != null) {
-							methodProduces = reqMappringMethod.produces();
-							methodConsumes = reqMappringMethod.consumes();
-						}
-					} else if (RequestMethod.DELETE.equals(requestMethod)) {
-						DeleteMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
-								DeleteMapping.class);
-						if (reqMappringMethod != null) {
-							methodProduces = reqMappringMethod.produces();
-							methodConsumes = reqMappringMethod.consumes();
-						}
-					} else {
-						RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
-								RequestMapping.class);
-						if (reqMappringMethod != null) {
-							methodProduces = reqMappringMethod.produces();
-							methodConsumes = reqMappringMethod.consumes();
-						}
-					}
+					this.calculateConsumesProduces(methodProduces, methodConsumes, requestMethod, handlerMethod);
 
 					String[] allConsumes = ArrayUtils.addAll(methodConsumes, classConsumes);
 					String[] allProduces = ArrayUtils.addAll(methodProduces, classProduces);
@@ -186,19 +151,17 @@ public class OpenApiResource {
 					operation = tagbuiBuilder.build(handlerMethod, operation, openAPI);
 
 					// Add documentation from operation annotation
-					operationParser.parse(components, apiOperation, operation, openAPI, classConsumes,
-							methodConsumes, classProduces, methodProduces);
+					operationParser.parse(components, apiOperation, operation, openAPI, classConsumes, methodConsumes,
+							classProduces, methodProduces);
 
 					// requests
-					operation = requestBuilder.build(components, handlerMethod, requestMethod,
-							operation, allConsumes);
+					operation = requestBuilder.build(components, handlerMethod, requestMethod, operation, allConsumes);
 
 					// responses
 					ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation,
 							allProduces);
 
 					operation.setResponses(apiResponses);
-
 
 					PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 					paths.addPathItem(operationPath, pathItemObject);
@@ -211,6 +174,52 @@ public class OpenApiResource {
 		}
 		LOGGER.info("Init duration for springdoc-openapi is: " + (System.currentTimeMillis() - start) + " ms");
 		return openAPI;
+	}
+
+	private void calculateConsumesProduces(String[] methodProduces, String[] methodConsumes,
+			RequestMethod requestMethod, HandlerMethod handlerMethod) {
+		switch (requestMethod) {
+		case POST:
+			PostMapping reqPostMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
+					PostMapping.class);
+			if (reqPostMappringMethod != null) {
+				methodProduces = reqPostMappringMethod.produces();
+				methodConsumes = reqPostMappringMethod.consumes();
+			}
+			break;
+		case GET:
+			GetMapping reqGetMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
+					GetMapping.class);
+			if (reqGetMappringMethod != null) {
+				methodProduces = reqGetMappringMethod.produces();
+				methodConsumes = reqGetMappringMethod.consumes();
+			}
+			break;
+		case DELETE:
+			DeleteMapping reqDeleteMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
+					DeleteMapping.class);
+			if (reqDeleteMappringMethod != null) {
+				methodProduces = reqDeleteMappringMethod.produces();
+				methodConsumes = reqDeleteMappringMethod.consumes();
+			}
+			break;
+		case PUT:
+			PutMapping reqPutMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
+					PutMapping.class);
+			if (reqPutMappringMethod != null) {
+				methodProduces = reqPutMappringMethod.produces();
+				methodConsumes = reqPutMappringMethod.consumes();
+			}
+			break;
+		default:
+			RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
+					RequestMapping.class);
+			if (reqMappringMethod != null) {
+				methodProduces = reqMappringMethod.produces();
+				methodConsumes = reqMappringMethod.consumes();
+			}
+			break;
+		}
 	}
 
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,

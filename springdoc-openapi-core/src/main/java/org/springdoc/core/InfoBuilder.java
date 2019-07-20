@@ -3,6 +3,7 @@ package org.springdoc.core;
 import static org.springdoc.core.Constants.DEFAULT_TITLE;
 import static org.springdoc.core.Constants.DEFAULT_VERSION;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 
 @Component
@@ -32,18 +34,32 @@ public class InfoBuilder {
 		super();
 	}
 
-	public Info build() {
+	public void build(OpenAPI openAPI) {
 		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
 		scanner.addIncludeFilter(new AnnotationTypeFilter(OpenAPIDefinition.class));
 		List<String> packagesToScan = AutoConfigurationPackages.get(context);
 		OpenAPIDefinition apiDef = getApiDefClass(scanner, packagesToScan);
-		Info info = null;
+		Info infos = null;
 		if (apiDef != null) {
-			info = AnnotationsUtils.getInfo(apiDef.info()).orElse(null);
+			// info
+			AnnotationsUtils.getInfo(apiDef.info()).ifPresent(info -> openAPI.setInfo(info));
+			// OpenApiDefinition security requirements
+			SecurityParser.getSecurityRequirements(apiDef.security()).ifPresent(s -> openAPI.setSecurity(s));
+			// OpenApiDefinition external docs
+			AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs())
+					.ifPresent(docs -> openAPI.setExternalDocs(docs));
+			// OpenApiDefinition tags
+			AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
+			// OpenApiDefinition servers
+			AnnotationsUtils.getServers(apiDef.servers()).ifPresent(servers -> openAPI.setServers(servers));
+			// OpenApiDefinition extensions
+			if (apiDef.extensions().length > 0) {
+				openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
+			}
 		} else {
-			info = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
+			infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
+			openAPI.setInfo(infos);
 		}
-		return info;
 	}
 
 	private OpenAPIDefinition getApiDefClass(ClassPathScanningCandidateComponentProvider scanner,
@@ -61,5 +77,6 @@ public class InfoBuilder {
 		}
 		return null;
 	}
+
 
 }
