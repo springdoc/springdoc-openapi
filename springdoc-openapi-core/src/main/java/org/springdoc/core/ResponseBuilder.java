@@ -41,7 +41,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 @SuppressWarnings("rawtypes")
 public class ResponseBuilder {
 
-	private Map<String, ApiResponse> genericMapResponse = new HashMap<String, ApiResponse>();
+	private Map<String, ApiResponse> genericMapResponse = new HashMap<>();
 
 	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
 			String[] methodProduces) {
@@ -59,7 +59,7 @@ public class ResponseBuilder {
 
 	public void buildGenericResponse(Components components, Map<String, Object> findControllerAdvice) {
 		// ControllerAdvice
-		List<Method> methods = new ArrayList<Method>();
+		List<Method> methods = new ArrayList<>();
 		for (Map.Entry<String, Object> entry : findControllerAdvice.entrySet()) {
 			Object controllerAdvice = entry.getValue();
 			// get all methods with annotation @ExceptionHandler

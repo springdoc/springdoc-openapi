@@ -2,11 +2,11 @@ package org.springdoc.ui;
 
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.DEFAULT_VALIDATOR_URL;
-import static org.springdoc.core.Constants.SLASH;
 import static org.springdoc.core.Constants.SPRING_BOOT_1_CONTEXT_PATH;
 import static org.springdoc.core.Constants.SPRING_BOOT_2_CONTEXT_PATH;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
 import static org.springdoc.core.Constants.WEB_JARS_URL;
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
 
 import org.apache.commons.lang3.StringUtils;
@@ -40,7 +40,7 @@ public class SwaggerWelcome {
 		StringBuilder sbUrl = new StringBuilder();
 		sbUrl.append(REDIRECT_URL_PREFIX);
 		sbUrl.append(WEB_JARS_URL);
-		if (contextPath.endsWith(SLASH)) {
+		if (contextPath.endsWith(DEFAULT_PATH_SEPARATOR)) {
 			contextPath = contextPath.substring(0, contextPath.length() - 1);
 			sbUrl.append(contextPath + apiDocsUrl);
 		} else {
