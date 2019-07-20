@@ -32,9 +32,9 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 @Component
 public class OperationBuilder {
 
-	public void parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation,
-			OpenAPI openAPI, String[] classConsumes, String[] methodConsumes, String[] classProduces,
-			String[] methodProduces) {
+	public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
+			Operation operation,
+			OpenAPI openAPI, MediaAttributes mediaAttributes) {
 		if (apiOperation != null) {
 			if (StringUtils.isNotBlank(apiOperation.summary())) {
 				operation.setSummary(apiOperation.summary());
@@ -65,7 +65,8 @@ public class OperationBuilder {
 						.ifPresent(operation::setExternalDocs);
 			}
 
-			getApiResponses(apiOperation.responses(), classProduces, methodProduces, components, null)
+			getApiResponses(apiOperation.responses(), mediaAttributes.getClassProduces(),
+					mediaAttributes.getMethodProduces(), components, null)
 					.ifPresent(responses -> {
 						if (operation.getResponses() == null) {
 							operation.setResponses(responses);
@@ -88,7 +89,8 @@ public class OperationBuilder {
 			// RequestBody in Operation
 			if (apiOperation != null && apiOperation.requestBody() != null && operation.getRequestBody() == null) {
 
-				getRequestBody(apiOperation.requestBody(), classConsumes, methodConsumes, components, null)
+				getRequestBody(apiOperation.requestBody(), mediaAttributes.getClassConsumes(),
+						mediaAttributes.getMethodConsumes(), components, null)
 						.ifPresent(operation::setRequestBody);
 			}
 
@@ -103,6 +105,7 @@ public class OperationBuilder {
 			}
 
 		}
+		return openAPI;
 	}
 
 	private static String getOperationId(String operationId, OpenAPI openAPI) {

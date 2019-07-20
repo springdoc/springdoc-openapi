@@ -44,8 +44,8 @@ public class InfoBuilder {
 			LOGGER.warn(
 					"found more than one OpenAPIDefinition class. springdoc-openapi will be using the first one found.");
 		if (openAPIDefinitionMap.size() > 0) {
-			Class<?> objClz = (Class<?>) openAPIDefinitionMap.entrySet().stream().findFirst().get().getValue()
-					.getClass();
+			Map.Entry<String, Object> entry = openAPIDefinitionMap.entrySet().iterator().next();
+			Class<?> objClz = (Class<?>) entry.getValue().getClass();
 			apiDef = ReflectionUtils.getAnnotation(objClz, OpenAPIDefinition.class);
 		}
 
