@@ -200,19 +200,19 @@ public class SecurityParser {
 		if (oAuthFlow == null) {
 			result = true;
 		}
-		if (!StringUtils.isBlank(oAuthFlow.authorizationUrl())) {
+		else if (!StringUtils.isBlank(oAuthFlow.authorizationUrl())) {
 			result = false;
 		}
-		if (!StringUtils.isBlank(oAuthFlow.refreshUrl())) {
+		else if (!StringUtils.isBlank(oAuthFlow.refreshUrl())) {
 			result = false;
 		}
-		if (!StringUtils.isBlank(oAuthFlow.tokenUrl())) {
+		else if (!StringUtils.isBlank(oAuthFlow.tokenUrl())) {
 			result = false;
 		}
-		if (!isEmpty(oAuthFlow.scopes())) {
+		else if (!isEmpty(oAuthFlow.scopes())) {
 			result = false;
 		}
-		if (oAuthFlow.extensions().length > 0) {
+		else if (oAuthFlow.extensions().length > 0) {
 			result = false;
 		} else {
 			result = true;
