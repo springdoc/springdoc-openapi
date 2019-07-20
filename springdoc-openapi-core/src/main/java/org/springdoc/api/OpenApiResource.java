@@ -10,11 +10,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.Constants;
 import org.springdoc.core.InfoBuilder;
+import org.springdoc.core.MediaAttributes;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.RequestBuilder;
 import org.springdoc.core.ResponseBuilder;
@@ -22,10 +22,7 @@ import org.springdoc.core.TagsBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -134,20 +131,13 @@ public class OpenApiResource {
 					RequestMapping reqMappringClass = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
 							RequestMapping.class);
 
-					String[] classProduces = null;
-					String[] classConsumes = null;
+					MediaAttributes mediaAttributes = new MediaAttributes();
 					if (reqMappringClass != null) {
-						classProduces = reqMappringClass.produces();
-						classConsumes = reqMappringClass.consumes();
+						mediaAttributes.setClassConsumes(reqMappringClass.consumes());
+						mediaAttributes.setClassProduces(reqMappringClass.produces());
 					}
 
-					String[] methodProduces = null;
-					String[] methodConsumes = null;
-
-					this.calculateConsumesProduces(methodProduces, methodConsumes, requestMethod, handlerMethod);
-
-					String[] allConsumes = ArrayUtils.addAll(methodConsumes, classConsumes);
-					String[] allProduces = ArrayUtils.addAll(methodProduces, classProduces);
+					mediaAttributes.calculateConsumesProduces(requestMethod, handlerMethod.getMethod());
 
 					Operation operation = new Operation();
 
@@ -155,15 +145,15 @@ public class OpenApiResource {
 					operation = tagbuiBuilder.build(handlerMethod, operation, openAPI);
 
 					// Add documentation from operation annotation
-					operationParser.parse(components, apiOperation, operation, openAPI, classConsumes, methodConsumes,
-							classProduces, methodProduces);
+					openAPI = operationParser.parse(components, apiOperation, operation, openAPI, mediaAttributes);
 
 					// requests
-					operation = requestBuilder.build(components, handlerMethod, requestMethod, operation, allConsumes);
+					operation = requestBuilder.build(components, handlerMethod, requestMethod, operation,
+							mediaAttributes.getAllConsumes());
 
 					// responses
 					ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation,
-							allProduces);
+							mediaAttributes.getAllProduces());
 
 					operation.setResponses(apiResponses);
 
@@ -178,52 +168,6 @@ public class OpenApiResource {
 		}
 		LOGGER.info("Init duration for springdoc-openapi is: " + (System.currentTimeMillis() - start) + " ms");
 		return openAPI;
-	}
-
-	private void calculateConsumesProduces(String[] methodProduces, String[] methodConsumes,
-			RequestMethod requestMethod, HandlerMethod handlerMethod) {
-		switch (requestMethod) {
-		case POST:
-			PostMapping reqPostMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
-					PostMapping.class);
-			if (reqPostMappringMethod != null) {
-				methodProduces = reqPostMappringMethod.produces();
-				methodConsumes = reqPostMappringMethod.consumes();
-			}
-			break;
-		case GET:
-			GetMapping reqGetMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
-					GetMapping.class);
-			if (reqGetMappringMethod != null) {
-				methodProduces = reqGetMappringMethod.produces();
-				methodConsumes = reqGetMappringMethod.consumes();
-			}
-			break;
-		case DELETE:
-			DeleteMapping reqDeleteMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
-					DeleteMapping.class);
-			if (reqDeleteMappringMethod != null) {
-				methodProduces = reqDeleteMappringMethod.produces();
-				methodConsumes = reqDeleteMappringMethod.consumes();
-			}
-			break;
-		case PUT:
-			PutMapping reqPutMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
-					PutMapping.class);
-			if (reqPutMappringMethod != null) {
-				methodProduces = reqPutMappringMethod.produces();
-				methodConsumes = reqPutMappringMethod.consumes();
-			}
-			break;
-		default:
-			RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(handlerMethod.getMethod(),
-					RequestMapping.class);
-			if (reqMappringMethod != null) {
-				methodProduces = reqMappringMethod.produces();
-				methodConsumes = reqMappringMethod.consumes();
-			}
-			break;
-		}
 	}
 
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
