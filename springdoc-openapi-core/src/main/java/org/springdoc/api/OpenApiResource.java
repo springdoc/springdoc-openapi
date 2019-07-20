@@ -1,5 +1,9 @@
 package org.springdoc.api;
 
+import static org.springdoc.core.Constants.API_DOCS_URL;
+import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
+import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -9,12 +13,14 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.Constants;
 import org.springdoc.core.InfoBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.RequestBuilder;
 import org.springdoc.core.ResponseBuilder;
 import org.springdoc.core.TagsBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +28,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
@@ -62,20 +67,19 @@ public class OpenApiResource {
 	@Autowired
 	private RequestMappingInfoHandlerMapping mappingHandler;
 
-	@io.swagger.v3.oas.annotations.Operation(hidden = true)
-	@GetMapping(value = "/v3/api-docs.yaml", produces = "application/vnd.oai.openapi")
-	@ResponseBody
-	public String openapiYaml() throws Exception {
-		OpenAPI openAPI = this.getOpenApi();
-		return Yaml.mapper().writeValueAsString(openAPI);
-	}
 
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
-	@GetMapping(value = "/v3/api-docs", produces = "application/json")
-	@ResponseBody
+	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String openapiJson() throws Exception {
 		OpenAPI openAPI = this.getOpenApi();
 		return Json.mapper().writeValueAsString(openAPI);
+	}
+
+	@io.swagger.v3.oas.annotations.Operation(hidden = true)
+	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
+	public String openapiYaml() throws Exception {
+		OpenAPI openAPI = this.getOpenApi();
+		return Yaml.mapper().writeValueAsString(openAPI);
 	}
 
 	private OpenAPI getOpenApi() throws Exception {
@@ -115,7 +119,7 @@ public class OpenApiResource {
 					operationPath = firstpattern.get();
 			}
 
-			if (operationPath != null && operationPath.startsWith("/")
+			if (operationPath != null && operationPath.startsWith(Constants.SLASH)
 					&& findRestControllers.containsKey(handlerMethod.getBean().toString())) {
 				Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 				for (RequestMethod requestMethod : requestMethods) {

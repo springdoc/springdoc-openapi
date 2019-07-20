@@ -3,8 +3,16 @@ package org.springdoc.core;
 public final class Constants {
 
 	public static final String DEFAULT_API_DOCS_URL = "/v3/api-docs";
+	public static final String API_DOCS_URL = "${springdoc.api-docs.path:#{T(org.springdoc.core.Constants).DEFAULT_API_DOCS_URL}}";
+	public static final String DEFAULT_API_DOCS_URL_YAML = API_DOCS_URL + ".yaml";
 	public static final String WEB_JARS_URL = "/webjars/swagger-ui/index.html?url=";
 	public static final String DEFAULT_VALIDATOR_URL = "&validatorUrl=";
+	public static final String APPLICATION_OPENAPI_YAML = "application/vnd.oai.openapi";
+	public static final String SPRING_BOOT_1_CONTEXT_PATH = "${server.contextPath:#{''}}";
+	public static final String SPRING_BOOT_2_CONTEXT_PATH = "${server.servlet.context-path:#{''}}";
+	public static final String DEFAULT_SWAGGER_UI_PATH = "/swagger-ui.html";
+	public static final String SWAGGER_UI_PATH = "${springdoc.swagger-ui.path:#{T(org.springdoc.core.Constants).DEFAULT_SWAGGER_UI_PATH}}";
+
 	public static final String SLASH = "/";
 	public static final String GET_METHOD = "get";
 	public static final String POST_METHOD = "post";
