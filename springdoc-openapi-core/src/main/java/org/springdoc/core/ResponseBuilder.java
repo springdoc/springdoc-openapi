@@ -48,31 +48,19 @@ public class ResponseBuilder {
 		ApiResponses apiResponses = operation.getResponses();
 		if (apiResponses == null)
 			apiResponses = new ApiResponses();
+		// Fill api Responses
+		computeResponse(components, handlerMethod.getMethod(), apiResponses, methodProduces);
+
 		// for each one build ApiResponse and add it to existing responses
 		for (Entry<String, ApiResponse> entry : genericMapResponse.entrySet()) {
 			apiResponses.addApiResponse(entry.getKey(), entry.getValue());
 		}
-		// Fill api Responses
-		computeResponse(components, handlerMethod.getMethod(), apiResponses, methodProduces);
 		return apiResponses;
 	}
 
 	public void buildGenericResponse(Components components, Map<String, Object> findControllerAdvice) {
 		// ControllerAdvice
-		List<Method> methods = new ArrayList<>();
-		for (Map.Entry<String, Object> entry : findControllerAdvice.entrySet()) {
-			Object controllerAdvice = entry.getValue();
-			// get all methods with annotation @ExceptionHandler
-			Class<?> objClz = controllerAdvice.getClass();
-			if (org.springframework.aop.support.AopUtils.isAopProxy(controllerAdvice)) {
-				objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerAdvice);
-			}
-			for (Method m : objClz.getDeclaredMethods()) {
-				if (m.isAnnotationPresent(ExceptionHandler.class)) {
-					methods.add(m);
-				}
-			}
-		}
+		List<Method> methods = getMethods(findControllerAdvice);
 
 		// for each one build ApiResponse and add it to existing responses
 		for (Method method : methods) {
@@ -88,6 +76,24 @@ public class ResponseBuilder {
 			}
 		}
 
+	}
+
+	private List<Method> getMethods(Map<String, Object> findControllerAdvice) {
+		List<Method> methods = new ArrayList<>();
+		for (Map.Entry<String, Object> entry : findControllerAdvice.entrySet()) {
+			Object controllerAdvice = entry.getValue();
+			// get all methods with annotation @ExceptionHandler
+			Class<?> objClz = controllerAdvice.getClass();
+			if (org.springframework.aop.support.AopUtils.isAopProxy(controllerAdvice)) {
+				objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerAdvice);
+			}
+			for (Method m : objClz.getDeclaredMethods()) {
+				if (m.isAnnotationPresent(ExceptionHandler.class)) {
+					methods.add(m);
+				}
+			}
+		}
+		return methods;
 	}
 
 	private Map<String, ApiResponse> computeResponse(Components components, Method method, ApiResponses apiResponsesOp,
