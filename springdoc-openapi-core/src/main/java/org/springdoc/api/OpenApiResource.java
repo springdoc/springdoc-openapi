@@ -3,6 +3,7 @@ package org.springdoc.api;
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 import java.util.Map;
 import java.util.Optional;
@@ -12,7 +13,6 @@ import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.Constants;
 import org.springdoc.core.InfoBuilder;
 import org.springdoc.core.MediaAttributes;
 import org.springdoc.core.OperationBuilder;
@@ -30,6 +30,8 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.ReflectionUtils;
@@ -67,19 +69,19 @@ public class OpenApiResource {
 
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String openapiJson() throws Exception {
+	public String openapiJson() throws JsonProcessingException {
 		OpenAPI openAPI = this.getOpenApi();
 		return Json.mapper().writeValueAsString(openAPI);
 	}
 
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
-	public String openapiYaml() throws Exception {
+	public String openapiYaml() throws JsonProcessingException {
 		OpenAPI openAPI = this.getOpenApi();
 		return Yaml.mapper().writeValueAsString(openAPI);
 	}
 
-	private OpenAPI getOpenApi() throws Exception {
+	private OpenAPI getOpenApi() {
 		long start = System.currentTimeMillis();
 		OpenAPI openAPI = new OpenAPI();
 		Components components = new Components();
@@ -116,7 +118,7 @@ public class OpenApiResource {
 					operationPath = firstpattern.get();
 			}
 
-			if (operationPath != null && operationPath.startsWith(Constants.SLASH)
+			if (operationPath != null && operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
 					&& findRestControllers.containsKey(handlerMethod.getBean().toString())) {
 				Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 				for (RequestMethod requestMethod : requestMethods) {
@@ -166,7 +168,7 @@ public class OpenApiResource {
 				}
 			}
 		}
-		LOGGER.info("Init duration for springdoc-openapi is: " + (System.currentTimeMillis() - start) + " ms");
+		LOGGER.info("Init duration for springdoc-openapi is: {0}  ms", (System.currentTimeMillis() - start));
 		return openAPI;
 	}
 

@@ -30,8 +30,8 @@ public class TagsBuilder {
 		List<io.swagger.v3.oas.annotations.tags.Tag> methodTags = ReflectionUtils
 				.getRepeatableAnnotations(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.tags.Tag.class);
 
-		List<io.swagger.v3.oas.annotations.tags.Tag> allTags = new ArrayList<Tag>();
-		Set<String> tagsStr = new HashSet<String>();
+		List<io.swagger.v3.oas.annotations.tags.Tag> allTags = new ArrayList<>();
+		Set<String> tagsStr = new HashSet<>();
 
 		if (!CollectionUtils.isEmpty(methodTags)) {
 			tagsStr.addAll(methodTags.stream().map(Tag::name).collect(Collectors.toSet()));

@@ -45,7 +45,7 @@ public class InfoBuilder {
 					"found more than one OpenAPIDefinition class. springdoc-openapi will be using the first one found.");
 		if (openAPIDefinitionMap.size() > 0) {
 			Map.Entry<String, Object> entry = openAPIDefinitionMap.entrySet().iterator().next();
-			Class<?> objClz = (Class<?>) entry.getValue().getClass();
+			Class<?> objClz = entry.getValue().getClass();
 			apiDef = ReflectionUtils.getAnnotation(objClz, OpenAPIDefinition.class);
 		}
 
@@ -60,16 +60,16 @@ public class InfoBuilder {
 
 		if (apiDef != null) {
 			// info
-			AnnotationsUtils.getInfo(apiDef.info()).ifPresent(info -> openAPI.setInfo(info));
+			AnnotationsUtils.getInfo(apiDef.info()).ifPresent(openAPI::setInfo);
 			// OpenApiDefinition security requirements
-			SecurityParser.getSecurityRequirements(apiDef.security()).ifPresent(s -> openAPI.setSecurity(s));
+			SecurityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
 			// OpenApiDefinition external docs
 			AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs())
-					.ifPresent(docs -> openAPI.setExternalDocs(docs));
+					.ifPresent(openAPI::setExternalDocs);
 			// OpenApiDefinition tags
 			AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
 			// OpenApiDefinition servers
-			AnnotationsUtils.getServers(apiDef.servers()).ifPresent(servers -> openAPI.setServers(servers));
+			AnnotationsUtils.getServers(apiDef.servers()).ifPresent(openAPI::setServers);
 			// OpenApiDefinition extensions
 			if (apiDef.extensions().length > 0) {
 				openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
@@ -89,7 +89,7 @@ public class InfoBuilder {
 					return AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()),
 							OpenAPIDefinition.class);
 				} catch (ClassNotFoundException e) {
-					LOGGER.error("Class Not Found in classpath: " + e.getMessage());
+					LOGGER.error("Class Not Found in classpath: {0}", e.getMessage());
 				}
 			}
 		}

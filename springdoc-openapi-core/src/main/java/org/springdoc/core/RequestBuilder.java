@@ -287,10 +287,8 @@ public class RequestBuilder {
 		boolean explode = true;
 		if (schema != null) {
 			Class<?> implementation = schema.implementation();
-			if (implementation == Void.class) {
-				if (!schema.type().equals("object") && !schema.type().equals("array")) {
+			if (implementation == Void.class && !schema.type().equals("object") && !schema.type().equals("array")) {
 					explode = false;
-				}
 			}
 		}
 		return explode;

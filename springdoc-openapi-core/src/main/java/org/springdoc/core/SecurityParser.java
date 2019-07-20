@@ -178,25 +178,26 @@ public class SecurityParser {
 	}
 
 	private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
+		boolean result = true;
 		if (oAuthFlows == null) {
-			return true;
+			result = true;
 		}
-		if (!isEmpty(oAuthFlows.implicit())) {
-			return false;
+		else if (!isEmpty(oAuthFlows.implicit())) {
+			result = false;
 		}
-		if (!isEmpty(oAuthFlows.authorizationCode())) {
-			return false;
+		else if (!isEmpty(oAuthFlows.authorizationCode())) {
+			result = false;
 		}
-		if (!isEmpty(oAuthFlows.clientCredentials())) {
-			return false;
+		else if (!isEmpty(oAuthFlows.clientCredentials())) {
+			result = false;
 		}
-		if (!isEmpty(oAuthFlows.password())) {
-			return false;
+		else if (!isEmpty(oAuthFlows.password())) {
+			result = false;
 		}
-		if (oAuthFlows.extensions().length > 0) {
-			return false;
+		else if (oAuthFlows.extensions().length > 0) {
+			result = false;
 		}
-		return true;
+		return result;
 	}
 
 	private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow) {
