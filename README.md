@@ -67,12 +67,6 @@ Snapshots:
       <version>0.0.8</version>
    </dependency>
 ```
-## [Example application 1](https://springdoc-openapi-test-app2-silly-numbat.eu-de.mybluemix.net/swagger-ui.html).
-## [Example application 2](https://springdoc-openapi-test-app1-courteous-puku.eu-de.mybluemix.net/).
-
-
-![Branching](https://springdoc.github.io/springdoc-openapi-demos/images/pets.png)
-
 
 ## Adding API Information documentation
   The library uses spring-boot application auto-configured packages to scan for annations: OpenAPIDefinition and Info.
