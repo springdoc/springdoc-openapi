@@ -5,6 +5,7 @@ import static org.springdoc.core.Constants.DEFAULT_VERSION;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -35,11 +37,27 @@ public class InfoBuilder {
 	}
 
 	public void build(OpenAPI openAPI) {
-		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
-		scanner.addIncludeFilter(new AnnotationTypeFilter(OpenAPIDefinition.class));
-		List<String> packagesToScan = AutoConfigurationPackages.get(context);
-		OpenAPIDefinition apiDef = getApiDefClass(scanner, packagesToScan);
-		Info infos = null;
+		// Look for OpenAPIDefinition in a spring managed bean
+		Map<String, Object> openAPIDefinitionMap = context.getBeansWithAnnotation(OpenAPIDefinition.class);
+		OpenAPIDefinition apiDef = null;
+		if (openAPIDefinitionMap.size() > 1)
+			LOGGER.warn(
+					"found more than one OpenAPIDefinition class. springdoc-openapi will be using the first one found.");
+		if (openAPIDefinitionMap.size() > 0) {
+			Class<?> objClz = (Class<?>) openAPIDefinitionMap.entrySet().stream().findFirst().get().getValue()
+					.getClass();
+			apiDef = ReflectionUtils.getAnnotation(objClz, OpenAPIDefinition.class);
+		}
+
+		// Look for OpenAPIDefinition in the spring classpath
+		else {
+			ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(
+					false);
+			scanner.addIncludeFilter(new AnnotationTypeFilter(OpenAPIDefinition.class));
+			List<String> packagesToScan = AutoConfigurationPackages.get(context);
+			apiDef = getApiDefClass(scanner, packagesToScan);
+		}
+
 		if (apiDef != null) {
 			// info
 			AnnotationsUtils.getInfo(apiDef.info()).ifPresent(info -> openAPI.setInfo(info));
@@ -57,7 +75,7 @@ public class InfoBuilder {
 				openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
 			}
 		} else {
-			infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
+			Info infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
 			openAPI.setInfo(infos);
 		}
 	}
@@ -77,6 +95,5 @@ public class InfoBuilder {
 		}
 		return null;
 	}
-
 
 }
