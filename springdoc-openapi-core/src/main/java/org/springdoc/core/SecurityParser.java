@@ -92,10 +92,8 @@ public class SecurityParser {
 
 		if (securityScheme.extensions().length > 0) {
 			Map<String, Object> extensions = AnnotationsUtils.getExtensions(securityScheme.extensions());
-			if (extensions != null) {
-				for (Map.Entry<String, Object> entry : extensions.entrySet()) {
-					securitySchemeObject.addExtension(entry.getKey(), entry.getValue());
-				}
+			for (Map.Entry<String, Object> entry : extensions.entrySet()) {
+				securitySchemeObject.addExtension(entry.getKey(), entry.getValue());
 			}
 		}
 
@@ -178,48 +176,48 @@ public class SecurityParser {
 	}
 
 	private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
-		boolean result = true;
+		boolean result = false;
 		if (oAuthFlows == null) {
 			result = true;
-		}
-		else if (!isEmpty(oAuthFlows.implicit())) {
+		} else if (!isEmpty(oAuthFlows.implicit())) {
 			result = false;
-		}
-		else if (!isEmpty(oAuthFlows.authorizationCode())) {
+		} else if (!isEmpty(oAuthFlows.authorizationCode())) {
 			result = false;
-		}
-		else if (!isEmpty(oAuthFlows.clientCredentials())) {
+		} else if (!isEmpty(oAuthFlows.clientCredentials())) {
 			result = false;
-		}
-		else if (!isEmpty(oAuthFlows.password())) {
+		} else if (!isEmpty(oAuthFlows.password())) {
 			result = false;
-		}
-		else if (oAuthFlows.extensions().length > 0) {
+		} else if (oAuthFlows.extensions().length > 0) {
 			result = false;
+		} else {
+			result = true;
 		}
 		return result;
 	}
 
 	private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow) {
+		boolean result = false;
 		if (oAuthFlow == null) {
-			return true;
+			result = true;
 		}
 		if (!StringUtils.isBlank(oAuthFlow.authorizationUrl())) {
-			return false;
+			result = false;
 		}
 		if (!StringUtils.isBlank(oAuthFlow.refreshUrl())) {
-			return false;
+			result = false;
 		}
 		if (!StringUtils.isBlank(oAuthFlow.tokenUrl())) {
-			return false;
+			result = false;
 		}
 		if (!isEmpty(oAuthFlow.scopes())) {
-			return false;
+			result = false;
 		}
 		if (oAuthFlow.extensions().length > 0) {
-			return false;
+			result = false;
+		} else {
+			result = true;
 		}
-		return true;
+		return result;
 	}
 
 	private static boolean isEmpty(OAuthScope[] scopes) {
