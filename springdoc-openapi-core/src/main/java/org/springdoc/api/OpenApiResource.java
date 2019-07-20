@@ -6,7 +6,6 @@ import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -111,65 +110,62 @@ public class OpenApiResource {
 			HandlerMethod handlerMethod = entry.getValue();
 			PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
 			Set<String> patterns = patternsRequestCondition.getPatterns();
-			String operationPath = null;
-			if (patterns != null) {
-				Optional<String> firstpattern = patterns.stream().findFirst();
-				if (firstpattern.isPresent())
-					operationPath = firstpattern.get();
-			}
+			String operationPath = patterns.iterator().next();
 
 			if (operationPath != null && operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
 					&& findRestControllers.containsKey(handlerMethod.getBean().toString())) {
 				Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
-				for (RequestMethod requestMethod : requestMethods) {
-
-					// skip hidden operations
-					io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
-							.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
-					if (apiOperation != null && apiOperation.hidden()) {
-						continue;
-					}
-
-					RequestMapping reqMappringClass = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
-							RequestMapping.class);
-
-					MediaAttributes mediaAttributes = new MediaAttributes();
-					if (reqMappringClass != null) {
-						mediaAttributes.setClassConsumes(reqMappringClass.consumes());
-						mediaAttributes.setClassProduces(reqMappringClass.produces());
-					}
-
-					mediaAttributes.calculateConsumesProduces(requestMethod, handlerMethod.getMethod());
-
-					Operation operation = new Operation();
-
-					// compute tags
-					operation = tagbuiBuilder.build(handlerMethod, operation, openAPI);
-
-					// Add documentation from operation annotation
-					openAPI = operationParser.parse(components, apiOperation, operation, openAPI, mediaAttributes);
-
-					// requests
-					operation = requestBuilder.build(components, handlerMethod, requestMethod, operation,
-							mediaAttributes.getAllConsumes());
-
-					// responses
-					ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation,
-							mediaAttributes.getAllProduces());
-
-					operation.setResponses(apiResponses);
-
-					PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
-					paths.addPathItem(operationPath, pathItemObject);
-					if (openAPI.getPaths() != null) {
-						paths.putAll(openAPI.getPaths());
-					}
-					openAPI.setPaths(paths);
-				}
+				paths = calculatePath(openAPI, components, paths, handlerMethod, operationPath, requestMethods);
 			}
 		}
+		openAPI.setPaths(paths);
 		LOGGER.info("Init duration for springdoc-openapi is: {} ms", (System.currentTimeMillis() - start));
 		return openAPI;
+	}
+
+	private Paths calculatePath(OpenAPI openAPI, Components components, Paths paths, HandlerMethod handlerMethod,
+			String operationPath, Set<RequestMethod> requestMethods) {
+		for (RequestMethod requestMethod : requestMethods) {
+			// skip hidden operations
+			io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
+					.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
+			if (apiOperation != null && apiOperation.hidden()) {
+				continue;
+			}
+
+			RequestMapping reqMappringClass = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
+					RequestMapping.class);
+
+			MediaAttributes mediaAttributes = new MediaAttributes();
+			if (reqMappringClass != null) {
+				mediaAttributes.setClassConsumes(reqMappringClass.consumes());
+				mediaAttributes.setClassProduces(reqMappringClass.produces());
+			}
+
+			mediaAttributes.calculateConsumesProduces(requestMethod, handlerMethod.getMethod());
+
+			Operation operation = new Operation();
+
+			// compute tags
+			operation = tagbuiBuilder.build(handlerMethod, operation, openAPI);
+
+			// Add documentation from operation annotation
+			openAPI = operationParser.parse(components, apiOperation, operation, openAPI, mediaAttributes);
+
+			// requests
+			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation,
+					mediaAttributes.getAllConsumes());
+
+			// responses
+			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation,
+					mediaAttributes.getAllProduces());
+
+			operation.setResponses(apiResponses);
+
+			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
+			paths.addPathItem(operationPath, pathItemObject);
+		}
+		return paths;
 	}
 
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
