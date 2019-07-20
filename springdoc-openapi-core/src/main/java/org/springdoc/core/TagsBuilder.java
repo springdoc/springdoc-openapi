@@ -21,6 +21,7 @@ import io.swagger.v3.oas.models.Operation;
 public class TagsBuilder {
 
 	public Operation build(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
+
 		// class tags
 		List<io.swagger.v3.oas.annotations.tags.Tag> classTags = ReflectionUtils
 				.getRepeatableAnnotations(handlerMethod.getBeanType(), io.swagger.v3.oas.annotations.tags.Tag.class);
@@ -43,12 +44,15 @@ public class TagsBuilder {
 		}
 
 		Optional<Set<io.swagger.v3.oas.models.tags.Tag>> tags = AnnotationsUtils
-				.getTags(allTags.toArray(new Tag[allTags.size()]),
-				true);
+				.getTags(allTags.toArray(new Tag[allTags.size()]), true);
 
 		if (tags.isPresent()) {
 			Set<io.swagger.v3.oas.models.tags.Tag> tagsSet = tags.get();
-			openAPI.setTags(new ArrayList<io.swagger.v3.oas.models.tags.Tag>(tagsSet));
+			// Existing tags
+			List<io.swagger.v3.oas.models.tags.Tag> openApiTags = openAPI.getTags();
+			if (!CollectionUtils.isEmpty(openApiTags))
+				tagsSet.addAll(openApiTags);
+			openAPI.setTags(new ArrayList<>(tagsSet));
 		}
 
 		if (!CollectionUtils.isEmpty(tagsStr))
