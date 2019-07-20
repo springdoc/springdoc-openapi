@@ -1,9 +1,7 @@
 [![Build Status](https://travis-ci.org/springdoc/springdoc-openapi.svg?branch=master)](https://travis-ci.org/springdoc/springdoc-openapi)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.springdoc%3Aspringdoc-openapi&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.springdoc%3Aspringdoc-openapi)
-
 # Java libray for OpenAPI 3 with spring-boot
-
-![Octocat](https://springdoc.github.io/springdoc-openapi/images/springdoc-openapi.png)
+![Octocat](https://springdoc.github.io/springdoc-openapi-demos/images/springdoc-openapi.png)
 
 # **Introduction**
 
@@ -26,50 +24,62 @@ This library supports:
 The springdoc-openapi libraries are hosted on maven central repository. 
 The artifacts can be viewed accessed at the following locations:
 
-Release:
-https://oss.sonatype.org/content/groups/public/org/springdoc/
+Releases:
+* [https://oss.sonatype.org/content/groups/public/org/springdoc/](https://oss.sonatype.org/content/groups/public/org/springdoc/).
 
-
-Snapshot
-https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/
+Snapshots:
+* [https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/](https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/).
 
 ### Library for springdoc-openapi generator 
 *   Generates documentation in JSON and YAML format
-*   Documentation can be available at the following enpoint for json format: /openapi.json
-*   Documentation can be available at the following enpoint for YAML format: /openapi.yml
+*   Documentation can be available at the following enpoint for json format: /v3/api-docs
+*   Documentation can be available at the following enpoint for YAML format: /v3/api-docs.yml
+*   Documentation will be available at the following url: http://server:port/context-path/v3/api-docs
+    * server: The server name or IP
+    * port: The server port
+    * context-path: The context path of the application
+
 
 ### Integration of the libray in a spring-boot 2 projet:
-*   You just need to add the library to the list of your project dependencies.
-*   No additional configuration is needed.
+*   Add the library to the list of your project dependencies. (No additional configuration is needed)
 
-```maven
-	<dependency>
-	   <groupId>org.springdoc</groupId>
-	   <artifactId>springdoc-openapi-core</artifactId>
-	   <version>1.0.0</version>
-	</dependency>
+```xml
+   <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-core</artifactId>
+      <version>0.0.8</version>
+   </dependency>
 ```
 
 ### Library for springdoc-openapi integration with swagger-ui 
 *   Automatically deploys swagger-ui to a spring-boot 2 application
-*   You just need to add the library to the list of your project dependencies (No additional configuration is needed)
-```maven
-	<dependency>
-	   <groupId>org.springdoc</groupId>
-	   <artifactId>springdoc-openapi-ui</artifactId>
-	   <version>1.0.0</version>
-	</dependency>
+*   The Swagger UI page should then be available at http://server:port/context-path/swagger-ui.html
+    * server: The server name or IP
+    * port: The server port
+    * context-path: The context path of the application
+
+*   Add the library to the list of your project dependencies (No additional configuration is needed)
+
+```xml
+   <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-ui</artifactId>
+      <version>0.0.8</version>
+   </dependency>
 ```
+## [Example application 1](https://springdoc-openapi-test-app2-silly-numbat.eu-de.mybluemix.net/swagger-ui.html).
+## [Example application 2](https://springdoc-openapi-test-app1-courteous-puku.eu-de.mybluemix.net/).
 
-![Branching](https://springdoc.github.io/springdoc-openapi/images/pets.png)
 
-## [Example application](https://springdoc-openapi-v3-rest-test-pipeline-nice-gecko.eu-de.mybluemix.net/).
+![Branching](https://springdoc.github.io/springdoc-openapi-demos/images/pets.png)
+
 
 ## Adding API Information documentation
   The library uses spring-boot application auto-configured packages to scan for annations: OpenAPIDefinition and Info.
   These annotations declare, API Information: Title, version, licence, security, servers, tags, security and externalDocs
-  
-## Support for documentation from property file lookup (To be done in the future release)
+ 
+
+
 
 
 
