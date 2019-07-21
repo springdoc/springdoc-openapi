@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.InfoBuilder;
 import org.springdoc.core.MediaAttributes;
+import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.RequestBuilder;
 import org.springdoc.core.ResponseBuilder;
@@ -48,6 +49,9 @@ public class OpenApiResource {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiResource.class);
 
 	@Autowired
+	private OpenAPIBuilder openAPIBuilder;
+
+	@Autowired
 	private RequestBuilder requestBuilder;
 
 	@Autowired
@@ -65,7 +69,6 @@ public class OpenApiResource {
 	@Autowired
 	private RequestMappingInfoHandlerMapping mappingHandler;
 
-
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String openapiJson() throws JsonProcessingException {
@@ -82,11 +85,8 @@ public class OpenApiResource {
 
 	private OpenAPI getOpenApi() {
 		long start = System.currentTimeMillis();
-		OpenAPI openAPI = new OpenAPI();
-		Components components = new Components();
-		openAPI.setComponents(components);
 		// Info block
-		infoBuilder.build(openAPI);
+		infoBuilder.build(openAPIBuilder.getOpenAPI());
 
 		Map<RequestMappingInfo, HandlerMethod> map = mappingHandler.getHandlerMethods();
 		Map<String, Object> findRestControllers1 = mappingHandler.getApplicationContext()
@@ -102,9 +102,8 @@ public class OpenApiResource {
 				.getBeansWithAnnotation(ControllerAdvice.class);
 
 		// calculate generic responses
-		responseBuilder.buildGenericResponse(components, findControllerAdvice);
+		responseBuilder.buildGenericResponse(openAPIBuilder.getComponents(), findControllerAdvice);
 
-		Paths paths = new Paths();
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
 			HandlerMethod handlerMethod = entry.getValue();
@@ -115,16 +114,20 @@ public class OpenApiResource {
 			if (operationPath != null && operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
 					&& findRestControllers.containsKey(handlerMethod.getBean().toString())) {
 				Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
-				paths = calculatePath(openAPI, components, paths, handlerMethod, operationPath, requestMethods);
+				calculatePath(openAPIBuilder, handlerMethod, operationPath, requestMethods);
 			}
 		}
-		openAPI.setPaths(paths);
+		openAPIBuilder.getOpenAPI().setPaths(openAPIBuilder.getPaths());
 		LOGGER.info("Init duration for springdoc-openapi is: {} ms", (System.currentTimeMillis() - start));
-		return openAPI;
+		return openAPIBuilder.getOpenAPI();
 	}
 
-	private Paths calculatePath(OpenAPI openAPI, Components components, Paths paths, HandlerMethod handlerMethod,
-			String operationPath, Set<RequestMethod> requestMethods) {
+	private void calculatePath(OpenAPIBuilder openAPIBuilder, HandlerMethod handlerMethod, String operationPath,
+			Set<RequestMethod> requestMethods) {
+		OpenAPI openAPI = openAPIBuilder.getOpenAPI();
+		Components components = openAPIBuilder.getComponents();
+		Paths paths = openAPIBuilder.getPaths();
+
 		for (RequestMethod requestMethod : requestMethods) {
 			// skip hidden operations
 			io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
@@ -165,7 +168,6 @@ public class OpenApiResource {
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
 		}
-		return paths;
 	}
 
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,

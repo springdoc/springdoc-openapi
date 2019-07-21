@@ -221,10 +221,11 @@ public class SecurityParser {
 	}
 
 	private static boolean isEmpty(OAuthScope[] scopes) {
+		boolean result = false;
 		if (scopes == null || scopes.length == 0) {
-			return true;
+			result = true;
 		}
-		return false;
+		return result;
 	}
 
 }
