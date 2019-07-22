@@ -65,12 +65,9 @@ public class RequestBuilder {
 		List<Parameter> operationParameters = new ArrayList<>();
 		java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
 
-		Parameter parameter = null;
-		RequestBody requestBody = null;
-		Content content1 = null;
 		for (int i = 0; i < pNames.length; i++) {
 			// check if query param
-			parameter = new Parameter();
+			Parameter parameter = new Parameter();
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotationUtils.findAnnotation(parameters[i],
 					io.swagger.v3.oas.annotations.Parameter.class);
 
@@ -122,62 +119,7 @@ public class RequestBuilder {
 					continue;
 				}
 
-				if (StringUtils.isNotBlank(parameterDoc.description())) {
-					parameter.setDescription(parameterDoc.description());
-				} else if (StringUtils.isNotBlank(parameterDoc.name())) {
-					parameter.setDescription(parameterDoc.name());
-				}
-				if (StringUtils.isNotBlank(parameterDoc.in().toString())) {
-					parameter.setIn(parameterDoc.in().toString());
-				}
-				if (StringUtils.isNotBlank(parameterDoc.example())) {
-					try {
-						parameter.setExample(Json.mapper().readTree(parameterDoc.example()));
-					} catch (IOException e) {
-						parameter.setExample(parameterDoc.example());
-					}
-				}
-				if (parameterDoc.deprecated()) {
-					parameter.setDeprecated(parameterDoc.deprecated());
-				}
-				if (parameterDoc.required()) {
-					parameter.setRequired(parameterDoc.required());
-				}
-				if (parameterDoc.allowEmptyValue()) {
-					parameter.setAllowEmptyValue(parameterDoc.allowEmptyValue());
-				}
-				if (parameterDoc.allowReserved()) {
-					parameter.setAllowReserved(parameterDoc.allowReserved());
-				}
-
-				Map<String, Example> exampleMap = new HashMap<>();
-				if (parameterDoc.examples().length == 1 && StringUtils.isBlank(parameterDoc.examples()[0].name())) {
-					Optional<Example> exampleOptional = AnnotationsUtils.getExample(parameterDoc.examples()[0]);
-					if (exampleOptional.isPresent()) {
-						parameter.setExample(exampleOptional.get());
-					}
-				} else {
-					for (ExampleObject exampleObject : parameterDoc.examples()) {
-						AnnotationsUtils.getExample(exampleObject)
-								.ifPresent(example -> exampleMap.put(exampleObject.name(), example));
-					}
-				}
-				if (exampleMap.size() > 0) {
-					parameter.setExamples(exampleMap);
-				}
-
-				if (parameterDoc.extensions().length > 0) {
-					Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
-					if (extensionMap != null && extensionMap.size() > 0) {
-						for (Map.Entry<String, Object> entry : extensionMap.entrySet()) {
-							parameter.addExtension(entry.getKey(), entry.getValue());
-						}
-					}
-				}
-
-				setParameterStyle(parameter, parameterDoc);
-				setParameterExplode(parameter, parameterDoc);
-
+				buildParameterFromDoc(parameter, parameterDoc);
 			}
 
 			if (parameter.getName() != null) {
@@ -188,32 +130,7 @@ public class RequestBuilder {
 			}
 
 			if (!RequestMethod.GET.equals(requestMethod)) {
-				requestBody = new RequestBody();
-				content1 = new Content();
-				Schema<?> schema = calculateSchema(components, parameters[i]);
-				io.swagger.v3.oas.models.media.MediaType mediaType = null;
-				if (schema != null && schema.getType() != null) {
-					mediaType = new io.swagger.v3.oas.models.media.MediaType();
-					mediaType.setSchema(schema);
-				} else {
-					Type returnType = parameters[i].getType();
-					mediaType = calculateSchema(components, returnType);
-				}
-
-				if (ArrayUtils.isNotEmpty(allConsumes)) {
-					for (String value : allConsumes) {
-						setMediaTypeToContent(schema, content1, value);
-					}
-				} else {
-					content1.addMediaType(MediaType.ALL_VALUE, mediaType);
-				}
-
-				requestBody.setContent(content1);
-				if (parameterDoc != null) {
-					if (StringUtils.isNotBlank(parameterDoc.description()))
-						requestBody.setDescription(parameterDoc.description());
-					requestBody.setRequired(parameterDoc.required());
-				}
+				RequestBody requestBody = buildRequestBody(components, allConsumes, parameters[i], parameterDoc);
 				operation.setRequestBody(requestBody);
 			}
 		}
@@ -223,6 +140,96 @@ public class RequestBuilder {
 		}
 
 		return operation;
+	}
+
+	private RequestBody buildRequestBody(Components components, String[] allConsumes,
+			java.lang.reflect.Parameter parameter, io.swagger.v3.oas.annotations.Parameter parameterDoc) {
+		RequestBody requestBody = new RequestBody();
+		Schema<?> schema = calculateSchema(components, parameter);
+		io.swagger.v3.oas.models.media.MediaType mediaType = null;
+		if (schema != null && schema.getType() != null) {
+			mediaType = new io.swagger.v3.oas.models.media.MediaType();
+			mediaType.setSchema(schema);
+		} else {
+			Type returnType = parameter.getType();
+			mediaType = calculateSchema(components, returnType);
+		}
+
+		Content content1 = new Content();
+		if (ArrayUtils.isNotEmpty(allConsumes)) {
+			for (String value : allConsumes) {
+				setMediaTypeToContent(schema, content1, value);
+			}
+		} else {
+			content1.addMediaType(MediaType.ALL_VALUE, mediaType);
+		}
+
+		requestBody.setContent(content1);
+		if (parameterDoc != null) {
+			if (StringUtils.isNotBlank(parameterDoc.description()))
+				requestBody.setDescription(parameterDoc.description());
+			requestBody.setRequired(parameterDoc.required());
+		}
+		return requestBody;
+	}
+
+	private void buildParameterFromDoc(Parameter parameter,
+			io.swagger.v3.oas.annotations.Parameter parameterDoc) {
+		if (StringUtils.isNotBlank(parameterDoc.description())) {
+			parameter.setDescription(parameterDoc.description());
+		} else if (StringUtils.isNotBlank(parameterDoc.name())) {
+			parameter.setDescription(parameterDoc.name());
+		}
+		if (StringUtils.isNotBlank(parameterDoc.in().toString())) {
+			parameter.setIn(parameterDoc.in().toString());
+		}
+		if (StringUtils.isNotBlank(parameterDoc.example())) {
+			try {
+				parameter.setExample(Json.mapper().readTree(parameterDoc.example()));
+			} catch (IOException e) {
+				parameter.setExample(parameterDoc.example());
+			}
+		}
+		if (parameterDoc.deprecated()) {
+			parameter.setDeprecated(parameterDoc.deprecated());
+		}
+		if (parameterDoc.required()) {
+			parameter.setRequired(parameterDoc.required());
+		}
+		if (parameterDoc.allowEmptyValue()) {
+			parameter.setAllowEmptyValue(parameterDoc.allowEmptyValue());
+		}
+		if (parameterDoc.allowReserved()) {
+			parameter.setAllowReserved(parameterDoc.allowReserved());
+		}
+
+		Map<String, Example> exampleMap = new HashMap<>();
+		if (parameterDoc.examples().length == 1 && StringUtils.isBlank(parameterDoc.examples()[0].name())) {
+			Optional<Example> exampleOptional = AnnotationsUtils.getExample(parameterDoc.examples()[0]);
+			if (exampleOptional.isPresent()) {
+				parameter.setExample(exampleOptional.get());
+			}
+		} else {
+			for (ExampleObject exampleObject : parameterDoc.examples()) {
+				AnnotationsUtils.getExample(exampleObject)
+						.ifPresent(example -> exampleMap.put(exampleObject.name(), example));
+			}
+		}
+		if (exampleMap.size() > 0) {
+			parameter.setExamples(exampleMap);
+		}
+
+		if (parameterDoc.extensions().length > 0) {
+			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
+			if (extensionMap != null && extensionMap.size() > 0) {
+				for (Map.Entry<String, Object> entry : extensionMap.entrySet()) {
+					parameter.addExtension(entry.getKey(), entry.getValue());
+				}
+			}
+		}
+
+		setParameterStyle(parameter, parameterDoc);
+		setParameterExplode(parameter, parameterDoc);
 	}
 
 	private void setParameter(String param, String value, Class<?> type, Parameter parameter) {
