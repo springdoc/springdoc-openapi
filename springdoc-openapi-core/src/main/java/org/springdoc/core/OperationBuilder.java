@@ -33,82 +33,89 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 public class OperationBuilder {
 
 	public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
-			Operation operation,
-			OpenAPI openAPI, MediaAttributes mediaAttributes) {
-		if (apiOperation != null) {
-			if (StringUtils.isNotBlank(apiOperation.summary())) {
-				operation.setSummary(apiOperation.summary());
-			}
-			if (StringUtils.isNotBlank(apiOperation.description())) {
-				operation.setDescription(apiOperation.description());
-			}
-			if (StringUtils.isNotBlank(apiOperation.operationId())) {
-				operation.setOperationId(getOperationId(apiOperation.operationId(), openAPI));
-			}
-			if (apiOperation.deprecated()) {
-				operation.setDeprecated(apiOperation.deprecated());
-			}
-
-			Optional<List<String>> mlist = getStringListFromStringArray(apiOperation.tags());
-			if (mlist.isPresent()) {
-				List<String> tags = mlist.get().stream()
-						.filter(t -> operation.getTags() == null
-								|| (operation.getTags() != null && !operation.getTags().contains(t)))
-						.collect(Collectors.toList());
-				for (String tagsItem : tags) {
-					operation.addTagsItem(tagsItem);
-				}
-			}
-
-			if (operation.getExternalDocs() == null) { // if not set in root annotation
-				AnnotationsUtils.getExternalDocumentation(apiOperation.externalDocs())
-						.ifPresent(operation::setExternalDocs);
-			}
-
-			getApiResponses(apiOperation.responses(), mediaAttributes.getClassProduces(),
-					mediaAttributes.getMethodProduces(), components, null)
-					.ifPresent(responses -> {
-						if (operation.getResponses() == null) {
-							operation.setResponses(responses);
-						} else {
-							responses.forEach(operation.getResponses()::addApiResponse);
-						}
-					});
-			AnnotationsUtils.getServers(apiOperation.servers())
-					.ifPresent(servers -> servers.forEach(operation::addServersItem));
-
-			// security
-			Optional<List<SecurityRequirement>> requirementsObject = SecurityParser
-					.getSecurityRequirements(apiOperation.security());
-			if (requirementsObject.isPresent()) {
-				requirementsObject.get().stream()
-						.filter(r -> operation.getSecurity() == null || !operation.getSecurity().contains(r))
-						.forEach(operation::addSecurityItem);
-			}
-
-			// RequestBody in Operation
-			if (apiOperation != null && apiOperation.requestBody() != null && operation.getRequestBody() == null) {
-
-				getRequestBody(apiOperation.requestBody(), mediaAttributes.getClassConsumes(),
-						mediaAttributes.getMethodConsumes(), components, null)
-						.ifPresent(operation::setRequestBody);
-			}
-
-			// Extensions in Operation
-			if (apiOperation.extensions().length > 0) {
-				Map<String, Object> extensions = AnnotationsUtils.getExtensions(apiOperation.extensions());
-				if (extensions != null) {
-					for (Map.Entry<String, Object> entry : extensions.entrySet()) {
-						operation.addExtension(entry.getKey(), entry.getValue());
-					}
-				}
-			}
-
+			Operation operation, OpenAPI openAPI, MediaAttributes mediaAttributes) {
+		if (StringUtils.isNotBlank(apiOperation.summary())) {
+			operation.setSummary(apiOperation.summary());
 		}
+		if (StringUtils.isNotBlank(apiOperation.description())) {
+			operation.setDescription(apiOperation.description());
+		}
+		if (StringUtils.isNotBlank(apiOperation.operationId())) {
+			operation.setOperationId(getOperationId(apiOperation.operationId(), openAPI));
+		}
+		if (apiOperation.deprecated()) {
+			operation.setDeprecated(apiOperation.deprecated());
+		}
+
+		buildTags(apiOperation, operation);
+
+		if (operation.getExternalDocs() == null) { // if not set in root annotation
+			AnnotationsUtils.getExternalDocumentation(apiOperation.externalDocs())
+					.ifPresent(operation::setExternalDocs);
+		}
+
+		// servers
+		AnnotationsUtils.getServers(apiOperation.servers())
+				.ifPresent(servers -> servers.forEach(operation::addServersItem));
+
+		// RequestBody in Operation
+		if (apiOperation != null && apiOperation.requestBody() != null && operation.getRequestBody() == null) {
+			getRequestBody(apiOperation.requestBody(), mediaAttributes.getClassConsumes(),
+					mediaAttributes.getMethodConsumes(), components, null).ifPresent(operation::setRequestBody);
+		}
+
+		// build response
+		buildResponse(components, apiOperation, operation, mediaAttributes);
+
+		// security
+		Optional<List<SecurityRequirement>> requirementsObject = SecurityParser
+				.getSecurityRequirements(apiOperation.security());
+		if (requirementsObject.isPresent()) {
+			requirementsObject.get().stream()
+					.filter(r -> operation.getSecurity() == null || !operation.getSecurity().contains(r))
+					.forEach(operation::addSecurityItem);
+		}
+
+		// Extensions in Operation
+		buildExtensions(apiOperation, operation);
 		return openAPI;
 	}
 
-	private static String getOperationId(String operationId, OpenAPI openAPI) {
+	private void buildResponse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
+			Operation operation, MediaAttributes mediaAttributes) {
+		getApiResponses(apiOperation.responses(), mediaAttributes.getClassProduces(),
+				mediaAttributes.getMethodProduces(), components, null).ifPresent(responses -> {
+					if (operation.getResponses() == null) {
+						operation.setResponses(responses);
+					} else {
+						responses.forEach(operation.getResponses()::addApiResponse);
+					}
+				});
+	}
+
+	private void buildExtensions(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation) {
+		if (apiOperation.extensions().length > 0) {
+			Map<String, Object> extensions = AnnotationsUtils.getExtensions(apiOperation.extensions());
+			for (Map.Entry<String, Object> entry : extensions.entrySet()) {
+				operation.addExtension(entry.getKey(), entry.getValue());
+			}
+		}
+	}
+
+	private void buildTags(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation) {
+		Optional<List<String>> mlist = getStringListFromStringArray(apiOperation.tags());
+		if (mlist.isPresent()) {
+			List<String> tags = mlist.get().stream()
+					.filter(t -> operation.getTags() == null
+							|| (operation.getTags() != null && !operation.getTags().contains(t)))
+					.collect(Collectors.toList());
+			for (String tagsItem : tags) {
+				operation.addTagsItem(tagsItem);
+			}
+		}
+	}
+
+	private String getOperationId(String operationId, OpenAPI openAPI) {
 		boolean operationIdUsed = existOperationId(operationId, openAPI);
 		String operationIdToFind = null;
 		int counter = 0;
@@ -122,7 +129,7 @@ public class OperationBuilder {
 		return operationId;
 	}
 
-	private static boolean existOperationId(String operationId, OpenAPI openAPI) {
+	private boolean existOperationId(String operationId, OpenAPI openAPI) {
 		if (openAPI == null) {
 			return false;
 		}
@@ -138,7 +145,7 @@ public class OperationBuilder {
 		return false;
 	}
 
-	private static Set<String> extractOperationIdFromPathItem(PathItem path) {
+	private Set<String> extractOperationIdFromPathItem(PathItem path) {
 		Set<String> ids = new HashSet<>();
 		if (path.getGet() != null && StringUtils.isNotBlank(path.getGet().getOperationId())) {
 			ids.add(path.getGet().getOperationId());
@@ -164,7 +171,7 @@ public class OperationBuilder {
 		return ids;
 	}
 
-	private static Optional<ApiResponses> getApiResponses(
+	private Optional<ApiResponses> getApiResponses(
 			final io.swagger.v3.oas.annotations.responses.ApiResponse[] responses, String[] classProduces,
 			String[] methodProduces, Components components, JsonView jsonViewAnnotation) {
 		if (responses == null) {
@@ -233,9 +240,7 @@ public class OperationBuilder {
 		return Optional.of(apiResponsesObject);
 	}
 
-
-
-	private static Optional<List<String>> getStringListFromStringArray(String[] array) {
+	private Optional<List<String>> getStringListFromStringArray(String[] array) {
 		if (array == null) {
 			return Optional.empty();
 		}
@@ -253,7 +258,7 @@ public class OperationBuilder {
 		return Optional.of(list);
 	}
 
-	private static Optional<RequestBody> getRequestBody(
+	private Optional<RequestBody> getRequestBody(
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, String[] classConsumes,
 			String[] methodConsumes, Components components, JsonView jsonViewAnnotation) {
 		if (requestBody == null) {

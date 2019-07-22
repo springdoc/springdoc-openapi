@@ -153,7 +153,9 @@ public class OpenApiResource {
 			operation = tagbuiBuilder.build(handlerMethod, operation, openAPI);
 
 			// Add documentation from operation annotation
-			openAPI = operationParser.parse(components, apiOperation, operation, openAPI, mediaAttributes);
+			if (apiOperation != null) {
+				openAPI = operationParser.parse(components, apiOperation, operation, openAPI, mediaAttributes);
+			}
 
 			// requests
 			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation,
