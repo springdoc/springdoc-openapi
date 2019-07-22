@@ -59,10 +59,8 @@ public class OperationBuilder {
 				.ifPresent(servers -> servers.forEach(operation::addServersItem));
 
 		// RequestBody in Operation
-		if (apiOperation != null && apiOperation.requestBody() != null && operation.getRequestBody() == null) {
-			getRequestBody(apiOperation.requestBody(), mediaAttributes.getClassConsumes(),
-					mediaAttributes.getMethodConsumes(), components, null).ifPresent(operation::setRequestBody);
-		}
+		getRequestBody(apiOperation.requestBody(), mediaAttributes.getClassConsumes(),
+				mediaAttributes.getMethodConsumes(), components, null).ifPresent(operation::setRequestBody);
 
 		// build response
 		buildResponse(components, apiOperation, operation, mediaAttributes);
@@ -79,18 +77,6 @@ public class OperationBuilder {
 		// Extensions in Operation
 		buildExtensions(apiOperation, operation);
 		return openAPI;
-	}
-
-	private void buildResponse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
-			Operation operation, MediaAttributes mediaAttributes) {
-		getApiResponses(apiOperation.responses(), mediaAttributes.getClassProduces(),
-				mediaAttributes.getMethodProduces(), components, null).ifPresent(responses -> {
-					if (operation.getResponses() == null) {
-						operation.setResponses(responses);
-					} else {
-						responses.forEach(operation.getResponses()::addApiResponse);
-					}
-				});
 	}
 
 	private void buildExtensions(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation) {
@@ -240,6 +226,18 @@ public class OperationBuilder {
 		return Optional.of(apiResponsesObject);
 	}
 
+	private void buildResponse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
+			Operation operation, MediaAttributes mediaAttributes) {
+		getApiResponses(apiOperation.responses(), mediaAttributes.getClassProduces(),
+				mediaAttributes.getMethodProduces(), components, null).ifPresent(responses -> {
+					if (operation.getResponses() == null) {
+						operation.setResponses(responses);
+					} else {
+						responses.forEach(operation.getResponses()::addApiResponse);
+					}
+				});
+	}
+
 	private Optional<List<String>> getStringListFromStringArray(String[] array) {
 		if (array == null) {
 			return Optional.empty();
@@ -258,9 +256,8 @@ public class OperationBuilder {
 		return Optional.of(list);
 	}
 
-	private Optional<RequestBody> getRequestBody(
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, String[] classConsumes,
-			String[] methodConsumes, Components components, JsonView jsonViewAnnotation) {
+	private Optional<RequestBody> getRequestBody(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
+			String[] classConsumes, String[] methodConsumes, Components components, JsonView jsonViewAnnotation) {
 		if (requestBody == null) {
 			return Optional.empty();
 		}
