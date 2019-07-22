@@ -167,44 +167,17 @@ public class OperationBuilder {
 		for (io.swagger.v3.oas.annotations.responses.ApiResponse response : responses) {
 			ApiResponse apiResponseObject = new ApiResponse();
 			if (StringUtils.isNotBlank(response.ref())) {
-				apiResponseObject.set$ref(response.ref());
-				if (StringUtils.isNotBlank(response.responseCode())) {
-					apiResponsesObject.addApiResponse(response.responseCode(), apiResponseObject);
-				} else {
-					apiResponsesObject._default(apiResponseObject);
-				}
+				set$ref(apiResponsesObject, response, apiResponseObject);
 				continue;
 			}
-			if (StringUtils.isNotBlank(response.description())) {
-				apiResponseObject.setDescription(response.description());
-			} else {
-				apiResponseObject.setDescription(DEFAULT_DESCRIPTION);
-			}
-			if (response.extensions().length > 0) {
-				Map<String, Object> extensions = AnnotationsUtils.getExtensions(response.extensions());
-				if (extensions != null) {
-					for (Map.Entry<String, Object> entry : extensions.entrySet()) {
-						apiResponseObject.addExtension(entry.getKey(), entry.getValue());
-					}
-				}
-			}
-
+			setDescription(response, apiResponseObject);
+			setExtensions(response, apiResponseObject);
 			AnnotationsUtils.getContent(response.content(), classProduces == null ? new String[0] : classProduces,
 					methodProduces == null ? new String[0] : methodProduces, null, components, jsonViewAnnotation)
 					.ifPresent(apiResponseObject::content);
 			AnnotationsUtils.getHeaders(response.headers(), jsonViewAnnotation).ifPresent(apiResponseObject::headers);
 			// Make schema as string if empty
-			Map<String, Header> headers = apiResponseObject.getHeaders();
-			if (!CollectionUtils.isEmpty(headers)) {
-				for (Map.Entry<String, Header> entry : headers.entrySet()) {
-					Header header = entry.getValue();
-					if (header.getSchema() == null) {
-						Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
-						header.setSchema(schema);
-						entry.setValue(header);
-					}
-				}
-			}
+			calculateHeader(apiResponseObject);
 			if (StringUtils.isNotBlank(apiResponseObject.getDescription()) || apiResponseObject.getContent() != null
 					|| apiResponseObject.getHeaders() != null) {
 
@@ -224,6 +197,49 @@ public class OperationBuilder {
 			return Optional.empty();
 		}
 		return Optional.of(apiResponsesObject);
+	}
+
+	private void setDescription(io.swagger.v3.oas.annotations.responses.ApiResponse response,
+			ApiResponse apiResponseObject) {
+		if (StringUtils.isNotBlank(response.description())) {
+			apiResponseObject.setDescription(response.description());
+		} else {
+			apiResponseObject.setDescription(DEFAULT_DESCRIPTION);
+		}
+	}
+
+	private void calculateHeader(ApiResponse apiResponseObject) {
+		Map<String, Header> headers = apiResponseObject.getHeaders();
+		if (!CollectionUtils.isEmpty(headers)) {
+			for (Map.Entry<String, Header> entry : headers.entrySet()) {
+				Header header = entry.getValue();
+				if (header.getSchema() == null) {
+					Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
+					header.setSchema(schema);
+					entry.setValue(header);
+				}
+			}
+		}
+	}
+
+	private void set$ref(ApiResponses apiResponsesObject, io.swagger.v3.oas.annotations.responses.ApiResponse response,
+			ApiResponse apiResponseObject) {
+		apiResponseObject.set$ref(response.ref());
+		if (StringUtils.isNotBlank(response.responseCode())) {
+			apiResponsesObject.addApiResponse(response.responseCode(), apiResponseObject);
+		} else {
+			apiResponsesObject._default(apiResponseObject);
+		}
+	}
+
+	private void setExtensions(io.swagger.v3.oas.annotations.responses.ApiResponse response,
+			ApiResponse apiResponseObject) {
+		if (response.extensions().length > 0) {
+			Map<String, Object> extensions = AnnotationsUtils.getExtensions(response.extensions());
+			for (Map.Entry<String, Object> entry : extensions.entrySet()) {
+				apiResponseObject.addExtension(entry.getKey(), entry.getValue());
+			}
+		}
 	}
 
 	private void buildResponse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
