@@ -160,14 +160,12 @@ public class OperationBuilder {
 	private Optional<ApiResponses> getApiResponses(
 			final io.swagger.v3.oas.annotations.responses.ApiResponse[] responses, String[] classProduces,
 			String[] methodProduces, Components components, JsonView jsonViewAnnotation) {
-		if (responses == null) {
-			return Optional.empty();
-		}
+
 		ApiResponses apiResponsesObject = new ApiResponses();
 		for (io.swagger.v3.oas.annotations.responses.ApiResponse response : responses) {
 			ApiResponse apiResponseObject = new ApiResponse();
 			if (StringUtils.isNotBlank(response.ref())) {
-				set$ref(apiResponsesObject, response, apiResponseObject);
+				setRef(apiResponsesObject, response, apiResponseObject);
 				continue;
 			}
 			setDescription(response, apiResponseObject);
@@ -193,9 +191,6 @@ public class OperationBuilder {
 			}
 		}
 
-		if (apiResponsesObject.isEmpty()) {
-			return Optional.empty();
-		}
 		return Optional.of(apiResponsesObject);
 	}
 
@@ -222,7 +217,7 @@ public class OperationBuilder {
 		}
 	}
 
-	private void set$ref(ApiResponses apiResponsesObject, io.swagger.v3.oas.annotations.responses.ApiResponse response,
+	private void setRef(ApiResponses apiResponsesObject, io.swagger.v3.oas.annotations.responses.ApiResponse response,
 			ApiResponse apiResponseObject) {
 		apiResponseObject.set$ref(response.ref());
 		if (StringUtils.isNotBlank(response.responseCode())) {
