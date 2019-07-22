@@ -76,29 +76,10 @@ public class RequestBuilder {
 				if (parameterDoc.hidden()) {
 					continue;
 				}
-				if (StringUtils.isNotBlank(parameterDoc.ref())) {
-					parameter = new Parameter().$ref(parameterDoc.ref());
-					operationParameters.add(parameter);
-					continue;
-				}
 				parameter = buildParameterFromDoc(parameterDoc);
 			}
 
-			RequestHeader requestHeader = AnnotationUtils.findAnnotation(parameters[i], RequestHeader.class);
-			RequestParam requestParam = AnnotationUtils.findAnnotation(parameters[i], RequestParam.class);
-			PathVariable pathVar = AnnotationUtils.findAnnotation(parameters[i], PathVariable.class);
-
-			if (requestHeader != null) {
-				parameter = this.buildParam(HEADER_PARAM, components, parameters[i], requestHeader.required(),
-						requestHeader.value(), parameter);
-			} else if (requestParam != null) {
-				parameter = this.buildParam(QUERY_PARAM, components, parameters[i], requestParam.required(),
-						requestParam.value(), parameter);
-			} else if (pathVar != null) {
-				// check if PATH PARAM
-				parameter = this.buildParam(PATH_PARAM, components, parameters[i], Boolean.TRUE, pathVar.value(),
-						parameter);
-			}
+			parameter = buildParams(components, parameters[i], parameter);
 
 			// By default
 			if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
@@ -109,11 +90,8 @@ public class RequestBuilder {
 			if (parameter != null && parameter.getName() != null) {
 				applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 				operationParameters.add(parameter);
-				// job finished
-				continue;
 			}
-
-			if (!RequestMethod.GET.equals(requestMethod)) {
+			else if (!RequestMethod.GET.equals(requestMethod)) {
 				RequestBody requestBody = buildRequestBody(components, allConsumes, parameters[i], parameterDoc);
 				operation.setRequestBody(requestBody);
 			}
@@ -126,6 +104,23 @@ public class RequestBuilder {
 		return operation;
 	}
 
+	private Parameter buildParams(Components components, java.lang.reflect.Parameter parameters, Parameter parameter) {
+		RequestHeader requestHeader = AnnotationUtils.findAnnotation(parameters, RequestHeader.class);
+		RequestParam requestParam = AnnotationUtils.findAnnotation(parameters, RequestParam.class);
+		PathVariable pathVar = AnnotationUtils.findAnnotation(parameters, PathVariable.class);
+
+		if (requestHeader != null) {
+			parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(),
+					requestHeader.value(), parameter);
+		} else if (requestParam != null) {
+			parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(),
+					requestParam.value(), parameter);
+		} else if (pathVar != null) {
+			// check if PATH PARAM
+			parameter = this.buildParam(PATH_PARAM, components, parameters, Boolean.TRUE, pathVar.value(), parameter);
+		}
+		return parameter;
+	}
 
 	private Parameter buildParam(String in, Components components, java.lang.reflect.Parameter parameters,
 			Boolean required, String name, Parameter parameter) {
@@ -198,6 +193,9 @@ public class RequestBuilder {
 		}
 		if (parameterDoc.allowReserved()) {
 			parameter.setAllowReserved(parameterDoc.allowReserved());
+		}
+		if (StringUtils.isNotBlank(parameterDoc.ref())) {
+			parameter.$ref(parameterDoc.ref());
 		}
 
 		setExamples(parameterDoc, parameter);
