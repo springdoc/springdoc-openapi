@@ -203,6 +203,20 @@ public class RequestBuilder {
 			parameter.setAllowReserved(parameterDoc.allowReserved());
 		}
 
+		calculateExampleFromDoc(parameter, parameterDoc);
+
+		if (parameterDoc.extensions().length > 0) {
+			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
+				for (Map.Entry<String, Object> entry : extensionMap.entrySet()) {
+					parameter.addExtension(entry.getKey(), entry.getValue());
+			}
+		}
+
+		setParameterStyle(parameter, parameterDoc);
+		setParameterExplode(parameter, parameterDoc);
+	}
+
+	private void calculateExampleFromDoc(Parameter parameter, io.swagger.v3.oas.annotations.Parameter parameterDoc) {
 		Map<String, Example> exampleMap = new HashMap<>();
 		if (parameterDoc.examples().length == 1 && StringUtils.isBlank(parameterDoc.examples()[0].name())) {
 			Optional<Example> exampleOptional = AnnotationsUtils.getExample(parameterDoc.examples()[0]);
@@ -218,18 +232,6 @@ public class RequestBuilder {
 		if (exampleMap.size() > 0) {
 			parameter.setExamples(exampleMap);
 		}
-
-		if (parameterDoc.extensions().length > 0) {
-			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
-			if (extensionMap != null && extensionMap.size() > 0) {
-				for (Map.Entry<String, Object> entry : extensionMap.entrySet()) {
-					parameter.addExtension(entry.getKey(), entry.getValue());
-				}
-			}
-		}
-
-		setParameterStyle(parameter, parameterDoc);
-		setParameterExplode(parameter, parameterDoc);
 	}
 
 	private void setParameter(String param, String value, Class<?> type, Parameter parameter) {
