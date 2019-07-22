@@ -67,48 +67,11 @@ public class RequestBuilder {
 
 		for (int i = 0; i < pNames.length; i++) {
 			// check if query param
-			Parameter parameter = new Parameter();
+			Parameter parameter = null;
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotationUtils.findAnnotation(parameters[i],
 					io.swagger.v3.oas.annotations.Parameter.class);
 
-			RequestHeader requestHeader = AnnotationUtils.findAnnotation(parameters[i], RequestHeader.class);
-			if (requestHeader != null) {
-				parameter.setIn(HEADER_PARAM);
-				if (requestHeader.required())
-					parameter.setRequired(Boolean.TRUE);
-				if (StringUtils.isNotBlank(requestHeader.value())) {
-					parameter.setName(requestHeader.value());
-				}
-
-				Schema<?> schema = calculateSchema(components, parameters[i]);
-				parameter.setSchema(schema);
-			}
-
-			RequestParam requestParam = AnnotationUtils.findAnnotation(parameters[i], RequestParam.class);
-			if (requestParam != null) {
-				parameter.setIn(QUERY_PARAM);
-				if (requestParam.required())
-					parameter.setRequired(Boolean.TRUE);
-				if (StringUtils.isNotBlank(requestParam.value())) {
-					parameter.setName(requestParam.value());
-				}
-
-				Schema<?> schema = calculateSchema(components, parameters[i]);
-				parameter.setSchema(schema);
-			}
-
-			PathVariable pathVar = AnnotationUtils.findAnnotation(parameters[i], PathVariable.class);
-			if (pathVar != null) {
-				// check if PATH PARAM
-				setParameter(PATH_PARAM, pathVar.value(), parameters[i].getType(), parameter);
-			}
-
-			// By default
-			if (RequestMethod.GET.equals(requestMethod) && parameter.getIn() == null) {
-				String name = (parameter.getName() == null) ? pNames[i] : parameter.getName();
-				setParameter(QUERY_PARAM, name, parameters[i].getType(), parameter);
-			}
-
+			// use documentation as reference
 			if (parameterDoc != null) {
 				if (parameterDoc.hidden()) {
 					continue;
@@ -118,11 +81,32 @@ public class RequestBuilder {
 					operationParameters.add(parameter);
 					continue;
 				}
-
-				buildParameterFromDoc(parameter, parameterDoc);
+				parameter = buildParameterFromDoc(parameterDoc);
 			}
 
-			if (parameter.getName() != null) {
+			RequestHeader requestHeader = AnnotationUtils.findAnnotation(parameters[i], RequestHeader.class);
+			RequestParam requestParam = AnnotationUtils.findAnnotation(parameters[i], RequestParam.class);
+			PathVariable pathVar = AnnotationUtils.findAnnotation(parameters[i], PathVariable.class);
+
+			if (requestHeader != null) {
+				parameter = this.buildParam(HEADER_PARAM, components, parameters[i], requestHeader.required(),
+						requestHeader.value(), parameter);
+			} else if (requestParam != null) {
+				parameter = this.buildParam(QUERY_PARAM, components, parameters[i], requestParam.required(),
+						requestParam.value(), parameter);
+			} else if (pathVar != null) {
+				// check if PATH PARAM
+				parameter = this.buildParam(PATH_PARAM, components, parameters[i], Boolean.TRUE, pathVar.value(),
+						parameter);
+			}
+
+			// By default
+			if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
+				String name = pNames[i];
+				parameter = this.buildParam(QUERY_PARAM, null, parameters[i], Boolean.FALSE, name, null);
+			}
+
+			if (parameter != null && parameter.getName() != null) {
 				applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 				operationParameters.add(parameter);
 				// job finished
@@ -140,6 +124,19 @@ public class RequestBuilder {
 		}
 
 		return operation;
+	}
+
+
+	private Parameter buildParam(String in, Components components, java.lang.reflect.Parameter parameters,
+			Boolean required, String name, Parameter parameter) {
+		if (parameter == null)
+			parameter = new Parameter();
+		parameter.setIn(in);
+		parameter.setRequired(required);
+		parameter.setName(name);
+		Schema<?> schema = calculateSchema(components, parameters);
+		parameter.setSchema(schema);
+		return parameter;
 	}
 
 	private RequestBody buildRequestBody(Components components, String[] allConsumes,
@@ -173,8 +170,8 @@ public class RequestBuilder {
 		return requestBody;
 	}
 
-	private void buildParameterFromDoc(Parameter parameter,
-			io.swagger.v3.oas.annotations.Parameter parameterDoc) {
+	private Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc) {
+		Parameter parameter = new Parameter();
 		if (StringUtils.isNotBlank(parameterDoc.description())) {
 			parameter.setDescription(parameterDoc.description());
 		} else if (StringUtils.isNotBlank(parameterDoc.name())) {
@@ -203,20 +200,6 @@ public class RequestBuilder {
 			parameter.setAllowReserved(parameterDoc.allowReserved());
 		}
 
-		calculateExampleFromDoc(parameter, parameterDoc);
-
-		if (parameterDoc.extensions().length > 0) {
-			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
-				for (Map.Entry<String, Object> entry : extensionMap.entrySet()) {
-					parameter.addExtension(entry.getKey(), entry.getValue());
-			}
-		}
-
-		setParameterStyle(parameter, parameterDoc);
-		setParameterExplode(parameter, parameterDoc);
-	}
-
-	private void calculateExampleFromDoc(Parameter parameter, io.swagger.v3.oas.annotations.Parameter parameterDoc) {
 		Map<String, Example> exampleMap = new HashMap<>();
 		if (parameterDoc.examples().length == 1 && StringUtils.isBlank(parameterDoc.examples()[0].name())) {
 			Optional<Example> exampleOptional = AnnotationsUtils.getExample(parameterDoc.examples()[0]);
@@ -232,15 +215,17 @@ public class RequestBuilder {
 		if (exampleMap.size() > 0) {
 			parameter.setExamples(exampleMap);
 		}
-	}
 
-	private void setParameter(String param, String value, Class<?> type, Parameter parameter) {
-		parameter.setIn(param);
-		if (StringUtils.isNotBlank(value)) {
-			parameter.setName(value);
+		if (parameterDoc.extensions().length > 0) {
+			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
+			for (Map.Entry<String, Object> entry : extensionMap.entrySet()) {
+				parameter.addExtension(entry.getKey(), entry.getValue());
+			}
 		}
-		Schema<?> schema = org.springdoc.core.AnnotationsUtils.resolveSchemaFromType(type, null, null);
-		parameter.setSchema(schema);
+
+		setParameterStyle(parameter, parameterDoc);
+		setParameterExplode(parameter, parameterDoc);
+		return parameter;
 	}
 
 	private Schema<?> calculateSchema(Components components, java.lang.reflect.Parameter parameter) {
@@ -258,7 +243,7 @@ public class RequestBuilder {
 				}
 			}
 		} else {
-			schemaN = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null);
+			schemaN = org.springdoc.core.AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null);
 		}
 		return schemaN;
 	}
@@ -297,7 +282,7 @@ public class RequestBuilder {
 		if (schema != null) {
 			Class<?> implementation = schema.implementation();
 			if (implementation == Void.class && !schema.type().equals("object") && !schema.type().equals("array")) {
-					explode = false;
+				explode = false;
 			}
 		}
 		return explode;
