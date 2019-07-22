@@ -200,6 +200,15 @@ public class RequestBuilder {
 			parameter.setAllowReserved(parameterDoc.allowReserved());
 		}
 
+		setExamples(parameterDoc, parameter);
+		setExtensions(parameterDoc, parameter);
+		setParameterStyle(parameter, parameterDoc);
+		setParameterExplode(parameter, parameterDoc);
+		return parameter;
+	}
+
+
+	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
 		Map<String, Example> exampleMap = new HashMap<>();
 		if (parameterDoc.examples().length == 1 && StringUtils.isBlank(parameterDoc.examples()[0].name())) {
 			Optional<Example> exampleOptional = AnnotationsUtils.getExample(parameterDoc.examples()[0]);
@@ -215,17 +224,16 @@ public class RequestBuilder {
 		if (exampleMap.size() > 0) {
 			parameter.setExamples(exampleMap);
 		}
+	}
 
+
+	private void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
 		if (parameterDoc.extensions().length > 0) {
 			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
 			for (Map.Entry<String, Object> entry : extensionMap.entrySet()) {
 				parameter.addExtension(entry.getKey(), entry.getValue());
 			}
 		}
-
-		setParameterStyle(parameter, parameterDoc);
-		setParameterExplode(parameter, parameterDoc);
-		return parameter;
 	}
 
 	private Schema<?> calculateSchema(Components components, java.lang.reflect.Parameter parameter) {
