@@ -72,6 +72,7 @@ public class RequestBuilder {
 			// check if query param
 			Parameter parameter = null;
 			Class<?> paramType = parameters[i].getType();
+			// Ignore HttpServletRequest and HttpServletResponse as parameters
 			if (!isParamTypeToIgnore(paramType)) {
 				io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotationUtils.findAnnotation(parameters[i],
 						io.swagger.v3.oas.annotations.Parameter.class);
@@ -82,14 +83,10 @@ public class RequestBuilder {
 					}
 					parameter = buildParameterFromDoc(parameterDoc);
 				}
-				// Ignore HttpServletRequest and HttpServletResponse as parameters
 				parameter = buildParams(pNames[i], components, parameters[i], parameter);
 
 				// By default
-				if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
-					String name = pNames[i];
-					parameter = this.buildParam(QUERY_PARAM, null, parameters[i], Boolean.FALSE, name, null);
-				}
+				parameter = buildParamDefault(requestMethod, pNames[i], parameters[i], parameter);
 
 				if (parameter != null && parameter.getName() != null) {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
@@ -106,6 +103,15 @@ public class RequestBuilder {
 		}
 
 		return operation;
+	}
+
+	private Parameter buildParamDefault(RequestMethod requestMethod, String pNames,
+			java.lang.reflect.Parameter parameters, Parameter parameter) {
+		if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
+			String name = pNames;
+			parameter = this.buildParam(QUERY_PARAM, null, parameters, Boolean.FALSE, name, null);
+		}
+		return parameter;
 	}
 
 	private boolean isParamTypeToIgnore(Class<?> paramType) {
