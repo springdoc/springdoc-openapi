@@ -67,7 +67,7 @@ public class OpenApiResource {
 	private InfoBuilder infoBuilder;
 
 	@Autowired
-	private RequestMappingInfoHandlerMapping mappingHandler;
+	private RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -88,17 +88,17 @@ public class OpenApiResource {
 		// Info block
 		infoBuilder.build(openAPIBuilder.getOpenAPI());
 
-		Map<RequestMappingInfo, HandlerMethod> map = mappingHandler.getHandlerMethods();
-		Map<String, Object> findRestControllers1 = mappingHandler.getApplicationContext()
+		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
+		Map<String, Object> findRestControllers1 = requestMappingHandlerMapping.getApplicationContext()
 				.getBeansWithAnnotation(RestController.class);
-		Map<String, Object> findRestControllers2 = mappingHandler.getApplicationContext()
+		Map<String, Object> findRestControllers2 = requestMappingHandlerMapping.getApplicationContext()
 				.getBeansWithAnnotation(RequestMapping.class);
 
 		Map<String, Object> findRestControllers = Stream.of(findRestControllers1, findRestControllers2)
 				.flatMap(mapEl -> mapEl.entrySet().stream())
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
-		Map<String, Object> findControllerAdvice = mappingHandler.getApplicationContext()
+		Map<String, Object> findControllerAdvice = requestMappingHandlerMapping.getApplicationContext()
 				.getBeansWithAnnotation(ControllerAdvice.class);
 
 		// calculate generic responses

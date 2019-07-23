@@ -49,7 +49,7 @@ public class ResponseBuilder {
 		if (apiResponses == null)
 			apiResponses = new ApiResponses();
 		// Fill api Responses
-		computeResponse(components, handlerMethod.getMethod(), apiResponses, methodProduces);
+		computeResponse(components, handlerMethod.getMethod(), apiResponses, methodProduces, false);
 
 		// for each one build ApiResponse and add it to existing responses
 		for (Entry<String, ApiResponse> entry : genericMapResponse.entrySet()) {
@@ -70,9 +70,9 @@ public class ResponseBuilder {
 				methodProduces = reqMappringMethod.produces();
 			}
 			Map<String, ApiResponse> apiResponses = computeResponse(components, method, new ApiResponses(),
-					methodProduces);
+					methodProduces, true);
 			for (Map.Entry<String, ApiResponse> entry : apiResponses.entrySet()) {
-				genericMapResponse.put(entry.getKey(), entry.getValue());
+					genericMapResponse.put(entry.getKey(), entry.getValue());
 			}
 		}
 
@@ -97,7 +97,7 @@ public class ResponseBuilder {
 	}
 
 	private Map<String, ApiResponse> computeResponse(Components components, Method method, ApiResponses apiResponsesOp,
-			String[] methodProduces) {
+			String[] methodProduces, boolean isGeneric) {
 		// Parsing documentation, if present
 		io.swagger.v3.oas.annotations.responses.ApiResponses apiResponsesDoc = ReflectionUtils.getAnnotation(method,
 				io.swagger.v3.oas.annotations.responses.ApiResponses.class);
@@ -128,8 +128,9 @@ public class ResponseBuilder {
 			}
 		} else {
 			// Use reponse parameters with no descirption filled
-			String httpCode = evaluateResponseStatus(method, method.getClass());
-			buildApiResponses(components, method, apiResponsesOp, methodProduces, httpCode, new ApiResponse());
+			String httpCode = evaluateResponseStatus(method, method.getClass(), isGeneric);
+			if (httpCode != null)
+				buildApiResponses(components, method, apiResponsesOp, methodProduces, httpCode, new ApiResponse());
 		}
 		return apiResponsesOp;
 	}
@@ -228,19 +229,19 @@ public class ResponseBuilder {
 		apiResponsesOp.addApiResponse(httpCode, apiResponse);
 	}
 
-	private String evaluateResponseStatus(Method method, Class<?> beanType) {
-		HttpStatus responseStatus = null;
+	private String evaluateResponseStatus(Method method, Class<?> beanType, boolean isGeneric) {
+		String responseStatus = null;
 		ResponseStatus annotation = AnnotatedElementUtils.findMergedAnnotation(method, ResponseStatus.class);
 		if (annotation == null && beanType != null) {
 			annotation = AnnotatedElementUtils.findMergedAnnotation(beanType, ResponseStatus.class);
 		}
 		if (annotation != null) {
-			responseStatus = annotation.code();
+			responseStatus = annotation.code().toString();
 		}
-		if (annotation == null) {
-			responseStatus = HttpStatus.OK;
+		if (annotation == null && !isGeneric) {
+			responseStatus = HttpStatus.OK.toString();
 		}
-		return responseStatus.toString();
+		return responseStatus;
 	}
 
 }
