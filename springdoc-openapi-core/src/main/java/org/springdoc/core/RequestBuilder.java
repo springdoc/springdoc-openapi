@@ -84,8 +84,7 @@ public class RequestBuilder {
 
 			// Ignore HttpServletRequest and HttpServletResponse as parameters
 			Class<?> paramType = parameters[i].getType();
-			if (HttpServletRequest.class.equals(paramType) || HttpServletResponse.class.equals(paramType)
-					|| HttpSession.class.equals(paramType))
+			if (isParamTypeToIgnore(paramType))
 				continue;
 
 			parameter = buildParams(pNames[i], components, parameters[i], parameter);
@@ -111,6 +110,11 @@ public class RequestBuilder {
 		}
 
 		return operation;
+	}
+
+	private boolean isParamTypeToIgnore(Class<?> paramType) {
+		return HttpServletRequest.class.equals(paramType) || HttpServletResponse.class.equals(paramType)
+				|| HttpSession.class.equals(paramType);
 	}
 
 	private Parameter buildParams(String pName, Components components, java.lang.reflect.Parameter parameters,
