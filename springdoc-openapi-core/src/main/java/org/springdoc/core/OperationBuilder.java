@@ -176,13 +176,8 @@ public class OperationBuilder {
 			AnnotationsUtils.getHeaders(response.headers(), jsonViewAnnotation).ifPresent(apiResponseObject::headers);
 			// Make schema as string if empty
 			calculateHeader(apiResponseObject);
-			if (StringUtils.isNotBlank(apiResponseObject.getDescription()) || apiResponseObject.getContent() != null
-					|| apiResponseObject.getHeaders() != null) {
-
-				Map<String, Link> links = AnnotationsUtils.getLinks(response.links());
-				if (links.size() > 0) {
-					apiResponseObject.setLinks(links);
-				}
+			if (isResponseObject(apiResponseObject)) {
+				setLinks(response, apiResponseObject);
 				if (StringUtils.isNotBlank(response.responseCode())) {
 					apiResponsesObject.addApiResponse(response.responseCode(), apiResponseObject);
 				} else {
@@ -192,6 +187,18 @@ public class OperationBuilder {
 		}
 
 		return Optional.of(apiResponsesObject);
+	}
+
+	private boolean isResponseObject(ApiResponse apiResponseObject) {
+		return StringUtils.isNotBlank(apiResponseObject.getDescription()) || apiResponseObject.getContent() != null
+				|| apiResponseObject.getHeaders() != null;
+	}
+
+	private void setLinks(io.swagger.v3.oas.annotations.responses.ApiResponse response, ApiResponse apiResponseObject) {
+		Map<String, Link> links = AnnotationsUtils.getLinks(response.links());
+		if (links.size() > 0) {
+			apiResponseObject.setLinks(links);
+		}
 	}
 
 	private void setDescription(io.swagger.v3.oas.annotations.responses.ApiResponse response,
