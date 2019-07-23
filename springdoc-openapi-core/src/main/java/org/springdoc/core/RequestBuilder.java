@@ -73,18 +73,18 @@ public class RequestBuilder {
 			Parameter parameter = null;
 			Class<?> paramType = parameters[i].getType();
 			// Ignore HttpServletRequest and HttpServletResponse as parameters
-			if (!isParamTypeToIgnore(paramType)) {
-				io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotationUtils.findAnnotation(parameters[i],
-						io.swagger.v3.oas.annotations.Parameter.class);
-				// use documentation as reference
-				if (parameterDoc != null) {
-					if (parameterDoc.hidden()) {
-						continue;
-					}
-					parameter = buildParameterFromDoc(parameterDoc);
+			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotationUtils.findAnnotation(parameters[i],
+					io.swagger.v3.oas.annotations.Parameter.class);
+			// use documentation as reference
+			if (parameterDoc != null) {
+				if (parameterDoc.hidden()) {
+					continue;
 				}
-				parameter = buildParams(pNames[i], components, parameters[i], parameter);
+				parameter = buildParameterFromDoc(parameterDoc);
+			}
 
+			if (!isParamTypeToIgnore(paramType)) {
+				parameter = buildParams(pNames[i], components, parameters[i], parameter);
 				// By default
 				parameter = buildParamDefault(requestMethod, pNames[i], parameters[i], parameter);
 
