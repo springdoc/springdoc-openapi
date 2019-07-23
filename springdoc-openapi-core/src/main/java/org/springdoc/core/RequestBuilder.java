@@ -79,7 +79,7 @@ public class RequestBuilder {
 				parameter = buildParameterFromDoc(parameterDoc);
 			}
 
-			parameter = buildParams(components, parameters[i], parameter);
+			parameter = buildParams(pNames[i], components, parameters[i], parameter);
 
 			// By default
 			if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
@@ -104,20 +104,24 @@ public class RequestBuilder {
 		return operation;
 	}
 
-	private Parameter buildParams(Components components, java.lang.reflect.Parameter parameters, Parameter parameter) {
+	private Parameter buildParams(String pName, Components components, java.lang.reflect.Parameter parameters,
+			Parameter parameter) {
 		RequestHeader requestHeader = AnnotationUtils.findAnnotation(parameters, RequestHeader.class);
 		RequestParam requestParam = AnnotationUtils.findAnnotation(parameters, RequestParam.class);
 		PathVariable pathVar = AnnotationUtils.findAnnotation(parameters, PathVariable.class);
 
 		if (requestHeader != null) {
+			String name = StringUtils.isBlank(requestHeader.value()) ? pName : requestHeader.value();
 			parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(),
-					requestHeader.value(), parameter);
+					name, parameter);
 		} else if (requestParam != null) {
+			String name = StringUtils.isBlank(requestParam.value()) ? pName : requestParam.value();
 			parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(),
-					requestParam.value(), parameter);
+					name, parameter);
 		} else if (pathVar != null) {
+			String name = StringUtils.isBlank(pathVar.value()) ? pName : pathVar.value();
 			// check if PATH PARAM
-			parameter = this.buildParam(PATH_PARAM, components, parameters, Boolean.TRUE, pathVar.value(), parameter);
+			parameter = this.buildParam(PATH_PARAM, components, parameters, Boolean.TRUE, name, parameter);
 		}
 		return parameter;
 	}
