@@ -71,37 +71,33 @@ public class RequestBuilder {
 		for (int i = 0; i < pNames.length; i++) {
 			// check if query param
 			Parameter parameter = null;
-			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotationUtils.findAnnotation(parameters[i],
-					io.swagger.v3.oas.annotations.Parameter.class);
-
-			// use documentation as reference
-			if (parameterDoc != null) {
-				if (parameterDoc.hidden()) {
-					continue;
-				}
-				parameter = buildParameterFromDoc(parameterDoc);
-			}
-
-			// Ignore HttpServletRequest and HttpServletResponse as parameters
 			Class<?> paramType = parameters[i].getType();
-			if (isParamTypeToIgnore(paramType))
-				continue;
+			if (!isParamTypeToIgnore(paramType)) {
+				io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotationUtils.findAnnotation(parameters[i],
+						io.swagger.v3.oas.annotations.Parameter.class);
+				// use documentation as reference
+				if (parameterDoc != null) {
+					if (parameterDoc.hidden()) {
+						continue;
+					}
+					parameter = buildParameterFromDoc(parameterDoc);
+				}
+				// Ignore HttpServletRequest and HttpServletResponse as parameters
+				parameter = buildParams(pNames[i], components, parameters[i], parameter);
 
-			parameter = buildParams(pNames[i], components, parameters[i], parameter);
+				// By default
+				if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
+					String name = pNames[i];
+					parameter = this.buildParam(QUERY_PARAM, null, parameters[i], Boolean.FALSE, name, null);
+				}
 
-			// By default
-			if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
-				String name = pNames[i];
-				parameter = this.buildParam(QUERY_PARAM, null, parameters[i], Boolean.FALSE, name, null);
-			}
-
-			if (parameter != null && parameter.getName() != null) {
-				applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
-				operationParameters.add(parameter);
-			}
-			else if (!RequestMethod.GET.equals(requestMethod)) {
-				RequestBody requestBody = buildRequestBody(components, allConsumes, parameters[i], parameterDoc);
-				operation.setRequestBody(requestBody);
+				if (parameter != null && parameter.getName() != null) {
+					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
+					operationParameters.add(parameter);
+				} else if (!RequestMethod.GET.equals(requestMethod)) {
+					RequestBody requestBody = buildRequestBody(components, allConsumes, parameters[i], parameterDoc);
+					operation.setRequestBody(requestBody);
+				}
 			}
 		}
 
@@ -125,12 +121,11 @@ public class RequestBuilder {
 
 		if (requestHeader != null) {
 			String name = StringUtils.isBlank(requestHeader.value()) ? pName : requestHeader.value();
-			parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(),
-					name, parameter);
+			parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(), name,
+					parameter);
 		} else if (requestParam != null) {
 			String name = StringUtils.isBlank(requestParam.value()) ? pName : requestParam.value();
-			parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(),
-					name, parameter);
+			parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(), name, parameter);
 		} else if (pathVar != null) {
 			String name = StringUtils.isBlank(pathVar.value()) ? pName : pathVar.value();
 			// check if PATH PARAM
@@ -222,7 +217,6 @@ public class RequestBuilder {
 		return parameter;
 	}
 
-
 	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
 		Map<String, Example> exampleMap = new HashMap<>();
 		if (parameterDoc.examples().length == 1 && StringUtils.isBlank(parameterDoc.examples()[0].name())) {
@@ -240,7 +234,6 @@ public class RequestBuilder {
 			parameter.setExamples(exampleMap);
 		}
 	}
-
 
 	private void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
 		if (parameterDoc.extensions().length > 0) {
