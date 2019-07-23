@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
@@ -78,6 +81,12 @@ public class RequestBuilder {
 				}
 				parameter = buildParameterFromDoc(parameterDoc);
 			}
+
+			// Ignore HttpServletRequest and HttpServletResponse as parameters
+			Class<?> paramType = parameters[i].getType();
+			if (HttpServletRequest.class.equals(paramType) || HttpServletResponse.class.equals(paramType)
+					|| HttpSession.class.equals(paramType))
+				continue;
 
 			parameter = buildParams(pNames[i], components, parameters[i], parameter);
 
