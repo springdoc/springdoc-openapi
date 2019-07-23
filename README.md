@@ -47,7 +47,7 @@ Snapshots:
    <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-core</artifactId>
-      <version>0.0.8</version>
+      <version>1.0.0</version>
    </dependency>
 ```
 
@@ -64,7 +64,7 @@ Snapshots:
    <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
-      <version>0.0.8</version>
+      <version>1.0.0</version>
    </dependency>
 ```
 
