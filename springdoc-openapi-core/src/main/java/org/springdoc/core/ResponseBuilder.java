@@ -48,13 +48,14 @@ public class ResponseBuilder {
 		ApiResponses apiResponses = operation.getResponses();
 		if (apiResponses == null)
 			apiResponses = new ApiResponses();
-		// Fill api Responses
-		computeResponse(components, handlerMethod.getMethod(), apiResponses, methodProduces, false);
 
 		// for each one build ApiResponse and add it to existing responses
 		for (Entry<String, ApiResponse> entry : genericMapResponse.entrySet()) {
 			apiResponses.addApiResponse(entry.getKey(), entry.getValue());
 		}
+		// Fill api Responses
+		computeResponse(components, handlerMethod.getMethod(), apiResponses, methodProduces, false);
+
 		return apiResponses;
 	}
 
@@ -69,6 +70,7 @@ public class ResponseBuilder {
 			if (reqMappringMethod != null) {
 				methodProduces = reqMappringMethod.produces();
 			}
+
 			Map<String, ApiResponse> apiResponses = computeResponse(components, method, new ApiResponses(),
 					methodProduces, true);
 			for (Map.Entry<String, ApiResponse> entry : apiResponses.entrySet()) {
@@ -120,14 +122,16 @@ public class ResponseBuilder {
 			}
 		}
 
-		if (!CollectionUtils.isEmpty(apiResponsesOp)) { // API Responses at operation and apiresposne annotation
+		if (!CollectionUtils.isEmpty(apiResponsesOp) && (apiResponsesOp.size() != genericMapResponse.size())) {
+			// API Responses at operation and apiresposne annotation
 			for (Map.Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
 				String httpCode = entry.getKey();
 				ApiResponse apiResponse = entry.getValue();
 				buildApiResponses(components, method, apiResponsesOp, methodProduces, httpCode, apiResponse);
 			}
 		} else {
-			// Use reponse parameters with no descirption filled
+			// Use reponse parameters with no descirption filled - No documentation
+			// available
 			String httpCode = evaluateResponseStatus(method, method.getClass(), isGeneric);
 			if (httpCode != null)
 				buildApiResponses(components, method, apiResponsesOp, methodProduces, httpCode, new ApiResponse());
