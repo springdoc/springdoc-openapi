@@ -17,7 +17,7 @@ This library supports:
 *  Oauth 2
 
 # **Getting Started**
-## Integration of the libray in a spring-boot 2 projet:
+## Integration of the libray in a spring-boot 2 project:
 *   Documentation will be available at the following url for json format: http://server:port/context-path/v3/api-docs
     * server: The server name or IP
     * port: The server port
