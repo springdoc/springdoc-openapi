@@ -54,8 +54,11 @@ public class InfoBuilder {
 			ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(
 					false);
 			scanner.addIncludeFilter(new AnnotationTypeFilter(OpenAPIDefinition.class));
-			List<String> packagesToScan = AutoConfigurationPackages.get(context);
-			apiDef = getApiDefClass(scanner, packagesToScan);
+			if (AutoConfigurationPackages.has(context)) {
+				List<String> packagesToScan = AutoConfigurationPackages.get(context);
+				apiDef = getApiDefClass(scanner, packagesToScan);
+			}
+
 		}
 
 		if (apiDef != null) {
@@ -64,8 +67,7 @@ public class InfoBuilder {
 			// OpenApiDefinition security requirements
 			SecurityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
 			// OpenApiDefinition external docs
-			AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs())
-					.ifPresent(openAPI::setExternalDocs);
+			AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs()).ifPresent(openAPI::setExternalDocs);
 			// OpenApiDefinition tags
 			AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
 			// OpenApiDefinition servers

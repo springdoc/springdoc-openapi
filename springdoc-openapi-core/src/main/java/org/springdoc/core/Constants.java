@@ -10,8 +10,6 @@ public final class Constants {
 	public static final String WEB_JARS_URL = "/webjars/swagger-ui/index.html?url=";
 	public static final String DEFAULT_VALIDATOR_URL = "&validatorUrl=";
 	public static final String APPLICATION_OPENAPI_YAML = "application/vnd.oai.openapi";
-	public static final String SPRING_BOOT_1_CONTEXT_PATH = "${server.contextPath:#{''}}";
-	public static final String SPRING_BOOT_2_CONTEXT_PATH = "${server.servlet.context-path:#{''}}";
 	public static final String DEFAULT_SWAGGER_UI_PATH = DEFAULT_PATH_SEPARATOR + "swagger-ui.html";
 	public static final String SWAGGER_UI_PATH = "${springdoc.swagger-ui.path:#{T(org.springdoc.core.Constants).DEFAULT_SWAGGER_UI_PATH}}";
 

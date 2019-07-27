@@ -2,41 +2,29 @@ package org.springdoc.ui;
 
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.DEFAULT_VALIDATOR_URL;
-import static org.springdoc.core.Constants.SPRING_BOOT_1_CONTEXT_PATH;
-import static org.springdoc.core.Constants.SPRING_BOOT_2_CONTEXT_PATH;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
 import static org.springdoc.core.Constants.WEB_JARS_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @Controller
 public class SwaggerWelcome {
-
-	@Value(SPRING_BOOT_1_CONTEXT_PATH)
-	private String contextPath1;
-
-	@Value(SPRING_BOOT_2_CONTEXT_PATH)
-	private String contextPath2;
 
 	@Value(API_DOCS_URL)
 	private String apiDocsUrl;
 
-	@io.swagger.v3.oas.annotations.Operation(hidden = true)
+	@Operation(hidden = true)
 	@GetMapping(SWAGGER_UI_PATH)
-	public String redirectToUi() {
-		String contextPath = StringUtils.EMPTY;
-		// spring-boot 2
-		if (StringUtils.isNotBlank(contextPath2))
-			contextPath = contextPath2;
-		// spring-boot 1
-		else if (StringUtils.isNotBlank(contextPath1))
-			contextPath = contextPath1;
-
+	public String redirectToUi(HttpServletRequest request) {
+		String contextPath = request.getContextPath();
 		StringBuilder sbUrl = new StringBuilder();
 		sbUrl.append(REDIRECT_URL_PREFIX);
 		sbUrl.append(WEB_JARS_URL);
