@@ -44,7 +44,8 @@
 	<modules>
 		<module>springdoc-openapi-core</module>
 		<module>springdoc-openapi-ui</module>
-
+		<module>springdoc-openapi-webflux-core</module>
+		<module>springdoc-openapi-webflux-ui</module>
 	</modules>
 
 	<properties>
