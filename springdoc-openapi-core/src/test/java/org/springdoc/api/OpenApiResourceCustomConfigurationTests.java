@@ -31,11 +31,12 @@ public class OpenApiResourceCustomConfigurationTests {
   private MockMvc mockMvc;
 
   /**
+   * Configured in CustomOpenAPIConfig
    * should return
    * {"openapi":"3.0.1","info":{"title":"Custom API","version":"100"},"paths":{},"components":{}}
    */
   @Test
-  public void givenNoConfiguration_whenGetApiJson_returnsDefaultEmptyDocs() throws Exception {
+  public void givenCustomConfiguration_whenGetApiJson_returnsCustomDocs() throws Exception {
     mockMvc
         .perform(get("/api-docs"))
         .andExpect(status().isOk())
