@@ -16,9 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
@@ -31,14 +28,22 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -115,8 +120,19 @@ public class RequestBuilder {
 	}
 
 	private boolean isParamTypeToIgnore(Class<?> paramType) {
-		return HttpServletRequest.class.equals(paramType) || HttpServletResponse.class.equals(paramType)
-				|| HttpSession.class.equals(paramType);
+		return WebRequest.class.equals(paramType) || NativeWebRequest.class.equals(paramType)
+				|| javax.servlet.ServletRequest.class.equals(paramType)
+				|| javax.servlet.ServletResponse.class.equals(paramType)
+				|| javax.servlet.http.HttpSession.class.equals(paramType)
+				|| java.security.Principal.class.equals(paramType) || HttpMethod.class.equals(paramType)
+				|| java.util.Locale.class.equals(paramType) || java.util.TimeZone.class.equals(paramType)
+				|| java.time.ZoneId.class.equals(paramType) || java.io.InputStream.class.equals(paramType)
+				|| java.io.Reader.class.equals(paramType) || java.io.OutputStream.class.equals(paramType)
+				|| java.io.Writer.class.equals(paramType) || java.util.Map.class.equals(paramType)
+				|| org.springframework.ui.Model.class.equals(paramType)
+				|| org.springframework.ui.ModelMap.class.equals(paramType) || RedirectAttributes.class.equals(paramType)
+				|| Errors.class.equals(paramType) || BindingResult.class.equals(paramType)
+				|| SessionStatus.class.equals(paramType) || UriComponentsBuilder.class.equals(paramType);
 	}
 
 	private Parameter buildParams(String pName, Components components, java.lang.reflect.Parameter parameters,
