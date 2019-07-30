@@ -74,7 +74,7 @@ public class ResponseBuilder {
 			Map<String, ApiResponse> apiResponses = computeResponse(components, method, new ApiResponses(),
 					methodProduces, true);
 			for (Map.Entry<String, ApiResponse> entry : apiResponses.entrySet()) {
-					genericMapResponse.put(entry.getKey(), entry.getValue());
+				genericMapResponse.put(entry.getKey(), entry.getValue());
 			}
 		}
 
@@ -224,9 +224,11 @@ public class ResponseBuilder {
 
 	private void buildApiResponses(Components components, Method method, ApiResponses apiResponsesOp,
 			String[] methodProduces, String httpCode, ApiResponse apiResponse) {
-		Content content = buildContent(components, method, methodProduces);
-		apiResponse.setContent(content);
-
+		// No documentation
+		if (apiResponse.getContent() == null) {
+			Content content = buildContent(components, method, methodProduces);
+			apiResponse.setContent(content);
+		}
 		if (StringUtils.isBlank(apiResponse.getDescription())) {
 			apiResponse.setDescription(DEFAULT_DESCRIPTION);
 		}
