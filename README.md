@@ -67,5 +67,6 @@ springdoc.swagger-ui.path=/swagger.html
 ![Branching](https://springdoc.github.io/springdoc-openapi-demos/images/pets.png)
 
 
-
+## Source code of the Demo Applications
+*   https://github.com/springdoc/springdoc-openapi-demos.git
 
