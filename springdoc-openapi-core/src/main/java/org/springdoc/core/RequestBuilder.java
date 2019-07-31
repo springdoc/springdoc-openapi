@@ -6,6 +6,7 @@ import static org.springdoc.core.Constants.QUERY_PARAM;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -25,7 +27,9 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpMethod;
@@ -73,13 +77,16 @@ public class RequestBuilder {
 		List<Parameter> operationParameters = new ArrayList<>();
 		java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
 
+		MethodUtils.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Parameter.class, true, true);
+
 		for (int i = 0; i < pNames.length; i++) {
 			// check if query param
 			Parameter parameter = null;
 			Class<?> paramType = parameters[i].getType();
-			// Ignore HttpServletRequest and HttpServletResponse as parameters
-			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotationUtils.findAnnotation(parameters[i],
-					io.swagger.v3.oas.annotations.Parameter.class);
+
+			io.swagger.v3.oas.annotations.Parameter parameterDoc = getParameterAnnotation(handlerMethod, parameters[i],
+					i, io.swagger.v3.oas.annotations.Parameter.class);
+
 			// use documentation as reference
 			if (parameterDoc != null) {
 				if (parameterDoc.hidden()) {
@@ -89,7 +96,8 @@ public class RequestBuilder {
 			}
 
 			if (!isParamTypeToIgnore(paramType)) {
-				parameter = buildParams(pNames[i], components, parameters[i], parameter);
+
+				parameter = buildParams(pNames[i], components, parameters[i], i, parameter, handlerMethod);
 				// By default
 				parameter = buildParamDefault(requestMethod, pNames[i], parameters[i], parameter);
 
@@ -110,11 +118,25 @@ public class RequestBuilder {
 		return operation;
 	}
 
+	private <A extends Annotation> A getParameterAnnotation(HandlerMethod handlerMethod,
+			java.lang.reflect.Parameter parameter, int i, Class<A> annotationType) {
+		A parameterDoc = AnnotationUtils.getAnnotation(parameter, annotationType);
+		if (parameterDoc == null) {
+			Set<Method> methods = MethodUtils.getOverrideHierarchy(handlerMethod.getMethod(),
+					ClassUtils.Interfaces.INCLUDE);
+			for (Method methodOverriden : methods) {
+				parameterDoc = AnnotationUtils.getAnnotation(methodOverriden.getParameters()[i], annotationType);
+				if (parameterDoc != null)
+					break;
+			}
+		}
+		return parameterDoc;
+	}
+
 	private Parameter buildParamDefault(RequestMethod requestMethod, String pNames,
 			java.lang.reflect.Parameter parameters, Parameter parameter) {
 		if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
-			String name = pNames;
-			parameter = this.buildParam(QUERY_PARAM, null, parameters, Boolean.FALSE, name, null);
+			parameter = this.buildParam(QUERY_PARAM, null, parameters, Boolean.FALSE, pNames, null);
 		}
 		return parameter;
 	}
@@ -136,10 +158,10 @@ public class RequestBuilder {
 	}
 
 	private Parameter buildParams(String pName, Components components, java.lang.reflect.Parameter parameters,
-			Parameter parameter) {
-		RequestHeader requestHeader = AnnotationUtils.findAnnotation(parameters, RequestHeader.class);
-		RequestParam requestParam = AnnotationUtils.findAnnotation(parameters, RequestParam.class);
-		PathVariable pathVar = AnnotationUtils.findAnnotation(parameters, PathVariable.class);
+			int index, Parameter parameter, HandlerMethod handlerMethod) {
+		RequestHeader requestHeader = getParameterAnnotation(handlerMethod, parameters, index, RequestHeader.class);
+		RequestParam requestParam = getParameterAnnotation(handlerMethod, parameters, index, RequestParam.class);
+		PathVariable pathVar = getParameterAnnotation(handlerMethod, parameters, index, PathVariable.class);
 
 		if (requestHeader != null) {
 			String name = StringUtils.isBlank(requestHeader.value()) ? pName : requestHeader.value();
@@ -189,7 +211,6 @@ public class RequestBuilder {
 		} else {
 			content1.addMediaType(MediaType.ALL_VALUE, mediaType);
 		}
-
 		requestBody.setContent(content1);
 		if (parameterDoc != null) {
 			if (StringUtils.isNotBlank(parameterDoc.description()))
@@ -203,8 +224,9 @@ public class RequestBuilder {
 		Parameter parameter = new Parameter();
 		if (StringUtils.isNotBlank(parameterDoc.description())) {
 			parameter.setDescription(parameterDoc.description());
-		} else if (StringUtils.isNotBlank(parameterDoc.name())) {
-			parameter.setDescription(parameterDoc.name());
+		}
+		if (StringUtils.isNotBlank(parameterDoc.name())) {
+			parameter.setName(parameterDoc.name());
 		}
 		if (StringUtils.isNotBlank(parameterDoc.in().toString())) {
 			parameter.setIn(parameterDoc.in().toString());
