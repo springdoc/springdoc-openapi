@@ -12,13 +12,6 @@ import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.InfoBuilder;
-import org.springdoc.core.MediaAttributes;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.OperationBuilder;
-import org.springdoc.core.RequestBuilder;
-import org.springdoc.core.ResponseBuilder;
-import org.springdoc.core.TagsBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,37 +27,13 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.v3.core.util.Json;
-import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.core.util.Yaml;
-import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.PathItem;
-import io.swagger.v3.oas.models.Paths;
-import io.swagger.v3.oas.models.responses.ApiResponses;
 
 @RestController
-public class OpenApiResource {
+public class OpenApiResource extends AbstractOpenApiResource {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiResource.class);
-
-	@Autowired
-	private OpenAPIBuilder openAPIBuilder;
-
-	@Autowired
-	private RequestBuilder requestBuilder;
-
-	@Autowired
-	private ResponseBuilder responseBuilder;
-
-	@Autowired
-	private TagsBuilder tagbuiBuilder;
-
-	@Autowired
-	private OperationBuilder operationParser;
-
-	@Autowired
-	private InfoBuilder infoBuilder;
 
 	@Autowired
 	private RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
@@ -120,95 +89,5 @@ public class OpenApiResource {
 		openAPIBuilder.getOpenAPI().setPaths(openAPIBuilder.getPaths());
 		LOGGER.info("Init duration for springdoc-openapi is: {} ms", (System.currentTimeMillis() - start));
 		return openAPIBuilder.getOpenAPI();
-	}
-
-	private void calculatePath(OpenAPIBuilder openAPIBuilder, HandlerMethod handlerMethod, String operationPath,
-			Set<RequestMethod> requestMethods) {
-		OpenAPI openAPI = openAPIBuilder.getOpenAPI();
-		Components components = openAPIBuilder.getComponents();
-		Paths paths = openAPIBuilder.getPaths();
-
-		for (RequestMethod requestMethod : requestMethods) {
-			// skip hidden operations
-			io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
-					.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
-			if (apiOperation != null && apiOperation.hidden()) {
-				continue;
-			}
-
-			RequestMapping reqMappringClass = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
-					RequestMapping.class);
-
-			MediaAttributes mediaAttributes = new MediaAttributes();
-			if (reqMappringClass != null) {
-				mediaAttributes.setClassConsumes(reqMappringClass.consumes());
-				mediaAttributes.setClassProduces(reqMappringClass.produces());
-			}
-
-			mediaAttributes.calculateConsumesProduces(requestMethod, handlerMethod.getMethod());
-
-			Operation operation = new Operation();
-
-			// compute tags
-			operation = tagbuiBuilder.build(handlerMethod, operation, openAPI);
-
-			// Add documentation from operation annotation
-			if (apiOperation != null) {
-				openAPI = operationParser.parse(components, apiOperation, operation, openAPI, mediaAttributes);
-			}
-
-			// requests
-			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation,
-					mediaAttributes.getAllConsumes());
-
-			// responses
-			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation,
-					mediaAttributes.getAllProduces());
-
-			operation.setResponses(apiResponses);
-
-			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
-			paths.addPathItem(operationPath, pathItemObject);
-		}
-	}
-
-	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
-			Paths paths) {
-		PathItem pathItemObject;
-		if (paths.containsKey(operationPath)) {
-			pathItemObject = paths.get(operationPath);
-		} else {
-			pathItemObject = new PathItem();
-		}
-		switch (requestMethod) {
-		case POST:
-			pathItemObject.post(operation);
-			break;
-		case GET:
-			pathItemObject.get(operation);
-			break;
-		case DELETE:
-			pathItemObject.delete(operation);
-			break;
-		case PUT:
-			pathItemObject.put(operation);
-			break;
-		case PATCH:
-			pathItemObject.patch(operation);
-			break;
-		case TRACE:
-			pathItemObject.trace(operation);
-			break;
-		case HEAD:
-			pathItemObject.head(operation);
-			break;
-		case OPTIONS:
-			pathItemObject.options(operation);
-			break;
-		default:
-			// Do nothing here
-			break;
-		}
-		return pathItemObject;
 	}
 }
