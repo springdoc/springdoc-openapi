@@ -27,7 +27,7 @@ public class ResponseBuilder extends AbstractResponseBuilder {
 			}
 		} else if (returnType instanceof TypeVariable) {
 			schemaN = AnnotationsUtils.resolveSchemaFromType((Class<?>) returnType, null, null);
-		} else if (Void.TYPE.equals(returnType)) {
+		} else if (Void.TYPE.equals(returnType) || ResponseEntity.class.getName().equals(returnType.getTypeName())) {
 			// if void, no content
 			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
 		}
