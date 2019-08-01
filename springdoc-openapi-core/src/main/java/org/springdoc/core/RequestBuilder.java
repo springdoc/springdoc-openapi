@@ -70,7 +70,6 @@ public class RequestBuilder extends AbstractRequestBuilder {
 				}
 			}
 		}
-
 		if (!CollectionUtils.isEmpty(operationParameters)) {
 			operation.setParameters(operationParameters);
 		}
