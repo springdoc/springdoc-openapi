@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -46,11 +47,13 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 
+@SuppressWarnings({ "rawtypes" })
 public abstract class AbstractRequestBuilder {
 
 	public abstract Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
@@ -214,11 +217,23 @@ public abstract class AbstractRequestBuilder {
 		Schema<?> schemaN = null;
 		Type returnType = parameter.getParameterizedType();
 		if (returnType instanceof ParameterizedType) {
+			ParameterizedType parameterizedType = (ParameterizedType) returnType;
+
 			ResolvedSchema resolvedSchema = ModelConverters.getInstance()
 					.resolveAsResolvedSchema(new AnnotatedType(returnType).resolveAsRef(true));
+			if (parameterizedType.getActualTypeArguments()[0].getTypeName().equals(MultipartFile.class.getName())) {
+				Schema schemaObject = new Schema();
+				schemaObject.setType("object");
+				ArraySchema schemafile = new ArraySchema();
+				Schema items = new Schema();
+				items.setType("string");
+				items.setFormat("binary");
+				schemafile.items(items);
+				schemaObject.addProperties("filename", schemafile);
+				return schemaObject;
+			}
 			if (resolvedSchema.schema != null) {
 				schemaN = resolvedSchema.schema;
-				@SuppressWarnings("rawtypes")
 				Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
 				if (schemaMap != null) {
 					schemaMap.forEach(components::addSchemas);
@@ -239,7 +254,6 @@ public abstract class AbstractRequestBuilder {
 			if (returnTypeSchema != null) {
 				mediaType.setSchema(returnTypeSchema);
 			}
-			@SuppressWarnings("rawtypes")
 			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
 			if (schemaMap != null) {
 				schemaMap.forEach(components::addSchemas);
@@ -334,7 +348,7 @@ public abstract class AbstractRequestBuilder {
 		}
 	}
 
-	private void setMediaTypeToContent(@SuppressWarnings("rawtypes") Schema schema, Content content, String value) {
+	private void setMediaTypeToContent(Schema schema, Content content, String value) {
 		io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
 		mediaTypeObject.setSchema(schema);
 		content.addMediaType(value, mediaTypeObject);
