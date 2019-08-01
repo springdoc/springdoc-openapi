@@ -3,6 +3,7 @@ package org.springdoc.core;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -23,10 +24,16 @@ public class AnnotationsUtils {
 	static final String COMPONENTS_REF = "#/components/schemas/";
 	static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
 			JsonView jsonViewAnnotation) {
-		Schema schemaObject;
+		Schema schemaObject = new Schema();
 		PrimitiveType primitiveType = PrimitiveType.fromType(schemaImplementation);
 		if (primitiveType != null) {
 			schemaObject = primitiveType.createProperty();
+		} else if (schemaImplementation.equals(MultipartFile.class)) {
+			schemaObject.setType("object");
+			Schema schemafile = new Schema();
+			schemafile.setType("string");
+			schemafile.setFormat("binary");
+			schemaObject.addProperties("file", schemafile);
 		} else {
 			schemaObject = new Schema();
 			ResolvedSchema resolvedSchema = ModelConverters.getInstance().readAllAsResolvedSchema(
