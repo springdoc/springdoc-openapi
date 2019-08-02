@@ -37,6 +37,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
@@ -49,6 +52,8 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.FileSchema;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
@@ -110,15 +115,17 @@ public abstract class AbstractRequestBuilder {
 		parameter.setIn(in);
 		parameter.setRequired(required);
 		parameter.setName(name);
-		Schema<?> schema = calculateSchema(components, parameters);
+		Schema<?> schema = calculateSchema(components, parameters, name);
 		parameter.setSchema(schema);
 		return parameter;
 	}
 
 	protected RequestBody buildRequestBody(Components components, String[] allConsumes,
-			java.lang.reflect.Parameter parameter, io.swagger.v3.oas.annotations.Parameter parameterDoc) {
+			java.lang.reflect.Parameter parameter, io.swagger.v3.oas.annotations.Parameter parameterDoc,
+			String paramName) {
 		RequestBody requestBody = new RequestBody();
-		Schema<?> schema = calculateSchema(components, parameter);
+
+		Schema<?> schema = calculateSchema(components, parameter, paramName);
 		io.swagger.v3.oas.models.media.MediaType mediaType = null;
 		if (schema != null && schema.getType() != null) {
 			mediaType = new io.swagger.v3.oas.models.media.MediaType();
@@ -213,25 +220,31 @@ public abstract class AbstractRequestBuilder {
 		}
 	}
 
-	private Schema<?> calculateSchema(Components components, java.lang.reflect.Parameter parameter) {
+	private Schema<?> calculateSchema(Components components, java.lang.reflect.Parameter parameter, String paramName) {
 		Schema<?> schemaN = null;
 		Type returnType = parameter.getParameterizedType();
+
+		JavaType ct = constructType(parameter.getType());
+
+		if (MultipartFile.class.isAssignableFrom(ct.getRawClass())) {
+			schemaN = new ObjectSchema();
+			schemaN.addProperties(paramName, new FileSchema());
+			return schemaN;
+		}
+
 		if (returnType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
+			if (parameterizedType.getActualTypeArguments()[0].getTypeName().equals(MultipartFile.class.getName())) {
+				schemaN = new ObjectSchema();
+				ArraySchema schemafile = new ArraySchema();
+				schemafile.items(new FileSchema());
+				schemaN.addProperties(paramName, new ArraySchema().items(new FileSchema()));
+				return schemaN;
+			}
 
 			ResolvedSchema resolvedSchema = ModelConverters.getInstance()
 					.resolveAsResolvedSchema(new AnnotatedType(returnType).resolveAsRef(true));
-			if (parameterizedType.getActualTypeArguments()[0].getTypeName().equals(MultipartFile.class.getName())) {
-				Schema schemaObject = new Schema();
-				schemaObject.setType("object");
-				ArraySchema schemafile = new ArraySchema();
-				Schema items = new Schema();
-				items.setType("string");
-				items.setFormat("binary");
-				schemafile.items(items);
-				schemaObject.addProperties("filename", schemafile);
-				return schemaObject;
-			}
+
 			if (resolvedSchema.schema != null) {
 				schemaN = resolvedSchema.schema;
 				Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
@@ -352,5 +365,9 @@ public abstract class AbstractRequestBuilder {
 		io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
 		mediaTypeObject.setSchema(schema);
 		content.addMediaType(value, mediaTypeObject);
+	}
+
+	protected JavaType constructType(Type type) {
+		return TypeFactory.defaultInstance().constructType(type);
 	}
 }
