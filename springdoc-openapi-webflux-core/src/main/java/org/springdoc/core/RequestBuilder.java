@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.method.HandlerMethod;
 
 import io.swagger.v3.oas.models.Components;
@@ -45,18 +47,24 @@ public class RequestBuilder extends AbstractRequestBuilder {
 				parameter = buildParameterFromDoc(parameterDoc);
 			}
 
-				parameter = buildParams(pNames[i], components, parameters[i], i, parameter, handlerMethod);
-				// By default
-				parameter = buildParamDefault(requestMethod, pNames[i], parameters[i], parameter);
+			parameter = buildParams(pNames[i], components, parameters[i], i, parameter, handlerMethod);
+			// By default
+			parameter = buildParamDefault(requestMethod, pNames[i], parameters[i], parameter);
 
-				if (parameter != null && parameter.getName() != null) {
-					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
-					operationParameters.add(parameter);
-				} else if (!RequestMethod.GET.equals(requestMethod)) {
-					RequestBody requestBody = buildRequestBody(components, allConsumes, parameters[i], parameterDoc);
-					operation.setRequestBody(requestBody);
-				}
+			if (parameter != null && parameter.getName() != null) {
+				applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
+				operationParameters.add(parameter);
+			} else if (!RequestMethod.GET.equals(requestMethod)) {
+				RequestPart requestPart = getParameterAnnotation(handlerMethod, parameters[i], i, RequestPart.class);
+				String paramName = null;
+				if (requestPart != null)
+					paramName = StringUtils.defaultIfEmpty(requestPart.value(), requestPart.name());
+				paramName = StringUtils.defaultIfEmpty(paramName, pNames[i]);
+				RequestBody requestBody = buildRequestBody(components, allConsumes, parameters[i], parameterDoc,
+						paramName);
+				operation.setRequestBody(requestBody);
 			}
+		}
 
 		if (!CollectionUtils.isEmpty(operationParameters)) {
 			operation.setParameters(operationParameters);

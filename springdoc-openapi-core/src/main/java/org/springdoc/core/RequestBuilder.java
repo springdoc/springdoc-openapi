@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.http.HttpMethod;
@@ -12,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
@@ -65,7 +67,14 @@ public class RequestBuilder extends AbstractRequestBuilder {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 					operationParameters.add(parameter);
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
-					RequestBody requestBody = buildRequestBody(components, allConsumes, parameters[i], parameterDoc);
+					RequestPart requestPart = getParameterAnnotation(handlerMethod, parameters[i], i,
+							RequestPart.class);
+					String paramName = null;
+					if (requestPart != null)
+						paramName = StringUtils.defaultIfEmpty(requestPart.value(), requestPart.name());
+					paramName = StringUtils.defaultIfEmpty(paramName, pNames[i]);
+					RequestBody requestBody = buildRequestBody(components, allConsumes, parameters[i], parameterDoc,
+							paramName);
 					operation.setRequestBody(requestBody);
 				}
 			}
