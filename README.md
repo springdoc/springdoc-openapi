@@ -79,7 +79,25 @@ springdoc.api-docs.path=/api-docs
 ## Error Handling for REST using @ControllerAdvice
 To generate documentation automatically, make sure all the methods declare the HTTP Code responses using the annotation: @ResponseStatus
 
-## spring-weblfux will be available in the future release
+## spring-weblfux support with Annotated Controllers
+*   Documentation can be available in yaml format as well, on the following path : /v3/api-docs.yml
+*   Add the library to the list of your project dependencies (No additional configuration is needed)
+
+```xml
+   <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-webflux-ui</artifactId>
+      <version>current-version</version>
+   </dependency>
+```
+*   This step is optional: For custom path of the swagger documentation in HTML format, add a custom springdoc property, in your spring-boot configuration file:
+
+```properties
+# swagger-ui custom path
+springdoc.swagger-ui.path=/swagger-ui.html
+```
+
+## spring-weblfux with Functional Endpoints, will be available in the future release
 
 ## Dependencies repository
 
