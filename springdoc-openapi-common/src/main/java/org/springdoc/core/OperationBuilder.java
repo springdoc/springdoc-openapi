@@ -65,7 +65,7 @@ public class OperationBuilder {
 
 		// build parameters
 		for (io.swagger.v3.oas.annotations.Parameter parameterDoc : apiOperation.parameters()) {
-			Parameter parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components, null);
+			Parameter parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components);
 			operation.addParametersItem(parameter);
 		}
 

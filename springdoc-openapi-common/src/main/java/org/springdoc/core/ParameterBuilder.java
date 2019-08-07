@@ -35,15 +35,13 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 public class ParameterBuilder {
 
 	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
-			Components components, String pNames) {
+			Components components) {
 		Parameter parameter = new Parameter();
 		if (StringUtils.isNotBlank(parameterDoc.description())) {
 			parameter.setDescription(parameterDoc.description());
 		}
 		if (StringUtils.isNotBlank(parameterDoc.name())) {
 			parameter.setName(parameterDoc.name());
-		} else {
-			parameter.setName(pNames);
 		}
 		if (StringUtils.isNotBlank(parameterDoc.in().toString())) {
 			parameter.setIn(parameterDoc.in().toString());
