@@ -1,6 +1,6 @@
 package org.springdoc.core;
 
-import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
+import static org.springframework.util.AntPathMatcher.*;
 
 public final class Constants {
 
@@ -34,6 +34,8 @@ public final class Constants {
 	public static final String DEFAULT_PROPS_LOCATION = "/swagger.properties";
 	public static final String DEFAULT_LICENSE_VALUE = "Apache 2.0 License";
 	public static final String DEFAULT_LICENSE_URL = "http://www.apache.org/licenses/LICENSE-2.0.html";
+	public static final String OPENAPI_STRING_TYPE = "string";
+	public static final String OPENAPI_ARRAY_TYPE = "array";
 
 	private Constants() {
 		super();

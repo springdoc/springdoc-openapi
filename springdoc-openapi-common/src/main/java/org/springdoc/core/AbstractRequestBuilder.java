@@ -1,8 +1,6 @@
 package org.springdoc.core;
 
-import static org.springdoc.core.Constants.HEADER_PARAM;
-import static org.springdoc.core.Constants.PATH_PARAM;
-import static org.springdoc.core.Constants.QUERY_PARAM;
+import static org.springdoc.core.Constants.*;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -332,12 +330,13 @@ public abstract class AbstractRequestBuilder {
 		}
 		if (annos.containsKey(Size.class.getName())) {
 			Size size = (Size) annos.get(Size.class.getName());
-
-			schema.setMinimum(BigDecimal.valueOf(size.min()));
-			schema.setMaximum(BigDecimal.valueOf(size.max()));
-
-			schema.setMinItems(size.min());
-			schema.setMaxItems(size.max());
+			if (OPENAPI_ARRAY_TYPE.equals(schema.getType())) {
+				schema.setMinItems(size.min());
+				schema.setMaxItems(size.max());
+			} else if (OPENAPI_STRING_TYPE.equals(schema.getType())) {
+				schema.setMinLength(size.min());
+				schema.setMaxLength(size.max());
+			}
 		}
 		if (annos.containsKey(DecimalMin.class.getName())) {
 			DecimalMin min = (DecimalMin) annos.get(DecimalMin.class.getName());
