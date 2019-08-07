@@ -1,18 +1,19 @@
 package org.springdoc.api;
 
-import static org.springdoc.core.Constants.API_DOCS_URL;
-import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
-import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
-import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
+import static org.springdoc.core.Constants.*;
+import static org.springframework.util.AntPathMatcher.*;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,14 +41,18 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String openapiJson() throws JsonProcessingException {
+	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl)
+			throws JsonProcessingException {
+		calculateServerUrl(request, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
 		return Json.mapper().writeValueAsString(openAPI);
 	}
 
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
-	public String openapiYaml() throws JsonProcessingException {
+	public String openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl)
+			throws JsonProcessingException {
+		calculateServerUrl(request, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
 		return Yaml.mapper().writeValueAsString(openAPI);
 	}
@@ -89,5 +94,11 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		openAPIBuilder.getOpenAPI().setPaths(openAPIBuilder.getPaths());
 		LOGGER.info("Init duration for springdoc-openapi is: {} ms", (System.currentTimeMillis() - start));
 		return openAPIBuilder.getOpenAPI();
+	}
+
+	private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
+		StringBuffer requestUrl = request.getRequestURL();
+		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
+		infoBuilder.setServerBaseUrl(serverBaseUrl);
 	}
 }
