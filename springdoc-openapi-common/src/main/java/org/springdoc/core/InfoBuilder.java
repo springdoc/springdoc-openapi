@@ -1,10 +1,12 @@
 package org.springdoc.core;
 
-import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.ReflectionUtils;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
+import static org.springdoc.core.Constants.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,12 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.springdoc.core.Constants.DEFAULT_TITLE;
-import static org.springdoc.core.Constants.DEFAULT_VERSION;
+import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.core.util.ReflectionUtils;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 
 @Component
 public class InfoBuilder {
@@ -33,6 +34,8 @@ public class InfoBuilder {
 	private ApplicationContext context;
 	@Autowired
 	private Optional<OpenAPI> openAPIBean;
+
+	private String serverBaseUrl;
 
 	private InfoBuilder() {
 		super();
@@ -77,7 +80,7 @@ public class InfoBuilder {
 		return Optional.ofNullable(apiDef);
 	}
 
-	private static void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef) {
+	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef) {
 		// info
 		AnnotationsUtils.getInfo(apiDef.info()).ifPresent(openAPI::setInfo);
 		// OpenApiDefinition security requirements
@@ -87,7 +90,12 @@ public class InfoBuilder {
 		// OpenApiDefinition tags
 		AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
 		// OpenApiDefinition servers
-		AnnotationsUtils.getServers(apiDef.servers()).ifPresent(openAPI::setServers);
+		if (AnnotationsUtils.getServers(apiDef.servers()).isPresent()) {
+			openAPI.setServers(AnnotationsUtils.getServers(apiDef.servers()).get());
+		} else {
+			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
+			openAPI.addServersItem(server);
+		}
 		// OpenApiDefinition extensions
 		if (apiDef.extensions().length > 0) {
 			openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
@@ -117,6 +125,10 @@ public class InfoBuilder {
 			}
 		}
 		return null;
+	}
+
+	public void setServerBaseUrl(String serverBaseUrl) {
+		this.serverBaseUrl = serverBaseUrl;
 	}
 
 }
