@@ -69,7 +69,7 @@ public abstract class AbstractRequestBuilder {
 	protected Parameter buildParamDefault(RequestMethod requestMethod, String pNames,
 			java.lang.reflect.Parameter parameters, Parameter parameter) {
 		if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
-			parameter = this.buildParam(QUERY_PARAM, null, parameters, Boolean.FALSE, pNames, null);
+			parameter = this.buildParam(QUERY_PARAM, null, parameters, Boolean.TRUE, pNames, null);
 		}
 		return parameter;
 	}
