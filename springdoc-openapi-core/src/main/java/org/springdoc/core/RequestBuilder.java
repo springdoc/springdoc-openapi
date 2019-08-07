@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -39,8 +38,6 @@ public class RequestBuilder extends AbstractRequestBuilder {
 		List<Parameter> operationParameters = new ArrayList<>();
 		java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
 
-		MethodUtils.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Parameter.class, true, true);
-
 		for (int i = 0; i < pNames.length; i++) {
 			// check if query param
 			Parameter parameter = null;
@@ -54,7 +51,7 @@ public class RequestBuilder extends AbstractRequestBuilder {
 				if (parameterDoc.hidden()) {
 					continue;
 				}
-				parameter = buildParameterFromDoc(parameterDoc);
+				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null);
 			}
 
 			if (!isParamTypeToIgnore(paramType)) {

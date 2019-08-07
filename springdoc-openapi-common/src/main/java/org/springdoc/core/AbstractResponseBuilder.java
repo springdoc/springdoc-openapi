@@ -1,6 +1,6 @@
 package org.springdoc.core;
 
-import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
+import static org.springdoc.core.Constants.*;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -111,7 +111,6 @@ public abstract class AbstractResponseBuilder {
 				for (int i = 0; i < contentdoc.length; i++) {
 					contentElt = new Content();
 					io.swagger.v3.oas.models.media.MediaType mediaTypeEl = new io.swagger.v3.oas.models.media.MediaType();
-					AnnotationsUtils.getSchema(contentdoc[i], components, null).orElse(null);
 					mediaTypeEl.schema(AnnotationsUtils.getSchema(contentdoc[i], components, null).orElse(null));
 					setContent(methodProduces, contentElt, mediaTypeEl);
 				}

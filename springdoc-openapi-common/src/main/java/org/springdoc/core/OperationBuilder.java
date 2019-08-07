@@ -1,6 +1,6 @@
 package org.springdoc.core;
 
-import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
+import static org.springdoc.core.Constants.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -24,6 +25,7 @@ import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.headers.Header;
 import io.swagger.v3.oas.models.links.Link;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -31,6 +33,9 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 
 @Component
 public class OperationBuilder {
+
+	@Autowired
+	private ParameterBuilder parameterBuilder;
 
 	public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
 			Operation operation, OpenAPI openAPI, MediaAttributes mediaAttributes) {
@@ -58,12 +63,19 @@ public class OperationBuilder {
 		AnnotationsUtils.getServers(apiOperation.servers())
 				.ifPresent(servers -> servers.forEach(operation::addServersItem));
 
+		// build parameters
+		for (io.swagger.v3.oas.annotations.Parameter parameterDoc : apiOperation.parameters()) {
+			Parameter parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components);
+			operation.addParametersItem(parameter);
+		}
+
 		// RequestBody in Operation
 		getRequestBody(apiOperation.requestBody(), mediaAttributes.getClassConsumes(),
 				mediaAttributes.getMethodConsumes(), components, null).ifPresent(operation::setRequestBody);
 
 		// build response
 		buildResponse(components, apiOperation, operation, mediaAttributes);
+
 
 		// security
 		Optional<List<SecurityRequirement>> requirementsObject = SecurityParser
@@ -320,4 +332,5 @@ public class OperationBuilder {
 				.ifPresent(requestBodyObject::setContent);
 		return Optional.of(requestBodyObject);
 	}
+
 }
