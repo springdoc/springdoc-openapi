@@ -41,7 +41,7 @@ public class RequestBuilder extends AbstractRequestBuilder {
 				if (parameterDoc.hidden()) {
 					continue;
 				}
-				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null);
+				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null, pNames[i]);
 			}
 
 			parameter = buildParams(pNames[i], components, parameters[i], i, parameter, handlerMethod);
