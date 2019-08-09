@@ -43,7 +43,6 @@ public abstract class AbstractOpenApiResource {
 	protected InfoBuilder infoBuilder;
 
 
-
 	protected void calculatePath(OpenAPIBuilder openAPIBuilder, HandlerMethod handlerMethod, String operationPath,
 			Set<RequestMethod> requestMethods) {
 		OpenAPI openAPI = openAPIBuilder.getOpenAPI();

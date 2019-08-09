@@ -11,7 +11,9 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,14 +42,18 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Mono<String> openapiJson() throws JsonProcessingException {
+	public Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl)
+			throws JsonProcessingException {
+		calculateServerUrl(serverHttpRequest, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
 		return Mono.just(Json.mapper().writeValueAsString(openAPI));
 	}
 
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
-	public Mono<String> openapiYaml() throws JsonProcessingException {
+	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest,
+			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl) throws JsonProcessingException {
+		calculateServerUrl(serverHttpRequest, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
 		return Mono.just(Yaml.mapper().writeValueAsString(openAPI));
 	}
@@ -91,5 +97,11 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		openAPIBuilder.getOpenAPI().setPaths(openAPIBuilder.getPaths());
 		LOGGER.info("Init duration for springdoc-openapi is: {} ms", (System.currentTimeMillis() - start));
 		return openAPIBuilder.getOpenAPI();
+	}
+
+	private void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
+		String requestUrl = serverHttpRequest.getURI().toString();
+		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
+		infoBuilder.setServerBaseUrl(serverBaseUrl);
 	}
 }
