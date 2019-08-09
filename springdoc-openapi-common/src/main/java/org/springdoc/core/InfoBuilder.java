@@ -17,6 +17,7 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.ReflectionUtils;
@@ -90,7 +91,7 @@ public class InfoBuilder {
 		// OpenApiDefinition servers
 		if (AnnotationsUtils.getServers(apiDef.servers()).isPresent()) {
 			openAPI.setServers(AnnotationsUtils.getServers(apiDef.servers()).get());
-		} else {
+		} else if (CollectionUtils.isEmpty(openAPI.getServers())) {
 			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
 			openAPI.addServersItem(server);
 		}
