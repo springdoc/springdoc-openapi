@@ -26,7 +26,6 @@ import io.swagger.v3.oas.models.headers.Header;
 import io.swagger.v3.oas.models.links.Link;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
-import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -36,6 +35,10 @@ public class OperationBuilder {
 
 	@Autowired
 	private ParameterBuilder parameterBuilder;
+
+	@Autowired
+	protected RequestBodyBuilder requestBodyBuilder;
+
 
 	public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
 			Operation operation, OpenAPI openAPI, MediaAttributes mediaAttributes) {
@@ -70,7 +73,7 @@ public class OperationBuilder {
 		}
 
 		// RequestBody in Operation
-		getRequestBody(apiOperation.requestBody(), mediaAttributes.getClassConsumes(),
+		requestBodyBuilder.buildRequestBodyFromDoc(apiOperation.requestBody(), mediaAttributes.getClassConsumes(),
 				mediaAttributes.getMethodConsumes(), components, null).ifPresent(operation::setRequestBody);
 
 		// build response
@@ -286,51 +289,5 @@ public class OperationBuilder {
 		return Optional.of(list);
 	}
 
-	private Optional<RequestBody> getRequestBody(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
-			String[] classConsumes, String[] methodConsumes, Components components, JsonView jsonViewAnnotation) {
-		if (requestBody == null) {
-			return Optional.empty();
-		}
-		RequestBody requestBodyObject = new RequestBody();
-		boolean isEmpty = true;
-
-		if (StringUtils.isNotBlank(requestBody.ref())) {
-			requestBodyObject.set$ref(requestBody.ref());
-			return Optional.of(requestBodyObject);
-		}
-
-		if (StringUtils.isNotBlank(requestBody.description())) {
-			requestBodyObject.setDescription(requestBody.description());
-			isEmpty = false;
-		} else {
-			requestBodyObject.setDescription(DEFAULT_DESCRIPTION);
-		}
-		if (requestBody.required()) {
-			requestBodyObject.setRequired(requestBody.required());
-			isEmpty = false;
-		}
-		if (requestBody.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(requestBody.extensions());
-			if (extensions != null) {
-				for (Map.Entry<String, Object> entry : extensions.entrySet()) {
-					requestBodyObject.addExtension(entry.getKey(), entry.getValue());
-				}
-			}
-			isEmpty = false;
-		}
-
-		if (requestBody.content().length > 0) {
-			isEmpty = false;
-		}
-
-		if (isEmpty) {
-			return Optional.empty();
-		}
-		AnnotationsUtils
-				.getContent(requestBody.content(), classConsumes == null ? new String[0] : classConsumes,
-						methodConsumes == null ? new String[0] : methodConsumes, null, components, jsonViewAnnotation)
-				.ifPresent(requestBodyObject::setContent);
-		return Optional.of(requestBodyObject);
-	}
 
 }

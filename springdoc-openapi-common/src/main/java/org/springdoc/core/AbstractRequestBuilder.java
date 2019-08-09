@@ -48,8 +48,11 @@ public abstract class AbstractRequestBuilder {
 	@Autowired
 	protected ParameterBuilder parameterBuilder;
 
+	@Autowired
+	protected RequestBodyBuilder requestBodyBuilder;
+
 	public abstract Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
-			Operation operation, String[] allConsumes);
+			Operation operation, MediaAttributes mediaAttributes);
 
 	protected <A extends Annotation> A getParameterAnnotation(HandlerMethod handlerMethod,
 			java.lang.reflect.Parameter parameter, int i, Class<A> annotationType) {
@@ -109,10 +112,11 @@ public abstract class AbstractRequestBuilder {
 		return parameter;
 	}
 
-	protected RequestBody buildRequestBody(Components components, String[] allConsumes,
+	protected RequestBody buildRequestBody(RequestBody requestBody, Components components, String[] allConsumes,
 			java.lang.reflect.Parameter parameter, io.swagger.v3.oas.annotations.Parameter parameterDoc,
 			String paramName) {
-		RequestBody requestBody = new RequestBody();
+		if (requestBody == null)
+			requestBody = new RequestBody();
 
 		Schema<?> schema = parameterBuilder.calculateSchema(components, parameter, paramName);
 		io.swagger.v3.oas.models.media.MediaType mediaType = null;
@@ -141,8 +145,6 @@ public abstract class AbstractRequestBuilder {
 		return requestBody;
 	}
 
-
-
 	private io.swagger.v3.oas.models.media.MediaType calculateSchema(Components components, Type returnType) {
 		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
 				.resolveAsResolvedSchema(new AnnotatedType(returnType).resolveAsRef(true));
@@ -159,7 +161,6 @@ public abstract class AbstractRequestBuilder {
 		}
 		return mediaType;
 	}
-
 
 	/**
 	 * This is mostly a duplicate of
