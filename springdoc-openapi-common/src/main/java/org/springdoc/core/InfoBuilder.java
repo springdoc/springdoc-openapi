@@ -108,6 +108,7 @@ public class InfoBuilder {
 		destinationOpenAPI.setExternalDocs(sourceOpenAPI.getExternalDocs());
 		destinationOpenAPI.setTags(sourceOpenAPI.getTags());
 		destinationOpenAPI.setServers(sourceOpenAPI.getServers());
+		destinationOpenAPI.setComponents(sourceOpenAPI.getComponents());
 		destinationOpenAPI.setExtensions(sourceOpenAPI.getExtensions());
 	}
 
