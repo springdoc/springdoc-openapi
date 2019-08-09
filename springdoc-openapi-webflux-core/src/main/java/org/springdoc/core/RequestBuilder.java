@@ -21,7 +21,7 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 public class RequestBuilder extends AbstractRequestBuilder {
 
 	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
-			Operation operation, String[] allConsumes) {
+			Operation operation, MediaAttributes mediaAttributes) {
 		// Documentation
 		operation.setOperationId(handlerMethod.getMethod().getName());
 		// requests
@@ -52,13 +52,23 @@ public class RequestBuilder extends AbstractRequestBuilder {
 				applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 				operationParameters.add(parameter);
 			} else if (!RequestMethod.GET.equals(requestMethod)) {
+				io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = getParameterAnnotation(
+						handlerMethod, parameters[i], i, io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+				// use documentation as reference
+				RequestBody requestBody = null;
+				if (requestBodyDoc != null) {
+					requestBody = requestBodyBuilder.buildRequestBodyFromDoc(requestBodyDoc,
+							mediaAttributes.getClassConsumes(), mediaAttributes.getMethodConsumes(), components, null)
+							.orElse(null);
+				}
+
 				RequestPart requestPart = getParameterAnnotation(handlerMethod, parameters[i], i, RequestPart.class);
 				String paramName = null;
 				if (requestPart != null)
 					paramName = StringUtils.defaultIfEmpty(requestPart.value(), requestPart.name());
 				paramName = StringUtils.defaultIfEmpty(paramName, pNames[i]);
-				RequestBody requestBody = buildRequestBody(components, allConsumes, parameters[i], parameterDoc,
-						paramName);
+				requestBody = buildRequestBody(requestBody, components, mediaAttributes.getAllConsumes(), parameters[i],
+						parameterDoc, paramName);
 				operation.setRequestBody(requestBody);
 			}
 		}

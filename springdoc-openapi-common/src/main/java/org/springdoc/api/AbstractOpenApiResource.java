@@ -81,7 +81,7 @@ public abstract class AbstractOpenApiResource {
 
 			// requests
 			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation,
-					mediaAttributes.getAllConsumes());
+					mediaAttributes);
 
 			// responses
 			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation,
