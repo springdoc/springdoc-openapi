@@ -32,8 +32,6 @@ public class InfoBuilder {
 
 	@Autowired
 	private ApplicationContext context;
-	@Autowired
-	private Optional<OpenAPI> openAPIBean;
 
 	private String serverBaseUrl;
 
@@ -45,9 +43,9 @@ public class InfoBuilder {
 		Optional<OpenAPIDefinition> apiDef = getOpenAPIDefinition();
 		if (apiDef.isPresent()) {
 			buildOpenAPIWithOpenAPIDefinition(openAPI, apiDef.get());
-		} else if(openAPIBean.isPresent()) {
-			buildOpenAPIWithOpenAPIBean(openAPI, openAPIBean.get());
-		} else {
+		}
+		// Set default info
+		else if (openAPI.getInfo() == null) {
 			Info infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
 			openAPI.setInfo(infos);
 		}
@@ -100,16 +98,6 @@ public class InfoBuilder {
 		if (apiDef.extensions().length > 0) {
 			openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
 		}
-	}
-
-	private static void buildOpenAPIWithOpenAPIBean(OpenAPI destinationOpenAPI, OpenAPI sourceOpenAPI) {
-		destinationOpenAPI.setInfo(sourceOpenAPI.getInfo());
-		destinationOpenAPI.setSecurity(sourceOpenAPI.getSecurity());
-		destinationOpenAPI.setExternalDocs(sourceOpenAPI.getExternalDocs());
-		destinationOpenAPI.setTags(sourceOpenAPI.getTags());
-		destinationOpenAPI.setServers(sourceOpenAPI.getServers());
-		destinationOpenAPI.setComponents(sourceOpenAPI.getComponents());
-		destinationOpenAPI.setExtensions(sourceOpenAPI.getExtensions());
 	}
 
 	private OpenAPIDefinition getApiDefClass(ClassPathScanningCandidateComponentProvider scanner,

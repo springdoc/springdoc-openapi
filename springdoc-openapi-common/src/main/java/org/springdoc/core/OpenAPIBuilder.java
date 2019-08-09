@@ -1,5 +1,8 @@
 package org.springdoc.core;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import io.swagger.v3.oas.models.Components;
@@ -9,40 +12,37 @@ import io.swagger.v3.oas.models.Paths;
 @Component
 public class OpenAPIBuilder {
 
+	@Autowired(required = false)
 	private OpenAPI openAPI;
-	private Components components;
-	private Paths paths;
 
 	private OpenAPIBuilder() {
 		super();
-		this.openAPI = new OpenAPI();
-		this.components = new Components();
-		this.openAPI.setComponents(components);
-		this.paths = new Paths();
+	}
+
+	@PostConstruct
+	public void init() {
+		if (openAPI == null) {
+			this.openAPI = new OpenAPI();
+			this.openAPI.setComponents(new Components());
+			this.openAPI.setPaths(new Paths());
+		} else {
+			if (openAPI.getComponents() == null)
+				this.openAPI.setComponents(new Components());
+			if (openAPI.getPaths() == null)
+				this.openAPI.setPaths(new Paths());
+		}
 	}
 
 	public OpenAPI getOpenAPI() {
 		return openAPI;
 	}
 
-	public void setOpenAPI(OpenAPI openAPI) {
-		this.openAPI = openAPI;
-	}
-
 	public Components getComponents() {
-		return components;
-	}
-
-	public void setComponents(Components components) {
-		this.components = components;
+		return openAPI.getComponents();
 	}
 
 	public Paths getPaths() {
-		return paths;
-	}
-
-	public void setPaths(Paths paths) {
-		this.paths = paths;
+		return openAPI.getPaths();
 	}
 
 }
