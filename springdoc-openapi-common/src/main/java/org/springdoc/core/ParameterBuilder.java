@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +35,8 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 @Component
 @SuppressWarnings({ "rawtypes" })
 public class ParameterBuilder {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterBuilder.class);
 
 	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
 			Components components) {
@@ -76,18 +80,13 @@ public class ParameterBuilder {
 
 		Type type = ParameterProcessor.getParameterType(parameterDoc);
 		Schema<?> schema = null;
-		try {
-			schema = this.calculateSchema(components, type, parameter.getName());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		schema = this.calculateSchema(components, type, parameter.getName());
 		parameter.setSchema(schema);
 
 		return parameter;
 	}
 
-	public Schema<?> calculateSchema(Components components, Type type, String paramName) throws ClassNotFoundException {
+	public Schema<?> calculateSchema(Components components, Type type, String paramName) {
 		Schema<?> schemaN = null;
 		JavaType ct = constructType(type);
 
@@ -118,8 +117,12 @@ public class ParameterBuilder {
 				}
 			}
 		} else {
-			schemaN = org.springdoc.core.AnnotationsUtils.resolveSchemaFromType(Class.forName(type.getTypeName()), null,
-					null);
+			try {
+				schemaN = org.springdoc.core.AnnotationsUtils.resolveSchemaFromType(Class.forName(type.getTypeName()),
+						null, null);
+			} catch (ClassNotFoundException e) {
+				LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
+			}
 		}
 		return schemaN;
 	}

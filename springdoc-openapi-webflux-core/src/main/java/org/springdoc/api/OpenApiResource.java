@@ -1,12 +1,8 @@
 package org.springdoc.api;
 
-import static org.springdoc.core.Constants.API_DOCS_URL;
-import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
-import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
-import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
+import static org.springdoc.core.Constants.*;
+import static org.springframework.util.AntPathMatcher.*;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,18 +11,13 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
-import org.springframework.lang.Nullable;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.support.RouterFunctionMapping;
 import org.springframework.web.reactive.result.condition.PatternsRequestCondition;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
@@ -47,12 +38,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	@Autowired
 	private RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
-	@Autowired
-	private RouterFunctionMapping routerFunctionMapping;
-
-	@Autowired
-	private ApplicationContext applicationContext;
-
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Mono<String> openapiJson() throws JsonProcessingException {
@@ -71,26 +56,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		long start = System.currentTimeMillis();
 		// Info block
 		infoBuilder.build(openAPIBuilder.getOpenAPI());
-
-		RouterFunction<?> routerFunction = routerFunctionMapping.getRouterFunction();
-
-		SortedRouterFunctionsContainer container = new SortedRouterFunctionsContainer();
-		applicationContext.getAutowireCapableBeanFactory().autowireBean(container);
-
-		List<RouterFunction<?>> routerFunctions = CollectionUtils.isEmpty(container.routerFunctions)
-				? Collections.emptyList()
-				: container.routerFunctions;
-
-		if (!CollectionUtils.isEmpty(routerFunctions)) {
-			for (RouterFunction router : routerFunctions) {
-
-				if (router instanceof org.springframework.web.reactive.function.server.RouterFunctions) {
-					LOGGER.info("done");
-				}
-				LOGGER.info("Mapped badou" + router.getClass());
-
-			}
-		}
 
 		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 		Map<String, Object> findRestControllers1 = requestMappingHandlerMapping.getApplicationContext()
@@ -126,16 +91,5 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		openAPIBuilder.getOpenAPI().setPaths(openAPIBuilder.getPaths());
 		LOGGER.info("Init duration for springdoc-openapi is: {} ms", (System.currentTimeMillis() - start));
 		return openAPIBuilder.getOpenAPI();
-	}
-
-	private static class SortedRouterFunctionsContainer {
-
-		@Nullable
-		private List<RouterFunction<?>> routerFunctions;
-
-		@Autowired(required = false)
-		public void setRouterFunctions(List<RouterFunction<?>> routerFunctions) {
-			this.routerFunctions = routerFunctions;
-		}
 	}
 }

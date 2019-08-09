@@ -50,6 +50,10 @@ public class InfoBuilder {
 			Info infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
 			openAPI.setInfo(infos);
 		}
+		if (CollectionUtils.isEmpty(openAPI.getServers())) {
+			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
+			openAPI.addServersItem(server);
+		}
 	}
 
 	private Optional<OpenAPIDefinition> getOpenAPIDefinition() {
@@ -89,12 +93,7 @@ public class InfoBuilder {
 		// OpenApiDefinition tags
 		AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
 		// OpenApiDefinition servers
-		if (AnnotationsUtils.getServers(apiDef.servers()).isPresent()) {
-			openAPI.setServers(AnnotationsUtils.getServers(apiDef.servers()).get());
-		} else if (CollectionUtils.isEmpty(openAPI.getServers())) {
-			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
-			openAPI.addServersItem(server);
-		}
+		openAPI.setServers(AnnotationsUtils.getServers(apiDef.servers()).orElse(null));
 		// OpenApiDefinition extensions
 		if (apiDef.extensions().length > 0) {
 			openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
