@@ -3,13 +3,12 @@ package org.springdoc.core;
 import static org.springdoc.core.Constants.*;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -19,57 +18,84 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.http.MediaType;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.method.HandlerMethod;
 
-import io.swagger.v3.core.converter.AnnotatedType;
-import io.swagger.v3.core.converter.ModelConverters;
-import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 
-@SuppressWarnings({ "rawtypes" })
 public abstract class AbstractRequestBuilder {
 
-	@Autowired
-	protected ParameterBuilder parameterBuilder;
+	private ParameterBuilder parameterBuilder;
 
-	@Autowired
-	protected RequestBodyBuilder requestBodyBuilder;
+	private RequestBodyBuilder requestBodyBuilder;
 
-	public abstract Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
-			Operation operation, MediaAttributes mediaAttributes);
-
-	protected <A extends Annotation> A getParameterAnnotation(HandlerMethod handlerMethod,
-			java.lang.reflect.Parameter parameter, int i, Class<A> annotationType) {
-		A parameterDoc = AnnotationUtils.getAnnotation(parameter, annotationType);
-		if (parameterDoc == null) {
-			Set<Method> methods = MethodUtils.getOverrideHierarchy(handlerMethod.getMethod(),
-					ClassUtils.Interfaces.INCLUDE);
-			for (Method methodOverriden : methods) {
-				parameterDoc = AnnotationUtils.getAnnotation(methodOverriden.getParameters()[i], annotationType);
-				if (parameterDoc != null)
-					break;
-			}
-		}
-		return parameterDoc;
+	protected AbstractRequestBuilder(ParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder) {
+		super();
+		this.parameterBuilder = parameterBuilder;
+		this.requestBodyBuilder = requestBodyBuilder;
 	}
 
-	protected Parameter buildParamDefault(RequestMethod requestMethod, String pNames,
+	abstract boolean isParamTypeToIgnore(Class<?> paramType);
+
+	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
+			Operation operation, MediaAttributes mediaAttributes) {
+		// Documentation
+		operation.setOperationId(handlerMethod.getMethod().getName());
+		// requests
+		LocalVariableTableParameterNameDiscoverer d = new LocalVariableTableParameterNameDiscoverer();
+		String[] pNames = d.getParameterNames(handlerMethod.getMethod());
+		List<Parameter> operationParameters = new ArrayList<>();
+		java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
+
+		for (int i = 0; i < pNames.length; i++) {
+			// check if query param
+			Parameter parameter = null;
+			Class<?> paramType = parameters[i].getType();
+			io.swagger.v3.oas.annotations.Parameter parameterDoc = parameterBuilder.getParameterAnnotation(
+					handlerMethod, parameters[i], i, io.swagger.v3.oas.annotations.Parameter.class);
+
+			// use documentation as reference
+			if (parameterDoc != null) {
+				if (parameterDoc.hidden()) {
+					continue;
+				}
+				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null);
+			}
+
+			if (!isParamTypeToIgnore(paramType)) {
+
+				parameter = buildParams(pNames[i], components, parameters[i], i, parameter, handlerMethod);
+				// By default
+				parameter = buildParamDefault(requestMethod, pNames[i], parameters[i], parameter);
+
+				if (parameter != null && parameter.getName() != null) {
+					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
+					operationParameters.add(parameter);
+				} else if (!RequestMethod.GET.equals(requestMethod)) {
+					RequestBody requestBody = requestBodyBuilder.calculateRequestBody(components, handlerMethod,
+							operation, mediaAttributes, pNames, parameters, i, parameterDoc);
+					operation.setRequestBody(requestBody);
+				}
+			}
+		}
+		if (!CollectionUtils.isEmpty(operationParameters)) {
+			operation.setParameters(operationParameters);
+		}
+
+		return operation;
+	}
+
+	private Parameter buildParamDefault(RequestMethod requestMethod, String pNames,
 			java.lang.reflect.Parameter parameters, Parameter parameter) {
 		if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
 			parameter = this.buildParam(QUERY_PARAM, null, parameters, Boolean.TRUE, pNames, null);
@@ -79,11 +105,14 @@ public abstract class AbstractRequestBuilder {
 		return parameter;
 	}
 
-	protected Parameter buildParams(String pName, Components components, java.lang.reflect.Parameter parameters,
+	private Parameter buildParams(String pName, Components components, java.lang.reflect.Parameter parameters,
 			int index, Parameter parameter, HandlerMethod handlerMethod) {
-		RequestHeader requestHeader = getParameterAnnotation(handlerMethod, parameters, index, RequestHeader.class);
-		RequestParam requestParam = getParameterAnnotation(handlerMethod, parameters, index, RequestParam.class);
-		PathVariable pathVar = getParameterAnnotation(handlerMethod, parameters, index, PathVariable.class);
+		RequestHeader requestHeader = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
+				RequestHeader.class);
+		RequestParam requestParam = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
+				RequestParam.class);
+		PathVariable pathVar = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
+				PathVariable.class);
 
 		if (requestHeader != null) {
 			String name = StringUtils.isBlank(requestHeader.value()) ? pName : requestHeader.value();
@@ -112,56 +141,6 @@ public abstract class AbstractRequestBuilder {
 		return parameter;
 	}
 
-	protected RequestBody buildRequestBody(RequestBody requestBody, Components components, String[] allConsumes,
-			java.lang.reflect.Parameter parameter, io.swagger.v3.oas.annotations.Parameter parameterDoc,
-			String paramName) {
-		if (requestBody == null)
-			requestBody = new RequestBody();
-
-		Schema<?> schema = parameterBuilder.calculateSchema(components, parameter, paramName);
-		io.swagger.v3.oas.models.media.MediaType mediaType = null;
-		if (schema != null && schema.getType() != null) {
-			mediaType = new io.swagger.v3.oas.models.media.MediaType();
-			mediaType.setSchema(schema);
-		} else {
-			Type returnType = parameter.getType();
-			mediaType = calculateSchema(components, returnType);
-		}
-
-		Content content1 = new Content();
-		if (ArrayUtils.isNotEmpty(allConsumes)) {
-			for (String value : allConsumes) {
-				setMediaTypeToContent(schema, content1, value);
-			}
-		} else {
-			content1.addMediaType(MediaType.ALL_VALUE, mediaType);
-		}
-		requestBody.setContent(content1);
-		if (parameterDoc != null) {
-			if (StringUtils.isNotBlank(parameterDoc.description()))
-				requestBody.setDescription(parameterDoc.description());
-			requestBody.setRequired(parameterDoc.required());
-		}
-		return requestBody;
-	}
-
-	private io.swagger.v3.oas.models.media.MediaType calculateSchema(Components components, Type returnType) {
-		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
-				.resolveAsResolvedSchema(new AnnotatedType(returnType).resolveAsRef(true));
-		io.swagger.v3.oas.models.media.MediaType mediaType = new io.swagger.v3.oas.models.media.MediaType();
-		if (resolvedSchema.schema != null) {
-			Schema<?> returnTypeSchema = resolvedSchema.schema;
-			if (returnTypeSchema != null) {
-				mediaType.setSchema(returnTypeSchema);
-			}
-			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
-			if (schemaMap != null) {
-				schemaMap.forEach(components::addSchemas);
-			}
-		}
-		return mediaType;
-	}
-
 	/**
 	 * This is mostly a duplicate of
 	 * {@link io.swagger.v3.core.jackson.ModelResolver#applyBeanValidatorAnnotations}.
@@ -169,7 +148,7 @@ public abstract class AbstractRequestBuilder {
 	 * @param parameter
 	 * @param annotations
 	 */
-	protected void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
+	private void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
 		Map<String, Annotation> annos = new HashMap<>();
 		if (annotations != null) {
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getName(), annotation));
@@ -189,16 +168,7 @@ public abstract class AbstractRequestBuilder {
 			Max max = (Max) annos.get(Max.class.getName());
 			schema.setMaximum(BigDecimal.valueOf(max.value()));
 		}
-		if (annos.containsKey(Size.class.getName())) {
-			Size size = (Size) annos.get(Size.class.getName());
-			if (OPENAPI_ARRAY_TYPE.equals(schema.getType())) {
-				schema.setMinItems(size.min());
-				schema.setMaxItems(size.max());
-			} else if (OPENAPI_STRING_TYPE.equals(schema.getType())) {
-				schema.setMinLength(size.min());
-				schema.setMaxLength(size.max());
-			}
-		}
+		calculateSize(annos, schema);
 		if (annos.containsKey(DecimalMin.class.getName())) {
 			DecimalMin min = (DecimalMin) annos.get(DecimalMin.class.getName());
 			if (min.inclusive()) {
@@ -221,9 +191,16 @@ public abstract class AbstractRequestBuilder {
 		}
 	}
 
-	private void setMediaTypeToContent(Schema schema, Content content, String value) {
-		io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
-		mediaTypeObject.setSchema(schema);
-		content.addMediaType(value, mediaTypeObject);
+	private void calculateSize(Map<String, Annotation> annos, Schema<?> schema) {
+		if (annos.containsKey(Size.class.getName())) {
+			Size size = (Size) annos.get(Size.class.getName());
+			if (OPENAPI_ARRAY_TYPE.equals(schema.getType())) {
+				schema.setMinItems(size.min());
+				schema.setMaxItems(size.max());
+			} else if (OPENAPI_STRING_TYPE.equals(schema.getType())) {
+				schema.setMinLength(size.min());
+				schema.setMaxLength(size.max());
+			}
+		}
 	}
 }

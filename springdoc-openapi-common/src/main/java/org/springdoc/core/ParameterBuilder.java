@@ -1,16 +1,23 @@
 package org.springdoc.core;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JavaType;
@@ -79,15 +86,15 @@ public class ParameterBuilder {
 		setParameterExplode(parameter, parameterDoc);
 
 		Type type = ParameterProcessor.getParameterType(parameterDoc);
-		Schema<?> schema = null;
+		Schema schema = null;
 		schema = this.calculateSchema(components, type, parameter.getName());
 		parameter.setSchema(schema);
 
 		return parameter;
 	}
 
-	public Schema<?> calculateSchema(Components components, Type type, String paramName) {
-		Schema<?> schemaN = null;
+	public Schema calculateSchema(Components components, Type type, String paramName) {
+		Schema schemaN = null;
 		JavaType ct = constructType(type);
 
 		if (MultipartFile.class.isAssignableFrom(ct.getRawClass())) {
@@ -127,8 +134,8 @@ public class ParameterBuilder {
 		return schemaN;
 	}
 
-	public Schema<?> calculateSchema(Components components, java.lang.reflect.Parameter parameter, String paramName) {
-		Schema<?> schemaN = null;
+	public Schema calculateSchema(Components components, java.lang.reflect.Parameter parameter, String paramName) {
+		Schema schemaN = null;
 		Type returnType = parameter.getParameterizedType();
 
 		JavaType ct = constructType(parameter.getType());
@@ -163,6 +170,21 @@ public class ParameterBuilder {
 			schemaN = org.springdoc.core.AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null);
 		}
 		return schemaN;
+	}
+
+	public <A extends Annotation> A getParameterAnnotation(HandlerMethod handlerMethod,
+			java.lang.reflect.Parameter parameter, int i, Class<A> annotationType) {
+		A parameterDoc = AnnotationUtils.getAnnotation(parameter, annotationType);
+		if (parameterDoc == null) {
+			Set<Method> methods = MethodUtils.getOverrideHierarchy(handlerMethod.getMethod(),
+					ClassUtils.Interfaces.INCLUDE);
+			for (Method methodOverriden : methods) {
+				parameterDoc = AnnotationUtils.getAnnotation(methodOverriden.getParameters()[i], annotationType);
+				if (parameterDoc != null)
+					break;
+			}
+		}
+		return parameterDoc;
 	}
 
 	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {

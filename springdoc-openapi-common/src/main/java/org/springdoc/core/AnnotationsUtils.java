@@ -23,7 +23,7 @@ public class AnnotationsUtils {
 	static final String COMPONENTS_REF = "#/components/schemas/";
 	static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
 			JsonView jsonViewAnnotation) {
-		Schema schemaObject = new Schema();
+		Schema schemaObject = null;
 		PrimitiveType primitiveType = PrimitiveType.fromType(schemaImplementation);
 		if (primitiveType != null) {
 			schemaObject = primitiveType.createProperty();

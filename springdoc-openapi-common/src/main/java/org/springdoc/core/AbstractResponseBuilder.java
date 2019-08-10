@@ -138,8 +138,8 @@ public abstract class AbstractResponseBuilder {
 
 	protected abstract Content buildContent(Components components, Method method, String[] methodProduces);
 
-	protected Schema<?> calculateSchemaParameterizedType(Components components, ParameterizedType parameterizedType) {
-		Schema<?> schemaN = null;
+	protected Schema calculateSchemaParameterizedType(Components components, ParameterizedType parameterizedType) {
+		Schema schemaN = null;
 		if (parameterizedType.getActualTypeArguments()[0] instanceof Class
 				&& !Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
 			schemaN = calculateSchema(components, parameterizedType);
@@ -165,8 +165,8 @@ public abstract class AbstractResponseBuilder {
 		}
 	}
 
-	protected Schema<?> extractSchema(Components components, Type returnType) {
-		Schema<?> schemaN = null;
+	protected Schema extractSchema(Components components, Type returnType) {
+		Schema schemaN = null;
 		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
 				.resolveAsResolvedSchema(new AnnotatedType(returnType).resolveAsRef(true));
 		if (resolvedSchema.schema != null) {
@@ -179,8 +179,8 @@ public abstract class AbstractResponseBuilder {
 		return schemaN;
 	}
 
-	private Schema<?> calculateSchema(Components components, ParameterizedType parameterizedType) {
-		Schema<?> schemaN;
+	private Schema calculateSchema(Components components, ParameterizedType parameterizedType) {
+		Schema schemaN;
 		schemaN = AnnotationsUtils.resolveSchemaFromType((Class<?>) parameterizedType.getActualTypeArguments()[0], null,
 				null);
 		if (schemaN.getType() == null) {

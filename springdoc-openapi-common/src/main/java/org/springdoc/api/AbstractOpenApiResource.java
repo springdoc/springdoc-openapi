@@ -9,7 +9,6 @@ import org.springdoc.core.MediaAttributes;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.TagsBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
@@ -24,24 +23,25 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 
 public abstract class AbstractOpenApiResource {
 
-	@Autowired
 	protected OpenAPIBuilder openAPIBuilder;
-
-	@Autowired
 	protected AbstractRequestBuilder requestBuilder;
-
-	@Autowired
 	protected AbstractResponseBuilder responseBuilder;
-
-	@Autowired
 	protected TagsBuilder tagbuiBuilder;
-
-	@Autowired
 	protected OperationBuilder operationParser;
-
-	@Autowired
 	protected InfoBuilder infoBuilder;
 
+
+	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+			AbstractResponseBuilder responseBuilder, TagsBuilder tagbuiBuilder, OperationBuilder operationParser,
+			InfoBuilder infoBuilder) {
+		super();
+		this.openAPIBuilder = openAPIBuilder;
+		this.requestBuilder = requestBuilder;
+		this.responseBuilder = responseBuilder;
+		this.tagbuiBuilder = tagbuiBuilder;
+		this.operationParser = operationParser;
+		this.infoBuilder = infoBuilder;
+	}
 
 	protected void calculatePath(OpenAPIBuilder openAPIBuilder, HandlerMethod handlerMethod, String operationPath,
 			Set<RequestMethod> requestMethods) {
