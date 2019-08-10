@@ -114,10 +114,12 @@ public abstract class AbstractRequestBuilder {
 			parameter = this.buildParam(PATH_PARAM, components, parameters, Boolean.TRUE, name, parameter);
 		}
 		// By default
-		if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
-			parameter = this.buildParam(QUERY_PARAM, null, parameters, Boolean.TRUE, pName, null);
-		} else if (RequestMethod.GET.equals(requestMethod) && parameter.getName() == null) {
-			parameter.setName(pName);
+		if (RequestMethod.GET.equals(requestMethod)) {
+			if (parameter == null) {
+				parameter = this.buildParam(QUERY_PARAM, null, parameters, Boolean.TRUE, pName, null);
+			} else if (parameter.getName() == null) {
+				parameter.setName(pName);
+			}
 		}
 		return parameter;
 	}
