@@ -10,7 +10,12 @@ import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.AbstractResponseBuilder;
+import org.springdoc.core.InfoBuilder;
+import org.springdoc.core.OpenAPIBuilder;
+import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.TagsBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -37,8 +42,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiResource.class);
 
-	@Autowired
 	private RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
+
+	private OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+			AbstractResponseBuilder responseBuilder, TagsBuilder tagbuiBuilder, OperationBuilder operationParser,
+			InfoBuilder infoBuilder, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
+		super(openAPIBuilder, requestBuilder, responseBuilder, tagbuiBuilder, operationParser, infoBuilder);
+		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+	}
 
 	@io.swagger.v3.oas.annotations.Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -87,7 +98,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 			for (PathPattern pathPattern : patterns) {
 				String operationPath = pathPattern.getPatternString();
-				if (operationPath != null && operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
+				if (operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
 						&& findRestControllers.containsKey(handlerMethod.getBean().toString())) {
 					Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 					calculatePath(openAPIBuilder, handlerMethod, operationPath, requestMethods);

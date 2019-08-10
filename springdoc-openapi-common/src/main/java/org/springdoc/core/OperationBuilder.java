@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -33,12 +32,14 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 @Component
 public class OperationBuilder {
 
-	@Autowired
 	private ParameterBuilder parameterBuilder;
+	private RequestBodyBuilder requestBodyBuilder;
 
-	@Autowired
-	protected RequestBodyBuilder requestBodyBuilder;
-
+	private OperationBuilder(ParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder) {
+		super();
+		this.parameterBuilder = parameterBuilder;
+		this.requestBodyBuilder = requestBodyBuilder;
+	}
 
 	public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
 			Operation operation, OpenAPI openAPI, MediaAttributes mediaAttributes) {
@@ -78,7 +79,6 @@ public class OperationBuilder {
 
 		// build response
 		buildResponse(components, apiOperation, operation, mediaAttributes);
-
 
 		// security
 		Optional<List<SecurityRequirement>> requirementsObject = SecurityParser
@@ -288,6 +288,5 @@ public class OperationBuilder {
 		}
 		return Optional.of(list);
 	}
-
 
 }

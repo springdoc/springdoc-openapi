@@ -9,7 +9,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ApplicationContext;
@@ -30,14 +29,12 @@ import io.swagger.v3.oas.models.servers.Server;
 public class InfoBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfoBuilder.class);
-
-	@Autowired
 	private ApplicationContext context;
-
 	private String serverBaseUrl;
 
-	private InfoBuilder() {
+	private InfoBuilder(ApplicationContext context) {
 		super();
+		this.context = context;
 	}
 
 	public void build(OpenAPI openAPI) {
