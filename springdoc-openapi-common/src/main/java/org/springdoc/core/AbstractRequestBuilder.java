@@ -73,11 +73,8 @@ public abstract class AbstractRequestBuilder {
 			}
 
 			if (!isParamTypeToIgnore(paramType)) {
-
-				parameter = buildParams(pNames[i], components, parameters[i], i, parameter, handlerMethod);
-				// By default
-				parameter = buildParamDefault(requestMethod, pNames[i], parameters[i], parameter);
-
+				parameter = buildParams(pNames[i], components, parameters[i], i, parameter, handlerMethod,
+						requestMethod);
 				if (parameter != null && parameter.getName() != null) {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 					operationParameters.add(parameter);
@@ -95,18 +92,8 @@ public abstract class AbstractRequestBuilder {
 		return operation;
 	}
 
-	private Parameter buildParamDefault(RequestMethod requestMethod, String pNames,
-			java.lang.reflect.Parameter parameters, Parameter parameter) {
-		if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
-			parameter = this.buildParam(QUERY_PARAM, null, parameters, Boolean.TRUE, pNames, null);
-		} else if (RequestMethod.GET.equals(requestMethod) && parameter.getName() == null) {
-			parameter.setName(pNames);
-		}
-		return parameter;
-	}
-
 	private Parameter buildParams(String pName, Components components, java.lang.reflect.Parameter parameters,
-			int index, Parameter parameter, HandlerMethod handlerMethod) {
+			int index, Parameter parameter, HandlerMethod handlerMethod, RequestMethod requestMethod) {
 		RequestHeader requestHeader = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
 				RequestHeader.class);
 		RequestParam requestParam = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
@@ -125,6 +112,12 @@ public abstract class AbstractRequestBuilder {
 			String name = StringUtils.isBlank(pathVar.value()) ? pName : pathVar.value();
 			// check if PATH PARAM
 			parameter = this.buildParam(PATH_PARAM, components, parameters, Boolean.TRUE, name, parameter);
+		}
+		// By default
+		if (RequestMethod.GET.equals(requestMethod) && parameter == null) {
+			parameter = this.buildParam(QUERY_PARAM, null, parameters, Boolean.TRUE, pName, null);
+		} else if (RequestMethod.GET.equals(requestMethod) && parameter.getName() == null) {
+			parameter.setName(pName);
 		}
 		return parameter;
 	}
