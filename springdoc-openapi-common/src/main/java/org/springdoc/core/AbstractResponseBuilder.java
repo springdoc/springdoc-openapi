@@ -107,14 +107,10 @@ public abstract class AbstractResponseBuilder {
 				ApiResponse apiResponse1 = new ApiResponse();
 				apiResponse1.setDescription(apiResponse2.description());
 				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
-				Content contentElt = null;
-				for (int i = 0; i < contentdoc.length; i++) {
-					contentElt = new Content();
-					io.swagger.v3.oas.models.media.MediaType mediaTypeEl = new io.swagger.v3.oas.models.media.MediaType();
-					mediaTypeEl.schema(AnnotationsUtils.getSchema(contentdoc[i], components, null).orElse(null));
-					setContent(methodProduces, contentElt, mediaTypeEl);
-				}
-				apiResponse1.content(contentElt);
+				org.springdoc.core.AnnotationsUtils.getContent(contentdoc, new String[0],
+						methodProduces == null ? new String[0] : methodProduces, null, components, null)
+						.ifPresent(apiResponse1::content);
+
 				apiResponsesOp.addApiResponse(apiResponse2.responseCode(), apiResponse1);
 			}
 		}
