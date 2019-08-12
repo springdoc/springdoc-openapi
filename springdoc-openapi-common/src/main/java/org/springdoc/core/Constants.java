@@ -8,6 +8,7 @@ public final class Constants {
 	public static final String DEFAULT_SERVER_DESCRIPTION = "Generated server url";
 	public static final String API_DOCS_URL = "${springdoc.api-docs.path:#{T(org.springdoc.core.Constants).DEFAULT_API_DOCS_URL}}";
 	public static final String DEFAULT_API_DOCS_URL_YAML = API_DOCS_URL + ".yaml";
+	public static final String SPRINGDOC_ENABLED = "springdoc.api-docs.enabled";
 	public static final String WEB_JARS_URL = "/webjars/swagger-ui/index.html?url=";
 	public static final String DEFAULT_VALIDATOR_URL = "&validatorUrl=";
 	public static final String APPLICATION_OPENAPI_YAML = "application/vnd.oai.openapi";
