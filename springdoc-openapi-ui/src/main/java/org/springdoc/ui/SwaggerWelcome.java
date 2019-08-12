@@ -1,11 +1,8 @@
 package org.springdoc.ui;
 
-import static org.springdoc.core.Constants.API_DOCS_URL;
-import static org.springdoc.core.Constants.DEFAULT_VALIDATOR_URL;
-import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
-import static org.springdoc.core.Constants.WEB_JARS_URL;
-import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
-import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
+import static org.springdoc.core.Constants.*;
+import static org.springframework.util.AntPathMatcher.*;
+import static org.springframework.web.servlet.view.UrlBasedViewResolver.*;
 
 import javax.servlet.http.HttpServletRequest;
 
