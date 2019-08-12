@@ -20,7 +20,6 @@ import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
@@ -31,7 +30,7 @@ public class RequestBodyBuilder {
 
 	private ParameterBuilder parameterBuilder;
 
-	private RequestBodyBuilder(ParameterBuilder parameterBuilder) {
+	public RequestBodyBuilder(ParameterBuilder parameterBuilder) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 	}
@@ -84,7 +83,7 @@ public class RequestBodyBuilder {
 		return Optional.of(requestBodyObject);
 	}
 
-	public RequestBody calculateRequestBody(Components components, HandlerMethod handlerMethod, Operation operation,
+	public RequestBody calculateRequestBody(Components components, HandlerMethod handlerMethod,
 			MediaAttributes mediaAttributes, String[] pNames, java.lang.reflect.Parameter[] parameters, int i,
 			io.swagger.v3.oas.annotations.Parameter parameterDoc) {
 		RequestBody requestBody = null;

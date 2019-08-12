@@ -59,8 +59,9 @@ public class ResponseBuilder extends AbstractResponseBuilder {
 				ParameterizedType parameterizedTypeNew = (ParameterizedType) parameterizedType
 						.getActualTypeArguments()[0];
 				schemaN = calculateSchemaParameterizedType(components, parameterizedTypeNew);
-			} else
+			} else {
 				schemaN = calculateSchemaParameterizedType(components, parameterizedType);
+			}
 		}
 		return schemaN;
 	}
