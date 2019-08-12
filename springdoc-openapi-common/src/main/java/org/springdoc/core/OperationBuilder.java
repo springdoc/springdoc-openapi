@@ -186,7 +186,7 @@ public class OperationBuilder {
 			setDescription(response, apiResponseObject);
 			setExtensions(response, apiResponseObject);
 
-			org.springdoc.core.AnnotationsUtils.getContent(response.content(),
+			org.springdoc.core.SpringDocAnnotationsUtils.getContent(response.content(),
 					classProduces == null ? new String[0] : classProduces,
 					methodProduces == null ? new String[0] : methodProduces, null, components, jsonViewAnnotation)
 					.ifPresent(apiResponseObject::content);

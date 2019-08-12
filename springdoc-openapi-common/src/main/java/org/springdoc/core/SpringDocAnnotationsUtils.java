@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
+import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
@@ -18,9 +19,9 @@ import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 
 @SuppressWarnings({ "rawtypes" })
-public class AnnotationsUtils extends io.swagger.v3.core.util.AnnotationsUtils {
+public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
-	private AnnotationsUtils() {
+	private SpringDocAnnotationsUtils() {
 		super();
 	}
 
@@ -64,41 +65,15 @@ public class AnnotationsUtils extends io.swagger.v3.core.util.AnnotationsUtils {
 		if (annotationContents == null || annotationContents.length == 0) {
 			return Optional.empty();
 		}
-
 		// Encapsulating Content model
 		Content content = new Content();
-
 		for (io.swagger.v3.oas.annotations.media.Content annotationContent : annotationContents) {
-			MediaType mediaType = new MediaType();
-			if (!annotationContent.schema().hidden()) {
-				if (components != null) {
-					getSchema(annotationContent, components, jsonViewAnnotation).ifPresent(mediaType::setSchema);
-				} else {
-					mediaType.setSchema(schema);
-				}
-			}
+			MediaType mediaType = getMediaType(schema, components, jsonViewAnnotation, annotationContent);
 			ExampleObject[] examples = annotationContent.examples();
-			if (examples.length == 1 && StringUtils.isBlank(examples[0].name())) {
-				getExample(examples[0], true).ifPresent(exampleObject -> mediaType.example(exampleObject.getValue()));
-			} else {
-				for (ExampleObject example : examples) {
-					getExample(example)
-							.ifPresent(exampleObject -> mediaType.addExamples(example.name(), exampleObject));
-				}
-			}
-			if (annotationContent.extensions() != null && annotationContent.extensions().length > 0) {
-				Map<String, Object> extensions = AnnotationsUtils.getExtensions(annotationContent.extensions());
-				if (extensions != null) {
-					for (String ext : extensions.keySet()) {
-						mediaType.addExtension(ext, extensions.get(ext));
-					}
-				}
-			}
-
+			setExamples(mediaType, examples);
+			addExtension(annotationContent, mediaType);
 			io.swagger.v3.oas.annotations.media.Encoding[] encodings = annotationContent.encoding();
-			for (io.swagger.v3.oas.annotations.media.Encoding encoding : encodings) {
-				addEncodingToMediaType(mediaType, encoding, jsonViewAnnotation);
-			}
+			addEncodingToMediaType(jsonViewAnnotation, mediaType, encodings);
 			if (StringUtils.isNotBlank(annotationContent.mediaType())) {
 				content.addMediaType(annotationContent.mediaType(), mediaType);
 			} else {
@@ -110,6 +85,48 @@ public class AnnotationsUtils extends io.swagger.v3.core.util.AnnotationsUtils {
 			return Optional.empty();
 		}
 		return Optional.of(content);
+	}
+
+	private static void addEncodingToMediaType(JsonView jsonViewAnnotation, MediaType mediaType,
+			io.swagger.v3.oas.annotations.media.Encoding[] encodings) {
+		for (io.swagger.v3.oas.annotations.media.Encoding encoding : encodings) {
+			addEncodingToMediaType(mediaType, encoding, jsonViewAnnotation);
+		}
+	}
+
+	private static void addExtension(io.swagger.v3.oas.annotations.media.Content annotationContent,
+			MediaType mediaType) {
+		if (annotationContent.extensions() != null && annotationContent.extensions().length > 0) {
+			Map<String, Object> extensions = SpringDocAnnotationsUtils.getExtensions(annotationContent.extensions());
+			if (extensions != null) {
+				for (Map.Entry<String, Object> entry : extensions.entrySet()) {
+					mediaType.addExtension(entry.getKey(), entry.getValue());
+				}
+			}
+		}
+	}
+
+	private static void setExamples(MediaType mediaType, ExampleObject[] examples) {
+		if (examples.length == 1 && StringUtils.isBlank(examples[0].name())) {
+			getExample(examples[0], true).ifPresent(exampleObject -> mediaType.example(exampleObject.getValue()));
+		} else {
+			for (ExampleObject example : examples) {
+				getExample(example).ifPresent(exampleObject -> mediaType.addExamples(example.name(), exampleObject));
+			}
+		}
+	}
+
+	private static MediaType getMediaType(Schema schema, Components components, JsonView jsonViewAnnotation,
+			io.swagger.v3.oas.annotations.media.Content annotationContent) {
+		MediaType mediaType = new MediaType();
+		if (!annotationContent.schema().hidden()) {
+			if (components != null) {
+				getSchema(annotationContent, components, jsonViewAnnotation).ifPresent(mediaType::setSchema);
+			} else {
+				mediaType.setSchema(schema);
+			}
+		}
+		return mediaType;
 	}
 
 }

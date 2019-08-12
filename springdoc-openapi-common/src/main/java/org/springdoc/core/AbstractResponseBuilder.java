@@ -107,7 +107,7 @@ public abstract class AbstractResponseBuilder {
 				ApiResponse apiResponse1 = new ApiResponse();
 				apiResponse1.setDescription(apiResponse2.description());
 				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
-				org.springdoc.core.AnnotationsUtils.getContent(contentdoc, new String[0],
+				org.springdoc.core.SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
 						methodProduces == null ? new String[0] : methodProduces, null, components, null)
 						.ifPresent(apiResponse1::content);
 
