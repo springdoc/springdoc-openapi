@@ -35,7 +35,7 @@ public class OperationBuilder {
 	private ParameterBuilder parameterBuilder;
 	private RequestBodyBuilder requestBodyBuilder;
 
-	private OperationBuilder(ParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder) {
+	public OperationBuilder(ParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyBuilder = requestBodyBuilder;

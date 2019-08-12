@@ -13,7 +13,7 @@ public class OpenAPIBuilder {
 
 	private OpenAPI openAPI;
 
-	private OpenAPIBuilder(Optional<OpenAPI> openAPI) {
+	public OpenAPIBuilder(Optional<OpenAPI> openAPI) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
 			if (this.openAPI.getComponents() == null)

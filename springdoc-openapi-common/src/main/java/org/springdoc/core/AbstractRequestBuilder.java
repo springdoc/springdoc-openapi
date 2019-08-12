@@ -80,7 +80,7 @@ public abstract class AbstractRequestBuilder {
 					operationParameters.add(parameter);
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
 					RequestBody requestBody = requestBodyBuilder.calculateRequestBody(components, handlerMethod,
-							operation, mediaAttributes, pNames, parameters, i, parameterDoc);
+							mediaAttributes, pNames, parameters, i, parameterDoc);
 					operation.setRequestBody(requestBody);
 				}
 			}

@@ -32,7 +32,7 @@ public class InfoBuilder {
 	private ApplicationContext context;
 	private String serverBaseUrl;
 
-	private InfoBuilder(ApplicationContext context) {
+	public InfoBuilder(ApplicationContext context) {
 		super();
 		this.context = context;
 	}
