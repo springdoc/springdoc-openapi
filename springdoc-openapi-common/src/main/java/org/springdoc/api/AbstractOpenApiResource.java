@@ -1,7 +1,14 @@
 package org.springdoc.api;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.AbstractResponseBuilder;
 import org.springdoc.core.InfoBuilder;
@@ -9,8 +16,11 @@ import org.springdoc.core.MediaAttributes;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.TagsBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 
 import io.swagger.v3.core.util.ReflectionUtils;
@@ -23,17 +33,18 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 
 public abstract class AbstractOpenApiResource {
 
+	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractOpenApiResource.class);
 	protected OpenAPIBuilder openAPIBuilder;
 	protected AbstractRequestBuilder requestBuilder;
 	protected AbstractResponseBuilder responseBuilder;
 	protected TagsBuilder tagbuiBuilder;
 	protected OperationBuilder operationParser;
 	protected InfoBuilder infoBuilder;
-
+	protected ApplicationContext context;
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, TagsBuilder tagbuiBuilder, OperationBuilder operationParser,
-			InfoBuilder infoBuilder) {
+			InfoBuilder infoBuilder, ApplicationContext context) {
 		super();
 		this.openAPIBuilder = openAPIBuilder;
 		this.requestBuilder = requestBuilder;
@@ -41,7 +52,28 @@ public abstract class AbstractOpenApiResource {
 		this.tagbuiBuilder = tagbuiBuilder;
 		this.operationParser = operationParser;
 		this.infoBuilder = infoBuilder;
+		this.context = context;
 	}
+
+	protected OpenAPI getOpenApi() {
+		Instant start = Instant.now();
+		infoBuilder.build(openAPIBuilder.getOpenAPI());
+		Map<String, Object> restControllersMap = context.getBeansWithAnnotation(RestController.class);
+		Map<String, Object> requestMappingMap = context.getBeansWithAnnotation(RequestMapping.class);
+		Map<String, Object> restControllers = Stream.of(restControllersMap, requestMappingMap)
+				.flatMap(mapEl -> mapEl.entrySet().stream())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+
+		Map<String, Object> findControllerAdvice = context.getBeansWithAnnotation(ControllerAdvice.class);
+		// calculate generic responses
+		responseBuilder.buildGenericResponse(openAPIBuilder.getComponents(), findControllerAdvice);
+
+		getPaths(restControllers);
+		LOGGER.info("Init duration for springdoc-openapi is: {} ms", Duration.between(start, Instant.now()).toMillis());
+		return openAPIBuilder.getOpenAPI();
+	}
+
+	protected abstract void getPaths(Map<String, Object> findRestControllers);
 
 	protected void calculatePath(OpenAPIBuilder openAPIBuilder, HandlerMethod handlerMethod, String operationPath,
 			Set<RequestMethod> requestMethods) {
@@ -79,8 +111,7 @@ public abstract class AbstractOpenApiResource {
 			}
 
 			// requests
-			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation,
-					mediaAttributes);
+			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation, mediaAttributes);
 
 			// responses
 			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation,
