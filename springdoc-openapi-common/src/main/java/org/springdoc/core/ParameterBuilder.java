@@ -125,7 +125,7 @@ public class ParameterBuilder {
 			}
 		} else {
 			try {
-				schemaN = org.springdoc.core.AnnotationsUtils.resolveSchemaFromType(Class.forName(type.getTypeName()),
+				schemaN = org.springdoc.core.SpringDocAnnotationsUtils.resolveSchemaFromType(Class.forName(type.getTypeName()),
 						null, null);
 			} catch (ClassNotFoundException e) {
 				LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
@@ -167,7 +167,7 @@ public class ParameterBuilder {
 				}
 			}
 		} else {
-			schemaN = org.springdoc.core.AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null);
+			schemaN = org.springdoc.core.SpringDocAnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null);
 		}
 		return schemaN;
 	}
