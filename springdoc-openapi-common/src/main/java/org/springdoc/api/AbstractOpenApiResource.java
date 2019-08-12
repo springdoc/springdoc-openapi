@@ -16,6 +16,7 @@ import org.springdoc.core.MediaAttributes;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.TagsBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +45,7 @@ public abstract class AbstractOpenApiResource {
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, TagsBuilder tagbuiBuilder, OperationBuilder operationParser,
-			InfoBuilder infoBuilder, ApplicationContext context) {
+			InfoBuilder infoBuilder) {
 		super();
 		this.openAPIBuilder = openAPIBuilder;
 		this.requestBuilder = requestBuilder;
@@ -52,7 +53,6 @@ public abstract class AbstractOpenApiResource {
 		this.tagbuiBuilder = tagbuiBuilder;
 		this.operationParser = operationParser;
 		this.infoBuilder = infoBuilder;
-		this.context = context;
 	}
 
 	protected OpenAPI getOpenApi() {
@@ -124,7 +124,7 @@ public abstract class AbstractOpenApiResource {
 		}
 	}
 
-	protected PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
+	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
 			Paths paths) {
 		PathItem pathItemObject;
 		if (paths.containsKey(operationPath)) {
@@ -162,5 +162,10 @@ public abstract class AbstractOpenApiResource {
 			break;
 		}
 		return pathItemObject;
+	}
+
+	@Autowired
+	public void setContext(ApplicationContext context) {
+		this.context = context;
 	}
 }
