@@ -17,6 +17,7 @@ import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.TagsBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,6 +39,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import reactor.core.publisher.Mono;
 
 @RestController
+@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class OpenApiResource extends AbstractOpenApiResource {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiResource.class);
