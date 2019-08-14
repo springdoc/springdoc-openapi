@@ -28,7 +28,6 @@ public class OpenAPIBuilder {
 	}
 
 	public OpenAPI getOpenAPI() {
-		System.out.println(openAPI.getComponents());
 		return openAPI;
 	}
 
