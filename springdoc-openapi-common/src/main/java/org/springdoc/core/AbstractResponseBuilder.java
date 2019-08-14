@@ -99,10 +99,20 @@ public abstract class AbstractResponseBuilder {
 	private Map<String, ApiResponse> computeResponse(Components components, Method method, ApiResponses apiResponsesOp,
 			String[] methodProduces, boolean isGeneric) {
 		// Parsing documentation, if present
+		io.swagger.v3.oas.annotations.responses.ApiResponse[] responsesArray = null;
 		io.swagger.v3.oas.annotations.responses.ApiResponses apiResponsesDoc = ReflectionUtils.getAnnotation(method,
 				io.swagger.v3.oas.annotations.responses.ApiResponses.class);
 		if (apiResponsesDoc != null) {
-			io.swagger.v3.oas.annotations.responses.ApiResponse[] responsesArray = apiResponsesDoc.value();
+			responsesArray = apiResponsesDoc.value();
+		} else {
+			List<io.swagger.v3.oas.annotations.responses.ApiResponse> apiResponseDoc = ReflectionUtils
+					.getRepeatableAnnotations(method, io.swagger.v3.oas.annotations.responses.ApiResponse.class);
+			if (!CollectionUtils.isEmpty(apiResponseDoc)) {
+				responsesArray = apiResponseDoc.stream()
+						.toArray(io.swagger.v3.oas.annotations.responses.ApiResponse[]::new);
+			}
+		}
+		if (ArrayUtils.isNotEmpty(responsesArray)) {
 			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponse2 : responsesArray) {
 				ApiResponse apiResponse1 = new ApiResponse();
 				apiResponse1.setDescription(apiResponse2.description());
