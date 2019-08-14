@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.AbstractResponseBuilder;
-import org.springdoc.core.InfoBuilder;
+import org.springdoc.core.GeneralInfoBuilder;
 import org.springdoc.core.MediaAttributes;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
@@ -42,24 +42,24 @@ public abstract class AbstractOpenApiResource {
 	protected AbstractResponseBuilder responseBuilder;
 	protected TagsBuilder tagbuiBuilder;
 	protected OperationBuilder operationParser;
-	protected InfoBuilder infoBuilder;
+	protected GeneralInfoBuilder generalInfoBuilder;
 	protected ApplicationContext context;
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, TagsBuilder tagbuiBuilder, OperationBuilder operationParser,
-			InfoBuilder infoBuilder) {
+			GeneralInfoBuilder infoBuilder) {
 		super();
 		this.openAPIBuilder = openAPIBuilder;
 		this.requestBuilder = requestBuilder;
 		this.responseBuilder = responseBuilder;
 		this.tagbuiBuilder = tagbuiBuilder;
 		this.operationParser = operationParser;
-		this.infoBuilder = infoBuilder;
+		this.generalInfoBuilder = infoBuilder;
 	}
 
 	protected OpenAPI getOpenApi() {
 		Instant start = Instant.now();
-		infoBuilder.build(openAPIBuilder.getOpenAPI());
+		generalInfoBuilder.build(openAPIBuilder.getOpenAPI());
 		Map<String, Object> restControllersMap = context.getBeansWithAnnotation(RestController.class);
 		Map<String, Object> requestMappingMap = context.getBeansWithAnnotation(RequestMapping.class);
 		Map<String, Object> restControllers = Stream.of(restControllersMap, requestMappingMap)

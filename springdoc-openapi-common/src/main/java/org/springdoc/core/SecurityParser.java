@@ -23,8 +23,8 @@ public class SecurityParser {
 	}
 
 	public static class SecuritySchemePair {
-		String key;
-		SecurityScheme securityScheme;
+		public String key;
+		public SecurityScheme securityScheme;
 	}
 
 	public static Optional<List<SecurityRequirement>> getSecurityRequirements(
