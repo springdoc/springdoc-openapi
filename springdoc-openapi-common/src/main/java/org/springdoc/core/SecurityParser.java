@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.security.OAuthScope;
@@ -16,18 +17,10 @@ import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
+@Component
 public class SecurityParser {
 
-	private SecurityParser() {
-		super();
-	}
-
-	public static class SecuritySchemePair {
-		public String key;
-		public SecurityScheme securityScheme;
-	}
-
-	public static Optional<List<SecurityRequirement>> getSecurityRequirements(
+	public Optional<List<SecurityRequirement>> getSecurityRequirements(
 			io.swagger.v3.oas.annotations.security.SecurityRequirement[] securityRequirementsApi) {
 		if (securityRequirementsApi == null || securityRequirementsApi.length == 0) {
 			return Optional.empty();
@@ -52,7 +45,7 @@ public class SecurityParser {
 		return Optional.of(securityRequirements);
 	}
 
-	public static Optional<SecuritySchemePair> getSecurityScheme(
+	public Optional<SecuritySchemePair> getSecurityScheme(
 			io.swagger.v3.oas.annotations.security.SecurityScheme securityScheme) {
 		if (securityScheme == null) {
 			return Optional.empty();
@@ -99,13 +92,11 @@ public class SecurityParser {
 
 		getOAuthFlows(securityScheme.flows()).ifPresent(securitySchemeObject::setFlows);
 
-		SecuritySchemePair result = new SecuritySchemePair();
-		result.key = key;
-		result.securityScheme = securitySchemeObject;
+		SecuritySchemePair result = new SecuritySchemePair(key, securitySchemeObject);
 		return Optional.of(result);
 	}
 
-	public static Optional<OAuthFlows> getOAuthFlows(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
+	private Optional<OAuthFlows> getOAuthFlows(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
 		if (isEmpty(oAuthFlows)) {
 			return Optional.empty();
 		}
@@ -126,7 +117,7 @@ public class SecurityParser {
 		return Optional.of(oAuthFlowsObject);
 	}
 
-	public static Optional<OAuthFlow> getOAuthFlow(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow) {
+	private Optional<OAuthFlow> getOAuthFlow(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow) {
 		if (isEmpty(oAuthFlow)) {
 			return Optional.empty();
 		}
@@ -153,7 +144,7 @@ public class SecurityParser {
 		return Optional.of(oAuthFlowObject);
 	}
 
-	public static Optional<Scopes> getScopes(OAuthScope[] scopes) {
+	private Optional<Scopes> getScopes(OAuthScope[] scopes) {
 		if (isEmpty(scopes)) {
 			return Optional.empty();
 		}
@@ -165,12 +156,12 @@ public class SecurityParser {
 		return Optional.of(scopesObject);
 	}
 
-	private static SecurityScheme.In getIn(String value) {
+	private SecurityScheme.In getIn(String value) {
 		return Arrays.stream(SecurityScheme.In.values()).filter(i -> i.toString().equals(value)).findFirst()
 				.orElse(null);
 	}
 
-	private static SecurityScheme.Type getType(String value) {
+	private SecurityScheme.Type getType(String value) {
 		return Arrays.stream(SecurityScheme.Type.values()).filter(i -> i.toString().equals(value)).findFirst()
 				.orElse(null);
 	}
@@ -199,20 +190,15 @@ public class SecurityParser {
 		boolean result = false;
 		if (oAuthFlow == null) {
 			result = true;
-		}
-		else if (!StringUtils.isBlank(oAuthFlow.authorizationUrl())) {
+		} else if (!StringUtils.isBlank(oAuthFlow.authorizationUrl())) {
 			result = false;
-		}
-		else if (!StringUtils.isBlank(oAuthFlow.refreshUrl())) {
+		} else if (!StringUtils.isBlank(oAuthFlow.refreshUrl())) {
 			result = false;
-		}
-		else if (!StringUtils.isBlank(oAuthFlow.tokenUrl())) {
+		} else if (!StringUtils.isBlank(oAuthFlow.tokenUrl())) {
 			result = false;
-		}
-		else if (!isEmpty(oAuthFlow.scopes())) {
+		} else if (!isEmpty(oAuthFlow.scopes())) {
 			result = false;
-		}
-		else if (oAuthFlow.extensions().length > 0) {
+		} else if (oAuthFlow.extensions().length > 0) {
 			result = false;
 		} else {
 			result = true;

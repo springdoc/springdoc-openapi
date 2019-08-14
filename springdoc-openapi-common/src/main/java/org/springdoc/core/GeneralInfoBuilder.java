@@ -34,11 +34,13 @@ public class GeneralInfoBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GeneralInfoBuilder.class);
 	private ApplicationContext context;
+	private SecurityParser securityParser;
 	private String serverBaseUrl;
 
-	public GeneralInfoBuilder(ApplicationContext context) {
+	public GeneralInfoBuilder(ApplicationContext context, SecurityParser securityParser) {
 		super();
 		this.context = context;
+		this.securityParser = securityParser;
 	}
 
 	public void build(OpenAPI openAPI) {
@@ -97,7 +99,7 @@ public class GeneralInfoBuilder {
 		// info
 		AnnotationsUtils.getInfo(apiDef.info()).ifPresent(openAPI::setInfo);
 		// OpenApiDefinition security requirements
-		SecurityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
+		securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
 		// OpenApiDefinition external docs
 		AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs()).ifPresent(openAPI::setExternalDocs);
 		// OpenApiDefinition tags
@@ -143,13 +145,13 @@ public class GeneralInfoBuilder {
 			Components components) {
 		if (!CollectionUtils.isEmpty(apiSecurityScheme)) {
 			for (io.swagger.v3.oas.annotations.security.SecurityScheme securitySchemeAnnotation : apiSecurityScheme) {
-				Optional<SecurityParser.SecuritySchemePair> securityScheme = SecurityParser
+				Optional<SecuritySchemePair> securityScheme = securityParser
 						.getSecurityScheme(securitySchemeAnnotation);
 				if (securityScheme.isPresent()) {
 					Map<String, SecurityScheme> securitySchemeMap = new HashMap<>();
-					if (StringUtils.isNotBlank(securityScheme.get().key)) {
-						securitySchemeMap.put(securityScheme.get().key, securityScheme.get().securityScheme);
-						if (components.getSecuritySchemes() != null && components.getSecuritySchemes().size() != 0) {
+					if (StringUtils.isNotBlank(securityScheme.get().getKey())) {
+						securitySchemeMap.put(securityScheme.get().getKey(), securityScheme.get().getSecurityScheme());
+						if (!CollectionUtils.isEmpty(securitySchemeMap)) {
 							components.getSecuritySchemes().putAll(securitySchemeMap);
 						} else {
 							components.setSecuritySchemes(securitySchemeMap);

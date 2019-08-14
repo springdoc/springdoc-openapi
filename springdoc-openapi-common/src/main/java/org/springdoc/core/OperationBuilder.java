@@ -34,11 +34,14 @@ public class OperationBuilder {
 
 	private ParameterBuilder parameterBuilder;
 	private RequestBodyBuilder requestBodyBuilder;
+	private SecurityParser securityParser;
 
-	public OperationBuilder(ParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder) {
+	public OperationBuilder(ParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+			SecurityParser securityParser) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyBuilder = requestBodyBuilder;
+		this.securityParser = securityParser;
 	}
 
 	public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
@@ -81,7 +84,7 @@ public class OperationBuilder {
 		buildResponse(components, apiOperation, operation, mediaAttributes);
 
 		// security
-		Optional<List<SecurityRequirement>> requirementsObject = SecurityParser
+		Optional<List<SecurityRequirement>> requirementsObject = securityParser
 				.getSecurityRequirements(apiOperation.security());
 		if (requirementsObject.isPresent()) {
 			requirementsObject.get().stream()
