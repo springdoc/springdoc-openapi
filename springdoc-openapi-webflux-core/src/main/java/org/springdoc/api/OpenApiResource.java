@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.AbstractResponseBuilder;
-import org.springdoc.core.InfoBuilder;
+import org.springdoc.core.GeneralInfoBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.TagsBuilder;
@@ -41,7 +41,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, TagsBuilder tagbuiBuilder, OperationBuilder operationParser,
-			InfoBuilder infoBuilder, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
+			GeneralInfoBuilder infoBuilder, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
 		super(openAPIBuilder, requestBuilder, responseBuilder, tagbuiBuilder, operationParser, infoBuilder);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
@@ -85,6 +85,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	private void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
 		String requestUrl = serverHttpRequest.getURI().toString();
 		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
-		infoBuilder.setServerBaseUrl(serverBaseUrl);
+		generalInfoBuilder.setServerBaseUrl(serverBaseUrl);
 	}
 }
