@@ -152,7 +152,7 @@ public abstract class AbstractResponseBuilder {
 		} else if (parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType
 				&& !Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
 			parameterizedType = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
-			schemaN = calculateSchema(components, parameterizedType);
+			schemaN = calculateSchemaForActualTypeArguments(components, parameterizedType);
 		} else if (Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
 			// if void, no content
 			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
@@ -163,8 +163,8 @@ public abstract class AbstractResponseBuilder {
 	protected void setContent(String[] methodProduces, Content content,
 			io.swagger.v3.oas.models.media.MediaType mediaType) {
 		if (ArrayUtils.isNotEmpty(methodProduces)) {
-			for (String mediaType2 : methodProduces) {
-				content.addMediaType(mediaType2, mediaType);
+			for (String mediaTypeStr : methodProduces) {
+				content.addMediaType(mediaTypeStr, mediaType);
 			}
 		} else if (content.size() == 0) {
 			content.addMediaType(MediaType.ALL_VALUE, mediaType);
@@ -175,6 +175,20 @@ public abstract class AbstractResponseBuilder {
 		Schema schemaN = null;
 		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
 				.resolveAsResolvedSchema(new AnnotatedType(returnType).resolveAsRef(true));
+		if (resolvedSchema.schema != null) {
+			schemaN = resolvedSchema.schema;
+			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
+			if (schemaMap != null) {
+				schemaMap.forEach(components::addSchemas);
+			}
+		}
+		return schemaN;
+	}
+
+	private Schema calculateSchemaForActualTypeArguments(Components components, ParameterizedType parameterizedType) {
+		Schema schemaN = null;
+		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
+				.resolveAsResolvedSchema(new AnnotatedType(parameterizedType).resolveAsRef(true));
 		if (resolvedSchema.schema != null) {
 			schemaN = resolvedSchema.schema;
 			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
