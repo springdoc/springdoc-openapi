@@ -151,7 +151,7 @@ public class GeneralInfoBuilder {
 					Map<String, SecurityScheme> securitySchemeMap = new HashMap<>();
 					if (StringUtils.isNotBlank(securityScheme.get().getKey())) {
 						securitySchemeMap.put(securityScheme.get().getKey(), securityScheme.get().getSecurityScheme());
-						if (!CollectionUtils.isEmpty(securitySchemeMap)) {
+						if (!CollectionUtils.isEmpty(components.getSecuritySchemes())) {
 							components.getSecuritySchemes().putAll(securitySchemeMap);
 						} else {
 							components.setSecuritySchemes(securitySchemeMap);
