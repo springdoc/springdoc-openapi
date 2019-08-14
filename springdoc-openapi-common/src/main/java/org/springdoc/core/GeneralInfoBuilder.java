@@ -143,19 +143,16 @@ public class GeneralInfoBuilder {
 
 	private void addSecurityScheme(List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme,
 			Components components) {
-		if (!CollectionUtils.isEmpty(apiSecurityScheme)) {
-			for (io.swagger.v3.oas.annotations.security.SecurityScheme securitySchemeAnnotation : apiSecurityScheme) {
-				Optional<SecuritySchemePair> securityScheme = securityParser
-						.getSecurityScheme(securitySchemeAnnotation);
-				if (securityScheme.isPresent()) {
-					Map<String, SecurityScheme> securitySchemeMap = new HashMap<>();
-					if (StringUtils.isNotBlank(securityScheme.get().getKey())) {
-						securitySchemeMap.put(securityScheme.get().getKey(), securityScheme.get().getSecurityScheme());
-						if (!CollectionUtils.isEmpty(components.getSecuritySchemes())) {
-							components.getSecuritySchemes().putAll(securitySchemeMap);
-						} else {
-							components.setSecuritySchemes(securitySchemeMap);
-						}
+		for (io.swagger.v3.oas.annotations.security.SecurityScheme securitySchemeAnnotation : apiSecurityScheme) {
+			Optional<SecuritySchemePair> securityScheme = securityParser.getSecurityScheme(securitySchemeAnnotation);
+			if (securityScheme.isPresent()) {
+				Map<String, SecurityScheme> securitySchemeMap = new HashMap<>();
+				if (StringUtils.isNotBlank(securityScheme.get().getKey())) {
+					securitySchemeMap.put(securityScheme.get().getKey(), securityScheme.get().getSecurityScheme());
+					if (!CollectionUtils.isEmpty(components.getSecuritySchemes())) {
+						components.getSecuritySchemes().putAll(securitySchemeMap);
+					} else {
+						components.setSecuritySchemes(securitySchemeMap);
 					}
 				}
 			}
