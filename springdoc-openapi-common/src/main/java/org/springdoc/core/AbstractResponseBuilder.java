@@ -99,19 +99,7 @@ public abstract class AbstractResponseBuilder {
 	private Map<String, ApiResponse> computeResponse(Components components, Method method, ApiResponses apiResponsesOp,
 			String[] methodProduces, boolean isGeneric) {
 		// Parsing documentation, if present
-		io.swagger.v3.oas.annotations.responses.ApiResponse[] responsesArray = null;
-		io.swagger.v3.oas.annotations.responses.ApiResponses apiResponsesDoc = ReflectionUtils.getAnnotation(method,
-				io.swagger.v3.oas.annotations.responses.ApiResponses.class);
-		if (apiResponsesDoc != null) {
-			responsesArray = apiResponsesDoc.value();
-		} else {
-			List<io.swagger.v3.oas.annotations.responses.ApiResponse> apiResponseDoc = ReflectionUtils
-					.getRepeatableAnnotations(method, io.swagger.v3.oas.annotations.responses.ApiResponse.class);
-			if (!CollectionUtils.isEmpty(apiResponseDoc)) {
-				responsesArray = apiResponseDoc.stream()
-						.toArray(io.swagger.v3.oas.annotations.responses.ApiResponse[]::new);
-			}
-		}
+		io.swagger.v3.oas.annotations.responses.ApiResponse[] responsesArray = getApiResponses(method);
 		if (ArrayUtils.isNotEmpty(responsesArray)) {
 			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponse2 : responsesArray) {
 				ApiResponse apiResponse1 = new ApiResponse();
@@ -140,6 +128,23 @@ public abstract class AbstractResponseBuilder {
 				buildApiResponses(components, method, apiResponsesOp, methodProduces, httpCode, new ApiResponse());
 		}
 		return apiResponsesOp;
+	}
+
+	private io.swagger.v3.oas.annotations.responses.ApiResponse[] getApiResponses(Method method) {
+		io.swagger.v3.oas.annotations.responses.ApiResponse[] responsesArray = null;
+		io.swagger.v3.oas.annotations.responses.ApiResponses apiResponsesDoc = ReflectionUtils.getAnnotation(method,
+				io.swagger.v3.oas.annotations.responses.ApiResponses.class);
+		if (apiResponsesDoc != null) {
+			responsesArray = apiResponsesDoc.value();
+		} else {
+			List<io.swagger.v3.oas.annotations.responses.ApiResponse> apiResponseDoc = ReflectionUtils
+					.getRepeatableAnnotations(method, io.swagger.v3.oas.annotations.responses.ApiResponse.class);
+			if (!CollectionUtils.isEmpty(apiResponseDoc)) {
+				responsesArray = apiResponseDoc.stream()
+						.toArray(io.swagger.v3.oas.annotations.responses.ApiResponse[]::new);
+			}
+		}
+		return responsesArray;
 	}
 
 	protected abstract Content buildContent(Components components, Method method, String[] methodProduces);
