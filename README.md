@@ -85,9 +85,10 @@ springdoc.api-docs.enabled=false
 ## Error Handling for REST using @ControllerAdvice
 To generate documentation automatically, make sure all the methods declare the HTTP Code responses using the annotation: @ResponseStatus
 
-## Adding API Information documentation
+## Adding API Information and Security documentation
   The library uses spring-boot application auto-configured packages to scan for the following annotations in spring beans: OpenAPIDefinition and Info.
-  These annotations declare, API Information: Title, version, licence, security, servers, tags, security and externalDocs
+  These annotations declare, API Information: Title, version, licence, security, servers, tags, security and externalDocs.
+  For better performance of documentation generation, declare @OpenAPIDefinition and @SecurityScheme annotations within a spring managed bean.  
   
 ## spring-weblfux support with Annotated Controllers
 *   Documentation can be available in yaml format as well, on the following path : /v3/api-docs.yml
