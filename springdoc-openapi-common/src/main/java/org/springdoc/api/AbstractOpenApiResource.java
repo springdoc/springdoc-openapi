@@ -18,6 +18,7 @@ import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.TagsBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 
 import io.swagger.v3.core.util.ReflectionUtils;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -62,6 +64,8 @@ public abstract class AbstractOpenApiResource {
 		Map<String, Object> requestMappingMap = context.getBeansWithAnnotation(RequestMapping.class);
 		Map<String, Object> restControllers = Stream.of(restControllersMap, requestMappingMap)
 				.flatMap(mapEl -> mapEl.entrySet().stream())
+				.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
+						Hidden.class) == null))
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
 		Map<String, Object> findControllerAdvice = context.getBeansWithAnnotation(ControllerAdvice.class);
@@ -85,7 +89,10 @@ public abstract class AbstractOpenApiResource {
 			// skip hidden operations
 			io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
 					.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
-			if (apiOperation != null && apiOperation.hidden()) {
+
+			boolean hiddenMethod = (ReflectionUtils.getAnnotation(handlerMethod.getMethod(), Hidden.class) != null);
+
+			if (apiOperation != null && (apiOperation.hidden() || hiddenMethod)) {
 				continue;
 			}
 
