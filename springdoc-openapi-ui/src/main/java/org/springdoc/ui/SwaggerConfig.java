@@ -10,7 +10,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @EnableWebMvc
-public class SwaggerConfig extends WebMvcConfigurerAdapter {
+@SuppressWarnings("deprecation")
+public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
 
 	@Value(SWAGGER_UI_PATH)
 	private String swaggerPath;
