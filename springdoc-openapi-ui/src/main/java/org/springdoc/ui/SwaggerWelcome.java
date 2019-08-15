@@ -29,7 +29,7 @@ public class SwaggerWelcome {
 		StringBuilder sbUrl = new StringBuilder();
 		sbUrl.append(REDIRECT_URL_PREFIX);
 		sbUrl.append(uiRootPath);
-		sbUrl.append(WEB_JARS_URL);
+		sbUrl.append(SWAGGER_UI_URL);
 		if (contextPath.endsWith(DEFAULT_PATH_SEPARATOR)) {
 			contextPath = contextPath.substring(0, contextPath.length() - 1);
 			sbUrl.append(contextPath + apiDocsUrl);
