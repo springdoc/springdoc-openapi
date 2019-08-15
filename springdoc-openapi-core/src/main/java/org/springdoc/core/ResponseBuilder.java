@@ -27,23 +27,27 @@ public class ResponseBuilder extends AbstractResponseBuilder {
 			}
 		} else if (returnType instanceof TypeVariable) {
 			schemaN = AnnotationsUtils.resolveSchemaFromType((Class<?>) returnType, null, null);
-		} else if (Void.TYPE.equals(returnType) || ResponseEntity.class.getName().equals(returnType.getTypeName())) {
-			// if void, no content
+		} else if (ResponseEntity.class.getName().equals(returnType.getTypeName())) {
 			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
 		}
-		if (schemaN == null) {
-			schemaN = extractSchema(components, returnType);
-		}
 
-		if (schemaN == null && returnType instanceof Class) {
-			schemaN = AnnotationsUtils.resolveSchemaFromType((Class<?>) returnType, null, null);
-		}
+		if (Void.TYPE.equals(returnType)) {
+			// if void, no content
+			content = null;
+		} else {
+			if (schemaN == null) {
+				schemaN = extractSchema(components, returnType);
+			}
+			if (schemaN == null && returnType instanceof Class) {
+				schemaN = AnnotationsUtils.resolveSchemaFromType((Class<?>) returnType, null, null);
+			}
 
-		if (schemaN != null) {
-			io.swagger.v3.oas.models.media.MediaType mediaType = new io.swagger.v3.oas.models.media.MediaType();
-			mediaType.setSchema(schemaN);
-			// Fill the content
-			setContent(methodProduces, content, mediaType);
+			if (schemaN != null) {
+				io.swagger.v3.oas.models.media.MediaType mediaType = new io.swagger.v3.oas.models.media.MediaType();
+				mediaType.setSchema(schemaN);
+				// Fill the content
+				setContent(methodProduces, content, mediaType);
+			}
 		}
 		return content;
 	}
