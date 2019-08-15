@@ -18,7 +18,10 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		String uiRootPath = swaggerPath.substring(0, swaggerPath.lastIndexOf('/'));
+		String uiRootPath = "";
+		if (swaggerPath.contains("/")) {
+			uiRootPath = swaggerPath.substring(0, swaggerPath.lastIndexOf('/'));
+		}
 		registry.addResourceHandler(uiRootPath + "/**").addResourceLocations(WEB_JARS_PREFIX_URL + "/")
 				.resourceChain(false);
 	}
