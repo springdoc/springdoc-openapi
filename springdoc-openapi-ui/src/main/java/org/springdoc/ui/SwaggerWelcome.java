@@ -25,7 +25,7 @@ public class SwaggerWelcome {
 	@GetMapping(SWAGGER_UI_PATH)
 	public String redirectToUi(HttpServletRequest request) {
 		String contextPath = request.getContextPath();
-		String uiRootPath = swaggerPath.substring(0, swaggerPath.lastIndexOf("/"));
+		String uiRootPath = swaggerPath.substring(0, swaggerPath.lastIndexOf('/'));
 		StringBuilder sbUrl = new StringBuilder();
 		sbUrl.append(REDIRECT_URL_PREFIX);
 		sbUrl.append(uiRootPath);
