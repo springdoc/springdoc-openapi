@@ -18,12 +18,17 @@ public class SwaggerWelcome {
 	@Value(API_DOCS_URL)
 	private String apiDocsUrl;
 
+	@Value(SWAGGER_UI_PATH)
+	private String swaggerPath;
+
 	@Operation(hidden = true)
 	@GetMapping(SWAGGER_UI_PATH)
 	public String redirectToUi(HttpServletRequest request) {
 		String contextPath = request.getContextPath();
+		String uiRootPath = swaggerPath.substring(0, swaggerPath.lastIndexOf("/"));
 		StringBuilder sbUrl = new StringBuilder();
 		sbUrl.append(REDIRECT_URL_PREFIX);
+		sbUrl.append(uiRootPath);
 		sbUrl.append(WEB_JARS_URL);
 		if (contextPath.endsWith(DEFAULT_PATH_SEPARATOR)) {
 			contextPath = contextPath.substring(0, contextPath.length() - 1);
