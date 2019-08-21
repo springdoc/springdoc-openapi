@@ -90,9 +90,7 @@ public abstract class AbstractOpenApiResource {
 			io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
 					.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
 
-			boolean hiddenMethod = (ReflectionUtils.getAnnotation(handlerMethod.getMethod(), Hidden.class) != null);
-
-			if (apiOperation != null && (apiOperation.hidden() || hiddenMethod)) {
+			if (operationParser.isHidden(handlerMethod.getMethod())) {
 				continue;
 			}
 

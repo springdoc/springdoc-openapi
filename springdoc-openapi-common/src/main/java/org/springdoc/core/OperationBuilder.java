@@ -2,6 +2,7 @@ package org.springdoc.core;
 
 import static org.springdoc.core.Constants.*;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +18,8 @@ import org.springframework.util.CollectionUtils;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.core.util.ReflectionUtils;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -95,6 +98,13 @@ public class OperationBuilder {
 		// Extensions in Operation
 		buildExtensions(apiOperation, operation);
 		return openAPI;
+	}
+
+	public boolean isHidden(Method method) {
+		io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils.getAnnotation(method,
+				io.swagger.v3.oas.annotations.Operation.class);
+		return (apiOperation != null && (apiOperation.hidden()))
+				|| (ReflectionUtils.getAnnotation(method, Hidden.class) != null);
 	}
 
 	private void buildExtensions(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation) {

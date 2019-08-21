@@ -41,6 +41,13 @@ public abstract class AbstractResponseBuilder {
 
 	private Map<String, ApiResponse> genericMapResponse = new HashMap<>();
 
+	private OperationBuilder operationBuilder;
+
+	protected AbstractResponseBuilder(OperationBuilder operationBuilder) {
+		super();
+		this.operationBuilder = operationBuilder;
+	}
+
 	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
 			String[] methodProduces) {
 		ApiResponses apiResponses = operation.getResponses();
@@ -63,19 +70,20 @@ public abstract class AbstractResponseBuilder {
 
 		// for each one build ApiResponse and add it to existing responses
 		for (Method method : methods) {
-			RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(method, RequestMapping.class);
-			String[] methodProduces = null;
-			if (reqMappringMethod != null) {
-				methodProduces = reqMappringMethod.produces();
-			}
+			if (!operationBuilder.isHidden(method)) {
+				RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(method, RequestMapping.class);
+				String[] methodProduces = null;
+				if (reqMappringMethod != null) {
+					methodProduces = reqMappringMethod.produces();
+				}
 
-			Map<String, ApiResponse> apiResponses = computeResponse(components, method, new ApiResponses(),
-					methodProduces, true);
-			for (Map.Entry<String, ApiResponse> entry : apiResponses.entrySet()) {
-				genericMapResponse.put(entry.getKey(), entry.getValue());
+				Map<String, ApiResponse> apiResponses = computeResponse(components, method, new ApiResponses(),
+						methodProduces, true);
+				for (Map.Entry<String, ApiResponse> entry : apiResponses.entrySet()) {
+					genericMapResponse.put(entry.getKey(), entry.getValue());
+				}
 			}
 		}
-
 	}
 
 	private List<Method> getMethods(Map<String, Object> findControllerAdvice) {
