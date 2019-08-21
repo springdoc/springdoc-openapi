@@ -16,6 +16,10 @@ import io.swagger.v3.oas.models.media.Schema;
 @Component
 public class ResponseBuilder extends AbstractResponseBuilder {
 
+	private ResponseBuilder(OperationBuilder operationBuilder) {
+		super(operationBuilder);
+	}
+
 	public Content buildContent(Components components, Method method, String[] methodProduces) {
 		Content content = new Content();
 		Schema<?> schemaN = null;
