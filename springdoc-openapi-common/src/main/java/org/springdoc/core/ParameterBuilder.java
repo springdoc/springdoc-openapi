@@ -78,17 +78,17 @@ public class ParameterBuilder {
 		}
 		if (StringUtils.isNotBlank(parameterDoc.ref())) {
 			parameter.$ref(parameterDoc.ref());
+		} else {
+			Type type = ParameterProcessor.getParameterType(parameterDoc);
+			Schema schema = null;
+			schema = this.calculateSchema(components, type, parameter.getName());
+			parameter.setSchema(schema);
 		}
 
 		setExamples(parameterDoc, parameter);
 		setExtensions(parameterDoc, parameter);
 		setParameterStyle(parameter, parameterDoc);
 		setParameterExplode(parameter, parameterDoc);
-
-		Type type = ParameterProcessor.getParameterType(parameterDoc);
-		Schema schema = null;
-		schema = this.calculateSchema(components, type, parameter.getName());
-		parameter.setSchema(schema);
 
 		return parameter;
 	}
@@ -125,8 +125,8 @@ public class ParameterBuilder {
 			}
 		} else {
 			try {
-				schemaN = org.springdoc.core.SpringDocAnnotationsUtils.resolveSchemaFromType(Class.forName(type.getTypeName()),
-						null, null);
+				schemaN = org.springdoc.core.SpringDocAnnotationsUtils
+						.resolveSchemaFromType(Class.forName(type.getTypeName()), null, null);
 			} catch (ClassNotFoundException e) {
 				LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
 			}
@@ -167,7 +167,8 @@ public class ParameterBuilder {
 				}
 			}
 		} else {
-			schemaN = org.springdoc.core.SpringDocAnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null);
+			schemaN = org.springdoc.core.SpringDocAnnotationsUtils.resolveSchemaFromType(parameter.getType(), null,
+					null);
 		}
 		return schemaN;
 	}

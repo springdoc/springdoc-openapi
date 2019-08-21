@@ -75,7 +75,7 @@ public abstract class AbstractRequestBuilder {
 			if (!isParamTypeToIgnore(paramType)) {
 				parameter = buildParams(pNames[i], components, parameters[i], i, parameter, handlerMethod,
 						requestMethod);
-				if (parameter != null && parameter.getName() != null) {
+				if (parameter != null && (parameter.getName() != null || parameter.get$ref() != null)) {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 					operationParameters.add(parameter);
 				} else if (!RequestMethod.GET.equals(requestMethod)) {

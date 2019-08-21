@@ -108,7 +108,7 @@ public abstract class AbstractResponseBuilder {
 				org.springdoc.core.SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
 						methodProduces == null ? new String[0] : methodProduces, null, components, null)
 						.ifPresent(apiResponse1::content);
-
+				AnnotationsUtils.getHeaders(apiResponse2.headers(), null).ifPresent(apiResponse1::headers);
 				apiResponsesOp.addApiResponse(apiResponse2.responseCode(), apiResponse1);
 			}
 		}
