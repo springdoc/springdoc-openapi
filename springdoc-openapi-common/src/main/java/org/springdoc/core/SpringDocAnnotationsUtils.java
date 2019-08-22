@@ -97,7 +97,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	private static void addExtension(io.swagger.v3.oas.annotations.media.Content annotationContent,
 			MediaType mediaType) {
 		if (annotationContent.extensions() != null && annotationContent.extensions().length > 0) {
-			Map<String, Object> extensions = SpringDocAnnotationsUtils.getExtensions(annotationContent.extensions());
+			Map<String, Object> extensions = AnnotationsUtils.getExtensions(annotationContent.extensions());
 			if (extensions != null) {
 				for (Map.Entry<String, Object> entry : extensions.entrySet()) {
 					mediaType.addExtension(entry.getKey(), entry.getValue());

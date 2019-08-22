@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 @Component
 public class ResponseBuilder extends AbstractResponseBuilder {
 
-	private ResponseBuilder(OperationBuilder operationBuilder) {
+	public ResponseBuilder(OperationBuilder operationBuilder) {
 		super(operationBuilder);
 	}
 

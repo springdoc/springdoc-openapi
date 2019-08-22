@@ -16,7 +16,7 @@ import io.swagger.v3.oas.models.media.Schema;
 @Component
 public class ResponseBuilder extends AbstractResponseBuilder {
 
-	private ResponseBuilder(OperationBuilder operationBuilder) {
+	public ResponseBuilder(OperationBuilder operationBuilder) {
 		super(operationBuilder);
 	}
 
