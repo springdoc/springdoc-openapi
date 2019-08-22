@@ -242,10 +242,10 @@ public abstract class AbstractResponseBuilder {
 			annotation = AnnotatedElementUtils.findMergedAnnotation(beanType, ResponseStatus.class);
 		}
 		if (annotation != null) {
-			responseStatus = annotation.code().toString();
+			responseStatus = String.valueOf(annotation.code().value());
 		}
 		if (annotation == null && !isGeneric) {
-			responseStatus = HttpStatus.OK.toString();
+			responseStatus = String.valueOf(HttpStatus.OK.value());
 		}
 		return responseStatus;
 	}
