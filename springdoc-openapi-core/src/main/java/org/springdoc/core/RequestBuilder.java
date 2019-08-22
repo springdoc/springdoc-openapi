@@ -21,6 +21,8 @@ public class RequestBuilder extends AbstractRequestBuilder {
 		return WebRequest.class.equals(paramType) || NativeWebRequest.class.equals(paramType)
 				|| javax.servlet.ServletRequest.class.equals(paramType)
 				|| javax.servlet.ServletResponse.class.equals(paramType)
+				|| javax.servlet.http.HttpServletRequest.class.equals(paramType)
+				|| javax.servlet.http.HttpServletResponse.class.equals(paramType)
 				|| javax.servlet.http.HttpSession.class.equals(paramType)
 				|| java.security.Principal.class.equals(paramType) || HttpMethod.class.equals(paramType)
 				|| java.util.Locale.class.equals(paramType) || java.util.TimeZone.class.equals(paramType)
