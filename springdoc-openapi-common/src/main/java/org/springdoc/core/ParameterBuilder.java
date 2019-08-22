@@ -81,7 +81,10 @@ public class ParameterBuilder {
 		} else {
 			Type type = ParameterProcessor.getParameterType(parameterDoc);
 			Schema schema = null;
-			schema = this.calculateSchema(components, type, parameter.getName());
+			if (parameterDoc.schema() != null)
+				schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.schema(), components, null).orElse(null);
+			else
+				schema = this.calculateSchema(components, type, parameter.getName());
 			parameter.setSchema(schema);
 		}
 
