@@ -10,6 +10,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Component
 public class RequestBuilder extends AbstractRequestBuilder {
 
@@ -30,6 +33,7 @@ public class RequestBuilder extends AbstractRequestBuilder {
 				|| org.springframework.ui.Model.class.equals(paramType)
 				|| org.springframework.ui.ModelMap.class.equals(paramType) || RedirectAttributes.class.equals(paramType)
 				|| Errors.class.equals(paramType) || BindingResult.class.equals(paramType)
-				|| SessionStatus.class.equals(paramType) || UriComponentsBuilder.class.equals(paramType);
+				|| SessionStatus.class.equals(paramType) || UriComponentsBuilder.class.equals(paramType)
+				|| HttpServletRequest.class.equals(paramType) || HttpServletResponse.class.equals(paramType);
 	}
 }
