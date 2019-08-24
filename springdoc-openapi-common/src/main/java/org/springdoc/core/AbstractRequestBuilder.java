@@ -116,7 +116,7 @@ public abstract class AbstractRequestBuilder {
 		// By default
 		if (RequestMethod.GET.equals(requestMethod)) {
 			if (parameter == null) {
-				parameter = this.buildParam(QUERY_PARAM, null, parameters, Boolean.TRUE, pName, null);
+				parameter = this.buildParam(QUERY_PARAM, components, parameters, Boolean.TRUE, pName, null);
 			} else if (parameter.getName() == null) {
 				parameter.setName(pName);
 			}
@@ -132,7 +132,7 @@ public abstract class AbstractRequestBuilder {
 		parameter.setRequired(required);
 		parameter.setName(name);
 		if (parameter.getSchema() == null) {
-			Schema<?> schema = parameterBuilder.calculateSchema(components, parameters, name);
+			Schema<?> schema = parameterBuilder.calculateSchema(components, parameters, name, null);
 			parameter.setSchema(schema);
 		}
 		return parameter;
