@@ -111,7 +111,7 @@ public class RequestBodyBuilder {
 		if (requestBody == null)
 			requestBody = new RequestBody();
 
-		Schema<?> schema = parameterBuilder.calculateSchema(components, parameter, paramName);
+		Schema<?> schema = parameterBuilder.calculateSchema(components, parameter, paramName, null);
 		io.swagger.v3.oas.models.media.MediaType mediaType = null;
 		if (schema != null && schema.getType() != null) {
 			mediaType = new io.swagger.v3.oas.models.media.MediaType();

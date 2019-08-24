@@ -84,7 +84,7 @@ public class ParameterBuilder {
 			if (parameterDoc.schema() != null)
 				schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.schema(), components, null).orElse(null);
 			else
-				schema = this.calculateSchema(components, type, parameter.getName());
+				schema = this.calculateSchema(components, null, parameter.getName(), type);
 			parameter.setSchema(schema);
 		}
 
@@ -96,52 +96,26 @@ public class ParameterBuilder {
 		return parameter;
 	}
 
-	public Schema calculateSchema(Components components, Type type, String paramName) {
+	public Schema calculateSchema(Components components, java.lang.reflect.Parameter parameter, String paramName,
+			Type type) {
 		Schema schemaN = null;
-		JavaType ct = constructType(type);
+		Class<?> schemaImplementation = null;
+		Type returnType;
+		JavaType ct;
 
-		if (MultipartFile.class.isAssignableFrom(ct.getRawClass())) {
-			schemaN = new ObjectSchema();
-			schemaN.addProperties(paramName, new FileSchema());
-			return schemaN;
-		}
-
-		if (type instanceof ParameterizedType) {
-			ParameterizedType parameterizedType = (ParameterizedType) type;
-			if (parameterizedType.getActualTypeArguments()[0].getTypeName().equals(MultipartFile.class.getName())) {
-				schemaN = new ObjectSchema();
-				ArraySchema schemafile = new ArraySchema();
-				schemafile.items(new FileSchema());
-				schemaN.addProperties(paramName, new ArraySchema().items(new FileSchema()));
-				return schemaN;
-			}
-
-			ResolvedSchema resolvedSchema = ModelConverters.getInstance()
-					.resolveAsResolvedSchema(new AnnotatedType(type).resolveAsRef(true));
-
-			if (resolvedSchema.schema != null) {
-				schemaN = resolvedSchema.schema;
-				Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
-				if (schemaMap != null) {
-					schemaMap.forEach(components::addSchemas);
-				}
-			}
+		if (parameter != null) {
+			returnType = parameter.getParameterizedType();
+			ct = constructType(parameter.getType());
+			schemaImplementation = parameter.getType();
 		} else {
+			returnType = type;
+			ct = constructType(type);
 			try {
-				schemaN = org.springdoc.core.SpringDocAnnotationsUtils
-						.resolveSchemaFromType(Class.forName(type.getTypeName()), null, null);
+				schemaImplementation = Class.forName(returnType.getTypeName());
 			} catch (ClassNotFoundException e) {
 				LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
 			}
 		}
-		return schemaN;
-	}
-
-	public Schema calculateSchema(Components components, java.lang.reflect.Parameter parameter, String paramName) {
-		Schema schemaN = null;
-		Type returnType = parameter.getParameterizedType();
-
-		JavaType ct = constructType(parameter.getType());
 
 		if (MultipartFile.class.isAssignableFrom(ct.getRawClass())) {
 			schemaN = new ObjectSchema();
@@ -170,8 +144,8 @@ public class ParameterBuilder {
 				}
 			}
 		} else {
-			schemaN = org.springdoc.core.SpringDocAnnotationsUtils.resolveSchemaFromType(parameter.getType(), null,
-					null);
+			schemaN = org.springdoc.core.SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation,
+					components, null);
 		}
 		return schemaN;
 	}
