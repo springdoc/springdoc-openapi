@@ -6,9 +6,7 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.method.HandlerMethod;
@@ -36,8 +34,8 @@ public class RequestBodyBuilder {
 	}
 
 	public Optional<RequestBody> buildRequestBodyFromDoc(
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
-			String[] classConsumes, String[] methodConsumes, Components components, JsonView jsonViewAnnotation) {
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, String[] classConsumes,
+			String[] methodConsumes, Components components, JsonView jsonViewAnnotation) {
 		if (requestBody == null) {
 			return Optional.empty();
 		}
@@ -89,8 +87,7 @@ public class RequestBodyBuilder {
 		RequestBody requestBody = null;
 
 		io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = parameterBuilder.getParameterAnnotation(
-				handlerMethod,
-				parameters[i], i, io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+				handlerMethod, parameters[i], i, io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 
 		// use documentation as reference
 		if (requestBodyDoc != null) {
@@ -125,12 +122,8 @@ public class RequestBodyBuilder {
 		}
 
 		Content content1 = new Content();
-		if (ArrayUtils.isNotEmpty(allConsumes)) {
-			for (String value : allConsumes) {
-				setMediaTypeToContent(schema, content1, value);
-			}
-		} else {
-			content1.addMediaType(MediaType.ALL_VALUE, mediaType);
+		for (String value : allConsumes) {
+			setMediaTypeToContent(schema, content1, value);
 		}
 		requestBody.setContent(content1);
 		if (parameterDoc != null) {

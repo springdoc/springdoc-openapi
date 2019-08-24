@@ -63,7 +63,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		return Yaml.mapper().writeValueAsString(openAPI);
 	}
 
-	public void getPaths(Map<String, Object> restControllers) {
+	@Override
+	protected void getPaths(Map<String, Object> restControllers) {
 		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
