@@ -45,7 +45,7 @@ public abstract class AbstractRequestBuilder {
 		this.requestBodyBuilder = requestBodyBuilder;
 	}
 
-	abstract boolean isParamTypeToIgnore(Class<?> paramType);
+	protected abstract boolean isParamTypeToIgnore(Class<?> paramType);
 
 	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MediaAttributes mediaAttributes) {

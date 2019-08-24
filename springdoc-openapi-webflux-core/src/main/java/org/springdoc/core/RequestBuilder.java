@@ -9,7 +9,8 @@ public class RequestBuilder extends AbstractRequestBuilder {
 		super(parameterBuilder, requestBodyBuilder);
 	}
 
-	boolean isParamTypeToIgnore(Class<?> paramType) {
+	@Override
+	protected boolean isParamTypeToIgnore(Class<?> paramType) {
 		return false;
 	}
 }

@@ -3,6 +3,7 @@ package org.springdoc.core;
 import java.lang.reflect.Method;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,39 +57,39 @@ public class MediaAttributes {
 		case POST:
 			PostMapping reqPostMappringMethod = ReflectionUtils.getAnnotation(method, PostMapping.class);
 			if (reqPostMappringMethod != null) {
-				methodProduces = reqPostMappringMethod.produces();
-				methodConsumes = reqPostMappringMethod.consumes();
+				fillMethods(reqPostMappringMethod.produces(), reqPostMappringMethod.consumes());
 			}
 			break;
 		case GET:
 			GetMapping reqGetMappringMethod = ReflectionUtils.getAnnotation(method, GetMapping.class);
 			if (reqGetMappringMethod != null) {
-				methodProduces = reqGetMappringMethod.produces();
-				methodConsumes = reqGetMappringMethod.consumes();
+				fillMethods(reqGetMappringMethod.produces(), reqGetMappringMethod.consumes());
 			}
 			break;
 		case DELETE:
 			DeleteMapping reqDeleteMappringMethod = ReflectionUtils.getAnnotation(method, DeleteMapping.class);
 			if (reqDeleteMappringMethod != null) {
-				methodProduces = reqDeleteMappringMethod.produces();
-				methodConsumes = reqDeleteMappringMethod.consumes();
+				fillMethods(reqDeleteMappringMethod.produces(), reqDeleteMappringMethod.consumes());
 			}
 			break;
 		case PUT:
 			PutMapping reqPutMappringMethod = ReflectionUtils.getAnnotation(method, PutMapping.class);
 			if (reqPutMappringMethod != null) {
-				methodProduces = reqPutMappringMethod.produces();
-				methodConsumes = reqPutMappringMethod.consumes();
+				fillMethods(reqPutMappringMethod.produces(), reqPutMappringMethod.consumes());
 			}
 			break;
 		default:
 			RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(method, RequestMapping.class);
 			if (reqMappringMethod != null) {
-				methodProduces = reqMappringMethod.produces();
-				methodConsumes = reqMappringMethod.consumes();
+				fillMethods(reqMappringMethod.produces(), reqMappringMethod.consumes());
 			}
 			break;
 		}
+	}
+
+	private void fillMethods(String[] produces, String[] consumes) {
+		methodProduces = ArrayUtils.isNotEmpty(produces) ? produces : new String[] { MediaType.ALL_VALUE };
+		methodConsumes = ArrayUtils.isNotEmpty(consumes) ? consumes : new String[] { MediaType.ALL_VALUE };
 	}
 
 	public String[] getAllConsumes() {

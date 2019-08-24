@@ -129,6 +129,11 @@ public abstract class AbstractOpenApiResource {
 		}
 	}
 
+	@Autowired
+	public void setContext(ApplicationContext context) {
+		this.context = context;
+	}
+
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
 			Paths paths) {
 		PathItem pathItemObject;
@@ -167,10 +172,5 @@ public abstract class AbstractOpenApiResource {
 			break;
 		}
 		return pathItemObject;
-	}
-
-	@Autowired
-	public void setContext(ApplicationContext context) {
-		this.context = context;
 	}
 }
