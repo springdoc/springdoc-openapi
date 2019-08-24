@@ -88,8 +88,7 @@ public abstract class AbstractResponseBuilder {
 		}
 	}
 
-	protected abstract Schema<?> calculateSchemaFromParameterizedType(Components components,
-			ParameterizedType returnType);
+	protected abstract Schema calculateSchemaFromParameterizedType(Components components, ParameterizedType returnType);
 
 	protected Schema calculateSchemaParameterizedType(Components components, ParameterizedType parameterizedType) {
 		Schema schemaN = null;
@@ -277,11 +276,9 @@ public abstract class AbstractResponseBuilder {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
 			Schema<?> schemaN = calculateSchema(components, method.getGenericReturnType());
-			if (schemaN != null) {
-				if (ArrayUtils.isNotEmpty(methodProduces)) {
-					for (String mediaTypeStr : methodProduces) {
-						mergeSchema(existingContent, schemaN, mediaTypeStr);
-					}
+			if (schemaN != null && ArrayUtils.isNotEmpty(methodProduces)) {
+				for (String mediaTypeStr : methodProduces) {
+					mergeSchema(existingContent, schemaN, mediaTypeStr);
 				}
 			}
 		}
