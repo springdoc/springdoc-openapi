@@ -131,8 +131,10 @@ public abstract class AbstractRequestBuilder {
 		parameter.setIn(in);
 		parameter.setRequired(required);
 		parameter.setName(name);
-		Schema<?> schema = parameterBuilder.calculateSchema(components, parameters, name);
-		parameter.setSchema(schema);
+		if (parameter.getSchema() == null) {
+			Schema<?> schema = parameterBuilder.calculateSchema(components, parameters, name);
+			parameter.setSchema(schema);
+		}
 		return parameter;
 	}
 
