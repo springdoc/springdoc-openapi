@@ -2,7 +2,6 @@ package org.springdoc.core;
 
 import static org.springdoc.core.Constants.*;
 
-import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Optional;
 
@@ -13,9 +12,6 @@ import org.springframework.web.method.HandlerMethod;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import io.swagger.v3.core.converter.AnnotatedType;
-import io.swagger.v3.core.converter.ModelConverters;
-import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.Content;
@@ -112,43 +108,18 @@ public class RequestBodyBuilder {
 			requestBody = new RequestBody();
 
 		Schema<?> schema = parameterBuilder.calculateSchema(components, parameter, paramName, null);
-		io.swagger.v3.oas.models.media.MediaType mediaType = null;
-		if (schema != null && schema.getType() != null) {
-			mediaType = new io.swagger.v3.oas.models.media.MediaType();
-			mediaType.setSchema(schema);
-		} else {
-			Type returnType = parameter.getType();
-			mediaType = calculateSchema(components, returnType);
-		}
 
-		Content content1 = new Content();
+		Content content = new Content();
 		for (String value : allConsumes) {
-			setMediaTypeToContent(schema, content1, value);
+			setMediaTypeToContent(schema, content, value);
 		}
-		requestBody.setContent(content1);
+		requestBody.setContent(content);
 		if (parameterDoc != null) {
 			if (StringUtils.isNotBlank(parameterDoc.description()))
 				requestBody.setDescription(parameterDoc.description());
 			requestBody.setRequired(parameterDoc.required());
 		}
 		return requestBody;
-	}
-
-	private io.swagger.v3.oas.models.media.MediaType calculateSchema(Components components, Type returnType) {
-		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
-				.resolveAsResolvedSchema(new AnnotatedType(returnType).resolveAsRef(true));
-		io.swagger.v3.oas.models.media.MediaType mediaType = new io.swagger.v3.oas.models.media.MediaType();
-		if (resolvedSchema.schema != null) {
-			Schema<?> returnTypeSchema = resolvedSchema.schema;
-			if (returnTypeSchema != null) {
-				mediaType.setSchema(returnTypeSchema);
-			}
-			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
-			if (schemaMap != null) {
-				schemaMap.forEach(components::addSchemas);
-			}
-		}
-		return mediaType;
 	}
 
 	private void setMediaTypeToContent(Schema schema, Content content, String value) {
