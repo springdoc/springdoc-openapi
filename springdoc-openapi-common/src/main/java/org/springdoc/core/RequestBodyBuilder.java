@@ -18,7 +18,7 @@ import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 
-@SuppressWarnings({ "rawtypes" })
+@SuppressWarnings("rawtypes")
 @Component
 public class RequestBodyBuilder {
 
@@ -79,7 +79,7 @@ public class RequestBodyBuilder {
 
 	public RequestBody calculateRequestBody(Components components, HandlerMethod handlerMethod,
 			MediaAttributes mediaAttributes, String[] pNames, java.lang.reflect.Parameter[] parameters, int i,
-			io.swagger.v3.oas.annotations.Parameter parameterDoc) {
+			io.swagger.v3.oas.annotations.Parameter parameterDoc, Schema mergedSchema) {
 		RequestBody requestBody = null;
 
 		io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = parameterBuilder.getParameterAnnotation(
@@ -98,21 +98,23 @@ public class RequestBodyBuilder {
 			paramName = StringUtils.defaultIfEmpty(requestPart.value(), requestPart.name());
 		paramName = StringUtils.defaultIfEmpty(paramName, pNames[i]);
 		return buildRequestBody(requestBody, components, mediaAttributes.getAllConsumes(), parameters[i], parameterDoc,
-				paramName);
+				paramName, mergedSchema);
 	}
 
 	protected RequestBody buildRequestBody(RequestBody requestBody, Components components, String[] allConsumes,
 			java.lang.reflect.Parameter parameter, io.swagger.v3.oas.annotations.Parameter parameterDoc,
-			String paramName) {
+			String paramName, Schema mergedSchema) {
 		if (requestBody == null)
 			requestBody = new RequestBody();
 
-		Schema<?> schema = parameterBuilder.calculateSchema(components, parameter, paramName, null);
+		Schema<?> schema = parameterBuilder.calculateSchema(components, parameter, paramName, null, mergedSchema);
 
 		Content content = new Content();
+
 		for (String value : allConsumes) {
 			setMediaTypeToContent(schema, content, value);
 		}
+
 		requestBody.setContent(content);
 		if (parameterDoc != null) {
 			if (StringUtils.isNotBlank(parameterDoc.description()))
