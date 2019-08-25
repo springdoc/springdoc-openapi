@@ -84,9 +84,7 @@ public abstract class AbstractRequestBuilder {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 					operationParameters.add(parameter);
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
-					if (pNames.length > 1 && mergedSchema == null) {
-						mergedSchema = new ObjectSchema();
-					}
+					mergedSchema = createMergedSchema(pNames, mergedSchema);
 					requestBody = requestBodyBuilder.calculateRequestBody(components, handlerMethod, mediaAttributes,
 							pNames, parameters, i, parameterDoc, mergedSchema);
 				}
@@ -99,6 +97,13 @@ public abstract class AbstractRequestBuilder {
 			operation.setRequestBody(requestBody);
 
 		return operation;
+	}
+
+	private Schema createMergedSchema(String[] pNames, Schema mergedSchema) {
+		if (pNames.length > 1 && mergedSchema == null) {
+			mergedSchema = new ObjectSchema();
+		}
+		return mergedSchema;
 	}
 
 	private boolean isValidPararameter(Parameter parameter) {
