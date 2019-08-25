@@ -23,9 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
-import io.swagger.v3.core.converter.AnnotatedType;
-import io.swagger.v3.core.converter.ModelConverters;
-import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.ParameterProcessor;
@@ -133,18 +130,9 @@ public class ParameterBuilder {
 				schemaN.addProperties(paramName, new ArraySchema().items(new FileSchema()));
 				return schemaN;
 			}
-
-			ResolvedSchema resolvedSchema = ModelConverters.getInstance()
-					.resolveAsResolvedSchema(new AnnotatedType(returnType).resolveAsRef(true));
-
-			if (resolvedSchema.schema != null) {
-				schemaN = resolvedSchema.schema;
-				Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
-				if (schemaMap != null)
-					schemaMap.forEach(components::addSchemas);
-			}
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType);
 		} else {
-			schemaN = org.springdoc.core.SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation,
+			schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation,
 					components, null);
 		}
 		if (mergedSchema != null) {

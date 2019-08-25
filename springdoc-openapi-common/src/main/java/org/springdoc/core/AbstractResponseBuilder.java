@@ -25,9 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.HandlerMethod;
 
-import io.swagger.v3.core.converter.AnnotatedType;
-import io.swagger.v3.core.converter.ModelConverters;
-import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.models.Components;
@@ -98,7 +95,7 @@ public abstract class AbstractResponseBuilder {
 		} else if (parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType
 				&& !Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
 			parameterizedType = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
-			schemaN = calculateSchemaForActualTypeArguments(components, parameterizedType);
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, parameterizedType);
 		} else if (Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
 			// if void, no content
 			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
@@ -133,7 +130,7 @@ public abstract class AbstractResponseBuilder {
 				ApiResponse apiResponse1 = new ApiResponse();
 				apiResponse1.setDescription(apiResponse2.description());
 				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
-				org.springdoc.core.SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
+				SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
 						methodProduces == null ? new String[0] : methodProduces, null, components, null)
 						.ifPresent(apiResponse1::content);
 				AnnotationsUtils.getHeaders(apiResponse2.headers(), null).ifPresent(apiResponse1::headers);
@@ -209,7 +206,7 @@ public abstract class AbstractResponseBuilder {
 			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
 		}
 		if (schemaN == null) {
-			schemaN = extractSchema(components, returnType);
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType);
 		}
 		if (schemaN == null && returnType instanceof Class) {
 			schemaN = AnnotationsUtils.resolveSchemaFromType((Class) returnType, null, null);
@@ -224,40 +221,13 @@ public abstract class AbstractResponseBuilder {
 		}
 	}
 
-	private Schema extractSchema(Components components, Type returnType) {
-		Schema schemaN = null;
-		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
-				.resolveAsResolvedSchema(new AnnotatedType(returnType).resolveAsRef(true));
-		if (resolvedSchema.schema != null) {
-			schemaN = resolvedSchema.schema;
-			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
-			if (schemaMap != null) {
-				schemaMap.forEach(components::addSchemas);
-			}
-		}
-		return schemaN;
-	}
-
-	private Schema calculateSchemaForActualTypeArguments(Components components, ParameterizedType parameterizedType) {
-		Schema schemaN = null;
-		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
-				.resolveAsResolvedSchema(new AnnotatedType(parameterizedType).resolveAsRef(true));
-		if (resolvedSchema.schema != null) {
-			schemaN = resolvedSchema.schema;
-			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
-			if (schemaMap != null) {
-				schemaMap.forEach(components::addSchemas);
-			}
-		}
-		return schemaN;
-	}
-
 	private Schema calculateSchema(Components components, ParameterizedType parameterizedType) {
 		Schema schemaN;
 		schemaN = AnnotationsUtils.resolveSchemaFromType((Class<?>) parameterizedType.getActualTypeArguments()[0], null,
 				null);
 		if (schemaN.getType() == null) {
-			schemaN = this.extractSchema(components, parameterizedType.getActualTypeArguments()[0]);
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components,
+					parameterizedType.getActualTypeArguments()[0]);
 		}
 		return schemaN;
 	}

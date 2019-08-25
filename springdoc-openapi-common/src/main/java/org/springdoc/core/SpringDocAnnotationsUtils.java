@@ -1,5 +1,6 @@
 package org.springdoc.core;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Optional;
 
@@ -57,6 +58,20 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			schemaObject.setType("string");
 		}
 		return schemaObject;
+	}
+
+	public static Schema extractSchema(Components components, Type returnType) {
+		Schema schemaN = null;
+		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
+				.resolveAsResolvedSchema(new AnnotatedType(returnType).resolveAsRef(true));
+		if (resolvedSchema.schema != null) {
+			schemaN = resolvedSchema.schema;
+			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
+			if (schemaMap != null) {
+				schemaMap.forEach(components::addSchemas);
+			}
+		}
+		return schemaN;
 	}
 
 	public static Optional<Content> getContent(io.swagger.v3.oas.annotations.media.Content[] annotationContents,
