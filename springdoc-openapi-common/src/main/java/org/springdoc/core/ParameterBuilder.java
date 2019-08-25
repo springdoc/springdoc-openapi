@@ -143,10 +143,10 @@ public class ParameterBuilder {
 				if (schemaMap != null)
 					schemaMap.forEach(components::addSchemas);
 			}
-		} else
+		} else {
 			schemaN = org.springdoc.core.SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation,
 					components, null);
-
+		}
 		if (mergedSchema != null) {
 			mergedSchema.addProperties(paramName, schemaN);
 			schemaN = mergedSchema;
