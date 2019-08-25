@@ -78,7 +78,7 @@ public class RequestBodyBuilder {
 	}
 
 	public RequestBody calculateRequestBody(Components components, HandlerMethod handlerMethod,
-			MediaAttributes mediaAttributes, int i, ParameterInfo parameterInfo, Schema mergedSchema) {
+			MediaAttributes mediaAttributes, int i, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		RequestBody requestBody = null;
 
 		io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = parameterBuilder.getParameterAnnotation(
@@ -100,16 +100,17 @@ public class RequestBodyBuilder {
 		paramName = StringUtils.defaultIfEmpty(paramName, parameterInfo.getpName());
 		parameterInfo.setpName(paramName);
 
-		return buildRequestBody(requestBody, components, mediaAttributes.getAllConsumes(), parameterInfo, mergedSchema);
+		return buildRequestBody(requestBody, components, mediaAttributes.getAllConsumes(), parameterInfo,
+				requestBodyInfo);
 	}
 
 	private RequestBody buildRequestBody(RequestBody requestBody, Components components, String[] allConsumes,
-			ParameterInfo parameterInfo, Schema mergedSchema) {
+			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		if (requestBody == null)
 			requestBody = new RequestBody();
 
 		Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(),
-				parameterInfo.getpName(), null, mergedSchema);
+				parameterInfo.getpName(), null, requestBodyInfo);
 
 		Content content = new Content();
 

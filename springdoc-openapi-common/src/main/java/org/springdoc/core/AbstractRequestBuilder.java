@@ -29,12 +29,10 @@ import org.springframework.web.method.HandlerMethod;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 
-@SuppressWarnings("rawtypes")
 public abstract class AbstractRequestBuilder {
 
 	private ParameterBuilder parameterBuilder;
@@ -59,8 +57,7 @@ public abstract class AbstractRequestBuilder {
 		List<Parameter> operationParameters = new ArrayList<>();
 		java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
 
-		Schema mergedSchema = null;
-		RequestBody requestBody = null;
+		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 
 		for (int i = 0; i < pNames.length; i++) {
 			// check if query param
@@ -84,27 +81,22 @@ public abstract class AbstractRequestBuilder {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 					operationParameters.add(parameter);
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
-					mergedSchema = createMergedSchema(pNames, mergedSchema);
+					requestBodyInfo.incrementNbParam();
 					ParameterInfo parameterInfo = new ParameterInfo(pNames[i], parameters[i], parameterDoc);
-					requestBody = requestBodyBuilder.calculateRequestBody(components, handlerMethod, mediaAttributes,
-							i, parameterInfo, mergedSchema);
+					RequestBody requestBody = requestBodyBuilder.calculateRequestBody(components, handlerMethod,
+							mediaAttributes,
+							i, parameterInfo, requestBodyInfo);
+					requestBodyInfo.setRequestBody(requestBody);
 				}
 			}
 		}
 		if (!CollectionUtils.isEmpty(operationParameters)) {
 			operation.setParameters(operationParameters);
 		}
-		if (requestBody != null)
-			operation.setRequestBody(requestBody);
+		if (requestBodyInfo.getRequestBody() != null)
+			operation.setRequestBody(requestBodyInfo.getRequestBody());
 
 		return operation;
-	}
-
-	private Schema createMergedSchema(String[] pNames, Schema mergedSchema) {
-		if (pNames.length > 1 && mergedSchema == null) {
-			mergedSchema = new ObjectSchema();
-		}
-		return mergedSchema;
 	}
 
 	private boolean isValidPararameter(Parameter parameter) {

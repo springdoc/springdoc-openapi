@@ -32,7 +32,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.FileSchema;
-import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 
@@ -94,7 +93,7 @@ public class ParameterBuilder {
 	}
 
 	public Schema calculateSchema(Components components, java.lang.reflect.Parameter parameter, String paramName,
-			Type type, Schema mergedSchema) {
+			Type type, RequestBodyInfo requestBodyInfo) {
 
 		Schema schemaN = null;
 		Class<?> schemaImplementation = null;
@@ -116,7 +115,7 @@ public class ParameterBuilder {
 		}
 
 		if (MultipartFile.class.isAssignableFrom(ct.getRawClass())) {
-			schemaN = (mergedSchema != null) ? mergedSchema : new ObjectSchema();
+			schemaN = requestBodyInfo.initMergedSchema();
 			schemaN.addProperties(paramName, new FileSchema());
 			return schemaN;
 		}
@@ -124,7 +123,7 @@ public class ParameterBuilder {
 		if (returnType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
 			if (parameterizedType.getActualTypeArguments()[0].getTypeName().equals(MultipartFile.class.getName())) {
-				schemaN = (mergedSchema != null) ? mergedSchema : new ObjectSchema();
+				schemaN = requestBodyInfo.initMergedSchema();
 				ArraySchema schemafile = new ArraySchema();
 				schemafile.items(new FileSchema());
 				schemaN.addProperties(paramName, new ArraySchema().items(new FileSchema()));
@@ -135,9 +134,9 @@ public class ParameterBuilder {
 			schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation,
 					components, null);
 		}
-		if (mergedSchema != null) {
-			mergedSchema.addProperties(paramName, schemaN);
-			schemaN = mergedSchema;
+		if (requestBodyInfo != null && requestBodyInfo.getMergedSchema() != null) {
+			requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
+			schemaN = requestBodyInfo.getMergedSchema();
 		}
 
 		return schemaN;
