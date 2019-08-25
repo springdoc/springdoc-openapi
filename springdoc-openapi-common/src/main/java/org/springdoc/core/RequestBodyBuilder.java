@@ -78,12 +78,12 @@ public class RequestBodyBuilder {
 	}
 
 	public RequestBody calculateRequestBody(Components components, HandlerMethod handlerMethod,
-			MediaAttributes mediaAttributes, String[] pNames, java.lang.reflect.Parameter[] parameters, int i,
-			io.swagger.v3.oas.annotations.Parameter parameterDoc, Schema mergedSchema) {
+			MediaAttributes mediaAttributes, int i, ParameterInfo parameterInfo, Schema mergedSchema) {
 		RequestBody requestBody = null;
 
 		io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = parameterBuilder.getParameterAnnotation(
-				handlerMethod, parameters[i], i, io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+				handlerMethod, parameterInfo.getParameter(), i,
+				io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 
 		// use documentation as reference
 		if (requestBodyDoc != null) {
@@ -91,23 +91,25 @@ public class RequestBodyBuilder {
 					mediaAttributes.getMethodConsumes(), components, null).orElse(null);
 		}
 
-		RequestPart requestPart = parameterBuilder.getParameterAnnotation(handlerMethod, parameters[i], i,
+		RequestPart requestPart = parameterBuilder.getParameterAnnotation(handlerMethod, parameterInfo.getParameter(),
+				i,
 				RequestPart.class);
 		String paramName = null;
 		if (requestPart != null)
 			paramName = StringUtils.defaultIfEmpty(requestPart.value(), requestPart.name());
-		paramName = StringUtils.defaultIfEmpty(paramName, pNames[i]);
-		return buildRequestBody(requestBody, components, mediaAttributes.getAllConsumes(), parameters[i], parameterDoc,
-				paramName, mergedSchema);
+		paramName = StringUtils.defaultIfEmpty(paramName, parameterInfo.getpName());
+		parameterInfo.setpName(paramName);
+
+		return buildRequestBody(requestBody, components, mediaAttributes.getAllConsumes(), parameterInfo, mergedSchema);
 	}
 
-	protected RequestBody buildRequestBody(RequestBody requestBody, Components components, String[] allConsumes,
-			java.lang.reflect.Parameter parameter, io.swagger.v3.oas.annotations.Parameter parameterDoc,
-			String paramName, Schema mergedSchema) {
+	private RequestBody buildRequestBody(RequestBody requestBody, Components components, String[] allConsumes,
+			ParameterInfo parameterInfo, Schema mergedSchema) {
 		if (requestBody == null)
 			requestBody = new RequestBody();
 
-		Schema<?> schema = parameterBuilder.calculateSchema(components, parameter, paramName, null, mergedSchema);
+		Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(),
+				parameterInfo.getpName(), null, mergedSchema);
 
 		Content content = new Content();
 
@@ -116,7 +118,8 @@ public class RequestBodyBuilder {
 		}
 
 		requestBody.setContent(content);
-		if (parameterDoc != null) {
+		if (parameterInfo.getParameterDoc() != null) {
+			io.swagger.v3.oas.annotations.Parameter parameterDoc = parameterInfo.getParameterDoc();
 			if (StringUtils.isNotBlank(parameterDoc.description()))
 				requestBody.setDescription(parameterDoc.description());
 			requestBody.setRequired(parameterDoc.required());

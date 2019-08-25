@@ -85,8 +85,9 @@ public abstract class AbstractRequestBuilder {
 					operationParameters.add(parameter);
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
 					mergedSchema = createMergedSchema(pNames, mergedSchema);
+					ParameterInfo parameterInfo = new ParameterInfo(pNames[i], parameters[i], parameterDoc);
 					requestBody = requestBodyBuilder.calculateRequestBody(components, handlerMethod, mediaAttributes,
-							pNames, parameters, i, parameterDoc, mergedSchema);
+							i, parameterInfo, mergedSchema);
 				}
 			}
 		}

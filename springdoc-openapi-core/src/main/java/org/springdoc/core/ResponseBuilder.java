@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.Schema;
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
+@SuppressWarnings("rawtypes")
 @Component
 public class ResponseBuilder extends AbstractResponseBuilder {
 
