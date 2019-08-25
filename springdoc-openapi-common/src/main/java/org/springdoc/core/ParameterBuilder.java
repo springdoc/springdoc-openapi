@@ -40,7 +40,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 
 @Component
-@SuppressWarnings({ "rawtypes" })
+@SuppressWarnings("rawtypes")
 public class ParameterBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterBuilder.class);
@@ -84,7 +84,7 @@ public class ParameterBuilder {
 			if (parameterDoc.schema() != null)
 				schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.schema(), components, null).orElse(null);
 			else
-				schema = this.calculateSchema(components, null, parameter.getName(), type);
+				schema = this.calculateSchema(components, null, parameter.getName(), type, null);
 			parameter.setSchema(schema);
 		}
 
@@ -97,7 +97,8 @@ public class ParameterBuilder {
 	}
 
 	public Schema calculateSchema(Components components, java.lang.reflect.Parameter parameter, String paramName,
-			Type type) {
+			Type type, Schema mergedSchema) {
+
 		Schema schemaN = null;
 		Class<?> schemaImplementation = null;
 		Type returnType;
@@ -118,7 +119,7 @@ public class ParameterBuilder {
 		}
 
 		if (MultipartFile.class.isAssignableFrom(ct.getRawClass())) {
-			schemaN = new ObjectSchema();
+			schemaN = (mergedSchema != null) ? mergedSchema : new ObjectSchema();
 			schemaN.addProperties(paramName, new FileSchema());
 			return schemaN;
 		}
@@ -126,7 +127,7 @@ public class ParameterBuilder {
 		if (returnType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
 			if (parameterizedType.getActualTypeArguments()[0].getTypeName().equals(MultipartFile.class.getName())) {
-				schemaN = new ObjectSchema();
+				schemaN = (mergedSchema != null) ? mergedSchema : new ObjectSchema();
 				ArraySchema schemafile = new ArraySchema();
 				schemafile.items(new FileSchema());
 				schemaN.addProperties(paramName, new ArraySchema().items(new FileSchema()));
@@ -139,14 +140,18 @@ public class ParameterBuilder {
 			if (resolvedSchema.schema != null) {
 				schemaN = resolvedSchema.schema;
 				Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
-				if (schemaMap != null) {
+				if (schemaMap != null)
 					schemaMap.forEach(components::addSchemas);
-				}
 			}
-		} else {
+		} else
 			schemaN = org.springdoc.core.SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation,
 					components, null);
+
+		if (mergedSchema != null) {
+			mergedSchema.addProperties(paramName, schemaN);
+			schemaN = mergedSchema;
 		}
+
 		return schemaN;
 	}
 
