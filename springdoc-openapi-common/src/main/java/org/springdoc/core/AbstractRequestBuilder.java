@@ -80,7 +80,7 @@ public abstract class AbstractRequestBuilder {
 			if (!isParamTypeToIgnore(paramType)) {
 				parameter = buildParams(pNames[i], components, parameters[i], i, parameter, handlerMethod,
 						requestMethod);
-				if (parameter != null && (parameter.getName() != null || parameter.get$ref() != null)) {
+				if (isValidPararameter(parameter)) {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 					operationParameters.add(parameter);
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
@@ -99,6 +99,10 @@ public abstract class AbstractRequestBuilder {
 			operation.setRequestBody(requestBody);
 
 		return operation;
+	}
+
+	private boolean isValidPararameter(Parameter parameter) {
+		return parameter != null && (parameter.getName() != null || parameter.get$ref() != null);
 	}
 
 	private Parameter buildParams(String pName, Components components, java.lang.reflect.Parameter parameters,
