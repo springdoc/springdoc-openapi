@@ -49,49 +49,52 @@ public class ParameterBuilder {
 			final String name = paramCalcul.getName();
 			Parameter paramDoc = existingParamDoc.stream().filter(p -> name.equals(p.getName())).findAny().orElse(null);
 			if (paramDoc != null) {
-				if (StringUtils.isBlank(paramDoc.getDescription()))
-					paramDoc.setDescription(paramCalcul.getDescription());
-
-				if (StringUtils.isBlank(paramDoc.getIn()))
-					paramDoc.setIn(paramCalcul.getIn());
-
-				if (paramDoc.getExample() == null)
-					paramDoc.setExample(paramCalcul.getExample());
-
-				if (paramDoc.getDeprecated() == null)
-					paramDoc.setDeprecated(paramCalcul.getDeprecated());
-
-				if (paramDoc.getRequired() == null)
-					paramDoc.setRequired(paramCalcul.getRequired());
-
-				if (paramDoc.getAllowEmptyValue() == null)
-					paramDoc.setAllowEmptyValue(paramCalcul.getAllowEmptyValue());
-
-				if (paramDoc.getAllowReserved() == null)
-					paramDoc.setAllowReserved(paramCalcul.getAllowReserved());
-
-				if (StringUtils.isBlank(paramDoc.get$ref()))
-					paramDoc.set$ref(paramDoc.get$ref());
-
-				if (paramDoc.getSchema() == null)
-					paramDoc.setSchema(paramCalcul.getSchema());
-
-				if (paramDoc.getExamples() == null)
-					paramDoc.setExamples(paramCalcul.getExamples());
-
-				if (paramDoc.getExtensions() == null)
-					paramDoc.setExtensions(paramCalcul.getExtensions());
-
-				if (paramDoc.getStyle() == null)
-					paramDoc.setStyle(paramCalcul.getStyle());
-
-				if (paramDoc.getExplode() == null)
-					paramDoc.setExplode(paramCalcul.getExplode());
-
+				mergeParameter(paramCalcul, paramDoc);
 				result = paramDoc;
 			}
 		}
 		return result;
+	}
+
+	private void mergeParameter(Parameter paramCalcul, Parameter paramDoc) {
+		if (StringUtils.isBlank(paramDoc.getDescription()))
+			paramDoc.setDescription(paramCalcul.getDescription());
+
+		if (StringUtils.isBlank(paramDoc.getIn()))
+			paramDoc.setIn(paramCalcul.getIn());
+
+		if (paramDoc.getExample() == null)
+			paramDoc.setExample(paramCalcul.getExample());
+
+		if (paramDoc.getDeprecated() == null)
+			paramDoc.setDeprecated(paramCalcul.getDeprecated());
+
+		if (paramDoc.getRequired() == null)
+			paramDoc.setRequired(paramCalcul.getRequired());
+
+		if (paramDoc.getAllowEmptyValue() == null)
+			paramDoc.setAllowEmptyValue(paramCalcul.getAllowEmptyValue());
+
+		if (paramDoc.getAllowReserved() == null)
+			paramDoc.setAllowReserved(paramCalcul.getAllowReserved());
+
+		if (StringUtils.isBlank(paramDoc.get$ref()))
+			paramDoc.set$ref(paramDoc.get$ref());
+
+		if (paramDoc.getSchema() == null)
+			paramDoc.setSchema(paramCalcul.getSchema());
+
+		if (paramDoc.getExamples() == null)
+			paramDoc.setExamples(paramCalcul.getExamples());
+
+		if (paramDoc.getExtensions() == null)
+			paramDoc.setExtensions(paramCalcul.getExtensions());
+
+		if (paramDoc.getStyle() == null)
+			paramDoc.setStyle(paramCalcul.getStyle());
+
+		if (paramDoc.getExplode() == null)
+			paramDoc.setExplode(paramCalcul.getExplode());
 	}
 
 	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
