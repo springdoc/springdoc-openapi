@@ -41,7 +41,7 @@ public class ParameterBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterBuilder.class);
 
-	public Parameter MergeParameter(Parameter paramDoc, Parameter paramCalcul) {
+	public Parameter mergeParameter(Parameter paramDoc, Parameter paramCalcul) {
 		if (StringUtils.isBlank(paramDoc.getDescription()))
 			paramDoc.setDescription(paramCalcul.getDescription());
 
