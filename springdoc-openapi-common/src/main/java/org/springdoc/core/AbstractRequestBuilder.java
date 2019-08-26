@@ -79,7 +79,7 @@ public abstract class AbstractRequestBuilder {
 
 			if (!isParamTypeToIgnore(paramType)) {
 				parameter = buildParams(pName, components, parameters[i], i, parameter, handlerMethod, requestMethod);
-				if (!CollectionUtils.isEmpty(existingParamDoc)) {
+				if (!CollectionUtils.isEmpty(existingParamDoc) && parameter != null) {
 					// Merge with the operation parameters
 					final String name = parameter.getName();
 					Parameter parameterOpDoc = existingParamDoc.stream().filter(p -> name.equals(p.getName())).findAny()
