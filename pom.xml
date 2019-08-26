@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springdoc</groupId>
 	<artifactId>springdoc-openapi</artifactId>
@@ -55,8 +57,6 @@
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<spring-boot.version>2.0.9.RELEASE</spring-boot.version>
-		<swagger-api.version>2.0.8</swagger-api.version>
 		<maven-compiler-plugin.version>3.6.2</maven-compiler-plugin.version>
 		<maven-jar-plugin.version>3.1.0</maven-jar-plugin.version>
 		<maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
@@ -69,6 +69,10 @@
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 		<jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
 		<resource.delimiter>@</resource.delimiter>
+		<spring-boot.version>2.0.9.RELEASE</spring-boot.version>
+		<swagger-api.version>2.0.9</swagger-api.version>
+		<swagger-ui.version>3.23.5</swagger-ui.version>
+		<webjars-locator.version>0.37</webjars-locator.version>
 	</properties>
 
 	<dependencyManagement>
@@ -100,12 +104,12 @@
 			<dependency>
 				<groupId>org.webjars</groupId>
 				<artifactId>swagger-ui</artifactId>
-				<version>3.23.0</version>
+				<version>${swagger-ui.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.webjars</groupId>
 				<artifactId>webjars-locator</artifactId>
-				<version>0.36</version>
+				<version>${webjars-locator.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
