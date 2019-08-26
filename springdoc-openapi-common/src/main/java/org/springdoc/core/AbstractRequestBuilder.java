@@ -79,15 +79,8 @@ public abstract class AbstractRequestBuilder {
 
 			if (!isParamTypeToIgnore(paramType)) {
 				parameter = buildParams(pName, components, parameters[i], i, parameter, handlerMethod, requestMethod);
-				if (!CollectionUtils.isEmpty(existingParamDoc) && parameter != null) {
-					// Merge with the operation parameters
-					final String name = parameter.getName();
-					Parameter parameterOpDoc = existingParamDoc.stream().filter(p -> name.equals(p.getName())).findAny()
-							.orElse(null);
-					if (parameterOpDoc != null)
-						parameter = parameterBuilder.mergeParameter(parameterOpDoc, parameter);
-				}
-
+				// Merge with the operation parameters
+				parameter = parameterBuilder.mergeParameter(existingParamDoc, parameter);
 				if (isValidPararameter(parameter)) {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 					operationParameters.add(parameter);
