@@ -1,13 +1,11 @@
-package org.springdoc.api;
+package test.org.springdoc.api.app2.sample;
 
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springdoc.SpringDocSpringDocTestApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,15 +15,15 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import ext.springdoc.bean.CustomOpenAPIConfig;
+import test.org.springdoc.api.app2.CustomOpenAPIConfig;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = SpringDocSpringDocTestApplication.class)
 @Import(CustomOpenAPIConfig.class)
+@SpringBootTest
 @ActiveProfiles("test")
 @TestPropertySource(properties = "springdoc.api-docs.path=/api-docs")
 @AutoConfigureMockMvc
-public class OpenApiResourceCustomConfigurationTests {
+public class OpenApiResourceCustomConfigurationTest {
 
   @Autowired
   private MockMvc mockMvc;
