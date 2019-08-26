@@ -41,6 +41,49 @@ public class ParameterBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterBuilder.class);
 
+	public Parameter MergeParameter(Parameter paramDoc, Parameter paramCalcul) {
+		if (StringUtils.isBlank(paramDoc.getDescription()))
+			paramDoc.setDescription(paramCalcul.getDescription());
+
+		if (StringUtils.isBlank(paramDoc.getIn()))
+			paramDoc.setIn(paramCalcul.getIn());
+
+		if (paramDoc.getExample() == null)
+			paramDoc.setExample(paramCalcul.getExample());
+
+		if (paramDoc.getDeprecated() == null)
+			paramDoc.setDeprecated(paramCalcul.getDeprecated());
+
+		if (paramDoc.getRequired() == null)
+			paramDoc.setRequired(paramCalcul.getRequired());
+
+		if (paramDoc.getAllowEmptyValue() == null)
+			paramDoc.setAllowEmptyValue(paramCalcul.getAllowEmptyValue());
+
+		if (paramDoc.getAllowReserved() == null)
+			paramDoc.setAllowReserved(paramCalcul.getAllowReserved());
+
+		if (StringUtils.isBlank(paramDoc.get$ref()))
+			paramDoc.set$ref(paramDoc.get$ref());
+
+		if (paramDoc.getSchema() == null)
+			paramDoc.setSchema(paramCalcul.getSchema());
+
+		if (paramDoc.getExamples() == null)
+			paramDoc.setExamples(paramCalcul.getExamples());
+
+		if (paramDoc.getExtensions() == null)
+			paramDoc.setExtensions(paramCalcul.getExtensions());
+
+		if (paramDoc.getStyle() == null)
+			paramDoc.setStyle(paramCalcul.getStyle());
+
+		if (paramDoc.getExplode() == null)
+			paramDoc.setExplode(paramCalcul.getExplode());
+
+		return paramDoc;
+	}
+
 	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
 			Components components) {
 		Parameter parameter = new Parameter();
@@ -131,8 +174,7 @@ public class ParameterBuilder {
 			}
 			schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType);
 		} else {
-			schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation,
-					components, null);
+			schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, null);
 		}
 		if (requestBodyInfo != null && requestBodyInfo.getMergedSchema() != null) {
 			requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
