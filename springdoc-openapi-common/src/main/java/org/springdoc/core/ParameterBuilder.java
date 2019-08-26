@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,47 +43,55 @@ public class ParameterBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterBuilder.class);
 
-	public Parameter mergeParameter(Parameter paramDoc, Parameter paramCalcul) {
-		if (StringUtils.isBlank(paramDoc.getDescription()))
-			paramDoc.setDescription(paramCalcul.getDescription());
+	public Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
+		Parameter result = paramCalcul;
+		if (!CollectionUtils.isEmpty(existingParamDoc) && paramCalcul != null) {
+			final String name = paramCalcul.getName();
+			Parameter paramDoc = existingParamDoc.stream().filter(p -> name.equals(p.getName())).findAny().orElse(null);
+			if (paramDoc != null) {
+				if (StringUtils.isBlank(paramDoc.getDescription()))
+					paramDoc.setDescription(paramCalcul.getDescription());
 
-		if (StringUtils.isBlank(paramDoc.getIn()))
-			paramDoc.setIn(paramCalcul.getIn());
+				if (StringUtils.isBlank(paramDoc.getIn()))
+					paramDoc.setIn(paramCalcul.getIn());
 
-		if (paramDoc.getExample() == null)
-			paramDoc.setExample(paramCalcul.getExample());
+				if (paramDoc.getExample() == null)
+					paramDoc.setExample(paramCalcul.getExample());
 
-		if (paramDoc.getDeprecated() == null)
-			paramDoc.setDeprecated(paramCalcul.getDeprecated());
+				if (paramDoc.getDeprecated() == null)
+					paramDoc.setDeprecated(paramCalcul.getDeprecated());
 
-		if (paramDoc.getRequired() == null)
-			paramDoc.setRequired(paramCalcul.getRequired());
+				if (paramDoc.getRequired() == null)
+					paramDoc.setRequired(paramCalcul.getRequired());
 
-		if (paramDoc.getAllowEmptyValue() == null)
-			paramDoc.setAllowEmptyValue(paramCalcul.getAllowEmptyValue());
+				if (paramDoc.getAllowEmptyValue() == null)
+					paramDoc.setAllowEmptyValue(paramCalcul.getAllowEmptyValue());
 
-		if (paramDoc.getAllowReserved() == null)
-			paramDoc.setAllowReserved(paramCalcul.getAllowReserved());
+				if (paramDoc.getAllowReserved() == null)
+					paramDoc.setAllowReserved(paramCalcul.getAllowReserved());
 
-		if (StringUtils.isBlank(paramDoc.get$ref()))
-			paramDoc.set$ref(paramDoc.get$ref());
+				if (StringUtils.isBlank(paramDoc.get$ref()))
+					paramDoc.set$ref(paramDoc.get$ref());
 
-		if (paramDoc.getSchema() == null)
-			paramDoc.setSchema(paramCalcul.getSchema());
+				if (paramDoc.getSchema() == null)
+					paramDoc.setSchema(paramCalcul.getSchema());
 
-		if (paramDoc.getExamples() == null)
-			paramDoc.setExamples(paramCalcul.getExamples());
+				if (paramDoc.getExamples() == null)
+					paramDoc.setExamples(paramCalcul.getExamples());
 
-		if (paramDoc.getExtensions() == null)
-			paramDoc.setExtensions(paramCalcul.getExtensions());
+				if (paramDoc.getExtensions() == null)
+					paramDoc.setExtensions(paramCalcul.getExtensions());
 
-		if (paramDoc.getStyle() == null)
-			paramDoc.setStyle(paramCalcul.getStyle());
+				if (paramDoc.getStyle() == null)
+					paramDoc.setStyle(paramCalcul.getStyle());
 
-		if (paramDoc.getExplode() == null)
-			paramDoc.setExplode(paramCalcul.getExplode());
+				if (paramDoc.getExplode() == null)
+					paramDoc.setExplode(paramCalcul.getExplode());
 
-		return paramDoc;
+				result = paramDoc;
+			}
+		}
+		return result;
 	}
 
 	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
