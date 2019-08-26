@@ -85,7 +85,7 @@ public abstract class AbstractRequestBuilder {
 					Parameter parameterOpDoc = existingParamDoc.stream().filter(p -> name.equals(p.getName())).findAny()
 							.orElse(null);
 					if (parameterOpDoc != null)
-						parameter = parameterBuilder.MergeParameter(parameterOpDoc, parameter);
+						parameter = parameterBuilder.mergeParameter(parameterOpDoc, parameter);
 				}
 
 				if (isValidPararameter(parameter)) {
