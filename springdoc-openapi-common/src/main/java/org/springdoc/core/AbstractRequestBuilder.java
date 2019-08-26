@@ -55,6 +55,8 @@ public abstract class AbstractRequestBuilder {
 		LocalVariableTableParameterNameDiscoverer d = new LocalVariableTableParameterNameDiscoverer();
 		String[] pNames = d.getParameterNames(handlerMethod.getMethod());
 		List<Parameter> operationParameters = new ArrayList<>();
+		List<Parameter> existingParamDoc = operation.getParameters();
+
 		java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
 
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
@@ -62,6 +64,7 @@ public abstract class AbstractRequestBuilder {
 		for (int i = 0; i < pNames.length; i++) {
 			// check if query param
 			Parameter parameter = null;
+			final String pName = pNames[i];
 			Class<?> paramType = parameters[i].getType();
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = parameterBuilder.getParameterAnnotation(
 					handlerMethod, parameters[i], i, io.swagger.v3.oas.annotations.Parameter.class);
@@ -75,17 +78,24 @@ public abstract class AbstractRequestBuilder {
 			}
 
 			if (!isParamTypeToIgnore(paramType)) {
-				parameter = buildParams(pNames[i], components, parameters[i], i, parameter, handlerMethod,
-						requestMethod);
+				parameter = buildParams(pName, components, parameters[i], i, parameter, handlerMethod, requestMethod);
+				if (!CollectionUtils.isEmpty(existingParamDoc)) {
+					// Merge with the operation parameters
+					final String name = parameter.getName();
+					Parameter parameterOpDoc = existingParamDoc.stream().filter(p -> name.equals(p.getName())).findAny()
+							.orElse(null);
+					if (parameterOpDoc != null)
+						parameter = parameterBuilder.MergeParameter(parameterOpDoc, parameter);
+				}
+
 				if (isValidPararameter(parameter)) {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 					operationParameters.add(parameter);
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
 					requestBodyInfo.incrementNbParam();
-					ParameterInfo parameterInfo = new ParameterInfo(pNames[i], parameters[i], parameterDoc);
+					ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameterDoc);
 					RequestBody requestBody = requestBodyBuilder.calculateRequestBody(components, handlerMethod,
-							mediaAttributes,
-							i, parameterInfo, requestBodyInfo);
+							mediaAttributes, i, parameterInfo, requestBodyInfo);
 					requestBodyInfo.setRequestBody(requestBody);
 				}
 			}

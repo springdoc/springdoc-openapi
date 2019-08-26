@@ -87,9 +87,6 @@ public abstract class AbstractOpenApiResource {
 
 		for (RequestMethod requestMethod : requestMethods) {
 			// skip hidden operations
-			io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
-					.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
-
 			if (operationParser.isHidden(handlerMethod.getMethod())) {
 				continue;
 			}
@@ -111,10 +108,11 @@ public abstract class AbstractOpenApiResource {
 			operation = tagbuiBuilder.build(handlerMethod, operation, openAPI);
 
 			// Add documentation from operation annotation
+			io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
+					.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
 			if (apiOperation != null) {
 				openAPI = operationParser.parse(components, apiOperation, operation, openAPI, mediaAttributes);
 			}
-
 			// requests
 			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation, mediaAttributes);
 
