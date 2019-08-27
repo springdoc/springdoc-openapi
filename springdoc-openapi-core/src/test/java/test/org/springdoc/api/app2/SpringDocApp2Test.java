@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app1;
+package test.org.springdoc.api.app2;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -26,20 +26,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class SpringDocApp1Test {
+public class SpringDocApp2Test {
 
 	@Autowired
 	private MockMvc mockMvc;
 
 	@Test
-	public void testApp1() throws Exception {
+	public void testApp2() throws Exception {
 		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
 
 		ObjectMapper mapper = new ObjectMapper();
 
-		Path path = Paths.get(getClass().getClassLoader().getResource("results/app1.json").toURI());
+		Path path = Paths.get(getClass().getClassLoader().getResource("results/app2.json").toURI());
 		byte[] fileBytes = Files.readAllBytes(path);
 		String expected = new String(fileBytes);
 

@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app2.sample;
+package test.org.springdoc.api.app5.sample;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app2;
+package test.org.springdoc.api.app5;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
