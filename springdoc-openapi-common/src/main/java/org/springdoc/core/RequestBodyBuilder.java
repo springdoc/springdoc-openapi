@@ -77,9 +77,9 @@ public class RequestBodyBuilder {
 		return Optional.of(requestBodyObject);
 	}
 
-	public RequestBody calculateRequestBody(Components components, HandlerMethod handlerMethod,
+	public void calculateRequestBodyInfo(Components components, HandlerMethod handlerMethod,
 			MediaAttributes mediaAttributes, int i, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
-		RequestBody requestBody = null;
+		RequestBody requestBody = requestBodyInfo.getRequestBody();
 
 		io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = parameterBuilder.getParameterAnnotation(
 				handlerMethod, parameterInfo.getParameter(), i,
@@ -100,8 +100,9 @@ public class RequestBodyBuilder {
 		paramName = StringUtils.defaultIfEmpty(paramName, parameterInfo.getpName());
 		parameterInfo.setpName(paramName);
 
-		return buildRequestBody(requestBody, components, mediaAttributes.getAllConsumes(), parameterInfo,
+		requestBody = buildRequestBody(requestBody, components, mediaAttributes.getAllConsumes(), parameterInfo,
 				requestBodyInfo);
+		requestBodyInfo.setRequestBody(requestBody);
 	}
 
 	private RequestBody buildRequestBody(RequestBody requestBody, Components components, String[] allConsumes,
@@ -109,16 +110,16 @@ public class RequestBodyBuilder {
 		if (requestBody == null)
 			requestBody = new RequestBody();
 
-		Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(),
-				parameterInfo.getpName(), null, requestBodyInfo);
-
-		Content content = new Content();
-
-		for (String value : allConsumes) {
-			setMediaTypeToContent(schema, content, value);
+		if (requestBody.getContent() == null) {
+			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(),
+					parameterInfo.getpName(), null, requestBodyInfo);
+			Content content = new Content();
+			for (String value : allConsumes) {
+				setMediaTypeToContent(schema, content, value);
+			}
+			requestBody.setContent(content);
 		}
 
-		requestBody.setContent(content);
 		if (parameterInfo.getParameterDoc() != null) {
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = parameterInfo.getParameterDoc();
 			if (StringUtils.isNotBlank(parameterDoc.description()))

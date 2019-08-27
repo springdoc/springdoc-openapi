@@ -31,7 +31,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
-import io.swagger.v3.oas.models.parameters.RequestBody;
 
 public abstract class AbstractRequestBuilder {
 
@@ -87,9 +86,9 @@ public abstract class AbstractRequestBuilder {
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
 					requestBodyInfo.incrementNbParam();
 					ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameterDoc);
-					RequestBody requestBody = requestBodyBuilder.calculateRequestBody(components, handlerMethod,
+					requestBodyInfo.setRequestBody(operation.getRequestBody());
+					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod,
 							mediaAttributes, i, parameterInfo, requestBodyInfo);
-					requestBodyInfo.setRequestBody(requestBody);
 				}
 			}
 		}
