@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app2.sample;
+package test.org.springdoc.api.app5.sample;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -15,7 +15,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import test.org.springdoc.api.app2.CustomOpenAPIConfig;
+import test.org.springdoc.api.app5.CustomOpenAPIConfig;
 
 @RunWith(SpringRunner.class)
 @Import(CustomOpenAPIConfig.class)

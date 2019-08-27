@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app1;
+package test.org.springdoc.api.app4;
 
 import java.time.Instant;
 
