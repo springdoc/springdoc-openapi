@@ -177,7 +177,7 @@ public abstract class AbstractResponseBuilder {
 	private Content buildContent(Components components, Method method, String[] methodProduces) {
 		Content content = new Content();
 		Type returnType = method.getGenericReturnType();
-		if (Void.TYPE.equals(returnType)) {
+		if (isVoid(returnType)) {
 			// if void, no content
 			content = null;
 		} else {
@@ -194,7 +194,7 @@ public abstract class AbstractResponseBuilder {
 
 	private Schema<?> calculateSchema(Components components, Type returnType) {
 		Schema<?> schemaN = null;
-		if (Void.TYPE.equals(returnType)) {
+		if (isVoid(returnType)) {
 			// if void, no content
 			return schemaN;
 		}
@@ -297,4 +297,8 @@ public abstract class AbstractResponseBuilder {
 		return responseStatus;
 	}
 
+	private boolean isVoid(Type returnType) {
+		return Void.TYPE.equals(returnType) || (returnType instanceof ParameterizedType
+				&& Void.class.equals(((ParameterizedType) returnType).getActualTypeArguments()[0]));
+	}
 }

@@ -5,7 +5,8 @@
       "license":{
          "name":"Apache 2.0",
          "url":"http://springdoc.org"
-      }   },
+      }
+   },
    "servers":[
       {
          "url":"http://localhost",
@@ -54,6 +55,128 @@
                         }
                      }
                   }
+               }
+            }
+         }
+      },
+      "/inventory":{
+         "get":{
+            "tags":[
+               "inventory",
+               "developers"
+            ],
+            "summary":"By passing in the appropriate options, you can search for available inventory in the system ",
+            "description":"searches inventory",
+            "operationId":"searchInventory",
+            "parameters":[
+               {
+                  "name":"searchString",
+                  "in":"query",
+                  "description":"pass an optional search string for looking up inventory",
+                  "required":false,
+                  "schema":{
+                     "type":"string"
+                  }
+               },
+               {
+                  "name":"skip",
+                  "in":"query",
+                  "required":true,
+                  "schema":{
+                     "minimum":0,
+                     "type":"integer",
+                     "format":"int32"
+                  }
+               },
+               {
+                  "name":"limit",
+                  "in":"query",
+                  "required":true,
+                  "schema":{
+                     "maximum":50,
+                     "minimum":0,
+                     "type":"integer",
+                     "format":"int32"
+                  }
+               }
+            ],
+            "responses":{
+               "500":{
+                  "description":"default response",
+                  "content":{
+                     "*/*":{
+                        "schema":{
+                           "$ref":"#/components/schemas/ErrorMessage"
+                        }
+                     }
+                  }
+               },
+               "200":{
+                  "description":"search results matching criteria",
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "type":"array",
+                           "items":{
+                              "$ref":"#/components/schemas/InventoryItem"
+                           }
+                        }
+                     }
+                  }
+               },
+               "400":{
+                  "description":"bad input parameter",
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "type":"array",
+                           "items":{
+                              "$ref":"#/components/schemas/InventoryItem"
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "post":{
+            "tags":[
+               "inventory",
+               "admins"
+            ],
+            "summary":"Adds an item to the system",
+            "description":"adds an inventory item",
+            "operationId":"addInventory",
+            "requestBody":{
+               "description":"Inventory item to add",
+               "content":{
+                  "application/json":{
+                     "schema":{
+                        "$ref":"#/components/schemas/InventoryItem"
+                     }
+                  }
+               },
+               "required":false
+            },
+            "responses":{
+               "500":{
+                  "description":"default response",
+                  "content":{
+                     "*/*":{
+                        "schema":{
+                           "$ref":"#/components/schemas/ErrorMessage"
+                        }
+                     }
+                  }
+               },
+               "201":{
+                  "description":"item created"
+               },
+               "400":{
+                  "description":"invalid input, object invalid"
+               },
+               "409":{
+                  "description":"an existing item already exists"
                }
             }
          }
@@ -371,149 +494,6 @@
                }
             }
          }
-      },
-      "/inventory":{
-         "get":{
-            "tags":[
-               "inventory",
-               "developers"
-            ],
-            "summary":"By passing in the appropriate options, you can search for available inventory in the system ",
-            "description":"searches inventory",
-            "operationId":"searchInventory",
-            "parameters":[
-               {
-                  "name":"searchString",
-                  "in":"query",
-                  "description":"pass an optional search string for looking up inventory",
-                  "required":false,
-                  "schema":{
-                     "type":"string"
-                  }
-               },
-               {
-                  "name":"skip",
-                  "in":"query",
-                  "required":true,
-                  "schema":{
-                     "minimum":0,
-                     "type":"integer",
-                     "format":"int32"
-                  }
-               },
-               {
-                  "name":"limit",
-                  "in":"query",
-                  "required":true,
-                  "schema":{
-                     "maximum":50,
-                     "minimum":0,
-                     "type":"integer",
-                     "format":"int32"
-                  }
-               }
-            ],
-            "responses":{
-               "500":{
-                  "description":"default response",
-                  "content":{
-                     "*/*":{
-                        "schema":{
-                           "$ref":"#/components/schemas/ErrorMessage"
-                        }
-                     }
-                  }
-               },
-               "200":{
-                  "description":"search results matching criteria",
-                  "content":{
-                     "application/json":{
-                        "schema":{
-                           "type":"array",
-                           "items":{
-                              "$ref":"#/components/schemas/InventoryItem"
-                           }
-                        }
-                     }
-                  }
-               },
-               "400":{
-                  "description":"bad input parameter",
-                  "content":{
-                     "application/json":{
-                        "schema":{
-                           "type":"array",
-                           "items":{
-                              "$ref":"#/components/schemas/InventoryItem"
-                           }
-                        }
-                     }
-                  }
-               }
-            }
-         },
-         "post":{
-            "tags":[
-               "inventory",
-               "admins"
-            ],
-            "summary":"Adds an item to the system",
-            "description":"adds an inventory item",
-            "operationId":"addInventory",
-            "requestBody":{
-               "description":"Inventory item to add",
-               "content":{
-                  "application/json":{
-                     "schema":{
-                        "$ref":"#/components/schemas/InventoryItem"
-                     }
-                  }
-               },
-               "required":false
-            },
-            "responses":{
-               "500":{
-                  "description":"default response",
-                  "content":{
-                     "*/*":{
-                        "schema":{
-                           "$ref":"#/components/schemas/ErrorMessage"
-                        }
-                     }
-                  }
-               },
-               "201":{
-                  "description":"item created",
-                  "content":{
-                     "*/*":{
-                        "schema":{
-                           "type":"string"
-                        }
-                     }
-                  }
-               },
-               "400":{
-                  "description":"invalid input, object invalid",
-                  "content":{
-                     "*/*":{
-                        "schema":{
-                           "type":"string"
-                        }
-                     }
-                  }
-               },
-               "409":{
-                  "description":"an existing item already exists",
-                  "content":{
-                     "*/*":{
-                        "schema":{
-                           "type":"string"
-                        }
-                     }
-                  }
-               }
-            }
-         }
       }
    },
    "components":{
@@ -525,47 +505,6 @@
                   "type":"string"
                },
                "message":{
-                  "type":"string"
-               }
-            }
-         },
-         "ItemLightDTO":{
-            "type":"object",
-            "properties":{
-               "description":{
-                  "type":"string"
-               },
-               "price":{
-                  "type":"integer",
-                  "format":"int32"
-               }
-            }
-         },
-         "ItemDTO":{
-            "type":"object",
-            "properties":{
-               "itemID":{
-                  "type":"string"
-               },
-               "description":{
-                  "type":"string"
-               },
-               "price":{
-                  "type":"integer",
-                  "format":"int32"
-               }
-            }
-         },
-         "PersonDTO":{
-            "type":"object",
-            "properties":{
-               "email":{
-                  "type":"string"
-               },
-               "firstName":{
-                  "type":"string"
-               },
-               "lastName":{
                   "type":"string"
                }
             }
@@ -614,6 +553,47 @@
                "phone":{
                   "type":"string",
                   "example":"408-867-5309"
+               }
+            }
+         },
+         "ItemLightDTO":{
+            "type":"object",
+            "properties":{
+               "description":{
+                  "type":"string"
+               },
+               "price":{
+                  "type":"integer",
+                  "format":"int32"
+               }
+            }
+         },
+         "ItemDTO":{
+            "type":"object",
+            "properties":{
+               "itemID":{
+                  "type":"string"
+               },
+               "description":{
+                  "type":"string"
+               },
+               "price":{
+                  "type":"integer",
+                  "format":"int32"
+               }
+            }
+         },
+         "PersonDTO":{
+            "type":"object",
+            "properties":{
+               "email":{
+                  "type":"string"
+               },
+               "firstName":{
+                  "type":"string"
+               },
+               "lastName":{
+                  "type":"string"
                }
             }
          }
