@@ -81,16 +81,6 @@ public class RequestBodyBuilder {
 			MediaAttributes mediaAttributes, int i, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
 
-		io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = parameterBuilder.getParameterAnnotation(
-				handlerMethod, parameterInfo.getParameter(), i,
-				io.swagger.v3.oas.annotations.parameters.RequestBody.class);
-
-		// use documentation as reference
-		if (requestBodyDoc != null) {
-			requestBody = buildRequestBodyFromDoc(requestBodyDoc, mediaAttributes.getClassConsumes(),
-					mediaAttributes.getMethodConsumes(), components, null).orElse(null);
-		}
-
 		RequestPart requestPart = parameterBuilder.getParameterAnnotation(handlerMethod, parameterInfo.getParameter(),
 				i,
 				RequestPart.class);

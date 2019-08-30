@@ -15,14 +15,11 @@ import org.springdoc.core.GeneralInfoBuilder;
 import org.springdoc.core.MediaAttributes;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.RequestBodyBuilder;
 import org.springdoc.core.TagsBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 
 import io.swagger.v3.core.util.ReflectionUtils;
@@ -42,33 +39,35 @@ public abstract class AbstractOpenApiResource {
 	protected AbstractResponseBuilder responseBuilder;
 	protected TagsBuilder tagbuiBuilder;
 	protected OperationBuilder operationParser;
+	protected RequestBodyBuilder requestBodyBuilder;
 	protected GeneralInfoBuilder generalInfoBuilder;
-	protected ApplicationContext context;
+
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, TagsBuilder tagbuiBuilder, OperationBuilder operationParser,
-			GeneralInfoBuilder infoBuilder) {
+			RequestBodyBuilder requestBodyBuilder, GeneralInfoBuilder generalInfoBuilder) {
 		super();
 		this.openAPIBuilder = openAPIBuilder;
 		this.requestBuilder = requestBuilder;
 		this.responseBuilder = responseBuilder;
 		this.tagbuiBuilder = tagbuiBuilder;
 		this.operationParser = operationParser;
-		this.generalInfoBuilder = infoBuilder;
+		this.requestBodyBuilder = requestBodyBuilder;
+		this.generalInfoBuilder = generalInfoBuilder;
 	}
 
 	protected OpenAPI getOpenApi() {
 		Instant start = Instant.now();
 		generalInfoBuilder.build(openAPIBuilder.getOpenAPI());
-		Map<String, Object> restControllersMap = context.getBeansWithAnnotation(RestController.class);
-		Map<String, Object> requestMappingMap = context.getBeansWithAnnotation(RequestMapping.class);
+		Map<String, Object> restControllersMap = generalInfoBuilder.getRestControllersMap();
+		Map<String, Object> requestMappingMap = generalInfoBuilder.getRequestMappingMap();
 		Map<String, Object> restControllers = Stream.of(restControllersMap, requestMappingMap)
 				.flatMap(mapEl -> mapEl.entrySet().stream())
 				.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 						Hidden.class) == null))
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
-		Map<String, Object> findControllerAdvice = context.getBeansWithAnnotation(ControllerAdvice.class);
+		Map<String, Object> findControllerAdvice = generalInfoBuilder.getControllerAdviceMap();
 		// calculate generic responses
 		responseBuilder.buildGenericResponse(openAPIBuilder.getComponents(), findControllerAdvice);
 
@@ -113,6 +112,14 @@ public abstract class AbstractOpenApiResource {
 			if (apiOperation != null) {
 				openAPI = operationParser.parse(components, apiOperation, operation, openAPI, mediaAttributes);
 			}
+
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = ReflectionUtils.getAnnotation(
+					handlerMethod.getMethod(), io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+
+			// RequestBody in Operation
+			requestBodyBuilder.buildRequestBodyFromDoc(requestBodyDoc, mediaAttributes.getClassConsumes(),
+					mediaAttributes.getMethodConsumes(), components, null).ifPresent(operation::setRequestBody);
+
 			// requests
 			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation, mediaAttributes);
 
@@ -125,11 +132,6 @@ public abstract class AbstractOpenApiResource {
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
 		}
-	}
-
-	@Autowired
-	public void setContext(ApplicationContext context) {
-		this.context = context;
 	}
 
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
