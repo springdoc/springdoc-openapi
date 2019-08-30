@@ -13,6 +13,7 @@ import org.springdoc.core.AbstractResponseBuilder;
 import org.springdoc.core.GeneralInfoBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.RequestBodyBuilder;
 import org.springdoc.core.TagsBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -40,8 +41,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, TagsBuilder tagbuiBuilder, OperationBuilder operationParser,
-			GeneralInfoBuilder infoBuilder, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
-		super(openAPIBuilder, requestBuilder, responseBuilder, tagbuiBuilder, operationParser, infoBuilder);
+			GeneralInfoBuilder infoBuilder, RequestBodyBuilder requestBodyBuilder,
+			RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
+		super(openAPIBuilder, requestBuilder, responseBuilder, tagbuiBuilder, operationParser, requestBodyBuilder,
+				infoBuilder);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 

@@ -19,6 +19,9 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.ReflectionUtils;
@@ -189,6 +192,18 @@ public class GeneralInfoBuilder {
 			}
 		}
 		return apiSecurityScheme;
+	}
+
+	public Map<String, Object> getRestControllersMap() {
+		return context.getBeansWithAnnotation(RestController.class);
+	}
+
+	public Map<String, Object> getRequestMappingMap() {
+		return context.getBeansWithAnnotation(RequestMapping.class);
+	}
+
+	public Map<String, Object> getControllerAdviceMap() {
+		return context.getBeansWithAnnotation(ControllerAdvice.class);
 	}
 
 }
