@@ -5,7 +5,8 @@
       "license":{
          "name":"Apache 2.0",
          "url":"http://springdoc.org"
-      }
+      },
+      "version":"v0"
    },
    "servers":[
       {
@@ -81,6 +82,7 @@
                {
                   "name":"skip",
                   "in":"query",
+                  "description":"number of records to skip for pagination",
                   "required":true,
                   "schema":{
                      "minimum":0,
@@ -91,6 +93,7 @@
                {
                   "name":"limit",
                   "in":"query",
+                  "description":"maximum number of records to return",
                   "required":true,
                   "schema":{
                      "maximum":50,
@@ -283,6 +286,40 @@
             }
          }
       },
+      "/people":{
+         "get":{
+            "tags":[
+               "people"
+            ],
+            "description":"List all people",
+            "operationId":"getPeople",
+            "responses":{
+               "200":{
+                  "description":"default response",
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "type":"array",
+                           "items":{
+                              "$ref":"#/components/schemas/PersonDTO"
+                           }
+                        }
+                     }
+                  }
+               },
+               "500":{
+                  "description":"default response",
+                  "content":{
+                     "*/*":{
+                        "schema":{
+                           "$ref":"#/components/schemas/ErrorMessage"
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
       "/{email}":{
          "get":{
             "tags":[
@@ -444,40 +481,6 @@
                      "*/*":{
                         "schema":{
                            "type":"string"
-                        }
-                     }
-                  }
-               },
-               "500":{
-                  "description":"default response",
-                  "content":{
-                     "*/*":{
-                        "schema":{
-                           "$ref":"#/components/schemas/ErrorMessage"
-                        }
-                     }
-                  }
-               }
-            }
-         }
-      },
-      "/people":{
-         "get":{
-            "tags":[
-               "people"
-            ],
-            "description":"List all people",
-            "operationId":"getPeople",
-            "responses":{
-               "200":{
-                  "description":"default response",
-                  "content":{
-                     "application/json":{
-                        "schema":{
-                           "type":"array",
-                           "items":{
-                              "$ref":"#/components/schemas/PersonDTO"
-                           }
                         }
                      }
                   }

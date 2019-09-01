@@ -1,0 +1,54 @@
+{
+   "openapi":"3.0.1",
+   "info":{
+      "title":"OpenAPI definition",
+      "version":"v0"
+   },
+   "servers":[
+      {
+         "url":"http://localhost",
+         "description":"Generated server url"
+      }
+   ],
+   "paths":{
+      "/upload2":{
+         "post":{
+            "operationId":"upload2",
+            "requestBody":{
+               "content":{
+                  "multipart/form-data":{
+                     "schema":{
+                        "type":"object",
+                        "properties":{
+                           "one":{
+                              "type":"string",
+                              "format":"binary"
+                           },
+                           "two":{
+                              "type":"string",
+                              "format":"binary"
+                           }
+                        }
+                     }
+                  }
+               }
+            },
+            "responses":{
+               "200":{
+                  "description":"default response",
+                  "content":{
+                     "*/*":{
+                        "schema":{
+                           "type":"string"
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   },
+   "components":{
+
+   }
+}

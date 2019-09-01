@@ -86,6 +86,16 @@ public abstract class AbstractRequestBuilder {
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
 					requestBodyInfo.incrementNbParam();
 					ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameterDoc);
+					// Get it from parameter level, if not present
+					if (operation.getRequestBody() == null) {
+						io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = parameterBuilder
+								.getParameterAnnotation(handlerMethod, parameters[i], i,
+										io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+						requestBodyBuilder
+								.buildRequestBodyFromDoc(requestBodyDoc, mediaAttributes.getClassConsumes(),
+										mediaAttributes.getMethodConsumes(), components, null)
+								.ifPresent(operation::setRequestBody);
+					}
 					requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod,
 							mediaAttributes, i, parameterInfo, requestBodyInfo);
@@ -128,11 +138,7 @@ public abstract class AbstractRequestBuilder {
 		}
 		// By default
 		if (RequestMethod.GET.equals(requestMethod)) {
-			if (parameter == null) {
-				parameter = this.buildParam(QUERY_PARAM, components, parameters, Boolean.TRUE, pName, null);
-			} else if (parameter.getName() == null) {
-				parameter.setName(pName);
-			}
+			parameter = this.buildParam(QUERY_PARAM, components, parameters, Boolean.TRUE, pName, parameter);
 		}
 		return parameter;
 	}
@@ -141,9 +147,19 @@ public abstract class AbstractRequestBuilder {
 			Boolean required, String name, Parameter parameter) {
 		if (parameter == null)
 			parameter = new Parameter();
-		parameter.setIn(in);
-		parameter.setRequired(required);
-		parameter.setName(name);
+
+		if (StringUtils.isBlank(parameter.getName())) {
+			parameter.setName(name);
+		}
+
+		if (StringUtils.isBlank(parameter.getIn())) {
+			parameter.setIn(in);
+		}
+
+		if (required != null && parameter.getRequired() == null) {
+			parameter.setRequired(required);
+		}
+
 		if (parameter.getSchema() == null) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameters, name, null, null);
 			parameter.setSchema(schema);

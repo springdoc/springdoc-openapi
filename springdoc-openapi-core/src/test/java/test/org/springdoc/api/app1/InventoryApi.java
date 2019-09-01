@@ -44,7 +44,7 @@ public interface InventoryApi {
 	@GetMapping(value = "/inventory", produces = { "application/json" })
 	ResponseEntity<List<InventoryItem>> searchInventory(
 			@Valid @RequestParam(value = "searchString", required = false) String searchString,
-			@Min(0) @Parameter(name = "number of records to skip for pagination") @Valid @RequestParam(value = "skip", required = true) Integer skip,
-			@Min(0) @Max(50) @Parameter(name = "maximum number of records to return") @Valid @RequestParam(value = "limit", required = true) Integer limit);
+			@Min(0) @Parameter(description = "number of records to skip for pagination") @Valid @RequestParam(value = "skip", required = true) Integer skip,
+			@Min(0) @Max(50) @Parameter(description = "maximum number of records to return") @Valid @RequestParam(value = "limit", required = true) Integer limit);
 
 }

@@ -21,7 +21,7 @@ public class SpringDocTestApp {
 		return new OpenAPI()
 				.components(new Components().addSecuritySchemes("basicScheme",
 						new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
-				.info(new Info().title("SpringShop API")
+				.info(new Info().title("SpringShop API").version("v0")
 						.license(new License().name("Apache 2.0").url("http://springdoc.org")));
 	}
 }
