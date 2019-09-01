@@ -81,9 +81,17 @@ public class RequestBodyBuilder {
 			MediaAttributes mediaAttributes, int i, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
 
+		// Get it from parameter level, if not present
+		if (requestBody == null) {
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = parameterBuilder
+					.getParameterAnnotation(handlerMethod, parameterInfo.getParameter(), i,
+							io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+			requestBody = this.buildRequestBodyFromDoc(requestBodyDoc, mediaAttributes.getClassConsumes(),
+					mediaAttributes.getMethodConsumes(), components, null).orElse(null);
+		}
+
 		RequestPart requestPart = parameterBuilder.getParameterAnnotation(handlerMethod, parameterInfo.getParameter(),
-				i,
-				RequestPart.class);
+				i, RequestPart.class);
 		String paramName = null;
 		if (requestPart != null)
 			paramName = StringUtils.defaultIfEmpty(requestPart.value(), requestPart.name());
