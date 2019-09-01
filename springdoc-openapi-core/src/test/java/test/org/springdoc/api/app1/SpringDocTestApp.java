@@ -11,10 +11,10 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @SpringBootApplication
-public class SpringDocTestApp1 {
-  public static void main(String[] args) {
-    SpringApplication.run(SpringDocTestApp1.class, args);
-  }
+public class SpringDocTestApp {
+	public static void main(String[] args) {
+		SpringApplication.run(SpringDocTestApp.class, args);
+	}
 
 	@Bean
 	public OpenAPI customOpenAPI() {

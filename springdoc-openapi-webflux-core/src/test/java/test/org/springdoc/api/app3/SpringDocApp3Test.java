@@ -26,6 +26,9 @@ public class SpringDocApp3Test {
 	@Autowired
 	private WebTestClient webTestClient;
 
+	@Autowired
+	private ObjectMapper objectMapper;
+
 	@Test
 	public void testApp3() throws Exception {
 		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
@@ -34,13 +37,11 @@ public class SpringDocApp3Test {
 
 		String result = new String(getResult.getResponseBody());
 
-		ObjectMapper mapper = new ObjectMapper();
-
 		Path path = Paths.get(getClass().getClassLoader().getResource("results/app3.json").toURI());
 		byte[] fileBytes = Files.readAllBytes(path);
 		String expected = new String(fileBytes);
 
-		assertEquals(mapper.readTree(expected), mapper.readTree(result));
+		assertEquals(objectMapper.readTree(expected), objectMapper.readTree(result));
 	}
 
 }
