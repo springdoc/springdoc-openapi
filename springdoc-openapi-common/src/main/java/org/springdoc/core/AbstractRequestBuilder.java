@@ -86,16 +86,6 @@ public abstract class AbstractRequestBuilder {
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
 					requestBodyInfo.incrementNbParam();
 					ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameterDoc);
-					// Get it from parameter level, if not present
-					if (operation.getRequestBody() == null) {
-						io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = parameterBuilder
-								.getParameterAnnotation(handlerMethod, parameters[i], i,
-										io.swagger.v3.oas.annotations.parameters.RequestBody.class);
-						requestBodyBuilder
-								.buildRequestBodyFromDoc(requestBodyDoc, mediaAttributes.getClassConsumes(),
-										mediaAttributes.getMethodConsumes(), components, null)
-								.ifPresent(operation::setRequestBody);
-					}
 					requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod,
 							mediaAttributes, i, parameterInfo, requestBodyInfo);
