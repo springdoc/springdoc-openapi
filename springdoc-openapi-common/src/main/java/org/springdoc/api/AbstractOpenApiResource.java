@@ -16,7 +16,6 @@ import org.springdoc.core.MediaAttributes;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.RequestBodyBuilder;
-import org.springdoc.core.TagsBuilder;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,20 +36,18 @@ public abstract class AbstractOpenApiResource {
 	protected OpenAPIBuilder openAPIBuilder;
 	protected AbstractRequestBuilder requestBuilder;
 	protected AbstractResponseBuilder responseBuilder;
-	protected TagsBuilder tagbuiBuilder;
 	protected OperationBuilder operationParser;
 	protected RequestBodyBuilder requestBodyBuilder;
 	protected GeneralInfoBuilder generalInfoBuilder;
 
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
-			AbstractResponseBuilder responseBuilder, TagsBuilder tagbuiBuilder, OperationBuilder operationParser,
+			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestBodyBuilder requestBodyBuilder, GeneralInfoBuilder generalInfoBuilder) {
 		super();
 		this.openAPIBuilder = openAPIBuilder;
 		this.requestBuilder = requestBuilder;
 		this.responseBuilder = responseBuilder;
-		this.tagbuiBuilder = tagbuiBuilder;
 		this.operationParser = operationParser;
 		this.requestBodyBuilder = requestBodyBuilder;
 		this.generalInfoBuilder = generalInfoBuilder;
@@ -104,7 +101,7 @@ public abstract class AbstractOpenApiResource {
 			Operation operation = new Operation();
 
 			// compute tags
-			operation = tagbuiBuilder.build(handlerMethod, operation, openAPI);
+			operation = generalInfoBuilder.buildTags(handlerMethod, operation, openAPI);
 
 			// Add documentation from operation annotation
 			io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
