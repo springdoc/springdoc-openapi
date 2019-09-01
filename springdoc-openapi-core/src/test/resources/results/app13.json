@@ -1,0 +1,60 @@
+{
+   "openapi":"3.0.1",
+   "info":{
+      "title":"OpenAPI definition",
+      "version":"v0"
+   },
+   "servers":[
+      {
+         "url":"http://localhost",
+         "description":"Generated server url"
+      }
+   ],
+   "paths":{
+      "/persons":{
+         "get":{
+            "operationId":"persons",
+            "parameters":[
+               {
+                  "name":"dto",
+                  "in":"query",
+                  "required":true,
+                  "schema":{
+                     "$ref":"#/components/schemas/PersonDTO"
+                  }
+               }
+            ],
+            "responses":{
+               "200":{
+                  "description":"default response",
+                  "content":{
+                     "*/*":{
+                        "schema":{
+                           "type":"string"
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   },
+   "components":{
+      "schemas":{
+         "PersonDTO":{
+            "type":"object",
+            "properties":{
+               "email":{
+                  "type":"string"
+               },
+               "firstName":{
+                  "type":"string"
+               },
+               "lastName":{
+                  "type":"string"
+               }
+            }
+         }
+      }
+   }
+}

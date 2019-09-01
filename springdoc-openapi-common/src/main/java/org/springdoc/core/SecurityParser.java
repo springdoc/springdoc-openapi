@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.models.security.OAuthFlow;
 import io.swagger.v3.oas.models.security.OAuthFlows;
@@ -81,6 +82,8 @@ public class SecurityParser {
 		}
 		if (StringUtils.isNotBlank(securityScheme.name())) {
 			key = securityScheme.name();
+			if (SecuritySchemeType.APIKEY.toString().equals(securitySchemeObject.getType().toString()))
+				securitySchemeObject.setName(securityScheme.name());
 		}
 
 		if (securityScheme.extensions().length > 0) {
