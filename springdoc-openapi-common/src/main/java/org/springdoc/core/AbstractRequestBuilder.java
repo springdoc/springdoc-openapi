@@ -102,13 +102,17 @@ public abstract class AbstractRequestBuilder {
 				}
 			}
 		}
+
+		setParams(operation, operationParameters, requestBodyInfo);
+		return operation;
+	}
+
+	private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
 		if (!CollectionUtils.isEmpty(operationParameters)) {
 			operation.setParameters(operationParameters);
 		}
 		if (requestBodyInfo.getRequestBody() != null)
 			operation.setRequestBody(requestBodyInfo.getRequestBody());
-
-		return operation;
 	}
 
 	private boolean isValidPararameter(Parameter parameter) {

@@ -4,9 +4,12 @@ import static org.springdoc.core.Constants.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -22,12 +25,15 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.HandlerMethod;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
@@ -65,6 +71,47 @@ public class GeneralInfoBuilder {
 
 		// add security schemes
 		this.calculateSecuritySchemes(openAPI.getComponents());
+	}
+
+	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
+
+		// class tags
+		List<io.swagger.v3.oas.annotations.tags.Tag> classTags = ReflectionUtils
+				.getRepeatableAnnotations(handlerMethod.getBeanType(), io.swagger.v3.oas.annotations.tags.Tag.class);
+
+		// method tags
+		List<io.swagger.v3.oas.annotations.tags.Tag> methodTags = ReflectionUtils
+				.getRepeatableAnnotations(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.tags.Tag.class);
+
+		List<io.swagger.v3.oas.annotations.tags.Tag> allTags = new ArrayList<>();
+		Set<String> tagsStr = new HashSet<>();
+
+		if (!CollectionUtils.isEmpty(methodTags)) {
+			tagsStr.addAll(methodTags.stream().map(Tag::name).collect(Collectors.toSet()));
+			allTags.addAll(methodTags);
+		}
+
+		if (!CollectionUtils.isEmpty(classTags)) {
+			tagsStr.addAll(classTags.stream().map(Tag::name).collect(Collectors.toSet()));
+			allTags.addAll(classTags);
+		}
+
+		Optional<Set<io.swagger.v3.oas.models.tags.Tag>> tags = AnnotationsUtils
+				.getTags(allTags.toArray(new Tag[allTags.size()]), true);
+
+		if (tags.isPresent()) {
+			Set<io.swagger.v3.oas.models.tags.Tag> tagsSet = tags.get();
+			// Existing tags
+			List<io.swagger.v3.oas.models.tags.Tag> openApiTags = openAPI.getTags();
+			if (!CollectionUtils.isEmpty(openApiTags))
+				tagsSet.addAll(openApiTags);
+			openAPI.setTags(new ArrayList<>(tagsSet));
+		}
+
+		if (!CollectionUtils.isEmpty(tagsStr))
+			operation.setTags(new ArrayList<String>(tagsStr));
+
+		return operation;
 	}
 
 	public void setServerBaseUrl(String serverBaseUrl) {
