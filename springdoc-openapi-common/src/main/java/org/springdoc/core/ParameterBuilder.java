@@ -34,6 +34,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.FileSchema;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 
@@ -171,7 +172,10 @@ public class ParameterBuilder {
 		}
 
 		if (MultipartFile.class.isAssignableFrom(ct.getRawClass())) {
-			schemaN = requestBodyInfo.initMergedSchema();
+			if (requestBodyInfo != null)
+				schemaN = requestBodyInfo.initMergedSchema();
+			else
+				schemaN = new ObjectSchema();
 			schemaN.addProperties(paramName, new FileSchema());
 			return schemaN;
 		}
@@ -179,7 +183,10 @@ public class ParameterBuilder {
 		if (returnType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
 			if (parameterizedType.getActualTypeArguments()[0].getTypeName().equals(MultipartFile.class.getName())) {
-				schemaN = requestBodyInfo.initMergedSchema();
+				if (requestBodyInfo != null)
+					schemaN = requestBodyInfo.initMergedSchema();
+				else
+					schemaN = new ObjectSchema();
 				ArraySchema schemafile = new ArraySchema();
 				schemafile.items(new FileSchema());
 				schemaN.addProperties(paramName, new ArraySchema().items(new FileSchema()));
