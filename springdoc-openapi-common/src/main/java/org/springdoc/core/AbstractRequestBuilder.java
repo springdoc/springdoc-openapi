@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ValueConstants;
 import org.springframework.web.method.HandlerMethod;
 
 import io.swagger.v3.oas.models.Components;
@@ -87,8 +88,8 @@ public abstract class AbstractRequestBuilder {
 					requestBodyInfo.incrementNbParam();
 					ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameterDoc);
 					requestBodyInfo.setRequestBody(operation.getRequestBody());
-					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod,
-							mediaAttributes, i, parameterInfo, requestBodyInfo);
+					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, mediaAttributes, i,
+							parameterInfo, requestBodyInfo);
 				}
 			}
 		}
@@ -120,25 +121,34 @@ public abstract class AbstractRequestBuilder {
 
 		if (requestHeader != null) {
 			String name = StringUtils.isBlank(requestHeader.value()) ? pName : requestHeader.value();
-			parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(), name,
-					parameter);
+			if (!ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()))
+				parameter = this.buildParam(HEADER_PARAM, components, parameters, false, name, parameter,
+						requestHeader.defaultValue());
+			else
+				parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(), name,
+						parameter, null);
 		} else if (requestParam != null) {
 			String name = StringUtils.isBlank(requestParam.value()) ? pName : requestParam.value();
-			parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(), name, parameter);
+			if (!ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()))
+				parameter = this.buildParam(QUERY_PARAM, components, parameters, false, name, parameter,
+						requestParam.defaultValue());
+			else
+				parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(), name,
+						parameter, null);
 		} else if (pathVar != null) {
 			String name = StringUtils.isBlank(pathVar.value()) ? pName : pathVar.value();
 			// check if PATH PARAM
-			parameter = this.buildParam(PATH_PARAM, components, parameters, Boolean.TRUE, name, parameter);
+			parameter = this.buildParam(PATH_PARAM, components, parameters, Boolean.TRUE, name, parameter, null);
 		}
 		// By default
 		if (RequestMethod.GET.equals(requestMethod)) {
-			parameter = this.buildParam(QUERY_PARAM, components, parameters, Boolean.TRUE, pName, parameter);
+			parameter = this.buildParam(QUERY_PARAM, components, parameters, Boolean.TRUE, pName, parameter, null);
 		}
 		return parameter;
 	}
 
 	private Parameter buildParam(String in, Components components, java.lang.reflect.Parameter parameters,
-			Boolean required, String name, Parameter parameter) {
+			Boolean required, String name, Parameter parameter, String defaultValue) {
 		if (parameter == null)
 			parameter = new Parameter();
 
@@ -156,6 +166,8 @@ public abstract class AbstractRequestBuilder {
 
 		if (parameter.getSchema() == null) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameters, name, null, null);
+			if (defaultValue != null)
+				schema.setDefault(defaultValue);
 			parameter.setSchema(schema);
 		}
 		return parameter;
