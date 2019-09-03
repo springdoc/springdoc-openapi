@@ -4,7 +4,9 @@ import static org.springdoc.core.Constants.*;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +26,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.callbacks.Callback;
 import io.swagger.v3.oas.models.headers.Header;
 import io.swagger.v3.oas.models.links.Link;
 import io.swagger.v3.oas.models.media.Schema;
@@ -105,6 +108,74 @@ public class OperationBuilder {
 				io.swagger.v3.oas.annotations.Operation.class);
 		return (apiOperation != null && (apiOperation.hidden()))
 				|| (ReflectionUtils.getAnnotation(method, Hidden.class) != null);
+	}
+
+	public Optional<Map<String, Callback>> buildCallbacks(
+			List<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks, Components components, OpenAPI openAPI,
+			MediaAttributes mediaAttributes) {
+		Map<String, Callback> callbacks = new LinkedHashMap<>();
+
+		for (io.swagger.v3.oas.annotations.callbacks.Callback methodCallback : apiCallbacks) {
+			Map<String, Callback> callbackMap = new HashMap<>();
+			if (methodCallback == null) {
+				callbacks.putAll(callbackMap);
+				break;
+			}
+			Callback callbackObject = new Callback();
+			if (StringUtils.isNotBlank(methodCallback.ref())) {
+				callbackObject.set$ref(methodCallback.ref());
+				callbackMap.put(methodCallback.name(), callbackObject);
+				callbacks.putAll(callbackMap);
+				break;
+			}
+
+			PathItem pathItemObject = new PathItem();
+			for (io.swagger.v3.oas.annotations.Operation callbackOperation : methodCallback.operation()) {
+				Operation callbackNewOperation = new Operation();
+				parse(components, callbackOperation, callbackNewOperation, openAPI, mediaAttributes);
+				setPathItemOperation(pathItemObject, callbackOperation.method(), callbackNewOperation);
+			}
+			callbackObject.addPathItem(methodCallback.callbackUrlExpression(), pathItemObject);
+			callbackMap.put(methodCallback.name(), callbackObject);
+			callbacks.putAll(callbackMap);
+		}
+
+		if (CollectionUtils.isEmpty(callbacks)) {
+			return Optional.empty();
+		} else
+			return Optional.of(callbacks);
+	}
+
+	private void setPathItemOperation(PathItem pathItemObject, String method, Operation operation) {
+		switch (method) {
+		case POST_METHOD:
+			pathItemObject.post(operation);
+			break;
+		case GET_METHOD:
+			pathItemObject.get(operation);
+			break;
+		case DELETE_METHOD:
+			pathItemObject.delete(operation);
+			break;
+		case PUT_METHOD:
+			pathItemObject.put(operation);
+			break;
+		case PATCH_METHOD:
+			pathItemObject.patch(operation);
+			break;
+		case TRACE_METHOD:
+			pathItemObject.trace(operation);
+			break;
+		case HEAD_METHOD:
+			pathItemObject.head(operation);
+			break;
+		case OPTIONS_METHOD:
+			pathItemObject.options(operation);
+			break;
+		default:
+			// Do nothing here
+			break;
+		}
 	}
 
 	private void buildExtensions(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation) {
