@@ -2,6 +2,7 @@ package org.springdoc.api;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,7 +40,6 @@ public abstract class AbstractOpenApiResource {
 	protected OperationBuilder operationParser;
 	protected RequestBodyBuilder requestBodyBuilder;
 	protected GeneralInfoBuilder generalInfoBuilder;
-
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -123,8 +123,17 @@ public abstract class AbstractOpenApiResource {
 			// responses
 			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation,
 					mediaAttributes.getAllProduces());
-
 			operation.setResponses(apiResponses);
+
+			List<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks = ReflectionUtils
+					.getRepeatableAnnotations(handlerMethod.getMethod(),
+							io.swagger.v3.oas.annotations.callbacks.Callback.class);
+
+			// callbacks
+			if (apiCallbacks != null) {
+				operationParser.buildCallbacks(apiCallbacks, components, openAPI, mediaAttributes)
+						.ifPresent(operation::setCallbacks);
+			}
 
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
