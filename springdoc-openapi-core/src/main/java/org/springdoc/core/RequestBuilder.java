@@ -13,7 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 public class RequestBuilder extends AbstractRequestBuilder {
 
-	public RequestBuilder(ParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder) {
+	public RequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder) {
 		super(parameterBuilder, requestBodyBuilder);
 	}
 
