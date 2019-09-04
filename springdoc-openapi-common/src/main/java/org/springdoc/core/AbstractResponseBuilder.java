@@ -5,7 +5,6 @@ import static org.springdoc.core.Constants.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -198,8 +197,6 @@ public abstract class AbstractResponseBuilder {
 		}
 		if (returnType instanceof ParameterizedType) {
 			schemaN = calculateSchemaFromParameterizedType(components, (ParameterizedType) returnType);
-		} else if (returnType instanceof TypeVariable) {
-			schemaN = AnnotationsUtils.resolveSchemaFromType((Class) returnType, null, null);
 		} else if (ResponseEntity.class.getName().equals(returnType.getTypeName())) {
 			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
 		}
