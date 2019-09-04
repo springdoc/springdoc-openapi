@@ -38,11 +38,11 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 @Component
 public class OperationBuilder {
 
-	private ParameterBuilder parameterBuilder;
+	private AbstractParameterBuilder parameterBuilder;
 	private RequestBodyBuilder requestBodyBuilder;
 	private SecurityParser securityParser;
 
-	public OperationBuilder(ParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+	public OperationBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			SecurityParser securityParser) {
 		super();
 		this.parameterBuilder = parameterBuilder;

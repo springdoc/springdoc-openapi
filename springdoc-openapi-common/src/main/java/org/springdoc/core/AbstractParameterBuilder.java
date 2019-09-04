@@ -17,11 +17,8 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.http.codec.multipart.FilePart;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -39,11 +36,10 @@ import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 
-@Component
 @SuppressWarnings("rawtypes")
-public class ParameterBuilder {
+public abstract class AbstractParameterBuilder {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParameterBuilder.class);
 
 	public Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
 		Parameter result = paramCalcul;
@@ -172,8 +168,7 @@ public class ParameterBuilder {
 			}
 		}
 
-		if (MultipartFile.class.isAssignableFrom(ct.getRawClass())
-				|| FilePart.class.isAssignableFrom(ct.getRawClass())) {
+		if (isFile(ct)) {
 			if (requestBodyInfo != null)
 				schemaN = requestBodyInfo.initMergedSchema();
 			else
@@ -184,8 +179,7 @@ public class ParameterBuilder {
 
 		if (returnType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
-			if (MultipartFile.class.getName().equals(parameterizedType.getActualTypeArguments()[0].getTypeName())
-					|| FilePart.class.getName().equals(parameterizedType.getActualTypeArguments()[0].getTypeName())) {
+			if (isFile(parameterizedType)) {
 				if (requestBodyInfo != null)
 					schemaN = requestBodyInfo.initMergedSchema();
 				else
@@ -206,6 +200,10 @@ public class ParameterBuilder {
 
 		return schemaN;
 	}
+
+	abstract boolean isFile(ParameterizedType parameterizedType);
+
+	abstract boolean isFile(JavaType ct);
 
 	public <A extends Annotation> A getParameterAnnotation(HandlerMethod handlerMethod,
 			java.lang.reflect.Parameter parameter, int i, Class<A> annotationType) {

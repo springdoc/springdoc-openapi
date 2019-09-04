@@ -35,11 +35,11 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 
 public abstract class AbstractRequestBuilder {
 
-	private ParameterBuilder parameterBuilder;
+	private AbstractParameterBuilder parameterBuilder;
 
 	private RequestBodyBuilder requestBodyBuilder;
 
-	protected AbstractRequestBuilder(ParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder) {
+	protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyBuilder = requestBodyBuilder;

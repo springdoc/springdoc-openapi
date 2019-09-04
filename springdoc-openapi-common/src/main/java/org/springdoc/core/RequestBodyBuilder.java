@@ -22,9 +22,9 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 @Component
 public class RequestBodyBuilder {
 
-	private ParameterBuilder parameterBuilder;
+	private AbstractParameterBuilder parameterBuilder;
 
-	public RequestBodyBuilder(ParameterBuilder parameterBuilder) {
+	public RequestBodyBuilder(AbstractParameterBuilder parameterBuilder) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 	}
