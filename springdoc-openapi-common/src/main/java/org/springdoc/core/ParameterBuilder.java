@@ -17,6 +17,7 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -171,7 +172,8 @@ public class ParameterBuilder {
 			}
 		}
 
-		if (MultipartFile.class.isAssignableFrom(ct.getRawClass())) {
+		if (MultipartFile.class.isAssignableFrom(ct.getRawClass())
+				|| FilePart.class.isAssignableFrom(ct.getRawClass())) {
 			if (requestBodyInfo != null)
 				schemaN = requestBodyInfo.initMergedSchema();
 			else
@@ -182,7 +184,8 @@ public class ParameterBuilder {
 
 		if (returnType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
-			if (parameterizedType.getActualTypeArguments()[0].getTypeName().equals(MultipartFile.class.getName())) {
+			if (MultipartFile.class.getName().equals(parameterizedType.getActualTypeArguments()[0].getTypeName())
+					|| FilePart.class.getName().equals(parameterizedType.getActualTypeArguments()[0].getTypeName())) {
 				if (requestBodyInfo != null)
 					schemaN = requestBodyInfo.initMergedSchema();
 				else
