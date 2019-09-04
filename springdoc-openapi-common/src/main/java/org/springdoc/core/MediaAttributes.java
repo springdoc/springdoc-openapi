@@ -58,26 +58,26 @@ public class MediaAttributes {
 			PostMapping reqPostMappringMethod = ReflectionUtils.getAnnotation(method, PostMapping.class);
 			if (reqPostMappringMethod != null) {
 				fillMethods(reqPostMappringMethod.produces(), reqPostMappringMethod.consumes());
+				break;
 			}
-			break;
 		case GET:
 			GetMapping reqGetMappringMethod = ReflectionUtils.getAnnotation(method, GetMapping.class);
 			if (reqGetMappringMethod != null) {
 				fillMethods(reqGetMappringMethod.produces(), reqGetMappringMethod.consumes());
+				break;
 			}
-			break;
 		case DELETE:
 			DeleteMapping reqDeleteMappringMethod = ReflectionUtils.getAnnotation(method, DeleteMapping.class);
 			if (reqDeleteMappringMethod != null) {
 				fillMethods(reqDeleteMappringMethod.produces(), reqDeleteMappringMethod.consumes());
+				break;
 			}
-			break;
 		case PUT:
 			PutMapping reqPutMappringMethod = ReflectionUtils.getAnnotation(method, PutMapping.class);
 			if (reqPutMappringMethod != null) {
 				fillMethods(reqPutMappringMethod.produces(), reqPutMappringMethod.consumes());
+				break;
 			}
-			break;
 		default:
 			RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(method, RequestMapping.class);
 			if (reqMappringMethod != null) {
