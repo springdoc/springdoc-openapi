@@ -140,9 +140,9 @@ public class OperationBuilder {
 			callbacks.putAll(callbackMap);
 		}
 
-		if (CollectionUtils.isEmpty(callbacks)) {
+		if (CollectionUtils.isEmpty(callbacks))
 			return Optional.empty();
-		} else
+		else
 			return Optional.of(callbacks);
 	}
 
