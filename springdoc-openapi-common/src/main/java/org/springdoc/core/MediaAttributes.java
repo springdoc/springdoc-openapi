@@ -17,8 +17,8 @@ public class MediaAttributes {
 
 	private String[] classProduces;
 	private String[] classConsumes;
-	private String[] methodProduces;
-	private String[] methodConsumes;
+	private String[] methodProduces = {};
+	private String[] methodConsumes = {};
 
 	public String[] getClassProduces() {
 		return classProduces;
@@ -53,38 +53,35 @@ public class MediaAttributes {
 	}
 
 	public void calculateConsumesProduces(RequestMethod requestMethod, Method method) {
-		switch (requestMethod) {
-		case POST:
-			PostMapping reqPostMappringMethod = ReflectionUtils.getAnnotation(method, PostMapping.class);
-			if (reqPostMappringMethod != null) {
-				fillMethods(reqPostMappringMethod.produces(), reqPostMappringMethod.consumes());
-				break;
-			}
-		case GET:
-			GetMapping reqGetMappringMethod = ReflectionUtils.getAnnotation(method, GetMapping.class);
-			if (reqGetMappringMethod != null) {
-				fillMethods(reqGetMappringMethod.produces(), reqGetMappringMethod.consumes());
-				break;
-			}
-		case DELETE:
-			DeleteMapping reqDeleteMappringMethod = ReflectionUtils.getAnnotation(method, DeleteMapping.class);
-			if (reqDeleteMappringMethod != null) {
-				fillMethods(reqDeleteMappringMethod.produces(), reqDeleteMappringMethod.consumes());
-				break;
-			}
-		case PUT:
-			PutMapping reqPutMappringMethod = ReflectionUtils.getAnnotation(method, PutMapping.class);
-			if (reqPutMappringMethod != null) {
-				fillMethods(reqPutMappringMethod.produces(), reqPutMappringMethod.consumes());
-				break;
-			}
-		default:
-			RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(method, RequestMapping.class);
-			if (reqMappringMethod != null) {
-				fillMethods(reqMappringMethod.produces(), reqMappringMethod.consumes());
-			}
-			break;
+		PostMapping reqPostMappringMethod = ReflectionUtils.getAnnotation(method, PostMapping.class);
+		if (reqPostMappringMethod != null) {
+			fillMethods(reqPostMappringMethod.produces(), reqPostMappringMethod.consumes());
+			return;
 		}
+
+		GetMapping reqGetMappringMethod = ReflectionUtils.getAnnotation(method, GetMapping.class);
+		if (reqGetMappringMethod != null) {
+			fillMethods(reqGetMappringMethod.produces(), reqGetMappringMethod.consumes());
+			return;
+		}
+
+		DeleteMapping reqDeleteMappringMethod = ReflectionUtils.getAnnotation(method, DeleteMapping.class);
+		if (reqDeleteMappringMethod != null) {
+			fillMethods(reqDeleteMappringMethod.produces(), reqDeleteMappringMethod.consumes());
+			return;
+		}
+
+		PutMapping reqPutMappringMethod = ReflectionUtils.getAnnotation(method, PutMapping.class);
+		if (reqPutMappringMethod != null) {
+			fillMethods(reqPutMappringMethod.produces(), reqPutMappringMethod.consumes());
+			return;
+		}
+
+		RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(method, RequestMapping.class);
+		if (reqMappringMethod != null) {
+			fillMethods(reqMappringMethod.produces(), reqMappringMethod.consumes());
+		}
+
 	}
 
 	private void fillMethods(String[] produces, String[] consumes) {

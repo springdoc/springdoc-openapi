@@ -18,9 +18,7 @@
                "200":{
                   "description":"default response",
                   "content":{
-                     "*/*":{
 
-                     }
                   }
                }
             }
