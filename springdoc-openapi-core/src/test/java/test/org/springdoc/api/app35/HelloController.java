@@ -17,7 +17,7 @@ public class HelloController {
 	@Operation(summary = "Get thing", responses = {
 			@ApiResponse(description = "Successful Operation", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
 			@ApiResponse(responseCode = "404", description = "Not found", content = @Content),
-			@ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content) })
+			@ApiResponse(responseCode = "401", description = "Authentication Failure", content = @Content(schema = @Schema(hidden = true))) })
 	@RequestMapping(path = "/testme", method = RequestMethod.GET)
 	ResponseEntity<String> testme() {
 		return ResponseEntity.ok("Hello");
