@@ -148,7 +148,6 @@ public abstract class AbstractParameterBuilder {
 
 	public Schema calculateSchema(Components components, java.lang.reflect.Parameter parameter, String paramName,
 			Type type, RequestBodyInfo requestBodyInfo) {
-
 		Schema schemaN = null;
 		Class<?> schemaImplementation = null;
 		Type returnType;
@@ -180,25 +179,34 @@ public abstract class AbstractParameterBuilder {
 		if (returnType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
 			if (isFile(parameterizedType)) {
-				if (requestBodyInfo != null)
-					schemaN = requestBodyInfo.initMergedSchema();
-				else
-					schemaN = new ObjectSchema();
-				ArraySchema schemafile = new ArraySchema();
-				schemafile.items(new FileSchema());
-				schemaN.addProperties(paramName, new ArraySchema().items(new FileSchema()));
-				return schemaN;
+				return extractFileSchema(paramName, requestBodyInfo);
 			}
 			schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType);
 		} else {
 			schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components);
 		}
-		if (requestBodyInfo != null && requestBodyInfo.getMergedSchema() != null) {
+		if (isRequestBodySchema(requestBodyInfo)) {
 			requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
 			schemaN = requestBodyInfo.getMergedSchema();
 		}
 
 		return schemaN;
+	}
+
+	private Schema extractFileSchema(String paramName, RequestBodyInfo requestBodyInfo) {
+		Schema schemaN;
+		if (requestBodyInfo != null)
+			schemaN = requestBodyInfo.initMergedSchema();
+		else
+			schemaN = new ObjectSchema();
+		ArraySchema schemafile = new ArraySchema();
+		schemafile.items(new FileSchema());
+		schemaN.addProperties(paramName, new ArraySchema().items(new FileSchema()));
+		return schemaN;
+	}
+
+	private boolean isRequestBodySchema(RequestBodyInfo requestBodyInfo) {
+		return requestBodyInfo != null && requestBodyInfo.getMergedSchema() != null;
 	}
 
 	abstract boolean isFile(ParameterizedType parameterizedType);

@@ -120,21 +120,9 @@ public abstract class AbstractRequestBuilder {
 				PathVariable.class);
 
 		if (requestHeader != null) {
-			String name = StringUtils.isBlank(requestHeader.value()) ? pName : requestHeader.value();
-			if (!ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()))
-				parameter = this.buildParam(HEADER_PARAM, components, parameters, false, name, parameter,
-						requestHeader.defaultValue());
-			else
-				parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(), name,
-						parameter, null);
+			parameter = buildHeaderParam(pName, components, parameters, parameter, requestHeader);
 		} else if (requestParam != null) {
-			String name = StringUtils.isBlank(requestParam.value()) ? pName : requestParam.value();
-			if (!ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()))
-				parameter = this.buildParam(QUERY_PARAM, components, parameters, false, name, parameter,
-						requestParam.defaultValue());
-			else
-				parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(), name,
-						parameter, null);
+			parameter = buildQueryParam(pName, components, parameters, parameter, requestParam);
 		} else if (pathVar != null) {
 			String name = StringUtils.isBlank(pathVar.value()) ? pName : pathVar.value();
 			// check if PATH PARAM
@@ -144,6 +132,30 @@ public abstract class AbstractRequestBuilder {
 		if (RequestMethod.GET.equals(requestMethod)) {
 			parameter = this.buildParam(QUERY_PARAM, components, parameters, Boolean.TRUE, pName, parameter, null);
 		}
+		return parameter;
+	}
+
+	private Parameter buildQueryParam(String pName, Components components, java.lang.reflect.Parameter parameters,
+			Parameter parameter, RequestParam requestParam) {
+		String name = StringUtils.isBlank(requestParam.value()) ? pName : requestParam.value();
+		if (!ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()))
+			parameter = this.buildParam(QUERY_PARAM, components, parameters, false, name, parameter,
+					requestParam.defaultValue());
+		else
+			parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(), name,
+					parameter, null);
+		return parameter;
+	}
+
+	private Parameter buildHeaderParam(String pName, Components components, java.lang.reflect.Parameter parameters,
+			Parameter parameter, RequestHeader requestHeader) {
+		String name = StringUtils.isBlank(requestHeader.value()) ? pName : requestHeader.value();
+		if (!ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()))
+			parameter = this.buildParam(HEADER_PARAM, components, parameters, false, name, parameter,
+					requestHeader.defaultValue());
+		else
+			parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(), name,
+					parameter, null);
 		return parameter;
 	}
 
