@@ -96,7 +96,7 @@ public abstract class AbstractOpenApiResource {
 				mediaAttributes.setClassProduces(reqMappringClass.produces());
 			}
 
-			mediaAttributes.calculateConsumesProduces(handlerMethod.getMethod());
+			mediaAttributes.calculateConsumesProduces(requestMethod, handlerMethod.getMethod());
 
 			Operation operation = new Operation();
 
