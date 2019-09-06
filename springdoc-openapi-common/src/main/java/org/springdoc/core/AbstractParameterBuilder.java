@@ -191,7 +191,7 @@ public abstract class AbstractParameterBuilder {
 			}
 			schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType);
 		} else {
-			schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, null);
+			schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components);
 		}
 		if (requestBodyInfo != null && requestBodyInfo.getMergedSchema() != null) {
 			requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
