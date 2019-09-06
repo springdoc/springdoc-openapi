@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -35,23 +36,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		if (primitiveType != null) {
 			schemaObject = primitiveType.createProperty();
 		} else {
-			schemaObject = new Schema();
-			ResolvedSchema resolvedSchema = ModelConverters.getInstance().readAllAsResolvedSchema(
-					new AnnotatedType().type(schemaImplementation).jsonViewAnnotation(jsonViewAnnotation));
-			Map<String, Schema> schemaMap;
-			if (resolvedSchema != null) {
-				schemaMap = resolvedSchema.referencedSchemas;
-				schemaMap.forEach((key, referencedSchema) -> {
-					if (components != null) {
-						components.addSchemas(key, referencedSchema);
-					}
-				});
-				if (StringUtils.isNotBlank(resolvedSchema.schema.getName())) {
-					schemaObject.set$ref(COMPONENTS_REF + resolvedSchema.schema.getName());
-				} else {
-					schemaObject = resolvedSchema.schema;
-				}
-			}
+			schemaObject = extractSchema(components, schemaImplementation);
 		}
 		if (StringUtils.isBlank(schemaObject.get$ref()) && StringUtils.isBlank(schemaObject.getType())) {
 			// default to string
@@ -77,11 +62,12 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	public static Optional<Content> getContent(io.swagger.v3.oas.annotations.media.Content[] annotationContents,
 			String[] classTypes, String[] methodTypes, Schema schema, Components components,
 			JsonView jsonViewAnnotation) {
-		if (annotationContents == null || annotationContents.length == 0) {
+		if (ArrayUtils.isEmpty(annotationContents)) {
 			return Optional.empty();
 		}
 		// Encapsulating Content model
 		Content content = new Content();
+		
 		for (io.swagger.v3.oas.annotations.media.Content annotationContent : annotationContents) {
 			MediaType mediaType = getMediaType(schema, components, jsonViewAnnotation, annotationContent);
 			ExampleObject[] examples = annotationContent.examples();
@@ -92,11 +78,12 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			if (StringUtils.isNotBlank(annotationContent.mediaType())) {
 				content.addMediaType(annotationContent.mediaType(), mediaType);
 			} else {
-				applyTypes(classTypes, methodTypes, content, mediaType);
+				if (mediaType.getSchema() != null)
+					applyTypes(classTypes, methodTypes, content, mediaType);
 			}
 		}
 
-		if (content.size() == 0) {
+		if (content.size() == 0 && annotationContents.length != 1) {
 			return Optional.empty();
 		}
 		return Optional.of(content);
