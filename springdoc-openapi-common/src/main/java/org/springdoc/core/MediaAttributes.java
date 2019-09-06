@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import io.swagger.v3.core.util.ReflectionUtils;
 
@@ -51,7 +52,7 @@ public class MediaAttributes {
 		this.methodConsumes = methodConsumes;
 	}
 
-	public void calculateConsumesProduces(Method method) {
+	public void calculateConsumesProduces(RequestMethod requestMethod, Method method) {
 		PostMapping reqPostMappringMethod = ReflectionUtils.getAnnotation(method, PostMapping.class);
 		if (reqPostMappringMethod != null) {
 			fillMethods(reqPostMappringMethod.produces(), reqPostMappringMethod.consumes());

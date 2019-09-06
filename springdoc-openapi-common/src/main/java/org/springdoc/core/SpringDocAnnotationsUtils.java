@@ -29,7 +29,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
 	static final String COMPONENTS_REF = "#/components/schemas/";
 
-	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components) {
+	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
+			JsonView jsonViewAnnotation) {
 		Schema schemaObject = null;
 		PrimitiveType primitiveType = PrimitiveType.fromType(schemaImplementation);
 		if (primitiveType != null) {
@@ -37,8 +38,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		} else {
 			schemaObject = extractSchema(components, schemaImplementation);
 		}
-		if (StringUtils.isBlank(schemaObject.get$ref()) && schemaObject != null
-				&& StringUtils.isBlank(schemaObject.getType())) {
+		if (StringUtils.isBlank(schemaObject.get$ref()) && StringUtils.isBlank(schemaObject.getType())) {
 			// default to string
 			schemaObject.setType("string");
 		}
