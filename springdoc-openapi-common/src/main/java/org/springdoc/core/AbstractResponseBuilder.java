@@ -177,7 +177,7 @@ public abstract class AbstractResponseBuilder {
 		if (isVoid(returnType)) {
 			// if void, no content
 			content = null;
-		} else {
+		} else if (ArrayUtils.isNotEmpty(methodProduces)) {
 			Schema<?> schemaN = calculateSchema(components, returnType);
 			if (schemaN != null) {
 				io.swagger.v3.oas.models.media.MediaType mediaType = new io.swagger.v3.oas.models.media.MediaType();

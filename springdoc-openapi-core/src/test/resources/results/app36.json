@@ -69,18 +69,6 @@
       }
    },
    "components":{
-      "schemas":{
-         "Link":{
-            "type":"object",
-            "properties":{
-               "href":{
-                  "type":"string"
-               },
-               "templated":{
-                  "type":"boolean"
-               }
-            }
-         }
-      }
+
    }
 }
