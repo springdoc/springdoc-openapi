@@ -77,7 +77,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		calculatePath(restControllers, map);
 		if (showActuator) {
 			map = servletContextProvider.getWebMvcHandlerMapping().getHandlerMethods();
-			Set<HandlerMethod> handlerMethods = new HashSet<HandlerMethod>(map.values());
+			Set<HandlerMethod> handlerMethods = new HashSet<>(map.values());
 			this.generalInfoBuilder.addTag(handlerMethods, SPRINGDOC_ACTUATOR_TAG);
 			calculatePath(restControllers, map);
 		}
