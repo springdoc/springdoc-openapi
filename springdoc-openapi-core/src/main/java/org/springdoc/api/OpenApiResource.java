@@ -14,6 +14,7 @@ import org.springdoc.core.GeneralInfoBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.RequestBodyBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
@@ -38,12 +39,16 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	private RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
+	@Autowired(required = false)
+	private ActuatorProvider servletContextProvider;
+
+	@Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
+	private boolean showActuator;
+
 	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
-			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
-			GeneralInfoBuilder infoBuilder, RequestBodyBuilder requestBodyBuilder,
-			RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
-		super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, requestBodyBuilder,
-				infoBuilder);
+			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser, GeneralInfoBuilder infoBuilder,
+			RequestBodyBuilder requestBodyBuilder, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
+		super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, requestBodyBuilder, infoBuilder);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
@@ -68,18 +73,36 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	@Override
 	protected void getPaths(Map<String, Object> restControllers) {
 		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
+		calculatePath(restControllers, map);
+		if (showActuator) {
+			map = servletContextProvider.getWebMvcHandlerMapping().getHandlerMethods();
+			calculatePath(restControllers, map);
+		}
+	}
+
+	private void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map) {
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
 			HandlerMethod handlerMethod = entry.getValue();
 			PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
 			Set<String> patterns = patternsRequestCondition.getPatterns();
 			String operationPath = patterns.iterator().next();
-			if (operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-					&& restControllers.containsKey(handlerMethod.getBean().toString())) {
+			if (isRestController(restControllers, handlerMethod, operationPath)) {
 				Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 				calculatePath(openAPIBuilder, handlerMethod, operationPath, requestMethods);
 			}
 		}
+	}
+
+	private boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod,
+			String operationPath) {
+		boolean result;
+		if (showActuator)
+			result = operationPath.startsWith(DEFAULT_PATH_SEPARATOR);
+		else
+			result = operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
+					&& restControllers.containsKey(handlerMethod.getBean().toString());
+		return result;
 	}
 
 	private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {

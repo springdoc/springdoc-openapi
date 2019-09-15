@@ -36,13 +36,15 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 public abstract class AbstractRequestBuilder {
 
 	private AbstractParameterBuilder parameterBuilder;
-
 	private RequestBodyBuilder requestBodyBuilder;
+	private OperationBuilder operationBuilder;
 
-	protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder) {
+	protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+			OperationBuilder operationBuilder) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyBuilder = requestBodyBuilder;
+		this.operationBuilder = operationBuilder;
 	}
 
 	protected abstract boolean isParamTypeToIgnore(Class<?> paramType);
@@ -50,7 +52,9 @@ public abstract class AbstractRequestBuilder {
 	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MediaAttributes mediaAttributes) {
 		// Documentation
-		operation.setOperationId(handlerMethod.getMethod().getName());
+		String operationId = operationBuilder.getOperationId(handlerMethod.getMethod().getName());
+		
+		operation.setOperationId(operationId);
 		// requests
 		LocalVariableTableParameterNameDiscoverer d = new LocalVariableTableParameterNameDiscoverer();
 		String[] pNames = d.getParameterNames(handlerMethod.getMethod());

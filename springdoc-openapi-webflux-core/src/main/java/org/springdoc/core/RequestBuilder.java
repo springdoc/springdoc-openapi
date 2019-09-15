@@ -5,8 +5,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class RequestBuilder extends AbstractRequestBuilder {
 
-	public RequestBuilder(ParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder) {
-		super(parameterBuilder, requestBodyBuilder);
+	public RequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+			OperationBuilder operationBuilder) {
+		super(parameterBuilder, requestBodyBuilder, operationBuilder);
 	}
 
 	@Override
