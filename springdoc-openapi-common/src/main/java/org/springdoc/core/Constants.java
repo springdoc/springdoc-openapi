@@ -9,6 +9,8 @@ public final class Constants {
 	public static final String API_DOCS_URL = "${springdoc.api-docs.path:#{T(org.springdoc.core.Constants).DEFAULT_API_DOCS_URL}}";
 	public static final String DEFAULT_API_DOCS_URL_YAML = API_DOCS_URL + ".yaml";
 	public static final String SPRINGDOC_ENABLED = "springdoc.api-docs.enabled";
+	public static final String SPRINGDOC_SHOW_ACTUATOR = "springdoc.show.actuator";
+	public static final String SPRINGDOC_SHOW_ACTUATOR_VALUE = "${" + SPRINGDOC_SHOW_ACTUATOR + ":false}";
 	public static final String WEB_JARS_PREFIX_URL = "/webjars";
 	public static final String SWAGGER_UI_URL = "/swagger-ui/index.html?url=";
 	public static final String WEB_JARS_URL = WEB_JARS_PREFIX_URL + SWAGGER_UI_URL;

@@ -41,13 +41,15 @@ public class OperationBuilder {
 	private AbstractParameterBuilder parameterBuilder;
 	private RequestBodyBuilder requestBodyBuilder;
 	private SecurityParser securityParser;
+	private OpenAPIBuilder openAPIBuilder;
 
-	public OperationBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			SecurityParser securityParser) {
+	private OperationBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+			SecurityParser securityParser, OpenAPIBuilder openAPIBuilder) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyBuilder = requestBodyBuilder;
 		this.securityParser = securityParser;
+		this.openAPIBuilder = openAPIBuilder;
 	}
 
 	public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
@@ -373,6 +375,10 @@ public class OperationBuilder {
 			return Optional.empty();
 		}
 		return Optional.of(list);
+	}
+
+	public String getOperationId(String operationId) {
+		return this.getOperationId(operationId, openAPIBuilder.getOpenAPI());
 	}
 
 }
