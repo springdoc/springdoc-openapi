@@ -11,61 +11,18 @@
       }
    ],
    "paths":{
-      "/api/v1/poc/test":{
+      "/persons":{
          "get":{
-            "summary":"Get thing",
-            "operationId":"test",
+            "operationId":"persons",
             "responses":{
                "200":{
-                  "description":"Successful Operation",
+                  "description":"default response",
                   "content":{
-                     "application/json":{
+                     "*/*":{
                         "schema":{
                            "type":"string"
                         }
                      }
-                  }
-               },
-               "404":{
-                  "description":"Not found",
-                  "content":{
-
-                  }
-               },
-               "401":{
-                  "description":"Authentication Failure",
-                  "content":{
-
-                  }
-               }
-            }
-         }
-      },
-      "/api/v1/poc/testme":{
-         "get":{
-            "summary":"Get thing",
-            "operationId":"testme",
-            "responses":{
-               "200":{
-                  "description":"Successful Operation",
-                  "content":{
-                     "application/json":{
-                        "schema":{
-                           "type":"string"
-                        }
-                     }
-                  }
-               },
-               "404":{
-                  "description":"Not found",
-                  "content":{
-
-                  }
-               },
-               "401":{
-                  "description":"Authentication Failure",
-                  "content":{
-
                   }
                }
             }
