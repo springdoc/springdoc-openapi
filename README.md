@@ -27,7 +27,7 @@ This library supports:
     * server: The server name or IP
     * port: The server port
     * context-path: The context path of the application
-*   Documentation can be available in yaml format as well, on the following path : /v3/api-docs.yml
+*   Documentation can be available in yaml format as well, on the following path : /v3/api-docs.yaml
 *   Add the library to the list of your project dependencies (No additional configuration is needed)
 
 ```xml
@@ -58,7 +58,7 @@ springdoc.swagger-ui.path=/swagger-ui.html
     * server: The server name or IP
     * port: The server port
     * context-path: The context path of the application
-*   Documentation will be available in yaml format as well, on the following path : /v3/api-docs.yml
+*   Documentation will be available in yaml format as well, on the following path : /v3/api-docs.yaml
 *   Add the library to the list of your project dependencies. (No additional configuration is needed)
 
 ```xml
@@ -91,7 +91,7 @@ To generate documentation automatically, make sure all the methods declare the H
   For better performance of documentation generation, declare @OpenAPIDefinition and @SecurityScheme annotations within a spring managed bean.  
   
 ## spring-weblfux support with Annotated Controllers
-*   Documentation can be available in yaml format as well, on the following path : /v3/api-docs.yml
+*   Documentation can be available in yaml format as well, on the following path : /v3/api-docs.yaml
 *   Add the library to the list of your project dependencies (No additional configuration is needed)
 
 ```xml
