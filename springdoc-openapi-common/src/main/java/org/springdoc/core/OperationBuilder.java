@@ -43,7 +43,7 @@ public class OperationBuilder {
 	private SecurityParser securityParser;
 	private OpenAPIBuilder openAPIBuilder;
 
-	private OperationBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+	public OperationBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			SecurityParser securityParser, OpenAPIBuilder openAPIBuilder) {
 		super();
 		this.parameterBuilder = parameterBuilder;
