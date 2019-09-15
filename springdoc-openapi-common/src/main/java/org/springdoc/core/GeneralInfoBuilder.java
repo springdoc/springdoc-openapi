@@ -47,6 +47,7 @@ public class GeneralInfoBuilder {
 	private ApplicationContext context;
 	private SecurityParser securityParser;
 	private String serverBaseUrl;
+	private Map<HandlerMethod, String> springdocTags = new HashMap<>();
 
 	public GeneralInfoBuilder(ApplicationContext context, SecurityParser securityParser) {
 		super();
@@ -97,6 +98,9 @@ public class GeneralInfoBuilder {
 			tagsStr.addAll(classTags.stream().map(Tag::name).collect(Collectors.toSet()));
 			allTags.addAll(classTags);
 		}
+
+		if (springdocTags.containsKey(handlerMethod))
+			tagsStr.add(springdocTags.get(handlerMethod));
 
 		Optional<Set<io.swagger.v3.oas.models.tags.Tag>> tags = AnnotationsUtils
 				.getTags(allTags.toArray(new Tag[allTags.size()]), true);
@@ -241,6 +245,10 @@ public class GeneralInfoBuilder {
 			}
 		}
 		return apiSecurityScheme;
+	}
+
+	public void addTag(Set<HandlerMethod> handlerMethods, String tagName) {
+		handlerMethods.forEach(handlerMethod -> springdocTags.put(handlerMethod, tagName));
 	}
 
 	public Map<String, Object> getRestControllersMap() {

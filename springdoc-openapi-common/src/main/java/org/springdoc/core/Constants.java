@@ -11,6 +11,7 @@ public final class Constants {
 	public static final String SPRINGDOC_ENABLED = "springdoc.api-docs.enabled";
 	public static final String SPRINGDOC_SHOW_ACTUATOR = "springdoc.show.actuator";
 	public static final String SPRINGDOC_SHOW_ACTUATOR_VALUE = "${" + SPRINGDOC_SHOW_ACTUATOR + ":false}";
+	public static final String SPRINGDOC_ACTUATOR_TAG = "Actuator";
 	public static final String WEB_JARS_PREFIX_URL = "/webjars";
 	public static final String SWAGGER_UI_URL = "/swagger-ui/index.html?url=";
 	public static final String WEB_JARS_URL = WEB_JARS_PREFIX_URL + SWAGGER_UI_URL;
@@ -18,7 +19,6 @@ public final class Constants {
 	public static final String APPLICATION_OPENAPI_YAML = "application/vnd.oai.openapi";
 	public static final String DEFAULT_SWAGGER_UI_PATH = DEFAULT_PATH_SEPARATOR + "swagger-ui.html";
 	public static final String SWAGGER_UI_PATH = "${springdoc.swagger-ui.path:#{T(org.springdoc.core.Constants).DEFAULT_SWAGGER_UI_PATH}}";
-
 	public static final String GET_METHOD = "get";
 	public static final String POST_METHOD = "post";
 	public static final String PUT_METHOD = "put";

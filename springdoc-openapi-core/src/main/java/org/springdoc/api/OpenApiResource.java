@@ -3,6 +3,7 @@ package org.springdoc.api;
 import static org.springdoc.core.Constants.*;
 import static org.springframework.util.AntPathMatcher.*;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -76,6 +77,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		calculatePath(restControllers, map);
 		if (showActuator) {
 			map = servletContextProvider.getWebMvcHandlerMapping().getHandlerMethods();
+			Set<HandlerMethod> handlerMethods = new HashSet<HandlerMethod>(map.values());
+			this.generalInfoBuilder.addTag(handlerMethods, SPRINGDOC_ACTUATOR_TAG);
 			calculatePath(restControllers, map);
 		}
 	}
