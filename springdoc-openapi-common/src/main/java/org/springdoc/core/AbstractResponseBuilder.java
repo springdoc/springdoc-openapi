@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.api.AbstractOpenApiResource;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -237,7 +238,7 @@ public abstract class AbstractResponseBuilder {
 		if (StringUtils.isBlank(apiResponse.getDescription())) {
 			apiResponse.setDescription(DEFAULT_DESCRIPTION);
 		}
-		if (apiResponse.getContent() != null && isGeneric) {
+		if (apiResponse.getContent() != null && (isGeneric || AbstractOpenApiResource.methodOverloaded)) {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
 			Schema<?> schemaN = calculateSchema(components, method.getGenericReturnType());

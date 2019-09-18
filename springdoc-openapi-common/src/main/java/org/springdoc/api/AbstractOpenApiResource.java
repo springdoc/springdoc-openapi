@@ -18,6 +18,7 @@ import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.RequestBodyBuilder;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
@@ -28,6 +29,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 
@@ -40,6 +42,7 @@ public abstract class AbstractOpenApiResource {
 	protected OperationBuilder operationParser;
 	protected RequestBodyBuilder requestBodyBuilder;
 	protected GeneralInfoBuilder generalInfoBuilder;
+	public static boolean methodOverloaded;
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -81,7 +84,41 @@ public abstract class AbstractOpenApiResource {
 		Components components = openAPIBuilder.getComponents();
 		Paths paths = openAPIBuilder.getPaths();
 
+		Map<HttpMethod, Operation> operationMap = null;
+		if (paths.containsKey(operationPath)) {
+			PathItem pathItem = paths.get(operationPath);
+			operationMap = pathItem.readOperationsMap();
+		}
+
 		for (RequestMethod requestMethod : requestMethods) {
+
+			Operation existingOperation = null;
+			if (!CollectionUtils.isEmpty(operationMap)) {
+				// Get existing operation definition
+				if (RequestMethod.GET.equals(requestMethod)) {
+					existingOperation = operationMap.get(HttpMethod.GET);
+				} else if (RequestMethod.POST.equals(requestMethod)) {
+					existingOperation = operationMap.get(HttpMethod.POST);
+				} else if (RequestMethod.PUT.equals(requestMethod)) {
+					existingOperation = operationMap.get(HttpMethod.PUT);
+				} else if (RequestMethod.DELETE.equals(requestMethod)) {
+					existingOperation = operationMap.get(HttpMethod.DELETE);
+				} else if (RequestMethod.PATCH.equals(requestMethod)) {
+					existingOperation = operationMap.get(HttpMethod.PATCH);
+				} else if (RequestMethod.TRACE.equals(requestMethod)) {
+					existingOperation = operationMap.get(HttpMethod.TRACE);
+				} else if (RequestMethod.HEAD.equals(requestMethod)) {
+					existingOperation = operationMap.get(HttpMethod.HEAD);
+				} else if (RequestMethod.OPTIONS.equals(requestMethod)) {
+					existingOperation = operationMap.get(HttpMethod.OPTIONS);
+				}
+			}
+
+			if (existingOperation != null) {
+				methodOverloaded = true;
+			}
+			else
+				methodOverloaded = false;
 			// skip hidden operations
 			if (operationParser.isHidden(handlerMethod.getMethod())) {
 				continue;
@@ -98,7 +135,7 @@ public abstract class AbstractOpenApiResource {
 
 			mediaAttributes.calculateConsumesProduces(handlerMethod.getMethod());
 
-			Operation operation = new Operation();
+			Operation operation = (existingOperation != null) ? existingOperation : new Operation();
 
 			// compute tags
 			operation = generalInfoBuilder.buildTags(handlerMethod, operation, openAPI);

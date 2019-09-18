@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.api.AbstractOpenApiResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.method.HandlerMethod;
@@ -108,12 +109,22 @@ public class RequestBodyBuilder {
 		if (requestBody == null)
 			requestBody = new RequestBody();
 
-		if (requestBody.getContent() == null) {
+		if (requestBody.getContent() == null
+				|| (requestBody.getContent() != null && AbstractOpenApiResource.methodOverloaded)) {
+
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(),
 					parameterInfo.getpName(), null, requestBodyInfo);
-			Content content = new Content();
-			for (String value : allConsumes) {
-				setMediaTypeToContent(schema, content, value);
+			Content content = requestBody.getContent();
+
+			if (AbstractOpenApiResource.methodOverloaded && content != null) {
+				for (String value : allConsumes) {
+					setMediaTypeToContent(schema, content, value);
+				}
+			} else {
+				content = new Content();
+				for (String value : allConsumes) {
+					setMediaTypeToContent(schema, content, value);
+				}
 			}
 			requestBody.setContent(content);
 		}
@@ -124,6 +135,7 @@ public class RequestBodyBuilder {
 				requestBody.setDescription(parameterDoc.description());
 			requestBody.setRequired(parameterDoc.required());
 		}
+
 		return requestBody;
 	}
 
