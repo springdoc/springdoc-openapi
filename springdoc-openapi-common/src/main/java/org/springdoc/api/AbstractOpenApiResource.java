@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.AbstractResponseBuilder;
 import org.springdoc.core.GeneralInfoBuilder;
-import org.springdoc.core.MediaAttributes;
+import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.RequestBodyBuilder;
@@ -42,7 +42,6 @@ public abstract class AbstractOpenApiResource {
 	protected OperationBuilder operationParser;
 	protected RequestBodyBuilder requestBodyBuilder;
 	protected GeneralInfoBuilder generalInfoBuilder;
-	public static boolean methodOverloaded;
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -92,33 +91,7 @@ public abstract class AbstractOpenApiResource {
 
 		for (RequestMethod requestMethod : requestMethods) {
 
-			Operation existingOperation = null;
-			if (!CollectionUtils.isEmpty(operationMap)) {
-				// Get existing operation definition
-				if (RequestMethod.GET.equals(requestMethod)) {
-					existingOperation = operationMap.get(HttpMethod.GET);
-				} else if (RequestMethod.POST.equals(requestMethod)) {
-					existingOperation = operationMap.get(HttpMethod.POST);
-				} else if (RequestMethod.PUT.equals(requestMethod)) {
-					existingOperation = operationMap.get(HttpMethod.PUT);
-				} else if (RequestMethod.DELETE.equals(requestMethod)) {
-					existingOperation = operationMap.get(HttpMethod.DELETE);
-				} else if (RequestMethod.PATCH.equals(requestMethod)) {
-					existingOperation = operationMap.get(HttpMethod.PATCH);
-				} else if (RequestMethod.TRACE.equals(requestMethod)) {
-					existingOperation = operationMap.get(HttpMethod.TRACE);
-				} else if (RequestMethod.HEAD.equals(requestMethod)) {
-					existingOperation = operationMap.get(HttpMethod.HEAD);
-				} else if (RequestMethod.OPTIONS.equals(requestMethod)) {
-					existingOperation = operationMap.get(HttpMethod.OPTIONS);
-				}
-			}
-
-			if (existingOperation != null) {
-				methodOverloaded = true;
-			}
-			else
-				methodOverloaded = false;
+			Operation existingOperation = getExistingOperation(operationMap, requestMethod);
 			// skip hidden operations
 			if (operationParser.isHidden(handlerMethod.getMethod())) {
 				continue;
@@ -127,13 +100,15 @@ public abstract class AbstractOpenApiResource {
 			RequestMapping reqMappringClass = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
 					RequestMapping.class);
 
-			MediaAttributes mediaAttributes = new MediaAttributes();
+			MethodAttributes methodAttributes = new MethodAttributes();
+			methodAttributes.setMethodOverloaded(existingOperation != null);
+
 			if (reqMappringClass != null) {
-				mediaAttributes.setClassConsumes(reqMappringClass.consumes());
-				mediaAttributes.setClassProduces(reqMappringClass.produces());
+				methodAttributes.setClassConsumes(reqMappringClass.consumes());
+				methodAttributes.setClassProduces(reqMappringClass.produces());
 			}
 
-			mediaAttributes.calculateConsumesProduces(handlerMethod.getMethod());
+			methodAttributes.calculateConsumesProduces(handlerMethod.getMethod());
 
 			Operation operation = (existingOperation != null) ? existingOperation : new Operation();
 
@@ -144,22 +119,22 @@ public abstract class AbstractOpenApiResource {
 			io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
 					.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
 			if (apiOperation != null) {
-				openAPI = operationParser.parse(components, apiOperation, operation, openAPI, mediaAttributes);
+				openAPI = operationParser.parse(components, apiOperation, operation, openAPI, methodAttributes);
 			}
 
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = ReflectionUtils.getAnnotation(
 					handlerMethod.getMethod(), io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 
 			// RequestBody in Operation
-			requestBodyBuilder.buildRequestBodyFromDoc(requestBodyDoc, mediaAttributes.getClassConsumes(),
-					mediaAttributes.getMethodConsumes(), components, null).ifPresent(operation::setRequestBody);
+			requestBodyBuilder.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes.getClassConsumes(),
+					methodAttributes.getMethodConsumes(), components, null).ifPresent(operation::setRequestBody);
 
 			// requests
-			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation, mediaAttributes);
+			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation, methodAttributes);
 
 			// responses
 			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation,
-					mediaAttributes.getAllProduces());
+					methodAttributes);
 			operation.setResponses(apiResponses);
 
 			List<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks = ReflectionUtils
@@ -168,13 +143,38 @@ public abstract class AbstractOpenApiResource {
 
 			// callbacks
 			if (apiCallbacks != null) {
-				operationParser.buildCallbacks(apiCallbacks, components, openAPI, mediaAttributes)
+				operationParser.buildCallbacks(apiCallbacks, components, openAPI, methodAttributes)
 						.ifPresent(operation::setCallbacks);
 			}
 
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
 		}
+	}
+
+	private Operation getExistingOperation(Map<HttpMethod, Operation> operationMap, RequestMethod requestMethod) {
+		Operation existingOperation = null;
+		if (!CollectionUtils.isEmpty(operationMap)) {
+			// Get existing operation definition
+			if (RequestMethod.GET.equals(requestMethod)) {
+				existingOperation = operationMap.get(HttpMethod.GET);
+			} else if (RequestMethod.POST.equals(requestMethod)) {
+				existingOperation = operationMap.get(HttpMethod.POST);
+			} else if (RequestMethod.PUT.equals(requestMethod)) {
+				existingOperation = operationMap.get(HttpMethod.PUT);
+			} else if (RequestMethod.DELETE.equals(requestMethod)) {
+				existingOperation = operationMap.get(HttpMethod.DELETE);
+			} else if (RequestMethod.PATCH.equals(requestMethod)) {
+				existingOperation = operationMap.get(HttpMethod.PATCH);
+			} else if (RequestMethod.TRACE.equals(requestMethod)) {
+				existingOperation = operationMap.get(HttpMethod.TRACE);
+			} else if (RequestMethod.HEAD.equals(requestMethod)) {
+				existingOperation = operationMap.get(HttpMethod.HEAD);
+			} else if (RequestMethod.OPTIONS.equals(requestMethod)) {
+				existingOperation = operationMap.get(HttpMethod.OPTIONS);
+			}
+		}
+		return existingOperation;
 	}
 
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,

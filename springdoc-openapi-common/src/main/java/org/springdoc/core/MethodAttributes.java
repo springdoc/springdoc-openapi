@@ -12,12 +12,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.swagger.v3.core.util.ReflectionUtils;
 
-public class MediaAttributes {
+public class MethodAttributes {
 
 	private String[] classProduces;
 	private String[] classConsumes;
 	private String[] methodProduces = {};
 	private String[] methodConsumes = {};
+	private boolean methodOverloaded;
+
+	public MethodAttributes() {
+	}
+
+	public MethodAttributes(String[] methodProducesNew) {
+		this.methodProduces = methodProducesNew;
+	}
 
 	public String[] getClassProduces() {
 		return classProduces;
@@ -94,6 +102,14 @@ public class MediaAttributes {
 
 	public String[] getAllProduces() {
 		return ArrayUtils.addAll(methodProduces, classProduces);
+	}
+
+	public void setMethodOverloaded(boolean overloaded) {
+		methodOverloaded = overloaded;
+	}
+
+	public boolean isMethodOverloaded() {
+		return methodOverloaded;
 	}
 
 }

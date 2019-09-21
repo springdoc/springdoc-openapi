@@ -50,7 +50,7 @@ public abstract class AbstractRequestBuilder {
 	protected abstract boolean isParamTypeToIgnore(Class<?> paramType);
 
 	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
-			Operation operation, MediaAttributes mediaAttributes) {
+			Operation operation, MethodAttributes methodAttributes) {
 		// Documentation
 		String operationId = operationBuilder.getOperationId(handlerMethod.getMethod().getName());
 		
@@ -92,7 +92,7 @@ public abstract class AbstractRequestBuilder {
 					requestBodyInfo.incrementNbParam();
 					ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameterDoc);
 					requestBodyInfo.setRequestBody(operation.getRequestBody());
-					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, mediaAttributes, i,
+					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, methodAttributes, i,
 							parameterInfo, requestBodyInfo);
 				}
 			}

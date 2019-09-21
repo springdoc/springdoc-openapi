@@ -13,7 +13,6 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.api.AbstractOpenApiResource;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,7 +46,7 @@ public abstract class AbstractResponseBuilder {
 	}
 
 	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
-			String[] methodProduces) {
+			MethodAttributes methodAttributes) {
 		ApiResponses apiResponses = operation.getResponses();
 		if (apiResponses == null)
 			apiResponses = new ApiResponses();
@@ -57,7 +56,7 @@ public abstract class AbstractResponseBuilder {
 			apiResponses.addApiResponse(entry.getKey(), entry.getValue());
 		}
 		// Fill api Responses
-		computeResponse(components, handlerMethod.getMethod(), apiResponses, methodProduces, false);
+		computeResponse(components, handlerMethod.getMethod(), apiResponses, methodAttributes, false);
 
 		return apiResponses;
 	}
@@ -75,7 +74,7 @@ public abstract class AbstractResponseBuilder {
 					methodProduces = reqMappringMethod.produces();
 				}
 				Map<String, ApiResponse> apiResponses = computeResponse(components, method, new ApiResponses(),
-						methodProduces, true);
+						new MethodAttributes(methodProduces), true);
 				for (Map.Entry<String, ApiResponse> entry : apiResponses.entrySet()) {
 					genericMapResponse.put(entry.getKey(), entry.getValue());
 				}
@@ -120,7 +119,7 @@ public abstract class AbstractResponseBuilder {
 	}
 
 	private Map<String, ApiResponse> computeResponse(Components components, Method method, ApiResponses apiResponsesOp,
-			String[] methodProduces, boolean isGeneric) {
+			MethodAttributes methodAttributes, boolean isGeneric) {
 		// Parsing documentation, if present
 		io.swagger.v3.oas.annotations.responses.ApiResponse[] responsesArray = getApiResponses(method);
 		if (ArrayUtils.isNotEmpty(responsesArray)) {
@@ -129,7 +128,8 @@ public abstract class AbstractResponseBuilder {
 				apiResponse1.setDescription(apiResponse2.description());
 				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
 				SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
-						methodProduces == null ? new String[0] : methodProduces, null, components, null)
+						methodAttributes.getAllProduces() == null ? new String[0] : methodAttributes.getAllProduces(),
+						null, components, null)
 						.ifPresent(apiResponse1::content);
 				AnnotationsUtils.getHeaders(apiResponse2.headers(), null).ifPresent(apiResponse1::headers);
 				apiResponsesOp.addApiResponse(apiResponse2.responseCode(), apiResponse1);
@@ -141,7 +141,8 @@ public abstract class AbstractResponseBuilder {
 			for (Map.Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
 				String httpCode = entry.getKey();
 				ApiResponse apiResponse = entry.getValue();
-				buildApiResponses(components, method, apiResponsesOp, methodProduces, httpCode, apiResponse, isGeneric);
+				buildApiResponses(components, method, apiResponsesOp, methodAttributes, httpCode, apiResponse,
+						isGeneric);
 			}
 		} else {
 			// Use reponse parameters with no descirption filled - No documentation
@@ -150,7 +151,8 @@ public abstract class AbstractResponseBuilder {
 			ApiResponse apiResponse = genericMapResponse.containsKey(httpCode) ? genericMapResponse.get(httpCode)
 					: new ApiResponse();
 			if (httpCode != null)
-				buildApiResponses(components, method, apiResponsesOp, methodProduces, httpCode, apiResponse, isGeneric);
+				buildApiResponses(components, method, apiResponsesOp, methodAttributes, httpCode, apiResponse,
+						isGeneric);
 		}
 		return apiResponsesOp;
 	}
@@ -229,21 +231,21 @@ public abstract class AbstractResponseBuilder {
 	}
 
 	private void buildApiResponses(Components components, Method method, ApiResponses apiResponsesOp,
-			String[] methodProduces, String httpCode, ApiResponse apiResponse, boolean isGeneric) {
+			MethodAttributes methodAttributes, String httpCode, ApiResponse apiResponse, boolean isGeneric) {
 		// No documentation
 		if (apiResponse.getContent() == null) {
-			Content content = buildContent(components, method, methodProduces);
+			Content content = buildContent(components, method, methodAttributes.getAllProduces());
 			apiResponse.setContent(content);
 		}
 		if (StringUtils.isBlank(apiResponse.getDescription())) {
 			apiResponse.setDescription(DEFAULT_DESCRIPTION);
 		}
-		if (apiResponse.getContent() != null && (isGeneric || AbstractOpenApiResource.methodOverloaded)) {
+		if (apiResponse.getContent() != null && (isGeneric || methodAttributes.isMethodOverloaded())) {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
 			Schema<?> schemaN = calculateSchema(components, method.getGenericReturnType());
-			if (schemaN != null && ArrayUtils.isNotEmpty(methodProduces)) {
-				for (String mediaTypeStr : methodProduces) {
+			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getAllProduces())) {
+				for (String mediaTypeStr : methodAttributes.getAllProduces()) {
 					mergeSchema(existingContent, schemaN, mediaTypeStr);
 				}
 			}
