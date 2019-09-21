@@ -1,7 +1,7 @@
 package test.org.springdoc.api;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.skyscreamer.jsonassert.JSONAssert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -20,8 +20,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
@@ -30,9 +28,6 @@ public abstract class AbstractSpringDocTest {
 
 	@Autowired
 	private MockMvc mockMvc;
-
-	@Autowired
-	private ObjectMapper objectMapper;
 
 	@Test
 	public void testApp() throws Exception {
@@ -44,7 +39,7 @@ public abstract class AbstractSpringDocTest {
 		Path path = Paths.get(getClass().getClassLoader().getResource("results/app" + testNumber + ".json").toURI());
 		byte[] fileBytes = Files.readAllBytes(path);
 		String expected = new String(fileBytes);
-		assertEquals(objectMapper.readTree(expected), objectMapper.readTree(result));
+		assertEquals(expected, result, false);
 	}
 
 }

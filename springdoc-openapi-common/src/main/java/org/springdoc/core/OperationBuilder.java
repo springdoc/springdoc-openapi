@@ -53,7 +53,7 @@ public class OperationBuilder {
 	}
 
 	public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
-			Operation operation, OpenAPI openAPI, MediaAttributes mediaAttributes) {
+			Operation operation, OpenAPI openAPI, MethodAttributes methodAttributes) {
 		if (StringUtils.isNotBlank(apiOperation.summary())) {
 			operation.setSummary(apiOperation.summary());
 		}
@@ -85,11 +85,11 @@ public class OperationBuilder {
 		}
 
 		// RequestBody in Operation
-		requestBodyBuilder.buildRequestBodyFromDoc(apiOperation.requestBody(), mediaAttributes.getClassConsumes(),
-				mediaAttributes.getMethodConsumes(), components, null).ifPresent(operation::setRequestBody);
+		requestBodyBuilder.buildRequestBodyFromDoc(apiOperation.requestBody(), methodAttributes.getClassConsumes(),
+				methodAttributes.getMethodConsumes(), components, null).ifPresent(operation::setRequestBody);
 
 		// build response
-		buildResponse(components, apiOperation, operation, mediaAttributes);
+		buildResponse(components, apiOperation, operation, methodAttributes);
 
 		// security
 		Optional<List<SecurityRequirement>> requirementsObject = securityParser
@@ -114,7 +114,7 @@ public class OperationBuilder {
 
 	public Optional<Map<String, Callback>> buildCallbacks(
 			List<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks, Components components, OpenAPI openAPI,
-			MediaAttributes mediaAttributes) {
+			MethodAttributes methodAttributes) {
 		Map<String, Callback> callbacks = new LinkedHashMap<>();
 
 		for (io.swagger.v3.oas.annotations.callbacks.Callback methodCallback : apiCallbacks) {
@@ -134,7 +134,7 @@ public class OperationBuilder {
 			PathItem pathItemObject = new PathItem();
 			for (io.swagger.v3.oas.annotations.Operation callbackOperation : methodCallback.operation()) {
 				Operation callbackNewOperation = new Operation();
-				parse(components, callbackOperation, callbackNewOperation, openAPI, mediaAttributes);
+				parse(components, callbackOperation, callbackNewOperation, openAPI, methodAttributes);
 				setPathItemOperation(pathItemObject, callbackOperation.method(), callbackNewOperation);
 			}
 			callbackObject.addPathItem(methodCallback.callbackUrlExpression(), pathItemObject);
@@ -348,9 +348,9 @@ public class OperationBuilder {
 	}
 
 	private void buildResponse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
-			Operation operation, MediaAttributes mediaAttributes) {
-		getApiResponses(apiOperation.responses(), mediaAttributes.getClassProduces(),
-				mediaAttributes.getMethodProduces(), components, null).ifPresent(responses -> {
+			Operation operation, MethodAttributes methodAttributes) {
+		getApiResponses(apiOperation.responses(), methodAttributes.getClassProduces(),
+				methodAttributes.getMethodProduces(), components, null).ifPresent(responses -> {
 					if (operation.getResponses() == null) {
 						operation.setResponses(responses);
 					} else {

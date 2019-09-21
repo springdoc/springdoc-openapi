@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.api.AbstractOpenApiResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.method.HandlerMethod;
@@ -79,7 +78,7 @@ public class RequestBodyBuilder {
 	}
 
 	public void calculateRequestBodyInfo(Components components, HandlerMethod handlerMethod,
-			MediaAttributes mediaAttributes, int i, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
+			MethodAttributes methodAttributes, int i, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
 
 		// Get it from parameter level, if not present
@@ -87,8 +86,8 @@ public class RequestBodyBuilder {
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = parameterBuilder
 					.getParameterAnnotation(handlerMethod, parameterInfo.getParameter(), i,
 							io.swagger.v3.oas.annotations.parameters.RequestBody.class);
-			requestBody = this.buildRequestBodyFromDoc(requestBodyDoc, mediaAttributes.getClassConsumes(),
-					mediaAttributes.getMethodConsumes(), components, null).orElse(null);
+			requestBody = this.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes.getClassConsumes(),
+					methodAttributes.getMethodConsumes(), components, null).orElse(null);
 		}
 
 		RequestPart requestPart = parameterBuilder.getParameterAnnotation(handlerMethod, parameterInfo.getParameter(),
@@ -99,30 +98,31 @@ public class RequestBodyBuilder {
 		paramName = StringUtils.defaultIfEmpty(paramName, parameterInfo.getpName());
 		parameterInfo.setpName(paramName);
 
-		requestBody = buildRequestBody(requestBody, components, mediaAttributes.getAllConsumes(), parameterInfo,
+		requestBody = buildRequestBody(requestBody, components, methodAttributes, parameterInfo,
 				requestBodyInfo);
 		requestBodyInfo.setRequestBody(requestBody);
 	}
 
-	private RequestBody buildRequestBody(RequestBody requestBody, Components components, String[] allConsumes,
+	private RequestBody buildRequestBody(RequestBody requestBody, Components components,
+			MethodAttributes methodAttributes,
 			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		if (requestBody == null)
 			requestBody = new RequestBody();
 
 		if (requestBody.getContent() == null
-				|| (requestBody.getContent() != null && AbstractOpenApiResource.methodOverloaded)) {
+				|| (requestBody.getContent() != null && methodAttributes.isMethodOverloaded())) {
 
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(),
 					parameterInfo.getpName(), null, requestBodyInfo);
 			Content content = requestBody.getContent();
 
-			if (AbstractOpenApiResource.methodOverloaded && content != null) {
-				for (String value : allConsumes) {
+			if (methodAttributes.isMethodOverloaded() && content != null) {
+				for (String value : methodAttributes.getAllConsumes()) {
 					setMediaTypeToContent(schema, content, value);
 				}
 			} else {
 				content = new Content();
-				for (String value : allConsumes) {
+				for (String value : methodAttributes.getAllConsumes()) {
 					setMediaTypeToContent(schema, content, value);
 				}
 			}
