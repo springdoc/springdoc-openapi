@@ -43,7 +43,7 @@ public abstract class AbstractParameterBuilder {
 
 	public Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
 		Parameter result = paramCalcul;
-		if (!CollectionUtils.isEmpty(existingParamDoc) && paramCalcul != null) {
+		if (!CollectionUtils.isEmpty(existingParamDoc) && paramCalcul != null && paramCalcul.getName() != null) {
 			final String name = paramCalcul.getName();
 			Parameter paramDoc = existingParamDoc.stream().filter(p -> name.equals(p.getName())).findAny().orElse(null);
 			if (paramDoc != null) {
