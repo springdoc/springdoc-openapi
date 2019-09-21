@@ -126,15 +126,16 @@ public abstract class AbstractOpenApiResource {
 					handlerMethod.getMethod(), io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 
 			// RequestBody in Operation
-			requestBodyBuilder.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes.getClassConsumes(),
-					methodAttributes.getMethodConsumes(), components, null).ifPresent(operation::setRequestBody);
+			requestBodyBuilder
+					.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes.getClassConsumes(),
+							methodAttributes.getMethodConsumes(), components, null)
+					.ifPresent(operation::setRequestBody);
 
 			// requests
 			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation, methodAttributes);
 
 			// responses
-			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation,
-					methodAttributes);
+			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation, methodAttributes);
 			operation.setResponses(apiResponses);
 
 			List<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks = ReflectionUtils
@@ -156,22 +157,31 @@ public abstract class AbstractOpenApiResource {
 		Operation existingOperation = null;
 		if (!CollectionUtils.isEmpty(operationMap)) {
 			// Get existing operation definition
-			if (RequestMethod.GET.equals(requestMethod)) {
+			switch (requestMethod) {
+			case GET:
 				existingOperation = operationMap.get(HttpMethod.GET);
-			} else if (RequestMethod.POST.equals(requestMethod)) {
+				break;
+			case POST:
 				existingOperation = operationMap.get(HttpMethod.POST);
-			} else if (RequestMethod.PUT.equals(requestMethod)) {
+				break;
+			case PUT:
 				existingOperation = operationMap.get(HttpMethod.PUT);
-			} else if (RequestMethod.DELETE.equals(requestMethod)) {
+				break;
+			case DELETE:
 				existingOperation = operationMap.get(HttpMethod.DELETE);
-			} else if (RequestMethod.PATCH.equals(requestMethod)) {
+				break;
+			case PATCH:
 				existingOperation = operationMap.get(HttpMethod.PATCH);
-			} else if (RequestMethod.TRACE.equals(requestMethod)) {
-				existingOperation = operationMap.get(HttpMethod.TRACE);
-			} else if (RequestMethod.HEAD.equals(requestMethod)) {
+				break;
+			case HEAD:
 				existingOperation = operationMap.get(HttpMethod.HEAD);
-			} else if (RequestMethod.OPTIONS.equals(requestMethod)) {
+				break;
+			case OPTIONS:
 				existingOperation = operationMap.get(HttpMethod.OPTIONS);
+				break;
+			default:
+				// Do nothing here
+				break;
 			}
 		}
 		return existingOperation;
