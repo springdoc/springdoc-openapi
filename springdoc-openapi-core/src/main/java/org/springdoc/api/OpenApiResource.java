@@ -4,7 +4,9 @@ import static org.springdoc.core.Constants.*;
 import static org.springframework.util.AntPathMatcher.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,8 +50,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser, GeneralInfoBuilder infoBuilder,
-			RequestBodyBuilder requestBodyBuilder, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
-		super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, requestBodyBuilder, infoBuilder);
+			RequestBodyBuilder requestBodyBuilder, RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
+		super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, requestBodyBuilder, infoBuilder, openApiCustomisers);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
