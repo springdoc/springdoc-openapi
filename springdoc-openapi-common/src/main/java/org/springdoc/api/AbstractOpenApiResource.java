@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,10 +43,11 @@ public abstract class AbstractOpenApiResource {
 	protected OperationBuilder operationParser;
 	protected RequestBodyBuilder requestBodyBuilder;
 	protected GeneralInfoBuilder generalInfoBuilder;
+	protected Optional<List<OpenApiCustomiser>> openApiCustomisers;
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
-			RequestBodyBuilder requestBodyBuilder, GeneralInfoBuilder generalInfoBuilder) {
+			RequestBodyBuilder requestBodyBuilder, GeneralInfoBuilder generalInfoBuilder, Optional<List<OpenApiCustomiser>> openApiCustomisers) {
 		super();
 		this.openAPIBuilder = openAPIBuilder;
 		this.requestBuilder = requestBuilder;
@@ -53,6 +55,7 @@ public abstract class AbstractOpenApiResource {
 		this.operationParser = operationParser;
 		this.requestBodyBuilder = requestBodyBuilder;
 		this.generalInfoBuilder = generalInfoBuilder;
+		this.openApiCustomisers = openApiCustomisers;
 	}
 
 	protected OpenAPI getOpenApi() {
@@ -71,8 +74,15 @@ public abstract class AbstractOpenApiResource {
 		responseBuilder.buildGenericResponse(openAPIBuilder.getComponents(), findControllerAdvice);
 
 		getPaths(restControllers);
+		OpenAPI openApi =  openAPIBuilder.getOpenAPI();
+		
+		// run the optional customisers
+	    if (openApiCustomisers.isPresent()) {
+	      openApiCustomisers.get().stream().forEach(openApiCustomiser -> openApiCustomiser.customise(openApi));
+	    }
+	    
 		LOGGER.info("Init duration for springdoc-openapi is: {} ms", Duration.between(start, Instant.now()).toMillis());
-		return openAPIBuilder.getOpenAPI();
+		return openApi;
 	}
 
 	protected abstract void getPaths(Map<String, Object> findRestControllers);

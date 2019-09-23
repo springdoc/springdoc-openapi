@@ -3,7 +3,9 @@ package org.springdoc.api;
 import static org.springdoc.core.Constants.*;
 import static org.springframework.util.AntPathMatcher.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springdoc.core.AbstractRequestBuilder;
@@ -42,9 +44,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
 			GeneralInfoBuilder infoBuilder, RequestBodyBuilder requestBodyBuilder,
-			RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
+			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
 		super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, requestBodyBuilder,
-				infoBuilder);
+				infoBuilder, openApiCustomisers);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
