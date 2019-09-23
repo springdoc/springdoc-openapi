@@ -86,14 +86,10 @@ public abstract class AbstractResponseBuilder {
 
 	protected Schema calculateSchemaParameterizedType(Components components, ParameterizedType parameterizedType) {
 		Schema schemaN = null;
-		if (parameterizedType.getActualTypeArguments()[0] instanceof Class
-				&& !Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
+		Type type = parameterizedType.getActualTypeArguments()[0];
+		if ((type instanceof Class || type instanceof ParameterizedType) && !Void.class.equals(type)) {
 			schemaN = calculateSchema(components, parameterizedType);
-		} else if (parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType
-				&& !Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
-			parameterizedType = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
-			schemaN = SpringDocAnnotationsUtils.extractSchema(components, parameterizedType);
-		} else if (Void.class.equals(parameterizedType.getActualTypeArguments()[0])) {
+		} else if (Void.class.equals(type)) {
 			// if void, no content
 			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
 		}
@@ -127,9 +123,11 @@ public abstract class AbstractResponseBuilder {
 				ApiResponse apiResponse1 = new ApiResponse();
 				apiResponse1.setDescription(apiResponse2.description());
 				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
-				SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
-						methodAttributes.getAllProduces() == null ? new String[0] : methodAttributes.getAllProduces(),
-						null, components, null)
+				SpringDocAnnotationsUtils
+						.getContent(contentdoc, new String[0],
+								methodAttributes.getAllProduces() == null ? new String[0]
+										: methodAttributes.getAllProduces(),
+								null, components, null)
 						.ifPresent(apiResponse1::content);
 				AnnotationsUtils.getHeaders(apiResponse2.headers(), null).ifPresent(apiResponse1::headers);
 				apiResponsesOp.addApiResponse(apiResponse2.responseCode(), apiResponse1);
@@ -221,8 +219,7 @@ public abstract class AbstractResponseBuilder {
 
 	private Schema calculateSchema(Components components, ParameterizedType parameterizedType) {
 		Schema schemaN;
-		schemaN = AnnotationsUtils.resolveSchemaFromType((Class<?>) parameterizedType.getActualTypeArguments()[0], null,
-				null);
+		schemaN = SpringDocAnnotationsUtils.extractSchema(components, parameterizedType.getActualTypeArguments()[0]);
 		if (schemaN.getType() == null) {
 			schemaN = SpringDocAnnotationsUtils.extractSchema(components,
 					parameterizedType.getActualTypeArguments()[0]);
