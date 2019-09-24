@@ -29,6 +29,10 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
 	static final String COMPONENTS_REF = "#/components/schemas/";
 
+	static {
+		ModelConverters.getInstance().addConverter(new ObjectNodeConverter());
+	}
+
 	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components) {
 		Schema schemaObject = null;
 		PrimitiveType primitiveType = PrimitiveType.fromType(schemaImplementation);
