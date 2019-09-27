@@ -45,6 +45,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	@Autowired(required = false)
 	private ActuatorProvider servletContextProvider;
 
+	@Autowired
+	OpenAPICloner openAPICloner;
+	
 	@Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
 	private boolean showActuator;
 
@@ -60,8 +63,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl)
 			throws JsonProcessingException {
-		calculateServerUrl(request, apiDocsUrl);
-		OpenAPI openAPI = this.getOpenApi();
+		String serverBaseUrl = calculateServerUrl(request, apiDocsUrl);
+		OpenAPI template = this.getOpenApi();
+		OpenAPI openAPI = openAPICloner.cloneOpenApi(template, serverBaseUrl);
 		return Json.mapper().writeValueAsString(openAPI);
 	}
 
@@ -69,8 +73,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
 	public String openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl)
 			throws JsonProcessingException {
-		calculateServerUrl(request, apiDocsUrl);
-		OpenAPI openAPI = this.getOpenApi();
+		String serverBaseUrl = calculateServerUrl(request, apiDocsUrl);
+		OpenAPI template = this.getOpenApi();
+		OpenAPI openAPI = openAPICloner.cloneOpenApi(template, serverBaseUrl);
 		return Yaml.mapper().writeValueAsString(openAPI);
 	}
 
@@ -111,9 +116,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		return result;
 	}
 
-	private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
+	private String calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
 		StringBuffer requestUrl = request.getRequestURL();
 		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
 		generalInfoBuilder.setServerBaseUrl(serverBaseUrl);
+		return serverBaseUrl;
 	}
 }
