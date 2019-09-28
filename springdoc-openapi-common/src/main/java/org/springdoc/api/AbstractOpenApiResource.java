@@ -44,6 +44,7 @@ public abstract class AbstractOpenApiResource {
 	protected RequestBodyBuilder requestBodyBuilder;
 	protected GeneralInfoBuilder generalInfoBuilder;
 	protected Optional<List<OpenApiCustomiser>> openApiCustomisers;
+	private boolean computeDone;
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -59,29 +60,35 @@ public abstract class AbstractOpenApiResource {
 	}
 
 	protected OpenAPI getOpenApi() {
-		Instant start = Instant.now();
-		generalInfoBuilder.build(openAPIBuilder.getOpenAPI());
-		Map<String, Object> restControllersMap = generalInfoBuilder.getRestControllersMap();
-		Map<String, Object> requestMappingMap = generalInfoBuilder.getRequestMappingMap();
-		Map<String, Object> restControllers = Stream.of(restControllersMap, requestMappingMap)
-				.flatMap(mapEl -> mapEl.entrySet().stream())
-				.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
-						Hidden.class) == null))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+		OpenAPI openApi;
+		if (!computeDone) {
+			Instant start = Instant.now();
+			generalInfoBuilder.build(openAPIBuilder.getOpenAPI());
+			Map<String, Object> restControllersMap = generalInfoBuilder.getRestControllersMap();
+			Map<String, Object> requestMappingMap = generalInfoBuilder.getRequestMappingMap();
+			Map<String, Object> restControllers = Stream.of(restControllersMap, requestMappingMap)
+					.flatMap(mapEl -> mapEl.entrySet().stream())
+					.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
+							Hidden.class) == null))
+					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
-		Map<String, Object> findControllerAdvice = generalInfoBuilder.getControllerAdviceMap();
-		// calculate generic responses
-		responseBuilder.buildGenericResponse(openAPIBuilder.getComponents(), findControllerAdvice);
+			Map<String, Object> findControllerAdvice = generalInfoBuilder.getControllerAdviceMap();
+			// calculate generic responses
+			responseBuilder.buildGenericResponse(openAPIBuilder.getComponents(), findControllerAdvice);
 
-		getPaths(restControllers);
-		OpenAPI openApi =  openAPIBuilder.getOpenAPI();
-		
-		// run the optional customisers
-	    if (openApiCustomisers.isPresent()) {
-	      openApiCustomisers.get().stream().forEach(openApiCustomiser -> openApiCustomiser.customise(openApi));
-	    }
-	    
-		LOGGER.info("Init duration for springdoc-openapi is: {} ms", Duration.between(start, Instant.now()).toMillis());
+			getPaths(restControllers);
+			openApi = openAPIBuilder.getOpenAPI();
+
+			// run the optional customisers
+			if (openApiCustomisers.isPresent()) {
+				openApiCustomisers.get().stream().forEach(openApiCustomiser -> openApiCustomiser.customise(openApi));
+			}
+			LOGGER.info("Init duration for springdoc-openapi is: {} ms",
+					Duration.between(start, Instant.now()).toMillis());
+			computeDone = true;
+		} else {
+			openApi = openAPIBuilder.getOpenAPI();
+		}
 		return openApi;
 	}
 
