@@ -1,6 +1,7 @@
 package org.springdoc.core;
 
 import java.lang.reflect.Type;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -57,7 +58,16 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			schemaN = resolvedSchema.schema;
 			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
 			if (schemaMap != null) {
-				schemaMap.forEach(components::addSchemas);
+				for (Map.Entry<String, Schema> entry : schemaMap.entrySet()) {
+					Map<String, Schema> componentSchemas = components.getSchemas();
+					if (componentSchemas == null) {
+						componentSchemas = new LinkedHashMap<>();
+						componentSchemas.put(entry.getKey(), entry.getValue());
+					} else if (!componentSchemas.containsKey(entry.getKey())) {
+						componentSchemas.put(entry.getKey(), entry.getValue());
+					}
+					components.setSchemas(componentSchemas);
+				}
 			}
 		}
 		return schemaN;
