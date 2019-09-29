@@ -42,23 +42,25 @@ public class OperationBuilder {
 	private RequestBodyBuilder requestBodyBuilder;
 	private SecurityParser securityParser;
 	private OpenAPIBuilder openAPIBuilder;
+	private ParameterPropertyResolverUtils propertyResolverUtils;
 
 	public OperationBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			SecurityParser securityParser, OpenAPIBuilder openAPIBuilder) {
+			SecurityParser securityParser, OpenAPIBuilder openAPIBuilder, ParameterPropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyBuilder = requestBodyBuilder;
 		this.securityParser = securityParser;
 		this.openAPIBuilder = openAPIBuilder;
+		this.propertyResolverUtils = propertyResolverUtils;
 	}
 
 	public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
 			Operation operation, OpenAPI openAPI, MethodAttributes methodAttributes) {
 		if (StringUtils.isNotBlank(apiOperation.summary())) {
-			operation.setSummary(apiOperation.summary());
+			operation.setSummary(propertyResolverUtils.resolve(apiOperation.summary()));
 		}
 		if (StringUtils.isNotBlank(apiOperation.description())) {
-			operation.setDescription(apiOperation.description());
+			operation.setDescription(propertyResolverUtils.resolve(apiOperation.description()));
 		}
 		if (StringUtils.isNotBlank(apiOperation.operationId())) {
 			operation.setOperationId(getOperationId(apiOperation.operationId(), openAPI));

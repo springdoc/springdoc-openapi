@@ -1,0 +1,54 @@
+{
+   "openapi": "3.0.1",
+   "info": {
+      "title": "OpenAPI definition",
+      "version": "v0"
+   },
+   "servers": [
+      {
+         "url": "http://localhost",
+         "description": "Generated server url"
+      }
+   ],
+   "tags": [
+      {
+         "name": "Hello world by properties file",
+         "description": "Hello world by properties file"
+      }
+   ],
+   "paths": {
+      "/iae_error": {
+         "get": {
+            "tags": [
+               "Hello world by properties file"
+            ],
+            "description": "Hello world by properties file",
+            "operationId": "getStartFormProperties",
+            "parameters": [
+               {
+                  "name": "test",
+                  "in": "query",
+                  "description": "Hello world by properties file",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "default response",
+                  "content": {
+                     "*/*": {
+                        "schema": {
+                           "type": "object"
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   },
+   "components": {}
+}

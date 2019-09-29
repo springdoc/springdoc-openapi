@@ -1,1 +1,6 @@
 spring.main.banner-mode: "off"
+
+swagger:
+  property:
+    parameter:
+      test: Hello world by properties file
