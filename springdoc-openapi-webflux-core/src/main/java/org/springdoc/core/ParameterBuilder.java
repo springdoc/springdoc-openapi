@@ -15,7 +15,8 @@ public class ParameterBuilder extends AbstractParameterBuilder {
 
 	public boolean isFile(ParameterizedType parameterizedType) {
 		Type type = parameterizedType.getActualTypeArguments()[0];
-		if (MultipartFile.class.getName().equals(type.getTypeName()) || FilePart.class.getName().equals(type)) {
+		if (MultipartFile.class.getName().equals(type.getTypeName())
+				|| FilePart.class.getName().equals(type.getTypeName())) {
 			return true;
 		} else if (type instanceof WildcardType) {
 			WildcardType wildcardType = (WildcardType) type;
