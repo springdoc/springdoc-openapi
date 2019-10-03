@@ -125,8 +125,7 @@ public abstract class AbstractResponseBuilder {
 				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
 				SpringDocAnnotationsUtils
 						.getContent(contentdoc, new String[0],
-								methodAttributes.getAllProduces() == null ? new String[0]
-										: methodAttributes.getAllProduces(),
+								methodAttributes.getAllProduces(),
 								null, components, null)
 						.ifPresent(apiResponse1::content);
 				AnnotationsUtils.getHeaders(apiResponse2.headers(), null).ifPresent(apiResponse1::headers);
