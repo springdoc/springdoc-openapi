@@ -47,6 +47,10 @@ public abstract class AbstractRequestBuilder {
 		this.operationBuilder = operationBuilder;
 	}
 
+    protected boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
+        return isParamTypeToIgnore(parameter.getType());
+    }
+
 	protected abstract boolean isParamTypeToIgnore(Class<?> paramType);
 
 	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
@@ -70,7 +74,6 @@ public abstract class AbstractRequestBuilder {
 			// check if query param
 			Parameter parameter = null;
 			final String pName = pNames[i];
-			Class<?> paramType = parameters[i].getType();
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = parameterBuilder.getParameterAnnotation(
 					handlerMethod, parameters[i], i, io.swagger.v3.oas.annotations.Parameter.class);
 
@@ -82,7 +85,7 @@ public abstract class AbstractRequestBuilder {
 				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null);
 			}
 
-			if (!isParamTypeToIgnore(paramType)) {
+            if (!isParamToIgnore(parameters[i])) {
 				parameter = buildParams(pName, components, parameters[i], i, parameter, handlerMethod, requestMethod);
 				// Merge with the operation parameters
 				parameter = parameterBuilder.mergeParameter(existingParamDoc, parameter);
