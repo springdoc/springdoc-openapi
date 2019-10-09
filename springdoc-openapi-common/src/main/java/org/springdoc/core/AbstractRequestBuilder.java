@@ -47,9 +47,12 @@ public abstract class AbstractRequestBuilder {
 		this.operationBuilder = operationBuilder;
 	}
 
-    protected boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
-        return isParamTypeToIgnore(parameter.getType());
-    }
+	protected boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
+		if (parameter.isAnnotationPresent(PathVariable.class)) {
+			return false;
+		}
+		return isParamTypeToIgnore(parameter.getType());
+	}
 
 	protected abstract boolean isParamTypeToIgnore(Class<?> paramType);
 
@@ -85,7 +88,7 @@ public abstract class AbstractRequestBuilder {
 				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null);
 			}
 
-            if (!isParamToIgnore(parameters[i])) {
+			if (!isParamToIgnore(parameters[i])) {
 				parameter = buildParams(pName, components, parameters[i], i, parameter, handlerMethod, requestMethod);
 				// Merge with the operation parameters
 				parameter = parameterBuilder.mergeParameter(existingParamDoc, parameter);
