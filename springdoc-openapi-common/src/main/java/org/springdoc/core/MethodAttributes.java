@@ -19,6 +19,7 @@ public class MethodAttributes {
 	private String[] methodProduces = {};
 	private String[] methodConsumes = {};
 	private boolean methodOverloaded;
+	private boolean withApiResponseDoc;
 
 	public MethodAttributes() {
 	}
@@ -110,6 +111,14 @@ public class MethodAttributes {
 
 	public boolean isMethodOverloaded() {
 		return methodOverloaded;
+	}
+
+	public void setWithApiResponseDoc(boolean withApiDoc) {
+		this.withApiResponseDoc = withApiDoc;
+	}
+
+	public boolean isNoApiResponseDoc() {
+		return !withApiResponseDoc;
 	}
 
 }

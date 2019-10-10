@@ -377,8 +377,22 @@ public class OperationBuilder {
 		return Optional.of(list);
 	}
 
-	public String getOperationId(String operationId) {
-		return this.getOperationId(operationId, openAPIBuilder.getOpenAPI());
+	public String getOperationId(String operationId, String OldOperationId) {
+		String operationIdToChoose = compareOperationId(operationId,
+				Optional.ofNullable(OldOperationId).orElse(StringUtils.EMPTY));
+		return this.getOperationId(operationIdToChoose, openAPIBuilder.getOpenAPI());
 	}
 
+	private String compareOperationId(String a, String b) {
+		if (StringUtils.EMPTY.equals(b))
+			return a;
+		int compare = a.compareTo(b);
+		if (compare < 0) {
+			return a;
+		} else if (compare > 0) {
+			return b;
+		} else {
+			return b;
+		}
+	}
 }

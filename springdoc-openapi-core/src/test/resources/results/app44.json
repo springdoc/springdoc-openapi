@@ -1,0 +1,107 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+		"title": "OpenAPI definition",
+		"version": "v0"
+	},
+	"servers": [
+		{
+			"url": "http://localhost",
+			"description": "Generated server url"
+		}
+	],
+	"paths": {
+		"/helloworld": {
+			"post": {
+				"operationId": "hellov1_1",
+				"requestBody": {
+					"content": {
+						"application/vnd.v2+json": {
+							"schema": {
+								"$ref": "#/components/schemas/RequestV2"
+							}
+						},
+						"application/vnd.v1+json": {
+							"schema": {
+								"$ref": "#/components/schemas/RequestV1"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"oneOf": [
+										{
+											"$ref": "#/components/schemas/HelloDTO1"
+										},
+										{
+											"$ref": "#/components/schemas/HelloDTO2"
+										}
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad name",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorDTO"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"RequestV2": {
+				"type": "object",
+				"properties": {
+					"nameV2": {
+						"type": "string"
+					}
+				}
+			},
+			"HelloDTO2": {
+				"type": "object",
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				}
+			},
+			"ErrorDTO": {
+				"type": "object",
+				"properties": {
+					"errorMessage": {
+						"type": "string"
+					}
+				}
+			},
+			"RequestV1": {
+				"type": "object",
+				"properties": {
+					"nameV1": {
+						"type": "string"
+					}
+				}
+			},
+			"HelloDTO1": {
+				"type": "object",
+				"properties": {
+					"message": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	}
+}

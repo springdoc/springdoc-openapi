@@ -52,7 +52,8 @@ public abstract class AbstractRequestBuilder {
 	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MethodAttributes methodAttributes) {
 		// Documentation
-		String operationId = operationBuilder.getOperationId(handlerMethod.getMethod().getName());
+		String operationId = operationBuilder.getOperationId(handlerMethod.getMethod().getName(),
+				operation.getOperationId());
 		
 		operation.setOperationId(operationId);
 		// requests
