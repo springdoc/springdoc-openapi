@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -119,15 +120,29 @@ public abstract class AbstractResponseBuilder {
 		// Parsing documentation, if present
 		io.swagger.v3.oas.annotations.responses.ApiResponse[] responsesArray = getApiResponses(method);
 		if (ArrayUtils.isNotEmpty(responsesArray)) {
+			methodAttributes.setWithApiResponseDoc(true);
 			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponse2 : responsesArray) {
 				ApiResponse apiResponse1 = new ApiResponse();
 				apiResponse1.setDescription(apiResponse2.description());
 				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
-				SpringDocAnnotationsUtils
-						.getContent(contentdoc, new String[0],
-								methodAttributes.getAllProduces(),
-								null, components, null)
-						.ifPresent(apiResponse1::content);
+				Optional<Content> optionalContent = SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
+						methodAttributes.getAllProduces(), null, components, null);
+
+				if (apiResponsesOp.containsKey(apiResponse2.responseCode())) {
+					// Merge with the existing content
+					Content existingContent = apiResponsesOp.get(apiResponse2.responseCode()).getContent();
+					if (optionalContent.isPresent()) {
+						Content newContent = optionalContent.get();
+						for (String mediaTypeStr : methodAttributes.getAllProduces()) {
+							io.swagger.v3.oas.models.media.MediaType mediaType = newContent.get(mediaTypeStr);
+							mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr);
+						}
+						apiResponse1.content(existingContent);
+					}
+				} else {
+					optionalContent.ifPresent(apiResponse1::content);
+				}
+
 				AnnotationsUtils.getHeaders(apiResponse2.headers(), null).ifPresent(apiResponse1::headers);
 				apiResponsesOp.addApiResponse(apiResponse2.responseCode(), apiResponse1);
 			}
@@ -236,7 +251,8 @@ public abstract class AbstractResponseBuilder {
 		if (StringUtils.isBlank(apiResponse.getDescription())) {
 			apiResponse.setDescription(DEFAULT_DESCRIPTION);
 		}
-		if (apiResponse.getContent() != null && (isGeneric || methodAttributes.isMethodOverloaded())) {
+		if (apiResponse.getContent() != null
+				&& (isGeneric || (methodAttributes.isMethodOverloaded() && methodAttributes.isNoApiResponseDoc()))) {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
 			Schema<?> schemaN = calculateSchema(components, method.getGenericReturnType());
