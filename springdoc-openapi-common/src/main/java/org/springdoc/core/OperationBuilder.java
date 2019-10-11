@@ -33,7 +33,6 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
 
 @Component
 public class OperationBuilder {
@@ -92,18 +91,14 @@ public class OperationBuilder {
 		buildResponse(components, apiOperation, operation, methodAttributes);
 
 		// security
-		Optional<List<SecurityRequirement>> requirementsObject = securityParser
-				.getSecurityRequirements(apiOperation.security());
-		if (requirementsObject.isPresent()) {
-			requirementsObject.get().stream()
-					.filter(r -> operation.getSecurity() == null || !operation.getSecurity().contains(r))
-					.forEach(operation::addSecurityItem);
-		}
+		securityParser.buildSecurityRequirement(apiOperation.security(), operation);
 
 		// Extensions in Operation
 		buildExtensions(apiOperation, operation);
 		return openAPI;
 	}
+
+
 
 	public boolean isHidden(Method method) {
 		io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils.getAnnotation(method,
@@ -395,4 +390,5 @@ public class OperationBuilder {
 			return b;
 		}
 	}
+
 }

@@ -2,16 +2,22 @@ package org.springdoc.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.method.HandlerMethod;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.OAuthScope;
+import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.security.OAuthFlow;
 import io.swagger.v3.oas.models.security.OAuthFlows;
 import io.swagger.v3.oas.models.security.Scopes;
@@ -20,6 +26,49 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @Component
 public class SecurityParser {
+
+	public Optional<io.swagger.v3.oas.annotations.security.SecurityRequirement[]> getSecurityRequirements(
+			HandlerMethod method) {
+		// class SecurityRequirements
+		io.swagger.v3.oas.annotations.security.SecurityRequirements classSecurity = ReflectionUtils
+				.getAnnotation(method.getBeanType(), io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
+		// method SecurityRequirements
+		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity = ReflectionUtils
+				.getAnnotation(method.getMethod(), io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
+
+		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = new HashSet<io.swagger.v3.oas.annotations.security.SecurityRequirement>();
+
+		if (classSecurity != null) {
+			allSecurityTags.addAll(Arrays.asList(classSecurity.value()));
+		}
+		if (methodSecurity != null) {
+			allSecurityTags.addAll(Arrays.asList(methodSecurity.value()));
+		}
+
+		if (allSecurityTags.isEmpty()) {
+			// class SecurityRequirement
+			List<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList = ReflectionUtils
+					.getRepeatableAnnotations(method.getBeanType(),
+							io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
+			// method SecurityRequirement
+			List<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsMethodList = ReflectionUtils
+					.getRepeatableAnnotations(method.getMethod(),
+							io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
+			if (!CollectionUtils.isEmpty(securityRequirementsClassList)) {
+				allSecurityTags.addAll(securityRequirementsClassList);
+			}
+			if (!CollectionUtils.isEmpty(securityRequirementsMethodList)) {
+				allSecurityTags.addAll(securityRequirementsMethodList);
+			}
+		}
+
+		if (allSecurityTags.isEmpty()) {
+			return Optional.empty();
+		}
+
+		return Optional.of(
+				allSecurityTags.stream().toArray(io.swagger.v3.oas.annotations.security.SecurityRequirement[]::new));
+	}
 
 	public Optional<List<SecurityRequirement>> getSecurityRequirements(
 			io.swagger.v3.oas.annotations.security.SecurityRequirement[] securityRequirementsApi) {
@@ -97,6 +146,16 @@ public class SecurityParser {
 
 		SecuritySchemePair result = new SecuritySchemePair(key, securitySchemeObject);
 		return Optional.of(result);
+	}
+
+	public void buildSecurityRequirement(
+			io.swagger.v3.oas.annotations.security.SecurityRequirement[] securityRequirements, Operation operation) {
+		Optional<List<SecurityRequirement>> requirementsObject = this.getSecurityRequirements(securityRequirements);
+		if (requirementsObject.isPresent()) {
+			requirementsObject.get().stream()
+					.filter(r -> operation.getSecurity() == null || !operation.getSecurity().contains(r))
+					.forEach(operation::addSecurityItem);
+		}
 	}
 
 	private Optional<OAuthFlows> getOAuthFlows(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
