@@ -1,8 +1,13 @@
 {
 	"openapi": "3.0.1",
 	"info": {
-		"title": "OpenAPI definition",
-		"version": "v0"
+		"title": "My App",
+		"description": "Some long and useful description",
+		"license": {
+			"name": "Apache 2.0",
+			"url": "https://www.apache.org/licenses/LICENSE-2.0"
+		},
+		"version": "v1"
 	},
 	"servers": [
 		{
@@ -144,6 +149,13 @@
 						"type": "string"
 					}
 				}
+			}
+		},
+		"securitySchemes": {
+			"bearer": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
 			}
 		}
 	}
