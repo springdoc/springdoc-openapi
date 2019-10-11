@@ -114,6 +114,13 @@ public class GeneralInfoBuilder {
 			openAPI.setTags(new ArrayList<>(tagsSet));
 		}
 
+		// Handle SecurityRequirement at operation level
+		Optional<io.swagger.v3.oas.annotations.security.SecurityRequirement[]> securityRequirement = securityParser
+				.getSecurityRequirements(handlerMethod);
+		if (securityRequirement.isPresent()) {
+			securityParser.buildSecurityRequirement(securityRequirement.get(), operation);
+		}
+
 		if (!CollectionUtils.isEmpty(tagsStr))
 			operation.setTags(new ArrayList<String>(tagsStr));
 
