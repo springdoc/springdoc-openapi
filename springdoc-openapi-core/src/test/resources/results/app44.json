@@ -13,22 +13,32 @@
 	"paths": {
 		"/helloworld": {
 			"post": {
-				"operationId": "hellov1_1",
+				"operationId": "hello_1",
 				"requestBody": {
 					"content": {
-						"application/vnd.v2+json": {
-							"schema": {
-								"$ref": "#/components/schemas/RequestV2"
-							}
-						},
 						"application/vnd.v1+json": {
 							"schema": {
 								"$ref": "#/components/schemas/RequestV1"
+							}
+						},
+						"application/vnd.v2+json": {
+							"schema": {
+								"$ref": "#/components/schemas/RequestV2"
 							}
 						}
 					}
 				},
 				"responses": {
+					"400": {
+						"description": "Bad name",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorDTO"
+								}
+							}
+						}
+					},
 					"200": {
 						"description": "Successful operation",
 						"content": {
@@ -36,22 +46,12 @@
 								"schema": {
 									"oneOf": [
 										{
-											"$ref": "#/components/schemas/HelloDTO1"
+											"$ref": "#/components/schemas/HelloDTO2"
 										},
 										{
-											"$ref": "#/components/schemas/HelloDTO2"
+											"$ref": "#/components/schemas/HelloDTO1"
 										}
 									]
-								}
-							}
-						}
-					},
-					"400": {
-						"description": "Bad name",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorDTO"
 								}
 							}
 						}
@@ -62,18 +62,10 @@
 	},
 	"components": {
 		"schemas": {
-			"RequestV2": {
+			"RequestV1": {
 				"type": "object",
 				"properties": {
-					"nameV2": {
-						"type": "string"
-					}
-				}
-			},
-			"HelloDTO2": {
-				"type": "object",
-				"properties": {
-					"message": {
+					"nameV1": {
 						"type": "string"
 					}
 				}
@@ -86,15 +78,23 @@
 					}
 				}
 			},
-			"RequestV1": {
+			"HelloDTO1": {
 				"type": "object",
 				"properties": {
-					"nameV1": {
+					"message": {
 						"type": "string"
 					}
 				}
 			},
-			"HelloDTO1": {
+			"RequestV2": {
+				"type": "object",
+				"properties": {
+					"nameV2": {
+						"type": "string"
+					}
+				}
+			},
+			"HelloDTO2": {
 				"type": "object",
 				"properties": {
 					"message": {
