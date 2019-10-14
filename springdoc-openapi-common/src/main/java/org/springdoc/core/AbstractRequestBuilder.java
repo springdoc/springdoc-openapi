@@ -47,13 +47,6 @@ public abstract class AbstractRequestBuilder {
 		this.operationBuilder = operationBuilder;
 	}
 
-	protected boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
-		if (parameter.isAnnotationPresent(PathVariable.class)) {
-			return false;
-		}
-		return isParamTypeToIgnore(parameter.getType());
-	}
-
 	protected abstract boolean isParamTypeToIgnore(Class<?> paramType);
 
 	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
@@ -107,6 +100,13 @@ public abstract class AbstractRequestBuilder {
 
 		setParams(operation, operationParameters, requestBodyInfo);
 		return operation;
+	}
+
+	private boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
+		if (parameter.isAnnotationPresent(PathVariable.class)) {
+			return false;
+		}
+		return isParamTypeToIgnore(parameter.getType());
 	}
 
 	private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
