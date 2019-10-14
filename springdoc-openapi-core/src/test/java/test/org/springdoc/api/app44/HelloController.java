@@ -18,7 +18,7 @@ public class HelloController {
 	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(schema = @Schema(implementation = HelloDTO1.class))),
 			@ApiResponse(responseCode = "400", description = "Bad name", content = @Content(schema = @Schema(implementation = ErrorDTO.class))) })
-	public ResponseEntity<?> hellov1(@RequestBody RequestV1 request) {
+	public ResponseEntity<?> hello(@RequestBody RequestV1 request) {
 		final String name = request.getNameV1();
 		if ("error".equalsIgnoreCase(name)) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("invalid name: " + name));
@@ -30,7 +30,7 @@ public class HelloController {
 	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(schema = @Schema(implementation = HelloDTO2.class))),
 			@ApiResponse(responseCode = "400", description = "Bad name", content = @Content(schema = @Schema(implementation = ErrorDTO.class))) })
-	public ResponseEntity<?> hellov2(@RequestBody RequestV2 request) {
+	public ResponseEntity<?> hello(@RequestBody RequestV2 request) {
 		final String name = request.getNameV2();
 		if ("error".equalsIgnoreCase(name)) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("invalid name: " + name));

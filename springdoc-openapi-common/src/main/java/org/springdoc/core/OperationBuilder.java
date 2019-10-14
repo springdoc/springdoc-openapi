@@ -98,8 +98,6 @@ public class OperationBuilder {
 		return openAPI;
 	}
 
-
-
 	public boolean isHidden(Method method) {
 		io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils.getAnnotation(method,
 				io.swagger.v3.oas.annotations.Operation.class);
@@ -373,22 +371,10 @@ public class OperationBuilder {
 	}
 
 	public String getOperationId(String operationId, String OldOperationId) {
-		String operationIdToChoose = compareOperationId(operationId,
-				Optional.ofNullable(OldOperationId).orElse(StringUtils.EMPTY));
-		return this.getOperationId(operationIdToChoose, openAPIBuilder.getOpenAPI());
-	}
-
-	private String compareOperationId(String a, String b) {
-		if (StringUtils.EMPTY.equals(b))
-			return a;
-		int compare = a.compareTo(b);
-		if (compare < 0) {
-			return a;
-		} else if (compare > 0) {
-			return b;
-		} else {
-			return b;
-		}
+		if (StringUtils.isNotBlank(OldOperationId))
+			return this.getOperationId(OldOperationId, openAPIBuilder.getOpenAPI());
+		else
+			return this.getOperationId(operationId, openAPIBuilder.getOpenAPI());
 	}
 
 }

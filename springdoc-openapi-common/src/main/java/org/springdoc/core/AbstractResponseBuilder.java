@@ -10,10 +10,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.Optional;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -126,6 +126,12 @@ public abstract class AbstractResponseBuilder {
 			methodAttributes.setWithApiResponseDoc(true);
 			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponse2 : responsesArray) {
 				ApiResponse apiResponse1 = new ApiResponse();
+				if (StringUtils.isNotBlank(apiResponse2.ref())) {
+					apiResponse1.$ref(apiResponse2.ref());
+					apiResponsesOp.addApiResponse(apiResponse2.responseCode(), apiResponse1);
+					continue;
+				}
+
 				apiResponse1.setDescription(apiResponse2.description());
 				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
 				Optional<Content> optionalContent = SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
@@ -178,23 +184,20 @@ public abstract class AbstractResponseBuilder {
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponses> apiResponsesDoc = AnnotatedElementUtils
 				.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.responses.ApiResponses.class);
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responses = apiResponsesDoc.stream()
-				.flatMap(x -> Stream.of(x.value()))
-				.collect(Collectors.toSet());
+				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet());
 
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponses> apiResponsesDocDeclaringClass = AnnotatedElementUtils
 				.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.responses.ApiResponses.class);
 		responses.addAll(
-				apiResponsesDocDeclaringClass.stream()
-						.flatMap(x -> Stream.of(x.value()))
-						.collect(Collectors.toSet())
-		);
+				apiResponsesDocDeclaringClass.stream().flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet()));
 
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> apiResponseDoc = AnnotatedElementUtils
 				.findMergedRepeatableAnnotations(method, io.swagger.v3.oas.annotations.responses.ApiResponse.class);
 		responses.addAll(apiResponseDoc);
 
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> apiResponseDocDeclaringClass = AnnotatedElementUtils
-				.findMergedRepeatableAnnotations(declaringClass, io.swagger.v3.oas.annotations.responses.ApiResponse.class);
+				.findMergedRepeatableAnnotations(declaringClass,
+						io.swagger.v3.oas.annotations.responses.ApiResponse.class);
 		responses.addAll(apiResponseDocDeclaringClass);
 
 		return responses;
@@ -258,13 +261,16 @@ public abstract class AbstractResponseBuilder {
 	private void buildApiResponses(Components components, Method method, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes, String httpCode, ApiResponse apiResponse, boolean isGeneric) {
 		// No documentation
-		if (apiResponse.getContent() == null) {
-			Content content = buildContent(components, method, methodAttributes.getAllProduces());
-			apiResponse.setContent(content);
+		if (StringUtils.isBlank(apiResponse.get$ref())) {
+			if (apiResponse.getContent() == null) {
+				Content content = buildContent(components, method, methodAttributes.getAllProduces());
+				apiResponse.setContent(content);
+			}
+			if (StringUtils.isBlank(apiResponse.getDescription())) {
+				apiResponse.setDescription(DEFAULT_DESCRIPTION);
+			}
 		}
-		if (StringUtils.isBlank(apiResponse.getDescription())) {
-			apiResponse.setDescription(DEFAULT_DESCRIPTION);
-		}
+
 		if (apiResponse.getContent() != null
 				&& (isGeneric || (methodAttributes.isMethodOverloaded() && methodAttributes.isNoApiResponseDoc()))) {
 			// Merge with existing schema

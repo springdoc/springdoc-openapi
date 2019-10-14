@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,7 +53,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser, GeneralInfoBuilder infoBuilder,
 			RequestBodyBuilder requestBodyBuilder, RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
-		super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, requestBodyBuilder, infoBuilder, openApiCustomisers);
+		super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, requestBodyBuilder, infoBuilder,
+				openApiCustomisers);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
@@ -92,7 +94,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			HandlerMethod handlerMethod = entry.getValue();
 			PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
 			Set<String> patterns = patternsRequestCondition.getPatterns();
-			String operationPath = patterns.iterator().next();
+			String operationPath = CollectionUtils.isEmpty(patterns) ? "/" : patterns.iterator().next();
 			if (isRestController(restControllers, handlerMethod, operationPath)) {
 				Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 				calculatePath(openAPIBuilder, handlerMethod, operationPath, requestMethods);
