@@ -39,7 +39,7 @@ public abstract class AbstractSpringDocTest {
 		Path path = Paths.get(getClass().getClassLoader().getResource("results/app" + testNumber + ".json").toURI());
 		byte[] fileBytes = Files.readAllBytes(path);
 		String expected = new String(fileBytes);
-		assertEquals(expected, result, false);
+		assertEquals(expected, result, true);
 	}
 
 }
