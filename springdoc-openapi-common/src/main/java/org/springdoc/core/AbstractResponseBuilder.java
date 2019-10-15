@@ -140,7 +140,7 @@ public abstract class AbstractResponseBuilder {
 				if (apiResponsesOp.containsKey(apiResponse2.responseCode())) {
 					// Merge with the existing content
 					Content existingContent = apiResponsesOp.get(apiResponse2.responseCode()).getContent();
-					if (optionalContent.isPresent()) {
+					if (optionalContent.isPresent() && existingContent != null) {
 						Content newContent = optionalContent.get();
 						for (String mediaTypeStr : methodAttributes.getAllProduces()) {
 							io.swagger.v3.oas.models.media.MediaType mediaType = newContent.get(mediaTypeStr);
