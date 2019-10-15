@@ -157,6 +157,13 @@ public abstract class AbstractResponseBuilder {
 			}
 		}
 
+		String httpCodeFromMethod = evaluateResponseStatus(method, method.getClass(), isGeneric);
+		if(httpCodeFromMethod != null && !apiResponsesOp.containsKey(httpCodeFromMethod)) {
+			ApiResponse apiResponse = genericMapResponse.containsKey(httpCodeFromMethod) ? genericMapResponse.get(httpCodeFromMethod)
+					: new ApiResponse();
+			buildApiResponses(components, method, apiResponsesOp, methodAttributes, httpCodeFromMethod, apiResponse,
+					isGeneric);
+		}
 		if (!CollectionUtils.isEmpty(apiResponsesOp) && (apiResponsesOp.size() != genericMapResponse.size())) {
 			// API Responses at operation and @ApiResponse annotation
 			for (Map.Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
@@ -165,15 +172,6 @@ public abstract class AbstractResponseBuilder {
 				buildApiResponses(components, method, apiResponsesOp, methodAttributes, httpCode, apiResponse,
 						isGeneric);
 			}
-		} else {
-			// Use response parameters with no description filled - No documentation
-			// available
-			String httpCode = evaluateResponseStatus(method, method.getClass(), isGeneric);
-			ApiResponse apiResponse = genericMapResponse.containsKey(httpCode) ? genericMapResponse.get(httpCode)
-					: new ApiResponse();
-			if (httpCode != null)
-				buildApiResponses(components, method, apiResponsesOp, methodAttributes, httpCode, apiResponse,
-						isGeneric);
 		}
 		return apiResponsesOp;
 	}
