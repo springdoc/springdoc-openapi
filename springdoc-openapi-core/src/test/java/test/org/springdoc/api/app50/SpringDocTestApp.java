@@ -19,17 +19,4 @@ public class SpringDocTestApp {
         SpringApplication.run(SpringDocTestApp.class, args);
     }
 
-	@Configuration
-	class OpenApiConfiguration {
-		@Bean
-		public OpenAPI defineOpenApi() {
-			OpenAPI api = new OpenAPI();
-			api.components(new Components().addResponses("Unauthorized",
-					new ApiResponse().description("Unauthorized")
-							.content(new Content().addMediaType(MediaType.APPLICATION_JSON_VALUE,
-									new io.swagger.v3.oas.models.media.MediaType().schema(new StringSchema())))));
-			return api;
-		}
-	}
-
 }
