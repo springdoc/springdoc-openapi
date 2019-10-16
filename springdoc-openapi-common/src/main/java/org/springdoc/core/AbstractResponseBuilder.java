@@ -121,39 +121,39 @@ public abstract class AbstractResponseBuilder {
 	private Map<String, ApiResponse> computeResponse(Components components, Method method, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes, boolean isGeneric) {
 		// Parsing documentation, if present
-		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray = getApiResponses(method);
-		if (!responsesArray.isEmpty()) {
+		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> apiResponseAnnotations = getApiResponseAnnotations(method);
+		if (!apiResponseAnnotations.isEmpty()) {
 			methodAttributes.setWithApiResponseDoc(true);
-			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponse2 : responsesArray) {
-				ApiResponse apiResponse1 = new ApiResponse();
-				if (StringUtils.isNotBlank(apiResponse2.ref())) {
-					apiResponse1.$ref(apiResponse2.ref());
-					apiResponsesOp.addApiResponse(apiResponse2.responseCode(), apiResponse1);
+			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotation : apiResponseAnnotations) {
+				ApiResponse apiResponse = new ApiResponse();
+				if (StringUtils.isNotBlank(apiResponseAnnotation.ref())) {
+					apiResponse.$ref(apiResponseAnnotation.ref());
+					apiResponsesOp.addApiResponse(apiResponseAnnotation.responseCode(), apiResponse);
 					continue;
 				}
 
-				apiResponse1.setDescription(apiResponse2.description());
-				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
+				apiResponse.setDescription(apiResponseAnnotation.description());
+				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotation.content();
 				Optional<Content> optionalContent = SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
 						methodAttributes.getAllProduces(), null, components, null);
 
-				if (apiResponsesOp.containsKey(apiResponse2.responseCode())) {
+				if (apiResponsesOp.containsKey(apiResponseAnnotation.responseCode())) {
 					// Merge with the existing content
-					Content existingContent = apiResponsesOp.get(apiResponse2.responseCode()).getContent();
+					Content existingContent = apiResponsesOp.get(apiResponseAnnotation.responseCode()).getContent();
 					if (optionalContent.isPresent() && existingContent != null) {
 						Content newContent = optionalContent.get();
 						for (String mediaTypeStr : methodAttributes.getAllProduces()) {
 							io.swagger.v3.oas.models.media.MediaType mediaType = newContent.get(mediaTypeStr);
 							mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr);
 						}
-						apiResponse1.content(existingContent);
+						apiResponse.content(existingContent);
 					}
 				} else {
-					optionalContent.ifPresent(apiResponse1::content);
+					optionalContent.ifPresent(apiResponse::content);
 				}
 
-				AnnotationsUtils.getHeaders(apiResponse2.headers(), null).ifPresent(apiResponse1::headers);
-				apiResponsesOp.addApiResponse(apiResponse2.responseCode(), apiResponse1);
+				AnnotationsUtils.getHeaders(apiResponseAnnotation.headers(), null).ifPresent(apiResponse::headers);
+				apiResponsesOp.addApiResponse(apiResponseAnnotation.responseCode(), apiResponse);
 			}
 		}
 
@@ -178,7 +178,7 @@ public abstract class AbstractResponseBuilder {
 		return apiResponsesOp;
 	}
 
-	private Set<io.swagger.v3.oas.annotations.responses.ApiResponse> getApiResponses(Method method) {
+	private Set<io.swagger.v3.oas.annotations.responses.ApiResponse> getApiResponseAnnotations(Method method) {
 		Class<?> declaringClass = method.getDeclaringClass();
 
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponses> apiResponsesDoc = AnnotatedElementUtils
