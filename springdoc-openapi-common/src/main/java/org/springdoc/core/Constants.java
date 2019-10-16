@@ -42,6 +42,7 @@ public final class Constants {
 	public static final String DEFAULT_LICENSE_URL = "http://www.apache.org/licenses/LICENSE-2.0.html";
 	public static final String OPENAPI_STRING_TYPE = "string";
 	public static final String OPENAPI_ARRAY_TYPE = "array";
+	public static final String RESPONSE_CODE_FROM_METHOD = "springdoc-openapi-response-code-from-method";
 
 	private Constants() {
 		super();

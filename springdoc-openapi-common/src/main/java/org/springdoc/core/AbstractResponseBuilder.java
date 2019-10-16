@@ -126,9 +126,15 @@ public abstract class AbstractResponseBuilder {
 			methodAttributes.setWithApiResponseDoc(true);
 			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotation : apiResponseAnnotations) {
 				ApiResponse apiResponse = new ApiResponse();
+
+				String responseCodeFromAnnotation = getResponseCodeFromAnnotation(apiResponseAnnotation, method, isGeneric, apiResponseAnnotations, apiResponsesOp);
+				if(responseCodeFromAnnotation == null) {
+					continue;
+				}
+
 				if (StringUtils.isNotBlank(apiResponseAnnotation.ref())) {
 					apiResponse.$ref(apiResponseAnnotation.ref());
-					apiResponsesOp.addApiResponse(apiResponseAnnotation.responseCode(), apiResponse);
+					apiResponsesOp.addApiResponse(responseCodeFromAnnotation, apiResponse);
 					continue;
 				}
 
@@ -137,9 +143,9 @@ public abstract class AbstractResponseBuilder {
 				Optional<Content> optionalContent = SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
 						methodAttributes.getAllProduces(), null, components, null);
 
-				if (apiResponsesOp.containsKey(apiResponseAnnotation.responseCode())) {
+				if (apiResponsesOp.containsKey(responseCodeFromAnnotation)) {
 					// Merge with the existing content
-					Content existingContent = apiResponsesOp.get(apiResponseAnnotation.responseCode()).getContent();
+					Content existingContent = apiResponsesOp.get(responseCodeFromAnnotation).getContent();
 					if (optionalContent.isPresent() && existingContent != null) {
 						Content newContent = optionalContent.get();
 						for (String mediaTypeStr : methodAttributes.getAllProduces()) {
@@ -153,7 +159,7 @@ public abstract class AbstractResponseBuilder {
 				}
 
 				AnnotationsUtils.getHeaders(apiResponseAnnotation.headers(), null).ifPresent(apiResponse::headers);
-				apiResponsesOp.addApiResponse(apiResponseAnnotation.responseCode(), apiResponse);
+				apiResponsesOp.addApiResponse(responseCodeFromAnnotation, apiResponse);
 			}
 		}
 
@@ -168,7 +174,7 @@ public abstract class AbstractResponseBuilder {
 		} else {
 			// Use response parameters with no description filled - No documentation
 			// available
-			String httpCode = evaluateResponseStatus(method, method.getClass(), isGeneric);
+			String httpCode = evaluateResponseStatus(method, isGeneric);
 			ApiResponse apiResponse = genericMapResponse.containsKey(httpCode) ? genericMapResponse.get(httpCode)
 					: new ApiResponse();
 			if (httpCode != null)
@@ -176,6 +182,27 @@ public abstract class AbstractResponseBuilder {
 						isGeneric);
 		}
 		return apiResponsesOp;
+	}
+
+	private String getResponseCodeFromAnnotation(io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotation, Method method, boolean isGeneric,
+												 Set<io.swagger.v3.oas.annotations.responses.ApiResponse> apiResponseAnnotations, ApiResponses apiResponsesOp) {
+		if(Constants.RESPONSE_CODE_FROM_METHOD.equals(apiResponseAnnotation.responseCode())) {
+			String responseCodeFromMethod = evaluateResponseStatus(method, isGeneric);
+			if(responseCodeFromMethod != null) {
+				// check if the default response code from method
+				// is already explicitly specified as documentation
+				if(apiResponsesOp.containsKey(responseCodeFromMethod))
+					return null;
+				boolean responseCodeFoundInAnnotations = apiResponseAnnotations.stream()
+						.anyMatch(annotation -> responseCodeFromMethod.equals(annotation.responseCode()));
+				if(responseCodeFoundInAnnotations)
+					return null;
+				return responseCodeFromMethod;
+			}
+			// never use the magic constant RESPONSE_CODE_FROM_METHOD as response code
+			return null;
+		}
+		return apiResponseAnnotation.responseCode();
 	}
 
 	private Set<io.swagger.v3.oas.annotations.responses.ApiResponse> getApiResponseAnnotations(Method method) {
@@ -312,7 +339,8 @@ public abstract class AbstractResponseBuilder {
 		}
 	}
 
-	private String evaluateResponseStatus(Method method, Class<?> beanType, boolean isGeneric) {
+	private String evaluateResponseStatus(Method method, boolean isGeneric) {
+		Class<? extends Method> beanType = method.getClass();
 		String responseStatus = null;
 		ResponseStatus annotation = AnnotatedElementUtils.findMergedAnnotation(method, ResponseStatus.class);
 		if (annotation == null && beanType != null) {
