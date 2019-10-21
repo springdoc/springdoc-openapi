@@ -36,7 +36,7 @@ public class SecurityParser {
 		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity = ReflectionUtils
 				.getAnnotation(method.getMethod(), io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 
-		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = new HashSet<io.swagger.v3.oas.annotations.security.SecurityRequirement>();
+		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = new HashSet<>();
 
 		if (classSecurity != null) {
 			allSecurityTags.addAll(Arrays.asList(classSecurity.value()));
