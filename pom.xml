@@ -68,8 +68,8 @@
 		<jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
 		<resource.delimiter>@</resource.delimiter>
 		<spring-boot.version>2.0.9.RELEASE</spring-boot.version>
-		<swagger-api.version>2.0.9</swagger-api.version>
-		<swagger-ui.version>3.23.5</swagger-ui.version>
+		<swagger-api.version>2.0.10</swagger-api.version>
+		<swagger-ui.version>3.24.0</swagger-ui.version>
 		<webjars-locator.version>0.37</webjars-locator.version>
 	</properties>
 
