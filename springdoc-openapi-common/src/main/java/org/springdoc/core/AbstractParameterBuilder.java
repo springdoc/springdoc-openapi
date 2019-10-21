@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -40,6 +41,9 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 public abstract class AbstractParameterBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParameterBuilder.class);
+
+	@Autowired
+	private ParameterPropertyResolverUtils propertyResolverUtils;
 
 	public Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
 		Parameter result = paramCalcul;
@@ -99,13 +103,13 @@ public abstract class AbstractParameterBuilder {
 			Components components) {
 		Parameter parameter = new Parameter();
 		if (StringUtils.isNotBlank(parameterDoc.description())) {
-			parameter.setDescription(parameterDoc.description());
+			parameter.setDescription(propertyResolverUtils.resolve(parameterDoc.description()));
 		}
 		if (StringUtils.isNotBlank(parameterDoc.name())) {
-			parameter.setName(parameterDoc.name());
+			parameter.setName(propertyResolverUtils.resolve(parameterDoc.name()));
 		}
 		if (StringUtils.isNotBlank(parameterDoc.in().toString())) {
-			parameter.setIn(parameterDoc.in().toString());
+			parameter.setIn(propertyResolverUtils.resolve(parameterDoc.in().toString()));
 		}
 		if (StringUtils.isNotBlank(parameterDoc.example())) {
 			try {
@@ -127,7 +131,7 @@ public abstract class AbstractParameterBuilder {
 			parameter.setAllowReserved(parameterDoc.allowReserved());
 		}
 		if (StringUtils.isNotBlank(parameterDoc.ref())) {
-			parameter.$ref(parameterDoc.ref());
+			parameter.$ref(propertyResolverUtils.resolve(parameterDoc.ref()));
 		} else {
 			Type type = ParameterProcessor.getParameterType(parameterDoc);
 			Schema schema = null;

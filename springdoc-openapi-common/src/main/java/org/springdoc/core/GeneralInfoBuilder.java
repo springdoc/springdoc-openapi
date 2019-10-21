@@ -48,11 +48,13 @@ public class GeneralInfoBuilder {
 	private SecurityParser securityParser;
 	private String serverBaseUrl;
 	private Map<HandlerMethod, String> springdocTags = new HashMap<>();
+	private ParameterPropertyResolverUtils propertyResolverUtils;
 
-	public GeneralInfoBuilder(ApplicationContext context, SecurityParser securityParser) {
+	public GeneralInfoBuilder(ApplicationContext context, SecurityParser securityParser, ParameterPropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.context = context;
 		this.securityParser = securityParser;
+		this.propertyResolverUtils = propertyResolverUtils;
 	}
 
 	public void build(OpenAPI openAPI) {
@@ -90,12 +92,14 @@ public class GeneralInfoBuilder {
 		Set<String> tagsStr = new HashSet<>();
 
 		if (!CollectionUtils.isEmpty(methodTags)) {
-			tagsStr.addAll(methodTags.stream().map(Tag::name).collect(Collectors.toSet()));
+			Set<String> tags = methodTags.stream().map(Tag::name).map(propertyResolverUtils::resolve).collect(Collectors.toSet());
+			tagsStr.addAll(tags);
 			allTags.addAll(methodTags);
 		}
 
 		if (!CollectionUtils.isEmpty(classTags)) {
-			tagsStr.addAll(classTags.stream().map(Tag::name).collect(Collectors.toSet()));
+			Set<String> tags = classTags.stream().map(Tag::name).map(propertyResolverUtils::resolve).collect(Collectors.toSet());
+			tagsStr.addAll(tags);
 			allTags.addAll(classTags);
 		}
 
@@ -111,6 +115,10 @@ public class GeneralInfoBuilder {
 			List<io.swagger.v3.oas.models.tags.Tag> openApiTags = openAPI.getTags();
 			if (!CollectionUtils.isEmpty(openApiTags))
 				tagsSet.addAll(openApiTags);
+			tagsSet.forEach(tag -> {
+				tag.setDescription(propertyResolverUtils.resolve(tag.getDescription()));
+				tag.setName(propertyResolverUtils.resolve(tag.getName()));
+			});
 			openAPI.setTags(new ArrayList<>(tagsSet));
 		}
 
@@ -160,7 +168,7 @@ public class GeneralInfoBuilder {
 
 	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef) {
 		// info
-		AnnotationsUtils.getInfo(apiDef.info()).ifPresent(openAPI::setInfo);
+		openApiInfoBuilder(openAPI, apiDef);
 		// OpenApiDefinition security requirements
 		securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
 		// OpenApiDefinition external docs
@@ -173,6 +181,14 @@ public class GeneralInfoBuilder {
 		if (apiDef.extensions().length > 0) {
 			openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
 		}
+	}
+
+	private void openApiInfoBuilder(OpenAPI openAPI, OpenAPIDefinition apiDef) {
+		AnnotationsUtils.getInfo(apiDef.info()).ifPresent(openAPI::setInfo);
+		openAPI.getInfo().setDescription(propertyResolverUtils.resolve(openAPI.getInfo().getDescription()));
+		openAPI.getInfo().setTitle(propertyResolverUtils.resolve(openAPI.getInfo().getTitle()));
+		openAPI.getInfo().setTermsOfService(propertyResolverUtils.resolve(openAPI.getInfo().getTermsOfService()));
+		openAPI.getInfo().setVersion(propertyResolverUtils.resolve(openAPI.getInfo().getVersion()));
 	}
 
 	private void calculateSecuritySchemes(Components components) {
