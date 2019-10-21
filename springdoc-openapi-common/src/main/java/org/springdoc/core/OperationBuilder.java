@@ -370,9 +370,9 @@ public class OperationBuilder {
 		return Optional.of(list);
 	}
 
-	public String getOperationId(String operationId, String OldOperationId) {
-		if (StringUtils.isNotBlank(OldOperationId))
-			return this.getOperationId(OldOperationId, openAPIBuilder.getOpenAPI());
+	public String getOperationId(String operationId, String oldOperationId) {
+		if (StringUtils.isNotBlank(oldOperationId))
+			return this.getOperationId(oldOperationId, openAPIBuilder.getOpenAPI());
 		else
 			return this.getOperationId(operationId, openAPIBuilder.getOpenAPI());
 	}

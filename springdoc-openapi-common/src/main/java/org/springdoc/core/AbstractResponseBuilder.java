@@ -124,36 +124,36 @@ public abstract class AbstractResponseBuilder {
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray = getApiResponses(method);
 		if (!responsesArray.isEmpty()) {
 			methodAttributes.setWithApiResponseDoc(true);
-			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponse2 : responsesArray) {
-				ApiResponse apiResponse1 = new ApiResponse();
-				if (StringUtils.isNotBlank(apiResponse2.ref())) {
-					apiResponse1.$ref(apiResponse2.ref());
-					apiResponsesOp.addApiResponse(apiResponse2.responseCode(), apiResponse1);
+			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations : responsesArray) {
+				ApiResponse apiResponse = new ApiResponse();
+				if (StringUtils.isNotBlank(apiResponseAnnotations.ref())) {
+					apiResponse.$ref(apiResponseAnnotations.ref());
+					apiResponsesOp.addApiResponse(apiResponseAnnotations.responseCode(), apiResponse);
 					continue;
 				}
 
-				apiResponse1.setDescription(apiResponse2.description());
-				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponse2.content();
+				apiResponse.setDescription(apiResponseAnnotations.description());
+				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
 				Optional<Content> optionalContent = SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
 						methodAttributes.getAllProduces(), null, components, null);
 
-				if (apiResponsesOp.containsKey(apiResponse2.responseCode())) {
+				if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
 					// Merge with the existing content
-					Content existingContent = apiResponsesOp.get(apiResponse2.responseCode()).getContent();
+					Content existingContent = apiResponsesOp.get(apiResponseAnnotations.responseCode()).getContent();
 					if (optionalContent.isPresent() && existingContent != null) {
 						Content newContent = optionalContent.get();
 						for (String mediaTypeStr : methodAttributes.getAllProduces()) {
 							io.swagger.v3.oas.models.media.MediaType mediaType = newContent.get(mediaTypeStr);
 							mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr);
 						}
-						apiResponse1.content(existingContent);
+						apiResponse.content(existingContent);
 					}
 				} else {
-					optionalContent.ifPresent(apiResponse1::content);
+					optionalContent.ifPresent(apiResponse::content);
 				}
 
-				AnnotationsUtils.getHeaders(apiResponse2.headers(), null).ifPresent(apiResponse1::headers);
-				apiResponsesOp.addApiResponse(apiResponse2.responseCode(), apiResponse1);
+				AnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), null).ifPresent(apiResponse::headers);
+				apiResponsesOp.addApiResponse(apiResponseAnnotations.responseCode(), apiResponse);
 			}
 		}
 
