@@ -1,5 +1,3 @@
-spring.main.banner-mode: "off"
-
 operation:
   description: Some operation
 
@@ -10,3 +8,11 @@ parameter:
 tag:
   name: Some tag name
   description: Some tag description
+
+info:
+  title: Some info title
+  description: Some info description
+  version: Some info version
+  license:
+      name: Some info license name
+      url: http://www.test.info

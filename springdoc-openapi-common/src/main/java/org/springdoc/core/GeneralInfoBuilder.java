@@ -185,10 +185,17 @@ public class GeneralInfoBuilder {
 
 	private void openApiInfoBuilder(OpenAPI openAPI, OpenAPIDefinition apiDef) {
 		AnnotationsUtils.getInfo(apiDef.info()).ifPresent(openAPI::setInfo);
-		openAPI.getInfo().setDescription(propertyResolverUtils.resolve(openAPI.getInfo().getDescription()));
-		openAPI.getInfo().setTitle(propertyResolverUtils.resolve(openAPI.getInfo().getTitle()));
-		openAPI.getInfo().setTermsOfService(propertyResolverUtils.resolve(openAPI.getInfo().getTermsOfService()));
-		openAPI.getInfo().setVersion(propertyResolverUtils.resolve(openAPI.getInfo().getVersion()));
+		Info openApiInfo = openAPI.getInfo();
+		if(openApiInfo != null) {
+			openApiInfo.setDescription(propertyResolverUtils.resolve(openApiInfo.getDescription()));
+			openApiInfo.setTitle(propertyResolverUtils.resolve(openApiInfo.getTitle()));
+			openApiInfo.setTermsOfService(propertyResolverUtils.resolve(openApiInfo.getTermsOfService()));
+			openApiInfo.setVersion(propertyResolverUtils.resolve(openApiInfo.getVersion()));
+			if(openApiInfo.getLicense() != null){
+				openApiInfo.getLicense().setName(propertyResolverUtils.resolve(openApiInfo.getLicense().getName()));
+				openApiInfo.getLicense().setUrl(propertyResolverUtils.resolve(openApiInfo.getLicense().getUrl()));
+			}
+		}
 	}
 
 	private void calculateSecuritySchemes(Components components) {
