@@ -64,7 +64,7 @@ public abstract class AbstractRequestBuilder {
 		
 		java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
 
-		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
+		RequestBodyInfo requestBodyInfo = new RequestBodyInfo(methodAttributes);
 
 		for (int i = 0; i < pNames.length; i++) {
 			// check if query param
