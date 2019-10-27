@@ -54,14 +54,14 @@ public abstract class AbstractRequestBuilder {
 		// Documentation
 		String operationId = operationBuilder.getOperationId(handlerMethod.getMethod().getName(),
 				operation.getOperationId());
-		
+
 		operation.setOperationId(operationId);
 		// requests
 		LocalVariableTableParameterNameDiscoverer d = new LocalVariableTableParameterNameDiscoverer();
 		String[] pNames = d.getParameterNames(handlerMethod.getMethod());
-		List<Parameter> operationParameters = new ArrayList<>();
-		List<Parameter> existingParamDoc = operation.getParameters();
-
+		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
+				: new ArrayList<>();
+		
 		java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
 
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
@@ -84,10 +84,9 @@ public abstract class AbstractRequestBuilder {
 			if (!isParamToIgnore(parameters[i])) {
 				parameter = buildParams(pName, components, parameters[i], i, parameter, handlerMethod, requestMethod);
 				// Merge with the operation parameters
-				parameter = parameterBuilder.mergeParameter(existingParamDoc, parameter);
+				parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
 				if (isValidPararameter(parameter)) {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
-					operationParameters.add(parameter);
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
 					requestBodyInfo.incrementNbParam();
 					ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameterDoc);
@@ -153,8 +152,8 @@ public abstract class AbstractRequestBuilder {
 			parameter = this.buildParam(QUERY_PARAM, components, parameters, false, name, parameter,
 					requestParam.defaultValue());
 		else
-			parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(), name,
-					parameter, null);
+			parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(), name, parameter,
+					null);
 		return parameter;
 	}
 
@@ -165,8 +164,8 @@ public abstract class AbstractRequestBuilder {
 			parameter = this.buildParam(HEADER_PARAM, components, parameters, false, name, parameter,
 					requestHeader.defaultValue());
 		else
-			parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(), name,
-					parameter, null);
+			parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(), name, parameter,
+					null);
 		return parameter;
 	}
 

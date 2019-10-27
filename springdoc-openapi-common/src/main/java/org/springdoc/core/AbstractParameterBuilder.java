@@ -17,7 +17,6 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 
 import com.fasterxml.jackson.databind.JavaType;
@@ -43,13 +42,15 @@ public abstract class AbstractParameterBuilder {
 
 	public Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
 		Parameter result = paramCalcul;
-		if (!CollectionUtils.isEmpty(existingParamDoc) && paramCalcul != null && paramCalcul.getName() != null) {
+		if (paramCalcul != null && paramCalcul.getName() != null) {
 			final String name = paramCalcul.getName();
 			Parameter paramDoc = existingParamDoc.stream().filter(p -> name.equals(p.getName())).findAny().orElse(null);
 			if (paramDoc != null) {
 				mergeParameter(paramCalcul, paramDoc);
 				result = paramDoc;
 			}
+			else
+				existingParamDoc.add(result);
 		}
 		return result;
 	}
