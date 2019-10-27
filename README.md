@@ -64,7 +64,7 @@ springdoc.swagger-ui.path=/swagger-ui.html
 ```xml
    <dependency>
       <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-core</artifactId>
+      <artifactId>springdoc-openapi-webmvc-core</artifactId>
       <version>last-release-version</version>
    </dependency>
 ```
