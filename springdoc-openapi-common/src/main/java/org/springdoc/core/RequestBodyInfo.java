@@ -1,5 +1,9 @@
 package org.springdoc.core;
 
+import java.util.Arrays;
+
+import org.springframework.http.MediaType;
+
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
@@ -10,6 +14,14 @@ public class RequestBodyInfo {
 	private RequestBody requestBody;
 	private Schema mergedSchema;
 	private int nbParams;
+
+	public RequestBodyInfo(MethodAttributes methodAttributes) {
+		String[] allConsumes = methodAttributes.getAllConsumes();
+		if (Arrays.stream(allConsumes).anyMatch(MediaType.MULTIPART_FORM_DATA_VALUE::equals))
+		{
+			this.initMergedSchema();
+		}
+	}
 
 	public RequestBody getRequestBody() {
 		return requestBody;
@@ -48,5 +60,5 @@ public class RequestBodyInfo {
 	public void setNbParams(int nbParams) {
 		this.nbParams = nbParams;
 	}
-
+	
 }

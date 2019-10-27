@@ -31,7 +31,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.FileSchema;
-import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 
@@ -169,10 +168,7 @@ public abstract class AbstractParameterBuilder {
 		}
 
 		if (isFile(ct)) {
-			if (requestBodyInfo != null)
-				schemaN = requestBodyInfo.initMergedSchema();
-			else
-				schemaN = new ObjectSchema();
+			schemaN = requestBodyInfo.getMergedSchema();
 			schemaN.addProperties(paramName, new FileSchema());
 			return schemaN;
 		}
@@ -195,11 +191,7 @@ public abstract class AbstractParameterBuilder {
 	}
 
 	private Schema extractFileSchema(String paramName, RequestBodyInfo requestBodyInfo) {
-		Schema schemaN;
-		if (requestBodyInfo != null)
-			schemaN = requestBodyInfo.initMergedSchema();
-		else
-			schemaN = new ObjectSchema();
+		Schema schemaN = requestBodyInfo.getMergedSchema();
 		ArraySchema schemafile = new ArraySchema();
 		schemafile.items(new FileSchema());
 		schemaN.addProperties(paramName, new ArraySchema().items(new FileSchema()));
