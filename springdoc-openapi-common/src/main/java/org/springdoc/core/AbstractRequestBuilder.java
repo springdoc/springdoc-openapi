@@ -1,23 +1,9 @@
 package org.springdoc.core;
 
-import static org.springdoc.core.Constants.*;
-
-import java.lang.annotation.Annotation;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.util.CollectionUtils;
@@ -28,10 +14,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ValueConstants;
 import org.springframework.web.method.HandlerMethod;
 
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.parameters.Parameter;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.lang.annotation.Annotation;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.springdoc.core.Constants.HEADER_PARAM;
+import static org.springdoc.core.Constants.OPENAPI_ARRAY_TYPE;
+import static org.springdoc.core.Constants.OPENAPI_STRING_TYPE;
+import static org.springdoc.core.Constants.PATH_PARAM;
+import static org.springdoc.core.Constants.QUERY_PARAM;
 
 public abstract class AbstractRequestBuilder {
 
@@ -98,10 +100,16 @@ public abstract class AbstractRequestBuilder {
 		}
 
 		setParams(operation, operationParameters, requestBodyInfo);
+
+		// allow for customisation
+		operation = customiseOperation(operation, handlerMethod);
+
 		return operation;
 	}
 
-	private boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
+	protected abstract Operation customiseOperation(Operation operation, HandlerMethod handlerMethod);
+
+	protected boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
 		if (parameter.isAnnotationPresent(PathVariable.class)) {
 			return false;
 		}
