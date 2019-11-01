@@ -18,6 +18,8 @@ This library supports:
 *  Swagger-ui
 *  Oauth 2
 
+This is a community-based project, not maintained by the Spring Framework Contributors (Pivotal)
+
 # **Getting Started**
 
 ## Library for springdoc-openapi integration with spring-boot and swagger-ui 
