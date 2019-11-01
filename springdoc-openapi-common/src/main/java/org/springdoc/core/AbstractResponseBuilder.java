@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.HandlerMethod;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.models.Components;
@@ -86,16 +88,18 @@ public abstract class AbstractResponseBuilder {
 		}
 	}
 
-	protected abstract Schema calculateSchemaFromParameterizedType(Components components, ParameterizedType returnType);
+	protected abstract Schema calculateSchemaFromParameterizedType(Components components, ParameterizedType returnType,
+			JsonView jsonView);
 
-	protected Schema calculateSchemaParameterizedType(Components components, ParameterizedType parameterizedType) {
+	protected Schema calculateSchemaParameterizedType(Components components, ParameterizedType parameterizedType,
+			JsonView jsonView) {
 		Schema schemaN = null;
 		Type type = parameterizedType.getActualTypeArguments()[0];
 		if ((type instanceof Class || type instanceof ParameterizedType) && !Void.class.equals(type)) {
-			schemaN = calculateSchema(components, parameterizedType);
+			schemaN = calculateSchema(components, parameterizedType, jsonView);
 		} else if (Void.class.equals(type)) {
 			// if void, no content
-			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
+			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, jsonView);
 		}
 		return schemaN;
 	}
@@ -135,7 +139,7 @@ public abstract class AbstractResponseBuilder {
 				apiResponse.setDescription(apiResponseAnnotations.description());
 				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
 				Optional<Content> optionalContent = SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
-						methodAttributes.getAllProduces(), null, components, null);
+						methodAttributes.getAllProduces(), null, components, methodAttributes.getJsonViewAnnotation());
 
 				if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
 					// Merge with the existing content
@@ -152,7 +156,8 @@ public abstract class AbstractResponseBuilder {
 					optionalContent.ifPresent(apiResponse::content);
 				}
 
-				AnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), null).ifPresent(apiResponse::headers);
+				AnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), methodAttributes.getJsonViewAnnotation())
+						.ifPresent(apiResponse::headers);
 				apiResponsesOp.addApiResponse(apiResponseAnnotations.responseCode(), apiResponse);
 			}
 		}
@@ -203,14 +208,14 @@ public abstract class AbstractResponseBuilder {
 		return responses;
 	}
 
-	private Content buildContent(Components components, Method method, String[] methodProduces) {
+	private Content buildContent(Components components, Method method, String[] methodProduces, JsonView jsonView) {
 		Content content = new Content();
 		Type returnType = method.getGenericReturnType();
 		if (isVoid(returnType)) {
 			// if void, no content
 			content = null;
 		} else if (ArrayUtils.isNotEmpty(methodProduces)) {
-			Schema<?> schemaN = calculateSchema(components, returnType);
+			Schema<?> schemaN = calculateSchema(components, returnType, jsonView);
 			if (schemaN != null) {
 				io.swagger.v3.oas.models.media.MediaType mediaType = new io.swagger.v3.oas.models.media.MediaType();
 				mediaType.setSchema(schemaN);
@@ -221,22 +226,22 @@ public abstract class AbstractResponseBuilder {
 		return content;
 	}
 
-	private Schema<?> calculateSchema(Components components, Type returnType) {
+	private Schema<?> calculateSchema(Components components, Type returnType, JsonView jsonView) {
 		Schema<?> schemaN = null;
 		if (isVoid(returnType)) {
 			// if void, no content
 			return schemaN;
 		}
 		if (returnType instanceof ParameterizedType) {
-			schemaN = calculateSchemaFromParameterizedType(components, (ParameterizedType) returnType);
+			schemaN = calculateSchemaFromParameterizedType(components, (ParameterizedType) returnType, jsonView);
 		} else if (ResponseEntity.class.getName().equals(returnType.getTypeName())) {
-			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
+			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, jsonView);
 		}
 		if (schemaN == null) {
-			schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType);
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView);
 		}
 		if (schemaN == null && returnType instanceof Class) {
-			schemaN = AnnotationsUtils.resolveSchemaFromType((Class) returnType, null, null);
+			schemaN = AnnotationsUtils.resolveSchemaFromType((Class) returnType, null, jsonView);
 		}
 		return schemaN;
 	}
@@ -248,12 +253,13 @@ public abstract class AbstractResponseBuilder {
 		}
 	}
 
-	private Schema calculateSchema(Components components, ParameterizedType parameterizedType) {
+	private Schema calculateSchema(Components components, ParameterizedType parameterizedType, JsonView jsonView) {
 		Schema schemaN;
-		schemaN = SpringDocAnnotationsUtils.extractSchema(components, parameterizedType.getActualTypeArguments()[0]);
+		schemaN = SpringDocAnnotationsUtils.extractSchema(components, parameterizedType.getActualTypeArguments()[0],
+				jsonView);
 		if (schemaN.getType() == null) {
 			schemaN = SpringDocAnnotationsUtils.extractSchema(components,
-					parameterizedType.getActualTypeArguments()[0]);
+					parameterizedType.getActualTypeArguments()[0], jsonView);
 		}
 		return schemaN;
 	}
@@ -263,7 +269,8 @@ public abstract class AbstractResponseBuilder {
 		// No documentation
 		if (StringUtils.isBlank(apiResponse.get$ref())) {
 			if (apiResponse.getContent() == null) {
-				Content content = buildContent(components, method, methodAttributes.getAllProduces());
+				Content content = buildContent(components, method, methodAttributes.getAllProduces(),
+						methodAttributes.getJsonViewAnnotation());
 				apiResponse.setContent(content);
 			}
 			if (StringUtils.isBlank(apiResponse.getDescription())) {
@@ -275,7 +282,8 @@ public abstract class AbstractResponseBuilder {
 				&& (isGeneric || (methodAttributes.isMethodOverloaded() && methodAttributes.isNoApiResponseDoc()))) {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
-			Schema<?> schemaN = calculateSchema(components, method.getGenericReturnType());
+			Schema<?> schemaN = calculateSchema(components, method.getGenericReturnType(),
+					methodAttributes.getJsonViewAnnotation());
 			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getAllProduces())) {
 				for (String mediaTypeStr : methodAttributes.getAllProduces()) {
 					mergeSchema(existingContent, schemaN, mediaTypeStr);

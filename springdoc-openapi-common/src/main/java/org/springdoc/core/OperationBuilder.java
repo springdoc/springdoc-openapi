@@ -79,7 +79,8 @@ public class OperationBuilder {
 
 		// build parameters
 		for (io.swagger.v3.oas.annotations.Parameter parameterDoc : apiOperation.parameters()) {
-			Parameter parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components);
+			Parameter parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components,
+					methodAttributes.getJsonViewAnnotation());
 			operation.addParametersItem(parameter);
 		}
 
@@ -271,7 +272,7 @@ public class OperationBuilder {
 					.ifPresent(apiResponseObject::content);
 			AnnotationsUtils.getHeaders(response.headers(), jsonViewAnnotation).ifPresent(apiResponseObject::headers);
 			// Make schema as string if empty
-			calculateHeader(apiResponseObject);
+			calculateHeader(apiResponseObject, jsonViewAnnotation);
 			if (isResponseObject(apiResponseObject)) {
 				setLinks(response, apiResponseObject);
 				if (StringUtils.isNotBlank(response.responseCode())) {
@@ -306,13 +307,13 @@ public class OperationBuilder {
 		}
 	}
 
-	private void calculateHeader(ApiResponse apiResponseObject) {
+	private void calculateHeader(ApiResponse apiResponseObject, JsonView jsonViewAnnotation) {
 		Map<String, Header> headers = apiResponseObject.getHeaders();
 		if (!CollectionUtils.isEmpty(headers)) {
 			for (Map.Entry<String, Header> entry : headers.entrySet()) {
 				Header header = entry.getValue();
 				if (header.getSchema() == null) {
-					Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
+					Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(String.class, null, jsonViewAnnotation);
 					header.setSchema(schema);
 					entry.setValue(header);
 				}

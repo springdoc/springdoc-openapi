@@ -113,7 +113,8 @@ public class RequestBodyBuilder {
 				|| (requestBody.getContent() != null && methodAttributes.isMethodOverloaded())) {
 
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(),
-					parameterInfo.getpName(), null, requestBodyInfo);
+					parameterInfo.getpName(), null, requestBodyInfo,
+					methodAttributes.getJsonViewAnnotationForRequestBody());
 			Content content = requestBody.getContent();
 
 			if (methodAttributes.isMethodOverloaded() && content != null) {
