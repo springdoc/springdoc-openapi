@@ -1,9 +1,23 @@
 package org.springdoc.core;
 
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.parameters.Parameter;
+import static org.springdoc.core.Constants.*;
+
+import java.lang.annotation.Annotation;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.util.CollectionUtils;
@@ -14,26 +28,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ValueConstants;
 import org.springframework.web.method.HandlerMethod;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import java.lang.annotation.Annotation;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonView;
 
-import static org.springdoc.core.Constants.HEADER_PARAM;
-import static org.springdoc.core.Constants.OPENAPI_ARRAY_TYPE;
-import static org.springdoc.core.Constants.OPENAPI_STRING_TYPE;
-import static org.springdoc.core.Constants.PATH_PARAM;
-import static org.springdoc.core.Constants.QUERY_PARAM;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.Parameter;
 
 public abstract class AbstractRequestBuilder {
 
@@ -80,11 +80,13 @@ public abstract class AbstractRequestBuilder {
 				if (parameterDoc.hidden()) {
 					continue;
 				}
-				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null);
+				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null,
+						methodAttributes.getJsonViewAnnotation());
 			}
 
 			if (!isParamToIgnore(parameters[i])) {
-				parameter = buildParams(pName, components, parameters[i], i, parameter, handlerMethod, requestMethod);
+				parameter = buildParams(pName, components, parameters[i], i, parameter, handlerMethod, requestMethod,
+						methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
 				parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
 				if (isValidPararameter(parameter)) {
@@ -129,7 +131,8 @@ public abstract class AbstractRequestBuilder {
 	}
 
 	private Parameter buildParams(String pName, Components components, java.lang.reflect.Parameter parameters,
-			int index, Parameter parameter, HandlerMethod handlerMethod, RequestMethod requestMethod) {
+			int index, Parameter parameter, HandlerMethod handlerMethod, RequestMethod requestMethod,
+			JsonView jsonView) {
 		RequestHeader requestHeader = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
 				RequestHeader.class);
 		RequestParam requestParam = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
@@ -138,47 +141,49 @@ public abstract class AbstractRequestBuilder {
 				PathVariable.class);
 
 		if (requestHeader != null) {
-			parameter = buildHeaderParam(pName, components, parameters, parameter, requestHeader);
+			parameter = buildHeaderParam(pName, components, parameters, parameter, requestHeader, jsonView);
 		} else if (requestParam != null) {
-			parameter = buildQueryParam(pName, components, parameters, parameter, requestParam);
+			parameter = buildQueryParam(pName, components, parameters, parameter, requestParam, jsonView);
 		} else if (pathVar != null) {
 			String name = StringUtils.isBlank(pathVar.value()) ? pName : pathVar.value();
 			// check if PATH PARAM
-			parameter = this.buildParam(PATH_PARAM, components, parameters, Boolean.TRUE, name, parameter, null);
+			parameter = this.buildParam(PATH_PARAM, components, parameters, Boolean.TRUE, name, parameter, null,
+					jsonView);
 		}
 		// By default
 		if (RequestMethod.GET.equals(requestMethod)) {
-			parameter = this.buildParam(QUERY_PARAM, components, parameters, Boolean.TRUE, pName, parameter, null);
+			parameter = this.buildParam(QUERY_PARAM, components, parameters, Boolean.TRUE, pName, parameter, null,
+					jsonView);
 		}
 		return parameter;
 	}
 
 	private Parameter buildQueryParam(String pName, Components components, java.lang.reflect.Parameter parameters,
-			Parameter parameter, RequestParam requestParam) {
+			Parameter parameter, RequestParam requestParam, JsonView jsonView) {
 		String name = StringUtils.isBlank(requestParam.value()) ? pName : requestParam.value();
 		if (!ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()))
 			parameter = this.buildParam(QUERY_PARAM, components, parameters, false, name, parameter,
-					requestParam.defaultValue());
+					requestParam.defaultValue(),jsonView);
 		else
 			parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(), name, parameter,
-					null);
+					null,jsonView);
 		return parameter;
 	}
 
 	private Parameter buildHeaderParam(String pName, Components components, java.lang.reflect.Parameter parameters,
-			Parameter parameter, RequestHeader requestHeader) {
+			Parameter parameter, RequestHeader requestHeader, JsonView jsonView) {
 		String name = StringUtils.isBlank(requestHeader.value()) ? pName : requestHeader.value();
 		if (!ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()))
 			parameter = this.buildParam(HEADER_PARAM, components, parameters, false, name, parameter,
-					requestHeader.defaultValue());
+					requestHeader.defaultValue(), jsonView);
 		else
 			parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(), name, parameter,
-					null);
+					null, jsonView);
 		return parameter;
 	}
 
 	private Parameter buildParam(String in, Components components, java.lang.reflect.Parameter parameters,
-			Boolean required, String name, Parameter parameter, String defaultValue) {
+			Boolean required, String name, Parameter parameter, String defaultValue, JsonView jsonView) {
 		if (parameter == null)
 			parameter = new Parameter();
 
@@ -195,7 +200,7 @@ public abstract class AbstractRequestBuilder {
 		}
 
 		if (parameter.getSchema() == null) {
-			Schema<?> schema = parameterBuilder.calculateSchema(components, parameters, name, null, null);
+			Schema<?> schema = parameterBuilder.calculateSchema(components, parameters, name, null, null, jsonView);
 			if (defaultValue != null)
 				schema.setDefault(defaultValue);
 			parameter.setSchema(schema);

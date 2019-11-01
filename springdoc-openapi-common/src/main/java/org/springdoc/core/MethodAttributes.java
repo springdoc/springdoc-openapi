@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import io.swagger.v3.core.util.ReflectionUtils;
 
 public class MethodAttributes {
@@ -20,6 +22,8 @@ public class MethodAttributes {
 	private String[] methodConsumes = {};
 	private boolean methodOverloaded;
 	private boolean withApiResponseDoc;
+	private JsonView jsonViewAnnotation;
+	private JsonView jsonViewAnnotationForRequestBody;
 
 	public MethodAttributes() {
 	}
@@ -119,6 +123,24 @@ public class MethodAttributes {
 
 	public boolean isNoApiResponseDoc() {
 		return !withApiResponseDoc;
+	}
+
+	public JsonView getJsonViewAnnotation() {
+		return jsonViewAnnotation;
+	}
+
+	public void setJsonViewAnnotation(JsonView jsonViewAnnotation) {
+		this.jsonViewAnnotation = jsonViewAnnotation;
+	}
+
+	public JsonView getJsonViewAnnotationForRequestBody() {
+		if (jsonViewAnnotationForRequestBody == null)
+			return jsonViewAnnotation;
+		return jsonViewAnnotationForRequestBody;
+	}
+
+	public void setJsonViewAnnotationForRequestBody(JsonView jsonViewAnnotationForRequestBody) {
+		this.jsonViewAnnotationForRequestBody = jsonViewAnnotationForRequestBody;
 	}
 
 }

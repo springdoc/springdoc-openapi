@@ -1,7 +1,28 @@
 package org.springdoc.core;
 
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.web.method.HandlerMethod;
+
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.ParameterProcessor;
@@ -13,24 +34,6 @@ import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
-import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.web.method.HandlerMethod;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 @SuppressWarnings("rawtypes")
 public abstract class AbstractParameterBuilder {
@@ -94,7 +97,7 @@ public abstract class AbstractParameterBuilder {
 	}
 
 	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
-			Components components) {
+			Components components, JsonView jsonView) {
 		Parameter parameter = new Parameter();
 		if (StringUtils.isNotBlank(parameterDoc.description())) {
 			parameter.setDescription(parameterDoc.description());
@@ -130,9 +133,10 @@ public abstract class AbstractParameterBuilder {
 			Type type = ParameterProcessor.getParameterType(parameterDoc);
 			Schema schema = null;
 			if (parameterDoc.schema() != null)
-				schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.schema(), components, null).orElse(null);
+				schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.schema(), components, jsonView)
+						.orElse(null);
 			else
-				schema = this.calculateSchema(components, null, parameter.getName(), type, null);
+				schema = this.calculateSchema(components, null, parameter.getName(), type, null, jsonView);
 			parameter.setSchema(schema);
 		}
 
@@ -145,7 +149,7 @@ public abstract class AbstractParameterBuilder {
 	}
 
 	public Schema calculateSchema(Components components, java.lang.reflect.Parameter parameter, String paramName,
-			Type type, RequestBodyInfo requestBodyInfo) {
+			Type type, RequestBodyInfo requestBodyInfo, JsonView jsonView) {
 		Schema schemaN = null;
 		Class<?> schemaImplementation = null;
 		Type returnType;
@@ -176,9 +180,9 @@ public abstract class AbstractParameterBuilder {
 			if (isFile(parameterizedType)) {
 				return extractFileSchema(paramName, requestBodyInfo);
 			}
-			schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType);
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView);
 		} else {
-			schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components);
+			schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, jsonView);
 		}
 		if (isRequestBodySchema(requestBodyInfo)) {
 			requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);

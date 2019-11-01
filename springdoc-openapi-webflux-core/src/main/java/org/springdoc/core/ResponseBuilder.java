@@ -5,6 +5,8 @@ import java.lang.reflect.ParameterizedType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.Schema;
 import reactor.core.publisher.Flux;
@@ -19,7 +21,8 @@ public class ResponseBuilder extends AbstractResponseBuilder {
 	}
 
 	@Override
-	protected Schema calculateSchemaFromParameterizedType(Components components, ParameterizedType parameterizedType) {
+	protected Schema calculateSchemaFromParameterizedType(Components components, ParameterizedType parameterizedType,
+			JsonView jsonView) {
 		Schema schemaN = null;
 		if (Mono.class.getName().contentEquals(parameterizedType.getRawType().getTypeName())
 				|| Flux.class.getName().contentEquals(parameterizedType.getRawType().getTypeName())) {
@@ -28,9 +31,9 @@ public class ResponseBuilder extends AbstractResponseBuilder {
 							.getRawType().getTypeName())) {
 				ParameterizedType parameterizedTypeNew = (ParameterizedType) parameterizedType
 						.getActualTypeArguments()[0];
-				schemaN = calculateSchemaParameterizedType(components, parameterizedTypeNew);
+				schemaN = calculateSchemaParameterizedType(components, parameterizedTypeNew, jsonView);
 			} else {
-				schemaN = calculateSchemaParameterizedType(components, parameterizedType);
+				schemaN = calculateSchemaParameterizedType(components, parameterizedType, jsonView);
 			}
 		}
 		return schemaN;

@@ -2,6 +2,7 @@ package org.springdoc.api;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,6 +24,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -48,7 +51,8 @@ public abstract class AbstractOpenApiResource {
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
-			RequestBodyBuilder requestBodyBuilder, GeneralInfoBuilder generalInfoBuilder, Optional<List<OpenApiCustomiser>> openApiCustomisers) {
+			RequestBodyBuilder requestBodyBuilder, GeneralInfoBuilder generalInfoBuilder,
+			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
 		super();
 		this.openAPIBuilder = openAPIBuilder;
 		this.requestBuilder = requestBuilder;
@@ -135,6 +139,31 @@ public abstract class AbstractOpenApiResource {
 			// Add documentation from operation annotation
 			io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils
 					.getAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
+			JsonView jsonViewAnnotation;
+			JsonView jsonViewAnnotationForRequestBody;
+			if (apiOperation != null && apiOperation.ignoreJsonView()) {
+				jsonViewAnnotation = null;
+				jsonViewAnnotationForRequestBody = null;
+			} else {
+				jsonViewAnnotation = ReflectionUtils.getAnnotation(handlerMethod.getMethod(), JsonView.class);
+				/*
+				 * If one and only one exists, use the @JsonView annotation from the method
+				 * parameter annotated with @RequestBody. Otherwise fall back to the @JsonView
+				 * annotation for the method itself.
+				 */
+				jsonViewAnnotationForRequestBody = (JsonView) Arrays
+						.stream(ReflectionUtils.getParameterAnnotations(handlerMethod.getMethod()))
+						.filter(arr -> Arrays.stream(arr)
+								.anyMatch(annotation -> annotation.annotationType()
+										.equals(io.swagger.v3.oas.annotations.parameters.RequestBody.class)))
+						.flatMap(Arrays::stream)
+						.filter(annotation -> annotation.annotationType().equals(JsonView.class)).reduce((a, b) -> null)
+						.orElse(jsonViewAnnotation);
+			}
+
+			methodAttributes.setJsonViewAnnotation(jsonViewAnnotation);
+			methodAttributes.setJsonViewAnnotationForRequestBody(jsonViewAnnotationForRequestBody);
+
 			if (apiOperation != null) {
 				openAPI = operationParser.parse(components, apiOperation, operation, openAPI, methodAttributes);
 			}
@@ -145,7 +174,8 @@ public abstract class AbstractOpenApiResource {
 			// RequestBody in Operation
 			requestBodyBuilder
 					.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes.getClassConsumes(),
-							methodAttributes.getMethodConsumes(), components, null)
+							methodAttributes.getMethodConsumes(), components,
+							methodAttributes.getJsonViewAnnotationForRequestBody())
 					.ifPresent(operation::setRequestBody);
 
 			// requests
