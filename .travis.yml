@@ -14,6 +14,6 @@ addons:
 
 after_success:
   - mvn clean deploy --settings settings.xml
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+  - mvn sonar:sonar
   
   

@@ -1,5 +1,27 @@
 package org.springdoc.core;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.core.util.Json;
+import io.swagger.v3.core.util.ParameterProcessor;
+import io.swagger.v3.oas.annotations.enums.Explode;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.examples.Example;
+import io.swagger.v3.oas.models.media.ArraySchema;
+import io.swagger.v3.oas.models.media.FileSchema;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.web.method.HandlerMethod;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -11,32 +33,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.method.HandlerMethod;
-
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-
-import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.Json;
-import io.swagger.v3.core.util.ParameterProcessor;
-import io.swagger.v3.oas.annotations.enums.Explode;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.examples.Example;
-import io.swagger.v3.oas.models.media.ArraySchema;
-import io.swagger.v3.oas.models.media.FileSchema;
-import io.swagger.v3.oas.models.media.ObjectSchema;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.parameters.Parameter;
-
 @SuppressWarnings("rawtypes")
 public abstract class AbstractParameterBuilder {
 
@@ -47,13 +43,15 @@ public abstract class AbstractParameterBuilder {
 
 	public Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
 		Parameter result = paramCalcul;
-		if (!CollectionUtils.isEmpty(existingParamDoc) && paramCalcul != null && paramCalcul.getName() != null) {
+		if (paramCalcul != null && paramCalcul.getName() != null) {
 			final String name = paramCalcul.getName();
 			Parameter paramDoc = existingParamDoc.stream().filter(p -> name.equals(p.getName())).findAny().orElse(null);
 			if (paramDoc != null) {
 				mergeParameter(paramCalcul, paramDoc);
 				result = paramDoc;
 			}
+			else
+				existingParamDoc.add(result);
 		}
 		return result;
 	}
@@ -172,10 +170,7 @@ public abstract class AbstractParameterBuilder {
 		}
 
 		if (isFile(ct)) {
-			if (requestBodyInfo != null)
-				schemaN = requestBodyInfo.initMergedSchema();
-			else
-				schemaN = new ObjectSchema();
+			schemaN = requestBodyInfo.getMergedSchema();
 			schemaN.addProperties(paramName, new FileSchema());
 			return schemaN;
 		}
@@ -198,11 +193,7 @@ public abstract class AbstractParameterBuilder {
 	}
 
 	private Schema extractFileSchema(String paramName, RequestBodyInfo requestBodyInfo) {
-		Schema schemaN;
-		if (requestBodyInfo != null)
-			schemaN = requestBodyInfo.initMergedSchema();
-		else
-			schemaN = new ObjectSchema();
+		Schema schemaN = requestBodyInfo.getMergedSchema();
 		ArraySchema schemafile = new ArraySchema();
 		schemafile.items(new FileSchema());
 		schemaN.addProperties(paramName, new ArraySchema().items(new FileSchema()));
@@ -213,9 +204,9 @@ public abstract class AbstractParameterBuilder {
 		return requestBodyInfo != null && requestBodyInfo.getMergedSchema() != null;
 	}
 
-	abstract boolean isFile(ParameterizedType parameterizedType);
+	protected abstract boolean isFile(ParameterizedType parameterizedType);
 
-	abstract boolean isFile(JavaType ct);
+	protected abstract boolean isFile(JavaType ct);
 
 	public <A extends Annotation> A getParameterAnnotation(HandlerMethod handlerMethod,
 			java.lang.reflect.Parameter parameter, int i, Class<A> annotationType) {

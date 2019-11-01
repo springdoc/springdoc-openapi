@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springdoc</groupId>
 	<artifactId>springdoc-openapi</artifactId>
-	<version>1.1.49-SNAPSHOT</version>
+	<version>1.2.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Spring openapi documentation generator</name>
 	<description>Spring openapi documentation generator</description>
@@ -43,7 +43,7 @@
 
 	<modules>
 		<module>springdoc-openapi-common</module>
-		<module>springdoc-openapi-core</module>
+		<module>springdoc-openapi-webmvc-core</module>
 		<module>springdoc-openapi-webflux-core</module>
 		<module>springdoc-openapi-ui</module>
 		<module>springdoc-openapi-webflux-ui</module>
@@ -67,7 +67,7 @@
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 		<jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
 		<resource.delimiter>@</resource.delimiter>
-		<spring-boot.version>2.0.9.RELEASE</spring-boot.version>
+		<spring-boot.version>2.2.0.RELEASE</spring-boot.version>
 		<swagger-api.version>2.0.10</swagger-api.version>
 		<swagger-ui.version>3.24.0</swagger-ui.version>
 		<webjars-locator.version>0.37</webjars-locator.version>

@@ -1,23 +1,9 @@
 package org.springdoc.core;
 
-import static org.springdoc.core.Constants.*;
-
-import java.lang.annotation.Annotation;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.util.CollectionUtils;
@@ -28,10 +14,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ValueConstants;
 import org.springframework.web.method.HandlerMethod;
 
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.parameters.Parameter;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.lang.annotation.Annotation;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.springdoc.core.Constants.HEADER_PARAM;
+import static org.springdoc.core.Constants.OPENAPI_ARRAY_TYPE;
+import static org.springdoc.core.Constants.OPENAPI_STRING_TYPE;
+import static org.springdoc.core.Constants.PATH_PARAM;
+import static org.springdoc.core.Constants.QUERY_PARAM;
 
 public abstract class AbstractRequestBuilder {
 
@@ -54,17 +56,17 @@ public abstract class AbstractRequestBuilder {
 		// Documentation
 		String operationId = operationBuilder.getOperationId(handlerMethod.getMethod().getName(),
 				operation.getOperationId());
-		
+
 		operation.setOperationId(operationId);
 		// requests
 		LocalVariableTableParameterNameDiscoverer d = new LocalVariableTableParameterNameDiscoverer();
 		String[] pNames = d.getParameterNames(handlerMethod.getMethod());
-		List<Parameter> operationParameters = new ArrayList<>();
-		List<Parameter> existingParamDoc = operation.getParameters();
-
+		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
+				: new ArrayList<>();
+		
 		java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
 
-		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
+		RequestBodyInfo requestBodyInfo = new RequestBodyInfo(methodAttributes);
 
 		for (int i = 0; i < pNames.length; i++) {
 			// check if query param
@@ -84,10 +86,9 @@ public abstract class AbstractRequestBuilder {
 			if (!isParamToIgnore(parameters[i])) {
 				parameter = buildParams(pName, components, parameters[i], i, parameter, handlerMethod, requestMethod);
 				// Merge with the operation parameters
-				parameter = parameterBuilder.mergeParameter(existingParamDoc, parameter);
+				parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
 				if (isValidPararameter(parameter)) {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
-					operationParameters.add(parameter);
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
 					requestBodyInfo.incrementNbParam();
 					ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameterDoc);
@@ -99,10 +100,16 @@ public abstract class AbstractRequestBuilder {
 		}
 
 		setParams(operation, operationParameters, requestBodyInfo);
+
+		// allow for customisation
+		operation = customiseOperation(operation, handlerMethod);
+
 		return operation;
 	}
 
-	private boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
+	protected abstract Operation customiseOperation(Operation operation, HandlerMethod handlerMethod);
+
+	protected boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
 		if (parameter.isAnnotationPresent(PathVariable.class)) {
 			return false;
 		}
@@ -153,8 +160,8 @@ public abstract class AbstractRequestBuilder {
 			parameter = this.buildParam(QUERY_PARAM, components, parameters, false, name, parameter,
 					requestParam.defaultValue());
 		else
-			parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(), name,
-					parameter, null);
+			parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(), name, parameter,
+					null);
 		return parameter;
 	}
 
@@ -165,8 +172,8 @@ public abstract class AbstractRequestBuilder {
 			parameter = this.buildParam(HEADER_PARAM, components, parameters, false, name, parameter,
 					requestHeader.defaultValue());
 		else
-			parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(), name,
-					parameter, null);
+			parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(), name, parameter,
+					null);
 		return parameter;
 	}
 
