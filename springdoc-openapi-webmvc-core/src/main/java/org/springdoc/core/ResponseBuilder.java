@@ -5,6 +5,8 @@ import java.lang.reflect.ParameterizedType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.Schema;
 
@@ -17,10 +19,11 @@ public class ResponseBuilder extends AbstractResponseBuilder {
 	}
 
 	@Override
-	protected Schema calculateSchemaFromParameterizedType(Components components, ParameterizedType parameterizedType) {
+	protected Schema calculateSchemaFromParameterizedType(Components components, ParameterizedType parameterizedType,
+			JsonView jsonView) {
 		Schema<?> schemaN = null;
 		if (ResponseEntity.class.getName().contentEquals(parameterizedType.getRawType().getTypeName())) {
-			schemaN = calculateSchemaParameterizedType(components, parameterizedType);
+			schemaN = calculateSchemaParameterizedType(components, parameterizedType, jsonView);
 		}
 		return schemaN;
 	}
