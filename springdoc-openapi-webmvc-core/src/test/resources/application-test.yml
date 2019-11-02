@@ -1,1 +1,8 @@
-spring.main.banner-mode: "off"
+spring:
+  main:
+    banner-mode: "off"
+logging:
+  pattern:
+    console:
+  file:
+    path: '@project.basedir@/src/test/resources/perfs'
