@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.v3.core.util.Json;
+import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -104,9 +106,16 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		boolean result;
 		if (showActuator)
 			result = operationPath.startsWith(DEFAULT_PATH_SEPARATOR);
-		else
+		else {
+			ResponseBody requestBodyAnnotation = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
+					ResponseBody.class);
+			if (requestBodyAnnotation == null)
+				requestBodyAnnotation = ReflectionUtils.getAnnotation(handlerMethod.getMethod(), ResponseBody.class);
 			result = operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-					&& restControllers.containsKey(handlerMethod.getBean().toString());
+					&& (restControllers.containsKey(handlerMethod.getBean().toString())
+							|| (requestBodyAnnotation != null));
+		}
+
 		return result;
 	}
 

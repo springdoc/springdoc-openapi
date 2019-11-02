@@ -1,0 +1,39 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+		"title": "OpenAPI definition",
+		"version": "v0"
+	},
+	"servers": [
+		{
+			"url": "http://localhost",
+			"description": "Generated server url"
+		}
+	],
+	"paths": {
+		"/ping": {
+			"get": {
+				"tags": [
+					"health"
+				],
+				"summary": "Simple health check",
+				"operationId": "ping",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		
+	}
+}
