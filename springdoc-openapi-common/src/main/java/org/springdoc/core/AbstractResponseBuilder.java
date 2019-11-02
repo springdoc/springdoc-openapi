@@ -138,23 +138,8 @@ public abstract class AbstractResponseBuilder {
 
 				apiResponse.setDescription(apiResponseAnnotations.description());
 				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
-				Optional<Content> optionalContent = SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
-						methodAttributes.getAllProduces(), null, components, methodAttributes.getJsonViewAnnotation());
-
-				if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
-					// Merge with the existing content
-					Content existingContent = apiResponsesOp.get(apiResponseAnnotations.responseCode()).getContent();
-					if (optionalContent.isPresent() && existingContent != null) {
-						Content newContent = optionalContent.get();
-						for (String mediaTypeStr : methodAttributes.getAllProduces()) {
-							io.swagger.v3.oas.models.media.MediaType mediaType = newContent.get(mediaTypeStr);
-							mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr);
-						}
-						apiResponse.content(existingContent);
-					}
-				} else {
-					optionalContent.ifPresent(apiResponse::content);
-				}
+				buildContentFromDoc(components, apiResponsesOp, methodAttributes,
+						apiResponseAnnotations, apiResponse, contentdoc);
 
 				AnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), methodAttributes.getJsonViewAnnotation())
 						.ifPresent(apiResponse::headers);
@@ -162,6 +147,35 @@ public abstract class AbstractResponseBuilder {
 			}
 		}
 
+		buildApiResponses(components, method, apiResponsesOp, methodAttributes, isGeneric);
+		return apiResponsesOp;
+	}
+
+	private void buildContentFromDoc(Components components, ApiResponses apiResponsesOp,
+			MethodAttributes methodAttributes,
+			io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations, ApiResponse apiResponse,
+			io.swagger.v3.oas.annotations.media.Content[] contentdoc) {
+		Optional<Content> optionalContent = SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
+				methodAttributes.getAllProduces(), null, components, methodAttributes.getJsonViewAnnotation());
+
+		if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
+			// Merge with the existing content
+			Content existingContent = apiResponsesOp.get(apiResponseAnnotations.responseCode()).getContent();
+			if (optionalContent.isPresent() && existingContent != null) {
+				Content newContent = optionalContent.get();
+				for (String mediaTypeStr : methodAttributes.getAllProduces()) {
+					io.swagger.v3.oas.models.media.MediaType mediaType = newContent.get(mediaTypeStr);
+					mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr);
+				}
+				apiResponse.content(existingContent);
+			}
+		} else {
+			optionalContent.ifPresent(apiResponse::content);
+		}
+	}
+
+	private void buildApiResponses(Components components, Method method, ApiResponses apiResponsesOp,
+			MethodAttributes methodAttributes, boolean isGeneric) {
 		if (!CollectionUtils.isEmpty(apiResponsesOp) && (apiResponsesOp.size() != genericMapResponse.size())) {
 			// API Responses at operation and @ApiResponse annotation
 			for (Map.Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
@@ -180,7 +194,6 @@ public abstract class AbstractResponseBuilder {
 				buildApiResponses(components, method, apiResponsesOp, methodAttributes, httpCode, apiResponse,
 						isGeneric);
 		}
-		return apiResponsesOp;
 	}
 
 	private Set<io.swagger.v3.oas.annotations.responses.ApiResponse> getApiResponses(Method method) {

@@ -37,7 +37,7 @@
 					"200": {
 						"description": "default response",
 						"content": {
-							"application/json;charset=UTF-8": {
+							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/Car"
 								}

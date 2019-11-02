@@ -5,4 +5,4 @@ logging:
   pattern:
     console:
   file:
-    path: '@project.basedir@/src/test/resources/perfs'
+    path: "@project.basedir@/src/test/resources/perfs"

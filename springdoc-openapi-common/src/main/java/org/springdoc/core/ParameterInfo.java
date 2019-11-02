@@ -10,6 +10,19 @@ public class ParameterInfo {
 
 	private io.swagger.v3.oas.annotations.Parameter parameterDoc;
 
+	private io.swagger.v3.oas.models.parameters.Parameter parameterModel;
+
+	private int index;
+
+	public ParameterInfo(String pName, Parameter parameter,
+			io.swagger.v3.oas.models.parameters.Parameter parameterModel, int index) {
+		super();
+		this.pName = pName;
+		this.parameter = parameter;
+		this.parameterModel = parameterModel;
+		this.index = index;
+	}
+
 	public ParameterInfo(String pName, Parameter parameter, io.swagger.v3.oas.annotations.Parameter parameterDoc) {
 		super();
 		this.pName = pName;
@@ -39,6 +52,22 @@ public class ParameterInfo {
 
 	public void setParameterDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc) {
 		this.parameterDoc = parameterDoc;
+	}
+
+	public io.swagger.v3.oas.models.parameters.Parameter getParameterModel() {
+		return parameterModel;
+	}
+
+	public void setParameterModel(io.swagger.v3.oas.models.parameters.Parameter parameterModel) {
+		this.parameterModel = parameterModel;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 
 }
