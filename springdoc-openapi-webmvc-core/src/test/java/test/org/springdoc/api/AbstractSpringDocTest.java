@@ -11,10 +11,13 @@ import java.nio.file.Paths;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springdoc.core.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,15 +26,20 @@ import org.springframework.test.web.servlet.MvcResult;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
+@ComponentScan(basePackages = { "test.org.springdoc.aop" })
 @AutoConfigureMockMvc
 public abstract class AbstractSpringDocTest {
 
+	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractSpringDocTest.class);
+
+	public static String className;
+	
 	@Autowired
 	protected MockMvc mockMvc;
 
 	@Test
 	public void testApp() throws Exception {
-		String className = getClass().getSimpleName();
+		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
