@@ -111,19 +111,23 @@ public class OperationBuilder {
 			MethodAttributes methodAttributes) {
 		Map<String, Callback> callbacks = new LinkedHashMap<>();
 
+		boolean doBreak = false;
 		for (io.swagger.v3.oas.annotations.callbacks.Callback methodCallback : apiCallbacks) {
 			Map<String, Callback> callbackMap = new HashMap<>();
 			if (methodCallback == null) {
 				callbacks.putAll(callbackMap);
-				break;
+				doBreak = true;
 			}
 			Callback callbackObject = new Callback();
-			if (StringUtils.isNotBlank(methodCallback.ref())) {
+			if (!doBreak && StringUtils.isNotBlank(methodCallback.ref())) {
 				callbackObject.set$ref(methodCallback.ref());
 				callbackMap.put(methodCallback.name(), callbackObject);
 				callbacks.putAll(callbackMap);
-				break;
+				doBreak = true;
 			}
+
+			if (doBreak)
+				break;
 
 			PathItem pathItemObject = new PathItem();
 			for (io.swagger.v3.oas.annotations.Operation callbackOperation : methodCallback.operation()) {
