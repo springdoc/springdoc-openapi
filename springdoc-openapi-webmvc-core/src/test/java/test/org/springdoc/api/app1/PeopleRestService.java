@@ -56,7 +56,7 @@ public class PeopleRestService {
 
 	@PostMapping(value = "/{email}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Operation(description = "Create new person", responses = {
-			@ApiResponse(content = @Content(schema = @Schema(implementation = PersonDTO.class), mediaType = MediaType.APPLICATION_JSON_UTF8_VALUE), headers = @Header(name = "Location"), responseCode = "201"),
+			@ApiResponse(content = @Content(schema = @Schema(implementation = PersonDTO.class), mediaType = MediaType.APPLICATION_JSON_VALUE), headers = @Header(name = "Location"), responseCode = "201"),
 			@ApiResponse(responseCode = "409", description = "Person with such e-mail already exists") })
 	public ResponseEntity<String> addPerson(
 			@Parameter(description = "E-Mail", required = true) @PathVariable("email") final String email,

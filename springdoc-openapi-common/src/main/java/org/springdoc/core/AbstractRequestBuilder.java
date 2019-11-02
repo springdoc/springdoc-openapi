@@ -19,6 +19,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.RequestInfo.ParameterType;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,7 +64,7 @@ public abstract class AbstractRequestBuilder {
 		String[] pNames = d.getParameterNames(handlerMethod.getMethod());
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
 				: new ArrayList<>();
-		
+
 		java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
 
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo(methodAttributes);
@@ -85,7 +86,9 @@ public abstract class AbstractRequestBuilder {
 			}
 
 			if (!isParamToIgnore(parameters[i])) {
-				parameter = buildParams(pName, components, parameters[i], i, parameter, handlerMethod, requestMethod,
+				ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameter, i);
+
+				parameter = buildParams(parameterInfo, components, handlerMethod, requestMethod,
 						methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
 				parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
@@ -93,7 +96,7 @@ public abstract class AbstractRequestBuilder {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 				} else if (!RequestMethod.GET.equals(requestMethod)) {
 					requestBodyInfo.incrementNbParam();
-					ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameterDoc);
+					parameterInfo = new ParameterInfo(pName, parameters[i], parameterDoc);
 					requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, methodAttributes, i,
 							parameterInfo, requestBodyInfo);
@@ -130,9 +133,11 @@ public abstract class AbstractRequestBuilder {
 		return parameter != null && (parameter.getName() != null || parameter.get$ref() != null);
 	}
 
-	private Parameter buildParams(String pName, Components components, java.lang.reflect.Parameter parameters,
-			int index, Parameter parameter, HandlerMethod handlerMethod, RequestMethod requestMethod,
-			JsonView jsonView) {
+	private Parameter buildParams(ParameterInfo parameterInfo, Components components, HandlerMethod handlerMethod,
+			RequestMethod requestMethod, JsonView jsonView) {
+		java.lang.reflect.Parameter parameters = parameterInfo.getParameter();
+		int index = parameterInfo.getIndex();
+
 		RequestHeader requestHeader = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
 				RequestHeader.class);
 		RequestParam requestParam = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
@@ -140,52 +145,59 @@ public abstract class AbstractRequestBuilder {
 		PathVariable pathVar = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
 				PathVariable.class);
 
+		Parameter parameter = null;
+		RequestInfo requestInfo = null;
+
 		if (requestHeader != null) {
-			parameter = buildHeaderParam(pName, components, parameters, parameter, requestHeader, jsonView);
+			requestInfo = new RequestInfo(ParameterType.HEADER_PARAM, requestHeader.value(), requestHeader.required(),
+					requestHeader.defaultValue());
+			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
+
 		} else if (requestParam != null) {
-			parameter = buildQueryParam(pName, components, parameters, parameter, requestParam, jsonView);
+			requestInfo = new RequestInfo(ParameterType.QUERY_PARAM, requestParam.value(), requestParam.required(),
+					requestParam.defaultValue());
+			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		} else if (pathVar != null) {
+			String pName = parameterInfo.getpName();
 			String name = StringUtils.isBlank(pathVar.value()) ? pName : pathVar.value();
+			parameterInfo.setpName(name);
 			// check if PATH PARAM
-			parameter = this.buildParam(PATH_PARAM, components, parameters, Boolean.TRUE, name, parameter, null,
-					jsonView);
+			requestInfo = new RequestInfo(ParameterType.PATH_PARAM, pathVar.value(), Boolean.TRUE, null);
+			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
+
 		// By default
 		if (RequestMethod.GET.equals(requestMethod)) {
-			parameter = this.buildParam(QUERY_PARAM, components, parameters, Boolean.TRUE, pName, parameter, null,
-					jsonView);
+			parameter = this.buildParam(QUERY_PARAM, components, parameterInfo, Boolean.TRUE, null, jsonView);
 		}
 		return parameter;
 	}
 
-	private Parameter buildQueryParam(String pName, Components components, java.lang.reflect.Parameter parameters,
-			Parameter parameter, RequestParam requestParam, JsonView jsonView) {
-		String name = StringUtils.isBlank(requestParam.value()) ? pName : requestParam.value();
-		if (!ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()))
-			parameter = this.buildParam(QUERY_PARAM, components, parameters, false, name, parameter,
-					requestParam.defaultValue(),jsonView);
+	private Parameter buildParam(ParameterInfo parameterInfo, Components components, RequestInfo requestInfo,
+			JsonView jsonView) {
+		Parameter parameter = null;
+		String pName = parameterInfo.getpName();
+		String name = StringUtils.isBlank(requestInfo.value()) ? pName : requestInfo.value();
+		parameterInfo.setpName(name);
+
+		if (!ValueConstants.DEFAULT_NONE.equals(requestInfo.defaultValue()))
+			parameter = this.buildParam(requestInfo.type(), components, parameterInfo, false,
+					requestInfo.defaultValue(), jsonView);
 		else
-			parameter = this.buildParam(QUERY_PARAM, components, parameters, requestParam.required(), name, parameter,
-					null,jsonView);
+			parameter = this.buildParam(requestInfo.type(), components, parameterInfo, requestInfo.required(), null,
+					jsonView);
 		return parameter;
 	}
 
-	private Parameter buildHeaderParam(String pName, Components components, java.lang.reflect.Parameter parameters,
-			Parameter parameter, RequestHeader requestHeader, JsonView jsonView) {
-		String name = StringUtils.isBlank(requestHeader.value()) ? pName : requestHeader.value();
-		if (!ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()))
-			parameter = this.buildParam(HEADER_PARAM, components, parameters, false, name, parameter,
-					requestHeader.defaultValue(), jsonView);
-		else
-			parameter = this.buildParam(HEADER_PARAM, components, parameters, requestHeader.required(), name, parameter,
-					null, jsonView);
-		return parameter;
-	}
+	private Parameter buildParam(String in, Components components, ParameterInfo parameterInfo, Boolean required,
+			String defaultValue, JsonView jsonView) {
+		Parameter parameter = parameterInfo.getParameterModel();
+		String name = parameterInfo.getpName();
 
-	private Parameter buildParam(String in, Components components, java.lang.reflect.Parameter parameters,
-			Boolean required, String name, Parameter parameter, String defaultValue, JsonView jsonView) {
-		if (parameter == null)
+		if (parameter == null) {
 			parameter = new Parameter();
+			parameterInfo.setParameterModel(parameter);
+		}
 
 		if (StringUtils.isBlank(parameter.getName())) {
 			parameter.setName(name);
@@ -200,7 +212,8 @@ public abstract class AbstractRequestBuilder {
 		}
 
 		if (parameter.getSchema() == null) {
-			Schema<?> schema = parameterBuilder.calculateSchema(components, parameters, name, null, null, jsonView);
+			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(), name, null,
+					null, jsonView);
 			if (defaultValue != null)
 				schema.setDefault(defaultValue);
 			parameter.setSchema(schema);
@@ -270,4 +283,9 @@ public abstract class AbstractRequestBuilder {
 			}
 		}
 	}
+
+	public RequestBodyBuilder getRequestBodyBuilder() {
+		return requestBodyBuilder;
+	}
+
 }

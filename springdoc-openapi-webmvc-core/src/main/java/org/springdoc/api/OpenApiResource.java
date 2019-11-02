@@ -13,10 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.AbstractResponseBuilder;
-import org.springdoc.core.GeneralInfoBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
-import org.springdoc.core.RequestBodyBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -50,11 +48,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	private boolean showActuator;
 
 	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
-			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser, GeneralInfoBuilder infoBuilder,
-			RequestBodyBuilder requestBodyBuilder, RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
-		super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, requestBodyBuilder, infoBuilder,
-				openApiCustomisers);
+		super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
@@ -83,7 +80,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		if (showActuator) {
 			map = servletContextProvider.getWebMvcHandlerMapping().getHandlerMethods();
 			Set<HandlerMethod> handlerMethods = new HashSet<>(map.values());
-			this.generalInfoBuilder.addTag(handlerMethods, SPRINGDOC_ACTUATOR_TAG);
+			this.openAPIBuilder.addTag(handlerMethods, SPRINGDOC_ACTUATOR_TAG);
 			calculatePath(restControllers, map);
 		}
 	}
@@ -117,6 +114,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		StringBuffer requestUrl = request.getRequestURL();
 
 		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
-		generalInfoBuilder.setServerBaseUrl(serverBaseUrl);
+		openAPIBuilder.setServerBaseUrl(serverBaseUrl);
 	}
 }

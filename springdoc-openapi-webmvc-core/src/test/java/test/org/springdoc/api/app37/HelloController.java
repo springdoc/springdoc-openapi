@@ -23,7 +23,7 @@ public class HelloController {
 		return b;
 	}
 
-	@PostMapping(path = "/bar/baz", consumes = "application/x.c+json", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping(path = "/bar/baz", consumes = "application/x.c+json", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Car process(@RequestBody Car c) {
 		return c;
 	}

@@ -10,10 +10,8 @@ import java.util.Set;
 
 import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.AbstractResponseBuilder;
-import org.springdoc.core.GeneralInfoBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
-import org.springdoc.core.RequestBodyBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
@@ -43,11 +41,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
-			GeneralInfoBuilder infoBuilder, RequestBodyBuilder requestBodyBuilder,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
-		super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, requestBodyBuilder,
-				infoBuilder, openApiCustomisers);
+		super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
@@ -91,6 +87,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	private void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
 		String requestUrl = serverHttpRequest.getURI().toString();
 		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
-		generalInfoBuilder.setServerBaseUrl(serverBaseUrl);
+		openAPIBuilder.setServerBaseUrl(serverBaseUrl);
 	}
 }

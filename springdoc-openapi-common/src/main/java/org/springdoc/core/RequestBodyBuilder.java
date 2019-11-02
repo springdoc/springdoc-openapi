@@ -116,17 +116,7 @@ public class RequestBodyBuilder {
 					parameterInfo.getpName(), null, requestBodyInfo,
 					methodAttributes.getJsonViewAnnotationForRequestBody());
 			Content content = requestBody.getContent();
-
-			if (methodAttributes.isMethodOverloaded() && content != null) {
-				for (String value : methodAttributes.getAllConsumes()) {
-					setMediaTypeToContent(schema, content, value);
-				}
-			} else {
-				content = new Content();
-				for (String value : methodAttributes.getAllConsumes()) {
-					setMediaTypeToContent(schema, content, value);
-				}
-			}
+			content = buildContent(methodAttributes, schema, content);
 			requestBody.setContent(content);
 		}
 
@@ -138,6 +128,20 @@ public class RequestBodyBuilder {
 		}
 
 		return requestBody;
+	}
+
+	private Content buildContent(MethodAttributes methodAttributes, Schema<?> schema, Content content) {
+		if (methodAttributes.isMethodOverloaded() && content != null) {
+			for (String value : methodAttributes.getAllConsumes()) {
+				setMediaTypeToContent(schema, content, value);
+			}
+		} else {
+			content = new Content();
+			for (String value : methodAttributes.getAllConsumes()) {
+				setMediaTypeToContent(schema, content, value);
+			}
+		}
+		return content;
 	}
 
 	private void setMediaTypeToContent(Schema schema, Content content, String value) {
