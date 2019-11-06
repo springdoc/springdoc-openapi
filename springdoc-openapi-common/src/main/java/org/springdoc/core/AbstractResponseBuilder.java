@@ -278,6 +278,8 @@ public abstract class AbstractResponseBuilder {
 				Content content = buildContent(components, method, methodAttributes.getAllProduces(),
 						methodAttributes.getJsonViewAnnotation());
 				apiResponse.setContent(content);
+			}else if(CollectionUtils.isEmpty(apiResponse.getContent())){
+				apiResponse.setContent(null);
 			}
 			if (StringUtils.isBlank(apiResponse.getDescription())) {
 				apiResponse.setDescription(DEFAULT_DESCRIPTION);
