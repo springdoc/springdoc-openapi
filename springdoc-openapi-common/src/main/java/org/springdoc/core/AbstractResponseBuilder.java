@@ -1,20 +1,15 @@
 package org.springdoc.core;
 
-import static org.springdoc.core.Constants.*;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.core.util.ReflectionUtils;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.ComposedSchema;
+import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -27,17 +22,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.HandlerMethod;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.ReflectionUtils;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.ComposedSchema;
-import io.swagger.v3.oas.models.media.Content;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.responses.ApiResponse;
-import io.swagger.v3.oas.models.responses.ApiResponses;
+import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
 
 @SuppressWarnings("rawtypes")
 public abstract class AbstractResponseBuilder {
@@ -292,7 +285,7 @@ public abstract class AbstractResponseBuilder {
 		}
 
 		if (apiResponse.getContent() != null
-				&& (isGeneric || (methodAttributes.isMethodOverloaded() && methodAttributes.isNoApiResponseDoc()))) {
+				&& ((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc())) {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
 			Schema<?> schemaN = calculateSchema(components, method.getGenericReturnType(),
