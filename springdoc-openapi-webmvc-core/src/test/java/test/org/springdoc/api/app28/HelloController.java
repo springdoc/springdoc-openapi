@@ -9,8 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class HelloController {
 
-	@PostMapping(value = "/upload2", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public String upload2(@RequestPart("one") MultipartFile one, @RequestPart("two") MultipartFile two) {
-		return "Ok";
-	}
+    @PostMapping(value = "/upload2", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String upload2(@RequestPart("one") MultipartFile one, @RequestPart("two") MultipartFile two) {
+        return "Ok";
+    }
 }

@@ -1,42 +1,42 @@
 {
-   "openapi":"3.0.1",
-   "info":{
-      "title":"OpenAPI definition",
-      "version":"v0"
-   },
-   "servers":[
-      {
-         "url":"http://localhost",
-         "description":"Generated server url"
-      }
-   ],
-   "paths":{
-      "/tweets":{
-         "get":{
-            "operationId":"tweets",
-            "parameters":[
-               {
-                  "name":"id",
-                  "in":"path",
-                  "required":true,
-                  "schema":{
-                     "$ref":"#/components/schemas/TweetId"
-                  }
-               }
-            ],
-            "responses":{
-               "200":{
-                  "description":"default response"
-               }
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/tweets": {
+      "get": {
+        "operationId": "tweets",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TweetId"
             }
-         }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response"
+          }
+        }
       }
-   },
-   "components":{
-      "schemas":{
-         "TweetId":{
-            "type":"string"
-         }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TweetId": {
+        "type": "string"
       }
-   }
+    }
+  }
 }

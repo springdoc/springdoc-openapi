@@ -1,79 +1,79 @@
 {
-	"openapi": "3.0.1",
-	"info": {
-		"title": "OpenAPI definition",
-		"version": "v0"
-	},
-	"servers": [
-		{
-			"url": "",
-			"description": "Generated server url"
-		}
-	],
-	"paths": {
-		"/test": {
-			"post": {
-				"summary": "test Request",
-				"operationId": "searchEmployee",
-				"parameters": [
-					{
-						"in": "header",
-						"$ref": "#/components/parameters/myGlobalHeader"
-					}
-				],
-				"requestBody": {
-					"description": "test value",
-					"content": {
-						"*/*": {
-							"schema": {
-								"type": "string"
-							}
-						}
-					},
-					"required": true
-				},
-				"responses": {
-					"200": {
-						"description": "default response"
-					}
-				}
-			}
-		},
-		"/hello": {
-			"get": {
-				"operationId": "hello",
-				"parameters": [
-					{
-						"in": "header",
-						"$ref": "#/components/parameters/myGlobalHeader"
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "default response",
-						"content": {
-							"*/*": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	},
-	"components": {
-		"parameters": {
-			"myGlobalHeader": {
-				"name": "My-Global-Header",
-				"in": "header",
-				"description": "My Global Header",
-				"required": true,
-				"schema": {
-					"type": "string"
-				}
-			}
-		}
-	}
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/test": {
+      "post": {
+        "summary": "test Request",
+        "operationId": "searchEmployee",
+        "parameters": [
+          {
+            "in": "header",
+            "$ref": "#/components/parameters/myGlobalHeader"
+          }
+        ],
+        "requestBody": {
+          "description": "test value",
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "default response"
+          }
+        }
+      }
+    },
+    "/hello": {
+      "get": {
+        "operationId": "hello",
+        "parameters": [
+          {
+            "in": "header",
+            "$ref": "#/components/parameters/myGlobalHeader"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "myGlobalHeader": {
+        "name": "My-Global-Header",
+        "in": "header",
+        "description": "My Global Header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  }
 }

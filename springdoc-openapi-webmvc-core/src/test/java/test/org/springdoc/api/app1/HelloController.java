@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-	@GetMapping(value = "/hello/{numTelco}")
-	@ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
-	@Tag(name = "tea")
-	public String index(@PathVariable("numTelco") String numTel, String adresse) {
-		return "Greetings from Spring Boot!";
-	}
+    @GetMapping(value = "/hello/{numTelco}")
+    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+    @Tag(name = "tea")
+    public String index(@PathVariable("numTelco") String numTel, String adresse) {
+        return "Greetings from Spring Boot!";
+    }
 
 }

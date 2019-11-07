@@ -5,12 +5,12 @@ package test.org.springdoc.api.app3.exception;
  */
 public class TweetConflictException extends RuntimeException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	public TweetConflictException(String tweetId) {
-		super("Tweet conflict with id " + tweetId);
+    public TweetConflictException(String tweetId) {
+        super("Tweet conflict with id " + tweetId);
     }
 }

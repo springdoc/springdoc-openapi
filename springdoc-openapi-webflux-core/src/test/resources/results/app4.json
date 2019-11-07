@@ -1,62 +1,62 @@
 {
-   "openapi":"3.0.1",
-   "info":{
-      "title":"Tweet API",
-      "license":{
-         "name":"Apache 2.0",
-         "url":"http://springdoc.org"
-      },
-      "version":"v0"
-   },
-   "servers":[
-      {
-         "url":"",
-         "description":"Generated server url"
-      }
-   ],
-   "paths":{
-      "/parse-resume":{
-         "post":{
-            "summary":"Parse Resume",
-            "operationId":"parse",
-            "requestBody":{
-               "description":"Resume file to be parsed",
-               "content":{
-                  "multipart/form-data":{
-                     "schema":{
-                        "type":"object",
-                        "properties":{
-                           "resumeFile":{
-                              "type":"string",
-                              "format":"binary"
-                           }
-                        }
-                     }
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Tweet API",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://springdoc.org"
+    },
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/parse-resume": {
+      "post": {
+        "summary": "Parse Resume",
+        "operationId": "parse",
+        "requestBody": {
+          "description": "Resume file to be parsed",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "resumeFile": {
+                    "type": "string",
+                    "format": "binary"
                   }
-               },
-               "required":false
-            },
-            "responses":{
-               "400":{
-                  "description":"Invalid input",
-                  "content":{
-                     "application/json":{
-                        "schema":{
-                           "type":"string"
-                        }
-                     }
-                  }
-               }
+                }
+              }
             }
-         }
+          },
+          "required": false
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
-   },
-   "components":{
-      "securitySchemes":{
-         "basicScheme":{
-            "type":"http",
-            "scheme":"basic"
-         }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicScheme": {
+        "type": "http",
+        "scheme": "basic"
       }
-   }
+    }
+  }
 }

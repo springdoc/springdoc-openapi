@@ -1,50 +1,50 @@
 {
-	"openapi": "3.0.1",
-	"info": {
-		"title": "OpenAPI definition",
-		"version": "v0"
-	},
-	"servers": [
-		{
-			"url": "http://localhost",
-			"description": "Generated server url"
-		}
-	],
-	"paths": {
-		"/hello": {
-			"get": {
-				"description": "Some operation",
-				"operationId": "list",
-				"responses": {
-					"401": {
-						"description": "default response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"type": "string"
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	},
-	"components": {
-		"responses": {
-			"Unauthorized": {
-				"description": "Unauthorized",
-				"content": {
-					"application/json": {
-						"schema": {
-							"type": "string"
-						}
-					}
-				}
-			}
-		}
-	}
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/hello": {
+      "get": {
+        "description": "Some operation",
+        "operationId": "list",
+        "responses": {
+          "401": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "Unauthorized": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
 }

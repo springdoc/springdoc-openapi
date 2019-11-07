@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @ApiResponse(responseCode = "400")
 @ApiResponses({
-		@ApiResponse(responseCode = "401")
+        @ApiResponse(responseCode = "401")
 })
 public class HelloController extends AbstractHelloController {
 
-	@Override
-	@GetMapping(path = "/documents/{locale}")
-	@ApiResponse(responseCode = "402")
-	@ApiResponses({
-			@ApiResponse(responseCode = "403")
-	})
-	public ResponseEntity<String> getDocuments() {
-		return null;
-	}
+    @Override
+    @GetMapping(path = "/documents/{locale}")
+    @ApiResponse(responseCode = "402")
+    @ApiResponses({
+            @ApiResponse(responseCode = "403")
+    })
+    public ResponseEntity<String> getDocuments() {
+        return null;
+    }
 }

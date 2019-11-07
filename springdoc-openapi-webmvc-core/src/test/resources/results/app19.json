@@ -1,99 +1,98 @@
 {
-   "openapi":"3.0.1",
-   "info":{
-      "title":"OpenAPI definition",
-      "version":"v0"
-   },
-   "servers":[
-      {
-         "url":"http://localhost",
-         "description":"Generated server url"
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/persons3": {
+      "post": {
+        "operationId": "persons3",
+        "requestBody": {
+          "description": "requestBody inside operation annotation",
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
-   ],
-   "paths":{
-      "/persons3":{
-         "post":{
-            "operationId":"persons3",
-            "requestBody":{
-               "description":"requestBody inside operation annotation",
-               "content":{
-                  "*/*":{
-                     "schema":{
-                        "type":"string"
-                     }
-                  }
-               }
-            },
-            "responses":{
-               "200":{
-                  "description":"default response",
-                  "content":{
-                     "*/*":{
-                        "schema":{
-                           "type":"string"
-                        }
-                     }
-                  }
-               }
+    },
+    "/persons": {
+      "post": {
+        "operationId": "persons",
+        "requestBody": {
+          "description": "requestBody description as parameter",
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "string"
+              }
             }
-         }
-      },
-      "/persons":{
-         "post":{
-            "operationId":"persons",
-            "requestBody":{
-               "description":"requestBody description as parameter",
-               "content":{
-                  "*/*":{
-                     "schema":{
-                        "type":"string"
-                     }
-                  }
-               }
-            },
-            "responses":{
-               "200":{
-                  "description":"default response",
-                  "content":{
-                     "*/*":{
-                        "schema":{
-                           "type":"string"
-                        }
-                     }
-                  }
-               }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
-         }
-      },
-      "/persons2":{
-         "post":{
-            "operationId":"persons2",
-            "requestBody":{
-               "description":"requestBody description outside",
-               "content":{
-                  "*/*":{
-                     "schema":{
-                        "type":"string"
-                     }
-                  }
-               }
-            },
-            "responses":{
-               "200":{
-                  "description":"default response",
-                  "content":{
-                     "*/*":{
-                        "schema":{
-                           "type":"string"
-                        }
-                     }
-                  }
-               }
-            }
-         }
+          }
+        }
       }
-   },
-   "components":{
-
-   }
+    },
+    "/persons2": {
+      "post": {
+        "operationId": "persons2",
+        "requestBody": {
+          "description": "requestBody description outside",
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+  }
 }

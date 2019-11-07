@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 /**
  * @author 472957
- *
  */
 public class ItemLightDTO implements Serializable {
 
@@ -24,22 +23,29 @@ public class ItemLightDTO implements Serializable {
     private int price;
 
     /**
-     * 
+     *
      */
     public ItemLightDTO() {
     }
 
     public ItemLightDTO(String description, int price) {
-		super();
-		this.description = description;
-		this.price = price;
-	}
+        super();
+        this.description = description;
+        this.price = price;
+    }
 
-	/**
+    /**
      * @return
      */
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * @param description description
+     */
+    public void setDescription(final String description) {
+        this.description = description;
     }
 
     /**
@@ -50,15 +56,8 @@ public class ItemLightDTO implements Serializable {
     }
 
     /**
-   * @param description description
-   */
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    /**
-   * @param price price
-   */
+     * @param price price
+     */
     public void setPrice(final int price) {
         this.price = price;
     }
