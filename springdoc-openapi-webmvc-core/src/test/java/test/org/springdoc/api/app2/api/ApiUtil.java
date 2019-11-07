@@ -1,12 +1,11 @@
 package test.org.springdoc.api.app2.api;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class ApiUtil {
 

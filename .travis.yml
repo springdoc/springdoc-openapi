@@ -3,9 +3,9 @@ jdk:
   - openjdk8
 cache:
   directories:
-  - $HOME/.m2
-  - $HOME/.sonar/cache
-  
+    - $HOME/.m2
+    - $HOME/.sonar/cache
+
 addons:
   sonarcloud:
     organization: "springdoc"

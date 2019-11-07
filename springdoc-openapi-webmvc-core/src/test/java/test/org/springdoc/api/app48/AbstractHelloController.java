@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @ApiResponse(responseCode = "410")
 @ApiResponses({
-		@ApiResponse(responseCode = "411")
+        @ApiResponse(responseCode = "411")
 })
 public class AbstractHelloController {
 
-	@GetMapping(path = "/documents/{locale}")
-	@ApiResponse(responseCode = "412")
-	@ApiResponses({
-			@ApiResponse(responseCode = "413")
-	})
-	public ResponseEntity<String> getDocuments() {
-		return null;
-	}
+    @GetMapping(path = "/documents/{locale}")
+    @ApiResponse(responseCode = "412")
+    @ApiResponses({
+            @ApiResponse(responseCode = "413")
+    })
+    public ResponseEntity<String> getDocuments() {
+        return null;
+    }
 
 }

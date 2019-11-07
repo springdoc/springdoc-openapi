@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController("/api")
 public class HelloController {
 
-	@RequestMapping(value = "/npe_error", method = RequestMethod.GET)
-	public ResponseEntity<byte[]> getModelResource() {
-		return new ResponseEntity<>(new byte[0], HttpStatus.OK);
-	}
+    @RequestMapping(value = "/npe_error", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> getModelResource() {
+        return new ResponseEntity<>(new byte[0], HttpStatus.OK);
+    }
 
 }

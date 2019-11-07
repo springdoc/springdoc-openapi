@@ -1,120 +1,119 @@
 {
-	"openapi": "3.0.1",
-	"info": {
-		"title": "OpenAPI definition",
-		"version": "v0"
-	},
-	"servers": [
-		{
-			"url": "http://localhost",
-			"description": "Generated server url"
-		}
-	],
-	"paths": {
-		"/test2": {
-			"get": {
-				"operationId": "test2",
-				"parameters": [
-					{
-						"name": "test_header",
-						"in": "header",
-						"required": true,
-						"schema": {
-							"type": "string",
-							"example": "rherherherherh"
-						}
-					},
-					{
-						"name": "param1",
-						"in": "query",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "default response",
-						"content": {
-							"*/*": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/test1": {
-			"get": {
-				"operationId": "test1",
-				"parameters": [
-					{
-						"name": "test_header",
-						"in": "header",
-						"required": true,
-						"schema": {
-							"type": "string",
-							"example": "rherherherherh"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "default response",
-						"content": {
-							"*/*": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		"/test3": {
-			"get": {
-				"operationId": "test3",
-				"parameters": [
-					{
-						"name": "test_header",
-						"in": "header",
-						"required": true,
-						"schema": {
-							"type": "string",
-							"example": "rherherherherh"
-						}
-					},
-					{
-						"name": "param1",
-						"in": "query",
-						"description": "desc1",
-						"required": true,
-						"schema": {
-							"type": "string",
-							"example": "something"
-						}
-					}
-				],
-				"responses": {
-					"200": {
-						"description": "default response",
-						"content": {
-							"*/*": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	},
-	"components": {
-		
-	}
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/test2": {
+      "get": {
+        "operationId": "test2",
+        "parameters": [
+          {
+            "name": "test_header",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "rherherherherh"
+            }
+          },
+          {
+            "name": "param1",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test1": {
+      "get": {
+        "operationId": "test1",
+        "parameters": [
+          {
+            "name": "test_header",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "rherherherherh"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test3": {
+      "get": {
+        "operationId": "test3",
+        "parameters": [
+          {
+            "name": "test_header",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "rherherherherh"
+            }
+          },
+          {
+            "name": "param1",
+            "in": "query",
+            "description": "desc1",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "something"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+  }
 }

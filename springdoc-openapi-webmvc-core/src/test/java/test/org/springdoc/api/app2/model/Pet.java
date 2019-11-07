@@ -1,224 +1,221 @@
 package test.org.springdoc.api.app2.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Pet {
 
-	@Schema(description = "")
-	private Long id = null;
+    @Schema(description = "")
+    private Long id = null;
 
-	@Schema(description = "")
-	private Category category = null;
+    @Schema(description = "")
+    private Category category = null;
 
-	@Schema(example = "doggie", required = true, description = "")
-	private String name = null;
+    @Schema(example = "doggie", required = true, description = "")
+    private String name = null;
 
-	@Schema(required = true, description = "")
-	private List<String> photoUrls = new ArrayList<String>();
+    @Schema(required = true, description = "")
+    private List<String> photoUrls = new ArrayList<String>();
 
-	@Schema(description = "")
-	private List<Tag> tags = null;
+    @Schema(description = "")
+    private List<Tag> tags = null;
+    @Schema(description = "pet status in the store")
+    /**
+     * pet status in the store
+     **/
+    private StatusEnum status = null;
 
-	public enum StatusEnum {
-		AVAILABLE("available"), PENDING("pending"), SOLD("sold");
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private static String toIndentedString(java.lang.Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
 
-		private String value;
+    /**
+     * Get id
+     *
+     * @return id
+     **/
+    @JsonProperty("id")
+    public Long getId() {
+        return id;
+    }
 
-		StatusEnum(String value) {
-			this.value = value;
-		}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-		@JsonValue
-		public String getValue() {
-			return value;
-		}
+    public Pet id(Long id) {
+        this.id = id;
+        return this;
+    }
 
-		@Override
-		public String toString() {
-			return String.valueOf(value);
-		}
+    /**
+     * Get category
+     *
+     * @return category
+     **/
+    @JsonProperty("category")
+    public Category getCategory() {
+        return category;
+    }
 
-		@JsonCreator
-		public static StatusEnum fromValue(String text) {
-			for (StatusEnum b : StatusEnum.values()) {
-				if (String.valueOf(b.value).equals(text)) {
-					return b;
-				}
-			}
-			return null;
-		}
-	}
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
-	@Schema(description = "pet status in the store")
-	/**
-	 * pet status in the store
-	 **/
-	private StatusEnum status = null;
+    public Pet category(Category category) {
+        this.category = category;
+        return this;
+    }
 
-	/**
-	 * Get id
-	 * 
-	 * @return id
-	 **/
-	@JsonProperty("id")
-	public Long getId() {
-		return id;
-	}
+    /**
+     * Get name
+     *
+     * @return name
+     **/
+    @JsonProperty("name")
+    @NotNull
+    public String getName() {
+        return name;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Pet id(Long id) {
-		this.id = id;
-		return this;
-	}
+    public Pet name(String name) {
+        this.name = name;
+        return this;
+    }
 
-	/**
-	 * Get category
-	 * 
-	 * @return category
-	 **/
-	@JsonProperty("category")
-	public Category getCategory() {
-		return category;
-	}
+    /**
+     * Get photoUrls
+     *
+     * @return photoUrls
+     **/
+    @JsonProperty("photoUrls")
+    @NotNull
+    public List<String> getPhotoUrls() {
+        return photoUrls;
+    }
 
-	public void setCategory(Category category) {
-		this.category = category;
-	}
+    public void setPhotoUrls(List<String> photoUrls) {
+        this.photoUrls = photoUrls;
+    }
 
-	public Pet category(Category category) {
-		this.category = category;
-		return this;
-	}
+    public Pet photoUrls(List<String> photoUrls) {
+        this.photoUrls = photoUrls;
+        return this;
+    }
 
-	/**
-	 * Get name
-	 * 
-	 * @return name
-	 **/
-	@JsonProperty("name")
-	@NotNull
-	public String getName() {
-		return name;
-	}
+    public Pet addPhotoUrlsItem(String photoUrlsItem) {
+        this.photoUrls.add(photoUrlsItem);
+        return this;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * Get tags
+     *
+     * @return tags
+     **/
+    @JsonProperty("tags")
+    public List<Tag> getTags() {
+        return tags;
+    }
 
-	public Pet name(String name) {
-		this.name = name;
-		return this;
-	}
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 
-	/**
-	 * Get photoUrls
-	 * 
-	 * @return photoUrls
-	 **/
-	@JsonProperty("photoUrls")
-	@NotNull
-	public List<String> getPhotoUrls() {
-		return photoUrls;
-	}
+    public Pet tags(List<Tag> tags) {
+        this.tags = tags;
+        return this;
+    }
 
-	public void setPhotoUrls(List<String> photoUrls) {
-		this.photoUrls = photoUrls;
-	}
+    public Pet addTagsItem(Tag tagsItem) {
+        if (this.tags == null) {
+            this.tags = new ArrayList<>();
+        }
+        this.tags.add(tagsItem);
+        return this;
+    }
 
-	public Pet photoUrls(List<String> photoUrls) {
-		this.photoUrls = photoUrls;
-		return this;
-	}
+    /**
+     * pet status in the store
+     *
+     * @return status
+     **/
+    @JsonProperty("status")
+    public StatusEnum getStatus() {
+        if (status == null) {
+            return null;
+        }
+        return status;
+    }
 
-	public Pet addPhotoUrlsItem(String photoUrlsItem) {
-		this.photoUrls.add(photoUrlsItem);
-		return this;
-	}
+    public void setStatus(StatusEnum status) {
+        this.status = status;
+    }
 
-	/**
-	 * Get tags
-	 * 
-	 * @return tags
-	 **/
-	@JsonProperty("tags")
-	public List<Tag> getTags() {
-		return tags;
-	}
+    public Pet status(StatusEnum status) {
+        this.status = status;
+        return this;
+    }
 
-	public void setTags(List<Tag> tags) {
-		this.tags = tags;
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class Pet {\n");
 
-	public Pet tags(List<Tag> tags) {
-		this.tags = tags;
-		return this;
-	}
+        sb.append("    id: ").append(toIndentedString(id)).append("\n");
+        sb.append("    category: ").append(toIndentedString(category)).append("\n");
+        sb.append("    name: ").append(toIndentedString(name)).append("\n");
+        sb.append("    photoUrls: ").append(toIndentedString(photoUrls)).append("\n");
+        sb.append("    tags: ").append(toIndentedString(tags)).append("\n");
+        sb.append("    status: ").append(toIndentedString(status)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
 
-	public Pet addTagsItem(Tag tagsItem) {
-		if (this.tags == null) {
-			this.tags = new ArrayList<>();
-		}
-		this.tags.add(tagsItem);
-		return this;
-	}
+    public enum StatusEnum {
+        AVAILABLE("available"), PENDING("pending"), SOLD("sold");
 
-	/**
-	 * pet status in the store
-	 * 
-	 * @return status
-	 **/
-	@JsonProperty("status")
-	public StatusEnum getStatus() {
-		if (status == null) {
-			return null;
-		}
-		return status;
-	}
+        private String value;
 
-	public void setStatus(StatusEnum status) {
-		this.status = status;
-	}
+        StatusEnum(String value) {
+            this.value = value;
+        }
 
-	public Pet status(StatusEnum status) {
-		this.status = status;
-		return this;
-	}
+        @JsonCreator
+        public static StatusEnum fromValue(String text) {
+            for (StatusEnum b : StatusEnum.values()) {
+                if (String.valueOf(b.value).equals(text)) {
+                    return b;
+                }
+            }
+            return null;
+        }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("class Pet {\n");
+        @JsonValue
+        public String getValue() {
+            return value;
+        }
 
-		sb.append("    id: ").append(toIndentedString(id)).append("\n");
-		sb.append("    category: ").append(toIndentedString(category)).append("\n");
-		sb.append("    name: ").append(toIndentedString(name)).append("\n");
-		sb.append("    photoUrls: ").append(toIndentedString(photoUrls)).append("\n");
-		sb.append("    tags: ").append(toIndentedString(tags)).append("\n");
-		sb.append("    status: ").append(toIndentedString(status)).append("\n");
-		sb.append("}");
-		return sb.toString();
-	}
-
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
-	private static String toIndentedString(java.lang.Object o) {
-		if (o == null) {
-			return "null";
-		}
-		return o.toString().replace("\n", "\n    ");
-	}
+        @Override
+        public String toString() {
+            return String.valueOf(value);
+        }
+    }
 }

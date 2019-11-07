@@ -5,5 +5,4 @@ import test.org.springdoc.api.AbstractSpringDocTest;
 public class SpringDocApp4Test extends AbstractSpringDocTest {
 
 
-
 }

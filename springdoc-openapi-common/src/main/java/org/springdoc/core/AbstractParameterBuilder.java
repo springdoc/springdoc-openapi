@@ -30,7 +30,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 @SuppressWarnings("rawtypes")
-public abstract class AbstractParameterBuilder {
+ abstract class AbstractParameterBuilder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParameterBuilder.class);
 
@@ -124,7 +124,7 @@ public abstract class AbstractParameterBuilder {
             parameter.$ref(parameterDoc.ref());
         } else {
             Schema schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.schema(), components, jsonView)
-                        .orElse(null);
+                    .orElse(null);
             parameter.setSchema(schema);
         }
 
@@ -137,25 +137,17 @@ public abstract class AbstractParameterBuilder {
     }
 
     Schema calculateSchema(Components components, java.lang.reflect.Parameter parameter, String paramName,
-                           Type type, RequestBodyInfo requestBodyInfo, JsonView jsonView) {
+                           RequestBodyInfo requestBodyInfo, JsonView jsonView) {
         Schema schemaN;
         Class<?> schemaImplementation = null;
-        Type returnType;
-        JavaType ct;
+        Type returnType = null;
+        JavaType ct = null;
 
         if (parameter != null) {
             returnType = parameter.getParameterizedType();
             ct = constructType(parameter.getType());
             schemaImplementation = parameter.getType();
-        } else {
-            returnType = type;
-            ct = constructType(type);
-            try {
-                schemaImplementation = Class.forName(returnType.getTypeName());
-            } catch (ClassNotFoundException e) {
-                LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
-            }
-        }
+        } 
 
         if (isFile(ct)) {
             schemaN = getFileSchema(requestBodyInfo);

@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-	@PostMapping(value = "/values/data")
-	TrackerData list(TrackerData toto) {
-		return toto;
+    @PostMapping(value = "/values/data")
+    TrackerData list(TrackerData toto) {
+        return toto;
 
-	}
+    }
 
 }

@@ -14,9 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public abstract class AbstractSpringDocTest {
 
-	@Autowired
-	protected MockMvc mockMvc;
-
+    @Autowired
+    protected MockMvc mockMvc;
 
 
 }

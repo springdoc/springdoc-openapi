@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 /**
  * @author 472957
- *
  */
 public class ItemDTO implements Serializable {
 
@@ -29,36 +28,43 @@ public class ItemDTO implements Serializable {
     private int price;
 
     /**
-     * 
+     *
      */
     public ItemDTO() {
     }
 
     /**
-   * @param description description
-   * @param price price
-   */
+     * @param description description
+     * @param price       price
+     */
     public ItemDTO(final String description, final int price) {
         this.description = description;
         this.price = price;
     }
 
     /**
-   * @param itemID itemID
-   * @param description description
-   * @param price price
-   */
+     * @param itemID      itemID
+     * @param description description
+     * @param price       price
+     */
     public ItemDTO(final String itemID, final String description, final int price) {
         this.itemID = itemID;
         this.description = description;
         this.price = price;
     }
 
-	/**
+    /**
      * @return
      */
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * @param description description
+     */
+    public void setDescription(final String description) {
+        this.description = description;
     }
 
     /**
@@ -69,6 +75,13 @@ public class ItemDTO implements Serializable {
     }
 
     /**
+     * @param itemID itemID
+     */
+    public void setItemID(final String itemID) {
+        this.itemID = itemID;
+    }
+
+    /**
      * @return
      */
     public int getPrice() {
@@ -76,22 +89,8 @@ public class ItemDTO implements Serializable {
     }
 
     /**
-   * @param description description
-   */
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    /**
-   * @param itemID itemID
-   */
-    public void setItemID(final String itemID) {
-        this.itemID = itemID;
-    }
-
-    /**
-   * @param price price
-   */
+     * @param price price
+     */
     public void setPrice(final int price) {
         this.price = price;
     }
