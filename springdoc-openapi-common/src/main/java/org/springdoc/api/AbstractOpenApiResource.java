@@ -3,12 +3,20 @@ package org.springdoc.api;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.Hidden;
-import io.swagger.v3.oas.models.*;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
+import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.*;
+import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.AbstractResponseBuilder;
+import org.springdoc.core.MethodAttributes;
+import org.springdoc.core.OpenAPIBuilder;
+import org.springdoc.core.OperationBuilder;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +33,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-abstract class AbstractOpenApiResource {
+public abstract class AbstractOpenApiResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractOpenApiResource.class);
     final OpenAPIBuilder openAPIBuilder;
@@ -35,7 +43,7 @@ abstract class AbstractOpenApiResource {
     private final List<OpenApiCustomiser> openApiCustomisers;
     private boolean computeDone;
 
-     AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+    protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                                       AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                                       List<OpenApiCustomiser> openApiCustomisers) {
         super();
@@ -46,7 +54,7 @@ abstract class AbstractOpenApiResource {
         this.openApiCustomisers = openApiCustomisers;
     }
 
-     OpenAPI getOpenApi() {
+    protected OpenAPI getOpenApi() {
         OpenAPI openApi;
         if (!computeDone) {
             Instant start = Instant.now();
@@ -81,8 +89,8 @@ abstract class AbstractOpenApiResource {
 
     protected abstract void getPaths(Map<String, Object> findRestControllers);
 
-     void calculatePath(OpenAPIBuilder openAPIBuilder, HandlerMethod handlerMethod, String operationPath,
-                                 Set<RequestMethod> requestMethods) {
+    protected void calculatePath(OpenAPIBuilder openAPIBuilder, HandlerMethod handlerMethod, String operationPath,
+                       Set<RequestMethod> requestMethods) {
         OpenAPI openAPI = openAPIBuilder.getOpenAPI();
         Components components = openAPIBuilder.getComponents();
         Paths paths = openAPIBuilder.getPaths();
@@ -260,4 +268,7 @@ abstract class AbstractOpenApiResource {
         return pathItemObject;
     }
 
+    protected void setServerBaseUrl(String setServerBaseUrl) {
+        this.openAPIBuilder.setServerBaseUrl(setServerBaseUrl);
+    }
 }
