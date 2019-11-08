@@ -2,6 +2,7 @@ package org.springdoc.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.Json;
+import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.annotations.Operation;
@@ -87,6 +88,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
             PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
             Set<String> patterns = patternsRequestCondition.getPatterns();
             String operationPath = CollectionUtils.isEmpty(patterns) ? "/" : patterns.iterator().next();
+            Map<String, String> regexMap = new LinkedHashMap<>();
+            operationPath = PathUtils.parsePath(operationPath, regexMap);
             if (isRestController(restControllers, handlerMethod, operationPath)) {
                 Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
                 calculatePath(openAPIBuilder, handlerMethod, operationPath, requestMethods);

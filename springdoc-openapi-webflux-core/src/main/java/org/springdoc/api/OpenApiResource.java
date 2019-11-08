@@ -2,6 +2,7 @@ package org.springdoc.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.Json;
+import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -23,6 +24,7 @@ import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerM
 import org.springframework.web.util.pattern.PathPattern;
 import reactor.core.publisher.Mono;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,6 +74,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
             Set<PathPattern> patterns = patternsRequestCondition.getPatterns();
             for (PathPattern pathPattern : patterns) {
                 String operationPath = pathPattern.getPatternString();
+                Map<String, String> regexMap = new LinkedHashMap<>();
+                operationPath = PathUtils.parsePath(operationPath, regexMap);
                 if (operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
                         && restControllers.containsKey(handlerMethod.getBean().toString())) {
                     Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
