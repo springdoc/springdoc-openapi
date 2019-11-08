@@ -1,6 +1,7 @@
 package org.springdoc.core;
 
 import com.fasterxml.jackson.databind.JavaType;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,6 +11,10 @@ import java.lang.reflect.WildcardType;
 
 @Component
 public class ParameterBuilder extends AbstractParameterBuilder {
+
+    public ParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+        super(localSpringDocParameterNameDiscoverer);
+    }
 
     public boolean isFile(ParameterizedType parameterizedType) {
         Type type = parameterizedType.getActualTypeArguments()[0];
