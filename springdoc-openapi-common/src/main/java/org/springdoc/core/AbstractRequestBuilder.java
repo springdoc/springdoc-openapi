@@ -26,7 +26,7 @@ public abstract class AbstractRequestBuilder {
     private final OperationBuilder operationBuilder;
 
     AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                                     OperationBuilder operationBuilder) {
+                           OperationBuilder operationBuilder) {
         super();
         this.parameterBuilder = parameterBuilder;
         this.requestBodyBuilder = requestBodyBuilder;
@@ -43,8 +43,8 @@ public abstract class AbstractRequestBuilder {
 
         operation.setOperationId(operationId);
         // requests
-        LocalVariableTableParameterNameDiscoverer d = new LocalVariableTableParameterNameDiscoverer();
-        String[] pNames = d.getParameterNames(handlerMethod.getMethod());
+        LocalVariableTableParameterNameDiscoverer d = parameterBuilder.getLocalSpringDocParameterNameDiscoverer();
+                String[]pNames = d.getParameterNames(handlerMethod.getMethod());
         List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
                 : new ArrayList<>();
 

@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.method.HandlerMethod;
 
@@ -31,6 +32,16 @@ import java.util.*;
 
 @SuppressWarnings("rawtypes")
  abstract class AbstractParameterBuilder {
+
+    private LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+
+    public AbstractParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+        this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
+    }
+
+    public LocalVariableTableParameterNameDiscoverer getLocalSpringDocParameterNameDiscoverer() {
+        return localSpringDocParameterNameDiscoverer;
+    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParameterBuilder.class);
 
