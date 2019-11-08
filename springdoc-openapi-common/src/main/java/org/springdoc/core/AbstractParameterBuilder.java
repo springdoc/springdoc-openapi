@@ -28,14 +28,18 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @SuppressWarnings("rawtypes")
- abstract class AbstractParameterBuilder {
+public abstract class AbstractParameterBuilder {
 
     private LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 
-    public AbstractParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+    protected AbstractParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
         this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
     }
 
@@ -158,7 +162,7 @@ import java.util.*;
             returnType = parameter.getParameterizedType();
             ct = constructType(parameter.getType());
             schemaImplementation = parameter.getType();
-        } 
+        }
 
         if (isFile(ct)) {
             schemaN = getFileSchema(requestBodyInfo);

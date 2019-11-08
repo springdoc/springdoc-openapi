@@ -25,7 +25,7 @@ public abstract class AbstractRequestBuilder {
     private final RequestBodyBuilder requestBodyBuilder;
     private final OperationBuilder operationBuilder;
 
-    AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+    protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
                            OperationBuilder operationBuilder) {
         super();
         this.parameterBuilder = parameterBuilder;
@@ -98,7 +98,7 @@ public abstract class AbstractRequestBuilder {
 
     protected abstract Operation customiseOperation(Operation operation, HandlerMethod handlerMethod);
 
-    private boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
+    protected boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
         if (parameter.isAnnotationPresent(PathVariable.class)) {
             return false;
         }
