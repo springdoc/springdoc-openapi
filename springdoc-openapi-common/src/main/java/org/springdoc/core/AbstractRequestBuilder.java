@@ -26,7 +26,7 @@ public abstract class AbstractRequestBuilder {
     private final OperationBuilder operationBuilder;
 
     protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                           OperationBuilder operationBuilder) {
+                                     OperationBuilder operationBuilder) {
         super();
         this.parameterBuilder = parameterBuilder;
         this.requestBodyBuilder = requestBodyBuilder;
@@ -44,15 +44,14 @@ public abstract class AbstractRequestBuilder {
         operation.setOperationId(operationId);
         // requests
         LocalVariableTableParameterNameDiscoverer d = parameterBuilder.getLocalSpringDocParameterNameDiscoverer();
-                String[]pNames = d.getParameterNames(handlerMethod.getMethod());
+        String[] pNames = d.getParameterNames(handlerMethod.getMethod());
+        java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
+        if(pNames == null){
+            pNames =  Arrays.stream(parameters).map(p -> p.getName()).toArray(String[]::new);
+        }
+        RequestBodyInfo requestBodyInfo = new RequestBodyInfo(methodAttributes);
         List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
                 : new ArrayList<>();
-
-        java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
-
-        RequestBodyInfo requestBodyInfo = new RequestBodyInfo(methodAttributes);
-
-        assert pNames != null;
         for (int i = 0; i < pNames.length; i++) {
             // check if query param
             Parameter parameter = null;
