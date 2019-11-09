@@ -36,7 +36,6 @@
         <url>git@github.com:springdoc/springdoc-openapi.git</url>
         <connection>scm:git:git@github.com:springdoc/springdoc-openapi.git</connection>
         <developerConnection>scm:git:git@github.com:springdoc/springdoc-openapi.git</developerConnection>
-        <tag>v1.1.7</tag>
     </scm>
     <distributionManagement>
         <snapshotRepository>
@@ -68,7 +67,7 @@
         <swagger-api.version>2.0.10</swagger-api.version>
         <swagger-ui.version>3.24.0</swagger-ui.version>
         <webjars-locator.version>0.37</webjars-locator.version>
-        <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -133,6 +132,7 @@
                     </configuration>
                 </plugin>
                 <plugin>
+                    <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco-maven-plugin.version}</version>
                     <executions>
