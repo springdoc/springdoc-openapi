@@ -12,7 +12,7 @@ import static org.springdoc.core.Constants.WEB_JARS_PREFIX_URL;
 @Configuration
 @EnableWebMvc
 @SuppressWarnings("deprecation")
- class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
+public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
 
     @Value(SWAGGER_UI_PATH)
     private String swaggerPath;
