@@ -13,6 +13,7 @@ addons:
       secure: $SONAR_TOKEN
 
 script:
-  - mvn deploy org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar --settings settings.xml
-  
+  - mvn deploy -DskipTests --settings settings.xml
+  - mvn org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -DskipTests
+
   
