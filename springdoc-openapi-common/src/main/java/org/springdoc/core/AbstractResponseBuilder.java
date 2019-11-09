@@ -25,8 +25,13 @@ import org.springframework.web.method.HandlerMethod;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,7 +44,7 @@ public abstract class AbstractResponseBuilder {
 
     private final OperationBuilder operationBuilder;
 
-     AbstractResponseBuilder(OperationBuilder operationBuilder) {
+    protected AbstractResponseBuilder(OperationBuilder operationBuilder) {
         super();
         this.operationBuilder = operationBuilder;
     }
@@ -83,7 +88,8 @@ public abstract class AbstractResponseBuilder {
 
     protected abstract Schema calculateSchemaFromParameterizedType(Components components, ParameterizedType returnType,
                                                                    JsonView jsonView);
-     Schema calculateSchemaParameterizedType(Components components, ParameterizedType parameterizedType,
+
+    protected Schema calculateSchemaParameterizedType(Components components, ParameterizedType parameterizedType,
                                                       JsonView jsonView) {
         Schema schemaN = null;
         Type type = parameterizedType.getActualTypeArguments()[0];
@@ -157,7 +163,9 @@ public abstract class AbstractResponseBuilder {
                 Content newContent = optionalContent.get();
                 for (String mediaTypeStr : methodAttributes.getAllProduces()) {
                     io.swagger.v3.oas.models.media.MediaType mediaType = newContent.get(mediaTypeStr);
-                    mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr);
+                    if (mediaType != null) {
+                        mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr);
+                    }
                 }
                 apiResponse.content(existingContent);
             }
