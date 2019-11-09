@@ -14,6 +14,6 @@ addons:
 
 script:
   - mvn deploy -DskipTests --settings settings.xml
-  - mvn org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -DskipTests
+  - mvn org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -DskipTests -X
 
   
