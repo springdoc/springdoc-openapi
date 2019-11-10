@@ -267,8 +267,4 @@ public abstract class AbstractOpenApiResource {
         }
         return pathItemObject;
     }
-
-    protected void setServerBaseUrl(String setServerBaseUrl) {
-        this.openAPIBuilder.setServerBaseUrl(setServerBaseUrl);
-    }
 }

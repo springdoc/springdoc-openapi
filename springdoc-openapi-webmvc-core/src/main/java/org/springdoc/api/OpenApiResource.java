@@ -11,10 +11,10 @@ import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.AbstractResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,18 +37,18 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
-    @Autowired(required = false)
-    private ActuatorProvider servletContextProvider;
+    private final ActuatorProvider servletContextProvider;
 
     @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
     private boolean showActuator;
 
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
-                           RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+                           RequestMappingInfoHandlerMapping requestMappingHandlerMapping, @Nullable ActuatorProvider servletContextProvider,
                            List<OpenApiCustomiser> openApiCustomisers) {
         super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers);
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+        this.servletContextProvider = servletContextProvider;
     }
 
     @Operation(hidden = true)

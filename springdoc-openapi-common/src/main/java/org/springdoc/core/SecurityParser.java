@@ -17,7 +17,7 @@ import java.util.*;
 class SecurityParser {
 
     private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
-        boolean result = false;
+        boolean result;
         if (oAuthFlows == null) {
             result = true;
         } else if (!isEmpty(oAuthFlows.implicit()) || !isEmpty(oAuthFlows.authorizationCode()) || !isEmpty(oAuthFlows.clientCredentials()) || !isEmpty(oAuthFlows.password())) {
@@ -27,7 +27,7 @@ class SecurityParser {
     }
 
     private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow) {
-        boolean result = false;
+        boolean result;
         if (oAuthFlow == null) {
             result = true;
         } else if (!StringUtils.isBlank(oAuthFlow.authorizationUrl()) || !StringUtils.isBlank(oAuthFlow.refreshUrl()) || !StringUtils.isBlank(oAuthFlow.tokenUrl()) || !isEmpty(oAuthFlow.scopes())  ) {

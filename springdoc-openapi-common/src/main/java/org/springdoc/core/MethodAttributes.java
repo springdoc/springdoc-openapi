@@ -46,17 +46,11 @@ public class MethodAttributes {
         return methodProduces;
     }
 
-    public void setMethodProduces(String[] methodProduces) {
-        this.methodProduces = methodProduces;
-    }
 
     public String[] getMethodConsumes() {
         return methodConsumes;
     }
 
-    public void setMethodConsumes(String[] methodConsumes) {
-        this.methodConsumes = methodConsumes;
-    }
 
     public void calculateConsumesProduces(Method method) {
         PostMapping reqPostMappringMethod = ReflectionUtils.getAnnotation(method, PostMapping.class);

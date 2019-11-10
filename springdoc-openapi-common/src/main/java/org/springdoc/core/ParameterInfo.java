@@ -6,7 +6,7 @@ class ParameterInfo {
 
     private String pName;
 
-    private java.lang.reflect.Parameter parameter;
+    private final java.lang.reflect.Parameter parameter;
 
     private io.swagger.v3.oas.annotations.Parameter parameterDoc;
 
@@ -42,16 +42,8 @@ class ParameterInfo {
         return parameter;
     }
 
-    public void setParameter(java.lang.reflect.Parameter parameter) {
-        this.parameter = parameter;
-    }
-
     public io.swagger.v3.oas.annotations.Parameter getParameterDoc() {
         return parameterDoc;
-    }
-
-    public void setParameterDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc) {
-        this.parameterDoc = parameterDoc;
     }
 
     public io.swagger.v3.oas.models.parameters.Parameter getParameterModel() {
@@ -64,10 +56,6 @@ class ParameterInfo {
 
     public int getIndex() {
         return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
 }
