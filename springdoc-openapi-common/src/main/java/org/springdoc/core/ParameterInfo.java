@@ -4,8 +4,8 @@ import java.lang.reflect.Parameter;
 
 class ParameterInfo {
 
-    private String pName;
     private final java.lang.reflect.Parameter parameter;
+    private String pName;
     private io.swagger.v3.oas.annotations.Parameter parameterDoc;
     private io.swagger.v3.oas.models.parameters.Parameter parameterModel;
     private int index;

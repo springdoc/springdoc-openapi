@@ -12,7 +12,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import java.util.Iterator;
 
 @SuppressWarnings("rawtypes")
- class ObjectNodeConverter implements ModelConverter {
+class ObjectNodeConverter implements ModelConverter {
 
     @Override
     public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {

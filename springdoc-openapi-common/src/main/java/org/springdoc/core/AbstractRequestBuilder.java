@@ -46,8 +46,8 @@ public abstract class AbstractRequestBuilder {
         LocalVariableTableParameterNameDiscoverer d = parameterBuilder.getLocalSpringDocParameterNameDiscoverer();
         String[] pNames = d.getParameterNames(handlerMethod.getMethod());
         java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
-        if(pNames == null){
-            pNames =  Arrays.stream(parameters).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
+        if (pNames == null) {
+            pNames = Arrays.stream(parameters).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
         }
         RequestBodyInfo requestBodyInfo = new RequestBodyInfo(methodAttributes);
         List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()

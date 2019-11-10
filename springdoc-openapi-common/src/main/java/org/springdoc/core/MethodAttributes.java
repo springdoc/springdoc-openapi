@@ -23,7 +23,8 @@ public class MethodAttributes {
         this.methodProduces = methodProducesNew;
     }
 
-    public MethodAttributes() { }
+    public MethodAttributes() {
+    }
 
     public String[] getClassProduces() {
         return classProduces;

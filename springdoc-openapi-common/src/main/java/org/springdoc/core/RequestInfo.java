@@ -33,9 +33,11 @@ public class RequestInfo {
     public enum ParameterType {
         QUERY_PARAM("query"), HEADER_PARAM("header"), PATH_PARAM("path");
         private final String value;
+
         ParameterType(String s) {
             value = s;
         }
+
         @Override
         public String toString() {
             return value;

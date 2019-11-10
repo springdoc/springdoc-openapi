@@ -3,20 +3,12 @@ package org.springdoc.api;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.Hidden;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.*;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
-import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.AbstractRequestBuilder;
-import org.springdoc.core.AbstractResponseBuilder;
-import org.springdoc.core.MethodAttributes;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.*;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +34,7 @@ public abstract class AbstractOpenApiResource {
 
     protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                                       AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
-                                      Optional<List<OpenApiCustomiser>>  openApiCustomisers) {
+                                      Optional<List<OpenApiCustomiser>> openApiCustomisers) {
         super();
         this.openAPIBuilder = openAPIBuilder;
         this.requestBuilder = requestBuilder;
@@ -87,7 +79,7 @@ public abstract class AbstractOpenApiResource {
     protected abstract void getPaths(Map<String, Object> findRestControllers);
 
     protected void calculatePath(OpenAPIBuilder openAPIBuilder, HandlerMethod handlerMethod, String operationPath,
-                       Set<RequestMethod> requestMethods) {
+                                 Set<RequestMethod> requestMethods) {
         OpenAPI openAPI = openAPIBuilder.getOpenAPI();
         Components components = openAPIBuilder.getComponents();
         Paths paths = openAPIBuilder.getPaths();

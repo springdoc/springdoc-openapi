@@ -10,7 +10,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 public class SpringDocConfiguration {
 
     @Bean
-    LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer(){
+    LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer() {
         return new LocalVariableTableParameterNameDiscoverer();
     }
 }
