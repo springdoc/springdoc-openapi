@@ -17,8 +17,6 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.method.HandlerMethod;
@@ -28,16 +26,12 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @SuppressWarnings("rawtypes")
 public abstract class AbstractParameterBuilder {
 
-    private LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+    private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 
     protected AbstractParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
         this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
@@ -46,8 +40,6 @@ public abstract class AbstractParameterBuilder {
     public LocalVariableTableParameterNameDiscoverer getLocalSpringDocParameterNameDiscoverer() {
         return localSpringDocParameterNameDiscoverer;
     }
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParameterBuilder.class);
 
     Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
         Parameter result = paramCalcul;
