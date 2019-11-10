@@ -24,10 +24,7 @@ import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerM
 import org.springframework.web.util.pattern.PathPattern;
 import reactor.core.publisher.Mono;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.springdoc.core.Constants.*;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
@@ -41,7 +38,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
-                           List<OpenApiCustomiser> openApiCustomisers) {
+                           Optional<List<OpenApiCustomiser>> openApiCustomisers) {
         super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers);
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
     }
