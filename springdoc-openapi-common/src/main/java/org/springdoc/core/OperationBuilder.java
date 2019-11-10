@@ -182,7 +182,7 @@ public class OperationBuilder {
                     .filter(t -> operation.getTags() == null
                             || (operation.getTags() != null && !operation.getTags().contains(t)))
                     .collect(Collectors.toList());
-            tags.forEach(tagsItem -> operation.addTagsItem(tagsItem));
+            tags.forEach(operation::addTagsItem);
         }
     }
 

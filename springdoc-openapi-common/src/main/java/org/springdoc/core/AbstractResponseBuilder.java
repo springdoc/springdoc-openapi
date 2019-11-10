@@ -103,7 +103,7 @@ public abstract class AbstractResponseBuilder {
             if (org.springframework.aop.support.AopUtils.isAopProxy(controllerAdvice)) {
                 objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerAdvice);
             }
-            Arrays.stream(objClz.getDeclaredMethods()).filter(m -> m.isAnnotationPresent(ExceptionHandler.class)).forEach(m -> methods.add(m));
+            Arrays.stream(objClz.getDeclaredMethods()).filter(m -> m.isAnnotationPresent(ExceptionHandler.class)).forEach(methods::add);
         }
         return methods;
     }
