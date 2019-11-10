@@ -115,9 +115,7 @@ import java.util.Optional;
         annotationContent.extensions();
         if (annotationContent.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(annotationContent.extensions());
-            for (Map.Entry<String, Object> entry : extensions.entrySet()) {
-                mediaType.addExtension(entry.getKey(), entry.getValue());
-            }
+            extensions.entrySet().forEach(entry -> mediaType.addExtension(entry.getKey(), entry.getValue()));
         }
     }
 

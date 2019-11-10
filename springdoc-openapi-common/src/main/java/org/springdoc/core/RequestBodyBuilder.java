@@ -53,9 +53,7 @@ public class RequestBodyBuilder {
         }
         if (requestBody.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(requestBody.extensions());
-            for (Map.Entry<String, Object> entry : extensions.entrySet()) {
-                requestBodyObject.addExtension(entry.getKey(), entry.getValue());
-            }
+            extensions.entrySet().forEach(entry -> requestBodyObject.addExtension(entry.getKey(), entry.getValue()));
             isEmpty = false;
         }
 

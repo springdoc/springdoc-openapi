@@ -171,9 +171,7 @@ public class OperationBuilder {
     private void buildExtensions(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation) {
         if (apiOperation.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(apiOperation.extensions());
-            for (Map.Entry<String, Object> entry : extensions.entrySet()) {
-                operation.addExtension(entry.getKey(), entry.getValue());
-            }
+            extensions.entrySet().forEach(entry -> operation.addExtension(entry.getKey(), entry.getValue()));
         }
     }
 
@@ -184,9 +182,7 @@ public class OperationBuilder {
                     .filter(t -> operation.getTags() == null
                             || (operation.getTags() != null && !operation.getTags().contains(t)))
                     .collect(Collectors.toList());
-            for (String tagsItem : tags) {
-                operation.addTagsItem(tagsItem);
-            }
+            tags.forEach(tagsItem -> operation.addTagsItem(tagsItem));
         }
     }
 
@@ -329,9 +325,7 @@ public class OperationBuilder {
                                ApiResponse apiResponseObject) {
         if (response.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(response.extensions());
-            for (Map.Entry<String, Object> entry : extensions.entrySet()) {
-                apiResponseObject.addExtension(entry.getKey(), entry.getValue());
-            }
+            extensions.entrySet().forEach(entry -> apiResponseObject.addExtension(entry.getKey(), entry.getValue()));
         }
     }
 

@@ -83,19 +83,16 @@ public class OpenAPIBuilder {
             Info infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
             openAPI.setInfo(infos);
         }
-
         // default server value
         if (CollectionUtils.isEmpty(openAPI.getServers())) {
             Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
             openAPI.addServersItem(server);
         }
-
         // add security schemes
         this.calculateSecuritySchemes(openAPI.getComponents());
     }
 
     public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
-
         // class tags
         List<io.swagger.v3.oas.annotations.tags.Tag> classTags = ReflectionUtils
                 .getRepeatableAnnotations(handlerMethod.getBeanType(), io.swagger.v3.oas.annotations.tags.Tag.class);

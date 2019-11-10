@@ -19,12 +19,11 @@ public class MethodAttributes {
     private JsonView jsonViewAnnotation;
     private JsonView jsonViewAnnotationForRequestBody;
 
-    public MethodAttributes() {
-    }
-
     public MethodAttributes(String[] methodProducesNew) {
         this.methodProduces = methodProducesNew;
     }
+
+    public MethodAttributes() { }
 
     public String[] getClassProduces() {
         return classProduces;
@@ -46,7 +45,6 @@ public class MethodAttributes {
         return methodProduces;
     }
 
-
     public String[] getMethodConsumes() {
         return methodConsumes;
     }
@@ -58,30 +56,25 @@ public class MethodAttributes {
             fillMethods(reqPostMappringMethod.produces(), reqPostMappringMethod.consumes());
             return;
         }
-
         GetMapping reqGetMappringMethod = ReflectionUtils.getAnnotation(method, GetMapping.class);
         if (reqGetMappringMethod != null) {
             fillMethods(reqGetMappringMethod.produces(), reqGetMappringMethod.consumes());
             return;
         }
-
         DeleteMapping reqDeleteMappringMethod = ReflectionUtils.getAnnotation(method, DeleteMapping.class);
         if (reqDeleteMappringMethod != null) {
             fillMethods(reqDeleteMappringMethod.produces(), reqDeleteMappringMethod.consumes());
             return;
         }
-
         PutMapping reqPutMappringMethod = ReflectionUtils.getAnnotation(method, PutMapping.class);
         if (reqPutMappringMethod != null) {
             fillMethods(reqPutMappringMethod.produces(), reqPutMappringMethod.consumes());
             return;
         }
-
         RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(method, RequestMapping.class);
         if (reqMappringMethod != null) {
             fillMethods(reqMappringMethod.produces(), reqMappringMethod.consumes());
         }
-
     }
 
     private void fillMethods(String[] produces, String[] consumes) {
@@ -130,5 +123,4 @@ public class MethodAttributes {
     public void setJsonViewAnnotationForRequestBody(JsonView jsonViewAnnotationForRequestBody) {
         this.jsonViewAnnotationForRequestBody = jsonViewAnnotationForRequestBody;
     }
-
 }
