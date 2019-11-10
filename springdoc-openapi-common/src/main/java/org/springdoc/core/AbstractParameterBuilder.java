@@ -238,9 +238,7 @@ public abstract class AbstractParameterBuilder {
     private void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
         if (parameterDoc.extensions().length > 0) {
             Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
-            for (Map.Entry<String, Object> entry : extensionMap.entrySet()) {
-                parameter.addExtension(entry.getKey(), entry.getValue());
-            }
+            extensionMap.entrySet().forEach(entry -> parameter.addExtension(entry.getKey(), entry.getValue()));
         }
     }
 

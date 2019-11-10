@@ -154,9 +154,7 @@ class SecurityParser {
 
         if (securityScheme.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(securityScheme.extensions());
-            for (Map.Entry<String, Object> entry : extensions.entrySet()) {
-                securitySchemeObject.addExtension(entry.getKey(), entry.getValue());
-            }
+            extensions.entrySet().forEach(entry ->  securitySchemeObject.addExtension(entry.getKey(), entry.getValue()));
         }
 
         getOAuthFlows(securityScheme.flows()).ifPresent(securitySchemeObject::setFlows);
@@ -180,11 +178,8 @@ class SecurityParser {
         OAuthFlows oAuthFlowsObject = new OAuthFlows();
         if (oAuthFlows.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlows.extensions());
-            for (Map.Entry<String, Object> entry : extensions.entrySet()) {
-                oAuthFlowsObject.addExtension(entry.getKey(), entry.getValue());
-            }
+            extensions.entrySet().forEach(entry-> oAuthFlowsObject.addExtension(entry.getKey(), entry.getValue()));
         }
-
         getOAuthFlow(oAuthFlows.authorizationCode()).ifPresent(oAuthFlowsObject::setAuthorizationCode);
         getOAuthFlow(oAuthFlows.clientCredentials()).ifPresent(oAuthFlowsObject::setClientCredentials);
         getOAuthFlow(oAuthFlows.implicit()).ifPresent(oAuthFlowsObject::setImplicit);
@@ -208,11 +203,8 @@ class SecurityParser {
         }
         if (oAuthFlow.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlow.extensions());
-            for (Map.Entry<String, Object> entry : extensions.entrySet()) {
-                oAuthFlowObject.addExtension(entry.getKey(), entry.getValue());
-            }
+            extensions.entrySet().forEach(entry -> oAuthFlowObject.addExtension(entry.getKey(), entry.getValue()));
         }
-
         getScopes(oAuthFlow.scopes()).ifPresent(oAuthFlowObject::setScopes);
         return Optional.of(oAuthFlowObject);
     }
@@ -222,10 +214,7 @@ class SecurityParser {
             return Optional.empty();
         }
         Scopes scopesObject = new Scopes();
-
-        for (OAuthScope scope : scopes) {
-            scopesObject.addString(scope.name(), scope.description());
-        }
+        Arrays.stream(scopes).forEach(scope -> scopesObject.addString(scope.name(), scope.description()));
         return Optional.of(scopesObject);
     }
 

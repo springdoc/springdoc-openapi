@@ -26,7 +26,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,24 +45,24 @@ public abstract class AbstractResponseBuilder {
 
     public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
                               MethodAttributes methodAttributes) {
+        final ApiResponses apiResponses = getApiResponses(operation);
+        // for each one build ApiResponse and add it to existing responses
+        genericMapResponse.entrySet().forEach(entry -> apiResponses.addApiResponse(entry.getKey(), entry.getValue()));
+        // Fill api Responses
+        computeResponse(components, handlerMethod.getMethod(), apiResponses, methodAttributes, false);
+        return apiResponses;
+    }
+
+    private ApiResponses getApiResponses(Operation operation) {
         ApiResponses apiResponses = operation.getResponses();
         if (apiResponses == null)
             apiResponses = new ApiResponses();
-
-        // for each one build ApiResponse and add it to existing responses
-        for (Entry<String, ApiResponse> entry : genericMapResponse.entrySet()) {
-            apiResponses.addApiResponse(entry.getKey(), entry.getValue());
-        }
-        // Fill api Responses
-        computeResponse(components, handlerMethod.getMethod(), apiResponses, methodAttributes, false);
-
         return apiResponses;
     }
 
     public void buildGenericResponse(Components components, Map<String, Object> findControllerAdvice) {
         // ControllerAdvice
         List<Method> methods = getMethods(findControllerAdvice);
-
         // for each one build ApiResponse and add it to existing responses
         for (Method method : methods) {
             if (!operationBuilder.isHidden(method)) {
@@ -74,9 +73,7 @@ public abstract class AbstractResponseBuilder {
                 }
                 Map<String, ApiResponse> apiResponses = computeResponse(components, method, new ApiResponses(),
                         new MethodAttributes(methodProduces), true);
-                for (Map.Entry<String, ApiResponse> entry : apiResponses.entrySet()) {
-                    genericMapResponse.put(entry.getKey(), entry.getValue());
-                }
+                apiResponses.entrySet().forEach(entry -> genericMapResponse.put(entry.getKey(), entry.getValue()));
             }
         }
     }
@@ -106,11 +103,7 @@ public abstract class AbstractResponseBuilder {
             if (org.springframework.aop.support.AopUtils.isAopProxy(controllerAdvice)) {
                 objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerAdvice);
             }
-            for (Method m : objClz.getDeclaredMethods()) {
-                if (m.isAnnotationPresent(ExceptionHandler.class)) {
-                    methods.add(m);
-                }
-            }
+            Arrays.stream(objClz.getDeclaredMethods()).filter(m -> m.isAnnotationPresent(ExceptionHandler.class)).forEach(m -> methods.add(m));
         }
         return methods;
     }
@@ -128,18 +121,15 @@ public abstract class AbstractResponseBuilder {
                     apiResponsesOp.addApiResponse(apiResponseAnnotations.responseCode(), apiResponse);
                     continue;
                 }
-
                 apiResponse.setDescription(apiResponseAnnotations.description());
                 io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
                 buildContentFromDoc(components, apiResponsesOp, methodAttributes,
                         apiResponseAnnotations, apiResponse, contentdoc);
-
                 AnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), methodAttributes.getJsonViewAnnotation())
                         .ifPresent(apiResponse::headers);
                 apiResponsesOp.addApiResponse(apiResponseAnnotations.responseCode(), apiResponse);
             }
         }
-
         buildApiResponses(components, method, apiResponsesOp, methodAttributes, isGeneric);
         return apiResponsesOp;
     }
@@ -150,18 +140,12 @@ public abstract class AbstractResponseBuilder {
                                      io.swagger.v3.oas.annotations.media.Content[] contentdoc) {
         Optional<Content> optionalContent = SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
                 methodAttributes.getAllProduces(), null, components, methodAttributes.getJsonViewAnnotation());
-
         if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
             // Merge with the existing content
             Content existingContent = apiResponsesOp.get(apiResponseAnnotations.responseCode()).getContent();
             if (optionalContent.isPresent() && existingContent != null) {
                 Content newContent = optionalContent.get();
-                for (String mediaTypeStr : methodAttributes.getAllProduces()) {
-                    io.swagger.v3.oas.models.media.MediaType mediaType = newContent.get(mediaTypeStr);
-                    if (mediaType != null) {
-                        mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr);
-                    }
-                }
+                Arrays.stream(methodAttributes.getAllProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr));
                 apiResponse.content(existingContent);
             }
         } else {
@@ -256,9 +240,7 @@ public abstract class AbstractResponseBuilder {
 
     private void setContent(String[] methodProduces, Content content,
                             io.swagger.v3.oas.models.media.MediaType mediaType) {
-        for (String mediaTypeStr : methodProduces) {
-            content.addMediaType(mediaTypeStr, mediaType);
-        }
+        Arrays.stream(methodProduces).forEach(mediaTypeStr -> content.addMediaType(mediaTypeStr, mediaType));
     }
 
     private Schema calculateSchema(Components components, ParameterizedType parameterizedType, JsonView jsonView) {
@@ -287,7 +269,6 @@ public abstract class AbstractResponseBuilder {
                 apiResponse.setDescription(DEFAULT_DESCRIPTION);
             }
         }
-
         if (apiResponse.getContent() != null
                 && ((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc())) {
             // Merge with existing schema
@@ -298,7 +279,6 @@ public abstract class AbstractResponseBuilder {
                 Arrays.stream(methodAttributes.getAllProduces()).forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));
             }
         }
-
         apiResponsesOp.addApiResponse(httpCode, apiResponse);
     }
 

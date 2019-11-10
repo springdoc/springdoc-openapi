@@ -8,7 +8,6 @@ public class RequestInfo {
     private final ParameterType paramType;
 
     public RequestInfo(ParameterType paramType, String value, boolean required, String defaultValue) {
-        super();
         this.value = value;
         this.required = required;
         this.defaultValue = defaultValue;
@@ -33,13 +32,10 @@ public class RequestInfo {
 
     public enum ParameterType {
         QUERY_PARAM("query"), HEADER_PARAM("header"), PATH_PARAM("path");
-
         private final String value;
-
         ParameterType(String s) {
             value = s;
         }
-
         @Override
         public String toString() {
             return value;
