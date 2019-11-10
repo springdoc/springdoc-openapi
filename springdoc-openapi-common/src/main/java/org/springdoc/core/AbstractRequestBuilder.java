@@ -47,7 +47,7 @@ public abstract class AbstractRequestBuilder {
         String[] pNames = d.getParameterNames(handlerMethod.getMethod());
         java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
         if(pNames == null){
-            pNames =  Arrays.stream(parameters).map(p -> p.getName()).toArray(String[]::new);
+            pNames =  Arrays.stream(parameters).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
         }
         RequestBodyInfo requestBodyInfo = new RequestBodyInfo(methodAttributes);
         List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
@@ -229,7 +229,7 @@ public abstract class AbstractRequestBuilder {
         if (annos.containsKey(DecimalMin.class.getName())) {
             DecimalMin min = (DecimalMin) annos.get(DecimalMin.class.getName());
             if (min.inclusive()) {
-                schema.setMinimum(BigDecimal.valueOf(Double.valueOf(min.value())));
+                schema.setMinimum(BigDecimal.valueOf(Double.parseDouble(min.value())));
             } else {
                 schema.setExclusiveMinimum(!min.inclusive());
             }
@@ -237,7 +237,7 @@ public abstract class AbstractRequestBuilder {
         if (annos.containsKey(DecimalMax.class.getName())) {
             DecimalMax max = (DecimalMax) annos.get(DecimalMax.class.getName());
             if (max.inclusive()) {
-                schema.setMaximum(BigDecimal.valueOf(Double.valueOf(max.value())));
+                schema.setMaximum(BigDecimal.valueOf(Double.parseDouble(max.value())));
             } else {
                 schema.setExclusiveMaximum(!max.inclusive());
             }

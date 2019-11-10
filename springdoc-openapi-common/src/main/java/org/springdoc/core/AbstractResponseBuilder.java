@@ -25,13 +25,8 @@ import org.springframework.web.method.HandlerMethod;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -300,9 +295,7 @@ public abstract class AbstractResponseBuilder {
             Schema<?> schemaN = calculateSchema(components, method.getGenericReturnType(),
                     methodAttributes.getJsonViewAnnotation());
             if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getAllProduces())) {
-                for (String mediaTypeStr : methodAttributes.getAllProduces()) {
-                    mergeSchema(existingContent, schemaN, mediaTypeStr);
-                }
+                Arrays.stream(methodAttributes.getAllProduces()).forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));
             }
         }
 
