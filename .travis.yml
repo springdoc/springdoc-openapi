@@ -1,10 +1,13 @@
 language: java
+sudo: false
+install: true
+
 jdk:
   - openjdk8
 cache:
   directories:
-    - $HOME/.m2
-    - $HOME/.sonar/cache
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
 
 addons:
   sonarcloud:
@@ -13,6 +16,9 @@ addons:
       secure: "hnxolauuIc38MkcXc60fFAebDMZuUmmBhSYiEe7iS8fZ8VOnZrw7SoQKbGOdgFp0NRGuhxBzxJFGyj6M+Q9fwlFSFQ4TqECu+RtDE6SKj7e1FA22tm5ptVvc2vm3W8y5LLYRGxN+415frLlukpx7dvtBrPnFfzl7nXbA32FLJVbiOMG7jmtqkw+Hxuk0rBnsh0hrrEHiClOBB+EWnD+d2VJahnNn+jMgLCIRouHWVxM/6iWeabpz4O1jYT1JKJNtH5czHVgYHDD9ewkQaoiRoHgl1/LvYhXj38OWftLGHl1URqiqkWzIxIf5mUeUn9UgKCpBb4pyPtVaq3k2TBqEV0IqMgGNlagAw/JBpHkBOeK+E1fFltBAJyPuWAr5M9WCfraMzgtg12rsyWX8THbHFthA72OQFA7SIgMEq03Z0j9b9IVrldyRhw/qAYOjjLETdESFXKGZeDAJQ1zYH9CNham2TjZnAw/u5Z6VV7SEVB1IdqKEW3oHnuNGMRP45Iiq77S0e23WXSTYd4SNNg0BW8esQNIdnP4vrPgnScxOmXPbWfbcMuHrvnkQpvkxz+mtW6dOZ5oSuZIgz6N4vVtyHRzebRdBFA/xGZKdUGT8nkhwkkST6J/gsLu3lup5Hv5CUyn6wqgNtLb5SNzLVPte1ZAbn1QcRSxsMae20fBcJ6Y="
 
 script:
+  - echo ${env.OSSRH_USER}
+  - echo ${SONAR_TOKEN}
+  - echo $SONAR_TOKEN
   - mvn deploy -DskipTests --settings settings.xml
   - mvn sonar:sonar -DskipTests
 
