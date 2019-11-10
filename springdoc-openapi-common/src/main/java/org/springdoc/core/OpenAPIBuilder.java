@@ -44,6 +44,7 @@ public class OpenAPIBuilder {
     private String serverBaseUrl;
     private final Map<HandlerMethod, String> springdocTags = new HashMap<>();
 
+     @SuppressWarnings("WeakerAccess")
      OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser) {
         if (openAPI.isPresent()) {
             this.openAPI = openAPI.get();
@@ -120,7 +121,7 @@ public class OpenAPIBuilder {
             tagsStr.add(springdocTags.get(handlerMethod));
 
         Optional<Set<io.swagger.v3.oas.models.tags.Tag>> tags = AnnotationsUtils
-                .getTags(allTags.toArray(new Tag[allTags.size()]), true);
+                .getTags(allTags.toArray(new Tag[0]), true);
 
         if (tags.isPresent()) {
             Set<io.swagger.v3.oas.models.tags.Tag> tagsSet = tags.get();
@@ -137,7 +138,7 @@ public class OpenAPIBuilder {
         securityRequirement.ifPresent(securityRequirements -> securityParser.buildSecurityRequirement(securityRequirements, operation));
 
         if (!CollectionUtils.isEmpty(tagsStr))
-            operation.setTags(new ArrayList<String>(tagsStr));
+            operation.setTags(new ArrayList<>(tagsStr));
 
         return operation;
     }
