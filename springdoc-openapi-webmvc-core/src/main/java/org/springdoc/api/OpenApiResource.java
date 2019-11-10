@@ -11,6 +11,7 @@ import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.AbstractResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.Option;
 import java.util.*;
 
 import static org.springdoc.core.Constants.*;
@@ -37,15 +39,15 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
-    private final ActuatorProvider servletContextProvider;
+    private final Optional<ActuatorProvider> servletContextProvider;
 
     @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
     private boolean showActuator;
 
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
-                           RequestMappingInfoHandlerMapping requestMappingHandlerMapping, @Nullable ActuatorProvider servletContextProvider,
-                           List<OpenApiCustomiser> openApiCustomisers) {
+                           RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
+                           Optional<List<OpenApiCustomiser>> openApiCustomisers) {
         super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers);
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
         this.servletContextProvider = servletContextProvider;
@@ -73,8 +75,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
     protected void getPaths(Map<String, Object> restControllers) {
         Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
         calculatePath(restControllers, map);
-        if (showActuator) {
-            map = servletContextProvider.getWebMvcHandlerMapping().getHandlerMethods();
+        if (showActuator && servletContextProvider.isPresent()) {
+            map = servletContextProvider.get().getWebMvcHandlerMapping().getHandlerMethods();
             Set<HandlerMethod> handlerMethods = new HashSet<>(map.values());
             this.openAPIBuilder.addTag(handlerMethods, SPRINGDOC_ACTUATOR_TAG);
             calculatePath(restControllers, map);

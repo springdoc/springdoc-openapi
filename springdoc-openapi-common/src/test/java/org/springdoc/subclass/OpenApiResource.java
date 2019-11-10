@@ -10,6 +10,7 @@ import org.springdoc.core.OperationBuilder;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Class which sub class AbstractOpenApiResource in a different package and makes sure base class access is not changed.
@@ -20,7 +21,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
                            AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder,
                            OperationBuilder operationParser,
-                           List<OpenApiCustomiser> openApiCustomisers) {
+                           Optional<List<OpenApiCustomiser>> openApiCustomisers) {
         super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers);
     }
 

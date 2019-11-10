@@ -26,10 +26,7 @@ import org.springframework.web.method.HandlerMethod;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,12 +37,12 @@ public abstract class AbstractOpenApiResource {
     private final AbstractRequestBuilder requestBuilder;
     private final AbstractResponseBuilder responseBuilder;
     private final OperationBuilder operationParser;
-    private final List<OpenApiCustomiser> openApiCustomisers;
+    private final Optional<List<OpenApiCustomiser>> openApiCustomisers;
     private boolean computeDone;
 
     protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                                       AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
-                                      List<OpenApiCustomiser> openApiCustomisers) {
+                                      Optional<List<OpenApiCustomiser>>  openApiCustomisers) {
         super();
         this.openAPIBuilder = openAPIBuilder;
         this.requestBuilder = requestBuilder;
@@ -75,8 +72,8 @@ public abstract class AbstractOpenApiResource {
             openApi = openAPIBuilder.getOpenAPI();
 
             // run the optional customisers
-            if (openApiCustomisers != null) {
-                openApiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi));
+            if (openApiCustomisers.isPresent()) {
+                openApiCustomisers.get().forEach(openApiCustomiser -> openApiCustomiser.customise(openApi));
             }
             LOGGER.info("Init duration for springdoc-openapi is: {} ms",
                     Duration.between(start, Instant.now()).toMillis());
