@@ -14,6 +14,6 @@ addons:
 
 script:
   - mvn deploy -DskipTests --settings settings.xml
-  - mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN -DskipTests
+  - mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN} -DskipTests
 
   
