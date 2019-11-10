@@ -41,11 +41,11 @@ public class OpenAPIBuilder {
     private final OpenAPI openAPI;
     private final ApplicationContext context;
     private final SecurityParser securityParser;
-    private String serverBaseUrl;
     private final Map<HandlerMethod, String> springdocTags = new HashMap<>();
+    private String serverBaseUrl;
 
-     @SuppressWarnings("WeakerAccess")
-     OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser) {
+    @SuppressWarnings("WeakerAccess")
+    OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser) {
         if (openAPI.isPresent()) {
             this.openAPI = openAPI.get();
             if (this.openAPI.getComponents() == null)

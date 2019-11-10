@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings({"rawtypes"})
- class SpringDocAnnotationsUtils extends AnnotationsUtils {
+class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
     static final String COMPONENTS_REF = "#/components/schemas/";
 

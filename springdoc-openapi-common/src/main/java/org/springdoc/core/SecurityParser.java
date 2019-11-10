@@ -30,7 +30,7 @@ class SecurityParser {
         boolean result;
         if (oAuthFlow == null) {
             result = true;
-        } else if (!StringUtils.isBlank(oAuthFlow.authorizationUrl()) || !StringUtils.isBlank(oAuthFlow.refreshUrl()) || !StringUtils.isBlank(oAuthFlow.tokenUrl()) || !isEmpty(oAuthFlow.scopes())  ) {
+        } else if (!StringUtils.isBlank(oAuthFlow.authorizationUrl()) || !StringUtils.isBlank(oAuthFlow.refreshUrl()) || !StringUtils.isBlank(oAuthFlow.tokenUrl()) || !isEmpty(oAuthFlow.scopes())) {
             result = false;
         } else result = oAuthFlow.extensions().length <= 0;
         return result;
@@ -154,7 +154,7 @@ class SecurityParser {
 
         if (securityScheme.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(securityScheme.extensions());
-            extensions.entrySet().forEach(entry ->  securitySchemeObject.addExtension(entry.getKey(), entry.getValue()));
+            extensions.entrySet().forEach(entry -> securitySchemeObject.addExtension(entry.getKey(), entry.getValue()));
         }
 
         getOAuthFlows(securityScheme.flows()).ifPresent(securitySchemeObject::setFlows);
@@ -178,7 +178,7 @@ class SecurityParser {
         OAuthFlows oAuthFlowsObject = new OAuthFlows();
         if (oAuthFlows.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlows.extensions());
-            extensions.entrySet().forEach(entry-> oAuthFlowsObject.addExtension(entry.getKey(), entry.getValue()));
+            extensions.entrySet().forEach(entry -> oAuthFlowsObject.addExtension(entry.getKey(), entry.getValue()));
         }
         getOAuthFlow(oAuthFlows.authorizationCode()).ifPresent(oAuthFlowsObject::setAuthorizationCode);
         getOAuthFlow(oAuthFlows.clientCredentials()).ifPresent(oAuthFlowsObject::setClientCredentials);

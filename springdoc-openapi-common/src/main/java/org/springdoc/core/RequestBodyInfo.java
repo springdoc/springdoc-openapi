@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import java.util.Arrays;
 
 @SuppressWarnings("rawtypes")
- class RequestBodyInfo {
+class RequestBodyInfo {
 
     private RequestBody requestBody;
     private Schema mergedSchema;
