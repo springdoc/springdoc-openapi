@@ -10,14 +10,15 @@ import java.util.Objects;
 @NotNull
 public class Pageable {
 
+    @NotNull
     @Min(0)
     private int page;
 
+    @NotNull
     @Min(1)
     @Max(2000)
     private int size;
 
-    @NotNull
     private List<String> sort = new ArrayList<>() ;
 
     public Pageable() {
