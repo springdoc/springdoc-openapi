@@ -25,6 +25,7 @@ import java.util.Optional;
     static final String COMPONENTS_REF = "#/components/schemas/";
 
     static {
+        ModelConverters.getInstance().addConverter(new PageableSupportConverter());
         ModelConverters.getInstance().addConverter(new ObjectNodeConverter());
     }
 
