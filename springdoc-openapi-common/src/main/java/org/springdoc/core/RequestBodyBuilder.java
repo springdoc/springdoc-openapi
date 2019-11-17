@@ -103,28 +103,29 @@ public class RequestBodyBuilder {
         if (requestBody == null)
             requestBody = new RequestBody();
 
+        if (parameterInfo.getParameterModel() != null) {
+            io.swagger.v3.oas.models.parameters.Parameter parameter = parameterInfo.getParameterModel();
+            if (StringUtils.isNotBlank(parameter.getDescription()))
+                requestBody.setDescription(parameter.getDescription());
+            if (parameter.getSchema() != null) {
+                Schema<?> schema = parameterInfo.getParameterModel().getSchema();
+                buildContent(requestBody, methodAttributes, schema);
+            }
+            requestBody.setRequired(parameter.getRequired());
+        }
+
         if (requestBody.getContent() == null
                 || (requestBody.getContent() != null && methodAttributes.isMethodOverloaded())) {
-
             Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(),
                     parameterInfo.getpName(), requestBodyInfo,
                     methodAttributes.getJsonViewAnnotationForRequestBody());
-            Content content = requestBody.getContent();
-            content = buildContent(methodAttributes, schema, content);
-            requestBody.setContent(content);
+            buildContent(requestBody, methodAttributes, schema);
         }
-
-        if (parameterInfo.getParameterDoc() != null) {
-            io.swagger.v3.oas.annotations.Parameter parameterDoc = parameterInfo.getParameterDoc();
-            if (StringUtils.isNotBlank(parameterDoc.description()))
-                requestBody.setDescription(parameterDoc.description());
-            requestBody.setRequired(parameterDoc.required());
-        }
-
         return requestBody;
     }
 
-    private Content buildContent(MethodAttributes methodAttributes, Schema<?> schema, Content content) {
+    private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
+        Content content = requestBody.getContent();
         if (methodAttributes.isMethodOverloaded() && content != null) {
             for (String value : methodAttributes.getAllConsumes()) {
                 setMediaTypeToContent(schema, content, value);
@@ -135,8 +136,10 @@ public class RequestBodyBuilder {
                 setMediaTypeToContent(schema, content, value);
             }
         }
-        return content;
+        requestBody.setContent(content);
     }
+
+
 
     private void setMediaTypeToContent(Schema schema, Content content, String value) {
         io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();

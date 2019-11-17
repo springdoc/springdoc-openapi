@@ -347,8 +347,7 @@
                 }
               }
             }
-          },
-          "required": false
+          }
         },
         "responses": {
           "400": {

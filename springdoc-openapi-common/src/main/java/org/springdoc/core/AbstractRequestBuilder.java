@@ -79,7 +79,6 @@ public abstract class AbstractRequestBuilder {
                     applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
                 } else if (!RequestMethod.GET.equals(requestMethod)) {
                     requestBodyInfo.incrementNbParam();
-                    parameterInfo = new ParameterInfo(pName, parameters[i], parameterDoc);
                     requestBodyInfo.setRequestBody(operation.getRequestBody());
                     requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, methodAttributes, i,
                             parameterInfo, requestBodyInfo);
