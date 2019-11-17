@@ -158,8 +158,7 @@
                 "$ref": "#/components/schemas/InventoryItem"
               }
             }
-          },
-          "required": false
+          }
         },
         "responses": {
           "500": {
@@ -559,12 +558,9 @@
           }
         }
       },
-      "ItemDTO": {
+      "ItemLightDTO": {
         "type": "object",
         "properties": {
-          "itemID": {
-            "type": "string"
-          },
           "description": {
             "type": "string"
           },
@@ -574,9 +570,12 @@
           }
         }
       },
-      "ItemLightDTO": {
+      "ItemDTO": {
         "type": "object",
         "properties": {
+          "itemID": {
+            "type": "string"
+          },
           "description": {
             "type": "string"
           },
