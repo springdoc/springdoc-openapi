@@ -24,7 +24,10 @@ public abstract class AbstractRequestBuilder {
     private final AbstractParameterBuilder parameterBuilder;
     private final RequestBodyBuilder requestBodyBuilder;
     private final OperationBuilder operationBuilder;
-    private static final String[] ANNOTATIONS_FOR_REQUIRED = {NotNull.class.getName(), NotBlank.class.getName(), NotEmpty.class.getName()};
+    // using string litterals to support both validation-api v1 and v2
+    private static final String[] ANNOTATIONS_FOR_REQUIRED = {NotNull.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty"};
+    private static final String POSITIVE_OR_ZERO = "javax.validation.constraints.PositiveOrZero";
+    private static final String NEGATIVE_OR_ZERO= "javax.validation.constraints.NegativeOrZero";
 
     protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
                                      OperationBuilder operationBuilder) {
@@ -243,10 +246,10 @@ public abstract class AbstractRequestBuilder {
                 schema.setExclusiveMaximum(!max.inclusive());
             }
         }
-        if (annos.containsKey(PositiveOrZero.class.getName())) {
+        if (annos.containsKey(POSITIVE_OR_ZERO)) {
             schema.setMinimum(BigDecimal.ZERO);
         }
-        if (annos.containsKey(NegativeOrZero .class.getName())) {
+        if (annos.containsKey(NEGATIVE_OR_ZERO)) {
             schema.setMaximum(BigDecimal.ZERO);
         }
         if (annos.containsKey(Pattern.class.getName())) {
