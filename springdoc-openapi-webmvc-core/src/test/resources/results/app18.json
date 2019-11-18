@@ -11,9 +11,122 @@
     }
   ],
   "paths": {
+    "/persons": {
+      "get": {
+        "operationId": "persons",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/persons3": {
       "get": {
         "operationId": "persons3",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "persons name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons5": {
+      "get": {
+        "operationId": "persons5",
+        "parameters": [
+          {
+            "name": "age",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maximum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons4": {
+      "get": {
+        "operationId": "persons4",
+        "parameters": [
+          {
+            "name": "age",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons6": {
+      "get": {
+        "operationId": "persons6",
         "parameters": [
           {
             "name": "name",
@@ -66,35 +179,7 @@
           }
         }
       }
-    },
-    "/persons": {
-      "get": {
-        "operationId": "persons",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
-  "components": {
-  }
+  "components": {}
 }
