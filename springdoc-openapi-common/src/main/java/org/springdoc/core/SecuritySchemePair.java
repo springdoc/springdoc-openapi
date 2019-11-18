@@ -17,16 +17,8 @@ class SecuritySchemePair {
         return key;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     public SecurityScheme getSecurityScheme() {
         return securityScheme;
-    }
-
-    public void setSecurityScheme(SecurityScheme securityScheme) {
-        this.securityScheme = securityScheme;
     }
 
 }

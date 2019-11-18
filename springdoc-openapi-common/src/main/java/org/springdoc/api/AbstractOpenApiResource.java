@@ -64,9 +64,7 @@ public abstract class AbstractOpenApiResource {
             openApi = openAPIBuilder.getOpenAPI();
 
             // run the optional customisers
-            if (openApiCustomisers.isPresent()) {
-                openApiCustomisers.get().forEach(openApiCustomiser -> openApiCustomiser.customise(openApi));
-            }
+            openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
             LOGGER.info("Init duration for springdoc-openapi is: {} ms",
                     Duration.between(start, Instant.now()).toMillis());
             computeDone = true;

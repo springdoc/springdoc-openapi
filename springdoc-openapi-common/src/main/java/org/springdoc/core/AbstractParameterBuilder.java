@@ -147,11 +147,11 @@ public abstract class AbstractParameterBuilder {
                            RequestBodyInfo requestBodyInfo, JsonView jsonView) {
         Schema schemaN;
         Class<?> schemaImplementation = null;
-        Type paramType = null;
+        Type returnType = null;
         JavaType ct = null;
 
         if (parameter != null) {
-            paramType = parameter.getParameterizedType();
+            returnType = parameter.getParameterizedType();
             ct = constructType(parameter.getType());
             schemaImplementation = parameter.getType();
         }
@@ -162,12 +162,12 @@ public abstract class AbstractParameterBuilder {
             return schemaN;
         }
 
-        if (paramType instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) paramType;
+        if (returnType instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) returnType;
             if (isFile(parameterizedType)) {
                 return extractFileSchema(paramName, requestBodyInfo);
             }
-            schemaN = calculateSchemaFromParameterizedType( components,  paramType,  jsonView);
+            schemaN = calculateSchemaFromParameterizedType( components,  returnType,  jsonView);
         } else {
             schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, jsonView);
         }
@@ -240,7 +240,7 @@ public abstract class AbstractParameterBuilder {
     private void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
         if (parameterDoc.extensions().length > 0) {
             Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
-            extensionMap.entrySet().forEach(entry -> parameter.addExtension(entry.getKey(), entry.getValue()));
+            extensionMap.forEach(parameter::addExtension);
         }
     }
 

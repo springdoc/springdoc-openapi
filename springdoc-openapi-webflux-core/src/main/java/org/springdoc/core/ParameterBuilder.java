@@ -24,7 +24,7 @@ public class ParameterBuilder extends AbstractParameterBuilder {
 
     @Override
     protected Schema calculateSchemaFromParameterizedType(Components components, Type paramType, JsonView jsonView) {
-        Schema schemaN = null;
+        Schema schemaN;
         ParameterizedType parameterizedType = (ParameterizedType) paramType;
         if (Mono.class.getName().contentEquals(parameterizedType.getRawType().getTypeName())
                 || Flux.class.getName().contentEquals(parameterizedType.getRawType().getTypeName()))

@@ -47,7 +47,7 @@ public abstract class AbstractResponseBuilder {
                               MethodAttributes methodAttributes) {
         final ApiResponses apiResponses = getApiResponses(operation);
         // for each one build ApiResponse and add it to existing responses
-        genericMapResponse.entrySet().forEach(entry -> apiResponses.addApiResponse(entry.getKey(), entry.getValue()));
+        genericMapResponse.forEach(apiResponses::addApiResponse);
         // Fill api Responses
         computeResponse(components, handlerMethod.getMethod(), apiResponses, methodAttributes, false);
         return apiResponses;
@@ -73,7 +73,7 @@ public abstract class AbstractResponseBuilder {
                 }
                 Map<String, ApiResponse> apiResponses = computeResponse(components, method, new ApiResponses(),
                         new MethodAttributes(methodProduces), true);
-                apiResponses.entrySet().forEach(entry -> genericMapResponse.put(entry.getKey(), entry.getValue()));
+                apiResponses.forEach(genericMapResponse::put);
             }
         }
     }
