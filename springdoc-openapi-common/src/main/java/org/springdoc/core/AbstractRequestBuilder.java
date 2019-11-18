@@ -24,6 +24,7 @@ public abstract class AbstractRequestBuilder {
     private final AbstractParameterBuilder parameterBuilder;
     private final RequestBodyBuilder requestBodyBuilder;
     private final OperationBuilder operationBuilder;
+    private static final String[] ANNOTATIONS_FOR_REQUIRED = {NotNull.class.getName(), NotBlank.class.getName(), NotEmpty.class.getName()};
 
     protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
                                      OperationBuilder operationBuilder) {
@@ -87,7 +88,6 @@ public abstract class AbstractRequestBuilder {
         }
 
         setParams(operation, operationParameters, requestBodyInfo);
-
         // allow for customisation
         operation = customiseOperation(operation, handlerMethod);
 
@@ -210,7 +210,9 @@ public abstract class AbstractRequestBuilder {
             annotations.forEach(annotation -> annos.put(annotation.annotationType().getName(), annotation));
         }
 
-        if (annos.containsKey(NotNull.class.getName())) {
+        boolean annotationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
+
+        if (annotationExists) {
             parameter.setRequired(true);
         }
 
@@ -240,6 +242,12 @@ public abstract class AbstractRequestBuilder {
             } else {
                 schema.setExclusiveMaximum(!max.inclusive());
             }
+        }
+        if (annos.containsKey(PositiveOrZero.class.getName())) {
+            schema.setMinimum(BigDecimal.ZERO);
+        }
+        if (annos.containsKey(NegativeOrZero .class.getName())) {
+            schema.setMaximum(BigDecimal.ZERO);
         }
         if (annos.containsKey(Pattern.class.getName())) {
             Pattern pattern = (Pattern) annos.get(Pattern.class.getName());
