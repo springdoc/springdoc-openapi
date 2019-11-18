@@ -1,8 +1,8 @@
 package org.springdoc.core;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import io.swagger.v3.core.util.ReflectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,27 +52,27 @@ public class MethodAttributes {
 
 
     public void calculateConsumesProduces(Method method) {
-        PostMapping reqPostMappringMethod = ReflectionUtils.getAnnotation(method, PostMapping.class);
+        PostMapping reqPostMappringMethod =  AnnotatedElementUtils.findMergedAnnotation(method, PostMapping.class);
         if (reqPostMappringMethod != null) {
             fillMethods(reqPostMappringMethod.produces(), reqPostMappringMethod.consumes());
             return;
         }
-        GetMapping reqGetMappringMethod = ReflectionUtils.getAnnotation(method, GetMapping.class);
+        GetMapping reqGetMappringMethod =  AnnotatedElementUtils.findMergedAnnotation(method, GetMapping.class);
         if (reqGetMappringMethod != null) {
             fillMethods(reqGetMappringMethod.produces(), reqGetMappringMethod.consumes());
             return;
         }
-        DeleteMapping reqDeleteMappringMethod = ReflectionUtils.getAnnotation(method, DeleteMapping.class);
+        DeleteMapping reqDeleteMappringMethod =  AnnotatedElementUtils.findMergedAnnotation(method, DeleteMapping.class);
         if (reqDeleteMappringMethod != null) {
             fillMethods(reqDeleteMappringMethod.produces(), reqDeleteMappringMethod.consumes());
             return;
         }
-        PutMapping reqPutMappringMethod = ReflectionUtils.getAnnotation(method, PutMapping.class);
+        PutMapping reqPutMappringMethod = AnnotatedElementUtils.findMergedAnnotation(method, PutMapping.class);
         if (reqPutMappringMethod != null) {
             fillMethods(reqPutMappringMethod.produces(), reqPutMappringMethod.consumes());
             return;
         }
-        RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(method, RequestMapping.class);
+        RequestMapping reqMappringMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
         if (reqMappringMethod != null) {
             fillMethods(reqMappringMethod.produces(), reqMappringMethod.consumes());
         }
