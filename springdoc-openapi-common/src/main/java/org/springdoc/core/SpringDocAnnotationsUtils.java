@@ -115,7 +115,7 @@ class SpringDocAnnotationsUtils extends AnnotationsUtils {
         annotationContent.extensions();
         if (annotationContent.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(annotationContent.extensions());
-            extensions.entrySet().forEach(entry -> mediaType.addExtension(entry.getKey(), entry.getValue()));
+            extensions.forEach(mediaType::addExtension);
         }
     }
 

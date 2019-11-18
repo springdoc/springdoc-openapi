@@ -154,7 +154,7 @@ class SecurityParser {
 
         if (securityScheme.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(securityScheme.extensions());
-            extensions.entrySet().forEach(entry -> securitySchemeObject.addExtension(entry.getKey(), entry.getValue()));
+            extensions.forEach(securitySchemeObject::addExtension);
         }
 
         getOAuthFlows(securityScheme.flows()).ifPresent(securitySchemeObject::setFlows);
@@ -178,7 +178,7 @@ class SecurityParser {
         OAuthFlows oAuthFlowsObject = new OAuthFlows();
         if (oAuthFlows.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlows.extensions());
-            extensions.entrySet().forEach(entry -> oAuthFlowsObject.addExtension(entry.getKey(), entry.getValue()));
+            extensions.forEach(oAuthFlowsObject::addExtension);
         }
         getOAuthFlow(oAuthFlows.authorizationCode()).ifPresent(oAuthFlowsObject::setAuthorizationCode);
         getOAuthFlow(oAuthFlows.clientCredentials()).ifPresent(oAuthFlowsObject::setClientCredentials);
@@ -203,7 +203,7 @@ class SecurityParser {
         }
         if (oAuthFlow.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlow.extensions());
-            extensions.entrySet().forEach(entry -> oAuthFlowObject.addExtension(entry.getKey(), entry.getValue()));
+            extensions.forEach(oAuthFlowObject::addExtension);
         }
         getScopes(oAuthFlow.scopes()).ifPresent(oAuthFlowObject::setScopes);
         return Optional.of(oAuthFlowObject);
