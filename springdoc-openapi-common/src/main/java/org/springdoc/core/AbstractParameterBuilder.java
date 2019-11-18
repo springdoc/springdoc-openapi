@@ -147,11 +147,11 @@ public abstract class AbstractParameterBuilder {
                            RequestBodyInfo requestBodyInfo, JsonView jsonView) {
         Schema schemaN;
         Class<?> schemaImplementation = null;
-        Type returnType = null;
+        Type paramType = null;
         JavaType ct = null;
 
         if (parameter != null) {
-            returnType = parameter.getParameterizedType();
+            paramType = parameter.getParameterizedType();
             ct = constructType(parameter.getType());
             schemaImplementation = parameter.getType();
         }
@@ -162,12 +162,12 @@ public abstract class AbstractParameterBuilder {
             return schemaN;
         }
 
-        if (returnType instanceof ParameterizedType) {
-            ParameterizedType parameterizedType = (ParameterizedType) returnType;
+        if (paramType instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) paramType;
             if (isFile(parameterizedType)) {
                 return extractFileSchema(paramName, requestBodyInfo);
             }
-            schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView);
+            schemaN = calculateSchemaFromParameterizedType( components,  paramType,  jsonView);
         } else {
             schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, jsonView);
         }
@@ -178,6 +178,8 @@ public abstract class AbstractParameterBuilder {
 
         return schemaN;
     }
+
+    protected abstract Schema calculateSchemaFromParameterizedType(Components components, Type returnType, JsonView jsonView);
 
     private Schema extractFileSchema(String paramName, RequestBodyInfo requestBodyInfo) {
         Schema schemaN = getFileSchema(requestBodyInfo);
