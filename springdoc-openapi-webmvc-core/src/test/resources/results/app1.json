@@ -17,6 +17,9 @@
   "paths": {
     "/hello/{numTelco}": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "index",
         "parameters": [
           {
@@ -558,9 +561,12 @@
           }
         }
       },
-      "ItemLightDTO": {
+      "ItemDTO": {
         "type": "object",
         "properties": {
+          "itemID": {
+            "type": "string"
+          },
           "description": {
             "type": "string"
           },
@@ -570,12 +576,9 @@
           }
         }
       },
-      "ItemDTO": {
+      "ItemLightDTO": {
         "type": "object",
         "properties": {
-          "itemID": {
-            "type": "string"
-          },
           "description": {
             "type": "string"
           },
