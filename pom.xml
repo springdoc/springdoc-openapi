@@ -50,6 +50,7 @@
 
     <modules>
         <module>springdoc-openapi-common</module>
+        <module>springdoc-openapi-kotlin-coroutines</module>
         <module>springdoc-openapi-webmvc-core</module>
         <module>springdoc-openapi-webflux-core</module>
         <module>springdoc-openapi-ui</module>
