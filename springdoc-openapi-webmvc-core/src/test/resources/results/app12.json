@@ -13,13 +13,15 @@
   "paths": {
     "/persons": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "persons",
         "parameters": [
           {
             "name": "name",
             "in": "query",
-            "schema": {
-            }
+            "schema": {}
           }
         ],
         "responses": {
@@ -37,6 +39,5 @@
       }
     }
   },
-  "components": {
-  }
+  "components": {}
 }

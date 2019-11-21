@@ -11,8 +11,41 @@
     }
   ],
   "paths": {
+    "/persons2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "persons2",
+        "requestBody": {
+          "description": "requestBody description outside",
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/persons3": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "persons3",
         "requestBody": {
           "description": "requestBody inside operation annotation",
@@ -40,6 +73,9 @@
     },
     "/persons": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "persons",
         "requestBody": {
           "description": "requestBody description as parameter",
@@ -64,35 +100,7 @@
           }
         }
       }
-    },
-    "/persons2": {
-      "post": {
-        "operationId": "persons2",
-        "requestBody": {
-          "description": "requestBody description outside",
-          "content": {
-            "*/*": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
-  "components": {
-  }
+  "components": {}
 }

@@ -17,6 +17,9 @@
   "paths": {
     "/parse-resume": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "summary": "Parse Resume",
         "operationId": "parse",
         "requestBody": {

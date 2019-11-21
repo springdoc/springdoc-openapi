@@ -13,6 +13,9 @@
   "paths": {
     "/hello": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "description": "Obtain the list of services available in the system",
         "operationId": "list",
         "responses": {

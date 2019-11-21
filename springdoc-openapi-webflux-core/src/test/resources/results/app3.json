@@ -17,6 +17,9 @@
   "paths": {
     "/tweets": {
       "get": {
+        "tags": [
+          "tweet-controller"
+        ],
         "operationId": "getAllTweets",
         "responses": {
           "409": {
@@ -52,6 +55,9 @@
         }
       },
       "post": {
+        "tags": [
+          "tweet-controller"
+        ],
         "operationId": "createTweets",
         "requestBody": {
           "content": {
@@ -98,6 +104,9 @@
     },
     "/tweets/{id}": {
       "get": {
+        "tags": [
+          "tweet-controller"
+        ],
         "operationId": "getTweetById",
         "parameters": [
           {
@@ -143,6 +152,9 @@
         }
       },
       "put": {
+        "tags": [
+          "tweet-controller"
+        ],
         "operationId": "updateTweet",
         "parameters": [
           {
@@ -197,6 +209,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "tweet-controller"
+        ],
         "operationId": "deleteTweet",
         "parameters": [
           {
@@ -244,6 +259,9 @@
     },
     "/stream/tweets": {
       "get": {
+        "tags": [
+          "tweet-controller"
+        ],
         "description": "Tweets are Sent to the client as Server Sent Events",
         "operationId": "streamAllTweets",
         "responses": {

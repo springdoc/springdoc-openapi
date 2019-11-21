@@ -1,10 +1,6 @@
-package org.springdoc.subclass;
+package org.springdoc.core;
 
 import io.swagger.v3.oas.models.Operation;
-import org.springdoc.core.AbstractParameterBuilder;
-import org.springdoc.core.AbstractRequestBuilder;
-import org.springdoc.core.OperationBuilder;
-import org.springdoc.core.RequestBodyBuilder;
 import org.springframework.web.method.HandlerMethod;
 
 import java.lang.annotation.Annotation;

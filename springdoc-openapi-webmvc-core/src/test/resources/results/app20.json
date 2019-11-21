@@ -10,8 +10,6 @@
       "description": "Generated server url"
     }
   ],
-  "paths": {
-  },
-  "components": {
-  }
+  "paths": {},
+  "components": {}
 }

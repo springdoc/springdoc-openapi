@@ -11,56 +11,11 @@
     }
   ],
   "paths": {
-    "/bar/baz": {
-      "post": {
-        "operationId": "process_1_1",
-        "requestBody": {
-          "content": {
-            "application/x.c+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Car"
-              }
-            },
-            "application/x.b+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Bar"
-              }
-            },
-            "application/x.a+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Foo"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Car"
-                }
-              },
-              "text/plain": {
-                "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Foo"
-                    },
-                    {
-                      "$ref": "#/components/schemas/Bar"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/pets": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "petsPost_1",
         "requestBody": {
           "content": {
@@ -82,14 +37,65 @@
           }
         }
       }
+    },
+    "/bar/baz": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "process_1_1",
+        "requestBody": {
+          "content": {
+            "application/x.b+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Bar"
+              }
+            },
+            "application/x.a+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Foo"
+              }
+            },
+            "application/x.c+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Car"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Foo"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Bar"
+                    }
+                  ]
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "Car": {
+      "Pet": {
         "type": "object",
         "properties": {
-          "car": {
+          "pet": {
             "type": "string"
           }
         }
@@ -110,10 +116,10 @@
           }
         }
       },
-      "Pet": {
+      "Car": {
         "type": "object",
         "properties": {
-          "pet": {
+          "car": {
             "type": "string"
           }
         }

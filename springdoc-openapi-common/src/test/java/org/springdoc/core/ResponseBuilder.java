@@ -1,10 +1,8 @@
-package org.springdoc.subclass;
+package org.springdoc.core;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.Schema;
-import org.springdoc.core.AbstractResponseBuilder;
-import org.springdoc.core.OperationBuilder;
 
 import java.lang.reflect.ParameterizedType;
 

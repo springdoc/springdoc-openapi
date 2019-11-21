@@ -13,6 +13,9 @@
   "paths": {
     "/post-entity": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "description": "Post entity",
         "operationId": "postEntity",
         "requestBody": {
