@@ -64,7 +64,7 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
-        <swagger-api.version>2.0.10</swagger-api.version>
+        <swagger-api.version>2.1.0</swagger-api.version>
         <swagger-ui.version>3.24.0</swagger-ui.version>
         <webjars-locator.version>0.37</webjars-locator.version>
     </properties>
