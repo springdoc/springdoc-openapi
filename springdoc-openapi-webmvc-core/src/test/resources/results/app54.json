@@ -13,6 +13,9 @@
   "paths": {
     "/parties": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "saveMealParty",
         "requestBody": {
           "content": {
@@ -39,6 +42,9 @@
     },
     "/parties/{id}": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "summary": "Gets meal party details [Meal party admin restricted]",
         "operationId": "getMealParty",
         "parameters": [

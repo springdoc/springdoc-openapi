@@ -13,6 +13,9 @@
   "paths": {
     "/{name}": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "getText",
         "parameters": [
           {

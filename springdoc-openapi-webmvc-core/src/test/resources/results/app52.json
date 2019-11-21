@@ -11,53 +11,11 @@
     }
   ],
   "paths": {
-    "/test2/{username}": {
-      "post": {
-        "operationId": "createTest2",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "image": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "test": {
-                    "$ref": "#/components/schemas/MyTestDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/test3": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "createTest3",
         "requestBody": {
           "content": {
@@ -96,6 +54,9 @@
     },
     "/test1/{username}": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "createTest1",
         "parameters": [
           {
@@ -119,6 +80,54 @@
                   "image": {
                     "type": "string",
                     "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test2/{username}": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "createTest2",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "test": {
+                    "$ref": "#/components/schemas/MyTestDto"
                   }
                 }
               }

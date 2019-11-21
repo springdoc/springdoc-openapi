@@ -1,10 +1,9 @@
-package org.springdoc.subclass;
+package org.springdoc.core;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.Schema;
-import org.springdoc.core.AbstractParameterBuilder;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 
 import java.lang.reflect.ParameterizedType;

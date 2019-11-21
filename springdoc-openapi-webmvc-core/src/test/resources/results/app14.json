@@ -13,6 +13,9 @@
   "paths": {
     "/persons": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "persons",
         "parameters": [
           {
@@ -32,6 +35,5 @@
       }
     }
   },
-  "components": {
-  }
+  "components": {}
 }

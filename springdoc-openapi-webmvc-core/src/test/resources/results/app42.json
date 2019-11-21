@@ -13,6 +13,9 @@
   "paths": {
     "/tweets": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "tweets",
         "parameters": [
           {

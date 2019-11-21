@@ -1,12 +1,8 @@
-package org.springdoc.subclass;
+package org.springdoc.core;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.api.OpenApiCustomiser;
-import org.springdoc.core.AbstractRequestBuilder;
-import org.springdoc.core.AbstractResponseBuilder;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.OperationBuilder;
 
 import java.util.List;
 import java.util.Map;

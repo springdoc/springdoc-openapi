@@ -17,6 +17,9 @@
   "paths": {
     "/tweets/does-not-work": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "postNotWorks",
         "requestBody": {
           "content": {

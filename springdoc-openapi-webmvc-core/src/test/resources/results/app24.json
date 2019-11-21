@@ -19,6 +19,9 @@
   "paths": {
     "/persons": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "summary": "Add a new person to the store",
         "operationId": "persons",
         "parameters": [
@@ -38,8 +41,7 @@
         },
         "security": [
           {
-            "Authorization": [
-            ]
+            "Authorization": []
           }
         ]
       }
