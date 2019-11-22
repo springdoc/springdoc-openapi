@@ -54,6 +54,7 @@
         <module>springdoc-openapi-webflux-core</module>
         <module>springdoc-openapi-ui</module>
         <module>springdoc-openapi-webflux-ui</module>
+        <module>springdoc-openapi-kotlin</module>
     </modules>
 
     <properties>
