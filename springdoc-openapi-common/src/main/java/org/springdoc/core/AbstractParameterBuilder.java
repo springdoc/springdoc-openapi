@@ -17,7 +17,6 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.method.HandlerMethod;
 
@@ -30,16 +29,6 @@ import java.util.*;
 
 @SuppressWarnings("rawtypes")
 public abstract class AbstractParameterBuilder {
-
-    private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
-
-    protected AbstractParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
-        this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
-    }
-
-    public LocalVariableTableParameterNameDiscoverer getLocalSpringDocParameterNameDiscoverer() {
-        return localSpringDocParameterNameDiscoverer;
-    }
 
     Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
         Parameter result = paramCalcul;
