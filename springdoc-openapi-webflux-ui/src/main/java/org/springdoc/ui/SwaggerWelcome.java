@@ -17,17 +17,21 @@ public class SwaggerWelcome {
 
     @Value(API_DOCS_URL)
     private String apiDocsUrl;
+
     @Value(SWAGGER_UI_PATH)
     private String uiPath;
 
+    @Value(WEB_JARS_PREFIX_URL)
+    private String webJarsPrefixUrl;
 
     @Bean
     RouterFunction<ServerResponse> routerFunction() {
-        String sbUrl = WEB_JARS_URL +
+        String url = webJarsPrefixUrl +
+                SWAGGER_UI_URL +
                 apiDocsUrl +
                 DEFAULT_VALIDATOR_URL;
-        return route(GET(uiPath),
-                req -> ServerResponse.temporaryRedirect(URI.create(sbUrl)).build());
-    }
 
+        return route(GET(uiPath),
+                req -> ServerResponse.temporaryRedirect(URI.create(url)).build());
+    }
 }
