@@ -112,6 +112,10 @@ public abstract class AbstractOpenApiResource {
 
             Operation operation = (existingOperation != null) ? existingOperation : new Operation();
 
+            if (ReflectionUtils.getAnnotation(method, Deprecated.class) != null) {
+                operation.setDeprecated(true);
+            }
+
             // compute tags
             operation = openAPIBuilder.buildTags(handlerMethod, operation, openAPI);
 
