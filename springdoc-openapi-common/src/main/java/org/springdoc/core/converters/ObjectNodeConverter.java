@@ -1,4 +1,4 @@
-package org.springdoc.core;
+package org.springdoc.core.converters;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -8,10 +8,12 @@ import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 
 @SuppressWarnings("rawtypes")
+@Component
 class ObjectNodeConverter implements ModelConverter {
 
     @Override
