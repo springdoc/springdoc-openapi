@@ -32,7 +32,7 @@ class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
     public SpringDocAnnotationsUtils(List<ModelConverter> modelConverters) {
         this.modelConverters = modelConverters;
-        modelConverters.forEach( ModelConverters.getInstance()::addConverter);
+        this.modelConverters.forEach( ModelConverters.getInstance()::addConverter);
     }
 
     public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
