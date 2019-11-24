@@ -30,7 +30,7 @@ class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
     private List<ModelConverter> modelConverters;
 
-    private SpringDocAnnotationsUtils(List<ModelConverter> modelConverters) {
+    public SpringDocAnnotationsUtils(List<ModelConverter> modelConverters) {
         this.modelConverters = modelConverters;
         modelConverters.forEach( ModelConverters.getInstance()::addConverter);
     }
