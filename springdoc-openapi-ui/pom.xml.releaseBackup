@@ -1,29 +1,36 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>springdoc-openapi-kotlin</artifactId>
+    <artifactId>springdoc-openapi-ui</artifactId>
     <name>${project.artifactId}</name>
     <parent>
         <groupId>org.springdoc</groupId>
         <artifactId>springdoc-openapi</artifactId>
-        <version>1.2.11</version>
+        <version>1.2.11-SNAPSHOT</version>
     </parent>
     <dependencies>
-        <!-- springdoc-common -->
+        <!-- springdoc-core -->
         <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-common</artifactId>
+            <artifactId>springdoc-openapi-webmvc-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- swagger-ui dependencies -->
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-webflux-core</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.webjars</groupId>
+            <artifactId>swagger-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

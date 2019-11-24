@@ -21,7 +21,10 @@ public class Pageable {
 
     private List<String> sort = new ArrayList<>() ;
 
-    public Pageable() {
+    public Pageable(@NotNull @Min(0) int page, @NotNull @Min(1) @Max(2000) int size, List<String> sort) {
+        this.page = page;
+        this.size = size;
+        this.sort = sort;
     }
 
     public int getPage() {
