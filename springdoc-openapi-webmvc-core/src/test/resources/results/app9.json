@@ -31,6 +31,27 @@
           }
         }
       }
+    },
+    "/myapi/getCode": {
+      "get": {
+        "tags": [
+          "my-api-controller"
+        ],
+        "description": "Annotations from class with hidden parameter code",
+        "operationId": "getCode",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {}
