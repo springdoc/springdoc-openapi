@@ -1,6 +1,7 @@
 package org.springdoc.ui;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -25,6 +26,7 @@ public class SwaggerWelcome {
     private String webJarsPrefixUrl;
 
     @Bean
+    @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
     RouterFunction<ServerResponse> routerFunction() {
         String url = webJarsPrefixUrl +
                 SWAGGER_UI_URL +

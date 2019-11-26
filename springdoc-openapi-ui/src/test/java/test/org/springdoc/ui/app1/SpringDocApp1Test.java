@@ -16,4 +16,5 @@ public class SpringDocApp1Test extends AbstractSpringDocTest {
         String contentAsString = mvcResult.getResponse().getContentAsString();
         assertTrue(contentAsString.contains("Swagger UI"));
     }
+
 }
