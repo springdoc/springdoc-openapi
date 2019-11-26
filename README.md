@@ -5,11 +5,10 @@
 
 # **Introduction**
 
-springdoc-openapi java library helps automating the generation of API documentation using spring boot projects.
-springdoc-openapi works by examining an application at runtime to infer API semantics based on spring configurations, class structure and various annotations.
+The springdoc-openapi Java library helps automating the generation of API documentation using Spring Boot projects.
+springdoc-openapi works by examining an application at runtime to infer API semantics based on Spring configurations, class structure and various annotations.
 
-Automatically generates documentation in JSON/YAML and HTML format APIs. 
-This documentation can be completed by comments using swagger-api annotations.
+The library automatically generates documentation in JSON/YAML and HTML formatted pages. The generateed documentation can be complemented using `swagger-api` annotations.
 
 This library supports:
 *  OpenAPI 3
@@ -23,14 +22,14 @@ This is a community-based project, not maintained by the Spring Framework Contri
 # **Getting Started**
 
 ## Library for springdoc-openapi integration with spring-boot and swagger-ui 
-*   Automatically deploys swagger-ui to a spring-boot 2 application
+*   Automatically deploys swagger-ui to a Spring Boot 2.x application
 *   Documentation will be available in HTML format, using the official [swagger-ui jars]: (https://github.com/swagger-api/swagger-ui.git).
 *   The Swagger UI page should then be available at http://server:port/context-path/swagger-ui.html and the OpenAPI description will be available at the following url for json format: http://server:port/context-path/v3/api-docs
-    * server: The server name or IP
-    * port: The server port
-    * context-path: The context path of the application
-*   Documentation can be available in yaml format as well, on the following path : /v3/api-docs.yaml
-*   Add the library to the list of your project dependencies (No additional configuration is needed)
+    * `server`: The server name or IP
+    * `port`: The server port
+    * `context-path`: The context path of the application
+*   Documentation can be available in yaml format as well, on the following path: /v3/api-docs.yaml
+*   Add the `springdoc-openapi-ui` library to the list of your project dependencies (No additional configuration is needed):
 
 ```xml
    <dependency>
@@ -55,12 +54,12 @@ springdoc.swagger-ui.path=/swagger-ui.html
 ## Source code of the Demo Applications
 * [https://github.com/springdoc/springdoc-openapi-demos.git](https://github.com/springdoc/springdoc-openapi-demos.git).
 
-## Integration of the libray in a spring-boot 2 project without the swagger-ui:
+## Integration of the library in a Spring Boot 2.x.x project without the swagger-ui:
 *   Documentation will be available at the following url for json format: http://server:port/context-path/v3/api-docs
-    * server: The server name or IP
-    * port: The server port
-    * context-path: The context path of the application
-*   Documentation will be available in yaml format as well, on the following path : /v3/api-docs.yaml
+    * `server`: The server name or IP
+    * `port`: The server port
+    * `context-path`: The context path of the application
+*   Documentation will be available in yaml format as well, on the following path : `/v3/api-docs.yaml`
 *   Add the library to the list of your project dependencies. (No additional configuration is needed)
 
 ```xml
@@ -70,14 +69,14 @@ springdoc.swagger-ui.path=/swagger-ui.html
       <version>last-release-version</version>
    </dependency>
 ```
-*   This step is optional: For custom path of the OpenAPI documentation in Json format, add a custom springdoc property, in your spring-boot configuration file:
+* This step is optional: For custom path of the OpenAPI documentation in Json format, add a custom springdoc property, in your spring-boot configuration file:
 
 ```properties
 # /api-docs endpoint custom path
 springdoc.api-docs.path=/api-docs
 ```
 
-*   This step is optional: If you want to disable springdoc-openapi endpoints, add a custom springdoc property, in your spring-boot configuration file:
+* This step is optional: If you want to disable `springdoc-openapi` endpoints, add a custom springdoc property, in your `spring-boot` configuration file:
 
 ```properties
 # /api-docs endpoint custom path
@@ -90,9 +89,9 @@ To generate documentation automatically, make sure all the methods declare the H
 ## Adding API Information and Security documentation
   The library uses spring-boot application auto-configured packages to scan for the following annotations in spring beans: OpenAPIDefinition and Info.
   These annotations declare, API Information: Title, version, licence, security, servers, tags, security and externalDocs.
-  For better performance of documentation generation, declare @OpenAPIDefinition and @SecurityScheme annotations within a spring managed bean.  
+  For better performance of documentation generation, declare `@OpenAPIDefinition` and `@SecurityScheme` annotations within a Spring managed bean.  
   
-## spring-weblfux support with Annotated Controllers
+## spring-webflux support with Annotated Controllers
 *   Documentation can be available in yaml format as well, on the following path : /v3/api-docs.yaml
 *   Add the library to the list of your project dependencies (No additional configuration is needed)
 
@@ -110,10 +109,10 @@ To generate documentation automatically, make sure all the methods declare the H
 springdoc.swagger-ui.path=/swagger-ui.html
 ```
 
-## spring-weblfux with Functional Endpoints, will be available in the future release
+## spring-webflux with Functional Endpoints, will be available in the future release
 ## Dependencies repository
 
-The springdoc-openapi libraries are hosted on maven central repository. 
+The `springdoc-openapi` libraries are hosted on maven central repository. 
 The artifacts can be viewed accessed at the following locations:
 
 Releases:
