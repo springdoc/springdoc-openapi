@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class KotlinCoroutinesRequestBuilder extends AbstractRequestBuilder {
 
-    private List<AbstractRequestBuilder> requestBuilders;
+    private final List<AbstractRequestBuilder> requestBuilders;
 
     public KotlinCoroutinesRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
                           OperationBuilder operationBuilder, List<AbstractRequestBuilder> requestBuilders) {

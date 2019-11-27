@@ -1,6 +1,6 @@
 package org.springdoc.ui;
 
-import org.springdoc.core.SwaggerUiConfig;
+import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -30,7 +30,7 @@ public class SwaggerWelcome {
     private String webJarsPrefixUrl;
 
     @Autowired
-    private SwaggerUiConfig swaggerUiConfig;
+    private SwaggerUiConfigProperties swaggerUiConfig;
 
     @Bean
     @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
@@ -48,7 +48,7 @@ public class SwaggerWelcome {
                 .stream()
                 .reduce(
                         UriComponentsBuilder
-                                .fromUriString(url.toString()),
+                                .fromUriString(url),
                         (b, e) -> b.queryParam(e.getKey(), e.getValue()),
                         (left, right) -> left);
 

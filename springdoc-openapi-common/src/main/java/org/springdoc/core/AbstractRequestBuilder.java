@@ -283,20 +283,20 @@ public abstract class AbstractRequestBuilder {
         Set<io.swagger.v3.oas.annotations.Parameters> apiParamerersDoc = AnnotatedElementUtils
                 .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameters.class);
         Map<String, io.swagger.v3.oas.annotations.Parameter> apiParamerersMap = apiParamerersDoc.stream()
-                .flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(x -> x.name(), x -> x));
+                .flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x));
 
         Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDocDeclaringClass = AnnotatedElementUtils
-                .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameters.class);
+                .findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameters.class);
         apiParamerersMap.putAll(apiParametersDocDeclaringClass.stream()
-                .flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(x -> x.name(), x -> x)));
+                .flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x)));
 
         Set<io.swagger.v3.oas.annotations.Parameter> apiParamererDoc = AnnotatedElementUtils
                 .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameter.class);
-        apiParamerersMap.putAll(apiParamererDoc.stream().collect(Collectors.toMap(x -> x.name(), x -> x)));
+        apiParamerersMap.putAll(apiParamererDoc.stream().collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x)));
 
         Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClass = AnnotatedElementUtils
-                .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameter.class);
-        apiParamerersMap.putAll(apiParameterDocDeclaringClass.stream().collect(Collectors.toMap(x -> x.name(), x -> x)));
+                .findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameter.class);
+        apiParamerersMap.putAll(apiParameterDocDeclaringClass.stream().collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x)));
 
         return apiParamerersMap;
     }

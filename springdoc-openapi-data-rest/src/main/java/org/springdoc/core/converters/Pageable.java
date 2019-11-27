@@ -3,7 +3,6 @@ package org.springdoc.core.converters;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,7 +18,7 @@ public class Pageable {
     @Max(2000)
     private int size;
 
-    private List<String> sort = new ArrayList<>() ;
+    private List<String> sort;
 
     public Pageable(@NotNull @Min(0) int page, @NotNull @Min(1) @Max(2000) int size, List<String> sort) {
         this.page = page;

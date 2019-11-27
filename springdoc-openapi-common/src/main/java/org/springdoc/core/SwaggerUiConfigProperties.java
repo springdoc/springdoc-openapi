@@ -14,12 +14,9 @@ import java.util.TreeMap;
  */
 @Configuration
 @ConfigurationProperties(prefix = "springdoc.swagger-ui")
-public class SwaggerUiConfig {
+public class SwaggerUiConfigProperties {
     // URL to fetch external configuration document from.
     private String configUrl;
-    // The url pointing to API definition (normally
-    // swagger.json/swagger.yaml/openapi.json/openapi.yaml).
-    private String url;
     // If set, enables filtering. The top bar will show an edit box that
     // could be used to filter the tagged operations that are shown.
     private String filter;
@@ -45,12 +42,9 @@ public class SwaggerUiConfig {
     private Boolean showExtensions;
     // Controls the display of extensions
     private Boolean showCommonExtensions;
-    // Set a different validator URL, for example for locally deployed validators
-    private String validatorUrl;
 
     public Map<String, String> getConfigParameters() {
         final Map<String, String> params = new TreeMap<>();
-        put("url", url, params);
         put("configUrl", configUrl, params);
         put("filter", filter, params);
         put("deepLinking", this.deepLinking, params);
@@ -63,7 +57,6 @@ public class SwaggerUiConfig {
         put("maxDisplayedTags", maxDisplayedTags, params);
         put("showExtensions", showExtensions, params);
         put("showCommonExtensions", showCommonExtensions, params);
-        put("validatorUrl", validatorUrl, params);
         return params;
     }
 
@@ -91,14 +84,6 @@ public class SwaggerUiConfig {
 
     public void setConfigUrl(String configUrl) {
         this.configUrl = configUrl;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public String getFilter() {
@@ -188,12 +173,4 @@ public class SwaggerUiConfig {
     public void setShowCommonExtensions(Boolean showCommonExtensions) {
         this.showCommonExtensions = showCommonExtensions;
     }
-
-    public String getValidatorUrl() {
-        return validatorUrl;
-    }
-
-    public void setValidatorUrl(String validatorUrl) {
-        this.validatorUrl = validatorUrl;
-    }
-}
+ }
