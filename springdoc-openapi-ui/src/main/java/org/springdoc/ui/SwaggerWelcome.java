@@ -1,7 +1,7 @@
 package org.springdoc.ui;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.springdoc.core.SwaggerUiConfig;
+import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,7 +27,7 @@ import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT
     private String swaggerPath;
 
     @Autowired
-    private SwaggerUiConfig swaggerUiConfig;
+    private SwaggerUiConfigProperties swaggerUiConfig;
 
     @Operation(hidden = true)
     @GetMapping(SWAGGER_UI_PATH)
