@@ -3,6 +3,7 @@ package test.org.springdoc.ui.app1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springdoc.core.SwaggerUiConfig;
 import org.springdoc.ui.SwaggerWelcome;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -14,7 +15,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @RunWith(SpringRunner.class)
 @WebFluxTest
 @ActiveProfiles("test")
-@ContextConfiguration(classes = {SwaggerWelcome.class})
+@ContextConfiguration(classes = {SwaggerWelcome.class,SwaggerUiConfig.class})
 public class SpringDocApp1Test {
 
     @Autowired

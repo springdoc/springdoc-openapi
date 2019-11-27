@@ -1,13 +1,17 @@
 package org.springdoc.ui;
 
+import org.springdoc.core.SwaggerUiConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Map;
 
 import static org.springdoc.core.Constants.*;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
@@ -25,6 +29,9 @@ public class SwaggerWelcome {
     @Value(WEB_JARS_PREFIX_URL)
     private String webJarsPrefixUrl;
 
+    @Autowired
+    private SwaggerUiConfig swaggerUiConfig;
+
     @Bean
     @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
     RouterFunction<ServerResponse> routerFunction() {
@@ -33,7 +40,20 @@ public class SwaggerWelcome {
                 apiDocsUrl +
                 DEFAULT_VALIDATOR_URL;
 
+        final Map<String, String> params = swaggerUiConfig.getConfigParameters();
+
+
+        final UriComponentsBuilder builder = params
+                .entrySet()
+                .stream()
+                .reduce(
+                        UriComponentsBuilder
+                                .fromUriString(url.toString()),
+                        (b, e) -> b.queryParam(e.getKey(), e.getValue()),
+                        (left, right) -> left);
+
+
         return route(GET(uiPath),
-                req -> ServerResponse.temporaryRedirect(URI.create(url)).build());
+                req -> ServerResponse.temporaryRedirect(URI.create(builder.build().encode().toString())).build());
     }
 }
