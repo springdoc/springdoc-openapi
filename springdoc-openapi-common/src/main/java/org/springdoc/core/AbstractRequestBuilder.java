@@ -7,14 +7,18 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.RequestInfo.ParameterType;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.HandlerMethod;
 
 import javax.validation.constraints.*;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springdoc.core.Constants.*;
 
@@ -26,7 +30,7 @@ public abstract class AbstractRequestBuilder {
     // using string litterals to support both validation-api v1 and v2
     private static final String[] ANNOTATIONS_FOR_REQUIRED = {NotNull.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty"};
     private static final String POSITIVE_OR_ZERO = "javax.validation.constraints.PositiveOrZero";
-    private static final String NEGATIVE_OR_ZERO= "javax.validation.constraints.NegativeOrZero";
+    private static final String NEGATIVE_OR_ZERO = "javax.validation.constraints.NegativeOrZero";
 
     protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
                                      OperationBuilder operationBuilder) {
@@ -51,13 +55,17 @@ public abstract class AbstractRequestBuilder {
         RequestBodyInfo requestBodyInfo = new RequestBodyInfo(methodAttributes);
         List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
                 : new ArrayList<>();
+        Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
+
         for (int i = 0; i < pNames.length; i++) {
             // check if query param
             Parameter parameter = null;
             final String pName = pNames[i];
             io.swagger.v3.oas.annotations.Parameter parameterDoc = parameterBuilder.getParameterAnnotation(
                     handlerMethod, parameters[i], i, io.swagger.v3.oas.annotations.Parameter.class);
-
+            if (parameterDoc == null) {
+                parameterDoc = parametersDocMap.get(pName);
+            }
             // use documentation as reference
             if (parameterDoc != null) {
                 if (parameterDoc.hidden()) {
@@ -69,7 +77,6 @@ public abstract class AbstractRequestBuilder {
 
             if (!isParamToIgnore(parameters[i])) {
                 ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameter, i);
-
                 parameter = buildParams(parameterInfo, components, handlerMethod, requestMethod,
                         methodAttributes.getJsonViewAnnotation());
                 // Merge with the operation parameters
@@ -270,4 +277,27 @@ public abstract class AbstractRequestBuilder {
         return requestBodyBuilder;
     }
 
+    private Map<String, io.swagger.v3.oas.annotations.Parameter> getApiParameters(Method method) {
+        Class<?> declaringClass = method.getDeclaringClass();
+
+        Set<io.swagger.v3.oas.annotations.Parameters> apiParamerersDoc = AnnotatedElementUtils
+                .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameters.class);
+        Map<String, io.swagger.v3.oas.annotations.Parameter> apiParamerersMap = apiParamerersDoc.stream()
+                .flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(x -> x.name(), x -> x));
+
+        Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDocDeclaringClass = AnnotatedElementUtils
+                .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameters.class);
+        apiParamerersMap.putAll(apiParametersDocDeclaringClass.stream()
+                .flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(x -> x.name(), x -> x)));
+
+        Set<io.swagger.v3.oas.annotations.Parameter> apiParamererDoc = AnnotatedElementUtils
+                .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameter.class);
+        apiParamerersMap.putAll(apiParamererDoc.stream().collect(Collectors.toMap(x -> x.name(), x -> x)));
+
+        Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClass = AnnotatedElementUtils
+                .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameter.class);
+        apiParamerersMap.putAll(apiParameterDocDeclaringClass.stream().collect(Collectors.toMap(x -> x.name(), x -> x)));
+
+        return apiParamerersMap;
+    }
 }
