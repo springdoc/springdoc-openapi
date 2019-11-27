@@ -26,8 +26,6 @@ import java.util.Optional;
 @Component
 class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
-    private static final String COMPONENTS_REF = "#/components/schemas/";
-
     private final List<ModelConverter> modelConverters;
 
     public SpringDocAnnotationsUtils(List<ModelConverter> modelConverters) {
