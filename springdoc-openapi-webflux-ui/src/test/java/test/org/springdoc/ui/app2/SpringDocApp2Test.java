@@ -27,10 +27,7 @@ public class SpringDocApp2Test  {
     @Test
     public void shouldDisplaySwaggerUiPage() throws Exception {
         webTestClient.get().uri("/swagger-ui.html").exchange()
-                .expectStatus().isTemporaryRedirect();
-        webTestClient.get().uri("/persons?name=toto").exchange()
                 .expectStatus().isNotFound();
-
     }
 
 
