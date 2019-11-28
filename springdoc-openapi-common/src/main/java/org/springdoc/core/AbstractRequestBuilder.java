@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.RequestInfo.ParameterType;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -50,8 +51,12 @@ public abstract class AbstractRequestBuilder {
 
         operation.setOperationId(operationId);
         // requests
+        LocalVariableTableParameterNameDiscoverer d = parameterBuilder.getLocalSpringDocParameterNameDiscoverer();
+        String[] pNames = d.getParameterNames(handlerMethod.getMethod());
         java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
-        String[] pNames = Arrays.stream(parameters).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
+        if (pNames == null) {
+            pNames = Arrays.stream(parameters).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
+        }
         RequestBodyInfo requestBodyInfo = new RequestBodyInfo(methodAttributes);
         List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
                 : new ArrayList<>();
