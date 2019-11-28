@@ -17,6 +17,7 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.method.HandlerMethod;
 
@@ -29,6 +30,12 @@ import java.util.*;
 
 @SuppressWarnings("rawtypes")
 public abstract class AbstractParameterBuilder {
+
+    protected LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+
+    public AbstractParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+        this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
+    }
 
     Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
         Parameter result = paramCalcul;
@@ -166,6 +173,10 @@ public abstract class AbstractParameterBuilder {
         }
 
         return schemaN;
+    }
+
+    public LocalVariableTableParameterNameDiscoverer getLocalSpringDocParameterNameDiscoverer() {
+        return localSpringDocParameterNameDiscoverer;
     }
 
     protected abstract Schema calculateSchemaFromParameterizedType(Components components, Type returnType, JsonView jsonView);
