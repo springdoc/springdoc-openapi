@@ -21,6 +21,11 @@ public class SwaggerUiConfigProperties {
     // could be used to filter the tagged operations that are shown.
     private String filter;
 
+    // Apply a sort to the operation list of each API
+    private String operationsSorter;
+    // Apply a sort to the tag list of each API
+    private String tagsSorter;
+
     // Enables or disables deep linking for tags and operations.
     private Boolean deepLinking;
     //  Controls the display of operationId in operations list.
@@ -57,6 +62,8 @@ public class SwaggerUiConfigProperties {
         put("maxDisplayedTags", maxDisplayedTags, params);
         put("showExtensions", showExtensions, params);
         put("showCommonExtensions", showCommonExtensions, params);
+        put("operationsSorter", operationsSorter, params);
+        put("tagsSorter", tagsSorter, params);
         return params;
     }
 
@@ -173,4 +180,20 @@ public class SwaggerUiConfigProperties {
     public void setShowCommonExtensions(Boolean showCommonExtensions) {
         this.showCommonExtensions = showCommonExtensions;
     }
- }
+
+    public String getOperationsSorter() {
+        return operationsSorter;
+    }
+
+    public void setOperationsSorter(String operationsSorter) {
+        this.operationsSorter = operationsSorter;
+    }
+
+    public String getTagsSorter() {
+        return tagsSorter;
+    }
+
+    public void setTagsSorter(String tagsSorter) {
+        this.tagsSorter = tagsSorter;
+    }
+}
