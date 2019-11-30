@@ -31,10 +31,13 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public abstract class AbstractParameterBuilder {
 
-    protected final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+    private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+    private final IgnoredParameterAnnotations ignoredParameterAnnotations;
 
-    public AbstractParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+
+    public AbstractParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, IgnoredParameterAnnotations ignoredParameterAnnotations) {
         this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
+        this.ignoredParameterAnnotations = ignoredParameterAnnotations;
     }
 
     Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
@@ -283,5 +286,9 @@ public abstract class AbstractParameterBuilder {
 
     private JavaType constructType(Type type) {
         return TypeFactory.defaultInstance().constructType(type);
+    }
+
+    public boolean isAnnotationToIgnore(java.lang.reflect.Parameter parameter){
+        return  ignoredParameterAnnotations.isAnnotationToIgnore(parameter);
     }
 }

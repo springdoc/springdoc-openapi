@@ -18,7 +18,7 @@ public class SpringDocTestApp {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info().title("Kotlin API").version("v1")
+                .info(new Info().title("Security API").version("v1")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")));
     }
 }
