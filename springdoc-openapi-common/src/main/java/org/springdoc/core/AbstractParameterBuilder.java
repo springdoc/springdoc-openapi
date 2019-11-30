@@ -31,7 +31,7 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public abstract class AbstractParameterBuilder {
 
-    protected LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+    protected final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 
     public AbstractParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
         this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
@@ -128,6 +128,17 @@ public abstract class AbstractParameterBuilder {
         } else {
             Schema schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.schema(), components, jsonView)
                     .orElse(null);
+            if (schema == null) {
+                if (parameterDoc.content().length > 0) {
+                    if (AnnotationsUtils.hasSchemaAnnotation(parameterDoc.content()[0].schema())) {
+                        schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.content()[0].schema(), components, jsonView).orElse(null);
+                    } else if (AnnotationsUtils.hasArrayAnnotation(parameterDoc.content()[0].array())) {
+                        schema = AnnotationsUtils.getArraySchema(parameterDoc.content()[0].array(), components, jsonView).orElse(null);
+                    }
+                } else {
+                    schema = AnnotationsUtils.getArraySchema(parameterDoc.array(), components, jsonView).orElse(null);
+                }
+            }
             parameter.setSchema(schema);
         }
 
@@ -163,7 +174,7 @@ public abstract class AbstractParameterBuilder {
             if (isFile(parameterizedType)) {
                 return extractFileSchema(paramName, requestBodyInfo);
             }
-            schemaN = calculateSchemaFromParameterizedType( components,  returnType,  jsonView);
+            schemaN = calculateSchemaFromParameterizedType(components, returnType, jsonView);
         } else {
             schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, jsonView);
         }

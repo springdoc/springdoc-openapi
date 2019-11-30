@@ -1,7 +1,6 @@
 package org.springdoc.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.MapperFeature;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.core.util.Yaml;
@@ -50,7 +49,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
             throws JsonProcessingException {
         calculateServerUrl(serverHttpRequest, apiDocsUrl);
         OpenAPI openAPI = this.getOpenApi();
-        return Mono.just(Json.mapper().configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true).writeValueAsString(openAPI));
+        return Mono.just(Json.mapper().writeValueAsString(openAPI));
     }
 
     @Operation(hidden = true)
@@ -59,7 +58,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
                                     @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl) throws JsonProcessingException {
         calculateServerUrl(serverHttpRequest, apiDocsUrl);
         OpenAPI openAPI = this.getOpenApi();
-        return Mono.just(Yaml.mapper().configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true).writeValueAsString(openAPI));
+        return Mono.just(Yaml.mapper().writeValueAsString(openAPI));
     }
 
     @Override
