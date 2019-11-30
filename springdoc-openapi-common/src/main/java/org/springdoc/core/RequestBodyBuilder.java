@@ -14,8 +14,6 @@ import org.springframework.web.method.HandlerMethod;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
-
 @SuppressWarnings("rawtypes")
 @Component
 public class RequestBodyBuilder {
@@ -44,9 +42,8 @@ public class RequestBodyBuilder {
         if (StringUtils.isNotBlank(requestBody.description())) {
             requestBodyObject.setDescription(requestBody.description());
             isEmpty = false;
-        } else {
-            requestBodyObject.setDescription(DEFAULT_DESCRIPTION);
         }
+
         if (requestBody.required()) {
             requestBodyObject.setRequired(requestBody.required());
             isEmpty = false;
