@@ -15,8 +15,8 @@ import java.lang.reflect.WildcardType;
 @Component
 public class ParameterBuilder extends AbstractParameterBuilder {
 
-    public ParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
-        super(localSpringDocParameterNameDiscoverer);
+    public ParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, IgnoredParameterAnnotations ignoredParameterAnnotations) {
+        super(localSpringDocParameterNameDiscoverer, ignoredParameterAnnotations);
     }
 
     @Override

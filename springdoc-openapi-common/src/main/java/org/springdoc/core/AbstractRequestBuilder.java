@@ -110,7 +110,7 @@ public abstract class AbstractRequestBuilder {
         if (parameter.isAnnotationPresent(PathVariable.class)) {
             return false;
         }
-        return isParamTypeToIgnore(parameter.getType());
+        return parameterBuilder.isAnnotationToIgnore(parameter) || isParamTypeToIgnore(parameter.getType());
     }
 
     private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
