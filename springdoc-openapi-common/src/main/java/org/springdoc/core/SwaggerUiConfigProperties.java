@@ -9,47 +9,88 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Please refer to https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md
+ * Please refer to the swagger
+ * <a href="https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md">configuration.md</a>
  * to get the idea what each parameter does.
  */
 @Configuration
 @ConfigurationProperties(prefix = "springdoc.swagger-ui")
 public class SwaggerUiConfigProperties {
-    // URL to fetch external configuration document from.
+    /**
+     * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
+     */
+    private String path = "/swagger-ui.html";
+
+    /**
+     * The name of a component available via the plugin system to use as the top-level layout for Swagger UI.
+     */
+    private String layout;
+    /**
+     * URL to fetch external configuration document from.
+     */
     private String configUrl;
-    // If set, enables filtering. The top bar will show an edit box that
-    // could be used to filter the tagged operations that are shown.
+    /**
+     * If set, enables filtering. The top bar will show an edit box that
+     * could be used to filter the tagged operations that are shown.
+     */
     private String filter;
 
-    // Apply a sort to the operation list of each API
+    /**
+     * Apply a sort to the operation list of each API
+     */
     private String operationsSorter;
-    // Apply a sort to the tag list of each API
+    /**
+     * Apply a sort to the tag list of each API
+     */
     private String tagsSorter;
 
-    // Enables or disables deep linking for tags and operations.
+    /**
+     * Enables or disables deep linking for tags and operations.
+     *
+     * @see <a href="https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/deep-linking.md">deep-linking.md</a>
+     */
     private Boolean deepLinking;
-    //  Controls the display of operationId in operations list.
+    /**
+     * Controls the display of operationId in operations list.
+     */
     private Boolean displayOperationId;
-    // The default expansion depth for models (set to -1 completely hide the models).
+    /**
+     * The default expansion depth for models (set to -1 completely hide the models).
+     */
     private Integer defaultModelsExpandDepth;
-    // The default expansion depth for the model on the model-example section.
+    /**
+     * The default expansion depth for the model on the model-example section.
+     */
     private Integer defaultModelExpandDepth;
 
-    // Controls how the model is shown when the API is first rendered.
+    /**
+     * Controls how the model is shown when the API is first rendered.
+     */
     private String defaultModelRendering;
-    // Controls the display of the request duration (in milliseconds) for Try-It-Out requests.
+    /**
+     * Controls the display of the request duration (in milliseconds) for Try-It-Out requests.
+     */
     private Boolean displayRequestDuration;
-    // Controls the default expansion setting for the operations and tags.
+    /**
+     * Controls the default expansion setting for the operations and tags.
+     */
     private String docExpansion;
-    //  If set, limits the number of tagged operations displayed to at most this many.
+    /**
+     * If set, limits the number of tagged operations displayed to at most this many.
+     */
     private Integer maxDisplayedTags;
-    // Controls the display of vendor extension (x-) fields and values.
+    /**
+     * Controls the display of vendor extension (x-) fields and values.
+     */
     private Boolean showExtensions;
-    // Controls the display of extensions
+    /**
+     * Controls the display of extensions
+     */
     private Boolean showCommonExtensions;
 
     public Map<String, String> getConfigParameters() {
         final Map<String, String> params = new TreeMap<>();
+        put("layout", layout, params);
         put("configUrl", configUrl, params);
         put("filter", filter, params);
         put("deepLinking", this.deepLinking, params);
@@ -85,6 +126,22 @@ public class SwaggerUiConfigProperties {
         }
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getLayout() {
+        return layout;
+    }
+
+    public void setLayout(String layout) {
+        this.layout = layout;
+    }
+
     public String getConfigUrl() {
         return configUrl;
     }
@@ -99,6 +156,22 @@ public class SwaggerUiConfigProperties {
 
     public void setFilter(String filter) {
         this.filter = filter;
+    }
+
+    public String getOperationsSorter() {
+        return operationsSorter;
+    }
+
+    public void setOperationsSorter(String operationsSorter) {
+        this.operationsSorter = operationsSorter;
+    }
+
+    public String getTagsSorter() {
+        return tagsSorter;
+    }
+
+    public void setTagsSorter(String tagsSorter) {
+        this.tagsSorter = tagsSorter;
     }
 
     public Boolean getDeepLinking() {
@@ -179,21 +252,5 @@ public class SwaggerUiConfigProperties {
 
     public void setShowCommonExtensions(Boolean showCommonExtensions) {
         this.showCommonExtensions = showCommonExtensions;
-    }
-
-    public String getOperationsSorter() {
-        return operationsSorter;
-    }
-
-    public void setOperationsSorter(String operationsSorter) {
-        this.operationsSorter = operationsSorter;
-    }
-
-    public String getTagsSorter() {
-        return tagsSorter;
-    }
-
-    public void setTagsSorter(String tagsSorter) {
-        this.tagsSorter = tagsSorter;
     }
 }
