@@ -13,6 +13,7 @@ public class SpringDocConfigProperties {
     private Webjars webjars = new Webjars();
     private ApiDocs apiDocs = new ApiDocs();
     private List<String> packagesToScan;
+    private List<String> pathsToMatch;
 
     public static class Webjars {
         private String prefix = "/webjars";
@@ -83,5 +84,13 @@ public class SpringDocConfigProperties {
 
     public void setApiDocs(ApiDocs apiDocs) {
         this.apiDocs = apiDocs;
+    }
+
+    public List<String> getPathsToMatch() {
+        return pathsToMatch;
+    }
+
+    public void setPathsToMatch(List<String> pathsToMatch) {
+        this.pathsToMatch = pathsToMatch;
     }
 }
