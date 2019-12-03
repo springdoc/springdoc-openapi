@@ -7,5 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @Deprecated
     @GetMapping("/example")
-    public void test() {}
+    public void test() {
+    }
 }

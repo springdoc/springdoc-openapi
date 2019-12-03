@@ -15,45 +15,6 @@ public class SpringDocConfigProperties {
     private List<String> packagesToScan;
     private List<String> pathsToMatch;
 
-    public static class Webjars {
-        private String prefix = "/webjars";
-
-        public String getPrefix() {
-            return prefix;
-        }
-
-        public void setPrefix(String prefix) {
-            this.prefix = prefix;
-        }
-    }
-
-    public static class ApiDocs {
-        /**
-         * Path to the generated OpenAPI documentation. For a yaml file, append ".yaml" to the path.
-         */
-        private String path = Constants.DEFAULT_API_DOCS_URL;
-        /**
-         * Weather to generate and serve a OpenAPI document.
-         */
-        private Boolean enabled = true;
-
-        public String getPath() {
-            return path;
-        }
-
-        public void setPath(String path) {
-            this.path = path;
-        }
-
-        public Boolean getEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(Boolean enabled) {
-            this.enabled = enabled;
-        }
-    }
-
     public List<String> getPackagesToScan() {
         return packagesToScan;
     }
@@ -92,5 +53,44 @@ public class SpringDocConfigProperties {
 
     public void setPathsToMatch(List<String> pathsToMatch) {
         this.pathsToMatch = pathsToMatch;
+    }
+
+    public static class Webjars {
+        private String prefix = "/webjars";
+
+        public String getPrefix() {
+            return prefix;
+        }
+
+        public void setPrefix(String prefix) {
+            this.prefix = prefix;
+        }
+    }
+
+    public static class ApiDocs {
+        /**
+         * Path to the generated OpenAPI documentation. For a yaml file, append ".yaml" to the path.
+         */
+        private String path = Constants.DEFAULT_API_DOCS_URL;
+        /**
+         * Weather to generate and serve a OpenAPI document.
+         */
+        private Boolean enabled = true;
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        public Boolean getEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(Boolean enabled) {
+            this.enabled = enabled;
+        }
     }
 }

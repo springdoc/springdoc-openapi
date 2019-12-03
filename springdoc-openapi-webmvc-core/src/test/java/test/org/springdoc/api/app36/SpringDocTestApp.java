@@ -2,7 +2,6 @@ package test.org.springdoc.api.app36;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootApplication
 public class SpringDocTestApp {

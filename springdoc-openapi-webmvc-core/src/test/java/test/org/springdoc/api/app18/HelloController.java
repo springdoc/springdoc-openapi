@@ -37,6 +37,7 @@ public class HelloController {
     public String persons5(@NegativeOrZero int age) {
         return "OK";
     }
+
     @GetMapping(value = "/persons6")
     public String persons6(@NotEmpty @Parameter(description = "persons name") String name) {
         return "OK";

@@ -9,10 +9,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD })
+@Target({ElementType.METHOD})
 @Parameters({
         @Parameter(name = "page", description = "desc page from Annotated interface"),
-        @Parameter(name = "size",  description = "desc page from Annotated interface")
+        @Parameter(name = "size", description = "desc page from Annotated interface")
 })
 public @interface QueryPaging {
 }

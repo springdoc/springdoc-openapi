@@ -5,9 +5,9 @@ import java.lang.reflect.Parameter;
 class ParameterInfo {
 
     private final java.lang.reflect.Parameter parameter;
+    private final int index;
     private String pName;
     private io.swagger.v3.oas.models.parameters.Parameter parameterModel;
-    private final int index;
 
     public ParameterInfo(String pName, Parameter parameter,
                          io.swagger.v3.oas.models.parameters.Parameter parameterModel, int index) {

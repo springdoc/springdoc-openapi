@@ -288,7 +288,7 @@ public abstract class AbstractParameterBuilder {
         return TypeFactory.defaultInstance().constructType(type);
     }
 
-    public boolean isAnnotationToIgnore(java.lang.reflect.Parameter parameter){
-        return  ignoredParameterAnnotations.isAnnotationToIgnore(parameter);
+    public boolean isAnnotationToIgnore(java.lang.reflect.Parameter parameter) {
+        return ignoredParameterAnnotations.isAnnotationToIgnore(parameter);
     }
 }

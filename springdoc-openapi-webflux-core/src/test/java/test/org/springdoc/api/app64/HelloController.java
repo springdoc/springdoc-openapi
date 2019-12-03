@@ -13,7 +13,7 @@ public class HelloController {
 
     @GetMapping(value = "/api/balance/abcd")
     @Operation(summary = "This is the test endpoint")
-    public String test2( String from) {
+    public String test2(String from) {
         return "This is a fake test";
     }
 

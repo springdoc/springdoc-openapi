@@ -137,7 +137,6 @@ public class RequestBodyBuilder {
     }
 
 
-
     private void setMediaTypeToContent(Schema schema, Content content, String value) {
         io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
         mediaTypeObject.setSchema(schema);

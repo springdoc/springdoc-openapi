@@ -61,6 +61,17 @@ public class OpenAPIBuilder {
         this.securityParser = securityParser;
     }
 
+    private static String splitCamelCase(String str) {
+        return str.replaceAll(
+                String.format(
+                        "%s|%s|%s",
+                        "(?<=[A-Z])(?=[A-Z][a-z])",
+                        "(?<=[^A-Z])(?=[A-Z])",
+                        "(?<=[A-Za-z])(?=[^A-Za-z])"),
+                "-")
+                .toLowerCase(Locale.ROOT);
+    }
+
     public OpenAPI getOpenAPI() {
         return openAPI;
     }
@@ -143,17 +154,6 @@ public class OpenAPIBuilder {
         }
 
         return operation;
-    }
-
-    private static String splitCamelCase(String str) {
-        return str.replaceAll(
-                        String.format(
-                                "%s|%s|%s",
-                                "(?<=[A-Z])(?=[A-Z][a-z])",
-                                "(?<=[^A-Z])(?=[A-Z])",
-                                "(?<=[A-Za-z])(?=[^A-Za-z])"),
-                        "-")
-                .toLowerCase(Locale.ROOT);
     }
 
     public void setServerBaseUrl(String serverBaseUrl) {

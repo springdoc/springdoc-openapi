@@ -1,5 +1,6 @@
 <!--suppress ALL -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springdoc</groupId>
     <artifactId>springdoc-openapi</artifactId>
@@ -35,8 +36,8 @@
         <url>git@github.com:springdoc/springdoc-openapi.git</url>
         <connection>scm:git:git@github.com:springdoc/springdoc-openapi.git</connection>
         <developerConnection>scm:git:git@github.com:springdoc/springdoc-openapi.git</developerConnection>
-      <tag>v1.2.11-SNAPSHOT</tag>
-  </scm>
+        <tag>v1.2.11-SNAPSHOT</tag>
+    </scm>
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -56,7 +57,7 @@
         <module>springdoc-openapi-webflux-ui</module>
         <module>springdoc-openapi-kotlin</module>
         <module>springdoc-openapi-data-rest</module>
-		<module>springdoc-openapi-security</module>
+        <module>springdoc-openapi-security</module>
     </modules>
 
     <properties>

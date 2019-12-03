@@ -13,13 +13,12 @@ public class HelloController {
 
     @PostMapping("/examplePost")
     @Operation(summary = "schema example")
-    public Object example(@Parameter(schema = @Schema(hidden = true)) JsonNode json)
-    {
+    public Object example(@Parameter(schema = @Schema(hidden = true)) JsonNode json) {
         return null;
     }
 
     @GetMapping("/example")
-    public void test(@Parameter(schema = @Schema(hidden = true))JsonNode json) {
+    public void test(@Parameter(schema = @Schema(hidden = true)) JsonNode json) {
 
     }
 }
