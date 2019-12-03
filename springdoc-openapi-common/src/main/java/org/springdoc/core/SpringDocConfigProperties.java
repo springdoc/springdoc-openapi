@@ -3,7 +3,6 @@ package org.springdoc.core;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -31,7 +30,7 @@ public class SpringDocConfigProperties {
         /**
          * Path to the generated OpenAPI documentation. For a yaml file, append ".yaml" to the path.
          */
-        private String path = "/v3/api-docs";
+        private String path = Constants.DEFAULT_API_DOCS_URL;
         /**
          * Weather to generate and serve a OpenAPI document.
          */

@@ -265,6 +265,6 @@ public abstract class AbstractOpenApiResource {
     }
 
     protected boolean isPackageToScan(String aPackage) {
-        return CollectionUtils.isEmpty(packagesToScan) || packagesToScan.stream().filter(pack -> aPackage.equals(pack) || aPackage.startsWith(pack + ".")).findAny().isPresent();
+        return CollectionUtils.isEmpty(packagesToScan) || packagesToScan.stream().anyMatch(pack -> aPackage.equals(pack) || aPackage.startsWith(pack + "."));
     }
 }
