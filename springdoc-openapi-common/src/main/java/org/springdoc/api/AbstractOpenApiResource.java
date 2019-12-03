@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.springdoc.core.Constants.SPRINGDOC_PACKAGES_TO_SCAN;
+import static org.springdoc.core.Constants.SPRINGDOC_PATHS_TO_MATCH;
 
 public abstract class AbstractOpenApiResource {
 
@@ -36,6 +38,9 @@ public abstract class AbstractOpenApiResource {
     private boolean computeDone;
     @Value(SPRINGDOC_PACKAGES_TO_SCAN)
     private List<String> packagesToScan;
+    @Value(SPRINGDOC_PATHS_TO_MATCH)
+    private List<String> pathsToMatch;
+    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                                       AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -266,5 +271,8 @@ public abstract class AbstractOpenApiResource {
 
     protected boolean isPackageToScan(String aPackage) {
         return CollectionUtils.isEmpty(packagesToScan) || packagesToScan.stream().anyMatch(pack -> aPackage.equals(pack) || aPackage.startsWith(pack + "."));
+    }
+    protected boolean isPathToMatch(String operationPath) {
+        return CollectionUtils.isEmpty(pathsToMatch) || pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
     }
 }
