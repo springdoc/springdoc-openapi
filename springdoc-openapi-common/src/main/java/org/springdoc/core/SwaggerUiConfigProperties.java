@@ -21,7 +21,7 @@ public class SwaggerUiConfigProperties {
     /**
      * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
      */
-    private String path = "/swagger-ui.html";
+    private String path = Constants.DEFAULT_SWAGGER_UI_PATH;
 
     /**
      * The name of a component available via the plugin system to use as the top-level layout for Swagger UI.
