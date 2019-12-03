@@ -25,13 +25,13 @@ import static org.springdoc.core.Constants.*;
 
 public abstract class AbstractRequestBuilder {
 
-    private final AbstractParameterBuilder parameterBuilder;
-    private final RequestBodyBuilder requestBodyBuilder;
-    private final OperationBuilder operationBuilder;
     // using string litterals to support both validation-api v1 and v2
     private static final String[] ANNOTATIONS_FOR_REQUIRED = {NotNull.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty"};
     private static final String POSITIVE_OR_ZERO = "javax.validation.constraints.PositiveOrZero";
     private static final String NEGATIVE_OR_ZERO = "javax.validation.constraints.NegativeOrZero";
+    private final AbstractParameterBuilder parameterBuilder;
+    private final RequestBodyBuilder requestBodyBuilder;
+    private final OperationBuilder operationBuilder;
 
     protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
                                      OperationBuilder operationBuilder) {

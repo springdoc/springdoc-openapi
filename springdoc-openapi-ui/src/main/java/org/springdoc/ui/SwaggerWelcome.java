@@ -18,7 +18,7 @@ import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT
 
 @Controller
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
- class SwaggerWelcome {
+class SwaggerWelcome {
 
     @Value(API_DOCS_URL)
     private String apiDocsUrl;

@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 public class HelloController {
 
-    @GetMapping(value = "/search", produces = { "application/xml", "application/json" })
+    @GetMapping(value = "/search", produces = {"application/xml", "application/json"})
     public ResponseEntity<List<PersonDTO>> getAllPets(@NotNull Pageable pageable) {
         System.out.println(pageable);
         return null;

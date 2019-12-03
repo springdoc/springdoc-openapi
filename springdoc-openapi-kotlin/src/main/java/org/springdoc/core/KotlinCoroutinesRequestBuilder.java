@@ -15,7 +15,7 @@ public class KotlinCoroutinesRequestBuilder extends AbstractRequestBuilder {
     private final List<AbstractRequestBuilder> requestBuilders;
 
     public KotlinCoroutinesRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                          OperationBuilder operationBuilder, List<AbstractRequestBuilder> requestBuilders) {
+                                          OperationBuilder operationBuilder, List<AbstractRequestBuilder> requestBuilders) {
         super(parameterBuilder, requestBodyBuilder, operationBuilder);
         this.requestBuilders = requestBuilders;
     }

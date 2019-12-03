@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(properties = "springdoc.swagger-ui.enabled=false")
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class SpringDocApp2Test  {
+public class SpringDocApp2Test {
 
     @Autowired
     private MockMvc mockMvc;

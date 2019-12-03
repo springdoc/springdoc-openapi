@@ -35,12 +35,12 @@ public abstract class AbstractOpenApiResource {
     private final AbstractResponseBuilder responseBuilder;
     private final OperationBuilder operationParser;
     private final Optional<List<OpenApiCustomiser>> openApiCustomisers;
+    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
     private boolean computeDone;
     @Value(SPRINGDOC_PACKAGES_TO_SCAN)
     private List<String> packagesToScan;
     @Value(SPRINGDOC_PATHS_TO_MATCH)
     private List<String> pathsToMatch;
-    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                                       AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -272,6 +272,7 @@ public abstract class AbstractOpenApiResource {
     protected boolean isPackageToScan(String aPackage) {
         return CollectionUtils.isEmpty(packagesToScan) || packagesToScan.stream().anyMatch(pack -> aPackage.equals(pack) || aPackage.startsWith(pack + "."));
     }
+
     protected boolean isPathToMatch(String operationPath) {
         return CollectionUtils.isEmpty(pathsToMatch) || pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
     }

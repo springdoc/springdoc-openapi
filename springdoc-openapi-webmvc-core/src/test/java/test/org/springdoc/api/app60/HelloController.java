@@ -17,11 +17,15 @@ public class HelloController {
             @Parameter(name = "page", description = "The page"),
             @Parameter(name = "size", description = "The size")
     })
-    public List<?> list1(String page, String size) {return  null; }
+    public List<?> list1(String page, String size) {
+        return null;
+    }
 
     @GetMapping("/hello2")
     @Operation(summary = "summary2")
     @QuerySort
     @QueryPaging
-    public List<?> list2(String page, String size, String sort) {return  null; }
+    public List<?> list2(String page, String size, String sort) {
+        return null;
+    }
 }
