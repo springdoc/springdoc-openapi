@@ -18,10 +18,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(properties = "springdoc.show.actuator=true")
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-@TestPropertySource("classpath:/properties/36.properties")
 public class SpringDocApp36Test {
 
 

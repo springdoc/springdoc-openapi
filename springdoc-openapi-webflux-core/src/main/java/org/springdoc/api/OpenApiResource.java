@@ -74,7 +74,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
                 Map<String, String> regexMap = new LinkedHashMap<>();
                 operationPath = PathUtils.parsePath(operationPath, regexMap);
                 if (operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-                        && restControllers.containsKey(handlerMethod.getBean().toString())) {
+                        && restControllers.containsKey(handlerMethod.getBean().toString()) && isPackageToScan(handlerMethod.getBeanType().getPackage().getName())) {
                     Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
                     calculatePath(openAPIBuilder, handlerMethod, operationPath, requestMethods);
                 }

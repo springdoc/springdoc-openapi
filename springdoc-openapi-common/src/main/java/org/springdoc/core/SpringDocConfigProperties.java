@@ -3,6 +3,9 @@ package org.springdoc.core;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 @ConfigurationProperties(prefix = "springdoc")
 public class SpringDocConfigProperties {
@@ -10,6 +13,7 @@ public class SpringDocConfigProperties {
     private Boolean showActuator = false;
     private Webjars webjars = new Webjars();
     private ApiDocs apiDocs = new ApiDocs();
+    private List<String> packagesToScan;
 
     public static class Webjars {
         private String prefix = "/webjars";
@@ -48,6 +52,14 @@ public class SpringDocConfigProperties {
         public void setEnabled(Boolean enabled) {
             this.enabled = enabled;
         }
+    }
+
+    public List<String> getPackagesToScan() {
+        return packagesToScan;
+    }
+
+    public void setPackagesToScan(List<String> packagesToScan) {
+        this.packagesToScan = packagesToScan;
     }
 
     public Boolean getShowActuator() {

@@ -4,7 +4,9 @@ package org.springdoc.core;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.CollectionUtils;
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -88,6 +90,12 @@ public class SwaggerUiConfigProperties {
      */
     private Boolean showCommonExtensions;
 
+    /**
+     * The supported try it out methods
+     */
+    private List<String> supportedSubmitMethods;
+
+
     public Map<String, String> getConfigParameters() {
         final Map<String, String> params = new TreeMap<>();
         put("layout", layout, params);
@@ -105,6 +113,8 @@ public class SwaggerUiConfigProperties {
         put("showCommonExtensions", showCommonExtensions, params);
         put("operationsSorter", operationsSorter, params);
         put("tagsSorter", tagsSorter, params);
+        if (!CollectionUtils.isEmpty(supportedSubmitMethods))
+            put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
         return params;
     }
 
@@ -252,5 +262,13 @@ public class SwaggerUiConfigProperties {
 
     public void setShowCommonExtensions(Boolean showCommonExtensions) {
         this.showCommonExtensions = showCommonExtensions;
+    }
+
+    public List<String> getSupportedSubmitMethods() {
+        return supportedSubmitMethods;
+    }
+
+    public void setSupportedSubmitMethods(List<String> supportedSubmitMethods) {
+        this.supportedSubmitMethods = supportedSubmitMethods;
     }
 }
