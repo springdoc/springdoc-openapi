@@ -44,6 +44,9 @@ public class ResponseBuilder extends AbstractResponseBuilder {
                 schemaN = calculateFluxSchema(components, parameterizedType, jsonView);
             }
         }
+        else if (ResponseEntity.class.getName().contentEquals(parameterizedType.getRawType().getTypeName())) {
+            schemaN = calculateSchemaParameterizedType(components, parameterizedType, jsonView);
+        }
         return schemaN;
     }
 
