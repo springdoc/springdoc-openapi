@@ -86,13 +86,13 @@ public class OpenApiResource extends AbstractOpenApiResource {
             HandlerMethod handlerMethod = entry.getValue();
             PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
             Set<String> patterns = patternsRequestCondition.getPatterns();
-            String operationPath = CollectionUtils.isEmpty(patterns) ? "/" : patterns.iterator().next();
             Map<String, String> regexMap = new LinkedHashMap<>();
-            operationPath = PathUtils.parsePath(operationPath, regexMap);
-
-            if (isRestController(restControllers, handlerMethod, operationPath) && isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(operationPath)) {
-                Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
-                calculatePath(openAPIBuilder, handlerMethod, operationPath, requestMethods);
+            for (String pattern : patterns) {
+                String operationPath = PathUtils.parsePath(pattern, regexMap);
+                if (isRestController(restControllers, handlerMethod, operationPath) && isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(operationPath)) {
+                    Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
+                    calculatePath(openAPIBuilder, handlerMethod, operationPath, requestMethods);
+                }
             }
         }
     }
