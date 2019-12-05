@@ -23,7 +23,7 @@ This is a community-based project, not maintained by the Spring Framework Contri
 
 ## Library for springdoc-openapi integration with spring-boot and swagger-ui 
 *   Automatically deploys swagger-ui to a Spring Boot 2.x application
-*   Documentation will be available in HTML format, using the official [swagger-ui jars]: (https://github.com/swagger-api/swagger-ui.git).
+*   Documentation will be available in HTML format, using the official [swagger-ui jars](https://github.com/swagger-api/swagger-ui.git).
 *   The Swagger UI page should then be available at http://server:port/context-path/swagger-ui.html and the OpenAPI description will be available at the following url for json format: http://server:port/context-path/v3/api-docs
     * `server`: The server name or IP
     * `port`: The server port
