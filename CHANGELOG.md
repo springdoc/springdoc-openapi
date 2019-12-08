@@ -353,7 +353,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - support Annotations from interfaces #8
 - oneOf response implementation #10
-- initial webflux support
+- Support Spring Boot WebFlux Netty #3
 ### Changed
 - Complete parameter types list to be excluded #9
 
