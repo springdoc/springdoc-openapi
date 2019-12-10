@@ -13,6 +13,9 @@
   "paths": {
     "/hello7": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "description": "Some operation",
         "operationId": "getNestedDTOWithDefaultResponseStatus",
         "responses": {
@@ -29,12 +32,15 @@
         }
       }
     },
-    "/hello6": {
+    "/hello4": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "description": "Some operation",
-        "operationId": "getDTOWithDefaultResponseStatus",
+        "operationId": "getDTOWithExplicitResponseStatus",
         "responses": {
-          "200": {
+          "204": {
             "description": "default response",
             "content": {
               "application/json": {
@@ -47,29 +53,11 @@
         }
       }
     },
-    "/hello1": {
-      "get": {
-        "description": "Some operation",
-        "operationId": "listWithNoApiResponse",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/hello2": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "description": "Some operation",
         "operationId": "listWithEmptyApiResponse",
         "responses": {
@@ -89,29 +77,11 @@
         }
       }
     },
-    "/hello3": {
-      "get": {
-        "description": "Some operation",
-        "operationId": "listWithExplicitResponseStatus",
-        "responses": {
-          "204": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/hello5": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "description": "Some operation",
         "operationId": "listWithDefaultResponseStatus",
         "responses": {
@@ -131,12 +101,15 @@
         }
       }
     },
-    "/hello4": {
+    "/hello6": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "description": "Some operation",
-        "operationId": "getDTOWithExplicitResponseStatus",
+        "operationId": "getDTOWithDefaultResponseStatus",
         "responses": {
-          "204": {
+          "200": {
             "description": "default response",
             "content": {
               "application/json": {
@@ -149,13 +122,40 @@
         }
       }
     },
-    "/global/hello1": {
+    "/hello1": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "description": "Some operation",
-        "operationId": "listWithNoApiResponse_1",
+        "operationId": "listWithNoApiResponse",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Some operation",
+        "operationId": "listWithExplicitResponseStatus",
         "responses": {
           "204": {
-            "description": "Explicit description for this response",
+            "description": "default response",
             "content": {
               "application/json": {
                 "schema": {
@@ -172,10 +172,37 @@
     },
     "/global/hello2": {
       "get": {
+        "tags": [
+          "hello-controller-with-global-api-response"
+        ],
         "description": "Some operation",
         "operationId": "listWithDefaultResponseStatus_1",
         "responses": {
           "200": {
+            "description": "Explicit description for this response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/global/hello1": {
+      "get": {
+        "tags": [
+          "hello-controller-with-global-api-response"
+        ],
+        "description": "Some operation",
+        "operationId": "listWithNoApiResponse_1",
+        "responses": {
+          "204": {
             "description": "Explicit description for this response",
             "content": {
               "application/json": {

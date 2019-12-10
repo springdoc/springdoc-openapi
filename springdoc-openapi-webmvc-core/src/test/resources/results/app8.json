@@ -13,6 +13,9 @@
   "paths": {
     "/myapi": {
       "get": {
+        "tags": [
+          "my-api-controller"
+        ],
         "description": "Annotations from interfaces test",
         "operationId": "get",
         "responses": {
@@ -30,6 +33,5 @@
       }
     }
   },
-  "components": {
-  }
+  "components": {}
 }

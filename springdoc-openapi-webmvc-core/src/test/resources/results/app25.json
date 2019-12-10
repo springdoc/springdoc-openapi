@@ -13,6 +13,9 @@
   "paths": {
     "/check": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "check",
         "responses": {
           "200": {
@@ -23,7 +26,54 @@
     },
     "/list": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "list",
+        "parameters": [
+          {
+            "name": "trackerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "the-tracker-id"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:00:00.000Z"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:10:00.000Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response"
+          }
+        }
+      }
+    },
+    "/secondlist": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "secondlist",
         "parameters": [
           {
             "name": "trackerId",
@@ -64,6 +114,9 @@
     },
     "/values/{trackerId}/data": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "description": "Get last data from a tracker",
         "operationId": "thirdList",
         "parameters": [
@@ -112,49 +165,7 @@
           }
         }
       }
-    },
-    "/secondlist": {
-      "get": {
-        "operationId": "secondlist",
-        "parameters": [
-          {
-            "name": "trackerId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "the-tracker-id"
-            }
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "example": "1970-01-01T00:00:00.000Z"
-            }
-          },
-          {
-            "name": "end",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "example": "1970-01-01T00:10:00.000Z"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response"
-          }
-        }
-      }
     }
   },
-  "components": {
-  }
+  "components": {}
 }

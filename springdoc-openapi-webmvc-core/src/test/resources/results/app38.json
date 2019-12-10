@@ -13,6 +13,9 @@
   "paths": {
     "/npe_error": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "getModelResource",
         "responses": {
           "200": {
@@ -33,6 +36,5 @@
       }
     }
   },
-  "components": {
-  }
+  "components": {}
 }

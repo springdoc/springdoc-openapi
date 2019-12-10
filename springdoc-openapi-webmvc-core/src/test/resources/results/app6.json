@@ -13,6 +13,9 @@
   "paths": {
     "/hello": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "summary": "Get Something by key",
         "operationId": "sayHello",
         "responses": {
@@ -53,6 +56,5 @@
       }
     }
   },
-  "components": {
-  }
+  "components": {}
 }

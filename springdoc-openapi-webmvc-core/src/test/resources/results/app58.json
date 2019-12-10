@@ -13,6 +13,9 @@
   "paths": {
     "/example": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "test",
         "parameters": [
           {
@@ -31,6 +34,9 @@
     },
     "/examplePost": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "summary": "schema example",
         "operationId": "example",
         "requestBody": {

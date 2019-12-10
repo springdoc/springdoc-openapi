@@ -32,13 +32,12 @@ import java.util.*;
 public abstract class AbstractParameterBuilder {
 
     private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+    private final IgnoredParameterAnnotations ignoredParameterAnnotations;
 
-    protected AbstractParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+
+    public AbstractParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, IgnoredParameterAnnotations ignoredParameterAnnotations) {
         this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
-    }
-
-    public LocalVariableTableParameterNameDiscoverer getLocalSpringDocParameterNameDiscoverer() {
-        return localSpringDocParameterNameDiscoverer;
+        this.ignoredParameterAnnotations = ignoredParameterAnnotations;
     }
 
     Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
@@ -132,6 +131,17 @@ public abstract class AbstractParameterBuilder {
         } else {
             Schema schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.schema(), components, jsonView)
                     .orElse(null);
+            if (schema == null) {
+                if (parameterDoc.content().length > 0) {
+                    if (AnnotationsUtils.hasSchemaAnnotation(parameterDoc.content()[0].schema())) {
+                        schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.content()[0].schema(), components, jsonView).orElse(null);
+                    } else if (AnnotationsUtils.hasArrayAnnotation(parameterDoc.content()[0].array())) {
+                        schema = AnnotationsUtils.getArraySchema(parameterDoc.content()[0].array(), components, jsonView).orElse(null);
+                    }
+                } else {
+                    schema = AnnotationsUtils.getArraySchema(parameterDoc.array(), components, jsonView).orElse(null);
+                }
+            }
             parameter.setSchema(schema);
         }
 
@@ -167,7 +177,7 @@ public abstract class AbstractParameterBuilder {
             if (isFile(parameterizedType)) {
                 return extractFileSchema(paramName, requestBodyInfo);
             }
-            schemaN = calculateSchemaFromParameterizedType( components,  returnType,  jsonView);
+            schemaN = calculateSchemaFromParameterizedType(components, returnType, jsonView);
         } else {
             schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, jsonView);
         }
@@ -177,6 +187,10 @@ public abstract class AbstractParameterBuilder {
         }
 
         return schemaN;
+    }
+
+    public LocalVariableTableParameterNameDiscoverer getLocalSpringDocParameterNameDiscoverer() {
+        return localSpringDocParameterNameDiscoverer;
     }
 
     protected abstract Schema calculateSchemaFromParameterizedType(Components components, Type returnType, JsonView jsonView);
@@ -272,5 +286,9 @@ public abstract class AbstractParameterBuilder {
 
     private JavaType constructType(Type type) {
         return TypeFactory.defaultInstance().constructType(type);
+    }
+
+    public boolean isAnnotationToIgnore(java.lang.reflect.Parameter parameter) {
+        return ignoredParameterAnnotations.isAnnotationToIgnore(parameter);
     }
 }

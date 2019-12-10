@@ -13,6 +13,9 @@
   "paths": {
     "/hello": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "description": "Some operation",
         "operationId": "list",
         "responses": {

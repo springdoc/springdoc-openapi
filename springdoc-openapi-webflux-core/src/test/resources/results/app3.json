@@ -1,55 +1,86 @@
 {
-  "openapi": "3.0.1",
+  "components": {
+    "schemas": {
+      "TweetDTO": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 140,
+            "minLength": 0,
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "createdAt",
+          "text"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "basicScheme": {
+        "scheme": "basic",
+        "type": "http"
+      }
+    }
+  },
   "info": {
-    "title": "Tweet API",
     "license": {
       "name": "Apache 2.0",
       "url": "http://springdoc.org"
     },
+    "title": "Tweet API",
     "version": "v0"
   },
-  "servers": [
-    {
-      "url": "",
-      "description": "Generated server url"
-    }
-  ],
+  "openapi": "3.0.1",
   "paths": {
     "/tweets": {
       "get": {
         "operationId": "getAllTweets",
         "responses": {
           "409": {
-            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
                   "type": "string"
                 }
               }
-            }
+            },
+            "description": "default response"
           },
           "404": {
-            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
                   "type": "string"
                 }
               }
-            }
+            },
+            "description": "default response"
           },
           "200": {
-            "description": "get All Tweets",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/TweetDTO"
+                  "items": {
+                    "$ref": "#/components/schemas/TweetDTO"
+                  },
+                  "type": "array"
                 }
               }
-            }
+            },
+            "description": "get All Tweets"
           }
-        }
+        },
+        "tags": [
+          "tweet-controller"
+        ]
       },
       "post": {
         "operationId": "createTweets",
@@ -64,45 +95,92 @@
         },
         "responses": {
           "409": {
-            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
                   "type": "string"
                 }
               }
-            }
+            },
+            "description": "default response"
           },
           "404": {
-            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
                   "type": "string"
                 }
               }
-            }
+            },
+            "description": "default response"
           },
           "200": {
-            "description": "create Tweets",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/TweetDTO"
                 }
               }
-            }
+            },
+            "description": "create Tweets"
           }
-        }
+        },
+        "tags": [
+          "tweet-controller"
+        ]
+      }
+    },
+    "/stream/tweets": {
+      "get": {
+        "description": "Tweets are Sent to the client as Server Sent Events",
+        "operationId": "streamAllTweets",
+        "responses": {
+          "200": {
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TweetDTO"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "stream All Tweets"
+          },
+          "409": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "default response"
+          },
+          "404": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "default response"
+          }
+        },
+        "tags": [
+          "tweet-controller"
+        ]
       }
     },
     "/tweets/{id}": {
-      "get": {
-        "operationId": "getTweetById",
+      "delete": {
+        "operationId": "deleteTweet",
         "parameters": [
           {
-            "name": "id",
             "in": "path",
+            "name": "id",
             "required": true,
             "schema": {
               "type": "string"
@@ -111,43 +189,94 @@
         ],
         "responses": {
           "409": {
-            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
                   "type": "string"
                 }
               }
-            }
+            },
+            "description": "default response"
           },
           "404": {
-            "description": "tweet not found",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/TweetDTO"
+                  "type": "string"
                 }
               }
-            }
+            },
+            "description": "tweet not found"
           },
           "200": {
-            "description": "get Tweet By Id",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "delete Tweet"
+          }
+        },
+        "tags": [
+          "tweet-controller"
+        ]
+      },
+      "get": {
+        "operationId": "getTweetById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "409": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "default response"
+          },
+          "404": {
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/TweetDTO"
                 }
               }
-            }
+            },
+            "description": "tweet not found"
+          },
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/TweetDTO"
+                }
+              }
+            },
+            "description": "get Tweet By Id"
           }
-        }
+        },
+        "tags": [
+          "tweet-controller"
+        ]
       },
       "put": {
         "operationId": "updateTweet",
         "parameters": [
           {
-            "name": "id",
             "in": "path",
+            "name": "id",
             "required": true,
             "schema": {
               "type": "string"
@@ -165,151 +294,46 @@
         },
         "responses": {
           "409": {
-            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
                   "type": "string"
                 }
               }
-            }
+            },
+            "description": "default response"
           },
           "404": {
-            "description": "tweet not found",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/TweetDTO"
                 }
               }
-            }
+            },
+            "description": "tweet not found"
           },
           "200": {
-            "description": "update Tweet",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/TweetDTO"
                 }
               }
-            }
+            },
+            "description": "update Tweet"
           }
-        }
-      },
-      "delete": {
-        "operationId": "deleteTweet",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "409": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "tweet not found",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "delete Tweet",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/stream/tweets": {
-      "get": {
-        "description": "Tweets are Sent to the client as Server Sent Events",
-        "operationId": "streamAllTweets",
-        "responses": {
-          "200": {
-            "description": "stream All Tweets",
-            "content": {
-              "text/event-stream": {
-                "schema": {
-                  "$ref": "#/components/schemas/TweetDTO"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
+        },
+        "tags": [
+          "tweet-controller"
+        ]
       }
     }
   },
-  "components": {
-    "schemas": {
-      "TweetDTO": {
-        "required": [
-          "createdAt",
-          "text"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "text": {
-            "maxLength": 140,
-            "minLength": 0,
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "basicScheme": {
-        "type": "http",
-        "scheme": "basic"
-      }
+  "servers": [
+    {
+      "description": "Generated server url",
+      "url": ""
     }
-  }
+  ]
 }
