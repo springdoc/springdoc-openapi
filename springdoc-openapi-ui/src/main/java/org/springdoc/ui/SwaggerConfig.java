@@ -5,15 +5,14 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springdoc.core.Constants.*;
 
 @Configuration
 @EnableWebMvc
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
-@SuppressWarnings("deprecation")
-public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
+public class SwaggerConfig implements WebMvcConfigurer {
 
     @Value(SWAGGER_UI_PATH)
     private String swaggerPath;
