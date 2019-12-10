@@ -184,7 +184,7 @@ public abstract class AbstractResponseBuilder {
                 .flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet());
 
         Set<io.swagger.v3.oas.annotations.responses.ApiResponses> apiResponsesDocDeclaringClass = AnnotatedElementUtils
-                .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.responses.ApiResponses.class);
+                .findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.responses.ApiResponses.class);
         responses.addAll(
                 apiResponsesDocDeclaringClass.stream().flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet()));
 

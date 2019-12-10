@@ -1,0 +1,113 @@
+{
+  "components": {},
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "openapi": "3.0.1",
+  "paths": {
+    "/hello1": {
+      "get": {
+        "operationId": "list1",
+        "parameters": [
+          {
+            "description": "The page",
+            "in": "query",
+            "name": "page",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "The size",
+            "in": "query",
+            "name": "size",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "items": {
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "default response"
+          }
+        },
+        "summary": "summary1",
+        "tags": [
+          "hello-controller"
+        ]
+      }
+    },
+    "/hello2": {
+      "get": {
+        "operationId": "list2",
+        "parameters": [
+          {
+            "description": "desc page from Annotated interface",
+            "in": "query",
+            "name": "page",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "desc page from Annotated interface",
+            "in": "query",
+            "name": "size",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "desc sort from Annotated interface",
+            "in": "query",
+            "name": "sort",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "*/*": {
+                "schema": {
+                  "items": {
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "default response"
+          }
+        },
+        "summary": "summary2",
+        "tags": [
+          "hello-controller"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Generated server url",
+      "url": "http://localhost"
+    }
+  ]
+}

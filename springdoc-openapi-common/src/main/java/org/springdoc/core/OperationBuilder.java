@@ -207,7 +207,8 @@ public class OperationBuilder {
         if (openAPI.getPaths() == null || openAPI.getPaths().isEmpty()) {
             return false;
         }
-        for (PathItem path : openAPI.getPaths().values()) {
+        for (Iterator<PathItem> iterator = openAPI.getPaths().values().iterator(); iterator.hasNext(); ) {
+            PathItem path = iterator.next();
             Set<String> pathOperationIds = extractOperationIdFromPathItem(path);
             if (pathOperationIds.contains(operationId)) {
                 return true;

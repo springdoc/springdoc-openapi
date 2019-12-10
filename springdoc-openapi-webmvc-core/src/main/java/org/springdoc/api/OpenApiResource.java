@@ -14,7 +14,6 @@ import org.springdoc.core.OperationBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -86,12 +85,13 @@ public class OpenApiResource extends AbstractOpenApiResource {
             HandlerMethod handlerMethod = entry.getValue();
             PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
             Set<String> patterns = patternsRequestCondition.getPatterns();
-            String operationPath = CollectionUtils.isEmpty(patterns) ? "/" : patterns.iterator().next();
             Map<String, String> regexMap = new LinkedHashMap<>();
-            operationPath = PathUtils.parsePath(operationPath, regexMap);
-            if (isRestController(restControllers, handlerMethod, operationPath)) {
-                Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
-                calculatePath(openAPIBuilder, handlerMethod, operationPath, requestMethods);
+            for (String pattern : patterns) {
+                String operationPath = PathUtils.parsePath(pattern, regexMap);
+                if (isRestController(restControllers, handlerMethod, operationPath) && isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(operationPath)) {
+                    Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
+                    calculatePath(openAPIBuilder, handlerMethod, operationPath, requestMethods);
+                }
             }
         }
     }

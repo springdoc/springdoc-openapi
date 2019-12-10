@@ -13,10 +13,12 @@
   "paths": {
     "/post-entity": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "description": "Post entity",
         "operationId": "postEntity",
         "requestBody": {
-          "description": "default response",
           "content": {
             "application/json": {
               "schema": {

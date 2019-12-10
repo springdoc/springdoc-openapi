@@ -52,29 +52,35 @@ public class MethodAttributes {
 
 
     public void calculateConsumesProduces(Method method) {
-        PostMapping reqPostMappringMethod =  AnnotatedElementUtils.findMergedAnnotation(method, PostMapping.class);
-        if (reqPostMappringMethod != null) {
-            fillMethods(reqPostMappringMethod.produces(), reqPostMappringMethod.consumes());
+        PostMapping reqPostMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, PostMapping.class);
+        if (reqPostMappingMethod != null) {
+            fillMethods(reqPostMappingMethod.produces(), reqPostMappingMethod.consumes());
             return;
         }
-        GetMapping reqGetMappringMethod =  AnnotatedElementUtils.findMergedAnnotation(method, GetMapping.class);
-        if (reqGetMappringMethod != null) {
-            fillMethods(reqGetMappringMethod.produces(), reqGetMappringMethod.consumes());
+        GetMapping reqGetMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, GetMapping.class);
+        if (reqGetMappingMethod != null) {
+            fillMethods(reqGetMappingMethod.produces(), reqGetMappingMethod.consumes());
             return;
         }
-        DeleteMapping reqDeleteMappringMethod =  AnnotatedElementUtils.findMergedAnnotation(method, DeleteMapping.class);
-        if (reqDeleteMappringMethod != null) {
-            fillMethods(reqDeleteMappringMethod.produces(), reqDeleteMappringMethod.consumes());
+        DeleteMapping reqDeleteMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, DeleteMapping.class);
+        if (reqDeleteMappingMethod != null) {
+            fillMethods(reqDeleteMappingMethod.produces(), reqDeleteMappingMethod.consumes());
             return;
         }
-        PutMapping reqPutMappringMethod = AnnotatedElementUtils.findMergedAnnotation(method, PutMapping.class);
-        if (reqPutMappringMethod != null) {
-            fillMethods(reqPutMappringMethod.produces(), reqPutMappringMethod.consumes());
+        PutMapping reqPutMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, PutMapping.class);
+        if (reqPutMappingMethod != null) {
+            fillMethods(reqPutMappingMethod.produces(), reqPutMappingMethod.consumes());
             return;
         }
-        RequestMapping reqMappringMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
-        if (reqMappringMethod != null) {
-            fillMethods(reqMappringMethod.produces(), reqMappringMethod.consumes());
+        RequestMapping reqMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
+        RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(method.getDeclaringClass(), RequestMapping.class);
+
+        if (reqMappingMethod != null && reqMappingClass != null) {
+            fillMethods(ArrayUtils.addAll(reqMappingMethod.produces(), reqMappingClass.produces()), ArrayUtils.addAll(reqMappingMethod.consumes(), reqMappingClass.consumes()));
+        } else if (reqMappingMethod != null) {
+            fillMethods(reqMappingMethod.produces(), reqMappingMethod.consumes());
+        } else if (reqMappingClass != null) {
+            fillMethods(reqMappingClass.produces(), reqMappingClass.consumes());
         }
     }
 

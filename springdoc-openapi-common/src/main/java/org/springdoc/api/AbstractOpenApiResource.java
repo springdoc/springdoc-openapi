@@ -9,7 +9,9 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +24,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.springdoc.core.Constants.SPRINGDOC_PACKAGES_TO_SCAN;
+import static org.springdoc.core.Constants.SPRINGDOC_PATHS_TO_MATCH;
+
 public abstract class AbstractOpenApiResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractOpenApiResource.class);
@@ -30,7 +35,12 @@ public abstract class AbstractOpenApiResource {
     private final AbstractResponseBuilder responseBuilder;
     private final OperationBuilder operationParser;
     private final Optional<List<OpenApiCustomiser>> openApiCustomisers;
+    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
     private boolean computeDone;
+    @Value(SPRINGDOC_PACKAGES_TO_SCAN)
+    private List<String> packagesToScan;
+    @Value(SPRINGDOC_PATHS_TO_MATCH)
+    private List<String> pathsToMatch;
 
     protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                                       AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -43,7 +53,7 @@ public abstract class AbstractOpenApiResource {
         this.openApiCustomisers = openApiCustomisers;
     }
 
-    protected OpenAPI getOpenApi() {
+    protected synchronized OpenAPI getOpenApi() {
         OpenAPI openApi;
         if (!computeDone) {
             Instant start = Instant.now();
@@ -111,6 +121,10 @@ public abstract class AbstractOpenApiResource {
             methodAttributes.calculateConsumesProduces(method);
 
             Operation operation = (existingOperation != null) ? existingOperation : new Operation();
+
+            if (ReflectionUtils.getAnnotation(method, Deprecated.class) != null) {
+                operation.setDeprecated(true);
+            }
 
             // compute tags
             operation = openAPIBuilder.buildTags(handlerMethod, operation, openAPI);
@@ -253,5 +267,13 @@ public abstract class AbstractOpenApiResource {
                 break;
         }
         return pathItemObject;
+    }
+
+    protected boolean isPackageToScan(String aPackage) {
+        return CollectionUtils.isEmpty(packagesToScan) || packagesToScan.stream().anyMatch(pack -> aPackage.equals(pack) || aPackage.startsWith(pack + "."));
+    }
+
+    protected boolean isPathToMatch(String operationPath) {
+        return CollectionUtils.isEmpty(pathsToMatch) || pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
     }
 }

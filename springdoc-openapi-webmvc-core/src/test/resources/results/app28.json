@@ -13,6 +13,9 @@
   "paths": {
     "/upload2": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "upload2",
         "requestBody": {
           "content": {
@@ -48,6 +51,5 @@
       }
     }
   },
-  "components": {
-  }
+  "components": {}
 }

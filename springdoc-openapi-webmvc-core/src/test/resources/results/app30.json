@@ -13,6 +13,9 @@
   "paths": {
     "/test": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "echo",
         "parameters": [
           {
@@ -40,6 +43,5 @@
       }
     }
   },
-  "components": {
-  }
+  "components": {}
 }

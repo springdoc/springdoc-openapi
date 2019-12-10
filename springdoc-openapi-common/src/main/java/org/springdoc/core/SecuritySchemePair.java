@@ -4,8 +4,8 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 
 class SecuritySchemePair {
 
-    private String key;
-    private SecurityScheme securityScheme;
+    private final String key;
+    private final SecurityScheme securityScheme;
 
     public SecuritySchemePair(String key, SecurityScheme securityScheme) {
         super();

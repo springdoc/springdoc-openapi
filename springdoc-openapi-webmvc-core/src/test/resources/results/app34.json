@@ -13,6 +13,9 @@
   "paths": {
     "/hello/{numTelco}": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "summary": "GET Persons",
         "operationId": "index",
         "parameters": [
@@ -48,6 +51,5 @@
       }
     }
   },
-  "components": {
-  }
+  "components": {}
 }

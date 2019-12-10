@@ -61,6 +61,17 @@ public class OpenAPIBuilder {
         this.securityParser = securityParser;
     }
 
+    private static String splitCamelCase(String str) {
+        return str.replaceAll(
+                String.format(
+                        "%s|%s|%s",
+                        "(?<=[A-Z])(?=[A-Z][a-z])",
+                        "(?<=[^A-Z])(?=[A-Z])",
+                        "(?<=[A-Za-z])(?=[^A-Za-z])"),
+                "-")
+                .toLowerCase(Locale.ROOT);
+    }
+
     public OpenAPI getOpenAPI() {
         return openAPI;
     }
@@ -94,14 +105,14 @@ public class OpenAPIBuilder {
 
     public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
         // class tags
-        List<io.swagger.v3.oas.annotations.tags.Tag> classTags = ReflectionUtils
-                .getRepeatableAnnotations(handlerMethod.getBeanType(), io.swagger.v3.oas.annotations.tags.Tag.class);
+        List<Tag> classTags =
+                ReflectionUtils.getRepeatableAnnotations(handlerMethod.getBeanType(), Tag.class);
 
         // method tags
-        List<io.swagger.v3.oas.annotations.tags.Tag> methodTags = ReflectionUtils
-                .getRepeatableAnnotations(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.tags.Tag.class);
+        List<Tag> methodTags =
+                ReflectionUtils.getRepeatableAnnotations(handlerMethod.getMethod(), Tag.class);
 
-        List<io.swagger.v3.oas.annotations.tags.Tag> allTags = new ArrayList<>();
+        List<Tag> allTags = new ArrayList<>();
         Set<String> tagsStr = new HashSet<>();
 
         if (!CollectionUtils.isEmpty(methodTags)) {
@@ -134,8 +145,13 @@ public class OpenAPIBuilder {
                 .getSecurityRequirements(handlerMethod);
         securityRequirement.ifPresent(securityRequirements -> securityParser.buildSecurityRequirement(securityRequirements, operation));
 
-        if (!CollectionUtils.isEmpty(tagsStr))
+        if (!CollectionUtils.isEmpty(tagsStr)) {
             operation.setTags(new ArrayList<>(tagsStr));
+        }
+
+        if (CollectionUtils.isEmpty(operation.getTags())) {
+            operation.addTagsItem(splitCamelCase(handlerMethod.getBeanType().getSimpleName()));
+        }
 
         return operation;
     }

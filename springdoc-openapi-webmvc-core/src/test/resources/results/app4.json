@@ -13,6 +13,9 @@
   "paths": {
     "/values/data": {
       "post": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "list",
         "requestBody": {
           "content": {

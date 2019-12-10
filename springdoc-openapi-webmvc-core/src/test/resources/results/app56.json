@@ -13,6 +13,9 @@
   "paths": {
     "/persons": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "persons",
         "responses": {
           "500": {

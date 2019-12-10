@@ -11,8 +11,42 @@
     }
   ],
   "paths": {
+    "/test1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test1",
+        "parameters": [
+          {
+            "name": "test_header",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "rherherherherh"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/test2": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "test2",
         "parameters": [
           {
@@ -47,36 +81,11 @@
         }
       }
     },
-    "/test1": {
-      "get": {
-        "operationId": "test1",
-        "parameters": [
-          {
-            "name": "test_header",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "rherherherherh"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/test3": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "test3",
         "parameters": [
           {
@@ -114,6 +123,5 @@
       }
     }
   },
-  "components": {
-  }
+  "components": {}
 }

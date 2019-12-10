@@ -13,6 +13,9 @@
   "paths": {
     "/api/v1/poc/test": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "summary": "Get thing",
         "operationId": "test",
         "responses": {
@@ -37,6 +40,9 @@
     },
     "/api/v1/poc/testme": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "summary": "Get thing",
         "operationId": "testme",
         "responses": {
