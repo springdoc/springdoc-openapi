@@ -22,6 +22,7 @@ public final class Constants {
     public static final String APPLICATION_OPENAPI_YAML = "application/vnd.oai.openapi";
     public static final String DEFAULT_SWAGGER_UI_PATH = DEFAULT_PATH_SEPARATOR + "swagger-ui.html";
     public static final String SWAGGER_UI_PATH = "${springdoc.swagger-ui.path:#{T(org.springdoc.core.Constants).DEFAULT_SWAGGER_UI_PATH}}";
+    public static final String MVC_SERVLET_PATH ="${spring.mvc.servlet.path:#{null}}";
     public static final String GET_METHOD = "get";
     public static final String POST_METHOD = "post";
     public static final String PUT_METHOD = "put";

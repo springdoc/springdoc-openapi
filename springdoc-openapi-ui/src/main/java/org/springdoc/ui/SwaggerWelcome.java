@@ -1,6 +1,7 @@
 package org.springdoc.ui;
 
 import io.swagger.v3.oas.annotations.Operation;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,9 @@ class SwaggerWelcome {
     @Value(SWAGGER_UI_PATH)
     private String swaggerPath;
 
+    @Value(MVC_SERVLET_PATH)
+    private String mvcServletPath;
+
     @Autowired
     private SwaggerUiConfigProperties swaggerUiConfig;
 
@@ -33,12 +37,16 @@ class SwaggerWelcome {
     @GetMapping(SWAGGER_UI_PATH)
     public String redirectToUi(HttpServletRequest request) {
         String contextPath = request.getContextPath();
+        if (StringUtils.isNotBlank(mvcServletPath))
+            contextPath += mvcServletPath;
         String uiRootPath = "";
         if (swaggerPath.contains("/")) {
             uiRootPath = swaggerPath.substring(0, swaggerPath.lastIndexOf('/'));
         }
         StringBuilder sbUrl = new StringBuilder();
         sbUrl.append(REDIRECT_URL_PREFIX);
+        if (StringUtils.isNotBlank(mvcServletPath))
+            sbUrl.append(mvcServletPath);
         sbUrl.append(uiRootPath);
         sbUrl.append(SWAGGER_UI_URL);
         if (contextPath.endsWith(DEFAULT_PATH_SEPARATOR)) {
