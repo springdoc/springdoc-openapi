@@ -1,6 +1,8 @@
 package org.springdoc.core;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.Operation;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -36,7 +38,8 @@ public class RequestBuilder extends AbstractRequestBuilder {
                 || org.springframework.ui.Model.class.equals(paramType)
                 || org.springframework.ui.ModelMap.class.equals(paramType) || RedirectAttributes.class.equals(paramType)
                 || Errors.class.equals(paramType) || BindingResult.class.equals(paramType)
-                || SessionStatus.class.equals(paramType) || UriComponentsBuilder.class.equals(paramType);
+                || SessionStatus.class.equals(paramType) || UriComponentsBuilder.class.equals(paramType)
+                || (AnnotationUtils.findAnnotation(paramType, Hidden.class) != null);
     }
 
     @Override
