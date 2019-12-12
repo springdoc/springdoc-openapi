@@ -59,8 +59,9 @@ public abstract class AbstractRequestBuilder {
         LocalVariableTableParameterNameDiscoverer d = parameterBuilder.getLocalSpringDocParameterNameDiscoverer();
         String[] pNames = d.getParameterNames(handlerMethod.getMethod());
         java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
+        String[] reflectionParametersNames = Arrays.stream(parameters).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
         if (pNames == null) {
-            pNames = Arrays.stream(parameters).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
+            pNames = reflectionParametersNames;
         }
         RequestBodyInfo requestBodyInfo = new RequestBodyInfo(methodAttributes);
         List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
@@ -70,7 +71,7 @@ public abstract class AbstractRequestBuilder {
         for (int i = 0; i < pNames.length; i++) {
             // check if query param
             Parameter parameter = null;
-            final String pName = pNames[i];
+            final String pName = pNames[i] == null ? reflectionParametersNames[i] : pNames[i];
             io.swagger.v3.oas.annotations.Parameter parameterDoc = parameterBuilder.getParameterAnnotation(
                     handlerMethod, parameters[i], i, io.swagger.v3.oas.annotations.Parameter.class);
             if (parameterDoc == null) {
