@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app2.app1;
+package test.org.springdoc.api.app2;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
