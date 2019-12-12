@@ -16,6 +16,12 @@ import java.util.*;
 @Component
 class SecurityParser {
 
+    private final PropertyResolverUtils propertyResolverUtils;
+
+    public SecurityParser(PropertyResolverUtils propertyResolverUtils) {
+        this.propertyResolverUtils = propertyResolverUtils;
+    }
+
     private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
         boolean result;
         if (oAuthFlows == null) {
@@ -128,7 +134,7 @@ class SecurityParser {
         }
 
         if (StringUtils.isNotBlank(securityScheme.openIdConnectUrl())) {
-            securitySchemeObject.setOpenIdConnectUrl(securityScheme.openIdConnectUrl());
+            securitySchemeObject.setOpenIdConnectUrl(propertyResolverUtils.resolve(securityScheme.openIdConnectUrl()));
         }
         if (StringUtils.isNotBlank(securityScheme.scheme())) {
             securitySchemeObject.setScheme(securityScheme.scheme());
@@ -193,13 +199,13 @@ class SecurityParser {
         }
         OAuthFlow oAuthFlowObject = new OAuthFlow();
         if (StringUtils.isNotBlank(oAuthFlow.authorizationUrl())) {
-            oAuthFlowObject.setAuthorizationUrl(oAuthFlow.authorizationUrl());
+            oAuthFlowObject.setAuthorizationUrl(propertyResolverUtils.resolve(oAuthFlow.authorizationUrl()));
         }
         if (StringUtils.isNotBlank(oAuthFlow.refreshUrl())) {
-            oAuthFlowObject.setRefreshUrl(oAuthFlow.refreshUrl());
+            oAuthFlowObject.setRefreshUrl(propertyResolverUtils.resolve(oAuthFlow.refreshUrl()));
         }
         if (StringUtils.isNotBlank(oAuthFlow.tokenUrl())) {
-            oAuthFlowObject.setTokenUrl(oAuthFlow.tokenUrl());
+            oAuthFlowObject.setTokenUrl(propertyResolverUtils.resolve(oAuthFlow.tokenUrl()));
         }
         if (oAuthFlow.extensions().length > 0) {
             Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlow.extensions());
