@@ -21,6 +21,10 @@ public class RequestBuilder extends AbstractRequestBuilder {
         super(parameterBuilder, requestBodyBuilder, operationBuilder);
     }
 
+    static {
+        PARAM_TYPES_TO_IGNORE.add(ServerWebExchange.class);
+    }
+
     @Override
     protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
         return operation;
