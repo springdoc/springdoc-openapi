@@ -6,23 +6,19 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 
-import java.util.List;
-
 @Primary
 @Component
 public class KotlinCoroutinesRequestBuilder extends AbstractRequestBuilder {
 
-    private final List<AbstractRequestBuilder> requestBuilders;
 
     public KotlinCoroutinesRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                                          OperationBuilder operationBuilder, List<AbstractRequestBuilder> requestBuilders) {
+                                          OperationBuilder operationBuilder) {
         super(parameterBuilder, requestBodyBuilder, operationBuilder);
-        this.requestBuilders = requestBuilders;
     }
 
     @Override
     protected boolean isParamTypeToIgnore(Class<?> paramType) {
-        return paramType.isAssignableFrom(Continuation.class) || requestBuilders.stream().anyMatch(builder -> builder.isParamTypeToIgnore(paramType));
+        return paramType.isAssignableFrom(Continuation.class);
     }
 
     @Override
