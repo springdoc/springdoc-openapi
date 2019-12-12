@@ -61,7 +61,6 @@ public abstract class AbstractRequestBuilder {
         PARAM_TYPES_TO_IGNORE.add(org.springframework.ui.ModelMap.class);
         PARAM_TYPES_TO_IGNORE.add(Errors.class);
         PARAM_TYPES_TO_IGNORE.add(BindingResult.class);
-        PARAM_TYPES_TO_IGNORE.add(ServerWebExchange.class);
         PARAM_TYPES_TO_IGNORE.add(SessionStatus.class);
         PARAM_TYPES_TO_IGNORE.add(UriComponentsBuilder.class);
     }
