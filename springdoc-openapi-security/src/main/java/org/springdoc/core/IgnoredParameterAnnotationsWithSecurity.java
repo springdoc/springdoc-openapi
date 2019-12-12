@@ -1,6 +1,7 @@
 package org.springdoc.core;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Component;
 
@@ -12,5 +13,4 @@ public class IgnoredParameterAnnotationsWithSecurity implements IgnoredParameter
     public boolean isAnnotationToIgnore(java.lang.reflect.Parameter parameter) {
         return parameter.isAnnotationPresent(AuthenticationPrincipal.class);
     }
-
 }

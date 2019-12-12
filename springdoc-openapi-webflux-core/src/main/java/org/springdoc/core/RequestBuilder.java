@@ -2,7 +2,6 @@ package org.springdoc.core;
 
 import io.swagger.v3.oas.models.Operation;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -22,19 +21,29 @@ public class RequestBuilder extends AbstractRequestBuilder {
         super(parameterBuilder, requestBodyBuilder, operationBuilder);
     }
 
-    @Override
-    protected boolean isParamTypeToIgnore(Class<?> paramType) {
-        return WebRequest.class.equals(paramType) || NativeWebRequest.class.equals(paramType)
-                || java.security.Principal.class.equals(paramType) || HttpMethod.class.equals(paramType)
-                || java.util.Locale.class.equals(paramType) || java.util.TimeZone.class.equals(paramType)
-                || java.time.ZoneId.class.equals(paramType) || java.io.InputStream.class.equals(paramType)
-                || java.io.Reader.class.equals(paramType) || java.io.OutputStream.class.equals(paramType)
-                || java.io.Writer.class.equals(paramType) || java.util.Map.class.equals(paramType)
-                || org.springframework.ui.Model.class.equals(paramType) || ServerHttpRequest.class.equals(paramType)
-                || org.springframework.ui.ModelMap.class.equals(paramType) || ServerHttpResponse.class.equals(paramType)
-                || Errors.class.equals(paramType) || BindingResult.class.equals(paramType) || ServerWebExchange.class.equals(paramType)
-                || SessionStatus.class.equals(paramType) || UriComponentsBuilder.class.equals(paramType);
+    static {
+        PARAM_TYPES_TO_IGNORE.add(WebRequest.class);
+        PARAM_TYPES_TO_IGNORE.add(NativeWebRequest.class);
+        PARAM_TYPES_TO_IGNORE.add(java.security.Principal.class);
+        PARAM_TYPES_TO_IGNORE.add(HttpMethod.class);
+        PARAM_TYPES_TO_IGNORE.add(java.util.Locale.class);
+        PARAM_TYPES_TO_IGNORE.add(java.util.TimeZone.class);
+        PARAM_TYPES_TO_IGNORE.add(java.io.InputStream.class);
+        PARAM_TYPES_TO_IGNORE.add(java.time.ZoneId.class);
+        PARAM_TYPES_TO_IGNORE.add(java.io.Reader.class);
+        PARAM_TYPES_TO_IGNORE.add(java.io.OutputStream.class);
+        PARAM_TYPES_TO_IGNORE.add(java.io.Writer.class);
+        PARAM_TYPES_TO_IGNORE.add(java.util.Map.class);
+        PARAM_TYPES_TO_IGNORE.add(org.springframework.ui.Model.class);
+        PARAM_TYPES_TO_IGNORE.add(ServerHttpRequest.class);
+        PARAM_TYPES_TO_IGNORE.add(org.springframework.ui.ModelMap.class);
+        PARAM_TYPES_TO_IGNORE.add(Errors.class);
+        PARAM_TYPES_TO_IGNORE.add(BindingResult.class);
+        PARAM_TYPES_TO_IGNORE.add(ServerWebExchange.class);
+        PARAM_TYPES_TO_IGNORE.add(SessionStatus.class);
+        PARAM_TYPES_TO_IGNORE.add(UriComponentsBuilder.class);
     }
+
 
     @Override
     protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
