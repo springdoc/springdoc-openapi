@@ -95,6 +95,11 @@ public class SwaggerUiConfigProperties {
      */
     private List<String> supportedSubmitMethods;
 
+    /**
+     * OAuth redirect URL.
+     */
+    private String oauth2RedirectUrl;
+
 
     public Map<String, String> getConfigParameters() {
         final Map<String, String> params = new TreeMap<>();
@@ -115,6 +120,7 @@ public class SwaggerUiConfigProperties {
         put("tagsSorter", tagsSorter, params);
         if (!CollectionUtils.isEmpty(supportedSubmitMethods))
             put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
+        put("oauth2RedirectUrl", oauth2RedirectUrl, params);
         return params;
     }
 
@@ -270,5 +276,13 @@ public class SwaggerUiConfigProperties {
 
     public void setSupportedSubmitMethods(List<String> supportedSubmitMethods) {
         this.supportedSubmitMethods = supportedSubmitMethods;
+    }
+
+    public String getOauth2RedirectUrl() {
+        return oauth2RedirectUrl;
+    }
+
+    public void setOauth2RedirectUrl(String oauth2RedirectUrl) {
+        this.oauth2RedirectUrl = oauth2RedirectUrl;
     }
 }

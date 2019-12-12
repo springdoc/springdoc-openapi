@@ -20,23 +20,32 @@ public class RequestBuilder extends AbstractRequestBuilder {
         super(parameterBuilder, requestBodyBuilder, operationBuilder);
     }
 
-    @Override
-    protected boolean isParamTypeToIgnore(Class<?> paramType) {
-        return WebRequest.class.equals(paramType) || NativeWebRequest.class.equals(paramType)
-                || javax.servlet.ServletRequest.class.equals(paramType)
-                || javax.servlet.ServletResponse.class.equals(paramType)
-                || javax.servlet.http.HttpServletRequest.class.equals(paramType)
-                || javax.servlet.http.HttpServletResponse.class.equals(paramType)
-                || javax.servlet.http.HttpSession.class.equals(paramType)
-                || java.security.Principal.class.equals(paramType) || HttpMethod.class.equals(paramType)
-                || java.util.Locale.class.equals(paramType) || java.util.TimeZone.class.equals(paramType)
-                || java.time.ZoneId.class.equals(paramType) || java.io.InputStream.class.equals(paramType)
-                || java.io.Reader.class.equals(paramType) || java.io.OutputStream.class.equals(paramType)
-                || java.io.Writer.class.equals(paramType) || java.util.Map.class.equals(paramType)
-                || org.springframework.ui.Model.class.equals(paramType)
-                || org.springframework.ui.ModelMap.class.equals(paramType) || RedirectAttributes.class.equals(paramType)
-                || Errors.class.equals(paramType) || BindingResult.class.equals(paramType)
-                || SessionStatus.class.equals(paramType) || UriComponentsBuilder.class.equals(paramType);
+    static {
+        PARAM_TYPES_TO_IGNORE.add(WebRequest.class);
+        PARAM_TYPES_TO_IGNORE.add(NativeWebRequest.class);
+        PARAM_TYPES_TO_IGNORE.add(javax.servlet.ServletRequest.class);
+        PARAM_TYPES_TO_IGNORE.add(javax.servlet.ServletResponse.class);
+        PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpServletRequest.class);
+        PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpServletResponse.class);
+        PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpSession.class);
+        PARAM_TYPES_TO_IGNORE.add(java.security.Principal.class);
+        PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpSession.class);
+        PARAM_TYPES_TO_IGNORE.add(java.util.Locale.class);
+        PARAM_TYPES_TO_IGNORE.add(HttpMethod.class);
+        PARAM_TYPES_TO_IGNORE.add(java.util.TimeZone.class);
+        PARAM_TYPES_TO_IGNORE.add(java.time.ZoneId.class);
+        PARAM_TYPES_TO_IGNORE.add(java.io.InputStream.class);
+        PARAM_TYPES_TO_IGNORE.add(java.io.Reader.class);
+        PARAM_TYPES_TO_IGNORE.add(java.io.OutputStream.class);
+        PARAM_TYPES_TO_IGNORE.add(java.util.Map.class);
+        PARAM_TYPES_TO_IGNORE.add(org.springframework.ui.Model.class);
+        PARAM_TYPES_TO_IGNORE.add(org.springframework.ui.ModelMap.class);
+        PARAM_TYPES_TO_IGNORE.add(RedirectAttributes.class);
+        PARAM_TYPES_TO_IGNORE.add(Errors.class);
+        PARAM_TYPES_TO_IGNORE.add(BindingResult.class);
+        PARAM_TYPES_TO_IGNORE.add(SessionStatus.class);
+        PARAM_TYPES_TO_IGNORE.add(UriComponentsBuilder.class);
+        PARAM_TYPES_TO_IGNORE.add(BindingResult.class);
     }
 
     @Override
