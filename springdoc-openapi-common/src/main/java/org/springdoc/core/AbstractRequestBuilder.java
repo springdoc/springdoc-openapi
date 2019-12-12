@@ -34,7 +34,7 @@ public abstract class AbstractRequestBuilder {
     private final AbstractParameterBuilder parameterBuilder;
     private final RequestBodyBuilder requestBodyBuilder;
     private final OperationBuilder operationBuilder;
-    public static List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
+    protected static final List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
 
     protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
                                      OperationBuilder operationBuilder) {
