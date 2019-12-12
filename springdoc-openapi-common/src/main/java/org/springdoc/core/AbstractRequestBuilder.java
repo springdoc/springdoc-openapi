@@ -1,6 +1,7 @@
 package org.springdoc.core;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Schema;
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.RequestInfo.ParameterType;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.HandlerMethod;
@@ -32,6 +34,7 @@ public abstract class AbstractRequestBuilder {
     private final AbstractParameterBuilder parameterBuilder;
     private final RequestBodyBuilder requestBodyBuilder;
     private final OperationBuilder operationBuilder;
+    public static List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
 
     protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
                                      OperationBuilder operationBuilder) {
@@ -41,7 +44,9 @@ public abstract class AbstractRequestBuilder {
         this.operationBuilder = operationBuilder;
     }
 
-    protected abstract boolean isParamTypeToIgnore(Class<?> paramType);
+    protected boolean isParamTypeToIgnore(Class<?> paramType){
+        return false;
+    }
 
     public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
                            Operation operation, MethodAttributes methodAttributes) {
@@ -110,7 +115,7 @@ public abstract class AbstractRequestBuilder {
         if (parameter.isAnnotationPresent(PathVariable.class)) {
             return false;
         }
-        return parameterBuilder.isAnnotationToIgnore(parameter) || isParamTypeToIgnore(parameter.getType());
+        return parameterBuilder.isAnnotationToIgnore(parameter) || isParamTypeToIgnore(parameter.getType()) || PARAM_TYPES_TO_IGNORE.contains(parameter.getType()) || (AnnotationUtils.findAnnotation(parameter.getType(), Hidden.class) != null);
     }
 
     private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
