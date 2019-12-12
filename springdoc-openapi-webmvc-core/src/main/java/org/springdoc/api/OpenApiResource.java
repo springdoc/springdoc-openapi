@@ -5,6 +5,7 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.core.util.Yaml;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.core.AbstractRequestBuilder;
@@ -13,6 +14,7 @@ import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -102,13 +104,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
         if (showActuator)
             result = operationPath.startsWith(DEFAULT_PATH_SEPARATOR);
         else {
-            ResponseBody requestBodyAnnotation = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
+            ResponseBody responseBodyAnnotation = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
                     ResponseBody.class);
-            if (requestBodyAnnotation == null)
-                requestBodyAnnotation = ReflectionUtils.getAnnotation(handlerMethod.getMethod(), ResponseBody.class);
+
+            if (responseBodyAnnotation == null)
+                responseBodyAnnotation = ReflectionUtils.getAnnotation(handlerMethod.getMethod(), ResponseBody.class);
             result = operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
                     && (restControllers.containsKey(handlerMethod.getBean().toString())
-                    || (requestBodyAnnotation != null));
+                    || (responseBodyAnnotation != null && AnnotationUtils.findAnnotation(handlerMethod.getBeanType(),Hidden.class) ==null));
         }
 
         return result;
