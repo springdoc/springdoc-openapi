@@ -5,7 +5,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class IgnoredParameterTypes {
-    static {
+
+    public IgnoredParameterTypes() {
         AbstractRequestBuilder.PARAM_TYPES_TO_IGNORE.add(Authentication.class);
     }
+
 }

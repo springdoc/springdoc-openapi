@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app2.app1;
+package test.org.springdoc.api.app2;
 
 import test.org.springdoc.api.AbstractSpringDocTest;
 
