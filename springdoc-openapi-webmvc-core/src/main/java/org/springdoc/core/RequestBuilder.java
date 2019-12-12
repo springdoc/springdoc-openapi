@@ -21,31 +21,12 @@ public class RequestBuilder extends AbstractRequestBuilder {
     }
 
     static {
-        PARAM_TYPES_TO_IGNORE.add(WebRequest.class);
-        PARAM_TYPES_TO_IGNORE.add(NativeWebRequest.class);
         PARAM_TYPES_TO_IGNORE.add(javax.servlet.ServletRequest.class);
         PARAM_TYPES_TO_IGNORE.add(javax.servlet.ServletResponse.class);
         PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpServletRequest.class);
         PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpServletResponse.class);
         PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpSession.class);
-        PARAM_TYPES_TO_IGNORE.add(java.security.Principal.class);
         PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpSession.class);
-        PARAM_TYPES_TO_IGNORE.add(java.util.Locale.class);
-        PARAM_TYPES_TO_IGNORE.add(HttpMethod.class);
-        PARAM_TYPES_TO_IGNORE.add(java.util.TimeZone.class);
-        PARAM_TYPES_TO_IGNORE.add(java.time.ZoneId.class);
-        PARAM_TYPES_TO_IGNORE.add(java.io.InputStream.class);
-        PARAM_TYPES_TO_IGNORE.add(java.io.Reader.class);
-        PARAM_TYPES_TO_IGNORE.add(java.io.OutputStream.class);
-        PARAM_TYPES_TO_IGNORE.add(java.util.Map.class);
-        PARAM_TYPES_TO_IGNORE.add(org.springframework.ui.Model.class);
-        PARAM_TYPES_TO_IGNORE.add(org.springframework.ui.ModelMap.class);
-        PARAM_TYPES_TO_IGNORE.add(RedirectAttributes.class);
-        PARAM_TYPES_TO_IGNORE.add(Errors.class);
-        PARAM_TYPES_TO_IGNORE.add(BindingResult.class);
-        PARAM_TYPES_TO_IGNORE.add(SessionStatus.class);
-        PARAM_TYPES_TO_IGNORE.add(UriComponentsBuilder.class);
-        PARAM_TYPES_TO_IGNORE.add(BindingResult.class);
     }
 
     @Override
