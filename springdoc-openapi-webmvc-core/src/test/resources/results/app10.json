@@ -33,6 +33,29 @@
           }
         }
       }
+    },
+    "/testreq": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "testRequestAttribute",
+        "parameters": [
+          {
+            "name": "s",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response"
+          }
+        }
+      }
     }
   },
   "components": {}
