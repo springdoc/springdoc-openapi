@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import static java.lang.annotation.ElementType.METHOD;
 
 @RestController
 @RequestMapping(path = "/demo",
@@ -41,7 +40,8 @@ public class HelloController {
     }
 
     @GetMapping("operation3")
-    @Operation(summary = "Operation 3 (expected result - 3 parameters)",parameters = {
+    @Operation(summary = "Operation 3 (expected result - 3 parameters)")
+    @Parameters({
             @Parameter(name = "pageNumber", description = "page number",
                     in = ParameterIn.QUERY, schema = @Schema(type = "integer")),
             @Parameter(name = "pageSize", description = "page size",
@@ -62,7 +62,7 @@ public class HelloController {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @Target({ METHOD })
+    @Target({ ElementType.METHOD })
     @Parameters({
             @Parameter(name = "pageNumber", description = "page number",
                     in = ParameterIn.QUERY, schema = @Schema(type = "integer")),
@@ -74,7 +74,7 @@ public class HelloController {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @Target({ METHOD })
+    @Target({ ElementType.METHOD })
     @Parameters({
             @Parameter(name = "sort", description = "sort specification",
                     in = ParameterIn.QUERY, schema = @Schema(type = "string"))
