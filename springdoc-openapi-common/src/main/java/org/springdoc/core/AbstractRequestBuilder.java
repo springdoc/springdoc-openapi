@@ -62,6 +62,7 @@ public abstract class AbstractRequestBuilder {
         PARAM_TYPES_TO_IGNORE.add(BindingResult.class);
         PARAM_TYPES_TO_IGNORE.add(SessionStatus.class);
         PARAM_TYPES_TO_IGNORE.add(UriComponentsBuilder.class);
+        PARAM_TYPES_TO_IGNORE.add(RequestAttribute.class);
     }
 
     protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
