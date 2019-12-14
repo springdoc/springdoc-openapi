@@ -4,18 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.18] - 2019-12-13
+## [1.2.18] - 2019-12-14
 
 ### Addded
 - Globally exclude params for webflux #228
 - Added ability to ignore param with @hidden annotation at class level #255
 - Support of spring.mvc.servlet.path #238
 - ignore Authentication in controller params #245
-- Added support for oauth2RedirectUrl  #240
+- Support for oauth2RedirectUrl  #240
+- Support of @Hidden at class level. #260
+- Ability for using properties from application.yml to declare security urls: (openIdConnectUrl - authorizationUrl - refreshUrl - tokenUrl) #231
+- Added support of annotation @Parameters (without @Operation) #241
+
 ### Changed 
 - Downgrade swagger-ui to 3.24.0, fixes #239
-### Fixed
 
+### Fixed
+- Fixes error with JDK 11 + Kotlin #248
 ## [1.2.17] - 2019-12-05
 ### Addded
 - Handle multiple endpoints on @GetParam #219
