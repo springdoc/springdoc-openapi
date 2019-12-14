@@ -120,7 +120,7 @@ public abstract class AbstractRequestBuilder {
                         methodAttributes.getJsonViewAnnotation());
                 // Merge with the operation parameters
                 parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
-                if (isValidPararameter(parameter)) {
+                if (isValidParameter(parameter)) {
                     applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
                 } else if (!RequestMethod.GET.equals(requestMethod)) {
                     requestBodyInfo.incrementNbParam();
@@ -131,7 +131,26 @@ public abstract class AbstractRequestBuilder {
             }
         }
 
-        setParams(operation, operationParameters, requestBodyInfo);
+        LinkedHashMap<String, Parameter> map = operationParameters.stream()
+                .collect(Collectors.toMap(
+                        Parameter::getName,
+                        parameter -> parameter,
+                        (u, v) -> {
+                            throw new IllegalStateException(String.format("Duplicate key %s", u));
+                        },
+                        LinkedHashMap::new
+                ));
+
+        for (Map.Entry<String, io.swagger.v3.oas.annotations.Parameter> entry : parametersDocMap.entrySet()) {
+            if (entry.getKey() != null && !map.containsKey(entry.getKey()) && !entry.getValue().hidden()) {
+                //Convert
+                Parameter parameter = parameterBuilder.buildParameterFromDoc(entry.getValue(), components,
+                        methodAttributes.getJsonViewAnnotation());
+                map.put(entry.getKey(), parameter);
+            }
+        }
+
+        setParams(operation, new ArrayList(map.values()) , requestBodyInfo);
         // allow for customisation
         operation = customiseOperation(operation, handlerMethod);
 
@@ -155,7 +174,7 @@ public abstract class AbstractRequestBuilder {
             operation.setRequestBody(requestBodyInfo.getRequestBody());
     }
 
-    private boolean isValidPararameter(Parameter parameter) {
+    private boolean isValidParameter(Parameter parameter) {
         return parameter != null && (parameter.getName() != null || parameter.get$ref() != null);
     }
 
@@ -319,24 +338,24 @@ public abstract class AbstractRequestBuilder {
     private Map<String, io.swagger.v3.oas.annotations.Parameter> getApiParameters(Method method) {
         Class<?> declaringClass = method.getDeclaringClass();
 
-        Set<io.swagger.v3.oas.annotations.Parameters> apiParamerersDoc = AnnotatedElementUtils
+        Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDoc = AnnotatedElementUtils
                 .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameters.class);
-        Map<String, io.swagger.v3.oas.annotations.Parameter> apiParamerersMap = apiParamerersDoc.stream()
+        Map<String, io.swagger.v3.oas.annotations.Parameter> apiParametersMap = apiParametersDoc.stream()
                 .flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x));
 
         Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDocDeclaringClass = AnnotatedElementUtils
                 .findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameters.class);
-        apiParamerersMap.putAll(apiParametersDocDeclaringClass.stream()
+        apiParametersMap.putAll(apiParametersDocDeclaringClass.stream()
                 .flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x)));
 
-        Set<io.swagger.v3.oas.annotations.Parameter> apiParamererDoc = AnnotatedElementUtils
+        Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDoc = AnnotatedElementUtils
                 .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameter.class);
-        apiParamerersMap.putAll(apiParamererDoc.stream().collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x)));
+        apiParametersMap.putAll(apiParameterDoc.stream().collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x)));
 
         Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClass = AnnotatedElementUtils
                 .findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameter.class);
-        apiParamerersMap.putAll(apiParameterDocDeclaringClass.stream().collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x)));
+        apiParametersMap.putAll(apiParameterDocDeclaringClass.stream().collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x)));
 
-        return apiParamerersMap;
+        return apiParametersMap;
     }
 }
