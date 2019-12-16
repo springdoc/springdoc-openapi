@@ -7,13 +7,11 @@ import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.security.*;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 
 import java.util.*;
 
-@Component
 class SecurityParser {
 
     private final PropertyResolverUtils propertyResolverUtils;

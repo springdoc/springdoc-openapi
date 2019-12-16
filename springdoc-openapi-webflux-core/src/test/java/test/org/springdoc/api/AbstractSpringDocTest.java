@@ -3,6 +3,7 @@ package test.org.springdoc.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springdoc.api.OpenApiResource;
 import org.springdoc.core.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -18,7 +19,7 @@ import java.nio.file.Paths;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-@WebFluxTest
+@WebFluxTest(controllers = {OpenApiResource.class})
 @ActiveProfiles("test")
 public abstract class AbstractSpringDocTest {
 

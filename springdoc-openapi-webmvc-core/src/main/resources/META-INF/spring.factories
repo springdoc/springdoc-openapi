@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.springdoc.core.SpringDocWebMvcConfiguration,\
+org.springdoc.core.SpringDocWebMvcActuatorConfiguration,\
+org.springdoc.core.MultipleOpenApiSupportConfiguration

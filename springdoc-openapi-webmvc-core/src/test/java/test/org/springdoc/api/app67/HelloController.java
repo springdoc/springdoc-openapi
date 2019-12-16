@@ -62,7 +62,7 @@ public class HelloController {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @Target({ ElementType.METHOD })
+    @Target({ElementType.METHOD})
     @Parameters({
             @Parameter(name = "pageNumber", description = "page number",
                     in = ParameterIn.QUERY, schema = @Schema(type = "integer")),
@@ -74,7 +74,7 @@ public class HelloController {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @Target({ ElementType.METHOD })
+    @Target({ElementType.METHOD})
     @Parameters({
             @Parameter(name = "sort", description = "sort specification",
                     in = ParameterIn.QUERY, schema = @Schema(type = "string"))

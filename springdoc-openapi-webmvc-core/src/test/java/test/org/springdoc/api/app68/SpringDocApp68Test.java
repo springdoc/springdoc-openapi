@@ -29,8 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(properties ="springdoc.api-docs.groups.enabled=true")
-public class SpringDocApp68Test  {
+@TestPropertySource(properties = "springdoc.api-docs.groups.enabled=true")
+public class SpringDocApp68Test {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractSpringDocTest.class);
 
@@ -42,7 +42,7 @@ public class SpringDocApp68Test  {
     @Test
     public void testApp1() throws Exception {
         className = getClass().getSimpleName();
-        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL+"/store")).andExpect(status().isOk())
+        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/store")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
         String result = mockMvcResult.getResponse().getContentAsString();
         Path path = Paths.get(getClass().getClassLoader().getResource("results/app681.json").toURI());
@@ -54,7 +54,7 @@ public class SpringDocApp68Test  {
     @Test
     public void testApp2() throws Exception {
         className = getClass().getSimpleName();
-        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL+"/others")).andExpect(status().isOk())
+        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/others")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
         String result = mockMvcResult.getResponse().getContentAsString();
         Path path = Paths.get(getClass().getClassLoader().getResource("results/app682.json").toURI());

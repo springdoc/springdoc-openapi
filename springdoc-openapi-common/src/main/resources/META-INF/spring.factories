@@ -1,1 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.springdoc.config.SpringDocConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.springdoc.core.SpringDocConfiguration

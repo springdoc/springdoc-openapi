@@ -113,7 +113,7 @@ class EmployeeController {
 
         Link newlyCreatedLink = linkTo(methodOn(EmployeeController.class).findOne(id)).withSelfRel();
 
-            return ResponseEntity.noContent().location(new URI(newlyCreatedLink.getHref())).build();
+        return ResponseEntity.noContent().location(new URI(newlyCreatedLink.getHref())).build();
 
     }
 

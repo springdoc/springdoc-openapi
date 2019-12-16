@@ -62,7 +62,7 @@ public abstract class AbstractOpenApiResource {
         this.responseBuilder = responseBuilder;
         this.operationParser = operationParser;
         this.openApiCustomisers = openApiCustomisers;
-        this.pathsToMatch=pathsToMatch;
+        this.pathsToMatch = pathsToMatch;
     }
 
     protected synchronized OpenAPI getOpenApi() {

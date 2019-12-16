@@ -14,7 +14,6 @@ import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +32,6 @@ import static org.springdoc.core.Constants.*;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
-@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class OpenApiResource extends AbstractOpenApiResource {
 
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
@@ -56,8 +54,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
-                           Optional<List<OpenApiCustomiser>> openApiCustomisers , List<String> pathsToMatch) {
-        super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers,pathsToMatch);
+                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch) {
+        super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, pathsToMatch);
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
         this.servletContextProvider = servletContextProvider;
     }
@@ -122,7 +120,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
                 responseBodyAnnotation = ReflectionUtils.getAnnotation(handlerMethod.getMethod(), ResponseBody.class);
             result = operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
                     && (restControllers.containsKey(handlerMethod.getBean().toString())
-                    || (responseBodyAnnotation != null && AnnotationUtils.findAnnotation(handlerMethod.getBeanType(),Hidden.class) ==null));
+                    || (responseBodyAnnotation != null && AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), Hidden.class) == null));
         }
 
         return result;
