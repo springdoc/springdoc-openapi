@@ -53,6 +53,18 @@ public abstract class AbstractOpenApiResource {
         this.openApiCustomisers = openApiCustomisers;
     }
 
+    protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+                                      AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+                                      Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch) {
+        super();
+        this.openAPIBuilder = openAPIBuilder;
+        this.requestBuilder = requestBuilder;
+        this.responseBuilder = responseBuilder;
+        this.operationParser = operationParser;
+        this.openApiCustomisers = openApiCustomisers;
+        this.pathsToMatch=pathsToMatch;
+    }
+
     protected synchronized OpenAPI getOpenApi() {
         OpenAPI openApi;
         if (!computeDone) {
