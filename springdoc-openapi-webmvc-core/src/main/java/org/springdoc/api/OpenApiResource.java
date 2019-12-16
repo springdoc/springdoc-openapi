@@ -12,6 +12,7 @@ import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.AbstractResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -42,11 +43,21 @@ public class OpenApiResource extends AbstractOpenApiResource {
     @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
     private boolean showActuator;
 
+    @Autowired
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
                            Optional<List<OpenApiCustomiser>> openApiCustomisers) {
         super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers);
+        this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+        this.servletContextProvider = servletContextProvider;
+    }
+
+    public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+                           AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+                           RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
+                           Optional<List<OpenApiCustomiser>> openApiCustomisers , List<String> pathsToMatch) {
+        super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers,pathsToMatch);
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
         this.servletContextProvider = servletContextProvider;
     }
