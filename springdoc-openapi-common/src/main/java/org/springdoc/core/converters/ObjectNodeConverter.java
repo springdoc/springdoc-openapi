@@ -8,13 +8,11 @@ import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
-import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 
 @SuppressWarnings("rawtypes")
-@Component
-class ObjectNodeConverter implements ModelConverter {
+public class ObjectNodeConverter implements ModelConverter {
 
     @Override
     public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {

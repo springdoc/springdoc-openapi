@@ -5,14 +5,12 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.ParameterizedType;
 
 @SuppressWarnings("rawtypes")
-@Component
 public class ResponseBuilder extends AbstractResponseBuilder {
 
     public ResponseBuilder(OperationBuilder operationBuilder) {
@@ -43,8 +41,7 @@ public class ResponseBuilder extends AbstractResponseBuilder {
             } else {
                 schemaN = calculateFluxSchema(components, parameterizedType, jsonView);
             }
-        }
-        else if (ResponseEntity.class.getName().contentEquals(parameterizedType.getRawType().getTypeName())) {
+        } else if (ResponseEntity.class.getName().contentEquals(parameterizedType.getRawType().getTypeName())) {
             schemaN = calculateSchemaParameterizedType(components, parameterizedType, jsonView);
         }
         return schemaN;

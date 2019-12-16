@@ -21,7 +21,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +33,6 @@ import java.util.stream.Stream;
 
 import static org.springdoc.core.Constants.*;
 
-@Component
 public class OpenAPIBuilder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIBuilder.class);

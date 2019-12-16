@@ -15,7 +15,6 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Method;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 
 import static org.springdoc.core.Constants.*;
 
-@Component
 public class OperationBuilder {
 
     private final AbstractParameterBuilder parameterBuilder;

@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.method.HandlerMethod;
 
@@ -15,7 +14,6 @@ import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings("rawtypes")
-@Component
 public class RequestBodyBuilder {
 
     private final AbstractParameterBuilder parameterBuilder;

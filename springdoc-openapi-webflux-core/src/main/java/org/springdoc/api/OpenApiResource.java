@@ -11,7 +11,6 @@ import org.springdoc.core.AbstractResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +29,6 @@ import static org.springdoc.core.Constants.*;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
-@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class OpenApiResource extends AbstractOpenApiResource {
 
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;

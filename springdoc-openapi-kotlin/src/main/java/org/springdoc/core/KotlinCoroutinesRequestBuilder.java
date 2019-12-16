@@ -2,12 +2,9 @@ package org.springdoc.core;
 
 import io.swagger.v3.oas.models.Operation;
 import kotlin.coroutines.Continuation;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 
-@Primary
-@Component
+
 public class KotlinCoroutinesRequestBuilder extends AbstractRequestBuilder {
 
 

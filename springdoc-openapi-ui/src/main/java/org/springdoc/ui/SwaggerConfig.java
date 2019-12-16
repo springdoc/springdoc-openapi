@@ -2,6 +2,7 @@ package org.springdoc.ui;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -29,5 +30,11 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
         }
         registry.addResourceHandler(uiRootPath + "/**").addResourceLocations(webJarsPrefixUrl + "/")
                 .resourceChain(false);
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
+    public SwaggerWelcome swaggerWelcome() {
+        return new SwaggerWelcome();
     }
 }

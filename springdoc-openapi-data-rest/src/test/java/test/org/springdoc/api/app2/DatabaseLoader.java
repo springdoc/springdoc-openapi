@@ -27,19 +27,19 @@ import org.springframework.stereotype.Component;
 @Component
 class DatabaseLoader {
 
-	/**
-	 * Use Spring to inject a {@link EmployeeRepository} that can then load data. Since this will run only after the app
-	 * is operational, the database will be up.
-	 *
-	 * @param repository
-	 */
-	@Bean
-	CommandLineRunner init(EmployeeRepository repository) {
+    /**
+     * Use Spring to inject a {@link EmployeeRepository} that can then load data. Since this will run only after the app
+     * is operational, the database will be up.
+     *
+     * @param repository
+     */
+    @Bean
+    CommandLineRunner init(EmployeeRepository repository) {
 
-		return args -> {
-			repository.save(new Employee("Frodo", "Baggins", "ring bearer"));
-			repository.save(new Employee("Bilbo", "Baggins", "burglar"));
-		};
-	}
+        return args -> {
+            repository.save(new Employee("Frodo", "Baggins", "ring bearer"));
+            repository.save(new Employee("Bilbo", "Baggins", "burglar"));
+        };
+    }
 
 }

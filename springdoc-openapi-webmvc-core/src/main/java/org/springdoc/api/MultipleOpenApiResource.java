@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.*;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 import static org.springdoc.core.Constants.*;
 
 @RestController
-@ConditionalOnProperty(name = SPRINGDOC_GROUPS_ENABLED, matchIfMissing = false)
 public class MultipleOpenApiResource {
 
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;

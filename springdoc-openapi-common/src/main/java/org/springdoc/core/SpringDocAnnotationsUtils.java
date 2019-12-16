@@ -14,7 +14,6 @@ import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
@@ -23,7 +22,6 @@ import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings({"rawtypes"})
-@Component
 class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
     private final List<ModelConverter> modelConverters;
