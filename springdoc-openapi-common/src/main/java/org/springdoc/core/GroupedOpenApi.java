@@ -1,6 +1,7 @@
 package org.springdoc.core;
 
 import org.springdoc.api.OpenApiCustomiser;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,12 +13,15 @@ public class GroupedOpenApi {
     private final String group;
     private final List<OpenApiCustomiser> openApiCustomisers;
     private final List<String> pathsToMatch;
-
+    private final List<String> packagesToScan;
 
     private GroupedOpenApi(Builder builder) {
         this.group = Objects.requireNonNull(builder.group, "group");
+        this.pathsToMatch = builder.pathsToMatch;
+        this.packagesToScan = builder.packagesToScan;
         this.openApiCustomisers = Objects.requireNonNull(builder.openApiCustomisers);
-        this.pathsToMatch = Objects.requireNonNull(builder.pathsToMatch);
+        if (CollectionUtils.isEmpty(this.pathsToMatch) && CollectionUtils.isEmpty(this.packagesToScan))
+            throw new IllegalStateException("Packages to scan or paths to filter can not be both null for the group:"+ this.group);
     }
 
     public static Builder builder() {
@@ -32,6 +36,10 @@ public class GroupedOpenApi {
         return pathsToMatch;
     }
 
+    public List<String> getPackagesToScan() {
+        return packagesToScan;
+    }
+
     public List<OpenApiCustomiser> getOpenApiCustomisers() {
         return openApiCustomisers;
     }
@@ -39,6 +47,7 @@ public class GroupedOpenApi {
     public static class Builder {
         private String group;
         private List<String> pathsToMatch;
+        private List<String> packagesToScan;
         private List<OpenApiCustomiser> openApiCustomisers = new ArrayList<>();
 
         private Builder() {
@@ -50,8 +59,13 @@ public class GroupedOpenApi {
             return this;
         }
 
-        public Builder setPathsToMatch(String[] pathsToMatch) {
+        public Builder pathsToMatch(String[] pathsToMatch) {
             this.pathsToMatch = Arrays.asList(pathsToMatch);
+            return this;
+        }
+
+        public Builder packagesToScan(String[] packagesToScan) {
+            this.packagesToScan = Arrays.asList(packagesToScan);
             return this;
         }
 

@@ -3,7 +3,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-package test.org.springdoc.api.app68.api;
+package test.org.springdoc.api.app68.api.user;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import test.org.springdoc.api.app68.model.User;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -104,4 +105,8 @@ public interface UserApi {
         return getDelegate().updateUser(username, user);
     }
 
+    @GetMapping(value = "/v1/users")
+    default void users(@Valid @NotBlank String name) {
+
+    }
 }

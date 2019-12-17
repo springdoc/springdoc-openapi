@@ -1,9 +1,10 @@
-package test.org.springdoc.api.app68.api;
+package test.org.springdoc.api.app68.api.store;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
+import test.org.springdoc.api.app68.api.ApiUtil;
 import test.org.springdoc.api.app68.model.Order;
 
 import java.util.Map;

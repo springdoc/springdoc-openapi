@@ -19,14 +19,29 @@ public class SpringDocTestApp {
     @Bean
     public GroupedOpenApi storeOpenApi() {
         String paths[] = {"/store/**"};
-        return GroupedOpenApi.builder().setGroup("store").setPathsToMatch(paths)
+        return GroupedOpenApi.builder().setGroup("stores").pathsToMatch(paths)
                 .build();
     }
 
     @Bean
     public GroupedOpenApi userOpenApi() {
-        String paths[] = {"/user/**", "/pet/**"};
-        return GroupedOpenApi.builder().setGroup("others").setPathsToMatch(paths)
+        String packagesToscan[] = {"test.org.springdoc.api.app68.api.user"};
+        return GroupedOpenApi.builder().setGroup("users").packagesToScan(packagesToscan)
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi petOpenApi() {
+        String paths[] = {"/pet/**"};
+        return GroupedOpenApi.builder().setGroup("pets").pathsToMatch(paths)
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi groupOpenApi() {
+        String paths[] = {"/v1/**"};
+        String packagesToscan[] = {"test.org.springdoc.api.app68.api.user", "test.org.springdoc.api.app68.api.store"};
+        return GroupedOpenApi.builder().setGroup("groups").pathsToMatch(paths).packagesToScan(packagesToscan)
                 .build();
     }
 
