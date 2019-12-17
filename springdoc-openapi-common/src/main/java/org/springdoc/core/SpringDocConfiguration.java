@@ -37,9 +37,9 @@ public class SpringDocConfiguration {
 
     @Bean
     public OperationBuilder operationBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                                             SecurityParser securityParser, OpenAPIBuilder openAPIBuilder) {
+                                             SecurityParser securityParser, OpenAPIBuilder openAPIBuilder, PropertyResolverUtils propertyResolverUtils) {
         return new OperationBuilder(parameterBuilder, requestBodyBuilder,
-                securityParser, openAPIBuilder);
+                securityParser, openAPIBuilder,propertyResolverUtils);
     }
 
     @Bean
