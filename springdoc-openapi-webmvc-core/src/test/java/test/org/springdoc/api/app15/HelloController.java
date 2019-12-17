@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
     @GetMapping(value = "/persons")
-    @Operation(responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(hidden = true))))
+    @Operation(description = "${springdoc.operation-descriptions.myOperation}", responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(hidden = true))))
     public JSONObject persons() {
         return new JSONObject();
     }

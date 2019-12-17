@@ -11,65 +11,13 @@
     }
   ],
   "paths": {
-    "/demo/operation2": {
+    "/demo/operation4": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Operation 2 (expected result - 3 parameters)",
-        "operationId": "operation2",
-        "parameters": [
-          {
-            "name": "pageNumber",
-            "in": "query",
-            "description": "page number",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "description": "page size",
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "description": "sort specification",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/demo/operation3": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "Operation 3 (expected result - 3 parameters)",
-        "operationId": "operation3",
+        "summary": "Operation 4 (expected result - 3 parameters)",
+        "operationId": "operation4",
         "parameters": [
           {
             "name": "pageNumber",
@@ -141,14 +89,22 @@
         }
       }
     },
-    "/demo/operation4": {
+    "/demo/operation3": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Operation 4 (expected result - 3 parameters)",
-        "operationId": "operation4",
+        "summary": "Operation 3 (expected result - 3 parameters)",
+        "operationId": "operation3",
         "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "page number",
+            "schema": {
+              "type": "integer"
+            }
+          },
           {
             "name": "pageSize",
             "in": "query",
@@ -158,9 +114,53 @@
             }
           },
           {
+            "name": "sort",
+            "in": "query",
+            "description": "sort specification",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/demo/operation2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Operation 2 (expected result - 3 parameters)",
+        "operationId": "operation2",
+        "parameters": [
+          {
             "name": "pageNumber",
             "in": "query",
             "description": "page number",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "page size",
             "schema": {
               "type": "integer"
             }
