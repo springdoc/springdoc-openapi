@@ -342,8 +342,9 @@ public abstract class AbstractRequestBuilder {
 
         Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDoc = AnnotatedElementUtils
                 .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameters.class);
-        Map<String, io.swagger.v3.oas.annotations.Parameter> apiParametersMap = apiParametersDoc.stream()
-                .flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x));
+        LinkedHashMap<String, io.swagger.v3.oas.annotations.Parameter> apiParametersMap = apiParametersDoc.stream()
+                .flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x, (e1, e2) -> e2,
+                        LinkedHashMap::new));
 
         Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDocDeclaringClass = AnnotatedElementUtils
                 .findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameters.class);
