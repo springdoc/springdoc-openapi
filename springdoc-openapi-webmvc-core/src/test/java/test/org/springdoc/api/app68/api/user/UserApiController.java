@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app68.api;
+package test.org.springdoc.api.app68.api.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

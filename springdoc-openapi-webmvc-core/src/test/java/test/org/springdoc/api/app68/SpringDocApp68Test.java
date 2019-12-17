@@ -42,7 +42,7 @@ public class SpringDocApp68Test {
     @Test
     public void testApp1() throws Exception {
         className = getClass().getSimpleName();
-        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/store")).andExpect(status().isOk())
+        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/stores")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
         String result = mockMvcResult.getResponse().getContentAsString();
         Path path = Paths.get(getClass().getClassLoader().getResource("results/app681.json").toURI());
@@ -54,10 +54,34 @@ public class SpringDocApp68Test {
     @Test
     public void testApp2() throws Exception {
         className = getClass().getSimpleName();
-        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/others")).andExpect(status().isOk())
+        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/users")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
         String result = mockMvcResult.getResponse().getContentAsString();
         Path path = Paths.get(getClass().getClassLoader().getResource("results/app682.json").toURI());
+        byte[] fileBytes = Files.readAllBytes(path);
+        String expected = new String(fileBytes);
+        assertEquals(expected, result, true);
+    }
+
+    @Test
+    public void testApp3() throws Exception {
+        className = getClass().getSimpleName();
+        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/pets")).andExpect(status().isOk())
+                .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
+        String result = mockMvcResult.getResponse().getContentAsString();
+        Path path = Paths.get(getClass().getClassLoader().getResource("results/app683.json").toURI());
+        byte[] fileBytes = Files.readAllBytes(path);
+        String expected = new String(fileBytes);
+        assertEquals(expected, result, true);
+    }
+
+    @Test
+    public void testApp4() throws Exception {
+        className = getClass().getSimpleName();
+        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/groups")).andExpect(status().isOk())
+                .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
+        String result = mockMvcResult.getResponse().getContentAsString();
+        Path path = Paths.get(getClass().getClassLoader().getResource("results/app684.json").toURI());
         byte[] fileBytes = Files.readAllBytes(path);
         String expected = new String(fileBytes);
         assertEquals(expected, result, true);

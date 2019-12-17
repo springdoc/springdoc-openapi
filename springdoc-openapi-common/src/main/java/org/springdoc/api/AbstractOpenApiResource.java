@@ -55,7 +55,7 @@ public abstract class AbstractOpenApiResource {
 
     protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                                       AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
-                                      Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch) {
+                                      Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan) {
         super();
         this.openAPIBuilder = openAPIBuilder;
         this.requestBuilder = requestBuilder;
@@ -63,6 +63,7 @@ public abstract class AbstractOpenApiResource {
         this.operationParser = operationParser;
         this.openApiCustomisers = openApiCustomisers;
         this.pathsToMatch = pathsToMatch;
+        this.packagesToScan = packagesToScan;
     }
 
     protected synchronized OpenAPI getOpenApi() {

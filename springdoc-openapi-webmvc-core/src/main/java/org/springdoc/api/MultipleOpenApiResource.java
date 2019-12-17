@@ -46,7 +46,7 @@ public class MultipleOpenApiResource {
                                 operationParser,
                                 requestMappingHandlerMapping,
                                 servletContextProvider,
-                                Optional.of(item.getOpenApiCustomisers()), item.getPathsToMatch()
+                                Optional.of(item.getOpenApiCustomisers()), item.getPathsToMatch(), item.getPackagesToScan()
                         )
                 ));
     }

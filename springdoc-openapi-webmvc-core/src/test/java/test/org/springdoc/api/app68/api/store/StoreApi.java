@@ -3,7 +3,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-package test.org.springdoc.api.app68.api;
+package test.org.springdoc.api.app68.api.store;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,6 +21,7 @@ import test.org.springdoc.api.app68.model.Order;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.Map;
 
 @javax.annotation.Generated(value = "org.springdoc.demo.app2.codegen.languages.SpringCodegen", date = "2019-07-11T00:09:29.839+02:00[Europe/Paris]")
@@ -73,4 +74,8 @@ public interface StoreApi {
         return getDelegate().placeOrder(order);
     }
 
+    @GetMapping(value = "/v1/stores")
+    default void stores(@Valid @NotBlank String name) {
+
+    }
 }

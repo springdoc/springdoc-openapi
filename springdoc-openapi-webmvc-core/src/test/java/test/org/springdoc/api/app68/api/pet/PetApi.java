@@ -3,7 +3,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-package test.org.springdoc.api.app68.api;
+package test.org.springdoc.api.app68.api.pet;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +22,7 @@ import test.org.springdoc.api.app68.model.ModelApiResponse;
 import test.org.springdoc.api.app68.model.Pet;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -125,4 +126,9 @@ public interface PetApi {
         return getDelegate().uploadFile(petId, additionalMetadata, file);
     }
 
+
+    @GetMapping(value = "/v1/pets")
+    default void pets(@Valid @NotBlank String name) {
+
+    }
 }
