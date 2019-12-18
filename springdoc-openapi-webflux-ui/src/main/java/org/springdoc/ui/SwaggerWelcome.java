@@ -15,6 +15,7 @@ import java.net.URI;
 import java.util.Map;
 
 import static org.springdoc.core.Constants.*;
+import static org.springdoc.core.SwaggerUiQueryParamsAppender.appendSwaggerUiQueryParams;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
@@ -38,23 +39,11 @@ public class SwaggerWelcome {
     @Bean
     @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
     RouterFunction<ServerResponse> routerFunction() {
-        String url = webJarsPrefixUrl +
-                SWAGGER_UI_URL +
-                apiDocsUrl +
-                DEFAULT_VALIDATOR_URL;
+        String baseUrl = webJarsPrefixUrl + SWAGGER_UI_URL;
 
-        final Map<String, String> params = swaggerUiConfig.getConfigParameters();
-
-
-        final UriComponentsBuilder builder = params
-                .entrySet()
-                .stream()
-                .reduce(
-                        UriComponentsBuilder
-                                .fromUriString(url),
-                        (b, e) -> b.queryParam(e.getKey(), e.getValue()),
-                        (left, right) -> left);
-
+        final Map<String, String> swaggerUiParams = swaggerUiConfig.getConfigParameters();
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(baseUrl);
+        final UriComponentsBuilder builder = appendSwaggerUiQueryParams(uriBuilder, swaggerUiParams, apiDocsUrl);
 
         return route(GET(uiPath),
                 req -> ServerResponse.temporaryRedirect(URI.create(builder.build().encode().toString())).build());
