@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 import static org.springdoc.core.Constants.*;
+import static org.springdoc.core.SwaggerUiQueryParamsAppender.appendSwaggerUiQueryParams;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
 
@@ -47,25 +48,19 @@ class SwaggerWelcome {
             sbUrl.append(mvcServletPath);
         sbUrl.append(uiRootPath);
         sbUrl.append(SWAGGER_UI_URL);
+
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl.toString());
+        Map<String, String> swaggerUiParams = swaggerUiConfig.getConfigParameters();
+        String url = buildUrl(contextPath, apiDocsUrl);
+
+        return appendSwaggerUiQueryParams(uriBuilder, swaggerUiParams, url)
+                .build().encode().toString();
+    }
+
+    private String buildUrl(final String contextPath, final String docsUrl) {
         if (contextPath.endsWith(DEFAULT_PATH_SEPARATOR)) {
-            contextPath = contextPath.substring(0, contextPath.length() - 1);
-            sbUrl.append(contextPath).append(apiDocsUrl);
-        } else {
-            sbUrl.append(contextPath).append(apiDocsUrl);
+            return contextPath.substring(0, contextPath.length() - 1) + docsUrl;
         }
-        sbUrl.append(DEFAULT_VALIDATOR_URL);
-
-        final Map<String, String> params = swaggerUiConfig.getConfigParameters();
-
-        final UriComponentsBuilder builder = params
-                .entrySet()
-                .stream()
-                .reduce(
-                        UriComponentsBuilder
-                                .fromUriString(sbUrl.toString()),
-                        (b, e) -> b.queryParam(e.getKey(), e.getValue()),
-                        (left, right) -> left);
-
-        return builder.build().encode().toString();
+        return contextPath + docsUrl;
     }
 }
