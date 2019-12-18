@@ -18,6 +18,11 @@ import java.util.TreeMap;
 @Configuration
 @ConfigurationProperties(prefix = "springdoc.swagger-ui")
 public class SwaggerUiConfigProperties {
+
+    public static final String CONFIG_URL_PROPERTY = "configUrl";
+    public static final String VALIDATOR_URL_PROPERTY = "validatorUrl";
+    public static final String URL_PROPERTY = "url";
+
     /**
      * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
      */
@@ -31,6 +36,11 @@ public class SwaggerUiConfigProperties {
      * URL to fetch external configuration document from.
      */
     private String configUrl;
+
+    /**
+     * URL to validate specs against.
+     */
+    private String validatorUrl;
     /**
      * If set, enables filtering. The top bar will show an edit box that
      * could be used to filter the tagged operations that are shown.
@@ -104,7 +114,8 @@ public class SwaggerUiConfigProperties {
     public Map<String, String> getConfigParameters() {
         final Map<String, String> params = new TreeMap<>();
         put("layout", layout, params);
-        put("configUrl", configUrl, params);
+        put(CONFIG_URL_PROPERTY, configUrl, params);
+        put(VALIDATOR_URL_PROPERTY, validatorUrl, params);
         put("filter", filter, params);
         put("deepLinking", this.deepLinking, params);
         put("displayOperationId", displayOperationId, params);
@@ -140,6 +151,14 @@ public class SwaggerUiConfigProperties {
         if (!StringUtils.isEmpty(value)) {
             params.put(name, value);
         }
+    }
+
+    public String getValidatorUrl() {
+        return validatorUrl;
+    }
+
+    public void setValidatorUrl(String validatorUrl) {
+        this.validatorUrl = validatorUrl;
     }
 
     public String getPath() {
