@@ -13,6 +13,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -226,7 +227,7 @@ public abstract class AbstractResponseBuilder {
         }
         if (returnType instanceof ParameterizedType) {
             schemaN = calculateSchemaFromParameterizedType(components, (ParameterizedType) returnType, jsonView);
-        } else if (ResponseEntity.class.getName().equals(returnType.getTypeName())) {
+        } else if (ResponseEntity.class.getName().equals(returnType.getTypeName()) || HttpEntity.class.getName().equals(returnType.getTypeName())) {
             schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, jsonView);
         }
         if (schemaN == null) {
