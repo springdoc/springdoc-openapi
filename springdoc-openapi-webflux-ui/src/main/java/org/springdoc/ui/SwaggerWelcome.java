@@ -1,22 +1,25 @@
 package org.springdoc.ui;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Map;
 
 import static org.springdoc.core.Constants.*;
-import static org.springdoc.core.SwaggerUiQueryParamsAppender.appendSwaggerUiQueryParams;
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Controller
@@ -34,18 +37,39 @@ public class SwaggerWelcome {
     private String webJarsPrefixUrl;
 
     @Autowired
-    private SwaggerUiConfigProperties swaggerUiConfig;
+    public SwaggerUiConfigProperties swaggerUiConfig;
+
+    @Value(SPRINGDOC_GROUPS_ENABLED_VALUE)
+    private boolean groupsEnabled;
 
     @Bean
     @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
     RouterFunction<ServerResponse> routerFunction() {
         String baseUrl = webJarsPrefixUrl + SWAGGER_UI_URL;
-
-        final Map<String, String> swaggerUiParams = swaggerUiConfig.getConfigParameters();
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(baseUrl);
-        final UriComponentsBuilder builder = appendSwaggerUiQueryParams(uriBuilder, swaggerUiParams, apiDocsUrl);
-
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(baseUrl);
+        buildConfigUrl();
+        uriBuilder.queryParam(SwaggerUiConfigProperties.CONFIG_URL_PROPERTY, swaggerUiConfig.getConfigUrl());
         return route(GET(uiPath),
-                req -> ServerResponse.temporaryRedirect(URI.create(builder.build().encode().toString())).build());
+                req -> ServerResponse.temporaryRedirect(URI.create(uriBuilder.build().encode().toString())).build());
     }
+
+    @Bean
+    @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
+    RouterFunction<ServerResponse> getSwaggerUiConfig() {
+        buildConfigUrl();
+        return RouterFunctions.route(GET(swaggerUiConfig.getConfigUrl()).and(accept(MediaType.APPLICATION_JSON)), req -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(swaggerUiConfig.getConfigParameters()));
+    }
+
+    private void buildConfigUrl() {
+        if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl()))
+        {
+            String swaggerConfigUrl = apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+            swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
+            if (groupsEnabled)
+                swaggerUiConfig.addUrl(apiDocsUrl);
+            else
+                swaggerUiConfig.setUrl(apiDocsUrl);
+        }
+    }
+
 }

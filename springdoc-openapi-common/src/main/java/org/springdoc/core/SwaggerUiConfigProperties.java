@@ -6,9 +6,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * Please refer to the swagger
@@ -110,9 +113,17 @@ public class SwaggerUiConfigProperties {
      */
     private String oauth2RedirectUrl;
 
+    private String url;
 
-    public Map<String, String> getConfigParameters() {
-        final Map<String, String> params = new TreeMap<>();
+    private static List<SwaggerUrl> swaggerUrls = new ArrayList<>();
+
+    public static void addGroup(String group) {
+        SwaggerUrl swaggerUrl = new SwaggerUrl(group);
+        swaggerUrls.add(swaggerUrl);
+    }
+
+    public Map<String, Object> getConfigParameters() {
+        final Map<String, Object> params = new TreeMap<>();
         put("layout", layout, params);
         put(CONFIG_URL_PROPERTY, configUrl, params);
         put(VALIDATOR_URL_PROPERTY, validatorUrl, params);
@@ -132,22 +143,31 @@ public class SwaggerUiConfigProperties {
         if (!CollectionUtils.isEmpty(supportedSubmitMethods))
             put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
         put("oauth2RedirectUrl", oauth2RedirectUrl, params);
+        put("url", url, params);
+        put("urls", swaggerUrls, params);
         return params;
     }
 
-    protected void put(final String name, final Integer value, final Map<String, String> params) {
+    protected void put(String urls, List<SwaggerUrl> swaggerUrls, Map<String, Object> params) {
+        swaggerUrls = swaggerUrls.stream().filter(elt -> StringUtils.isNotEmpty(elt.getUrl())).collect(Collectors.toList());
+        if (!CollectionUtils.isEmpty(swaggerUrls)) {
+            params.put(urls, swaggerUrls);
+        }
+    }
+
+    protected void put(final String name, final Integer value, final Map<String, Object> params) {
         if (value != null) {
             params.put(name, value.toString());
         }
     }
 
-    protected void put(final String name, final Boolean value, final Map<String, String> params) {
+    protected void put(final String name, final Boolean value, final Map<String, Object> params) {
         if (value != null) {
             params.put(name, value.toString());
         }
     }
 
-    protected void put(final String name, final String value, final Map<String, String> params) {
+    protected void put(final String name, final String value, final Map<String, Object> params) {
         if (!StringUtils.isEmpty(value)) {
             params.put(name, value);
         }
@@ -303,5 +323,51 @@ public class SwaggerUiConfigProperties {
 
     public void setOauth2RedirectUrl(String oauth2RedirectUrl) {
         this.oauth2RedirectUrl = oauth2RedirectUrl;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public List<SwaggerUrl> getSwaggerUrls() {
+        return swaggerUrls;
+    }
+
+    public void setSwaggerUrls(List<SwaggerUrl> swaggerUrls) {
+        this.swaggerUrls = swaggerUrls;
+    }
+
+    public static void addUrl(String url) {
+        swaggerUrls.forEach(elt -> elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName()));
+    }
+
+
+    static class SwaggerUrl {
+        private String url;
+        private String name;
+
+        public SwaggerUrl(String group) {
+            this.name = group;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }

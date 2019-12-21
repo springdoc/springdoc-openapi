@@ -16,7 +16,7 @@ public class SpringDocApp1RedirectDefaultTest extends AbstractSpringDocTest {
                 .andExpect(status().isFound()).andReturn();
 
         String locationHeader = mvcResult.getResponse().getHeader("Location");
-        assertEquals("/swagger-ui/index.html?url=/v3/api-docs&validatorUrl=", locationHeader);
+        assertEquals("/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config", locationHeader);
     }
 
 }

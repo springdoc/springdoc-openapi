@@ -10,8 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MvcResult;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(properties = {
@@ -26,7 +28,11 @@ public class SpringDocApp1RedirectWithConfigTest extends AbstractSpringDocTest {
                 .andExpect(status().isFound()).andReturn();
 
         String locationHeader = mvcResult.getResponse().getHeader("Location");
-        assertEquals("/swagger-ui/index.html?url=/baf/batz&validatorUrl=/foo/validate", locationHeader);
+        assertEquals("/swagger-ui/index.html?configUrl=/baf/batz/swagger-config", locationHeader);
+
+        mvcResult = mockMvc.perform(get("/baf/batz/swagger-config"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.validatorUrl", is("/foo/validate"))).andReturn();
+
     }
 
 }
