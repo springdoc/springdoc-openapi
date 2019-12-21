@@ -7,9 +7,12 @@ public final class Constants {
     public static final String DEFAULT_API_DOCS_URL = "/v3/api-docs";
     public static final String DEFAULT_SERVER_DESCRIPTION = "Generated server url";
     public static final String API_DOCS_URL = "${springdoc.api-docs.path:#{T(org.springdoc.core.Constants).DEFAULT_API_DOCS_URL}}";
+    public static final String SWAGGGER_CONFIG_FILE = "swagger-config";
+    public static final String SWAGGER_CONFIG_URL =API_DOCS_URL +DEFAULT_PATH_SEPARATOR+ SWAGGGER_CONFIG_FILE;
     public static final String DEFAULT_API_DOCS_URL_YAML = API_DOCS_URL + ".yaml";
     public static final String SPRINGDOC_ENABLED = "springdoc.api-docs.enabled";
     public static final String SPRINGDOC_GROUPS_ENABLED = "springdoc.api-docs.groups.enabled";
+    public static final String SPRINGDOC_GROUPS_ENABLED_VALUE =  "${" + SPRINGDOC_GROUPS_ENABLED + ":false}";
     public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
     public static final String SPRINGDOC_SHOW_ACTUATOR = "springdoc.show.actuator";
     public static final String SPRINGDOC_SHOW_ACTUATOR_VALUE = "${" + SPRINGDOC_SHOW_ACTUATOR + ":false}";

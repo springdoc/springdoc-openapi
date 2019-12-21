@@ -29,7 +29,10 @@ public class SpringDocApp1RedirectWithConfigTest {
                 .expectStatus().isTemporaryRedirect();
 
         responseSpec.expectHeader()
-                .value("Location", Matchers.is("/webjars/swagger-ui/index.html?url=/baf/batz&validatorUrl=/foo/validate"));
+                .value("Location", Matchers.is("/webjars/swagger-ui/index.html?configUrl=/baf/batz/swagger-config"));
+
+        webTestClient.get().uri("/baf/batz/swagger-config").exchange()
+                .expectStatus().isOk().expectBody().jsonPath("$.validatorUrl","/foo/validate" );
     }
 
 }
