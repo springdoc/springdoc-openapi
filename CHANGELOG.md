@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.19] - 2019-12-22
+
+### Addded
+- Support for Multiple OpenAPI definitions in one Spring Boot #213
+- Support for spring-context-indexer #262
+- Added support using properties from application.yml for description field in swagger-annotations #231
+- Make validatorUrl configurable and fix overwrites #281
+- Improve support of HttpEntity. fixes #280
+
+
+### Changed 
+- Ignore ServerHttpRequest and ServerHttpResponse Webflux #270
+- Preserve order of parameters in @Parameters annotation #274
+- Changed the default value if consumes is missing, to MediaType.APPLICATION_JSON_VALUE #275
+- Renamed actuator property to springdoc.show-actuator #286
+
+### Fixed
+- Static content no longer delivered #246
+
 ## [1.2.18] - 2019-12-14
 
 ### Addded
