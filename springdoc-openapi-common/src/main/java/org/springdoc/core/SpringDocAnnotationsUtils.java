@@ -24,11 +24,8 @@ import java.util.Optional;
 @SuppressWarnings({"rawtypes"})
 class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
-    private final List<ModelConverter> modelConverters;
-
     public SpringDocAnnotationsUtils(List<ModelConverter> modelConverters) {
-        this.modelConverters = modelConverters;
-        this.modelConverters.forEach(ModelConverters.getInstance()::addConverter);
+        modelConverters.forEach(ModelConverters.getInstance()::addConverter);
     }
 
     public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
