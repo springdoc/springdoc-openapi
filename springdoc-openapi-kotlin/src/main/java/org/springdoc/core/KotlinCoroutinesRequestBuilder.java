@@ -13,9 +13,8 @@ public class KotlinCoroutinesRequestBuilder extends AbstractRequestBuilder {
         super(parameterBuilder, requestBodyBuilder, operationBuilder);
     }
 
-    @Override
-    protected boolean isParamTypeToIgnore(Class<?> paramType) {
-        return paramType.isAssignableFrom(Continuation.class);
+    static {
+        PARAM_TYPES_TO_IGNORE.add(Continuation.class);
     }
 
     @Override
