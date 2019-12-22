@@ -26,12 +26,11 @@ public class SwaggerUiConfigProperties {
     public static final String CONFIG_URL_PROPERTY = "configUrl";
     public static final String VALIDATOR_URL_PROPERTY = "validatorUrl";
     public static final String URL_PROPERTY = "url";
-
+    private static List<SwaggerUrl> swaggerUrls = new ArrayList<>();
     /**
      * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
      */
     private String path = Constants.DEFAULT_SWAGGER_UI_PATH;
-
     /**
      * The name of a component available via the plugin system to use as the top-level layout for Swagger UI.
      */
@@ -40,7 +39,6 @@ public class SwaggerUiConfigProperties {
      * URL to fetch external configuration document from.
      */
     private String configUrl;
-
     /**
      * URL to validate specs against.
      */
@@ -50,7 +48,6 @@ public class SwaggerUiConfigProperties {
      * could be used to filter the tagged operations that are shown.
      */
     private String filter;
-
     /**
      * Apply a sort to the operation list of each API
      */
@@ -59,7 +56,6 @@ public class SwaggerUiConfigProperties {
      * Apply a sort to the tag list of each API
      */
     private String tagsSorter;
-
     /**
      * Enables or disables deep linking for tags and operations.
      *
@@ -78,7 +74,6 @@ public class SwaggerUiConfigProperties {
      * The default expansion depth for the model on the model-example section.
      */
     private Integer defaultModelExpandDepth;
-
     /**
      * Controls how the model is shown when the API is first rendered.
      */
@@ -103,20 +98,32 @@ public class SwaggerUiConfigProperties {
      * Controls the display of extensions
      */
     private Boolean showCommonExtensions;
-
     /**
      * The supported try it out methods
      */
     private List<String> supportedSubmitMethods;
-
     /**
      * OAuth redirect URL.
      */
     private String oauth2RedirectUrl;
-
     private String url;
 
-    private static List<SwaggerUrl> swaggerUrls = new ArrayList<>();
+    public static void addGroup(String group) {
+        SwaggerUrl swaggerUrl = new SwaggerUrl(group);
+        swaggerUrls.add(swaggerUrl);
+    }
+
+    public static List<SwaggerUrl> getSwaggerUrls() {
+        return swaggerUrls;
+    }
+
+    public static void setSwaggerUrls(List<SwaggerUrl> swaggerUrls) {
+        SwaggerUiConfigProperties.swaggerUrls = swaggerUrls;
+    }
+
+    public static void addUrl(String url) {
+        swaggerUrls.forEach(elt -> elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName()));
+    }
 
     public Map<String, Object> getConfigParameters() {
         final Map<String, Object> params = new TreeMap<>();
@@ -321,11 +328,6 @@ public class SwaggerUiConfigProperties {
         this.oauth2RedirectUrl = oauth2RedirectUrl;
     }
 
-    public static void addGroup(String group) {
-        SwaggerUrl swaggerUrl = new SwaggerUrl(group);
-        swaggerUrls.add(swaggerUrl);
-    }
-
     public String getUrl() {
         return url;
     }
@@ -333,19 +335,6 @@ public class SwaggerUiConfigProperties {
     public void setUrl(String url) {
         this.url = url;
     }
-
-    public List<SwaggerUrl> getSwaggerUrls() {
-        return swaggerUrls;
-    }
-
-    public void setSwaggerUrls(List<SwaggerUrl> swaggerUrls) {
-        this.swaggerUrls = swaggerUrls;
-    }
-
-    public static void addUrl(String url) {
-        swaggerUrls.forEach(elt -> elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName()));
-    }
-
 
     static class SwaggerUrl {
         private String url;

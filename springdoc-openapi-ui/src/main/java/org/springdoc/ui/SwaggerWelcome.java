@@ -79,7 +79,7 @@ class SwaggerWelcome {
             String swaggerConfigUrl = url + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
             swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
             if (groupsEnabled)
-                swaggerUiConfig.addUrl(url);
+                SwaggerUiConfigProperties.addUrl(url);
             else
                 swaggerUiConfig.setUrl(url);
         }

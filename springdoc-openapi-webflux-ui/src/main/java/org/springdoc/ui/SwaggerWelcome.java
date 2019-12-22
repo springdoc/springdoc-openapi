@@ -27,18 +27,14 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 public class SwaggerWelcome {
 
-    @Value(API_DOCS_URL)
-    private String apiDocsUrl;
-
-    @Value(SWAGGER_UI_PATH)
-    private String uiPath;
-
-    @Value(WEB_JARS_PREFIX_URL)
-    private String webJarsPrefixUrl;
-
     @Autowired
     public SwaggerUiConfigProperties swaggerUiConfig;
-
+    @Value(API_DOCS_URL)
+    private String apiDocsUrl;
+    @Value(SWAGGER_UI_PATH)
+    private String uiPath;
+    @Value(WEB_JARS_PREFIX_URL)
+    private String webJarsPrefixUrl;
     @Value(SPRINGDOC_GROUPS_ENABLED_VALUE)
     private boolean groupsEnabled;
 
@@ -61,12 +57,11 @@ public class SwaggerWelcome {
     }
 
     private void buildConfigUrl() {
-        if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl()))
-        {
+        if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
             String swaggerConfigUrl = apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
             swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
             if (groupsEnabled)
-                swaggerUiConfig.addUrl(apiDocsUrl);
+                SwaggerUiConfigProperties.addUrl(apiDocsUrl);
             else
                 swaggerUiConfig.setUrl(apiDocsUrl);
         }
