@@ -74,9 +74,6 @@ public abstract class AbstractRequestBuilder {
         this.operationBuilder = operationBuilder;
     }
 
-    protected boolean isParamTypeToIgnore(Class<?> paramType) {
-        return false;
-    }
 
     public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
                            Operation operation, MethodAttributes methodAttributes) {
@@ -165,7 +162,7 @@ public abstract class AbstractRequestBuilder {
         if (parameter.isAnnotationPresent(PathVariable.class)) {
             return false;
         }
-        return parameterBuilder.isAnnotationToIgnore(parameter) || isParamTypeToIgnore(parameter.getType()) || PARAM_TYPES_TO_IGNORE.contains(parameter.getType()) || (AnnotationUtils.findAnnotation(parameter.getType(), Hidden.class) != null);
+        return parameterBuilder.isAnnotationToIgnore(parameter)  || PARAM_TYPES_TO_IGNORE.contains(parameter.getType()) || (AnnotationUtils.findAnnotation(parameter.getType(), Hidden.class) != null);
     }
 
     private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
