@@ -14,7 +14,7 @@ public final class Constants {
     public static final String SPRINGDOC_GROUPS_ENABLED = "springdoc.api-docs.groups.enabled";
     public static final String SPRINGDOC_GROUPS_ENABLED_VALUE =  "${" + SPRINGDOC_GROUPS_ENABLED + ":false}";
     public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
-    public static final String SPRINGDOC_SHOW_ACTUATOR = "springdoc.show.actuator";
+    public static final String SPRINGDOC_SHOW_ACTUATOR = "springdoc.show-actuator";
     public static final String SPRINGDOC_SHOW_ACTUATOR_VALUE = "${" + SPRINGDOC_SHOW_ACTUATOR + ":false}";
     public static final String SPRINGDOC_PACKAGES_TO_SCAN = "${springdoc.packagesToScan:#{null}}";
     public static final String SPRINGDOC_PATHS_TO_MATCH = "${springdoc.pathsToMatch:#{null}}";

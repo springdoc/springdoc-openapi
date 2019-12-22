@@ -77,6 +77,8 @@ public class SpringDocConfigProperties {
          */
         private Boolean enabled = true;
 
+        private Groups groups = new Groups();
+
         public String getPath() {
             return path;
         }
@@ -84,6 +86,19 @@ public class SpringDocConfigProperties {
         public void setPath(String path) {
             this.path = path;
         }
+
+        public Boolean getEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(Boolean enabled) {
+            this.enabled = enabled;
+        }
+
+    }
+
+    public static class Groups {
+        private Boolean enabled = false;
 
         public Boolean getEnabled() {
             return enabled;
