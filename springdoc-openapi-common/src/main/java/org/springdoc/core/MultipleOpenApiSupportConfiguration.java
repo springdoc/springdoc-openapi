@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import static org.springdoc.core.Constants.SPRINGDOC_GROUPS_ENABLED;
 
 @Configuration
-@ConditionalOnProperty(name = SPRINGDOC_GROUPS_ENABLED, matchIfMissing = false)
+@ConditionalOnProperty(name = SPRINGDOC_GROUPS_ENABLED)
 public class MultipleOpenApiSupportConfiguration {
     @Bean
     public BeanFactoryPostProcessor beanFactoryPostProcessor() {

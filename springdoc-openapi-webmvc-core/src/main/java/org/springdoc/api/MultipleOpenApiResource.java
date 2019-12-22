@@ -18,14 +18,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springdoc.core.Constants.*;
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
 public class MultipleOpenApiResource {
 
     private final Map<String, OpenApiResource> groupedOpenApiResources;
-
-    @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
-    private boolean showActuator;
 
     public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
                                    ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
@@ -50,7 +48,7 @@ public class MultipleOpenApiResource {
     public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl,
                               @PathVariable String group)
             throws JsonProcessingException {
-        return getOpenApiResourceOrThrow(group).openapiJson(request, apiDocsUrl + "/" + group);
+        return getOpenApiResourceOrThrow(group).openapiJson(request, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
     }
 
     @Operation(hidden = true)
@@ -58,7 +56,7 @@ public class MultipleOpenApiResource {
     public String openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl,
                               @PathVariable String group)
             throws JsonProcessingException {
-        return getOpenApiResourceOrThrow(group).openapiYaml(request, apiDocsUrl + "/" + group);
+        return getOpenApiResourceOrThrow(group).openapiYaml(request, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
     }
 
 
