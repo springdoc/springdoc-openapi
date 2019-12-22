@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -116,11 +117,6 @@ public class SwaggerUiConfigProperties {
     private String url;
 
     private static List<SwaggerUrl> swaggerUrls = new ArrayList<>();
-
-    public static void addGroup(String group) {
-        SwaggerUrl swaggerUrl = new SwaggerUrl(group);
-        swaggerUrls.add(swaggerUrl);
-    }
 
     public Map<String, Object> getConfigParameters() {
         final Map<String, Object> params = new TreeMap<>();
@@ -323,6 +319,11 @@ public class SwaggerUiConfigProperties {
 
     public void setOauth2RedirectUrl(String oauth2RedirectUrl) {
         this.oauth2RedirectUrl = oauth2RedirectUrl;
+    }
+
+    public static void addGroup(String group) {
+        SwaggerUrl swaggerUrl = new SwaggerUrl(group);
+        swaggerUrls.add(swaggerUrl);
     }
 
     public String getUrl() {
