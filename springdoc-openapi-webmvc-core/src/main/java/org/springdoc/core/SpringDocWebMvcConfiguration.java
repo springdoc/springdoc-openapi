@@ -24,11 +24,11 @@ public class SpringDocWebMvcConfiguration {
     @Bean
     @ConditionalOnProperty(name = SPRINGDOC_GROUPS_ENABLED, matchIfMissing = false)
     public MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
-                                                           ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+                                                           ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
                                                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                                                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider) {
         return new MultipleOpenApiResource(groupedOpenApis,
-                defaultOpenAPIBuilder, openAPIBuilder, requestBuilder,
+                defaultOpenAPIBuilder, requestBuilder,
                 responseBuilder, operationParser,
                 requestMappingHandlerMapping, servletContextProvider);
     }

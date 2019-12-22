@@ -22,21 +22,15 @@ import static org.springdoc.core.Constants.*;
 @RestController
 public class MultipleOpenApiResource {
 
-    private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
-
-    private final Optional<ActuatorProvider> servletContextProvider;
-
     private final Map<String, OpenApiResource> groupedOpenApiResources;
 
     @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
     private boolean showActuator;
 
     public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
-                                   ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+                                   ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
                                    AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                                    RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider) {
-        this.requestMappingHandlerMapping = requestMappingHandlerMapping;
-        this.servletContextProvider = servletContextProvider;
         this.groupedOpenApiResources = groupedOpenApis.stream()
                 .collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
                         new OpenApiResource(

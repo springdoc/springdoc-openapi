@@ -95,6 +95,13 @@ public class SpringDocConfigProperties {
             this.enabled = enabled;
         }
 
+        public Groups getGroups() {
+            return groups;
+        }
+
+        public void setGroups(Groups groups) {
+            this.groups = groups;
+        }
     }
 
     public static class Groups {

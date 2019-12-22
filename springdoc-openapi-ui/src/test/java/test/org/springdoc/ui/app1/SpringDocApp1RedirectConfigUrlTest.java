@@ -1,14 +1,11 @@
 package test.org.springdoc.ui.app1;
 
 import org.junit.Test;
-import org.springdoc.core.SwaggerUiConfigProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MvcResult;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @RestController
 public class HelloController {
 
-    @GetMapping( "/persons")
+    @GetMapping("/persons")
     public void persons(@Valid @NotBlank String name) {
 
     }

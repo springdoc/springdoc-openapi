@@ -38,7 +38,7 @@ public class OperationBuilder {
         this.requestBodyBuilder = requestBodyBuilder;
         this.securityParser = securityParser;
         this.openAPIBuilder = openAPIBuilder;
-        this.propertyResolverUtils=propertyResolverUtils;
+        this.propertyResolverUtils = propertyResolverUtils;
     }
 
     public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
