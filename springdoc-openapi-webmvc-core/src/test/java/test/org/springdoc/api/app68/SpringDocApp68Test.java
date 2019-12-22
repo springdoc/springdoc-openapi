@@ -41,7 +41,6 @@ public class SpringDocApp68Test {
 
     @Test
     public void testApp1() throws Exception {
-        className = getClass().getSimpleName();
         MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/stores")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
         String result = mockMvcResult.getResponse().getContentAsString();
@@ -53,7 +52,6 @@ public class SpringDocApp68Test {
 
     @Test
     public void testApp2() throws Exception {
-        className = getClass().getSimpleName();
         MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/users")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
         String result = mockMvcResult.getResponse().getContentAsString();
@@ -65,7 +63,6 @@ public class SpringDocApp68Test {
 
     @Test
     public void testApp3() throws Exception {
-        className = getClass().getSimpleName();
         MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/pets")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
         String result = mockMvcResult.getResponse().getContentAsString();
@@ -77,7 +74,6 @@ public class SpringDocApp68Test {
 
     @Test
     public void testApp4() throws Exception {
-        className = getClass().getSimpleName();
         MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/groups")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
         String result = mockMvcResult.getResponse().getContentAsString();
