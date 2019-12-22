@@ -22,7 +22,7 @@ public class SpringDocWebMvcConfiguration {
 
 
     @Bean
-    @ConditionalOnProperty(name = SPRINGDOC_GROUPS_ENABLED, matchIfMissing = false)
+    @ConditionalOnProperty(name = SPRINGDOC_GROUPS_ENABLED)
     public MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
                                                            ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
                                                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,

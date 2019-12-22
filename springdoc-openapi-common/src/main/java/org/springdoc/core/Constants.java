@@ -22,7 +22,6 @@ public final class Constants {
     public static final String DEFAULT_WEB_JARS_PREFIX_URL = "/webjars";
     public static final String WEB_JARS_PREFIX_URL = "${springdoc.webjars.prefix:#{T(org.springdoc.core.Constants).DEFAULT_WEB_JARS_PREFIX_URL}}";
     public static final String SWAGGER_UI_URL = "/swagger-ui/index.html";
-    public static final String DEFAULT_VALIDATOR_URL = "";
     public static final String APPLICATION_OPENAPI_YAML = "application/vnd.oai.openapi";
     public static final String DEFAULT_SWAGGER_UI_PATH = DEFAULT_PATH_SEPARATOR + "swagger-ui.html";
     public static final String SWAGGER_UI_PATH = "${springdoc.swagger-ui.path:#{T(org.springdoc.core.Constants).DEFAULT_SWAGGER_UI_PATH}}";

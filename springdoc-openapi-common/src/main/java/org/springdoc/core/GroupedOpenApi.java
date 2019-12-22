@@ -49,7 +49,7 @@ public class GroupedOpenApi {
         private String group;
         private List<String> pathsToMatch;
         private List<String> packagesToScan;
-        private List<OpenApiCustomiser> openApiCustomisers = new ArrayList<>();
+        private final List<OpenApiCustomiser> openApiCustomisers = new ArrayList<>();
 
         private Builder() {
             // use static factory method in parent class

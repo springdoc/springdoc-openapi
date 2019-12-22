@@ -4,7 +4,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 
 public class PropertyResolverUtils {
 
-    ConfigurableBeanFactory factory;
+    private final ConfigurableBeanFactory factory;
 
     public PropertyResolverUtils(ConfigurableBeanFactory factory) {
         this.factory = factory;
