@@ -19,7 +19,7 @@
         "operationId": "saveMealParty",
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/MealParty_Public"
               }
