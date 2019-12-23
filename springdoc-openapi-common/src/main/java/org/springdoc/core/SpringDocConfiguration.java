@@ -3,6 +3,8 @@ package org.springdoc.core;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.core.converters.ObjectNodeConverter;
+import org.springdoc.core.converters.PropertyCustomizingConverter;
+import org.springdoc.core.customizer.PropertyCustomizer;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,11 @@ public class SpringDocConfiguration {
     @Bean
     ObjectNodeConverter objectNodeConverter() {
         return new ObjectNodeConverter();
+    }
+
+    @Bean
+    PropertyCustomizingConverter propertyCustomizingConverter(List<PropertyCustomizer> customizers){
+        return new PropertyCustomizingConverter(customizers);
     }
 
     @Bean
