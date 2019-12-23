@@ -345,16 +345,24 @@ public abstract class AbstractRequestBuilder {
 
         Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDocDeclaringClass = AnnotatedElementUtils
                 .findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameters.class);
-        apiParametersMap.putAll(apiParametersDocDeclaringClass.stream()
-                .flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x)));
+        LinkedHashMap<String, io.swagger.v3.oas.annotations.Parameter> apiParametersDocDeclaringClassMap = apiParametersDocDeclaringClass.stream()
+                .flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x, (e1, e2) -> e2,
+                        LinkedHashMap::new));
+        apiParametersMap.putAll(apiParametersDocDeclaringClassMap);
 
         Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDoc = AnnotatedElementUtils
                 .findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameter.class);
-        apiParametersMap.putAll(apiParameterDoc.stream().collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x)));
+        LinkedHashMap<String, io.swagger.v3.oas.annotations.Parameter> apiParameterDocMap = apiParameterDoc.stream()
+                .collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x, (e1, e2) -> e2,
+                        LinkedHashMap::new));
+        apiParametersMap.putAll(apiParameterDocMap);
 
         Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClass = AnnotatedElementUtils
                 .findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameter.class);
-        apiParametersMap.putAll(apiParameterDocDeclaringClass.stream().collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x)));
+        LinkedHashMap<String, io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClassMap = apiParameterDocDeclaringClass.stream()
+                .collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x, (e1, e2) -> e2,
+                        LinkedHashMap::new));
+        apiParametersMap.putAll(apiParameterDocDeclaringClassMap);
 
         return apiParametersMap;
     }
