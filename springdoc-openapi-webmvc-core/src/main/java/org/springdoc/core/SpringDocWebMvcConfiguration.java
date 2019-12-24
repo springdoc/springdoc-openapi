@@ -15,10 +15,10 @@ import java.util.Optional;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 @Configuration
+@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocWebMvcConfiguration {
 
     @Bean
-    @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
     public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,

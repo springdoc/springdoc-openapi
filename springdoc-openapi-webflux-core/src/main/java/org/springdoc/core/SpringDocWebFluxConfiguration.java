@@ -14,6 +14,7 @@ import java.util.Optional;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 @Configuration
+@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocWebFluxConfiguration {
 
     @Bean
