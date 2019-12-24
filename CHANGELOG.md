@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.21] - 
+
+### Removed
+- Property `springdoc.api-docs.groups.enabled` removed, as not needed any more for enabling multiple OpenAPI definitions support
+
 ## [1.2.20] - 2019-12-23
 
 ### Changed 
@@ -13,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.19] - 2019-12-22
 
-### Addded
+### Added
 - Support for Multiple OpenAPI definitions in one Spring Boot #213
 - Support for spring-context-indexer #262
 - Added support using properties from application.yml for description field in swagger-annotations #231
@@ -32,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.18] - 2019-12-14
 
-### Addded
+### Added
 - Globally exclude params for webflux #228
 - Added ability to ignore param with @hidden annotation at class level #255
 - Support of spring.mvc.servlet.path #238
@@ -48,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixes error with JDK 11 + Kotlin #248
 ## [1.2.17] - 2019-12-05
-### Addded
+### Added
 - Handle multiple endpoints on @GetParam #219
 
 ### Changed
