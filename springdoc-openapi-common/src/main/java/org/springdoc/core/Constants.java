@@ -11,8 +11,6 @@ public final class Constants {
     public static final String SWAGGER_CONFIG_URL = API_DOCS_URL + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
     public static final String DEFAULT_API_DOCS_URL_YAML = API_DOCS_URL + ".yaml";
     public static final String SPRINGDOC_ENABLED = "springdoc.api-docs.enabled";
-    public static final String SPRINGDOC_GROUPS_ENABLED = "springdoc.api-docs.groups.enabled";
-    public static final String SPRINGDOC_GROUPS_ENABLED_VALUE = "${" + SPRINGDOC_GROUPS_ENABLED + ":false}";
     public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
     public static final String SPRINGDOC_SHOW_ACTUATOR = "springdoc.show-actuator";
     public static final String SPRINGDOC_SHOW_ACTUATOR_VALUE = "${" + SPRINGDOC_SHOW_ACTUATOR + ":false}";

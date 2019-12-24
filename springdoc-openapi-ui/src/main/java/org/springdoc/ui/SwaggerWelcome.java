@@ -15,7 +15,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-import static org.springdoc.core.Constants.*;
+import static org.springdoc.core.Constants.API_DOCS_URL;
+import static org.springdoc.core.Constants.MVC_SERVLET_PATH;
+import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
+import static org.springdoc.core.Constants.SWAGGER_CONFIG_URL;
+import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
+import static org.springdoc.core.Constants.SWAGGER_UI_URL;
+import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
 
@@ -34,9 +40,6 @@ class SwaggerWelcome {
 
     @Autowired
     private SwaggerUiConfigProperties swaggerUiConfig;
-
-    @Value(SPRINGDOC_GROUPS_ENABLED_VALUE)
-    private boolean groupsEnabled;
 
     @Operation(hidden = true)
     @GetMapping(SWAGGER_UI_PATH)
@@ -78,10 +81,12 @@ class SwaggerWelcome {
             String url = buildUrl(request, apiDocsUrl);
             String swaggerConfigUrl = url + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
             swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
-            if (groupsEnabled)
-                SwaggerUiConfigProperties.addUrl(url);
-            else
+
+            if (SwaggerUiConfigProperties.getSwaggerUrls().isEmpty())
                 swaggerUiConfig.setUrl(url);
+            else
+                SwaggerUiConfigProperties.addUrl(url);
+
         }
     }
 }
