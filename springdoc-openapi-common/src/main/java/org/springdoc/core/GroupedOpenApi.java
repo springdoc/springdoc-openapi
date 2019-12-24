@@ -60,12 +60,12 @@ public class GroupedOpenApi {
             return this;
         }
 
-        public Builder pathsToMatch(String[] pathsToMatch) {
+        public Builder pathsToMatch(String... pathsToMatch) {
             this.pathsToMatch = Arrays.asList(pathsToMatch);
             return this;
         }
 
-        public Builder packagesToScan(String[] packagesToScan) {
+        public Builder packagesToScan(String... packagesToScan) {
             this.packagesToScan = Arrays.asList(packagesToScan);
             return this;
         }
