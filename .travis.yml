@@ -11,7 +11,12 @@ addons:
     organization: "springdoc"
 
 script:
-  - mvn clean deploy --settings settings.xml
+  - mvn clean package --settings settings.xml
   - mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN -DskipTests
 
+deploy:
+  provider: script
+  script: mvn clean deploy -DskipTests --settings settings.xml
+  on:
+    branch: master
   
