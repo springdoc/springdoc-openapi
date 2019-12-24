@@ -1,7 +1,11 @@
 package test.org.springdoc.ui.app4;
 
+import org.junit.After;
 import org.junit.Test;
+import org.springdoc.core.SwaggerUiConfigProperties;
 import test.org.springdoc.ui.AbstractSpringDocTest;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -20,5 +24,10 @@ public class SpringDocApp4Test extends AbstractSpringDocTest {
                 .andExpect(jsonPath("urls[0].name", equalTo("stores")))
                 .andExpect(jsonPath("urls[1].url", equalTo("/v3/api-docs/pets")))
                 .andExpect(jsonPath("urls[1].name", equalTo("pets")));
+    }
+
+    @After
+    public void reset(){
+        SwaggerUiConfigProperties.setSwaggerUrls(new ArrayList<>());
     }
 }
