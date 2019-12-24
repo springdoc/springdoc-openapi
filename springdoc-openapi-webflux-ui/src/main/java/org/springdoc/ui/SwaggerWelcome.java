@@ -1,9 +1,11 @@
 package org.springdoc.ui;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,23 +25,18 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Controller
-@Configuration
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(OpenAPIBuilder.class)
 public class SwaggerWelcome {
-
-    @Value(API_DOCS_URL)
-    private String apiDocsUrl;
-
-    @Value(SWAGGER_UI_PATH)
-    private String uiPath;
-
-    @Value(WEB_JARS_PREFIX_URL)
-    private String webJarsPrefixUrl;
 
     @Autowired
     public SwaggerUiConfigProperties swaggerUiConfig;
-
-    private boolean groupsEnabled;
+    @Value(API_DOCS_URL)
+    private String apiDocsUrl;
+    @Value(SWAGGER_UI_PATH)
+    private String uiPath;
+    @Value(WEB_JARS_PREFIX_URL)
+    private String webJarsPrefixUrl;
 
     @Bean
     @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
@@ -60,14 +57,15 @@ public class SwaggerWelcome {
     }
 
     private void buildConfigUrl() {
-        if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl()))
-        {
+        if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
             String swaggerConfigUrl = apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
             swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
-            if (groupsEnabled)
-                swaggerUiConfig.addUrl(apiDocsUrl);
-            else
+
+            if (SwaggerUiConfigProperties.getSwaggerUrls().isEmpty())
                 swaggerUiConfig.setUrl(apiDocsUrl);
+            else
+                SwaggerUiConfigProperties.addUrl(apiDocsUrl);
+
         }
     }
 
