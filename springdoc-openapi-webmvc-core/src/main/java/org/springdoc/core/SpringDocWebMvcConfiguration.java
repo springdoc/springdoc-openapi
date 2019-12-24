@@ -1,10 +1,8 @@
 package org.springdoc.core;
 
 import org.springdoc.api.ActuatorProvider;
-import org.springdoc.api.MultipleOpenApiResource;
 import org.springdoc.api.OpenApiCustomiser;
 import org.springdoc.api.OpenApiResource;
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,23 +13,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.Constants.SPRINGDOC_GROUPS_ENABLED;
 
 @Configuration
 public class SpringDocWebMvcConfiguration {
-
-
-    @Bean
-    @ConditionalOnProperty(name = SPRINGDOC_GROUPS_ENABLED)
-    public MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
-                                                           ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
-                                                           AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
-                                                           RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider) {
-        return new MultipleOpenApiResource(groupedOpenApis,
-                defaultOpenAPIBuilder, requestBuilder,
-                responseBuilder, operationParser,
-                requestMappingHandlerMapping, servletContextProvider);
-    }
 
     @Bean
     @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
