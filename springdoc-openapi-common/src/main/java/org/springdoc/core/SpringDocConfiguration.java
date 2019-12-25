@@ -35,8 +35,8 @@ public class SpringDocConfiguration {
     }
 
     @Bean
-    public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser) {
-        return new OpenAPIBuilder(openAPI, context, securityParser);
+    public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, List<ModelConverter> modelConverters) {
+        return new OpenAPIBuilder(openAPI, context, securityParser,modelConverters);
     }
 
     @Bean
@@ -59,11 +59,6 @@ public class SpringDocConfiguration {
     @Bean
     public SecurityParser securityParser(PropertyResolverUtils propertyResolverUtils) {
         return new SecurityParser(propertyResolverUtils);
-    }
-
-    @Bean
-    public SpringDocAnnotationsUtils springDocAnnotationsUtils(List<ModelConverter> modelConverters) {
-        return new SpringDocAnnotationsUtils(modelConverters);
     }
 
 }

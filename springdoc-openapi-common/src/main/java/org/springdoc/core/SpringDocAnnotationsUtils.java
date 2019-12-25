@@ -2,7 +2,6 @@ package org.springdoc.core;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.converter.AnnotatedType;
-import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.AnnotationsUtils;
@@ -17,16 +16,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings({"rawtypes"})
 class SpringDocAnnotationsUtils extends AnnotationsUtils {
-
-    public SpringDocAnnotationsUtils(List<ModelConverter> modelConverters) {
-        modelConverters.forEach(ModelConverters.getInstance()::addConverter);
-    }
 
     public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
                                                JsonView jsonView) {
