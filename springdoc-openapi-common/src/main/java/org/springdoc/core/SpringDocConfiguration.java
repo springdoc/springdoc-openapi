@@ -40,20 +40,8 @@ public class SpringDocConfiguration {
     }
 
     @Bean
-    public OperationBuilder operationBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                                             SecurityParser securityParser, OpenAPIBuilder openAPIBuilder, PropertyResolverUtils propertyResolverUtils) {
-        return new OperationBuilder(parameterBuilder, requestBodyBuilder,
-                securityParser, openAPIBuilder, propertyResolverUtils);
-    }
-
-    @Bean
     public PropertyResolverUtils propertyResolverUtils(ConfigurableBeanFactory factory) {
         return new PropertyResolverUtils(factory);
-    }
-
-    @Bean
-    public RequestBodyBuilder requestBodyBuilder(AbstractParameterBuilder parameterBuilder) {
-        return new RequestBodyBuilder(parameterBuilder);
     }
 
     @Bean
