@@ -1,12 +1,16 @@
 package org.springdoc.core;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+
 @Configuration
 @ConfigurationProperties(prefix = "springdoc")
+@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocConfigProperties {
 
     private Boolean showActuator = false;

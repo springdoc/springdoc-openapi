@@ -2,6 +2,8 @@ package org.springdoc.core;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
@@ -12,6 +14,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -21,11 +24,11 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  */
 @Configuration
 @ConfigurationProperties(prefix = "springdoc.swagger-ui")
+@ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(OpenAPIBuilder.class)
 public class SwaggerUiConfigProperties {
 
     public static final String CONFIG_URL_PROPERTY = "configUrl";
-    public static final String VALIDATOR_URL_PROPERTY = "validatorUrl";
-    public static final String URL_PROPERTY = "url";
     private static List<SwaggerUrl> swaggerUrls = new ArrayList<>();
     /**
      * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
@@ -129,7 +132,7 @@ public class SwaggerUiConfigProperties {
         final Map<String, Object> params = new TreeMap<>();
         put("layout", layout, params);
         put(CONFIG_URL_PROPERTY, configUrl, params);
-        put(VALIDATOR_URL_PROPERTY, validatorUrl, params);
+        put( "validatorUrl", validatorUrl, params);
         put("filter", filter, params);
         put("deepLinking", this.deepLinking, params);
         put("displayOperationId", displayOperationId, params);

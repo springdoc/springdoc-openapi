@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springdoc</groupId>
     <artifactId>springdoc-openapi</artifactId>
-    <version>1.2.20-SNAPSHOT</version>
+    <version>1.2.22-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Spring openapi documentation generator</name>
     <description>Spring openapi documentation generator</description>
