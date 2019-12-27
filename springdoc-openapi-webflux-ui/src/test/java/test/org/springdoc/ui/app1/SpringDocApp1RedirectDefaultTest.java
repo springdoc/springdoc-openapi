@@ -3,6 +3,8 @@ package test.org.springdoc.ui.app1;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springdoc.core.SpringDocConfiguration;
+import org.springdoc.core.SpringDocWebFluxConfiguration;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.ui.SwaggerWelcome;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @RunWith(SpringRunner.class)
 @WebFluxTest()
 @ActiveProfiles("test")
-@ContextConfiguration(classes = {SwaggerWelcome.class, SwaggerUiConfigProperties.class})
+@ContextConfiguration(classes = {SpringDocConfiguration.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class ,SwaggerWelcome.class})
 public class SpringDocApp1RedirectDefaultTest {
 
     @Autowired

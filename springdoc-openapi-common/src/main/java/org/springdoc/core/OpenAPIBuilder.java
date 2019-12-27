@@ -1,5 +1,7 @@
 package org.springdoc.core;
 
+import io.swagger.v3.core.converter.ModelConverter;
+import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -43,7 +45,7 @@ public class OpenAPIBuilder {
     private String serverBaseUrl;
 
     @SuppressWarnings("WeakerAccess")
-    OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser) {
+    OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, List<ModelConverter> modelConverters) {
         if (openAPI.isPresent()) {
             this.openAPI = openAPI.get();
             if (this.openAPI.getComponents() == null)
@@ -57,6 +59,7 @@ public class OpenAPIBuilder {
         }
         this.context = context;
         this.securityParser = securityParser;
+        modelConverters.forEach(ModelConverters.getInstance()::addConverter);
     }
 
     private static String splitCamelCase(String str) {

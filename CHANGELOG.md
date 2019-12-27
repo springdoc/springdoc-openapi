@@ -4,28 +4,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.19] - 2019-12-22
+## [1.2.21] - 
+### Added
+- Springdoc, Callable support #297
+### Removed
+- Property `springdoc.api-docs.groups.enabled` removed, as not needed any more for enabling multiple OpenAPI definitions support #296
+### Changed 
+- Improve springdoc-openapi beans loading #290 #294
 
-### Addded
+## [1.2.20] - 2019-12-23
+### Changed 
+- Preserve order of @Parameters for spring-boot 2.2 #289
+### Removed
+- Remove @EnableWebMvc from SwaggerConfig (not needed for Spring Boot) #236 #150
+
+## [1.2.19] - 2019-12-22
+### Added
 - Support for Multiple OpenAPI definitions in one Spring Boot #213
 - Support for spring-context-indexer #262
 - Added support using properties from application.yml for description field in swagger-annotations #231
 - Make validatorUrl configurable and fix overwrites #281
 - Improve support of HttpEntity. fixes #280
-
-
 ### Changed 
 - Ignore ServerHttpRequest and ServerHttpResponse Webflux #270
 - Preserve order of parameters in @Parameters annotation #274
 - Changed the default value if consumes is missing, to MediaType.APPLICATION_JSON_VALUE #275
 - Renamed actuator property to springdoc.show-actuator #286
-
 ### Fixed
 - Static content no longer delivered #246
 
 ## [1.2.18] - 2019-12-14
-
-### Addded
+### Added
 - Globally exclude params for webflux #228
 - Added ability to ignore param with @hidden annotation at class level #255
 - Support of spring.mvc.servlet.path #238
@@ -34,16 +43,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support of @Hidden at class level. #260
 - Ability for using properties from application.yml to declare security urls: (openIdConnectUrl - authorizationUrl - refreshUrl - tokenUrl) #231
 - Added support of annotation @Parameters (without @Operation) #241
-
 ### Changed 
 - Downgrade swagger-ui to 3.24.0, fixes #239
-
 ### Fixed
 - Fixes error with JDK 11 + Kotlin #248
-## [1.2.17] - 2019-12-05
-### Addded
-- Handle multiple endpoints on @GetParam #219
 
+## [1.2.17] - 2019-12-05
+### Added
+- Handle multiple endpoints on @GetParam #219
 ### Changed
 - Upgrade Springboot to 2.2.1
 - Upgrade Swagger UI to 3.24.3
@@ -54,10 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Spring Boot metadata for config properties. #208
 - Explicitly set which packages/ paths to scan #210
 - Disable the try it out button #214
-
 ### Changed
 - Changed getOpenApi in AbstractOpenApiResource to synchronized #209
-
 ### Fixed
 - Missing Response Content - #212
 

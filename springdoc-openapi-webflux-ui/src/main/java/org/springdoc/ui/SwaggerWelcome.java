@@ -1,12 +1,13 @@
 package org.springdoc.ui;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -23,8 +24,8 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Controller
-@Configuration
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(OpenAPIBuilder.class)
 public class SwaggerWelcome {
 
     @Autowired
@@ -35,8 +36,6 @@ public class SwaggerWelcome {
     private String uiPath;
     @Value(WEB_JARS_PREFIX_URL)
     private String webJarsPrefixUrl;
-    @Value(SPRINGDOC_GROUPS_ENABLED_VALUE)
-    private boolean groupsEnabled;
 
     @Bean
     @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
@@ -60,10 +59,12 @@ public class SwaggerWelcome {
         if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
             String swaggerConfigUrl = apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
             swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
-            if (groupsEnabled)
-                SwaggerUiConfigProperties.addUrl(apiDocsUrl);
-            else
+
+            if (SwaggerUiConfigProperties.getSwaggerUrls().isEmpty())
                 swaggerUiConfig.setUrl(apiDocsUrl);
+            else
+                SwaggerUiConfigProperties.addUrl(apiDocsUrl);
+
         }
     }
 

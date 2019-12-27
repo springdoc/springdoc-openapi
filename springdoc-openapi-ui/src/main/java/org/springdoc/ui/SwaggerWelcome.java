@@ -2,9 +2,11 @@ package org.springdoc.ui;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT
 
 @Controller
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(OpenAPIBuilder.class)
 class SwaggerWelcome {
 
     @Value(API_DOCS_URL)
@@ -34,9 +37,6 @@ class SwaggerWelcome {
 
     @Autowired
     private SwaggerUiConfigProperties swaggerUiConfig;
-
-    @Value(SPRINGDOC_GROUPS_ENABLED_VALUE)
-    private boolean groupsEnabled;
 
     @Operation(hidden = true)
     @GetMapping(SWAGGER_UI_PATH)
@@ -78,10 +78,12 @@ class SwaggerWelcome {
             String url = buildUrl(request, apiDocsUrl);
             String swaggerConfigUrl = url + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
             swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
-            if (groupsEnabled)
-                SwaggerUiConfigProperties.addUrl(url);
-            else
+
+            if (SwaggerUiConfigProperties.getSwaggerUrls().isEmpty())
                 swaggerUiConfig.setUrl(url);
+            else
+                SwaggerUiConfigProperties.addUrl(url);
+
         }
     }
 }
