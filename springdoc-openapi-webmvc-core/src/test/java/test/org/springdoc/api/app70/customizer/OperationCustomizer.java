@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app69.customizer;
+package test.org.springdoc.api.app70.customizer;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;

@@ -1,7 +1,7 @@
-package test.org.springdoc.api.app69.model;
+package test.org.springdoc.api.app70.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import test.org.springdoc.api.app69.customizer.CustomizedProperty;
+import test.org.springdoc.api.app70.customizer.CustomizedProperty;
 
 public class ApiType {
 	@CustomizedProperty

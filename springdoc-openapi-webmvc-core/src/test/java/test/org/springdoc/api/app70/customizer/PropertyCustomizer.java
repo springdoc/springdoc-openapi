@@ -1,14 +1,12 @@
-package test.org.springdoc.api.app69.customizer;
+package test.org.springdoc.api.app70.customizer;
 
 import java.lang.annotation.Annotation;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
-import org.springframework.web.method.HandlerMethod;
 
 import io.swagger.v3.core.converter.AnnotatedType;
-import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Schema;
 
 @Component

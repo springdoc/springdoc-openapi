@@ -1,12 +1,12 @@
-package test.org.springdoc.api.app69;
+package test.org.springdoc.api.app70;
 
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import test.org.springdoc.api.app69.customizer.CustomizedOperation;
-import test.org.springdoc.api.app69.customizer.CustomizedParameter;
-import test.org.springdoc.api.app69.model.ApiType;
+import test.org.springdoc.api.app70.customizer.CustomizedOperation;
+import test.org.springdoc.api.app70.customizer.CustomizedParameter;
+import test.org.springdoc.api.app70.model.ApiType;
 
 @RestController
 public class HelloController {
