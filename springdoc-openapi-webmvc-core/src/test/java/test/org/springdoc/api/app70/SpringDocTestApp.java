@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app69;
+package test.org.springdoc.api.app70;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
