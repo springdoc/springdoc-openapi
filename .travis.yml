@@ -14,7 +14,6 @@ addons:
 
 script:
   - mvn clean package --settings settings.xml
-  - mvn sonar:sonar -DskipTests
 
 deploy:
   provider: script
