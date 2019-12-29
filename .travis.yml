@@ -9,10 +9,12 @@ cache:
 addons:
   sonarcloud:
     organization: "springdoc"
+    token:
+      secure: $SONAR_TOKEN
 
 script:
   - mvn clean package --settings settings.xml
-  - mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN -DskipTests
+  - mvn sonar:sonar -DskipTests
 
 deploy:
   provider: script
