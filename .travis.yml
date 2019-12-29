@@ -14,11 +14,10 @@ addons:
       
 script:
   - mvn clean package --settings settings.xml
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=springdoc_springdoc-openapi
 
 deploy:
   provider: script
-  script: mvn clean deploy -DskipTests --settings settings.xml
+  script: mvn clean deploy -DskipTests sonar:sonar -Dsonar.projectKey=springdoc_springdoc-openapi --settings settings.xml
   on:
     branch: master
   
