@@ -14,6 +14,7 @@ addons:
 
 script:
   - mvn clean package --settings settings.xml
+  - mvn sonar:sonar
 
 deploy:
   provider: script
