@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springdoc.core.converters.PageableAsQueryParam;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,23 +30,5 @@ public class HelloController {
     }
 
 
-    @Parameters({
-            @Parameter(in = ParameterIn.QUERY
-                    , description = "Page you want to retrieve (0..N)"
-                    , name = "page"
-                    , content = @Content(schema = @Schema(type = "integer", defaultValue = "0"))),
-            @Parameter(in = ParameterIn.QUERY
-                    , description = "Number of records per page."
-                    , name = "size"
-                    , content = @Content(schema = @Schema(type = "integer", defaultValue = "20"))),
-            @Parameter(in = ParameterIn.QUERY
-                    , description = "Sorting criteria in the format: property(,asc|desc). "
-                    + "Default sort order is ascending. " + "Multiple sort criteria are supported."
-                    , name = "sort"
-                    , content = @Content(array = @ArraySchema(schema = @Schema(type = "string"))))
-    })
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.METHOD})
-    public @interface PageableAsQueryParam {}
 
 }
