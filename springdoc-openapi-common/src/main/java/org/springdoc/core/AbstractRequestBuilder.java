@@ -8,6 +8,8 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.RequestInfo.ParameterType;
+import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -65,13 +67,18 @@ public abstract class AbstractRequestBuilder {
     private final AbstractParameterBuilder parameterBuilder;
     private final RequestBodyBuilder requestBodyBuilder;
     private final OperationBuilder operationBuilder;
+    private final Optional<List<OperationCustomizer>> operationCustomizers;
+    private final Optional<List<ParameterCustomizer>> parameterCustomizers;
 
     protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                                     OperationBuilder operationBuilder) {
+                                     OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
+                                     Optional<List<ParameterCustomizer>> parameterCustomizers) {
         super();
         this.parameterBuilder = parameterBuilder;
         this.requestBodyBuilder = requestBodyBuilder;
         this.operationBuilder = operationBuilder;
+        this.operationCustomizers = operationCustomizers;
+        this.parameterCustomizers = parameterCustomizers;
     }
 
 
@@ -156,13 +163,21 @@ public abstract class AbstractRequestBuilder {
         return operation;
     }
 
-    protected abstract Operation customiseOperation(Operation operation, HandlerMethod handlerMethod);
+    protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
+        operationCustomizers.ifPresent(parameterCustomizers ->  parameterCustomizers.forEach( customizer -> customizer.customize(operation, handlerMethod)));
+        return operation;
+    }
+
+    protected Parameter customiseParameter(Parameter parameter, ParameterInfo parameterInfo, HandlerMethod handlerMethod) {
+        parameterCustomizers.ifPresent(parameterCustomizers ->  parameterCustomizers.forEach( customizer -> customizer.customize(parameter, parameterInfo.getParameter(), handlerMethod)));
+        return parameter;
+    }
 
     protected boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
         if (parameter.isAnnotationPresent(PathVariable.class)) {
             return false;
         }
-        return parameterBuilder.isAnnotationToIgnore(parameter)  || PARAM_TYPES_TO_IGNORE.contains(parameter.getType()) || (AnnotationUtils.findAnnotation(parameter.getType(), Hidden.class) != null);
+        return parameterBuilder.isAnnotationToIgnore(parameter) || PARAM_TYPES_TO_IGNORE.contains(parameter.getType()) || (AnnotationUtils.findAnnotation(parameter.getType(), Hidden.class) != null);
     }
 
     private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
@@ -214,6 +229,8 @@ public abstract class AbstractRequestBuilder {
         if (RequestMethod.GET.equals(requestMethod)) {
             parameter = this.buildParam(QUERY_PARAM, components, parameterInfo, Boolean.TRUE, null, jsonView);
         }
+
+        parameter = customiseParameter(parameter, parameterInfo, handlerMethod);
         return parameter;
     }
 
