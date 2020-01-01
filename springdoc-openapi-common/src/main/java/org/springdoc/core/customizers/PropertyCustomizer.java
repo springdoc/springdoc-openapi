@@ -14,5 +14,5 @@ public interface PropertyCustomizer {
      * @param type     form the model class
      * @return customized property
      */
-    Schema<?> customize(Schema<?> property, AnnotatedType type);
+    Schema customize(Schema property, AnnotatedType type);
 }
