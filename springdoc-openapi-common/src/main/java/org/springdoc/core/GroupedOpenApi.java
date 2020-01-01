@@ -1,6 +1,6 @@
 package org.springdoc.core;
 
-import org.springdoc.api.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;

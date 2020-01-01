@@ -4,7 +4,7 @@ import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.core.converters.ObjectNodeConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
-import org.springdoc.core.customizer.PropertyCustomizer;
+import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;

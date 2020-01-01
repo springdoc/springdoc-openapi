@@ -1,9 +1,10 @@
 package org.springdoc.core;
 
-import org.springdoc.core.customizer.OperationCustomizer;
-import org.springdoc.core.customizer.ParameterCustomizer;
+import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.ParameterCustomizer;
 
 import java.util.List;
+import java.util.Optional;
 
 public class RequestBuilder extends AbstractRequestBuilder {
 
@@ -16,10 +17,9 @@ public class RequestBuilder extends AbstractRequestBuilder {
         PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpSession.class);
     }
 
-
     public RequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                          OperationBuilder operationBuilder, List<OperationCustomizer> customizers,
-                          List<ParameterCustomizer> parameterCustomizers) {
+                          OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> customizers,
+                          Optional<List<ParameterCustomizer>> parameterCustomizers) {
         super(parameterBuilder, requestBodyBuilder, operationBuilder, customizers, parameterCustomizers);
     }
 }
