@@ -1,8 +1,11 @@
 package org.springdoc.core;
 
 import org.springdoc.api.ActuatorProvider;
-import org.springdoc.api.OpenApiCustomiser;
 import org.springdoc.api.OpenApiResource;
+import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,18 +33,21 @@ public class SpringDocWebMvcConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public ParameterBuilder parameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, IgnoredParameterAnnotations ignoredParameterAnnotations) {
         return new ParameterBuilder(localSpringDocParameterNameDiscoverer, ignoredParameterAnnotations);
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public RequestBuilder requestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                                         OperationBuilder operationBuilder) {
+                                         OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<ParameterCustomizer>> parameterCustomizers) {
         return new RequestBuilder(parameterBuilder, requestBodyBuilder,
-                operationBuilder);
+                operationBuilder, operationCustomizers, parameterCustomizers);
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public ResponseBuilder responseBuilder(OperationBuilder operationBuilder) {
         return new ResponseBuilder(operationBuilder);
     }
