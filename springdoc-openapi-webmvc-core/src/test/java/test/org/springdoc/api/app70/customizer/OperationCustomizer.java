@@ -1,9 +1,8 @@
 package test.org.springdoc.api.app70.customizer;
 
+import io.swagger.v3.oas.models.Operation;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
-
-import io.swagger.v3.oas.models.Operation;
 
 @Component
 public class OperationCustomizer implements org.springdoc.core.customizers.OperationCustomizer {
