@@ -164,12 +164,12 @@ public abstract class AbstractRequestBuilder {
     }
 
     protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
-        operationCustomizers.ifPresent(customizers ->  customizers.forEach( customizer -> customizer.customize(operation, handlerMethod)));
+        operationCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(operation, handlerMethod)));
         return operation;
     }
 
     protected Parameter customiseParameter(Parameter parameter, ParameterInfo parameterInfo, HandlerMethod handlerMethod) {
-        parameterCustomizers.ifPresent(customizers ->  customizers.forEach( customizer -> customizer.customize(parameter, parameterInfo.getParameter(), handlerMethod)));
+        parameterCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(parameter, parameterInfo.getParameter(), handlerMethod)));
         return parameter;
     }
 

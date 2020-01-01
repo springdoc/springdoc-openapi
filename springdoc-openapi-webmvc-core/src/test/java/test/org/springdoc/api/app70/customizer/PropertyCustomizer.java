@@ -10,21 +10,21 @@ import java.util.stream.Stream;
 
 @Component
 public class PropertyCustomizer implements org.springdoc.core.customizers.PropertyCustomizer {
-	@Override
-	public Schema customize(Schema property, AnnotatedType type) {
-		Annotation[] ctxAnnotations = type.getCtxAnnotations();
-		if(ctxAnnotations == null) {
-			return property;
-		}
+    @Override
+    public Schema customize(Schema property, AnnotatedType type) {
+        Annotation[] ctxAnnotations = type.getCtxAnnotations();
+        if (ctxAnnotations == null) {
+            return property;
+        }
 
-		Optional<CustomizedProperty> propertyAnnotation = Stream.of(ctxAnnotations)
-				.filter(CustomizedProperty.class::isInstance)
-				.findFirst()
-				.map(CustomizedProperty.class::cast);
+        Optional<CustomizedProperty> propertyAnnotation = Stream.of(ctxAnnotations)
+                .filter(CustomizedProperty.class::isInstance)
+                .findFirst()
+                .map(CustomizedProperty.class::cast);
 
-		propertyAnnotation
-				.ifPresent(annotation -> property.description(property.getDescription() + ", " + annotation.addition()));
+        propertyAnnotation
+                .ifPresent(annotation -> property.description(property.getDescription() + ", " + annotation.addition()));
 
-		return property;
-	}
+        return property;
+    }
 }

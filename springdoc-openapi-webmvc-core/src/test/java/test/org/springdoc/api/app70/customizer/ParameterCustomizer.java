@@ -6,12 +6,12 @@ import org.springframework.web.method.HandlerMethod;
 
 @Component
 public class ParameterCustomizer implements org.springdoc.core.customizers.ParameterCustomizer {
-	@Override
-	public Parameter customize(Parameter parameterModel, java.lang.reflect.Parameter parameter, HandlerMethod handlerMethod) {
-		CustomizedParameter annotation = parameter.getAnnotation(CustomizedParameter.class);
-		if(annotation != null){
-			parameterModel.description(parameterModel.getDescription() + ", " + annotation.addition());
-		}
-		return parameterModel;
-	}
+    @Override
+    public Parameter customize(Parameter parameterModel, java.lang.reflect.Parameter parameter, HandlerMethod handlerMethod) {
+        CustomizedParameter annotation = parameter.getAnnotation(CustomizedParameter.class);
+        if (annotation != null) {
+            parameterModel.description(parameterModel.getDescription() + ", " + annotation.addition());
+        }
+        return parameterModel;
+    }
 }

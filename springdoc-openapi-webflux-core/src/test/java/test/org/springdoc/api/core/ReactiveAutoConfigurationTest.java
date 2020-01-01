@@ -43,7 +43,7 @@ public class ReactiveAutoConfigurationTest {
     @Test
     public void configurations_not_loaded_when_reactor_is_not_on_class_path() {
         contextRunner
-                .withClassLoader(new FilteredClassLoader( "org.springframework.web.reactive.HandlerResult"))
+                .withClassLoader(new FilteredClassLoader("org.springframework.web.reactive.HandlerResult"))
                 .run(context -> assertThat(context)
                         .hasNotFailed()
                         .doesNotHaveBean("openApiResource"));
