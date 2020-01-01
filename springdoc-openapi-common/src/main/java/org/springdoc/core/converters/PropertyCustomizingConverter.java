@@ -12,10 +12,10 @@ import java.util.Optional;
 
 public class PropertyCustomizingConverter implements ModelConverter {
 
-    private final Optional<List<PropertyCustomizer>> customizers;
+    private final Optional<List<PropertyCustomizer>> propertyCustomizers;
 
     public PropertyCustomizingConverter(Optional<List<PropertyCustomizer>> customizers) {
-        this.customizers = customizers;
+        this.propertyCustomizers = customizers;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class PropertyCustomizingConverter implements ModelConverter {
         if (chain.hasNext()) {
             Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
             if (type.isSchemaProperty()) {
-                customizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(resolvedSchema, type)));
+                propertyCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(resolvedSchema, type)));
             }
             return resolvedSchema;
         } else {
