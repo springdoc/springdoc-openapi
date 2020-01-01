@@ -35,17 +35,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
 
         String webJarsLocation = webJarsPrefixUrl + DEFAULT_PATH_SEPARATOR;
 
-        registry.addResourceHandler(uiRootPath + "/swagger-ui/swagger-ui.css").addResourceLocations(webJarsLocation)
-                .resourceChain(false);
-        registry.addResourceHandler(uiRootPath + "/swagger-ui/swagger-ui-standalone-preset.js").addResourceLocations(webJarsLocation)
-                .resourceChain(false);
-        registry.addResourceHandler(uiRootPath + "/swagger-ui/swagger-ui-bundle.js").addResourceLocations(webJarsLocation)
-                .resourceChain(false);
-        registry.addResourceHandler(uiRootPath + "/swagger-ui/index.html").addResourceLocations(webJarsLocation)
-                .resourceChain(false);
-        registry.addResourceHandler(uiRootPath + "/swagger-ui/favicon-32x32.png").addResourceLocations(webJarsLocation)
-                .resourceChain(false);
-        registry.addResourceHandler(uiRootPath + "/swagger-ui/favicon-16x16.png").addResourceLocations(webJarsLocation)
+        registry.addResourceHandler(uiRootPath + "/swagger-ui/**").addResourceLocations(webJarsLocation)
                 .resourceChain(false);
     }
 

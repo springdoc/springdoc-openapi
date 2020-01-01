@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -361,6 +362,15 @@ public class SwaggerUiConfigProperties {
 
         public void setName(String name) {
             this.name = name;
+        }
+    }
+
+    public boolean isValidUrl(String url) {
+        try {
+            new URL(url).toURI();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }
