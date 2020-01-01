@@ -1,4 +1,4 @@
-package org.springdoc.api;
+package org.springdoc.core.customizers;
 
 import io.swagger.v3.oas.models.OpenAPI;
 

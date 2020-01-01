@@ -1,10 +1,13 @@
 package org.springdoc.core;
 
-import io.swagger.v3.oas.models.Operation;
+import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.server.ServerWebExchange;
+
+import java.util.List;
+import java.util.Optional;
 
 public class RequestBuilder extends AbstractRequestBuilder {
 
@@ -15,12 +18,8 @@ public class RequestBuilder extends AbstractRequestBuilder {
     }
 
     public RequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                          OperationBuilder operationBuilder) {
-        super(parameterBuilder, requestBodyBuilder, operationBuilder);
-    }
-
-    @Override
-    protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
-        return operation;
+                          OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
+                          Optional<List<ParameterCustomizer>> parameterCustomizers) {
+        super(parameterBuilder, requestBodyBuilder, operationBuilder, operationCustomizers, parameterCustomizers);
     }
 }
