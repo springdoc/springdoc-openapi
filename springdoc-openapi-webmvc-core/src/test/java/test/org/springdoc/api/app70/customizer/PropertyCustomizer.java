@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 @Component
 public class PropertyCustomizer implements org.springdoc.core.customizers.PropertyCustomizer {
 	@Override
-	public Schema<?> customize(Schema<?> property, AnnotatedType type) {
+	public Schema customize(Schema property, AnnotatedType type) {
 		Annotation[] ctxAnnotations = type.getCtxAnnotations();
 		if(ctxAnnotations == null) {
 			return property;
