@@ -5,7 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.2.22] -
-- Fix autoconfigurations to be not loaded if classpath does not contain mvc/reactive dependencies or application is not web application
+### Added
+- New annotation @PageableAsQueryParam for better Pageable support
+- Feature to serve from the same swagger-ui both, REST APIs that are deployed within the same application and external REST APIs  #309
+- Customizing operations, parameters and properties available through an SPI #293
+### Changed
+-  Autoconfigurations will not be loaded if classpath does not contain mvc/reactive dependencies or application is not web application #299
+### Fixed
+- Corrected the support of oauth2-redirect.html and oauth2RedirectUrl #311
+
   
 ## [1.2.21] - 
 ### Added
