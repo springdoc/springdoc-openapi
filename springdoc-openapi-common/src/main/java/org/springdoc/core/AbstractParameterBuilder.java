@@ -126,6 +126,16 @@ public abstract class AbstractParameterBuilder {
         if (parameterDoc.allowReserved()) {
             parameter.setAllowReserved(parameterDoc.allowReserved());
         }
+        setSchema(parameterDoc, components, jsonView, parameter);
+        setExamples(parameterDoc, parameter);
+        setExtensions(parameterDoc, parameter);
+        setParameterStyle(parameter, parameterDoc);
+        setParameterExplode(parameter, parameterDoc);
+
+        return parameter;
+    }
+
+    private void setSchema(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonView, Parameter parameter) {
         if (StringUtils.isNotBlank(parameterDoc.ref())) {
             parameter.$ref(parameterDoc.ref());
         } else {
@@ -144,13 +154,6 @@ public abstract class AbstractParameterBuilder {
             }
             parameter.setSchema(schema);
         }
-
-        setExamples(parameterDoc, parameter);
-        setExtensions(parameterDoc, parameter);
-        setParameterStyle(parameter, parameterDoc);
-        setParameterExplode(parameter, parameterDoc);
-
-        return parameter;
     }
 
     Schema calculateSchema(Components components, java.lang.reflect.Parameter parameter, String paramName,

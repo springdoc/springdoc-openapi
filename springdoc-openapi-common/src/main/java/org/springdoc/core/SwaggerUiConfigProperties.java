@@ -349,6 +349,15 @@ public class SwaggerUiConfigProperties {
         this.url = url;
     }
 
+    public boolean isValidUrl(String url) {
+        try {
+            new URL(url).toURI();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     static class SwaggerUrl {
         private String url;
         private String name;
@@ -376,15 +385,6 @@ public class SwaggerUiConfigProperties {
 
         public void setName(String name) {
             this.name = name;
-        }
-    }
-
-    public boolean isValidUrl(String url) {
-        try {
-            new URL(url).toURI();
-            return true;
-        } catch (Exception e) {
-            return false;
         }
     }
 }

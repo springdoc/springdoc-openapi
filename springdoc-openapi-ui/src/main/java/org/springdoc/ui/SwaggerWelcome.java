@@ -86,7 +86,7 @@ class SwaggerWelcome {
                 SwaggerUiConfigProperties.addUrl(url);
 
         }
-        if(!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())){
+        if (!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
             swaggerUiConfig.setOauth2RedirectUrl(ServletUriComponentsBuilder.fromCurrentContextPath().path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
         }
     }

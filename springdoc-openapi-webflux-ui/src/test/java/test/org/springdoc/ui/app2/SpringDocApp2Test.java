@@ -17,7 +17,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @RunWith(SpringRunner.class)
 @WebFluxTest(properties = "springdoc.swagger-ui.enabled=false")
 @ActiveProfiles("test")
-@ContextConfiguration(classes = {SpringDocConfiguration.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class ,SwaggerWelcome.class})
+@ContextConfiguration(classes = {SpringDocConfiguration.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class, SwaggerWelcome.class})
 public class SpringDocApp2Test {
 
     @Autowired

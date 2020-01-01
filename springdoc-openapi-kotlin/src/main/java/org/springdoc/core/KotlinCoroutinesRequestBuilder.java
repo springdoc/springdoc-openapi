@@ -11,13 +11,13 @@ import java.util.Optional;
 public class KotlinCoroutinesRequestBuilder extends AbstractRequestBuilder {
 
 
+    static {
+        PARAM_TYPES_TO_IGNORE.add(Continuation.class);
+    }
+
     public KotlinCoroutinesRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
                                           OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> customizers,
                                           Optional<List<ParameterCustomizer>> parameterCustomizers) {
         super(parameterBuilder, requestBodyBuilder, operationBuilder, customizers, parameterCustomizers);
-    }
-
-    static {
-        PARAM_TYPES_TO_IGNORE.add(Continuation.class);
     }
 }

@@ -33,7 +33,7 @@ public class SpringDocConfiguration {
     }
 
     @Bean
-    PropertyCustomizingConverter propertyCustomizingConverter(Optional<List<PropertyCustomizer>> customizers){
+    PropertyCustomizingConverter propertyCustomizingConverter(Optional<List<PropertyCustomizer>> customizers) {
         return new PropertyCustomizingConverter(customizers);
     }
 
@@ -44,7 +44,7 @@ public class SpringDocConfiguration {
 
     @Bean
     public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, List<ModelConverter> modelConverters) {
-        return new OpenAPIBuilder(openAPI, context, securityParser,modelConverters);
+        return new OpenAPIBuilder(openAPI, context, securityParser, modelConverters);
     }
 
     @Bean
