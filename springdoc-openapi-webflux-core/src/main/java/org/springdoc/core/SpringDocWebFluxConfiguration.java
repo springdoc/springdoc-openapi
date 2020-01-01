@@ -1,10 +1,9 @@
 package org.springdoc.core;
 
-import org.springdoc.api.OpenApiCustomiser;
 import org.springdoc.api.OpenApiResource;
-import org.springdoc.core.customizer.ParameterCustomizer;
-import org.springdoc.core.customizer.OperationCustomizer;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +18,6 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocWebFluxConfiguration {
-
-    @Autowired(required = false)
-    private List<OperationCustomizer> operationCustomizers;
-
-    @Autowired(required = false)
-    private List<ParameterCustomizer> parameterCustomizers;
 
     @Bean
     @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
@@ -45,7 +38,7 @@ public class SpringDocWebFluxConfiguration {
 
     @Bean
     public RequestBuilder requestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                                         OperationBuilder operationBuilder) {
+                                         OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<ParameterCustomizer>> parameterCustomizers ) {
         return new RequestBuilder(parameterBuilder, requestBodyBuilder,
                 operationBuilder, operationCustomizers, parameterCustomizers);
     }

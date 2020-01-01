@@ -1,4 +1,4 @@
-package org.springdoc.core.customizer;
+package org.springdoc.core.customizers;
 
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.springframework.web.method.HandlerMethod;

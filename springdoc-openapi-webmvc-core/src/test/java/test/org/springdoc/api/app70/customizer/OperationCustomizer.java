@@ -6,7 +6,7 @@ import org.springframework.web.method.HandlerMethod;
 import io.swagger.v3.oas.models.Operation;
 
 @Component
-public class OperationCustomizer implements org.springdoc.core.customizer.OperationCustomizer {
+public class OperationCustomizer implements org.springdoc.core.customizers.OperationCustomizer {
 	@Override
 	public Operation customize(Operation operation, HandlerMethod handlerMethod) {
 		CustomizedOperation annotation = handlerMethod.getMethodAnnotation(CustomizedOperation.class);

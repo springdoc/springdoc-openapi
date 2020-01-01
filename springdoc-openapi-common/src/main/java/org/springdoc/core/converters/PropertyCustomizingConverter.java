@@ -4,7 +4,7 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
-import org.springdoc.core.customizer.PropertyCustomizer;
+import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Iterator;
