@@ -4,9 +4,10 @@ import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.core.converters.ObjectNodeConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
-import org.springdoc.core.customizer.PropertyCustomizer;
+import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +33,7 @@ public class SpringDocConfiguration {
     }
 
     @Bean
-    PropertyCustomizingConverter propertyCustomizingConverter(List<PropertyCustomizer> customizers){
+    PropertyCustomizingConverter propertyCustomizingConverter(Optional<List<PropertyCustomizer>> customizers) {
         return new PropertyCustomizingConverter(customizers);
     }
 
@@ -43,10 +44,11 @@ public class SpringDocConfiguration {
 
     @Bean
     public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, List<ModelConverter> modelConverters) {
-        return new OpenAPIBuilder(openAPI, context, securityParser,modelConverters);
+        return new OpenAPIBuilder(openAPI, context, securityParser, modelConverters);
     }
 
     @Bean
+    @ConditionalOnWebApplication
     public OperationBuilder operationBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
                                              SecurityParser securityParser, OpenAPIBuilder openAPIBuilder, PropertyResolverUtils propertyResolverUtils) {
         return new OperationBuilder(parameterBuilder, requestBodyBuilder,
@@ -59,6 +61,7 @@ public class SpringDocConfiguration {
     }
 
     @Bean
+    @ConditionalOnWebApplication
     public RequestBodyBuilder requestBodyBuilder(AbstractParameterBuilder parameterBuilder) {
         return new RequestBodyBuilder(parameterBuilder);
     }

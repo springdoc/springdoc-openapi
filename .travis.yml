@@ -11,7 +11,7 @@ addons:
     organization: "springdoc-openapi"
     token:
       secure: "S5zeA+Vvbe7LG450OAtd5TrBRL8fhaWgJjzAp3RzS797++2xrN92jI74h5NL0MiYBd6NKoWql1WJaMKHCfo/EJ6RdExdw71126B2k061iK54y8pxom+ADFigKgkVzHgnV28uBioC2DIcVvRDk8WkX6IZ9I6C72TzWapXrlCnRkSY1lsfOwvqahTYheaDzRKWN5WoBm8M63IiciMz21SSrdm20fjQeY90EI0EfKn0jjJWL8WKmDa98MeSsJWBwR964ICKRvRq9CGTjTZVhL+D0VYt4tS7kpoN9QatL6SL/octL6jXhgGqnFu8AWRwe1RX7hM9jjDLCkXrz6pr9+t4ts8lo7CcG1YmO5A0vRZYvdO9Y98REEAfU17Y21YjWwl2H41BuHGjJ/vSyVQ1ASE4Q7hBdCTJYNVr+PtMIHR6WFuNIBgA23sYvEQhBolnLpVfs3q5CjVwV3r6wx0ubaRkLlv0MTphic/lGQPFfaVdjYpBCKAr+G6k7t8elpMCf1oeVoopGM6y1WRSCmq2nZyf1n9oNXd4BcFvwnaQwQaEAPnTcZw1F4O6Z0Tc5BJOvJ5pQ79d3EJaOGyDJmezKBxV6mgeIH1ILkWc6nKf1JnqE4v8yCdRsvsTAPcIEn66jqTLpo5uvERroodHqNKP9aSbxvyHp8nkSLb35+w8NpRMlEg="
-      
+
 script:
   - mvn clean package --settings settings.xml
 
