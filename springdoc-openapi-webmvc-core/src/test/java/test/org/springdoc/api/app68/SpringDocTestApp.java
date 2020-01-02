@@ -43,7 +43,7 @@ public class SpringDocTestApp {
     @Bean
     public GroupedOpenApi groupOpenApi() {
         return GroupedOpenApi.builder()
-                .setGroup("groups")
+                .setGroup("groups test")
                 .pathsToMatch("/v1/**")
                 .packagesToScan("test.org.springdoc.api.app68.api.user", "test.org.springdoc.api.app68.api.store")
                 .build();

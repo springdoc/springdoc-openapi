@@ -25,6 +25,9 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.springdoc.core.Constants.*;
@@ -125,7 +128,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
     }
 
     private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
-        StringBuffer requestUrl = request.getRequestURL();
+        String requestUrl = decode(request.getRequestURL().toString());
         String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
         openAPIBuilder.setServerBaseUrl(serverBaseUrl);
     }

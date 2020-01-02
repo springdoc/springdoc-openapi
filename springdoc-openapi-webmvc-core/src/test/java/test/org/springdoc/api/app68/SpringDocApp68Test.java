@@ -59,7 +59,7 @@ public class SpringDocApp68Test {
 
     @Test
     public void testApp4() throws Exception {
-        mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/groups"))
+        mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/groups test"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi", is("3.0.1")))
                 .andExpect(content().json(getContent("results/app684.json"), true));
