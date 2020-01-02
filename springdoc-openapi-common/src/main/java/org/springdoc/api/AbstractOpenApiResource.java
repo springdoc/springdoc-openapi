@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.*;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.*;
@@ -304,10 +305,10 @@ public abstract class AbstractOpenApiResource {
         }
     }
 
-    protected static String getProtocolRelativeUrl(String url){
+    protected static String getRelativeUrl(String url){
         try {
             URI uri = new URI(url);
-            return new URI(null, uri.getHost(), uri.getPath(), null).toString();
+            return StringUtils.appendIfMissing(new URI(null, null, uri.getPath(), null).toString(), "/");
         } catch (URISyntaxException e) {
             return url;
         }

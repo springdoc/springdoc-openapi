@@ -26,11 +26,6 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.springdoc.core.Constants.*;
@@ -46,8 +41,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
     @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
     private boolean showActuator;
 
-    @Value(SPRINGDOC_PROTOCOL_RELATIVE_BASEURL_VALUE)
-    private boolean protocolRelativBaseurl;
+    @Value(SPRINGDOC_RELATIVE_BASEURL_VALUE)
+    private boolean relativBaseurl;
 
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -61,11 +56,15 @@ public class OpenApiResource extends AbstractOpenApiResource {
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
-                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan) {
+                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan,
+                           boolean showActuator, boolean relativBaseurl) {
         super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, pathsToMatch, packagesToScan);
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
         this.servletContextProvider = servletContextProvider;
+        this.showActuator = showActuator;
+        this.relativBaseurl = relativBaseurl;
     }
+
 
     @Operation(hidden = true)
     @GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -136,6 +135,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
     private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
         String requestUrl = decode(request.getRequestURL().toString());
         String calculatedUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
-        openAPIBuilder.setServerBaseUrl(protocolRelativBaseurl ? getProtocolRelativeUrl(calculatedUrl) : calculatedUrl);
+        openAPIBuilder.setServerBaseUrl(relativBaseurl ? getRelativeUrl(calculatedUrl) : calculatedUrl);
     }
 }
