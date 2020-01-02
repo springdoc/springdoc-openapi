@@ -19,6 +19,8 @@ import org.springframework.web.method.HandlerMethod;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -298,6 +300,15 @@ public abstract class AbstractOpenApiResource {
             return URLDecoder.decode(requestURI, StandardCharsets.UTF_8.toString());
         } catch (UnsupportedEncodingException e) {
             return requestURI;
+        }
+    }
+
+    protected static String getProtocolRelativeUrl(String url){
+        try {
+            URI uri = new URI(url);
+            return new URI(null, uri.getHost(), uri.getPath(), null).toString();
+        } catch (URISyntaxException e) {
+            return url;
         }
     }
 }

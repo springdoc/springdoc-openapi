@@ -26,6 +26,8 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -42,6 +44,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
     @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
     private boolean showActuator;
+
+    @Value(SPRINGDOC_PROTOCOL_RELATIVE_BASEURL_VALUE)
+    private boolean protocolRelativBaseurl;
 
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -129,7 +134,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
     private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
         String requestUrl = decode(request.getRequestURL().toString());
-        String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
-        openAPIBuilder.setServerBaseUrl(serverBaseUrl);
+        String calculatedUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
+        openAPIBuilder.setServerBaseUrl(protocolRelativBaseurl ? getProtocolRelativeUrl(calculatedUrl) : calculatedUrl);
     }
 }
