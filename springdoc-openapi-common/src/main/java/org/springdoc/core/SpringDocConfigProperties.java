@@ -14,7 +14,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 public class SpringDocConfigProperties {
 
     private Boolean showActuator = false;
-    private Boolean protocolRelativeBaseurl = false;
+    private Boolean relativeBaseurl = false;
     private Webjars webjars = new Webjars();
     private ApiDocs apiDocs = new ApiDocs();
     private List<String> packagesToScan;
@@ -36,12 +36,12 @@ public class SpringDocConfigProperties {
         this.showActuator = showActuator;
     }
 
-    public Boolean getProtocolRelativeBaseurl() {
-        return protocolRelativeBaseurl;
+    public Boolean getRelativeBaseurl() {
+        return relativeBaseurl;
     }
 
-    public void setProtocolRelativeBaseurl(Boolean protocolRelativeBaseurl) {
-        this.protocolRelativeBaseurl = protocolRelativeBaseurl;
+    public void setRelativeBaseurl(Boolean relativeBaseurl) {
+        this.relativeBaseurl = relativeBaseurl;
     }
 
     public Webjars getWebjars() {
