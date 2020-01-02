@@ -1,14 +1,15 @@
 package org.springdoc.core;
 
 import org.springdoc.api.ActuatorProvider;
-import org.springdoc.api.OpenApiCustomiser;
 import org.springdoc.api.OpenApiResource;
-import org.springdoc.core.customizer.OperationCustomizer;
-import org.springdoc.core.customizer.ParameterCustomizer;
-import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -18,16 +19,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 
 @Configuration
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocWebMvcConfiguration {
-
-    @Autowired(required = false)
-    private List<OperationCustomizer> operationCustomizers;
-
-    @Autowired(required = false)
-    private List<ParameterCustomizer> parameterCustomizers;
 
     @Bean
     public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
@@ -49,7 +46,7 @@ public class SpringDocWebMvcConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public RequestBuilder requestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                                         OperationBuilder operationBuilder) {
+                                         OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<ParameterCustomizer>> parameterCustomizers) {
         return new RequestBuilder(parameterBuilder, requestBodyBuilder,
                 operationBuilder, operationCustomizers, parameterCustomizers);
     }
@@ -58,6 +55,18 @@ public class SpringDocWebMvcConfiguration {
     @ConditionalOnMissingBean
     public ResponseBuilder responseBuilder(OperationBuilder operationBuilder) {
         return new ResponseBuilder(operationBuilder);
+    }
+
+    @Configuration
+    @ConditionalOnProperty(name = SPRINGDOC_SHOW_ACTUATOR)
+    @ConditionalOnClass(WebMvcEndpointHandlerMapping.class)
+    class SpringDocWebMvcActuatorConfiguration {
+
+        @Bean
+        public ActuatorProvider actuatorProvider(WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping) {
+            return new ActuatorProvider(webMvcEndpointHandlerMapping);
+        }
+
     }
 
 }

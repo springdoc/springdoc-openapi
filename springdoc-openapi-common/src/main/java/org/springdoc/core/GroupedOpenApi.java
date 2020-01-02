@@ -1,6 +1,6 @@
 package org.springdoc.core;
 
-import org.springdoc.api.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -46,10 +46,10 @@ public class GroupedOpenApi {
     }
 
     public static class Builder {
+        private final List<OpenApiCustomiser> openApiCustomisers = new ArrayList<>();
         private String group;
         private List<String> pathsToMatch;
         private List<String> packagesToScan;
-        private final List<OpenApiCustomiser> openApiCustomisers = new ArrayList<>();
 
         private Builder() {
             // use static factory method in parent class

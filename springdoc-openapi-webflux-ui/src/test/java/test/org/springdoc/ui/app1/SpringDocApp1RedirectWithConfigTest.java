@@ -20,7 +20,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
         "springdoc.api-docs.path=/baf/batz"
 })
 @ActiveProfiles("test")
-@ContextConfiguration(classes = {SpringDocConfiguration.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class ,SwaggerWelcome.class})
+@ContextConfiguration(classes = {SpringDocConfiguration.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class, SwaggerWelcome.class})
 public class SpringDocApp1RedirectWithConfigTest {
     @Autowired
     private WebTestClient webTestClient;

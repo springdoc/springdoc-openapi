@@ -21,7 +21,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
         "springdoc.swagger-ui.url=/batz" // ignored since configUrl is configured
 })
 @ActiveProfiles("test")
-@ContextConfiguration(classes = {SpringDocConfiguration.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class ,SwaggerWelcome.class})
+@ContextConfiguration(classes = {SpringDocConfiguration.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class, SwaggerWelcome.class})
 public class SpringDocApp1RedirectConfigUrlTest {
 
     @Autowired

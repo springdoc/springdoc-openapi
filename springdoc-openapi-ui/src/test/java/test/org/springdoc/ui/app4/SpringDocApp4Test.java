@@ -27,7 +27,7 @@ public class SpringDocApp4Test extends AbstractSpringDocTest {
     }
 
     @After
-    public void reset(){
+    public void reset() {
         SwaggerUiConfigProperties.setSwaggerUrls(new ArrayList<>());
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +117,11 @@ public class SwaggerUiConfigProperties {
         swaggerUrls.add(swaggerUrl);
     }
 
+    public static void addGroup(String group, String url) {
+        SwaggerUrl swaggerUrl = new SwaggerUrl(group, url);
+        swaggerUrls.add(swaggerUrl);
+    }
+
     public static List<SwaggerUrl> getSwaggerUrls() {
         return swaggerUrls;
     }
@@ -125,14 +131,18 @@ public class SwaggerUiConfigProperties {
     }
 
     public static void addUrl(String url) {
-        swaggerUrls.forEach(elt -> elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName()));
+        swaggerUrls.forEach(elt ->
+        {
+            if (StringUtils.isEmpty(elt.url))
+                elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName());
+        });
     }
 
     public Map<String, Object> getConfigParameters() {
         final Map<String, Object> params = new TreeMap<>();
         put("layout", layout, params);
         put(CONFIG_URL_PROPERTY, configUrl, params);
-        put( "validatorUrl", validatorUrl, params);
+        put("validatorUrl", validatorUrl, params);
         put("filter", filter, params);
         put("deepLinking", this.deepLinking, params);
         put("displayOperationId", displayOperationId, params);
@@ -339,9 +349,23 @@ public class SwaggerUiConfigProperties {
         this.url = url;
     }
 
+    public boolean isValidUrl(String url) {
+        try {
+            new URL(url).toURI();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     static class SwaggerUrl {
         private String url;
         private String name;
+
+        public SwaggerUrl(String group, String url) {
+            this.url = url;
+            this.name = group;
+        }
 
         public SwaggerUrl(String group) {
             this.name = group;

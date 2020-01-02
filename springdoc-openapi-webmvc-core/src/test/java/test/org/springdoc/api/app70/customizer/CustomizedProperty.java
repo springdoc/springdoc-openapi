@@ -5,5 +5,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CustomizedProperty {
-	String addition() default "customized property!";
+    String addition() default "customized property!";
 }
