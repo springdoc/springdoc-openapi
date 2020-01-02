@@ -31,6 +31,9 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 @RestController
 public class OpenApiResource extends AbstractOpenApiResource {
 
+    @Value(SPRINGDOC_PROTOCOL_RELATIVE_BASEURL_VALUE)
+    private boolean protocolRelativBaseurl;
+
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
@@ -83,7 +86,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
     private void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
         String requestUrl = decode(serverHttpRequest.getURI().toString());
         String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
-        openAPIBuilder.setServerBaseUrl(serverBaseUrl);
+        openAPIBuilder.setServerBaseUrl(protocolRelativBaseurl ? getProtocolRelativeUrl(serverBaseUrl) : serverBaseUrl);
     }
 
 }
