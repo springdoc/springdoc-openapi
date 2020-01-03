@@ -3,6 +3,8 @@
 
 ![Octocat](https://springdoc.github.io/springdoc-openapi-demos/images/springdoc-openapi.png)
 
+# [Full documentation](https://springdoc.org)
+
 # **Introduction**
 
 The springdoc-openapi Java library helps automating the generation of API documentation using Spring Boot projects.
