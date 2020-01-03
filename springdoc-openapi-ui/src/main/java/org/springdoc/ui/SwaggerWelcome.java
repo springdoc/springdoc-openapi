@@ -42,14 +42,7 @@ class SwaggerWelcome {
     @Operation(hidden = true)
     @GetMapping(SWAGGER_UI_PATH)
     public String redirectToUi(HttpServletRequest request) {
-        String uiRootPath = "";
-        if (swaggerPath.contains("/"))
-            uiRootPath = swaggerPath.substring(0, swaggerPath.lastIndexOf('/'));
-        StringBuilder sbUrl = new StringBuilder();
-        sbUrl.append(REDIRECT_URL_PREFIX);
-        if (StringUtils.isNotBlank(mvcServletPath))
-            sbUrl.append(mvcServletPath);
-        sbUrl.append(uiRootPath);
+        StringBuilder sbUrl = new StringBuilder(REDIRECT_URL_PREFIX).append(this.calculateUiRootPath());
         sbUrl.append(SWAGGER_UI_URL);
         buildConfigUrl(request);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl.toString());
@@ -87,7 +80,18 @@ class SwaggerWelcome {
 
         }
         if (!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
-            swaggerUiConfig.setOauth2RedirectUrl(ServletUriComponentsBuilder.fromCurrentContextPath().path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
+            swaggerUiConfig.setOauth2RedirectUrl(ServletUriComponentsBuilder.fromCurrentContextPath().path(this.calculateUiRootPath().append(swaggerUiConfig.getOauth2RedirectUrl()).toString()).build().toString());
         }
+    }
+
+    private StringBuilder calculateUiRootPath() {
+        String uiRootPath = "";
+        if (swaggerPath.contains("/"))
+            uiRootPath = swaggerPath.substring(0, swaggerPath.lastIndexOf('/'));
+        StringBuilder sbUrl = new StringBuilder();
+        if (StringUtils.isNotBlank(mvcServletPath))
+            sbUrl.append(mvcServletPath);
+        sbUrl.append(uiRootPath);
+        return sbUrl;
     }
 }
