@@ -16,6 +16,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
+import static org.springdoc.core.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -109,7 +110,7 @@ public class SwaggerUiConfigProperties {
     /**
      * OAuth redirect URL.
      */
-    private String oauth2RedirectUrl;
+    private String oauth2RedirectUrl=SWAGGER_UI_OAUTH_REDIRECT_URL;
     private String url;
 
     public static void addGroup(String group) {
