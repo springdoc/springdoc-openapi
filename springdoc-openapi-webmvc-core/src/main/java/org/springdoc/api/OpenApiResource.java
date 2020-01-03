@@ -41,9 +41,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
     @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
     private boolean showActuator;
 
-    @Value(SPRINGDOC_RELATIVE_BASEURL_VALUE)
-    private boolean relativBaseurl;
-
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
@@ -57,12 +54,11 @@ public class OpenApiResource extends AbstractOpenApiResource {
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
                            Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan,
-                           boolean showActuator, boolean relativBaseurl) {
+                           boolean showActuator) {
         super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, pathsToMatch, packagesToScan);
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
         this.servletContextProvider = servletContextProvider;
         this.showActuator = showActuator;
-        this.relativBaseurl = relativBaseurl;
     }
 
 
@@ -135,6 +131,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
     private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
         String requestUrl = decode(request.getRequestURL().toString());
         String calculatedUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
-        openAPIBuilder.setServerBaseUrl(relativBaseurl ? getRelativeUrl(calculatedUrl) : calculatedUrl);
+        openAPIBuilder.setServerBaseUrl(calculatedUrl);
     }
 }

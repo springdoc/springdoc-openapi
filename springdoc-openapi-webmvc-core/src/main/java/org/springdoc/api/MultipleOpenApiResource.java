@@ -36,9 +36,6 @@ public class MultipleOpenApiResource implements InitializingBean {
     @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
     private boolean showActuator;
 
-    @Value(SPRINGDOC_RELATIVE_BASEURL_VALUE)
-    private boolean protocolRelativBaseurl;
-
     public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
                                    ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
                                    AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -65,7 +62,7 @@ public class MultipleOpenApiResource implements InitializingBean {
                                 requestMappingHandlerMapping,
                                 servletContextProvider,
                                 Optional.of(item.getOpenApiCustomisers()), item.getPathsToMatch(), item.getPackagesToScan(),
-                                showActuator, protocolRelativBaseurl
+                                showActuator
                         )
                 ));
     }

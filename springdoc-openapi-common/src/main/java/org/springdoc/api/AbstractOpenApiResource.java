@@ -304,13 +304,4 @@ public abstract class AbstractOpenApiResource {
             return requestURI;
         }
     }
-
-    protected static String getRelativeUrl(String url){
-        try {
-            URI uri = new URI(url);
-            return StringUtils.appendIfMissing(new URI(null, null, uri.getPath(), null).toString(), "/");
-        } catch (URISyntaxException e) {
-            return url;
-        }
-    }
 }
