@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
@@ -200,8 +201,8 @@ public abstract class AbstractOpenApiResource {
              */
             jsonViewAnnotationForRequestBody = (JsonView) Arrays.stream(ReflectionUtils.getParameterAnnotations(method))
                     .filter(arr -> Arrays.stream(arr)
-                            .anyMatch(annotation -> annotation.annotationType()
-                                    .equals(io.swagger.v3.oas.annotations.parameters.RequestBody.class)))
+                            .anyMatch(annotation -> (annotation.annotationType()
+                                    .equals(io.swagger.v3.oas.annotations.parameters.RequestBody.class) || annotation.annotationType().equals(RequestBody.class))))
                     .flatMap(Arrays::stream).filter(annotation -> annotation.annotationType().equals(JsonView.class))
                     .reduce((a, b) -> null).orElse(jsonViewAnnotation);
         }
