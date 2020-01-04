@@ -3,6 +3,7 @@ package org.springdoc.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.*;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -21,14 +22,36 @@ import static org.springdoc.core.Constants.*;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
-public class MultipleOpenApiResource {
+public class MultipleOpenApiResource implements InitializingBean {
 
-    private final Map<String, OpenApiResource> groupedOpenApiResources;
+    private Map<String, OpenApiResource> groupedOpenApiResources;
+    private final List<GroupedOpenApi> groupedOpenApis;
+    private final ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder;
+    private final AbstractRequestBuilder requestBuilder;
+    private final AbstractResponseBuilder responseBuilder;
+    private final OperationBuilder operationParser;
+    private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
+    private final Optional<ActuatorProvider> servletContextProvider;
+
+    @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
+    private boolean showActuator;
 
     public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
                                    ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
                                    AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                                    RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider) {
+
+        this.groupedOpenApis = groupedOpenApis;
+        this.defaultOpenAPIBuilder = defaultOpenAPIBuilder;
+        this.requestBuilder = requestBuilder;
+        this.responseBuilder = responseBuilder;
+        this.operationParser = operationParser;
+        this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+        this.servletContextProvider = servletContextProvider;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
         this.groupedOpenApiResources = groupedOpenApis.stream()
                 .collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
                         new OpenApiResource(
@@ -38,7 +61,8 @@ public class MultipleOpenApiResource {
                                 operationParser,
                                 requestMappingHandlerMapping,
                                 servletContextProvider,
-                                Optional.of(item.getOpenApiCustomisers()), item.getPathsToMatch(), item.getPackagesToScan()
+                                Optional.of(item.getOpenApiCustomisers()), item.getPathsToMatch(), item.getPackagesToScan(),
+                                showActuator
                         )
                 ));
     }

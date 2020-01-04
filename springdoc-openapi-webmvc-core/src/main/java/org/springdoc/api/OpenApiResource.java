@@ -53,11 +53,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
-                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan) {
+                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan,
+                           boolean showActuator) {
         super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, pathsToMatch, packagesToScan);
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
         this.servletContextProvider = servletContextProvider;
+        this.showActuator = showActuator;
     }
+
 
     @Operation(hidden = true)
     @GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -126,8 +129,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
     }
 
     private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
-        StringBuffer requestUrl = request.getRequestURL();
-        String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
-        openAPIBuilder.setServerBaseUrl(serverBaseUrl);
+        String requestUrl = decode(request.getRequestURL().toString());
+        String calculatedUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
+        openAPIBuilder.setServerBaseUrl(calculatedUrl);
     }
 }
