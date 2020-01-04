@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
@@ -290,5 +293,13 @@ public abstract class AbstractOpenApiResource {
 
     protected boolean isPathToMatch(String operationPath) {
         return CollectionUtils.isEmpty(pathsToMatch) || pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
+    }
+
+    protected String decode(String requestURI) {
+        try {
+            return URLDecoder.decode(requestURI, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            return requestURI;
+        }
     }
 }

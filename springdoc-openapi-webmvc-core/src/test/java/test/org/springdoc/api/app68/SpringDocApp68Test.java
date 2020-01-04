@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -20,7 +21,7 @@ import static test.org.springdoc.utils.FileUtils.getContent;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
-@SpringBootTest
+@SpringBootTest(properties = "springdoc.show-actuator=true")
 @AutoConfigureMockMvc
 public class SpringDocApp68Test {
 
@@ -57,9 +58,15 @@ public class SpringDocApp68Test {
 
     @Test
     public void testApp4() throws Exception {
-        mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/groups"))
+        mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/groups test"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi", is("3.0.1")))
                 .andExpect(content().json(getContent("results/app684.json"), true));
+    }
+
+    @Test
+    public void testActuator() throws Exception {
+        mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.openapi", is("3.0.1"))).andExpect(jsonPath("$.paths./actuator/info.get.operationId", containsString("handle"))).andExpect(jsonPath("$.paths./actuator/health.get.operationId", containsString("handle")));
     }
 }
