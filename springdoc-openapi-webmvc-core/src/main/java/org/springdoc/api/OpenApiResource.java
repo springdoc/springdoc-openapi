@@ -61,7 +61,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
         this.showActuator = showActuator;
     }
 
-
     @Operation(hidden = true)
     @GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
     public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl)
