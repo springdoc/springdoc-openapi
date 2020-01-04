@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class SpringDocApp1RedirectDefaultTest extends AbstractSpringDocTest {
+public class SpringDocRedirectDefaultTest extends AbstractSpringDocTest {
 
     @Test
     public void shouldRedirectWithDefaultQueryParams() throws Exception {

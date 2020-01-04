@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -39,10 +40,22 @@ class SwaggerWelcome {
     @Autowired
     private SwaggerUiConfigProperties swaggerUiConfig;
 
+    private String uiRootPath;
+
+    @PostConstruct
+    public void calculateUiRootPath() {
+        StringBuilder sbUrl = new StringBuilder();
+        if (StringUtils.isNotBlank(mvcServletPath))
+            sbUrl.append(mvcServletPath);
+        if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
+            sbUrl.append(swaggerPath.substring(0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR)));
+        this.uiRootPath=sbUrl.toString();
+    }
+
     @Operation(hidden = true)
     @GetMapping(SWAGGER_UI_PATH)
     public String redirectToUi(HttpServletRequest request) {
-        StringBuilder sbUrl = new StringBuilder(REDIRECT_URL_PREFIX).append(this.calculateUiRootPath());
+        StringBuilder sbUrl = new StringBuilder(REDIRECT_URL_PREFIX).append(this.uiRootPath);
         sbUrl.append(SWAGGER_UI_URL);
         buildConfigUrl(request);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl.toString());
@@ -72,26 +85,14 @@ class SwaggerWelcome {
             String url = buildUrl(request, apiDocsUrl);
             String swaggerConfigUrl = url + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
             swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
-
             if (SwaggerUiConfigProperties.getSwaggerUrls().isEmpty())
                 swaggerUiConfig.setUrl(url);
             else
                 SwaggerUiConfigProperties.addUrl(url);
-
         }
         if (!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
-            swaggerUiConfig.setOauth2RedirectUrl(ServletUriComponentsBuilder.fromCurrentContextPath().path(this.calculateUiRootPath().append(swaggerUiConfig.getOauth2RedirectUrl()).toString()).build().toString());
+            swaggerUiConfig.setOauth2RedirectUrl(ServletUriComponentsBuilder.fromCurrentContextPath().path(this.uiRootPath).path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
         }
     }
 
-    private StringBuilder calculateUiRootPath() {
-        String uiRootPath = "";
-        if (swaggerPath.contains("/"))
-            uiRootPath = swaggerPath.substring(0, swaggerPath.lastIndexOf('/'));
-        StringBuilder sbUrl = new StringBuilder();
-        if (StringUtils.isNotBlank(mvcServletPath))
-            sbUrl.append(mvcServletPath);
-        sbUrl.append(uiRootPath);
-        return sbUrl;
-    }
 }

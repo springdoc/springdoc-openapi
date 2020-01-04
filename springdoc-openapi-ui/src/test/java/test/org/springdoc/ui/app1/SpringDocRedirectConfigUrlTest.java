@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "springdoc.swagger-ui.configUrl=/foo/bar",
         "springdoc.swagger-ui.url=/batz" // ignored since configUrl is configured
 })
-public class SpringDocApp1RedirectConfigUrlTest extends AbstractSpringDocTest {
+public class SpringDocRedirectConfigUrlTest extends AbstractSpringDocTest {
 
     @Test
     public void shouldRedirectWithConfigUrlIgnoringQueryParams() throws Exception {

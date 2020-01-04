@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "springdoc.swagger-ui.validatorUrl=/foo/validate",
         "springdoc.api-docs.path=/baf/batz"
 })
-public class SpringDocApp1RedirectWithConfigTest extends AbstractSpringDocTest {
+public class SpringDocRedirectWithConfigTest extends AbstractSpringDocTest {
 
     @Test
     public void shouldRedirectWithConfiguredParams() throws Exception {
