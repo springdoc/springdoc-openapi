@@ -82,7 +82,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
     }
 
     private void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
-        String requestUrl = serverHttpRequest.getURI().toString();
+        String requestUrl = decode(serverHttpRequest.getURI().toString());
         String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
         openAPIBuilder.setServerBaseUrl(serverBaseUrl);
     }
