@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.23] -
+### Added
+- Added migration guide from springfox #292
+- Added support for @JsonViews with spring @requestbody annotation #315
+- Provide oauth2RedirectUrl, if not declared #320
+### Fixed
+- Wrong server url with when grouped api name contains special charater #312
+
 ## [1.2.22] -
 ### Added
 - New annotation @PageableAsQueryParam for better Pageable support
