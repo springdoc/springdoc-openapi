@@ -27,7 +27,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 @Configuration
 @ConfigurationProperties(prefix = "springdoc.swagger-ui")
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
-@ConditionalOnBean(OpenAPIBuilder.class)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerUiConfigProperties {
 
     public static final String CONFIG_URL_PROPERTY = "configUrl";

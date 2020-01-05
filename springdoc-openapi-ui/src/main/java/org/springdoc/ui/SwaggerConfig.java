@@ -1,6 +1,6 @@
 package org.springdoc.ui;
 
-import org.springdoc.core.OpenAPIBuilder;
+import org.springdoc.core.SpringDocConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -15,7 +15,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
-@ConditionalOnBean(OpenAPIBuilder.class)
+@ConditionalOnBean(SpringDocConfiguration.class)
 @SuppressWarnings("deprecation")
 public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
 
