@@ -3,7 +3,7 @@
 
 ![Octocat](https://springdoc.github.io/springdoc-openapi-demos/images/springdoc-openapi.png)
 
-# [Full documentation](http://springdoc.org)
+# [Full documentation](https://springdoc.org)
 
 # **Introduction**
 
