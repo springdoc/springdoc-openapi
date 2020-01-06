@@ -2,6 +2,7 @@ package org.springdoc.core;
 
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.oas.models.OpenAPI;
+import org.springdoc.core.converters.ModelConverterRegistrar;
 import org.springdoc.core.converters.ObjectNodeConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.customizers.PropertyCustomizer;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,8 +45,13 @@ public class SpringDocConfiguration {
     }
 
     @Bean
-    public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, List<ModelConverter> modelConverters) {
-        return new OpenAPIBuilder(openAPI, context, securityParser, modelConverters);
+    public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser) {
+        return new OpenAPIBuilder(openAPI, context, securityParser);
+    }
+
+    @Bean
+    public ModelConverterRegistrar modelConverterRegistrar(Optional<List<ModelConverter>> modelConverters) {
+        return new ModelConverterRegistrar(modelConverters.orElse(Collections.emptyList()));
     }
 
     @Bean
