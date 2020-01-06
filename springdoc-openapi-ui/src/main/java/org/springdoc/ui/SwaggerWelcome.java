@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.SwaggerUiConfigProperties;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -26,7 +26,7 @@ import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT
 @Controller
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(OpenAPIBuilder.class)
-class SwaggerWelcome {
+class SwaggerWelcome implements InitializingBean {
 
     @Value(API_DOCS_URL)
     private String apiDocsUrl;
@@ -42,8 +42,13 @@ class SwaggerWelcome {
 
     private String uiRootPath;
 
-    @PostConstruct
-    public void calculateUiRootPath() {
+
+    @Override
+    public void afterPropertiesSet() {
+        calculateUiRootPath();
+    }
+
+    private void calculateUiRootPath() {
         StringBuilder sbUrl = new StringBuilder();
         if (StringUtils.isNotBlank(mvcServletPath))
             sbUrl.append(mvcServletPath);
