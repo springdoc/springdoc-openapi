@@ -1,7 +1,7 @@
 package org.springdoc.ui;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.core.OpenAPIBuilder;
+import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +25,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 
 @Controller
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
-@ConditionalOnBean(OpenAPIBuilder.class)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerWelcome {
 
     @Autowired
