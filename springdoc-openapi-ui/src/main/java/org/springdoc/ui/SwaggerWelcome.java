@@ -2,7 +2,7 @@ package org.springdoc.ui;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.core.OpenAPIBuilder;
+import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT
 
 @Controller
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
-@ConditionalOnBean(OpenAPIBuilder.class)
+@ConditionalOnBean(SpringDocConfiguration.class)
 class SwaggerWelcome implements InitializingBean {
 
     @Value(API_DOCS_URL)
@@ -90,7 +90,7 @@ class SwaggerWelcome implements InitializingBean {
             swaggerUiConfig.setOauth2RedirectUrl(ServletUriComponentsBuilder.fromCurrentContextPath().path(this.uiRootPath).path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
         }
     }
-    
+
     private void calculateUiRootPath() {
         StringBuilder sbUrl = new StringBuilder();
         if (StringUtils.isNotBlank(mvcServletPath))
