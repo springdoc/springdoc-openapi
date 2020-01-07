@@ -110,7 +110,7 @@ public class SwaggerUiConfigProperties {
     /**
      * OAuth redirect URL.
      */
-    private String oauth2RedirectUrl=SWAGGER_UI_OAUTH_REDIRECT_URL;
+    private String oauth2RedirectUrl = SWAGGER_UI_OAUTH_REDIRECT_URL;
     private String url;
 
     public static void addGroup(String group) {

@@ -23,15 +23,15 @@ import static org.junit.Assert.assertEquals;
 @ActiveProfiles("test")
 public abstract class AbstractSpringDocTest {
 
+    protected String groupName = "";
     @Autowired
     private WebTestClient webTestClient;
-
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
     public void testApp() throws Exception {
-        EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
+        EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange()
                 .expectStatus().isOk().expectBody().returnResult();
 
         String result = new String(getResult.getResponseBody());

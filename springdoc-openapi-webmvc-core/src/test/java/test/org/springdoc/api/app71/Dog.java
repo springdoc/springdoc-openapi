@@ -16,5 +16,4 @@ public class Dog {
     String displayName;
 
 
-
 }

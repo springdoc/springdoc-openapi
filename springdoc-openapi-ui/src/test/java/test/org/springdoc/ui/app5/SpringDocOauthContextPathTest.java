@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(properties ="server.servlet.context-path=/context-path")
+@SpringBootTest(properties = "server.servlet.context-path=/context-path")
 public class SpringDocOauthContextPathTest extends AbstractSpringDocTest {
 
     @Test

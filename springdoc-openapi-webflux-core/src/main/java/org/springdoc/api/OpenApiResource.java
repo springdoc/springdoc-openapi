@@ -42,6 +42,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
     }
 
+    public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+                           AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+                           RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan) {
+        super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, pathsToMatch, packagesToScan);
+        this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+    }
+
     @Operation(hidden = true)
     @GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl)
