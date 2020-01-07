@@ -97,6 +97,6 @@ class SwaggerWelcome implements InitializingBean {
             sbUrl.append(mvcServletPath);
         if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
             sbUrl.append(swaggerPath.substring(0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR)));
-        this.uiRootPath=sbUrl.toString();
+        this.uiRootPath = sbUrl.toString();
     }
 }
