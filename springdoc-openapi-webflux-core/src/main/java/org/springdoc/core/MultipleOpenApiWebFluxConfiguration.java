@@ -20,7 +20,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnBean(GroupedOpenApi.class)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-public class MultipleOpenApiSupportConfiguration {
+public class MultipleOpenApiWebFluxConfiguration {
 
     @Bean
     public BeanFactoryPostProcessor beanFactoryPostProcessor() {
