@@ -37,6 +37,7 @@ public class OpenAPIBuilder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIBuilder.class);
     private final OpenAPI openAPI;
+    private boolean isServersPresent = false;
     private final ApplicationContext context;
     private final SecurityParser securityParser;
     private final Map<HandlerMethod, String> springdocTags = new HashMap<>();
@@ -50,6 +51,8 @@ public class OpenAPIBuilder {
                 this.openAPI.setComponents(new Components());
             if (this.openAPI.getPaths() == null)
                 this.openAPI.setPaths(new Paths());
+            if (!CollectionUtils.isEmpty(this.openAPI.getServers()))
+                this.isServersPresent = true;
         } else {
             this.openAPI = new OpenAPI();
             this.openAPI.setComponents(new Components());
@@ -93,9 +96,11 @@ public class OpenAPIBuilder {
             openAPI.setInfo(infos);
         }
         // default server value
-        if (CollectionUtils.isEmpty(openAPI.getServers())) {
+        if (CollectionUtils.isEmpty(openAPI.getServers()) || !isServersPresent) {
             Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
-            openAPI.addServersItem(server);
+            List servers = new ArrayList();
+            servers.add(server);
+            openAPI.setServers(servers);
         }
         // add security schemes
         this.calculateSecuritySchemes(openAPI.getComponents());
@@ -195,7 +200,10 @@ public class OpenAPIBuilder {
         // OpenApiDefinition tags
         AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
         // OpenApiDefinition servers
-        openAPI.setServers(AnnotationsUtils.getServers(apiDef.servers()).orElse(null));
+        if(AnnotationsUtils.getServers(apiDef.servers()).isPresent()){
+            openAPI.setServers(AnnotationsUtils.getServers(apiDef.servers()).get());
+            this.isServersPresent=true;
+        }
         // OpenApiDefinition extensions
         if (apiDef.extensions().length > 0) {
             openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));

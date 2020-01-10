@@ -45,8 +45,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
-                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan) {
-        super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, pathsToMatch, packagesToScan);
+                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan, boolean cacheDisabled) {
+        super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, pathsToMatch, packagesToScan, cacheDisabled);
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
     }
 

@@ -37,6 +37,9 @@ class SwaggerWelcome implements InitializingBean {
     @Value(MVC_SERVLET_PATH)
     private String mvcServletPath;
 
+    @Value(SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE)
+    private String originConfigUrl;
+
     @Autowired
     private SwaggerUiConfigProperties swaggerUiConfig;
 
@@ -77,7 +80,7 @@ class SwaggerWelcome implements InitializingBean {
     }
 
     private void buildConfigUrl(HttpServletRequest request) {
-        if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
+        if (StringUtils.isEmpty(originConfigUrl)) {
             String url = buildUrl(request, apiDocsUrl);
             String swaggerConfigUrl = url + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
             swaggerUiConfig.setConfigUrl(swaggerConfigUrl);

@@ -34,6 +34,8 @@ public class MultipleOpenApiResource implements InitializingBean {
     private Map<String, OpenApiResource> groupedOpenApiResources;
     @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
     private boolean showActuator;
+    @Value(SPRINGDOC_CACHE_DISABLED_VALUE)
+    private boolean cacheDisabled;
 
     public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
                                    ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
@@ -61,7 +63,8 @@ public class MultipleOpenApiResource implements InitializingBean {
                                 requestMappingHandlerMapping,
                                 servletContextProvider,
                                 Optional.of(item.getOpenApiCustomisers()), item.getPathsToMatch(), item.getPackagesToScan(),
-                                showActuator
+                                showActuator,
+                                cacheDisabled
                         )
                 ));
     }
