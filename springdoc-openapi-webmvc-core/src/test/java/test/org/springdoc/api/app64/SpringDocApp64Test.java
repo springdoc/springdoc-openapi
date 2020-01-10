@@ -8,11 +8,11 @@ public class SpringDocApp64Test extends AbstractSpringDocTest {
 
     @BeforeClass
     public static void beforeClass() {
-        System.setProperty("springdoc.pathsToMatch", "/v1, /api/**");
+        System.setProperty("springdoc.paths-to-match", "/v1, /api/**");
     }
 
     @AfterClass
     public static void afterClass() {
-        System.clearProperty("springdoc.pathsToMatch");
+        System.clearProperty("springdoc.paths-to-match");
     }
 }
