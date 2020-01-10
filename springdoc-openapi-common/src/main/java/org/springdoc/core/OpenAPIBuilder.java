@@ -200,8 +200,9 @@ public class OpenAPIBuilder {
         // OpenApiDefinition tags
         AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
         // OpenApiDefinition servers
-        if(AnnotationsUtils.getServers(apiDef.servers()).isPresent()){
-            openAPI.setServers(AnnotationsUtils.getServers(apiDef.servers()).get());
+        Optional<List<Server>> optionalServers = AnnotationsUtils.getServers(apiDef.servers());
+        if(optionalServers.isPresent()){
+            openAPI.setServers(optionalServers.get());
             this.isServersPresent=true;
         }
         // OpenApiDefinition extensions

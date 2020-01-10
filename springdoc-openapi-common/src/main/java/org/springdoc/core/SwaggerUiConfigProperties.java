@@ -132,10 +132,7 @@ public class SwaggerUiConfigProperties {
     }
 
     public static void addUrl(String url) {
-        swaggerUrls.forEach(elt ->
-        {
-            elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName());
-        });
+        swaggerUrls.forEach(elt -> elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName()));
     }
 
     public Map<String, Object> getConfigParameters() {

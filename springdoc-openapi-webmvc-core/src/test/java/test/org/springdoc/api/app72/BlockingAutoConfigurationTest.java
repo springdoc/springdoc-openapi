@@ -1,4 +1,4 @@
-package test.org.springdoc.core;
+package test.org.springdoc.api.app72;
 
 import org.junit.Test;
 import org.springdoc.core.GroupedOpenApi;
