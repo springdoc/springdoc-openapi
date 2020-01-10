@@ -2,6 +2,7 @@ package org.springdoc.core;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Schema;
@@ -224,9 +225,8 @@ public abstract class AbstractRequestBuilder {
             requestInfo = new RequestInfo(ParameterType.PATH_PARAM, pathVar.value(), Boolean.TRUE, null);
             parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
         }
-
         // By default
-        if (RequestMethod.GET.equals(requestMethod)) {
+        if (RequestMethod.GET.equals(requestMethod) || (parameterInfo.getParameterModel() != null && ParameterIn.PATH.toString().equals(parameterInfo.getParameterModel().getIn()))) {
             parameter = this.buildParam(QUERY_PARAM, components, parameterInfo, Boolean.TRUE, null, jsonView);
         }
 
