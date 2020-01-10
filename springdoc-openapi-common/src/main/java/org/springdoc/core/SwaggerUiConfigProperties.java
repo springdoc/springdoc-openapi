@@ -134,8 +134,7 @@ public class SwaggerUiConfigProperties {
     public static void addUrl(String url) {
         swaggerUrls.forEach(elt ->
         {
-            if (StringUtils.isEmpty(elt.url))
-                elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName());
+            elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName());
         });
     }
 
