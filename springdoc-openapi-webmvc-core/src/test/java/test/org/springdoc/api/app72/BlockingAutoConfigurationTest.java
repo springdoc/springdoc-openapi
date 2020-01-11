@@ -2,8 +2,7 @@ package test.org.springdoc.api.app72;
 
 import org.junit.Test;
 import org.springdoc.core.GroupedOpenApi;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -76,10 +75,8 @@ public class BlockingAutoConfigurationTest {
 
     }
 
-    @SpringBootConfiguration
-    @EnableAutoConfiguration
-    protected static class TestApp {
-
+    @SpringBootApplication
+    static class TestApp {
         @Bean
         GroupedOpenApi testGroupedOpenApi() {
             return GroupedOpenApi.builder()

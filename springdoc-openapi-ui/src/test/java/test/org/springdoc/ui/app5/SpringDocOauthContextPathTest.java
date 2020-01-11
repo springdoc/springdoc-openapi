@@ -1,6 +1,7 @@
 package test.org.springdoc.ui.app5;
 
 import org.junit.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
@@ -11,6 +12,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = "server.servlet.context-path=/context-path")
 public class SpringDocOauthContextPathTest extends AbstractSpringDocTest {
+
+    @SpringBootApplication
+    static class SpringDocTestApp { }
 
     @Test
     public void oauth2_redirect_url_calculated_with_context_path() throws Exception {

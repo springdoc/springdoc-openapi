@@ -1,6 +1,7 @@
 package test.org.springdoc.ui.app1;
 
 import org.junit.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MvcResult;
 import test.org.springdoc.ui.AbstractSpringDocTest;
@@ -14,6 +15,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "springdoc.swagger-ui.url=/batz" // ignored since configUrl is configured
 })
 public class SpringDocRedirectConfigUrlTest extends AbstractSpringDocTest {
+
+    @SpringBootApplication
+    static class SpringDocTestApp { }
 
     @Test
     public void shouldRedirectWithConfigUrlIgnoringQueryParams() throws Exception {

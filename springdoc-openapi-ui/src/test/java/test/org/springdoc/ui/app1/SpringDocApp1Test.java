@@ -1,6 +1,7 @@
 package test.org.springdoc.ui.app1;
 
 import org.junit.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.web.servlet.MvcResult;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
@@ -9,6 +10,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SpringDocApp1Test extends AbstractSpringDocTest {
+
+    @SpringBootApplication
+    static class SpringDocTestApp { }
 
     @Test
     public void shouldDisplaySwaggerUiPage() throws Exception {
