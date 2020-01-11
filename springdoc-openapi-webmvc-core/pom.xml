@@ -34,10 +34,5 @@
             <artifactId>hibernate-validator</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>

@@ -2,6 +2,7 @@ package test.org.springdoc.api.app41;
 
 import org.junit.Test;
 import org.springdoc.core.Constants;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.web.servlet.MvcResult;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
@@ -16,6 +17,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SpringDocApp411Test extends AbstractSpringDocTest {
+
+    @SpringBootApplication
+    static class SpringDocTestApp { }
 
     @Test
     public void testApp() throws Exception {

@@ -1,4 +1,4 @@
-package test.org.springdoc.utils;
+package test.org.springdoc.api.app68;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
