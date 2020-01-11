@@ -3,45 +3,58 @@ package test.org.springdoc.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springdoc.core.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.reactive.server.EntityExchangeResult;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebFluxTest
+@SpringBootTest
 @ActiveProfiles("test")
+@AutoConfigureMockMvc
 public abstract class AbstractSpringDocTest {
 
+    public static String className;
+
     @Autowired
-    private WebTestClient webTestClient;
+    protected MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Configuration
+    @EnableAutoConfiguration(exclude = { SecurityAutoConfiguration.class})
+    static class ContextConfiguration { }
+
     @Test
     public void testApp() throws Exception {
-        EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
-                .expectStatus().isOk().expectBody().returnResult();
-
-        String result = new String(getResult.getResponseBody());
-        String className = getClass().getSimpleName();
+        className = getClass().getSimpleName();
         String testNumber = className.replaceAll("[^0-9]", "");
-
+        MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
+        String result = mockMvcResult.getResponse().getContentAsString();
         Path path = Paths.get(getClass().getClassLoader().getResource("results/app" + testNumber + ".json").toURI());
         byte[] fileBytes = Files.readAllBytes(path);
         String expected = new String(fileBytes);
-
-        assertEquals(objectMapper.readTree(expected), objectMapper.readTree(result));
+        JSONAssert.assertEquals(expected, result, true);
     }
+
 
 }
