@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.26] -
 ### Added
-- Make springdoc cache configurable. Fixes #331
+- Make springdoc cache configurable #331
 ### Fixed
 - Multiple paths in controller and DeleteMapping generates incorrect Request Body #334
 
