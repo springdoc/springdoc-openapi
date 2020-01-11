@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import test.org.springdoc.api.app71.Dog;
 
 
 @RestController

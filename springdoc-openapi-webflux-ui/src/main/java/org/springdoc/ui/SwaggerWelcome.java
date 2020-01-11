@@ -36,6 +36,10 @@ public class SwaggerWelcome {
     private String uiPath;
     @Value(WEB_JARS_PREFIX_URL)
     private String webJarsPrefixUrl;
+    @Value(SPRINGDOC_SWAGGER_UI_URL_VALUE)
+    private String swaggerUiUrl;
+    @Value(SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE)
+    private String originConfigUrl;
 
     @Bean
     @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
@@ -56,15 +60,18 @@ public class SwaggerWelcome {
     }
 
     private void buildConfigUrl() {
-        if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
+        if (StringUtils.isEmpty(originConfigUrl)){
             String swaggerConfigUrl = apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
             swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
-
             if (SwaggerUiConfigProperties.getSwaggerUrls().isEmpty())
-                swaggerUiConfig.setUrl(apiDocsUrl);
+            {
+                if (StringUtils.isEmpty(swaggerUiUrl))
+                    swaggerUiConfig.setUrl(apiDocsUrl);
+                else
+                    swaggerUiConfig.setUrl(swaggerUiUrl);
+            }
             else
                 SwaggerUiConfigProperties.addUrl(apiDocsUrl);
-
         }
     }
 

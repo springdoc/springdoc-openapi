@@ -15,6 +15,8 @@ public final class Constants {
     public static final String SPRINGDOC_CACHE_DISABLED_VALUE= "${" + SPRINGDOC_CACHE_DISABLED + ":false}";
     public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
     public static final String SPRINGDOC_SWAGGER_UI_CONFIG_URL  ="springdoc.swagger-ui.configUrl";
+    public static final String SPRINGDOC_SWAGGER_UI_URL  ="springdoc.swagger-ui.url";
+    public static final String SPRINGDOC_SWAGGER_UI_URL_VALUE  ="${" + SPRINGDOC_SWAGGER_UI_URL + ":#{null}}";
     public static final String SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE  ="${" + SPRINGDOC_SWAGGER_UI_CONFIG_URL + ":#{null}}";
     public static final String SPRINGDOC_SHOW_ACTUATOR = "springdoc.show-actuator";
     public static final String SPRINGDOC_SHOW_ACTUATOR_VALUE = "${" + SPRINGDOC_SHOW_ACTUATOR + ":false}";
