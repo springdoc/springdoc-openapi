@@ -70,6 +70,7 @@
         <swagger-api.version>2.1.0</swagger-api.version>
         <swagger-ui.version>3.24.0</swagger-ui.version>
         <webjars-locator.version>0.38</webjars-locator.version>
+        <spring-security-oauth2.version>2.3.5.RELEASE</spring-security-oauth2.version>
     </properties>
 
     <dependencyManagement>
@@ -100,6 +101,11 @@
                 <groupId>org.webjars</groupId>
                 <artifactId>webjars-locator</artifactId>
                 <version>${webjars-locator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security.oauth</groupId>
+                <artifactId>spring-security-oauth2</artifactId>
+                <version>${spring-security-oauth2.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

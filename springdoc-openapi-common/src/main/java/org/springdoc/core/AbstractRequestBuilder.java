@@ -175,7 +175,7 @@ public abstract class AbstractRequestBuilder {
     }
 
     protected boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
-        if (parameter.isAnnotationPresent(PathVariable.class)) {
+        if (parameter.isAnnotationPresent(PathVariable.class) || parameter.isAnnotationPresent(RequestParam.class)) {
             return false;
         }
         return parameterBuilder.isAnnotationToIgnore(parameter) || PARAM_TYPES_TO_IGNORE.contains(parameter.getType()) || (AnnotationUtils.findAnnotation(parameter.getType(), Hidden.class) != null);

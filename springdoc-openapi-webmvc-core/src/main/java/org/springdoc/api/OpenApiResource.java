@@ -8,10 +8,7 @@ import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
-import org.springdoc.core.AbstractRequestBuilder;
-import org.springdoc.core.AbstractResponseBuilder;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.*;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -88,6 +85,12 @@ public class OpenApiResource extends AbstractOpenApiResource {
             Set<HandlerMethod> handlerMethods = new HashSet<>(map.values());
             this.openAPIBuilder.addTag(handlerMethods, SPRINGDOC_ACTUATOR_TAG);
             calculatePath(restControllers, map);
+        }
+        if (openAPIBuilder.getSpringSecurityOAuth2Provider().isPresent()) {
+            SecurityOAuth2Provider securityOAuth2Provider = openAPIBuilder.getSpringSecurityOAuth2Provider().get();
+            Map<RequestMappingInfo, HandlerMethod> mapOauth = securityOAuth2Provider.getHandlerMethods();
+            Map<String, Object> requestMappingMapSec = securityOAuth2Provider.getFrameworkEndpoints();
+            calculatePath(requestMappingMapSec, mapOauth);
         }
     }
 

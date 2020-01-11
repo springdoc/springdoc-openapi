@@ -46,8 +46,8 @@ public class SpringDocConfiguration {
     }
 
     @Bean
-    public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser) {
-        return new OpenAPIBuilder(openAPI, context, securityParser);
+    public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser,Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
+        return new OpenAPIBuilder(openAPI, context, securityParser,springSecurityOAuth2Provider);
     }
 
     @Bean

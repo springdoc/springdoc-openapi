@@ -42,9 +42,10 @@ public class OpenAPIBuilder {
     private final SecurityParser securityParser;
     private final Map<HandlerMethod, String> springdocTags = new HashMap<>();
     private String serverBaseUrl;
+    private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
 
     @SuppressWarnings("WeakerAccess")
-    OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser) {
+    OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
         if (openAPI.isPresent()) {
             this.openAPI = openAPI.get();
             if (this.openAPI.getComponents() == null)
@@ -60,6 +61,7 @@ public class OpenAPIBuilder {
         }
         this.context = context;
         this.securityParser = securityParser;
+        this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
     }
 
     private static String splitCamelCase(String str) {
@@ -307,5 +309,9 @@ public class OpenAPIBuilder {
         return Stream.of(controllerAdviceMap).flatMap(mapEl -> mapEl.entrySet().stream()).filter(
                 controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(), Hidden.class) == null))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+    }
+
+    public Optional<SecurityOAuth2Provider> getSpringSecurityOAuth2Provider() {
+        return springSecurityOAuth2Provider;
     }
 }
