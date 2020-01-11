@@ -40,6 +40,9 @@ class SwaggerWelcome implements InitializingBean {
     @Value(SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE)
     private String originConfigUrl;
 
+    @Value(SPRINGDOC_SWAGGER_UI_URL_VALUE)
+    private String swaggerUiUrl;
+
     @Autowired
     private SwaggerUiConfigProperties swaggerUiConfig;
 
@@ -84,9 +87,12 @@ class SwaggerWelcome implements InitializingBean {
             String url = buildUrl(request, apiDocsUrl);
             String swaggerConfigUrl = url + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
             swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
-            if (SwaggerUiConfigProperties.getSwaggerUrls().isEmpty())
-                swaggerUiConfig.setUrl(url);
-            else
+            if (SwaggerUiConfigProperties.getSwaggerUrls().isEmpty()) {
+                if (StringUtils.isEmpty(swaggerUiUrl))
+                    swaggerUiConfig.setUrl(url);
+                else
+                    swaggerUiConfig.setUrl(swaggerUiUrl);
+            } else
                 SwaggerUiConfigProperties.addUrl(url);
         }
         if (!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
