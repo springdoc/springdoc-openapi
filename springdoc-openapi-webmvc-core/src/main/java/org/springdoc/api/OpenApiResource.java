@@ -86,8 +86,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
             this.openAPIBuilder.addTag(handlerMethods, SPRINGDOC_ACTUATOR_TAG);
             calculatePath(restControllers, map);
         }
-        if (openAPIBuilder.getSpringSecurityOAuth2Provider().isPresent()) {
-            SecurityOAuth2Provider securityOAuth2Provider = openAPIBuilder.getSpringSecurityOAuth2Provider().get();
+        Optional<SecurityOAuth2Provider>  securityOAuth2ProviderOptional = openAPIBuilder.getSpringSecurityOAuth2Provider();
+        if (securityOAuth2ProviderOptional.isPresent()) {
+            SecurityOAuth2Provider securityOAuth2Provider = securityOAuth2ProviderOptional.get();
             Map<RequestMappingInfo, HandlerMethod> mapOauth = securityOAuth2Provider.getHandlerMethods();
             Map<String, Object> requestMappingMapSec = securityOAuth2Provider.getFrameworkEndpoints();
             calculatePath(requestMappingMapSec, mapOauth);
