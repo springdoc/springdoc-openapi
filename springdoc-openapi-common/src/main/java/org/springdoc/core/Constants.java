@@ -17,6 +17,9 @@ public final class Constants {
     public static final String SPRINGDOC_PACKAGES_TO_SCAN = "${springdoc.packagesToScan:#{null}}";
     public static final String SPRINGDOC_PATHS_TO_MATCH = "${springdoc.pathsToMatch:#{null}}";
     public static final String SPRINGDOC_ACTUATOR_TAG = "Actuator";
+    public static final String SPRINGDOC_ACTUATOR_DESCRIPTION = "Monitor and interact";
+    public static final String SPRINGDOC_ACTUATOR_DOC_URL = "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/";
+    public static final String SPRINGDOC_ACTUATOR_DOC_DESCRIPTION = "Spring Boot Actuator Web API Documentation";
     public static final String DEFAULT_WEB_JARS_PREFIX_URL = "/webjars";
     public static final String WEB_JARS_PREFIX_URL = "${springdoc.webjars.prefix:#{T(org.springdoc.core.Constants).DEFAULT_WEB_JARS_PREFIX_URL}}";
     public static final String SWAGGER_UI_URL = "/swagger-ui/index.html";

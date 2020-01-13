@@ -1,5 +1,6 @@
 package org.springdoc.core;
 
+import io.swagger.v3.oas.models.Operation;
 import org.springdoc.api.ActuatorProvider;
 import org.springdoc.api.OpenApiResource;
 import org.springdoc.core.customizers.OpenApiCustomiser;
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import java.util.List;
@@ -67,6 +69,22 @@ public class SpringDocWebMvcConfiguration {
             return new ActuatorProvider(webMvcEndpointHandlerMapping);
         }
 
-    }
+        @Bean
+        public OperationCustomizer ActuatorCustomizer(ActuatorProvider actuatorProvider){
+            return new OperationCustomizer() {
 
+                private int methodCount;
+
+                @Override
+                public Operation customize(Operation operation, HandlerMethod handlerMethod) {
+                    if(operation.getTags() != null && operation.getTags().contains(actuatorProvider.getTag().getName())) {
+                        operation.setSummary(handlerMethod.toString());
+                        operation.setOperationId(operation.getOperationId()+"_"+methodCount++);
+                    }
+                    return operation;
+                }
+            };
+        }
+
+    }
 }

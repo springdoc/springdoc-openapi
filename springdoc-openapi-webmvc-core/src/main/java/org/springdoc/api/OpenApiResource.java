@@ -26,9 +26,16 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
-import static org.springdoc.core.Constants.*;
+import static org.springdoc.core.Constants.API_DOCS_URL;
+import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
+import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
@@ -37,9 +44,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
     private final Optional<ActuatorProvider> servletContextProvider;
-
-    @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
-    private boolean showActuator;
 
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -53,12 +57,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
-                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan,
-                           boolean showActuator) {
+                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan) {
         super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, pathsToMatch, packagesToScan);
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
         this.servletContextProvider = servletContextProvider;
-        this.showActuator = showActuator;
     }
 
     @Operation(hidden = true)
@@ -82,16 +84,16 @@ public class OpenApiResource extends AbstractOpenApiResource {
     @Override
     protected void getPaths(Map<String, Object> restControllers) {
         Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-        calculatePath(restControllers, map);
-        if (showActuator && servletContextProvider.isPresent()) {
-            map = servletContextProvider.get().getWebMvcHandlerMapping().getHandlerMethods();
-            Set<HandlerMethod> handlerMethods = new HashSet<>(map.values());
-            this.openAPIBuilder.addTag(handlerMethods, SPRINGDOC_ACTUATOR_TAG);
-            calculatePath(restControllers, map);
+        calculatePath(restControllers, map, Optional.empty());
+
+        if (servletContextProvider.isPresent()){
+            map = servletContextProvider.get().getMethods();
+            this.openAPIBuilder.addTag(new HashSet<>(map.values()), servletContextProvider.get().getTag());
+            calculatePath(restControllers, map, servletContextProvider);
         }
     }
 
-    private void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map) {
+    private void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Optional<ActuatorProvider> actuatorProvider) {
         for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
             RequestMappingInfo requestMappingInfo = entry.getKey();
             HandlerMethod handlerMethod = entry.getValue();
@@ -100,7 +102,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
             Map<String, String> regexMap = new LinkedHashMap<>();
             for (String pattern : patterns) {
                 String operationPath = PathUtils.parsePath(pattern, regexMap);
-                if (isRestController(restControllers, handlerMethod, operationPath) && isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(operationPath)) {
+                if ( ((actuatorProvider.isPresent() && actuatorProvider.get().isRestController(restControllers, handlerMethod, operationPath))
+                        || isRestController(restControllers, handlerMethod, operationPath))
+                        && isPackageToScan(handlerMethod.getBeanType().getPackage().getName())
+                        && isPathToMatch(operationPath)) {
                     Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
                     calculatePath(openAPIBuilder, handlerMethod, operationPath, requestMethods);
                 }
@@ -110,21 +115,13 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
     private boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod,
                                      String operationPath) {
-        boolean result;
-        if (showActuator)
-            result = operationPath.startsWith(DEFAULT_PATH_SEPARATOR);
-        else {
-            ResponseBody responseBodyAnnotation = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
-                    ResponseBody.class);
+        ResponseBody responseBodyAnnotation = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
 
-            if (responseBodyAnnotation == null)
-                responseBodyAnnotation = ReflectionUtils.getAnnotation(handlerMethod.getMethod(), ResponseBody.class);
-            result = operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-                    && (restControllers.containsKey(handlerMethod.getBean().toString())
-                    || (responseBodyAnnotation != null && AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), Hidden.class) == null));
-        }
-
-        return result;
+        if (responseBodyAnnotation == null)
+            responseBodyAnnotation = ReflectionUtils.getAnnotation(handlerMethod.getMethod(), ResponseBody.class);
+        return operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
+                && (restControllers.containsKey(handlerMethod.getBean().toString())
+                || (responseBodyAnnotation != null && AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), Hidden.class) == null));
     }
 
     private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
