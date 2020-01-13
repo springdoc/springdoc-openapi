@@ -19,7 +19,7 @@ public class SpringDocApp3Test extends AbstractSpringDocTest {
     static class SpringDocTestApp { }
 
     @Test
-    public void appLoads() throws Exception {
+    public void app_loads_ok() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.forwardedUrl("index.html"));
