@@ -194,7 +194,15 @@ public class OpenAPIBuilder {
 
     private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef) {
         // info
-        AnnotationsUtils.getInfo(apiDef.info()).ifPresent(openAPI::setInfo);
+        Optional<Info> infos = AnnotationsUtils.getInfo(apiDef.info());
+        if (infos.isPresent()) {
+            Info info = infos.get();
+            if (StringUtils.isNotBlank(info.getTitle())) {
+                PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
+                info.title(propertyResolverUtils.resolve(info.getTitle()));
+            }
+            openAPI.setInfo(info);
+        }
         // OpenApiDefinition security requirements
         securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
         // OpenApiDefinition external docs
@@ -203,9 +211,9 @@ public class OpenAPIBuilder {
         AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
         // OpenApiDefinition servers
         Optional<List<Server>> optionalServers = AnnotationsUtils.getServers(apiDef.servers());
-        if(optionalServers.isPresent()){
+        if (optionalServers.isPresent()) {
             openAPI.setServers(optionalServers.get());
-            this.isServersPresent=true;
+            this.isServersPresent = true;
         }
         // OpenApiDefinition extensions
         if (apiDef.extensions().length > 0) {
