@@ -17,6 +17,8 @@ public final class Constants {
     public static final String SPRINGDOC_SWAGGER_UI_CONFIG_URL  ="springdoc.swagger-ui.configUrl";
     public static final String SPRINGDOC_SWAGGER_UI_URL  ="springdoc.swagger-ui.url";
     public static final String SPRINGDOC_SWAGGER_UI_URL_VALUE  ="${" + SPRINGDOC_SWAGGER_UI_URL + ":#{null}}";
+    public static final String SPRINGDOC_OAUTH2_REDIRECT_URL  ="springdoc.swagger-ui.oauth2RedirectUrl";
+    public static final String SPRINGDOC_OAUTH2_REDIRECT_URL_VALUE  ="${" + SPRINGDOC_OAUTH2_REDIRECT_URL + ":#{null}}";
     public static final String SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE  ="${" + SPRINGDOC_SWAGGER_UI_CONFIG_URL + ":#{null}}";
     public static final String SPRINGDOC_SHOW_ACTUATOR = "springdoc.show-actuator";
     public static final String SPRINGDOC_SHOW_ACTUATOR_VALUE = "${" + SPRINGDOC_SHOW_ACTUATOR + ":false}";
