@@ -11,11 +11,19 @@ public final class Constants {
     public static final String SWAGGER_CONFIG_URL = API_DOCS_URL + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
     public static final String DEFAULT_API_DOCS_URL_YAML = API_DOCS_URL + ".yaml";
     public static final String SPRINGDOC_ENABLED = "springdoc.api-docs.enabled";
+    public static final String SPRINGDOC_CACHE_DISABLED = "springdoc.cache.disabled";
+    public static final String SPRINGDOC_CACHE_DISABLED_VALUE= "${" + SPRINGDOC_CACHE_DISABLED + ":false}";
     public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
+    public static final String SPRINGDOC_SWAGGER_UI_CONFIG_URL  ="springdoc.swagger-ui.configUrl";
+    public static final String SPRINGDOC_SWAGGER_UI_URL  ="springdoc.swagger-ui.url";
+    public static final String SPRINGDOC_SWAGGER_UI_URL_VALUE  ="${" + SPRINGDOC_SWAGGER_UI_URL + ":#{null}}";
+    public static final String SPRINGDOC_OAUTH2_REDIRECT_URL  ="springdoc.swagger-ui.oauth2RedirectUrl";
+    public static final String SPRINGDOC_OAUTH2_REDIRECT_URL_VALUE  ="${" + SPRINGDOC_OAUTH2_REDIRECT_URL + ":#{null}}";
+    public static final String SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE  ="${" + SPRINGDOC_SWAGGER_UI_CONFIG_URL + ":#{null}}";
     public static final String SPRINGDOC_SHOW_ACTUATOR = "springdoc.show-actuator";
     public static final String SPRINGDOC_SHOW_ACTUATOR_VALUE = "${" + SPRINGDOC_SHOW_ACTUATOR + ":false}";
-    public static final String SPRINGDOC_PACKAGES_TO_SCAN = "${springdoc.packagesToScan:#{null}}";
-    public static final String SPRINGDOC_PATHS_TO_MATCH = "${springdoc.pathsToMatch:#{null}}";
+    public static final String SPRINGDOC_PACKAGES_TO_SCAN = "${springdoc.packages-to-scan:#{null}}";
+    public static final String SPRINGDOC_PATHS_TO_MATCH = "${springdoc.paths-to-match:#{null}}";
     public static final String SPRINGDOC_ACTUATOR_TAG = "Actuator";
     public static final String SPRINGDOC_ACTUATOR_DESCRIPTION = "Monitor and interact";
     public static final String SPRINGDOC_ACTUATOR_DOC_URL = "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/";
@@ -37,7 +45,6 @@ public final class Constants {
     public static final String HEAD_METHOD = "head";
     public static final String OPTIONS_METHOD = "options";
     public static final String QUERY_PARAM = "query";
-
     public static final String DEFAULT_DESCRIPTION = "default response";
     public static final String DEFAULT_TITLE = "OpenAPI definition";
     public static final String DEFAULT_VERSION = "v0";

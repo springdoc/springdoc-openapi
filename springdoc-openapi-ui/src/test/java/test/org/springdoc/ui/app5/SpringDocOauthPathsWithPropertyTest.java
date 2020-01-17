@@ -1,6 +1,7 @@
 package test.org.springdoc.ui.app5;
 
 import org.junit.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
@@ -11,6 +12,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = "springdoc.swagger-ui.oauth2RedirectUrl=http://localhost:8080/toto/test/swagger-ui/oauth2-redirect.html")
 public class SpringDocOauthPathsWithPropertyTest extends AbstractSpringDocTest {
+
+    @SpringBootApplication
+    static class SpringDocTestApp { }
 
     @Test
     public void oauth2_redirect_url_calculated() throws Exception {

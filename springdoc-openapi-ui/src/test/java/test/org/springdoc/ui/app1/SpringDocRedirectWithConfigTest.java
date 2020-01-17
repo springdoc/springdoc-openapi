@@ -1,6 +1,7 @@
 package test.org.springdoc.ui.app1;
 
 import org.junit.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MvcResult;
 import test.org.springdoc.ui.AbstractSpringDocTest;
@@ -16,6 +17,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "springdoc.api-docs.path=/baf/batz"
 })
 public class SpringDocRedirectWithConfigTest extends AbstractSpringDocTest {
+
+    @SpringBootApplication
+    static class SpringDocTestApp { }
 
     @Test
     public void shouldRedirectWithConfiguredParams() throws Exception {

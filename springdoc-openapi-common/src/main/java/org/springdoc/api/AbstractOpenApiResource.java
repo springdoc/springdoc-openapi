@@ -29,8 +29,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.springdoc.core.Constants.SPRINGDOC_PACKAGES_TO_SCAN;
-import static org.springdoc.core.Constants.SPRINGDOC_PATHS_TO_MATCH;
+import static org.springdoc.core.Constants.*;
 
 public abstract class AbstractOpenApiResource {
 
@@ -46,6 +45,8 @@ public abstract class AbstractOpenApiResource {
     private List<String> packagesToScan;
     @Value(SPRINGDOC_PATHS_TO_MATCH)
     private List<String> pathsToMatch;
+    @Value(SPRINGDOC_CACHE_DISABLED_VALUE)
+    private boolean cacheDisabled;
 
     protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                                       AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -60,7 +61,7 @@ public abstract class AbstractOpenApiResource {
 
     protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                                       AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
-                                      Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan) {
+                                      Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan,boolean cacheDisabled) {
         super();
         this.openAPIBuilder = openAPIBuilder;
         this.requestBuilder = requestBuilder;
@@ -69,11 +70,12 @@ public abstract class AbstractOpenApiResource {
         this.openApiCustomisers = openApiCustomisers;
         this.pathsToMatch = pathsToMatch;
         this.packagesToScan = packagesToScan;
+        this.cacheDisabled=cacheDisabled;
     }
 
     protected synchronized OpenAPI getOpenApi() {
         OpenAPI openApi;
-        if (!computeDone) {
+        if (!computeDone || cacheDisabled) {
             Instant start = Instant.now();
             openAPIBuilder.build();
             Map<String, Object> restControllersMap = openAPIBuilder.getRestControllersMap();

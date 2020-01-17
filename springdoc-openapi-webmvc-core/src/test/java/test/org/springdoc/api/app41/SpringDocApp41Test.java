@@ -1,9 +1,16 @@
 package test.org.springdoc.api.app41;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springdoc.core.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import test.org.springdoc.api.AbstractSpringDocTest;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,7 +22,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class SpringDocApp41Test extends AbstractSpringDocTest {
+@RunWith(SpringRunner.class)
+@ActiveProfiles("test")
+@SpringBootTest(properties = "springdoc.cache.disabled=true")
+@AutoConfigureMockMvc
+public class SpringDocApp41Test {
+
+    @SpringBootApplication
+    static class SpringDocTestApp { }
+
+    @Autowired
+    protected MockMvc mockMvc;
 
     @Test
     public void testApp() throws Exception {

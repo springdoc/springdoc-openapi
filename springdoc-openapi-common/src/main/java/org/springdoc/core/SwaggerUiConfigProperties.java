@@ -1,6 +1,5 @@
 package org.springdoc.core;
 
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -132,62 +131,33 @@ public class SwaggerUiConfigProperties {
     }
 
     public static void addUrl(String url) {
-        swaggerUrls.forEach(elt ->
-        {
-            if (StringUtils.isEmpty(elt.url))
-                elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName());
-        });
+        swaggerUrls.forEach(elt -> elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName()));
     }
 
     public Map<String, Object> getConfigParameters() {
         final Map<String, Object> params = new TreeMap<>();
-        put("layout", layout, params);
-        put(CONFIG_URL_PROPERTY, configUrl, params);
-        put("validatorUrl", validatorUrl, params);
-        put("filter", filter, params);
-        put("deepLinking", this.deepLinking, params);
-        put("displayOperationId", displayOperationId, params);
-        put("defaultModelsExpandDepth", defaultModelsExpandDepth, params);
-        put("defaultModelExpandDepth", defaultModelExpandDepth, params);
-        put("defaultModelRendering", defaultModelRendering, params);
-        put("displayRequestDuration", displayRequestDuration, params);
-        put("docExpansion", docExpansion, params);
-        put("maxDisplayedTags", maxDisplayedTags, params);
-        put("showExtensions", showExtensions, params);
-        put("showCommonExtensions", showCommonExtensions, params);
-        put("operationsSorter", operationsSorter, params);
-        put("tagsSorter", tagsSorter, params);
+        SpringDocPropertiesUtils.put("layout", layout, params);
+        SpringDocPropertiesUtils.put(CONFIG_URL_PROPERTY, configUrl, params);
+        SpringDocPropertiesUtils.put("validatorUrl", validatorUrl, params);
+        SpringDocPropertiesUtils.put("filter", filter, params);
+        SpringDocPropertiesUtils.put("deepLinking", this.deepLinking, params);
+        SpringDocPropertiesUtils.put("displayOperationId", displayOperationId, params);
+        SpringDocPropertiesUtils.put("defaultModelsExpandDepth", defaultModelsExpandDepth, params);
+        SpringDocPropertiesUtils.put("defaultModelExpandDepth", defaultModelExpandDepth, params);
+        SpringDocPropertiesUtils.put("defaultModelRendering", defaultModelRendering, params);
+        SpringDocPropertiesUtils.put("displayRequestDuration", displayRequestDuration, params);
+        SpringDocPropertiesUtils.put("docExpansion", docExpansion, params);
+        SpringDocPropertiesUtils.put("maxDisplayedTags", maxDisplayedTags, params);
+        SpringDocPropertiesUtils.put("showExtensions", showExtensions, params);
+        SpringDocPropertiesUtils.put("showCommonExtensions", showCommonExtensions, params);
+        SpringDocPropertiesUtils.put("operationsSorter", operationsSorter, params);
+        SpringDocPropertiesUtils.put("tagsSorter", tagsSorter, params);
         if (!CollectionUtils.isEmpty(supportedSubmitMethods))
-            put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
-        put("oauth2RedirectUrl", oauth2RedirectUrl, params);
-        put("url", url, params);
+            SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
+        SpringDocPropertiesUtils.put("oauth2RedirectUrl", oauth2RedirectUrl, params);
+        SpringDocPropertiesUtils.put("url", url, params);
         put("urls", swaggerUrls, params);
         return params;
-    }
-
-    protected void put(String urls, List<SwaggerUrl> swaggerUrls, Map<String, Object> params) {
-        swaggerUrls = swaggerUrls.stream().filter(elt -> StringUtils.isNotEmpty(elt.getUrl())).collect(Collectors.toList());
-        if (!CollectionUtils.isEmpty(swaggerUrls)) {
-            params.put(urls, swaggerUrls);
-        }
-    }
-
-    protected void put(final String name, final Integer value, final Map<String, Object> params) {
-        if (value != null) {
-            params.put(name, value.toString());
-        }
-    }
-
-    protected void put(final String name, final Boolean value, final Map<String, Object> params) {
-        if (value != null) {
-            params.put(name, value.toString());
-        }
-    }
-
-    protected void put(final String name, final String value, final Map<String, Object> params) {
-        if (!StringUtils.isEmpty(value)) {
-            params.put(name, value);
-        }
     }
 
     public String getValidatorUrl() {
@@ -386,6 +356,13 @@ public class SwaggerUiConfigProperties {
 
         public void setName(String name) {
             this.name = name;
+        }
+    }
+
+    private void put(String urls, List<SwaggerUrl> swaggerUrls, Map<String, Object> params) {
+        swaggerUrls = swaggerUrls.stream().filter(elt -> StringUtils.isNotEmpty(elt.getUrl())).collect(Collectors.toList());
+        if (!CollectionUtils.isEmpty(swaggerUrls)) {
+            params.put(urls, swaggerUrls);
         }
     }
 }

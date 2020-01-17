@@ -1,10 +1,8 @@
 package org.springdoc.core;
 
-import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.ActuatorProvider;
 import org.springdoc.api.MultipleOpenApiResource;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -23,18 +21,6 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @ConditionalOnBean(GroupedOpenApi.class)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class MultipleOpenApiSupportConfiguration {
-
-    @Bean
-    public BeanFactoryPostProcessor beanFactoryPostProcessor() {
-        return beanFactory -> {
-            for (String beanName : beanFactory.getBeanNamesForType(OpenAPI.class)) {
-                beanFactory.getBeanDefinition(beanName).setScope("prototype");
-            }
-            for (String beanName : beanFactory.getBeanNamesForType(OpenAPIBuilder.class)) {
-                beanFactory.getBeanDefinition(beanName).setScope("prototype");
-            }
-        };
-    }
 
     @Bean
     public MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,

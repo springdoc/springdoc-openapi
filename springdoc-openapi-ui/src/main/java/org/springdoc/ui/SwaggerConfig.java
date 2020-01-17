@@ -1,6 +1,9 @@
 package org.springdoc.ui;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springdoc.core.SpringDocConfiguration;
+import org.springdoc.core.SwaggerUiOAuthProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -25,23 +28,31 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
     @Value(WEB_JARS_PREFIX_URL)
     private String webJarsPrefixUrl;
 
+    @Autowired
+    private SwaggerIndexTransformer swaggerIndexTransformer;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String uiRootPath = "";
+        StringBuilder uiRootPath = new StringBuilder();
         if (swaggerPath.contains("/")) {
-            uiRootPath = swaggerPath.substring(0, swaggerPath.lastIndexOf('/'));
+            uiRootPath.append(swaggerPath.substring(0, swaggerPath.lastIndexOf('/')));
         }
-        uiRootPath += "/**";
-
+        uiRootPath.append("/**");
         String webJarsLocation = webJarsPrefixUrl + DEFAULT_PATH_SEPARATOR;
-
         registry.addResourceHandler(uiRootPath + "/swagger-ui/**").addResourceLocations(webJarsLocation)
-                .resourceChain(false);
+                .resourceChain(false)
+                .addTransformer(swaggerIndexTransformer);
     }
 
     @Bean
     @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
     public SwaggerWelcome swaggerWelcome() {
         return new SwaggerWelcome();
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
+    public SwaggerIndexTransformer indexPageTransformer(SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
+        return new SwaggerIndexTransformer(swaggerUiOAuthProperties, objectMapper);
     }
 }

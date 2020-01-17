@@ -1,6 +1,7 @@
 package test.org.springdoc.ui.app5;
 
 import org.junit.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
@@ -14,6 +15,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "spring.mvc.servlet.path=/servlet-path"
 })
 public class SpringDocOauthServletPathsTest extends AbstractSpringDocTest {
+
+    @SpringBootApplication
+    static class SpringDocTestApp { }
 
     @Test
     public void should_display_oauth2_redirect_page() throws Exception {
