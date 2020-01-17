@@ -2,7 +2,11 @@ package org.springdoc.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springdoc.core.*;
+import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.AbstractResponseBuilder;
+import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.OpenAPIBuilder;
+import org.springdoc.core.OperationBuilder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +22,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.springdoc.core.Constants.*;
+import static org.springdoc.core.Constants.API_DOCS_URL;
+import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
+import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
+import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED_VALUE;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
@@ -32,8 +39,6 @@ public class MultipleOpenApiResource implements InitializingBean {
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
     private final Optional<ActuatorProvider> servletContextProvider;
     private Map<String, OpenApiResource> groupedOpenApiResources;
-    @Value(SPRINGDOC_SHOW_ACTUATOR_VALUE)
-    private boolean showActuator;
     @Value(SPRINGDOC_CACHE_DISABLED_VALUE)
     private boolean cacheDisabled;
 
@@ -63,7 +68,6 @@ public class MultipleOpenApiResource implements InitializingBean {
                                 requestMappingHandlerMapping,
                                 servletContextProvider,
                                 Optional.of(item.getOpenApiCustomisers()), item.getPathsToMatch(), item.getPackagesToScan(),
-                                showActuator,
                                 cacheDisabled
                         )
                 ));
