@@ -27,11 +27,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.springdoc.core.Constants.*;
+import static org.springdoc.core.Constants.DEFAULT_SERVER_DESCRIPTION;
+import static org.springdoc.core.Constants.DEFAULT_TITLE;
+import static org.springdoc.core.Constants.DEFAULT_VERSION;
 
 public class OpenAPIBuilder {
 
@@ -40,7 +49,7 @@ public class OpenAPIBuilder {
     private boolean isServersPresent = false;
     private final ApplicationContext context;
     private final SecurityParser securityParser;
-    private final Map<HandlerMethod, String> springdocTags = new HashMap<>();
+    private final Map<HandlerMethod, io.swagger.v3.oas.models.tags.Tag> springdocTags = new HashMap<>();
     private String serverBaseUrl;
     private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
 
@@ -130,8 +139,13 @@ public class OpenAPIBuilder {
             allTags.addAll(classTags);
         }
 
-        if (springdocTags.containsKey(handlerMethod))
-            tagsStr.add(springdocTags.get(handlerMethod));
+        if (springdocTags.containsKey(handlerMethod)) {
+            io.swagger.v3.oas.models.tags.Tag tag = springdocTags.get(handlerMethod);
+            tagsStr.add(tag.getName());
+            if(openAPI.getTags() == null || !openAPI.getTags().contains(tag)) {
+                openAPI.addTagsItem(tag);
+            }
+        }
 
         Optional<Set<io.swagger.v3.oas.models.tags.Tag>> tags = AnnotationsUtils
                 .getTags(allTags.toArray(new Tag[0]), true);
@@ -300,8 +314,8 @@ public class OpenAPIBuilder {
         return apiSecurityScheme;
     }
 
-    public void addTag(Set<HandlerMethod> handlerMethods, String tagName) {
-        handlerMethods.forEach(handlerMethod -> springdocTags.put(handlerMethod, tagName));
+    public void addTag(Set<HandlerMethod> handlerMethods, io.swagger.v3.oas.models.tags.Tag tag) {
+        handlerMethods.forEach(handlerMethod -> springdocTags.put(handlerMethod, tag));
     }
 
     public Map<String, Object> getRestControllersMap() {
