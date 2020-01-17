@@ -70,7 +70,7 @@ public class SpringDocWebMvcConfiguration {
         }
 
         @Bean
-        public OperationCustomizer ActuatorCustomizer(ActuatorProvider actuatorProvider){
+        public OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider){
             return new OperationCustomizer() {
 
                 private int methodCount;

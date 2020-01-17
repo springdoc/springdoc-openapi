@@ -8,11 +8,7 @@ import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
-import org.springdoc.core.AbstractRequestBuilder;
-import org.springdoc.core.AbstractResponseBuilder;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.OperationBuilder;
-import org.springdoc.core.SecurityOAuth2Provider;
+import org.springdoc.core.*;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -27,16 +23,9 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
-import static org.springdoc.core.Constants.API_DOCS_URL;
-import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
-import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
+import static org.springdoc.core.Constants.*;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
@@ -111,7 +100,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
             Map<String, String> regexMap = new LinkedHashMap<>();
             for (String pattern : patterns) {
                 String operationPath = PathUtils.parsePath(pattern, regexMap);
-                if ( ((actuatorProvider.isPresent() && actuatorProvider.get().isRestController(restControllers, handlerMethod, operationPath))
+                if ( ((actuatorProvider.isPresent() && actuatorProvider.get().isRestController(operationPath))
                         || isRestController(restControllers, handlerMethod, operationPath))
                         && isPackageToScan(handlerMethod.getBeanType().getPackage().getName())
                         && isPathToMatch(operationPath)) {
