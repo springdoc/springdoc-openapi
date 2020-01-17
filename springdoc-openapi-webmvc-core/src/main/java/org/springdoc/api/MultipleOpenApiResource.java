@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
+import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED_VALUE;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
