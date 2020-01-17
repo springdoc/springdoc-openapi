@@ -35,7 +35,7 @@ public class ActuatorProvider {
         return actuatorTag;
     }
 
-    public boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod, String operationPath) {
+    public boolean isRestController(String operationPath) {
         return operationPath.startsWith(AntPathMatcher.DEFAULT_PATH_SEPARATOR);
     }
 

@@ -46,8 +46,7 @@ public class SwaggerIndexTransformer implements ResourceTransformer {
         String json = objectMapper.writeValueAsString(swaggerUiOAuthProperties.getConfigParameters());
         stringBuilder.append(json);
         stringBuilder.append(")");
-        String result = html.replace("window.ui = ui", stringBuilder.toString());
-        return result;
+        return html.replace("window.ui = ui", stringBuilder.toString());
     }
 
     private String readFullyAsString(InputStream inputStream)
