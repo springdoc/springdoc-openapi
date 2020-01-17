@@ -3,8 +3,6 @@ package test.org.springdoc.api.app68;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springdoc.core.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import test.org.springdoc.api.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsString;
@@ -23,14 +20,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static test.org.springdoc.utils.FileUtils.getContent;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static test.org.springdoc.api.app68.FileUtils.getContent;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest(properties = "springdoc.show-actuator=true")
 @AutoConfigureMockMvc
 public class SpringDocApp68Test {
-
-    protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractSpringDocTest.class);
 
     public static String className;
 

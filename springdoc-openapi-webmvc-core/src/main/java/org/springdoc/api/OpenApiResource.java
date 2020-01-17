@@ -8,10 +8,7 @@ import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
-import org.springdoc.core.AbstractRequestBuilder;
-import org.springdoc.core.AbstractResponseBuilder;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.*;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -57,8 +54,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
     public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                            AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
-                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan) {
-        super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, pathsToMatch, packagesToScan);
+                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan,
+                           boolean cacheDisabled) {
+        super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, pathsToMatch, packagesToScan, cacheDisabled);
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
         this.servletContextProvider = servletContextProvider;
     }
@@ -90,6 +88,13 @@ public class OpenApiResource extends AbstractOpenApiResource {
             map = servletContextProvider.get().getMethods();
             this.openAPIBuilder.addTag(new HashSet<>(map.values()), servletContextProvider.get().getTag());
             calculatePath(restControllers, map, servletContextProvider);
+        }
+        Optional<SecurityOAuth2Provider>  securityOAuth2ProviderOptional = openAPIBuilder.getSpringSecurityOAuth2Provider();
+        if (securityOAuth2ProviderOptional.isPresent()) {
+            SecurityOAuth2Provider securityOAuth2Provider = securityOAuth2ProviderOptional.get();
+            Map<RequestMappingInfo, HandlerMethod> mapOauth = securityOAuth2Provider.getHandlerMethods();
+            Map<String, Object> requestMappingMapSec = securityOAuth2Provider.getFrameworkEndpoints();
+            calculatePath(requestMappingMapSec, mapOauth);
         }
     }
 

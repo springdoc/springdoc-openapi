@@ -37,6 +37,15 @@ class SwaggerWelcome implements InitializingBean {
     @Value(MVC_SERVLET_PATH)
     private String mvcServletPath;
 
+    @Value(SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE)
+    private String originConfigUrl;
+
+    @Value(SPRINGDOC_SWAGGER_UI_URL_VALUE)
+    private String swaggerUiUrl;
+
+    @Value(SPRINGDOC_OAUTH2_REDIRECT_URL_VALUE)
+    private String oauth2RedirectUrl;
+
     @Autowired
     private SwaggerUiConfigProperties swaggerUiConfig;
 
@@ -77,16 +86,22 @@ class SwaggerWelcome implements InitializingBean {
     }
 
     private void buildConfigUrl(HttpServletRequest request) {
-        if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
+        if (StringUtils.isEmpty(originConfigUrl)) {
             String url = buildUrl(request, apiDocsUrl);
             String swaggerConfigUrl = url + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
             swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
-            if (SwaggerUiConfigProperties.getSwaggerUrls().isEmpty())
-                swaggerUiConfig.setUrl(url);
-            else
+            if (SwaggerUiConfigProperties.getSwaggerUrls().isEmpty()) {
+                if (StringUtils.isEmpty(swaggerUiUrl))
+                    swaggerUiConfig.setUrl(url);
+                else
+                    swaggerUiConfig.setUrl(swaggerUiUrl);
+            } else
                 SwaggerUiConfigProperties.addUrl(url);
         }
-        if (!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
+        if(StringUtils.isEmpty(oauth2RedirectUrl)){
+            swaggerUiConfig.setOauth2RedirectUrl(ServletUriComponentsBuilder.fromCurrentContextPath().path(this.uiRootPath).path(SWAGGER_UI_OAUTH_REDIRECT_URL).build().toString());
+        }
+        else if (!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
             swaggerUiConfig.setOauth2RedirectUrl(ServletUriComponentsBuilder.fromCurrentContextPath().path(this.uiRootPath).path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
         }
     }
