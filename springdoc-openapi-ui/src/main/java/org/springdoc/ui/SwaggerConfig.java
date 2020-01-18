@@ -39,7 +39,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
         }
         uiRootPath.append("/**");
         String webJarsLocation = webJarsPrefixUrl + DEFAULT_PATH_SEPARATOR;
-        registry.addResourceHandler(uiRootPath + "/swagger-ui/**").addResourceLocations(webJarsLocation)
+        registry.addResourceHandler(uiRootPath + "/swagger-ui/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATION+webJarsLocation)
                 .resourceChain(false)
                 .addTransformer(swaggerIndexTransformer);
     }

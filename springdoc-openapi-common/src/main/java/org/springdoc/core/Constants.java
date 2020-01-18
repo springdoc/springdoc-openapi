@@ -29,7 +29,8 @@ public final class Constants {
     public static final String SPRINGDOC_ACTUATOR_DOC_URL = "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/";
     public static final String SPRINGDOC_ACTUATOR_DOC_DESCRIPTION = "Spring Boot Actuator Web API Documentation";
     public static final String DEFAULT_WEB_JARS_PREFIX_URL = "/webjars";
-    public static final String WEB_JARS_PREFIX_URL = "${springdoc.webjars.prefix:#{T(org.springdoc.core.Constants).DEFAULT_WEB_JARS_PREFIX_URL}}";
+    public static final String WEB_JARS_PREFIX_URL = "${springdoc.webjars.prefix:"+DEFAULT_WEB_JARS_PREFIX_URL+"}";
+    public static final String CLASSPATH_RESOURCE_LOCATION = "classpath:/META-INF/resources";
     public static final String SWAGGER_UI_URL = "/swagger-ui/index.html";
     public static final String SWAGGER_UI_OAUTH_REDIRECT_URL = "/swagger-ui/oauth2-redirect.html";
     public static final String APPLICATION_OPENAPI_YAML = "application/vnd.oai.openapi";
