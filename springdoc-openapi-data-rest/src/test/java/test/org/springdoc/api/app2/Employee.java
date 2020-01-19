@@ -42,22 +42,24 @@ import javax.persistence.Id;
 @AllArgsConstructor
 class Employee {
 
-	@Id @GeneratedValue private Long id;
-	private String firstName;
-	private String lastName;
-	private String role;
+    @Id
+    @GeneratedValue
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String role;
 
-	/**
-	 * Useful constructor when id is not yet known.
-	 * 
-	 * @param firstName
-	 * @param lastName
-	 * @param role
-	 */
-	Employee(String firstName, String lastName, String role) {
+    /**
+     * Useful constructor when id is not yet known.
+     *
+     * @param firstName
+     * @param lastName
+     * @param role
+     */
+    Employee(String firstName, String lastName, String role) {
 
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.role = role;
-	}
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+    }
 }

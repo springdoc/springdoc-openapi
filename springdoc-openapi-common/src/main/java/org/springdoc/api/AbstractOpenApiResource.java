@@ -9,23 +9,27 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.*;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.springdoc.core.Constants.SPRINGDOC_PACKAGES_TO_SCAN;
-import static org.springdoc.core.Constants.SPRINGDOC_PATHS_TO_MATCH;
+import static org.springdoc.core.Constants.*;
 
 public abstract class AbstractOpenApiResource {
 
@@ -41,6 +45,8 @@ public abstract class AbstractOpenApiResource {
     private List<String> packagesToScan;
     @Value(SPRINGDOC_PATHS_TO_MATCH)
     private List<String> pathsToMatch;
+    @Value(SPRINGDOC_CACHE_DISABLED_VALUE)
+    private boolean cacheDisabled;
 
     protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
                                       AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -53,9 +59,23 @@ public abstract class AbstractOpenApiResource {
         this.openApiCustomisers = openApiCustomisers;
     }
 
+    protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+                                      AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+                                      Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan,boolean cacheDisabled) {
+        super();
+        this.openAPIBuilder = openAPIBuilder;
+        this.requestBuilder = requestBuilder;
+        this.responseBuilder = responseBuilder;
+        this.operationParser = operationParser;
+        this.openApiCustomisers = openApiCustomisers;
+        this.pathsToMatch = pathsToMatch;
+        this.packagesToScan = packagesToScan;
+        this.cacheDisabled=cacheDisabled;
+    }
+
     protected synchronized OpenAPI getOpenApi() {
         OpenAPI openApi;
-        if (!computeDone) {
+        if (!computeDone || cacheDisabled) {
             Instant start = Instant.now();
             openAPIBuilder.build();
             Map<String, Object> restControllersMap = openAPIBuilder.getRestControllersMap();
@@ -186,8 +206,8 @@ public abstract class AbstractOpenApiResource {
              */
             jsonViewAnnotationForRequestBody = (JsonView) Arrays.stream(ReflectionUtils.getParameterAnnotations(method))
                     .filter(arr -> Arrays.stream(arr)
-                            .anyMatch(annotation -> annotation.annotationType()
-                                    .equals(io.swagger.v3.oas.annotations.parameters.RequestBody.class)))
+                            .anyMatch(annotation -> (annotation.annotationType()
+                                    .equals(io.swagger.v3.oas.annotations.parameters.RequestBody.class) || annotation.annotationType().equals(RequestBody.class))))
                     .flatMap(Arrays::stream).filter(annotation -> annotation.annotationType().equals(JsonView.class))
                     .reduce((a, b) -> null).orElse(jsonViewAnnotation);
         }
@@ -275,5 +295,13 @@ public abstract class AbstractOpenApiResource {
 
     protected boolean isPathToMatch(String operationPath) {
         return CollectionUtils.isEmpty(pathsToMatch) || pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
+    }
+
+    protected String decode(String requestURI) {
+        try {
+            return URLDecoder.decode(requestURI, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            return requestURI;
+        }
     }
 }

@@ -86,7 +86,7 @@
         "operationId": "createTweets",
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/TweetDTO"
               }
@@ -285,7 +285,7 @@
         ],
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/TweetDTO"
               }

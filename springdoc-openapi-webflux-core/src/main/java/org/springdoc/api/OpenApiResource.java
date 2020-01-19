@@ -10,8 +10,8 @@ import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.AbstractResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +30,6 @@ import static org.springdoc.core.Constants.*;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
-@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class OpenApiResource extends AbstractOpenApiResource {
 
     private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
@@ -40,6 +39,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
                            RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
                            Optional<List<OpenApiCustomiser>> openApiCustomisers) {
         super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers);
+        this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+    }
+
+    public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+                           AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+                           RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+                           Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan, boolean cacheDisabled) {
+        super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, pathsToMatch, packagesToScan, cacheDisabled);
         this.requestMappingHandlerMapping = requestMappingHandlerMapping;
     }
 
@@ -83,7 +90,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
     }
 
     private void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
-        String requestUrl = serverHttpRequest.getURI().toString();
+        String requestUrl = decode(serverHttpRequest.getURI().toString());
         String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
         openAPIBuilder.setServerBaseUrl(serverBaseUrl);
     }

@@ -53,7 +53,7 @@
         "requestBody": {
           "description": "test value",
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "string"
               }

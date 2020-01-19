@@ -1,12 +1,16 @@
 package org.springdoc.core;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+
 @Configuration
 @ConfigurationProperties(prefix = "springdoc")
+@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocConfigProperties {
 
     private Boolean showActuator = false;
@@ -77,6 +81,8 @@ public class SpringDocConfigProperties {
          */
         private Boolean enabled = true;
 
+        private Groups groups = new Groups();
+
         public String getPath() {
             return path;
         }
@@ -84,6 +90,26 @@ public class SpringDocConfigProperties {
         public void setPath(String path) {
             this.path = path;
         }
+
+        public Boolean getEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(Boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public Groups getGroups() {
+            return groups;
+        }
+
+        public void setGroups(Groups groups) {
+            this.groups = groups;
+        }
+    }
+
+    public static class Groups {
+        private Boolean enabled = false;
 
         public Boolean getEnabled() {
             return enabled;

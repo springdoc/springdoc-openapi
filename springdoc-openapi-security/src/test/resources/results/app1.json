@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "",
+      "url": "http://localhost",
       "description": "Generated server url"
     }
   ],
@@ -23,7 +23,7 @@
         "operationId": "persons",
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Person"
               }
@@ -52,7 +52,7 @@
         "operationId": "personsWithUser",
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Person"
               }

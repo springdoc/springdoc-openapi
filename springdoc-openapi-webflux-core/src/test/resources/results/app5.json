@@ -43,6 +43,26 @@
           }
         }
       }
+    },
+    "/test": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "demo2",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

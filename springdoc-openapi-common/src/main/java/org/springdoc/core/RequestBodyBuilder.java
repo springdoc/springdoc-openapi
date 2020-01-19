@@ -7,15 +7,12 @@ import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.method.HandlerMethod;
 
 import java.util.Map;
 import java.util.Optional;
 
-@SuppressWarnings("rawtypes")
-@Component
 public class RequestBodyBuilder {
 
     private final AbstractParameterBuilder parameterBuilder;
@@ -111,35 +108,39 @@ public class RequestBodyBuilder {
             requestBody.setRequired(parameter.getRequired());
         }
 
-        if (requestBody.getContent() == null
-                || (requestBody.getContent() != null && methodAttributes.isMethodOverloaded())) {
+        if (requestBody.getContent() == null) {
             Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(),
                     parameterInfo.getpName(), requestBodyInfo,
                     methodAttributes.getJsonViewAnnotationForRequestBody());
             buildContent(requestBody, methodAttributes, schema);
+        } else if (requestBody.getContent() != null && (methodAttributes.isMethodOverloaded() ||
+                requestBody.getContent().values().stream().anyMatch(mediaType -> mediaType.getSchema() == null))) {
+            Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(),
+                    parameterInfo.getpName(), requestBodyInfo,
+                    methodAttributes.getJsonViewAnnotationForRequestBody());
+            mergeContent(requestBody, methodAttributes, schema);
         }
         return requestBody;
     }
 
-    private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
+    private void mergeContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
         Content content = requestBody.getContent();
-        if (methodAttributes.isMethodOverloaded() && content != null) {
-            for (String value : methodAttributes.getAllConsumes()) {
-                setMediaTypeToContent(schema, content, value);
-            }
-        } else {
-            content = new Content();
-            for (String value : methodAttributes.getAllConsumes()) {
-                setMediaTypeToContent(schema, content, value);
-            }
-        }
-        requestBody.setContent(content);
+        buildContent(requestBody, methodAttributes, schema, content);
     }
 
+    private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
+        Content content = new Content();
+        buildContent(requestBody, methodAttributes, schema, content);
+    }
 
-    private void setMediaTypeToContent(Schema schema, Content content, String value) {
-        io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
-        mediaTypeObject.setSchema(schema);
-        content.addMediaType(value, mediaTypeObject);
+    private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content) {
+        for (String value : methodAttributes.getAllConsumes()) {
+            io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
+            mediaTypeObject.setSchema(schema);
+            if (content.get(value) != null)
+                mediaTypeObject.setExample(content.get(value).getExample());
+            content.addMediaType(value, mediaTypeObject);
+        }
+        requestBody.setContent(content);
     }
 }
