@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.security.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -28,6 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(properties = "springdoc.api-docs.path=/api-docs")
 @AutoConfigureMockMvc
 public class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest {
+
+    @SpringBootApplication
+    static class SpringDocTestApp { }
 
     @Autowired
     private MockMvc mockMvc;

@@ -1,8 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI definition",
-    "version": "v0"
+    "title": "My title"
   },
   "servers": [
     {
@@ -16,6 +15,7 @@
         "tags": [
           "hello-controller"
         ],
+        "description": "My Desc",
         "operationId": "persons",
         "responses": {
           "200": {

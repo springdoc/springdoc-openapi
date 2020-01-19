@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springdoc.core.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -27,5 +28,6 @@ public class SpringDocApp8Test {
         mockMvc.perform(get("/myapp" + Constants.DEFAULT_API_DOCS_URL).contextPath("/myapp"))
                 .andExpect(status().isOk());
     }
-
+    @SpringBootApplication
+    static class SpringDocTestApp { }
 }

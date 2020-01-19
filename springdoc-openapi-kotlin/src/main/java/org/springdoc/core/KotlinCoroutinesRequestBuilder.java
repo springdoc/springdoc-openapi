@@ -1,28 +1,23 @@
 package org.springdoc.core;
 
-import io.swagger.v3.oas.models.Operation;
 import kotlin.coroutines.Continuation;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
-import org.springframework.web.method.HandlerMethod;
+import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.ParameterCustomizer;
 
-@Primary
-@Component
+import java.util.List;
+import java.util.Optional;
+
+
 public class KotlinCoroutinesRequestBuilder extends AbstractRequestBuilder {
 
 
+    static {
+        PARAM_TYPES_TO_IGNORE.add(Continuation.class);
+    }
+
     public KotlinCoroutinesRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                                          OperationBuilder operationBuilder) {
-        super(parameterBuilder, requestBodyBuilder, operationBuilder);
-    }
-
-    @Override
-    protected boolean isParamTypeToIgnore(Class<?> paramType) {
-        return paramType.isAssignableFrom(Continuation.class);
-    }
-
-    @Override
-    protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
-        return operation;
+                                          OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> customizers,
+                                          Optional<List<ParameterCustomizer>> parameterCustomizers) {
+        super(parameterBuilder, requestBodyBuilder, operationBuilder, customizers, parameterCustomizers);
     }
 }

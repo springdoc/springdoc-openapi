@@ -21,37 +21,48 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.springdoc.core.Constants.*;
+import static org.springdoc.core.Constants.DEFAULT_SERVER_DESCRIPTION;
+import static org.springdoc.core.Constants.DEFAULT_TITLE;
+import static org.springdoc.core.Constants.DEFAULT_VERSION;
 
-@Component
 public class OpenAPIBuilder {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIBuilder.class);
     private final OpenAPI openAPI;
+    private boolean isServersPresent = false;
     private final ApplicationContext context;
     private final SecurityParser securityParser;
-    private final Map<HandlerMethod, String> springdocTags = new HashMap<>();
+    private final Map<HandlerMethod, io.swagger.v3.oas.models.tags.Tag> springdocTags = new HashMap<>();
     private String serverBaseUrl;
+    private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
 
     @SuppressWarnings("WeakerAccess")
-    OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser) {
+    OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
         if (openAPI.isPresent()) {
             this.openAPI = openAPI.get();
             if (this.openAPI.getComponents() == null)
                 this.openAPI.setComponents(new Components());
             if (this.openAPI.getPaths() == null)
                 this.openAPI.setPaths(new Paths());
+            if (!CollectionUtils.isEmpty(this.openAPI.getServers()))
+                this.isServersPresent = true;
         } else {
             this.openAPI = new OpenAPI();
             this.openAPI.setComponents(new Components());
@@ -59,6 +70,7 @@ public class OpenAPIBuilder {
         }
         this.context = context;
         this.securityParser = securityParser;
+        this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
     }
 
     private static String splitCamelCase(String str) {
@@ -95,9 +107,11 @@ public class OpenAPIBuilder {
             openAPI.setInfo(infos);
         }
         // default server value
-        if (CollectionUtils.isEmpty(openAPI.getServers())) {
+        if (CollectionUtils.isEmpty(openAPI.getServers()) || !isServersPresent) {
             Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
-            openAPI.addServersItem(server);
+            List servers = new ArrayList();
+            servers.add(server);
+            openAPI.setServers(servers);
         }
         // add security schemes
         this.calculateSecuritySchemes(openAPI.getComponents());
@@ -125,8 +139,13 @@ public class OpenAPIBuilder {
             allTags.addAll(classTags);
         }
 
-        if (springdocTags.containsKey(handlerMethod))
-            tagsStr.add(springdocTags.get(handlerMethod));
+        if (springdocTags.containsKey(handlerMethod)) {
+            io.swagger.v3.oas.models.tags.Tag tag = springdocTags.get(handlerMethod);
+            tagsStr.add(tag.getName());
+            if(openAPI.getTags() == null || !openAPI.getTags().contains(tag)) {
+                openAPI.addTagsItem(tag);
+            }
+        }
 
         Optional<Set<io.swagger.v3.oas.models.tags.Tag>> tags = AnnotationsUtils
                 .getTags(allTags.toArray(new Tag[0]), true);
@@ -189,7 +208,15 @@ public class OpenAPIBuilder {
 
     private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef) {
         // info
-        AnnotationsUtils.getInfo(apiDef.info()).ifPresent(openAPI::setInfo);
+        Optional<Info> infos = AnnotationsUtils.getInfo(apiDef.info());
+        if (infos.isPresent()) {
+            Info info = infos.get();
+            if (StringUtils.isNotBlank(info.getTitle())) {
+                PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
+                info.title(propertyResolverUtils.resolve(info.getTitle()));
+            }
+            openAPI.setInfo(info);
+        }
         // OpenApiDefinition security requirements
         securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
         // OpenApiDefinition external docs
@@ -197,7 +224,11 @@ public class OpenAPIBuilder {
         // OpenApiDefinition tags
         AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
         // OpenApiDefinition servers
-        openAPI.setServers(AnnotationsUtils.getServers(apiDef.servers()).orElse(null));
+        Optional<List<Server>> optionalServers = AnnotationsUtils.getServers(apiDef.servers());
+        if (optionalServers.isPresent()) {
+            openAPI.setServers(optionalServers.get());
+            this.isServersPresent = true;
+        }
         // OpenApiDefinition extensions
         if (apiDef.extensions().length > 0) {
             openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
@@ -283,8 +314,8 @@ public class OpenAPIBuilder {
         return apiSecurityScheme;
     }
 
-    public void addTag(Set<HandlerMethod> handlerMethods, String tagName) {
-        handlerMethods.forEach(handlerMethod -> springdocTags.put(handlerMethod, tagName));
+    public void addTag(Set<HandlerMethod> handlerMethods, io.swagger.v3.oas.models.tags.Tag tag) {
+        handlerMethods.forEach(handlerMethod -> springdocTags.put(handlerMethod, tag));
     }
 
     public Map<String, Object> getRestControllersMap() {
@@ -300,5 +331,9 @@ public class OpenAPIBuilder {
         return Stream.of(controllerAdviceMap).flatMap(mapEl -> mapEl.entrySet().stream()).filter(
                 controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(), Hidden.class) == null))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+    }
+
+    public Optional<SecurityOAuth2Provider> getSpringSecurityOAuth2Provider() {
+        return springSecurityOAuth2Provider;
     }
 }

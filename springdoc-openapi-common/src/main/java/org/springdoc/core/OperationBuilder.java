@@ -15,7 +15,6 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Method;
@@ -24,21 +23,22 @@ import java.util.stream.Collectors;
 
 import static org.springdoc.core.Constants.*;
 
-@Component
 public class OperationBuilder {
 
     private final AbstractParameterBuilder parameterBuilder;
     private final RequestBodyBuilder requestBodyBuilder;
     private final SecurityParser securityParser;
     private final OpenAPIBuilder openAPIBuilder;
+    private final PropertyResolverUtils propertyResolverUtils;
 
     public OperationBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-                            SecurityParser securityParser, OpenAPIBuilder openAPIBuilder) {
+                            SecurityParser securityParser, OpenAPIBuilder openAPIBuilder, PropertyResolverUtils propertyResolverUtils) {
         super();
         this.parameterBuilder = parameterBuilder;
         this.requestBodyBuilder = requestBodyBuilder;
         this.securityParser = securityParser;
         this.openAPIBuilder = openAPIBuilder;
+        this.propertyResolverUtils = propertyResolverUtils;
     }
 
     public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
@@ -47,7 +47,7 @@ public class OperationBuilder {
             operation.setSummary(apiOperation.summary());
         }
         if (StringUtils.isNotBlank(apiOperation.description())) {
-            operation.setDescription(apiOperation.description());
+            operation.setDescription(propertyResolverUtils.resolve(apiOperation.description()));
         }
         if (StringUtils.isNotBlank(apiOperation.operationId())) {
             operation.setOperationId(getOperationId(apiOperation.operationId(), openAPI));
@@ -207,8 +207,7 @@ public class OperationBuilder {
         if (openAPI.getPaths() == null || openAPI.getPaths().isEmpty()) {
             return false;
         }
-        for (Iterator<PathItem> iterator = openAPI.getPaths().values().iterator(); iterator.hasNext(); ) {
-            PathItem path = iterator.next();
+        for (PathItem path : openAPI.getPaths().values()) {
             Set<String> pathOperationIds = extractOperationIdFromPathItem(path);
             if (pathOperationIds.contains(operationId)) {
                 return true;

@@ -20,7 +20,7 @@
         "requestBody": {
           "description": "requestBody description outside",
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "string"
               }
@@ -50,7 +50,7 @@
         "requestBody": {
           "description": "requestBody inside operation annotation",
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "string"
               }
@@ -80,7 +80,7 @@
         "requestBody": {
           "description": "requestBody description as parameter",
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "type": "string"
               }

@@ -86,7 +86,7 @@ public class MethodAttributes {
 
     private void fillMethods(String[] produces, String[] consumes) {
         methodProduces = ArrayUtils.isNotEmpty(produces) ? produces : new String[]{MediaType.ALL_VALUE};
-        methodConsumes = ArrayUtils.isNotEmpty(consumes) ? consumes : new String[]{MediaType.ALL_VALUE};
+        methodConsumes = ArrayUtils.isNotEmpty(consumes) ? consumes : new String[]{MediaType.APPLICATION_JSON_VALUE};
     }
 
     public String[] getAllConsumes() {

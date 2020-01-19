@@ -19,7 +19,7 @@
         "operationId": "filterPost",
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/MyTestDto"
               }

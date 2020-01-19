@@ -5,12 +5,10 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
-import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 
-@Component
-class PageableSupportConverter implements ModelConverter {
+public class PageableSupportConverter implements ModelConverter {
 
     private static final String PAGEABLE_TO_REPLACE = "org.springframework.data.domain.Pageable";
     private static final String PAGE_REQUEST_TO_REPLACE = "org.springframework.data.domain.PageRequest";

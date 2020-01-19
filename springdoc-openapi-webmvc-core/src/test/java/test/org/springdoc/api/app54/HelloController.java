@@ -28,4 +28,9 @@ public class HelloController {
         return null;
     }
 
+    @JsonView(Views.MealPartyAdmin.class)
+    @PostMapping(value = "/new-parties")
+    public ResponseEntity<MealParty> saveMealNewParty(@JsonView(Views.Public.class) @org.springframework.web.bind.annotation.RequestBody MealParty p) {
+        return null;
+    }
 }

@@ -41,7 +41,7 @@
         "operationId": "example",
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {}
             }
           }

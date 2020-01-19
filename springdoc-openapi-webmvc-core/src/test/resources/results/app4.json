@@ -19,7 +19,7 @@
         "operationId": "list",
         "requestBody": {
           "content": {
-            "*/*": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/TrackerData"
               }
