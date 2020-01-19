@@ -1,17 +1,22 @@
 package org.springdoc.core;
 
-import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.ReflectionUtils;
-import io.swagger.v3.oas.annotations.Hidden;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.Paths;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
+import static org.springdoc.core.Constants.DEFAULT_SERVER_DESCRIPTION;
+import static org.springdoc.core.Constants.DEFAULT_TITLE;
+import static org.springdoc.core.Constants.DEFAULT_VERSION;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,20 +32,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.springdoc.core.Constants.DEFAULT_SERVER_DESCRIPTION;
-import static org.springdoc.core.Constants.DEFAULT_TITLE;
-import static org.springdoc.core.Constants.DEFAULT_VERSION;
+import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.core.util.ReflectionUtils;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 
 public class OpenAPIBuilder {
 
@@ -208,15 +213,7 @@ public class OpenAPIBuilder {
 
     private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef) {
         // info
-        Optional<Info> infos = AnnotationsUtils.getInfo(apiDef.info());
-        if (infos.isPresent()) {
-            Info info = infos.get();
-            if (StringUtils.isNotBlank(info.getTitle())) {
-                PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
-                info.title(propertyResolverUtils.resolve(info.getTitle()));
-            }
-            openAPI.setInfo(info);
-        }
+        AnnotationsUtils.getInfo(apiDef.info()).map(this::resolveProperties).ifPresent(openAPI::setInfo);
         // OpenApiDefinition security requirements
         securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
         // OpenApiDefinition external docs
@@ -232,6 +229,36 @@ public class OpenAPIBuilder {
         // OpenApiDefinition extensions
         if (apiDef.extensions().length > 0) {
             openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
+        }
+    }
+
+    private Info resolveProperties(Info info) {
+        PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
+        resolveProperty(info::getTitle, info::title, propertyResolverUtils);
+        resolveProperty(info::getDescription, info::description, propertyResolverUtils);
+        resolveProperty(info::getVersion, info::version, propertyResolverUtils);
+        resolveProperty(info::getTermsOfService, info::termsOfService, propertyResolverUtils);
+
+        License license = info.getLicense();
+        if (license != null) {
+            resolveProperty(license::getName, license::name, propertyResolverUtils);
+            resolveProperty(license::getUrl, license::url, propertyResolverUtils);
+        }
+
+        Contact contact = info.getContact();
+        if (contact != null) {
+            resolveProperty(contact::getName, contact::name, propertyResolverUtils);
+            resolveProperty(contact::getEmail, contact::email, propertyResolverUtils);
+            resolveProperty(contact::getUrl, contact::url, propertyResolverUtils);
+        }
+        return info;
+    }
+
+    private void resolveProperty(Supplier<String> getProperty, Consumer<String> setProperty,
+                                 PropertyResolverUtils propertyResolverUtils) {
+        String value = getProperty.get();
+        if (StringUtils.isNotBlank(value)) {
+            setProperty.accept(propertyResolverUtils.resolve(value));
         }
     }
 
