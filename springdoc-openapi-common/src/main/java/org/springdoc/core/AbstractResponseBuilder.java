@@ -23,9 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.HandlerMethod;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,9 +37,12 @@ public abstract class AbstractResponseBuilder {
 
     private final OperationBuilder operationBuilder;
 
-    protected AbstractResponseBuilder(OperationBuilder operationBuilder) {
+    private final List<ReturnTypeParser> returnTypeParsers;
+
+    protected AbstractResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers) {
         super();
         this.operationBuilder = operationBuilder;
+        this.returnTypeParsers = returnTypeParsers;
     }
 
     public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
@@ -203,7 +204,7 @@ public abstract class AbstractResponseBuilder {
 
     private Content buildContent(Components components, Method method, String[] methodProduces, JsonView jsonView) {
         Content content = new Content();
-        Type returnType = method.getGenericReturnType();
+        Type returnType = getReturnType(method);
         if (isVoid(returnType)) {
             // if void, no content
             content = null;
@@ -217,6 +218,19 @@ public abstract class AbstractResponseBuilder {
             }
         }
         return content;
+    }
+
+    private Type getReturnType(Method method) {
+        Type returnType = Object.class;
+        for (ReturnTypeParser returnTypeParser: returnTypeParsers) {
+            if (returnType.getTypeName().equals(Object.class.getTypeName())) {
+                returnType = returnTypeParser.getReturnType(method);
+            } else {
+                break;
+            }
+        }
+
+        return returnType;
     }
 
     private Schema<?> calculateSchema(Components components, Type returnType, JsonView jsonView) {
@@ -327,5 +341,16 @@ public abstract class AbstractResponseBuilder {
     private boolean isVoid(Type returnType) {
         return Void.TYPE.equals(returnType) || (returnType instanceof ParameterizedType
                 && Void.class.equals(((ParameterizedType) returnType).getActualTypeArguments()[0]));
+    }
+
+    interface ReturnTypeParser {
+        Type getReturnType(Method method);
+    }
+
+    public static class GenericReturnTypeParser implements ReturnTypeParser {
+        @Override
+        public Type getReturnType(Method method) {
+            return method.getGenericReturnType();
+        }
     }
 }

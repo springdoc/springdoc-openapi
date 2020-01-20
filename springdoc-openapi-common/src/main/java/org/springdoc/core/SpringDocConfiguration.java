@@ -79,6 +79,11 @@ public class SpringDocConfiguration {
         return new SecurityParser(propertyResolverUtils);
     }
 
+    @Bean
+    public AbstractResponseBuilder.GenericReturnTypeParser genericReturnTypeParser() {
+        return new AbstractResponseBuilder.GenericReturnTypeParser();
+    }
+
     static class ConditionOnCacheOrGroupedOpenApi extends AnyNestedCondition {
 
         ConditionOnCacheOrGroupedOpenApi() {

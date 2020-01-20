@@ -8,13 +8,14 @@ import org.springframework.http.ResponseEntity;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 @SuppressWarnings("rawtypes")
 public class ResponseBuilder extends AbstractResponseBuilder {
 
-    public ResponseBuilder(OperationBuilder operationBuilder) {
-        super(operationBuilder);
+    public ResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers) {
+        super(operationBuilder, returnTypeParsers);
     }
 
     @Override
