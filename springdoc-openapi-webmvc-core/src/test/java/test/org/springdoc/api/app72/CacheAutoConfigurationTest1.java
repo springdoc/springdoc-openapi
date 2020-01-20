@@ -1,7 +1,8 @@
 package test.org.springdoc.api.app72;
 
 import org.junit.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,7 +48,9 @@ public class CacheAutoConfigurationTest1 {
     }
 
 
-    @SpringBootApplication
+
+    @SpringBootConfiguration
+    @EnableAutoConfiguration
     static class TestApp {
 
     }
