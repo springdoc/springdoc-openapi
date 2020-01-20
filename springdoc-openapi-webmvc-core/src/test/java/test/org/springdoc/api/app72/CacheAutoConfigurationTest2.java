@@ -49,7 +49,6 @@ public class CacheAutoConfigurationTest2 {
 
 
 
-    @SpringBootApplication
     @EnableAutoConfiguration
     static class TestApp {
         @Bean
