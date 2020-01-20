@@ -55,8 +55,8 @@ public class SpringDocWebMvcConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ResponseBuilder responseBuilder(OperationBuilder operationBuilder) {
-        return new ResponseBuilder(operationBuilder);
+    public ResponseBuilder responseBuilder(OperationBuilder operationBuilder, List<AbstractResponseBuilder.ReturnTypeParser> returnTypeParsers) {
+        return new ResponseBuilder(operationBuilder, returnTypeParsers);
     }
 
     @Configuration
