@@ -2,6 +2,7 @@ package test.org.springdoc.api.app72;
 
 import org.junit.Test;
 import org.springdoc.core.GroupedOpenApi;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -49,6 +50,7 @@ public class CacheAutoConfigurationTest2 {
 
 
     @SpringBootApplication
+    @EnableAutoConfiguration
     static class TestApp {
         @Bean
         GroupedOpenApi testGroupedOpenApi() {
