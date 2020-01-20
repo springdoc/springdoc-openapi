@@ -1,6 +1,7 @@
 package test.org.springdoc.api.app72;
 
 import org.junit.Test;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 
@@ -17,7 +18,7 @@ public class CacheAutoConfigurationTest1 {
                 .run(context -> assertThat(context)
                         .hasNotFailed()
                         .hasBean("openApiResource")
-                        .doesNotHaveBean("beanFactoryPostProcessor1")
+                        .hasBean("beanFactoryPostProcessor1")
                         .doesNotHaveBean("beanFactoryPostProcessor2")
                 );
     }
@@ -29,7 +30,7 @@ public class CacheAutoConfigurationTest1 {
                 .run(context -> assertThat(context)
                         .hasNotFailed()
                         .hasBean("openApiResource")
-                        .doesNotHaveBean("beanFactoryPostProcessor1")
+                        .hasBean("beanFactoryPostProcessor1")
                         .doesNotHaveBean("beanFactoryPostProcessor2")
                 );
     }
