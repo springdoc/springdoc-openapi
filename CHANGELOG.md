@@ -4,11 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] -
+## [1.2.27] -
 ### Added
-- Support for pathsToMatch and packagesToScan to work in spinal-case as well. Fixes #338
+- Support for pathsToMatch and packagesToScan to work in spinal-case as well #338
+- Support support for spring-security-oauth2 authorization server #327
+- support for custom OAuth 2.0 configuration, of the swagger-ui #333
+- Support of HttpEntity on webflux #280
+- Support: Example value can be specified without having to specify the schema #352
+- Support for serving the swagger-ui from outside of the spring-boot application / exploed jar #346
+- Support spring property resolver in all @Info #353
+## Changed
+- Improve actuator documentation
+- Make oauth2RedirectUrl dynamically calculated #349
 ## Fixed
 - Fixes springdoc.swagger-ui.url property #339
+- Allow webFlux handlers using kotlin coroutines to produce response documentation #351
 
 ## [1.2.26] -
 ### Added
