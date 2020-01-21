@@ -49,18 +49,15 @@ public abstract class AbstractResponseBuilder {
 
     public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
                               MethodAttributes methodAttributes) {
-        final ApiResponses apiResponses = getApiResponses(operation);
-        // for each one build ApiResponse and add it to existing responses
+        ApiResponses apiResponses = new ApiResponses();
         genericMapResponse.forEach(apiResponses::addApiResponse);
+        //Then use the apiResponses from documentation
+        ApiResponses apiResponsesFromDoc = operation.getResponses();
+        if (apiResponsesFromDoc != null)
+            apiResponsesFromDoc.forEach(apiResponses::addApiResponse);
+        // for each one build ApiResponse and add it to existing responses
         // Fill api Responses
         computeResponse(components, handlerMethod.getMethod(), apiResponses, methodAttributes, false);
-        return apiResponses;
-    }
-
-    private ApiResponses getApiResponses(Operation operation) {
-        ApiResponses apiResponses = operation.getResponses();
-        if (apiResponses == null)
-            apiResponses = new ApiResponses();
         return apiResponses;
     }
 
@@ -149,8 +146,11 @@ public abstract class AbstractResponseBuilder {
             Content existingContent = apiResponsesOp.get(apiResponseAnnotations.responseCode()).getContent();
             if (optionalContent.isPresent() && existingContent != null) {
                 Content newContent = optionalContent.get();
-                Arrays.stream(methodAttributes.getAllProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr));
-                apiResponse.content(existingContent);
+                if (methodAttributes.isMethodOverloaded()) {
+                    Arrays.stream(methodAttributes.getAllProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr));
+                    apiResponse.content(existingContent);
+                } else
+                    apiResponse.content(newContent);
             }
         } else {
             optionalContent.ifPresent(apiResponse::content);
@@ -224,7 +224,7 @@ public abstract class AbstractResponseBuilder {
 
     private Type getReturnType(Method method) {
         Type returnType = Object.class;
-        for (ReturnTypeParser returnTypeParser: returnTypeParsers) {
+        for (ReturnTypeParser returnTypeParser : returnTypeParsers) {
             if (returnType.getTypeName().equals(Object.class.getTypeName())) {
                 returnType = returnTypeParser.getReturnType(method);
             } else {
