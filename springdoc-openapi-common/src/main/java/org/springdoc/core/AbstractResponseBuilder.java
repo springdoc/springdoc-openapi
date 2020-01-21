@@ -39,9 +39,12 @@ public abstract class AbstractResponseBuilder {
 
     private final OperationBuilder operationBuilder;
 
-    protected AbstractResponseBuilder(OperationBuilder operationBuilder) {
+    private final List<ReturnTypeParser> returnTypeParsers;
+
+    protected AbstractResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers) {
         super();
         this.operationBuilder = operationBuilder;
+        this.returnTypeParsers = returnTypeParsers;
     }
 
     public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
@@ -203,7 +206,7 @@ public abstract class AbstractResponseBuilder {
 
     private Content buildContent(Components components, Method method, String[] methodProduces, JsonView jsonView) {
         Content content = new Content();
-        Type returnType = method.getGenericReturnType();
+        Type returnType = getReturnType(method);
         if (isVoid(returnType)) {
             // if void, no content
             content = null;
@@ -217,6 +220,19 @@ public abstract class AbstractResponseBuilder {
             }
         }
         return content;
+    }
+
+    private Type getReturnType(Method method) {
+        Type returnType = Object.class;
+        for (ReturnTypeParser returnTypeParser: returnTypeParsers) {
+            if (returnType.getTypeName().equals(Object.class.getTypeName())) {
+                returnType = returnTypeParser.getReturnType(method);
+            } else {
+                break;
+            }
+        }
+
+        return returnType;
     }
 
     private Schema<?> calculateSchema(Components components, Type returnType, JsonView jsonView) {

@@ -46,8 +46,8 @@ public class SpringDocWebFluxConfiguration {
     }
 
     @Bean
-    public ResponseBuilder responseBuilder(OperationBuilder operationBuilder) {
-        return new ResponseBuilder(operationBuilder);
+    public ResponseBuilder responseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers) {
+        return new ResponseBuilder(operationBuilder, returnTypeParsers);
     }
 
 }
