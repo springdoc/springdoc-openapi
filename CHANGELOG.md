@@ -4,8 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] -
+## [1.2.28] -
 ## Changed
+- Upgrade to spring-boot to 2.2.4.RELEASE
+- Upgrade swagger-api to 2.1.1
+- Upgrade swagger-ui to 3.24.3
+- Make spring-security-oauth2 as optional for springdoc-openapi-security #359
 - Improve support of response of responses overloading #354
 
 ## [1.2.27] -
