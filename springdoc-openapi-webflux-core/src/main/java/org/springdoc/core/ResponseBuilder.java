@@ -10,12 +10,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
 @SuppressWarnings("rawtypes")
 public class ResponseBuilder extends AbstractResponseBuilder {
 
-    public ResponseBuilder(OperationBuilder operationBuilder) {
-        super(operationBuilder);
+    public ResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers) {
+        super(operationBuilder, returnTypeParsers);
     }
 
     @Override

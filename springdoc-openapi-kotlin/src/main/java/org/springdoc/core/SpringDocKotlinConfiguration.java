@@ -24,5 +24,10 @@ public class SpringDocKotlinConfiguration {
                 operationBuilder, operationCustomizers, parameterCustomizers);
     }
 
+    @Bean
+    KotlinCoroutinesReturnTypeParser kotlinCoroutinesReturnTypeParser() {
+        return new KotlinCoroutinesReturnTypeParser();
+    }
+
 
 }

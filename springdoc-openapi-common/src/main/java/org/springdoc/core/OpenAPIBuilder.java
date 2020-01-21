@@ -27,20 +27,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.springdoc.core.Constants.DEFAULT_SERVER_DESCRIPTION;
-import static org.springdoc.core.Constants.DEFAULT_TITLE;
-import static org.springdoc.core.Constants.DEFAULT_VERSION;
+import static org.springdoc.core.Constants.*;
 
 public class OpenAPIBuilder {
 
