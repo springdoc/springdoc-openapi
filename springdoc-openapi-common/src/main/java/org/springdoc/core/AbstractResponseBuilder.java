@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.HandlerMethod;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -341,16 +343,5 @@ public abstract class AbstractResponseBuilder {
     private boolean isVoid(Type returnType) {
         return Void.TYPE.equals(returnType) || (returnType instanceof ParameterizedType
                 && Void.class.equals(((ParameterizedType) returnType).getActualTypeArguments()[0]));
-    }
-
-    interface ReturnTypeParser {
-        Type getReturnType(Method method);
-    }
-
-    public static class GenericReturnTypeParser implements ReturnTypeParser {
-        @Override
-        public Type getReturnType(Method method) {
-            return method.getGenericReturnType();
-        }
     }
 }

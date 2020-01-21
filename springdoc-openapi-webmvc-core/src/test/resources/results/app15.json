@@ -1,7 +1,19 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "My title"
+    "title": "My title",
+    "description": "My description",
+    "version": "My version",
+    "termsOfService": "My terms",
+    "license": {
+      "name": "My license name",
+      "url": "My license url"
+    },
+    "contact": {
+      "name": "My contact name",
+      "email": "My contact email",
+      "url": "My contact url"
+    }
   },
   "servers": [
     {

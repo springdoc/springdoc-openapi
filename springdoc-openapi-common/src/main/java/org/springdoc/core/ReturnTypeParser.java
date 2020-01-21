@@ -3,7 +3,7 @@ package org.springdoc.core;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
-public interface ReturnTypeParser {
+interface ReturnTypeParser {
     default Type getReturnType(Method method) {
         return method.getGenericReturnType();
     }
