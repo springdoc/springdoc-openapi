@@ -1,7 +1,6 @@
 package test.org.springdoc.api.app72;
 
 import org.junit.Test;
-import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 
