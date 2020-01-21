@@ -25,6 +25,7 @@ public class SpringDocKotlinConfiguration {
     }
 
     @Bean
+    @Primary
     KotlinCoroutinesReturnTypeParser kotlinCoroutinesReturnTypeParser() {
         return new KotlinCoroutinesReturnTypeParser();
     }
