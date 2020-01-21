@@ -24,9 +24,12 @@ public class SpringDocSecurityConfiguration {
         return new IgnoredParameterTypes();
     }
 
-    @Bean
+    @Configuration
     @ConditionalOnBean(FrameworkEndpointHandlerMapping.class)
-    public SpringSecurityOAuth2Provider springSecurityOAuth2Provider(FrameworkEndpointHandlerMapping oauth2EndpointHandlerMapping) {
-        return new SpringSecurityOAuth2Provider(oauth2EndpointHandlerMapping);
+    class SpringSecurityOAuth2ProviderConfiguration {
+        @Bean
+        public SpringSecurityOAuth2Provider springSecurityOAuth2Provider(FrameworkEndpointHandlerMapping oauth2EndpointHandlerMapping) {
+            return new SpringSecurityOAuth2Provider(oauth2EndpointHandlerMapping);
+        }
     }
 }
