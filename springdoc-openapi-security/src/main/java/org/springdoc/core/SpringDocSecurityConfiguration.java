@@ -26,7 +26,7 @@ public class SpringDocSecurityConfiguration {
 
     @Configuration
     @ConditionalOnBean(FrameworkEndpointHandlerMapping.class)
-    static class SpringSecurityOAuth2ProviderConfiguration {
+    class SpringSecurityOAuth2ProviderConfiguration {
         @Bean
         public SpringSecurityOAuth2Provider springSecurityOAuth2Provider(FrameworkEndpointHandlerMapping oauth2EndpointHandlerMapping) {
             return new SpringSecurityOAuth2Provider(oauth2EndpointHandlerMapping);
