@@ -1,9 +1,9 @@
 package org.springdoc.core;
 
-public interface IgnoredParameterAnnotations {
-
+interface IgnoredParameterAnnotations {
     default boolean isAnnotationToIgnore(java.lang.reflect.Parameter parameter) {
         return false;
     }
-
 }
+
+class IgnoredParameterAnnotationsDefault implements IgnoredParameterAnnotations { }

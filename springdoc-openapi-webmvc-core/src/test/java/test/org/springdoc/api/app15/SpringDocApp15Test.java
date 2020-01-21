@@ -1,12 +1,11 @@
 package test.org.springdoc.api.app15;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.test.context.TestPropertySource;
-
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 @TestPropertySource(properties = {
