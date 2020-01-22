@@ -1,6 +1,6 @@
 package test.org.springdoc.api.app41;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.web.servlet.MvcResult;

@@ -1,7 +1,7 @@
 package test.org.springdoc.api;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import nonapi.io.github.classgraph.utils.FileUtils;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.Constants;
@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,9 +23,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 @ActiveProfiles("test")
+@SpringBootTest
 @AutoConfigureMockMvc
 public abstract class AbstractSpringDocTest {
 
@@ -43,10 +42,17 @@ public abstract class AbstractSpringDocTest {
         MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
         String result = mockMvcResult.getResponse().getContentAsString();
-        Path path = Paths.get(getClass().getClassLoader().getResource("results/app" + testNumber + ".json").toURI());
-        byte[] fileBytes = Files.readAllBytes(path);
-        String expected = new String(fileBytes);
+        String expected = getContent("results/app" + testNumber + ".json");
         assertEquals(expected, result, true);
     }
 
+    public static String getContent(String fileName) throws Exception {
+        try {
+            Path path = Paths.get(FileUtils.class.getClassLoader().getResource(fileName).toURI());
+            byte[] fileBytes = Files.readAllBytes(path);
+            return new String(fileBytes, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to read file: " + fileName, e);
+        }
+    }
 }

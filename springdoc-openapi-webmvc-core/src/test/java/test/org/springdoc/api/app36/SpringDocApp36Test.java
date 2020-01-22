@@ -1,15 +1,10 @@
 package test.org.springdoc.api.app36;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -17,17 +12,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(properties = "springdoc.show-actuator=true")
-@ActiveProfiles("test")
-@AutoConfigureMockMvc
-public class SpringDocApp36Test {
+@TestPropertySource(properties = "springdoc.show-actuator=true")
+public class SpringDocApp36Test extends AbstractSpringDocTest {
 
     @SpringBootApplication
     static class SpringDocTestApp { }
-
-    @Autowired
-    protected MockMvc mockMvc;
 
     @Test
     public void testApp() throws Exception {
