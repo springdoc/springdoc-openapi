@@ -1,8 +1,8 @@
 package test.org.springdoc.ui.app5;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(properties = "server.servlet.context-path=/context-path")
+@TestPropertySource(properties = "server.servlet.context-path=/context-path")
 public class SpringDocOauthContextPathTest extends AbstractSpringDocTest {
 
     @SpringBootApplication

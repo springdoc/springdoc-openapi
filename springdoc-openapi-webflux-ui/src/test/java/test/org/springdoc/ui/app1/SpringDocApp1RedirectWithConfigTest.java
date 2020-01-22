@@ -1,34 +1,20 @@
 package test.org.springdoc.ui.app1;
 
 import org.hamcrest.Matchers;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springdoc.core.SpringDocConfiguration;
-import org.springdoc.core.SpringDocWebFluxConfiguration;
-import org.springdoc.core.SwaggerUiConfigProperties;
-import org.springdoc.ui.SwaggerWelcome;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
-@RunWith(SpringRunner.class)
-@WebFluxTest(properties = {
+@TestPropertySource(properties = {
         "springdoc.swagger-ui.validatorUrl=/foo/validate",
         "springdoc.api-docs.path=/baf/batz"
 })
-@ActiveProfiles("test")
-@ContextConfiguration(classes = {SpringDocConfiguration.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class, SwaggerWelcome.class})
-public class SpringDocApp1RedirectWithConfigTest {
+public class SpringDocApp1RedirectWithConfigTest  extends AbstractSpringDocTest {
 
     @SpringBootApplication
     static class SpringDocTestApp {}
-
-    @Autowired
-    private WebTestClient webTestClient;
 
     @Test
     public void shouldRedirectWithConfiguredParams() throws Exception {

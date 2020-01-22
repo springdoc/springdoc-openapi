@@ -3,18 +3,12 @@ package test.org.springdoc.api.app5.sample;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.*;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import test.org.springdoc.api.AbstractSpringDocTest;
 
 import java.util.ArrayList;
 
@@ -23,26 +17,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@ActiveProfiles("test")
 @TestPropertySource(properties = "springdoc.api-docs.path=/api-docs")
-@AutoConfigureMockMvc
-public class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest {
+public class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest extends AbstractSpringDocTest {
 
     @SpringBootApplication
     static class SpringDocTestApp { }
 
-    @Autowired
-    private MockMvc mockMvc;
-
     /**
-     * Given: Bean configuration with security scheme http basic
+     * Given: Bean configuration with security scheme http basic (shouldDefineComponentsSecuritySchemesForHttpBasic)
      * When: Get api-docs
      * Then: Return security definitions http basic
      */
     @Test
-    public void shouldDefineComponentsSecuritySchemesForHttpBasic() throws Exception {
+    public void testApp() throws Exception {
         mockMvc
                 .perform(get("/api-docs"))
                 .andExpect(status().isOk())

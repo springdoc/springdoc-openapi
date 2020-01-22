@@ -1,7 +1,7 @@
 package test.org.springdoc.ui.app4;
 
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
@@ -26,7 +26,7 @@ public class SpringDocApp4Test extends AbstractSpringDocTest {
                 .andExpect(jsonPath("urls[1].name", equalTo("pets")));
     }
 
-    @After
+    @AfterEach
     public void reset() {
         SwaggerUiConfigProperties.setSwaggerUrls(new ArrayList<>());
     }

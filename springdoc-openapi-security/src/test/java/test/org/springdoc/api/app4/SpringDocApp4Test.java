@@ -1,6 +1,6 @@
 package test.org.springdoc.api.app4;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;

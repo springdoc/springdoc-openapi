@@ -1,7 +1,7 @@
 package test.org.springdoc.ui.app6;
 
-import org.junit.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.TestPropertySource;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(properties = "springdoc.swagger-ui.url=http://myserver:8080/v3/api-docs")
+@TestPropertySource(properties = "springdoc.swagger-ui.url=http://myserver:8080/v3/api-docs")
 public class SpringDocSwaggerUiUrlPropertyTest extends AbstractSpringDocTest {
 
     @Test

@@ -1,34 +1,22 @@
 package test.org.springdoc.api.app16;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.AbstractSpringDocTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(properties = "springdoc.api-docs.enabled=false")
-@ActiveProfiles("test")
-@AutoConfigureMockMvc
-public class SpringDocApp16Test {
+@TestPropertySource(properties = "springdoc.api-docs.enabled=false")
+public class SpringDocApp16Test extends AbstractSpringDocTest {
 
-
-    @SpringBootApplication
+    @SpringBootConfiguration
     static class SpringDocTestApp { }
 
-    @Autowired
-    private MockMvc mockMvc;
-
     @Test
-    public void test() throws Exception {
+    public void testApp() throws Exception {
         mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
                 .andExpect(status().isNotFound());
     }

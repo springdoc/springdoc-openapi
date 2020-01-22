@@ -1,18 +1,16 @@
 package test.org.springdoc.ui.app1;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(properties = {
-        "springdoc.swagger-ui.path=/test/swagger.html"
-})
+@TestPropertySource(properties = "springdoc.swagger-ui.path=/test/swagger.html")
 public class SpringDocConfigPathsTest extends AbstractSpringDocTest {
 
     @SpringBootApplication

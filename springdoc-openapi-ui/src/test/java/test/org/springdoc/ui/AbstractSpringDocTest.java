@@ -1,20 +1,19 @@
 package test.org.springdoc.ui;
 
-import org.junit.runner.RunWith;
+import nonapi.io.github.classgraph.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 @ActiveProfiles("test")
+@SpringBootTest
 @AutoConfigureMockMvc
 public abstract class AbstractSpringDocTest {
 
@@ -26,8 +25,16 @@ public abstract class AbstractSpringDocTest {
     protected String getExpectedResult() throws Exception {
         className = getClass().getSimpleName();
         String testNumber = className.replaceAll("[^0-9]", "");
-        Path path = Paths.get(getClass().getClassLoader().getResource("results/app" + testNumber).toURI());
-        byte[] fileBytes = Files.readAllBytes(path);
-       return new String(fileBytes);
+       return  getContent("results/app" + testNumber );
+    }
+
+    public static String getContent(String fileName) throws Exception {
+        try {
+            Path path = Paths.get(FileUtils.class.getClassLoader().getResource(fileName).toURI());
+            byte[] fileBytes = Files.readAllBytes(path);
+            return new String(fileBytes, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to read file: " + fileName, e);
+        }
     }
 }

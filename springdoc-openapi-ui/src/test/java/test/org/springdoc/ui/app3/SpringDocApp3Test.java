@@ -1,6 +1,6 @@
 package test.org.springdoc.ui.app3;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
