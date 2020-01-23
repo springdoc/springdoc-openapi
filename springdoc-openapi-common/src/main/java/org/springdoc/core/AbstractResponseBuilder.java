@@ -152,6 +152,9 @@ public abstract class AbstractResponseBuilder {
 				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
 				buildContentFromDoc(components, apiResponsesOp, methodAttributes,
 						apiResponseAnnotations, apiResponse, contentdoc);
+				Map<String, Object> extensions = AnnotationsUtils.getExtensions(apiResponseAnnotations.extensions());
+				if (!CollectionUtils.isEmpty(extensions))
+					apiResponse.extensions(extensions);
 				AnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), methodAttributes.getJsonViewAnnotation())
 						.ifPresent(apiResponse::headers);
 				apiResponsesOp.addApiResponse(apiResponseAnnotations.responseCode(), apiResponse);
