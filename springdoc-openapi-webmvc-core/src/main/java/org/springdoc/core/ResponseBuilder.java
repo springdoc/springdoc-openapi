@@ -20,8 +20,10 @@ package org.springdoc.core;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionStage;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.models.Components;
@@ -33,18 +35,21 @@ import org.springframework.http.ResponseEntity;
 @SuppressWarnings("rawtypes")
 public class ResponseBuilder extends AbstractResponseBuilder {
 
+	private final List<Class<?>> resultWrappers = Arrays.asList(Callable.class, CompletionStage.class);
+
 	public ResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers) {
 		super(operationBuilder, returnTypeParsers);
 	}
 
 	@Override
 	protected Schema calculateSchemaFromParameterizedType(Components components, ParameterizedType parameterizedType,
-			JsonView jsonView) {
+														  JsonView jsonView) {
 		Schema<?> schemaN = null;
-		if (ResponseEntity.class.getName().contentEquals(parameterizedType.getRawType().getTypeName()) || HttpEntity.class.getName().contentEquals(parameterizedType.getRawType().getTypeName())) {
+		String parameterizedTypeName = parameterizedType.getRawType().getTypeName();
+		if (ResponseEntity.class.getName().contentEquals(parameterizedTypeName) || HttpEntity.class.getName().contentEquals(parameterizedTypeName)) {
 			schemaN = calculateSchemaParameterizedType(components, parameterizedType, jsonView);
 		}
-		else if (Callable.class.getName().contentEquals(parameterizedType.getRawType().getTypeName())) {
+		else if(resultWrappers.stream().anyMatch(clazz -> isParameterizedTypeWrapper(clazz, parameterizedType))) {
 			Type type = parameterizedType.getActualTypeArguments()[0];
 			if (type instanceof ParameterizedType) {
 				schemaN = this.calculateSchemaFromParameterizedType(components, (ParameterizedType) type, jsonView);
@@ -56,4 +61,12 @@ public class ResponseBuilder extends AbstractResponseBuilder {
 		return schemaN;
 	}
 
+	private boolean isParameterizedTypeWrapper(Class<?> clazz, ParameterizedType type) {
+		try {
+			Class<?> parameterType = Class.forName(type.getRawType().getTypeName());
+			return clazz.isAssignableFrom(parameterType);
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
+	}
 }
