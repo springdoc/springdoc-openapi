@@ -1,4 +1,35 @@
+/*
+ *
+ *  * Copyright 2019-2020 the original author or authors.
+ *  *
+ *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  * you may not use this file except in compliance with the License.
+ *  * You may obtain a copy of the License at
+ *  *
+ *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  * See the License for the specific language governing permissions and
+ *  * limitations under the License.
+ *
+ */
+
 package org.springdoc.core;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.ReflectionUtils;
@@ -17,6 +48,7 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ApplicationContext;
@@ -29,328 +61,335 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.springdoc.core.Constants.*;
+import static org.springdoc.core.Constants.DEFAULT_SERVER_DESCRIPTION;
+import static org.springdoc.core.Constants.DEFAULT_TITLE;
+import static org.springdoc.core.Constants.DEFAULT_VERSION;
 
 public class OpenAPIBuilder {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIBuilder.class);
-    private final OpenAPI openAPI;
-    private boolean isServersPresent = false;
-    private final ApplicationContext context;
-    private final SecurityParser securityParser;
-    private final Map<HandlerMethod, io.swagger.v3.oas.models.tags.Tag> springdocTags = new HashMap<>();
-    private String serverBaseUrl;
-    private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
+	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIBuilder.class);
 
-    @SuppressWarnings("WeakerAccess")
-    OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
-        if (openAPI.isPresent()) {
-            this.openAPI = openAPI.get();
-            if (this.openAPI.getComponents() == null)
-                this.openAPI.setComponents(new Components());
-            if (this.openAPI.getPaths() == null)
-                this.openAPI.setPaths(new Paths());
-            if (!CollectionUtils.isEmpty(this.openAPI.getServers()))
-                this.isServersPresent = true;
-        } else {
-            this.openAPI = new OpenAPI();
-            this.openAPI.setComponents(new Components());
-            this.openAPI.setPaths(new Paths());
-        }
-        this.context = context;
-        this.securityParser = securityParser;
-        this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
-    }
+	private final OpenAPI openAPI;
 
-    private static String splitCamelCase(String str) {
-        return str.replaceAll(
-                String.format(
-                        "%s|%s|%s",
-                        "(?<=[A-Z])(?=[A-Z][a-z])",
-                        "(?<=[^A-Z])(?=[A-Z])",
-                        "(?<=[A-Za-z])(?=[^A-Za-z])"),
-                "-")
-                .toLowerCase(Locale.ROOT);
-    }
+	private final ApplicationContext context;
 
-    public OpenAPI getOpenAPI() {
-        return openAPI;
-    }
+	private final SecurityParser securityParser;
 
-    public Components getComponents() {
-        return openAPI.getComponents();
-    }
+	private final Map<HandlerMethod, io.swagger.v3.oas.models.tags.Tag> springdocTags = new HashMap<>();
 
-    public Paths getPaths() {
-        return openAPI.getPaths();
-    }
+	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
 
-    public void build() {
-        Optional<OpenAPIDefinition> apiDef = getOpenAPIDefinition();
-        if (apiDef.isPresent()) {
-            buildOpenAPIWithOpenAPIDefinition(openAPI, apiDef.get());
-        }
-        // Set default info
-        else if (openAPI.getInfo() == null) {
-            Info infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
-            openAPI.setInfo(infos);
-        }
-        // default server value
-        if (CollectionUtils.isEmpty(openAPI.getServers()) || !isServersPresent) {
-            Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
-            List servers = new ArrayList();
-            servers.add(server);
-            openAPI.setServers(servers);
-        }
-        // add security schemes
-        this.calculateSecuritySchemes(openAPI.getComponents());
-    }
+	private boolean isServersPresent = false;
 
-    public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
-        // class tags
-        List<Tag> classTags =
-                ReflectionUtils.getRepeatableAnnotations(handlerMethod.getBeanType(), Tag.class);
+	private String serverBaseUrl;
 
-        // method tags
-        List<Tag> methodTags =
-                ReflectionUtils.getRepeatableAnnotations(handlerMethod.getMethod(), Tag.class);
+	@SuppressWarnings("WeakerAccess")
+	OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
+		if (openAPI.isPresent()) {
+			this.openAPI = openAPI.get();
+			if (this.openAPI.getComponents() == null)
+				this.openAPI.setComponents(new Components());
+			if (this.openAPI.getPaths() == null)
+				this.openAPI.setPaths(new Paths());
+			if (!CollectionUtils.isEmpty(this.openAPI.getServers()))
+				this.isServersPresent = true;
+		}
+		else {
+			this.openAPI = new OpenAPI();
+			this.openAPI.setComponents(new Components());
+			this.openAPI.setPaths(new Paths());
+		}
+		this.context = context;
+		this.securityParser = securityParser;
+		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
+	}
 
-        List<Tag> allTags = new ArrayList<>();
-        Set<String> tagsStr = new HashSet<>();
+	private static String splitCamelCase(String str) {
+		return str.replaceAll(
+				String.format(
+						"%s|%s|%s",
+						"(?<=[A-Z])(?=[A-Z][a-z])",
+						"(?<=[^A-Z])(?=[A-Z])",
+						"(?<=[A-Za-z])(?=[^A-Za-z])"),
+				"-")
+				.toLowerCase(Locale.ROOT);
+	}
 
-        if (!CollectionUtils.isEmpty(methodTags)) {
-            tagsStr.addAll(methodTags.stream().map(Tag::name).collect(Collectors.toSet()));
-            allTags.addAll(methodTags);
-        }
+	public OpenAPI getOpenAPI() {
+		return openAPI;
+	}
 
-        if (!CollectionUtils.isEmpty(classTags)) {
-            tagsStr.addAll(classTags.stream().map(Tag::name).collect(Collectors.toSet()));
-            allTags.addAll(classTags);
-        }
+	public Components getComponents() {
+		return openAPI.getComponents();
+	}
 
-        if (springdocTags.containsKey(handlerMethod)) {
-            io.swagger.v3.oas.models.tags.Tag tag = springdocTags.get(handlerMethod);
-            tagsStr.add(tag.getName());
-            if(openAPI.getTags() == null || !openAPI.getTags().contains(tag)) {
-                openAPI.addTagsItem(tag);
-            }
-        }
+	public Paths getPaths() {
+		return openAPI.getPaths();
+	}
 
-        Optional<Set<io.swagger.v3.oas.models.tags.Tag>> tags = AnnotationsUtils
-                .getTags(allTags.toArray(new Tag[0]), true);
+	public void build() {
+		Optional<OpenAPIDefinition> apiDef = getOpenAPIDefinition();
+		if (apiDef.isPresent()) {
+			buildOpenAPIWithOpenAPIDefinition(openAPI, apiDef.get());
+		}
+		// Set default info
+		else if (openAPI.getInfo() == null) {
+			Info infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
+			openAPI.setInfo(infos);
+		}
+		// default server value
+		if (CollectionUtils.isEmpty(openAPI.getServers()) || !isServersPresent) {
+			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
+			List servers = new ArrayList();
+			servers.add(server);
+			openAPI.setServers(servers);
+		}
+		// add security schemes
+		this.calculateSecuritySchemes(openAPI.getComponents());
+	}
 
-        if (tags.isPresent()) {
-            Set<io.swagger.v3.oas.models.tags.Tag> tagsSet = tags.get();
-            // Existing tags
-            List<io.swagger.v3.oas.models.tags.Tag> openApiTags = openAPI.getTags();
-            if (!CollectionUtils.isEmpty(openApiTags))
-                tagsSet.addAll(openApiTags);
-            openAPI.setTags(new ArrayList<>(tagsSet));
-        }
+	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
+		// class tags
+		List<Tag> classTags =
+				ReflectionUtils.getRepeatableAnnotations(handlerMethod.getBeanType(), Tag.class);
 
-        // Handle SecurityRequirement at operation level
-        Optional<io.swagger.v3.oas.annotations.security.SecurityRequirement[]> securityRequirement = securityParser
-                .getSecurityRequirements(handlerMethod);
-        securityRequirement.ifPresent(securityRequirements -> securityParser.buildSecurityRequirement(securityRequirements, operation));
+		// method tags
+		List<Tag> methodTags =
+				ReflectionUtils.getRepeatableAnnotations(handlerMethod.getMethod(), Tag.class);
 
-        if (!CollectionUtils.isEmpty(tagsStr)) {
-            operation.setTags(new ArrayList<>(tagsStr));
-        }
+		List<Tag> allTags = new ArrayList<>();
+		Set<String> tagsStr = new HashSet<>();
 
-        if (CollectionUtils.isEmpty(operation.getTags())) {
-            operation.addTagsItem(splitCamelCase(handlerMethod.getBeanType().getSimpleName()));
-        }
+		if (!CollectionUtils.isEmpty(methodTags)) {
+			tagsStr.addAll(methodTags.stream().map(Tag::name).collect(Collectors.toSet()));
+			allTags.addAll(methodTags);
+		}
 
-        return operation;
-    }
+		if (!CollectionUtils.isEmpty(classTags)) {
+			tagsStr.addAll(classTags.stream().map(Tag::name).collect(Collectors.toSet()));
+			allTags.addAll(classTags);
+		}
 
-    public void setServerBaseUrl(String serverBaseUrl) {
-        this.serverBaseUrl = serverBaseUrl;
-    }
+		if (springdocTags.containsKey(handlerMethod)) {
+			io.swagger.v3.oas.models.tags.Tag tag = springdocTags.get(handlerMethod);
+			tagsStr.add(tag.getName());
+			if (openAPI.getTags() == null || !openAPI.getTags().contains(tag)) {
+				openAPI.addTagsItem(tag);
+			}
+		}
 
-    private Optional<OpenAPIDefinition> getOpenAPIDefinition() {
-        // Look for OpenAPIDefinition in a spring managed bean
-        Map<String, Object> openAPIDefinitionMap = context.getBeansWithAnnotation(OpenAPIDefinition.class);
-        OpenAPIDefinition apiDef = null;
-        if (openAPIDefinitionMap.size() > 1)
-            LOGGER.warn(
-                    "found more than one OpenAPIDefinition class. springdoc-openapi will be using the first one found.");
-        if (openAPIDefinitionMap.size() > 0) {
-            Map.Entry<String, Object> entry = openAPIDefinitionMap.entrySet().iterator().next();
-            Class<?> objClz = entry.getValue().getClass();
-            apiDef = ReflectionUtils.getAnnotation(objClz, OpenAPIDefinition.class);
-        }
+		Optional<Set<io.swagger.v3.oas.models.tags.Tag>> tags = AnnotationsUtils
+				.getTags(allTags.toArray(new Tag[0]), true);
 
-        // Look for OpenAPIDefinition in the spring classpath
-        else {
-            ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(
-                    false);
-            scanner.addIncludeFilter(new AnnotationTypeFilter(OpenAPIDefinition.class));
-            if (AutoConfigurationPackages.has(context)) {
-                List<String> packagesToScan = AutoConfigurationPackages.get(context);
-                apiDef = getApiDefClass(scanner, packagesToScan);
-            }
+		if (tags.isPresent()) {
+			Set<io.swagger.v3.oas.models.tags.Tag> tagsSet = tags.get();
+			// Existing tags
+			List<io.swagger.v3.oas.models.tags.Tag> openApiTags = openAPI.getTags();
+			if (!CollectionUtils.isEmpty(openApiTags))
+				tagsSet.addAll(openApiTags);
+			openAPI.setTags(new ArrayList<>(tagsSet));
+		}
 
-        }
-        return Optional.ofNullable(apiDef);
-    }
+		// Handle SecurityRequirement at operation level
+		Optional<io.swagger.v3.oas.annotations.security.SecurityRequirement[]> securityRequirement = securityParser
+				.getSecurityRequirements(handlerMethod);
+		securityRequirement.ifPresent(securityRequirements -> securityParser.buildSecurityRequirement(securityRequirements, operation));
 
-    private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef) {
-        // info
-        AnnotationsUtils.getInfo(apiDef.info()).map(this::resolveProperties).ifPresent(openAPI::setInfo);
-        // OpenApiDefinition security requirements
-        securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
-        // OpenApiDefinition external docs
-        AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs()).ifPresent(openAPI::setExternalDocs);
-        // OpenApiDefinition tags
-        AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
-        // OpenApiDefinition servers
-        Optional<List<Server>> optionalServers = AnnotationsUtils.getServers(apiDef.servers());
-        if (optionalServers.isPresent()) {
-            openAPI.setServers(optionalServers.get());
-            this.isServersPresent = true;
-        }
-        // OpenApiDefinition extensions
-        if (apiDef.extensions().length > 0) {
-            openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
-        }
-    }
+		if (!CollectionUtils.isEmpty(tagsStr)) {
+			operation.setTags(new ArrayList<>(tagsStr));
+		}
 
-    private Info resolveProperties(Info info) {
-        PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
-        resolveProperty(info::getTitle, info::title, propertyResolverUtils);
-        resolveProperty(info::getDescription, info::description, propertyResolverUtils);
-        resolveProperty(info::getVersion, info::version, propertyResolverUtils);
-        resolveProperty(info::getTermsOfService, info::termsOfService, propertyResolverUtils);
+		if (CollectionUtils.isEmpty(operation.getTags())) {
+			operation.addTagsItem(splitCamelCase(handlerMethod.getBeanType().getSimpleName()));
+		}
 
-        License license = info.getLicense();
-        if (license != null) {
-            resolveProperty(license::getName, license::name, propertyResolverUtils);
-            resolveProperty(license::getUrl, license::url, propertyResolverUtils);
-        }
+		return operation;
+	}
 
-        Contact contact = info.getContact();
-        if (contact != null) {
-            resolveProperty(contact::getName, contact::name, propertyResolverUtils);
-            resolveProperty(contact::getEmail, contact::email, propertyResolverUtils);
-            resolveProperty(contact::getUrl, contact::url, propertyResolverUtils);
-        }
-        return info;
-    }
+	public void setServerBaseUrl(String serverBaseUrl) {
+		this.serverBaseUrl = serverBaseUrl;
+	}
 
-    private void resolveProperty(Supplier<String> getProperty, Consumer<String> setProperty,
-                                 PropertyResolverUtils propertyResolverUtils) {
-        String value = getProperty.get();
-        if (StringUtils.isNotBlank(value)) {
-            setProperty.accept(propertyResolverUtils.resolve(value));
-        }
-    }
+	private Optional<OpenAPIDefinition> getOpenAPIDefinition() {
+		// Look for OpenAPIDefinition in a spring managed bean
+		Map<String, Object> openAPIDefinitionMap = context.getBeansWithAnnotation(OpenAPIDefinition.class);
+		OpenAPIDefinition apiDef = null;
+		if (openAPIDefinitionMap.size() > 1)
+			LOGGER.warn(
+					"found more than one OpenAPIDefinition class. springdoc-openapi will be using the first one found.");
+		if (openAPIDefinitionMap.size() > 0) {
+			Map.Entry<String, Object> entry = openAPIDefinitionMap.entrySet().iterator().next();
+			Class<?> objClz = entry.getValue().getClass();
+			apiDef = ReflectionUtils.getAnnotation(objClz, OpenAPIDefinition.class);
+		}
 
-    private void calculateSecuritySchemes(Components components) {
-        // Look for OpenAPIDefinition in a spring managed bean
-        Map<String, Object> securitySchemeBeans = context
-                .getBeansWithAnnotation(io.swagger.v3.oas.annotations.security.SecurityScheme.class);
-        if (securitySchemeBeans.size() > 0) {
-            for (Map.Entry<String, Object> entry : securitySchemeBeans.entrySet()) {
-                Class<?> objClz = entry.getValue().getClass();
-                List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = ReflectionUtils
-                        .getRepeatableAnnotations(objClz, io.swagger.v3.oas.annotations.security.SecurityScheme.class);
-                this.addSecurityScheme(apiSecurityScheme, components);
-            }
-        }
+		// Look for OpenAPIDefinition in the spring classpath
+		else {
+			ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(
+					false);
+			scanner.addIncludeFilter(new AnnotationTypeFilter(OpenAPIDefinition.class));
+			if (AutoConfigurationPackages.has(context)) {
+				List<String> packagesToScan = AutoConfigurationPackages.get(context);
+				apiDef = getApiDefClass(scanner, packagesToScan);
+			}
 
-        // Look for OpenAPIDefinition in the spring classpath
-        else {
-            ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(
-                    false);
-            scanner.addIncludeFilter(
-                    new AnnotationTypeFilter(io.swagger.v3.oas.annotations.security.SecurityScheme.class));
-            if (AutoConfigurationPackages.has(context)) {
-                List<String> packagesToScan = AutoConfigurationPackages.get(context);
-                List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = getSecuritySchemesClasses(
-                        scanner, packagesToScan);
-                this.addSecurityScheme(apiSecurityScheme, components);
-            }
+		}
+		return Optional.ofNullable(apiDef);
+	}
 
-        }
-    }
+	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef) {
+		// info
+		AnnotationsUtils.getInfo(apiDef.info()).map(this::resolveProperties).ifPresent(openAPI::setInfo);
+		// OpenApiDefinition security requirements
+		securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
+		// OpenApiDefinition external docs
+		AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs()).ifPresent(openAPI::setExternalDocs);
+		// OpenApiDefinition tags
+		AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
+		// OpenApiDefinition servers
+		Optional<List<Server>> optionalServers = AnnotationsUtils.getServers(apiDef.servers());
+		if (optionalServers.isPresent()) {
+			openAPI.setServers(optionalServers.get());
+			this.isServersPresent = true;
+		}
+		// OpenApiDefinition extensions
+		if (apiDef.extensions().length > 0) {
+			openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
+		}
+	}
 
-    private void addSecurityScheme(List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme,
-                                   Components components) {
-        for (io.swagger.v3.oas.annotations.security.SecurityScheme securitySchemeAnnotation : apiSecurityScheme) {
-            Optional<SecuritySchemePair> securityScheme = securityParser.getSecurityScheme(securitySchemeAnnotation);
-            if (securityScheme.isPresent()) {
-                Map<String, SecurityScheme> securitySchemeMap = new HashMap<>();
-                if (StringUtils.isNotBlank(securityScheme.get().getKey())) {
-                    securitySchemeMap.put(securityScheme.get().getKey(), securityScheme.get().getSecurityScheme());
-                    if (!CollectionUtils.isEmpty(components.getSecuritySchemes())) {
-                        components.getSecuritySchemes().putAll(securitySchemeMap);
-                    } else {
-                        components.setSecuritySchemes(securitySchemeMap);
-                    }
-                }
-            }
-        }
-    }
+	private Info resolveProperties(Info info) {
+		PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
+		resolveProperty(info::getTitle, info::title, propertyResolverUtils);
+		resolveProperty(info::getDescription, info::description, propertyResolverUtils);
+		resolveProperty(info::getVersion, info::version, propertyResolverUtils);
+		resolveProperty(info::getTermsOfService, info::termsOfService, propertyResolverUtils);
 
-    private OpenAPIDefinition getApiDefClass(ClassPathScanningCandidateComponentProvider scanner,
-                                             List<String> packagesToScan) {
-        for (String pack : packagesToScan) {
-            for (BeanDefinition bd : scanner.findCandidateComponents(pack)) {
-                // first one found is ok
-                try {
-                    return AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()),
-                            OpenAPIDefinition.class);
-                } catch (ClassNotFoundException e) {
-                    LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
-                }
-            }
-        }
-        return null;
-    }
+		License license = info.getLicense();
+		if (license != null) {
+			resolveProperty(license::getName, license::name, propertyResolverUtils);
+			resolveProperty(license::getUrl, license::url, propertyResolverUtils);
+		}
 
-    private List<io.swagger.v3.oas.annotations.security.SecurityScheme> getSecuritySchemesClasses(
-            ClassPathScanningCandidateComponentProvider scanner, List<String> packagesToScan) {
-        List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = new ArrayList<>();
-        for (String pack : packagesToScan) {
-            for (BeanDefinition bd : scanner.findCandidateComponents(pack)) {
-                try {
-                    apiSecurityScheme.add(AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()),
-                            io.swagger.v3.oas.annotations.security.SecurityScheme.class));
-                } catch (ClassNotFoundException e) {
-                    LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
-                }
-            }
-        }
-        return apiSecurityScheme;
-    }
+		Contact contact = info.getContact();
+		if (contact != null) {
+			resolveProperty(contact::getName, contact::name, propertyResolverUtils);
+			resolveProperty(contact::getEmail, contact::email, propertyResolverUtils);
+			resolveProperty(contact::getUrl, contact::url, propertyResolverUtils);
+		}
+		return info;
+	}
 
-    public void addTag(Set<HandlerMethod> handlerMethods, io.swagger.v3.oas.models.tags.Tag tag) {
-        handlerMethods.forEach(handlerMethod -> springdocTags.put(handlerMethod, tag));
-    }
+	private void resolveProperty(Supplier<String> getProperty, Consumer<String> setProperty,
+			PropertyResolverUtils propertyResolverUtils) {
+		String value = getProperty.get();
+		if (StringUtils.isNotBlank(value)) {
+			setProperty.accept(propertyResolverUtils.resolve(value));
+		}
+	}
 
-    public Map<String, Object> getRestControllersMap() {
-        return context.getBeansWithAnnotation(RestController.class);
-    }
+	private void calculateSecuritySchemes(Components components) {
+		// Look for OpenAPIDefinition in a spring managed bean
+		Map<String, Object> securitySchemeBeans = context
+				.getBeansWithAnnotation(io.swagger.v3.oas.annotations.security.SecurityScheme.class);
+		if (securitySchemeBeans.size() > 0) {
+			for (Map.Entry<String, Object> entry : securitySchemeBeans.entrySet()) {
+				Class<?> objClz = entry.getValue().getClass();
+				List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = ReflectionUtils
+						.getRepeatableAnnotations(objClz, io.swagger.v3.oas.annotations.security.SecurityScheme.class);
+				this.addSecurityScheme(apiSecurityScheme, components);
+			}
+		}
 
-    public Map<String, Object> getRequestMappingMap() {
-        return context.getBeansWithAnnotation(RequestMapping.class);
-    }
+		// Look for OpenAPIDefinition in the spring classpath
+		else {
+			ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(
+					false);
+			scanner.addIncludeFilter(
+					new AnnotationTypeFilter(io.swagger.v3.oas.annotations.security.SecurityScheme.class));
+			if (AutoConfigurationPackages.has(context)) {
+				List<String> packagesToScan = AutoConfigurationPackages.get(context);
+				List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = getSecuritySchemesClasses(
+						scanner, packagesToScan);
+				this.addSecurityScheme(apiSecurityScheme, components);
+			}
 
-    public Map<String, Object> getControllerAdviceMap() {
-        Map<String, Object> controllerAdviceMap = context.getBeansWithAnnotation(ControllerAdvice.class);
-        return Stream.of(controllerAdviceMap).flatMap(mapEl -> mapEl.entrySet().stream()).filter(
-                controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(), Hidden.class) == null))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
-    }
+		}
+	}
 
-    public Optional<SecurityOAuth2Provider> getSpringSecurityOAuth2Provider() {
-        return springSecurityOAuth2Provider;
-    }
+	private void addSecurityScheme(List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme,
+			Components components) {
+		for (io.swagger.v3.oas.annotations.security.SecurityScheme securitySchemeAnnotation : apiSecurityScheme) {
+			Optional<SecuritySchemePair> securityScheme = securityParser.getSecurityScheme(securitySchemeAnnotation);
+			if (securityScheme.isPresent()) {
+				Map<String, SecurityScheme> securitySchemeMap = new HashMap<>();
+				if (StringUtils.isNotBlank(securityScheme.get().getKey())) {
+					securitySchemeMap.put(securityScheme.get().getKey(), securityScheme.get().getSecurityScheme());
+					if (!CollectionUtils.isEmpty(components.getSecuritySchemes())) {
+						components.getSecuritySchemes().putAll(securitySchemeMap);
+					}
+					else {
+						components.setSecuritySchemes(securitySchemeMap);
+					}
+				}
+			}
+		}
+	}
+
+	private OpenAPIDefinition getApiDefClass(ClassPathScanningCandidateComponentProvider scanner,
+			List<String> packagesToScan) {
+		for (String pack : packagesToScan) {
+			for (BeanDefinition bd : scanner.findCandidateComponents(pack)) {
+				// first one found is ok
+				try {
+					return AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()),
+							OpenAPIDefinition.class);
+				}
+				catch (ClassNotFoundException e) {
+					LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
+				}
+			}
+		}
+		return null;
+	}
+
+	private List<io.swagger.v3.oas.annotations.security.SecurityScheme> getSecuritySchemesClasses(
+			ClassPathScanningCandidateComponentProvider scanner, List<String> packagesToScan) {
+		List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = new ArrayList<>();
+		for (String pack : packagesToScan) {
+			for (BeanDefinition bd : scanner.findCandidateComponents(pack)) {
+				try {
+					apiSecurityScheme.add(AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()),
+							io.swagger.v3.oas.annotations.security.SecurityScheme.class));
+				}
+				catch (ClassNotFoundException e) {
+					LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
+				}
+			}
+		}
+		return apiSecurityScheme;
+	}
+
+	public void addTag(Set<HandlerMethod> handlerMethods, io.swagger.v3.oas.models.tags.Tag tag) {
+		handlerMethods.forEach(handlerMethod -> springdocTags.put(handlerMethod, tag));
+	}
+
+	public Map<String, Object> getRestControllersMap() {
+		return context.getBeansWithAnnotation(RestController.class);
+	}
+
+	public Map<String, Object> getRequestMappingMap() {
+		return context.getBeansWithAnnotation(RequestMapping.class);
+	}
+
+	public Map<String, Object> getControllerAdviceMap() {
+		Map<String, Object> controllerAdviceMap = context.getBeansWithAnnotation(ControllerAdvice.class);
+		return Stream.of(controllerAdviceMap).flatMap(mapEl -> mapEl.entrySet().stream()).filter(
+				controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(), Hidden.class) == null))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+	}
+
+	public Optional<SecurityOAuth2Provider> getSpringSecurityOAuth2Provider() {
+		return springSecurityOAuth2Provider;
+	}
 }
