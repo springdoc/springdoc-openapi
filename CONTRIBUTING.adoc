@@ -17,6 +17,8 @@ broader community monitor the https://stackoverflow.com/tags/springdoc[`springdo
 tag.
 
 These are some basic guidelines before opening an issue. First of all you need to make sure, you don't create duplicate issues, and there no question already answred on https://stackoverflow.com/tags/springdoc.
+If you are starting using springdoc-openapi, we  advise you to use the last available release.
+
 Then refer to the relevant documentation:
 
 1. For OpenAPI specification 3:
