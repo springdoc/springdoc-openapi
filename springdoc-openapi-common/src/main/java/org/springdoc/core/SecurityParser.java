@@ -81,7 +81,7 @@ class SecurityParser {
 		return result;
 	}
 
-	public Optional<io.swagger.v3.oas.annotations.security.SecurityRequirement[]> getSecurityRequirements(
+	public io.swagger.v3.oas.annotations.security.SecurityRequirement[] getSecurityRequirements(
 			HandlerMethod method) {
 		// class SecurityRequirements
 		io.swagger.v3.oas.annotations.security.SecurityRequirements classSecurity = ReflectionUtils
@@ -90,16 +90,16 @@ class SecurityParser {
 		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity = ReflectionUtils
 				.getAnnotation(method.getMethod(), io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 
-		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = new HashSet<>();
+		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = null;
 
 		if (classSecurity != null) {
-			allSecurityTags.addAll(Arrays.asList(classSecurity.value()));
+			allSecurityTags = new HashSet<>(Arrays.asList(classSecurity.value()));
 		}
 		if (methodSecurity != null) {
-			allSecurityTags.addAll(Arrays.asList(methodSecurity.value()));
+			allSecurityTags = addSecurityRequirements(allSecurityTags, Arrays.asList(methodSecurity.value()));
 		}
 
-		if (allSecurityTags.isEmpty()) {
+		if (CollectionUtils.isEmpty(allSecurityTags)) {
 			// class SecurityRequirement
 			List<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList = ReflectionUtils
 					.getRepeatableAnnotations(method.getBeanType(),
@@ -109,19 +109,21 @@ class SecurityParser {
 					.getRepeatableAnnotations(method.getMethod(),
 							io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
 			if (!CollectionUtils.isEmpty(securityRequirementsClassList)) {
-				allSecurityTags.addAll(securityRequirementsClassList);
+				allSecurityTags = addSecurityRequirements(allSecurityTags, securityRequirementsClassList);
 			}
 			if (!CollectionUtils.isEmpty(securityRequirementsMethodList)) {
-				allSecurityTags.addAll(securityRequirementsMethodList);
+				allSecurityTags = addSecurityRequirements(allSecurityTags, securityRequirementsMethodList);
 			}
 		}
 
-		if (allSecurityTags.isEmpty()) {
-			return Optional.empty();
-		}
+		return (allSecurityTags != null) ? allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]) : null;
+	}
 
-		return Optional.of(
-				allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]));
+	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> addSecurityRequirements(Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags, List<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList) {
+		if (allSecurityTags == null)
+			allSecurityTags = new HashSet<>();
+		allSecurityTags.addAll(securityRequirementsClassList);
+		return allSecurityTags;
 	}
 
 	public Optional<List<SecurityRequirement>> getSecurityRequirements(

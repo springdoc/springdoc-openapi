@@ -19,6 +19,7 @@
 package org.springdoc.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -191,9 +192,14 @@ public class OpenAPIBuilder {
 		}
 
 		// Handle SecurityRequirement at operation level
-		Optional<io.swagger.v3.oas.annotations.security.SecurityRequirement[]> securityRequirement = securityParser
+		io.swagger.v3.oas.annotations.security.SecurityRequirement[] securityRequirements = securityParser
 				.getSecurityRequirements(handlerMethod);
-		securityRequirement.ifPresent(securityRequirements -> securityParser.buildSecurityRequirement(securityRequirements, operation));
+		if (securityRequirements != null) {
+			if (securityRequirements.length == 0)
+				operation.setSecurity(Collections.emptyList());
+			else
+				securityParser.buildSecurityRequirement(securityRequirements, operation);
+		}
 
 		if (!CollectionUtils.isEmpty(tagsStr)) {
 			operation.setTags(new ArrayList<>(tagsStr));
