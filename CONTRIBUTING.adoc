@@ -1,0 +1,143 @@
+= Contributing to springdoc-openapi
+
+springdoc-openapi is released under the Apache 2.0 license. If you would like to contribute
+something, or simply want to hack on the code this document should help you get started.
+
+
+
+== Code of Conduct
+This project adheres to the Contributor Covenant link:CODE_OF_CONDUCT.adoc[code of
+conduct]. By participating, you are expected to uphold this code. 
+
+
+== Using GitHub Issues
+We use GitHub issues to track bugs and enhancements. If you have a general usage question
+please ask on https://stackoverflow.com[Stack Overflow]. The springdoc-openapi team and the
+broader community monitor the https://stackoverflow.com/tags/springdoc[`springdoc`]
+tag.
+
+These are some basic guidelines before opening an issue. First of all you need to make sure, you don't create duplicate issues, and there no question already answred on https://stackoverflow.com/tags/springdoc.
+Then refer to the relevant documentation:
+
+1. For OpenAPI specification 3:
+   - https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md
+2. For swagger2-annotations:
+    - https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations
+3. For swagger-ui configuration:
+    - https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md
+4. For springdoc-openapi:
+    - https://springdoc.github.io/springdoc-openapi-demos/
+    - https://springdoc.github.io/springdoc-openapi-demos/faq.html
+    - https://springdoc.github.io/springdoc-openapi-demos/migrating-from-springfox.html
+  
+
+If you are reporting a bug, please help to speed up problem diagnosis by providing as
+much information as possible:
+
+ - You need to describe your context (the title of an issue is not enough)
+ - What version of spring-boot you are using?
+ - What modules and versions of springdoc-openapi are you using? 
+ - What are the actual and the expected result using OpenAPI Description (yml or json)?
+ - Provide with a sample code (HelloController) or Test that reproduces the problem
+
+
+== Reporting Security Vulnerabilities
+If you think you have found a security vulnerability in Spring Boot please *DO NOT*
+disclose it publicly until we've had a chance to fix it. Please don't report security
+vulnerabilities using GitHub issues, instead head over to springdoc99@gmail.com and
+learn how to disclose them responsibly.
+
+
+== Code Conventions and Housekeeping
+None of these is essential for a pull request, but they will all help.  They can also be
+added after the original pull request but before a merge.
+
+* We use the https://github.com/spring-io/spring-javaformat/[Spring JavaFormat] project
+  to apply code formatting conventions. If you use Eclipse and you follow the '`Importing
+  into eclipse`' instructions below you should get project specific formatting
+  automatically. You can also install the
+  https://github.com/spring-io/spring-javaformat/#intellij-idea[Spring JavaFormat IntelliJ
+  Plugin]
+* Make sure all new `.java` files to have a simple Javadoc class comment with at least an
+  `@author` tag identifying you, and preferably at least a paragraph on what the class is
+  for.
+* Add the ASF license header comment to all new `.java` files (copy from existing files
+  in the project)
+* Add yourself as an `@author` to the `.java` files that you modify substantially (more
+  than cosmetic changes).
+* Add some Javadocs.
+* A few unit tests would help a lot as well -- someone has to do it.
+* If no-one else is using your branch, please rebase it against the current master (or
+  other target branch in the main project).
+* When writing a commit message please follow https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html[these conventions],
+  if you are fixing an existing issue please add `Fixes #XXXX` at the end of the commit
+  message (where `XXXX` is the issue number).
+
+
+
+== Working with the Code
+If you don't have an IDE preference we would recommend that you use IntellIJ.
+
+=== Importing into IntelliJ IDEA
+If you have performed a checkout of this repository already, use "`File`" -> "`Open`" and
+then select the root `build.gradle` file to import the code.
+
+Alternatively, you can let IntellIJ IDEA checkout the code for you. Use "`File`" ->
+"`New`" -> "`Project from Version Control`" and
+`https://github.com/spring-projects/spring-boot` for the URL. Once the checkout has
+completed, a pop-up will suggest to open the project.
+
+
+==== Install the Spring Formatter plugin
+If you haven't done so, install the formatter plugin so that proper formatting rules are
+applied automatically when you reformat code in the IDE.
+
+* Download the latest https://search.maven.org/search?q=g:io.spring.javaformat%20AND%20a:spring-javaformat-intellij-plugin[IntelliJ IDEA plugin].
+* Select "`IntelliJ IDEA`" -> "`Preferences`".
+* Select "`Plugins`".
+* Select the wheel and "`Install Plugin from Disk...`".
+* Select the jar file you've downloaded.
+
+
+==== Import additional code style
+The formatter does not cover all rules (such as order of imports) and an additional file
+needs to be added.
+
+* Select "`IntelliJ IDEA`" -> "`Preferences`".
+* Select "`Editor`" -> "`Code Style`".
+* Select the wheel and "`Import Scheme`" -> "`IntelliJ IDEA code style XML`".
+* Select https://github.com/spring-projects/spring-boot/blob/master/idea/codeStyleConfig.xml[`idea/codeStyleConfig.xml`] from this repository.
+
+==== Importing into Eclipse
+
+You can use Spring Boot project specific source formatting settings.
+
+
+===== Install the Spring Formatter plugin
+* Select "`Help`" -> "`Install New Software`".
+* Add `https://dl.bintray.com/spring/javaformat-eclipse/` as a site.
+* Install "Spring Java Format".
+
+NOTE: The plugin is optional. Projects can be imported without the plugins, your code
+changes just won't be automatically formatted.
+
+=== Building from Source
+springdoc-openapi source can be built from the command line using https://maven.apache.org/[Maven] on
+JDK 1.8 or above.
+
+The project can be built from the root directory using the standard maven command:
+
+[indent=0]
+----
+	$ ./mvn install
+----
+
+
+== Cloning the git repository on Windows
+Some files in the git repository may exceed the Windows maximum file path (260
+characters), depending on where you clone the repository. If you get `Filename too long`
+errors, set the `core.longPaths=true` git option:
+
+```
+git clone -c core.longPaths=true https://github.com/springdoc/springdoc-openapi
+```
