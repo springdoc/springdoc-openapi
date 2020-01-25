@@ -348,15 +348,16 @@ public class GenericResponseBuilder {
 	}
 
 	private boolean isVoid(Type returnType) {
+		boolean result = false;
 		if (Void.TYPE.equals(returnType))
-			return true;
-		if (returnType instanceof ParameterizedType) {
-			Type[]  types = ((ParameterizedType) returnType).getActualTypeArguments();
-			if(types !=null)
+			result = true;
+		else if (returnType instanceof ParameterizedType) {
+			Type[] types = ((ParameterizedType) returnType).getActualTypeArguments();
+			if (types != null)
 				return isVoid(types[0]);
 		}
 		if (Void.class.equals(returnType))
-			return true;
-		return false;
+			result = true;
+		return result;
 	}
 }

@@ -27,6 +27,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 
 public class ConverterUtils {
+	
+	private ConverterUtils() { }
 
 	private static final List<Class<?>> RESULT_WRAPPERS_TO_IGNORE = new ArrayList<>();
 
