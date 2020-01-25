@@ -45,7 +45,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.AbstractRequestBuilder;
-import org.springdoc.core.AbstractResponseBuilder;
+import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
@@ -72,7 +72,7 @@ public abstract class AbstractOpenApiResource {
 
 	private final AbstractRequestBuilder requestBuilder;
 
-	private final AbstractResponseBuilder responseBuilder;
+	private final GenericResponseBuilder responseBuilder;
 
 	private final OperationBuilder operationParser;
 
@@ -92,7 +92,7 @@ public abstract class AbstractOpenApiResource {
 	private boolean cacheDisabled;
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
-			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
 		super();
 		this.openAPIBuilder = openAPIBuilder;
@@ -103,7 +103,7 @@ public abstract class AbstractOpenApiResource {
 	}
 
 	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
-			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan, boolean cacheDisabled) {
 		super();
 		this.openAPIBuilder = openAPIBuilder;
@@ -224,7 +224,7 @@ public abstract class AbstractOpenApiResource {
 					.getRepeatableAnnotations(method, io.swagger.v3.oas.annotations.callbacks.Callback.class);
 
 			// callbacks
-			if (apiCallbacks != null) {
+			if (!CollectionUtils.isEmpty(apiCallbacks)) {
 				operationParser.buildCallbacks(apiCallbacks, components, openAPI, methodAttributes)
 						.ifPresent(operation::setCallbacks);
 			}
