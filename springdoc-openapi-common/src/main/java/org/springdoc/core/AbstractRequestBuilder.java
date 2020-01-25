@@ -263,7 +263,8 @@ public abstract class AbstractRequestBuilder {
 
 		}
 		else if (requestParam != null) {
-			requestInfo = new RequestInfo(ParameterType.QUERY_PARAM, requestParam.value(), requestParam.required(),
+			boolean isOptional = Optional.class.equals(parameters.getType());
+			requestInfo = new RequestInfo(ParameterType.QUERY_PARAM, requestParam.value(), requestParam.required() && !isOptional,
 					requestParam.defaultValue());
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
