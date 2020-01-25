@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Added
 - Added ability to disable security for one operation using  @SecurityRequirements #259
 - Support for extensions on @ApiResponse #368
+- Support for CompletionStage as endpoint return type #370
+- Support for extensions on @ApiResponse #368
+- Support for java 8 Optional for  @RequestParam #375
 
 ## [1.2.28] -
 ## Changed
