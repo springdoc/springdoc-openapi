@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
@@ -36,6 +37,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
+@AutoConfigureWebTestClient(timeout = "3600000")
 @WebFluxTest
 @ActiveProfiles("test")
 public abstract class AbstractSpringDocTest {

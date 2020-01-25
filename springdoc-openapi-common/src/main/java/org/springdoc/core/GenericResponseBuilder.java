@@ -58,7 +58,7 @@ import org.springframework.web.method.HandlerMethod;
 import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
 
 @SuppressWarnings("rawtypes")
-public abstract class AbstractResponseBuilder {
+public class GenericResponseBuilder {
 
 	private final Map<String, ApiResponse> genericMapResponse = new LinkedHashMap<>();
 
@@ -66,7 +66,7 @@ public abstract class AbstractResponseBuilder {
 
 	private final List<ReturnTypeParser> returnTypeParsers;
 
-	protected AbstractResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers) {
+	protected GenericResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers) {
 		super();
 		this.operationBuilder = operationBuilder;
 		this.returnTypeParsers = returnTypeParsers;
@@ -102,23 +102,6 @@ public abstract class AbstractResponseBuilder {
 				apiResponses.forEach(genericMapResponse::put);
 			}
 		}
-	}
-
-	protected abstract Schema calculateSchemaFromParameterizedType(Components components, ParameterizedType returnType,
-			JsonView jsonView);
-
-	protected Schema calculateSchemaParameterizedType(Components components, ParameterizedType parameterizedType,
-			JsonView jsonView) {
-		Schema schemaN = null;
-		Type type = parameterizedType.getActualTypeArguments()[0];
-		if ((type instanceof Class || type instanceof ParameterizedType) && !Void.class.equals(type)) {
-			schemaN = calculateSchema(components, parameterizedType, jsonView);
-		}
-		else if (Void.class.equals(type)) {
-			// if void, no content
-			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, jsonView);
-		}
-		return schemaN;
 	}
 
 	private List<Method> getMethods(Map<String, Object> findControllerAdvice) {
@@ -275,9 +258,6 @@ public abstract class AbstractResponseBuilder {
 			// if void, no content
 			return null;
 		}
-		if (returnType instanceof ParameterizedType) {
-			schemaN = calculateSchemaFromParameterizedType(components, (ParameterizedType) returnType, jsonView);
-		}
 		else if (ResponseEntity.class.getName().equals(returnType.getTypeName()) || HttpEntity.class.getName().equals(returnType.getTypeName())) {
 			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, jsonView);
 		}
@@ -293,17 +273,6 @@ public abstract class AbstractResponseBuilder {
 	private void setContent(String[] methodProduces, Content content,
 			io.swagger.v3.oas.models.media.MediaType mediaType) {
 		Arrays.stream(methodProduces).forEach(mediaTypeStr -> content.addMediaType(mediaTypeStr, mediaType));
-	}
-
-	private Schema calculateSchema(Components components, ParameterizedType parameterizedType, JsonView jsonView) {
-		Schema schemaN;
-		schemaN = SpringDocAnnotationsUtils.extractSchema(components, parameterizedType.getActualTypeArguments()[0],
-				jsonView);
-		if (schemaN.getType() == null) {
-			schemaN = SpringDocAnnotationsUtils.extractSchema(components,
-					parameterizedType.getActualTypeArguments()[0], jsonView);
-		}
-		return schemaN;
 	}
 
 	private void buildApiResponses(Components components, Method method, ApiResponses apiResponsesOp,
@@ -379,7 +348,15 @@ public abstract class AbstractResponseBuilder {
 	}
 
 	private boolean isVoid(Type returnType) {
-		return Void.TYPE.equals(returnType) || (returnType instanceof ParameterizedType
-				&& Void.class.equals(((ParameterizedType) returnType).getActualTypeArguments()[0]));
+		if (Void.TYPE.equals(returnType))
+			return true;
+		if (returnType instanceof ParameterizedType) {
+			Type[]  types = ((ParameterizedType) returnType).getActualTypeArguments();
+			if(types !=null)
+				return isVoid(types[0]);
+		}
+		if (Void.class.equals(returnType))
+			return true;
+		return false;
 	}
 }
