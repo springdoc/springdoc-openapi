@@ -11,30 +11,17 @@
     }
   ],
   "paths": {
-<<<<<<< HEAD
-    "/person1": {
-=======
     "/test": {
->>>>>>> 945f0e9e8cbfe98accf6bb98cc7274552fa47441
       "get": {
         "tags": [
           "hello-controller"
         ],
-<<<<<<< HEAD
-        "operationId": "getPerson1",
-        "parameters": [
-          {
-            "name": "str",
-            "in": "query",
-            "required": true,
-=======
         "operationId": "echo",
         "parameters": [
           {
             "name": "text",
             "in": "query",
             "required": false,
->>>>>>> 945f0e9e8cbfe98accf6bb98cc7274552fa47441
             "schema": {
               "type": "string"
             }
@@ -44,45 +31,9 @@
           "200": {
             "description": "default response",
             "content": {
-<<<<<<< HEAD
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PersonDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/person2": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "getPerson2",
-        "parameters": [
-          {
-            "name": "str",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PersonDTO"
-=======
               "text/plain": {
                 "schema": {
                   "type": "string"
->>>>>>> 945f0e9e8cbfe98accf6bb98cc7274552fa47441
                 }
               }
             }
@@ -91,26 +42,5 @@
       }
     }
   },
-<<<<<<< HEAD
-  "components": {
-    "schemas": {
-      "PersonDTO": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          }
-        }
-      }
-    }
-  }
-=======
   "components": {}
->>>>>>> 945f0e9e8cbfe98accf6bb98cc7274552fa47441
 }
