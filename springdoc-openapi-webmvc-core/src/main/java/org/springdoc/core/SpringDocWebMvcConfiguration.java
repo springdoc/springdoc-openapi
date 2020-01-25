@@ -49,7 +49,7 @@ public class SpringDocWebMvcConfiguration {
 
 	@Bean
 	public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
-			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
 		return new OpenApiResource(openAPIBuilder, requestBuilder,
@@ -74,8 +74,8 @@ public class SpringDocWebMvcConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public ResponseBuilder responseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers) {
-		return new ResponseBuilder(operationBuilder, returnTypeParsers);
+	public GenericResponseBuilder responseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers) {
+		return new GenericResponseBuilder(operationBuilder, returnTypeParsers);
 	}
 
 	@Configuration

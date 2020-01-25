@@ -36,7 +36,7 @@ import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.core.AbstractRequestBuilder;
-import org.springdoc.core.AbstractResponseBuilder;
+import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.SecurityOAuth2Provider;
@@ -67,7 +67,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	private final Optional<ActuatorProvider> servletContextProvider;
 
 	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
-			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
 		super(openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers);
@@ -76,7 +76,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	}
 
 	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
-			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan,
 			boolean cacheDisabled) {

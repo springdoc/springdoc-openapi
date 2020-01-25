@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.AbstractRequestBuilder;
-import org.springdoc.core.AbstractResponseBuilder;
+import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
@@ -57,7 +57,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 
 	private final AbstractRequestBuilder requestBuilder;
 
-	private final AbstractResponseBuilder responseBuilder;
+	private final GenericResponseBuilder responseBuilder;
 
 	private final OperationBuilder operationParser;
 
@@ -72,7 +72,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
-			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider) {
 
 		this.groupedOpenApis = groupedOpenApis;
