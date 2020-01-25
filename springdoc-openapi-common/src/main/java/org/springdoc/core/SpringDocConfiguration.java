@@ -27,6 +27,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.core.converters.ModelConverterRegistrar;
 import org.springdoc.core.converters.ObjectNodeConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
+import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.customizers.PropertyCustomizer;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -61,6 +62,11 @@ public class SpringDocConfiguration {
 	@Bean
 	PropertyCustomizingConverter propertyCustomizingConverter(Optional<List<PropertyCustomizer>> customizers) {
 		return new PropertyCustomizingConverter(customizers);
+	}
+
+	@Bean
+	ResponseSupportConverter responseSupportConverter(){
+		return new ResponseSupportConverter();
 	}
 
 	@Bean

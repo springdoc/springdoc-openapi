@@ -44,7 +44,7 @@ public class MultipleOpenApiSupportConfiguration {
 	@Bean
 	public MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
-			AbstractResponseBuilder responseBuilder, OperationBuilder operationParser,
+			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> servletContextProvider) {
 		return new MultipleOpenApiResource(groupedOpenApis,
