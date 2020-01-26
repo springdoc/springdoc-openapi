@@ -27,6 +27,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,9 +50,10 @@ import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
@@ -59,10 +61,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
-
-import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED_VALUE;
-import static org.springdoc.core.Constants.SPRINGDOC_PACKAGES_TO_SCAN;
-import static org.springdoc.core.Constants.SPRINGDOC_PATHS_TO_MATCH;
 
 public abstract class AbstractOpenApiResource {
 
@@ -80,45 +78,28 @@ public abstract class AbstractOpenApiResource {
 
 	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
+	private final SpringDocConfigProperties springDocConfigProperties;
+
 	private boolean computeDone;
 
-	@Value(SPRINGDOC_PACKAGES_TO_SCAN)
-	private List<String> packagesToScan;
+	private final String groupName;
 
-	@Value(SPRINGDOC_PATHS_TO_MATCH)
-	private List<String> pathsToMatch;
-
-	@Value(SPRINGDOC_CACHE_DISABLED_VALUE)
-	private boolean cacheDisabled;
-
-	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+	protected AbstractOpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
+			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties) {
 		super();
+		this.groupName = Objects.requireNonNull(groupName, "groupName");
 		this.openAPIBuilder = openAPIBuilder;
 		this.requestBuilder = requestBuilder;
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
 		this.openApiCustomisers = openApiCustomisers;
-	}
-
-	protected AbstractOpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
-			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers, List<String> pathsToMatch, List<String> packagesToScan, boolean cacheDisabled) {
-		super();
-		this.openAPIBuilder = openAPIBuilder;
-		this.requestBuilder = requestBuilder;
-		this.responseBuilder = responseBuilder;
-		this.operationParser = operationParser;
-		this.openApiCustomisers = openApiCustomisers;
-		this.pathsToMatch = pathsToMatch;
-		this.packagesToScan = packagesToScan;
-		this.cacheDisabled = cacheDisabled;
+		this.springDocConfigProperties = springDocConfigProperties;
 	}
 
 	protected synchronized OpenAPI getOpenApi() {
 		OpenAPI openApi;
-		if (!computeDone || cacheDisabled) {
+		if (!computeDone || Boolean.TRUE.equals(springDocConfigProperties.getCache().getDisabled())) {
 			Instant start = Instant.now();
 			openAPIBuilder.build();
 			Map<String, Object> restControllersMap = openAPIBuilder.getRestControllersMap();
@@ -171,15 +152,15 @@ public abstract class AbstractOpenApiResource {
 				continue;
 			}
 
-			RequestMapping reqMappringClass = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
+			RequestMapping reqMappingClass = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
 					RequestMapping.class);
 
 			MethodAttributes methodAttributes = new MethodAttributes();
 			methodAttributes.setMethodOverloaded(existingOperation != null);
 
-			if (reqMappringClass != null) {
-				methodAttributes.setClassConsumes(reqMappringClass.consumes());
-				methodAttributes.setClassProduces(reqMappringClass.produces());
+			if (reqMappingClass != null) {
+				methodAttributes.setClassConsumes(reqMappingClass.consumes());
+				methodAttributes.setClassProduces(reqMappingClass.produces());
 			}
 
 			methodAttributes.calculateConsumesProduces(method);
@@ -336,10 +317,22 @@ public abstract class AbstractOpenApiResource {
 	}
 
 	protected boolean isPackageToScan(String aPackage) {
+		List<String> packagesToScan = springDocConfigProperties.getPackagesToScan();
+		if (CollectionUtils.isEmpty(packagesToScan)) {
+			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
+			if (optionalGroupConfig.isPresent())
+				packagesToScan = optionalGroupConfig.get().getPackagesToScan();
+		}
 		return CollectionUtils.isEmpty(packagesToScan) || packagesToScan.stream().anyMatch(pack -> aPackage.equals(pack) || aPackage.startsWith(pack + "."));
 	}
 
 	protected boolean isPathToMatch(String operationPath) {
+		List<String> pathsToMatch = springDocConfigProperties.getPathsToMatch();
+		if (CollectionUtils.isEmpty(pathsToMatch)) {
+			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
+			if (optionalGroupConfig.isPresent())
+				pathsToMatch = optionalGroupConfig.get().getPathsToMatch();
+		}
 		return CollectionUtils.isEmpty(pathsToMatch) || pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
 	}
 

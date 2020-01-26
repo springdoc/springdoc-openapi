@@ -90,10 +90,10 @@ class SwaggerWelcome implements InitializingBean {
 	@Operation(hidden = true)
 	@GetMapping(SWAGGER_UI_PATH)
 	public String redirectToUi(HttpServletRequest request) {
-		StringBuilder sbUrl = new StringBuilder(REDIRECT_URL_PREFIX).append(this.uiRootPath);
-		sbUrl.append(SWAGGER_UI_URL);
 		buildConfigUrl(request);
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl.toString());
+		String sbUrl = REDIRECT_URL_PREFIX + this.uiRootPath
+				+ SWAGGER_UI_URL;
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl);
 		return uriBuilder.queryParam(SwaggerUiConfigProperties.CONFIG_URL_PROPERTY, swaggerUiConfig.getConfigUrl()).build().encode().toString();
 	}
 
@@ -142,7 +142,7 @@ class SwaggerWelcome implements InitializingBean {
 		if (StringUtils.isNotBlank(mvcServletPath))
 			sbUrl.append(mvcServletPath);
 		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
-			sbUrl.append(swaggerPath.substring(0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR)));
+			sbUrl.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
 		this.uiRootPath = sbUrl.toString();
 	}
 }

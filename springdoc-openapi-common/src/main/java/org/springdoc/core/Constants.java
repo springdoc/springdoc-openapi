@@ -40,8 +40,6 @@ public final class Constants {
 
 	public static final String SPRINGDOC_CACHE_DISABLED = "springdoc.cache.disabled";
 
-	public static final String SPRINGDOC_CACHE_DISABLED_VALUE = "${" + SPRINGDOC_CACHE_DISABLED + ":false}";
-
 	public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
 
 	public static final String SPRINGDOC_SWAGGER_UI_CONFIG_URL = "springdoc.swagger-ui.configUrl";
@@ -59,10 +57,6 @@ public final class Constants {
 	public static final String SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE = "${" + SPRINGDOC_SWAGGER_UI_CONFIG_URL + NULL + "}";
 
 	public static final String SPRINGDOC_SHOW_ACTUATOR = "springdoc.show-actuator";
-
-	public static final String SPRINGDOC_PACKAGES_TO_SCAN = "${springdoc.packages-to-scan" + NULL + "}";
-
-	public static final String SPRINGDOC_PATHS_TO_MATCH = "${springdoc.paths-to-match" + NULL + "}";
 
 	public static final String SPRINGDOC_ACTUATOR_TAG = "Actuator";
 
@@ -89,6 +83,8 @@ public final class Constants {
 	public static final String SWAGGER_UI_PATH = "${springdoc.swagger-ui.path:#{T(org.springdoc.core.Constants).DEFAULT_SWAGGER_UI_PATH}}";
 
 	public static final String MVC_SERVLET_PATH = "${spring.mvc.servlet.path" + NULL + "}";
+
+	public static final String DEFAULT_GROUP_NAME="springdocDefault";
 
 	public static final String GET_METHOD = "get";
 

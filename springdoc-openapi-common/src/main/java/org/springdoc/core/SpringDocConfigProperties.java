@@ -18,6 +18,7 @@
 
 package org.springdoc.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -40,6 +41,11 @@ public class SpringDocConfigProperties {
 	private List<String> packagesToScan;
 
 	private List<String> pathsToMatch;
+
+	private Cache cache = new Cache();
+
+	private List<GroupConfig> groupConfigs = new ArrayList<>();
+
 
 	public List<String> getPackagesToScan() {
 		return packagesToScan;
@@ -79,6 +85,14 @@ public class SpringDocConfigProperties {
 
 	public void setPathsToMatch(List<String> pathsToMatch) {
 		this.pathsToMatch = pathsToMatch;
+	}
+
+	public Cache getCache() {
+		return cache;
+	}
+
+	public void setCache(Cache cache) {
+		this.cache = cache;
 	}
 
 	public static class Webjars {
@@ -140,6 +154,70 @@ public class SpringDocConfigProperties {
 
 		public void setEnabled(Boolean enabled) {
 			this.enabled = enabled;
+		}
+	}
+
+	public static class Cache {
+		private Boolean disabled = false;
+
+		public Boolean getDisabled() {
+			return disabled;
+		}
+
+		public void setDisabled(Boolean disabled) {
+			this.disabled = disabled;
+		}
+	}
+
+	public List<GroupConfig> getGroupConfigs() {
+		return groupConfigs;
+	}
+
+	public void setGroupConfigs(List<GroupConfig> groupConfigs) {
+		this.groupConfigs = groupConfigs;
+	}
+
+	public void addGroupConfig(GroupConfig groupConfigs) {
+		this.groupConfigs.add(groupConfigs);
+	}
+
+	public static class GroupConfig {
+		public GroupConfig() { }
+
+		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan) {
+			this.pathsToMatch = pathsToMatch;
+			this.packagesToScan = packagesToScan;
+			this.group = group;
+		}
+
+		private List<String> pathsToMatch;
+
+		private List<String> packagesToScan;
+
+		private String group;
+
+		public List<String> getPathsToMatch() {
+			return pathsToMatch;
+		}
+
+		public void setPathsToMatch(List<String> pathsToMatch) {
+			this.pathsToMatch = pathsToMatch;
+		}
+
+		public List<String> getPackagesToScan() {
+			return packagesToScan;
+		}
+
+		public void setPackagesToScan(List<String> packagesToScan) {
+			this.packagesToScan = packagesToScan;
+		}
+
+		public String getGroup() {
+			return group;
+		}
+
+		public void setGroup(String group) {
+			this.group = group;
 		}
 	}
 }

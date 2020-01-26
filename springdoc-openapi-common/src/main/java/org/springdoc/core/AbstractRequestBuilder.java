@@ -186,6 +186,16 @@ public abstract class AbstractRequestBuilder {
 			}
 		}
 
+		LinkedHashMap<String, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
+
+		setParams(operation, new ArrayList(map.values()), requestBodyInfo);
+		// allow for customisation
+		operation = customiseOperation(operation, handlerMethod);
+
+		return operation;
+	}
+
+	private LinkedHashMap<String, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
 		LinkedHashMap<String, Parameter> map = operationParameters.stream()
 				.collect(Collectors.toMap(
 						Parameter::getName,
@@ -204,12 +214,7 @@ public abstract class AbstractRequestBuilder {
 				map.put(entry.getKey(), parameter);
 			}
 		}
-
-		setParams(operation, new ArrayList(map.values()), requestBodyInfo);
-		// allow for customisation
-		operation = customiseOperation(operation, handlerMethod);
-
-		return operation;
+		return map;
 	}
 
 	protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
