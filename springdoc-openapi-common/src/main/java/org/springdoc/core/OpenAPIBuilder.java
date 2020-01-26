@@ -141,7 +141,7 @@ public class OpenAPIBuilder {
 		// default server value
 		if (CollectionUtils.isEmpty(openAPI.getServers()) || !isServersPresent) {
 			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
-			List servers = new ArrayList();
+			List<Server> servers = new ArrayList();
 			servers.add(server);
 			openAPI.setServers(servers);
 		}

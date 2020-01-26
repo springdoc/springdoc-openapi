@@ -39,6 +39,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
+import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 
@@ -51,11 +52,12 @@ public class SpringDocWebMvcConfiguration {
 	public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
+			SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
-		return new OpenApiResource(openAPIBuilder, requestBuilder,
+		return new OpenApiResource(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping, servletContextProvider,
-				openApiCustomisers);
+				openApiCustomisers,springDocConfigProperties);
 	}
 
 	@Bean

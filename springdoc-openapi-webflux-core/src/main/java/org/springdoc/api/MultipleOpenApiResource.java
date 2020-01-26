@@ -30,6 +30,8 @@ import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -45,7 +47,6 @@ import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerM
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
-import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED_VALUE;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
@@ -63,15 +64,15 @@ public class MultipleOpenApiResource implements InitializingBean {
 
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
-	private Map<String, OpenApiResource> groupedOpenApiResources;
+	private final SpringDocConfigProperties springDocConfigProperties;
 
-	@Value(SPRINGDOC_CACHE_DISABLED_VALUE)
-	private boolean cacheDisabled;
+	private Map<String, OpenApiResource> groupedOpenApiResources;
 
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
-			RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
+			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			SpringDocConfigProperties springDocConfigProperties) {
 
 		this.groupedOpenApis = groupedOpenApis;
 		this.defaultOpenAPIBuilder = defaultOpenAPIBuilder;
@@ -79,27 +80,33 @@ public class MultipleOpenApiResource implements InitializingBean {
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+		this.springDocConfigProperties = springDocConfigProperties;
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		this.groupedOpenApiResources = groupedOpenApis.stream()
 				.collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
-						new OpenApiResource(
-								defaultOpenAPIBuilder.getObject(),
-								requestBuilder,
-								responseBuilder,
-								operationParser,
-								requestMappingHandlerMapping,
-								Optional.of(item.getOpenApiCustomisers()), item.getPathsToMatch(), item.getPackagesToScan(),
-								cacheDisabled
-						)
+						{
+							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan());
+							springDocConfigProperties.addGroupConfig(groupConfig);
+							return new OpenApiResource(item.getGroup(),
+									defaultOpenAPIBuilder.getObject(),
+									requestBuilder,
+									responseBuilder,
+									operationParser,
+									requestMappingHandlerMapping,
+									Optional.of(item.getOpenApiCustomisers()), springDocConfigProperties
+							);
+						}
 				));
 	}
 
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL + "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl, @PathVariable String group)
+	public Mono<String> openapiJson(ServerHttpRequest
+			serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl, @PathVariable String
+			group)
 			throws JsonProcessingException {
 		return getOpenApiResourceOrThrow(group).openapiJson(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
 	}
@@ -107,7 +114,8 @@ public class MultipleOpenApiResource implements InitializingBean {
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML + "/{group}", produces = APPLICATION_OPENAPI_YAML)
 	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest,
-			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, @PathVariable String group) throws JsonProcessingException {
+			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, @PathVariable String
+			group) throws JsonProcessingException {
 		return getOpenApiResourceOrThrow(group).openapiYaml(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
 	}
 

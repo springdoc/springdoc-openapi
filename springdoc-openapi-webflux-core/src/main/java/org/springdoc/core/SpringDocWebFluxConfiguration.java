@@ -35,6 +35,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
 
+import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 @Configuration
@@ -47,11 +48,11 @@ public class SpringDocWebFluxConfiguration {
 	public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
-		return new OpenApiResource(openAPIBuilder, requestBuilder,
+			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties) {
+		return new OpenApiResource(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping,
-				openApiCustomisers);
+				openApiCustomisers,springDocConfigProperties);
 	}
 
 	@Bean
