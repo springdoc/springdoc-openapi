@@ -43,8 +43,8 @@ public class GroupedOpenApi {
 		this.packagesToScan = builder.packagesToScan;
 		this.openApiCustomisers = Objects.requireNonNull(builder.openApiCustomisers);
 		SwaggerUiConfigProperties.addGroup(this.group);
-		if (CollectionUtils.isEmpty(this.pathsToMatch) && CollectionUtils.isEmpty(this.packagesToScan))
-			throw new IllegalStateException("Packages to scan or paths to filter can not be both null for the group:" + this.group);
+		if (CollectionUtils.isEmpty(this.pathsToMatch) && CollectionUtils.isEmpty(this.packagesToScan) && CollectionUtils.isEmpty(openApiCustomisers))
+			throw new IllegalStateException("Packages to scan or paths to filter or openApiCustomisers can not be all null for the group:" + this.group);
 	}
 
 	public static Builder builder() {
