@@ -253,6 +253,22 @@ public abstract class AbstractParameterBuilder {
 
 	protected abstract boolean isFile(JavaType ct);
 
+	public boolean isFile(java.lang.reflect.Parameter parameter) {
+		boolean result =false;
+		Type type =  parameter.getParameterizedType();
+		JavaType javaType = constructType(parameter.getType());
+		if (isFile(javaType)) {
+			result =true;
+		}
+		else if (type instanceof ParameterizedType) {
+			ParameterizedType parameterizedType = (ParameterizedType) type;
+			if (isFile(parameterizedType)) {
+				result =true;
+			}
+		}
+		return result;
+	}
+
 	<A extends Annotation> A getParameterAnnotation(HandlerMethod handlerMethod,
 			java.lang.reflect.Parameter parameter, int i, Class<A> annotationType) {
 		A parameterDoc = AnnotationUtils.getAnnotation(parameter, annotationType);
