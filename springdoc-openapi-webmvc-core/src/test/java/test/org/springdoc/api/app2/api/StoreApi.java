@@ -46,6 +46,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @javax.annotation.Generated(value = "org.springdoc.demo.app2.codegen.languages.SpringCodegen", date = "2019-07-11T00:09:29.839+02:00[Europe/Paris]")
 
@@ -61,6 +62,7 @@ public interface StoreApi {
 	@ApiResponses(value = { @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
 			@ApiResponse(responseCode = "404", description = "Order not found") })
 	@DeleteMapping(value = "/store/order/{orderId}")
+	@ResponseBody
 	default ResponseEntity<Void> deleteOrder(
 			@Parameter(description = "ID of the order that needs to be deleted", required = true) @PathVariable("orderId") String orderId) {
 		return getDelegate().deleteOrder(orderId);
@@ -71,6 +73,7 @@ public interface StoreApi {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Map.class)))) })
 	@GetMapping(value = "/store/inventory", produces = { "application/json" })
+	@ResponseBody
 	default ResponseEntity<Map<String, Integer>> getInventory() {
 		return getDelegate().getInventory();
 	}
@@ -81,6 +84,7 @@ public interface StoreApi {
 			@ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
 			@ApiResponse(responseCode = "404", description = "Order not found") })
 	@GetMapping(value = "/store/order/{orderId}", produces = { "application/xml", "application/json" })
+	@ResponseBody
 	default ResponseEntity<Order> getOrderById(
 			@Min(1L) @Max(5L) @Parameter(description = "ID of pet that needs to be fetched", required = true) @PathVariable("orderId") Long orderId) {
 		return getDelegate().getOrderById(orderId);
@@ -92,6 +96,7 @@ public interface StoreApi {
 			@ApiResponse(responseCode = "400", description = "Invalid Order") })
 	@PostMapping(value = "/store/order", produces = { "application/xml", "application/json" }, consumes = {
 			"application/json" })
+	@ResponseBody
 	default ResponseEntity<Order> placeOrder(
 			@Parameter(description = "order placed for purchasing the pet", required = true) @Valid @RequestBody Order order) {
 		return getDelegate().placeOrder(order);

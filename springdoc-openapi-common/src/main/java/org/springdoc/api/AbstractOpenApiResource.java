@@ -24,7 +24,9 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -80,6 +82,8 @@ public abstract class AbstractOpenApiResource {
 
 	private final SpringDocConfigProperties springDocConfigProperties;
 
+	private static final List<Class<?>> ADDITIONAL_REST_CONTROLLERS = new ArrayList<>();
+
 	private boolean computeDone;
 
 	private final String groupName;
@@ -104,7 +108,8 @@ public abstract class AbstractOpenApiResource {
 			openAPIBuilder.build();
 			Map<String, Object> restControllersMap = openAPIBuilder.getRestControllersMap();
 			Map<String, Object> requestMappingMap = openAPIBuilder.getRequestMappingMap();
-			Map<String, Object> restControllers = Stream.of(restControllersMap, requestMappingMap)
+			Map<String, Object> controllerMap = openAPIBuilder.getControllersMap();
+			Map<String, Object> restControllers = Stream.of(restControllersMap, requestMappingMap, controllerMap)
 					.flatMap(mapEl -> mapEl.entrySet().stream())
 					.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 							Hidden.class) == null))
@@ -343,5 +348,18 @@ public abstract class AbstractOpenApiResource {
 		catch (UnsupportedEncodingException e) {
 			return requestURI;
 		}
+	}
+
+	protected boolean isAdditionalRestController(Class<?> rawClass) {
+		return ADDITIONAL_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+	}
+
+	public static void addRestControllers(Class<?>... classes){
+		ADDITIONAL_REST_CONTROLLERS.addAll(Arrays.asList(classes));
+	}
+
+	protected Set getDefaultAllowedHttpMethods(){
+		RequestMethod[] allowedRequestMethods = {RequestMethod.GET,  RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD} ;
+		return new HashSet<>(Arrays.asList(allowedRequestMethods));
 	}
 }

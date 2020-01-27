@@ -30,7 +30,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -45,6 +44,7 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.StringUtils;
 
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 
 import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
@@ -128,10 +128,10 @@ public class OperationBuilder {
 	}
 
 	public boolean isHidden(Method method) {
-		io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils.getAnnotation(method,
+		io.swagger.v3.oas.annotations.Operation apiOperation = AnnotationUtils.findAnnotation(method,
 				io.swagger.v3.oas.annotations.Operation.class);
 		return (apiOperation != null && (apiOperation.hidden()))
-				|| (ReflectionUtils.getAnnotation(method, Hidden.class) != null);
+				|| (AnnotationUtils.findAnnotation(method, Hidden.class) != null);
 	}
 
 	public Optional<Map<String, Callback>> buildCallbacks(

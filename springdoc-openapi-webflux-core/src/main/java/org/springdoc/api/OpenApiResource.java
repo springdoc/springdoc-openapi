@@ -102,6 +102,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				if (operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
 						&& restControllers.containsKey(handlerMethod.getBean().toString()) && isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(operationPath)) {
 					Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
+					// default allowed requestmethods
+					if (requestMethods.isEmpty())
+						requestMethods = this.getDefaultAllowedHttpMethods();
 					calculatePath(openAPIBuilder, handlerMethod, operationPath, requestMethods);
 				}
 			}

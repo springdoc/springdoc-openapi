@@ -55,12 +55,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @SecurityScheme(name = "petstore_auth", type = SecuritySchemeType.OAUTH2, flows = @OAuthFlows(implicit = @OAuthFlow(authorizationUrl = "http://petstore.swagger.io/oauth/dialog", scopes = {
 		@OAuthScope(name = "write:pets", description = "modify pets in your account"),
 		@OAuthScope(name = "read:pets", description = "read your pets") })))
 @Tag(name = "pet", description = "the pet API")
+@ResponseBody
 public interface PetApi {
 
 	default PetApiDelegate getDelegate() {

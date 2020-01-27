@@ -16,29 +16,18 @@
  *
  */
 
-package test.org.springdoc.api.app68.api.pet;
-
-import java.util.Optional;
+package test.org.springdoc.api.app67;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@javax.annotation.Generated(value = "org.springdoc.demo.app2.codegen.languages.SpringCodegen", date = "2019-07-11T00:09:29.839+02:00[Europe/Paris]")
-
 @RestController
-@RequestMapping("${openapi.openAPIPetstore.base-path:/}")
-public class PetApiController implements PetApi {
+@RequestMapping("/api")
+public class HelloController {
 
-	private final PetApiDelegate delegate;
-
-	public PetApiController(@org.springframework.beans.factory.annotation.Autowired(required = false) PetApiDelegate delegate) {
-		this.delegate = Optional.ofNullable(delegate).orElse(new PetApiDelegate() {
-		});
-	}
-
-	@Override
-	public PetApiDelegate getDelegate() {
-		return delegate;
+	@RequestMapping
+	public String test() {
+		return "ok";
 	}
 
 }

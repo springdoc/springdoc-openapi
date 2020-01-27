@@ -71,7 +71,7 @@
 		<swagger-api.version>2.1.1</swagger-api.version>
 		<swagger-ui.version>3.24.3</swagger-ui.version>
 		<webjars-locator.version>0.38</webjars-locator.version>
-		<spring-security-oauth2.version>2.3.5.RELEASE</spring-security-oauth2.version>
+		<spring-security-oauth2.version>2.3.8.RELEASE</spring-security-oauth2.version>
 	</properties>
 
 	<dependencyManagement>
