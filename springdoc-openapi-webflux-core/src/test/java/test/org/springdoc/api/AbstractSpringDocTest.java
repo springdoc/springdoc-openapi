@@ -45,7 +45,7 @@ public abstract class AbstractSpringDocTest {
 	protected String groupName = "";
 
 	@Autowired
-	private WebTestClient webTestClient;
+	protected WebTestClient webTestClient;
 
 	public static String getContent(String fileName) throws Exception {
 		try {

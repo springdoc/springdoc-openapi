@@ -56,6 +56,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -386,6 +387,10 @@ public class OpenAPIBuilder {
 
 	public Map<String, Object> getRequestMappingMap() {
 		return context.getBeansWithAnnotation(RequestMapping.class);
+	}
+
+	public Map<String, Object> getControllersMap() {
+		return context.getBeansWithAnnotation(Controller.class);
 	}
 
 	public Map<String, Object> getControllerAdviceMap() {
