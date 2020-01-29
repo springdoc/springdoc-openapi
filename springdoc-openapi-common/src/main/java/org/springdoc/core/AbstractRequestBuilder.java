@@ -77,7 +77,7 @@ import static org.springdoc.core.Constants.QUERY_PARAM;
 
 public abstract class AbstractRequestBuilder {
 
-	protected static final List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
+	public static final List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
 
 	// using string litterals to support both validation-api v1 and v2
 	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
