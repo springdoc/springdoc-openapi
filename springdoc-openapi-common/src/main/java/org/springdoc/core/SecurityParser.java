@@ -180,9 +180,7 @@ class SecurityParser {
 		if (StringUtils.isNotBlank(securityScheme.description())) {
 			securitySchemeObject.setDescription(securityScheme.description());
 		}
-		if (StringUtils.isNotBlank(securityScheme.paramName())) {
-			securitySchemeObject.setName(securityScheme.paramName());
-		}
+
 		if (StringUtils.isNotBlank(securityScheme.ref())) {
 			securitySchemeObject.set$ref(securityScheme.ref());
 		}
@@ -190,6 +188,10 @@ class SecurityParser {
 			key = securityScheme.name();
 			if (SecuritySchemeType.APIKEY.toString().equals(securitySchemeObject.getType().toString()))
 				securitySchemeObject.setName(securityScheme.name());
+		}
+
+		if (StringUtils.isNotBlank(securityScheme.paramName())) {
+			securitySchemeObject.setName(securityScheme.paramName());
 		}
 
 		if (securityScheme.extensions().length > 0) {

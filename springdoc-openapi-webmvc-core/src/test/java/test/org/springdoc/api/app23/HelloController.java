@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@SecurityScheme(type = SecuritySchemeType.APIKEY, in = SecuritySchemeIn.HEADER, name = "Authorization", description = "A core-auth Bearer token")
+@SecurityScheme(type = SecuritySchemeType.APIKEY, in = SecuritySchemeIn.HEADER, name = "Authorization", paramName = "JWT",description = "A core-auth Bearer token")
 public class HelloController {
 
 	@Operation(summary = "Add a new person to the store", description = "", security = {
