@@ -178,7 +178,8 @@ public class SwaggerUiConfigProperties {
 		final Map<String, Object> params = new TreeMap<>();
 		SpringDocPropertiesUtils.put("layout", layout, params);
 		SpringDocPropertiesUtils.put(CONFIG_URL_PROPERTY, configUrl, params);
-		SpringDocPropertiesUtils.put("validatorUrl", validatorUrl, params);
+		// empty-string prevents swagger-ui default validation
+		params.put("validatorUrl", validatorUrl != null ? validatorUrl : "");
 		SpringDocPropertiesUtils.put("filter", filter, params);
 		SpringDocPropertiesUtils.put("deepLinking", this.deepLinking, params);
 		SpringDocPropertiesUtils.put("displayOperationId", displayOperationId, params);
