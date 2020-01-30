@@ -28,9 +28,8 @@ import org.springdoc.core.customizers.ParameterCustomizer;
 
 public class KotlinCoroutinesRequestBuilder extends AbstractRequestBuilder {
 
-
 	static {
-		PARAM_TYPES_TO_IGNORE.add(Continuation.class);
+		AbstractRequestBuilder.addResponseWrapperToIgnore(Continuation.class);
 	}
 
 	public KotlinCoroutinesRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
