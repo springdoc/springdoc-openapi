@@ -31,9 +31,7 @@ import org.springframework.web.server.ServerWebExchange;
 public class RequestBuilder extends AbstractRequestBuilder {
 
 	static {
-		PARAM_TYPES_TO_IGNORE.add(ServerWebExchange.class);
-		PARAM_TYPES_TO_IGNORE.add(ServerHttpRequest.class);
-		PARAM_TYPES_TO_IGNORE.add(ServerHttpResponse.class);
+		AbstractRequestBuilder.addResponseWrapperToIgnore(ServerWebExchange.class,ServerHttpRequest.class,ServerHttpResponse.class);
 	}
 
 	public RequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
