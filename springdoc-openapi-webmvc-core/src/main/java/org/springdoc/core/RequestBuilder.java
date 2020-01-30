@@ -27,12 +27,12 @@ import org.springdoc.core.customizers.ParameterCustomizer;
 public class RequestBuilder extends AbstractRequestBuilder {
 
 	static {
-		PARAM_TYPES_TO_IGNORE.add(javax.servlet.ServletRequest.class);
-		PARAM_TYPES_TO_IGNORE.add(javax.servlet.ServletResponse.class);
-		PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpServletRequest.class);
-		PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpServletResponse.class);
-		PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpSession.class);
-		PARAM_TYPES_TO_IGNORE.add(javax.servlet.http.HttpSession.class);
+		addResponseWrapperToIgnore(javax.servlet.ServletRequest.class);
+		addResponseWrapperToIgnore(javax.servlet.ServletResponse.class);
+		addResponseWrapperToIgnore(javax.servlet.http.HttpServletRequest.class);
+		addResponseWrapperToIgnore(javax.servlet.http.HttpServletResponse.class);
+		addResponseWrapperToIgnore(javax.servlet.http.HttpSession.class);
+		addResponseWrapperToIgnore(javax.servlet.http.HttpSession.class);
 	}
 
 	public RequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
