@@ -145,7 +145,7 @@ public abstract class AbstractRequestBuilder {
 		if (pNames == null) {
 			pNames = reflectionParametersNames;
 		}
-		RequestBodyInfo requestBodyInfo = new RequestBodyInfo(methodAttributes);
+		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
 				: new ArrayList<>();
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
@@ -178,7 +178,6 @@ public abstract class AbstractRequestBuilder {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 				}
 				else if (!RequestMethod.GET.equals(requestMethod)) {
-					requestBodyInfo.incrementNbParam();
 					requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, methodAttributes, i,
 							parameterInfo, requestBodyInfo);

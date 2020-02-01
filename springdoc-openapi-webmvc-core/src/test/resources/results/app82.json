@@ -28,9 +28,6 @@
                   },
                   "second": {
                     "type": "string"
-                  },
-                  "personDTO": {
-                    "$ref": "#/components/schemas/PersonDTO"
                   }
                 }
               }
@@ -52,22 +49,5 @@
       }
     }
   },
-  "components": {
-    "schemas": {
-      "PersonDTO": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          }
-        }
-      }
-    }
-  }
+  "components": {}
 }
