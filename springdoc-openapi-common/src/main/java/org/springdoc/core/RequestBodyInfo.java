@@ -18,13 +18,9 @@
 
 package org.springdoc.core;
 
-import java.util.Arrays;
-
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
-
-import org.springframework.http.MediaType;
 
 @SuppressWarnings("rawtypes")
 class RequestBodyInfo {
@@ -32,15 +28,6 @@ class RequestBodyInfo {
 	private RequestBody requestBody;
 
 	private Schema mergedSchema;
-
-	private int nbParams;
-
-	public RequestBodyInfo(MethodAttributes methodAttributes) {
-		String[] allConsumes = methodAttributes.getAllConsumes();
-		if (Arrays.asList(allConsumes).contains(MediaType.MULTIPART_FORM_DATA_VALUE)) {
-			this.initMergedSchema();
-		}
-	}
 
 	public RequestBody getRequestBody() {
 		return requestBody;
@@ -50,14 +37,7 @@ class RequestBodyInfo {
 		this.requestBody = requestBody;
 	}
 
-	public void incrementNbParam() {
-		nbParams++;
-	}
-
 	public Schema getMergedSchema() {
-		if (mergedSchema == null && nbParams > 1) {
-			mergedSchema = new ObjectSchema();
-		}
 		return mergedSchema;
 	}
 
@@ -65,18 +45,10 @@ class RequestBodyInfo {
 		this.mergedSchema = mergedSchema;
 	}
 
-	private void initMergedSchema() {
-		if (mergedSchema == null) {
+	public void addProperties(String paramName, Schema schemaN) {
+		if (mergedSchema == null)
 			mergedSchema = new ObjectSchema();
-		}
-	}
-
-	public int getNbParams() {
-		return nbParams;
-	}
-
-	public void setNbParams(int nbParams) {
-		this.nbParams = nbParams;
+		mergedSchema.addProperties(paramName, schemaN);
 	}
 
 }

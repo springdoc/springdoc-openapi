@@ -214,9 +214,13 @@ public abstract class AbstractParameterBuilder {
 		else {
 			schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, jsonView);
 		}
-		if (isRequestBodySchema(requestBodyInfo)) {
-			requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
-			schemaN = requestBodyInfo.getMergedSchema();
+		if (requestBodyInfo != null) {
+			if (requestBodyInfo.getMergedSchema() != null) {
+				requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
+				schemaN = requestBodyInfo.getMergedSchema();
+			}
+			else
+				requestBodyInfo.addProperties(paramName, schemaN);
 		}
 
 		return schemaN;
@@ -238,15 +242,13 @@ public abstract class AbstractParameterBuilder {
 
 	private Schema getFileSchema(RequestBodyInfo requestBodyInfo) {
 		Schema schemaN;
-		if (isRequestBodySchema(requestBodyInfo))
+		if (requestBodyInfo.getMergedSchema() != null)
 			schemaN = requestBodyInfo.getMergedSchema();
-		else
+		else {
 			schemaN = new ObjectSchema();
+			requestBodyInfo.setMergedSchema(schemaN);
+		}
 		return schemaN;
-	}
-
-	private boolean isRequestBodySchema(RequestBodyInfo requestBodyInfo) {
-		return requestBodyInfo != null && requestBodyInfo.getMergedSchema() != null;
 	}
 
 	protected abstract boolean isFile(ParameterizedType parameterizedType);
@@ -254,16 +256,16 @@ public abstract class AbstractParameterBuilder {
 	protected abstract boolean isFile(JavaType ct);
 
 	public boolean isFile(java.lang.reflect.Parameter parameter) {
-		boolean result =false;
-		Type type =  parameter.getParameterizedType();
+		boolean result = false;
+		Type type = parameter.getParameterizedType();
 		JavaType javaType = constructType(parameter.getType());
 		if (isFile(javaType)) {
-			result =true;
+			result = true;
 		}
 		else if (type instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) type;
 			if (isFile(parameterizedType)) {
-				result =true;
+				result = true;
 			}
 		}
 		return result;
