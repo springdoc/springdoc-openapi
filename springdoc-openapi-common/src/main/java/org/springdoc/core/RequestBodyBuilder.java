@@ -34,9 +34,9 @@ import org.springframework.web.method.HandlerMethod;
 
 public class RequestBodyBuilder {
 
-	private final AbstractParameterBuilder parameterBuilder;
+	private final GenericParameterBuilder parameterBuilder;
 
-	public RequestBodyBuilder(AbstractParameterBuilder parameterBuilder) {
+	public RequestBodyBuilder(GenericParameterBuilder parameterBuilder) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 	}

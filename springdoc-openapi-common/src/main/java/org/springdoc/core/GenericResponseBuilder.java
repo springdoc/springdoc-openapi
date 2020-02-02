@@ -45,10 +45,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -257,9 +255,6 @@ public class GenericResponseBuilder {
 		if (isVoid(returnType)) {
 			// if void, no content
 			return null;
-		}
-		else if (ResponseEntity.class.getName().equals(returnType.getTypeName()) || HttpEntity.class.getName().equals(returnType.getTypeName())) {
-			schemaN = AnnotationsUtils.resolveSchemaFromType(String.class, null, jsonView);
 		}
 		if (schemaN == null) {
 			schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView);

@@ -23,6 +23,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.WildcardType;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,17 +51,23 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 @SuppressWarnings("rawtypes")
-public abstract class AbstractParameterBuilder {
+public class GenericParameterBuilder {
 
 	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
-
 	private final IgnoredParameterAnnotations ignoredParameterAnnotations;
+	private static final List<Class<?>> FILE_TYPES = new ArrayList<>();
 
+	static {
+		FILE_TYPES.add(MultipartFile.class);
+		FILE_TYPES.add(FilePart.class);
+	}
 
-	public AbstractParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, IgnoredParameterAnnotations ignoredParameterAnnotations) {
+	public GenericParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, IgnoredParameterAnnotations ignoredParameterAnnotations) {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 		this.ignoredParameterAnnotations = ignoredParameterAnnotations;
 	}
@@ -235,7 +243,9 @@ public abstract class AbstractParameterBuilder {
 		return localSpringDocParameterNameDiscoverer;
 	}
 
-	protected abstract Schema calculateSchemaFromParameterizedType(Components components, Type returnType, JsonView jsonView);
+	private Schema calculateSchemaFromParameterizedType(Components components, Type paramType, JsonView jsonView) {
+		return SpringDocAnnotationsUtils.extractSchema(components, paramType, jsonView);
+	}
 
 	private Schema extractFileSchema(String paramName, RequestBodyInfo requestBodyInfo) {
 		Schema schemaN = getFileSchema(requestBodyInfo);
@@ -256,14 +266,28 @@ public abstract class AbstractParameterBuilder {
 		return schemaN;
 	}
 
-	protected abstract boolean isFile(ParameterizedType parameterizedType);
+	private boolean isFile(ParameterizedType parameterizedType) {
+		Type type = parameterizedType.getActualTypeArguments()[0];
+		if (MultipartFile.class.getName().equals(type.getTypeName())
+				|| FilePart.class.getName().equals(type.getTypeName())) {
+			return true;
+		}
+		else if (type instanceof WildcardType) {
+			WildcardType wildcardType = (WildcardType) type;
+			Type[] upperBounds = wildcardType.getUpperBounds();
+			return MultipartFile.class.getName().equals(upperBounds[0].getTypeName());
+		}
+		return false;
+	}
 
-	protected abstract boolean isFile(JavaType ct);
+	private boolean isFile(JavaType ct) {
+		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(ct.getRawClass()));
+	}
 
 	public boolean isFile(java.lang.reflect.Parameter parameter) {
 		boolean result = false;
 		Type type = parameter.getParameterizedType();
-		JavaType javaType = constructType(parameter.getType());
+		JavaType javaType = this.constructType(type);
 		if (isFile(javaType)) {
 			result = true;
 		}

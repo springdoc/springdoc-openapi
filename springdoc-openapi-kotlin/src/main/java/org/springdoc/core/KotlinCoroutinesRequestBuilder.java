@@ -32,7 +32,7 @@ public class KotlinCoroutinesRequestBuilder extends AbstractRequestBuilder {
 		AbstractRequestBuilder.addResponseWrapperToIgnore(Continuation.class);
 	}
 
-	public KotlinCoroutinesRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+	public KotlinCoroutinesRequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> customizers,
 			Optional<List<ParameterCustomizer>> parameterCustomizers) {
 		super(parameterBuilder, requestBodyBuilder, operationBuilder, customizers, parameterCustomizers);

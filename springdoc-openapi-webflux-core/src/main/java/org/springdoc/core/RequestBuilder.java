@@ -31,10 +31,10 @@ import org.springframework.web.server.ServerWebExchange;
 public class RequestBuilder extends AbstractRequestBuilder {
 
 	static {
-		AbstractRequestBuilder.addResponseWrapperToIgnore(ServerWebExchange.class,ServerHttpRequest.class,ServerHttpResponse.class);
+		addResponseWrapperToIgnore(ServerWebExchange.class,ServerHttpRequest.class,ServerHttpResponse.class);
 	}
 
-	public RequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+	public RequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<ParameterCustomizer>> parameterCustomizers) {
 		super(parameterBuilder, requestBodyBuilder, operationBuilder, operationCustomizers, parameterCustomizers);

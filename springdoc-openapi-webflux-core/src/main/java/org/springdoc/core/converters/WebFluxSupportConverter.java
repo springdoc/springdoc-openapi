@@ -27,6 +27,7 @@ import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -47,7 +48,10 @@ public class WebFluxSupportConverter implements ModelConverter {
 			Class<?> cls = javaType.getRawClass();
 			if (Flux.class.isAssignableFrom(cls)) {
 				JavaType innerType = javaType.getBindings().getBoundType(0);
-				if (innerType.getBindings() != null && isResponseTypeWrapper(innerType.getRawClass())) {
+				if (innerType == null) {
+					return new StringSchema();
+				}
+				else if (innerType.getBindings() != null && isResponseTypeWrapper(innerType.getRawClass())) {
 					type = new AnnotatedType(innerType).jsonViewAnnotation(type.getJsonViewAnnotation()).resolveAsRef(true);
 					return this.resolve(type, context, chain);
 				}

@@ -296,7 +296,7 @@ public class OpenAPIBuilder {
 	}
 
 	private void calculateSecuritySchemes(Components components) {
-		// Look for OpenAPIDefinition in a spring managed bean
+		// Look for SecurityScheme in a spring managed bean
 		Map<String, Object> securitySchemeBeans = context
 				.getBeansWithAnnotation(io.swagger.v3.oas.annotations.security.SecurityScheme.class);
 		if (securitySchemeBeans.size() > 0) {
@@ -308,7 +308,7 @@ public class OpenAPIBuilder {
 			}
 		}
 
-		// Look for OpenAPIDefinition in the spring classpath
+		// Look for SecurityScheme in the spring classpath
 		else {
 			ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(
 					false);

@@ -37,7 +37,7 @@ public class SpringDocKotlinConfiguration {
 
 	@Bean
 	@Primary
-	KotlinCoroutinesRequestBuilder kotlinCoroutinesRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+	KotlinCoroutinesRequestBuilder kotlinCoroutinesRequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<ParameterCustomizer>> parameterCustomizers) {
 		return new KotlinCoroutinesRequestBuilder(parameterBuilder, requestBodyBuilder,
 				operationBuilder, operationCustomizers, parameterCustomizers);

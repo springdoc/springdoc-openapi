@@ -86,7 +86,7 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@ConditionalOnWebApplication
-	public OperationBuilder operationBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+	public OperationBuilder operationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			SecurityParser securityParser, OpenAPIBuilder openAPIBuilder, PropertyResolverUtils propertyResolverUtils) {
 		return new OperationBuilder(parameterBuilder, requestBodyBuilder,
 				securityParser, openAPIBuilder, propertyResolverUtils);
@@ -99,7 +99,7 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@ConditionalOnWebApplication
-	public RequestBodyBuilder requestBodyBuilder(AbstractParameterBuilder parameterBuilder) {
+	public RequestBodyBuilder requestBodyBuilder(GenericParameterBuilder parameterBuilder) {
 		return new RequestBodyBuilder(parameterBuilder);
 	}
 
@@ -111,6 +111,11 @@ public class SpringDocConfiguration {
 	@Bean
 	public GenericReturnTypeParser genericReturnTypeParser() {
 		return new GenericReturnTypeParser();
+	}
+
+	@Bean
+	public GenericParameterBuilder parameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, IgnoredParameterAnnotations ignoredParameterAnnotations) {
+		return new GenericParameterBuilder(localSpringDocParameterNameDiscoverer, ignoredParameterAnnotations);
 	}
 
 	static class ConditionOnCacheOrGroupedOpenApi extends AnyNestedCondition {

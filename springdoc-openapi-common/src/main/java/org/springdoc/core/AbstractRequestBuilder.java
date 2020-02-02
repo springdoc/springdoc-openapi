@@ -108,7 +108,7 @@ public abstract class AbstractRequestBuilder {
 		PARAM_TYPES_TO_IGNORE.add(RequestAttribute.class);
 	}
 
-	private final AbstractParameterBuilder parameterBuilder;
+	private final GenericParameterBuilder parameterBuilder;
 
 	private final RequestBodyBuilder requestBodyBuilder;
 
@@ -118,7 +118,7 @@ public abstract class AbstractRequestBuilder {
 
 	private final Optional<List<ParameterCustomizer>> parameterCustomizers;
 
-	protected AbstractRequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+	protected AbstractRequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<ParameterCustomizer>> parameterCustomizers) {
 		super();
