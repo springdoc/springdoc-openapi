@@ -178,7 +178,8 @@ public abstract class AbstractRequestBuilder {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
 				}
 				else if (!RequestMethod.GET.equals(requestMethod)) {
-					requestBodyInfo.setRequestBody(operation.getRequestBody());
+					if (operation.getRequestBody() != null)
+						requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, methodAttributes, i,
 							parameterInfo, requestBodyInfo);
 				}
@@ -328,7 +329,7 @@ public abstract class AbstractRequestBuilder {
 		}
 
 		if (parameter.getSchema() == null) {
-			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(), name, null,
+			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, null,
 					jsonView);
 			if (defaultValue != null)
 				schema.setDefault(defaultValue);
@@ -442,7 +443,7 @@ public abstract class AbstractRequestBuilder {
 		return apiParametersMap;
 	}
 
-	public static void addResponseWrapperToIgnore(Class<?>... classes){
+	public static void addResponseWrapperToIgnore(Class<?>... classes) {
 		PARAM_TYPES_TO_IGNORE.addAll(Arrays.asList(classes));
 	}
 }

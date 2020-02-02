@@ -120,23 +120,16 @@ public class RequestBodyBuilder {
 			io.swagger.v3.oas.models.parameters.Parameter parameter = parameterInfo.getParameterModel();
 			if (StringUtils.isNotBlank(parameter.getDescription()))
 				requestBody.setDescription(parameter.getDescription());
-			if (parameter.getSchema() != null) {
-				Schema<?> schema = parameterInfo.getParameterModel().getSchema();
-				buildContent(requestBody, methodAttributes, schema);
-			}
 			requestBody.setRequired(parameter.getRequired());
 		}
 
 		if (requestBody.getContent() == null) {
-			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(),
-					parameterInfo.getpName(), requestBodyInfo,
+			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
 					methodAttributes.getJsonViewAnnotationForRequestBody());
 			buildContent(requestBody, methodAttributes, schema);
 		}
-		else if (requestBody.getContent() != null && (methodAttributes.isMethodOverloaded() ||
-				requestBody.getContent().values().stream().anyMatch(mediaType -> mediaType.getSchema() == null))) {
-			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo.getParameter(),
-					parameterInfo.getpName(), requestBodyInfo,
+		else if (requestBodyInfo.getRequestBody()!=null) {
+			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
 					methodAttributes.getJsonViewAnnotationForRequestBody());
 			mergeContent(requestBody, methodAttributes, schema);
 		}

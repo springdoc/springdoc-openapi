@@ -185,35 +185,40 @@ public abstract class AbstractParameterBuilder {
 		}
 	}
 
-	Schema calculateSchema(Components components, java.lang.reflect.Parameter parameter, String paramName,
+	Schema calculateSchema(Components components, ParameterInfo parameterInfo,
 			RequestBodyInfo requestBodyInfo, JsonView jsonView) {
 		Schema schemaN;
 		Class<?> schemaImplementation = null;
 		Type returnType = null;
 		JavaType ct = null;
-
+		String paramName = parameterInfo.getpName();
+		java.lang.reflect.Parameter parameter = parameterInfo.getParameter();
 		if (parameter != null) {
 			returnType = parameter.getParameterizedType();
 			ct = constructType(parameter.getType());
 			schemaImplementation = parameter.getType();
 		}
 
-		if (isFile(ct)) {
-			schemaN = getFileSchema(requestBodyInfo);
-			schemaN.addProperties(paramName, new FileSchema());
-			return schemaN;
-		}
-
-		if (returnType instanceof ParameterizedType) {
-			ParameterizedType parameterizedType = (ParameterizedType) returnType;
-			if (isFile(parameterizedType)) {
-				return extractFileSchema(paramName, requestBodyInfo);
+		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
+			if (isFile(ct)) {
+				schemaN = getFileSchema(requestBodyInfo);
+				schemaN.addProperties(paramName, new FileSchema());
+				return schemaN;
+			} else if (returnType instanceof ParameterizedType) {
+				ParameterizedType parameterizedType = (ParameterizedType) returnType;
+				if (isFile(parameterizedType)) {
+					return extractFileSchema(paramName, requestBodyInfo);
+				}
+				schemaN = calculateSchemaFromParameterizedType(components, returnType, jsonView);
 			}
-			schemaN = calculateSchemaFromParameterizedType(components, returnType, jsonView);
+			else {
+				schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, jsonView);
+			}
 		}
 		else {
-			schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, jsonView);
+			schemaN = parameterInfo.getParameterModel().getSchema();
 		}
+
 		if (requestBodyInfo != null) {
 			if (requestBodyInfo.getMergedSchema() != null) {
 				requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
@@ -234,8 +239,8 @@ public abstract class AbstractParameterBuilder {
 
 	private Schema extractFileSchema(String paramName, RequestBodyInfo requestBodyInfo) {
 		Schema schemaN = getFileSchema(requestBodyInfo);
-		ArraySchema schemafile = new ArraySchema();
-		schemafile.items(new FileSchema());
+		ArraySchema schemaFile = new ArraySchema();
+		schemaFile.items(new FileSchema());
 		schemaN.addProperties(paramName, new ArraySchema().items(new FileSchema()));
 		return schemaN;
 	}
