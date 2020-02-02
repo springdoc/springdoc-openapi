@@ -44,6 +44,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
@@ -131,10 +132,10 @@ public abstract class AbstractRequestBuilder {
 
 
 	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
-			Operation operation, MethodAttributes methodAttributes) {
+			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
 		// Documentation
 		String operationId = operationBuilder.getOperationId(handlerMethod.getMethod().getName(),
-				operation.getOperationId());
+				operation.getOperationId(), openAPI);
 
 		operation.setOperationId(operationId);
 		// requests

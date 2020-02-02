@@ -87,9 +87,9 @@ public class SpringDocConfiguration {
 	@Bean
 	@ConditionalOnWebApplication
 	public OperationBuilder operationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			SecurityParser securityParser, OpenAPIBuilder openAPIBuilder, PropertyResolverUtils propertyResolverUtils) {
+			SecurityParser securityParser, PropertyResolverUtils propertyResolverUtils) {
 		return new OperationBuilder(parameterBuilder, requestBodyBuilder,
-				securityParser, openAPIBuilder, propertyResolverUtils);
+				securityParser, propertyResolverUtils);
 	}
 
 	@Bean
