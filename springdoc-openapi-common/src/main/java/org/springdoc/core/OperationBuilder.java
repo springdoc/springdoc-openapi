@@ -65,17 +65,14 @@ public class OperationBuilder {
 
 	private final SecurityParser securityParser;
 
-	private final OpenAPIBuilder openAPIBuilder;
-
 	private final PropertyResolverUtils propertyResolverUtils;
 
 	public OperationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			SecurityParser securityParser, OpenAPIBuilder openAPIBuilder, PropertyResolverUtils propertyResolverUtils) {
+			SecurityParser securityParser, PropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyBuilder = requestBodyBuilder;
 		this.securityParser = securityParser;
-		this.openAPIBuilder = openAPIBuilder;
 		this.propertyResolverUtils = propertyResolverUtils;
 	}
 
@@ -401,11 +398,11 @@ public class OperationBuilder {
 		return Optional.of(list);
 	}
 
-	public String getOperationId(String operationId, String oldOperationId) {
+	public String getOperationId(String operationId, String oldOperationId, OpenAPI openAPI) {
 		if (StringUtils.isNotBlank(oldOperationId))
-			return this.getOperationId(oldOperationId, openAPIBuilder.getOpenAPI());
+			return this.getOperationId(oldOperationId, openAPI);
 		else
-			return this.getOperationId(operationId, openAPIBuilder.getOpenAPI());
+			return this.getOperationId(operationId, openAPI);
 	}
 
 }

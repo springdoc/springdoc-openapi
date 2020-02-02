@@ -71,7 +71,11 @@ public class OpenAPIBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIBuilder.class);
 
-	private final OpenAPI openAPI;
+	private OpenAPI openAPI;
+
+	private OpenAPI cachedOpenAPI;
+
+	private OpenAPI calculatedOpenAPI;
 
 	private final ApplicationContext context;
 
@@ -96,11 +100,6 @@ public class OpenAPIBuilder {
 			if (!CollectionUtils.isEmpty(this.openAPI.getServers()))
 				this.isServersPresent = true;
 		}
-		else {
-			this.openAPI = new OpenAPI();
-			this.openAPI.setComponents(new Components());
-			this.openAPI.setPaths(new Paths());
-		}
 		this.context = context;
 		this.securityParser = securityParser;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
@@ -117,37 +116,42 @@ public class OpenAPIBuilder {
 				.toLowerCase(Locale.ROOT);
 	}
 
-	public OpenAPI getOpenAPI() {
-		return openAPI;
-	}
-
 	public Components getComponents() {
-		return openAPI.getComponents();
+		return calculatedOpenAPI.getComponents();
 	}
 
 	public Paths getPaths() {
-		return openAPI.getPaths();
+		return calculatedOpenAPI.getPaths();
 	}
 
 	public void build() {
 		Optional<OpenAPIDefinition> apiDef = getOpenAPIDefinition();
+
+		if(openAPI==null){
+			this.calculatedOpenAPI = new OpenAPI();
+			this.calculatedOpenAPI.setComponents(new Components());
+			this.calculatedOpenAPI.setPaths(new Paths());
+		}
+		else
+			this.calculatedOpenAPI=openAPI;
+
 		if (apiDef.isPresent()) {
-			buildOpenAPIWithOpenAPIDefinition(openAPI, apiDef.get());
+			buildOpenAPIWithOpenAPIDefinition(calculatedOpenAPI, apiDef.get());
 		}
 		// Set default info
-		else if (openAPI.getInfo() == null) {
+		else if (calculatedOpenAPI.getInfo() == null) {
 			Info infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
-			openAPI.setInfo(infos);
+			calculatedOpenAPI.setInfo(infos);
 		}
 		// default server value
-		if (CollectionUtils.isEmpty(openAPI.getServers()) || !isServersPresent) {
+		if (CollectionUtils.isEmpty(calculatedOpenAPI.getServers()) || !isServersPresent) {
 			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
 			List<Server> servers = new ArrayList();
 			servers.add(server);
-			openAPI.setServers(servers);
+			calculatedOpenAPI.setServers(servers);
 		}
 		// add security schemes
-		this.calculateSecuritySchemes(openAPI.getComponents());
+		this.calculateSecuritySchemes(calculatedOpenAPI.getComponents());
 	}
 
 	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
@@ -402,5 +406,21 @@ public class OpenAPIBuilder {
 
 	public Optional<SecurityOAuth2Provider> getSpringSecurityOAuth2Provider() {
 		return springSecurityOAuth2Provider;
+	}
+
+	public OpenAPI getCachedOpenAPI() {
+		return cachedOpenAPI;
+	}
+
+	public void setCachedOpenAPI(OpenAPI cachedOpenAPI) {
+		this.cachedOpenAPI = cachedOpenAPI;
+	}
+
+	public OpenAPI getCalculatedOpenAPI() {
+		return calculatedOpenAPI;
+	}
+
+	public void resetCalculatedOpenAPI() {
+		this.calculatedOpenAPI=null;
 	}
 }

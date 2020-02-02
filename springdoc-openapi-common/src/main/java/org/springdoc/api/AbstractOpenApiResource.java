@@ -120,25 +120,26 @@ public abstract class AbstractOpenApiResource {
 			responseBuilder.buildGenericResponse(openAPIBuilder.getComponents(), findControllerAdvice);
 
 			getPaths(restControllers);
-			openApi = openAPIBuilder.getOpenAPI();
+			openApi = openAPIBuilder.getCalculatedOpenAPI();
 
 			// run the optional customisers
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
+			computeDone = true;
+			openAPIBuilder.setCachedOpenAPI(openApi);
+			openAPIBuilder.resetCalculatedOpenAPI();
 			LOGGER.info("Init duration for springdoc-openapi is: {} ms",
 					Duration.between(start, Instant.now()).toMillis());
-			computeDone = true;
 		}
-		else {
-			openApi = openAPIBuilder.getOpenAPI();
-		}
+		else
+			openApi = openAPIBuilder.getCachedOpenAPI();
 		return openApi;
 	}
 
 	protected abstract void getPaths(Map<String, Object> findRestControllers);
 
-	protected void calculatePath(OpenAPIBuilder openAPIBuilder, HandlerMethod handlerMethod, String operationPath,
+	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
 			Set<RequestMethod> requestMethods) {
-		OpenAPI openAPI = openAPIBuilder.getOpenAPI();
+		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
 		Components components = openAPIBuilder.getComponents();
 		Paths paths = openAPIBuilder.getPaths();
 
@@ -198,9 +199,8 @@ public abstract class AbstractOpenApiResource {
 							methodAttributes.getMethodConsumes(), components,
 							methodAttributes.getJsonViewAnnotationForRequestBody())
 					.ifPresent(operation::setRequestBody);
-
 			// requests
-			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation, methodAttributes);
+			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation, methodAttributes, openAPI);
 
 			// responses
 			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation, methodAttributes);
@@ -354,12 +354,12 @@ public abstract class AbstractOpenApiResource {
 		return ADDITIONAL_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 
-	public static void addRestControllers(Class<?>... classes){
+	public static void addRestControllers(Class<?>... classes) {
 		ADDITIONAL_REST_CONTROLLERS.addAll(Arrays.asList(classes));
 	}
 
-	protected Set getDefaultAllowedHttpMethods(){
-		RequestMethod[] allowedRequestMethods = {RequestMethod.GET,  RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD} ;
+	protected Set getDefaultAllowedHttpMethods() {
+		RequestMethod[] allowedRequestMethods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD };
 		return new HashSet<>(Arrays.asList(allowedRequestMethods));
 	}
 }
