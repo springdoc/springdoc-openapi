@@ -35,7 +35,7 @@ public class RequestBuilder extends AbstractRequestBuilder {
 		addResponseWrapperToIgnore(javax.servlet.http.HttpSession.class);
 	}
 
-	public RequestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+	public RequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> customizers,
 			Optional<List<ParameterCustomizer>> parameterCustomizers) {
 		super(parameterBuilder, requestBodyBuilder, operationBuilder, customizers, parameterCustomizers);

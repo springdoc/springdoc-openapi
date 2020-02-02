@@ -59,7 +59,7 @@ import static org.springdoc.core.Constants.TRACE_METHOD;
 
 public class OperationBuilder {
 
-	private final AbstractParameterBuilder parameterBuilder;
+	private final GenericParameterBuilder parameterBuilder;
 
 	private final RequestBodyBuilder requestBodyBuilder;
 
@@ -69,7 +69,7 @@ public class OperationBuilder {
 
 	private final PropertyResolverUtils propertyResolverUtils;
 
-	public OperationBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+	public OperationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			SecurityParser securityParser, OpenAPIBuilder openAPIBuilder, PropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.parameterBuilder = parameterBuilder;

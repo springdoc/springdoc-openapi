@@ -35,7 +35,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
@@ -62,13 +61,7 @@ public class SpringDocWebMvcConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public ParameterBuilder parameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, IgnoredParameterAnnotations ignoredParameterAnnotations) {
-		return new ParameterBuilder(localSpringDocParameterNameDiscoverer, ignoredParameterAnnotations);
-	}
-
-	@Bean
-	@ConditionalOnMissingBean
-	public RequestBuilder requestBuilder(AbstractParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
+	public RequestBuilder requestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<ParameterCustomizer>> parameterCustomizers) {
 		return new RequestBuilder(parameterBuilder, requestBodyBuilder,
 				operationBuilder, operationCustomizers, parameterCustomizers);
