@@ -25,6 +25,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,6 @@ public class GenericParameterBuilder {
 
 	static {
 		FILE_TYPES.add(MultipartFile.class);
-		FILE_TYPES.add(FilePart.class);
 	}
 
 	public GenericParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, IgnoredParameterAnnotations ignoredParameterAnnotations) {
@@ -372,5 +372,9 @@ public class GenericParameterBuilder {
 
 	public boolean isAnnotationToIgnore(java.lang.reflect.Parameter parameter) {
 		return ignoredParameterAnnotations.isAnnotationToIgnore(parameter);
+	}
+
+	public static void addFileType(Class<?>... classes) {
+		FILE_TYPES.addAll(Arrays.asList(classes));
 	}
 }

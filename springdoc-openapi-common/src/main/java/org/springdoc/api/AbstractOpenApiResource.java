@@ -83,6 +83,7 @@ public abstract class AbstractOpenApiResource {
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	private static final List<Class<?>> ADDITIONAL_REST_CONTROLLERS = new ArrayList<>();
+	private static final List<Class<?>> HIDDEN_REST_CONTROLLERS = new ArrayList<>();
 
 	private boolean computeDone;
 
@@ -113,6 +114,7 @@ public abstract class AbstractOpenApiResource {
 					.flatMap(mapEl -> mapEl.entrySet().stream())
 					.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 							Hidden.class) == null))
+					.filter(controller -> !isHiddenRestControllers(controller.getValue().getClass()))
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
 			Map<String, Object> findControllerAdvice = openAPIBuilder.getControllerAdviceMap();
@@ -356,6 +358,13 @@ public abstract class AbstractOpenApiResource {
 
 	public static void addRestControllers(Class<?>... classes) {
 		ADDITIONAL_REST_CONTROLLERS.addAll(Arrays.asList(classes));
+	}
+
+	public static void addHiddenRestControllers(Class<?>... classes) {
+		HIDDEN_REST_CONTROLLERS.addAll(Arrays.asList(classes));
+	}
+	protected boolean isHiddenRestControllers(Class<?> rawClass) {
+		return HIDDEN_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 
 	protected Set getDefaultAllowedHttpMethods() {
