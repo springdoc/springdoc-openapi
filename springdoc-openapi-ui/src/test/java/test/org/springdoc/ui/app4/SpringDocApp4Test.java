@@ -19,6 +19,7 @@
 package test.org.springdoc.ui.app4;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -49,6 +50,6 @@ public class SpringDocApp4Test extends AbstractSpringDocTest {
 
 	@AfterEach
 	public void reset() {
-		SwaggerUiConfigProperties.setSwaggerUrls(new ArrayList<>());
+		SwaggerUiConfigProperties.setSwaggerUrls(new HashSet<>());
 	}
 }

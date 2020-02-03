@@ -19,10 +19,12 @@
 package org.springdoc.core;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -51,7 +53,7 @@ public class SwaggerUiConfigProperties {
 
 	public static final String CONFIG_URL_PROPERTY = "configUrl";
 
-	private static List<SwaggerUrl> swaggerUrls = new ArrayList<>();
+	private static Set<SwaggerUrl> swaggerUrls = new HashSet<>();
 
 	/**
 	 * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
@@ -165,11 +167,11 @@ public class SwaggerUiConfigProperties {
 		swaggerUrls.add(swaggerUrl);
 	}
 
-	public static List<SwaggerUrl> getSwaggerUrls() {
+	public static Set<SwaggerUrl> getSwaggerUrls() {
 		return swaggerUrls;
 	}
 
-	public static void setSwaggerUrls(List<SwaggerUrl> swaggerUrls) {
+	public static void setSwaggerUrls(Set<SwaggerUrl> swaggerUrls) {
 		SwaggerUiConfigProperties.swaggerUrls = swaggerUrls;
 	}
 
@@ -374,14 +376,14 @@ public class SwaggerUiConfigProperties {
 		}
 	}
 
-	private void put(String urls, List<SwaggerUrl> swaggerUrls, Map<String, Object> params) {
+	private void put(String urls, Set<SwaggerUrl> swaggerUrls, Map<String, Object> params) {
 		Comparator<SwaggerUrl> swaggerUrlComparator;
 		if (groupsOrder.isAscending())
 			swaggerUrlComparator = (h1, h2) -> h1.getName().compareTo(h2.getName());
 		else
 			swaggerUrlComparator = (h1, h2) -> h2.getName().compareTo(h1.getName());
 
-		swaggerUrls = swaggerUrls.stream().sorted(swaggerUrlComparator).filter(elt -> StringUtils.isNotEmpty(elt.getUrl())).collect(Collectors.toList());
+		swaggerUrls = swaggerUrls.stream().sorted(swaggerUrlComparator).filter(elt -> StringUtils.isNotEmpty(elt.getUrl())).collect(Collectors.toSet());
 		if (!CollectionUtils.isEmpty(swaggerUrls)) {
 			params.put(urls, swaggerUrls);
 		}
@@ -415,6 +417,19 @@ public class SwaggerUiConfigProperties {
 
 		public void setName(String name) {
 			this.name = name;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			SwaggerUrl that = (SwaggerUrl) o;
+			return name.equals(that.name);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(name);
 		}
 	}
 

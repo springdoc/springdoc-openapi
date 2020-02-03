@@ -75,9 +75,9 @@ public class SwaggerWelcome {
 	@Bean
 	@ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 	RouterFunction<ServerResponse> routerFunction() {
+		buildConfigUrl();
 		String baseUrl = webJarsPrefixUrl + SWAGGER_UI_URL;
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(baseUrl);
-		buildConfigUrl();
 		uriBuilder.queryParam(SwaggerUiConfigProperties.CONFIG_URL_PROPERTY, swaggerUiConfig.getConfigUrl());
 		return route(GET(uiPath),
 				req -> ServerResponse.temporaryRedirect(URI.create(uriBuilder.build().encode().toString())).build());
