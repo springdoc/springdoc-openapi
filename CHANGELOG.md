@@ -4,11 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UnReleased] -
+## [1.2.30] - 2020-02-03
 ## Added
 - Support REST Controllers with default empty @RequestMapping #378
+- Support for Sort GroupedOpenApi by name #398
+## Changed
+- Improve support of @Parameter Schema, in case of @RequestBody #396
+- Prevent swagger-ui default validation #393
+- @SecurityScheme `paramName` not accounted for the `name` #384
+## Fixed
+- Same operationId for overloaded methods using Groups, breaks swagger-ui collapsibles #399
 
-## [1.2.29] -
+## [1.2.29] - 2020-01-27
 ## Added
 - Support for extensions on @ApiResponse #368
 - Support for CompletionStage as endpoint return type #370
@@ -18,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added ability to disable security for one operation using  @SecurityRequirements #259
 - Support to configure packages-to-scan as list using YAML Syntax #376
 
-## [1.2.28] -
+## [1.2.28] - 2020-01-22
 ## Changed
 - Upgrade to spring-boot to 2.2.4.RELEASE
 - Upgrade swagger-api to 2.1.1
@@ -26,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Make spring-security-oauth2 as optional for springdoc-openapi-security #359
 - Improve support of response of responses overloading #354
 
-## [1.2.27] -
+## [1.2.27] - 2020-01-21
 ### Added
 - Support for pathsToMatch and packagesToScan to work in spinal-case as well #338
 - Support support for spring-security-oauth2 authorization server #327
@@ -42,23 +49,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixes springdoc.swagger-ui.url property #339
 - Allow webFlux handlers using kotlin coroutines to produce response documentation #351
 
-## [1.2.26] -
+## [1.2.26] - 2020-01-10
 ### Added
 - Make springdoc cache configurable #331
 ### Fixed
 - Multiple paths in controller and DeleteMapping generates incorrect Request Body #334
 
-## [1.2.25] -
+## [1.2.25] - 2020-01-08
 ### Fixed
 - Fix double registration of model converters when grouped api is used #324
 ### Added
 - Added support for multiple OpenAPI definitions in spring webflux #329
 
-## [1.2.24] -
+## [1.2.24] - 2020-01-05
 ### Changed
 - Improve beans loading, if projects uses the UI only #321
 
-## [1.2.23] -
+## [1.2.23] - 2020-01-05
 ### Added
 - Added migration guide from springfox #292
 - Added support for @JsonViews with spring @requestbody annotation #315
@@ -66,7 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Wrong server url with when grouped api name contains special charater #312
 
-## [1.2.22] -
+## [1.2.22] - 2020-01-01
 ### Added
 - New annotation @PageableAsQueryParam for better Pageable support
 - Feature to serve from the same swagger-ui both, REST APIs that are deployed within the same application and external REST APIs  #309
@@ -77,7 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Corrected the support of oauth2-redirect.html and oauth2RedirectUrl #311
 
   
-## [1.2.21] - 
+## [1.2.21] - 2019-12-25
 ### Added
 - Springdoc, Callable support #297
 ### Removed
