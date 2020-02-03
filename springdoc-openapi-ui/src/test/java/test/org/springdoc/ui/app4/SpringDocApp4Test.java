@@ -18,7 +18,6 @@
 
 package test.org.springdoc.ui.app4;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.junit.jupiter.api.AfterEach;

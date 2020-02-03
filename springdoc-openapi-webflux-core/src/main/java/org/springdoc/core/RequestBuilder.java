@@ -24,14 +24,18 @@ import java.util.Optional;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
+
+import static org.springdoc.core.GenericParameterBuilder.addFileType;
 
 public class RequestBuilder extends AbstractRequestBuilder {
 
 	static {
 		addResponseWrapperToIgnore(ServerWebExchange.class,ServerHttpRequest.class,ServerHttpResponse.class);
+		addFileType(FilePart.class);
 	}
 
 	public RequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
