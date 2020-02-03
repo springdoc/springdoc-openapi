@@ -25,11 +25,14 @@ import org.junit.jupiter.api.Test;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
+import org.springframework.test.context.TestPropertySource;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@TestPropertySource(properties = "springdoc.swagger-ui.groups-order=DESC")
 public class SpringDocApp4Test extends AbstractSpringDocTest {
 
 	@Test

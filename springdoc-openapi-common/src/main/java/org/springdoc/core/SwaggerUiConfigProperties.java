@@ -20,6 +20,7 @@ package org.springdoc.core;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -151,6 +152,8 @@ public class SwaggerUiConfigProperties {
 	private String oauth2RedirectUrl = SWAGGER_UI_OAUTH_REDIRECT_URL;
 
 	private String url;
+
+	private Direction groupsOrder = Direction.ASC;
 
 	public static void addGroup(String group) {
 		SwaggerUrl swaggerUrl = new SwaggerUrl(group);
@@ -372,7 +375,13 @@ public class SwaggerUiConfigProperties {
 	}
 
 	private void put(String urls, List<SwaggerUrl> swaggerUrls, Map<String, Object> params) {
-		swaggerUrls = swaggerUrls.stream().filter(elt -> StringUtils.isNotEmpty(elt.getUrl())).collect(Collectors.toList());
+		Comparator<SwaggerUrl> swaggerUrlComparator;
+		if (groupsOrder.isAscending())
+			swaggerUrlComparator = (h1, h2) -> h1.getName().compareTo(h2.getName());
+		else
+			swaggerUrlComparator = (h1, h2) -> h2.getName().compareTo(h1.getName());
+
+		swaggerUrls = swaggerUrls.stream().sorted(swaggerUrlComparator).filter(elt -> StringUtils.isNotEmpty(elt.getUrl())).collect(Collectors.toList());
 		if (!CollectionUtils.isEmpty(swaggerUrls)) {
 			params.put(urls, swaggerUrls);
 		}
@@ -407,5 +416,26 @@ public class SwaggerUiConfigProperties {
 		public void setName(String name) {
 			this.name = name;
 		}
+	}
+
+	static enum Direction {
+		ASC,
+		DESC;
+
+		public boolean isAscending() {
+			return this.equals(ASC);
+		}
+
+		public boolean isDescending() {
+			return this.equals(DESC);
+		}
+	}
+
+	public Direction getGroupsOrder() {
+		return groupsOrder;
+	}
+
+	public void setGroupsOrder(Direction groupsOrder) {
+		this.groupsOrder = groupsOrder;
 	}
 }
