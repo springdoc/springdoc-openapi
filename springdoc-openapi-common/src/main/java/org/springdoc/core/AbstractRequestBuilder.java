@@ -199,7 +199,7 @@ public abstract class AbstractRequestBuilder {
 	private LinkedHashMap<String, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
 		LinkedHashMap<String, Parameter> map = operationParameters.stream()
 				.collect(Collectors.toMap(
-						Parameter::getName,
+						parameter -> parameter.getName() !=null ? parameter.getName(): Integer.toString(parameter.hashCode()),
 						parameter -> parameter,
 						(u, v) -> {
 							throw new IllegalStateException(String.format("Duplicate key %s", u));
