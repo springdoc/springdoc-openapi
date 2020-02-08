@@ -34,7 +34,7 @@ import static org.springdoc.core.GenericParameterBuilder.addFileType;
 public class RequestBuilder extends AbstractRequestBuilder {
 
 	static {
-		addResponseWrapperToIgnore(ServerWebExchange.class,ServerHttpRequest.class,ServerHttpResponse.class);
+		addRequestWrapperToIgnore(ServerWebExchange.class,ServerHttpRequest.class,ServerHttpResponse.class);
 		addFileType(FilePart.class);
 	}
 

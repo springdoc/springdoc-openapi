@@ -444,7 +444,14 @@ public abstract class AbstractRequestBuilder {
 		return apiParametersMap;
 	}
 
-	public static void addResponseWrapperToIgnore(Class<?>... classes) {
+	public static void addRequestWrapperToIgnore(Class<?>... classes) {
 		PARAM_TYPES_TO_IGNORE.addAll(Arrays.asList(classes));
 	}
+
+	public static void removeRequestWrapperToIgnore(Class<?>... classes) {
+		List classesToIgnore = Arrays.asList(classes);
+		if (PARAM_TYPES_TO_IGNORE.containsAll(classesToIgnore))
+			PARAM_TYPES_TO_IGNORE.removeAll(Arrays.asList(classes));
+	}
+
 }
