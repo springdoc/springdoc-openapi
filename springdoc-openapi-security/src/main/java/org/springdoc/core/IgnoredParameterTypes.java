@@ -23,7 +23,7 @@ import org.springframework.security.core.Authentication;
 public class IgnoredParameterTypes {
 
 	public IgnoredParameterTypes() {
-		AbstractRequestBuilder.addResponseWrapperToIgnore(Authentication.class);
+		AbstractRequestBuilder.addRequestWrapperToIgnore(Authentication.class);
 	}
 
 }
