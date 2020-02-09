@@ -40,12 +40,31 @@ public class SpringDocConfigProperties {
 
 	private List<String> packagesToScan;
 
+	private List<String> packagesToExclude;
+
 	private List<String> pathsToMatch;
+
+	private List<String> pathsToExclude;
 
 	private Cache cache = new Cache();
 
 	private List<GroupConfig> groupConfigs = new ArrayList<>();
 
+	public List<String> getPackagesToExclude() {
+		return packagesToExclude;
+	}
+
+	public void setPackagesToExclude(List<String> packagesToExclude) {
+		this.packagesToExclude = packagesToExclude;
+	}
+
+	public List<String> getPathsToExclude() {
+		return pathsToExclude;
+	}
+
+	public void setPathsToExclude(List<String> pathsToExclude) {
+		this.pathsToExclude = pathsToExclude;
+	}
 
 	public List<String> getPackagesToScan() {
 		return packagesToScan;
@@ -184,8 +203,10 @@ public class SpringDocConfigProperties {
 	public static class GroupConfig {
 		public GroupConfig() { }
 
-		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan) {
+		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan, List<String> packagesToExclude, List<String> pathsToExclude) {
 			this.pathsToMatch = pathsToMatch;
+			this.pathsToExclude = pathsToExclude;
+			this.packagesToExclude = pathsToExclude;
 			this.packagesToScan = packagesToScan;
 			this.group = group;
 		}
@@ -193,6 +214,10 @@ public class SpringDocConfigProperties {
 		private List<String> pathsToMatch;
 
 		private List<String> packagesToScan;
+
+		private List<String> packagesToExclude;
+
+		private List<String> pathsToExclude;
 
 		private String group;
 
@@ -218,6 +243,22 @@ public class SpringDocConfigProperties {
 
 		public void setGroup(String group) {
 			this.group = group;
+		}
+
+		public List<String> getPackagesToExclude() {
+			return packagesToExclude;
+		}
+
+		public void setPackagesToExclude(List<String> packagesToExclude) {
+			this.packagesToExclude = packagesToExclude;
+		}
+
+		public List<String> getPathsToExclude() {
+			return pathsToExclude;
+		}
+
+		public void setPathsToExclude(List<String> pathsToExclude) {
+			this.pathsToExclude = pathsToExclude;
 		}
 	}
 }

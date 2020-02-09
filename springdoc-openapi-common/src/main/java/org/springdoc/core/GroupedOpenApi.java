@@ -37,13 +37,23 @@ public class GroupedOpenApi {
 
 	private final List<String> packagesToScan;
 
+	private final List<String> packagesToExclude;
+
+	private final List<String> pathsToExclude;
+
 	private GroupedOpenApi(Builder builder) {
 		this.group = Objects.requireNonNull(builder.group, "group");
 		this.pathsToMatch = builder.pathsToMatch;
 		this.packagesToScan = builder.packagesToScan;
+		this.packagesToExclude=builder.packagesToExclude;
+		this.pathsToExclude=builder.pathsToExclude;
 		this.openApiCustomisers = Objects.requireNonNull(builder.openApiCustomisers);
 		SwaggerUiConfigProperties.addGroup(this.group);
-		if (CollectionUtils.isEmpty(this.pathsToMatch) && CollectionUtils.isEmpty(this.packagesToScan) && CollectionUtils.isEmpty(openApiCustomisers))
+		if (CollectionUtils.isEmpty(this.pathsToMatch)
+				&& CollectionUtils.isEmpty(this.packagesToScan)
+				&& CollectionUtils.isEmpty(this.pathsToExclude)
+				&& CollectionUtils.isEmpty(this.packagesToExclude)
+				&& CollectionUtils.isEmpty(openApiCustomisers))
 			throw new IllegalStateException("Packages to scan or paths to filter or openApiCustomisers can not be all null for the group:" + this.group);
 	}
 
@@ -63,6 +73,14 @@ public class GroupedOpenApi {
 		return packagesToScan;
 	}
 
+	public List<String> getPackagesToExclude() {
+		return packagesToExclude;
+	}
+
+	public List<String> getPathsToExclude() {
+		return pathsToExclude;
+	}
+
 	public List<OpenApiCustomiser> getOpenApiCustomisers() {
 		return openApiCustomisers;
 	}
@@ -75,6 +93,10 @@ public class GroupedOpenApi {
 		private List<String> pathsToMatch;
 
 		private List<String> packagesToScan;
+
+		private List<String> packagesToExclude;
+
+		private List<String> pathsToExclude;
 
 		private Builder() {
 			// use static factory method in parent class
@@ -92,6 +114,16 @@ public class GroupedOpenApi {
 
 		public Builder packagesToScan(String... packagesToScan) {
 			this.packagesToScan = Arrays.asList(packagesToScan);
+			return this;
+		}
+
+		public Builder pathsToExclude(String... pathsToExclude) {
+			this.pathsToExclude = Arrays.asList(pathsToExclude);
+			return this;
+		}
+
+		public Builder packagesToExclude(String... packagesToExclude) {
+			this.packagesToExclude = Arrays.asList(packagesToExclude);
 			return this;
 		}
 

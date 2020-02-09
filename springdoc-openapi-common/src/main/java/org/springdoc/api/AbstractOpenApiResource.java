@@ -327,22 +327,43 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	protected boolean isPackageToScan(String aPackage) {
 		List<String> packagesToScan = springDocConfigProperties.getPackagesToScan();
+		List<String> packagesToExclude = springDocConfigProperties.getPackagesToExclude();
 		if (CollectionUtils.isEmpty(packagesToScan)) {
 			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
 			if (optionalGroupConfig.isPresent())
 				packagesToScan = optionalGroupConfig.get().getPackagesToScan();
 		}
-		return CollectionUtils.isEmpty(packagesToScan) || packagesToScan.stream().anyMatch(pack -> aPackage.equals(pack) || aPackage.startsWith(pack + "."));
+		if (CollectionUtils.isEmpty(packagesToExclude)) {
+			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
+			if (optionalGroupConfig.isPresent())
+				packagesToExclude = optionalGroupConfig.get().getPackagesToExclude();
+		}
+		boolean include =  CollectionUtils.isEmpty(packagesToScan)
+				|| packagesToScan.stream().anyMatch(pack -> aPackage.equals(pack)
+				|| aPackage.startsWith(pack + "."));
+		boolean exclude =  !CollectionUtils.isEmpty(packagesToExclude)
+				&& (packagesToExclude.stream().anyMatch(pack -> aPackage.equals(pack)
+				|| aPackage.startsWith(pack + ".")));
+
+		return include && !exclude;
 	}
 
 	protected boolean isPathToMatch(String operationPath) {
 		List<String> pathsToMatch = springDocConfigProperties.getPathsToMatch();
+		List<String> pathsToExclude = springDocConfigProperties.getPathsToExclude();
 		if (CollectionUtils.isEmpty(pathsToMatch)) {
 			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
 			if (optionalGroupConfig.isPresent())
 				pathsToMatch = optionalGroupConfig.get().getPathsToMatch();
 		}
-		return CollectionUtils.isEmpty(pathsToMatch) || pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
+		if (CollectionUtils.isEmpty(pathsToExclude)) {
+			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
+			if (optionalGroupConfig.isPresent())
+				pathsToExclude = optionalGroupConfig.get().getPathsToExclude();
+		}
+		boolean include =  CollectionUtils.isEmpty(pathsToMatch) || pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
+		boolean exclude =  !CollectionUtils.isEmpty(pathsToExclude) && pathsToExclude.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
+		return include && !exclude;
 	}
 
 	protected String decode(String requestURI) {
