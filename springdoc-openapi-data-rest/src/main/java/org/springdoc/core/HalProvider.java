@@ -18,26 +18,24 @@
 
 package org.springdoc.core;
 
-import org.springdoc.core.converters.PageableSupportConverter;
+import javax.annotation.PostConstruct;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import io.swagger.v3.core.util.Json;
+
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 
-import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+public class HalProvider {
 
-@Configuration
-@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-public class SpringDocDataRestConfiguration {
+	private final RepositoryRestConfiguration repositoryRestConfiguration;
 
-	@Bean
-	PageableSupportConverter pageableSupportConverter() {
-		return new PageableSupportConverter();
+	public HalProvider(RepositoryRestConfiguration repositoryRestConfiguration) {
+		this.repositoryRestConfiguration = repositoryRestConfiguration;
 	}
 
-	@Bean
-	public HalProvider halProvider(RepositoryRestConfiguration repositoryRestConfiguration) {
-		return new HalProvider(repositoryRestConfiguration);
+	@PostConstruct
+	private void init(){
+		if(repositoryRestConfiguration.useHalAsDefaultJsonMediaType())
+			Json.mapper().registerModule(new Jackson2HalModule());
 	}
 }

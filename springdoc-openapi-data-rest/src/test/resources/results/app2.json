@@ -11,6 +11,53 @@
     }
   ],
   "paths": {
+    "/employees": {
+      "get": {
+        "tags": [
+          "employee-controller"
+        ],
+        "operationId": "findAll",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelEntityModelEmployee"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "employee-controller"
+        ],
+        "operationId": "newEmployee",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Employee"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelEmployee"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/employees/{id}": {
       "get": {
         "tags": [
@@ -72,57 +119,27 @@
           }
         }
       }
-    },
-    "/employees": {
-      "get": {
-        "tags": [
-          "employee-controller"
-        ],
-        "operationId": "findAll",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelEmployee"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "employee-controller"
-        ],
-        "operationId": "newEmployee",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Employee"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelEmployee"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
+      "CollectionModelEntityModelEmployee": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EntityModelEmployee"
+            }
+          },
+          "_links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            }
+          }
+        }
+      },
       "Employee": {
         "type": "object",
         "properties": {
@@ -157,7 +174,7 @@
           "role": {
             "type": "string"
           },
-          "links": {
+          "_links": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Link"
@@ -168,16 +185,10 @@
       "Link": {
         "type": "object",
         "properties": {
-          "rel": {
-            "type": "string"
-          },
           "href": {
             "type": "string"
           },
           "hreflang": {
-            "type": "string"
-          },
-          "media": {
             "type": "string"
           },
           "title": {
@@ -194,23 +205,9 @@
           },
           "name": {
             "type": "string"
-          }
-        }
-      },
-      "CollectionModelEntityModelEmployee": {
-        "type": "object",
-        "properties": {
-          "links": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Link"
-            }
           },
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EntityModelEmployee"
-            }
+          "templated": {
+            "type": "boolean"
           }
         }
       }

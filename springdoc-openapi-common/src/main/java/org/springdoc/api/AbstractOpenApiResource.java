@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.v3.core.filter.SpecFilter;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.Components;
@@ -64,7 +65,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
-public abstract class AbstractOpenApiResource {
+public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractOpenApiResource.class);
 
@@ -127,6 +128,7 @@ public abstract class AbstractOpenApiResource {
 			// run the optional customisers
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
 			computeDone = true;
+			this.removeBrokenReferenceDefinitions(openApi);
 			openAPIBuilder.setCachedOpenAPI(openApi);
 			openAPIBuilder.resetCalculatedOpenAPI();
 			LOGGER.info("Init duration for springdoc-openapi is: {} ms",
