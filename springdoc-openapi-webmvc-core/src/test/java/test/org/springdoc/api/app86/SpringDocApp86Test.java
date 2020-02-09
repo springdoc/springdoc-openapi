@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.api.app63;
+package test.org.springdoc.api.app86;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,12 +24,12 @@ import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class SpringDocApp63Test extends AbstractSpringDocTest {
+public class SpringDocApp86Test extends AbstractSpringDocTest {
 
 	@BeforeAll
 	public static void beforeClass() {
-		System.setProperty("springdoc.packagesToScan", "hell,hello1, hello.me");
-		System.setProperty("springdoc.packagesToExclude", "test.org.springdoc.api.app63.65");
+		System.setProperty("springdoc.packagesToScan", "test.org.springdoc.api.app86");
+		System.setProperty("springdoc.packagesToExclude", "test.org.springdoc.api.app86.test");
 	}
 
 	@AfterAll

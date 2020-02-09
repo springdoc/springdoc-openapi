@@ -18,10 +18,6 @@
   ],
   "tags": [
     {
-      "name": "user",
-      "description": "the user API"
-    },
-    {
       "name": "store",
       "description": "the store API"
     }
@@ -33,42 +29,6 @@
           "store"
         ],
         "operationId": "stores",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "default response"
-          }
-        }
-      }
-    },
-    "/v1/users": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "operationId": "users",
         "parameters": [
           {
             "name": "name",

@@ -16,27 +16,23 @@
  *
  */
 
-package test.org.springdoc.api.app85;
+package test.org.springdoc.api.app86;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
+import java.util.Locale;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
 public class HelloController {
 
-	@PostMapping("/test/{id}")
-	@Operation(
-			parameters = {
-					@Parameter(ref = "#/components/parameters/paramA"),
-					@Parameter(ref = "#/components/parameters/paramB")
-			}
-	)
-	public void testme(@PathVariable("id") String id) {
+	@GetMapping("/test")
+	public void test(HttpSession header, HttpServletRequest request, HttpServletResponse response, Locale locale,
+			String hello) {
 	}
+
 }
