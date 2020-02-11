@@ -81,7 +81,10 @@ public abstract class AbstractRequestBuilder {
 	private static final List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
 
 	// using string litterals to support both validation-api v1 and v2
-	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
+	private static final String[] ANNOTATIONS_FOR_REQUIRED = {
+		NotNull.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty",
+		"org.jetbrains.annotations.NotNull"
+	};
 
 	private static final String POSITIVE_OR_ZERO = "javax.validation.constraints.PositiveOrZero";
 
