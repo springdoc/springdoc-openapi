@@ -85,10 +85,15 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	private static final List<Class<?>> ADDITIONAL_REST_CONTROLLERS = new ArrayList<>();
 	private static final List<Class<?>> HIDDEN_REST_CONTROLLERS = new ArrayList<>();
+	private static final List<Class> DEPRECATED_TYPES = new ArrayList<>();
 
 	private boolean computeDone;
 
 	private final String groupName;
+
+	static {
+		DEPRECATED_TYPES.add(Deprecated.class);
+	}
 
 	protected AbstractOpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -177,7 +182,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 			Operation operation = (existingOperation != null) ? existingOperation : new Operation();
 
-			if (ReflectionUtils.getAnnotation(method, Deprecated.class) != null) {
+			if (isDeprecatedType(method)) {
 				operation.setDeprecated(true);
 			}
 
@@ -393,5 +398,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected Set getDefaultAllowedHttpMethods() {
 		RequestMethod[] allowedRequestMethods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD };
 		return new HashSet<>(Arrays.asList(allowedRequestMethods));
+	}
+
+	public static void addDeprecatedType(Class<?> cls){
+		DEPRECATED_TYPES.add(cls);
+	}
+
+	private boolean isDeprecatedType(Method method) {
+		return DEPRECATED_TYPES.stream().anyMatch(clazz -> (ReflectionUtils.getAnnotation(method, clazz) != null));
 	}
 }

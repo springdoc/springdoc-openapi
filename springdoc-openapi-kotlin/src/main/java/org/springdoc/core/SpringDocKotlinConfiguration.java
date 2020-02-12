@@ -18,29 +18,25 @@
 
 package org.springdoc.core;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springdoc.core.customizers.OperationCustomizer;
-import org.springdoc.core.customizers.ParameterCustomizer;
+import kotlin.Deprecated;
+import kotlin.coroutines.Continuation;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+import static org.springdoc.api.AbstractOpenApiResource.addDeprecatedType;
+import static org.springdoc.core.AbstractRequestBuilder.addRequestWrapperToIgnore;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocKotlinConfiguration {
 
-	@Bean
-	@Primary
-	KotlinCoroutinesRequestBuilder kotlinCoroutinesRequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<ParameterCustomizer>> parameterCustomizers) {
-		return new KotlinCoroutinesRequestBuilder(parameterBuilder, requestBodyBuilder,
-				operationBuilder, operationCustomizers, parameterCustomizers);
+	static {
+		addRequestWrapperToIgnore(Continuation.class);
+		addDeprecatedType(Deprecated.class);
 	}
 
 	@Bean

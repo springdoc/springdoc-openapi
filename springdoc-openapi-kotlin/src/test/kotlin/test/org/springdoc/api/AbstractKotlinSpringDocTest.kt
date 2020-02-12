@@ -45,6 +45,7 @@ abstract class AbstractKotlinSpringDocTest {
 				.expectStatus().isOk.expectBody().returnResult()
 
 		val result = String(getResult.responseBody!!)
+		print(result)
 		val className = javaClass.simpleName
 		val testNumber = className.replace("[^0-9]".toRegex(), "")
 
