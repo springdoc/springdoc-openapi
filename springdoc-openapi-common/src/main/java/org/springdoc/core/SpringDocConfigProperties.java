@@ -206,7 +206,7 @@ public class SpringDocConfigProperties {
 		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan, List<String> packagesToExclude, List<String> pathsToExclude) {
 			this.pathsToMatch = pathsToMatch;
 			this.pathsToExclude = pathsToExclude;
-			this.packagesToExclude = pathsToExclude;
+			this.packagesToExclude = packagesToExclude;
 			this.packagesToScan = packagesToScan;
 			this.group = group;
 		}
