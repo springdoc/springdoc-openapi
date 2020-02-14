@@ -123,23 +123,6 @@
   },
   "components": {
     "schemas": {
-      "CollectionModelEntityModelEmployee": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EntityModelEmployee"
-            }
-          },
-          "_links": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Link"
-            }
-          }
-        }
-      },
       "Employee": {
         "type": "object",
         "properties": {
@@ -175,10 +158,27 @@
             "type": "string"
           },
           "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
+        }
+      },
+      "CollectionModelEntityModelEmployee": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Link"
+              "$ref": "#/components/schemas/EntityModelEmployee"
             }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
           }
         }
       },
