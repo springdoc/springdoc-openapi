@@ -68,5 +68,7 @@
       }
     }
   },
-  "components": {}
+  "components": {
+    "schemas": {}
+  }
 }
