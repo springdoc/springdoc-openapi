@@ -11,13 +11,13 @@
     }
   ],
   "paths": {
-    "/demo/operation4": {
+    "/demo/operation2": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Operation 4 (expected result - 3 parameters)",
-        "operationId": "operation4",
+        "summary": "Operation 2 (expected result - 3 parameters)",
+        "operationId": "operation2",
         "parameters": [
           {
             "name": "pageNumber",
@@ -48,37 +48,6 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/demo/operation1": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "Operation 1 (expected result - no parameters)",
-        "operationId": "operation1",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              },
               "text/plain": {
                 "schema": {
                   "type": "string"
@@ -126,11 +95,6 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              },
               "text/plain": {
                 "schema": {
                   "type": "string"
@@ -141,13 +105,34 @@
         }
       }
     },
-    "/demo/operation2": {
+    "/demo/operation1": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Operation 2 (expected result - 3 parameters)",
-        "operationId": "operation2",
+        "summary": "Operation 1 (expected result - no parameters)",
+        "operationId": "operation1",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/demo/operation4": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Operation 4 (expected result - 3 parameters)",
+        "operationId": "operation4",
         "parameters": [
           {
             "name": "pageNumber",
@@ -178,11 +163,6 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              },
               "text/plain": {
                 "schema": {
                   "type": "string"

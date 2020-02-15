@@ -117,16 +117,20 @@ public class MethodAttributes {
 	}
 
 	private void fillMethods(String[] produces, String[] consumes) {
-		methodProduces = ArrayUtils.isNotEmpty(produces) ? produces : new String[] { MediaType.ALL_VALUE };
-		methodConsumes = ArrayUtils.isNotEmpty(consumes) ? consumes : new String[] { MediaType.APPLICATION_JSON_VALUE };
-	}
+		if (ArrayUtils.isNotEmpty(produces))
+			methodProduces = produces;
+		else if (ArrayUtils.isNotEmpty(classProduces))
+			methodProduces = classProduces;
+		else
+			methodProduces = new String[] { MediaType.ALL_VALUE };
 
-	public String[] getAllConsumes() {
-		return ArrayUtils.addAll(methodConsumes, classConsumes);
-	}
+		if (ArrayUtils.isNotEmpty(consumes))
+			methodConsumes = consumes;
+		else if (ArrayUtils.isNotEmpty(classConsumes))
+			methodConsumes = classConsumes;
+		else
+			methodConsumes = new String[] { MediaType.APPLICATION_JSON_VALUE };
 
-	public String[] getAllProduces() {
-		return ArrayUtils.addAll(methodProduces, classProduces);
 	}
 
 	public boolean isMethodOverloaded() {
