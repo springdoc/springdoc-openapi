@@ -26,9 +26,9 @@ public class RequestInfo {
 
 	private final String defaultValue;
 
-	private final ParameterType paramType;
+	private final String paramType;
 
-	public RequestInfo(ParameterType paramType, String value, boolean required, String defaultValue) {
+	public RequestInfo(String paramType, String value, boolean required, String defaultValue) {
 		this.value = value;
 		this.required = required;
 		this.defaultValue = defaultValue;
@@ -49,21 +49,6 @@ public class RequestInfo {
 
 	public String type() {
 		return paramType.toString();
-	}
-
-	public enum ParameterType {
-		QUERY_PARAM("query"), HEADER_PARAM("header"), PATH_PARAM("path"), COOKIE("cookie");
-
-		private final String value;
-
-		ParameterType(String s) {
-			value = s;
-		}
-
-		@Override
-		public String toString() {
-			return value;
-		}
 	}
 
 }

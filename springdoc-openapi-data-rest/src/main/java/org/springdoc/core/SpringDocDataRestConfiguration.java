@@ -30,6 +30,7 @@ import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.converters.PageableSupportConverter;
 import org.springdoc.core.customizers.OpenApiCustomiser;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -76,7 +77,7 @@ public class SpringDocDataRestConfiguration {
 						.additionalProperties(new ObjectSchema().$ref("#/components/schemas/Link")));
     }
 
-    static abstract class RepresentationModelLinksOASMixin extends RepresentationModelMixin {
+	abstract static class RepresentationModelLinksOASMixin extends RepresentationModelMixin {
         @Override
         @Schema(ref = "#/components/schemas/Links")
         public abstract Links getLinks();
