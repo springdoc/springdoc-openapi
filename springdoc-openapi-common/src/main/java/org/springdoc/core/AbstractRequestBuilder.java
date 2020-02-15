@@ -49,7 +49,6 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.core.RequestInfo.ParameterType;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
@@ -266,14 +265,14 @@ public abstract class AbstractRequestBuilder {
 		RequestInfo requestInfo;
 
 		if (requestHeader != null) {
-			requestInfo = new RequestInfo(ParameterType.HEADER_PARAM, requestHeader.value(), requestHeader.required(),
+			requestInfo = new RequestInfo(ParameterIn.HEADER.toString(), requestHeader.value(), requestHeader.required(),
 					requestHeader.defaultValue());
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 
 		}
 		else if (requestParam != null && !parameterBuilder.isFile(parameterInfo.getParameter())) {
 			boolean isOptional = Optional.class.equals(parameters.getType());
-			requestInfo = new RequestInfo(ParameterType.QUERY_PARAM, requestParam.value(), requestParam.required() && !isOptional,
+			requestInfo = new RequestInfo(ParameterIn.QUERY.toString(), requestParam.value(), requestParam.required() && !isOptional,
 					requestParam.defaultValue());
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
@@ -282,10 +281,10 @@ public abstract class AbstractRequestBuilder {
 			String name = StringUtils.isBlank(pathVar.value()) ? pName : pathVar.value();
 			parameterInfo.setpName(name);
 			// check if PATH PARAM
-			requestInfo = new RequestInfo(ParameterType.PATH_PARAM, pathVar.value(), Boolean.TRUE, null);
+			requestInfo = new RequestInfo(ParameterIn.PATH.toString(), pathVar.value(), Boolean.TRUE, null);
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		} else if (cookieValue != null) {
-			requestInfo = new RequestInfo(ParameterType.COOKIE, cookieValue.value(), cookieValue.required(),
+			requestInfo = new RequestInfo(ParameterIn.COOKIE.toString(), cookieValue.value(), cookieValue.required(),
 					cookieValue.defaultValue());
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
