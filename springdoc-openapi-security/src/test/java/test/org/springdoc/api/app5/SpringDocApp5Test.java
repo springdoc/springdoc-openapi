@@ -16,14 +16,15 @@
  *
  */
 
-package org.springdoc.core;
+package test.org.springdoc.api.app5;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import test.org.springdoc.api.AbstractSpringDocTest;
 
-public class IgnoredParameterAnnotationsWithSecurity implements IgnoredParameterAnnotations {
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-	@Override
-	public boolean isAnnotationToIgnore(java.lang.reflect.Parameter parameter) {
-		return parameter.isAnnotationPresent(AuthenticationPrincipal.class);
-	}
+public class SpringDocApp5Test extends AbstractSpringDocTest {
+
+	@SpringBootApplication(scanBasePackages =  { "test.org.springdoc.api.configuration,test.org.springdoc.api.app5" })
+	static class SpringDocTestApp {}
+
 }

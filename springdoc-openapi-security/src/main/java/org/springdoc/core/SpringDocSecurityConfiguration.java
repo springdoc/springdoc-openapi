@@ -33,13 +33,8 @@ public class SpringDocSecurityConfiguration {
 
 	@Bean
 	@Primary
-	IgnoredParameterAnnotationsWithSecurity ignoredParameterAnnotationsWithSecurity() {
-		return new IgnoredParameterAnnotationsWithSecurity();
-	}
-
-	@Bean
-	IgnoredParameterTypes ignoredParameterTypes() {
-		return new IgnoredParameterTypes();
+	IgnoredParameterWithSecurity ignoredParameterAnnotationsWithSecurity() {
+		return new IgnoredParameterWithSecurity();
 	}
 
 	@Configuration

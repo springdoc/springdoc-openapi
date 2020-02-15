@@ -16,14 +16,27 @@
  *
  */
 
-package org.springdoc.core;
+package test.org.springdoc.api.app5;
 
 import org.springframework.security.core.Authentication;
 
-public class IgnoredParameterTypes {
+public class Sample {
+	private String toto;
+	private Authentication authentication;
 
-	public IgnoredParameterTypes() {
-		AbstractRequestBuilder.addRequestWrapperToIgnore(Authentication.class);
+	public String getToto() {
+		return toto;
 	}
 
+	public void setToto(String toto) {
+		this.toto = toto;
+	}
+
+	public Authentication getAuthentication() {
+		return authentication;
+	}
+
+	public void setAuthentication(Authentication authentication) {
+		this.authentication = authentication;
+	}
 }
