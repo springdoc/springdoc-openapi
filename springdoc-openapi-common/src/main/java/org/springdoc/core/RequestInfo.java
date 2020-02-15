@@ -52,7 +52,7 @@ public class RequestInfo {
 	}
 
 	public enum ParameterType {
-		QUERY_PARAM("query"), HEADER_PARAM("header"), PATH_PARAM("path");
+		QUERY_PARAM("query"), HEADER_PARAM("header"), PATH_PARAM("path"), COOKIE("cookie");
 
 		private final String value;
 
