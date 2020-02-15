@@ -29,6 +29,7 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 
+import static org.springdoc.core.converters.ConverterUtils.isResponseTypeToIgnore;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper;
 
 public class ResponseSupportConverter implements ModelConverter {
@@ -51,6 +52,8 @@ public class ResponseSupportConverter implements ModelConverter {
 					type = new AnnotatedType(innerType).jsonViewAnnotation(type.getJsonViewAnnotation()).resolveAsRef(true);
 				}
 			}
+			else if (isResponseTypeToIgnore(cls))
+				return null;
 		}
 		if (chain.hasNext()) {
 			return chain.next().resolve(type, context, chain);
