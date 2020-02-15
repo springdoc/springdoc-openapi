@@ -147,7 +147,7 @@ public class RequestBodyBuilder {
 	}
 
 	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content) {
-		for (String value : methodAttributes.getAllConsumes()) {
+		for (String value : methodAttributes.getMethodConsumes()) {
 			io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
 			mediaTypeObject.setSchema(schema);
 			if (content.get(value) != null)

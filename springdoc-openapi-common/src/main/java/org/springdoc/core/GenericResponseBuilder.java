@@ -151,14 +151,14 @@ public class GenericResponseBuilder {
 			io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations, ApiResponse apiResponse,
 			io.swagger.v3.oas.annotations.media.Content[] contentdoc) {
 		Optional<Content> optionalContent = SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
-				methodAttributes.getAllProduces(), null, components, methodAttributes.getJsonViewAnnotation());
+				methodAttributes.getMethodProduces(), null, components, methodAttributes.getJsonViewAnnotation());
 		if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
 			// Merge with the existing content
 			Content existingContent = apiResponsesOp.get(apiResponseAnnotations.responseCode()).getContent();
 			if (optionalContent.isPresent() && existingContent != null) {
 				Content newContent = optionalContent.get();
 				if (methodAttributes.isMethodOverloaded()) {
-					Arrays.stream(methodAttributes.getAllProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr));
+					Arrays.stream(methodAttributes.getMethodProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr));
 					apiResponse.content(existingContent);
 				}
 				else
@@ -273,7 +273,7 @@ public class GenericResponseBuilder {
 		// No documentation
 		if (StringUtils.isBlank(apiResponse.get$ref())) {
 			if (apiResponse.getContent() == null) {
-				Content content = buildContent(components, method, methodAttributes.getAllProduces(),
+				Content content = buildContent(components, method, methodAttributes.getMethodProduces(),
 						methodAttributes.getJsonViewAnnotation());
 				apiResponse.setContent(content);
 			}
@@ -290,8 +290,8 @@ public class GenericResponseBuilder {
 			Content existingContent = apiResponse.getContent();
 			Schema<?> schemaN = calculateSchema(components, method.getGenericReturnType(),
 					methodAttributes.getJsonViewAnnotation());
-			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getAllProduces())) {
-				Arrays.stream(methodAttributes.getAllProduces()).forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));
+			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getMethodProduces())) {
+				Arrays.stream(methodAttributes.getMethodProduces()).forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));
 			}
 		}
 		apiResponsesOp.addApiResponse(httpCode, apiResponse);
