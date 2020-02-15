@@ -60,6 +60,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -258,6 +259,8 @@ public abstract class AbstractRequestBuilder {
 				RequestParam.class);
 		PathVariable pathVar = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
 				PathVariable.class);
+		CookieValue cookieValue =  parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
+				CookieValue.class);
 
 		Parameter parameter = null;
 		RequestInfo requestInfo;
@@ -280,6 +283,10 @@ public abstract class AbstractRequestBuilder {
 			parameterInfo.setpName(name);
 			// check if PATH PARAM
 			requestInfo = new RequestInfo(ParameterType.PATH_PARAM, pathVar.value(), Boolean.TRUE, null);
+			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
+		} else if (cookieValue != null) {
+			requestInfo = new RequestInfo(ParameterType.COOKIE, cookieValue.value(), cookieValue.required(),
+					cookieValue.defaultValue());
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
 		// By default
