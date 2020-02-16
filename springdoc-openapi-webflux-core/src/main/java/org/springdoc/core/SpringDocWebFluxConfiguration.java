@@ -43,7 +43,6 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 public class SpringDocWebFluxConfiguration {
 
 	@Bean
-	@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 	public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
@@ -55,6 +54,7 @@ public class SpringDocWebFluxConfiguration {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	public RequestBuilder requestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<ParameterCustomizer>> parameterCustomizers) {
 		return new RequestBuilder(parameterBuilder, requestBodyBuilder,

@@ -21,6 +21,7 @@ package org.springdoc.core;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -379,11 +380,11 @@ public class SwaggerUiConfigProperties {
 	private void put(String urls, Set<SwaggerUrl> swaggerUrls, Map<String, Object> params) {
 		Comparator<SwaggerUrl> swaggerUrlComparator;
 		if (groupsOrder.isAscending())
-			swaggerUrlComparator = (h1, h2) -> h1.getName().compareTo(h2.getName());
+			swaggerUrlComparator = Comparator.comparing(SwaggerUrl::getName);
 		else
 			swaggerUrlComparator = (h1, h2) -> h2.getName().compareTo(h1.getName());
 
-		swaggerUrls = swaggerUrls.stream().sorted(swaggerUrlComparator).filter(elt -> StringUtils.isNotEmpty(elt.getUrl())).collect(Collectors.toSet());
+		swaggerUrls = swaggerUrls.stream().sorted(swaggerUrlComparator).filter(elt -> StringUtils.isNotEmpty(elt.getUrl())).collect(Collectors.toCollection(LinkedHashSet::new));
 		if (!CollectionUtils.isEmpty(swaggerUrls)) {
 			params.put(urls, swaggerUrls);
 		}

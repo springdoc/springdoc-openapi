@@ -139,8 +139,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			LOGGER.info("Init duration for springdoc-openapi is: {} ms",
 					Duration.between(start, Instant.now()).toMillis());
 		}
-		else
+		else {
+			if(!openAPIBuilder.isServersPresent())
+				openAPIBuilder.updateServers(openAPIBuilder.getCachedOpenAPI());
 			openApi = openAPIBuilder.getCachedOpenAPI();
+		}
 		return openApi;
 	}
 
