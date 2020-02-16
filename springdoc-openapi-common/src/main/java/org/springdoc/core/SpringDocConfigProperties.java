@@ -50,6 +50,16 @@ public class SpringDocConfigProperties {
 
 	private List<GroupConfig> groupConfigs = new ArrayList<>();
 
+	private Boolean autoTagClasses = true;
+
+	public Boolean getAutoTagClasses() {
+		return autoTagClasses;
+	}
+
+	public void setAutoTagClasses(Boolean autoTagClasses) {
+		this.autoTagClasses = autoTagClasses;
+	}
+
 	public List<String> getPackagesToExclude() {
 		return packagesToExclude;
 	}
@@ -201,7 +211,8 @@ public class SpringDocConfigProperties {
 	}
 
 	public static class GroupConfig {
-		public GroupConfig() { }
+		public GroupConfig() {
+		}
 
 		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan, List<String> packagesToExclude, List<String> pathsToExclude) {
 			this.pathsToMatch = pathsToMatch;
