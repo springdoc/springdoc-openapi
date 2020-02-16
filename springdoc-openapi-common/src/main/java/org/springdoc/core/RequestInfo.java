@@ -48,7 +48,7 @@ public class RequestInfo {
 	}
 
 	public String type() {
-		return paramType.toString();
+		return paramType;
 	}
 
 }
