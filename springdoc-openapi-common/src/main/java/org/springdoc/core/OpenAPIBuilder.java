@@ -213,7 +213,7 @@ public class OpenAPIBuilder {
 			operation.setTags(new ArrayList<>(tagsStr));
 		}
 
-		if (CollectionUtils.isEmpty(operation.getTags()) && springDocConfigProperties.getAutoTagClasses()) {
+		if (CollectionUtils.isEmpty(operation.getTags()) && Boolean.TRUE.equals(springDocConfigProperties.getAutoTagClasses())) {
 			operation.addTagsItem(splitCamelCase(handlerMethod.getBeanType().getSimpleName()));
 		}
 
