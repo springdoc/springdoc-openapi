@@ -89,8 +89,10 @@ public class OpenAPIBuilder {
 
 	private String serverBaseUrl;
 
+	private final SpringDocConfigProperties springDocConfigProperties;
+
 	@SuppressWarnings("WeakerAccess")
-	OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
+	OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, SpringDocConfigProperties springDocConfigProperties) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
 			if (this.openAPI.getComponents() == null)
@@ -103,6 +105,7 @@ public class OpenAPIBuilder {
 		this.context = context;
 		this.securityParser = securityParser;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
+		this.springDocConfigProperties=springDocConfigProperties;
 	}
 
 	private static String splitCamelCase(String str) {
@@ -210,7 +213,7 @@ public class OpenAPIBuilder {
 			operation.setTags(new ArrayList<>(tagsStr));
 		}
 
-		if (CollectionUtils.isEmpty(operation.getTags())) {
+		if (CollectionUtils.isEmpty(operation.getTags()) && springDocConfigProperties.getAutoTagClasses()) {
 			operation.addTagsItem(splitCamelCase(handlerMethod.getBeanType().getSimpleName()));
 		}
 
