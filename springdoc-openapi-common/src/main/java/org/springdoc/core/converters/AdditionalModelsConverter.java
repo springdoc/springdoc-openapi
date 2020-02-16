@@ -32,8 +32,9 @@ import io.swagger.v3.oas.models.media.Schema;
 
 public class AdditionalModelsConverter implements ModelConverter {
 
-	private static Map<Class, Class> modelToClassMap= new HashMap();
-	private static Map<Class, Schema> modelToSchemaMap= new HashMap();
+	private static final Map<Class, Class> modelToClassMap= new HashMap();
+	private static final Map<Class, Schema> modelToSchemaMap= new HashMap();
+
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = Json.mapper().constructType(type.getType());

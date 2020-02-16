@@ -85,7 +85,7 @@ public class OpenAPIBuilder {
 
 	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
 
-	private boolean isServersPresent = false;
+	private boolean isServersPresent;
 
 	private String serverBaseUrl;
 
@@ -105,7 +105,7 @@ public class OpenAPIBuilder {
 		this.context = context;
 		this.securityParser = securityParser;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
-		this.springDocConfigProperties=springDocConfigProperties;
+		this.springDocConfigProperties = springDocConfigProperties;
 	}
 
 	private static String splitCamelCase(String str) {
@@ -130,13 +130,13 @@ public class OpenAPIBuilder {
 	public void build() {
 		Optional<OpenAPIDefinition> apiDef = getOpenAPIDefinition();
 
-		if(openAPI==null){
+		if (openAPI == null) {
 			this.calculatedOpenAPI = new OpenAPI();
 			this.calculatedOpenAPI.setComponents(new Components());
 			this.calculatedOpenAPI.setPaths(new Paths());
 		}
 		else
-			this.calculatedOpenAPI=openAPI;
+			this.calculatedOpenAPI = openAPI;
 
 		if (apiDef.isPresent()) {
 			buildOpenAPIWithOpenAPIDefinition(calculatedOpenAPI, apiDef.get());
@@ -148,13 +148,21 @@ public class OpenAPIBuilder {
 		}
 		// default server value
 		if (CollectionUtils.isEmpty(calculatedOpenAPI.getServers()) || !isServersPresent) {
-			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
-			List<Server> servers = new ArrayList();
-			servers.add(server);
-			calculatedOpenAPI.setServers(servers);
+			this.updateServers(calculatedOpenAPI);
 		}
 		// add security schemes
 		this.calculateSecuritySchemes(calculatedOpenAPI.getComponents());
+	}
+
+	public void updateServers(OpenAPI openAPI) {
+		Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
+		List<Server> servers = new ArrayList();
+		servers.add(server);
+		openAPI.setServers(servers);
+	}
+
+	public boolean isServersPresent() {
+		return isServersPresent;
 	}
 
 	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
@@ -208,16 +216,18 @@ public class OpenAPIBuilder {
 			else
 				securityParser.buildSecurityRequirement(securityRequirements, operation);
 		}
-
-		if (!CollectionUtils.isEmpty(tagsStr)) {
+		if (!CollectionUtils.isEmpty(tagsStr))
 			operation.setTags(new ArrayList<>(tagsStr));
-		}
 
-		if (CollectionUtils.isEmpty(operation.getTags()) && springDocConfigProperties.isAutoTagClasses()) {
+
+		if (isAutoTagClasses(operation))
 			operation.addTagsItem(splitCamelCase(handlerMethod.getBeanType().getSimpleName()));
-		}
 
 		return operation;
+	}
+
+	private boolean isAutoTagClasses(Operation operation) {
+		return CollectionUtils.isEmpty(operation.getTags()) && springDocConfigProperties.isAutoTagClasses();
 	}
 
 	public void setServerBaseUrl(String serverBaseUrl) {
@@ -424,6 +434,6 @@ public class OpenAPIBuilder {
 	}
 
 	public void resetCalculatedOpenAPI() {
-		this.calculatedOpenAPI=null;
+		this.calculatedOpenAPI = null;
 	}
 }
