@@ -28,7 +28,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
-import org.springdoc.core.converters.PageableSupportConverter;
+import org.springdoc.core.converters.AdditionalModelsConverter;
+import org.springdoc.core.converters.Pageable;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -46,10 +47,10 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocDataRestConfiguration {
 
-    @Bean
-    PageableSupportConverter pageableSupportConverter() {
-        return new PageableSupportConverter();
-    }
+	static {
+		AdditionalModelsConverter.replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class);
+		AdditionalModelsConverter.replaceWithClass(org.springframework.data.domain.PageRequest.class,Pageable.class);
+	}
 
     @Bean
     public HalProvider halProvider(RepositoryRestConfiguration repositoryRestConfiguration) {

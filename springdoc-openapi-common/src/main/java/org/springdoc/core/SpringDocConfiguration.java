@@ -22,10 +22,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.ObjectSchema;
+import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.ModelConverterRegistrar;
-import org.springdoc.core.converters.ObjectNodeConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.customizers.PropertyCustomizer;
@@ -49,14 +51,17 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocConfiguration {
 
+	static {
+		AdditionalModelsConverter.replaceWithSchema(ObjectNode.class, new ObjectSchema());
+	}
 	@Bean
 	LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer() {
 		return new LocalVariableTableParameterNameDiscoverer();
 	}
 
 	@Bean
-	ObjectNodeConverter objectNodeConverter() {
-		return new ObjectNodeConverter();
+	AdditionalModelsConverter pageableSupportConverter() {
+		return new AdditionalModelsConverter();
 	}
 
 	@Bean

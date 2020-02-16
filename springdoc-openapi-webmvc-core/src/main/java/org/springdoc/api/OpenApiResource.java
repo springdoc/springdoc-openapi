@@ -145,7 +145,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 		return (responseBodyAnnotation != null && restControllers.containsKey(handlerMethod.getBean().toString()) || isAdditionalRestController(handlerMethod.getBeanType()))
 				&& operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-				&& !ModelAndView.class.isAssignableFrom(handlerMethod.getMethod().getReturnType());
+				&& (springDocConfigProperties.isModelAndViewAllowed()|| !ModelAndView.class.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}
 
 	private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {

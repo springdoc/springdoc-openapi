@@ -19,26 +19,30 @@
 package org.springdoc.core.converters;
 
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
+import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 
-public class PageableSupportConverter implements ModelConverter {
+public class AdditionalModelsConverter implements ModelConverter {
 
-	private static final String PAGEABLE_TO_REPLACE = "org.springframework.data.domain.Pageable";
-
-	private static final String PAGE_REQUEST_TO_REPLACE = "org.springframework.data.domain.PageRequest";
-
-	private static final AnnotatedType PAGEABLE = new AnnotatedType(Pageable.class);
-
+	private static Map<Class, Class> modelToClassMap= new HashMap();
+	private static Map<Class, Schema> modelToSchemaMap= new HashMap();
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
-		String typeName = type.getType().getTypeName();
-		if (PAGEABLE_TO_REPLACE.equals(typeName) || PAGE_REQUEST_TO_REPLACE.equals(typeName)) {
-			type = PAGEABLE;
+		JavaType javaType = Json.mapper().constructType(type.getType());
+		if (javaType != null) {
+			Class<?> cls = javaType.getRawClass();
+			if(modelToSchemaMap.containsKey(cls))
+				return modelToSchemaMap.get(cls);
+			if(modelToClassMap.containsKey(cls))
+				type = new AnnotatedType(modelToClassMap.get(cls));
 		}
 		if (chain.hasNext()) {
 			return chain.next().resolve(type, context, chain);
@@ -47,4 +51,13 @@ public class PageableSupportConverter implements ModelConverter {
 			return null;
 		}
 	}
+
+	public static void replaceWithClass(Class source, Class target) {
+		modelToClassMap.put(source, target);
+	}
+
+	public static void replaceWithSchema(Class source, Schema target) {
+		modelToSchemaMap.put(source, target);
+	}
+
 }

@@ -32,7 +32,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocConfigProperties {
 
-	private Boolean showActuator = false;
+	private boolean showActuator;
 
 	private Webjars webjars = new Webjars();
 
@@ -50,14 +50,24 @@ public class SpringDocConfigProperties {
 
 	private List<GroupConfig> groupConfigs = new ArrayList<>();
 
-	private Boolean autoTagClasses = true;
+	private boolean autoTagClasses = true;
 
-	public Boolean getAutoTagClasses() {
+	private boolean modelAndViewAllowed;
+
+	public boolean isAutoTagClasses() {
 		return autoTagClasses;
 	}
 
-	public void setAutoTagClasses(Boolean autoTagClasses) {
+	public void setAutoTagClasses(boolean autoTagClasses) {
 		this.autoTagClasses = autoTagClasses;
+	}
+
+	public boolean isModelAndViewAllowed() {
+		return modelAndViewAllowed;
+	}
+
+	public void setModelAndViewAllowed(boolean modelAndViewAllowed) {
+		this.modelAndViewAllowed = modelAndViewAllowed;
 	}
 
 	public List<String> getPackagesToExclude() {
@@ -84,11 +94,11 @@ public class SpringDocConfigProperties {
 		this.packagesToScan = packagesToScan;
 	}
 
-	public Boolean getShowActuator() {
+	public boolean isShowActuator() {
 		return showActuator;
 	}
 
-	public void setShowActuator(Boolean showActuator) {
+	public void setShowActuator(boolean showActuator) {
 		this.showActuator = showActuator;
 	}
 
@@ -145,7 +155,7 @@ public class SpringDocConfigProperties {
 		/**
 		 * Weather to generate and serve a OpenAPI document.
 		 */
-		private Boolean enabled = true;
+		private boolean enabled = true;
 
 		private Groups groups = new Groups();
 
@@ -157,11 +167,11 @@ public class SpringDocConfigProperties {
 			this.path = path;
 		}
 
-		public Boolean getEnabled() {
+		public boolean isEnabled() {
 			return enabled;
 		}
 
-		public void setEnabled(Boolean enabled) {
+		public void setEnabled(boolean enabled) {
 			this.enabled = enabled;
 		}
 
@@ -175,25 +185,25 @@ public class SpringDocConfigProperties {
 	}
 
 	public static class Groups {
-		private Boolean enabled = false;
+		private boolean enabled;
 
-		public Boolean getEnabled() {
+		public boolean isEnabled() {
 			return enabled;
 		}
 
-		public void setEnabled(Boolean enabled) {
+		public void setEnabled(boolean enabled) {
 			this.enabled = enabled;
 		}
 	}
 
 	public static class Cache {
-		private Boolean disabled = false;
+		private boolean disabled;
 
-		public Boolean getDisabled() {
+		public boolean isDisabled() {
 			return disabled;
 		}
 
-		public void setDisabled(Boolean disabled) {
+		public void setDisabled(boolean disabled) {
 			this.disabled = disabled;
 		}
 	}
