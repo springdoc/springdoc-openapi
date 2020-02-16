@@ -81,7 +81,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
-	private final SpringDocConfigProperties springDocConfigProperties;
+	protected final SpringDocConfigProperties springDocConfigProperties;
 
 	private static final List<Class<?>> ADDITIONAL_REST_CONTROLLERS = new ArrayList<>();
 	private static final List<Class<?>> HIDDEN_REST_CONTROLLERS = new ArrayList<>();
@@ -110,7 +110,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	protected synchronized OpenAPI getOpenApi() {
 		OpenAPI openApi;
-		if (!computeDone || Boolean.TRUE.equals(springDocConfigProperties.getCache().getDisabled())) {
+		if (!computeDone || springDocConfigProperties.getCache().isDisabled()) {
 			Instant start = Instant.now();
 			openAPIBuilder.build();
 			Map<String, Object> restControllersMap = openAPIBuilder.getRestControllersMap();
