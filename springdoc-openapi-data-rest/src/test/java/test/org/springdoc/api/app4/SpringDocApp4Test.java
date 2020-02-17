@@ -16,13 +16,11 @@
  *
  */
 
-package test.org.springdoc.api.app1;
+package test.org.springdoc.api.app4;
 
 import test.org.springdoc.api.AbstractSpringDocTest;
 
-import org.springframework.test.context.TestPropertySource;
+public class SpringDocApp4Test extends AbstractSpringDocTest {
 
-@TestPropertySource(properties = "spring.hateoas.use-hal-as-default-json-media-type= false")
-public class SpringDocApp1Test extends AbstractSpringDocTest {
 
 }

@@ -11,67 +11,42 @@
     }
   ],
   "paths": {
-    "/employees": {
+    "/search": {
       "get": {
         "tags": [
-          "employee-controller"
+          "hello-controller"
         ],
-        "operationId": "findAll",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelEmployee"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "employee-controller"
-        ],
-        "operationId": "newEmployee",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Employee"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelEmployee"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/employees/{id}": {
-      "get": {
-        "tags": [
-          "employee-controller"
-        ],
-        "operationId": "findOne",
+        "operationId": "getAllPets",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
+            "name": "pageable",
+            "in": "query",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "required": [
+                "page",
+                "size"
+              ],
+              "type": "object",
+              "properties": {
+                "page": {
+                  "minimum": 0,
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "size": {
+                  "maximum": 2000,
+                  "minimum": 1,
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "sort": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           }
         ],
@@ -79,43 +54,23 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/EntityModelEmployee"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonDTO"
+                  }
                 }
               }
             }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "employee-controller"
-        ],
-        "operationId": "updateEmployee",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Employee"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response"
           }
         }
       }
@@ -123,94 +78,17 @@
   },
   "components": {
     "schemas": {
-      "Employee": {
+      "PersonDTO": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
+          "email": {
+            "type": "string"
           },
           "firstName": {
             "type": "string"
           },
           "lastName": {
             "type": "string"
-          },
-          "role": {
-            "type": "string"
-          }
-        }
-      },
-      "EntityModelEmployee": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "role": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "Links": {
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/Link"
-        }
-      },
-      "CollectionModelEntityModelEmployee": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/EntityModelEmployee"
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "Link": {
-        "type": "object",
-        "properties": {
-          "href": {
-            "type": "string"
-          },
-          "hreflang": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "deprecation": {
-            "type": "string"
-          },
-          "profile": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "templated": {
-            "type": "boolean"
           }
         }
       }

@@ -23,11 +23,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import io.swagger.v3.core.converter.ModelConverters;
 import nonapi.io.github.classgraph.utils.FileUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.Constants;
+import org.springdoc.core.converters.CollectionModelContentConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -76,5 +79,11 @@ public abstract class AbstractSpringDocTest {
 		byte[] fileBytes = Files.readAllBytes(path);
 		String expected = new String(fileBytes);
 		assertEquals(expected, result, true);
+	}
+
+	@AfterAll
+	public static void afterClass() {
+		ModelConverters.getInstance().removeConverter(CollectionModelContentConverter.getConverter());
+		System.clearProperty("spring.hateoas.use-hal-as-default-json-media-type");
 	}
 }

@@ -15,14 +15,14 @@
  *  * limitations under the License.
  *
  */
+package test.org.springdoc.api.app4;
 
-package test.org.springdoc.api.app1;
+import org.springframework.data.repository.CrudRepository;
 
-import test.org.springdoc.api.AbstractSpringDocTest;
-
-import org.springframework.test.context.TestPropertySource;
-
-@TestPropertySource(properties = "spring.hateoas.use-hal-as-default-json-media-type= false")
-public class SpringDocApp1Test extends AbstractSpringDocTest {
-
+/**
+ * A simple Spring Data {@link CrudRepository} for storing {@link Employee}s.
+ *
+ * @author Greg Turnquist
+ */
+interface EmployeeRepository extends CrudRepository<Employee, Long> {
 }

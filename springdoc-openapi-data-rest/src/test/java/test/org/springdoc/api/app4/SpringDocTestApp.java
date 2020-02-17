@@ -16,13 +16,23 @@
  *
  */
 
-package test.org.springdoc.api.app1;
+package test.org.springdoc.api.app4;
 
-import test.org.springdoc.api.AbstractSpringDocTest;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.hateoas.server.core.EvoInflectorLinkRelationProvider;
 
-import org.springframework.test.context.TestPropertySource;
+@SpringBootApplication
+public class SpringDocTestApp {
 
-@TestPropertySource(properties = "spring.hateoas.use-hal-as-default-json-media-type= false")
-public class SpringDocApp1Test extends AbstractSpringDocTest {
+	public static void main(String[] args) {
+		SpringApplication.run(SpringDocTestApp.class, args);
+	}
+
+	@Bean
+	EvoInflectorLinkRelationProvider relProvider() {
+		return new EvoInflectorLinkRelationProvider();
+	}
 
 }
