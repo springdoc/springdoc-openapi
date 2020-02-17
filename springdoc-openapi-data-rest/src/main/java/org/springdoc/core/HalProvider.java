@@ -19,6 +19,7 @@
 package org.springdoc.core;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.util.Json;
@@ -36,11 +37,18 @@ public class HalProvider {
 	}
 
 	@PostConstruct
-	private void init(){
-		if(repositoryRestConfiguration.useHalAsDefaultJsonMediaType()) {
-			Json.mapper().registerModule(new Jackson2HalModule());
+	private void init() {
+		if (repositoryRestConfiguration.useHalAsDefaultJsonMediaType()) {
+			if (!Jackson2HalModule.isAlreadyRegisteredIn(Json.mapper()))
+				Json.mapper().registerModule(new Jackson2HalModule());
 			ModelConverters.getInstance()
 					.addConverter(CollectionModelContentConverter.getConverter());
 		}
+	}
+
+	@PreDestroy
+	private void reset() {
+		ModelConverters.getInstance()
+				.removeConverter(CollectionModelContentConverter.getConverter());
 	}
 }
