@@ -135,7 +135,13 @@ class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		}
 		else {
 			for (ExampleObject example : examples) {
-				getExample(example).ifPresent(exampleObject -> mediaType.addExamples(example.name(), exampleObject));
+				getExample(example).ifPresent(exampleObject -> {
+							if (exampleObject.get$ref() != null)
+								//Ignore description
+								exampleObject.setDescription(null);
+							mediaType.addExamples(example.name(), exampleObject);
+						}
+				);
 			}
 		}
 	}
