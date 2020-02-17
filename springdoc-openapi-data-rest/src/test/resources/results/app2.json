@@ -172,9 +172,12 @@
         "type": "object",
         "properties": {
           "_embedded": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EntityModelEmployee"
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/EntityModelEmployee"
+              }
             }
           },
           "_links": {
