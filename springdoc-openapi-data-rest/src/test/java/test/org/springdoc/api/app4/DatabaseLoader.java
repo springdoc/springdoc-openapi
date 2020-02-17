@@ -15,7 +15,7 @@
  *  * limitations under the License.
  *
  */
-package test.org.springdoc.api.app2;
+package test.org.springdoc.api.app4;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

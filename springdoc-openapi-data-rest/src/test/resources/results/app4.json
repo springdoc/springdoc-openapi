@@ -123,23 +123,6 @@
   },
   "components": {
     "schemas": {
-      "CollectionModelEntityModelEmployee": {
-        "type": "object",
-        "properties": {
-          "links": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Link"
-            }
-          },
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EntityModelEmployee"
-            }
-          }
-        }
-      },
       "Employee": {
         "type": "object",
         "properties": {
@@ -174,27 +157,41 @@
           "role": {
             "type": "string"
           },
-          "links": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Link"
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
+        }
+      },
+      "CollectionModelEntityModelEmployee": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/EntityModelEmployee"
+              }
             }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
           }
         }
       },
       "Link": {
         "type": "object",
         "properties": {
-          "rel": {
-            "type": "string"
-          },
           "href": {
             "type": "string"
           },
           "hreflang": {
-            "type": "string"
-          },
-          "media": {
             "type": "string"
           },
           "title": {
@@ -211,6 +208,9 @@
           },
           "name": {
             "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
           }
         }
       }

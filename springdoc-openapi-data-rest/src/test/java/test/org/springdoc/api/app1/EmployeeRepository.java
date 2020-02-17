@@ -15,7 +15,7 @@
  *  * limitations under the License.
  *
  */
-package test.org.springdoc.api.app2;
+package test.org.springdoc.api.app1;
 
 import org.springframework.data.repository.CrudRepository;
 

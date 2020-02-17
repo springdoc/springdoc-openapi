@@ -22,7 +22,7 @@ import javax.annotation.PostConstruct;
 
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.util.Json;
-import org.springdoc.core.hal.CollectionModelContentConverter;
+import org.springdoc.core.converters.CollectionModelContentConverter;
 
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
@@ -40,7 +40,7 @@ public class HalProvider {
 		if(repositoryRestConfiguration.useHalAsDefaultJsonMediaType()) {
 			Json.mapper().registerModule(new Jackson2HalModule());
 			ModelConverters.getInstance()
-					.addConverter(new CollectionModelContentConverter());
+					.addConverter(CollectionModelContentConverter.getConverter());
 		}
 	}
 }

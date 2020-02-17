@@ -16,13 +16,15 @@
  *
  */
 
-package test.org.springdoc.api.app1;
+package org.springdoc.core.converters;
 
-import test.org.springdoc.api.AbstractSpringDocTest;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.hateoas.Links;
+import org.springframework.hateoas.mediatype.hal.RepresentationModelMixin;
 
-@TestPropertySource(properties = "spring.hateoas.use-hal-as-default-json-media-type= false")
-public class SpringDocApp1Test extends AbstractSpringDocTest {
-
+public abstract class RepresentationModelLinksOASMixin extends RepresentationModelMixin {
+    @Override
+    @Schema(ref = "#/components/schemas/Links")
+    public abstract Links getLinks();
 }

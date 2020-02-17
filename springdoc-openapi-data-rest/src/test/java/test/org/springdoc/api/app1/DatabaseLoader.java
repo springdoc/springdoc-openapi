@@ -15,24 +15,33 @@
  *  * limitations under the License.
  *
  */
+package test.org.springdoc.api.app1;
 
-package test.org.springdoc.api.app2;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.hateoas.server.core.EvoInflectorLinkRelationProvider;
+import org.springframework.stereotype.Component;
 
-@SpringBootApplication
-public class SpringDocTestApp {
+/**
+ * Pre-load some data using a Spring Boot {@link CommandLineRunner}.
+ *
+ * @author Greg Turnquist
+ */
+@Component
+class DatabaseLoader {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringDocTestApp.class, args);
-	}
-
+	/**
+	 * Use Spring to inject a {@link EmployeeRepository} that can then load data. Since this will run only after the app
+	 * is operational, the database will be up.
+	 *
+	 * @param repository
+	 */
 	@Bean
-	EvoInflectorLinkRelationProvider relProvider() {
-		return new EvoInflectorLinkRelationProvider();
+	CommandLineRunner init(EmployeeRepository repository) {
+
+		return args -> {
+			repository.save(new Employee("Frodo", "Baggins", "ring bearer"));
+			repository.save(new Employee("Bilbo", "Baggins", "burglar"));
+		};
 	}
 
 }

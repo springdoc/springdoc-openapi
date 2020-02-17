@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.api.app1;
+package test.org.springdoc.api.app2;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
