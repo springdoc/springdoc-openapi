@@ -189,9 +189,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				operation.setDeprecated(true);
 			}
 
-			// compute tags
-			operation = openAPIBuilder.buildTags(handlerMethod, operation, openAPI);
-
 			// Add documentation from operation annotation
 			io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils.getAnnotation(method,
 					io.swagger.v3.oas.annotations.Operation.class);
@@ -201,6 +198,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			if (apiOperation != null) {
 				openAPI = operationParser.parse(components, apiOperation, operation, openAPI, methodAttributes);
 			}
+
+			// compute tags
+			operation = openAPIBuilder.buildTags(handlerMethod, operation, openAPI);
 
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = ReflectionUtils.getAnnotation(method,
 					io.swagger.v3.oas.annotations.parameters.RequestBody.class);
