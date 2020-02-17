@@ -29,7 +29,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 
-import static org.springdoc.core.SpringDocOpenApi.getConfig;
+import static org.springdoc.core.SpringDocUtils.getConfig;
 
 public class RequestBuilder extends AbstractRequestBuilder {
 

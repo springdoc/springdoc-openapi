@@ -24,7 +24,7 @@ import java.util.Optional;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
-import static org.springdoc.core.SpringDocOpenApi.getConfig;
+import static org.springdoc.core.SpringDocUtils.getConfig;
 
 public class RequestBuilder extends AbstractRequestBuilder {
 

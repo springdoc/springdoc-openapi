@@ -46,7 +46,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 
 import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.SpringDocOpenApi.getConfig;
+import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)

@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.SpringDocOpenApi.getConfig;
+import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)

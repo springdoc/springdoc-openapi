@@ -23,62 +23,62 @@ import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.ConverterUtils;
 
-public class SpringDocOpenApi {
+public class SpringDocUtils {
 
-	private static final SpringDocOpenApi springDocConfig = new SpringDocOpenApi();
+	private static final SpringDocUtils springDocConfig = new SpringDocUtils();
 
-	private SpringDocOpenApi() { }
+	private SpringDocUtils() { }
 
-	public static SpringDocOpenApi getConfig() {
+	public static SpringDocUtils getConfig() {
 		return springDocConfig;
 	}
 
-	public SpringDocOpenApi addDeprecatedType(Class<?> cls) {
+	public SpringDocUtils addDeprecatedType(Class<?> cls) {
 		AbstractOpenApiResource.addDeprecatedType(cls);
 		return this;
 	}
 
-	public SpringDocOpenApi addRestControllers(Class<?>... classes) {
+	public SpringDocUtils addRestControllers(Class<?>... classes) {
 		AbstractOpenApiResource.addRestControllers(classes);
 		return this;
 	}
 
-	public SpringDocOpenApi addHiddenRestControllers(Class<?>... classes) {
+	public SpringDocUtils addHiddenRestControllers(Class<?>... classes) {
 		AbstractOpenApiResource.addHiddenRestControllers(classes);
 		return this;
 	}
 
-	public SpringDocOpenApi replaceWithClass(Class source, Class target) {
+	public SpringDocUtils replaceWithClass(Class source, Class target) {
 		AdditionalModelsConverter.replaceWithClass( source,  target);
 		return this;
 	}
 
-	public SpringDocOpenApi replaceWithSchema(Class source, Schema target) {
+	public SpringDocUtils replaceWithSchema(Class source, Schema target) {
 		AdditionalModelsConverter.replaceWithSchema( source,  target);
 		return this;
 	}
 
-	public SpringDocOpenApi addRequestWrapperToIgnore(Class<?>... classes) {
+	public SpringDocUtils addRequestWrapperToIgnore(Class<?>... classes) {
 		AbstractRequestBuilder.addRequestWrapperToIgnore( classes);
 		return this;
 	}
 
-	public SpringDocOpenApi removeRequestWrapperToIgnore(Class<?>... classes) {
+	public SpringDocUtils removeRequestWrapperToIgnore(Class<?>... classes) {
 		AbstractRequestBuilder.removeRequestWrapperToIgnore( classes);
 		return this;
 	}
 
-	public SpringDocOpenApi addFileType(Class<?>... classes) {
+	public SpringDocUtils addFileType(Class<?>... classes) {
 		GenericParameterBuilder.addFileType(classes);
 		return this;
 	}
 
-	public SpringDocOpenApi addResponseWrapperToIgnore(Class<?> cls){
+	public SpringDocUtils addResponseWrapperToIgnore(Class<?> cls){
 		ConverterUtils.addResponseWrapperToIgnore(cls);
 		return this;
 	}
 
-	public SpringDocOpenApi addResponseTypeToIgnore(Class<?> cls){
+	public SpringDocUtils addResponseTypeToIgnore(Class<?> cls){
 		ConverterUtils.addResponseTypeToIgnore(cls);
 		return this;
 	}
