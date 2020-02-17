@@ -24,13 +24,14 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.Json;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.converters.Pageable;
 import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.hal.RepresentationModelLinksOASMixin;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +39,6 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
-import org.springframework.hateoas.mediatype.hal.RepresentationModelMixin;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
@@ -52,35 +52,36 @@ public class SpringDocDataRestConfiguration {
 		.replaceWithClass(org.springframework.data.domain.PageRequest.class,Pageable.class);
 	}
 
-    @Bean
-    public HalProvider halProvider(RepositoryRestConfiguration repositoryRestConfiguration) {
-        return new HalProvider(repositoryRestConfiguration);
-    }
+	@Configuration
+	@ConditionalOnClass(RepositoryRestConfiguration.class)
+	class HalProviderConfiguration {
 
-	/**
-	 * Registers an OpenApiCustomiser and a jackson mixin to ensure the definition of `Links` matches the serialized
-	 * output. This is done because the customer serializer converts the data to a map before serializing it.
-	 *
-	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
-	 */
-    @Bean
-    public OpenApiCustomiser linksSchemaCustomiser(RepositoryRestConfiguration repositoryRestConfiguration) {
-        if (!repositoryRestConfiguration.useHalAsDefaultJsonMediaType()) {
-            return openApi -> {};
-        }
-        Json.mapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
-        ResolvedSchema resolvedLinkSchema = ModelConverters.getInstance()
-                .resolveAsResolvedSchema(new AnnotatedType(Link.class));
-        return openApi -> openApi
-				.schema("Link", resolvedLinkSchema.schema)
-				.schema("Links", new MapSchema()
-						.additionalProperties(new StringSchema())
-						.additionalProperties(new ObjectSchema().$ref("#/components/schemas/Link")));
-    }
+		@Bean
+		public HalProvider halProvider(RepositoryRestConfiguration repositoryRestConfiguration) {
+			return new HalProvider(repositoryRestConfiguration);
+		}
 
-	abstract static class RepresentationModelLinksOASMixin extends RepresentationModelMixin {
-        @Override
-        @Schema(ref = "#/components/schemas/Links")
-        public abstract Links getLinks();
-    }
+		/**
+		 * Registers an OpenApiCustomiser and a jackson mixin to ensure the definition of `Links` matches the serialized
+		 * output. This is done because the customer serializer converts the data to a map before serializing it.
+		 *
+		 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
+		 */
+		@Bean
+		public OpenApiCustomiser linksSchemaCustomiser(RepositoryRestConfiguration repositoryRestConfiguration) {
+			if (!repositoryRestConfiguration.useHalAsDefaultJsonMediaType()) {
+				return openApi -> {};
+			}
+			Json.mapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
+
+			ResolvedSchema resolvedLinkSchema = ModelConverters.getInstance()
+					.resolveAsResolvedSchema(new AnnotatedType(Link.class));
+
+			return openApi -> openApi
+					.schema("Link", resolvedLinkSchema.schema)
+					.schema("Links", new MapSchema()
+							.additionalProperties(new StringSchema())
+							.additionalProperties(new ObjectSchema().$ref("#/components/schemas/Link")));
+		}
+	}
 }
