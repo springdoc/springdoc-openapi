@@ -31,7 +31,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static org.springdoc.core.SpringDocOpenApi.getConfig;
+import static org.springdoc.core.SpringDocUtils.getConfig;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper;
 
 

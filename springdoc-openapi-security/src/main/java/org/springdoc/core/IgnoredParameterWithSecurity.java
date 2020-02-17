@@ -21,7 +21,7 @@ package org.springdoc.core;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
-import static org.springdoc.core.SpringDocOpenApi.getConfig;
+import static org.springdoc.core.SpringDocUtils.getConfig;
 
 
 public class IgnoredParameterWithSecurity implements IgnoredParameterAnnotations {

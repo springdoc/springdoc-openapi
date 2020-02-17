@@ -26,7 +26,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.servlet.ModelAndView;
 
-import static org.springdoc.core.SpringDocOpenApi.getConfig;
+import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @TestPropertySource(properties = "springdoc.model-and-view-allowed=true")
 public class SpringDocApp89Test extends AbstractSpringDocTest {
