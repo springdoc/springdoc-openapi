@@ -46,14 +46,16 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 
 import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.SpringDocOpenApi.getConfig;
 
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocConfiguration {
 
 	static {
-		AdditionalModelsConverter.replaceWithSchema(ObjectNode.class, new ObjectSchema());
+		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema());
 	}
+
 	@Bean
 	LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer() {
 		return new LocalVariableTableParameterNameDiscoverer();

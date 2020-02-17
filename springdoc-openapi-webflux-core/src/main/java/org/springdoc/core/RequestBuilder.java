@@ -29,13 +29,14 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 
-import static org.springdoc.core.GenericParameterBuilder.addFileType;
+import static org.springdoc.core.SpringDocOpenApi.getConfig;
 
 public class RequestBuilder extends AbstractRequestBuilder {
 
 	static {
-		addRequestWrapperToIgnore(ServerWebExchange.class,ServerHttpRequest.class,ServerHttpResponse.class);
-		addFileType(FilePart.class);
+		getConfig().addRequestWrapperToIgnore(ServerWebExchange.class, ServerHttpRequest.class)
+				.addRequestWrapperToIgnore(ServerHttpResponse.class)
+				.addFileType(FilePart.class);
 	}
 
 	public RequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,

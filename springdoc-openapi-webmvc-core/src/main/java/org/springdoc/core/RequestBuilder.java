@@ -24,15 +24,17 @@ import java.util.Optional;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
+import static org.springdoc.core.SpringDocOpenApi.getConfig;
+
 public class RequestBuilder extends AbstractRequestBuilder {
 
 	static {
-		addRequestWrapperToIgnore(javax.servlet.ServletRequest.class);
-		addRequestWrapperToIgnore(javax.servlet.ServletResponse.class);
-		addRequestWrapperToIgnore(javax.servlet.http.HttpServletRequest.class);
-		addRequestWrapperToIgnore(javax.servlet.http.HttpServletResponse.class);
-		addRequestWrapperToIgnore(javax.servlet.http.HttpSession.class);
-		addRequestWrapperToIgnore(javax.servlet.http.HttpSession.class);
+		getConfig().addRequestWrapperToIgnore(javax.servlet.ServletRequest.class)
+		.addRequestWrapperToIgnore(javax.servlet.ServletResponse.class)
+		.addRequestWrapperToIgnore(javax.servlet.http.HttpServletRequest.class)
+		.addRequestWrapperToIgnore(javax.servlet.http.HttpServletResponse.class)
+		.addRequestWrapperToIgnore(javax.servlet.http.HttpSession.class)
+		.addRequestWrapperToIgnore(javax.servlet.http.HttpSession.class);
 	}
 
 	public RequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,

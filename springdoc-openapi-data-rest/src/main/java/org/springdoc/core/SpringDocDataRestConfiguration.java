@@ -28,7 +28,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
-import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.Pageable;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
@@ -42,14 +41,15 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.mediatype.hal.RepresentationModelMixin;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.SpringDocOpenApi.getConfig;
 
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocDataRestConfiguration {
 
 	static {
-		AdditionalModelsConverter.replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class);
-		AdditionalModelsConverter.replaceWithClass(org.springframework.data.domain.PageRequest.class,Pageable.class);
+		getConfig().replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
+		.replaceWithClass(org.springframework.data.domain.PageRequest.class,Pageable.class);
 	}
 
     @Bean

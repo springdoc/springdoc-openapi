@@ -21,14 +21,14 @@ package org.springdoc.core;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
-import static org.springdoc.core.AbstractRequestBuilder.addRequestWrapperToIgnore;
-import static org.springdoc.core.converters.ConverterUtils.addResponseTypeToIgnore;
+import static org.springdoc.core.SpringDocOpenApi.getConfig;
+
 
 public class IgnoredParameterWithSecurity implements IgnoredParameterAnnotations {
 
 	static {
-		addRequestWrapperToIgnore(Authentication .class);
-		addResponseTypeToIgnore(Authentication.class);
+		getConfig().addRequestWrapperToIgnore(Authentication .class)
+				.addResponseTypeToIgnore(Authentication.class);
 	}
 
 	@Override
