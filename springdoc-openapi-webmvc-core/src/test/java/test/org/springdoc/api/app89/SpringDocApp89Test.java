@@ -26,7 +26,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.servlet.ModelAndView;
 
-import static org.springdoc.core.converters.AdditionalModelsConverter.replaceWithSchema;
+import static org.springdoc.core.SpringDocOpenApi.getConfig;
 
 @TestPropertySource(properties = "springdoc.model-and-view-allowed=true")
 public class SpringDocApp89Test extends AbstractSpringDocTest {
@@ -35,6 +35,6 @@ public class SpringDocApp89Test extends AbstractSpringDocTest {
 	static class SpringDocTestApp {}
 
 	static {
-		replaceWithSchema(ModelAndView .class, new ObjectSchema());
+		getConfig().replaceWithSchema(ModelAndView .class, new ObjectSchema());
 	}
 }

@@ -26,17 +26,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
-import static org.springdoc.api.AbstractOpenApiResource.addDeprecatedType;
-import static org.springdoc.core.AbstractRequestBuilder.addRequestWrapperToIgnore;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.SpringDocOpenApi.getConfig;
 
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocKotlinConfiguration {
 
 	static {
-		addRequestWrapperToIgnore(Continuation.class);
-		addDeprecatedType(Deprecated.class);
+		getConfig().addRequestWrapperToIgnore(Continuation.class)
+		.addDeprecatedType(Deprecated.class);
 	}
 
 	@Bean

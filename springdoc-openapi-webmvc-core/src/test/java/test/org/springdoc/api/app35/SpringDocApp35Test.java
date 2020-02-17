@@ -18,15 +18,16 @@
 
 package test.org.springdoc.api.app35;
 
-import org.springdoc.api.AbstractOpenApiResource;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import static org.springdoc.core.SpringDocOpenApi.getConfig;
+
 public class SpringDocApp35Test extends AbstractSpringDocTest {
 
 	static {
-		AbstractOpenApiResource.addRestControllers(HelloController.class);
+		getConfig().addRestControllers(HelloController.class);
 	}
 
 	@SpringBootApplication
