@@ -6,21 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.31] - 2020-02-18
 ## Added
-- Allow Request paremeters types to be ignored programatically
-- Added support to disable autotagging of @RestController Classes. Fixes #420.
-- Multiple Parameter Refs throws IllegalStateException (Duplicate key). Fixes #408
-- Support for properties to exclude packages and paths from documentation. Fixes #404
-- Support for kotlin. Deprecated. Fixes #414
-- Add Suppot for Hiding org.springframework.security.core.Authentication on ServerHttpResponse. Fixes #423.
+- Allow Request paremeters types to be ignored programatically using SpringDocUtils
+- Support to disable autotagging of @RestController Classes #420
+- Support for properties to exclude packages and paths from documentation. #404
+- Support for kotlin Deprecated  #414
+- Support for Hiding org.springframework.security.core.Authentication on ServerHttpResponse #423
 ## Changed
-- @CookieValue parameter indents request body. Fixes #419
-- Solves Hateoas fields names mismatch. Fixes #401
-- Fixes #418 by adjusting the output for Links.
 - Upgrade swagger-ui to 3.25.0
-- Allow ModelAndView to be detected. Fixes #428.
+- Allow ModelAndView to be detected #428
+- Improve Reverse proxy compatibily for webflux #435
+- Adjusting the output for Links #418
 ## Fixed
-- Discovery of MediaType producers inconsistent with Spring MVC behaviour. Fixes #426
-- Improve Reverse proxy compatibily for webflux. Fixes #435
+- Discovery of MediaType producers inconsistent with Spring MVC behaviour #426
+- Multiple Parameter Refs throws IllegalStateException (Duplicate key) #408
+- Solves Hateoas fields names mismatch #401
+- @CookieValue parameter indents request body  #419
+
 ## [1.2.30] - 2020-02-03
 ## Added
 - Support REST Controllers with default empty @RequestMapping #378
@@ -29,11 +30,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve support of @Parameter Schema, in case of @RequestBody #396
 - Prevent swagger-ui default validation #393
 - @SecurityScheme `paramName` not accounted for the `name` #384
-- Warning on referenced example. Fixes #437
+- Warning on referenced example #437
 ## Fixed
 - Same operationId for overloaded methods using Groups, breaks swagger-ui collapsibles #399
-- Duplicate tags if they are defined on @Operation annotation on swagger-ui. Fixes #436.
-- When using RestControllerAdvice, one of the responses description is missing and replaced with a default. Fixes #440
+- Duplicate tags if they are defined on @Operation annotation on swagger-ui #436.
+- When using RestControllerAdvice, one of the responses description is missing and replaced with a default #440
 ## [1.2.29] - 2020-01-27
 ## Added
 - Support for extensions on @ApiResponse #368
@@ -123,7 +124,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for spring-context-indexer #262
 - Added support using properties from application.yml for description field in swagger-annotations #231
 - Make validatorUrl configurable and fix overwrites #281
-- Improve support of HttpEntity. fixes #280
+- Improve support of HttpEntity #280
 ### Changed 
 - Ignore ServerHttpRequest and ServerHttpResponse Webflux #270
 - Preserve order of parameters in @Parameters annotation #274
