@@ -99,7 +99,7 @@
       "http500Example": {
         "summary": "HTTP 500 JSON Body response example",
         "description": "An example of HTTP response in case an error occurs on server side. instance attribute reference a traceId to ease server side analysis.",
-        "value": "{\r\n  \"500\": {\r\n    \"$ref\": \"#/components/examples/http500Example\"\r\n  }\r\n}\r\n"
+        "value": "{\"500\":{\"$ref\":\"#/components/examples/http500Example\"}}"
       }
     }
   }
