@@ -150,8 +150,10 @@ public class RequestBodyBuilder {
 		for (String value : methodAttributes.getMethodConsumes()) {
 			io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
 			mediaTypeObject.setSchema(schema);
-			if (content.get(value) != null)
+			if (content.get(value) != null) {
 				mediaTypeObject.setExample(content.get(value).getExample());
+				mediaTypeObject.setExamples(content.get(value).getExamples());
+			}
 			content.addMediaType(value, mediaTypeObject);
 		}
 		requestBody.setContent(content);
