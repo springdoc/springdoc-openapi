@@ -48,6 +48,8 @@ public final class Constants {
 
 	public static final String NULL = ":#{null}";
 
+	public static final String MVC_SERVLET_PATH = "${spring.mvc.servlet.path"+ NULL +"}";
+
 	public static final String SPRINGDOC_SWAGGER_UI_URL_VALUE = "${" + SPRINGDOC_SWAGGER_UI_URL + NULL + "}";
 
 	public static final String SPRINGDOC_OAUTH2_REDIRECT_URL = "springdoc.swagger-ui.oauth2RedirectUrl";
