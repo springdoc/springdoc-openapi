@@ -1,0 +1,122 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Demo",
+      "description": "The Demo API"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Demo"
+        ],
+        "summary": "This API will return a random greeting.",
+        "operationId": "sayHello",
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "Service-500": {
+                    "summary": "500 from the service directly",
+                    "description": "Service-500",
+                    "value": {
+                      "status": 500,
+                      "errorCode": "ERROR_002",
+                      "message": "Another example message..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "Service-400": {
+                    "summary": "400 from the service directly",
+                    "description": "Service-400",
+                    "value": {
+                      "status": 400,
+                      "errorCode": "ERROR_001",
+                      "message": "An example message..."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Greeting"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiError": {
+        "title": "ApiError",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "description": "The Http Status value",
+            "format": "int32",
+            "nullable": true
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "An Error Code which can help with identifying issues.",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "description": "The Error Message."
+          }
+        },
+        "description": "A consistent response object for sending errors over the wire."
+      },
+      "Greeting": {
+        "title": "Greeting",
+        "type": "object",
+        "properties": {
+          "payload": {
+            "type": "string",
+            "description": "The greeting value",
+            "example": "sdfsdfs"
+          }
+        },
+        "description": "An object containing a greeting message"
+      }
+    }
+  }
+}

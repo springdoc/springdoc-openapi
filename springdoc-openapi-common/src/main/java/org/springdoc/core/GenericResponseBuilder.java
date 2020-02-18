@@ -77,7 +77,7 @@ public class GenericResponseBuilder {
 		genericMapResponse.forEach(apiResponses::addApiResponse);
 		//Then use the apiResponses from documentation
 		ApiResponses apiResponsesFromDoc = operation.getResponses();
-		if (apiResponsesFromDoc != null)
+		if (!CollectionUtils.isEmpty(apiResponsesFromDoc))
 			apiResponsesFromDoc.forEach(apiResponses::addApiResponse);
 		// for each one build ApiResponse and add it to existing responses
 		// Fill api Responses
@@ -172,7 +172,7 @@ public class GenericResponseBuilder {
 
 	private void buildApiResponses(Components components, Method method, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes, boolean isGeneric) {
-		if (!CollectionUtils.isEmpty(apiResponsesOp) && (apiResponsesOp.size() != genericMapResponse.size())) {
+		if (!CollectionUtils.isEmpty(apiResponsesOp) && ((apiResponsesOp.size() != genericMapResponse.size() || isGeneric))) {
 			// API Responses at operation and @ApiResponse annotation
 			for (Map.Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
 				String httpCode = entry.getKey();
