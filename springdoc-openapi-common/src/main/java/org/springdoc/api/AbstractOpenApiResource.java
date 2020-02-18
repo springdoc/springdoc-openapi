@@ -140,7 +140,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					Duration.between(start, Instant.now()).toMillis());
 		}
 		else {
-			if(!openAPIBuilder.isServersPresent())
+			if (!openAPIBuilder.isServersPresent())
 				openAPIBuilder.updateServers(openAPIBuilder.getCachedOpenAPI());
 			openApi = openAPIBuilder.getCachedOpenAPI();
 		}
@@ -173,7 +173,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			RequestMapping reqMappingClass = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
 					RequestMapping.class);
 
-			MethodAttributes methodAttributes = new MethodAttributes();
+			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType());
 			methodAttributes.setMethodOverloaded(existingOperation != null);
 
 			if (reqMappingClass != null) {
@@ -346,10 +346,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			if (optionalGroupConfig.isPresent())
 				packagesToExclude = optionalGroupConfig.get().getPackagesToExclude();
 		}
-		boolean include =  CollectionUtils.isEmpty(packagesToScan)
+		boolean include = CollectionUtils.isEmpty(packagesToScan)
 				|| packagesToScan.stream().anyMatch(pack -> aPackage.equals(pack)
 				|| aPackage.startsWith(pack + "."));
-		boolean exclude =  !CollectionUtils.isEmpty(packagesToExclude)
+		boolean exclude = !CollectionUtils.isEmpty(packagesToExclude)
 				&& (packagesToExclude.stream().anyMatch(pack -> aPackage.equals(pack)
 				|| aPackage.startsWith(pack + ".")));
 
@@ -369,8 +369,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			if (optionalGroupConfig.isPresent())
 				pathsToExclude = optionalGroupConfig.get().getPathsToExclude();
 		}
-		boolean include =  CollectionUtils.isEmpty(pathsToMatch) || pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
-		boolean exclude =  !CollectionUtils.isEmpty(pathsToExclude) && pathsToExclude.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
+		boolean include = CollectionUtils.isEmpty(pathsToMatch) || pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
+		boolean exclude = !CollectionUtils.isEmpty(pathsToExclude) && pathsToExclude.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
 		return include && !exclude;
 	}
 
@@ -403,7 +403,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return new HashSet<>(Arrays.asList(allowedRequestMethods));
 	}
 
-	public static void addDeprecatedType(Class<?> cls){
+	public static void addDeprecatedType(Class<?> cls) {
 		DEPRECATED_TYPES.add(cls);
 	}
 

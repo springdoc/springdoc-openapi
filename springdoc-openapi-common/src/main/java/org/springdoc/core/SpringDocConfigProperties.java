@@ -24,6 +24,7 @@ import java.util.List;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
@@ -53,6 +54,10 @@ public class SpringDocConfigProperties {
 	private boolean autoTagClasses = true;
 
 	private boolean modelAndViewAllowed;
+
+	private String defaultConsumesMediaType = MediaType.APPLICATION_JSON_VALUE;
+
+	private String defaultProducesMediaType = MediaType.ALL_VALUE;
 
 	public boolean isAutoTagClasses() {
 		return autoTagClasses;
@@ -281,5 +286,21 @@ public class SpringDocConfigProperties {
 		public void setPathsToExclude(List<String> pathsToExclude) {
 			this.pathsToExclude = pathsToExclude;
 		}
+	}
+
+	public String getDefaultConsumesMediaType() {
+		return defaultConsumesMediaType;
+	}
+
+	public void setDefaultConsumesMediaType(String defaultConsumesMediaType) {
+		this.defaultConsumesMediaType = defaultConsumesMediaType;
+	}
+
+	public String getDefaultProducesMediaType() {
+		return defaultProducesMediaType;
+	}
+
+	public void setDefaultProducesMediaType(String defaultProducesMediaType) {
+		this.defaultProducesMediaType = defaultProducesMediaType;
 	}
 }

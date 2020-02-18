@@ -46,7 +46,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,10 +64,13 @@ public class GenericResponseBuilder {
 
 	private final List<ReturnTypeParser> returnTypeParsers;
 
-	protected GenericResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers) {
+	private final SpringDocConfigProperties springDocConfigProperties;
+
+	GenericResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties) {
 		super();
 		this.operationBuilder = operationBuilder;
 		this.returnTypeParsers = returnTypeParsers;
+		this.springDocConfigProperties=springDocConfigProperties;
 	}
 
 	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
@@ -92,12 +94,12 @@ public class GenericResponseBuilder {
 		for (Method method : methods) {
 			if (!operationBuilder.isHidden(method)) {
 				RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(method, RequestMapping.class);
-				String[] methodProduces = { MediaType.ALL_VALUE };
+				String[] methodProduces = { springDocConfigProperties.getDefaultProducesMediaType() };
 				if (reqMappringMethod != null) {
 					methodProduces = reqMappringMethod.produces();
 				}
 				Map<String, ApiResponse> apiResponses = computeResponse(components, method, new ApiResponses(),
-						new MethodAttributes(methodProduces), true);
+						new MethodAttributes(methodProduces, springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType()), true);
 				apiResponses.forEach(genericMapResponse::put);
 			}
 		}
