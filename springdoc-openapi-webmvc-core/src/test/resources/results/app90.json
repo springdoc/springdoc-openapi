@@ -50,6 +50,42 @@
           }
         }
       }
+    },
+    "/test2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test2",
+        "requestBody": {
+          "description": "Details of the Item to be created",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "An example request with the minimum required fields to create.": {
+                  "summary": "Minimal request",
+                  "description": "An example request with the minimum required fields to create.",
+                  "value": "min"
+                },
+                "An example request with all fields provided with example values.": {
+                  "summary": "Full request",
+                  "description": "An example request with all fields provided with example values.",
+                  "value": "full"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "default response"
+          }
+        }
+      }
     }
   },
   "components": {
