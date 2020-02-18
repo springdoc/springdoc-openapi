@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.31] - 2020-02-18
+## Added
+- Allow Request paremeters types to be ignored programatically
+- Added support to disable autotagging of @RestController Classes. Fixes #420.
+- Multiple Parameter Refs throws IllegalStateException (Duplicate key). Fixes #408
+- Support for properties to exclude packages and paths from documentation. Fixes #404
+- Support for kotlin. Deprecated. Fixes #414
+- Add Suppot for Hiding org.springframework.security.core.Authentication on ServerHttpResponse. Fixes #423.
+## Changed
+- @CookieValue parameter indents request body. Fixes #419
+- Solves Hateoas fields names mismatch. Fixes #401
+- Fixes #418 by adjusting the output for Links.
+- Upgrade swagger-ui to 3.25.0
+- Allow ModelAndView to be detected. Fixes #428.
+## Fixed
+- Discovery of MediaType producers inconsistent with Spring MVC behaviour. Fixes #426
+- Improve Reverse proxy compatibily for webflux. Fixes #435
 ## [1.2.30] - 2020-02-03
 ## Added
 - Support REST Controllers with default empty @RequestMapping #378
@@ -12,9 +29,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve support of @Parameter Schema, in case of @RequestBody #396
 - Prevent swagger-ui default validation #393
 - @SecurityScheme `paramName` not accounted for the `name` #384
+- Warning on referenced example. Fixes #437
 ## Fixed
 - Same operationId for overloaded methods using Groups, breaks swagger-ui collapsibles #399
-
+- Duplicate tags if they are defined on @Operation annotation on swagger-ui. Fixes #436.
+- When using RestControllerAdvice, one of the responses description is missing and replaced with a default. Fixes #440
 ## [1.2.29] - 2020-01-27
 ## Added
 - Support for extensions on @ApiResponse #368

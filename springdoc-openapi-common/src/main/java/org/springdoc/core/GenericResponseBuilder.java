@@ -172,7 +172,7 @@ public class GenericResponseBuilder {
 
 	private void buildApiResponses(Components components, Method method, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes, boolean isGeneric) {
-		if (!CollectionUtils.isEmpty(apiResponsesOp) && ((apiResponsesOp.size() != genericMapResponse.size() || isGeneric))) {
+		if (!CollectionUtils.isEmpty(apiResponsesOp) && (apiResponsesOp.size() != genericMapResponse.size() || isGeneric)) {
 			// API Responses at operation and @ApiResponse annotation
 			for (Map.Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
 				String httpCode = entry.getKey();
