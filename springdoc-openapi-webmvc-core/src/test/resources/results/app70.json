@@ -51,7 +51,8 @@
         "properties": {
           "someProperty": {
             "type": "string",
-            "description": "Test description, customized property!"
+            "properties": {},
+            "format": "duration"
           }
         }
       }

@@ -19,11 +19,16 @@
 package test.org.springdoc.api.app70.customizer;
 
 import java.lang.annotation.Annotation;
+import java.time.Duration;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 
 import org.springframework.stereotype.Component;
 
@@ -41,9 +46,10 @@ public class PropertyCustomizer implements org.springdoc.core.customizers.Proper
 				.findFirst()
 				.map(CustomizedProperty.class::cast);
 
-		propertyAnnotation
-				.ifPresent(annotation -> property.description(property.getDescription() + ", " + annotation.addition()));
-
+		JavaType javaType = Json.mapper().constructType(type.getType());
+		if (javaType.getRawClass().equals(Duration.class)) {
+			property = new StringSchema().format("duration").properties(Collections.emptyMap());
+		}
 		return property;
 	}
 }
