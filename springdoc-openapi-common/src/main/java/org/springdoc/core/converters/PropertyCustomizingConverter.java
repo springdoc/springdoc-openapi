@@ -40,12 +40,10 @@ public class PropertyCustomizingConverter implements ModelConverter {
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		if (chain.hasNext()) {
 			Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
-			if (type.isSchemaProperty()) {
-				if(propertyCustomizers.isPresent()){
-					List<PropertyCustomizer> propertyCustomizerList =	propertyCustomizers.get() ;
-					for(PropertyCustomizer propertyCustomizer : propertyCustomizerList)
-						resolvedSchema = propertyCustomizer.customize(resolvedSchema, type);
-				}
+			if (type.isSchemaProperty() && propertyCustomizers.isPresent()) {
+				List<PropertyCustomizer> propertyCustomizerList = propertyCustomizers.get();
+				for (PropertyCustomizer propertyCustomizer : propertyCustomizerList)
+					resolvedSchema = propertyCustomizer.customize(resolvedSchema, type);
 			}
 			return resolvedSchema;
 		}
