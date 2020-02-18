@@ -43,7 +43,7 @@
           "500": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessage"
                 }
@@ -53,7 +53,7 @@
           "418": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "string"
                 }
@@ -109,7 +109,7 @@
           "500": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessage"
                 }
@@ -165,7 +165,7 @@
           "500": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessage"
                 }
@@ -225,7 +225,7 @@
           "500": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessage"
                 }
@@ -235,7 +235,7 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -265,39 +265,7 @@
           "500": {
             "description": "default response",
             "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessage"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string",
-                  "format": "uri"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/people": {
-      "get": {
-        "tags": [
-          "people"
-        ],
-        "description": "List all people",
-        "operationId": "getPeople",
-        "responses": {
-          "500": {
-            "description": "default response",
-            "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessage"
                 }
@@ -309,10 +277,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PersonDTO"
-                  }
+                  "type": "string",
+                  "format": "uri"
                 }
               }
             }
@@ -342,7 +308,7 @@
           "500": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessage"
                 }
@@ -410,7 +376,7 @@
           "500": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessage"
                 }
@@ -468,7 +434,7 @@
           "500": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorMessage"
                 }
@@ -478,7 +444,7 @@
           "204": {
             "description": "Person has been deleted",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "string"
                 }
@@ -488,9 +454,43 @@
           "404": {
             "description": "Person with such e-mail doesn't exists",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/people": {
+      "get": {
+        "tags": [
+          "people"
+        ],
+        "description": "List all people",
+        "operationId": "getPeople",
+        "responses": {
+          "500": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonDTO"
+                  }
                 }
               }
             }

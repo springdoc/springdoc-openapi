@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.commons.lang3.ArrayUtils;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,11 +48,19 @@ public class MethodAttributes {
 
 	private JsonView jsonViewAnnotationForRequestBody;
 
-	public MethodAttributes(String[] methodProducesNew) {
+	private String defaultConsumesMediaType;
+
+	private String defaultProducesMediaType;
+
+	public MethodAttributes(String[] methodProducesNew, String defaultConsumesMediaType, String defaultProducesMediaType) {
 		this.methodProduces = methodProducesNew;
+		this.defaultConsumesMediaType = defaultConsumesMediaType;
+		this.defaultProducesMediaType = defaultProducesMediaType;
 	}
 
-	public MethodAttributes() {
+	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType) {
+		this.defaultConsumesMediaType = defaultConsumesMediaType;
+		this.defaultProducesMediaType = defaultProducesMediaType;
 	}
 
 	public String[] getClassProduces() {
@@ -122,14 +129,14 @@ public class MethodAttributes {
 		else if (ArrayUtils.isNotEmpty(classProduces))
 			methodProduces = classProduces;
 		else
-			methodProduces = new String[] { MediaType.ALL_VALUE };
+			methodProduces = new String[] { defaultProducesMediaType };
 
 		if (ArrayUtils.isNotEmpty(consumes))
 			methodConsumes = consumes;
 		else if (ArrayUtils.isNotEmpty(classConsumes))
 			methodConsumes = classConsumes;
 		else
-			methodConsumes = new String[] { MediaType.APPLICATION_JSON_VALUE };
+			methodConsumes = new String[] { defaultConsumesMediaType };
 
 	}
 
