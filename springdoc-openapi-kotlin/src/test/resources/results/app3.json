@@ -56,6 +56,9 @@
   "components": {
     "schemas": {
       "SystemStatusResponse": {
+        "required": [
+          "status"
+        ],
         "type": "object",
         "properties": {
           "status": {
