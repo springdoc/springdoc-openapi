@@ -33,7 +33,6 @@ import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.ComposedSchema;
@@ -93,7 +92,7 @@ public class GenericResponseBuilder {
 		// for each one build ApiResponse and add it to existing responses
 		for (Method method : methods) {
 			if (!operationBuilder.isHidden(method)) {
-				RequestMapping reqMappringMethod = ReflectionUtils.getAnnotation(method, RequestMapping.class);
+				RequestMapping reqMappringMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
 				String[] methodProduces = { springDocConfigProperties.getDefaultProducesMediaType() };
 				if (reqMappringMethod != null) {
 					methodProduces = reqMappringMethod.produces();

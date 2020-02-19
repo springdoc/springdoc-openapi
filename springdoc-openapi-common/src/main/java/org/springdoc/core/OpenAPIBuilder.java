@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -54,6 +53,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Controller;
@@ -167,12 +167,12 @@ public class OpenAPIBuilder {
 
 	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
 		// class tags
-		List<Tag> classTags =
-				ReflectionUtils.getRepeatableAnnotations(handlerMethod.getBeanType(), Tag.class);
+		Set<Tag> classTags =
+				AnnotatedElementUtils.findAllMergedAnnotations(handlerMethod.getBeanType(), Tag.class);
 
 		// method tags
-		List<Tag> methodTags =
-				ReflectionUtils.getRepeatableAnnotations(handlerMethod.getMethod(), Tag.class);
+		Set<Tag> methodTags =
+				AnnotatedElementUtils.findAllMergedAnnotations(handlerMethod.getMethod(), Tag.class);
 
 		List<Tag> allTags = new ArrayList<>();
 		Set<String> tagsStr = new HashSet<>();
@@ -244,7 +244,7 @@ public class OpenAPIBuilder {
 		if (openAPIDefinitionMap.size() > 0) {
 			Map.Entry<String, Object> entry = openAPIDefinitionMap.entrySet().iterator().next();
 			Class<?> objClz = entry.getValue().getClass();
-			apiDef = ReflectionUtils.getAnnotation(objClz, OpenAPIDefinition.class);
+			apiDef = AnnotatedElementUtils.findMergedAnnotation(objClz, OpenAPIDefinition.class);
 		}
 
 		// Look for OpenAPIDefinition in the spring classpath
@@ -319,8 +319,7 @@ public class OpenAPIBuilder {
 		if (securitySchemeBeans.size() > 0) {
 			for (Map.Entry<String, Object> entry : securitySchemeBeans.entrySet()) {
 				Class<?> objClz = entry.getValue().getClass();
-				List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = ReflectionUtils
-						.getRepeatableAnnotations(objClz, io.swagger.v3.oas.annotations.security.SecurityScheme.class);
+				Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = AnnotatedElementUtils.findMergedRepeatableAnnotations(objClz, io.swagger.v3.oas.annotations.security.SecurityScheme.class);
 				this.addSecurityScheme(apiSecurityScheme, components);
 			}
 		}
@@ -333,7 +332,7 @@ public class OpenAPIBuilder {
 					new AnnotationTypeFilter(io.swagger.v3.oas.annotations.security.SecurityScheme.class));
 			if (AutoConfigurationPackages.has(context)) {
 				List<String> packagesToScan = AutoConfigurationPackages.get(context);
-				List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = getSecuritySchemesClasses(
+				Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = getSecuritySchemesClasses(
 						scanner, packagesToScan);
 				this.addSecurityScheme(apiSecurityScheme, components);
 			}
@@ -341,7 +340,7 @@ public class OpenAPIBuilder {
 		}
 	}
 
-	private void addSecurityScheme(List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme,
+	private void addSecurityScheme(Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme,
 			Components components) {
 		for (io.swagger.v3.oas.annotations.security.SecurityScheme securitySchemeAnnotation : apiSecurityScheme) {
 			Optional<SecuritySchemePair> securityScheme = securityParser.getSecurityScheme(securitySchemeAnnotation);
@@ -377,9 +376,9 @@ public class OpenAPIBuilder {
 		return null;
 	}
 
-	private List<io.swagger.v3.oas.annotations.security.SecurityScheme> getSecuritySchemesClasses(
+	private Set<io.swagger.v3.oas.annotations.security.SecurityScheme> getSecuritySchemesClasses(
 			ClassPathScanningCandidateComponentProvider scanner, List<String> packagesToScan) {
-		List<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = new ArrayList<>();
+		Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = new HashSet<>();
 		for (String pack : packagesToScan) {
 			for (BeanDefinition bd : scanner.findCandidateComponents(pack)) {
 				try {
