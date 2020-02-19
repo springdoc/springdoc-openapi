@@ -49,6 +49,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ApplicationContext;
@@ -81,9 +82,13 @@ public class OpenAPIBuilder {
 
 	private final SecurityParser securityParser;
 
+	private final Map<String, Object> mappingsMap = new HashMap<>();
+
 	private final Map<HandlerMethod, io.swagger.v3.oas.models.tags.Tag> springdocTags = new HashMap<>();
 
 	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
+
+	private final List<OpenApiBuilderCustomiser> openApiBuilderCustomisers;
 
 	private boolean isServersPresent;
 
@@ -92,7 +97,9 @@ public class OpenAPIBuilder {
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	@SuppressWarnings("WeakerAccess")
-	OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, SpringDocConfigProperties springDocConfigProperties) {
+	OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser,
+				   Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, SpringDocConfigProperties springDocConfigProperties,
+				   List<OpenApiBuilderCustomiser> openApiBuilderCustomisers) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
 			if (this.openAPI.getComponents() == null)
@@ -106,6 +113,7 @@ public class OpenAPIBuilder {
 		this.securityParser = securityParser;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.springDocConfigProperties = springDocConfigProperties;
+		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
 	}
 
 	private static String splitCamelCase(String str) {
@@ -146,12 +154,18 @@ public class OpenAPIBuilder {
 			Info infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
 			calculatedOpenAPI.setInfo(infos);
 		}
+		// Set default mappings
+		this.mappingsMap.putAll(context.getBeansWithAnnotation(RestController.class));
+		this.mappingsMap.putAll(context.getBeansWithAnnotation(RequestMapping.class));
+		this.mappingsMap.putAll(context.getBeansWithAnnotation(Controller.class));
+
 		// default server value
 		if (CollectionUtils.isEmpty(calculatedOpenAPI.getServers()) || !isServersPresent) {
 			this.updateServers(calculatedOpenAPI);
 		}
 		// add security schemes
 		this.calculateSecuritySchemes(calculatedOpenAPI.getComponents());
+		Optional.ofNullable(this.openApiBuilderCustomisers).ifPresent(customisers -> customisers.forEach(customiser -> customiser.customise(this)));
 	}
 
 	public void updateServers(OpenAPI openAPI) {
@@ -397,16 +411,8 @@ public class OpenAPIBuilder {
 		handlerMethods.forEach(handlerMethod -> springdocTags.put(handlerMethod, tag));
 	}
 
-	public Map<String, Object> getRestControllersMap() {
-		return context.getBeansWithAnnotation(RestController.class);
-	}
-
-	public Map<String, Object> getRequestMappingMap() {
-		return context.getBeansWithAnnotation(RequestMapping.class);
-	}
-
-	public Map<String, Object> getControllersMap() {
-		return context.getBeansWithAnnotation(Controller.class);
+	public Map<String, Object> getMappingsMap() {
+		return this.mappingsMap;
 	}
 
 	public Map<String, Object> getControllerAdviceMap() {
