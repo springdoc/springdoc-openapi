@@ -57,6 +57,7 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
@@ -170,7 +171,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				continue;
 			}
 
-			RequestMapping reqMappingClass = ReflectionUtils.getAnnotation(handlerMethod.getBeanType(),
+			RequestMapping reqMappingClass =  AnnotatedElementUtils.findMergedAnnotation(handlerMethod.getBeanType(),
 					RequestMapping.class);
 
 			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType());
@@ -190,7 +191,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			}
 
 			// Add documentation from operation annotation
-			io.swagger.v3.oas.annotations.Operation apiOperation = ReflectionUtils.getAnnotation(method,
+			io.swagger.v3.oas.annotations.Operation apiOperation =  AnnotatedElementUtils.findMergedAnnotation(method,
 					io.swagger.v3.oas.annotations.Operation.class);
 
 			calculateJsonView(apiOperation, methodAttributes, method);
@@ -202,7 +203,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// compute tags
 			operation = openAPIBuilder.buildTags(handlerMethod, operation, openAPI);
 
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = ReflectionUtils.getAnnotation(method,
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc =  AnnotatedElementUtils.findMergedAnnotation(method,
 					io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 
 			// RequestBody in Operation
@@ -218,8 +219,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation, methodAttributes);
 			operation.setResponses(apiResponses);
 
-			List<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks = ReflectionUtils
-					.getRepeatableAnnotations(method, io.swagger.v3.oas.annotations.callbacks.Callback.class);
+			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks =  AnnotatedElementUtils.findMergedRepeatableAnnotations(method, io.swagger.v3.oas.annotations.callbacks.Callback.class);
 
 			// callbacks
 			if (!CollectionUtils.isEmpty(apiCallbacks)) {
@@ -241,7 +241,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			jsonViewAnnotationForRequestBody = null;
 		}
 		else {
-			jsonViewAnnotation = ReflectionUtils.getAnnotation(method, JsonView.class);
+			jsonViewAnnotation =  AnnotatedElementUtils.findMergedAnnotation(method, JsonView.class);
 			/*
 			 * If one and only one exists, use the @JsonView annotation from the method
 			 * parameter annotated with @RequestBody. Otherwise fall back to the @JsonView
@@ -408,6 +408,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	}
 
 	private boolean isDeprecatedType(Method method) {
-		return DEPRECATED_TYPES.stream().anyMatch(clazz -> (ReflectionUtils.getAnnotation(method, clazz) != null));
+		return DEPRECATED_TYPES.stream().anyMatch(clazz -> (AnnotatedElementUtils.findMergedAnnotation(method, clazz) != null));
 	}
 }

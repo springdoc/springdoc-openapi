@@ -132,7 +132,7 @@ public class OperationBuilder {
 	}
 
 	public Optional<Map<String, Callback>> buildCallbacks(
-			List<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks, Components components, OpenAPI openAPI,
+			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks, Components components, OpenAPI openAPI,
 			MethodAttributes methodAttributes) {
 		Map<String, Callback> callbacks = new LinkedHashMap<>();
 

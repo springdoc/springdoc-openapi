@@ -27,7 +27,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.models.Operation;
@@ -38,6 +37,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.apache.commons.lang3.StringUtils;
 
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 
@@ -84,11 +84,9 @@ class SecurityParser {
 	public io.swagger.v3.oas.annotations.security.SecurityRequirement[] getSecurityRequirements(
 			HandlerMethod method) {
 		// class SecurityRequirements
-		io.swagger.v3.oas.annotations.security.SecurityRequirements classSecurity = ReflectionUtils
-				.getAnnotation(method.getBeanType(), io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
+		io.swagger.v3.oas.annotations.security.SecurityRequirements classSecurity = AnnotatedElementUtils.findMergedAnnotation(method.getBeanType(), io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 		// method SecurityRequirements
-		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity = ReflectionUtils
-				.getAnnotation(method.getMethod(), io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
+		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity = AnnotatedElementUtils.findMergedAnnotation(method.getMethod(), io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 
 		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = null;
 
@@ -96,17 +94,16 @@ class SecurityParser {
 			allSecurityTags = new HashSet<>(Arrays.asList(classSecurity.value()));
 		}
 		if (methodSecurity != null) {
-			allSecurityTags = addSecurityRequirements(allSecurityTags, Arrays.asList(methodSecurity.value()));
+			allSecurityTags = addSecurityRequirements(allSecurityTags, new HashSet<>(Arrays.asList(methodSecurity.value())));
 		}
 
 		if (CollectionUtils.isEmpty(allSecurityTags)) {
 			// class SecurityRequirement
-			List<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList = ReflectionUtils
-					.getRepeatableAnnotations(method.getBeanType(),
+			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList = AnnotatedElementUtils.findMergedRepeatableAnnotations(
+					method.getBeanType(),
 							io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
 			// method SecurityRequirement
-			List<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsMethodList = ReflectionUtils
-					.getRepeatableAnnotations(method.getMethod(),
+			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsMethodList = AnnotatedElementUtils.findMergedRepeatableAnnotations(method.getMethod(),
 							io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
 			if (!CollectionUtils.isEmpty(securityRequirementsClassList)) {
 				allSecurityTags = addSecurityRequirements(allSecurityTags, securityRequirementsClassList);
@@ -119,7 +116,7 @@ class SecurityParser {
 		return (allSecurityTags != null) ? allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]) : null;
 	}
 
-	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> addSecurityRequirements(Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags, List<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList) {
+	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> addSecurityRequirements(Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList) {
 		if (allSecurityTags == null)
 			allSecurityTags = new HashSet<>();
 		allSecurityTags.addAll(securityRequirementsClassList);
