@@ -18,6 +18,8 @@
 
 package org.springdoc.core;
 
+import com.fasterxml.jackson.module.kotlin.KotlinModule;
+import io.swagger.v3.core.util.Json;
 import kotlin.Deprecated;
 import kotlin.coroutines.Continuation;
 
@@ -36,6 +38,7 @@ public class SpringDocKotlinConfiguration {
 	static {
 		getConfig().addRequestWrapperToIgnore(Continuation.class)
 		.addDeprecatedType(Deprecated.class);
+		Json.mapper().registerModule(new KotlinModule());
 	}
 
 	@Bean

@@ -11,39 +11,29 @@
     }
   ],
   "paths": {
-    "/status": {
+    "/test": {
       "get": {
         "tags": [
-          "system-status-controller"
+          "hello-controller"
         ],
         "operationId": "index",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/SystemStatusResponse"
-                }
-              }
+        "parameters": [
+          {
+            "name": "s",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Person"
             }
           }
-        }
-      }
-    },
-    "/status/foo": {
-      "get": {
-        "tags": [
-          "system-status-controller"
         ],
-        "operationId": "foo",
         "responses": {
           "200": {
             "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/SystemStatusResponse"
+                  "$ref": "#/components/schemas/Person"
                 }
               }
             }
@@ -54,17 +44,17 @@
   },
   "components": {
     "schemas": {
-      "SystemStatusResponse": {
+      "Person": {
         "required": [
-          "status"
+          "name"
         ],
         "type": "object",
         "properties": {
-          "status": {
-            "type": "string",
-            "enum": [
-              "OK"
-            ]
+          "name": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
           }
         }
       }
