@@ -72,6 +72,7 @@
 		<swagger-ui.version>3.25.0</swagger-ui.version>
 		<webjars-locator.version>0.38</webjars-locator.version>
 		<spring-security-oauth2.version>2.3.8.RELEASE</spring-security-oauth2.version>
+		<classgraph.version>4.8.44</classgraph.version>
 	</properties>
 
 	<dependencyManagement>
@@ -90,6 +91,12 @@
 			<dependency>
 				<groupId>io.swagger.core.v3</groupId>
 				<artifactId>swagger-integration</artifactId>
+				<exclusions>
+					<exclusion>
+						<groupId>io.github.classgraph</groupId>
+						<artifactId>classgraph</artifactId>
+					</exclusion>
+				</exclusions>
 				<version>${swagger-api.version}</version>
 			</dependency>
 			<!-- swagger ui -->
@@ -107,6 +114,11 @@
 				<groupId>org.springframework.security.oauth</groupId>
 				<artifactId>spring-security-oauth2</artifactId>
 				<version>${spring-security-oauth2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.classgraph</groupId>
+				<artifactId>classgraph</artifactId>
+				<version>${classgraph.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
