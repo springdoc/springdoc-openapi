@@ -25,27 +25,6 @@
         "summary": "This API will return a random greeting.",
         "operationId": "sayHello",
         "responses": {
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                },
-                "examples": {
-                  "Service-500": {
-                    "summary": "500 from the service directly",
-                    "description": "Service-500",
-                    "value": {
-                      "status": 500,
-                      "errorCode": "ERROR_002",
-                      "message": "Another example message..."
-                    }
-                  }
-                }
-              }
-            }
-          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -67,10 +46,71 @@
               }
             }
           },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                },
+                "examples": {
+                  "Service-500": {
+                    "summary": "500 from the service directly",
+                    "description": "Service-500",
+                    "value": {
+                      "status": 500,
+                      "errorCode": "ERROR_002",
+                      "message": "Another example message..."
+                    }
+                  }
+                }
+              }
+            }
+          },
           "200": {
             "description": "default response",
             "content": {
               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Greeting"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test": {
+      "get": {
+        "tags": [
+          "Demo"
+        ],
+        "operationId": "sayHello2",
+        "responses": {
+          "400": {
+            "description": "invalid input, object invalid",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Greeting"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "item created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Greeting"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "an existing item already exists",
+            "content": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/Greeting"
                 }

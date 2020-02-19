@@ -70,7 +70,7 @@ public class GenericResponseBuilder {
 		super();
 		this.operationBuilder = operationBuilder;
 		this.returnTypeParsers = returnTypeParsers;
-		this.springDocConfigProperties=springDocConfigProperties;
+		this.springDocConfigProperties = springDocConfigProperties;
 	}
 
 	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
@@ -125,6 +125,9 @@ public class GenericResponseBuilder {
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray = getApiResponses(method);
 		if (!responsesArray.isEmpty()) {
 			methodAttributes.setWithApiResponseDoc(true);
+			if (!springDocConfigProperties.isOverrideWithGenericResponse())
+				for (String key : genericMapResponse.keySet())
+					apiResponsesOp.remove(key);
 			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations : responsesArray) {
 				ApiResponse apiResponse = new ApiResponse();
 				if (StringUtils.isNotBlank(apiResponseAnnotations.ref())) {
@@ -258,7 +261,7 @@ public class GenericResponseBuilder {
 			// if void, no content
 			return null;
 		}
-		Schema<?> schemaN  = SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView);
+		Schema<?> schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView);
 		if (schemaN == null && returnType instanceof Class && !isResponseTypeToIgnore((Class) returnType)) {
 			schemaN = AnnotationsUtils.resolveSchemaFromType((Class) returnType, null, jsonView);
 		}

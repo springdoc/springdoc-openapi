@@ -22,7 +22,9 @@ package test.org.springdoc.api.app91;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = "springdoc.override-with-generic-response=false")
 public class SpringDocApp91Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication

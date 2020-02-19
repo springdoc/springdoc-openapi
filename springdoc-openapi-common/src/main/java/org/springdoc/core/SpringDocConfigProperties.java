@@ -55,6 +55,8 @@ public class SpringDocConfigProperties {
 
 	private boolean modelAndViewAllowed;
 
+	private boolean overrideWithGenericResponse = true;
+
 	private String defaultConsumesMediaType = MediaType.APPLICATION_JSON_VALUE;
 
 	private String defaultProducesMediaType = MediaType.ALL_VALUE;
@@ -302,5 +304,13 @@ public class SpringDocConfigProperties {
 
 	public void setDefaultProducesMediaType(String defaultProducesMediaType) {
 		this.defaultProducesMediaType = defaultProducesMediaType;
+	}
+
+	public boolean isOverrideWithGenericResponse() {
+		return overrideWithGenericResponse;
+	}
+
+	public void setOverrideWithGenericResponse(boolean overrideWithGenericResponse) {
+		this.overrideWithGenericResponse = overrideWithGenericResponse;
 	}
 }
