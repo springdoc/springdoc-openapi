@@ -415,6 +415,10 @@ public class OpenAPIBuilder {
 		return this.mappingsMap;
 	}
 
+	public void addMappings(Map<String, Object> mappings) {
+		this.mappingsMap.putAll(mappings);
+	}
+
 	public Map<String, Object> getControllerAdviceMap() {
 		Map<String, Object> controllerAdviceMap = context.getBeansWithAnnotation(ControllerAdvice.class);
 		return Stream.of(controllerAdviceMap).flatMap(mapEl -> mapEl.entrySet().stream()).filter(
