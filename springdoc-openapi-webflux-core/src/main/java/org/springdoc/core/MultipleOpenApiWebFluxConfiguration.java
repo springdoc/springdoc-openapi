@@ -36,7 +36,6 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-@ConditionalOnBean(GroupedOpenApi.class)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class MultipleOpenApiWebFluxConfiguration {
 
