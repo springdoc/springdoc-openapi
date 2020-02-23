@@ -18,7 +18,6 @@
 
 package org.springdoc.ui;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigProperties;
@@ -30,7 +29,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import static org.springdoc.core.Constants.SPRINGDOC_OAUTH2_REDIRECT_URL_VALUE;
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE;
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_URL_VALUE;
-import static org.springdoc.core.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
 import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 

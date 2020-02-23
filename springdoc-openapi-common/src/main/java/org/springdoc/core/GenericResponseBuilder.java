@@ -255,12 +255,12 @@ public class GenericResponseBuilder {
 		return returnType;
 	}
 
-	public Schema<?> calculateSchema(Components components, Type returnType, JsonView jsonView) {
+	public Schema calculateSchema(Components components, Type returnType, JsonView jsonView) {
 		if (isVoid(returnType)) {
 			// if void, no content
 			return null;
 		}
-		Schema<?> schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView);
+		Schema schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView);
 		if (schemaN == null && returnType instanceof Class && !isResponseTypeToIgnore((Class) returnType)) {
 			schemaN = AnnotationsUtils.resolveSchemaFromType((Class) returnType, null, jsonView);
 		}
