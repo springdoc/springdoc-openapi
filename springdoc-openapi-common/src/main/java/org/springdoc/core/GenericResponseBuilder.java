@@ -255,7 +255,7 @@ public class GenericResponseBuilder {
 		return returnType;
 	}
 
-	private Schema<?> calculateSchema(Components components, Type returnType, JsonView jsonView) {
+	public Schema<?> calculateSchema(Components components, Type returnType, JsonView jsonView) {
 		if (isVoid(returnType)) {
 			// if void, no content
 			return null;
