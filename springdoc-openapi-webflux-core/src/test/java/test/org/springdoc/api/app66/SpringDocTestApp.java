@@ -25,13 +25,17 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.GroupedOpenApi;
 
+import org.springdoc.core.MultipleOpenApiWebFluxConfiguration;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app66" })
+@ComponentScan(basePackages = { "org.springdoc.core", "test.org.springdoc.api.app66" })
 public class SpringDocTestApp {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringDocTestApp.class, args);
@@ -47,7 +51,8 @@ public class SpringDocTestApp {
 	}
 
 	@Bean
-	public GroupedOpenApi stramOpenApi() {
+	@Order(Ordered.HIGHEST_PRECEDENCE)
+	public GroupedOpenApi streamOpenApi() {
 		String[] paths = { "/stream/**" };
 		String[] packagedToMatch = { "test.org.springdoc.api.app66" };
 		return GroupedOpenApi.builder().setGroup("stream").pathsToMatch(paths)

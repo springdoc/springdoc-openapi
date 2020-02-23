@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app39" })
+@ComponentScan(basePackages = { "org.springdoc.core", "test.org.springdoc.api.app39" })
 public class SpringDocTestApp {
 
 	public static void main(String[] args) {

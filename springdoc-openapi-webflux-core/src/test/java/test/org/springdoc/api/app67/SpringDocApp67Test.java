@@ -28,7 +28,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class SpringDocApp67Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app67" })
+	@ComponentScan(basePackages = { "org.springdoc.core", "test.org.springdoc.api.app67" })
 	static class SpringDocTestApp {}
 
 	@Test
