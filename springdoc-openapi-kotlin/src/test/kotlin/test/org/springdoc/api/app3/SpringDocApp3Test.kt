@@ -22,7 +22,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.ComponentScan
 import test.org.springdoc.api.AbstractKotlinSpringDocTest
 
-@ComponentScan(basePackages = ["org.springdoc", "test.org.springdoc.api.app3"])
+@ComponentScan(basePackages = ["org.springdoc.core", "test.org.springdoc.api.app3"])
 class SpringDocApp3Test : AbstractKotlinSpringDocTest() {
 
 	@SpringBootApplication
