@@ -47,7 +47,7 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	private String originConfigUrl;
 
 	@Value(SPRINGDOC_OAUTH2_REDIRECT_URL_VALUE)
-	private String oauth2RedirectUrl;
+	protected String oauth2RedirectUrl;
 
 	@Value(SPRINGDOC_SWAGGER_UI_URL_VALUE)
 	private String swaggerUiUrl;
@@ -62,17 +62,6 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 		calculateUiRootPath();
 	}
 
-
-	protected void calculateUiRootPath(StringBuilder... sbUrls) {
-		StringBuilder sbUrl = new StringBuilder();
-		if (ArrayUtils.isNotEmpty(sbUrls))
-			sbUrl = sbUrls[0];
-		String swaggerPath = swaggerUiConfig.getPath();
-		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
-			sbUrl.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
-		this.uiRootPath = sbUrl.toString();
-	}
-
 	protected String buildUrl(String contextPath, final String docsUrl) {
 		if (contextPath.endsWith(DEFAULT_PATH_SEPARATOR)) {
 			return contextPath.substring(0, contextPath.length() - 1) + docsUrl;
@@ -80,7 +69,7 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 		return contextPath + docsUrl;
 	}
 
-	void buildConfigUrl(String contextPath, UriComponentsBuilder uriComponentsBuilder) {
+	protected void buildConfigUrl(String contextPath, UriComponentsBuilder uriComponentsBuilder) {
 		String apiDocsUrl = springDocConfigProperties.getApiDocs().getPath();
 		if (StringUtils.isEmpty(originConfigUrl)) {
 			String url = buildUrl(contextPath, apiDocsUrl);
@@ -95,12 +84,11 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 			else
 				SwaggerUiConfigProperties.addUrl(url);
 		}
-		if (StringUtils.isEmpty(oauth2RedirectUrl)) {
-			swaggerUiConfig.setOauth2RedirectUrl(uriComponentsBuilder.path(this.uiRootPath).path(SWAGGER_UI_OAUTH_REDIRECT_URL).build().toString());
-		}
-		else if (!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
-			swaggerUiConfig.setOauth2RedirectUrl(uriComponentsBuilder.path(this.uiRootPath).path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
-		}
+		calculateOauth2RedirectUrl(uriComponentsBuilder);
 	}
+
+	abstract void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder);
+
+	abstract void calculateUiRootPath(StringBuilder... sbUrls);
 
 }
