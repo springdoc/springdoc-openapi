@@ -22,11 +22,14 @@ import java.net.URI;
 import java.util.Map;
 
 import io.swagger.v3.oas.annotations.Operation;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import reactor.core.publisher.Mono;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
@@ -40,13 +43,19 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.Constants.SWAGGER_CONFIG_URL;
+import static org.springdoc.core.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
 import static org.springdoc.core.Constants.SWAGGER_UI_URL;
+import static org.springdoc.core.Constants.WEB_JARS_PREFIX_URL;
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @Controller
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
-public class SwaggerWelcome extends AbstractSwaggerWelcome  {
+public class SwaggerWelcome extends AbstractSwaggerWelcome {
+
+	@Value(WEB_JARS_PREFIX_URL)
+	private String webJarsPrefixUrl;
 
 	public SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
 		super(swaggerUiConfig, springDocConfigProperties);
@@ -55,9 +64,8 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome  {
 	@Operation(hidden = true)
 	@GetMapping(SWAGGER_UI_PATH)
 	public Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
-		String contextPath = request.getPath().contextPath().value();
-		buildConfigUrl(contextPath, UriComponentsBuilder.fromHttpRequest(request));
-		String sbUrl =  this.buildUrl(contextPath,this.uiRootPath + springDocConfigProperties.getWebjars().getPrefix()+ SWAGGER_UI_URL);
+		String contextPath = this.fromCurrentContextPath(request);
+		String sbUrl = this.buildUrl(contextPath, this.uiRootPath + springDocConfigProperties.getWebjars().getPrefix() + SWAGGER_UI_URL);
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl);
 		uriBuilder.queryParam(SwaggerUiConfigProperties.CONFIG_URL_PROPERTY, swaggerUiConfig.getConfigUrl());
 		response.setStatusCode(HttpStatus.TEMPORARY_REDIRECT);
@@ -69,9 +77,36 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome  {
 	@GetMapping(value = SWAGGER_CONFIG_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
-		String contextPath = request.getPath().contextPath().value();
-		buildConfigUrl(contextPath, UriComponentsBuilder.fromHttpRequest(request));
+		this.fromCurrentContextPath(request);
 		return swaggerUiConfig.getConfigParameters();
 	}
 
+	@Override
+	void calculateUiRootPath(StringBuilder... sbUrls) {
+		StringBuilder sbUrl = new StringBuilder();
+		if (ArrayUtils.isNotEmpty(sbUrls))
+			sbUrl = sbUrls[0];
+		String swaggerPath = swaggerUiConfig.getPath();
+		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
+			sbUrl.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
+		this.uiRootPath = sbUrl.toString();
+	}
+
+	@Override
+	void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
+		if (StringUtils.isEmpty(oauth2RedirectUrl)) {
+			swaggerUiConfig.setOauth2RedirectUrl(uriComponentsBuilder.path(this.uiRootPath).path(webJarsPrefixUrl + SWAGGER_UI_OAUTH_REDIRECT_URL).build().toString());
+		}
+		else if (!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
+			swaggerUiConfig.setOauth2RedirectUrl(uriComponentsBuilder.path(this.uiRootPath).path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
+		}
+	}
+
+	private String fromCurrentContextPath(ServerHttpRequest request) {
+		String contextPath = request.getPath().contextPath().value();
+		String url = UriComponentsBuilder.fromHttpRequest(request).toUriString();
+		url = url.replace(request.getPath().toString(), "");
+		buildConfigUrl(contextPath, UriComponentsBuilder.fromUriString(url));
+		return contextPath;
+	}
 }

@@ -34,9 +34,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import static org.springdoc.core.Constants.CLASSPATH_RESOURCE_LOCATION;
+import static org.springdoc.core.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
-import static org.springdoc.core.Constants.WEB_JARS_PREFIX_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 
@@ -49,9 +49,6 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
 	@Value(SWAGGER_UI_PATH)
 	private String swaggerPath;
 
-	@Value(WEB_JARS_PREFIX_URL)
-	private String webJarsPrefixUrl;
-
 	@Autowired
 	private SwaggerIndexTransformer swaggerIndexTransformer;
 
@@ -62,8 +59,8 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
 			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf('/'));
 		}
 		uiRootPath.append("/**");
-		String webJarsLocation = webJarsPrefixUrl + DEFAULT_PATH_SEPARATOR;
-		registry.addResourceHandler(uiRootPath + "/swagger-ui/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATION + webJarsLocation)
+		registry.addResourceHandler(uiRootPath + "/swagger-ui/**")
+				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL+DEFAULT_PATH_SEPARATOR)
 				.resourceChain(false)
 				.addTransformer(swaggerIndexTransformer);
 	}
