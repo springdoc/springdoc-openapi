@@ -114,11 +114,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		if (!computeDone || springDocConfigProperties.getCache().isDisabled()) {
 			Instant start = Instant.now();
 			openAPIBuilder.build();
-			Map<String, Object> restControllersMap = openAPIBuilder.getRestControllersMap();
-			Map<String, Object> requestMappingMap = openAPIBuilder.getRequestMappingMap();
-			Map<String, Object> controllerMap = openAPIBuilder.getControllersMap();
-			Map<String, Object> restControllers = Stream.of(restControllersMap, requestMappingMap, controllerMap)
-					.flatMap(mapEl -> mapEl.entrySet().stream())
+			Map<String, Object> mappingsMap = openAPIBuilder.getMappingsMap().entrySet().stream()
 					.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 							Hidden.class) == null))
 					.filter(controller -> !isHiddenRestControllers(controller.getValue().getClass()))
@@ -128,7 +124,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// calculate generic responses
 			responseBuilder.buildGenericResponse(openAPIBuilder.getComponents(), findControllerAdvice);
 
-			getPaths(restControllers);
+			getPaths(mappingsMap);
 			openApi = openAPIBuilder.getCalculatedOpenAPI();
 
 			// run the optional customisers
