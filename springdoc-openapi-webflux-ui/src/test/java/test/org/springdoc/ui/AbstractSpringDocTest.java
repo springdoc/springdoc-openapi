@@ -22,6 +22,7 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SpringDocWebFluxConfiguration;
 import org.springdoc.core.SwaggerUiConfigProperties;
+import org.springdoc.ui.SwaggerConfig;
 import org.springdoc.ui.SwaggerWelcome;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @ActiveProfiles("test")
 @WebFluxTest
-@ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class, SwaggerWelcome.class })
+@ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class, SwaggerConfig.class, SwaggerWelcome.class })
 public abstract class AbstractSpringDocTest {
 
 
