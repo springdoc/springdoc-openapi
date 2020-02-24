@@ -36,11 +36,12 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+@ConditionalOnBean(GroupedOpenApi.class)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class MultipleOpenApiWebFluxConfiguration {
 
-	@Bean(name = "multipleWebfluxOpenApiResource")
-	@ConditionalOnMissingBean(name = "multipleWebfluxOpenApiResource")
+	@Bean
+	@ConditionalOnMissingBean
 	public MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,

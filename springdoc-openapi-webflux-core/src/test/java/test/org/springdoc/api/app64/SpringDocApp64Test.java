@@ -38,6 +38,6 @@ public class SpringDocApp64Test extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc.core", "test.org.springdoc.api.app64" })
+	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app64" })
 	static class SpringDocTestApp {}
 }

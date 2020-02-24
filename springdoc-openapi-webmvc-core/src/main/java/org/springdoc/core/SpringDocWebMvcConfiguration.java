@@ -47,8 +47,8 @@ import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocWebMvcConfiguration {
 
-	@Bean(name = "mvcOpenApiResource")
-	@ConditionalOnMissingBean(name = "mvcOpenApiResource")
+	@Bean
+	@ConditionalOnMissingBean
 	public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
