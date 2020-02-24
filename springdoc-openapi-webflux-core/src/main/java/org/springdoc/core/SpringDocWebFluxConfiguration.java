@@ -42,8 +42,8 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocWebFluxConfiguration {
 
-	@Bean(name = "webfluxOpenApiResource")
-	@ConditionalOnMissingBean(name = "webfluxOpenApiResource")
+	@Bean
+	@ConditionalOnMissingBean
 	public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,

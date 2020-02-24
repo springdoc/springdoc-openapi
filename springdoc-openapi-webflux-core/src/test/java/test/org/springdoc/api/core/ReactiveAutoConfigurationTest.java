@@ -37,7 +37,7 @@ public class ReactiveAutoConfigurationTest {
 		contextRunner
 				.run(context -> assertThat(context)
 						.hasNotFailed()
-						.hasBean("webfluxOpenApiResource"));
+						.hasBean("openApiResource"));
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class ReactiveAutoConfigurationTest {
 				.withUserConfiguration(TestApp.class)
 				.run(context -> assertThat(context)
 						.hasNotFailed()
-						.doesNotHaveBean("webfluxOpenApiResource"));
+						.doesNotHaveBean("openApiResource"));
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class ReactiveAutoConfigurationTest {
 				.withPropertyValues("springdoc.api-docs.enabled=false")
 				.run(context -> assertThat(context)
 						.hasNotFailed()
-						.doesNotHaveBean("webfluxOpenApiResource"));
+						.doesNotHaveBean("openApiResource"));
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class ReactiveAutoConfigurationTest {
 				.withClassLoader(new FilteredClassLoader("org.springframework.web.reactive.HandlerResult"))
 				.run(context -> assertThat(context)
 						.hasNotFailed()
-						.doesNotHaveBean("webfluxOpenApiResource"));
+						.doesNotHaveBean("openApiResource"));
 
 	}
 

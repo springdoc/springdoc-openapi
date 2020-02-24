@@ -40,9 +40,9 @@ public class BlockingAutoConfigurationTest {
 				.withPropertyValues("springdoc.show-actuator=true")
 				.run(context -> assertThat(context)
 						.hasNotFailed()
-						.hasBean("mvcOpenApiResource")
+						.hasBean("openApiResource")
 						.hasBean("actuatorProvider")
-						.hasBean("multipleMvcOpenApiResource")
+						.hasBean("multipleOpenApiResource")
 				);
 	}
 
@@ -52,9 +52,9 @@ public class BlockingAutoConfigurationTest {
 				.withUserConfiguration(TestApp.class)
 				.run(context -> assertThat(context)
 						.hasNotFailed()
-						.doesNotHaveBean("mvcOpenApiResource")
+						.doesNotHaveBean("openApiResource")
 						.doesNotHaveBean("actuatorProvider")
-						.doesNotHaveBean("multipleMvcOpenApiResource")
+						.doesNotHaveBean("multipleOpenApiResource")
 				);
 	}
 
@@ -63,9 +63,9 @@ public class BlockingAutoConfigurationTest {
 		contextRunner
 				.run(context -> assertThat(context)
 						.hasNotFailed()
-						.hasBean("mvcOpenApiResource")
+						.hasBean("openApiResource")
 						.doesNotHaveBean("actuatorPprrovider")
-						.hasBean("multipleMvcOpenApiResource")
+						.hasBean("multipleOpenApiResource")
 				);
 	}
 
@@ -75,9 +75,9 @@ public class BlockingAutoConfigurationTest {
 				.withPropertyValues("springdoc.api-docs.enabled=false")
 				.run(context -> assertThat(context)
 						.hasNotFailed()
-						.doesNotHaveBean("mvcOpenApiResource")
+						.doesNotHaveBean("openApiResource")
 						.doesNotHaveBean("actuatorProvider")
-						.doesNotHaveBean("multipleMvcOpenApiResource")
+						.doesNotHaveBean("multipleOpenApiResource")
 				);
 	}
 
@@ -87,9 +87,9 @@ public class BlockingAutoConfigurationTest {
 				.withClassLoader(new FilteredClassLoader("org.springframework.web.context.support.GenericWebApplicationContext"))
 				.run(context -> assertThat(context)
 						.hasNotFailed()
-						.doesNotHaveBean("mvcOpenApiResource")
+						.doesNotHaveBean("openApiResource")
 						.doesNotHaveBean("actuatorProvider")
-						.doesNotHaveBean("multipleMvcOpenApiResource")
+						.doesNotHaveBean("multipleOpenApiResource")
 				);
 
 	}

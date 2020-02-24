@@ -42,8 +42,8 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class MultipleOpenApiSupportConfiguration {
 
-	@Bean(name = "multipleMvcOpenApiResource")
-	@ConditionalOnMissingBean(name = "multipleMvcOpenApiResource")
+	@Bean
+	@ConditionalOnMissingBean
 	public MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
