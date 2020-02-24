@@ -42,6 +42,7 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,6 +61,7 @@ import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
+@ConditionalOnMissingBean(name = "openApiResource")
 public class OpenApiResource extends AbstractOpenApiResource {
 
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;

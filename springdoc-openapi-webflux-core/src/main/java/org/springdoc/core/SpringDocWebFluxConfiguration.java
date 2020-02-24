@@ -43,6 +43,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 public class SpringDocWebFluxConfiguration {
 
 	@Bean
+	@ConditionalOnMissingBean
 	public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
