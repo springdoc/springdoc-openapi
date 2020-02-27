@@ -177,8 +177,10 @@ public abstract class AbstractRequestBuilder {
 				parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
 				if (isValidParameter(parameter)) {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
+					parameter = customiseParameter(parameter, parameterInfo, handlerMethod);
 				}
 				else if (!RequestMethod.GET.equals(requestMethod)) {
+					parameter = customiseParameter(parameter, parameterInfo, handlerMethod);
 					if (operation.getRequestBody() != null)
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, methodAttributes, i,
@@ -293,7 +295,6 @@ public abstract class AbstractRequestBuilder {
 			parameter = this.buildParam(QUERY_PARAM, components, parameterInfo, Boolean.TRUE, null, jsonView);
 		}
 
-		parameter = customiseParameter(parameter, parameterInfo, handlerMethod);
 		return parameter;
 	}
 
