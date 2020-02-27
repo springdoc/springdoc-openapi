@@ -38,7 +38,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @SuppressWarnings({ "rawtypes" })
-class SpringDocAnnotationsUtils extends AnnotationsUtils {
+public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
 	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
 			JsonView jsonView) {
