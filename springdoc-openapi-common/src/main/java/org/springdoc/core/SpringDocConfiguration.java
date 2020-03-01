@@ -73,7 +73,7 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
-	ResponseSupportConverter responseSupportConverter(){
+	ResponseSupportConverter responseSupportConverter() {
 		return new ResponseSupportConverter();
 	}
 
@@ -84,9 +84,9 @@ public class SpringDocConfiguration {
 
 	@Bean
 	public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser,
-										 Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, SpringDocConfigProperties springDocConfigProperties,
-										 List<OpenApiBuilderCustomiser> openApiBuilderCustomisers) {
-		return new OpenAPIBuilder(openAPI, context, securityParser, springSecurityOAuth2Provider,springDocConfigProperties, openApiBuilderCustomisers);
+			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, SpringDocConfigProperties springDocConfigProperties,
+			Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers) {
+		return new OpenAPIBuilder(openAPI, context, securityParser, springSecurityOAuth2Provider, springDocConfigProperties, openApiBuilderCustomisers);
 	}
 
 	@Bean
