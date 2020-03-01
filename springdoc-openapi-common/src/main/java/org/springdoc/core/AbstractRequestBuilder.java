@@ -177,15 +177,14 @@ public abstract class AbstractRequestBuilder {
 				parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
 				if (isValidParameter(parameter)) {
 					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
-					parameter = customiseParameter(parameter, parameterInfo, handlerMethod);
 				}
 				else if (!RequestMethod.GET.equals(requestMethod)) {
-					parameter = customiseParameter(parameter, parameterInfo, handlerMethod);
 					if (operation.getRequestBody() != null)
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, methodAttributes, i,
 							parameterInfo, requestBodyInfo);
 				}
+				parameter = customiseParameter(parameter, parameterInfo, handlerMethod);
 			}
 		}
 
@@ -201,7 +200,7 @@ public abstract class AbstractRequestBuilder {
 	private LinkedHashMap<String, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
 		LinkedHashMap<String, Parameter> map = operationParameters.stream()
 				.collect(Collectors.toMap(
-						parameter -> parameter.getName() !=null ? parameter.getName(): Integer.toString(parameter.hashCode()),
+						parameter -> parameter.getName() != null ? parameter.getName() : Integer.toString(parameter.hashCode()),
 						parameter -> parameter,
 						(u, v) -> {
 							throw new IllegalStateException(String.format("Duplicate key %s", u));
@@ -260,7 +259,7 @@ public abstract class AbstractRequestBuilder {
 				RequestParam.class);
 		PathVariable pathVar = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
 				PathVariable.class);
-		CookieValue cookieValue =  parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
+		CookieValue cookieValue = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
 				CookieValue.class);
 
 		Parameter parameter = null;
@@ -285,7 +284,8 @@ public abstract class AbstractRequestBuilder {
 			// check if PATH PARAM
 			requestInfo = new RequestInfo(ParameterIn.PATH.toString(), pathVar.value(), Boolean.TRUE, null);
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
-		} else if (cookieValue != null) {
+		}
+		else if (cookieValue != null) {
 			requestInfo = new RequestInfo(ParameterIn.COOKIE.toString(), cookieValue.value(), cookieValue.required(),
 					cookieValue.defaultValue());
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
