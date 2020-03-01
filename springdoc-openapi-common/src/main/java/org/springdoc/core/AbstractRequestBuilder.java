@@ -184,7 +184,7 @@ public abstract class AbstractRequestBuilder {
 					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, methodAttributes, i,
 							parameterInfo, requestBodyInfo);
 				}
-				parameter = customiseParameter(parameter, parameterInfo, handlerMethod);
+				customiseParameter(parameter, parameterInfo, handlerMethod);
 			}
 		}
 
