@@ -48,7 +48,6 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
@@ -88,7 +87,7 @@ public class OpenAPIBuilder {
 
 	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
 
-	private final List<OpenApiBuilderCustomiser> openApiBuilderCustomisers;
+	private final Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers;
 
 	private boolean isServersPresent;
 
@@ -98,8 +97,8 @@ public class OpenAPIBuilder {
 
 	@SuppressWarnings("WeakerAccess")
 	OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser,
-				   Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, SpringDocConfigProperties springDocConfigProperties,
-				   List<OpenApiBuilderCustomiser> openApiBuilderCustomisers) {
+			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, SpringDocConfigProperties springDocConfigProperties,
+			Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
 			if (this.openAPI.getComponents() == null)
@@ -165,7 +164,7 @@ public class OpenAPIBuilder {
 		}
 		// add security schemes
 		this.calculateSecuritySchemes(calculatedOpenAPI.getComponents());
-		Optional.ofNullable(this.openApiBuilderCustomisers).ifPresent(customisers -> customisers.forEach(customiser -> customiser.customise(this)));
+		openApiBuilderCustomisers.ifPresent(customisers -> customisers.forEach(customiser -> customiser.customise(this)));
 	}
 
 	public void updateServers(OpenAPI openAPI) {
