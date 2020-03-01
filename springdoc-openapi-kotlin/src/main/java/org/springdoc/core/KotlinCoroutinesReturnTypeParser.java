@@ -31,7 +31,7 @@ import kotlin.coroutines.Continuation;
 public class KotlinCoroutinesReturnTypeParser implements ReturnTypeParser {
 
 	@Override
-	public Type getReturnType(Method method) {
+	public Type getReturnType(Method method, Class<?>  clazz) {
 		Type returnType = Object.class;
 		Optional<Parameter> continuationParameter = Arrays.stream(method.getParameters())
 				.filter(parameter -> parameter.getType().getCanonicalName().equals(Continuation.class.getCanonicalName()))
