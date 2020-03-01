@@ -30,6 +30,7 @@ import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.ModelConverterRegistrar;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
+import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
 import org.springdoc.core.customizers.PropertyCustomizer;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -82,8 +83,10 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
-	public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,SpringDocConfigProperties springDocConfigProperties) {
-		return new OpenAPIBuilder(openAPI, context, securityParser, springSecurityOAuth2Provider,springDocConfigProperties);
+	public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser,
+										 Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, SpringDocConfigProperties springDocConfigProperties,
+										 List<OpenApiBuilderCustomiser> openApiBuilderCustomisers) {
+		return new OpenAPIBuilder(openAPI, context, securityParser, springSecurityOAuth2Provider,springDocConfigProperties, openApiBuilderCustomisers);
 	}
 
 	@Bean
