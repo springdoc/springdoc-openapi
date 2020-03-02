@@ -79,7 +79,7 @@ public class OperationBuilder {
 	public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
 			Operation operation, OpenAPI openAPI, MethodAttributes methodAttributes) {
 		if (StringUtils.isNotBlank(apiOperation.summary())) {
-			operation.setSummary(apiOperation.summary());
+			operation.setSummary(propertyResolverUtils.resolve(apiOperation.summary()));
 		}
 		if (StringUtils.isNotBlank(apiOperation.description())) {
 			operation.setDescription(propertyResolverUtils.resolve(apiOperation.description()));
