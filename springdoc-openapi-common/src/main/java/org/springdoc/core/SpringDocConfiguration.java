@@ -124,8 +124,10 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
-	public GenericParameterBuilder parameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, IgnoredParameterAnnotations ignoredParameterAnnotations) {
-		return new GenericParameterBuilder(localSpringDocParameterNameDiscoverer, ignoredParameterAnnotations);
+	public GenericParameterBuilder parameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
+													IgnoredParameterAnnotations ignoredParameterAnnotations,
+													PropertyResolverUtils propertyResolverUtils) {
+		return new GenericParameterBuilder(localSpringDocParameterNameDiscoverer, ignoredParameterAnnotations, propertyResolverUtils);
 	}
 
 	static class ConditionOnCacheOrGroupedOpenApi extends AnyNestedCondition {

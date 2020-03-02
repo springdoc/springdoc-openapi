@@ -61,15 +61,19 @@ public class GenericParameterBuilder {
 
 	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 	private final IgnoredParameterAnnotations ignoredParameterAnnotations;
+	private final PropertyResolverUtils propertyResolverUtils;
 	private static final List<Class<?>> FILE_TYPES = new ArrayList<>();
 
 	static {
 		FILE_TYPES.add(MultipartFile.class);
 	}
 
-	public GenericParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, IgnoredParameterAnnotations ignoredParameterAnnotations) {
+	public GenericParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
+								   IgnoredParameterAnnotations ignoredParameterAnnotations,
+								   PropertyResolverUtils propertyResolverUtils) {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 		this.ignoredParameterAnnotations = ignoredParameterAnnotations;
+		this.propertyResolverUtils = propertyResolverUtils;
 	}
 
 	Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
@@ -132,10 +136,10 @@ public class GenericParameterBuilder {
 			Components components, JsonView jsonView) {
 		Parameter parameter = new Parameter();
 		if (StringUtils.isNotBlank(parameterDoc.description())) {
-			parameter.setDescription(parameterDoc.description());
+			parameter.setDescription(propertyResolverUtils.resolve(parameterDoc.description()));
 		}
 		if (StringUtils.isNotBlank(parameterDoc.name())) {
-			parameter.setName(parameterDoc.name());
+			parameter.setName(propertyResolverUtils.resolve(parameterDoc.name()));
 		}
 		if (StringUtils.isNotBlank(parameterDoc.in().toString())) {
 			parameter.setIn(parameterDoc.in().toString());
