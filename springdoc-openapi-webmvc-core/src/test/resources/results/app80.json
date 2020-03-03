@@ -11,26 +11,6 @@
     }
   ],
   "paths": {
-    "/api/hello": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "hello",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/testpost1": {
       "post": {
         "tags": [
@@ -44,7 +24,8 @@
                 "$ref": "#/components/schemas/TestObject"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -53,6 +34,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TestObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/hello": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }

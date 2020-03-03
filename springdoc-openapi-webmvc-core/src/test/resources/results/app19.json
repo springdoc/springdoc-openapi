@@ -11,14 +11,14 @@
     }
   ],
   "paths": {
-    "/persons2": {
+    "/persons": {
       "post": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "persons2",
+        "operationId": "persons",
         "requestBody": {
-          "description": "requestBody description outside",
+          "description": "requestBody description as parameter",
           "content": {
             "application/json": {
               "schema": {
@@ -55,7 +55,8 @@
                 "type": "string"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -71,14 +72,14 @@
         }
       }
     },
-    "/persons": {
+    "/persons2": {
       "post": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "persons",
+        "operationId": "persons2",
         "requestBody": {
-          "description": "requestBody description as parameter",
+          "description": "requestBody description outside",
           "content": {
             "application/json": {
               "schema": {

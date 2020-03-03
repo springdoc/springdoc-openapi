@@ -15,35 +15,6 @@
     }
   ],
   "paths": {
-    "/tweets/does-not-work": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "postNotWorks",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Tweet"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Tweet"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/test": {
       "get": {
         "tags": [
@@ -57,6 +28,36 @@
               "*/*": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tweets/does-not-work": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "postNotWorks",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tweet"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tweet"
                 }
               }
             }
