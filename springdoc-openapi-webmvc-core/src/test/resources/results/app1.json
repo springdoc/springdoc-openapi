@@ -159,7 +159,8 @@
                 "$ref": "#/components/schemas/InventoryItem"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "500": {
@@ -259,7 +260,8 @@
                 "$ref": "#/components/schemas/ItemLightDTO"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "500": {

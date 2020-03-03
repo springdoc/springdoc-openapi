@@ -2,3 +2,8 @@ spring:
   main:
     allow-bean-definition-overriding: true
     banner-mode: "off"
+logging:
+  level:
+    root: OFF
+  pattern:
+    console: '%m%n'

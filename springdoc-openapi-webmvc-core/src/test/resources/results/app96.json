@@ -11,46 +11,17 @@
     }
   ],
   "paths": {
-    "/parties": {
+    "/api2": {
       "post": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "saveMealParty",
+        "operationId": "test2",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MealParty_Public"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/MealParty_MealPartyAdmin"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/new-parties": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "saveMealNewParty",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MealParty_Public"
+                "type": "string"
               }
             }
           },
@@ -62,7 +33,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/MealParty_MealPartyAdmin"
+                  "type": "string"
                 }
               }
             }
@@ -70,31 +41,61 @@
         }
       }
     },
-    "/parties/{id}": {
-      "get": {
+    "/api3": {
+      "post": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Gets meal party details [Meal party admin restricted]",
-        "operationId": "getMealParty",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
+        "operationId": "test3",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Successfully retrieved the meal party",
+            "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/MealParty_Public"
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api1": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "minimum": 2,
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -103,30 +104,5 @@
       }
     }
   },
-  "components": {
-    "schemas": {
-      "MealParty_Public": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "MealParty_MealPartyAdmin": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "members": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    }
-  }
+  "components": {}
 }

@@ -46,8 +46,11 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
@@ -81,7 +84,7 @@ public abstract class AbstractRequestBuilder {
 	private static final List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
 
 	// using string litterals to support both validation-api v1 and v2
-	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
+	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), org.springframework.web.bind.annotation.RequestBody.class.getName(),"javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
 
 	private static final String POSITIVE_OR_ZERO = "javax.validation.constraints.PositiveOrZero";
 
@@ -183,6 +186,7 @@ public abstract class AbstractRequestBuilder {
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, methodAttributes, i,
 							parameterInfo, requestBodyInfo);
+					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), Arrays.asList(parameters[i].getAnnotations()));
 				}
 				customiseParameter(parameter, parameterInfo, handlerMethod);
 			}
@@ -349,54 +353,26 @@ public abstract class AbstractRequestBuilder {
 
 	private void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
 		Map<String, Annotation> annos = new HashMap<>();
-		if (annotations != null) {
+		if (annotations != null)
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getName(), annotation));
-		}
-
 		boolean annotationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
-
-		if (annotationExists) {
+		if (annotationExists)
 			parameter.setRequired(true);
-		}
-
 		Schema<?> schema = parameter.getSchema();
+		applyValidationsToSchema(annos, schema);
+	}
 
-		if (annos.containsKey(Min.class.getName())) {
-			Min min = (Min) annos.get(Min.class.getName());
-			schema.setMinimum(BigDecimal.valueOf(min.value()));
-		}
-		if (annos.containsKey(Max.class.getName())) {
-			Max max = (Max) annos.get(Max.class.getName());
-			schema.setMaximum(BigDecimal.valueOf(max.value()));
-		}
-		calculateSize(annos, schema);
-		if (annos.containsKey(DecimalMin.class.getName())) {
-			DecimalMin min = (DecimalMin) annos.get(DecimalMin.class.getName());
-			if (min.inclusive()) {
-				schema.setMinimum(BigDecimal.valueOf(Double.parseDouble(min.value())));
-			}
-			else {
-				schema.setExclusiveMinimum(!min.inclusive());
-			}
-		}
-		if (annos.containsKey(DecimalMax.class.getName())) {
-			DecimalMax max = (DecimalMax) annos.get(DecimalMax.class.getName());
-			if (max.inclusive()) {
-				schema.setMaximum(BigDecimal.valueOf(Double.parseDouble(max.value())));
-			}
-			else {
-				schema.setExclusiveMaximum(!max.inclusive());
-			}
-		}
-		if (annos.containsKey(POSITIVE_OR_ZERO)) {
-			schema.setMinimum(BigDecimal.ZERO);
-		}
-		if (annos.containsKey(NEGATIVE_OR_ZERO)) {
-			schema.setMaximum(BigDecimal.ZERO);
-		}
-		if (annos.containsKey(Pattern.class.getName())) {
-			Pattern pattern = (Pattern) annos.get(Pattern.class.getName());
-			schema.setPattern(pattern.regexp());
+	private void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations) {
+		Map<String, Annotation> annos = new HashMap<>();
+		if (annotations != null)
+			annotations.forEach(annotation -> annos.put(annotation.annotationType().getName(), annotation));
+		boolean annotationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
+		if (annotationExists)
+			requestBody.setRequired(true);
+		Content content = requestBody.getContent();
+		for (MediaType mediaType : content.values()) {
+			Schema schema = mediaType.getSchema();
+			applyValidationsToSchema(annos, schema);
 		}
 	}
 
@@ -449,6 +425,46 @@ public abstract class AbstractRequestBuilder {
 		apiParametersMap.putAll(apiParameterDocDeclaringClassMap);
 
 		return apiParametersMap;
+	}
+
+	private void applyValidationsToSchema(Map<String, Annotation> annos, Schema<?> schema) {
+		if (annos.containsKey(Min.class.getName())) {
+			Min min = (Min) annos.get(Min.class.getName());
+			schema.setMinimum(BigDecimal.valueOf(min.value()));
+		}
+		if (annos.containsKey(Max.class.getName())) {
+			Max max = (Max) annos.get(Max.class.getName());
+			schema.setMaximum(BigDecimal.valueOf(max.value()));
+		}
+		calculateSize(annos, schema);
+		if (annos.containsKey(DecimalMin.class.getName())) {
+			DecimalMin min = (DecimalMin) annos.get(DecimalMin.class.getName());
+			if (min.inclusive()) {
+				schema.setMinimum(BigDecimal.valueOf(Double.parseDouble(min.value())));
+			}
+			else {
+				schema.setExclusiveMinimum(!min.inclusive());
+			}
+		}
+		if (annos.containsKey(DecimalMax.class.getName())) {
+			DecimalMax max = (DecimalMax) annos.get(DecimalMax.class.getName());
+			if (max.inclusive()) {
+				schema.setMaximum(BigDecimal.valueOf(Double.parseDouble(max.value())));
+			}
+			else {
+				schema.setExclusiveMaximum(!max.inclusive());
+			}
+		}
+		if (annos.containsKey(POSITIVE_OR_ZERO)) {
+			schema.setMinimum(BigDecimal.ZERO);
+		}
+		if (annos.containsKey(NEGATIVE_OR_ZERO)) {
+			schema.setMaximum(BigDecimal.ZERO);
+		}
+		if (annos.containsKey(Pattern.class.getName())) {
+			Pattern pattern = (Pattern) annos.get(Pattern.class.getName());
+			schema.setPattern(pattern.regexp());
+		}
 	}
 
 	public static void addRequestWrapperToIgnore(Class<?>... classes) {

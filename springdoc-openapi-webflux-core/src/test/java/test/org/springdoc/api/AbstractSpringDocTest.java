@@ -25,6 +25,9 @@ import java.nio.file.Paths;
 
 import nonapi.io.github.classgraph.utils.FileUtils;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.Constants;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,8 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 @WebFluxTest
 @ActiveProfiles("test")
 public abstract class AbstractSpringDocTest {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSpringDocTest.class);
 
 	protected String groupName = "";
 
@@ -60,14 +65,20 @@ public abstract class AbstractSpringDocTest {
 
 	@Test
 	public void testApp() throws Exception {
-		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange()
-				.expectStatus().isOk().expectBody().returnResult();
+		String result = null;
+		try {
+			EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange()
+					.expectStatus().isOk().expectBody().returnResult();
 
-		String result = new String(getResult.getResponseBody());
-		String className = getClass().getSimpleName();
-		String testNumber = className.replaceAll("[^0-9]", "");
+			result = new String(getResult.getResponseBody());
+			String className = getClass().getSimpleName();
+			String testNumber = className.replaceAll("[^0-9]", "");
 
-		String expected = getContent("results/app" + testNumber + ".json");
-		assertEquals(expected, result, true);
+			String expected = getContent("results/app" + testNumber + ".json");
+			assertEquals(expected, result, true);
+		}catch (java.lang.AssertionError e) {
+			LOGGER.error(result);
+			throw e;
+		}
 	}
 }
