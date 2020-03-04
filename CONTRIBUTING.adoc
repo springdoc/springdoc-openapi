@@ -1,5 +1,3 @@
-* TOC
-{:toc}
 
 = Contributing to springdoc-openapi
 
