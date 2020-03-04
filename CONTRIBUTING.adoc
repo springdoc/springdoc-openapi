@@ -1,3 +1,6 @@
+* TOC
+{:toc}
+
 = Contributing to springdoc-openapi
 
 springdoc-openapi is released under the Apache 2.0 license. If you would like to contribute
