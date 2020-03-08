@@ -21,14 +21,16 @@ package org.springdoc.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 
+import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+
 @Configuration
 @ConfigurationProperties(prefix = "springdoc")
-@ConditionalOnBean(SpringDocConfiguration.class)
+@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocConfigProperties {
 
 	private boolean showActuator;
