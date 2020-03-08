@@ -18,6 +18,8 @@
 
 package org.springdoc.core;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -49,7 +51,7 @@ public class SpringDocDataRestConfiguration {
 
 	static {
 		getConfig().replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
-		.replaceWithClass(org.springframework.data.domain.PageRequest.class,Pageable.class);
+				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
 	}
 
 	@Configuration
@@ -57,8 +59,10 @@ public class SpringDocDataRestConfiguration {
 	class HalProviderConfiguration {
 
 		@Bean
-		public HalProvider halProvider(RepositoryRestConfiguration repositoryRestConfiguration) {
-			return new HalProvider(repositoryRestConfiguration);
+		public HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
+			if (repositoryRestConfiguration.isPresent())
+				return new HalProvider(repositoryRestConfiguration.get());
+			return null;
 		}
 
 		/**
@@ -68,8 +72,8 @@ public class SpringDocDataRestConfiguration {
 		 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
 		 */
 		@Bean
-		public OpenApiCustomiser linksSchemaCustomiser(RepositoryRestConfiguration repositoryRestConfiguration) {
-			if (!repositoryRestConfiguration.useHalAsDefaultJsonMediaType()) {
+		public OpenApiCustomiser linksSchemaCustomiser(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
+			if (!repositoryRestConfiguration.isPresent() || !repositoryRestConfiguration.get().useHalAsDefaultJsonMediaType()) {
 				return openApi -> {};
 			}
 			Json.mapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
