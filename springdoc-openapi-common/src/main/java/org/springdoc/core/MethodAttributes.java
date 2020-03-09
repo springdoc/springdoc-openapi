@@ -20,6 +20,7 @@ package org.springdoc.core;
 
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.commons.lang3.ArrayUtils;
@@ -184,7 +185,7 @@ public class MethodAttributes {
 		this.jsonViewAnnotationForRequestBody = jsonViewAnnotationForRequestBody;
 	}
 
-	public LinkedHashMap<String, String> getHeaders() {
+	public Map<String, String> getHeaders() {
 		return headers;
 	}
 }
