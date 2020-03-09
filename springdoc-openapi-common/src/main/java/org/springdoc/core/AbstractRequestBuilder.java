@@ -49,6 +49,7 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
@@ -84,7 +85,7 @@ public abstract class AbstractRequestBuilder {
 	private static final List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
 
 	// using string litterals to support both validation-api v1 and v2
-	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), org.springframework.web.bind.annotation.RequestBody.class.getName(),"javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
+	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), org.springframework.web.bind.annotation.RequestBody.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
 
 	private static final String POSITIVE_OR_ZERO = "javax.validation.constraints.PositiveOrZero";
 
@@ -219,6 +220,16 @@ public abstract class AbstractRequestBuilder {
 						methodAttributes.getJsonViewAnnotation());
 				map.put(entry.getKey(), parameter);
 			}
+		}
+
+		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
+			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(new StringSchema().addEnumItem(entry.getValue()));
+			if (map.containsKey(entry.getKey())){
+				parameter = map.get(entry.getKey());
+				parameter.getSchema().addEnumItemObject(entry.getValue());
+				parameter.setSchema(parameter.getSchema());
+			}
+			map.put(entry.getKey(), parameter);
 		}
 		return map;
 	}

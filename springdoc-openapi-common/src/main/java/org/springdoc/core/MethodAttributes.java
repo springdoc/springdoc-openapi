@@ -19,6 +19,7 @@
 package org.springdoc.core;
 
 import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.apache.commons.lang3.ArrayUtils;
@@ -52,15 +53,19 @@ public class MethodAttributes {
 
 	private String defaultProducesMediaType;
 
+	private LinkedHashMap<String, String> headers;
+
 	public MethodAttributes(String[] methodProducesNew, String defaultConsumesMediaType, String defaultProducesMediaType) {
 		this.methodProduces = methodProducesNew;
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
+		this.headers = new LinkedHashMap<>();
 	}
 
 	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType) {
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
+		this.headers = new LinkedHashMap<>();
 	}
 
 	public String[] getClassProduces() {
@@ -91,39 +96,39 @@ public class MethodAttributes {
 	public void calculateConsumesProduces(Method method) {
 		PostMapping reqPostMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, PostMapping.class);
 		if (reqPostMappingMethod != null) {
-			fillMethods(reqPostMappingMethod.produces(), reqPostMappingMethod.consumes());
+			fillMethods(reqPostMappingMethod.produces(), reqPostMappingMethod.consumes(), reqPostMappingMethod.headers());
 			return;
 		}
 		GetMapping reqGetMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, GetMapping.class);
 		if (reqGetMappingMethod != null) {
-			fillMethods(reqGetMappingMethod.produces(), reqGetMappingMethod.consumes());
+			fillMethods(reqGetMappingMethod.produces(), reqGetMappingMethod.consumes(), reqGetMappingMethod.headers());
 			return;
 		}
 		DeleteMapping reqDeleteMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, DeleteMapping.class);
 		if (reqDeleteMappingMethod != null) {
-			fillMethods(reqDeleteMappingMethod.produces(), reqDeleteMappingMethod.consumes());
+			fillMethods(reqDeleteMappingMethod.produces(), reqDeleteMappingMethod.consumes(), reqDeleteMappingMethod.headers());
 			return;
 		}
 		PutMapping reqPutMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, PutMapping.class);
 		if (reqPutMappingMethod != null) {
-			fillMethods(reqPutMappingMethod.produces(), reqPutMappingMethod.consumes());
+			fillMethods(reqPutMappingMethod.produces(), reqPutMappingMethod.consumes(), reqPutMappingMethod.headers());
 			return;
 		}
 		RequestMapping reqMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
 		RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(method.getDeclaringClass(), RequestMapping.class);
 
 		if (reqMappingMethod != null && reqMappingClass != null) {
-			fillMethods(ArrayUtils.addAll(reqMappingMethod.produces(), reqMappingClass.produces()), ArrayUtils.addAll(reqMappingMethod.consumes(), reqMappingClass.consumes()));
+			fillMethods(ArrayUtils.addAll(reqMappingMethod.produces(), reqMappingClass.produces()), ArrayUtils.addAll(reqMappingMethod.consumes(), reqMappingClass.consumes()), reqMappingMethod.headers());
 		}
 		else if (reqMappingMethod != null) {
-			fillMethods(reqMappingMethod.produces(), reqMappingMethod.consumes());
+			fillMethods(reqMappingMethod.produces(), reqMappingMethod.consumes(), reqMappingMethod.headers());
 		}
 		else if (reqMappingClass != null) {
-			fillMethods(reqMappingClass.produces(), reqMappingClass.consumes());
+			fillMethods(reqMappingClass.produces(), reqMappingClass.consumes(), reqMappingClass.headers());
 		}
 	}
 
-	private void fillMethods(String[] produces, String[] consumes) {
+	private void fillMethods(String[] produces, String[] consumes, String[] headers) {
 		if (ArrayUtils.isNotEmpty(produces))
 			methodProduces = produces;
 		else if (ArrayUtils.isNotEmpty(classProduces))
@@ -138,6 +143,11 @@ public class MethodAttributes {
 		else
 			methodConsumes = new String[] { defaultConsumesMediaType };
 
+		if (ArrayUtils.isNotEmpty(headers))
+			for (String header : headers) {
+				String[] keyValueHeader = header.split("=");
+				this.headers.put(keyValueHeader[0], keyValueHeader[1]);
+			}
 	}
 
 	public boolean isMethodOverloaded() {
@@ -172,5 +182,9 @@ public class MethodAttributes {
 
 	public void setJsonViewAnnotationForRequestBody(JsonView jsonViewAnnotationForRequestBody) {
 		this.jsonViewAnnotationForRequestBody = jsonViewAnnotationForRequestBody;
+	}
+
+	public LinkedHashMap<String, String> getHeaders() {
+		return headers;
 	}
 }
