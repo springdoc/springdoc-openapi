@@ -54,7 +54,7 @@ public class SwaggerUiConfigProperties {
 
 	public static final String CONFIG_URL_PROPERTY = "configUrl";
 
-	private static Set<SwaggerUrl> swaggerUrls = new HashSet<>();
+	private Set<SwaggerUrl> urls = new HashSet<>();
 
 	/**
 	 * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
@@ -158,26 +158,26 @@ public class SwaggerUiConfigProperties {
 
 	private Direction groupsOrder = Direction.ASC;
 
-	public static void addGroup(String group) {
+	public void addGroup(String group) {
 		SwaggerUrl swaggerUrl = new SwaggerUrl(group);
-		swaggerUrls.add(swaggerUrl);
+		urls.add(swaggerUrl);
 	}
 
-	public static void addGroup(String group, String url) {
-		SwaggerUrl swaggerUrl = new SwaggerUrl(group, url);
-		swaggerUrls.add(swaggerUrl);
+	public Set<SwaggerUrl> getUrls() {
+		return this.urls;
 	}
 
-	public static Set<SwaggerUrl> getSwaggerUrls() {
-		return swaggerUrls;
+	public void setUrls(Set<SwaggerUrl> urls) {
+		this.urls = urls;
 	}
 
-	public static void setSwaggerUrls(Set<SwaggerUrl> swaggerUrls) {
-		SwaggerUiConfigProperties.swaggerUrls = swaggerUrls;
-	}
-
-	public static void addUrl(String url) {
-		swaggerUrls.forEach(elt -> elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName()));
+	public void addUrl(String url) {
+		this.urls.forEach(elt ->
+				{
+					if (StringUtils.isBlank(elt.url))
+						elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName());
+				}
+		);
 	}
 
 	public Map<String, Object> getConfigParameters() {
@@ -203,7 +203,7 @@ public class SwaggerUiConfigProperties {
 			SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
 		SpringDocPropertiesUtils.put("oauth2RedirectUrl", oauth2RedirectUrl, params);
 		SpringDocPropertiesUtils.put("url", url, params);
-		put("urls", swaggerUrls, params);
+		put("urls", urls, params);
 		return params;
 	}
 
@@ -395,6 +395,8 @@ public class SwaggerUiConfigProperties {
 
 		private String name;
 
+		public SwaggerUrl() { }
+
 		public SwaggerUrl(String group, String url) {
 			this.url = url;
 			this.name = group;
@@ -431,6 +433,15 @@ public class SwaggerUiConfigProperties {
 		@Override
 		public int hashCode() {
 			return Objects.hash(name);
+		}
+
+		@Override
+		public String toString() {
+			final StringBuilder sb = new StringBuilder("SwaggerUrl{");
+			sb.append("url='").append(url).append('\'');
+			sb.append(", name='").append(name).append('\'');
+			sb.append('}');
+			return sb.toString();
 		}
 	}
 
