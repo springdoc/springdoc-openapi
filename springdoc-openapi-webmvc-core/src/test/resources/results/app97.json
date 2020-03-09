@@ -11,12 +11,12 @@
     }
   ],
   "paths": {
-    "/api/student/header": {
+    "/api/student/header2": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "headerV2_1",
+        "operationId": "headerV2",
         "parameters": [
           {
             "name": "X-API-VERSION",
@@ -24,7 +24,38 @@
             "schema": {
               "type": "string",
               "enum": [
-                "2",
+                "2"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentV2"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/student/header1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "headerV1",
+        "parameters": [
+          {
+            "name": "X-API-VERSION",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": [
                 "1"
               ]
             }
@@ -36,14 +67,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/StudentV1"
-                    },
-                    {
-                      "$ref": "#/components/schemas/StudentV2"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/StudentV1"
                 }
               }
             }

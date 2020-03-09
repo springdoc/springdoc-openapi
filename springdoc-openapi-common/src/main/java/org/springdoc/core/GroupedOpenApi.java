@@ -48,7 +48,6 @@ public class GroupedOpenApi {
 		this.packagesToExclude=builder.packagesToExclude;
 		this.pathsToExclude=builder.pathsToExclude;
 		this.openApiCustomisers = Objects.requireNonNull(builder.openApiCustomisers);
-		SwaggerUiConfigProperties.addGroup(this.group);
 		if (CollectionUtils.isEmpty(this.pathsToMatch)
 				&& CollectionUtils.isEmpty(this.packagesToScan)
 				&& CollectionUtils.isEmpty(this.pathsToExclude)

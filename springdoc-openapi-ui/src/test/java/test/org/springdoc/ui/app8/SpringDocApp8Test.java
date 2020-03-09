@@ -16,20 +16,27 @@
  *
  */
 
-package test.org.springdoc.ui.app4;
+package test.org.springdoc.ui.app8;
 
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "springdoc.swagger-ui.groups-order=DESC")
-public class SpringDocApp4Test extends AbstractSpringDocTest {
+@TestPropertySource(properties = {
+		"springdoc.swagger-ui.urls[0].name=users",
+		"springdoc.swagger-ui.urls[0].url=/api-docs.yaml"
+})
+public class SpringDocApp8Test extends AbstractSpringDocTest {
 
 	@Test
 	public void swagger_config_for_multiple_groups() throws Exception {
@@ -37,9 +44,11 @@ public class SpringDocApp4Test extends AbstractSpringDocTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("configUrl", equalTo("/v3/api-docs/swagger-config")))
 				.andExpect(jsonPath("url").doesNotExist())
-				.andExpect(jsonPath("urls[0].url", equalTo("/v3/api-docs/stores")))
-				.andExpect(jsonPath("urls[0].name", equalTo("stores")))
-				.andExpect(jsonPath("urls[1].url", equalTo("/v3/api-docs/pets")))
-				.andExpect(jsonPath("urls[1].name", equalTo("pets")));
+				.andExpect(jsonPath("urls[0].url", equalTo("/api-docs.yaml")))
+				.andExpect(jsonPath("urls[0].name", equalTo("users")));
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
+
 }

@@ -16,24 +16,21 @@
  *
  */
 
-package test.org.springdoc.api.app97;
+package test.org.springdoc.ui.app8;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
 public class HelloController {
 
-	@GetMapping(value = "/student/header1", headers = "X-API-VERSION=1")
-	public StudentV1 headerV1() {
-		return new StudentV1("Bob Charlie");
-	}
+	@GetMapping(value = "/persons")
+	public void persons(@Valid @RequestParam @Size(min = 4, max = 6) String name) {
 
-	@GetMapping(value = "/student/header2", headers = "X-API-VERSION=2")
-	public StudentV2 headerV2() {
-		return new StudentV2( "Charlie");
 	}
 
 }

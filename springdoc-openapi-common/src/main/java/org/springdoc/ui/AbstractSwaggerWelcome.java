@@ -57,6 +57,7 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() {
+		springDocConfigProperties.getGroupConfigs().forEach( groupConfig -> swaggerUiConfig.addGroup(groupConfig.getGroup()));
 		calculateUiRootPath();
 	}
 
@@ -73,14 +74,14 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 			String url = buildUrl(contextPath, apiDocsUrl);
 			String swaggerConfigUrl = url + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
 			swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
-			if (SwaggerUiConfigProperties.getSwaggerUrls().isEmpty()) {
+			if (swaggerUiConfig.getUrls().isEmpty()) {
 				if (StringUtils.isEmpty(swaggerUiUrl))
 					swaggerUiConfig.setUrl(url);
 				else
 					swaggerUiConfig.setUrl(swaggerUiUrl);
 			}
 			else
-				SwaggerUiConfigProperties.addUrl(url);
+				swaggerUiConfig.addUrl(url);
 		}
 		calculateOauth2RedirectUrl(uriComponentsBuilder);
 	}
