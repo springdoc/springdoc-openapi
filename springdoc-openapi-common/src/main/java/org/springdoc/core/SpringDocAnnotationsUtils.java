@@ -18,6 +18,7 @@
 
 package org.springdoc.core;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -41,14 +42,14 @@ import org.apache.commons.lang3.StringUtils;
 public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
 	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
-			JsonView jsonView) {
+											   JsonView jsonView, Annotation[] annotations) {
 		Schema schemaObject;
 		PrimitiveType primitiveType = PrimitiveType.fromType(schemaImplementation);
 		if (primitiveType != null) {
 			schemaObject = primitiveType.createProperty();
 		}
 		else {
-			schemaObject = extractSchema(components, schemaImplementation, jsonView);
+			schemaObject = extractSchema(components, schemaImplementation, jsonView,annotations);
 		}
 		if (schemaObject != null && StringUtils.isBlank(schemaObject.get$ref())
 				&& StringUtils.isBlank(schemaObject.getType())) {
@@ -58,11 +59,11 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		return schemaObject;
 	}
 
-	public static Schema extractSchema(Components components, Type returnType, JsonView jsonView) {
+	public static Schema extractSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations) {
 		Schema schemaN = null;
 		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
 				.resolveAsResolvedSchema(
-						new AnnotatedType(returnType).resolveAsRef(true).jsonViewAnnotation(jsonView));
+						new AnnotatedType(returnType).resolveAsRef(true).jsonViewAnnotation(jsonView).ctxAnnotations(annotations));
 		if (resolvedSchema.schema != null) {
 			schemaN = resolvedSchema.schema;
 			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;

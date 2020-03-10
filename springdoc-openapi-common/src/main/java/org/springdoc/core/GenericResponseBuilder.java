@@ -260,7 +260,7 @@ public class GenericResponseBuilder {
 			// if void, no content
 			return null;
 		}
-		Schema schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView);
+		Schema schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView,null);
 		if (schemaN == null && returnType instanceof Class && !isResponseTypeToIgnore((Class) returnType)) {
 			schemaN = AnnotationsUtils.resolveSchemaFromType((Class) returnType, null, jsonView);
 		}

@@ -224,7 +224,7 @@ public class GenericParameterBuilder {
 				schemaN = calculateSchemaFromParameterizedType(components, returnType, jsonView);
 			}
 			else {
-				schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, jsonView);
+				schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, jsonView, parameter != null ? parameter.getAnnotations() : null);
 			}
 		}
 		else {
@@ -248,7 +248,7 @@ public class GenericParameterBuilder {
 	}
 
 	private Schema calculateSchemaFromParameterizedType(Components components, Type paramType, JsonView jsonView) {
-		return SpringDocAnnotationsUtils.extractSchema(components, paramType, jsonView);
+		return SpringDocAnnotationsUtils.extractSchema(components, paramType, jsonView,null);
 	}
 
 	private Schema extractFileSchema(String paramName, RequestBodyInfo requestBodyInfo) {

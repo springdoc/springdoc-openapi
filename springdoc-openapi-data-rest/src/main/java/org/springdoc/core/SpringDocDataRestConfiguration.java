@@ -18,29 +18,32 @@
 
 package org.springdoc.core;
 
-import java.util.Optional;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.Json;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.converters.Pageable;
+import org.springdoc.core.converters.QueryDslPredicateConverter;
 import org.springdoc.core.converters.RepresentationModelLinksOASMixin;
 import org.springdoc.core.customizers.OpenApiCustomiser;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
+
+import java.util.Optional;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
@@ -54,9 +57,20 @@ public class SpringDocDataRestConfiguration {
 				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
 	}
 
-	@Configuration
-	@ConditionalOnClass(RepositoryRestConfiguration.class)
-	class HalProviderConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+    public QueryDslPredicateConverter qdslConverter(QuerydslBindingsFactory querydslBindingsFactory, Optional<OpenAPI> openAPI) {
+       return new QueryDslPredicateConverter(querydslBindingsFactory,openAPI);
+    }
+    @Bean
+    @ConditionalOnMissingBean
+    public OpenAPI openAPI() {
+       return new OpenAPI();
+    }
+
+    @Configuration
+    @ConditionalOnClass(RepositoryRestConfiguration.class)
+    class HalProviderConfiguration {
 
 		@Bean
 		public HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
