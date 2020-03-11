@@ -42,14 +42,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
 	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
 			JsonView jsonView) {
-		Schema schemaObject;
-		PrimitiveType primitiveType = PrimitiveType.fromType(schemaImplementation);
-		if (primitiveType != null) {
-			schemaObject = primitiveType.createProperty();
-		}
-		else {
-			schemaObject = extractSchema(components, schemaImplementation, jsonView);
-		}
+		Schema schemaObject = extractSchema(components, schemaImplementation, jsonView);
 		if (schemaObject != null && StringUtils.isBlank(schemaObject.get$ref())
 				&& StringUtils.isBlank(schemaObject.getType())) {
 			// default to string
