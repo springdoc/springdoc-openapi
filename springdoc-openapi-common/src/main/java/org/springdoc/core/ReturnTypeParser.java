@@ -18,16 +18,17 @@
 
 package org.springdoc.core;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import org.springframework.core.MethodParameter;
+
 interface ReturnTypeParser {
 
-	default Type getReturnType(Method method, Class<?>  clazz) {
-		if( method.getGenericReturnType() instanceof ParameterizedType || clazz==null)
-			return method.getGenericReturnType();
-		return clazz;
+	default Type getReturnType(MethodParameter methodParameter) {
+		if( methodParameter.getGenericParameterType() instanceof ParameterizedType)
+			return methodParameter.getGenericParameterType();
+		return methodParameter.getParameterType();
 	}
 }
 
