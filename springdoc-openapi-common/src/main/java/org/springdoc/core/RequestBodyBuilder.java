@@ -29,6 +29,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
 
+import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.method.HandlerMethod;
 
@@ -87,18 +88,15 @@ public class RequestBodyBuilder {
 	public void calculateRequestBodyInfo(Components components, HandlerMethod handlerMethod,
 			MethodAttributes methodAttributes, int i, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
-
+		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		// Get it from parameter level, if not present
 		if (requestBody == null) {
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = parameterBuilder
-					.getParameterAnnotation(handlerMethod, parameterInfo.getParameter(), i,
-							io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 			requestBody = this.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes.getClassConsumes(),
 					methodAttributes.getMethodConsumes(), components, null).orElse(null);
 		}
 
-		RequestPart requestPart = parameterBuilder.getParameterAnnotation(handlerMethod, parameterInfo.getParameter(),
-				i, RequestPart.class);
+		RequestPart requestPart = methodParameter.getParameterAnnotation(RequestPart.class);
 		String paramName = null;
 		if (requestPart != null)
 			paramName = StringUtils.defaultIfEmpty(requestPart.value(), requestPart.name());
@@ -128,7 +126,7 @@ public class RequestBodyBuilder {
 					methodAttributes.getJsonViewAnnotationForRequestBody());
 			buildContent(requestBody, methodAttributes, schema);
 		}
-		else if (requestBodyInfo.getRequestBody()!=null) {
+		else if (requestBodyInfo.getRequestBody() != null) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
 					methodAttributes.getJsonViewAnnotationForRequestBody());
 			mergeContent(requestBody, methodAttributes, schema);

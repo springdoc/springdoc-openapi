@@ -57,6 +57,7 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpMethod;
@@ -140,13 +141,12 @@ public abstract class AbstractRequestBuilder {
 		// Documentation
 		String operationId = operationBuilder.getOperationId(handlerMethod.getMethod().getName(),
 				operation.getOperationId(), openAPI);
-
 		operation.setOperationId(operationId);
 		// requests
 		LocalVariableTableParameterNameDiscoverer d = parameterBuilder.getLocalSpringDocParameterNameDiscoverer();
 		String[] pNames = d.getParameterNames(handlerMethod.getMethod());
-		java.lang.reflect.Parameter[] parameters = handlerMethod.getMethod().getParameters();
-		String[] reflectionParametersNames = Arrays.stream(parameters).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
+		MethodParameter[] parameters = handlerMethod.getMethodParameters();
+		String[] reflectionParametersNames = Arrays.stream(parameters).map(MethodParameter::getParameterName).toArray(String[]::new);
 		if (pNames == null) {
 			pNames = reflectionParametersNames;
 		}
@@ -159,8 +159,7 @@ public abstract class AbstractRequestBuilder {
 			// check if query param
 			Parameter parameter = null;
 			final String pName = pNames[i] == null ? reflectionParametersNames[i] : pNames[i];
-			io.swagger.v3.oas.annotations.Parameter parameterDoc = parameterBuilder.getParameterAnnotation(
-					handlerMethod, parameters[i], i, io.swagger.v3.oas.annotations.Parameter.class);
+			io.swagger.v3.oas.annotations.Parameter parameterDoc = parameters[i].getParameterAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
 			if (parameterDoc == null) {
 				parameterDoc = parametersDocMap.get(pName);
 			}
@@ -173,21 +172,21 @@ public abstract class AbstractRequestBuilder {
 						methodAttributes.getJsonViewAnnotation());
 			}
 
-			if (!isParamToIgnore(parameters[i])) {
+			if (!isParamToIgnore(parameters[i].getParameter())) {
 				ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameter, i);
 				parameter = buildParams(parameterInfo, components, handlerMethod, requestMethod,
 						methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
 				parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
 				if (isValidParameter(parameter)) {
-					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getAnnotations()));
+					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getParameterAnnotations()));
 				}
 				else if (!RequestMethod.GET.equals(requestMethod)) {
 					if (operation.getRequestBody() != null)
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, methodAttributes, i,
 							parameterInfo, requestBodyInfo);
-					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), Arrays.asList(parameters[i].getAnnotations()));
+					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), Arrays.asList(parameters[i].getParameterAnnotations()));
 				}
 				customiseParameter(parameter, parameterInfo, handlerMethod);
 			}
@@ -265,17 +264,13 @@ public abstract class AbstractRequestBuilder {
 
 	private Parameter buildParams(ParameterInfo parameterInfo, Components components, HandlerMethod handlerMethod,
 			RequestMethod requestMethod, JsonView jsonView) {
-		java.lang.reflect.Parameter parameters = parameterInfo.getParameter();
+		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		int index = parameterInfo.getIndex();
 
-		RequestHeader requestHeader = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
-				RequestHeader.class);
-		RequestParam requestParam = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
-				RequestParam.class);
-		PathVariable pathVar = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
-				PathVariable.class);
-		CookieValue cookieValue = parameterBuilder.getParameterAnnotation(handlerMethod, parameters, index,
-				CookieValue.class);
+		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
+		RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
+		PathVariable pathVar = methodParameter.getParameterAnnotation(PathVariable.class);
+		CookieValue cookieValue =  methodParameter.getParameterAnnotation(CookieValue.class);
 
 		Parameter parameter = null;
 		RequestInfo requestInfo;
@@ -287,7 +282,7 @@ public abstract class AbstractRequestBuilder {
 
 		}
 		else if (requestParam != null && !parameterBuilder.isFile(parameterInfo.getParameter())) {
-			boolean isOptional = Optional.class.equals(parameters.getType());
+			boolean isOptional = Optional.class.equals(methodParameter.getParameterType());
 			requestInfo = new RequestInfo(ParameterIn.QUERY.toString(), requestParam.value(), requestParam.required() && !isOptional,
 					requestParam.defaultValue());
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);

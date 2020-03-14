@@ -19,8 +19,6 @@
 package org.springdoc.core;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
@@ -30,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.JavaType;
@@ -46,22 +43,22 @@ import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
-import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.MethodParameter;
 import org.springframework.http.codec.multipart.FilePart;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartFile;
 
 @SuppressWarnings("rawtypes")
 public class GenericParameterBuilder {
 
 	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+
 	private final IgnoredParameterAnnotations ignoredParameterAnnotations;
+
 	private final PropertyResolverUtils propertyResolverUtils;
+
 	private static final List<Class<?>> FILE_TYPES = new ArrayList<>();
 
 	static {
@@ -69,8 +66,8 @@ public class GenericParameterBuilder {
 	}
 
 	public GenericParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
-								   IgnoredParameterAnnotations ignoredParameterAnnotations,
-								   PropertyResolverUtils propertyResolverUtils) {
+			IgnoredParameterAnnotations ignoredParameterAnnotations,
+			PropertyResolverUtils propertyResolverUtils) {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 		this.ignoredParameterAnnotations = ignoredParameterAnnotations;
 		this.propertyResolverUtils = propertyResolverUtils;
@@ -200,31 +197,25 @@ public class GenericParameterBuilder {
 	Schema calculateSchema(Components components, ParameterInfo parameterInfo,
 			RequestBodyInfo requestBodyInfo, JsonView jsonView) {
 		Schema schemaN;
-		Class<?> schemaImplementation = null;
-		Type returnType = null;
-		JavaType ct = null;
 		String paramName = parameterInfo.getpName();
-		java.lang.reflect.Parameter parameter = parameterInfo.getParameter();
-		if (parameter != null) {
-			returnType = parameter.getParameterizedType();
-			ct = constructType(parameter.getType());
-			schemaImplementation = parameter.getType();
-		}
+		MethodParameter methodParameter = parameterInfo.getMethodParameter();
+		JavaType ct = constructType(methodParameter.getParameterType());
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
 			if (isFile(ct)) {
 				schemaN = getFileSchema(requestBodyInfo);
 				schemaN.addProperties(paramName, new FileSchema());
 				return schemaN;
-			} else if (returnType instanceof ParameterizedType) {
-				ParameterizedType parameterizedType = (ParameterizedType) returnType;
+			}
+			else if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
+				ParameterizedType parameterizedType = (ParameterizedType) methodParameter.getGenericParameterType();
 				if (isFile(parameterizedType)) {
 					return extractFileSchema(paramName, requestBodyInfo);
 				}
-				schemaN = calculateSchemaFromParameterizedType(components, returnType, jsonView);
+				schemaN = calculateSchemaFromParameterizedType(components, methodParameter.getGenericParameterType(), jsonView);
 			}
 			else {
-				schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(schemaImplementation, components, jsonView);
+				schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(methodParameter.getParameterType(), components, jsonView);
 			}
 		}
 		else {
@@ -302,21 +293,6 @@ public class GenericParameterBuilder {
 			}
 		}
 		return result;
-	}
-
-	<A extends Annotation> A getParameterAnnotation(HandlerMethod handlerMethod,
-			java.lang.reflect.Parameter parameter, int i, Class<A> annotationType) {
-		A parameterDoc = AnnotationUtils.getAnnotation(parameter, annotationType);
-		if (parameterDoc == null) {
-			Set<Method> methods = MethodUtils.getOverrideHierarchy(handlerMethod.getMethod(),
-					ClassUtils.Interfaces.INCLUDE);
-			for (Method methodOverriden : methods) {
-				parameterDoc = AnnotationUtils.getAnnotation(methodOverriden.getParameters()[i], annotationType);
-				if (parameterDoc != null)
-					break;
-			}
-		}
-		return parameterDoc;
 	}
 
 	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {

@@ -43,6 +43,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
@@ -82,7 +83,7 @@ public class GenericResponseBuilder {
 			apiResponsesFromDoc.forEach(apiResponses::addApiResponse);
 		// for each one build ApiResponse and add it to existing responses
 		// Fill api Responses
-		computeResponse(components, handlerMethod.getMethod(), handlerMethod.getReturnType().getParameterType(), apiResponses, methodAttributes, false);
+		computeResponse(components, handlerMethod.getReturnType(), apiResponses, methodAttributes, false);
 		return apiResponses;
 	}
 
@@ -97,7 +98,7 @@ public class GenericResponseBuilder {
 				if (reqMappringMethod != null) {
 					methodProduces = reqMappringMethod.produces();
 				}
-				Map<String, ApiResponse> apiResponses = computeResponse(components, method,null, new ApiResponses(),
+				Map<String, ApiResponse> apiResponses = computeResponse(components, new MethodParameter(method,-1), new ApiResponses(),
 						new MethodAttributes(methodProduces, springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType()), true);
 				apiResponses.forEach(genericMapResponse::put);
 			}
@@ -118,10 +119,10 @@ public class GenericResponseBuilder {
 		return methods;
 	}
 
-	private Map<String, ApiResponse> computeResponse(Components components, Method method,  Class<?>  clazz, ApiResponses apiResponsesOp,
+	private Map<String, ApiResponse> computeResponse(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes, boolean isGeneric) {
 		// Parsing documentation, if present
-		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray = getApiResponses(method);
+		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray = getApiResponses(methodParameter.getMethod());
 		if (!responsesArray.isEmpty()) {
 			methodAttributes.setWithApiResponseDoc(true);
 			if (!springDocConfigProperties.isOverrideWithGenericResponse())
@@ -146,7 +147,7 @@ public class GenericResponseBuilder {
 				apiResponsesOp.addApiResponse(apiResponseAnnotations.responseCode(), apiResponse);
 			}
 		}
-		buildApiResponses(components, method, clazz, apiResponsesOp, methodAttributes, isGeneric);
+		buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, isGeneric);
 		return apiResponsesOp;
 	}
 
@@ -174,25 +175,25 @@ public class GenericResponseBuilder {
 		}
 	}
 
-	private void buildApiResponses(Components components, Method method,  Class<?>  clazz, ApiResponses apiResponsesOp,
+	private void buildApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes, boolean isGeneric) {
 		if (!CollectionUtils.isEmpty(apiResponsesOp) && (apiResponsesOp.size() != genericMapResponse.size() || isGeneric)) {
 			// API Responses at operation and @ApiResponse annotation
 			for (Map.Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
 				String httpCode = entry.getKey();
 				ApiResponse apiResponse = entry.getValue();
-				buildApiResponses(components, method, clazz, apiResponsesOp, methodAttributes, httpCode, apiResponse,
+				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse,
 						isGeneric);
 			}
 		}
 		else {
 			// Use response parameters with no description filled - No documentation
 			// available
-			String httpCode = evaluateResponseStatus(method, method.getClass(), isGeneric);
+			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getMethod().getClass(), isGeneric);
 			ApiResponse apiResponse = genericMapResponse.containsKey(httpCode) ? genericMapResponse.get(httpCode)
 					: new ApiResponse();
 			if (httpCode != null)
-				buildApiResponses(components, method, clazz, apiResponsesOp, methodAttributes, httpCode, apiResponse,
+				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse,
 						isGeneric);
 		}
 	}
@@ -222,9 +223,9 @@ public class GenericResponseBuilder {
 		return responses;
 	}
 
-	private Content buildContent(Components components, Method method, Class<?>  clazz, String[] methodProduces, JsonView jsonView) {
+	private Content buildContent(Components components, MethodParameter methodParameter, String[] methodProduces, JsonView jsonView) {
 		Content content = new Content();
-		Type returnType = getReturnType(method,clazz);
+		Type returnType = getReturnType(methodParameter);
 		if (isVoid(returnType)) {
 			// if void, no content
 			content = null;
@@ -241,11 +242,11 @@ public class GenericResponseBuilder {
 		return content;
 	}
 
-	private Type getReturnType(Method method,Class<?>  clazz) {
+	private Type getReturnType(MethodParameter methodParameter) {
 		Type returnType = Object.class;
 		for (ReturnTypeParser returnTypeParser : returnTypeParsers) {
 			if (returnType.getTypeName().equals(Object.class.getTypeName())) {
-				returnType = returnTypeParser.getReturnType(method,clazz);
+				returnType = returnTypeParser.getReturnType(methodParameter);
 			}
 			else {
 				break;
@@ -272,12 +273,12 @@ public class GenericResponseBuilder {
 		Arrays.stream(methodProduces).forEach(mediaTypeStr -> content.addMediaType(mediaTypeStr, mediaType));
 	}
 
-	private void buildApiResponses(Components components, Method method, Class<?>  clazz, ApiResponses apiResponsesOp,
+	private void buildApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes, String httpCode, ApiResponse apiResponse, boolean isGeneric) {
 		// No documentation
 		if (StringUtils.isBlank(apiResponse.get$ref())) {
 			if (apiResponse.getContent() == null) {
-				Content content = buildContent(components, method,clazz, methodAttributes.getMethodProduces(),
+				Content content = buildContent(components, methodParameter, methodAttributes.getMethodProduces(),
 						methodAttributes.getJsonViewAnnotation());
 				apiResponse.setContent(content);
 			}
@@ -292,7 +293,7 @@ public class GenericResponseBuilder {
 				&& ((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc())) {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
-			Schema<?> schemaN = calculateSchema(components, method.getGenericReturnType(),
+			Schema<?> schemaN = calculateSchema(components, methodParameter.getGenericParameterType(),
 					methodAttributes.getJsonViewAnnotation());
 			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getMethodProduces())) {
 				Arrays.stream(methodAttributes.getMethodProduces()).forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));

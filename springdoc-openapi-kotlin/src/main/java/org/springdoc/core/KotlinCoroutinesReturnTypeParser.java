@@ -28,10 +28,13 @@ import java.util.Optional;
 
 import kotlin.coroutines.Continuation;
 
+import org.springframework.core.MethodParameter;
+
 public class KotlinCoroutinesReturnTypeParser implements ReturnTypeParser {
 
 	@Override
-	public Type getReturnType(Method method, Class<?>  clazz) {
+	public Type getReturnType(MethodParameter methodParameter) {
+		Method method = methodParameter.getMethod();
 		Type returnType = Object.class;
 		Optional<Parameter> continuationParameter = Arrays.stream(method.getParameters())
 				.filter(parameter -> parameter.getType().getCanonicalName().equals(Continuation.class.getCanonicalName()))
