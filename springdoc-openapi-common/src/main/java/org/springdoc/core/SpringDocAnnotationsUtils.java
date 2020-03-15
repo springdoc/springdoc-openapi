@@ -18,6 +18,7 @@
 
 package org.springdoc.core;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -40,8 +41,8 @@ import org.apache.commons.lang3.StringUtils;
 public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
 	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
-			JsonView jsonView) {
-		Schema schemaObject = extractSchema(components, schemaImplementation, jsonView);
+			JsonView jsonView, Annotation[] annotations) {
+		Schema schemaObject = extractSchema(components, schemaImplementation, jsonView, annotations);
 		if (schemaObject != null && StringUtils.isBlank(schemaObject.get$ref())
 				&& StringUtils.isBlank(schemaObject.getType())) {
 			// default to string
@@ -50,11 +51,11 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		return schemaObject;
 	}
 
-	public static Schema extractSchema(Components components, Type returnType, JsonView jsonView) {
+	public static Schema extractSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations) {
 		Schema schemaN = null;
 		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
 				.resolveAsResolvedSchema(
-						new AnnotatedType(returnType).resolveAsRef(true).jsonViewAnnotation(jsonView));
+						new AnnotatedType(returnType).resolveAsRef(true).jsonViewAnnotation(jsonView).ctxAnnotations(annotations));
 		if (resolvedSchema.schema != null) {
 			schemaN = resolvedSchema.schema;
 			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
@@ -73,6 +74,10 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			}
 		}
 		return schemaN;
+	}
+
+	public static Schema extractSchema(Components components, Type genericParameterType, JsonView jsonView) {
+		return extractSchema(components, genericParameterType, jsonView, null);
 	}
 
 	public static Optional<Content> getContent(io.swagger.v3.oas.annotations.media.Content[] annotationContents,
