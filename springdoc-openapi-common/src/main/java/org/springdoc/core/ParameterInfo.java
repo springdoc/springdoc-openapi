@@ -20,9 +20,11 @@ package org.springdoc.core;
 
 import java.lang.reflect.Parameter;
 
+import org.springframework.core.MethodParameter;
+
 class ParameterInfo {
 
-	private final java.lang.reflect.Parameter parameter;
+	private final MethodParameter methodParameter;
 
 	private final int index;
 
@@ -30,11 +32,11 @@ class ParameterInfo {
 
 	private io.swagger.v3.oas.models.parameters.Parameter parameterModel;
 
-	public ParameterInfo(String pName, Parameter parameter,
+	public ParameterInfo(String pName, MethodParameter methodParameter,
 			io.swagger.v3.oas.models.parameters.Parameter parameterModel, int index) {
 		super();
 		this.pName = pName;
-		this.parameter = parameter;
+		this.methodParameter = methodParameter;
 		this.parameterModel = parameterModel;
 		this.index = index;
 	}
@@ -47,8 +49,12 @@ class ParameterInfo {
 		this.pName = pName;
 	}
 
-	public java.lang.reflect.Parameter getParameter() {
-		return parameter;
+	public MethodParameter getMethodParameter() {
+		return methodParameter;
+	}
+
+	public Parameter getParameter(){
+		return methodParameter.getParameter();
 	}
 
 	public io.swagger.v3.oas.models.parameters.Parameter getParameterModel() {

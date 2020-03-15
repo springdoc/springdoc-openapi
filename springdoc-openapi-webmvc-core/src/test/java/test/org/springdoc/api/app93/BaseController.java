@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public abstract class BaseController<TClientModel extends BaseClientModel> {
 	@Operation
 	@GetMapping
-	TClientModel get() {
+	TClientModel get(TClientModel param) {
 		return null;
 	}
 }

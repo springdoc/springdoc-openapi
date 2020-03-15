@@ -18,39 +18,43 @@
 
 package org.springdoc.ui;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springdoc.core.SwaggerUiOAuthProperties;
+import reactor.core.publisher.Mono;
 
 import org.springframework.core.io.Resource;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.servlet.resource.ResourceTransformer;
-import org.springframework.web.servlet.resource.ResourceTransformerChain;
-import org.springframework.web.servlet.resource.TransformedResource;
+import org.springframework.web.reactive.resource.ResourceTransformer;
+import org.springframework.web.reactive.resource.ResourceTransformerChain;
+import org.springframework.web.reactive.resource.TransformedResource;
+import org.springframework.web.server.ServerWebExchange;
 
-public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer implements ResourceTransformer {
+public class SwaggerIndexTransformer extends  AbstractSwaggerIndexTransformer implements ResourceTransformer {
 
 	public SwaggerIndexTransformer(SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
 		super(swaggerUiOAuthProperties, objectMapper);
 	}
 
 	@Override
-	public Resource transform(HttpServletRequest request, Resource resource,
-			ResourceTransformerChain transformerChain) throws IOException {
+	public Mono<Resource> transform(ServerWebExchange serverWebExchange, Resource resource, ResourceTransformerChain resourceTransformerChain) {
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
-		boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
-		if (isIndexFound && !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters())) {
-			String html = readFullyAsString(resource.getInputStream());
-			html = addInitOauth(html);
-			return new TransformedResource(resource, html.getBytes());
+		boolean isIndexFound = false;
+		try {
+			isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
+			if (isIndexFound && !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters())) {
+				String html = readFullyAsString(resource.getInputStream());
+				html = addInitOauth(html);
+				return Mono.just(new TransformedResource(resource, html.getBytes()));
+			}
+			else {
+				return Mono.just(resource);
+			}
 		}
-		else {
-			return resource;
+		catch (Exception e) {
+			throw new RuntimeException("Failed to transform Index", e);
 		}
 	}
+
 
 }

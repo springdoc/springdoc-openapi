@@ -17,6 +17,16 @@
           "specific-controller"
         ],
         "operationId": "get",
+        "parameters": [
+          {
+            "name": "param",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SpecificClientModel"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "default response",

@@ -18,10 +18,17 @@
 
 package test.org.springdoc.ui;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import nonapi.io.github.classgraph.utils.FileUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SpringDocWebFluxConfiguration;
 import org.springdoc.core.SwaggerUiConfigProperties;
+import org.springdoc.core.SwaggerUiOAuthProperties;
 import org.springdoc.ui.SwaggerConfig;
 import org.springdoc.ui.SwaggerWelcome;
 
@@ -34,11 +41,21 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @ActiveProfiles("test")
 @WebFluxTest
-@ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class, SwaggerConfig.class, SwaggerWelcome.class })
+@ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class, SwaggerConfig.class, SwaggerWelcome.class, SwaggerUiOAuthProperties.class })
 public abstract class AbstractSpringDocTest {
-
 
 	@Autowired
 	protected WebTestClient webTestClient;
+
+	protected String getContent(String fileName) {
+		try {
+			Path path = Paths.get(FileUtils.class.getClassLoader().getResource(fileName).toURI());
+			byte[] fileBytes = Files.readAllBytes(path);
+			return new String(fileBytes, StandardCharsets.UTF_8);
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Failed to read file: " + fileName, e);
+		}
+	}
 
 }
