@@ -212,10 +212,10 @@ public class GenericParameterBuilder {
 				if (isFile(parameterizedType)) {
 					return extractFileSchema(paramName, requestBodyInfo);
 				}
-				schemaN = calculateSchemaFromParameterizedType(components, methodParameter.getGenericParameterType(), jsonView);
+				schemaN = SpringDocAnnotationsUtils.extractSchema(components, methodParameter.getGenericParameterType(), jsonView);
 			}
 			else {
-				schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(methodParameter.getParameterType(), components, jsonView);
+				schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(methodParameter.getParameterType(), components, jsonView, methodParameter.getParameterAnnotations());
 			}
 		}
 		else {
@@ -236,10 +236,6 @@ public class GenericParameterBuilder {
 
 	public LocalVariableTableParameterNameDiscoverer getLocalSpringDocParameterNameDiscoverer() {
 		return localSpringDocParameterNameDiscoverer;
-	}
-
-	private Schema calculateSchemaFromParameterizedType(Components components, Type paramType, JsonView jsonView) {
-		return SpringDocAnnotationsUtils.extractSchema(components, paramType, jsonView);
 	}
 
 	private Schema extractFileSchema(String paramName, RequestBodyInfo requestBodyInfo) {
