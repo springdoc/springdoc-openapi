@@ -30,13 +30,16 @@ import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.converters.Pageable;
+import org.springdoc.core.converters.QueryDslPredicateConverter;
 import org.springdoc.core.converters.RepresentationModelLinksOASMixin;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
@@ -54,9 +57,16 @@ public class SpringDocDataRestConfiguration {
 				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
 	}
 
-	@Configuration
-	@ConditionalOnClass(RepositoryRestConfiguration.class)
-	class HalProviderConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+	@ConditionalOnClass(QuerydslBindingsFactory.class)
+    public QueryDslPredicateConverter qdslConverter(QuerydslBindingsFactory querydslBindingsFactory) {
+       return new QueryDslPredicateConverter(querydslBindingsFactory);
+    }
+
+    @Configuration
+    @ConditionalOnClass(RepositoryRestConfiguration.class)
+    class HalProviderConfiguration {
 
 		@Bean
 		public HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
