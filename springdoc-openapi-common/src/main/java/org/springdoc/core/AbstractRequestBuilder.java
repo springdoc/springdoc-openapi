@@ -41,7 +41,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -59,7 +58,6 @@ import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
@@ -172,7 +170,7 @@ public abstract class AbstractRequestBuilder {
 						methodAttributes.getJsonViewAnnotation());
 			}
 
-			if (!isParamToIgnore(parameters[i].getParameter())) {
+			if (!isParamToIgnore(parameters[i])) {
 				ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameter, i);
 				parameter = buildParams(parameterInfo, components, requestMethod,
 						methodAttributes.getJsonViewAnnotation());
@@ -243,11 +241,11 @@ public abstract class AbstractRequestBuilder {
 		return parameter;
 	}
 
-	protected boolean isParamToIgnore(java.lang.reflect.Parameter parameter) {
-		if (parameter.isAnnotationPresent(PathVariable.class) || parameter.isAnnotationPresent(RequestParam.class)) {
+	protected boolean isParamToIgnore(MethodParameter parameter) {
+		if (parameter.getParameterAnnotation(PathVariable.class) !=null || parameter.getParameterAnnotation(RequestParam.class) !=null) {
 			return false;
 		}
-		return parameterBuilder.isAnnotationToIgnore(parameter) || PARAM_TYPES_TO_IGNORE.contains(parameter.getType()) || (AnnotationUtils.findAnnotation(parameter.getType(), Hidden.class) != null);
+		return parameterBuilder.isAnnotationToIgnore(parameter) || PARAM_TYPES_TO_IGNORE.contains(parameter.getParameterType());
 	}
 
 	private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {

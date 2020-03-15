@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.Json;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
@@ -47,6 +48,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,21 +57,19 @@ public class GenericParameterBuilder {
 
 	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 
-	private final IgnoredParameterAnnotations ignoredParameterAnnotations;
-
 	private final PropertyResolverUtils propertyResolverUtils;
 
 	private static final List<Class<?>> FILE_TYPES = new ArrayList<>();
+	private static final List<Class> ANNOTATIOSN_TO_IGNORE = new ArrayList<>();
 
 	static {
 		FILE_TYPES.add(MultipartFile.class);
+		ANNOTATIOSN_TO_IGNORE.add(Hidden.class);
 	}
 
 	public GenericParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
-			IgnoredParameterAnnotations ignoredParameterAnnotations,
 			PropertyResolverUtils propertyResolverUtils) {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
-		this.ignoredParameterAnnotations = ignoredParameterAnnotations;
 		this.propertyResolverUtils = propertyResolverUtils;
 	}
 
@@ -346,11 +346,23 @@ public class GenericParameterBuilder {
 		return TypeFactory.defaultInstance().constructType(type);
 	}
 
-	public boolean isAnnotationToIgnore(java.lang.reflect.Parameter parameter) {
-		return ignoredParameterAnnotations.isAnnotationToIgnore(parameter);
+	public boolean isAnnotationToIgnore(MethodParameter parameter) {
+		return ANNOTATIOSN_TO_IGNORE.stream().anyMatch(
+				annotation -> parameter.getParameterAnnotation(annotation)!=null
+				|| AnnotationUtils.findAnnotation(parameter.getParameterType(), annotation) != null);
 	}
 
 	public static void addFileType(Class<?>... classes) {
 		FILE_TYPES.addAll(Arrays.asList(classes));
+	}
+
+	public static void addAnnotationsToIgnore(Class<?>... classes) {
+		ANNOTATIOSN_TO_IGNORE.addAll(Arrays.asList(classes));
+	}
+
+	public static void removeAnnotationsToIgnore(Class<?>... classes) {
+		List classesToIgnore = Arrays.asList(classes);
+		if (ANNOTATIOSN_TO_IGNORE.containsAll(classesToIgnore))
+			ANNOTATIOSN_TO_IGNORE.removeAll(Arrays.asList(classes));
 	}
 }
