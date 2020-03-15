@@ -16,20 +16,24 @@
  *
  */
 
-package org.springdoc.core;
+package test.org.springdoc.api.app97;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.core.MethodParameter;
+@RestController
+@RequestMapping("/api")
+public class HelloController {
 
-interface ReturnTypeParser {
-
-	default Type getReturnType(MethodParameter methodParameter) {
-		if( methodParameter.getGenericParameterType() instanceof ParameterizedType)
-			return methodParameter.getGenericParameterType();
-		return methodParameter.getParameterType();
+	@GetMapping(value = "/student/header1", headers = "X-API-VERSION=1")
+	public StudentV1 headerV1() {
+		return new StudentV1("Bob Charlie");
 	}
-}
 
-class GenericReturnTypeParser implements ReturnTypeParser {}
+	@GetMapping(value = "/student/header2", headers = "X-API-VERSION=2")
+	public StudentV2 headerV2() {
+		return new StudentV2( "Charlie");
+	}
+
+}

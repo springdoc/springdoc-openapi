@@ -16,20 +16,16 @@
  *
  */
 
-package org.springdoc.core;
+package test.org.springdoc.api.app97;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
-import org.springframework.core.MethodParameter;
+import test.org.springdoc.api.AbstractSpringDocTest;
 
-interface ReturnTypeParser {
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-	default Type getReturnType(MethodParameter methodParameter) {
-		if( methodParameter.getGenericParameterType() instanceof ParameterizedType)
-			return methodParameter.getGenericParameterType();
-		return methodParameter.getParameterType();
-	}
+public class SpringDocApp97Test extends AbstractSpringDocTest {
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
+
 }
-
-class GenericReturnTypeParser implements ReturnTypeParser {}

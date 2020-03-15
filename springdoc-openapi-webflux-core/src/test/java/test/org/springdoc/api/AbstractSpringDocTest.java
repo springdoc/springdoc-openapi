@@ -27,7 +27,6 @@ import nonapi.io.github.classgraph.utils.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.Constants;
 
 import org.springframework.beans.factory.annotation.Autowired;
