@@ -83,5 +83,14 @@ public class SpringDocUtils {
 		return this;
 	}
 
+	public SpringDocUtils addAnnotationsToIgnore(Class<?>... classes) {
+		GenericParameterBuilder.addAnnotationsToIgnore( classes);
+		return this;
+	}
+
+	public SpringDocUtils removeAnnotationsToIgnore(Class<?>... classes) {
+		GenericParameterBuilder.removeAnnotationsToIgnore( classes);
+		return this;
+	}
 }
 

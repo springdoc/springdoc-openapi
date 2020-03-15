@@ -78,11 +78,6 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
-	IgnoredParameterAnnotationsDefault ignoredParameterAnnotationsDefault() {
-		return new IgnoredParameterAnnotationsDefault();
-	}
-
-	@Bean
 	public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers) {
@@ -125,9 +120,8 @@ public class SpringDocConfiguration {
 
 	@Bean
 	public GenericParameterBuilder parameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
-													IgnoredParameterAnnotations ignoredParameterAnnotations,
 													PropertyResolverUtils propertyResolverUtils) {
-		return new GenericParameterBuilder(localSpringDocParameterNameDiscoverer, ignoredParameterAnnotations, propertyResolverUtils);
+		return new GenericParameterBuilder(localSpringDocParameterNameDiscoverer, propertyResolverUtils);
 	}
 
 	static class ConditionOnCacheOrGroupedOpenApi extends AnyNestedCondition {
