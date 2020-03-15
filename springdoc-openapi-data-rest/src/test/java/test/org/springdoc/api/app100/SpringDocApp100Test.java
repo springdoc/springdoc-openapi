@@ -1,22 +1,21 @@
-package test.org.springdoc.api.app98;
-
+package test.org.springdoc.api.app100;
 import com.querydsl.core.types.Predicate;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
-import test.org.springdoc.api.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import test.org.springdoc.api.AbstractSpringDocTest;
+
+import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.springdoc.core.Constants.SPRINGDOC_QDSLPREDICATE_MODE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,15 +26,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Mar, 2020
  **/
 
-@TestPropertySource(properties = {SPRINGDOC_QDSLPREDICATE_MODE +"=object"})
-public class SpringDocApp98Test extends AbstractSpringDocTest {
+public class SpringDocApp100Test extends AbstractSpringDocTest {
     @Test
     public void testApp() throws Exception {
         mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.openapi", is("3.0.1")))
-                .andExpect(jsonPath("$.paths./test.get.parameters[0].schema.$ref")
-                        .value("#/components/schemas/DummyEntityPredicateG"))
-                .andExpect(jsonPath("$.components.schemas.DummyEntityPredicateG.properties.notCode").exists());
+                .andExpect(jsonPath("$.paths./test.get.parameters[2].name")
+                        .value("name"))
+                .andExpect(jsonPath("$.paths./test.get.parameters[3].name")
+                        .value("notCode"))
+                .andExpect(jsonPath("$.paths./test.get.parameters[4].name")
+                        .value("status"))
+                .andExpect(jsonPath("$.paths./test.get.parameters[4].schema.enum").isArray());
+    }
+
+    public enum Status {
+        ACTIVE, INACTIVE
     }
 
     @SpringBootApplication
@@ -50,12 +56,8 @@ public class SpringDocApp98Test extends AbstractSpringDocTest {
     public static class GreetingController {
 
         @GetMapping("/test")
-        public ResponseEntity<?> sayHello2(@QuerydslPredicate(bindings = DummyEntityPredicate.class, root = DummyEntity.class) Predicate predicate) {
-            return ResponseEntity.ok().build();
-        }
-
-        @GetMapping("/test-multiple")
-        public ResponseEntity<?> searchDummyEntity(@QuerydslPredicate(bindings = DummyEntityPredicate.class, root = DummyEntity.class) Predicate predicate) {
+        public ResponseEntity<?> sayHello2(@QuerydslPredicate(bindings = DummyEntityPredicate.class, root = DummyEntity.class) Predicate predicate,
+                                           @RequestParam List<Status> statuses) {
             return ResponseEntity.ok().build();
         }
     }
