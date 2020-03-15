@@ -16,23 +16,20 @@
  *
  */
 
-package org.springdoc.core;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-
-import static org.springdoc.core.SpringDocUtils.getConfig;
+package test.org.springdoc.api.app98;
 
 
-public class IgnoredParameterWithSecurity implements IgnoredParameterAnnotations {
+import org.springdoc.core.SpringDocUtils;
+import test.org.springdoc.api.AbstractSpringDocTest;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+public class SpringDocApp98Test extends AbstractSpringDocTest {
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 	static {
-		getConfig().addRequestWrapperToIgnore(Authentication .class)
-				.addResponseTypeToIgnore(Authentication.class);
-	}
-
-	@Override
-	public boolean isAnnotationToIgnore(java.lang.reflect.Parameter parameter) {
-		return parameter.isAnnotationPresent(AuthenticationPrincipal.class);
+		SpringDocUtils.getConfig().addAnnotationsToIgnore(IgnoredAnnotationParameter.class);
 	}
 }
