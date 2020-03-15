@@ -32,6 +32,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.converters.Pageable;
 import org.springdoc.core.converters.QueryDslPredicateConverter;
 import org.springdoc.core.converters.RepresentationModelLinksOASMixin;
+import org.springdoc.core.customisers.QuerydslPredicateOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -39,6 +40,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
@@ -46,6 +48,7 @@ import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.Constants.SPRINGDOC_QDSLPREDICATE_MODE;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @Configuration
@@ -59,9 +62,18 @@ public class SpringDocDataRestConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-	@ConditionalOnClass(QuerydslBindingsFactory.class)
+    @ConditionalOnProperty(name = SPRINGDOC_QDSLPREDICATE_MODE, havingValue = "object")
+    @ConditionalOnClass(QuerydslBindingsFactory.class)
     public QueryDslPredicateConverter qdslConverter(QuerydslBindingsFactory querydslBindingsFactory) {
-       return new QueryDslPredicateConverter(querydslBindingsFactory);
+        return new QueryDslPredicateConverter(querydslBindingsFactory);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean({QuerydslPredicateOperationCustomizer.class, QueryDslPredicateConverter.class})
+    @ConditionalOnClass(QuerydslBindingsFactory.class)
+    public QuerydslPredicateOperationCustomizer querydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory,
+                                                                                     LocalVariableTableParameterNameDiscoverer localVariableTableParameterNameDiscoverer) {
+        return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory, localVariableTableParameterNameDiscoverer);
     }
 
     @Configuration
