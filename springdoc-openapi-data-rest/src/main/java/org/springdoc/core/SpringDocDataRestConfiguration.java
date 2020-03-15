@@ -29,18 +29,16 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import javassist.ClassPool;
 import org.springdoc.core.converters.Pageable;
 import org.springdoc.core.converters.QueryDslPredicateConverter;
 import org.springdoc.core.converters.RepresentationModelLinksOASMixin;
-import org.springdoc.core.customisers.QuerydslPredicateOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
@@ -48,7 +46,6 @@ import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.Constants.SPRINGDOC_QDSLPREDICATE_MODE;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @Configuration
@@ -60,31 +57,24 @@ public class SpringDocDataRestConfiguration {
 				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
 	}
 
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(name = SPRINGDOC_QDSLPREDICATE_MODE, havingValue = "object")
-    @ConditionalOnClass(QuerydslBindingsFactory.class)
-    public QueryDslPredicateConverter qdslConverter(QuerydslBindingsFactory querydslBindingsFactory) {
-        return new QueryDslPredicateConverter(querydslBindingsFactory);
-    }
 
-    @Bean
-    @ConditionalOnMissingBean({QuerydslPredicateOperationCustomizer.class, QueryDslPredicateConverter.class})
-    @ConditionalOnClass(QuerydslBindingsFactory.class)
-    public QuerydslPredicateOperationCustomizer querydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory,
-                                                                                     LocalVariableTableParameterNameDiscoverer localVariableTableParameterNameDiscoverer) {
-        return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory, localVariableTableParameterNameDiscoverer);
-    }
+	@Configuration
+	@ConditionalOnClass(value = {QuerydslBindingsFactory.class, ClassPool.class})
+	class QuerydslProvider {
 
-    @Configuration
-    @ConditionalOnClass(RepositoryRestConfiguration.class)
-    class HalProviderConfiguration {
+		@Bean
+		public QueryDslPredicateConverter qdslConverter(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
+			return querydslBindingsFactory.isPresent() ?  new QueryDslPredicateConverter(querydslBindingsFactory.get()) : null;
+		}
+	}
+
+	@Configuration
+	@ConditionalOnClass(RepositoryRestConfiguration.class)
+	class HalProviderConfiguration {
 
 		@Bean
 		public HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
-			if (repositoryRestConfiguration.isPresent())
-				return new HalProvider(repositoryRestConfiguration.get());
-			return null;
+			return repositoryRestConfiguration.isPresent() ? new HalProvider(repositoryRestConfiguration.get()) : null;
 		}
 
 		/**

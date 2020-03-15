@@ -16,12 +16,12 @@
  *
  */
 
-package org.springdoc.core;
+package test.org.springdoc.api.app98;
 
-interface IgnoredParameterAnnotations {
-	default boolean isAnnotationToIgnore(java.lang.reflect.Parameter parameter) {
-		return false;
-	}
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface IgnoredAnnotationParameter {
+	String addition() default "customized parameter!";
 }
-
-class IgnoredParameterAnnotationsDefault implements IgnoredParameterAnnotations {}

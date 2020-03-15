@@ -22,19 +22,21 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpointHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocSecurityConfiguration {
 
-	@Bean
-	@Primary
-	IgnoredParameterWithSecurity ignoredParameterAnnotationsWithSecurity() {
-		return new IgnoredParameterWithSecurity();
+	static {
+		getConfig().addRequestWrapperToIgnore(Authentication.class)
+				.addResponseTypeToIgnore(Authentication.class)
+				.addAnnotationsToIgnore(AuthenticationPrincipal.class);
 	}
 
 	@Configuration
