@@ -82,34 +82,41 @@ public class QueryDslPredicateConverter implements ModelConverter {
 	}
 
 	private Class<?> getClassFromPredicate(QuerydslPredicate predicate) throws CannotCompileException {
-		ClassTypeInformation<?> classTypeInformation = ClassTypeInformation.from(predicate.root());
-		TypeInformation<?> domainType = classTypeInformation.getRequiredActualType();
-		Optional<Class<? extends QuerydslBinderCustomizer<?>>> bindingsAnnotation = Optional.of(predicate)
-				.map(QuerydslPredicate::bindings)
-				.map(CastUtils::cast);
-		QuerydslBindings bindings = bindingsAnnotation
-				.map(it -> querydslBindingsFactory.createBindingsFor(domainType, it))
-				.orElseGet(() -> querydslBindingsFactory.createBindingsFor(domainType));
+		Class<?> tClass = null;
 		String generatedClassName = "com.springdoc.core." + predicate.bindings().getSimpleName() + "G";
-		ClassPool classPool = ClassPool.getDefault();
-		CtClass classPoolOrNull = classPool.getOrNull(generatedClassName);
-		if (classPoolOrNull == null) {
-			classPoolOrNull = classPool.makeClass(generatedClassName);
-			Set<String> fieldsToAdd = Arrays.stream(predicate.root().getDeclaredFields()).map(Field::getName).collect(Collectors.toSet());
-			//remove blacklisted fields
-			Set<String> blacklist = getBindingFieldValues(bindings, "blackList");
-			fieldsToAdd.removeIf(blacklist::contains);
-			Set<String> whiteList = getBindingFieldValues(bindings, "whiteList");
-			Set<String> aliases = getBindingFieldValues(bindings, "aliases");
-			fieldsToAdd.addAll(aliases);
-			fieldsToAdd.addAll(whiteList);
-			for (String fieldName : fieldsToAdd) {
-				CtField f = new CtField(CtClass.charType, fieldName, classPoolOrNull);
-				f.setModifiers(Modifier.PUBLIC);
-				classPoolOrNull.addField(f);
-			}
+		try {
+			tClass = Class.forName(generatedClassName);
 		}
-		return classPoolOrNull.toClass(this.getClass().getClassLoader(), this.getClass().getProtectionDomain());
+		catch (ClassNotFoundException cnfe) {
+			ClassTypeInformation<?> classTypeInformation = ClassTypeInformation.from(predicate.root());
+			TypeInformation<?> domainType = classTypeInformation.getRequiredActualType();
+			Optional<Class<? extends QuerydslBinderCustomizer<?>>> bindingsAnnotation = Optional.of(predicate)
+					.map(QuerydslPredicate::bindings)
+					.map(CastUtils::cast);
+			QuerydslBindings bindings = bindingsAnnotation
+					.map(it -> querydslBindingsFactory.createBindingsFor(domainType, it))
+					.orElseGet(() -> querydslBindingsFactory.createBindingsFor(domainType));
+			ClassPool classPool = ClassPool.getDefault();
+			CtClass classPoolOrNull = classPool.getOrNull(generatedClassName);
+			if (classPoolOrNull == null) {
+				classPoolOrNull = classPool.makeClass(generatedClassName);
+				Set<String> fieldsToAdd = Arrays.stream(predicate.root().getDeclaredFields()).map(Field::getName).collect(Collectors.toSet());
+				//remove blacklisted fields
+				Set<String> blacklist = getBindingFieldValues(bindings, "blackList");
+				fieldsToAdd.removeIf(blacklist::contains);
+				Set<String> whiteList = getBindingFieldValues(bindings, "whiteList");
+				Set<String> aliases = getBindingFieldValues(bindings, "aliases");
+				fieldsToAdd.addAll(aliases);
+				fieldsToAdd.addAll(whiteList);
+				for (String fieldName : fieldsToAdd) {
+					CtField f = new CtField(CtClass.charType, fieldName, classPoolOrNull);
+					f.setModifiers(Modifier.PUBLIC);
+					classPoolOrNull.addField(f);
+				}
+			}
+			tClass = classPoolOrNull.toClass(this.getClass().getClassLoader(), this.getClass().getProtectionDomain());
+		}
+		return tClass;
 	}
 
 	private Set<String> getBindingFieldValues(QuerydslBindings instance, String fieldName) {
