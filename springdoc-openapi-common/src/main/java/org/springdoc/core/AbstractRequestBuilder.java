@@ -174,7 +174,7 @@ public abstract class AbstractRequestBuilder {
 
 			if (!isParamToIgnore(parameters[i].getParameter())) {
 				ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameter, i);
-				parameter = buildParams(parameterInfo, components, handlerMethod, requestMethod,
+				parameter = buildParams(parameterInfo, components, requestMethod,
 						methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
 				parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
@@ -184,7 +184,7 @@ public abstract class AbstractRequestBuilder {
 				else if (!RequestMethod.GET.equals(requestMethod)) {
 					if (operation.getRequestBody() != null)
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
-					requestBodyBuilder.calculateRequestBodyInfo(components, handlerMethod, methodAttributes, i,
+					requestBodyBuilder.calculateRequestBodyInfo(components, methodAttributes,
 							parameterInfo, requestBodyInfo);
 					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), Arrays.asList(parameters[i].getParameterAnnotations()));
 				}
@@ -223,7 +223,7 @@ public abstract class AbstractRequestBuilder {
 
 		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
 			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(new StringSchema().addEnumItem(entry.getValue()));
-			if (map.containsKey(entry.getKey())){
+			if (map.containsKey(entry.getKey())) {
 				parameter = map.get(entry.getKey());
 				parameter.getSchema().addEnumItemObject(entry.getValue());
 				parameter.setSchema(parameter.getSchema());
@@ -262,15 +262,14 @@ public abstract class AbstractRequestBuilder {
 		return parameter != null && (parameter.getName() != null || parameter.get$ref() != null);
 	}
 
-	private Parameter buildParams(ParameterInfo parameterInfo, Components components, HandlerMethod handlerMethod,
+	private Parameter buildParams(ParameterInfo parameterInfo, Components components,
 			RequestMethod requestMethod, JsonView jsonView) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
-		int index = parameterInfo.getIndex();
 
 		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
 		RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
 		PathVariable pathVar = methodParameter.getParameterAnnotation(PathVariable.class);
-		CookieValue cookieValue =  methodParameter.getParameterAnnotation(CookieValue.class);
+		CookieValue cookieValue = methodParameter.getParameterAnnotation(CookieValue.class);
 
 		Parameter parameter = null;
 		RequestInfo requestInfo;

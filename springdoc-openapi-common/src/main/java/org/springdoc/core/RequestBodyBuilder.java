@@ -31,7 +31,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.method.HandlerMethod;
 
 public class RequestBodyBuilder {
 
@@ -85,8 +84,8 @@ public class RequestBodyBuilder {
 		return Optional.of(requestBodyObject);
 	}
 
-	public void calculateRequestBodyInfo(Components components, HandlerMethod handlerMethod,
-			MethodAttributes methodAttributes, int i, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
+	public void calculateRequestBodyInfo(Components components, MethodAttributes methodAttributes,
+			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		// Get it from parameter level, if not present
