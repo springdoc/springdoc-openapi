@@ -61,6 +61,11 @@ public class SpringDocConfigProperties {
 
 	private String defaultProducesMediaType = MediaType.ALL_VALUE;
 
+	/**
+	 * To override calculated server scheme in order to permit run on a https proxy
+	 */
+	private String calculatedServerScheme;
+
 	public boolean isAutoTagClasses() {
 		return autoTagClasses;
 	}
@@ -139,6 +144,14 @@ public class SpringDocConfigProperties {
 
 	public void setCache(Cache cache) {
 		this.cache = cache;
+	}
+
+	public String getCalculatedServerScheme() {
+		return calculatedServerScheme;
+	}
+
+	public void setCalculatedServerScheme(String calculatedServerScheme) {
+		this.calculatedServerScheme = calculatedServerScheme;
 	}
 
 	public static class Webjars {

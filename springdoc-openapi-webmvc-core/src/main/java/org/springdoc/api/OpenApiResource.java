@@ -45,6 +45,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,6 +55,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
@@ -153,6 +155,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
 		String requestUrl = decode(request.getRequestURL().toString());
 		String calculatedUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
+		if (!StringUtils.isEmpty(springDocConfigProperties.getCalculatedServerScheme())) {
+			calculatedUrl = UriComponentsBuilder.fromHttpUrl(calculatedUrl).scheme(springDocConfigProperties.getCalculatedServerScheme()).toUriString();
+		}
 		openAPIBuilder.setServerBaseUrl(calculatedUrl);
 	}
 }
