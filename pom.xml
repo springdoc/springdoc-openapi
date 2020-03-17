@@ -73,16 +73,10 @@
 		<webjars-locator.version>0.38</webjars-locator.version>
 		<spring-security-oauth2.version>2.3.8.RELEASE</spring-security-oauth2.version>
 		<classgraph.version>4.8.44</classgraph.version>
-		<javassist.version>3.26.0-GA</javassist.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.javassist</groupId>
-				<artifactId>javassist</artifactId>
-				<version>${javassist.version}</version>
-			</dependency>
 			<!-- swagger dependencies -->
 			<dependency>
 				<groupId>io.swagger.core.v3</groupId>
