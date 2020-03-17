@@ -18,8 +18,6 @@
 
 package org.springdoc.core;
 
-import java.util.Optional;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -33,19 +31,20 @@ import org.springdoc.core.converters.Pageable;
 import org.springdoc.core.converters.RepresentationModelLinksOASMixin;
 import org.springdoc.core.customisers.QuerydslPredicateOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 
+import java.util.Optional;
+
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.Constants.SPRINGDOC_QDSLPREDICATE_MODE;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @Configuration
@@ -55,6 +54,17 @@ public class SpringDocDataRestConfiguration {
 	static {
 		getConfig().replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
 				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
+	}
+
+	@Configuration
+	@ConditionalOnClass(value = {QuerydslBindingsFactory.class})
+	class QuerydslProvider {
+
+		@Bean
+		public QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory,
+																								 LocalVariableTableParameterNameDiscoverer localVariableTableParameterNameDiscoverer) {
+			return querydslBindingsFactory.isPresent() ? new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get(), localVariableTableParameterNameDiscoverer) : null;
+		}
 	}
 
 	@Configuration
