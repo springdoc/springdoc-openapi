@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve compatibility of springdoc-openapi-data-rest with Spring Webflux #477
 - Improve support of  Swagger UI to use provided spec.yml #480
 - Delegate primitive type generation to swagger-core
+- spring-boot 1, end of compatibility: https://spring.io/blog/2018/07/30/spring-boot-1-x-eol-aug-1st-2019
 ### Fixed
 - Wrong schema mapping with inheritance. Fixes #489
 
