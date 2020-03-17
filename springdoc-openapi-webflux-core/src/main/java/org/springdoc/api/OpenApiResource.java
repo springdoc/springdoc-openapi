@@ -36,9 +36,10 @@ import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -73,18 +74,17 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl)
+	public Mono<String> openapiJson(ServerHttpRequest serverHttpRequest)
 			throws JsonProcessingException {
-		calculateServerUrl(serverHttpRequest, apiDocsUrl);
+		calculateServerUrl(serverHttpRequest);
 		OpenAPI openAPI = this.getOpenApi();
 		return Mono.just(Json.mapper().writeValueAsString(openAPI));
 	}
 
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
-	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest,
-			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl) throws JsonProcessingException {
-		calculateServerUrl(serverHttpRequest, apiDocsUrl);
+	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest) throws JsonProcessingException {
+		calculateServerUrl(serverHttpRequest);
 		OpenAPI openAPI = this.getOpenApi();
 		return Mono.just(Yaml.mapper().writeValueAsString(openAPI));
 	}
@@ -113,10 +113,26 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		}
 	}
 
-	private void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
-		String requestUrl = decode(serverHttpRequest.getURI().toString());
-		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
-		openAPIBuilder.setServerBaseUrl(serverBaseUrl);
+	private void calculateServerUrl(ServerHttpRequest serverHttpRequest) {
+		UriComponents uriComponents = UriComponentsBuilder.fromHttpRequest(serverHttpRequest).build();
+
+		String scheme = uriComponents.getScheme();
+		String serverName = uriComponents.getHost();
+		int serverPort = uriComponents.getPort();
+
+		StringBuilder url = new StringBuilder();
+
+		if (scheme != null && serverName != null) {
+			url.append(scheme).append("://");
+			url.append(serverName);
+
+			if (serverPort != 80 && serverPort != 443 && serverPort != -1) {
+				url.append(":").append(serverPort);
+			}
+		}
+
+		openAPIBuilder.setServerBaseUrl(url.toString());
+
 	}
 
 }

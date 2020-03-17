@@ -41,10 +41,11 @@ import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,6 +55,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
@@ -79,18 +82,18 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl)
+	public String openapiJson(HttpServletRequest request)
 			throws JsonProcessingException {
-		calculateServerUrl(request, apiDocsUrl);
+		calculateServerUrl(request);
 		OpenAPI openAPI = this.getOpenApi();
 		return Json.mapper().writeValueAsString(openAPI);
 	}
 
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
-	public String openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl)
+	public String openapiYaml(HttpServletRequest request)
 			throws JsonProcessingException {
-		calculateServerUrl(request, apiDocsUrl);
+		calculateServerUrl(request);
 		OpenAPI openAPI = this.getOpenApi();
 		return Yaml.mapper().writeValueAsString(openAPI);
 	}
@@ -150,9 +153,22 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				&& (springDocConfigProperties.isModelAndViewAllowed()|| !ModelAndView.class.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}
 
-	private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
-		String requestUrl = decode(request.getRequestURL().toString());
-		String calculatedUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
-		openAPIBuilder.setServerBaseUrl(calculatedUrl);
+	private void calculateServerUrl(HttpServletRequest request) {
+		HttpRequest httpRequest = new ServletServerHttpRequest(request);
+		UriComponents uriComponents = UriComponentsBuilder.fromHttpRequest(httpRequest).build();
+
+		String scheme = uriComponents.getScheme();
+		String serverName = uriComponents.getHost();
+		int serverPort = uriComponents.getPort();
+
+		StringBuilder url = new StringBuilder();
+		url.append(scheme).append("://");
+		url.append(serverName);
+
+		if (serverPort != 80 && serverPort != 443 && serverPort != -1) {
+			url.append(":").append(serverPort);
+		}
+
+		openAPIBuilder.setServerBaseUrl(url.toString());
 	}
 }

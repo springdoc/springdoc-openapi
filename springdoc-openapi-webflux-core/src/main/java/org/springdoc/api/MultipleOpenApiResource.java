@@ -47,7 +47,6 @@ import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerM
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
-import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
 public class MultipleOpenApiResource implements InitializingBean {
@@ -108,7 +107,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 			serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl, @PathVariable String
 			group)
 			throws JsonProcessingException {
-		return getOpenApiResourceOrThrow(group).openapiJson(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
+		return getOpenApiResourceOrThrow(group).openapiJson(serverHttpRequest);
 	}
 
 	@Operation(hidden = true)
@@ -116,7 +115,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest,
 			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, @PathVariable String
 			group) throws JsonProcessingException {
-		return getOpenApiResourceOrThrow(group).openapiYaml(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
+		return getOpenApiResourceOrThrow(group).openapiYaml(serverHttpRequest);
 	}
 
 	private OpenApiResource getOpenApiResourceOrThrow(String group) {
