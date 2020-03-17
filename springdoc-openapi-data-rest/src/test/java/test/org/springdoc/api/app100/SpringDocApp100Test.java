@@ -34,10 +34,9 @@ public class SpringDocApp100Test extends AbstractSpringDocTest {
                 .andExpect(jsonPath("$.paths./test.get.parameters[2].name")
                         .value("name"))
                 .andExpect(jsonPath("$.paths./test.get.parameters[3].name")
-                        .value("notCode"))
+                        .value("postCode"))
                 .andExpect(jsonPath("$.paths./test.get.parameters[4].name")
-                        .value("status"))
-                .andExpect(jsonPath("$.paths./test.get.parameters[4].schema.enum").isArray());
+                        .value("id"));
     }
 
     public enum Status {
