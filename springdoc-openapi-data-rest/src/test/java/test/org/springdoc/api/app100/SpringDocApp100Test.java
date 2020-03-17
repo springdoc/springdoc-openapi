@@ -56,17 +56,18 @@ public class SpringDocApp100Test extends AbstractSpringDocTest {
     public static class GreetingController {
 
         @GetMapping("/test")
-        public ResponseEntity<?> sayHello2(@QuerydslPredicate(bindings = DummyEntityPredicate.class, root = DummyEntity.class) Predicate predicate,
+        public ResponseEntity<?> sayHello2(@QuerydslPredicate(bindings = CountryPredicate.class, root = Country.class) Predicate predicate,
                                            @RequestParam List<Status> statuses) {
             return ResponseEntity.ok().build();
         }
     }
 
-    public static class DummyEntityPredicate implements QuerydslBinderCustomizer<QDummyEntity> {
+    public static class CountryPredicate implements QuerydslBinderCustomizer<QCountry> {
 
         @Override
-        public void customize(QuerydslBindings querydslBindings, QDummyEntity qDummyEntity) {
-            querydslBindings.bind(qDummyEntity.code).as("notCode").first((path, value) -> path.containsIgnoreCase(value));
+        public void customize(QuerydslBindings querydslBindings, QCountry qCountry) {
+            querydslBindings.bind(qCountry.codeISO3166).as("code").first((path, value) -> path.containsIgnoreCase(value));
+            querydslBindings.bind(qCountry.dialingCode).as("postCode").first((path, value) -> path.containsIgnoreCase(value));
         }
     }
 }

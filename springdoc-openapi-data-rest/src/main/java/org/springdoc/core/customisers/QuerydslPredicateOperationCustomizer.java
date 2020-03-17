@@ -88,6 +88,11 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
             fieldsToAdd.addAll(aliases);
             fieldsToAdd.addAll(whiteList);
             for (String fieldName : fieldsToAdd) {
+                //dont generate parameters with duplicate names
+                Parameter existingParamWithSameName = getParameterFromOperationByName(operationParameters, fieldName);
+                if (existingParamWithSameName != null) {
+                    continue;
+                }
                 Type type = getFieldType(fieldName, pathSpecMap, predicate.root());
                 io.swagger.v3.oas.models.parameters.Parameter newParameter = buildParam(type, fieldName);
 

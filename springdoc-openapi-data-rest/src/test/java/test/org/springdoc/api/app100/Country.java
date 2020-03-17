@@ -1,0 +1,83 @@
+package test.org.springdoc.api.app100;
+
+import javax.persistence.*;
+
+/**
+ * @author gibah
+ */
+
+@Entity
+public class Country {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Basic
+    @Column(nullable = false)
+    private String name;
+
+    @Basic
+    private String shortName;
+
+    @Basic
+    private String dialingCode;
+
+    @Basic
+    @Column(unique = true, nullable = false)
+    private String codeISO3166;
+
+    @Basic
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SpringDocApp100Test.Status status;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
+    public String getDialingCode() {
+        return dialingCode;
+    }
+
+    public void setDialingCode(String dialingCode) {
+        this.dialingCode = dialingCode;
+    }
+
+    public String getCodeISO3166() {
+        return codeISO3166;
+    }
+
+    public void setCodeISO3166(String codeISO3166) {
+        this.codeISO3166 = codeISO3166;
+    }
+
+    public SpringDocApp100Test.Status getStatus() {
+        return status;
+    }
+
+    public Country setStatus(SpringDocApp100Test.Status status) {
+        this.status = status;
+        return this;
+    }
+}
