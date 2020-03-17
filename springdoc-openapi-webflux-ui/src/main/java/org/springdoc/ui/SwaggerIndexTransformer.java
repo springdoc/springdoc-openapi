@@ -52,7 +52,7 @@ public class SwaggerIndexTransformer extends  AbstractSwaggerIndexTransformer im
 			}
 		}
 		catch (Exception e) {
-			throw new RuntimeException("Failed to transform Index", e);
+			throw new SpringDocUIException("Failed to transform Index", e);
 		}
 	}
 

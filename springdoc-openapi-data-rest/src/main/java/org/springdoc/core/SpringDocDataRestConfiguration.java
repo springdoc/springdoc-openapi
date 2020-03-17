@@ -29,9 +29,7 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
-import javassist.ClassPool;
 import org.springdoc.core.converters.Pageable;
-import org.springdoc.core.converters.QueryDslPredicateConverter;
 import org.springdoc.core.converters.RepresentationModelLinksOASMixin;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
@@ -39,7 +37,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
@@ -55,17 +52,6 @@ public class SpringDocDataRestConfiguration {
 	static {
 		getConfig().replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
 				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
-	}
-
-
-	@Configuration
-	@ConditionalOnClass(value = {QuerydslBindingsFactory.class, ClassPool.class})
-	class QuerydslProvider {
-
-		@Bean
-		public QueryDslPredicateConverter qdslConverter(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
-			return querydslBindingsFactory.isPresent() ?  new QueryDslPredicateConverter(querydslBindingsFactory.get()) : null;
-		}
 	}
 
 	@Configuration
