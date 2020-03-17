@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.34] - 2020-03-17
+### Added
+- Property resolver on @operation.summary, @parameter.description and @parameter.name
+- Use required attribute from spring RequestBody annotation #468
+- Review configuration via springdoc.swagger-ui.urls #481
+- Support for auto fill clientId and clientSecret for webflux #333
+- Support to ignore annotations on parameter level
+### Changed
+- Update spring-boot-starter-parent to 2.2.5.RELEASE #469
+- Improve compatibility of springdoc-openapi-data-rest with Spring Webflux #477
+- Improve support of  Swagger UI to use provided spec.yml #480
+- Delegate primitive type generation to swagger-core
+### Fixed
+- Wrong schema mapping with inheritance. Fixes #489
 
 ## [1.2.33] - 2020-03-01
 ### Added
@@ -13,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Allow @Schema annotation to set an attribute as not required even if it's annotated with @NotNull #459
 - Make SpringDocAnnotationsUtils public #458
-- Make GenericResponseBuilder.calculateSchema method public #455.
+- Make GenericResponseBuilder.calculateSchema method public #455
 
 ## [1.2.32] - 2020-02-19
 ### Added
