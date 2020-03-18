@@ -70,8 +70,8 @@ public class SpringDocWebMvcConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public GenericResponseBuilder responseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties) {
-		return new GenericResponseBuilder(operationBuilder, returnTypeParsers, springDocConfigProperties);
+	public GenericResponseBuilder responseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
+		return new GenericResponseBuilder(operationBuilder, returnTypeParsers, springDocConfigProperties, propertyResolverUtils);
 	}
 
 	@Configuration
