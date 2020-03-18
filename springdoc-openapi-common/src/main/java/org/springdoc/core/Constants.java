@@ -46,8 +46,6 @@ public final class Constants {
 
 	public static final String SPRINGDOC_SWAGGER_UI_URL = "springdoc.swagger-ui.url";
 
-	public static final String SPRINGDOC_QDSLPREDICATE_MODE = "springdoc.qdslpredicate.mode";
-
 	public static final String NULL = ":#{null}";
 
 	public static final String MVC_SERVLET_PATH = "${spring.mvc.servlet.path"+ NULL +"}";

@@ -18,8 +18,11 @@
 
 package org.springdoc.core;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.querydsl.core.types.Predicate;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
@@ -31,6 +34,7 @@ import org.springdoc.core.converters.Pageable;
 import org.springdoc.core.converters.RepresentationModelLinksOASMixin;
 import org.springdoc.core.customisers.QuerydslPredicateOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -41,8 +45,6 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
-
-import java.util.Optional;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
@@ -57,13 +59,17 @@ public class SpringDocDataRestConfiguration {
 	}
 
 	@Configuration
-	@ConditionalOnClass(value = {QuerydslBindingsFactory.class})
+	@ConditionalOnClass(value = { QuerydslBindingsFactory.class })
 	class QuerydslProvider {
 
 		@Bean
 		public QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory,
-																								 LocalVariableTableParameterNameDiscoverer localVariableTableParameterNameDiscoverer) {
-			return querydslBindingsFactory.isPresent() ? new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get(), localVariableTableParameterNameDiscoverer) : null;
+				LocalVariableTableParameterNameDiscoverer localVariableTableParameterNameDiscoverer) {
+			if (querydslBindingsFactory.isPresent()) {
+				getConfig().addRequestWrapperToIgnore(Predicate.class);
+				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get(), localVariableTableParameterNameDiscoverer);
+			}
+			return null;
 		}
 	}
 
@@ -85,7 +91,8 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		public OpenApiCustomiser linksSchemaCustomiser(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
 			if (!repositoryRestConfiguration.isPresent() || !repositoryRestConfiguration.get().useHalAsDefaultJsonMediaType()) {
-				return openApi -> {};
+				return openApi -> {
+				};
 			}
 			Json.mapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
 
