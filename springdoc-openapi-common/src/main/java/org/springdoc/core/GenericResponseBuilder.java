@@ -66,11 +66,15 @@ public class GenericResponseBuilder {
 
 	private final SpringDocConfigProperties springDocConfigProperties;
 
-	GenericResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties) {
+	private final PropertyResolverUtils propertyResolverUtils;
+
+	GenericResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers,
+						   SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.operationBuilder = operationBuilder;
 		this.returnTypeParsers = returnTypeParsers;
 		this.springDocConfigProperties = springDocConfigProperties;
+		this.propertyResolverUtils = propertyResolverUtils;
 	}
 
 	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
@@ -135,7 +139,7 @@ public class GenericResponseBuilder {
 					apiResponsesOp.addApiResponse(apiResponseAnnotations.responseCode(), apiResponse);
 					continue;
 				}
-				apiResponse.setDescription(apiResponseAnnotations.description());
+				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotations.description()));
 				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
 				buildContentFromDoc(components, apiResponsesOp, methodAttributes,
 						apiResponseAnnotations, apiResponse, contentdoc);
