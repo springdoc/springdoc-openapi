@@ -25,6 +25,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-core</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-webmvc-core</artifactId>
 			<version>${project.version}</version>
