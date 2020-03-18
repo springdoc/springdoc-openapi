@@ -67,10 +67,10 @@ public class Pageable {
 	}
 
 	public void setSort(List<String> sort) {
-		if (sort == null) {
+		if (sort == null)
 			this.sort.clear();
-		}
-		this.sort = sort;
+		else
+			this.sort = sort;
 	}
 
 	public void addSort(String sort) {
