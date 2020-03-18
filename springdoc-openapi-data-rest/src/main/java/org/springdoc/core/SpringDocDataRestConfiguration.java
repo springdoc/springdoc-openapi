@@ -39,7 +39,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
@@ -63,11 +62,10 @@ public class SpringDocDataRestConfiguration {
 	class QuerydslProvider {
 
 		@Bean
-		public QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory,
-				LocalVariableTableParameterNameDiscoverer localVariableTableParameterNameDiscoverer) {
+		public QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
 			if (querydslBindingsFactory.isPresent()) {
 				getConfig().addRequestWrapperToIgnore(Predicate.class);
-				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get(), localVariableTableParameterNameDiscoverer);
+				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get());
 			}
 			return null;
 		}
