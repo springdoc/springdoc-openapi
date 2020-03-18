@@ -1,6 +1,12 @@
-package test.org.springdoc.api.app100;
+package test.org.springdoc.api.app5;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 /**
  * @author gibah
@@ -30,7 +36,7 @@ public class Country {
     @Basic
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private SpringDocApp100Test.Status status;
+    private Status status;
 
     public Long getId() {
         return id;
@@ -72,12 +78,17 @@ public class Country {
         this.codeISO3166 = codeISO3166;
     }
 
-    public SpringDocApp100Test.Status getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public Country setStatus(SpringDocApp100Test.Status status) {
+    public Country setStatus(Status status) {
         this.status = status;
         return this;
     }
+
+	public enum Status {
+		ACTIVE, INACTIVE
+	}
+
 }
