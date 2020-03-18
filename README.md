@@ -15,7 +15,7 @@ The library automatically generates documentation in JSON/YAML and HTML formatte
 
 This library supports:
 *  OpenAPI 3
-*  Spring-boot (v1 and v2)
+*  Spring-boot (v2)
 *  JSR-303, specifically for @NotNull, @Min, @Max, and @Size.
 *  Swagger-ui
 *  Oauth 2
