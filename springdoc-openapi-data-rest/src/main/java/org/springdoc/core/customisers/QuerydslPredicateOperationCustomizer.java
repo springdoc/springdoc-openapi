@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.OperationCustomizer;
 
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
@@ -41,13 +40,15 @@ import org.springframework.web.method.HandlerMethod;
  * Mar, 2020
  **/
 public class QuerydslPredicateOperationCustomizer implements OperationCustomizer {
-	private static final Logger LOGGER = LoggerFactory.getLogger(QuerydslPredicateOperationCustomizer.class);
-	private QuerydslBindingsFactory querydslBindingsFactory;
-	private LocalVariableTableParameterNameDiscoverer localVariableTableParameterNameDiscoverer;
 
-	public QuerydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory, LocalVariableTableParameterNameDiscoverer localVariableTableParameterNameDiscoverer) {
+	private static final Logger LOGGER = LoggerFactory.getLogger(QuerydslPredicateOperationCustomizer.class);
+
+	public static final String ACCESS_EXCEPTION_OCCURRED = "NoSuchFieldException or IllegalAccessException occurred : {}";
+
+	private QuerydslBindingsFactory querydslBindingsFactory;
+
+	public QuerydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory) {
 		this.querydslBindingsFactory = querydslBindingsFactory;
-		this.localVariableTableParameterNameDiscoverer = localVariableTableParameterNameDiscoverer;
 	}
 
 	@Override
@@ -57,11 +58,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 		}
 
 		MethodParameter[] methodParameters = handlerMethod.getMethodParameters();
-		String[] methodParameterNames = this.localVariableTableParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
-		String[] reflectionParametersNames = Arrays.stream(methodParameters).map(MethodParameter::getParameterName).toArray(String[]::new);
-		if (methodParameterNames == null) {
-			methodParameterNames = reflectionParametersNames;
-		}
+
 		int parametersLength = methodParameters.length;
 		List<Parameter> parametersToAddToOperation = new ArrayList<>();
 		for (int i = 0; i < parametersLength; i++) {
@@ -72,7 +69,6 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 				continue;
 			}
 
-			List<io.swagger.v3.oas.models.parameters.Parameter> operationParameters = operation.getParameters();
 			QuerydslBindings bindings = extractQdslBindings(predicate);
 
 			Set<String> fieldsToAdd = Arrays.stream(predicate.root().getDeclaredFields()).map(Field::getName).collect(Collectors.toSet());
@@ -119,7 +115,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 			}
 			return (Set<String>) field.get(instance);
 		} catch (NoSuchFieldException | IllegalAccessException e) {
-			LOGGER.warn("NoSuchFieldException or IllegalAccessException occurred : {}", e.getMessage());
+			LOGGER.warn(ACCESS_EXCEPTION_OCCURRED, e.getMessage());
 		}
 		return Collections.emptySet();
 	}
@@ -132,7 +128,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 			}
 			return (Map<String, Object>) field.get(instance);
 		} catch (NoSuchFieldException | IllegalAccessException e) {
-			LOGGER.warn("NoSuchFieldException or IllegalAccessException occurred : {}", e.getMessage());
+			LOGGER.warn(ACCESS_EXCEPTION_OCCURRED, e.getMessage());
 		}
 		return Collections.emptyMap();
 	}
@@ -148,7 +144,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 			}
 			return (Optional<Path<?>>) field.get(instance);
 		} catch (NoSuchFieldException | IllegalAccessException e) {
-			LOGGER.warn("NoSuchFieldException or IllegalAccessException occurred : {}", e.getMessage());
+			LOGGER.warn(ACCESS_EXCEPTION_OCCURRED, e.getMessage());
 		}
 		return Optional.empty();
 	}
