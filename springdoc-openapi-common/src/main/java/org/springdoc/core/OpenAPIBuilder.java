@@ -36,6 +36,7 @@ import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -116,7 +117,7 @@ public class OpenAPIBuilder {
 		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
 	}
 
-	private static String splitCamelCase(String str) {
+	public static String splitCamelCase(String str) {
 		return str.replaceAll(
 				String.format(
 						"%s|%s|%s",
@@ -180,13 +181,21 @@ public class OpenAPIBuilder {
 	}
 
 	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
+
 		// class tags
-		Set<Tag> classTags =
-				AnnotatedElementUtils.findAllMergedAnnotations(handlerMethod.getBeanType(), Tag.class);
+		Set<Tags> tagsSet = AnnotatedElementUtils
+				.findAllMergedAnnotations(handlerMethod.getBeanType(), Tags.class);
+		Set<Tag> classTags = tagsSet.stream()
+				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet());
+		classTags.addAll(AnnotatedElementUtils.findAllMergedAnnotations(handlerMethod.getBeanType(), Tag.class));
 
 		// method tags
-		Set<Tag> methodTags =
-				AnnotatedElementUtils.findAllMergedAnnotations(handlerMethod.getMethod(), Tag.class);
+		tagsSet = AnnotatedElementUtils
+				.findAllMergedAnnotations(handlerMethod.getMethod(), Tags.class);
+		Set<Tag> methodTags = tagsSet.stream()
+				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet());
+		methodTags.addAll(AnnotatedElementUtils.findAllMergedAnnotations(handlerMethod.getMethod(), Tag.class));
+
 
 		List<Tag> allTags = new ArrayList<>();
 		Set<String> tagsStr = new HashSet<>();
@@ -213,12 +222,12 @@ public class OpenAPIBuilder {
 				.getTags(allTags.toArray(new Tag[0]), true);
 
 		if (tags.isPresent()) {
-			Set<io.swagger.v3.oas.models.tags.Tag> tagsSet = tags.get();
+			Set<io.swagger.v3.oas.models.tags.Tag> tagSet = tags.get();
 			// Existing tags
 			List<io.swagger.v3.oas.models.tags.Tag> openApiTags = openAPI.getTags();
 			if (!CollectionUtils.isEmpty(openApiTags))
-				tagsSet.addAll(openApiTags);
-			openAPI.setTags(new ArrayList<>(tagsSet));
+				tagSet.addAll(openApiTags);
+			openAPI.setTags(new ArrayList<>(tagSet));
 		}
 
 		// Handle SecurityRequirement at operation level
