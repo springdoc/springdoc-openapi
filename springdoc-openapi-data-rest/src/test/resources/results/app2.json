@@ -23,30 +23,7 @@
             "in": "query",
             "required": true,
             "schema": {
-              "required": [
-                "page",
-                "size"
-              ],
-              "type": "object",
-              "properties": {
-                "page": {
-                  "minimum": 0,
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "size": {
-                  "maximum": 2000,
-                  "minimum": 1,
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "sort": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
+              "$ref": "#/components/schemas/Pageable"
             }
           }
         ],
@@ -78,6 +55,33 @@
   },
   "components": {
     "schemas": {
+      "Pageable": {
+        "required": [
+          "page",
+          "size",
+          "sort"
+        ],
+        "type": "object",
+        "properties": {
+          "page": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "maximum": 2000,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "PersonDTO": {
         "type": "object",
         "properties": {
