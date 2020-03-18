@@ -16,18 +16,24 @@
  *
  */
 
-package test.org.springdoc.api.app99;
+package test.org.springdoc.api.app100;
 
+import javax.validation.constraints.NotNull;
 
-import test.org.springdoc.api.AbstractSpringDocTest;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@ActiveProfiles("99")
-public class SpringDocApp99Test extends AbstractSpringDocTest {
+@RestController
+@Tags(value = @Tag(name="hello-ap1"))
+public class HelloController {
 
-    @SpringBootApplication
-    static class SpringDocTestApp {}
+	@GetMapping(value = "/search", produces = { "application/xml", "application/json" })
+	@Tags(value = @Tag(name="hello-ap2"))
+	public PersonDTO getAllPets(@NotNull String toto) {
+		return null;
+	}
 
 }

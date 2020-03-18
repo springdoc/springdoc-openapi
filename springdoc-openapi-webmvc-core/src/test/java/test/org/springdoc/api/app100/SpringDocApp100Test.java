@@ -16,16 +16,14 @@
  *
  */
 
-package test.org.springdoc.api.app99;
+package test.org.springdoc.api.app100;
 
 
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("99")
-public class SpringDocApp99Test extends AbstractSpringDocTest {
+public class SpringDocApp100Test extends AbstractSpringDocTest {
 
     @SpringBootApplication
     static class SpringDocTestApp {}
