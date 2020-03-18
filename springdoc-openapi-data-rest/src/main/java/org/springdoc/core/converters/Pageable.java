@@ -37,6 +37,7 @@ public class Pageable {
 	@Max(2000)
 	private int size;
 
+	@NotNull
 	private List<String> sort;
 
 	public Pageable(@NotNull @Min(0) int page, @NotNull @Min(1) @Max(2000) int size, List<String> sort) {

@@ -43,7 +43,7 @@ public class AdditionalModelsConverter implements ModelConverter {
 			if(modelToSchemaMap.containsKey(cls))
 				return modelToSchemaMap.get(cls);
 			if(modelToClassMap.containsKey(cls))
-				type = new AnnotatedType(modelToClassMap.get(cls));
+				type = new AnnotatedType(modelToClassMap.get(cls)).resolveAsRef(true);
 		}
 		if (chain.hasNext()) {
 			return chain.next().resolve(type, context, chain);
