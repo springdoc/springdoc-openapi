@@ -123,7 +123,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 			Map<String, Object> findControllerAdvice = openAPIBuilder.getControllerAdviceMap();
 			// calculate generic responses
-			responseBuilder.buildGenericResponse(openAPIBuilder.getComponents(), findControllerAdvice);
+			responseBuilder.buildGenericResponse(openAPIBuilder.getCalculatedOpenAPI().getComponents(), findControllerAdvice);
 
 			getPaths(mappingsMap);
 			openApi = openAPIBuilder.getCalculatedOpenAPI();
@@ -151,8 +151,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
 			Set<RequestMethod> requestMethods) {
 		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
-		Components components = openAPIBuilder.getComponents();
-		Paths paths = openAPIBuilder.getPaths();
+		Components components = openAPI.getComponents();
+		Paths paths = openAPI.getPaths();
 
 		Map<HttpMethod, Operation> operationMap = null;
 		if (paths.containsKey(operationPath)) {
@@ -195,7 +195,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			calculateJsonView(apiOperation, methodAttributes, method);
 
 			if (apiOperation != null) {
-				openAPI = operationParser.parse(components, apiOperation, operation, openAPI, methodAttributes);
+				openAPI = operationParser.parse(apiOperation, operation, openAPI, methodAttributes);
 			}
 
 			// compute tags
@@ -211,7 +211,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 							methodAttributes.getJsonViewAnnotationForRequestBody())
 					.ifPresent(operation::setRequestBody);
 			// requests
-			operation = requestBuilder.build(components, handlerMethod, requestMethod, operation, methodAttributes, openAPI);
+			operation = requestBuilder.build(handlerMethod, requestMethod, operation, methodAttributes, openAPI);
 
 			// responses
 			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation, methodAttributes);
@@ -221,7 +221,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 			// callbacks
 			if (!CollectionUtils.isEmpty(apiCallbacks)) {
-				operationParser.buildCallbacks(apiCallbacks, components, openAPI, methodAttributes)
+				operationParser.buildCallbacks(apiCallbacks, openAPI, methodAttributes)
 						.ifPresent(operation::setCallbacks);
 			}
 
