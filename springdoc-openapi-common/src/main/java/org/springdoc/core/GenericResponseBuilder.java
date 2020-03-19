@@ -53,7 +53,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.HandlerMethod;
 
 import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
-import static org.springdoc.core.converters.ConverterUtils.isResponseTypeToIgnore;
 
 @SuppressWarnings("rawtypes")
 public class GenericResponseBuilder {
@@ -265,11 +264,7 @@ public class GenericResponseBuilder {
 			// if void, no content
 			return null;
 		}
-		Schema schemaN = SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView);
-		if (schemaN == null && returnType instanceof Class && !isResponseTypeToIgnore((Class) returnType)) {
-			schemaN = AnnotationsUtils.resolveSchemaFromType((Class) returnType, null, jsonView);
-		}
-		return schemaN;
+		return SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView);
 	}
 
 	private void setContent(String[] methodProduces, Content content,
