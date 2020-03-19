@@ -260,11 +260,7 @@ public class GenericResponseBuilder {
 	}
 
 	public Schema calculateSchema(Components components, Type returnType, JsonView jsonView) {
-		if (isVoid(returnType)) {
-			// if void, no content
-			return null;
-		}
-		return SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView);
+		return !isVoid(returnType) ? SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView) : null;
 	}
 
 	private void setContent(String[] methodProduces, Content content,
