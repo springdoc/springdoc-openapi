@@ -76,8 +76,9 @@ public class OperationBuilder {
 		this.propertyResolverUtils = propertyResolverUtils;
 	}
 
-	public OpenAPI parse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
+	public OpenAPI parse(io.swagger.v3.oas.annotations.Operation apiOperation,
 			Operation operation, OpenAPI openAPI, MethodAttributes methodAttributes) {
+		Components components = openAPI.getComponents();
 		if (StringUtils.isNotBlank(apiOperation.summary())) {
 			operation.setSummary(propertyResolverUtils.resolve(apiOperation.summary()));
 		}
@@ -132,7 +133,7 @@ public class OperationBuilder {
 	}
 
 	public Optional<Map<String, Callback>> buildCallbacks(
-			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks, Components components, OpenAPI openAPI,
+			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks, OpenAPI openAPI,
 			MethodAttributes methodAttributes) {
 		Map<String, Callback> callbacks = new LinkedHashMap<>();
 
@@ -157,7 +158,7 @@ public class OperationBuilder {
 			PathItem pathItemObject = new PathItem();
 			for (io.swagger.v3.oas.annotations.Operation callbackOperation : methodCallback.operation()) {
 				Operation callbackNewOperation = new Operation();
-				parse(components, callbackOperation, callbackNewOperation, openAPI, methodAttributes);
+				parse(callbackOperation, callbackNewOperation, openAPI, methodAttributes);
 				setPathItemOperation(pathItemObject, callbackOperation.method(), callbackNewOperation);
 			}
 			callbackObject.addPathItem(methodCallback.callbackUrlExpression(), pathItemObject);

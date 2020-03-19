@@ -128,14 +128,6 @@ public class OpenAPIBuilder {
 				.toLowerCase(Locale.ROOT);
 	}
 
-	public Components getComponents() {
-		return calculatedOpenAPI.getComponents();
-	}
-
-	public Paths getPaths() {
-		return calculatedOpenAPI.getPaths();
-	}
-
 	public void build() {
 		Optional<OpenAPIDefinition> apiDef = getOpenAPIDefinition();
 

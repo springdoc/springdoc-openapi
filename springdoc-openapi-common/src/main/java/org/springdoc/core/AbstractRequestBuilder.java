@@ -134,7 +134,7 @@ public abstract class AbstractRequestBuilder {
 	}
 
 
-	public Operation build(Components components, HandlerMethod handlerMethod, RequestMethod requestMethod,
+	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
 		// Documentation
 		String operationId = operationBuilder.getOperationId(handlerMethod.getMethod().getName(),
@@ -152,6 +152,7 @@ public abstract class AbstractRequestBuilder {
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
 				: new ArrayList<>();
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
+        Components components = openAPI.getComponents();
 
 		for (int i = 0; i < pNames.length; i++) {
 			// check if query param
