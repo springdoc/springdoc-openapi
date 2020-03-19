@@ -57,6 +57,8 @@ public class SpringDocConfigProperties {
 
 	private boolean overrideWithGenericResponse = true;
 
+	private boolean removeBrokenReferenceDefinitions = true;
+
 	private String defaultConsumesMediaType = MediaType.APPLICATION_JSON_VALUE;
 
 	private String defaultProducesMediaType = MediaType.ALL_VALUE;
@@ -312,5 +314,13 @@ public class SpringDocConfigProperties {
 
 	public void setOverrideWithGenericResponse(boolean overrideWithGenericResponse) {
 		this.overrideWithGenericResponse = overrideWithGenericResponse;
+	}
+
+	public boolean isRemoveBrokenReferenceDefinitions() {
+		return removeBrokenReferenceDefinitions;
+	}
+
+	public void setRemoveBrokenReferenceDefinitions(boolean removeBrokenReferenceDefinitions) {
+		this.removeBrokenReferenceDefinitions = removeBrokenReferenceDefinitions;
 	}
 }

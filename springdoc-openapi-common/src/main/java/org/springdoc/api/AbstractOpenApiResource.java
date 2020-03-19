@@ -84,7 +84,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected final SpringDocConfigProperties springDocConfigProperties;
 
 	private static final List<Class<?>> ADDITIONAL_REST_CONTROLLERS = new ArrayList<>();
+
 	private static final List<Class<?>> HIDDEN_REST_CONTROLLERS = new ArrayList<>();
+
 	private static final List<Class> DEPRECATED_TYPES = new ArrayList<>();
 
 	private boolean computeDone;
@@ -129,7 +131,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// run the optional customisers
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
 			computeDone = true;
-			this.removeBrokenReferenceDefinitions(openApi);
+			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
+				this.removeBrokenReferenceDefinitions(openApi);
 			openAPIBuilder.setCachedOpenAPI(openApi);
 			openAPIBuilder.resetCalculatedOpenAPI();
 			LOGGER.info("Init duration for springdoc-openapi is: {} ms",
@@ -166,7 +169,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				continue;
 			}
 
-			RequestMapping reqMappingClass =  AnnotatedElementUtils.findMergedAnnotation(handlerMethod.getBeanType(),
+			RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(handlerMethod.getBeanType(),
 					RequestMapping.class);
 
 			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType());
@@ -186,7 +189,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			}
 
 			// Add documentation from operation annotation
-			io.swagger.v3.oas.annotations.Operation apiOperation =  AnnotatedElementUtils.findMergedAnnotation(method,
+			io.swagger.v3.oas.annotations.Operation apiOperation = AnnotatedElementUtils.findMergedAnnotation(method,
 					io.swagger.v3.oas.annotations.Operation.class);
 
 			calculateJsonView(apiOperation, methodAttributes, method);
@@ -198,7 +201,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// compute tags
 			operation = openAPIBuilder.buildTags(handlerMethod, operation, openAPI);
 
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc =  AnnotatedElementUtils.findMergedAnnotation(method,
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = AnnotatedElementUtils.findMergedAnnotation(method,
 					io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 
 			// RequestBody in Operation
@@ -214,7 +217,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation, methodAttributes);
 			operation.setResponses(apiResponses);
 
-			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks =  AnnotatedElementUtils.findMergedRepeatableAnnotations(method, io.swagger.v3.oas.annotations.callbacks.Callback.class);
+			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks = AnnotatedElementUtils.findMergedRepeatableAnnotations(method, io.swagger.v3.oas.annotations.callbacks.Callback.class);
 
 			// callbacks
 			if (!CollectionUtils.isEmpty(apiCallbacks)) {
@@ -236,7 +239,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			jsonViewAnnotationForRequestBody = null;
 		}
 		else {
-			jsonViewAnnotation =  AnnotatedElementUtils.findMergedAnnotation(method, JsonView.class);
+			jsonViewAnnotation = AnnotatedElementUtils.findMergedAnnotation(method, JsonView.class);
 			/*
 			 * If one and only one exists, use the @JsonView annotation from the method
 			 * parameter annotated with @RequestBody. Otherwise fall back to the @JsonView
@@ -389,6 +392,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	public static void addHiddenRestControllers(Class<?>... classes) {
 		HIDDEN_REST_CONTROLLERS.addAll(Arrays.asList(classes));
 	}
+
 	protected boolean isHiddenRestControllers(Class<?> rawClass) {
 		return HIDDEN_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
