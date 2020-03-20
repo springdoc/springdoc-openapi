@@ -111,6 +111,12 @@
 				<groupId>org.webjars</groupId>
 				<artifactId>webjars-locator</artifactId>
 				<version>${webjars-locator.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.fasterxml.jackson.core</groupId>
+						<artifactId>jackson-databind</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security.oauth</groupId>
