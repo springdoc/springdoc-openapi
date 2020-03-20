@@ -78,8 +78,18 @@ public class SpringDocUtils {
 		return this;
 	}
 
+	public SpringDocUtils removeResponseWrapperToIgnore(Class<?> cls){
+		ConverterUtils.removeResponseWrapperToIgnore(cls);
+		return this;
+	}
+
 	public SpringDocUtils addResponseTypeToIgnore(Class<?> cls){
 		ConverterUtils.addResponseTypeToIgnore(cls);
+		return this;
+	}
+
+	public SpringDocUtils removeResponseTypeToIgnore(Class<?> cls){
+		ConverterUtils.removeResponseTypeToIgnore(cls);
 		return this;
 	}
 
