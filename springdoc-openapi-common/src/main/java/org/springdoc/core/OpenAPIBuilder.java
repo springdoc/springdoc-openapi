@@ -44,6 +44,7 @@ import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.StringUtils;
@@ -226,8 +227,21 @@ public class OpenAPIBuilder {
 		return operation;
 	}
 
-	private boolean isAutoTagClasses(Operation operation) {
-		return CollectionUtils.isEmpty(operation.getTags()) && springDocConfigProperties.isAutoTagClasses();
+	public Schema resolveProperties(Schema schema, PropertyResolverUtils propertyResolverUtils) {
+		resolveProperty(schema::getName, schema::name, propertyResolverUtils);
+		resolveProperty(schema::getTitle, schema::title, propertyResolverUtils);
+		resolveProperty(schema::getDescription, schema::description, propertyResolverUtils);
+
+		Map<String, Schema> properties = schema.getProperties();
+		if (!CollectionUtils.isEmpty(properties)) {
+			Map<String, Schema> resolvedSchemas = properties.entrySet().stream().map(es -> {
+				es.setValue(resolveProperties(es.getValue(), propertyResolverUtils));
+				return es;
+			}).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+			schema.setProperties(resolvedSchemas);
+		}
+
+		return schema;
 	}
 
 	public void setServerBaseUrl(String serverBaseUrl) {
@@ -374,6 +388,10 @@ public class OpenAPIBuilder {
 			}
 		}
 		return null;
+	}
+
+	private boolean isAutoTagClasses(Operation operation) {
+		return CollectionUtils.isEmpty(operation.getTags()) && springDocConfigProperties.isAutoTagClasses();
 	}
 
 	private Set<io.swagger.v3.oas.annotations.security.SecurityScheme> getSecuritySchemesClasses(

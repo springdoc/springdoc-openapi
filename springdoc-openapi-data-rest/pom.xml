@@ -30,6 +30,11 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-webmvc-core</artifactId>
 			<version>${project.version}</version>
