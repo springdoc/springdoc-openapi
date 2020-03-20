@@ -43,9 +43,8 @@ public class KotlinCoroutinesReturnTypeParser implements ReturnTypeParser {
 			Type continuationType = continuationParameter.get().getParameterizedType();
 			if (continuationType instanceof ParameterizedType) {
 				Type actualTypeArguments = ((ParameterizedType) continuationType).getActualTypeArguments()[0];
-				if (actualTypeArguments instanceof WildcardType) {
+				if (actualTypeArguments instanceof WildcardType)
 					returnType = ((WildcardType) actualTypeArguments).getLowerBounds()[0];
-				}
 			}
 		}
 		return returnType;

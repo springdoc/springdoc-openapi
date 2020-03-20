@@ -35,6 +35,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
@@ -51,21 +52,25 @@ public class SpringDocWebMvcConfiguration {
 	@ConditionalOnMissingBean
 	public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
-			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
+			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			Optional<ActuatorProvider> servletContextProvider,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers) {
+			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
 		return new OpenApiResource(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping, servletContextProvider,
-				openApiCustomisers,springDocConfigProperties);
+				openApiCustomisers,springDocConfigProperties,springSecurityOAuth2Provider);
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	public RequestBuilder requestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<ParameterCustomizer>> parameterCustomizers) {
+			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
+			Optional<List<ParameterCustomizer>> parameterCustomizers,
+			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		return new RequestBuilder(parameterBuilder, requestBodyBuilder,
-				operationBuilder, operationCustomizers, parameterCustomizers);
+				operationBuilder, operationCustomizers, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 
 	@Bean
@@ -87,9 +92,7 @@ public class SpringDocWebMvcConfiguration {
 		@Bean
 		public OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider) {
 			return new OperationCustomizer() {
-
 				private int methodCount;
-
 				@Override
 				public Operation customize(Operation operation, HandlerMethod handlerMethod) {
 					if (operation.getTags() != null && operation.getTags().contains(actuatorProvider.getTag().getName())) {

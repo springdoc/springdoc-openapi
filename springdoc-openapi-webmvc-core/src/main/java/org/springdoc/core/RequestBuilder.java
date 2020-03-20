@@ -24,6 +24,8 @@ import java.util.Optional;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
 public class RequestBuilder extends AbstractRequestBuilder {
@@ -39,7 +41,8 @@ public class RequestBuilder extends AbstractRequestBuilder {
 
 	public RequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> customizers,
-			Optional<List<ParameterCustomizer>> parameterCustomizers) {
-		super(parameterBuilder, requestBodyBuilder, operationBuilder, customizers, parameterCustomizers);
+			Optional<List<ParameterCustomizer>> parameterCustomizers,
+			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+		super(parameterBuilder, requestBodyBuilder, operationBuilder, customizers, parameterCustomizers,localSpringDocParameterNameDiscoverer);
 	}
 }

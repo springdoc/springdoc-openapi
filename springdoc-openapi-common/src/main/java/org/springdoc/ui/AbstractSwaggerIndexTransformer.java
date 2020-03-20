@@ -30,7 +30,6 @@ import org.springdoc.core.SwaggerUiOAuthProperties;
 public class AbstractSwaggerIndexTransformer {
 
 	protected SwaggerUiOAuthProperties swaggerUiOAuthProperties;
-
 	protected ObjectMapper objectMapper;
 
 	public AbstractSwaggerIndexTransformer(SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {

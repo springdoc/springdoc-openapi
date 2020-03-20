@@ -51,33 +51,28 @@ class SecurityParser {
 
 	private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
 		boolean result;
-		if (oAuthFlows == null) {
+		if (oAuthFlows == null)
 			result = true;
-		}
-		else if (!isEmpty(oAuthFlows.implicit()) || !isEmpty(oAuthFlows.authorizationCode()) || !isEmpty(oAuthFlows.clientCredentials()) || !isEmpty(oAuthFlows.password())) {
+		else if (!isEmpty(oAuthFlows.implicit()) || !isEmpty(oAuthFlows.authorizationCode()) || !isEmpty(oAuthFlows.clientCredentials()) || !isEmpty(oAuthFlows.password()))
 			result = false;
-		}
 		else result = oAuthFlows.extensions().length <= 0;
 		return result;
 	}
 
 	private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow) {
 		boolean result;
-		if (oAuthFlow == null) {
+		if (oAuthFlow == null)
 			result = true;
-		}
-		else if (!StringUtils.isBlank(oAuthFlow.authorizationUrl()) || !StringUtils.isBlank(oAuthFlow.refreshUrl()) || !StringUtils.isBlank(oAuthFlow.tokenUrl()) || !isEmpty(oAuthFlow.scopes())) {
+		else if (!StringUtils.isBlank(oAuthFlow.authorizationUrl()) || !StringUtils.isBlank(oAuthFlow.refreshUrl()) || !StringUtils.isBlank(oAuthFlow.tokenUrl()) || !isEmpty(oAuthFlow.scopes()))
 			result = false;
-		}
 		else result = oAuthFlow.extensions().length <= 0;
 		return result;
 	}
 
 	private static boolean isEmpty(OAuthScope[] scopes) {
 		boolean result = false;
-		if (scopes == null || scopes.length == 0) {
+		if (scopes == null || scopes.length == 0)
 			result = true;
-		}
 		return result;
 	}
 
@@ -90,27 +85,23 @@ class SecurityParser {
 
 		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = null;
 
-		if (classSecurity != null) {
+		if (classSecurity != null)
 			allSecurityTags = new HashSet<>(Arrays.asList(classSecurity.value()));
-		}
-		if (methodSecurity != null) {
+		if (methodSecurity != null)
 			allSecurityTags = addSecurityRequirements(allSecurityTags, new HashSet<>(Arrays.asList(methodSecurity.value())));
-		}
 
 		if (CollectionUtils.isEmpty(allSecurityTags)) {
 			// class SecurityRequirement
 			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList = AnnotatedElementUtils.findMergedRepeatableAnnotations(
 					method.getBeanType(),
-							io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
+					io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
 			// method SecurityRequirement
 			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsMethodList = AnnotatedElementUtils.findMergedRepeatableAnnotations(method.getMethod(),
-							io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
-			if (!CollectionUtils.isEmpty(securityRequirementsClassList)) {
+					io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
+			if (!CollectionUtils.isEmpty(securityRequirementsClassList))
 				allSecurityTags = addSecurityRequirements(allSecurityTags, securityRequirementsClassList);
-			}
-			if (!CollectionUtils.isEmpty(securityRequirementsMethodList)) {
+			if (!CollectionUtils.isEmpty(securityRequirementsMethodList))
 				allSecurityTags = addSecurityRequirements(allSecurityTags, securityRequirementsMethodList);
-			}
 		}
 
 		return (allSecurityTags != null) ? allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]) : null;
@@ -125,71 +116,59 @@ class SecurityParser {
 
 	public Optional<List<SecurityRequirement>> getSecurityRequirements(
 			io.swagger.v3.oas.annotations.security.SecurityRequirement[] securityRequirementsApi) {
-		if (securityRequirementsApi == null || securityRequirementsApi.length == 0) {
+		if (securityRequirementsApi == null || securityRequirementsApi.length == 0)
 			return Optional.empty();
-		}
 		List<SecurityRequirement> securityRequirements = new ArrayList<>();
 		for (io.swagger.v3.oas.annotations.security.SecurityRequirement securityRequirementApi : securityRequirementsApi) {
-			if (StringUtils.isBlank(securityRequirementApi.name())) {
+			if (StringUtils.isBlank(securityRequirementApi.name()))
 				continue;
-			}
 			SecurityRequirement securityRequirement = new SecurityRequirement();
-			if (securityRequirementApi.scopes().length > 0) {
-				securityRequirement.addList(securityRequirementApi.name(),
-						Arrays.asList(securityRequirementApi.scopes()));
-			}
-			else {
+			if (securityRequirementApi.scopes().length > 0)
+				securityRequirement.addList(securityRequirementApi.name(), Arrays.asList(securityRequirementApi.scopes()));
+			else
 				securityRequirement.addList(securityRequirementApi.name());
-			}
 			securityRequirements.add(securityRequirement);
 		}
-		if (securityRequirements.isEmpty()) {
+		if (securityRequirements.isEmpty())
 			return Optional.empty();
-		}
 		return Optional.of(securityRequirements);
 	}
 
 	public Optional<SecuritySchemePair> getSecurityScheme(
 			io.swagger.v3.oas.annotations.security.SecurityScheme securityScheme) {
-		if (securityScheme == null) {
+		if (securityScheme == null)
 			return Optional.empty();
-		}
 		String key = null;
 		SecurityScheme securitySchemeObject = new SecurityScheme();
 
-		if (StringUtils.isNotBlank(securityScheme.in().toString())) {
+		if (StringUtils.isNotBlank(securityScheme.in().toString()))
 			securitySchemeObject.setIn(getIn(securityScheme.in().toString()));
-		}
-		if (StringUtils.isNotBlank(securityScheme.type().toString())) {
+
+		if (StringUtils.isNotBlank(securityScheme.type().toString()))
 			securitySchemeObject.setType(getType(securityScheme.type().toString()));
-		}
 
-		if (StringUtils.isNotBlank(securityScheme.openIdConnectUrl())) {
+		if (StringUtils.isNotBlank(securityScheme.openIdConnectUrl()))
 			securitySchemeObject.setOpenIdConnectUrl(propertyResolverUtils.resolve(securityScheme.openIdConnectUrl()));
-		}
-		if (StringUtils.isNotBlank(securityScheme.scheme())) {
+
+		if (StringUtils.isNotBlank(securityScheme.scheme()))
 			securitySchemeObject.setScheme(securityScheme.scheme());
-		}
 
-		if (StringUtils.isNotBlank(securityScheme.bearerFormat())) {
+		if (StringUtils.isNotBlank(securityScheme.bearerFormat()))
 			securitySchemeObject.setBearerFormat(securityScheme.bearerFormat());
-		}
-		if (StringUtils.isNotBlank(securityScheme.description())) {
-			securitySchemeObject.setDescription(securityScheme.description());
-		}
 
-		if (StringUtils.isNotBlank(securityScheme.ref())) {
+		if (StringUtils.isNotBlank(securityScheme.description()))
+			securitySchemeObject.setDescription(securityScheme.description());
+
+		if (StringUtils.isNotBlank(securityScheme.ref()))
 			securitySchemeObject.set$ref(securityScheme.ref());
-		}
-		if (StringUtils.isNotBlank(securityScheme.name())) {
+
+		if (StringUtils.isNotBlank(securityScheme.name()))
 			key = securityScheme.name();
 			if (SecuritySchemeType.APIKEY.toString().equals(securitySchemeObject.getType().toString()))
 				securitySchemeObject.setName(securityScheme.name());
-		}
 
-		if (StringUtils.isNotBlank(securityScheme.paramName())) {
+		if (StringUtils.isNotBlank(securityScheme.paramName()))
 			securitySchemeObject.setName(securityScheme.paramName());
-		}
 
 		if (securityScheme.extensions().length > 0) {
 			Map<String, Object> extensions = AnnotationsUtils.getExtensions(securityScheme.extensions());
@@ -211,9 +190,9 @@ class SecurityParser {
 	}
 
 	private Optional<OAuthFlows> getOAuthFlows(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
-		if (isEmpty(oAuthFlows)) {
+		if (isEmpty(oAuthFlows))
 			return Optional.empty();
-		}
+
 		OAuthFlows oAuthFlowsObject = new OAuthFlows();
 		if (oAuthFlows.extensions().length > 0) {
 			Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlows.extensions());
@@ -231,15 +210,15 @@ class SecurityParser {
 			return Optional.empty();
 		}
 		OAuthFlow oAuthFlowObject = new OAuthFlow();
-		if (StringUtils.isNotBlank(oAuthFlow.authorizationUrl())) {
+		if (StringUtils.isNotBlank(oAuthFlow.authorizationUrl()))
 			oAuthFlowObject.setAuthorizationUrl(propertyResolverUtils.resolve(oAuthFlow.authorizationUrl()));
-		}
-		if (StringUtils.isNotBlank(oAuthFlow.refreshUrl())) {
+
+		if (StringUtils.isNotBlank(oAuthFlow.refreshUrl()))
 			oAuthFlowObject.setRefreshUrl(propertyResolverUtils.resolve(oAuthFlow.refreshUrl()));
-		}
-		if (StringUtils.isNotBlank(oAuthFlow.tokenUrl())) {
+
+		if (StringUtils.isNotBlank(oAuthFlow.tokenUrl()))
 			oAuthFlowObject.setTokenUrl(propertyResolverUtils.resolve(oAuthFlow.tokenUrl()));
-		}
+
 		if (oAuthFlow.extensions().length > 0) {
 			Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlow.extensions());
 			extensions.forEach(oAuthFlowObject::addExtension);
@@ -249,9 +228,9 @@ class SecurityParser {
 	}
 
 	private Optional<Scopes> getScopes(OAuthScope[] scopes) {
-		if (isEmpty(scopes)) {
+		if (isEmpty(scopes))
 			return Optional.empty();
-		}
+
 		Scopes scopesObject = new Scopes();
 		Arrays.stream(scopes).forEach(scope -> scopesObject.addString(scope.name(), scope.description()));
 		return Optional.of(scopesObject);

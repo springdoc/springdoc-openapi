@@ -58,17 +58,14 @@ import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
 public class GenericResponseBuilder {
 
 	private final Map<String, ApiResponse> genericMapResponse = new LinkedHashMap<>();
-
 	private final OperationBuilder operationBuilder;
-
 	private final List<ReturnTypeParser> returnTypeParsers;
-
 	private final SpringDocConfigProperties springDocConfigProperties;
-
 	private final PropertyResolverUtils propertyResolverUtils;
 
 	GenericResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers,
-						   SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
+			SpringDocConfigProperties springDocConfigProperties,
+			PropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.operationBuilder = operationBuilder;
 		this.returnTypeParsers = returnTypeParsers;
@@ -98,10 +95,9 @@ public class GenericResponseBuilder {
 			if (!operationBuilder.isHidden(method)) {
 				RequestMapping reqMappringMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
 				String[] methodProduces = { springDocConfigProperties.getDefaultProducesMediaType() };
-				if (reqMappringMethod != null) {
+				if (reqMappringMethod != null)
 					methodProduces = reqMappringMethod.produces();
-				}
-				Map<String, ApiResponse> apiResponses = computeResponse(components, new MethodParameter(method,-1), new ApiResponses(),
+				Map<String, ApiResponse> apiResponses = computeResponse(components, new MethodParameter(method, -1), new ApiResponses(),
 						new MethodAttributes(methodProduces, springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType()), true);
 				apiResponses.forEach(genericMapResponse::put);
 			}
@@ -114,9 +110,8 @@ public class GenericResponseBuilder {
 			Object controllerAdvice = entry.getValue();
 			// get all methods with annotation @ExceptionHandler
 			Class<?> objClz = controllerAdvice.getClass();
-			if (org.springframework.aop.support.AopUtils.isAopProxy(controllerAdvice)) {
+			if (org.springframework.aop.support.AopUtils.isAopProxy(controllerAdvice))
 				objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerAdvice);
-			}
 			Arrays.stream(objClz.getDeclaredMethods()).filter(m -> m.isAnnotationPresent(ExceptionHandler.class)).forEach(methods::add);
 		}
 		return methods;
@@ -229,11 +224,10 @@ public class GenericResponseBuilder {
 	private Content buildContent(Components components, MethodParameter methodParameter, String[] methodProduces, JsonView jsonView) {
 		Content content = new Content();
 		Type returnType = getReturnType(methodParameter);
-		if (isVoid(returnType)) {
-			// if void, no content
-			content = null;
-		}
-		else if (ArrayUtils.isNotEmpty(methodProduces)) {
+		// if void, no content
+		if (isVoid(returnType))
+			return null;
+		if (ArrayUtils.isNotEmpty(methodProduces)) {
 			Schema<?> schemaN = calculateSchema(components, returnType, jsonView);
 			if (schemaN != null) {
 				io.swagger.v3.oas.models.media.MediaType mediaType = new io.swagger.v3.oas.models.media.MediaType();
@@ -251,9 +245,8 @@ public class GenericResponseBuilder {
 			if (returnType.getTypeName().equals(Object.class.getTypeName())) {
 				returnType = returnTypeParser.getReturnType(methodParameter);
 			}
-			else {
+			else
 				break;
-			}
 		}
 
 		return returnType;
@@ -277,12 +270,10 @@ public class GenericResponseBuilder {
 						methodAttributes.getJsonViewAnnotation());
 				apiResponse.setContent(content);
 			}
-			else if (CollectionUtils.isEmpty(apiResponse.getContent())) {
+			else if (CollectionUtils.isEmpty(apiResponse.getContent()))
 				apiResponse.setContent(null);
-			}
-			if (StringUtils.isBlank(apiResponse.getDescription())) {
+			if (StringUtils.isBlank(apiResponse.getDescription()))
 				apiResponse.setDescription(DEFAULT_DESCRIPTION);
-			}
 		}
 		if (apiResponse.getContent() != null
 				&& ((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc())) {
@@ -290,9 +281,8 @@ public class GenericResponseBuilder {
 			Content existingContent = apiResponse.getContent();
 			Schema<?> schemaN = calculateSchema(components, methodParameter.getGenericParameterType(),
 					methodAttributes.getJsonViewAnnotation());
-			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getMethodProduces())) {
+			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getMethodProduces()))
 				Arrays.stream(methodAttributes.getMethodProduces()).forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));
-			}
 		}
 		apiResponsesOp.addApiResponse(httpCode, apiResponse);
 	}
@@ -319,24 +309,20 @@ public class GenericResponseBuilder {
 				existingContent.addMediaType(mediaTypeStr, mediaType);
 			}
 		}
-		else {
+		else
 			// Add the new schema for a different mediaType
 			existingContent.addMediaType(mediaTypeStr, new io.swagger.v3.oas.models.media.MediaType().schema(schemaN));
-		}
 	}
 
 	private String evaluateResponseStatus(Method method, Class<?> beanType, boolean isGeneric) {
 		String responseStatus = null;
 		ResponseStatus annotation = AnnotatedElementUtils.findMergedAnnotation(method, ResponseStatus.class);
-		if (annotation == null && beanType != null) {
+		if (annotation == null && beanType != null)
 			annotation = AnnotatedElementUtils.findMergedAnnotation(beanType, ResponseStatus.class);
-		}
-		if (annotation != null) {
+		if (annotation != null)
 			responseStatus = String.valueOf(annotation.code().value());
-		}
-		if (annotation == null && !isGeneric) {
+		if (annotation == null && !isGeneric)
 			responseStatus = String.valueOf(HttpStatus.OK.value());
-		}
 		return responseStatus;
 	}
 

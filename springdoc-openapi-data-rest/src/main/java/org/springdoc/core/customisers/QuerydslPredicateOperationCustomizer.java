@@ -42,8 +42,7 @@ import org.springframework.web.method.HandlerMethod;
 public class QuerydslPredicateOperationCustomizer implements OperationCustomizer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(QuerydslPredicateOperationCustomizer.class);
-
-	public static final String ACCESS_EXCEPTION_OCCURRED = "NoSuchFieldException or IllegalAccessException occurred : {}";
+	private static final String ACCESS_EXCEPTION_OCCURRED = "NoSuchFieldException or IllegalAccessException occurred : {}";
 
 	private QuerydslBindingsFactory querydslBindingsFactory;
 

@@ -34,33 +34,19 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 public class SpringDocConfigProperties {
 
 	private boolean showActuator;
-
 	private Webjars webjars = new Webjars();
-
 	private ApiDocs apiDocs = new ApiDocs();
-
 	private List<String> packagesToScan;
-
 	private List<String> packagesToExclude;
-
 	private List<String> pathsToMatch;
-
 	private List<String> pathsToExclude;
-
 	private Cache cache = new Cache();
-
 	private List<GroupConfig> groupConfigs = new ArrayList<>();
-
 	private boolean autoTagClasses = true;
-
 	private boolean modelAndViewAllowed;
-
 	private boolean overrideWithGenericResponse = true;
-
 	private boolean removeBrokenReferenceDefinitions = true;
-
 	private String defaultConsumesMediaType = MediaType.APPLICATION_JSON_VALUE;
-
 	private String defaultProducesMediaType = MediaType.ALL_VALUE;
 
 	public boolean isAutoTagClasses() {
@@ -135,12 +121,12 @@ public class SpringDocConfigProperties {
 		this.pathsToMatch = pathsToMatch;
 	}
 
-	public Cache getCache() {
-		return cache;
-	}
-
 	public void setCache(Cache cache) {
 		this.cache = cache;
+	}
+
+	public boolean isCacheDisabled() {
+		return cache.isDisabled();
 	}
 
 	public static class Webjars {
@@ -160,7 +146,6 @@ public class SpringDocConfigProperties {
 		 * Path to the generated OpenAPI documentation. For a yaml file, append ".yaml" to the path.
 		 */
 		private String path = Constants.DEFAULT_API_DOCS_URL;
-
 		/**
 		 * Weather to generate and serve a OpenAPI document.
 		 */
@@ -230,8 +215,14 @@ public class SpringDocConfigProperties {
 	}
 
 	public static class GroupConfig {
-		public GroupConfig() {
-		}
+
+		private List<String> pathsToMatch;
+		private List<String> packagesToScan;
+		private List<String> packagesToExclude;
+		private List<String> pathsToExclude;
+		private String group;
+
+		public GroupConfig() { }
 
 		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan, List<String> packagesToExclude, List<String> pathsToExclude) {
 			this.pathsToMatch = pathsToMatch;
@@ -240,16 +231,6 @@ public class SpringDocConfigProperties {
 			this.packagesToScan = packagesToScan;
 			this.group = group;
 		}
-
-		private List<String> pathsToMatch;
-
-		private List<String> packagesToScan;
-
-		private List<String> packagesToExclude;
-
-		private List<String> pathsToExclude;
-
-		private String group;
 
 		public List<String> getPathsToMatch() {
 			return pathsToMatch;

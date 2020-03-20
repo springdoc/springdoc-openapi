@@ -62,7 +62,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
-
 	public OpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,

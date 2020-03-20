@@ -68,38 +68,28 @@ import org.springframework.web.method.HandlerMethod;
 public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractOpenApiResource.class);
-
-	final OpenAPIBuilder openAPIBuilder;
-
 	private final AbstractRequestBuilder requestBuilder;
-
 	private final GenericResponseBuilder responseBuilder;
-
 	private final OperationBuilder operationParser;
-
 	private final Optional<List<OpenApiCustomiser>> openApiCustomisers;
-
 	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
-
-	protected final SpringDocConfigProperties springDocConfigProperties;
-
 	private static final List<Class<?>> ADDITIONAL_REST_CONTROLLERS = new ArrayList<>();
-
 	private static final List<Class<?>> HIDDEN_REST_CONTROLLERS = new ArrayList<>();
-
 	private static final List<Class> DEPRECATED_TYPES = new ArrayList<>();
-
 	private boolean computeDone;
-
 	private final String groupName;
+	protected final OpenAPIBuilder openAPIBuilder;
+	protected final SpringDocConfigProperties springDocConfigProperties;
 
 	static {
 		DEPRECATED_TYPES.add(Deprecated.class);
 	}
 
-	protected AbstractOpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+	protected AbstractOpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder,
+			AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties) {
+			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			SpringDocConfigProperties springDocConfigProperties) {
 		super();
 		this.groupName = Objects.requireNonNull(groupName, "groupName");
 		this.openAPIBuilder = openAPIBuilder;
@@ -112,7 +102,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	protected synchronized OpenAPI getOpenApi() {
 		OpenAPI openApi;
-		if (!computeDone || springDocConfigProperties.getCache().isDisabled()) {
+		if (!computeDone || springDocConfigProperties.isCacheDisabled()) {
 			Instant start = Instant.now();
 			openAPIBuilder.build();
 			Map<String, Object> mappingsMap = openAPIBuilder.getMappingsMap().entrySet().stream()
@@ -123,11 +113,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 			Map<String, Object> findControllerAdvice = openAPIBuilder.getControllerAdviceMap();
 			// calculate generic responses
-			responseBuilder.buildGenericResponse(openAPIBuilder.getCalculatedOpenAPI().getComponents(), findControllerAdvice);
-
-			getPaths(mappingsMap);
 			openApi = openAPIBuilder.getCalculatedOpenAPI();
-
+			responseBuilder.buildGenericResponse(openApi.getComponents(), findControllerAdvice);
+			getPaths(mappingsMap);
 			// run the optional customisers
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
 			computeDone = true;
@@ -139,9 +127,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					Duration.between(start, Instant.now()).toMillis());
 		}
 		else {
-			if (!openAPIBuilder.isServersPresent())
-				openAPIBuilder.updateServers(openAPIBuilder.getCachedOpenAPI());
-			openApi = openAPIBuilder.getCachedOpenAPI();
+			openApi = openAPIBuilder.calculateCachedOpenAPI();
 		}
 		return openApi;
 	}
@@ -161,13 +147,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 
 		for (RequestMethod requestMethod : requestMethods) {
-
 			Operation existingOperation = getExistingOperation(operationMap, requestMethod);
 			Method method = handlerMethod.getMethod();
 			// skip hidden operations
-			if (operationParser.isHidden(method)) {
+			if (operationParser.isHidden(method))
 				continue;
-			}
 
 			RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(handlerMethod.getBeanType(),
 					RequestMapping.class);
@@ -184,9 +168,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 			Operation operation = (existingOperation != null) ? existingOperation : new Operation();
 
-			if (isDeprecatedType(method)) {
+			if (isDeprecatedType(method))
 				operation.setDeprecated(true);
-			}
 
 			// Add documentation from operation annotation
 			io.swagger.v3.oas.annotations.Operation apiOperation = AnnotatedElementUtils.findMergedAnnotation(method,
@@ -194,9 +177,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 			calculateJsonView(apiOperation, methodAttributes, method);
 
-			if (apiOperation != null) {
+			if (apiOperation != null)
 				openAPI = operationParser.parse(apiOperation, operation, openAPI, methodAttributes);
-			}
 
 			// compute tags
 			operation = openAPIBuilder.buildTags(handlerMethod, operation, openAPI);
@@ -220,10 +202,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks = AnnotatedElementUtils.findMergedRepeatableAnnotations(method, io.swagger.v3.oas.annotations.callbacks.Callback.class);
 
 			// callbacks
-			if (!CollectionUtils.isEmpty(apiCallbacks)) {
+			if (!CollectionUtils.isEmpty(apiCallbacks))
 				operationParser.buildCallbacks(apiCallbacks, openAPI, methodAttributes)
 						.ifPresent(operation::setCallbacks);
-			}
 
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
@@ -293,12 +274,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
 			Paths paths) {
 		PathItem pathItemObject;
-		if (paths.containsKey(operationPath)) {
+		if (paths.containsKey(operationPath))
 			pathItemObject = paths.get(operationPath);
-		}
-		else {
+		else
 			pathItemObject = new PathItem();
-		}
+
 		switch (requestMethod) {
 			case POST:
 				pathItemObject.post(operation);
@@ -385,14 +365,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return ADDITIONAL_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 
-	public static void addRestControllers(Class<?>... classes) {
-		ADDITIONAL_REST_CONTROLLERS.addAll(Arrays.asList(classes));
-	}
-
-	public static void addHiddenRestControllers(Class<?>... classes) {
-		HIDDEN_REST_CONTROLLERS.addAll(Arrays.asList(classes));
-	}
-
 	protected boolean isHiddenRestControllers(Class<?> rawClass) {
 		return HIDDEN_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
@@ -402,11 +374,20 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return new HashSet<>(Arrays.asList(allowedRequestMethods));
 	}
 
+	private boolean isDeprecatedType(Method method) {
+		return DEPRECATED_TYPES.stream().anyMatch(clazz -> (AnnotatedElementUtils.findMergedAnnotation(method, clazz) != null));
+	}
+
+	public static void addRestControllers(Class<?>... classes) {
+		ADDITIONAL_REST_CONTROLLERS.addAll(Arrays.asList(classes));
+	}
+
+	public static void addHiddenRestControllers(Class<?>... classes) {
+		HIDDEN_REST_CONTROLLERS.addAll(Arrays.asList(classes));
+	}
+
 	public static void addDeprecatedType(Class<?> cls) {
 		DEPRECATED_TYPES.add(cls);
 	}
 
-	private boolean isDeprecatedType(Method method) {
-		return DEPRECATED_TYPES.stream().anyMatch(clazz -> (AnnotatedElementUtils.findMergedAnnotation(method, clazz) != null));
-	}
 }

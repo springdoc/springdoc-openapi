@@ -32,6 +32,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
@@ -57,9 +58,11 @@ public class SpringDocWebFluxConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public RequestBuilder requestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<ParameterCustomizer>> parameterCustomizers) {
+			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
+			Optional<List<ParameterCustomizer>> parameterCustomizers,
+			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		return new RequestBuilder(parameterBuilder, requestBodyBuilder,
-				operationBuilder, operationCustomizers, parameterCustomizers);
+				operationBuilder, operationCustomizers, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 
 	@Bean

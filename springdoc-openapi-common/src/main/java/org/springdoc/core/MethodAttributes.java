@@ -34,27 +34,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 public class MethodAttributes {
 
-	private String[] classProduces;
-
-	private String[] classConsumes;
-
-	private String[] methodProduces = {};
-
-	private String[] methodConsumes = {};
-
 	private boolean methodOverloaded;
-
 	private boolean withApiResponseDoc;
-
 	private JsonView jsonViewAnnotation;
-
 	private JsonView jsonViewAnnotationForRequestBody;
-
 	private String defaultConsumesMediaType;
-
 	private String defaultProducesMediaType;
-
 	private LinkedHashMap<String, String> headers;
+	private String[] classProduces;
+	private String[] classConsumes;
+	private String[] methodProduces = {};
+	private String[] methodConsumes = {};
 
 	public MethodAttributes(String[] methodProducesNew, String defaultConsumesMediaType, String defaultProducesMediaType) {
 		this.methodProduces = methodProducesNew;

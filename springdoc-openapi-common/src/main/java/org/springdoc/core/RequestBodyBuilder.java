@@ -44,9 +44,8 @@ public class RequestBodyBuilder {
 	public Optional<RequestBody> buildRequestBodyFromDoc(
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, String[] classConsumes,
 			String[] methodConsumes, Components components, JsonView jsonViewAnnotation) {
-		if (requestBody == null) {
+		if (requestBody == null)
 			return Optional.empty();
-		}
 		RequestBody requestBodyObject = new RequestBody();
 		boolean isEmpty = true;
 
@@ -70,13 +69,12 @@ public class RequestBodyBuilder {
 			isEmpty = false;
 		}
 
-		if (requestBody.content().length > 0) {
+		if (requestBody.content().length > 0)
 			isEmpty = false;
-		}
 
-		if (isEmpty) {
+		if (isEmpty)
 			return Optional.empty();
-		}
+
 		AnnotationsUtils
 				.getContent(requestBody.content(), classConsumes == null ? new String[0] : classConsumes,
 						methodConsumes == null ? new String[0] : methodConsumes, null, components, jsonViewAnnotation)

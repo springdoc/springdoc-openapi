@@ -48,9 +48,8 @@ public class WebFluxSupportConverter implements ModelConverter {
 			Class<?> cls = javaType.getRawClass();
 			if (Flux.class.isAssignableFrom(cls)) {
 				JavaType innerType = javaType.getBindings().getBoundType(0);
-				if (innerType == null) {
+				if (innerType == null)
 					return new StringSchema();
-				}
 				else if (innerType.getBindings() != null && isResponseTypeWrapper(innerType.getRawClass())) {
 					type = new AnnotatedType(innerType).jsonViewAnnotation(type.getJsonViewAnnotation()).resolveAsRef(true);
 					return this.resolve(type, context, chain);
@@ -61,11 +60,6 @@ public class WebFluxSupportConverter implements ModelConverter {
 				}
 			}
 		}
-		if (chain.hasNext()) {
-			return chain.next().resolve(type, context, chain);
-		}
-		else {
-			return null;
-		}
+		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
 	}
 }

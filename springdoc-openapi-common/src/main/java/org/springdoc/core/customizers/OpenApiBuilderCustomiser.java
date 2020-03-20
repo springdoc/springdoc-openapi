@@ -21,5 +21,7 @@ package org.springdoc.core.customizers;
 import org.springdoc.core.OpenAPIBuilder;
 
 public interface OpenApiBuilderCustomiser {
+
     void customise(OpenAPIBuilder openApiBuilder);
+
 }

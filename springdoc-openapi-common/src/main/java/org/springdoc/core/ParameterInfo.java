@@ -25,20 +25,15 @@ import org.springframework.core.MethodParameter;
 class ParameterInfo {
 
 	private final MethodParameter methodParameter;
-
-	private final int index;
-
 	private String pName;
-
 	private io.swagger.v3.oas.models.parameters.Parameter parameterModel;
 
 	public ParameterInfo(String pName, MethodParameter methodParameter,
-			io.swagger.v3.oas.models.parameters.Parameter parameterModel, int index) {
+			io.swagger.v3.oas.models.parameters.Parameter parameterModel) {
 		super();
 		this.pName = pName;
 		this.methodParameter = methodParameter;
 		this.parameterModel = parameterModel;
-		this.index = index;
 	}
 
 	public String getpName() {
@@ -65,7 +60,4 @@ class ParameterInfo {
 		this.parameterModel = parameterModel;
 	}
 
-	public int getIndex() {
-		return index;
-	}
 }

@@ -46,7 +46,6 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
 
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.codec.multipart.FilePart;
@@ -55,10 +54,7 @@ import org.springframework.web.multipart.MultipartFile;
 @SuppressWarnings("rawtypes")
 public class GenericParameterBuilder {
 
-	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
-
 	private final PropertyResolverUtils propertyResolverUtils;
-
 	private static final List<Class<?>> FILE_TYPES = new ArrayList<>();
 	private static final List<Class> ANNOTATIOSN_TO_IGNORE = new ArrayList<>();
 
@@ -67,9 +63,7 @@ public class GenericParameterBuilder {
 		ANNOTATIOSN_TO_IGNORE.add(Hidden.class);
 	}
 
-	public GenericParameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
-			PropertyResolverUtils propertyResolverUtils) {
-		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
+	public GenericParameterBuilder(PropertyResolverUtils propertyResolverUtils) {
 		this.propertyResolverUtils = propertyResolverUtils;
 	}
 
@@ -132,15 +126,12 @@ public class GenericParameterBuilder {
 	Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
 			Components components, JsonView jsonView) {
 		Parameter parameter = new Parameter();
-		if (StringUtils.isNotBlank(parameterDoc.description())) {
+		if (StringUtils.isNotBlank(parameterDoc.description()))
 			parameter.setDescription(propertyResolverUtils.resolve(parameterDoc.description()));
-		}
-		if (StringUtils.isNotBlank(parameterDoc.name())) {
+		if (StringUtils.isNotBlank(parameterDoc.name()))
 			parameter.setName(propertyResolverUtils.resolve(parameterDoc.name()));
-		}
-		if (StringUtils.isNotBlank(parameterDoc.in().toString())) {
+		if (StringUtils.isNotBlank(parameterDoc.in().toString()))
 			parameter.setIn(parameterDoc.in().toString());
-		}
 		if (StringUtils.isNotBlank(parameterDoc.example())) {
 			try {
 				parameter.setExample(Json.mapper().readTree(parameterDoc.example()));
@@ -149,18 +140,15 @@ public class GenericParameterBuilder {
 				parameter.setExample(parameterDoc.example());
 			}
 		}
-		if (parameterDoc.deprecated()) {
+		if (parameterDoc.deprecated())
 			parameter.setDeprecated(parameterDoc.deprecated());
-		}
-		if (parameterDoc.required()) {
+		if (parameterDoc.required())
 			parameter.setRequired(parameterDoc.required());
-		}
-		if (parameterDoc.allowEmptyValue()) {
+		if (parameterDoc.allowEmptyValue())
 			parameter.setAllowEmptyValue(parameterDoc.allowEmptyValue());
-		}
-		if (parameterDoc.allowReserved()) {
+		if (parameterDoc.allowReserved())
 			parameter.setAllowReserved(parameterDoc.allowReserved());
-		}
+
 		setSchema(parameterDoc, components, jsonView, parameter);
 		setExamples(parameterDoc, parameter);
 		setExtensions(parameterDoc, parameter);
@@ -171,31 +159,25 @@ public class GenericParameterBuilder {
 	}
 
 	private void setSchema(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonView, Parameter parameter) {
-		if (StringUtils.isNotBlank(parameterDoc.ref())) {
+		if (StringUtils.isNotBlank(parameterDoc.ref()))
 			parameter.$ref(parameterDoc.ref());
-		}
 		else {
-			Schema schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.schema(), components, jsonView)
-					.orElse(null);
+			Schema schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.schema(), components, jsonView).orElse(null);
 			if (schema == null) {
 				if (parameterDoc.content().length > 0) {
-					if (AnnotationsUtils.hasSchemaAnnotation(parameterDoc.content()[0].schema())) {
+					if (AnnotationsUtils.hasSchemaAnnotation(parameterDoc.content()[0].schema()))
 						schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.content()[0].schema(), components, jsonView).orElse(null);
-					}
-					else if (AnnotationsUtils.hasArrayAnnotation(parameterDoc.content()[0].array())) {
+					else if (AnnotationsUtils.hasArrayAnnotation(parameterDoc.content()[0].array()))
 						schema = AnnotationsUtils.getArraySchema(parameterDoc.content()[0].array(), components, jsonView).orElse(null);
-					}
 				}
-				else {
+				else
 					schema = AnnotationsUtils.getArraySchema(parameterDoc.array(), components, jsonView).orElse(null);
-				}
 			}
 			parameter.setSchema(schema);
 		}
 	}
 
-	Schema calculateSchema(Components components, ParameterInfo parameterInfo,
-			RequestBodyInfo requestBodyInfo, JsonView jsonView) {
+	Schema calculateSchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, JsonView jsonView) {
 		Schema schemaN;
 		String paramName = parameterInfo.getpName();
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
@@ -209,18 +191,15 @@ public class GenericParameterBuilder {
 			}
 			else if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
 				ParameterizedType parameterizedType = (ParameterizedType) methodParameter.getGenericParameterType();
-				if (isFile(parameterizedType)) {
+				if (isFile(parameterizedType))
 					return extractFileSchema(paramName, requestBodyInfo);
-				}
-				schemaN = SpringDocAnnotationsUtils.extractSchema(components, methodParameter.getGenericParameterType(), jsonView);
+				schemaN = SpringDocAnnotationsUtils.extractSchema(components, methodParameter.getGenericParameterType(), jsonView, methodParameter.getParameterAnnotations());
 			}
-			else {
+			else
 				schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(methodParameter.getParameterType(), components, jsonView, methodParameter.getParameterAnnotations());
-			}
 		}
-		else {
+		else
 			schemaN = parameterInfo.getParameterModel().getSchema();
-		}
 
 		if (requestBodyInfo != null) {
 			if (requestBodyInfo.getMergedSchema() != null) {
@@ -234,8 +213,26 @@ public class GenericParameterBuilder {
 		return schemaN;
 	}
 
-	public LocalVariableTableParameterNameDiscoverer getLocalSpringDocParameterNameDiscoverer() {
-		return localSpringDocParameterNameDiscoverer;
+	public boolean isFile(java.lang.reflect.Parameter parameter) {
+		boolean result = false;
+		Type type = parameter.getParameterizedType();
+		JavaType javaType = this.constructType(type);
+		if (isFile(javaType)) {
+			result = true;
+		}
+		else if (type instanceof ParameterizedType) {
+			ParameterizedType parameterizedType = (ParameterizedType) type;
+			if (isFile(parameterizedType)) {
+				result = true;
+			}
+		}
+		return result;
+	}
+
+	public boolean isAnnotationToIgnore(MethodParameter parameter) {
+		return ANNOTATIOSN_TO_IGNORE.stream().anyMatch(
+				annotation -> parameter.getParameterAnnotation(annotation) != null
+						|| AnnotationUtils.findAnnotation(parameter.getParameterType(), annotation) != null);
 	}
 
 	private Schema extractFileSchema(String paramName, RequestBodyInfo requestBodyInfo) {
@@ -269,26 +266,6 @@ public class GenericParameterBuilder {
 			return MultipartFile.class.getName().equals(upperBounds[0].getTypeName());
 		}
 		return false;
-	}
-
-	private boolean isFile(JavaType ct) {
-		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(ct.getRawClass()));
-	}
-
-	public boolean isFile(java.lang.reflect.Parameter parameter) {
-		boolean result = false;
-		Type type = parameter.getParameterizedType();
-		JavaType javaType = this.constructType(type);
-		if (isFile(javaType)) {
-			result = true;
-		}
-		else if (type instanceof ParameterizedType) {
-			ParameterizedType parameterizedType = (ParameterizedType) type;
-			if (isFile(parameterizedType)) {
-				result = true;
-			}
-		}
-		return result;
 	}
 
 	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
@@ -346,10 +323,8 @@ public class GenericParameterBuilder {
 		return TypeFactory.defaultInstance().constructType(type);
 	}
 
-	public boolean isAnnotationToIgnore(MethodParameter parameter) {
-		return ANNOTATIOSN_TO_IGNORE.stream().anyMatch(
-				annotation -> parameter.getParameterAnnotation(annotation)!=null
-				|| AnnotationUtils.findAnnotation(parameter.getParameterType(), annotation) != null);
+	private boolean isFile(JavaType ct) {
+		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(ct.getRawClass()));
 	}
 
 	public static void addFileType(Class<?>... classes) {

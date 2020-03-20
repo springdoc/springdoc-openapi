@@ -65,16 +65,20 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public class OpenApiResource extends AbstractOpenApiResource {
 
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
-
 	private final Optional<ActuatorProvider> servletContextProvider;
+	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
 
 	public OpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
-			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties) {
+			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			Optional<ActuatorProvider> servletContextProvider,
+			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			SpringDocConfigProperties springDocConfigProperties,
+			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
 		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, springDocConfigProperties);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.servletContextProvider = servletContextProvider;
+		this.springSecurityOAuth2Provider=springSecurityOAuth2Provider;
 	}
 
 	@Operation(hidden = true)
@@ -105,9 +109,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			this.openAPIBuilder.addTag(new HashSet<>(map.values()), servletContextProvider.get().getTag());
 			calculatePath(restControllers, map, servletContextProvider);
 		}
-		Optional<SecurityOAuth2Provider> securityOAuth2ProviderOptional = openAPIBuilder.getSpringSecurityOAuth2Provider();
-		if (securityOAuth2ProviderOptional.isPresent()) {
-			SecurityOAuth2Provider securityOAuth2Provider = securityOAuth2ProviderOptional.get();
+		if (this.springSecurityOAuth2Provider.isPresent()) {
+			SecurityOAuth2Provider securityOAuth2Provider = this.springSecurityOAuth2Provider.get();
 			Map<RequestMappingInfo, HandlerMethod> mapOauth = securityOAuth2Provider.getHandlerMethods();
 			Map<String, Object> requestMappingMapSec = securityOAuth2Provider.getFrameworkEndpoints();
 			Class[] additionalRestClasses = requestMappingMapSec.values().stream().map(Object::getClass).toArray(Class[]::new);

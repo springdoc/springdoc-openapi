@@ -45,10 +45,4 @@ public class HalProvider {
 					.addConverter(CollectionModelContentConverter.getConverter());
 		}
 	}
-
-	@PreDestroy
-	private void reset() {
-		ModelConverters.getInstance()
-				.removeConverter(CollectionModelContentConverter.getConverter());
-	}
 }
