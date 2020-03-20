@@ -84,7 +84,6 @@ public class OpenAPIBuilder {
 	private String serverBaseUrl;
 	private final SpringDocConfigProperties springDocConfigProperties;
 
-	@SuppressWarnings("WeakerAccess")
 	OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers) {

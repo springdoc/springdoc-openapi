@@ -46,7 +46,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
 import static org.springdoc.core.Constants.DELETE_METHOD;
@@ -167,39 +166,6 @@ public class OperationBuilder {
 		else
 			return Optional.of(callbacks);
 	}
-
-	private void fillPathItem(RequestMethod requestMethod, Operation operation, PathItem pathItemObject) {
-		switch (requestMethod) {
-			case POST:
-				pathItemObject.post(operation);
-				break;
-			case GET:
-				pathItemObject.get(operation);
-				break;
-			case DELETE:
-				pathItemObject.delete(operation);
-				break;
-			case PUT:
-				pathItemObject.put(operation);
-				break;
-			case PATCH:
-				pathItemObject.patch(operation);
-				break;
-			case TRACE:
-				pathItemObject.trace(operation);
-				break;
-			case HEAD:
-				pathItemObject.head(operation);
-				break;
-			case OPTIONS:
-				pathItemObject.options(operation);
-				break;
-			default:
-				// Do nothing here
-				break;
-		}
-	}
-
 
 	private void setPathItemOperation(PathItem pathItemObject, String method, Operation operation) {
 		switch (method) {

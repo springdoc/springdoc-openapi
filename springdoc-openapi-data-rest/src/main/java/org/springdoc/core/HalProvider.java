@@ -19,7 +19,6 @@
 package org.springdoc.core;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.util.Json;

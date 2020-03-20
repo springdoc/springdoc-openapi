@@ -162,11 +162,11 @@ class SecurityParser {
 		if (StringUtils.isNotBlank(securityScheme.ref()))
 			securitySchemeObject.set$ref(securityScheme.ref());
 
-		if (StringUtils.isNotBlank(securityScheme.name()))
+		if (StringUtils.isNotBlank(securityScheme.name())) {
 			key = securityScheme.name();
 			if (SecuritySchemeType.APIKEY.toString().equals(securitySchemeObject.getType().toString()))
 				securitySchemeObject.setName(securityScheme.name());
-
+		}
 		if (StringUtils.isNotBlank(securityScheme.paramName()))
 			securitySchemeObject.setName(securityScheme.paramName());
 
