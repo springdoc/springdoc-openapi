@@ -16,19 +16,17 @@
  *
  */
 
-package org.springdoc.core;
+package test.org.springdoc.api.app101;
 
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 
-public class PropertyResolverUtils {
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.ActiveProfiles;
+import test.org.springdoc.api.AbstractSpringDocTest;
 
-	private final ConfigurableBeanFactory factory;
+@ActiveProfiles("101")
+public class SpringDocApp101Test extends AbstractSpringDocTest {
 
-	public PropertyResolverUtils(ConfigurableBeanFactory factory) {
-		this.factory = factory;
-	}
+    @SpringBootApplication
+    static class SpringDocTestApp {}
 
-	public String resolve(String parameterProperty) {
-		return factory.resolveEmbeddedValue(parameterProperty);
-	}
 }

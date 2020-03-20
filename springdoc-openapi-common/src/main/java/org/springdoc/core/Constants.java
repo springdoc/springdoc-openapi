@@ -38,6 +38,8 @@ public final class Constants {
 
 	public static final String SPRINGDOC_ENABLED = "springdoc.api-docs.enabled";
 
+	public static final String SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES = "springdoc.api-docs.resolve-schema-properties";
+
 	public static final String SPRINGDOC_CACHE_DISABLED = "springdoc.cache.disabled";
 
 	public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";

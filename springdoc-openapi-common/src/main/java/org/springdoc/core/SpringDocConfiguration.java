@@ -20,17 +20,21 @@ package org.springdoc.core;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.core.converter.ModelConverter;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.ModelConverterRegistrar;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.PropertyCustomizer;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -47,6 +51,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 
 import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.Constants.SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @Configuration
@@ -122,6 +127,16 @@ public class SpringDocConfiguration {
 	@Bean
 	public GenericParameterBuilder parameterBuilder(PropertyResolverUtils propertyResolverUtils) {
 		return new GenericParameterBuilder(propertyResolverUtils);
+	}
+
+	@Bean
+	@ConditionalOnProperty(SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES)
+	public OpenApiCustomiser propertiesResolverForSchema(PropertyResolverUtils propertyResolverUtils, OpenAPIBuilder openAPIBuilder) {
+		return openApi -> {
+			Components components = openApi.getComponents();
+			Map<String, Schema> schemas = components.getSchemas();
+			schemas.values().forEach(schema -> openAPIBuilder.resolveProperties(schema, propertyResolverUtils));
+		};
 	}
 
 	static class ConditionOnCacheOrGroupedOpenApi extends AnyNestedCondition {
