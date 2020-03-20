@@ -18,6 +18,7 @@
 
 package org.springdoc.core;
 
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +45,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.MethodParameter;
 
 import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
@@ -78,10 +80,11 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
-	public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser,
-			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, SpringDocConfigProperties springDocConfigProperties,
+	public OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context,
+			SecurityParser securityParser,
+			SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers) {
-		return new OpenAPIBuilder(openAPI, context, securityParser, springSecurityOAuth2Provider, springDocConfigProperties, openApiBuilderCustomisers);
+		return new OpenAPIBuilder(openAPI, context, securityParser, springDocConfigProperties, openApiBuilderCustomisers);
 	}
 
 	@Bean
@@ -114,14 +117,13 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
-	public GenericReturnTypeParser genericReturnTypeParser() {
-		return new GenericReturnTypeParser();
+	public ReturnTypeParser genericReturnTypeParser() {
+		return new ReturnTypeParser() {};
 	}
 
 	@Bean
-	public GenericParameterBuilder parameterBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
-													PropertyResolverUtils propertyResolverUtils) {
-		return new GenericParameterBuilder(localSpringDocParameterNameDiscoverer, propertyResolverUtils);
+	public GenericParameterBuilder parameterBuilder(PropertyResolverUtils propertyResolverUtils) {
+		return new GenericParameterBuilder(propertyResolverUtils);
 	}
 
 	static class ConditionOnCacheOrGroupedOpenApi extends AnyNestedCondition {

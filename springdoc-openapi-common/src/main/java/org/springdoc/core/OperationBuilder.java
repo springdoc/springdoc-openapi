@@ -46,6 +46,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
 import static org.springdoc.core.Constants.DELETE_METHOD;
@@ -60,11 +61,8 @@ import static org.springdoc.core.Constants.TRACE_METHOD;
 public class OperationBuilder {
 
 	private final GenericParameterBuilder parameterBuilder;
-
 	private final RequestBodyBuilder requestBodyBuilder;
-
 	private final SecurityParser securityParser;
-
 	private final PropertyResolverUtils propertyResolverUtils;
 
 	public OperationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
@@ -79,25 +77,23 @@ public class OperationBuilder {
 	public OpenAPI parse(io.swagger.v3.oas.annotations.Operation apiOperation,
 			Operation operation, OpenAPI openAPI, MethodAttributes methodAttributes) {
 		Components components = openAPI.getComponents();
-		if (StringUtils.isNotBlank(apiOperation.summary())) {
+		if (StringUtils.isNotBlank(apiOperation.summary()))
 			operation.setSummary(propertyResolverUtils.resolve(apiOperation.summary()));
-		}
-		if (StringUtils.isNotBlank(apiOperation.description())) {
+
+		if (StringUtils.isNotBlank(apiOperation.description()))
 			operation.setDescription(propertyResolverUtils.resolve(apiOperation.description()));
-		}
-		if (StringUtils.isNotBlank(apiOperation.operationId())) {
+
+		if (StringUtils.isNotBlank(apiOperation.operationId()))
 			operation.setOperationId(getOperationId(apiOperation.operationId(), openAPI));
-		}
-		if (apiOperation.deprecated()) {
+
+		if (apiOperation.deprecated())
 			operation.setDeprecated(apiOperation.deprecated());
-		}
 
 		buildTags(apiOperation, operation);
 
-		if (operation.getExternalDocs() == null) { // if not set in root annotation
+		if (operation.getExternalDocs() == null)  // if not set in root annotation
 			AnnotationsUtils.getExternalDocumentation(apiOperation.externalDocs())
 					.ifPresent(operation::setExternalDocs);
-		}
 
 		// servers
 		AnnotationsUtils.getServers(apiOperation.servers())
@@ -171,6 +167,39 @@ public class OperationBuilder {
 		else
 			return Optional.of(callbacks);
 	}
+
+	private void fillPathItem(RequestMethod requestMethod, Operation operation, PathItem pathItemObject) {
+		switch (requestMethod) {
+			case POST:
+				pathItemObject.post(operation);
+				break;
+			case GET:
+				pathItemObject.get(operation);
+				break;
+			case DELETE:
+				pathItemObject.delete(operation);
+				break;
+			case PUT:
+				pathItemObject.put(operation);
+				break;
+			case PATCH:
+				pathItemObject.patch(operation);
+				break;
+			case TRACE:
+				pathItemObject.trace(operation);
+				break;
+			case HEAD:
+				pathItemObject.head(operation);
+				break;
+			case OPTIONS:
+				pathItemObject.options(operation);
+				break;
+			default:
+				// Do nothing here
+				break;
+		}
+	}
+
 
 	private void setPathItemOperation(PathItem pathItemObject, String method, Operation operation) {
 		switch (method) {

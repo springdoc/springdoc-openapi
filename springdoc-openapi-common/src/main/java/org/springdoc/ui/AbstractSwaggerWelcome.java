@@ -36,9 +36,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public abstract class AbstractSwaggerWelcome implements InitializingBean {
 
 	protected final SwaggerUiConfigProperties swaggerUiConfig;
-
 	protected final SpringDocConfigProperties springDocConfigProperties;
-
 	protected String uiRootPath;
 
 	@Value(SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE)

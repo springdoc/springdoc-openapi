@@ -48,10 +48,14 @@ public class MultipleOpenApiSupportConfiguration {
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
-			Optional<ActuatorProvider> servletContextProvider, SpringDocConfigProperties springDocConfigProperties) {
+			Optional<ActuatorProvider> servletContextProvider,
+			SpringDocConfigProperties springDocConfigProperties,
+			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
 		return new MultipleOpenApiResource(groupedOpenApis,
 				defaultOpenAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
-				requestMappingHandlerMapping, servletContextProvider,springDocConfigProperties);
+				requestMappingHandlerMapping, servletContextProvider,
+				springDocConfigProperties,
+				springSecurityOAuth2Provider);
 	}
 }

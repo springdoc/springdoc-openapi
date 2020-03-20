@@ -72,34 +72,21 @@ import static org.springdoc.core.Constants.DEFAULT_VERSION;
 public class OpenAPIBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIBuilder.class);
-
 	private OpenAPI openAPI;
-
 	private OpenAPI cachedOpenAPI;
-
 	private OpenAPI calculatedOpenAPI;
-
 	private final ApplicationContext context;
-
 	private final SecurityParser securityParser;
-
 	private final Map<String, Object> mappingsMap = new HashMap<>();
-
 	private final Map<HandlerMethod, io.swagger.v3.oas.models.tags.Tag> springdocTags = new HashMap<>();
-
-	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
-
 	private final Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers;
-
 	private boolean isServersPresent;
-
 	private String serverBaseUrl;
-
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	@SuppressWarnings("WeakerAccess")
 	OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser,
-			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, SpringDocConfigProperties springDocConfigProperties,
+			SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
@@ -112,7 +99,6 @@ public class OpenAPIBuilder {
 		}
 		this.context = context;
 		this.securityParser = securityParser;
-		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
 	}
@@ -427,11 +413,9 @@ public class OpenAPIBuilder {
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 	}
 
-	public Optional<SecurityOAuth2Provider> getSpringSecurityOAuth2Provider() {
-		return springSecurityOAuth2Provider;
-	}
-
-	public OpenAPI getCachedOpenAPI() {
+	public OpenAPI calculateCachedOpenAPI() {
+		if (!this.isServersPresent())
+			this.updateServers(cachedOpenAPI);
 		return cachedOpenAPI;
 	}
 

@@ -81,13 +81,17 @@ import static org.springdoc.core.Constants.QUERY_PARAM;
 
 public abstract class AbstractRequestBuilder {
 
-	private static final List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
+	private final GenericParameterBuilder parameterBuilder;
+	private final RequestBodyBuilder requestBodyBuilder;
+	private final OperationBuilder operationBuilder;
+	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+	private final Optional<List<OperationCustomizer>> operationCustomizers;
+	private final Optional<List<ParameterCustomizer>> parameterCustomizers;
 
+	private static final List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
 	// using string litterals to support both validation-api v1 and v2
 	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), org.springframework.web.bind.annotation.RequestBody.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
-
 	private static final String POSITIVE_OR_ZERO = "javax.validation.constraints.PositiveOrZero";
-
 	private static final String NEGATIVE_OR_ZERO = "javax.validation.constraints.NegativeOrZero";
 
 	static {
@@ -112,27 +116,17 @@ public abstract class AbstractRequestBuilder {
 		PARAM_TYPES_TO_IGNORE.add(RequestAttribute.class);
 	}
 
-	private final GenericParameterBuilder parameterBuilder;
-
-	private final RequestBodyBuilder requestBodyBuilder;
-
-	private final OperationBuilder operationBuilder;
-
-	private final Optional<List<OperationCustomizer>> operationCustomizers;
-
-	private final Optional<List<ParameterCustomizer>> parameterCustomizers;
-
 	protected AbstractRequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<ParameterCustomizer>> parameterCustomizers) {
+			Optional<List<ParameterCustomizer>> parameterCustomizers, LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyBuilder = requestBodyBuilder;
 		this.operationBuilder = operationBuilder;
 		this.operationCustomizers = operationCustomizers;
 		this.parameterCustomizers = parameterCustomizers;
+		this.localSpringDocParameterNameDiscoverer=localSpringDocParameterNameDiscoverer;
 	}
-
 
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
@@ -141,16 +135,13 @@ public abstract class AbstractRequestBuilder {
 				operation.getOperationId(), openAPI);
 		operation.setOperationId(operationId);
 		// requests
-		LocalVariableTableParameterNameDiscoverer d = parameterBuilder.getLocalSpringDocParameterNameDiscoverer();
-		String[] pNames = d.getParameterNames(handlerMethod.getMethod());
+		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
 		MethodParameter[] parameters = handlerMethod.getMethodParameters();
 		String[] reflectionParametersNames = Arrays.stream(parameters).map(MethodParameter::getParameterName).toArray(String[]::new);
-		if (pNames == null) {
+		if (pNames == null)
 			pNames = reflectionParametersNames;
-		}
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
-		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
-				: new ArrayList<>();
+		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
         Components components = openAPI.getComponents();
 
@@ -158,46 +149,42 @@ public abstract class AbstractRequestBuilder {
 			// check if query param
 			Parameter parameter = null;
 			final String pName = pNames[i] == null ? reflectionParametersNames[i] : pNames[i];
-			io.swagger.v3.oas.annotations.Parameter parameterDoc = parameters[i].getParameterAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
-			if (parameterDoc == null) {
+			MethodParameter methodParameter = parameters[i];
+			io.swagger.v3.oas.annotations.Parameter parameterDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
+			if (parameterDoc == null)
 				parameterDoc = parametersDocMap.get(pName);
-			}
 			// use documentation as reference
 			if (parameterDoc != null) {
-				if (parameterDoc.hidden()) {
+				if (parameterDoc.hidden())
 					continue;
-				}
 				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null,
 						methodAttributes.getJsonViewAnnotation());
 			}
 
-			if (!isParamToIgnore(parameters[i])) {
-				ParameterInfo parameterInfo = new ParameterInfo(pName, parameters[i], parameter, i);
+			if (!isParamToIgnore(methodParameter)) {
+				ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameter);
 				parameter = buildParams(parameterInfo, components, requestMethod,
 						methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
 				parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
-				if (isValidParameter(parameter)) {
-					applyBeanValidatorAnnotations(parameter, Arrays.asList(parameters[i].getParameterAnnotations()));
-				}
+				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
+				if (isValidParameter(parameter))
+					applyBeanValidatorAnnotations(parameter, parameterAnnotations);
 				else if (!RequestMethod.GET.equals(requestMethod)) {
 					if (operation.getRequestBody() != null)
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyBuilder.calculateRequestBodyInfo(components, methodAttributes,
 							parameterInfo, requestBodyInfo);
-					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), Arrays.asList(parameters[i].getParameterAnnotations()));
+					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations);
 				}
 				customiseParameter(parameter, parameterInfo, handlerMethod);
 			}
 		}
 
 		LinkedHashMap<String, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
-
 		setParams(operation, new ArrayList(map.values()), requestBodyInfo);
 		// allow for customisation
-		operation = customiseOperation(operation, handlerMethod);
-
-		return operation;
+		return customiseOperation(operation, handlerMethod);
 	}
 
 	private LinkedHashMap<String, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
@@ -251,9 +238,8 @@ public abstract class AbstractRequestBuilder {
 	}
 
 	private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
-		if (!CollectionUtils.isEmpty(operationParameters)) {
+		if (!CollectionUtils.isEmpty(operationParameters))
 			operation.setParameters(operationParameters);
-		}
 		if (requestBodyInfo.getRequestBody() != null)
 			operation.setRequestBody(requestBodyInfo.getRequestBody());
 	}
@@ -265,12 +251,10 @@ public abstract class AbstractRequestBuilder {
 	private Parameter buildParams(ParameterInfo parameterInfo, Components components,
 			RequestMethod requestMethod, JsonView jsonView) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
-
 		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
 		RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
 		PathVariable pathVar = methodParameter.getParameterAnnotation(PathVariable.class);
 		CookieValue cookieValue = methodParameter.getParameterAnnotation(CookieValue.class);
-
 		Parameter parameter = null;
 		RequestInfo requestInfo;
 
@@ -299,9 +283,8 @@ public abstract class AbstractRequestBuilder {
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
 		// By default
-		if (RequestMethod.GET.equals(requestMethod) || (parameterInfo.getParameterModel() != null && ParameterIn.PATH.toString().equals(parameterInfo.getParameterModel().getIn()))) {
+		if (RequestMethod.GET.equals(requestMethod) || (parameterInfo.getParameterModel() != null && ParameterIn.PATH.toString().equals(parameterInfo.getParameterModel().getIn())))
 			parameter = this.buildParam(QUERY_PARAM, components, parameterInfo, Boolean.TRUE, null, jsonView);
-		}
 
 		return parameter;
 	}
@@ -332,17 +315,14 @@ public abstract class AbstractRequestBuilder {
 			parameterInfo.setParameterModel(parameter);
 		}
 
-		if (StringUtils.isBlank(parameter.getName())) {
+		if (StringUtils.isBlank(parameter.getName()))
 			parameter.setName(name);
-		}
 
-		if (StringUtils.isBlank(parameter.getIn())) {
+		if (StringUtils.isBlank(parameter.getIn()))
 			parameter.setIn(in);
-		}
 
-		if (required != null && parameter.getRequired() == null) {
+		if (required != null && parameter.getRequired() == null)
 			parameter.setRequired(required);
-		}
 
 		if (parameter.getSchema() == null) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, null,
@@ -443,28 +423,22 @@ public abstract class AbstractRequestBuilder {
 		calculateSize(annos, schema);
 		if (annos.containsKey(DecimalMin.class.getName())) {
 			DecimalMin min = (DecimalMin) annos.get(DecimalMin.class.getName());
-			if (min.inclusive()) {
+			if (min.inclusive())
 				schema.setMinimum(BigDecimal.valueOf(Double.parseDouble(min.value())));
-			}
-			else {
+			else
 				schema.setExclusiveMinimum(!min.inclusive());
-			}
 		}
 		if (annos.containsKey(DecimalMax.class.getName())) {
 			DecimalMax max = (DecimalMax) annos.get(DecimalMax.class.getName());
-			if (max.inclusive()) {
+			if (max.inclusive())
 				schema.setMaximum(BigDecimal.valueOf(Double.parseDouble(max.value())));
-			}
-			else {
+			else
 				schema.setExclusiveMaximum(!max.inclusive());
-			}
 		}
-		if (annos.containsKey(POSITIVE_OR_ZERO)) {
+		if (annos.containsKey(POSITIVE_OR_ZERO))
 			schema.setMinimum(BigDecimal.ZERO);
-		}
-		if (annos.containsKey(NEGATIVE_OR_ZERO)) {
+		if (annos.containsKey(NEGATIVE_OR_ZERO))
 			schema.setMaximum(BigDecimal.ZERO);
-		}
 		if (annos.containsKey(Pattern.class.getName())) {
 			Pattern pattern = (Pattern) annos.get(Pattern.class.getName());
 			schema.setPattern(pattern.regexp());

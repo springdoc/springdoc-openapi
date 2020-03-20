@@ -48,9 +48,8 @@ public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer imp
 			html = addInitOauth(html);
 			return new TransformedResource(resource, html.getBytes());
 		}
-		else {
+		else
 			return resource;
-		}
 	}
 
 }

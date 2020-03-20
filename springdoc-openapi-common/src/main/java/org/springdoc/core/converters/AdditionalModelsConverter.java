@@ -32,25 +32,21 @@ import io.swagger.v3.oas.models.media.Schema;
 
 public class AdditionalModelsConverter implements ModelConverter {
 
-	private static final Map<Class, Class> modelToClassMap= new HashMap();
-	private static final Map<Class, Schema> modelToSchemaMap= new HashMap();
+	private static final Map<Class, Class> modelToClassMap = new HashMap();
+
+	private static final Map<Class, Schema> modelToSchemaMap = new HashMap();
 
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = Json.mapper().constructType(type.getType());
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
-			if(modelToSchemaMap.containsKey(cls))
+			if (modelToSchemaMap.containsKey(cls))
 				return modelToSchemaMap.get(cls);
-			if(modelToClassMap.containsKey(cls))
+			if (modelToClassMap.containsKey(cls))
 				type = new AnnotatedType(modelToClassMap.get(cls)).resolveAsRef(true);
 		}
-		if (chain.hasNext()) {
-			return chain.next().resolve(type, context, chain);
-		}
-		else {
-			return null;
-		}
+		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
 	}
 
 	public static void replaceWithClass(Class source, Class target) {

@@ -23,7 +23,7 @@ import java.lang.reflect.Type;
 
 import org.springframework.core.MethodParameter;
 
-interface ReturnTypeParser {
+public interface ReturnTypeParser {
 
 	default Type getReturnType(MethodParameter methodParameter) {
 		if( methodParameter.getGenericParameterType() instanceof ParameterizedType)
@@ -32,4 +32,3 @@ interface ReturnTypeParser {
 	}
 }
 
-class GenericReturnTypeParser implements ReturnTypeParser {}

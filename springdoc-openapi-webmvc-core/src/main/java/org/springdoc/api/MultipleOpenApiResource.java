@@ -32,6 +32,7 @@ import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 
@@ -53,28 +54,21 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public class MultipleOpenApiResource implements InitializingBean {
 
 	private final List<GroupedOpenApi> groupedOpenApis;
-
 	private final ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder;
-
 	private final AbstractRequestBuilder requestBuilder;
-
 	private final GenericResponseBuilder responseBuilder;
-
 	private final OperationBuilder operationParser;
-
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
-
 	private final Optional<ActuatorProvider> servletContextProvider;
-
 	private Map<String, OpenApiResource> groupedOpenApiResources;
-
 	private final SpringDocConfigProperties springDocConfigProperties;
+	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
 
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
-			SpringDocConfigProperties springDocConfigProperties) {
+			SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
 
 		this.groupedOpenApis = groupedOpenApis;
 		this.defaultOpenAPIBuilder = defaultOpenAPIBuilder;
@@ -84,6 +78,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.servletContextProvider = servletContextProvider;
 		this.springDocConfigProperties = springDocConfigProperties;
+		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 	}
 
 	@Override
@@ -100,7 +95,9 @@ public class MultipleOpenApiResource implements InitializingBean {
 									operationParser,
 									requestMappingHandlerMapping,
 									servletContextProvider,
-									Optional.of(item.getOpenApiCustomisers()), springDocConfigProperties
+									Optional.of(item.getOpenApiCustomisers()),
+									springDocConfigProperties,
+									springSecurityOAuth2Provider
 							);
 						}
 				));
