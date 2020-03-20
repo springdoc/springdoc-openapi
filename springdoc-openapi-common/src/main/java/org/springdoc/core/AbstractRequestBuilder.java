@@ -182,7 +182,7 @@ public abstract class AbstractRequestBuilder {
 		}
 
 		LinkedHashMap<String, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
-		setParams(operation, new ArrayList(map.values()), requestBodyInfo);
+		setParams(operation, new ArrayList<Parameter>(map.values()), requestBodyInfo);
 		// allow for customisation
 		return customiseOperation(operation, handlerMethod);
 	}
