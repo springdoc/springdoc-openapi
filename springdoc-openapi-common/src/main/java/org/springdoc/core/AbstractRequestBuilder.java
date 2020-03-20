@@ -243,10 +243,11 @@ public abstract class AbstractRequestBuilder {
 	}
 
 	protected boolean isParamToIgnore(MethodParameter parameter) {
-		if (parameter.getParameterAnnotation(PathVariable.class) !=null || parameter.getParameterAnnotation(RequestParam.class) !=null) {
+		if(parameterBuilder.isAnnotationToIgnore(parameter))
+			return true;
+		if (parameter.getParameterAnnotation(PathVariable.class) !=null || parameter.getParameterAnnotation(RequestParam.class) !=null)
 			return false;
-		}
-		return parameterBuilder.isAnnotationToIgnore(parameter) || PARAM_TYPES_TO_IGNORE.contains(parameter.getParameterType());
+		return PARAM_TYPES_TO_IGNORE.contains(parameter.getParameterType());
 	}
 
 	private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
