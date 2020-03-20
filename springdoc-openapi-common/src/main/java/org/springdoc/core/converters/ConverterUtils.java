@@ -19,6 +19,7 @@
 package org.springdoc.core.converters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionStage;
@@ -54,5 +55,17 @@ public class ConverterUtils {
 
 	public static boolean isResponseTypeToIgnore(Class<?> rawClass){
 		return RESPONSE_TYPES_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+	}
+
+	public static void removeResponseWrapperToIgnore(Class<?> classes) {
+		List classesToIgnore = Arrays.asList(classes);
+		if (RESULT_WRAPPERS_TO_IGNORE.containsAll(classesToIgnore))
+			RESULT_WRAPPERS_TO_IGNORE.removeAll(Arrays.asList(classes));
+	}
+
+	public static void removeResponseTypeToIgnore(Class<?> classes) {
+		List classesToIgnore = Arrays.asList(classes);
+		if (RESPONSE_TYPES_TO_IGNORE.containsAll(classesToIgnore))
+			RESPONSE_TYPES_TO_IGNORE.removeAll(Arrays.asList(classes));
 	}
 }
