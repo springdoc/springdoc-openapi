@@ -19,9 +19,10 @@
 package test.org.springdoc.api.app101;
 
 
+import test.org.springdoc.api.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.ActiveProfiles;
-import test.org.springdoc.api.AbstractSpringDocTest;
 
 @ActiveProfiles("101")
 public class SpringDocApp101Test extends AbstractSpringDocTest {
