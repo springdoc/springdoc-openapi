@@ -18,20 +18,6 @@
 
 package org.springdoc.core;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -44,13 +30,13 @@ import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ApplicationContext;
@@ -65,9 +51,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 
-import static org.springdoc.core.Constants.DEFAULT_SERVER_DESCRIPTION;
-import static org.springdoc.core.Constants.DEFAULT_TITLE;
-import static org.springdoc.core.Constants.DEFAULT_VERSION;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.springdoc.core.Constants.*;
 
 public class OpenAPIBuilder {
 
@@ -318,6 +308,25 @@ public class OpenAPIBuilder {
 		}
 		return info;
 	}
+
+	public Schema resolveProperties(Schema schema) {
+		PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
+		resolveProperty(schema::getName, schema::name, propertyResolverUtils);
+		resolveProperty(schema::getTitle, schema::title, propertyResolverUtils);
+		resolveProperty(schema::getDescription, schema::description, propertyResolverUtils);
+
+		Map<String, Schema> properties = schema.getProperties();
+		if (!CollectionUtils.isEmpty(properties)) {
+			Map<String, Schema> resolvedSchemas = properties.entrySet().stream().map(es -> {
+				es.setValue(resolveProperties(es.getValue()));
+				return es;
+			}).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+			schema.setProperties(resolvedSchemas);
+		}
+
+		return schema;
+	}
+
 
 	private void resolveProperty(Supplier<String> getProperty, Consumer<String> setProperty,
 			PropertyResolverUtils propertyResolverUtils) {

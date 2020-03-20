@@ -9,6 +9,10 @@
 
 	<artifactId>springdoc-openapi-data-rest</artifactId>
 	<dependencies>
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+		</dependency>
 		<!-- springdoc-common -->
 		<dependency>
 			<groupId>org.springdoc</groupId>

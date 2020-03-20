@@ -18,44 +18,19 @@
 
 package org.springdoc.api;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.filter.SpecFilter;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.Hidden;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.*;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
-import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.AbstractRequestBuilder;
-import org.springdoc.core.GenericResponseBuilder;
-import org.springdoc.core.MethodAttributes;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.OperationBuilder;
-import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.*;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.customizers.OpenApiCustomiser;
-
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.AntPathMatcher;
@@ -64,6 +39,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
+
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class AbstractOpenApiResource extends SpecFilter {
 
@@ -128,8 +112,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			getPaths(mappingsMap);
 			openApi = openAPIBuilder.getCalculatedOpenAPI();
 
+
 			// run the optional customisers
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
+
+			getModelSchemas(openAPIBuilder.getCalculatedOpenAPI().getComponents());
+
 			computeDone = true;
 			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
 				this.removeBrokenReferenceDefinitions(openApi);
@@ -144,6 +132,19 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			openApi = openAPIBuilder.getCachedOpenAPI();
 		}
 		return openApi;
+	}
+
+	protected void getModelSchemas(Components components) {
+		if (components != null) {
+			Map<String, Schema> mapSchemas = components.getSchemas();
+			if (!CollectionUtils.isEmpty(mapSchemas)) {
+				Map<String, Schema> resolvedSchemas = mapSchemas.entrySet().stream().map(es -> {
+					es.setValue(openAPIBuilder.resolveProperties(es.getValue()));
+					return es;
+				}).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+				components.setSchemas(resolvedSchemas);
+			}
+		}
 	}
 
 	protected abstract void getPaths(Map<String, Object> findRestControllers);
