@@ -151,6 +151,8 @@ public class SpringDocConfigProperties {
 		 */
 		private boolean enabled = true;
 
+		private boolean resolveSchemaProperties;
+
 		private Groups groups = new Groups();
 
 		public String getPath() {
@@ -175,6 +177,14 @@ public class SpringDocConfigProperties {
 
 		public void setGroups(Groups groups) {
 			this.groups = groups;
+		}
+
+		public boolean isResolveSchemaProperties() {
+			return resolveSchemaProperties;
+		}
+
+		public void setResolveSchemaProperties(boolean resolveSchemaProperties) {
+			this.resolveSchemaProperties = resolveSchemaProperties;
 		}
 	}
 
