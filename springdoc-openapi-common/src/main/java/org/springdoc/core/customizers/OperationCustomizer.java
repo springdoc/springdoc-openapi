@@ -26,6 +26,7 @@ import org.springframework.web.method.HandlerMethod;
  * Implement and register a bean of type {@link OperationCustomizer} to customize an operation
  * based on the handler method input
  */
+@FunctionalInterface
 public interface OperationCustomizer {
 
 	/**

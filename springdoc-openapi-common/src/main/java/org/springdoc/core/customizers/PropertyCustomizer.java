@@ -25,6 +25,7 @@ import io.swagger.v3.oas.models.media.Schema;
  * Implement and register a bean of type {@link PropertyCustomizer} to customize a schema property
  * based on annotated type
  */
+@FunctionalInterface
 public interface PropertyCustomizer {
 
 	/**
