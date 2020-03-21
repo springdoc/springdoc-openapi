@@ -14,8 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support of @QuerydslPredicate in Rest controllers
 ### Changed
 - Change the interface of ParameterCustomizer
-- Improve isAnnotationToIgnore
-- Improve isParamToIgnore
+- Improve isAnnotationToIgnore and isParamToIgnore
 - Use MethodParameter#isOptional() instead of checking for Optional type
 - Improve the support of Pageable. Fixes #496
 - Improve compatibility with spring-boot 1, even there is EOL announced: https://spring.io/blog/2018/07/30/spring-boot-1-x-eol-aug-1st-2019
