@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2020-03-21
+### Added
+- Feature to support for property resolver on @Schema (name, title and description)
+- Introduced new property springdoc.api-docs.resolve-schema-properties for property resolver on @Schema #501
+- Being able to see the class within an EntityModel as a Schema. Fixes #453
+- Introduce new property springdoc.remove-broken-reference-definitions
+- Property resolver on @ApiResponse.description #498
+- Support of @QuerydslPredicate in Rest controllers
+### Changed
+- Change the interface of ParameterCustomizer
+- Improve isAnnotationToIgnore
+- Improve isParamToIgnore
+- Use MethodParameter#isOptional() instead of checking for Optional type
+- Improve the support of Pageable. Fixes #496
+- Improve compatibility with spring-boot 1, even there is EOL announced: https://spring.io/blog/2018/07/30/spring-boot-1-x-eol-aug-1st-2019
+
 ## [1.2.34] - 2020-03-17
 ### Added
 - Property resolver on @operation.summary, @parameter.description and @parameter.name
@@ -16,7 +32,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improve compatibility of springdoc-openapi-data-rest with Spring Webflux #477
 - Improve support of  Swagger UI to use provided spec.yml #480
 - Delegate primitive type generation to swagger-core
-- spring-boot 1, end of compatibility: https://spring.io/blog/2018/07/30/spring-boot-1-x-eol-aug-1st-2019
 ### Fixed
 - Wrong schema mapping with inheritance. Fixes #489
 
