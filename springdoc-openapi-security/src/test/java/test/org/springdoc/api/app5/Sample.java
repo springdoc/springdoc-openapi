@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 
 public class Sample {
 	private String toto;
+
 	private Authentication authentication;
 
 	public String getToto() {

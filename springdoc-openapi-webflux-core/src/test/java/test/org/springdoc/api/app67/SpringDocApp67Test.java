@@ -27,10 +27,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 public class SpringDocApp67Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app67" })
-	static class SpringDocTestApp {}
-
 	@Test
 	public void testApp() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange().expectStatus().isOk().expectBody()
@@ -50,4 +46,8 @@ public class SpringDocApp67Test extends AbstractSpringDocTest {
 				.jsonPath("$.paths./api.head.tags[0]").isEqualTo("hello-controller")
 				.jsonPath("$.paths./api.head.responses.200.content.['*/*'].schema.type").isEqualTo("string");
 	}
+
+	@SpringBootApplication
+	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app67" })
+	static class SpringDocTestApp {}
 }

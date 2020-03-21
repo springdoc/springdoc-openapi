@@ -24,7 +24,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp5Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication(scanBasePackages =  { "test.org.springdoc.api.configuration,test.org.springdoc.api.app5" })
+	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.configuration,test.org.springdoc.api.app5" })
 	static class SpringDocTestApp {}
 
 }

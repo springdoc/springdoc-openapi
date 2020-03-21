@@ -23,6 +23,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 class SecuritySchemePair {
 
 	private final String key;
+
 	private final SecurityScheme securityScheme;
 
 	public SecuritySchemePair(String key, SecurityScheme securityScheme) {

@@ -32,17 +32,17 @@ public class RequestBuilder extends AbstractRequestBuilder {
 
 	static {
 		getConfig().addRequestWrapperToIgnore(javax.servlet.ServletRequest.class)
-		.addRequestWrapperToIgnore(javax.servlet.ServletResponse.class)
-		.addRequestWrapperToIgnore(javax.servlet.http.HttpServletRequest.class)
-		.addRequestWrapperToIgnore(javax.servlet.http.HttpServletResponse.class)
-		.addRequestWrapperToIgnore(javax.servlet.http.HttpSession.class)
-		.addRequestWrapperToIgnore(javax.servlet.http.HttpSession.class);
+				.addRequestWrapperToIgnore(javax.servlet.ServletResponse.class)
+				.addRequestWrapperToIgnore(javax.servlet.http.HttpServletRequest.class)
+				.addRequestWrapperToIgnore(javax.servlet.http.HttpServletResponse.class)
+				.addRequestWrapperToIgnore(javax.servlet.http.HttpSession.class)
+				.addRequestWrapperToIgnore(javax.servlet.http.HttpSession.class);
 	}
 
 	public RequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> customizers,
 			Optional<List<ParameterCustomizer>> parameterCustomizers,
 			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
-		super(parameterBuilder, requestBodyBuilder, operationBuilder, customizers, parameterCustomizers,localSpringDocParameterNameDiscoverer);
+		super(parameterBuilder, requestBodyBuilder, operationBuilder, customizers, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 }

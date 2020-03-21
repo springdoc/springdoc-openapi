@@ -42,6 +42,14 @@ class SpringDocTestApp {
 	@Value("classpath:/500-90.json")
 	private Resource http500ExampleResource;
 
+	public static String asString(Resource resource) {
+		try (Reader reader = new InputStreamReader(resource.getInputStream())) {
+			return FileCopyUtils.copyToString(reader);
+		}
+		catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
 
 	@Bean
 	public OpenApiCustomiser openApiCustomiser(Collection<Entry<String, Example>> examples) {
@@ -61,13 +69,5 @@ class SpringDocTestApp {
 				"An example of HTTP response in case an error occurs on server side. instance attribute reference a traceId to ease server side analysis.");
 		http500Example.setValue(asString(http500ExampleResource));
 		return entry;
-	}
-
-	public static String asString(Resource resource) {
-		try (Reader reader = new InputStreamReader(resource.getInputStream())) {
-			return FileCopyUtils.copyToString(reader);
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
 	}
 }

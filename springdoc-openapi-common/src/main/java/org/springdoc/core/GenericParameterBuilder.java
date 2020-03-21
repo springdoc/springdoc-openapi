@@ -54,8 +54,8 @@ import org.springframework.web.multipart.MultipartFile;
 @SuppressWarnings("rawtypes")
 public class GenericParameterBuilder {
 
-	private final PropertyResolverUtils propertyResolverUtils;
 	private static final List<Class<?>> FILE_TYPES = new ArrayList<>();
+
 	private static final List<Class> ANNOTATIOSN_TO_IGNORE = new ArrayList<>();
 
 	static {
@@ -63,8 +63,24 @@ public class GenericParameterBuilder {
 		ANNOTATIOSN_TO_IGNORE.add(Hidden.class);
 	}
 
+	private final PropertyResolverUtils propertyResolverUtils;
+
 	public GenericParameterBuilder(PropertyResolverUtils propertyResolverUtils) {
 		this.propertyResolverUtils = propertyResolverUtils;
+	}
+
+	public static void addFileType(Class<?>... classes) {
+		FILE_TYPES.addAll(Arrays.asList(classes));
+	}
+
+	public static void addAnnotationsToIgnore(Class<?>... classes) {
+		ANNOTATIOSN_TO_IGNORE.addAll(Arrays.asList(classes));
+	}
+
+	public static void removeAnnotationsToIgnore(Class<?>... classes) {
+		List classesToIgnore = Arrays.asList(classes);
+		if (ANNOTATIOSN_TO_IGNORE.containsAll(classesToIgnore))
+			ANNOTATIOSN_TO_IGNORE.removeAll(Arrays.asList(classes));
 	}
 
 	Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
@@ -181,10 +197,10 @@ public class GenericParameterBuilder {
 		Schema schemaN;
 		String paramName = parameterInfo.getpName();
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
-		JavaType ct = constructType(methodParameter.getParameterType());
+		Class type = methodParameter.getParameterType();
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
-			if (isFile(ct)) {
+			if (isFile(type)) {
 				schemaN = getFileSchema(requestBodyInfo);
 				schemaN.addProperties(paramName, new FileSchema());
 				return schemaN;
@@ -213,20 +229,16 @@ public class GenericParameterBuilder {
 		return schemaN;
 	}
 
-	public boolean isFile(java.lang.reflect.Parameter parameter) {
-		boolean result = false;
-		Type type = parameter.getParameterizedType();
-		JavaType javaType = this.constructType(type);
-		if (isFile(javaType)) {
-			result = true;
-		}
-		else if (type instanceof ParameterizedType) {
+	public boolean isFile(MethodParameter methodParameter) {
+		if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
+			Type type = methodParameter.getGenericParameterType();
 			ParameterizedType parameterizedType = (ParameterizedType) type;
-			if (isFile(parameterizedType)) {
-				result = true;
-			}
+			return isFile(parameterizedType);
 		}
-		return result;
+		else {
+			Class type = methodParameter.getParameterType();
+			return isFile(type);
+		}
 	}
 
 	public boolean isAnnotationToIgnore(MethodParameter parameter) {
@@ -323,21 +335,7 @@ public class GenericParameterBuilder {
 		return TypeFactory.defaultInstance().constructType(type);
 	}
 
-	private boolean isFile(JavaType ct) {
-		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(ct.getRawClass()));
-	}
-
-	public static void addFileType(Class<?>... classes) {
-		FILE_TYPES.addAll(Arrays.asList(classes));
-	}
-
-	public static void addAnnotationsToIgnore(Class<?>... classes) {
-		ANNOTATIOSN_TO_IGNORE.addAll(Arrays.asList(classes));
-	}
-
-	public static void removeAnnotationsToIgnore(Class<?>... classes) {
-		List classesToIgnore = Arrays.asList(classes);
-		if (ANNOTATIOSN_TO_IGNORE.containsAll(classesToIgnore))
-			ANNOTATIOSN_TO_IGNORE.removeAll(Arrays.asList(classes));
+	private boolean isFile(Class type) {
+		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(type));
 	}
 }

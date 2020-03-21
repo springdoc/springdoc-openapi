@@ -34,19 +34,33 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 public class SpringDocConfigProperties {
 
 	private boolean showActuator;
+
 	private Webjars webjars = new Webjars();
+
 	private ApiDocs apiDocs = new ApiDocs();
+
 	private List<String> packagesToScan;
+
 	private List<String> packagesToExclude;
+
 	private List<String> pathsToMatch;
+
 	private List<String> pathsToExclude;
+
 	private Cache cache = new Cache();
+
 	private List<GroupConfig> groupConfigs = new ArrayList<>();
+
 	private boolean autoTagClasses = true;
+
 	private boolean modelAndViewAllowed;
+
 	private boolean overrideWithGenericResponse = true;
+
 	private boolean removeBrokenReferenceDefinitions = true;
+
 	private String defaultConsumesMediaType = MediaType.APPLICATION_JSON_VALUE;
+
 	private String defaultProducesMediaType = MediaType.ALL_VALUE;
 
 	public boolean isAutoTagClasses() {
@@ -129,6 +143,50 @@ public class SpringDocConfigProperties {
 		return cache.isDisabled();
 	}
 
+	public List<GroupConfig> getGroupConfigs() {
+		return groupConfigs;
+	}
+
+	public void setGroupConfigs(List<GroupConfig> groupConfigs) {
+		this.groupConfigs = groupConfigs;
+	}
+
+	public void addGroupConfig(GroupConfig groupConfigs) {
+		this.groupConfigs.add(groupConfigs);
+	}
+
+	public String getDefaultConsumesMediaType() {
+		return defaultConsumesMediaType;
+	}
+
+	public void setDefaultConsumesMediaType(String defaultConsumesMediaType) {
+		this.defaultConsumesMediaType = defaultConsumesMediaType;
+	}
+
+	public String getDefaultProducesMediaType() {
+		return defaultProducesMediaType;
+	}
+
+	public void setDefaultProducesMediaType(String defaultProducesMediaType) {
+		this.defaultProducesMediaType = defaultProducesMediaType;
+	}
+
+	public boolean isOverrideWithGenericResponse() {
+		return overrideWithGenericResponse;
+	}
+
+	public void setOverrideWithGenericResponse(boolean overrideWithGenericResponse) {
+		this.overrideWithGenericResponse = overrideWithGenericResponse;
+	}
+
+	public boolean isRemoveBrokenReferenceDefinitions() {
+		return removeBrokenReferenceDefinitions;
+	}
+
+	public void setRemoveBrokenReferenceDefinitions(boolean removeBrokenReferenceDefinitions) {
+		this.removeBrokenReferenceDefinitions = removeBrokenReferenceDefinitions;
+	}
+
 	public static class Webjars {
 		private String prefix = "/webjars";
 
@@ -146,6 +204,7 @@ public class SpringDocConfigProperties {
 		 * Path to the generated OpenAPI documentation. For a yaml file, append ".yaml" to the path.
 		 */
 		private String path = Constants.DEFAULT_API_DOCS_URL;
+
 		/**
 		 * Weather to generate and serve a OpenAPI document.
 		 */
@@ -212,27 +271,20 @@ public class SpringDocConfigProperties {
 		}
 	}
 
-	public List<GroupConfig> getGroupConfigs() {
-		return groupConfigs;
-	}
-
-	public void setGroupConfigs(List<GroupConfig> groupConfigs) {
-		this.groupConfigs = groupConfigs;
-	}
-
-	public void addGroupConfig(GroupConfig groupConfigs) {
-		this.groupConfigs.add(groupConfigs);
-	}
-
 	public static class GroupConfig {
 
 		private List<String> pathsToMatch;
+
 		private List<String> packagesToScan;
+
 		private List<String> packagesToExclude;
+
 		private List<String> pathsToExclude;
+
 		private String group;
 
-		public GroupConfig() { }
+		public GroupConfig() {
+		}
 
 		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan, List<String> packagesToExclude, List<String> pathsToExclude) {
 			this.pathsToMatch = pathsToMatch;
@@ -281,37 +333,5 @@ public class SpringDocConfigProperties {
 		public void setPathsToExclude(List<String> pathsToExclude) {
 			this.pathsToExclude = pathsToExclude;
 		}
-	}
-
-	public String getDefaultConsumesMediaType() {
-		return defaultConsumesMediaType;
-	}
-
-	public void setDefaultConsumesMediaType(String defaultConsumesMediaType) {
-		this.defaultConsumesMediaType = defaultConsumesMediaType;
-	}
-
-	public String getDefaultProducesMediaType() {
-		return defaultProducesMediaType;
-	}
-
-	public void setDefaultProducesMediaType(String defaultProducesMediaType) {
-		this.defaultProducesMediaType = defaultProducesMediaType;
-	}
-
-	public boolean isOverrideWithGenericResponse() {
-		return overrideWithGenericResponse;
-	}
-
-	public void setOverrideWithGenericResponse(boolean overrideWithGenericResponse) {
-		this.overrideWithGenericResponse = overrideWithGenericResponse;
-	}
-
-	public boolean isRemoveBrokenReferenceDefinitions() {
-		return removeBrokenReferenceDefinitions;
-	}
-
-	public void setRemoveBrokenReferenceDefinitions(boolean removeBrokenReferenceDefinitions) {
-		this.removeBrokenReferenceDefinitions = removeBrokenReferenceDefinitions;
 	}
 }

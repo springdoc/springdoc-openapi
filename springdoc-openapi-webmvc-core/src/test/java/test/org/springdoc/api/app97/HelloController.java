@@ -33,7 +33,7 @@ public class HelloController {
 
 	@GetMapping(value = "/student/header2", headers = "X-API-VERSION=2")
 	public StudentV2 headerV2() {
-		return new StudentV2( "Charlie");
+		return new StudentV2("Charlie");
 	}
 
 }

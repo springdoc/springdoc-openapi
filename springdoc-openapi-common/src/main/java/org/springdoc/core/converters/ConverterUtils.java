@@ -28,10 +28,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 
 public class ConverterUtils {
-	
-	private ConverterUtils() { }
 
 	private static final List<Class<?>> RESULT_WRAPPERS_TO_IGNORE = new ArrayList<>();
+
 	private static final List<Class<?>> RESPONSE_TYPES_TO_IGNORE = new ArrayList<>();
 
 	static {
@@ -41,11 +40,14 @@ public class ConverterUtils {
 		RESULT_WRAPPERS_TO_IGNORE.add(CompletionStage.class);
 	}
 
-	public static void addResponseWrapperToIgnore(Class<?> cls){
+	private ConverterUtils() {
+	}
+
+	public static void addResponseWrapperToIgnore(Class<?> cls) {
 		RESULT_WRAPPERS_TO_IGNORE.add(cls);
 	}
 
-	public static void addResponseTypeToIgnore(Class<?> cls){
+	public static void addResponseTypeToIgnore(Class<?> cls) {
 		RESPONSE_TYPES_TO_IGNORE.add(cls);
 	}
 
@@ -53,7 +55,7 @@ public class ConverterUtils {
 		return RESULT_WRAPPERS_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 
-	public static boolean isResponseTypeToIgnore(Class<?> rawClass){
+	public static boolean isResponseTypeToIgnore(Class<?> rawClass) {
 		return RESPONSE_TYPES_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 

@@ -26,6 +26,7 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 class RequestBodyInfo {
 
 	private RequestBody requestBody;
+
 	private Schema mergedSchema;
 
 	public RequestBody getRequestBody() {

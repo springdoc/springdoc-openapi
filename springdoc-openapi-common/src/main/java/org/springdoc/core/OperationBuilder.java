@@ -60,8 +60,11 @@ import static org.springdoc.core.Constants.TRACE_METHOD;
 public class OperationBuilder {
 
 	private final GenericParameterBuilder parameterBuilder;
+
 	private final RequestBodyBuilder requestBodyBuilder;
+
 	private final SecurityParser securityParser;
+
 	private final PropertyResolverUtils propertyResolverUtils;
 
 	public OperationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,

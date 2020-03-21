@@ -27,7 +27,8 @@ public class SpringDocUtils {
 
 	private static final SpringDocUtils springDocConfig = new SpringDocUtils();
 
-	private SpringDocUtils() { }
+	private SpringDocUtils() {
+	}
 
 	public static SpringDocUtils getConfig() {
 		return springDocConfig;
@@ -49,22 +50,22 @@ public class SpringDocUtils {
 	}
 
 	public SpringDocUtils replaceWithClass(Class source, Class target) {
-		AdditionalModelsConverter.replaceWithClass( source,  target);
+		AdditionalModelsConverter.replaceWithClass(source, target);
 		return this;
 	}
 
 	public SpringDocUtils replaceWithSchema(Class source, Schema target) {
-		AdditionalModelsConverter.replaceWithSchema( source,  target);
+		AdditionalModelsConverter.replaceWithSchema(source, target);
 		return this;
 	}
 
 	public SpringDocUtils addRequestWrapperToIgnore(Class<?>... classes) {
-		AbstractRequestBuilder.addRequestWrapperToIgnore( classes);
+		AbstractRequestBuilder.addRequestWrapperToIgnore(classes);
 		return this;
 	}
 
 	public SpringDocUtils removeRequestWrapperToIgnore(Class<?>... classes) {
-		AbstractRequestBuilder.removeRequestWrapperToIgnore( classes);
+		AbstractRequestBuilder.removeRequestWrapperToIgnore(classes);
 		return this;
 	}
 
@@ -73,33 +74,33 @@ public class SpringDocUtils {
 		return this;
 	}
 
-	public SpringDocUtils addResponseWrapperToIgnore(Class<?> cls){
+	public SpringDocUtils addResponseWrapperToIgnore(Class<?> cls) {
 		ConverterUtils.addResponseWrapperToIgnore(cls);
 		return this;
 	}
 
-	public SpringDocUtils removeResponseWrapperToIgnore(Class<?> cls){
+	public SpringDocUtils removeResponseWrapperToIgnore(Class<?> cls) {
 		ConverterUtils.removeResponseWrapperToIgnore(cls);
 		return this;
 	}
 
-	public SpringDocUtils addResponseTypeToIgnore(Class<?> cls){
+	public SpringDocUtils addResponseTypeToIgnore(Class<?> cls) {
 		ConverterUtils.addResponseTypeToIgnore(cls);
 		return this;
 	}
 
-	public SpringDocUtils removeResponseTypeToIgnore(Class<?> cls){
+	public SpringDocUtils removeResponseTypeToIgnore(Class<?> cls) {
 		ConverterUtils.removeResponseTypeToIgnore(cls);
 		return this;
 	}
 
 	public SpringDocUtils addAnnotationsToIgnore(Class<?>... classes) {
-		GenericParameterBuilder.addAnnotationsToIgnore( classes);
+		GenericParameterBuilder.addAnnotationsToIgnore(classes);
 		return this;
 	}
 
 	public SpringDocUtils removeAnnotationsToIgnore(Class<?>... classes) {
-		GenericParameterBuilder.removeAnnotationsToIgnore( classes);
+		GenericParameterBuilder.removeAnnotationsToIgnore(classes);
 		return this;
 	}
 }

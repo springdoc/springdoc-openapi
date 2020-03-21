@@ -58,9 +58,13 @@ import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
 public class GenericResponseBuilder {
 
 	private final Map<String, ApiResponse> genericMapResponse = new LinkedHashMap<>();
+
 	private final OperationBuilder operationBuilder;
+
 	private final List<ReturnTypeParser> returnTypeParsers;
+
 	private final SpringDocConfigProperties springDocConfigProperties;
+
 	private final PropertyResolverUtils propertyResolverUtils;
 
 	GenericResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers,

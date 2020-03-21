@@ -42,7 +42,8 @@ public class HelloController {
 	}
 
 
-	@Operation(responses = @ApiResponse(content = @Content(schema = @Schema(type = "string")), extensions = @Extension(properties = @ExtensionProperty(name = "x-is-file", value = "true"))))	@GetMapping(value = "/persons2")
+	@Operation(responses = @ApiResponse(content = @Content(schema = @Schema(type = "string")), extensions = @Extension(properties = @ExtensionProperty(name = "x-is-file", value = "true"))))
+	@GetMapping(value = "/persons2")
 	public void persons2(@Valid @NotBlank String name) {
 
 	}

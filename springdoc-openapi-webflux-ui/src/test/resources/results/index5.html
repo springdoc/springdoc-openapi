@@ -1,12 +1,12 @@
 <!-- HTML for static distribution bundle build -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <title>Swagger UI</title>
-    <link rel="stylesheet" type="text/css" href="./swagger-ui.css" >
-    <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
+    <link href="./swagger-ui.css" rel="stylesheet" type="text/css">
+    <link href="./favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+    <link href="./favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
     <style>
       html
       {
@@ -27,15 +27,16 @@
         margin:0;
         background: #fafafa;
       }
+
     </style>
-  </head>
+</head>
 
-  <body>
-    <div id="swagger-ui"></div>
+<body>
+<div id="swagger-ui"></div>
 
-    <script src="./swagger-ui-bundle.js"> </script>
-    <script src="./swagger-ui-standalone-preset.js"> </script>
-    <script>
+<script src="./swagger-ui-bundle.js"></script>
+<script src="./swagger-ui-standalone-preset.js"></script>
+<script>
     window.onload = function() {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
@@ -57,6 +58,7 @@
 ui.initOAuth(
 {"clientId":"myClientId"})
     }
-  </script>
-  </body>
+
+</script>
+</body>
 </html>

@@ -27,11 +27,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tags(value = @Tag(name="hello-ap1"))
+@Tags(value = @Tag(name = "hello-ap1"))
 public class HelloController {
 
 	@GetMapping(value = "/search", produces = { "application/xml", "application/json" })
-	@Tags(value = @Tag(name="hello-ap2"))
+	@Tags(value = @Tag(name = "hello-ap2"))
 	public PersonDTO getAllPets(@NotNull String toto) {
 		return null;
 	}

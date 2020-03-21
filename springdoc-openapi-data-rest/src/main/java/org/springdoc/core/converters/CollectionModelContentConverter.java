@@ -42,24 +42,25 @@ public class CollectionModelContentConverter implements ModelConverter {
 
 	private static final CollectionModelContentConverter collectionModelContentConverter = new CollectionModelContentConverter();
 
-	private CollectionModelContentConverter() { }
+	private CollectionModelContentConverter() {
+	}
 
 	public static CollectionModelContentConverter getConverter() {
 		return collectionModelContentConverter;
 	}
 
-    @Override
-    public Schema<?> resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
-        if (chain.hasNext() && type != null && type.getType() instanceof CollectionType
-                && "_embedded".equalsIgnoreCase(type.getPropertyName())) {
-            Schema<?> schema = chain.next().resolve(type, context, chain);
-            if (schema instanceof ArraySchema) {
-                return new MapSchema()
-                        .name("_embedded")
-                        .additionalProperties(new StringSchema())
-                        .additionalProperties(schema);
-            }
-        }
-        return chain.hasNext() ? chain.next().resolve(type, context, chain) : null;
-    }
+	@Override
+	public Schema<?> resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+		if (chain.hasNext() && type != null && type.getType() instanceof CollectionType
+				&& "_embedded".equalsIgnoreCase(type.getPropertyName())) {
+			Schema<?> schema = chain.next().resolve(type, context, chain);
+			if (schema instanceof ArraySchema) {
+				return new MapSchema()
+						.name("_embedded")
+						.additionalProperties(new StringSchema())
+						.additionalProperties(schema);
+			}
+		}
+		return chain.hasNext() ? chain.next().resolve(type, context, chain) : null;
+	}
 }

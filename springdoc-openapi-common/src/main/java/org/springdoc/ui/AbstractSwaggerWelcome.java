@@ -36,14 +36,16 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public abstract class AbstractSwaggerWelcome implements InitializingBean {
 
 	protected final SwaggerUiConfigProperties swaggerUiConfig;
-	protected final SpringDocConfigProperties springDocConfigProperties;
-	protected String uiRootPath;
 
-	@Value(SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE)
-	private String originConfigUrl;
+	protected final SpringDocConfigProperties springDocConfigProperties;
+
+	protected String uiRootPath;
 
 	@Value(SPRINGDOC_OAUTH2_REDIRECT_URL_VALUE)
 	protected String oauth2RedirectUrl;
+
+	@Value(SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE)
+	private String originConfigUrl;
 
 	@Value(SPRINGDOC_SWAGGER_UI_URL_VALUE)
 	private String swaggerUiUrl;
@@ -55,7 +57,7 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() {
-		springDocConfigProperties.getGroupConfigs().forEach( groupConfig -> swaggerUiConfig.addGroup(groupConfig.getGroup()));
+		springDocConfigProperties.getGroupConfigs().forEach(groupConfig -> swaggerUiConfig.addGroup(groupConfig.getGroup()));
 		calculateUiRootPath();
 	}
 

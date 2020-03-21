@@ -28,8 +28,8 @@ public class HelloController {
 
 	@PutMapping(value = "/test")
 	public ResponseEntity<?> put(
-			 String configuration,
-			 String second, PersonDTO personDTO ) {
+			String configuration,
+			String second, PersonDTO personDTO) {
 		return null;
 	}
 

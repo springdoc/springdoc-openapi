@@ -59,7 +59,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
 			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf('/'));
 		uiRootPath.append("/**");
 		registry.addResourceHandler(uiRootPath + "/swagger-ui/**")
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL+DEFAULT_PATH_SEPARATOR)
+				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
 				.resourceChain(false)
 				.addTransformer(swaggerIndexTransformer);
 	}
@@ -67,7 +67,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
 	@Bean
 	@ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 	public SwaggerWelcome swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
-		return new SwaggerWelcome( swaggerUiConfig,  springDocConfigProperties);
+		return new SwaggerWelcome(swaggerUiConfig, springDocConfigProperties);
 	}
 
 	@Bean

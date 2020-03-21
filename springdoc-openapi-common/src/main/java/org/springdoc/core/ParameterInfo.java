@@ -25,7 +25,9 @@ import org.springframework.core.MethodParameter;
 class ParameterInfo {
 
 	private final MethodParameter methodParameter;
+
 	private String pName;
+
 	private io.swagger.v3.oas.models.parameters.Parameter parameterModel;
 
 	public ParameterInfo(String pName, MethodParameter methodParameter,
@@ -48,7 +50,7 @@ class ParameterInfo {
 		return methodParameter;
 	}
 
-	public Parameter getParameter(){
+	public Parameter getParameter() {
 		return methodParameter.getParameter();
 	}
 

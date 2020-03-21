@@ -21,8 +21,11 @@ package org.springdoc.core;
 public class RequestInfo {
 
 	private final String value;
+
 	private final boolean required;
+
 	private final String defaultValue;
+
 	private final String paramType;
 
 	public RequestInfo(String paramType, String value, boolean required, String defaultValue) {

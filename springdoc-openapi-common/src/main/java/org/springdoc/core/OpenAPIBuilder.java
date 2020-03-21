@@ -73,17 +73,28 @@ import static org.springdoc.core.Constants.DEFAULT_VERSION;
 public class OpenAPIBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIBuilder.class);
-	private OpenAPI openAPI;
-	private OpenAPI cachedOpenAPI;
-	private OpenAPI calculatedOpenAPI;
+
 	private final ApplicationContext context;
+
 	private final SecurityParser securityParser;
+
 	private final Map<String, Object> mappingsMap = new HashMap<>();
+
 	private final Map<HandlerMethod, io.swagger.v3.oas.models.tags.Tag> springdocTags = new HashMap<>();
+
 	private final Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers;
-	private boolean isServersPresent;
-	private String serverBaseUrl;
+
 	private final SpringDocConfigProperties springDocConfigProperties;
+
+	private OpenAPI openAPI;
+
+	private OpenAPI cachedOpenAPI;
+
+	private OpenAPI calculatedOpenAPI;
+
+	private boolean isServersPresent;
+
+	private String serverBaseUrl;
 
 	OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser,
 			SpringDocConfigProperties springDocConfigProperties,

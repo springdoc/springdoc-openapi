@@ -65,7 +65,9 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public class OpenApiResource extends AbstractOpenApiResource {
 
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
+
 	private final Optional<ActuatorProvider> servletContextProvider;
+
 	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
 
 	public OpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
@@ -78,7 +80,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, springDocConfigProperties);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.servletContextProvider = servletContextProvider;
-		this.springSecurityOAuth2Provider=springSecurityOAuth2Provider;
+		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 	}
 
 	@Operation(hidden = true)
@@ -150,7 +152,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 		return (responseBodyAnnotation != null && restControllers.containsKey(handlerMethod.getBean().toString()) || isAdditionalRestController(handlerMethod.getBeanType()))
 				&& operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-				&& (springDocConfigProperties.isModelAndViewAllowed()|| !ModelAndView.class.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
+				&& (springDocConfigProperties.isModelAndViewAllowed() || !ModelAndView.class.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}
 
 	private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
