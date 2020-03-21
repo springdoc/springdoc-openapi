@@ -26,6 +26,7 @@ import org.springframework.core.MethodParameter;
  * Implement and register a bean of type {@link ParameterCustomizer} to customize a parameter
  * based on the parameter and handler method input
  */
+@FunctionalInterface
 public interface ParameterCustomizer {
 	/**
 	 * @param parameterModel to be customized
