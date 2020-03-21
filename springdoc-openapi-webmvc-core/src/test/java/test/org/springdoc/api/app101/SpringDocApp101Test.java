@@ -27,7 +27,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("101")
 public class SpringDocApp101Test extends AbstractSpringDocTest {
 
-    @SpringBootApplication
-    static class SpringDocTestApp {}
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

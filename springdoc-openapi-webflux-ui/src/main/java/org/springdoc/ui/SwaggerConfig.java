@@ -59,8 +59,8 @@ public class SwaggerConfig implements WebFluxConfigurer {
 		if (swaggerPath.contains("/")) {
 			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf('/'));
 		}
-		registry.addResourceHandler(uiRootPath + webJarsPrefixUrl+"/**")
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL+DEFAULT_PATH_SEPARATOR)
+		registry.addResourceHandler(uiRootPath + webJarsPrefixUrl + "/**")
+				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
 				.resourceChain(false)
 				.addTransformer(swaggerIndexTransformer);
 	}

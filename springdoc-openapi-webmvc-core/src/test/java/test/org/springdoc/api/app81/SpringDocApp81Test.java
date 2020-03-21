@@ -33,9 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class SpringDocApp81Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	public void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
@@ -62,4 +59,7 @@ public class SpringDocApp81Test extends AbstractSpringDocTest {
 				.andExpect(jsonPath("$.paths./api.head.operationId", startsWith("test")))
 				.andExpect(jsonPath("$.paths./api.head.responses.200.content.['*/*'].schema.type", is("string")));
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

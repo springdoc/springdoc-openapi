@@ -26,7 +26,7 @@ import org.springframework.core.MethodParameter;
 public interface ReturnTypeParser {
 
 	default Type getReturnType(MethodParameter methodParameter) {
-		if( methodParameter.getGenericParameterType() instanceof ParameterizedType)
+		if (methodParameter.getGenericParameterType() instanceof ParameterizedType)
 			return methodParameter.getGenericParameterType();
 		return methodParameter.getParameterType();
 	}

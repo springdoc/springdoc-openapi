@@ -33,7 +33,7 @@ public class SpringDocApp5Test extends AbstractSpringDocTest {
 
 	@Test
 	public void transformed_index_with_oauth() throws Exception {
-		EntityExchangeResult<byte[]> getResult  = webTestClient.get().uri("/webjars/swagger-ui/index.html")
+		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/webjars/swagger-ui/index.html")
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody().returnResult();

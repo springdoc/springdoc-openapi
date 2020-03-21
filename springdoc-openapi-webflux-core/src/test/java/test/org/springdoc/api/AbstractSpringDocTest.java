@@ -75,7 +75,8 @@ public abstract class AbstractSpringDocTest {
 
 			String expected = getContent("results/app" + testNumber + ".json");
 			assertEquals(expected, result, true);
-		}catch (java.lang.AssertionError e) {
+		}
+		catch (java.lang.AssertionError e) {
 			LOGGER.error(result);
 			throw e;
 		}

@@ -49,6 +49,4 @@ class EmployeeController {
 		return null;
 	}
 
-
-
 }

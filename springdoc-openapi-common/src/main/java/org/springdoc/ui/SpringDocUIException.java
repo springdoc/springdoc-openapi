@@ -18,7 +18,7 @@
 
 package org.springdoc.ui;
 
-public class SpringDocUIException extends RuntimeException{
+public class SpringDocUIException extends RuntimeException {
 
 	public SpringDocUIException(String message, Throwable cause) {
 		super(message, cause);

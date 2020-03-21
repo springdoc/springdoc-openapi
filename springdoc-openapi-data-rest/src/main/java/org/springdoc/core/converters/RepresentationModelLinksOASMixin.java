@@ -24,7 +24,7 @@ import org.springframework.hateoas.Links;
 import org.springframework.hateoas.mediatype.hal.RepresentationModelMixin;
 
 public abstract class RepresentationModelLinksOASMixin extends RepresentationModelMixin {
-    @Override
-    @Schema(ref = "#/components/schemas/Links")
-    public abstract Links getLinks();
+	@Override
+	@Schema(ref = "#/components/schemas/Links")
+	public abstract Links getLinks();
 }

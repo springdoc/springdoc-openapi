@@ -68,22 +68,34 @@ import org.springframework.web.method.HandlerMethod;
 public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractOpenApiResource.class);
-	private final AbstractRequestBuilder requestBuilder;
-	private final GenericResponseBuilder responseBuilder;
-	private final OperationBuilder operationParser;
-	private final Optional<List<OpenApiCustomiser>> openApiCustomisers;
-	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
+
 	private static final List<Class<?>> ADDITIONAL_REST_CONTROLLERS = new ArrayList<>();
+
 	private static final List<Class<?>> HIDDEN_REST_CONTROLLERS = new ArrayList<>();
+
 	private static final List<Class> DEPRECATED_TYPES = new ArrayList<>();
-	private boolean computeDone;
-	private final String groupName;
-	protected final OpenAPIBuilder openAPIBuilder;
-	protected final SpringDocConfigProperties springDocConfigProperties;
 
 	static {
 		DEPRECATED_TYPES.add(Deprecated.class);
 	}
+
+	protected final OpenAPIBuilder openAPIBuilder;
+
+	protected final SpringDocConfigProperties springDocConfigProperties;
+
+	private final AbstractRequestBuilder requestBuilder;
+
+	private final GenericResponseBuilder responseBuilder;
+
+	private final OperationBuilder operationParser;
+
+	private final Optional<List<OpenApiCustomiser>> openApiCustomisers;
+
+	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
+
+	private final String groupName;
+
+	private boolean computeDone;
 
 	protected AbstractOpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder,
 			AbstractRequestBuilder requestBuilder,
@@ -98,6 +110,18 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.operationParser = operationParser;
 		this.openApiCustomisers = openApiCustomisers;
 		this.springDocConfigProperties = springDocConfigProperties;
+	}
+
+	public static void addRestControllers(Class<?>... classes) {
+		ADDITIONAL_REST_CONTROLLERS.addAll(Arrays.asList(classes));
+	}
+
+	public static void addHiddenRestControllers(Class<?>... classes) {
+		HIDDEN_REST_CONTROLLERS.addAll(Arrays.asList(classes));
+	}
+
+	public static void addDeprecatedType(Class<?> cls) {
+		DEPRECATED_TYPES.add(cls);
 	}
 
 	protected synchronized OpenAPI getOpenApi() {
@@ -376,18 +400,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	private boolean isDeprecatedType(Method method) {
 		return DEPRECATED_TYPES.stream().anyMatch(clazz -> (AnnotatedElementUtils.findMergedAnnotation(method, clazz) != null));
-	}
-
-	public static void addRestControllers(Class<?>... classes) {
-		ADDITIONAL_REST_CONTROLLERS.addAll(Arrays.asList(classes));
-	}
-
-	public static void addHiddenRestControllers(Class<?>... classes) {
-		HIDDEN_REST_CONTROLLERS.addAll(Arrays.asList(classes));
-	}
-
-	public static void addDeprecatedType(Class<?> cls) {
-		DEPRECATED_TYPES.add(cls);
 	}
 
 }

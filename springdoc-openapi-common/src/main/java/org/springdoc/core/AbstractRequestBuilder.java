@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -81,17 +82,13 @@ import static org.springdoc.core.Constants.QUERY_PARAM;
 
 public abstract class AbstractRequestBuilder {
 
-	private final GenericParameterBuilder parameterBuilder;
-	private final RequestBodyBuilder requestBodyBuilder;
-	private final OperationBuilder operationBuilder;
-	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
-	private final Optional<List<OperationCustomizer>> operationCustomizers;
-	private final Optional<List<ParameterCustomizer>> parameterCustomizers;
-
 	private static final List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
+
 	// using string litterals to support both validation-api v1 and v2
 	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), org.springframework.web.bind.annotation.RequestBody.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
+
 	private static final String POSITIVE_OR_ZERO = "javax.validation.constraints.PositiveOrZero";
+
 	private static final String NEGATIVE_OR_ZERO = "javax.validation.constraints.NegativeOrZero";
 
 	static {
@@ -116,6 +113,18 @@ public abstract class AbstractRequestBuilder {
 		PARAM_TYPES_TO_IGNORE.add(RequestAttribute.class);
 	}
 
+	private final GenericParameterBuilder parameterBuilder;
+
+	private final RequestBodyBuilder requestBodyBuilder;
+
+	private final OperationBuilder operationBuilder;
+
+	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+
+	private final Optional<List<OperationCustomizer>> operationCustomizers;
+
+	private final Optional<List<ParameterCustomizer>> parameterCustomizers;
+
 	protected AbstractRequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<ParameterCustomizer>> parameterCustomizers, LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
@@ -123,9 +132,23 @@ public abstract class AbstractRequestBuilder {
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyBuilder = requestBodyBuilder;
 		this.operationBuilder = operationBuilder;
+		if (operationCustomizers.isPresent())
+			operationCustomizers.get().removeIf(Objects::isNull);
 		this.operationCustomizers = operationCustomizers;
+		if (parameterCustomizers.isPresent())
+			parameterCustomizers.get().removeIf(Objects::isNull);
 		this.parameterCustomizers = parameterCustomizers;
-		this.localSpringDocParameterNameDiscoverer=localSpringDocParameterNameDiscoverer;
+		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
+	}
+
+	public static void addRequestWrapperToIgnore(Class<?>... classes) {
+		PARAM_TYPES_TO_IGNORE.addAll(Arrays.asList(classes));
+	}
+
+	public static void removeRequestWrapperToIgnore(Class<?>... classes) {
+		List classesToIgnore = Arrays.asList(classes);
+		if (PARAM_TYPES_TO_IGNORE.containsAll(classesToIgnore))
+			PARAM_TYPES_TO_IGNORE.removeAll(Arrays.asList(classes));
 	}
 
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
@@ -143,7 +166,7 @@ public abstract class AbstractRequestBuilder {
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
-        Components components = openAPI.getComponents();
+		Components components = openAPI.getComponents();
 
 		for (int i = 0; i < pNames.length; i++) {
 			// check if query param
@@ -225,14 +248,14 @@ public abstract class AbstractRequestBuilder {
 	}
 
 	protected Parameter customiseParameter(Parameter parameter, ParameterInfo parameterInfo, HandlerMethod handlerMethod) {
-		parameterCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(parameter, parameterInfo.getParameter(), handlerMethod)));
+		parameterCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(parameter, parameterInfo.getMethodParameter())));
 		return parameter;
 	}
 
 	protected boolean isParamToIgnore(MethodParameter parameter) {
-		if(parameterBuilder.isAnnotationToIgnore(parameter))
+		if (parameterBuilder.isAnnotationToIgnore(parameter))
 			return true;
-		if (parameter.getParameterAnnotation(PathVariable.class) !=null || parameter.getParameterAnnotation(RequestParam.class) !=null)
+		if (parameter.getParameterAnnotation(PathVariable.class) != null || parameter.getParameterAnnotation(RequestParam.class) != null)
 			return false;
 		return PARAM_TYPES_TO_IGNORE.contains(parameter.getParameterType());
 	}
@@ -264,7 +287,7 @@ public abstract class AbstractRequestBuilder {
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 
 		}
-		else if (requestParam != null && !parameterBuilder.isFile(parameterInfo.getParameter())) {
+		else if (requestParam != null && !parameterBuilder.isFile(parameterInfo.getMethodParameter())) {
 			requestInfo = new RequestInfo(ParameterIn.QUERY.toString(), requestParam.value(), requestParam.required() && !methodParameter.isOptional(),
 					requestParam.defaultValue());
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
@@ -333,7 +356,6 @@ public abstract class AbstractRequestBuilder {
 		}
 		return parameter;
 	}
-
 
 	private void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
 		Map<String, Annotation> annos = new HashMap<>();
@@ -443,16 +465,6 @@ public abstract class AbstractRequestBuilder {
 			Pattern pattern = (Pattern) annos.get(Pattern.class.getName());
 			schema.setPattern(pattern.regexp());
 		}
-	}
-
-	public static void addRequestWrapperToIgnore(Class<?>... classes) {
-		PARAM_TYPES_TO_IGNORE.addAll(Arrays.asList(classes));
-	}
-
-	public static void removeRequestWrapperToIgnore(Class<?>... classes) {
-		List classesToIgnore = Arrays.asList(classes);
-		if (PARAM_TYPES_TO_IGNORE.containsAll(classesToIgnore))
-			PARAM_TYPES_TO_IGNORE.removeAll(Arrays.asList(classes));
 	}
 
 }

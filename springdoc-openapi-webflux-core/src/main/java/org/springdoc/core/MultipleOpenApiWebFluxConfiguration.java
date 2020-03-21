@@ -49,6 +49,6 @@ public class MultipleOpenApiWebFluxConfiguration {
 		return new MultipleOpenApiResource(groupedOpenApis,
 				defaultOpenAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
-				requestMappingHandlerMapping,springDocConfigProperties);
+				requestMappingHandlerMapping, springDocConfigProperties);
 	}
 }

@@ -37,7 +37,7 @@ public class SpringDocKotlinConfiguration {
 
 	static {
 		getConfig().addRequestWrapperToIgnore(Continuation.class)
-		.addDeprecatedType(Deprecated.class);
+				.addDeprecatedType(Deprecated.class);
 		Json.mapper().registerModule(new KotlinModule());
 	}
 

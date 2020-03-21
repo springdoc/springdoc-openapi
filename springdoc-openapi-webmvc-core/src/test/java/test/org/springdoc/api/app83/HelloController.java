@@ -36,12 +36,12 @@ public class HelloController {
 
 	@RequestMapping(value = "/{config}",
 			method = RequestMethod.PUT,
-			consumes = { MediaType.MULTIPART_FORM_DATA_VALUE},
-			produces = {MediaType.APPLICATION_JSON_VALUE}
+			consumes = { MediaType.MULTIPART_FORM_DATA_VALUE },
+			produces = { MediaType.APPLICATION_JSON_VALUE }
 	)
 	public ResponseEntity<?> put(
 			@PathVariable("config") final String config,
-			@Parameter(name = "configuration", schema = @Schema(name ="configuration", type = "string", format = "binary")) @RequestPart(value = "configuration") 	 final PersonDTO configuration,
+			@Parameter(name = "configuration", schema = @Schema(name = "configuration", type = "string", format = "binary")) @RequestPart(value = "configuration") final PersonDTO configuration,
 			@RequestPart(value = "file") final MultipartFile aFile) {
 		return null;
 	}

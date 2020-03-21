@@ -30,7 +30,7 @@ import org.springframework.web.reactive.resource.ResourceTransformerChain;
 import org.springframework.web.reactive.resource.TransformedResource;
 import org.springframework.web.server.ServerWebExchange;
 
-public class SwaggerIndexTransformer extends  AbstractSwaggerIndexTransformer implements ResourceTransformer {
+public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer implements ResourceTransformer {
 
 	public SwaggerIndexTransformer(SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
 		super(swaggerUiOAuthProperties, objectMapper);
@@ -55,6 +55,5 @@ public class SwaggerIndexTransformer extends  AbstractSwaggerIndexTransformer im
 			throw new SpringDocUIException("Failed to transform Index", e);
 		}
 	}
-
 
 }

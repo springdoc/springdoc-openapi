@@ -53,12 +53,19 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public class MultipleOpenApiResource implements InitializingBean {
 
 	private final List<GroupedOpenApi> groupedOpenApis;
+
 	private final ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder;
+
 	private final AbstractRequestBuilder requestBuilder;
+
 	private final GenericResponseBuilder responseBuilder;
+
 	private final OperationBuilder operationParser;
+
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
+
 	private final SpringDocConfigProperties springDocConfigProperties;
+
 	private Map<String, OpenApiResource> groupedOpenApiResources;
 
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,

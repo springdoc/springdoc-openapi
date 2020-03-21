@@ -95,7 +95,7 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 				Optional<ActuatorProvider> servletContextProvider, SpringDocConfigProperties springDocConfigProperties,
 				Optional<List<OpenApiCustomiser>> openApiCustomisers, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
 			return new OpenApiResource(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping,
-					servletContextProvider, openApiCustomisers, springDocConfigProperties,springSecurityOAuth2Provider);
+					servletContextProvider, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider);
 		}
 
 		@Override

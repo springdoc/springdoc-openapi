@@ -68,6 +68,12 @@ public abstract class AbstractSpringDocTest {
 		}
 	}
 
+	@AfterAll
+	public static void afterClass() {
+		ModelConverters.getInstance().removeConverter(CollectionModelContentConverter.getConverter());
+		System.clearProperty("spring.hateoas.use-hal-as-default-json-media-type");
+	}
+
 	@Test
 	public void testApp() throws Exception {
 		className = getClass().getSimpleName();
@@ -79,11 +85,5 @@ public abstract class AbstractSpringDocTest {
 		byte[] fileBytes = Files.readAllBytes(path);
 		String expected = new String(fileBytes);
 		assertEquals(expected, result, true);
-	}
-
-	@AfterAll
-	public static void afterClass() {
-		ModelConverters.getInstance().removeConverter(CollectionModelContentConverter.getConverter());
-		System.clearProperty("spring.hateoas.use-hal-as-default-json-media-type");
 	}
 }

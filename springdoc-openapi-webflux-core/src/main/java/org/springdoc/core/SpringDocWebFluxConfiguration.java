@@ -52,7 +52,7 @@ public class SpringDocWebFluxConfiguration {
 		return new OpenApiResource(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping,
-				openApiCustomisers,springDocConfigProperties);
+				openApiCustomisers, springDocConfigProperties);
 	}
 
 	@Bean

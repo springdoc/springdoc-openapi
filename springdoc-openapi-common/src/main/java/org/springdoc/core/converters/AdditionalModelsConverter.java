@@ -36,6 +36,14 @@ public class AdditionalModelsConverter implements ModelConverter {
 
 	private static final Map<Class, Schema> modelToSchemaMap = new HashMap();
 
+	public static void replaceWithClass(Class source, Class target) {
+		modelToClassMap.put(source, target);
+	}
+
+	public static void replaceWithSchema(Class source, Schema target) {
+		modelToSchemaMap.put(source, target);
+	}
+
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = Json.mapper().constructType(type.getType());
@@ -47,14 +55,6 @@ public class AdditionalModelsConverter implements ModelConverter {
 				type = new AnnotatedType(modelToClassMap.get(cls)).resolveAsRef(true);
 		}
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
-	}
-
-	public static void replaceWithClass(Class source, Class target) {
-		modelToClassMap.put(source, target);
-	}
-
-	public static void replaceWithSchema(Class source, Schema target) {
-		modelToSchemaMap.put(source, target);
 	}
 
 }

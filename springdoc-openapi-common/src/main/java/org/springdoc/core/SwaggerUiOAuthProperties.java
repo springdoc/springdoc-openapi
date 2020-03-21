@@ -42,12 +42,19 @@ import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 public class SwaggerUiOAuthProperties {
 
 	private String clientId;
+
 	private String clientSecret;
+
 	private String realm;
+
 	private String appName;
+
 	private String scopeSeparator;
+
 	private List<String> additionalQueryStringParams;
+
 	private String useBasicAuthenticationWithAccessCodeGrant;
+
 	private Boolean usePkceWithAuthorizationCodeGrant;
 
 	public Map<String, Object> getConfigParameters() {

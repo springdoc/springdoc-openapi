@@ -26,10 +26,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp98Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	static {
 		SpringDocUtils.getConfig().addAnnotationsToIgnore(IgnoredAnnotationParameter.class);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

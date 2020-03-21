@@ -60,7 +60,7 @@ public class SpringDocWebMvcConfiguration {
 		return new OpenApiResource(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping, servletContextProvider,
-				openApiCustomisers,springDocConfigProperties,springSecurityOAuth2Provider);
+				openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider);
 	}
 
 	@Bean
@@ -93,6 +93,7 @@ public class SpringDocWebMvcConfiguration {
 		public OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider) {
 			return new OperationCustomizer() {
 				private int methodCount;
+
 				@Override
 				public Operation customize(Operation operation, HandlerMethod handlerMethod) {
 					if (operation.getTags() != null && operation.getTags().contains(actuatorProvider.getTag().getName())) {

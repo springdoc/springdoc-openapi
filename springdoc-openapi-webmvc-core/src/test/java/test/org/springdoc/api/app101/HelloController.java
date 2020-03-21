@@ -14,8 +14,8 @@ public class HelloController {
 
 	@GetMapping
 	@ApiResponse(content = @Content(schema = @Schema(
-		description = "${test.app101.operation.hello.response.schema.description}",
-		implementation = HelloDTO.class)))
+			description = "${test.app101.operation.hello.response.schema.description}",
+			implementation = HelloDTO.class)))
 	public HelloDTO hello() {
 		return new HelloDTO();
 	}

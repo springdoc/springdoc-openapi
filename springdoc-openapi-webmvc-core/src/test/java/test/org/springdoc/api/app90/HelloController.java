@@ -35,7 +35,8 @@ public class HelloController {
 
 	@GetMapping("/test")
 	@ApiResponses(value = { @ApiResponse(description = "successful operation", content = { @Content(examples = @ExampleObject(name = "500", ref = "#/components/examples/http500Example"), mediaType = "application/json", schema = @Schema(implementation = User.class)), @Content(mediaType = "application/xml", schema = @Schema(implementation = User.class)) }) })
-	public void test1(String hello) { }
+	public void test1(String hello) {
+	}
 
 	@PostMapping("/test2")
 	@RequestBody(
@@ -53,6 +54,7 @@ public class HelloController {
 									name = "An example request with all fields provided with example values.",
 									value = "full",
 									summary = "Full request") }))
-	public void test2(String hello) { }
+	public void test2(String hello) {
+	}
 
 }

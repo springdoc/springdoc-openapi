@@ -30,18 +30,23 @@ import org.springframework.util.CollectionUtils;
 public class GroupedOpenApi {
 
 	private final String group;
+
 	private final List<OpenApiCustomiser> openApiCustomisers;
+
 	private final List<String> pathsToMatch;
+
 	private final List<String> packagesToScan;
+
 	private final List<String> packagesToExclude;
+
 	private final List<String> pathsToExclude;
 
 	private GroupedOpenApi(Builder builder) {
 		this.group = Objects.requireNonNull(builder.group, "group");
 		this.pathsToMatch = builder.pathsToMatch;
 		this.packagesToScan = builder.packagesToScan;
-		this.packagesToExclude=builder.packagesToExclude;
-		this.pathsToExclude=builder.pathsToExclude;
+		this.packagesToExclude = builder.packagesToExclude;
+		this.pathsToExclude = builder.pathsToExclude;
 		this.openApiCustomisers = Objects.requireNonNull(builder.openApiCustomisers);
 		if (CollectionUtils.isEmpty(this.pathsToMatch)
 				&& CollectionUtils.isEmpty(this.packagesToScan)
@@ -81,10 +86,15 @@ public class GroupedOpenApi {
 
 	public static class Builder {
 		private final List<OpenApiCustomiser> openApiCustomisers = new ArrayList<>();
+
 		private String group;
+
 		private List<String> pathsToMatch;
+
 		private List<String> packagesToScan;
+
 		private List<String> packagesToExclude;
+
 		private List<String> pathsToExclude;
 
 		private Builder() {

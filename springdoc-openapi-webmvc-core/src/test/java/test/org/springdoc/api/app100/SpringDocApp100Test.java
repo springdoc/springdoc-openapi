@@ -25,7 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp100Test extends AbstractSpringDocTest {
 
-    @SpringBootApplication
-    static class SpringDocTestApp {}
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

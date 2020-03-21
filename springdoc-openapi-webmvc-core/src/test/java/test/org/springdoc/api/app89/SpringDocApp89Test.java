@@ -31,10 +31,10 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @TestPropertySource(properties = "springdoc.model-and-view-allowed=true")
 public class SpringDocApp89Test extends AbstractSpringDocTest {
 
+	static {
+		getConfig().replaceWithSchema(ModelAndView.class, new ObjectSchema());
+	}
+
 	@SpringBootApplication
 	static class SpringDocTestApp {}
-
-	static {
-		getConfig().replaceWithSchema(ModelAndView .class, new ObjectSchema());
-	}
 }

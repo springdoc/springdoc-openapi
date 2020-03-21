@@ -42,6 +42,7 @@ import org.springframework.web.method.HandlerMethod;
 public class QuerydslPredicateOperationCustomizer implements OperationCustomizer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(QuerydslPredicateOperationCustomizer.class);
+
 	private static final String ACCESS_EXCEPTION_OCCURRED = "NoSuchFieldException or IllegalAccessException occurred : {}";
 
 	private QuerydslBindingsFactory querydslBindingsFactory;
@@ -113,7 +114,8 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 				field.setAccessible(true);
 			}
 			return (Set<String>) field.get(instance);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
+		}
+		catch (NoSuchFieldException | IllegalAccessException e) {
 			LOGGER.warn(ACCESS_EXCEPTION_OCCURRED, e.getMessage());
 		}
 		return Collections.emptySet();
@@ -126,7 +128,8 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 				field.setAccessible(true);
 			}
 			return (Map<String, Object>) field.get(instance);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
+		}
+		catch (NoSuchFieldException | IllegalAccessException e) {
 			LOGGER.warn(ACCESS_EXCEPTION_OCCURRED, e.getMessage());
 		}
 		return Collections.emptyMap();
@@ -142,7 +145,8 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 				field.setAccessible(true);
 			}
 			return (Optional<Path<?>>) field.get(instance);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
+		}
+		catch (NoSuchFieldException | IllegalAccessException e) {
 			LOGGER.warn(ACCESS_EXCEPTION_OCCURRED, e.getMessage());
 		}
 		return Optional.empty();
@@ -164,14 +168,16 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 			Field declaredField = null;
 			if (path.isPresent()) {
 				genericType = path.get().getType();
-			} else {
+			}
+			else {
 				declaredField = root.getDeclaredField(fieldName);
 				genericType = declaredField.getGenericType();
 			}
 			if (genericType != null) {
 				return genericType;
 			}
-		} catch (NoSuchFieldException e) {
+		}
+		catch (NoSuchFieldException e) {
 			LOGGER.warn("Field {} not found on {} : {}", fieldName, root.getName(), e.getMessage());
 		}
 		return String.class;
@@ -199,7 +205,8 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 			PrimitiveType primitiveType = PrimitiveType.fromType(type);
 			if (primitiveType != null) {
 				schema = primitiveType.createProperty();
-			} else {
+			}
+			else {
 				ResolvedSchema resolvedSchema = ModelConverters.getInstance()
 						.resolveAsResolvedSchema(
 								new io.swagger.v3.core.converter.AnnotatedType(type).resolveAsRef(true));
@@ -208,7 +215,8 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 				// defaulting to string
 				if (resolvedSchema == null || !resolvedSchema.referencedSchemas.isEmpty()) {
 					schema = PrimitiveType.fromType(String.class).createProperty();
-				} else {
+				}
+				else {
 					schema = resolvedSchema.schema;
 				}
 			}
