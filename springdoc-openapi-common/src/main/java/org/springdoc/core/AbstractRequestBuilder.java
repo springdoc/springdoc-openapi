@@ -200,7 +200,7 @@ public abstract class AbstractRequestBuilder {
 							parameterInfo, requestBodyInfo);
 					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations);
 				}
-				customiseParameter(parameter, parameterInfo, handlerMethod);
+				customiseParameter(parameter, parameterInfo);
 			}
 		}
 
@@ -247,7 +247,7 @@ public abstract class AbstractRequestBuilder {
 		return operation;
 	}
 
-	protected Parameter customiseParameter(Parameter parameter, ParameterInfo parameterInfo, HandlerMethod handlerMethod) {
+	protected Parameter customiseParameter(Parameter parameter, ParameterInfo parameterInfo) {
 		parameterCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(parameter, parameterInfo.getMethodParameter())));
 		return parameter;
 	}

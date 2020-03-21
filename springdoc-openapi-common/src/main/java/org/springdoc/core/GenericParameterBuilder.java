@@ -30,8 +30,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -329,10 +327,6 @@ public class GenericParameterBuilder {
 			explode = false;
 		}
 		return explode;
-	}
-
-	private JavaType constructType(Type type) {
-		return TypeFactory.defaultInstance().constructType(type);
 	}
 
 	private boolean isFile(Class type) {
