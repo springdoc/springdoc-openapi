@@ -257,7 +257,7 @@ public abstract class AbstractRequestBuilder {
 			return true;
 		if (parameter.getParameterAnnotation(PathVariable.class) != null || parameter.getParameterAnnotation(RequestParam.class) != null)
 			return false;
-		return PARAM_TYPES_TO_IGNORE.contains(parameter.getParameterType());
+		return PARAM_TYPES_TO_IGNORE.stream().anyMatch(paramToIgnore -> paramToIgnore.isAssignableFrom(parameter.getParameterType()));
 	}
 
 	private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
