@@ -1,14 +1,32 @@
+/*
+ *
+ *  * Copyright 2019-2020 the original author or authors.
+ *  *
+ *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  * you may not use this file except in compliance with the License.
+ *  * You may obtain a copy of the License at
+ *  *
+ *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  * See the License for the specific language governing permissions and
+ *  * limitations under the License.
+ *
+ */
+
 package org.springdoc.core;
 
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 
@@ -23,90 +41,96 @@ import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerUiOAuthProperties {
 
-    private String clientId;
-    private String clientSecret;
-    private String realm;
-    private String appName;
-    private String scopeSeparator;
-    private List<String> additionalQueryStringParams;
-    private String useBasicAuthenticationWithAccessCodeGrant;
-    private Boolean usePkceWithAuthorizationCodeGrant;
+	private String clientId;
 
+	private String clientSecret;
 
-    public Map<String, Object> getConfigParameters() {
-        final Map<String, Object> params = new TreeMap<>();
-        SpringDocPropertiesUtils.put("clientId", clientId, params);
-        SpringDocPropertiesUtils.put("clientSecret", clientSecret, params);
-        SpringDocPropertiesUtils.put("realm", realm, params);
-        SpringDocPropertiesUtils.put("scopeSeparator", scopeSeparator, params);
-        SpringDocPropertiesUtils.put("appName", appName, params);
-        SpringDocPropertiesUtils.put("useBasicAuthenticationWithAccessCodeGrant", useBasicAuthenticationWithAccessCodeGrant, params);
-        SpringDocPropertiesUtils.put("usePkceWithAuthorizationCodeGrant", usePkceWithAuthorizationCodeGrant, params);
-        SpringDocPropertiesUtils.put("additionalQueryStringParams", additionalQueryStringParams, params);
-        return params;
-    }
+	private String realm;
 
-    public String getClientId() {
-        return clientId;
-    }
+	private String appName;
 
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
+	private String scopeSeparator;
 
-    public String getClientSecret() {
-        return clientSecret;
-    }
+	private List<String> additionalQueryStringParams;
 
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
-    }
+	private String useBasicAuthenticationWithAccessCodeGrant;
 
-    public String getRealm() {
-        return realm;
-    }
+	private Boolean usePkceWithAuthorizationCodeGrant;
 
-    public void setRealm(String realm) {
-        this.realm = realm;
-    }
+	public Map<String, Object> getConfigParameters() {
+		final Map<String, Object> params = new TreeMap<>();
+		SpringDocPropertiesUtils.put("clientId", clientId, params);
+		SpringDocPropertiesUtils.put("clientSecret", clientSecret, params);
+		SpringDocPropertiesUtils.put("realm", realm, params);
+		SpringDocPropertiesUtils.put("scopeSeparator", scopeSeparator, params);
+		SpringDocPropertiesUtils.put("appName", appName, params);
+		SpringDocPropertiesUtils.put("useBasicAuthenticationWithAccessCodeGrant", useBasicAuthenticationWithAccessCodeGrant, params);
+		SpringDocPropertiesUtils.put("usePkceWithAuthorizationCodeGrant", usePkceWithAuthorizationCodeGrant, params);
+		SpringDocPropertiesUtils.put("additionalQueryStringParams", additionalQueryStringParams, params);
+		return params;
+	}
 
-    public String getAppName() {
-        return appName;
-    }
+	public String getClientId() {
+		return clientId;
+	}
 
-    public void setAppName(String appName) {
-        this.appName = appName;
-    }
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
 
-    public String getScopeSeparator() {
-        return scopeSeparator;
-    }
+	public String getClientSecret() {
+		return clientSecret;
+	}
 
-    public void setScopeSeparator(String scopeSeparator) {
-        this.scopeSeparator = scopeSeparator;
-    }
+	public void setClientSecret(String clientSecret) {
+		this.clientSecret = clientSecret;
+	}
 
-    public List<String> getAdditionalQueryStringParams() {
-        return additionalQueryStringParams;
-    }
+	public String getRealm() {
+		return realm;
+	}
 
-    public void setAdditionalQueryStringParams(List<String> additionalQueryStringParams) {
-        this.additionalQueryStringParams = additionalQueryStringParams;
-    }
+	public void setRealm(String realm) {
+		this.realm = realm;
+	}
 
-    public String getUseBasicAuthenticationWithAccessCodeGrant() {
-        return useBasicAuthenticationWithAccessCodeGrant;
-    }
+	public String getAppName() {
+		return appName;
+	}
 
-    public void setUseBasicAuthenticationWithAccessCodeGrant(String useBasicAuthenticationWithAccessCodeGrant) {
-        this.useBasicAuthenticationWithAccessCodeGrant = useBasicAuthenticationWithAccessCodeGrant;
-    }
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
 
-    public Boolean getUsePkceWithAuthorizationCodeGrant() {
-        return usePkceWithAuthorizationCodeGrant;
-    }
+	public String getScopeSeparator() {
+		return scopeSeparator;
+	}
 
-    public void setUsePkceWithAuthorizationCodeGrant(Boolean usePkceWithAuthorizationCodeGrant) {
-        this.usePkceWithAuthorizationCodeGrant = usePkceWithAuthorizationCodeGrant;
-    }
+	public void setScopeSeparator(String scopeSeparator) {
+		this.scopeSeparator = scopeSeparator;
+	}
+
+	public List<String> getAdditionalQueryStringParams() {
+		return additionalQueryStringParams;
+	}
+
+	public void setAdditionalQueryStringParams(List<String> additionalQueryStringParams) {
+		this.additionalQueryStringParams = additionalQueryStringParams;
+	}
+
+	public String getUseBasicAuthenticationWithAccessCodeGrant() {
+		return useBasicAuthenticationWithAccessCodeGrant;
+	}
+
+	public void setUseBasicAuthenticationWithAccessCodeGrant(String useBasicAuthenticationWithAccessCodeGrant) {
+		this.useBasicAuthenticationWithAccessCodeGrant = useBasicAuthenticationWithAccessCodeGrant;
+	}
+
+	public Boolean getUsePkceWithAuthorizationCodeGrant() {
+		return usePkceWithAuthorizationCodeGrant;
+	}
+
+	public void setUsePkceWithAuthorizationCodeGrant(Boolean usePkceWithAuthorizationCodeGrant) {
+		this.usePkceWithAuthorizationCodeGrant = usePkceWithAuthorizationCodeGrant;
+	}
 }

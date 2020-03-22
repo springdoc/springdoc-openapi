@@ -1,0 +1,5 @@
+#With this configuration, only 2 resources should be visibile in http://localhost:8080/swagger-ui, but 3 are found.
+springdoc:
+  paths-to-match:
+    - /api/testpost1
+    - /api/hello

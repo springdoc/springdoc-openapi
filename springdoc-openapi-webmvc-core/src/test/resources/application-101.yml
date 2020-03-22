@@ -1,0 +1,16 @@
+test:
+  app101:
+    operation:
+      hello:
+        response:
+          schema:
+            description: Description of schema of api response hello
+    schema:
+      hello:
+        description: Description of schema of hello entity
+        param:
+          id:
+            description: Description of schema of param id for api hello
+springdoc:
+  api-docs:
+    resolve-schema-properties: true
