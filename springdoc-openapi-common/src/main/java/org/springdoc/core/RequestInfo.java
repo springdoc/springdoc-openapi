@@ -1,47 +1,54 @@
+/*
+ *
+ *  * Copyright 2019-2020 the original author or authors.
+ *  *
+ *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  * you may not use this file except in compliance with the License.
+ *  * You may obtain a copy of the License at
+ *  *
+ *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  * See the License for the specific language governing permissions and
+ *  * limitations under the License.
+ *
+ */
+
 package org.springdoc.core;
 
 public class RequestInfo {
 
-    private final String value;
-    private final boolean required;
-    private final String defaultValue;
-    private final ParameterType paramType;
+	private final String value;
 
-    public RequestInfo(ParameterType paramType, String value, boolean required, String defaultValue) {
-        this.value = value;
-        this.required = required;
-        this.defaultValue = defaultValue;
-        this.paramType = paramType;
-    }
+	private final boolean required;
 
-    public String value() {
-        return value;
-    }
+	private final String defaultValue;
 
-    public boolean required() {
-        return required;
-    }
+	private final String paramType;
 
-    public String defaultValue() {
-        return defaultValue;
-    }
+	public RequestInfo(String paramType, String value, boolean required, String defaultValue) {
+		this.value = value;
+		this.required = required;
+		this.defaultValue = defaultValue;
+		this.paramType = paramType;
+	}
 
-    public String type() {
-        return paramType.toString();
-    }
+	public String value() {
+		return value;
+	}
 
-    public enum ParameterType {
-        QUERY_PARAM("query"), HEADER_PARAM("header"), PATH_PARAM("path");
-        private final String value;
+	public boolean required() {
+		return required;
+	}
 
-        ParameterType(String s) {
-            value = s;
-        }
+	public String defaultValue() {
+		return defaultValue;
+	}
 
-        @Override
-        public String toString() {
-            return value;
-        }
-    }
+	public String type() {
+		return paramType;
+	}
 
 }

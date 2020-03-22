@@ -52,11 +52,6 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              },
               "text/plain": {
                 "schema": {
                   "type": "string"
@@ -68,5 +63,7 @@
       }
     }
   },
-  "components": {}
+  "components": {
+    "schemas": {}
+  }
 }

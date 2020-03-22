@@ -28,7 +28,8 @@
                 "$ref": "#/components/schemas/Person"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -57,7 +58,8 @@
                 "$ref": "#/components/schemas/Person"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {

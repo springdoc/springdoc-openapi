@@ -46,7 +46,7 @@
       "Authorization": {
         "type": "apiKey",
         "description": "A core-auth Bearer token",
-        "name": "Authorization",
+        "name": "JWT",
         "in": "header"
       }
     }

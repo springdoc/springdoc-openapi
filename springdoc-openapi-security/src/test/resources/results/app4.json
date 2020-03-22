@@ -107,6 +107,39 @@
           }
         }
       }
+    },
+    "/oauth/check_token": {
+      "post": {
+        "tags": [
+          "check-token-endpoint"
+        ],
+        "operationId": "checkToken",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -129,11 +162,9 @@
             "type": "string",
             "format": "date-time"
           },
-          "tokenType": {
-            "type": "string"
-          },
-          "expired": {
-            "type": "boolean"
+          "expiresIn": {
+            "type": "integer",
+            "format": "int32"
           },
           "scope": {
             "uniqueItems": true,
@@ -148,12 +179,14 @@
               "type": "object"
             }
           },
+          "expired": {
+            "type": "boolean"
+          },
+          "tokenType": {
+            "type": "string"
+          },
           "refreshToken": {
             "$ref": "#/components/schemas/OAuth2RefreshToken"
-          },
-          "expiresIn": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },
