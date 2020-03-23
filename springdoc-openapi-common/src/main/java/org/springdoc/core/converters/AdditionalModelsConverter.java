@@ -18,16 +18,16 @@
 
 package org.springdoc.core.converters;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class AdditionalModelsConverter implements ModelConverter {
 
@@ -52,12 +52,10 @@ public class AdditionalModelsConverter implements ModelConverter {
 		JavaType javaType = Json.mapper().constructType(type.getType());
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
-			if (modelToSchemaMap.containsKey(cls)) {
+			if (modelToSchemaMap.containsKey(cls))
 				return modelToSchemaMap.get(cls);
-			}
-			if (modelToClassMap.containsKey(cls)) {
+			if (modelToClassMap.containsKey(cls))
 				type = new AnnotatedType(modelToClassMap.get(cls)).resolveAsRef(true);
-			}
 		}
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
 	}
