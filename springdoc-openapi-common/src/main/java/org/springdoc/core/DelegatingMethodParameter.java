@@ -1,22 +1,34 @@
 package org.springdoc.core;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.Objects;
+import java.util.stream.Stream;
+
 import org.apache.commons.lang3.ArrayUtils;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
-import java.util.Objects;
-import java.util.stream.Stream;
-
+/**
+ * @author zarebski.m
+ */
 class DelegatingMethodParameter extends MethodParameter {
 	private volatile MethodParameter delegate;
+
 	private Annotation[] additionalParameterAnnotations;
+
 	private String parameterName;
 
 	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations) {
@@ -37,7 +49,8 @@ class DelegatingMethodParameter extends MethodParameter {
 					.map(method -> new MethodParameter(method, -1))
 					.map(param -> new DelegatingMethodParameter(param, field.getName(), field.getDeclaredAnnotations()))
 					.orElse(null);
-		} catch (IntrospectionException e) {
+		}
+		catch (IntrospectionException e) {
 			return null;
 		}
 	}

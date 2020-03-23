@@ -31,10 +31,10 @@ import java.lang.annotation.Target;
 
 /**
  * @deprecated Use {@link org.springdoc.api.annotations.ParameterObject} annotation
- * 		on {@link org.springframework.data.domain.Pageable} method parameter instead.
+ * on {@link org.springframework.data.domain.Pageable} method parameter instead.
  */
 @Deprecated
-@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Parameter(in = ParameterIn.QUERY
 		, description = "Zero-based page index (0..N)"

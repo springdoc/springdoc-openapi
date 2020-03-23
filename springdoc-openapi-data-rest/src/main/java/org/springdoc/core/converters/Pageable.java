@@ -87,12 +87,8 @@ public class Pageable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 		Pageable pageable = (Pageable) o;
 		return Objects.equals(page, pageable.page) &&
 				Objects.equals(size, pageable.size) &&
