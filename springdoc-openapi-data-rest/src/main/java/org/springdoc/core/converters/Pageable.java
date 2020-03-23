@@ -18,29 +18,30 @@
 
 package org.springdoc.core.converters;
 
-import java.util.List;
-import java.util.Objects;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Objects;
 
 @NotNull
 public class Pageable {
 
-	@NotNull
+	@Nullable
 	@Min(0)
-	private int page;
+	private Integer page;
 
-	@NotNull
+	@Nullable
 	@Min(1)
 	@Max(2000)
-	private int size;
+	private Integer size;
 
-	@NotNull
+	@Nullable
 	private List<String> sort;
 
-	public Pageable(@NotNull @Min(0) int page, @NotNull @Min(1) @Max(2000) int size, List<String> sort) {
+	public Pageable(int page, int size, List<String> sort) {
 		this.page = page;
 		this.size = size;
 		this.sort = sort;

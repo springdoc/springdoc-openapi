@@ -19,11 +19,36 @@
         "operationId": "getAllPets",
         "parameters": [
           {
-            "name": "pageable",
+            "name": "page",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
-              "$ref": "#/components/schemas/Pageable"
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 2000,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -55,28 +80,6 @@
   },
   "components": {
     "schemas": {
-      "Pageable": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "minimum": 0,
-            "type": "integer",
-            "format": "int32"
-          },
-          "size": {
-            "maximum": 2000,
-            "minimum": 1,
-            "type": "integer",
-            "format": "int32"
-          },
-          "sort": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "PersonDTO": {
         "type": "object",
         "properties": {

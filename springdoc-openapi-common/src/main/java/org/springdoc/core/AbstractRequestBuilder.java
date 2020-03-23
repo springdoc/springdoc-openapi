@@ -31,6 +31,7 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.api.annotations.ParameterObject;
+import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -144,7 +145,7 @@ public abstract class AbstractRequestBuilder {
 		for (int i = 0; i < parameters.length; ++i) {
 			MethodParameter p = parameters[i];
 			if (p.hasParameterAnnotation(ParameterObject.class)) {
-				Class<?> paramClass = p.getParameterType();
+				Class<?> paramClass = AdditionalModelsConverter.getReplacement(p.getParameterType());
 				Stream.of(paramClass.getDeclaredFields())
 						.map(f -> DelegatingMethodParameter.fromGetterOfField(paramClass, f))
 						.filter(Objects::nonNull)
