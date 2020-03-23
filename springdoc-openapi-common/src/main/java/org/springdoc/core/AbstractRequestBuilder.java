@@ -18,29 +18,6 @@
 
 package org.springdoc.core;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
@@ -53,9 +30,9 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
-
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -63,18 +40,20 @@ import org.springframework.http.HttpMethod;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ValueConstants;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.validation.constraints.*;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springdoc.core.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.Constants.OPENAPI_STRING_TYPE;
@@ -160,42 +139,57 @@ public abstract class AbstractRequestBuilder {
 		// requests
 		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
 		MethodParameter[] parameters = handlerMethod.getMethodParameters();
-		String[] reflectionParametersNames = Arrays.stream(parameters).map(MethodParameter::getParameterName).toArray(String[]::new);
-		if (pNames == null)
-			pNames = reflectionParametersNames;
+
+		List<MethodParameter> explodedParameters = new ArrayList<>();
+		for (int i = 0; i < parameters.length; ++i) {
+			MethodParameter p = parameters[i];
+			if (p.hasParameterAnnotation(ParameterObject.class)) {
+				Class<?> paramClass = p.getParameterType();
+				Stream.of(paramClass.getDeclaredFields())
+						.map(f -> DelegatingMethodParameter.fromGetterOfField(paramClass, f))
+						.filter(Objects::nonNull)
+						.forEach(explodedParameters::add);
+			} else {
+				String name = pNames != null ? pNames[i] : p.getParameterName();
+				explodedParameters.add(new DelegatingMethodParameter(p, name, null));
+			}
+		}
+		parameters = explodedParameters.toArray(new MethodParameter[0]);
+
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
 		Components components = openAPI.getComponents();
 
-		for (int i = 0; i < pNames.length; i++) {
+		for (MethodParameter methodParameter : parameters) {
 			// check if query param
 			Parameter parameter = null;
-			final String pName = pNames[i] == null ? reflectionParametersNames[i] : pNames[i];
-			MethodParameter methodParameter = parameters[i];
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
-			if (parameterDoc == null)
-				parameterDoc = parametersDocMap.get(pName);
+			if (parameterDoc == null) {
+				parameterDoc = parametersDocMap.get(methodParameter.getParameterName());
+			}
 			// use documentation as reference
 			if (parameterDoc != null) {
-				if (parameterDoc.hidden())
+				if (parameterDoc.hidden()) {
 					continue;
+				}
 				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null,
 						methodAttributes.getJsonViewAnnotation());
 			}
 
 			if (!isParamToIgnore(methodParameter)) {
-				ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameter);
+				ParameterInfo parameterInfo = new ParameterInfo(methodParameter.getParameterName(), methodParameter, parameter);
 				parameter = buildParams(parameterInfo, components, requestMethod,
 						methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
 				parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
 				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
-				if (isValidParameter(parameter))
+				if (isValidParameter(parameter)) {
 					applyBeanValidatorAnnotations(parameter, parameterAnnotations);
-				else if (!RequestMethod.GET.equals(requestMethod)) {
-					if (operation.getRequestBody() != null)
+				} else if (!RequestMethod.GET.equals(requestMethod)) {
+					if (operation.getRequestBody() != null) {
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
+					}
 					requestBodyBuilder.calculateRequestBodyInfo(components, methodAttributes,
 							parameterInfo, requestBodyInfo);
 					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations);
@@ -205,7 +199,7 @@ public abstract class AbstractRequestBuilder {
 		}
 
 		LinkedHashMap<String, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
-		setParams(operation, new ArrayList<Parameter>(map.values()), requestBodyInfo);
+		setParams(operation, new ArrayList<>(map.values()), requestBodyInfo);
 		// allow for customisation
 		return customiseOperation(operation, handlerMethod);
 	}
@@ -297,7 +291,7 @@ public abstract class AbstractRequestBuilder {
 			String name = StringUtils.isBlank(pathVar.value()) ? pName : pathVar.value();
 			parameterInfo.setpName(name);
 			// check if PATH PARAM
-			requestInfo = new RequestInfo(ParameterIn.PATH.toString(), pathVar.value(), Boolean.TRUE, null);
+			requestInfo = new RequestInfo(ParameterIn.PATH.toString(), pathVar.value(), !methodParameter.isOptional(), null);
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
 		else if (cookieValue != null) {
@@ -307,7 +301,7 @@ public abstract class AbstractRequestBuilder {
 		}
 		// By default
 		if (RequestMethod.GET.equals(requestMethod) || (parameterInfo.getParameterModel() != null && ParameterIn.PATH.toString().equals(parameterInfo.getParameterModel().getIn())))
-			parameter = this.buildParam(QUERY_PARAM, components, parameterInfo, Boolean.TRUE, null, jsonView);
+			parameter = this.buildParam(QUERY_PARAM, components, parameterInfo, !methodParameter.isOptional(), null, jsonView);
 
 		return parameter;
 	}
