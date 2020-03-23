@@ -18,6 +18,8 @@
 
 package org.springdoc.core.converters;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Max;
@@ -31,14 +33,18 @@ public class Pageable {
 
 	@Nullable
 	@Min(0)
+	@Schema(description = "Zero-based page index (0..N)", defaultValue = "0")
 	private Integer page;
 
 	@Nullable
 	@Min(1)
 	@Max(2000)
+	@Schema(description = "The size of the page to be returned", defaultValue = "20")
 	private Integer size;
 
 	@Nullable
+	@ArraySchema(arraySchema = @Schema(description = "Sorting criteria in the format: property(,asc|desc). "
+			+ "Default sort order is ascending. " + "Multiple sort criteria are supported."))
 	private List<String> sort;
 
 	public Pageable(int page, int size, List<String> sort) {
@@ -47,19 +53,19 @@ public class Pageable {
 		this.sort = sort;
 	}
 
-	public int getPage() {
+	public Integer getPage() {
 		return page;
 	}
 
-	public void setPage(int page) {
+	public void setPage(Integer page) {
 		this.page = page;
 	}
 
-	public int getSize() {
+	public Integer getSize() {
 		return size;
 	}
 
-	public void setSize(int size) {
+	public void setSize(Integer size) {
 		this.size = size;
 	}
 
@@ -68,10 +74,11 @@ public class Pageable {
 	}
 
 	public void setSort(List<String> sort) {
-		if (sort == null)
+		if (sort == null) {
 			this.sort.clear();
-		else
+		} else {
 			this.sort = sort;
+		}
 	}
 
 	public void addSort(String sort) {
@@ -80,11 +87,15 @@ public class Pageable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 		Pageable pageable = (Pageable) o;
-		return page == pageable.page &&
-				size == pageable.size &&
+		return Objects.equals(page, pageable.page) &&
+				Objects.equals(size, pageable.size) &&
 				Objects.equals(sort, pageable.sort);
 	}
 
