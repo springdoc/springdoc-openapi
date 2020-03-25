@@ -163,16 +163,16 @@ public abstract class AbstractRequestBuilder {
 		String[] reflectionParametersNames = Arrays.stream(parameters).map(MethodParameter::getParameterName).toArray(String[]::new);
 		if (pNames == null)
 			pNames = reflectionParametersNames;
+		parameters = DelegatingMethodParameter.customize(pNames, parameters);
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
 		Components components = openAPI.getComponents();
 
-		for (int i = 0; i < pNames.length; i++) {
+		for (MethodParameter methodParameter : parameters) {
 			// check if query param
 			Parameter parameter = null;
-			final String pName = pNames[i] == null ? reflectionParametersNames[i] : pNames[i];
-			MethodParameter methodParameter = parameters[i];
+			final String pName = methodParameter.getParameterName();
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
 			if (parameterDoc == null)
 				parameterDoc = parametersDocMap.get(pName);
@@ -205,7 +205,7 @@ public abstract class AbstractRequestBuilder {
 		}
 
 		LinkedHashMap<String, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
-		setParams(operation, new ArrayList<Parameter>(map.values()), requestBodyInfo);
+		setParams(operation, new ArrayList<>(map.values()), requestBodyInfo);
 		// allow for customisation
 		return customiseOperation(operation, handlerMethod);
 	}
@@ -297,7 +297,7 @@ public abstract class AbstractRequestBuilder {
 			String name = StringUtils.isBlank(pathVar.value()) ? pName : pathVar.value();
 			parameterInfo.setpName(name);
 			// check if PATH PARAM
-			requestInfo = new RequestInfo(ParameterIn.PATH.toString(), pathVar.value(), Boolean.TRUE, null);
+			requestInfo = new RequestInfo(ParameterIn.PATH.toString(), pathVar.value(), !methodParameter.isOptional(), null);
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
 		else if (cookieValue != null) {
@@ -307,7 +307,7 @@ public abstract class AbstractRequestBuilder {
 		}
 		// By default
 		if (RequestMethod.GET.equals(requestMethod) || (parameterInfo.getParameterModel() != null && ParameterIn.PATH.toString().equals(parameterInfo.getParameterModel().getIn())))
-			parameter = this.buildParam(QUERY_PARAM, components, parameterInfo, Boolean.TRUE, null, jsonView);
+			parameter = this.buildParam(QUERY_PARAM, components, parameterInfo, !methodParameter.isOptional(), null, jsonView);
 
 		return parameter;
 	}

@@ -18,7 +18,6 @@
 
 package org.springdoc.core.converters;
 
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -42,6 +41,10 @@ public class AdditionalModelsConverter implements ModelConverter {
 
 	public static void replaceWithSchema(Class source, Schema target) {
 		modelToSchemaMap.put(source, target);
+	}
+
+	public static Class getReplacement(Class clazz) {
+		return modelToClassMap.getOrDefault(clazz, clazz);
 	}
 
 	@Override
