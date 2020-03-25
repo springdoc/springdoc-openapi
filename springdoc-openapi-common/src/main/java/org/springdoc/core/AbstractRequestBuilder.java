@@ -53,8 +53,6 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.api.annotations.ParameterObject;
-import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
@@ -162,24 +160,10 @@ public abstract class AbstractRequestBuilder {
 		// requests
 		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
 		MethodParameter[] parameters = handlerMethod.getMethodParameters();
-
-		List<MethodParameter> explodedParameters = new ArrayList<>();
-		for (int i = 0; i < parameters.length; ++i) {
-			MethodParameter p = parameters[i];
-			if (p.hasParameterAnnotation(ParameterObject.class)) {
-				Class<?> paramClass = AdditionalModelsConverter.getReplacement(p.getParameterType());
-				Stream.of(paramClass.getDeclaredFields())
-						.map(f -> DelegatingMethodParameter.fromGetterOfField(paramClass, f))
-						.filter(Objects::nonNull)
-						.forEach(explodedParameters::add);
-			}
-			else {
-				String name = pNames != null ? pNames[i] : p.getParameterName();
-				explodedParameters.add(new DelegatingMethodParameter(p, name, null));
-			}
-		}
-		parameters = explodedParameters.toArray(new MethodParameter[0]);
-
+		String[] reflectionParametersNames = Arrays.stream(parameters).map(MethodParameter::getParameterName).toArray(String[]::new);
+		if (pNames == null)
+			pNames = reflectionParametersNames;
+		parameters = DelegatingMethodParameter.customize(pNames, parameters);
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
@@ -188,9 +172,10 @@ public abstract class AbstractRequestBuilder {
 		for (MethodParameter methodParameter : parameters) {
 			// check if query param
 			Parameter parameter = null;
+			final String pName = methodParameter.getParameterName();
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
 			if (parameterDoc == null)
-				parameterDoc = parametersDocMap.get(methodParameter.getParameterName());
+				parameterDoc = parametersDocMap.get(pName);
 			// use documentation as reference
 			if (parameterDoc != null) {
 				if (parameterDoc.hidden())
@@ -200,7 +185,7 @@ public abstract class AbstractRequestBuilder {
 			}
 
 			if (!isParamToIgnore(methodParameter)) {
-				ParameterInfo parameterInfo = new ParameterInfo(methodParameter.getParameterName(), methodParameter, parameter);
+				ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameter);
 				parameter = buildParams(parameterInfo, components, requestMethod,
 						methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
