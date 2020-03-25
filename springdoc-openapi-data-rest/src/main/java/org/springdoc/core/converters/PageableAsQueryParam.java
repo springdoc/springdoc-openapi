@@ -18,18 +18,23 @@
 
 package org.springdoc.core.converters;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * @deprecated Use {@link org.springdoc.api.annotations.ParameterObject} annotation
+ * on {@link org.springframework.data.domain.Pageable} method parameter instead.
+ */
+@Deprecated
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Parameter(in = ParameterIn.QUERY
 		, description = "Zero-based page index (0..N)"
