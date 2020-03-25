@@ -11,10 +11,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.springdoc.api.annotations.ParameterObject;
+import org.springdoc.core.converters.AdditionalModelsConverter;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -38,21 +42,23 @@ class DelegatingMethodParameter extends MethodParameter {
 		this.parameterName = parameterName;
 	}
 
-	@Nullable
-	static MethodParameter fromGetterOfField(Class<?> paramClass, Field field) {
-		try {
-			return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
-					.filter(d -> d.getName().equals(field.getName()))
-					.map(PropertyDescriptor::getReadMethod)
-					.filter(Objects::nonNull)
-					.findFirst()
-					.map(method -> new MethodParameter(method, -1))
-					.map(param -> new DelegatingMethodParameter(param, field.getName(), field.getDeclaredAnnotations()))
-					.orElse(null);
+	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters) {
+		List<MethodParameter> explodedParameters = new ArrayList<>();
+		for (int i = 0; i < parameters.length; ++i) {
+			MethodParameter p = parameters[i];
+			if (p.hasParameterAnnotation(ParameterObject.class)) {
+				Class<?> paramClass = AdditionalModelsConverter.getReplacement(p.getParameterType());
+				Stream.of(paramClass.getDeclaredFields())
+						.map(f -> fromGetterOfField(paramClass, f))
+						.filter(Objects::nonNull)
+						.forEach(explodedParameters::add);
+			}
+			else {
+				String name = pNames != null ? pNames[i] : p.getParameterName();
+				explodedParameters.add(new DelegatingMethodParameter(p, name, null));
+			}
 		}
-		catch (IntrospectionException e) {
-			return null;
-		}
+		return explodedParameters.toArray(new MethodParameter[0]);
 	}
 
 	@Override
@@ -129,5 +135,22 @@ class DelegatingMethodParameter extends MethodParameter {
 	@Override
 	public void initParameterNameDiscovery(ParameterNameDiscoverer parameterNameDiscoverer) {
 		delegate.initParameterNameDiscovery(parameterNameDiscoverer);
+	}
+
+	@Nullable
+	static MethodParameter fromGetterOfField(Class<?> paramClass, Field field) {
+		try {
+			return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
+					.filter(d -> d.getName().equals(field.getName()))
+					.map(PropertyDescriptor::getReadMethod)
+					.filter(Objects::nonNull)
+					.findFirst()
+					.map(method -> new MethodParameter(method, -1))
+					.map(param -> new DelegatingMethodParameter(param, field.getName(), field.getDeclaredAnnotations()))
+					.orElse(null);
+		}
+		catch (IntrospectionException e) {
+			return null;
+		}
 	}
 }
