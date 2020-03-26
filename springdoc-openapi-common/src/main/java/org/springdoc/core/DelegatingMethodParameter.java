@@ -12,6 +12,7 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -29,7 +30,7 @@ import org.springframework.lang.Nullable;
  * @author zarebski.m
  */
 class DelegatingMethodParameter extends MethodParameter {
-	private volatile MethodParameter delegate;
+	private MethodParameter delegate;
 
 	private Annotation[] additionalParameterAnnotations;
 
@@ -152,5 +153,23 @@ class DelegatingMethodParameter extends MethodParameter {
 		catch (IntrospectionException e) {
 			return null;
 		}
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+		DelegatingMethodParameter that = (DelegatingMethodParameter) o;
+		return Objects.equals(delegate, that.delegate) &&
+				Arrays.equals(additionalParameterAnnotations, that.additionalParameterAnnotations) &&
+				Objects.equals(parameterName, that.parameterName);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = Objects.hash(super.hashCode(), delegate, parameterName);
+		result = 31 * result + Arrays.hashCode(additionalParameterAnnotations);
+		return result;
 	}
 }

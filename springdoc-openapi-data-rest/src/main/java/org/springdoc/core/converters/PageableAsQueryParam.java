@@ -49,6 +49,7 @@ import java.lang.annotation.Target;
 		+ "Default sort order is ascending. " + "Multiple sort criteria are supported."
 		, name = "sort"
 		, content = @Content(array = @ArraySchema(schema = @Schema(type = "string"))))
-public @interface PageableAsQueryParam {
+public @interface
+PageableAsQueryParam {
 
 }
