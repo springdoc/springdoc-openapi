@@ -16,33 +16,23 @@
  *
  */
 
-package test.org.springdoc.api.app2;
+package test.org.springdoc.api.app7;
 
-import org.springframework.security.core.Authentication;
+import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RestController
 public class HelloController {
 
-	@GetMapping("oneParameterAndAuthentication")
-	public Object oneParameterAndAuthentication(@RequestBody String req, Authentication authentication) {
+	@GetMapping(value = "/search", produces = { "application/xml", "application/json" })
+	public ResponseEntity<List<PersonDTO>> getAllPets(@NotNull @ParameterObject Pageable pageable) {
 		return null;
 	}
 
-	@GetMapping("noParametersAndAuthentication")
-	public Object noParametersAndAuthentication(Authentication authentication) {
-		return null;
-	}
-
-	@GetMapping("oneParameterAndUser")
-	public Object oneParameterAndUser(@RequestBody String req, User user) {
-		return null;
-	}
-
-	@GetMapping("noParametersAndUser")
-	public Object noParametersAndUser(User user) {
-		return null;
-	}
 }

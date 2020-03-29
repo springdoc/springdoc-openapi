@@ -19,11 +19,40 @@
         "operationId": "getAllPets",
         "parameters": [
           {
-            "name": "pageable",
+            "name": "page",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
-              "$ref": "#/components/schemas/Pageable"
+              "minimum": 0,
+              "type": "integer",
+              "description": "Zero-based page index (0..N)",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "maximum": 2000,
+              "minimum": 1,
+              "type": "integer",
+              "description": "The size of the page to be returned",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -55,33 +84,6 @@
   },
   "components": {
     "schemas": {
-      "Pageable": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "minimum": 0,
-            "type": "integer",
-            "description": "Zero-based page index (0..N)",
-            "format": "int32",
-            "default": 0
-          },
-          "size": {
-            "maximum": 2000,
-            "minimum": 1,
-            "type": "integer",
-            "description": "The size of the page to be returned",
-            "format": "int32",
-            "default": 20
-          },
-          "sort": {
-            "type": "array",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "PersonDTO": {
         "type": "object",
         "properties": {
