@@ -15,12 +15,13 @@
     }
   ],
   "paths": {
-    "/": {
+    "/oneParameterAndAuthentication": {
       "get": {
         "tags": [
           "hello-controller"
         ],
         "operationId": "doPost",
+        "operationId": "oneParameterAndAuthentication",
         "parameters": [
           {
             "name": "req",
@@ -31,6 +32,76 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/noParametersAndAuthentication": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "noParametersAndAuthentication",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oneParameterAndUser": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "oneParameterAndUser",
+        "parameters": [
+          {
+            "name": "req",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/noParametersAndUser": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "noParametersAndUser",
         "responses": {
           "200": {
             "description": "default response",
