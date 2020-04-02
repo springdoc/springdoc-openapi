@@ -148,6 +148,7 @@ public class RequestBodyBuilder {
 			if (content.get(value) != null) {
 				mediaTypeObject.setExample(content.get(value).getExample());
 				mediaTypeObject.setExamples(content.get(value).getExamples());
+				mediaTypeObject.setEncoding(content.get(value).getEncoding());
 			}
 			content.addMediaType(value, mediaTypeObject);
 		}
