@@ -66,13 +66,13 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter { // NOSONAR
 
 	@Bean
 	@ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
-	public SwaggerWelcome swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
+	SwaggerWelcome swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
 		return new SwaggerWelcome(swaggerUiConfig, springDocConfigProperties);
 	}
 
 	@Bean
 	@ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
-	public SwaggerIndexTransformer indexPageTransformer(SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
+	SwaggerIndexTransformer indexPageTransformer(SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
 		return new SwaggerIndexTransformer(swaggerUiOAuthProperties, objectMapper);
 	}
 }

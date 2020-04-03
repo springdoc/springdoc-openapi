@@ -18,15 +18,17 @@
 
 package org.springdoc.core.converters;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.lang.Nullable;
+import java.util.List;
+import java.util.Objects;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Objects;
+
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import org.springframework.lang.Nullable;
 
 @NotNull
 public class Pageable {

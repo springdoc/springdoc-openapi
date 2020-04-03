@@ -1,6 +1,7 @@
 package test.org.springdoc.api.app102;
 
 import io.swagger.v3.oas.annotations.Parameter;
+
 import org.springframework.lang.Nullable;
 
 public class RequestParams {
