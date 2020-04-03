@@ -57,12 +57,11 @@ public class SpringDocDataRestConfiguration {
 				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
 	}
 
-	@Configuration
 	@ConditionalOnClass(value = { QuerydslBindingsFactory.class })
 	class QuerydslProvider {
 
 		@Bean
-		public QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
+		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
 			if (querydslBindingsFactory.isPresent()) {
 				getConfig().addRequestWrapperToIgnore(Predicate.class);
 				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get());
@@ -71,12 +70,11 @@ public class SpringDocDataRestConfiguration {
 		}
 	}
 
-	@Configuration
 	@ConditionalOnClass(RepositoryRestConfiguration.class)
 	class HalProviderConfiguration {
 
 		@Bean
-		public HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
+		HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
 			return repositoryRestConfiguration.isPresent() ? new HalProvider(repositoryRestConfiguration.get()) : null;
 		}
 
@@ -87,7 +85,7 @@ public class SpringDocDataRestConfiguration {
 		 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
 		 */
 		@Bean
-		public OpenApiCustomiser linksSchemaCustomiser(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
+		OpenApiCustomiser linksSchemaCustomiser(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
 			if (!repositoryRestConfiguration.isPresent() || !repositoryRestConfiguration.get().useHalAsDefaultJsonMediaType()) {
 				return openApi -> {
 				};

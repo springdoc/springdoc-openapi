@@ -257,8 +257,13 @@ public abstract class AbstractRequestBuilder {
 			return true;
 		if (parameter.getParameterAnnotation(PathVariable.class) != null || parameter.getParameterAnnotation(RequestParam.class) != null)
 			return false;
-		return PARAM_TYPES_TO_IGNORE.stream().anyMatch(paramToIgnore -> paramToIgnore.isAssignableFrom(parameter.getParameterType()));
+		return isRequestTypeToIgnore(parameter.getParameterType());
 	}
+
+	public static boolean isRequestTypeToIgnore(Class<?> rawClass) {
+		return PARAM_TYPES_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+	}
+
 
 	private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
 		if (!CollectionUtils.isEmpty(operationParameters))
