@@ -160,8 +160,8 @@ public abstract class AbstractRequestBuilder {
 		// requests
 		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
 		MethodParameter[] parameters = handlerMethod.getMethodParameters();
-		String[] reflectionParametersNames = Arrays.stream(parameters).map(MethodParameter::getParameterName).toArray(String[]::new);
-		if (pNames == null)
+		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
+		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
 		parameters = DelegatingMethodParameter.customize(pNames, parameters);
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
