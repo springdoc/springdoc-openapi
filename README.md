@@ -96,7 +96,7 @@ To generate documentation automatically, make sure all the methods declare the H
   
 ## spring-webflux support with Annotated Controllers
 *   Documentation can be available in yaml format as well, on the following path : /v3/api-docs.yaml
-*   Add the library to the list of your project dependencies (No additional configuration is needed)
+*   Add the library to the list of your project dependencies ( No additional configuration is needed)
 
 ```xml
    <dependency>
