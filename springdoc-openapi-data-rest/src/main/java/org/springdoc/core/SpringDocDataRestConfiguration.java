@@ -36,6 +36,7 @@ import org.springdoc.core.customisers.QuerydslPredicateOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,6 +62,7 @@ public class SpringDocDataRestConfiguration {
 	class QuerydslProvider {
 
 		@Bean
+		@ConditionalOnMissingBean
 		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
 			if (querydslBindingsFactory.isPresent()) {
 				getConfig().addRequestWrapperToIgnore(Predicate.class);
@@ -74,6 +76,7 @@ public class SpringDocDataRestConfiguration {
 	class HalProviderConfiguration {
 
 		@Bean
+		@ConditionalOnMissingBean
 		HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
 			return repositoryRestConfiguration.isPresent() ? new HalProvider(repositoryRestConfiguration.get()) : null;
 		}

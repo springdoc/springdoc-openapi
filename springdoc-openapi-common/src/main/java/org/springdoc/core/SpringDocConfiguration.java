@@ -43,6 +43,7 @@ import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.bind.BindResult;
@@ -85,6 +86,7 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	ResponseSupportConverter responseSupportConverter() {
 		return new ResponseSupportConverter();
 	}
@@ -104,6 +106,7 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context,
 			SecurityParser securityParser,
 			SpringDocConfigProperties springDocConfigProperties,
@@ -118,6 +121,7 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@ConditionalOnWebApplication
+	@ConditionalOnMissingBean
 	OperationBuilder operationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			SecurityParser securityParser, PropertyResolverUtils propertyResolverUtils) {
 		return new OperationBuilder(parameterBuilder, requestBodyBuilder,
@@ -131,11 +135,13 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@ConditionalOnWebApplication
+	@ConditionalOnMissingBean
 	RequestBodyBuilder requestBodyBuilder(GenericParameterBuilder parameterBuilder) {
 		return new RequestBodyBuilder(parameterBuilder);
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	SecurityParser securityParser(PropertyResolverUtils propertyResolverUtils) {
 		return new SecurityParser(propertyResolverUtils);
 	}
@@ -146,6 +152,7 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	GenericParameterBuilder parameterBuilder(PropertyResolverUtils propertyResolverUtils) {
 		return new GenericParameterBuilder(propertyResolverUtils);
 	}
