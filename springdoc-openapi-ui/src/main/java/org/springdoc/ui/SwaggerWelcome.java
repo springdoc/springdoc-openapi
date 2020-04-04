@@ -65,8 +65,8 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	public String redirectToUi(HttpServletRequest request) {
 		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
 		String sbUrl = REDIRECT_URL_PREFIX + this.uiRootPath + SWAGGER_UI_URL;
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl);
-		return uriBuilder.queryParam(SwaggerUiConfigProperties.CONFIG_URL_PROPERTY, swaggerUiConfig.getConfigUrl()).build().encode().toString();
+		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
+		return uriBuilder.build().encode().toString();
 	}
 
 	@Operation(hidden = true)

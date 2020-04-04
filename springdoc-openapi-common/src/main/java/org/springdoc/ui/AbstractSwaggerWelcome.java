@@ -86,6 +86,17 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 		calculateOauth2RedirectUrl(uriComponentsBuilder);
 	}
 
+	protected UriComponentsBuilder getUriComponentsBuilder(String sbUrl) {
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl);
+		uriBuilder.queryParam(SwaggerUiConfigProperties.CONFIG_URL_PROPERTY, swaggerUiConfig.getConfigUrl());
+		if(StringUtils.isNotEmpty(swaggerUiConfig.getLayout()))
+			uriBuilder.queryParam(SwaggerUiConfigProperties.LAYOUT_PROPERTY, swaggerUiConfig.getLayout());
+		if(StringUtils.isNotEmpty(swaggerUiConfig.getFilter()))
+			uriBuilder.queryParam(SwaggerUiConfigProperties.FILTER_PROPERTY, swaggerUiConfig.getFilter());
+
+		return uriBuilder;
+	}
+
 	abstract void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder);
 
 	abstract void calculateUiRootPath(StringBuilder... sbUrls);
