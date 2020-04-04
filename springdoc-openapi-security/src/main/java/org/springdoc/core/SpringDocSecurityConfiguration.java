@@ -19,6 +19,7 @@
 package org.springdoc.core;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +44,7 @@ public class SpringDocSecurityConfiguration {
 	@ConditionalOnBean(FrameworkEndpointHandlerMapping.class)
 	class SpringSecurityOAuth2ProviderConfiguration {
 		@Bean
+		@ConditionalOnMissingBean
 		SpringSecurityOAuth2Provider springSecurityOAuth2Provider(FrameworkEndpointHandlerMapping oauth2EndpointHandlerMapping) {
 			return new SpringSecurityOAuth2Provider(oauth2EndpointHandlerMapping);
 		}

@@ -72,6 +72,7 @@ public class SpringDocWebFluxConfiguration {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	WebFluxSupportConverter webFluxSupportConverter() {
 		return new WebFluxSupportConverter();
 	}

@@ -84,6 +84,7 @@ public class SpringDocWebMvcConfiguration {
 	class SpringDocWebMvcActuatorConfiguration {
 
 		@Bean
+		@ConditionalOnMissingBean
 		ActuatorProvider actuatorProvider(WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping) {
 			return new ActuatorProvider(webMvcEndpointHandlerMapping);
 		}
