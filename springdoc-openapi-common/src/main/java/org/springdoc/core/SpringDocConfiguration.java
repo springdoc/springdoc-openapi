@@ -39,6 +39,7 @@ import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.PropertyCustomizer;
 
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
@@ -177,10 +178,10 @@ public class SpringDocConfiguration {
 		private BeanFactoryPostProcessor getBeanFactoryPostProcessor() {
 			return beanFactory -> {
 				for (String beanName : beanFactory.getBeanNamesForType(OpenAPIBuilder.class)) {
-					beanFactory.getBeanDefinition(beanName).setScope("prototype");
+					beanFactory.getBeanDefinition(beanName).setScope(BeanDefinition.SCOPE_PROTOTYPE);
 				}
 				for (String beanName : beanFactory.getBeanNamesForType(OpenAPI.class)) {
-					beanFactory.getBeanDefinition(beanName).setScope("prototype");
+					beanFactory.getBeanDefinition(beanName).setScope(BeanDefinition.SCOPE_PROTOTYPE);
 				}
 			};
 		}
