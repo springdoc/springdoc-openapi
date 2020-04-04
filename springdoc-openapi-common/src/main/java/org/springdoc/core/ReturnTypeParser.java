@@ -21,13 +21,14 @@ package org.springdoc.core;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 
 public interface ReturnTypeParser {
 
 	default Type getReturnType(MethodParameter methodParameter) {
 		if (methodParameter.getGenericParameterType() instanceof ParameterizedType)
-			return methodParameter.getGenericParameterType();
+			return GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(),methodParameter.getContainingClass());
 		return methodParameter.getParameterType();
 	}
 }
