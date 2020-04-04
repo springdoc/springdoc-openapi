@@ -29,7 +29,7 @@ import org.springframework.http.MediaType;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 @Configuration
-@ConfigurationProperties(prefix = "springdoc")
+@ConfigurationProperties(prefix = Constants.SPRINGDOC_PREFIX)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocConfigProperties {
 

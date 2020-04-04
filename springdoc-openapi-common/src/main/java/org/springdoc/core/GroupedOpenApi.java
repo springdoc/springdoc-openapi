@@ -27,6 +27,8 @@ import org.springdoc.core.customizers.OpenApiCustomiser;
 
 import org.springframework.util.CollectionUtils;
 
+import static org.springdoc.core.Constants.GROUP_NAME_NOT_NULL;
+
 public class GroupedOpenApi {
 
 	private final String group;
@@ -42,7 +44,7 @@ public class GroupedOpenApi {
 	private final List<String> pathsToExclude;
 
 	private GroupedOpenApi(Builder builder) {
-		this.group = Objects.requireNonNull(builder.group, "group");
+		this.group = Objects.requireNonNull(builder.group, GROUP_NAME_NOT_NULL);
 		this.pathsToMatch = builder.pathsToMatch;
 		this.packagesToScan = builder.packagesToScan;
 		this.packagesToExclude = builder.packagesToExclude;

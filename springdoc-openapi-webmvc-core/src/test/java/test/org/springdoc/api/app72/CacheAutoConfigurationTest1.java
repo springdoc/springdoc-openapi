@@ -36,8 +36,7 @@ public class CacheAutoConfigurationTest1 {
 				.run(context -> assertThat(context)
 						.hasNotFailed()
 						.hasBean("openApiResource")
-						.doesNotHaveBean("beanFactoryPostProcessor1")
-						.doesNotHaveBean("beanFactoryPostProcessor2")
+						.doesNotHaveBean("springdocBeanFactoryPostProcessor")
 				);
 	}
 
@@ -48,8 +47,7 @@ public class CacheAutoConfigurationTest1 {
 				.run(context -> assertThat(context)
 						.hasNotFailed()
 						.hasBean("openApiResource")
-						.doesNotHaveBean("beanFactoryPostProcessor1")
-						.doesNotHaveBean("beanFactoryPostProcessor2")
+						.doesNotHaveBean("springdocBeanFactoryPostProcessor")
 				);
 	}
 
@@ -60,8 +58,7 @@ public class CacheAutoConfigurationTest1 {
 				.run(context -> assertThat(context)
 						.hasNotFailed()
 						.hasBean("openApiResource")
-						.hasBean("beanFactoryPostProcessor2")
-						.doesNotHaveBean("beanFactoryPostProcessor1")
+						.hasBean("springdocBeanFactoryPostProcessor")
 				);
 	}
 

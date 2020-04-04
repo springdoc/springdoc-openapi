@@ -24,6 +24,8 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 public final class Constants {
 
+	public static final String SPRINGDOC_PREFIX="springdoc";
+
 	public static final String DEFAULT_API_DOCS_URL = "/v3/api-docs";
 
 	public static final String DEFAULT_SERVER_DESCRIPTION = "Generated server url";
@@ -87,6 +89,10 @@ public final class Constants {
 	public static final String SWAGGER_UI_PATH = "${springdoc.swagger-ui.path:#{T(org.springdoc.core.Constants).DEFAULT_SWAGGER_UI_PATH}}";
 
 	public static final String DEFAULT_GROUP_NAME = "springdocDefault";
+
+	public static final String GROUP_CONFIG_FIRST_PROPERTY ="springdoc.group-configs[0].group";
+
+	public static final String GROUP_NAME_NOT_NULL = "Group name can not be null";
 
 	public static final String GET_METHOD = "get";
 
