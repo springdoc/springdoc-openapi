@@ -66,12 +66,12 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	public Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
 		String contextPath = this.fromCurrentContextPath(request);
 		String sbUrl = this.buildUrl(contextPath, this.uiRootPath + springDocConfigProperties.getWebjars().getPrefix() + SWAGGER_UI_URL);
-		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl);
-		uriBuilder.queryParam(SwaggerUiConfigProperties.CONFIG_URL_PROPERTY, swaggerUiConfig.getConfigUrl());
+		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
 		response.setStatusCode(HttpStatus.TEMPORARY_REDIRECT);
 		response.getHeaders().setLocation(URI.create(uriBuilder.build().encode().toString()));
 		return response.setComplete();
 	}
+
 
 	@Operation(hidden = true)
 	@GetMapping(value = SWAGGER_CONFIG_URL, produces = MediaType.APPLICATION_JSON_VALUE)

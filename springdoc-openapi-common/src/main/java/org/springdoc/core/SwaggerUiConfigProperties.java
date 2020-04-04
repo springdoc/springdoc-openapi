@@ -53,7 +53,8 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public class SwaggerUiConfigProperties {
 
 	public static final String CONFIG_URL_PROPERTY = "configUrl";
-
+	public static final String LAYOUT_PROPERTY = "layout";
+	public static final String FILTER_PROPERTY = "filter";
 	/**
 	 * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
 	 */
@@ -182,11 +183,9 @@ public class SwaggerUiConfigProperties {
 
 	public Map<String, Object> getConfigParameters() {
 		final Map<String, Object> params = new TreeMap<>();
-		SpringDocPropertiesUtils.put("layout", layout, params);
-		SpringDocPropertiesUtils.put(CONFIG_URL_PROPERTY, configUrl, params);
 		// empty-string prevents swagger-ui default validation
 		params.put("validatorUrl", validatorUrl != null ? validatorUrl : "");
-		SpringDocPropertiesUtils.put("filter", filter, params);
+		SpringDocPropertiesUtils.put(CONFIG_URL_PROPERTY, configUrl, params);
 		SpringDocPropertiesUtils.put("deepLinking", this.deepLinking, params);
 		SpringDocPropertiesUtils.put("displayOperationId", displayOperationId, params);
 		SpringDocPropertiesUtils.put("defaultModelsExpandDepth", defaultModelsExpandDepth, params);

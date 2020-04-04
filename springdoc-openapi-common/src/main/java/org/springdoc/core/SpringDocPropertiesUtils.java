@@ -46,7 +46,7 @@ public interface SpringDocPropertiesUtils {
 	}
 
 	static void put(final String name, final String value, final Map<String, Object> params) {
-		if (!StringUtils.isEmpty(value)) {
+		if (StringUtils.isNotEmpty(value)) {
 			params.put(name, value);
 		}
 	}
