@@ -37,6 +37,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 
+import static org.springdoc.core.Constants.GROUP_NAME_NOT_NULL;
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
@@ -415,11 +416,13 @@ public class SwaggerUiConfigProperties {
 		}
 
 		public SwaggerUrl(String group, String url) {
+			Objects.requireNonNull(group, GROUP_NAME_NOT_NULL);
 			this.url = url;
 			this.name = group;
 		}
 
 		public SwaggerUrl(String group) {
+			Objects.requireNonNull(group, GROUP_NAME_NOT_NULL);
 			this.name = group;
 		}
 
