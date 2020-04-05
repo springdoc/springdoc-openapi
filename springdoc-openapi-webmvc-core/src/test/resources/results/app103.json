@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Issue OpenAPI with Groovy",
-    "description": "Special Groovy Metaclass Test Issue"
+    "title": "OpenAPI definition",
+    "version": "v0"
   },
   "servers": [
     {
@@ -11,53 +11,35 @@
     }
   ],
   "paths": {
-    "/cars": {
-      "get": {
-        "tags": [
-          "car-controller"
-        ],
-        "operationId": "getCars",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Car"
-                  }
+    "/test/103": {
+      "post": {
+        "tags": [ "hello-controller" ],
+        "operationId": "postMyRequestBody",
+        "requestBody": {
+          "content": {
+            "multipart/form-data":{
+              "schema":{
+                "type":"object",
+                "properties":{
+                  "body":{"$ref":"#/components/schemas/ExampleBody"},
+                  "file":{"type":"string","format":"binary"}
+                }
+              },
+              "encoding":{
+                "body":{
+                  "contentType":"application/json"
                 }
               }
             }
           }
-        }
-      }
-    },
-    "/cars/{carId}": {
-      "get": {
-        "tags": [
-          "car-controller"
-        ],
-        "operationId": "getCar",
-        "parameters": [
-          {
-            "name": "carId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
+        },
         "responses": {
           "200": {
             "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Car"
+                  "type": "string"
                 }
               }
             }
@@ -67,17 +49,12 @@
     }
   },
   "components": {
-    "schemas": {
-      "Car": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          }
+    "schemas":{
+      "ExampleBody":{
+        "type":"object",
+        "properties":{
+          "stringParam":{ "type":"string" },
+          "intParam":{ "type":"integer", "format":"int32" }
         }
       }
     }

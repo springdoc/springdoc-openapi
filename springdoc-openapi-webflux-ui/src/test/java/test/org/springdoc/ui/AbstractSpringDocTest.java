@@ -26,9 +26,9 @@ import java.nio.file.Paths;
 import nonapi.io.github.classgraph.utils.FileUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
-import org.springdoc.webflux.core.SpringDocWebFluxConfiguration;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
+import org.springdoc.webflux.core.SpringDocWebFluxConfiguration;
 import org.springdoc.webflux.ui.SwaggerConfig;
 import org.springdoc.webflux.ui.SwaggerWelcome;
 

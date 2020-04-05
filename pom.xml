@@ -58,6 +58,7 @@
 		<module>springdoc-openapi-kotlin</module>
 		<module>springdoc-openapi-data-rest</module>
 		<module>springdoc-openapi-security</module>
+		<module>springdoc-openapi-groovy</module>
 	</modules>
 
 	<properties>

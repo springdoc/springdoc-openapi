@@ -21,8 +21,6 @@ package org.springdoc.webmvc.core;
 import java.util.List;
 import java.util.Optional;
 
-import org.springdoc.webmvc.api.ActuatorProvider;
-import org.springdoc.webmvc.api.MultipleOpenApiResource;
 import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.GroupedOpenApi;
@@ -31,6 +29,8 @@ import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.webmvc.api.ActuatorProvider;
+import org.springdoc.webmvc.api.MultipleOpenApiResource;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

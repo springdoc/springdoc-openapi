@@ -11,35 +11,56 @@
     }
   ],
   "paths": {
-    "/test/103": {
-      "post": {
-        "tags": [ "hello-controller" ],
-        "operationId": "postMyRequestBody",
-        "requestBody": {
-          "content": {
-            "multipart/form-data":{
-              "schema":{
-                "type":"object",
-                "properties":{
-                  "body":{"$ref":"#/components/schemas/ExampleBody"},
-                  "file":{"type":"string","format":"binary"}
-                }
-              },
-              "encoding":{
-                "body":{
-                  "contentType":"application/json"
-                }
-              }
+    "/design/{id}": {
+      "get": {
+        "tags": [
+          "design"
+        ],
+        "description": "Get single object",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id to get.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/Design"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/design": {
+      "get": {
+        "tags": [
+          "design"
+        ],
+        "description": "Receive a list of objects",
+        "operationId": "list",
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Design"
+                  }
                 }
               }
             }
@@ -49,13 +70,9 @@
     }
   },
   "components": {
-    "schemas":{
-      "ExampleBody":{
-        "type":"object",
-        "properties":{
-          "stringParam":{ "type":"string" },
-          "intParam":{ "type":"integer", "format":"int32" }
-        }
+    "schemas": {
+      "Design": {
+        "type": "object"
       }
     }
   }

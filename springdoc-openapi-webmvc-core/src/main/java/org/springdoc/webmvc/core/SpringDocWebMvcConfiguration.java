@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Optional;
 
 import io.swagger.v3.oas.models.Operation;
-import org.springdoc.webmvc.api.ActuatorProvider;
-import org.springdoc.webmvc.api.OpenApiResource;
 import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.GenericParameterBuilder;
 import org.springdoc.core.GenericResponseBuilder;
@@ -37,6 +35,8 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.webmvc.api.ActuatorProvider;
+import org.springdoc.webmvc.api.OpenApiResource;
 
 import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

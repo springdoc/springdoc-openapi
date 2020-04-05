@@ -30,11 +30,11 @@ import org.springdoc.core.PropertyResolverUtils;
 import org.springdoc.core.RequestBodyBuilder;
 import org.springdoc.core.ReturnTypeParser;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.webflux.api.OpenApiResource;
-import org.springdoc.webflux.core.converters.WebFluxSupportConverter;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.webflux.api.OpenApiResource;
+import org.springdoc.webflux.core.converters.WebFluxSupportConverter;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
