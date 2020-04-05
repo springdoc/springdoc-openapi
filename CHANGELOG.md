@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2020-04-05
+### Added
+-  Support for dynamic groups from application.yml #344
+-  Support for Groovy metaclass/metadata #509
+-  Support to extract parameters from parameter object using Springdoc annotation @ParameterObject #120 #268 #162 #119 
+-  Support for Subtypes to be also ignored from Controller class #502
+### Changed
+- Rename some packages to improve Java 9 Modules support #461
+- Workaround for swagger-ui, to enable layout and filter properties #536 #424
+- Added encoding section in multipart request #531 
+- Upgrade to spring-boot to 2.2.6
+### Fixed
+- Schema mapping with inheritance #489
+- Improve support of Generics inheritance on complex return types #537
+- Kotlin Coroutines support fixed #517
+
 ## [1.3.0] - 2020-03-21
 ### Added
 - Feature to support for property resolver on @Schema (name, title and description)
