@@ -26,11 +26,11 @@ import java.nio.file.Paths;
 import nonapi.io.github.classgraph.utils.FileUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
-import org.springdoc.core.SpringDocWebFluxConfiguration;
+import org.springdoc.webflux.core.SpringDocWebFluxConfiguration;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
-import org.springdoc.ui.SwaggerConfig;
-import org.springdoc.ui.SwaggerWelcome;
+import org.springdoc.webflux.ui.SwaggerConfig;
+import org.springdoc.webflux.ui.SwaggerWelcome;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;

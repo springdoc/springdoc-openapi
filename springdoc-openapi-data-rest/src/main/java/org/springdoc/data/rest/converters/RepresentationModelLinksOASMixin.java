@@ -16,24 +16,15 @@
  *
  */
 
-package test.org.springdoc.api.app3;
+package org.springdoc.data.rest.converters;
 
-import org.springdoc.data.rest.converters.PageableAsQueryParam;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.hateoas.Links;
+import org.springframework.hateoas.mediatype.hal.RepresentationModelMixin;
 
-@RestController
-@RequestMapping(path = "/demo",
-		produces = MediaType.TEXT_PLAIN_VALUE)
-public class HelloController {
-
-	@GetMapping("operation4")
-	@PageableAsQueryParam
-	public String operation4() {
-		return "operation4";
-	}
-
+public abstract class RepresentationModelLinksOASMixin extends RepresentationModelMixin {
+	@Override
+	@Schema(ref = "#/components/schemas/Links")
+	public abstract Links getLinks();
 }
