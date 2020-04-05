@@ -31,9 +31,11 @@ import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.StringSchema;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -148,13 +150,33 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		MediaType mediaType = new MediaType();
 		if (!annotationContent.schema().hidden()) {
 			if (components != null) {
-				getSchema(annotationContent, components, jsonViewAnnotation).ifPresent(mediaType::setSchema);
+				try {
+					getSchema(annotationContent, components, jsonViewAnnotation).ifPresent(mediaType::setSchema);
+				}
+				catch (Exception e) {
+					if (isArray(annotationContent))
+						mediaType.setSchema(new ArraySchema().items(new StringSchema()));
+					else
+						mediaType.setSchema(new StringSchema());
+				}
 			}
 			else {
 				mediaType.setSchema(schema);
 			}
 		}
 		return mediaType;
+	}
+
+	private static boolean isArray(io.swagger.v3.oas.annotations.media.Content annotationContent){
+		Class<?> schemaImplementation = annotationContent.schema().implementation();
+		boolean isArray = false;
+		if (schemaImplementation == Void.class) {
+			schemaImplementation = annotationContent.array().schema().implementation();
+			if (schemaImplementation != Void.class) {
+				isArray = true;
+			}
+		}
+		return isArray;
 	}
 
 }
