@@ -13,6 +13,9 @@
   "paths": {
     "/file": {
       "get": {
+        "tags": [
+          "hello-controller"
+        ],
         "description": "Download file",
         "operationId": "getFile",
         "parameters": [
@@ -27,6 +30,16 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "200": {
             "description": "File resource",
             "content": {
@@ -43,17 +56,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "error"
+                  "type": "string"
                 }
               }
             }
@@ -62,6 +65,5 @@
       }
     }
   },
-  "components": {
-  }
+  "components": {}
 }
