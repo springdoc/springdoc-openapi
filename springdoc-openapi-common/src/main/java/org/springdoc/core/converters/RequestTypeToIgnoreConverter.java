@@ -16,11 +16,9 @@ public class RequestTypeToIgnoreConverter implements ModelConverter {
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		if (type.isSchemaProperty()) {
 			JavaType javaType = Json.mapper().constructType(type.getType());
-			if (type != null) {
-				Class<?> cls = javaType.getRawClass();
-				if(AbstractRequestBuilder.isRequestTypeToIgnore(cls))
-					return null;
-			}
+			Class<?> cls = javaType.getRawClass();
+			if (AbstractRequestBuilder.isRequestTypeToIgnore(cls))
+				return null;
 		}
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
 	}
