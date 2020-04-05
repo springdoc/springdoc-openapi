@@ -1,7 +1,0 @@
-test\org\springdoc\api\app1\SpringDocApp1Test$SpringDocTestApp.class
-test\org\springdoc\api\AbstractSpringDocTest.class
-test\org\springdoc\api\app1\SpringDocApp1Test.class
-test\org\springdoc\api\app1\CarService.class
-test\org\springdoc\api\app1\OpenApiConfiguration.class
-test\org\springdoc\api\app1\Car.class
-test\org\springdoc\api\app1\CarController.class

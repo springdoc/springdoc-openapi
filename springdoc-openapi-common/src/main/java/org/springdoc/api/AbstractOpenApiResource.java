@@ -95,8 +95,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	private final String groupName;
 
-	private boolean computeDone;
-
 	protected AbstractOpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder,
 			AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -124,9 +122,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		DEPRECATED_TYPES.add(cls);
 	}
 
-	protected synchronized OpenAPI getOpenApi() {
+	protected OpenAPI getOpenApi() {
 		OpenAPI openApi;
-		if (!computeDone || springDocConfigProperties.isCacheDisabled()) {
+		if (openAPIBuilder.getCachedOpenAPI() == null || springDocConfigProperties.isCacheDisabled()) {
 			Instant start = Instant.now();
 			openAPIBuilder.build();
 			Map<String, Object> mappingsMap = openAPIBuilder.getMappingsMap().entrySet().stream()
@@ -142,7 +140,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			getPaths(mappingsMap);
 			// run the optional customisers
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
-			computeDone = true;
 			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
 				this.removeBrokenReferenceDefinitions(openApi);
 			openAPIBuilder.setCachedOpenAPI(openApi);

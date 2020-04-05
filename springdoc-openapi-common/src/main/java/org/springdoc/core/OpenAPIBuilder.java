@@ -451,6 +451,10 @@ public class OpenAPIBuilder {
 		this.cachedOpenAPI = cachedOpenAPI;
 	}
 
+	public OpenAPI getCachedOpenAPI() {
+		return cachedOpenAPI;
+	}
+
 	public OpenAPI getCalculatedOpenAPI() {
 		return calculatedOpenAPI;
 	}

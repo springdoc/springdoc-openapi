@@ -89,7 +89,7 @@ public class SpringDocWebMvcConfiguration {
 		return new GenericResponseBuilder(operationBuilder, returnTypeParsers, springDocConfigProperties, propertyResolverUtils);
 	}
 
-	@ConditionalOnProperty(name = SPRINGDOC_SHOW_ACTUATOR)
+	@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
 	@ConditionalOnClass(WebMvcEndpointHandlerMapping.class)
 	class SpringDocWebMvcActuatorConfiguration {
 
