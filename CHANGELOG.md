@@ -13,8 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Rename some packages to improve Java 9 Modules support #461
 - Workaround for swagger-ui, to enable layout and filter properties #536 #424
-- Added encoding section in multipart request #531 
+- Added encoding section iswagger-apin multipart request #531 
 - Upgrade to spring-boot to 2.2.6
+- Upgrade swagger-api to 2.1.2
 ### Fixed
 - Schema mapping with inheritance #489
 - Improve support of Generics inheritance on complex return types #537
