@@ -25,7 +25,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import groovy.lang.MetaClass;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -34,7 +33,6 @@ import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.ModelConverterRegistrar;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
-import org.springdoc.core.converters.RequestTypeToIgnoreConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
 import org.springdoc.core.customizers.OpenApiCustomiser;
@@ -42,7 +40,6 @@ import org.springdoc.core.customizers.PropertyCustomizer;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -89,20 +86,6 @@ public class SpringDocConfiguration {
 	@ConditionalOnMissingBean
 	ResponseSupportConverter responseSupportConverter() {
 		return new ResponseSupportConverter();
-	}
-
-	@ConditionalOnClass(value = { MetaClass.class })
-	class GroovyProvider {
-		@Bean
-		Object ignoreGroovyMetaClass() {
-			SpringDocUtils.getConfig().addRequestWrapperToIgnore(MetaClass.class);
-			return null;
-		}
-
-		@Bean
-		RequestTypeToIgnoreConverter requestTypeToIgnoreConverter() {
-			return new RequestTypeToIgnoreConverter();
-		}
 	}
 
 	@Bean

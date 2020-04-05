@@ -27,8 +27,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springdoc.webmvc.api.ActuatorProvider;
-import org.springdoc.webmvc.api.OpenApiResource;
 import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
@@ -37,6 +35,8 @@ import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
 import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.webmvc.api.ActuatorProvider;
+import org.springdoc.webmvc.api.OpenApiResource;
 import test.org.springdoc.api.AbstractSpringDocTest;
 import test.org.springdoc.api.app91.Greeting;
 
