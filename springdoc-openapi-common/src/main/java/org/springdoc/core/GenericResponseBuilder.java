@@ -67,7 +67,7 @@ public class GenericResponseBuilder {
 
 	private final PropertyResolverUtils propertyResolverUtils;
 
-	GenericResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers,
+	public GenericResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers,
 			SpringDocConfigProperties springDocConfigProperties,
 			PropertyResolverUtils propertyResolverUtils) {
 		super();

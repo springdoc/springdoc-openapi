@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.springdoc.core.SpringDocSecurityConfiguration
+org.springdoc.security.SpringDocSecurityConfiguration

@@ -51,7 +51,7 @@ public class ConverterUtils {
 		RESPONSE_TYPES_TO_IGNORE.add(cls);
 	}
 
-	static boolean isResponseTypeWrapper(Class<?> rawClass) {
+	public static boolean isResponseTypeWrapper(Class<?> rawClass) {
 		return RESULT_WRAPPERS_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 

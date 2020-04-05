@@ -97,8 +97,8 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 		return uriBuilder;
 	}
 
-	abstract void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder);
+	protected abstract void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder);
 
-	abstract void calculateUiRootPath(StringBuilder... sbUrls);
+	protected abstract void calculateUiRootPath(StringBuilder... sbUrls);
 
 }

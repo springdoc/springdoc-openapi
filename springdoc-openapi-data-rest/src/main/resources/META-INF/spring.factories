@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.springdoc.core.SpringDocDataRestConfiguration
+org.springdoc.data.rest.SpringDocDataRestConfiguration
