@@ -36,13 +36,46 @@
             }
           },
           {
+            "name": "stringParam1",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stringParam2",
+            "in": "query",
+            "description": "string parameter2",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "intParam",
             "in": "query",
             "description": "int parameter",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "intParam2",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "intParam3",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
