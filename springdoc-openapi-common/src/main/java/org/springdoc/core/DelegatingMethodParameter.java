@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springdoc.core.converters.AdditionalModelsConverter;
@@ -141,16 +142,24 @@ class DelegatingMethodParameter extends MethodParameter {
 	@Nullable
 	static MethodParameter fromGetterOfField(Class<?> paramClass, Field field) {
 		try {
+			Annotation[] filedAnnotations = field.getDeclaredAnnotations();
+			Parameter parameter = field.getAnnotation(Parameter.class);
+			if (parameter != null && !parameter.required()) {
+				Field fieldNullable = NullableFieldClass.class.getDeclaredField("nullableField");
+				Annotation annotation = fieldNullable.getAnnotation(Nullable.class);
+				filedAnnotations = ArrayUtils.add(filedAnnotations, annotation);
+			}
+			Annotation[] filedAnnotationsNew = filedAnnotations;
 			return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
 					.filter(d -> d.getName().equals(field.getName()))
 					.map(PropertyDescriptor::getReadMethod)
 					.filter(Objects::nonNull)
 					.findFirst()
 					.map(method -> new MethodParameter(method, -1))
-					.map(param -> new DelegatingMethodParameter(param, field.getName(), field.getDeclaredAnnotations()))
+					.map(param -> new DelegatingMethodParameter(param, field.getName(), filedAnnotationsNew))
 					.orElse(null);
 		}
-		catch (IntrospectionException e) {
+		catch (IntrospectionException | NoSuchFieldException e) {
 			return null;
 		}
 	}
@@ -171,5 +180,10 @@ class DelegatingMethodParameter extends MethodParameter {
 		int result = Objects.hash(super.hashCode(), delegate, parameterName);
 		result = 31 * result + Arrays.hashCode(additionalParameterAnnotations);
 		return result;
+	}
+
+	private class NullableFieldClass {
+		@Nullable
+		private String nullableField;
 	}
 }
