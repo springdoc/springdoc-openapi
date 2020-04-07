@@ -56,11 +56,6 @@
   "components": {
     "schemas": {
       "Pageable": {
-        "required": [
-          "page",
-          "size",
-          "sort"
-        ],
         "type": "object",
         "properties": {
           "page": {
