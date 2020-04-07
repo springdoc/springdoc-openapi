@@ -172,22 +172,22 @@ public abstract class AbstractRequestBuilder {
 		for (MethodParameter methodParameter : parameters) {
 			// check if query param
 			Parameter parameter = null;
-			final String pName = methodParameter.getParameterName();
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
+			final String pName = methodParameter.getParameterName();
+			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter);
+
 			if (parameterDoc == null)
-				parameterDoc = parametersDocMap.get(pName);
+				parameterDoc = parametersDocMap.get(parameterInfo.getpName());
 			// use documentation as reference
 			if (parameterDoc != null) {
 				if (parameterDoc.hidden())
 					continue;
-				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null,
-						methodAttributes.getJsonViewAnnotation());
+				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null, methodAttributes.getJsonViewAnnotation());
+				parameterInfo.setParameterModel(parameter);
 			}
 
 			if (!isParamToIgnore(methodParameter)) {
-				ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameter);
-				parameter = buildParams(parameterInfo, components, requestMethod,
-						methodAttributes.getJsonViewAnnotation());
+				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
 				parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
 				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
@@ -279,34 +279,31 @@ public abstract class AbstractRequestBuilder {
 	private Parameter buildParams(ParameterInfo parameterInfo, Components components,
 			RequestMethod requestMethod, JsonView jsonView) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
-		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
-		RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
-		PathVariable pathVar = methodParameter.getParameterAnnotation(PathVariable.class);
-		CookieValue cookieValue = methodParameter.getParameterAnnotation(CookieValue.class);
+		RequestHeader requestHeader = parameterInfo.getRequestHeader();
+		RequestParam requestParam = parameterInfo.getRequestParam();
+		PathVariable pathVar = parameterInfo.getPathVar();
+		CookieValue cookieValue = parameterInfo.getCookieValue();
+
 		Parameter parameter = null;
 		RequestInfo requestInfo;
 
 		if (requestHeader != null) {
-			requestInfo = new RequestInfo(ParameterIn.HEADER.toString(), requestHeader.value(), requestHeader.required(),
+			requestInfo = new RequestInfo(ParameterIn.HEADER.toString(), parameterInfo.getpName(), requestHeader.required(),
 					requestHeader.defaultValue());
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 
 		}
 		else if (requestParam != null && !parameterBuilder.isFile(parameterInfo.getMethodParameter())) {
-			requestInfo = new RequestInfo(ParameterIn.QUERY.toString(), requestParam.value(), requestParam.required() && !methodParameter.isOptional(),
+			requestInfo = new RequestInfo(ParameterIn.QUERY.toString(), parameterInfo.getpName(), requestParam.required() && !methodParameter.isOptional(),
 					requestParam.defaultValue());
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
 		else if (pathVar != null) {
-			String pName = parameterInfo.getpName();
-			String name = StringUtils.isBlank(pathVar.value()) ? pName : pathVar.value();
-			parameterInfo.setpName(name);
-			// check if PATH PARAM
-			requestInfo = new RequestInfo(ParameterIn.PATH.toString(), pathVar.value(), !methodParameter.isOptional(), null);
+			requestInfo = new RequestInfo(ParameterIn.PATH.toString(), parameterInfo.getpName(), !methodParameter.isOptional(), null);
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
 		else if (cookieValue != null) {
-			requestInfo = new RequestInfo(ParameterIn.COOKIE.toString(), cookieValue.value(), cookieValue.required(),
+			requestInfo = new RequestInfo(ParameterIn.COOKIE.toString(), parameterInfo.getpName(), cookieValue.required(),
 					cookieValue.defaultValue());
 			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
