@@ -29,8 +29,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import org.springframework.lang.Nullable;
-
 @NotNull
 public class Pageable {
 

@@ -20,7 +20,13 @@ package org.springdoc.core;
 
 import java.lang.reflect.Parameter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.core.MethodParameter;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 
 class ParameterInfo {
 
@@ -30,12 +36,21 @@ class ParameterInfo {
 
 	private io.swagger.v3.oas.models.parameters.Parameter parameterModel;
 
-	public ParameterInfo(String pName, MethodParameter methodParameter,
-			io.swagger.v3.oas.models.parameters.Parameter parameterModel) {
-		super();
-		this.pName = pName;
+	private RequestHeader requestHeader;
+
+	private RequestParam requestParam;
+
+	private PathVariable pathVar;
+
+	private CookieValue cookieValue;
+
+	public ParameterInfo(String pName, MethodParameter methodParameter) {
 		this.methodParameter = methodParameter;
-		this.parameterModel = parameterModel;
+		this.requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
+		this.requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
+		this.pathVar = methodParameter.getParameterAnnotation(PathVariable.class);
+		this.cookieValue = methodParameter.getParameterAnnotation(CookieValue.class);
+		this.pName = calculateName(pName, requestHeader, requestParam, pathVar, cookieValue);
 	}
 
 	public String getpName() {
@@ -62,4 +77,32 @@ class ParameterInfo {
 		this.parameterModel = parameterModel;
 	}
 
+	public RequestHeader getRequestHeader() {
+		return requestHeader;
+	}
+
+	public RequestParam getRequestParam() {
+		return requestParam;
+	}
+
+	public PathVariable getPathVar() {
+		return pathVar;
+	}
+
+	public CookieValue getCookieValue() {
+		return cookieValue;
+	}
+
+	private String calculateName(String pName, RequestHeader requestHeader, RequestParam requestParam, PathVariable pathVar, CookieValue cookieValue) {
+		String name = pName;
+		if (requestHeader != null && StringUtils.isNotEmpty(requestHeader.value()))
+			name = requestHeader.value();
+		else if (requestParam != null && StringUtils.isNotEmpty(requestParam.value()))
+			name = requestParam.value();
+		else if (pathVar != null && StringUtils.isNotEmpty(pathVar.value()))
+			name = pathVar.value();
+		else if (cookieValue != null && StringUtils.isNotEmpty(cookieValue.value()))
+			name = cookieValue.value();
+		return name;
+	}
 }
