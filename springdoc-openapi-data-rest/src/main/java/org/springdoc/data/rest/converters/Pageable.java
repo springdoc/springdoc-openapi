@@ -25,6 +25,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -33,20 +34,19 @@ import org.springframework.lang.Nullable;
 @NotNull
 public class Pageable {
 
-	@Nullable
 	@Min(0)
-	@Schema(description = "Zero-based page index (0..N)", defaultValue = "0")
+	@Parameter(description = "Zero-based page index (0..N)",schema = @Schema(type = "integer", defaultValue = "0"),required = true)
 	private Integer page;
 
-	@Nullable
 	@Min(1)
 	@Max(2000)
-	@Schema(description = "The size of the page to be returned", defaultValue = "20")
+	@Parameter(description = "The size of the page to be returned",schema = @Schema(type = "integer", defaultValue = "20"),required = true)
 	private Integer size;
 
-	@Nullable
-	@ArraySchema(arraySchema = @Schema(description = "Sorting criteria in the format: property(,asc|desc). "
-			+ "Default sort order is ascending. " + "Multiple sort criteria are supported."))
+	@Parameter(description = "Sorting criteria in the format: property(,asc|desc). "
+			+ "Default sort order is ascending. " + "Multiple sort criteria are supported."
+			, name = "sort"
+			,array = @ArraySchema(schema = @Schema(type = "string")),required = true)
 	private List<String> sort;
 
 	public Pageable(int page, int size, List<String> sort) {
