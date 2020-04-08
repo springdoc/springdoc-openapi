@@ -6,219 +6,219 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.3.1] - 2020-04-05
 ### Added
--  Support for dynamic groups from application.yml #344
--  Support for Groovy metaclass/metadata #509
--  Support to extract parameters from parameter object using Springdoc annotation @ParameterObject #120 #268 #162 #119 
--  Support for Subtypes to be also ignored from Controller class #502
+- #344 - Support for dynamic groups from application.yml 
+- #509 - Support for Groovy metaclass/metadata 
+- #120 #268 #162 #119 - Support to extract parameters from parameter object using Springdoc annotation @ParameterObject 
+- #502 - Support for Subtypes to be also ignored from Controller class 
 ### Changed
-- Rename some packages to improve Java 9 Modules support #461
-- Workaround for swagger-ui, to enable layout and filter properties #536 #424
-- Added encoding section iswagger-apin multipart request #531 
+- #461 - Rename some packages to improve Java 9 Modules support 
+- #536 #424 - Workaround for swagger-ui, to enable layout and filter properties 
+- #531  - Added encoding section iswagger-apin multipart request 
 - Upgrade to spring-boot to 2.2.6
 - Upgrade swagger-api to 2.1.2
 ### Fixed
-- Schema mapping with inheritance #489
-- Improve support of Generics inheritance on complex return types #537
-- Kotlin Coroutines support fixed #517
+- #489 - Schema mapping with inheritance 
+- #537 - Improve support of Generics inheritance on complex return types 
+- #517 - Kotlin Coroutines support corrected 
 
 ## [1.3.0] - 2020-03-21
 ### Added
 - Feature to support for property resolver on @Schema (name, title and description)
-- Introduced new property springdoc.api-docs.resolve-schema-properties for property resolver on @Schema #501
-- Being able to see the class within an EntityModel as a Schema. Fixes #453
+- #501 - Introduced new property springdoc.api-docs.resolve-schema-properties for property resolver on @Schema 
+- #453 - Being able to see the class within an EntityModel as a Schema.  
 - Introduce new property springdoc.remove-broken-reference-definitions
-- Property resolver on @ApiResponse.description #498
+- #498 - Property resolver on @ApiResponse.description 
 - Support of @QuerydslPredicate in Rest controllers
 ### Changed
 - Change the interface of ParameterCustomizer
 - Improve isAnnotationToIgnore and isParamToIgnore
 - Use MethodParameter#isOptional() instead of checking for Optional type
-- Improve the support of Pageable. Fixes #496
+- #496 - Improve the support of Pageable. 
 - Improve compatibility with spring-boot 1, even there is EOL announced: https://spring.io/blog/2018/07/30/spring-boot-1-x-eol-aug-1st-2019
 
 ## [1.2.34] - 2020-03-17
 ### Added
 - Property resolver on @operation.summary, @parameter.description and @parameter.name
-- Use required attribute from spring RequestBody annotation #468
-- Review configuration via springdoc.swagger-ui.urls #481
-- Support for auto fill clientId and clientSecret for webflux #333
+- #468 - Use required attribute from spring RequestBody annotation 
+- #481 - Review configuration via springdoc.swagger-ui.urls 
+- #333 - Support for auto fill clientId and clientSecret for webflux 
 - Support to ignore annotations on parameter level
 ### Changed
-- Update spring-boot-starter-parent to 2.2.5.RELEASE #469
-- Improve compatibility of springdoc-openapi-data-rest with Spring Webflux #477
-- Improve support of  Swagger UI to use provided spec.yml #480
+- #469 - Update spring-boot-starter-parent to 2.2.5.RELEASE 
+- #477 - Improve compatibility of springdoc-openapi-data-rest with Spring Webflux 
+- #480 - Improve support of  Swagger UI to use provided spec.yml 
 - Delegate primitive type generation to swagger-core
 ### Fixed
-- Wrong schema mapping with inheritance. Fixes #489
+- #489 - Wrong schema mapping with inheritance. Fixes 
 
 ## [1.2.33] - 2020-03-01
 ### Added
-- Support for OpenApiBuilderCustomiser to allow users to customize the OpenApiBuilder #451
+- #451 - Support for OpenApiBuilderCustomiser to allow users to customize the OpenApiBuilder 
 - Support for generic controller types parameters
-- Support to handle prefix for webflux-ui #454
+- #454 - Support to handle prefix for webflux-ui 
 ### Changed
-- Allow @Schema annotation to set an attribute as not required even if it's annotated with @NotNull #459
-- Make SpringDocAnnotationsUtils public #458
-- Make GenericResponseBuilder.calculateSchema method public #455
+- #459 - Allow @Schema annotation to set an attribute as not required even if it's annotated with @NotNull 
+- #458 - Make SpringDocAnnotationsUtils public 
+- #455 - Make GenericResponseBuilder.calculateSchema method public 
 
 ## [1.2.32] - 2020-02-19
 ### Added
-- Support to override generic responses from controller advice with ApiResponses  #429
-- Support for non-nullable types in Kotlin #443
-- Support for setting default produces/consumes mediaTypes #442
+- #429 - Support to override generic responses from controller advice with ApiResponses 
+- #443 - Support for non-nullable types in Kotlin 
+- #442 - Support for setting default produces/consumes mediaTypes 
 ### Changed
-- Force classgraph version #447
+- #447 - Force classgraph version 
 ### Fixed
-- Payload/Request Examples no longer generated #444
-- Return value of PropertyCustomizer is ignored #441
+- #444 - Payload/Request Examples no longer generated 
+- #441 - Return value of PropertyCustomizer is ignored 
 
 ## [1.2.31] - 2020-02-18
 ### Added
 - Allow Request paremeters types to be ignored programatically using SpringDocUtils
-- Support to disable autotagging of @RestController Classes #420
-- Support for properties to exclude packages and paths from documentation. #404
-- Support for kotlin Deprecated  #414
-- Support for Hiding org.springframework.security.core.Authentication on ServerHttpResponse #423
+- #420 - Support to disable autotagging of @RestController Classes 
+- #404 - Support for properties to exclude packages and paths from documentation.
+- #414 - Support for kotlin Deprecated 
+- #423 - Support for Hiding org.springframework.security.core.Authentication on ServerHttpResponse 
 ### Changed
 - Upgrade swagger-ui to 3.25.0
-- Allow ModelAndView to be detected #428
-- Improve Reverse proxy compatibily for webflux #435
-- Adjusting the output for Links #418
+- #428 - Allow ModelAndView to be detected 
+- #435 - Improve Reverse proxy compatibily for webflux 
+- #418 - Adjusting the output for Links 
 ### Fixed
-- Discovery of MediaType producers inconsistent with Spring MVC behaviour #426
-- Multiple Parameter Refs throws IllegalStateException (Duplicate key) #408
-- Solves Hateoas fields names mismatch #401
-- @CookieValue parameter indents request body  #419
+- #426 - Discovery of MediaType producers inconsistent with Spring MVC behaviour 
+- #408 - Multiple Parameter Refs throws IllegalStateException (Duplicate key)
+- #401 - Solves Hateoas fields names mismatch
+- #419 - @CookieValue parameter indents request body 
 
 ## [1.2.30] - 2020-02-03
 ### Added
-- Support REST Controllers with default empty @RequestMapping #378
-- Support for Sort GroupedOpenApi by name #398
+- #378- Support REST Controllers with default empty @RequestMapping 
+- #398 - Support for Sort GroupedOpenApi by name 
 ### Changed
-- Improve support of @Parameter Schema, in case of @RequestBody #396
-- Prevent swagger-ui default validation #393
-- @SecurityScheme `paramName` not accounted for the `name` #384
-- Warning on referenced example #437
+- #396 - Improve support of @Parameter Schema, in case of @RequestBody 
+- #393 - Prevent swagger-ui default validation 
+- #384 - @SecurityScheme `paramName` not accounted for the `name` 
+- #437 - Warning on referenced example 
 ### Fixed
-- Same operationId for overloaded methods using Groups, breaks swagger-ui collapsibles #399
-- Duplicate tags if they are defined on @Operation annotation on swagger-ui #436.
-- When using RestControllerAdvice, one of the responses description is missing and replaced with a default #440
+- #399 - Same operationId for overloaded methods using Groups, breaks swagger-ui collapsibles 
+- #436 - Duplicate tags if they are defined on @Operation annotation on swagger-ui.
+- #440 - When using RestControllerAdvice, one of the responses description is missing and replaced with a default 
 ## [1.2.29] - 2020-01-27
 ### Added
-- Support for extensions on @ApiResponse #368
-- Support for CompletionStage as endpoint return type #370
-- Support for extensions on @ApiResponse #368
-- Support for java 8 Optional for  @RequestParam #375
-- Support for @RequestParam for file upload #377
-- Added ability to disable security for one operation using  @SecurityRequirements #259
-- Support to configure packages-to-scan as list using YAML Syntax #376
+- #368 - Support for extensions on @ApiResponse 
+- #370 - Support for CompletionStage as endpoint return type 
+- #368 - Support for extensions on @ApiResponse 
+- #375 - Support for java 8 Optional for @RequestParam 
+- #377 - Support for @RequestParam for file upload 
+- #259 - Added ability to disable security for one operation using @SecurityRequirements 
+- #376 - Support to configure packages-to-scan as list using YAML Syntax 
 
 ## [1.2.28] - 2020-01-22
 ### Changed
 - Upgrade to spring-boot to 2.2.4.RELEASE
 - Upgrade swagger-api to 2.1.1
 - Upgrade swagger-ui to 3.24.3
-- Make spring-security-oauth2 as optional for springdoc-openapi-security #359
-- Improve support of response of responses overloading #354
+- #359 - Make spring-security-oauth2 as optional for springdoc-openapi-security 
+- #354 - Improve support of response of responses overloading 
 
 ## [1.2.27] - 2020-01-21
 #### Added
-- Support for pathsToMatch and packagesToScan to work in spinal-case as well #338
-- Support support for spring-security-oauth2 authorization server #327
-- support for custom OAuth 2.0 configuration, of the swagger-ui #333
-- Support of HttpEntity on webflux #280
-- Support: Example value can be specified without having to specify the schema #352
-- Support for serving the swagger-ui from outside of the spring-boot application / exploed jar #346
-- Support spring property resolver in all @Info #353
+- #338 - Support for pathsToMatch and packagesToScan to work in spinal-case as well 
+- #327 - Support support for spring-security-oauth2 authorization server 
+- #333 - Support for custom OAuth 2.0 configuration, of the swagger-ui 
+- #280 - Support of HttpEntity on webflux 
+- #352 - Support: Example value can be specified without having to specify the schema 
+- #346 - Support for serving the swagger-ui from outside of the spring-boot application / exploed jar 
+- #353 - Support spring property resolver in all @Info 
 ### Changed
 - Improve actuator documentation
-- Make oauth2RedirectUrl dynamically calculated #349
+- #349 - Make oauth2RedirectUrl dynamically calculated 
 ### Fixed
-- Fixes springdoc.swagger-ui.url property #339
-- Allow webFlux handlers using kotlin coroutines to produce response documentation #351
+- #339 - Fixes springdoc.swagger-ui.url property 
+- #351 - Allow webFlux handlers using kotlin coroutines to produce response documentation 
 
 ## [1.2.26] - 2020-01-10
 #### Added
-- Make springdoc cache configurable #331
+- #331 - Make springdoc cache configurable 
 #### Fixed
-- Multiple paths in controller and DeleteMapping generates incorrect Request Body #334
+- #334 - Multiple paths in controller and DeleteMapping generates incorrect Request Body 
 
 ## [1.2.25] - 2020-01-08
 #### Fixed
-- Fix double registration of model converters when grouped api is used #324
+- #324 - Fix double registration of model converters when grouped api is used 
 #### Added
-- Added support for multiple OpenAPI definitions in spring webflux #329
+- #329 - Added support for multiple OpenAPI definitions in spring webflux 
 
 ## [1.2.24] - 2020-01-05
 #### Changed
-- Improve beans loading, if projects uses the UI only #321
+- #321 - Improve beans loading, if projects uses the UI only 
 
 ## [1.2.23] - 2020-01-05
 #### Added
-- Added migration guide from springfox #292
-- Added support for @JsonViews with spring @requestbody annotation #315
-- Provide oauth2RedirectUrl, if not declared #320
+- #292 - Added migration guide from springfox 
+- #315 - Added support for @JsonViews with spring @requestbody annotation 
+- #320 - Provide oauth2RedirectUrl, if not declared 
 #### Fixed
-- Wrong server url with when grouped api name contains special charater #312
+- #312 - Wrong server url with when grouped api name contains special charater 
 
 ## [1.2.22] - 2020-01-01
 #### Added
 - New annotation @PageableAsQueryParam for better Pageable support
-- Feature to serve from the same swagger-ui both, REST APIs that are deployed within the same application and external REST APIs  #309
-- Customizing operations, parameters and properties available through an SPI #293
+- #309 - Feature to serve from the same swagger-ui both, REST APIs that are deployed within the same application and external REST APIs 
+- #293 - Customizing operations, parameters and properties available through an SPI 
 #### Changed
--  Autoconfigurations will not be loaded if classpath does not contain mvc/reactive dependencies or application is not web application #299
+- #299 - Autoconfigurations will not be loaded if classpath does not contain mvc/reactive dependencies or application is not web application 
 #### Fixed
-- Corrected the support of oauth2-redirect.html and oauth2RedirectUrl #311
+- #311 - Corrected the support of oauth2-redirect.html and oauth2RedirectUrl 
 
-  
+ 
 ## [1.2.21] - 2019-12-25
 #### Added
-- Springdoc, Callable support #297
+- #297 - Springdoc, Callable support 
 ### Removed
-- Property `springdoc.api-docs.groups.enabled` removed, as not needed any more for enabling multiple OpenAPI definitions support #296
+- #296 - Property `springdoc.api-docs.groups.enabled` removed, as not needed any more for enabling multiple OpenAPI definitions support 
 #### Changed 
-- Improve springdoc-openapi beans loading #290 #294
+- #290 #294 - Improve springdoc-openapi beans loading 
 
 ## [1.2.20] - 2019-12-23
 #### Changed 
-- Preserve order of @Parameters for spring-boot 2.2 #289
+- #289 - Preserve order of @Parameters for spring-boot 2.2 
 ### Removed
-- Remove @EnableWebMvc from SwaggerConfig (not needed for Spring Boot) #236 #150
+- #236 #150 - Remove @EnableWebMvc from SwaggerConfig (not needed for Spring Boot) 
 
 ## [1.2.19] - 2019-12-22
 #### Added
-- Support for Multiple OpenAPI definitions in one Spring Boot #213
-- Support for spring-context-indexer #262
-- Added support using properties from application.yml for description field in swagger-annotations #231
-- Make validatorUrl configurable and fix overwrites #281
-- Improve support of HttpEntity #280
+- #213 - Support for Multiple OpenAPI definitions in one Spring Boot 
+- #262 - Support for spring-context-indexer 
+- #231 - Added support using properties from application.yml for description field in swagger-annotations 
+- #281 - Make validatorUrl configurable and fix overwrites 
+- #280 - Improve support of HttpEntity 
 #### Changed 
-- Ignore ServerHttpRequest and ServerHttpResponse Webflux #270
-- Preserve order of parameters in @Parameters annotation #274
-- Changed the default value if consumes is missing, to MediaType.APPLICATION_JSON_VALUE #275
-- Renamed actuator property to springdoc.show-actuator #286
+- #270 - Ignore ServerHttpRequest and ServerHttpResponse Webflux 
+- #274 - Preserve order of parameters in @Parameters annotation 
+- #275 - Changed the default value if consumes is missing, to MediaType.APPLICATION_JSON_VALUE 
+- #286 - Renamed actuator property to springdoc.show-actuator 
 #### Fixed
-- Static content no longer delivered #246
+- #246 - Static content no longer delivered 
 
 ## [1.2.18] - 2019-12-14
 #### Added
-- Globally exclude params for webflux #228
-- Added ability to ignore param with @hidden annotation at class level #255
-- Support of spring.mvc.servlet.path #238
-- ignore Authentication in controller params #245
-- Support for oauth2RedirectUrl  #240
-- Support of @Hidden at class level. #260
-- Ability for using properties from application.yml to declare security urls: (openIdConnectUrl - authorizationUrl - refreshUrl - tokenUrl) #231
-- Added support of annotation @Parameters (without @Operation) #241
+- #228 - Globally exclude params for webflux 
+- #255 - Added ability to ignore param with @hidden annotation at class level 
+- #238 - Support of spring.mvc.servlet.path 
+- #245 - ignore Authentication in controller params 
+- #240 - Support for oauth2RedirectUrl 
+- #260 - Support of @Hidden at class level. 
+- #231 - Ability for using properties from application.yml to declare security urls: (openIdConnectUrl - authorizationUrl - refreshUrl - tokenUrl)
+- #241 - Added support of annotation @Parameters (without @Operation) 
 #### Changed 
-- Downgrade swagger-ui to 3.24.0, fixes #239
+- #239 - Downgrade swagger-ui to 3.24.0
 #### Fixed
-- Fixes error with JDK 11 + Kotlin #248
+- #248 - Fixes error with JDK 11 + Kotlin 
 
 ## [1.2.17] - 2019-12-05
 #### Added
-- Handle multiple endpoints on @GetParam #219
+- #219 - Handle multiple endpoints on @GetParam 
 #### Changed
 - Upgrade Springboot to 2.2.1
 - Upgrade Swagger UI to 3.24.3
@@ -226,52 +226,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.16] - 2019-12-04
 #### Added
-- Add Spring Boot metadata for config properties. #208
-- Explicitly set which packages/ paths to scan #210
-- Disable the try it out button #214
+- #208 - Add Spring Boot metadata for config properties. 
+- #210 - Explicitly set which packages/ paths to scan 
+- #214 - Disable the try it out button 
 #### Changed
-- Changed getOpenApi in AbstractOpenApiResource to synchronized #209
+- #209 - Changed getOpenApi in AbstractOpenApiResource to synchronized 
 #### Fixed
-- Missing Response Content - #212
+- #212 - Missing Response Content 
 
 ## [1.2.15] - 2019-11-30
 #### Added
-- Ignore @AuthenticationPrincipal from spring-security #198
+- #198 - Ignore @AuthenticationPrincipal from spring-security 
 
 ## [1.2.14] - 2019-11-30
 #### Added
 - Add operationsSorter and tagsSorter configuration.
 #### Changed
-- Flux<> implies array structure #195
-- Improve support of ArraySchema in @Parameter #202
+- #195 - Flux<> implies array structure 
+- #202 - Improve support of ArraySchema in @Parameter 
 ### Removed
-- Removed default description on RequestBody annotation #207
+- #207 - Removed default description on RequestBody annotation 
 #### Fixed
-- Duplicated mapping key. Random ConcurrentModificationException error #206
+- #206 - Duplicated mapping key. Random ConcurrentModificationException error 
 
 ## [1.2.13] - 2019-11-28
 #### Added
-- Add Ability to Configure Swagger UI - The support of the swagger official properties #192
-- Support of @Parameters on controller or interface level #185
+- #192 - Add Ability to Configure Swagger UI - The support of the swagger official properties 
+- #185 - Support of @Parameters on controller or interface level 
 
 ## [1.2.12] - 2019-11-27
 #### Added
-- Disable/enable Swagger-UI generation based on env variable #191
+- #191 - Disable/enable Swagger-UI generation based on env variable 
 #### Changed
-- Update README.md #189
+- #189 - Update README.md 
 
 ## [1.2.11] - 2019-11-24
 #### Added
-- Use `@Deprecated` annotation to mark API operation as deprecated #180
-- Support for mappring Pageable of spring-data to correct URL-Parameter in Swagger UI #177
+- #180 - Use `@Deprecated` annotation to mark API operation as deprecated 
+- #177 - Support for mappring Pageable of spring-data to correct URL-Parameter in Swagger UI 
 
 ## [1.2.10] - 2019-11-22
 #### Added
 - Make webjars prefix configurable
 - Generate a default tag name if no tag specified
-- Support for Kotlin Coroutines added #172
+- #172 - Support for Kotlin Coroutines added 
 #### Changed
-- update swagger api version to 2.0.10 #167
+- #167 - update swagger api version to 2.0.10 
 
 ## [1.2.9] - 2019-11-19
 #### Changed
@@ -279,15 +279,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.8] - 2019-11-18
 #### Added
-- Support custom annotations of @RequestMapping #160
-- Add @NotEmpty @NotBlank @PositiveOrZero @NegativeOrZero support #161
+- #160 - Support custom annotations of @RequestMapping 
+- #161 - Add @NotEmpty @NotBlank @PositiveOrZero @NegativeOrZero support 
 
 #### Changed
-- Improve handling of @RequestBody Mono<Tweet>  #163
+- #163 - Improve handling of @RequestBody Mono<Tweet> 
 
 ## [1.2.7] - 2019-11-18
 #### Added
-- Support @Schema(hidden = true) on @Parameter #148
+- #148 - Support @Schema(hidden = true) on @Parameter 
 
 ## [1.2.6] - 2019-11-10
 #### Changed
@@ -295,22 +295,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.5] - 2019-11-10
 #### Added
-- Support of RequestMapping with Regex #145
+- #145 - Support of RequestMapping with Regex 
 - Open base classes for subclassing outside of package
 #### Fixed
-- Improve handling interface methods #147
+- #147 - Improve handling interface methods 
 
 ## [1.2.4] - 2019-11-07
 #### Changed
-- Improve Media Type management, on ControllerAdvice method with explicit ApiResponse annotation #144
-- Using @Content on @ApiResponse, will ensure that no content will be generated on the OpenAPI yml/json description. #143
+- #144 - Improve Media Type management, on ControllerAdvice method with explicit ApiResponse annotation 
+- #143 - Using @Content on @ApiResponse, will ensure that no content will be generated on the OpenAPI yml/json description. 
 
 #### Fixed
-- Error on calling GET /v3/api-docs #142
+- #142 - Error on calling GET /v3/api-docs 
 
 ## [1.2.3] - 2019-11-03
 #### Added
-- Support for @Controller class with @ResponseBody annotation #138
+- #138 - Support for @Controller class with @ResponseBody annotation 
 
 ## [1.2.2] - 2019-11-02
 #### Changed
@@ -319,14 +319,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.2.1] - 2019-11-02
 #### Added
 - upgrade to spring-boot 2.2.0.RELEASE
-- Open up for customisation #136: Change signatures on some methods in AbstractParameterBuilder 
-- Add support for @JsonView annotations in Spring MVC APIs #107
+- #136 - Open up for customisation: Change signatures on some methods in AbstractParameterBuilder 
+- #107 - Add support for @JsonView annotations in Spring MVC APIs 
 
 ## [1.2.0] - 2019-10-27
 #### Added
 - rename module springdoc-openapi-core to springdoc-openapi-webmvc-core
-- Missing Header parameters from @Operation annotation #127
-- Ui with multiple file @RequestPart only shows last part #55
+- #127 - Missing Header parameters from @Operation annotation 
+- #55 - Ui with multiple file @RequestPart only shows last part 
 
 ## [1.1.49] - 2019-10-22
 #### Changed
@@ -335,18 +335,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.48] - 2019-10-15
 #### Changed
-- Enable strict JSON output checking in tests #115
+- #115- Enable strict JSON output checking in tests 
 
 ## [1.1.47] - 2019-10-15
 #### Added
 - Make ignoring parameters in AbstractRequestBuilder easier to extend
 - Do not ignore PathVariable parameters, they are all time mandatory
 - Extend search for @ApiResponse annotations
-- Ability to generate operation responses that reference a global reusable response component #114
+- #114 - Ability to generate operation responses that reference a global reusable response component 
 
 ## [1.1.46] - 2019-10-11
 #### Changed
-- Imporove support of `oneOf` Response schemas: merge will be based on content element inside @ApiResponse annotation only  #106
+- #106 - Imporove support of `oneOf` Response schemas: merge will be based on content element inside @ApiResponse annotation only 
 #### Added
 - @SecurityRequirement at Operation and class level
 
@@ -356,20 +356,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.44] - 2019-09-29
 #### Added
-- Added sample tests for Swagger UI #99
-- Support of Kotlin List of MultipartFile #95
+- #99 - Added sample tests for Swagger UI 
+- #95 - Support of Kotlin List of MultipartFile 
 #### Changed
-- Imporive inconsistency of generated operationId in /v3/api-docs #96
-- Change behaviour to not overwrite an existing common schema. #98
+- #96 - Imporive inconsistency of generated operationId in /v3/api-docs 
+- #98 - Change behaviour to not overwrite an existing common schema. 
 
 ## [1.1.43] - 2019-09-24
 #### Added
-- New Feature: OpenAPICustomiser #92
-- Added Custom converter to handle IllegalArgumentException at com.fasterxml.jackson.databind.introspect.POJOPropertyBuilder.getSetter() #94
+- New Feature: OpenAPICustomiser 
+- #92 - Added Custom converter to handle IllegalArgumentException at com.fasterxml.jackson.databind.introspect.POJOPropertyBuilder.getSetter() #94
 
 ## [1.1.42] - 2019-09-23
 #### Fixed
-- Error in AbstractResponseBuilder.Schema calculateSchema(Components components, ParameterizedType parameterizedType) #90
+- #90 - Error in AbstractResponseBuilder.Schema calculateSchema(Components components, ParameterizedType parameterizedType)
 
 ## [1.1.41] - 2019-09-21
 #### Changed
@@ -377,7 +377,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.40] - 2019-09-21
 #### Changed
--  Imporove support of overloaded methods in the same Rest Controller
+- Imporove support of overloaded methods in the same Rest Controller
 
 ## [1.1.39] - 2019-09-15
 #### Added
@@ -385,20 +385,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.38] - 2019-09-15
 #### Added
-- Support of spring-boot-actuator endpoints to swagger-ui #88
+- #88 - Support of spring-boot-actuator endpoints to swagger-ui
 
 ## [1.1.37] - 2019-09-06
 #### Changed
 - Update README.md
 
 #### Fixed
-- Regression between 1.1.33 and 1.1.34 #84
+- #84 - Regression between 1.1.33 and 1.1.34 
 
 ## [1.1.36] - 2019-09-04
 #### Added
-- Make @Hidden work on classlevel of @RestControllerAdvice #81
+- #81 - Make @Hidden work on classlevel of @RestControllerAdvice 
 #### Fixed
-- ClassCastException in org.springdoc.core.AbstractResponseBuilder#calculateSchema #76
+- #76 - ClassCastException in org.springdoc.core.AbstractResponseBuilder#calculateSchema 
 
 ## [1.1.35] - 2019-09-04
 #### Changed
@@ -406,12 +406,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.34] - 2019-09-04
 #### Added
-- Query parameter with defaultValue specified will not be marked as required #72
-- Added Support for callbacks #74
-- WebFlux Multipart File Upload - Support for FilePart #75
+- #72 - Query parameter with defaultValue specified will not be marked as required 
+- #74 - Added Support for callbacks 
+- WebFlux Multipart File Upload 
+- #75 - Support for FilePart 
 #### Fixed
-- Error in version 1.1.27 #79
-- requestBody content is empty when using @RequestMapping annotation but is populated for @PostMapping #80
+- #79 - Error in version 1.1.27 
+- #80 - requestBody content is empty when using @RequestMapping annotation but is populated for @PostMapping 
 
 ## [1.1.33] - 2019-09-01
 #### Changed
@@ -419,20 +420,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.32] - 2019-08-30
 #### Fixed
-- Regression between 1.1.25 and 1.1.26 #70
+- #70 - Regression between 1.1.25 and 1.1.26 
 
 ## [1.1.31] - 2019-08-28
 #### Changed
 - Added more tests
-- Spring ResponseEntity shoudl not return empty MediaType for no-body responses #68
+- #68 - Spring ResponseEntity shoudl not return empty MediaType for no-body responses 
 
 ## [1.1.30] - 2019-08-27
 #### Fixed
-- Operation.requestBody.content[0].mediaType is ignored #62
+- #62 - Operation.requestBody.content[0].mediaType is ignored 
 
 ## [1.1.29] - 2019-08-26
 #### Added
-- Support of schema.example for string/date-time #61
+- #61 - Support of schema.example for string/date-time 
 
 ## [1.1.28] - 2019-08-26
 #### Changed
@@ -440,23 +441,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.27] - 2019-08-26
 #### Added
-- View on the Swagger-ui multiple file @RequestPart #55
+- #55 - View on the Swagger-ui multiple file @RequestPart 
 
 ## [1.1.26] - 2019-08-25
 #### Added
-- Support beans as parameter in @GetMapping / components empty #12
+- #12 - Support beans as parameter in @GetMapping / components empty 
 #### Changed 
-- Improve Generic (error) responses built from `ControllerAdvice` #53
-- Parameter documentation overwritten by schema calculation based on type #59
+- #53 - Improve Generic (error) responses built from `ControllerAdvice` 
+- #59 - Parameter documentation overwritten by schema calculation based on type 
 
 ## [1.1.25] - 2019-08-23
 #### Added
-- Ignore HttpServletRequest and HttpServletResponse params #57
-- HTTP status codes in responses not according to spec #46
+- #57 - Ignore HttpServletRequest and HttpServletResponse params 
+- #46 - HTTP status codes in responses not according to spec 
 - better support for global parameters
 - Support of @Hidden annotation for ControllerAdvice exception handlers
 #### Changed
-- Do not override parameter.schema #51
+- #51 - Do not override parameter.schema 
 
 ## [1.1.24] - 2019-08-15
 #### Changed
@@ -468,14 +469,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.22] - 2019-08-15
 #### Added
-- A Controller method that does not return a response body will not document a schema #40
+- #40 - A Controller method that does not return a response body will not document a schema 
 - Make sure the swagger-ui.path of the initial html page is the same for other swagger-ui requests
 
 ## [1.1.21] - 2019-08-15
 #### Added
-- Allow to overwrite default API response #35
+- #35 - Allow to overwrite default API response 
 #### Fixed
-- Exception in case of parametrized types inside ReponseEntity #34
+- #34 - Exception in case of parametrized types inside ReponseEntity 
 
 ## [1.1.20] - 2019-08-14
 #### Changed
@@ -483,12 +484,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.19] - 2019-08-14
 #### Fixed
-- Attempting to add @SecurityScheme to annotation results in a NPE. #36
+- #36 - Attempting to add @SecurityScheme to annotation results in a NPE. 
 
 ## [1.1.18] - 2019-08-14
 #### Added
-- Support the io.swagger.v3.oas.annotations.security.SecurityScheme annotation #33
-- Support the io.swagger.v3.oas.annotations.Hidden annotation to exclude from swagger docs #32 
+- #33 - Support the io.swagger.v3.oas.annotations.security.SecurityScheme annotation 
+- #32  - Support the io.swagger.v3.oas.annotations.Hidden annotation to exclude from swagger docs 
 #### Changed
 - update README
 
@@ -498,7 +499,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.16] - 2019-08-12
 #### Added
-- Support hiding of Schema and Example Value #16
+- #16 - Support hiding of Schema and Example Value
 
 ## [1.1.15] - 2019-08-12
 #### Added
@@ -526,21 +527,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.9] - 2019-08-09
 #### Added
-- Load components from OpenAPI bean config #28
-- Load components from OpenAPI bean config
+- #28 - Load components from OpenAPI bean config 
 - Support handling @requestbody annotation directly at parameter level
 
 ## [1.1.8] - 2019-08-08
 #### Added
-- Detect context-path on standalone webservers #20
+- #20 - Detect context-path on standalone webservers 
 #### Changed
-- Parameter will not be missing, if @parameter is used without name. #23
+- #23 - Parameter will not be missing, if @parameter is used without name. 
 
 ## [1.1.7] - 2019-08-07
 #### Added
-- Support of @javax.validation.Size specs with (maximum instead of maxLength) #21
+- #21 - Support of @javax.validation.Size specs with (maximum instead of maxLength) 
 - Any @GetMapping parameters should be marked as required, even if @RequestParam missing #14
-- Handling @parameter in @operation with proper schema #17
+- #17 - Handling @parameter in @operation with proper schema 
 
 ## [1.1.6] - 2019-08-02
 #### Changed
@@ -548,7 +548,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.5] - 2019-08-01
 #### Added
-- Support MultipartFile schema in UI #1
+- #1 - Support MultipartFile schema in UI 
 
 ## [1.1.4] - 2019-08-01
 #### Changed
@@ -556,19 +556,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.3] - 2019-07-31
 #### Added
-- support Annotations from interfaces #8
-- oneOf response implementation #10
-- Support Spring Boot WebFlux Netty #3
+- #8 - Support Annotations from interfaces 
+- #10 - oneOf response implementation 
+- #3 - Support Spring Boot WebFlux Netty 
 #### Changed
-- Complete parameter types list to be excluded #9
+- #9 - Complete parameter types list to be excluded 
 
 ## [1.1.2] - 2019-07-30
 #### Added
-- Allow to customize OpenAPI object programmatically #4
+- #4 - Allow to customize OpenAPI object programmatically
 
 ## [1.1.1] - 2019-07-27
 #### Fixed
-- context-path is not respected when using Swagger UI - #2
+- #2 - context-path is not respected when using Swagger UI
 
 ## [1.1.0] - 2019-07-25
 #### Changed
