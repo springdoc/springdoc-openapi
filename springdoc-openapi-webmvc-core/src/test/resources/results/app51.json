@@ -11,20 +11,19 @@
     }
   ],
   "paths": {
-    "/test1": {
+    "/test": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "test1",
+        "operationId": "get",
         "parameters": [
           {
-            "name": "test_header",
-            "in": "header",
+            "name": "path",
+            "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "example": "rherherherherh"
+              "type": "string"
             }
           }
         ],
@@ -42,12 +41,12 @@
         }
       }
     },
-    "/test2": {
+    "/test1": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "test2",
+        "operationId": "test1",
         "parameters": [
           {
             "name": "test_header",
@@ -56,14 +55,6 @@
             "schema": {
               "type": "string",
               "example": "rherherherherh"
-            }
-          },
-          {
-            "name": "param1",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -105,6 +96,45 @@
             "schema": {
               "type": "string",
               "example": "something"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test2",
+        "parameters": [
+          {
+            "name": "test_header",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "rherherherherh"
+            }
+          },
+          {
+            "name": "param1",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
         ],

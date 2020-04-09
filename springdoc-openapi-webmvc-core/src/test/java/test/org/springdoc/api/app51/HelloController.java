@@ -18,12 +18,15 @@
 
 package test.org.springdoc.api.app51;
 
+import java.util.Map;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,6 +54,13 @@ public class HelloController {
 	public String test3(
 			@RequestParam(name = "param1") @Parameter(description = "desc2", in = ParameterIn.QUERY) String param1) {
 		return "test";
+	}
+
+	@GetMapping("/test")
+	public String get(
+			@PathVariable String path,
+			@RequestParam(required = false) Map<String, String> params) {
+		return null;
 	}
 
 }
