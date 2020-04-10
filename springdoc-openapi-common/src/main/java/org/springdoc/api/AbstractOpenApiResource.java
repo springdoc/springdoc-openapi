@@ -122,7 +122,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		DEPRECATED_TYPES.add(cls);
 	}
 
-	protected OpenAPI getOpenApi() {
+	protected synchronized OpenAPI getOpenApi() {
 		OpenAPI openApi;
 		if (openAPIBuilder.getCachedOpenAPI() == null || springDocConfigProperties.isCacheDisabled()) {
 			Instant start = Instant.now();
