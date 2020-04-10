@@ -44,6 +44,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
@@ -53,6 +54,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.HandlerMethod;
 
 import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
+import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper;
 
 @SuppressWarnings("rawtypes")
 public class GenericResponseBuilder {
@@ -336,7 +338,7 @@ public class GenericResponseBuilder {
 			result = true;
 		else if (returnType instanceof ParameterizedType) {
 			Type[] types = ((ParameterizedType) returnType).getActualTypeArguments();
-			if (types != null)
+			if (types != null && isResponseTypeWrapper(ResolvableType.forType(returnType).getRawClass()))
 				return isVoid(types[0]);
 		}
 		if (Void.class.equals(returnType))
