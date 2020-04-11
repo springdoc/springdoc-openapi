@@ -18,6 +18,8 @@
 
 package org.springdoc.data.rest;
 
+import java.util.Optional;
+
 import javax.annotation.PostConstruct;
 
 import io.swagger.v3.core.converter.ModelConverters;
@@ -29,15 +31,15 @@ import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 
 public class HalProvider {
 
-	private final RepositoryRestConfiguration repositoryRestConfiguration;
+	private RepositoryRestConfiguration repositoryRestConfiguration;
 
-	public HalProvider(RepositoryRestConfiguration repositoryRestConfiguration) {
-		this.repositoryRestConfiguration = repositoryRestConfiguration;
+	public HalProvider(Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
+		optionalRepositoryRestConfiguration.ifPresent(repositoryRestConfiguration ->  this.repositoryRestConfiguration =repositoryRestConfiguration);
 	}
 
 	@PostConstruct
 	private void init() {
-		if (repositoryRestConfiguration.useHalAsDefaultJsonMediaType()) {
+		if (repositoryRestConfiguration == null || repositoryRestConfiguration.useHalAsDefaultJsonMediaType()) {
 			if (!Jackson2HalModule.isAlreadyRegisteredIn(Json.mapper()))
 				Json.mapper().registerModule(new Jackson2HalModule());
 			ModelConverters.getInstance()

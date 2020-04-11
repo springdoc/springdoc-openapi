@@ -72,37 +72,34 @@ public class SpringDocDataRestConfiguration {
 		}
 	}
 
-	@ConditionalOnClass(RepositoryRestConfiguration.class)
-	class HalProviderConfiguration {
 
-		@Bean
-		@ConditionalOnMissingBean
-		HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
-			return repositoryRestConfiguration.isPresent() ? new HalProvider(repositoryRestConfiguration.get()) : null;
+	@Bean
+	@ConditionalOnMissingBean
+	HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
+		return new HalProvider(repositoryRestConfiguration);
+	}
+
+	/**
+	 * Registers an OpenApiCustomiser and a jackson mixin to ensure the definition of `Links` matches the serialized
+	 * output. This is done because the customer serializer converts the data to a map before serializing it.
+	 *
+	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
+	 */
+	@Bean
+	OpenApiCustomiser linksSchemaCustomiser(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
+		if (!repositoryRestConfiguration.isPresent() || !repositoryRestConfiguration.get().useHalAsDefaultJsonMediaType()) {
+			return openApi -> {
+			};
 		}
+		Json.mapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
 
-		/**
-		 * Registers an OpenApiCustomiser and a jackson mixin to ensure the definition of `Links` matches the serialized
-		 * output. This is done because the customer serializer converts the data to a map before serializing it.
-		 *
-		 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
-		 */
-		@Bean
-		OpenApiCustomiser linksSchemaCustomiser(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
-			if (!repositoryRestConfiguration.isPresent() || !repositoryRestConfiguration.get().useHalAsDefaultJsonMediaType()) {
-				return openApi -> {
-				};
-			}
-			Json.mapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
+		ResolvedSchema resolvedLinkSchema = ModelConverters.getInstance()
+				.resolveAsResolvedSchema(new AnnotatedType(Link.class).resolveAsRef(true));
 
-			ResolvedSchema resolvedLinkSchema = ModelConverters.getInstance()
-					.resolveAsResolvedSchema(new AnnotatedType(Link.class).resolveAsRef(true));
-
-			return openApi -> openApi
-					.schema("Link", resolvedLinkSchema.schema)
-					.schema("Links", new MapSchema()
-							.additionalProperties(new StringSchema())
-							.additionalProperties(new ObjectSchema().$ref("#/components/schemas/Link")));
-		}
+		return openApi -> openApi
+				.schema("Link", resolvedLinkSchema.schema)
+				.schema("Links", new MapSchema()
+						.additionalProperties(new StringSchema())
+						.additionalProperties(new ObjectSchema().$ref("#/components/schemas/Link")));
 	}
 }
