@@ -11,6 +11,38 @@
     }
   ],
   "paths": {
+    "/api/student/header3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "headerV3",
+        "parameters": [
+          {
+            "name": "X-API-VERSION",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": [
+                ""
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentV3"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/student/header2": {
       "get": {
         "tags": [
@@ -78,6 +110,14 @@
   },
   "components": {
     "schemas": {
+      "StudentV3": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "StudentV2": {
         "type": "object",
         "properties": {

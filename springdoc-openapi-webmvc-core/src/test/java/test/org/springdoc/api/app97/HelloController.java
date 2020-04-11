@@ -36,4 +36,8 @@ public class HelloController {
 		return new StudentV2("Charlie");
 	}
 
+	@GetMapping(value = "/student/header3", headers = "X-API-VERSION")
+	public StudentV3 headerV3() {
+		return new StudentV3("Tom Charlie");
+	}
 }
