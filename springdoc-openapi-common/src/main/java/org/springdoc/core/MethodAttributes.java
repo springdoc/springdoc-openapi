@@ -147,7 +147,8 @@ public class MethodAttributes {
 		if (ArrayUtils.isNotEmpty(headers))
 			for (String header : headers) {
 				String[] keyValueHeader = header.split("=");
-				this.headers.put(keyValueHeader[0], keyValueHeader[1]);
+				String headerValue = keyValueHeader.length > 1 ? keyValueHeader[1] : "";
+				this.headers.put(keyValueHeader[0], headerValue);
 			}
 	}
 
