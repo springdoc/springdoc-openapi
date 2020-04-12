@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2] - 2020-04-12
+### Added
+- #541 - Add support for none required fields on @ParameterObject
+- Support headers without value (headers = "X-API-VERSION")
+### Changed
+- #544 - Improve @Parameter annotation support for header
+- #156 - Added test for required param object is not marked as required
+- #553 - Ignore Map type with @RequestParam(required = false) in method
+- #549 - Imrpove Spring HATEOAS support 
+### Fixed
+- #543 - Description for Pageable parameters is not displayed in swagger-ui using @ParameterObject.
+- #555 - The response scheme is erased with the generic void type
+- #545 - Random null pointer exception in 1.3.1
+
 ## [1.3.1] - 2020-04-05
 ### Added
 - #344 - Support for dynamic groups from application.yml 
