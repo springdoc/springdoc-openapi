@@ -29,11 +29,6 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-/**
- * @deprecated Use {@link org.springdoc.api.annotations.ParameterObject} annotation
- * on {@link org.springframework.data.domain.Pageable} method parameter instead.
- */
-@Deprecated
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Parameter(in = ParameterIn.QUERY
