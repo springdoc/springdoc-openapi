@@ -34,7 +34,7 @@ public class HalProvider {
 	private RepositoryRestConfiguration repositoryRestConfiguration;
 
 	public HalProvider(Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
-		optionalRepositoryRestConfiguration.ifPresent(repositoryRestConfiguration ->  this.repositoryRestConfiguration =repositoryRestConfiguration);
+		optionalRepositoryRestConfiguration.ifPresent(repoRestConfiguration ->  this.repositoryRestConfiguration =repoRestConfiguration);
 	}
 
 	@PostConstruct
