@@ -45,8 +45,8 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.multipart.MultipartFile;
 
 @SuppressWarnings("rawtypes")
@@ -266,10 +266,8 @@ public class GenericParameterBuilder {
 
 	private boolean isFile(ParameterizedType parameterizedType) {
 		Type type = parameterizedType.getActualTypeArguments()[0];
-		if (MultipartFile.class.getName().equals(type.getTypeName())
-				|| FilePart.class.getName().equals(type.getTypeName())) {
+		if (isFile(ResolvableType.forType(type).getRawClass()))
 			return true;
-		}
 		else if (type instanceof WildcardType) {
 			WildcardType wildcardType = (WildcardType) type;
 			Type[] upperBounds = wildcardType.getUpperBounds();
