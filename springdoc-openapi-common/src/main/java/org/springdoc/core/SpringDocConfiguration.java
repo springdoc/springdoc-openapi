@@ -40,7 +40,10 @@ import org.springdoc.core.customizers.PropertyCustomizer;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.bind.BindResult;
@@ -67,6 +70,8 @@ public class SpringDocConfiguration {
 	static {
 		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema());
 	}
+
+	private final String BINDRESULT_CLASS = "org.springframework.boot.context.properties.bind.BindResult";
 
 	@Bean
 	LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer() {
@@ -158,6 +163,7 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@Conditional(CacheOrGroupedOpenApiCondition.class)
+	@ConditionalOnClass(name= BINDRESULT_CLASS)
 	@Lazy(false)
 	BeanFactoryPostProcessor springdocBeanFactoryPostProcessor(Environment environment) {
 		return beanFactory -> {
@@ -177,10 +183,23 @@ public class SpringDocConfiguration {
 						.collect(Collectors.toList());
 				groupedOpenApis.forEach(elt -> beanFactory.registerSingleton(elt.getGroup(), elt));
 			}
-			for (String beanName : beanFactory.getBeanNamesForType(OpenAPIBuilder.class))
-				beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
-			for (String beanName : beanFactory.getBeanNamesForType(OpenAPI.class))
-				beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
+			initBeanFactoryPostProcessor(beanFactory);
 		};
+	}
+
+	// For spring-boot-1 compatibility
+	@Bean
+	@Conditional(CacheOrGroupedOpenApiCondition.class)
+	@ConditionalOnMissingClass(value = BINDRESULT_CLASS)
+	@Lazy(false)
+	BeanFactoryPostProcessor springdocBeanFactoryPostProcessor2(Environment environment) {
+		return beanFactory -> initBeanFactoryPostProcessor(beanFactory);
+	}
+
+	private void initBeanFactoryPostProcessor(ConfigurableListableBeanFactory beanFactory) {
+		for (String beanName : beanFactory.getBeanNamesForType(OpenAPIBuilder.class))
+			beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
+		for (String beanName : beanFactory.getBeanNamesForType(OpenAPI.class))
+			beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
 	}
 }
