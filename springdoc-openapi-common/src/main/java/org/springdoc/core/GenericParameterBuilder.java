@@ -266,7 +266,8 @@ public class GenericParameterBuilder {
 
 	private boolean isFile(ParameterizedType parameterizedType) {
 		Type type = parameterizedType.getActualTypeArguments()[0];
-		if (isFile(ResolvableType.forType(type).getRawClass()))
+		Class fileClass = ResolvableType.forType(type).getRawClass();
+		if (fileClass!=null && isFile(fileClass))
 			return true;
 		else if (type instanceof WildcardType) {
 			WildcardType wildcardType = (WildcardType) type;
