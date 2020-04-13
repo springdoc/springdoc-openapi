@@ -45,6 +45,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
@@ -60,6 +61,7 @@ public class SpringDocWebMvcConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
@@ -100,6 +102,7 @@ public class SpringDocWebMvcConfiguration {
 		}
 
 		@Bean
+		@Lazy(false)
 		OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider) {
 			return new OperationCustomizer() {
 				private int methodCount;

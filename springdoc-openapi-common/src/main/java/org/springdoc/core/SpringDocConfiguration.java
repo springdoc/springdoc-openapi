@@ -49,6 +49,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.env.Environment;
 import org.springframework.util.CollectionUtils;
@@ -73,17 +74,20 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
+	@Lazy(false)
 	AdditionalModelsConverter pageableSupportConverter() {
 		return new AdditionalModelsConverter();
 	}
 
 	@Bean
+	@Lazy(false)
 	PropertyCustomizingConverter propertyCustomizingConverter(Optional<List<PropertyCustomizer>> customizers) {
 		return new PropertyCustomizingConverter(customizers);
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	ResponseSupportConverter responseSupportConverter() {
 		return new ResponseSupportConverter();
 	}
@@ -98,6 +102,7 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
+	@Lazy(false)
 	ModelConverterRegistrar modelConverterRegistrar(Optional<List<ModelConverter>> modelConverters) {
 		return new ModelConverterRegistrar(modelConverters.orElse(Collections.emptyList()));
 	}
@@ -142,6 +147,7 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@ConditionalOnProperty(SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES)
+	@Lazy(false)
 	OpenApiCustomiser propertiesResolverForSchema(PropertyResolverUtils propertyResolverUtils, OpenAPIBuilder openAPIBuilder) {
 		return openApi -> {
 			Components components = openApi.getComponents();
@@ -152,6 +158,7 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@Conditional(CacheOrGroupedOpenApiCondition.class)
+	@Lazy(false)
 	BeanFactoryPostProcessor springdocBeanFactoryPostProcessor(Environment environment) {
 		return beanFactory -> {
 			final BindResult<SpringDocConfigProperties> result = Binder.get(environment)

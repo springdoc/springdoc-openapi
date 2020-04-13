@@ -39,6 +39,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
@@ -52,6 +53,7 @@ public class MultipleOpenApiSupportConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,

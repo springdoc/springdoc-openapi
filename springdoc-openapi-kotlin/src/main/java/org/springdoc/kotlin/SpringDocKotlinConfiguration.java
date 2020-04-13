@@ -26,6 +26,7 @@ import kotlin.coroutines.Continuation;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
@@ -42,7 +43,7 @@ public class SpringDocKotlinConfiguration {
 	}
 
 	@Bean
-	@Primary
+	@Lazy(false)
 	KotlinCoroutinesReturnTypeParser kotlinCoroutinesReturnTypeParser() {
 		return new KotlinCoroutinesReturnTypeParser();
 	}
