@@ -41,6 +41,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
 
@@ -54,6 +55,7 @@ public class SpringDocWebFluxConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
@@ -82,6 +84,7 @@ public class SpringDocWebFluxConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	WebFluxSupportConverter webFluxSupportConverter() {
 		return new WebFluxSupportConverter();
 	}

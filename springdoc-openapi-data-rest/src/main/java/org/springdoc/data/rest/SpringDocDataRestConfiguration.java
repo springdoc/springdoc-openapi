@@ -40,6 +40,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
@@ -63,6 +64,7 @@ public class SpringDocDataRestConfiguration {
 
 		@Bean
 		@ConditionalOnMissingBean
+		@Lazy(false)
 		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
 			if (querydslBindingsFactory.isPresent()) {
 				getConfig().addRequestWrapperToIgnore(Predicate.class);
@@ -75,6 +77,7 @@ public class SpringDocDataRestConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
 		return new HalProvider(repositoryRestConfiguration);
 	}
@@ -86,6 +89,7 @@ public class SpringDocDataRestConfiguration {
 	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
 	 */
 	@Bean
+	@Lazy(false)
 	OpenApiCustomiser linksSchemaCustomiser(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
 		if (!repositoryRestConfiguration.isPresent() || !repositoryRestConfiguration.get().useHalAsDefaultJsonMediaType()) {
 			return openApi -> {
