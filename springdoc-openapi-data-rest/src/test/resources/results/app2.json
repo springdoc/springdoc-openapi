@@ -64,7 +64,6 @@
             "format": "int32"
           },
           "size": {
-            "maximum": 2000,
             "minimum": 1,
             "type": "integer",
             "format": "int32"
