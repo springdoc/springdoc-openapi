@@ -71,7 +71,7 @@ public class SpringDocConfiguration {
 		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema());
 	}
 
-	private final String BINDRESULT_CLASS = "org.springframework.boot.context.properties.bind.BindResult";
+	private static final String BINDRESULT_CLASS = "org.springframework.boot.context.properties.bind.BindResult";
 
 	@Bean
 	LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer() {
@@ -193,7 +193,7 @@ public class SpringDocConfiguration {
 	@ConditionalOnMissingClass(value = BINDRESULT_CLASS)
 	@Lazy(false)
 	BeanFactoryPostProcessor springdocBeanFactoryPostProcessor2(Environment environment) {
-		return beanFactory -> initBeanFactoryPostProcessor(beanFactory);
+		return this::initBeanFactoryPostProcessor;
 	}
 
 	private void initBeanFactoryPostProcessor(ConfigurableListableBeanFactory beanFactory) {
