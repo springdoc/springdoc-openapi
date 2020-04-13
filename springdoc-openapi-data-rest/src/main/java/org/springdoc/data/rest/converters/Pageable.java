@@ -21,7 +21,6 @@ package org.springdoc.data.rest.converters;
 import java.util.List;
 import java.util.Objects;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -33,18 +32,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class Pageable {
 
 	@Min(0)
-	@Parameter(description = "Zero-based page index (0..N)",schema = @Schema(type = "integer", defaultValue = "0"),required = true)
+	@Parameter(description = "Zero-based page index (0..N)",schema = @Schema(type = "integer", defaultValue = "0"))
 	private Integer page;
 
 	@Min(1)
-	@Max(2000)
-	@Parameter(description = "The size of the page to be returned",schema = @Schema(type = "integer", defaultValue = "20"),required = true)
+	@Parameter(description = "The size of the page to be returned",schema = @Schema(type = "integer", defaultValue = "20"))
 	private Integer size;
 
 	@Parameter(description = "Sorting criteria in the format: property(,asc|desc). "
 			+ "Default sort order is ascending. " + "Multiple sort criteria are supported."
 			, name = "sort"
-			,array = @ArraySchema(schema = @Schema(type = "string")),required = true)
+			,array = @ArraySchema(schema = @Schema(type = "string")))
 	private List<String> sort;
 
 	public Pageable(int page, int size, List<String> sort) {
