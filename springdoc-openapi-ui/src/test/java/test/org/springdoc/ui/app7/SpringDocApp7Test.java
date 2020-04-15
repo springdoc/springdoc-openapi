@@ -30,7 +30,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "springdoc.swagger-ui.oauth.clientId=myClientId")
+@TestPropertySource(properties = { "springdoc.swagger-ui.oauth.clientId=myClientId",
+		"springdoc.swagger-ui.oauth.additionalQueryStringParams.test1=test1",
+		"springdoc.swagger-ui.oauth.additionalQueryStringParams.test2=test2" })
 public class SpringDocApp7Test extends AbstractSpringDocTest {
 
 	@Test

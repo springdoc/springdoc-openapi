@@ -19,7 +19,6 @@
 package org.springdoc.core;
 
 
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -51,7 +50,7 @@ public class SwaggerUiOAuthProperties {
 
 	private String scopeSeparator;
 
-	private List<String> additionalQueryStringParams;
+	private Map<String,String> additionalQueryStringParams;
 
 	private String useBasicAuthenticationWithAccessCodeGrant;
 
@@ -110,11 +109,11 @@ public class SwaggerUiOAuthProperties {
 		this.scopeSeparator = scopeSeparator;
 	}
 
-	public List<String> getAdditionalQueryStringParams() {
+	public Map<String, String> getAdditionalQueryStringParams() {
 		return additionalQueryStringParams;
 	}
 
-	public void setAdditionalQueryStringParams(List<String> additionalQueryStringParams) {
+	public void setAdditionalQueryStringParams(Map<String, String> additionalQueryStringParams) {
 		this.additionalQueryStringParams = additionalQueryStringParams;
 	}
 
