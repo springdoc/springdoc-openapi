@@ -18,32 +18,37 @@
 
 package org.springdoc.data.rest;
 
-import java.util.Optional;
-
-import javax.annotation.PostConstruct;
-
-import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.util.Json;
-import org.springdoc.data.rest.converters.CollectionModelContentConverter;
-
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.Optional;
+
+@Component
 public class HalProvider {
 
-	private RepositoryRestConfiguration repositoryRestConfiguration;
+    private Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional;
 
-	public HalProvider(Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
-		optionalRepositoryRestConfiguration.ifPresent(repoRestConfiguration ->  this.repositoryRestConfiguration =repoRestConfiguration);
-	}
+    public HalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional) {
+        this.repositoryRestConfigurationOptional = repositoryRestConfigurationOptional;
+    }
 
-	@PostConstruct
-	private void init() {
-		if (repositoryRestConfiguration == null || repositoryRestConfiguration.useHalAsDefaultJsonMediaType()) {
-			if (!Jackson2HalModule.isAlreadyRegisteredIn(Json.mapper()))
-				Json.mapper().registerModule(new Jackson2HalModule());
-			ModelConverters.getInstance()
-					.addConverter(CollectionModelContentConverter.getConverter());
-		}
-	}
+    @PostConstruct
+    private void init() {
+        if (!isEnabled()) {
+            return;
+        }
+
+        if (!Jackson2HalModule.isAlreadyRegisteredIn(Json.mapper())) {
+            Json.mapper().registerModule(new Jackson2HalModule());
+        }
+    }
+
+    public boolean isEnabled() {
+        return repositoryRestConfigurationOptional
+                .map(RepositoryRestConfiguration::useHalAsDefaultJsonMediaType)
+                .orElse(true);
+    }
 }
