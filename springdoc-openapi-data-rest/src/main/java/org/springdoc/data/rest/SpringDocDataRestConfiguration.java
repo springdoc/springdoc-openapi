@@ -18,6 +18,8 @@
 
 package org.springdoc.data.rest;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.querydsl.core.types.Predicate;
@@ -33,12 +35,13 @@ import org.springdoc.data.rest.converters.CollectionModelContentConverter;
 import org.springdoc.data.rest.converters.Pageable;
 import org.springdoc.data.rest.converters.RepresentationModelLinksOASMixin;
 import org.springdoc.data.rest.customisers.QuerydslPredicateOperationCustomizer;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
@@ -46,61 +49,70 @@ import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.LinkRelationProvider;
 
-import java.util.Optional;
-
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-@ComponentScan
 public class SpringDocDataRestConfiguration {
 
-    static {
-        getConfig().replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
-                .replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
-    }
+	static {
+		getConfig().replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
+				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
+	}
 
-    @ConditionalOnClass(value = {QuerydslBindingsFactory.class})
-    class QuerydslProvider {
+	@ConditionalOnClass(value = { QuerydslBindingsFactory.class })
+	class QuerydslProvider {
 
-        @Bean
-        @ConditionalOnMissingBean
-        QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
-            if (querydslBindingsFactory.isPresent()) {
-                getConfig().addRequestWrapperToIgnore(Predicate.class);
-                return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get());
-            }
-            return null;
-        }
-    }
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
+			if (querydslBindingsFactory.isPresent()) {
+				getConfig().addRequestWrapperToIgnore(Predicate.class);
+				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get());
+			}
+			return null;
+		}
+	}
 
-    @Bean
-    CollectionModelContentConverter collectionModelContentConverter(HalProvider halProvider, LinkRelationProvider linkRelationProvider) {
-        return halProvider.isEnabled() ? new CollectionModelContentConverter(linkRelationProvider) : null;
-    }
 
-    /**
-     * Registers an OpenApiCustomiser and a jackson mixin to ensure the definition of `Links` matches the serialized
-     * output. This is done because the customer serializer converts the data to a map before serializing it.
-     *
-     * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
-     */
-    @Bean
-    OpenApiCustomiser linksSchemaCustomiser(HalProvider halProvider) {
-        if (!halProvider.isEnabled()) {
-            return openApi -> {
-            };
-        }
-        Json.mapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
+		return new HalProvider(repositoryRestConfiguration);
+	}
 
-        ResolvedSchema resolvedLinkSchema = ModelConverters.getInstance()
-                .resolveAsResolvedSchema(new AnnotatedType(Link.class).resolveAsRef(true));
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	CollectionModelContentConverter collectionModelContentConverter(HalProvider halProvider, LinkRelationProvider linkRelationProvider) {
+		return halProvider.isHalEnabled() ? new CollectionModelContentConverter(linkRelationProvider) : null;
+	}
 
-        return openApi -> openApi
-                .schema("Link", resolvedLinkSchema.schema)
-                .schema("Links", new MapSchema()
-                        .additionalProperties(new StringSchema())
-                        .additionalProperties(new ObjectSchema().$ref("#/components/schemas/Link")));
-    }
+	/**
+	 * Registers an OpenApiCustomiser and a jackson mixin to ensure the definition of `Links` matches the serialized
+	 * output. This is done because the customer serializer converts the data to a map before serializing it.
+	 *
+	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
+	 */
+	@Bean
+	@Lazy(false)
+	OpenApiCustomiser linksSchemaCustomiser(HalProvider halProvider) {
+		if (!halProvider.isHalEnabled()) {
+			return openApi -> {
+			};
+		}
+		Json.mapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
+
+		ResolvedSchema resolvedLinkSchema = ModelConverters.getInstance()
+				.resolveAsResolvedSchema(new AnnotatedType(Link.class).resolveAsRef(true));
+
+		return openApi -> openApi
+				.schema("Link", resolvedLinkSchema.schema)
+				.schema("Links", new MapSchema()
+						.additionalProperties(new StringSchema())
+						.additionalProperties(new ObjectSchema().$ref("#/components/schemas/Link")));
+	}
 }

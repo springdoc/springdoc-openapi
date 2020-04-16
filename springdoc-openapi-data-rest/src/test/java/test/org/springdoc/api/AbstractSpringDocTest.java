@@ -54,15 +54,11 @@ public abstract class AbstractSpringDocTest {
 	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractSpringDocTest.class);
 
 	public static String className;
+
 	private static List<ModelConverter> modelConverters;
 
 	@Autowired
 	protected MockMvc mockMvc;
-
-	@Autowired
-	private void setModelConverters(List<ModelConverter> modelConverters) {
-		AbstractSpringDocTest.modelConverters = modelConverters;
-	}
 
 	public static String getContent(String fileName) throws Exception {
 		try {
@@ -79,6 +75,11 @@ public abstract class AbstractSpringDocTest {
 	public static void afterClass() {
 		modelConverters.forEach(ModelConverters.getInstance()::removeConverter);
 		System.clearProperty("spring.hateoas.use-hal-as-default-json-media-type");
+	}
+
+	@Autowired
+	private void setModelConverters(List<ModelConverter> modelConverters) {
+		AbstractSpringDocTest.modelConverters = modelConverters;
 	}
 
 	@Test

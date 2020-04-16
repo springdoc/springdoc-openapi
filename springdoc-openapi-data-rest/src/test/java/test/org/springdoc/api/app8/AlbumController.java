@@ -1,5 +1,7 @@
 package test.org.springdoc.api.app8;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -8,23 +10,22 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-
 @RestController
 public class AlbumController {
 
-    @Autowired
-    private AlbumModelAssembler albumModelAssembler;
-    @Autowired
-    private PagedResourcesAssembler pagedResourcesAssembler;
+	@Autowired
+	private AlbumModelAssembler albumModelAssembler;
 
-    @GetMapping("/api/albums")
-    public PagedModel<Album> getAllAlbums() {
-        Album album1 = new Album("album-title-1", "album-description-1", "album-release-date-1");
-        Album album2 = new Album("album-title-2", "album-description-2", "album-release-date-2");
-        Page<Album> albumPage = new PageImpl<>(Arrays.asList(album1, album2));
+	@Autowired
+	private PagedResourcesAssembler pagedResourcesAssembler;
 
-        return pagedResourcesAssembler.toModel(albumPage, albumModelAssembler);
-    }
+	@GetMapping("/api/albums")
+	public PagedModel<Album> getAllAlbums() {
+		Album album1 = new Album("album-title-1", "album-description-1", "album-release-date-1");
+		Album album2 = new Album("album-title-2", "album-description-2", "album-release-date-2");
+		Page<Album> albumPage = new PageImpl<>(Arrays.asList(album1, album2));
+
+		return pagedResourcesAssembler.toModel(albumPage, albumModelAssembler);
+	}
 
 }
