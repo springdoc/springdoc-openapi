@@ -130,10 +130,12 @@
         "properties": {
           "_embedded": {
             "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/EntityModelEmployee"
+            "properties": {
+              "employees": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelEmployee"
+                }
               }
             }
           },
