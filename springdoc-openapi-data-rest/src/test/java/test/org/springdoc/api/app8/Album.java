@@ -2,26 +2,28 @@ package test.org.springdoc.api.app8;
 
 public class Album {
 
-    private String title;
-    private String description;
-    private String releaseDate;
+	private String title;
 
-    public Album(String title, String description, String releaseDate) {
-        this.title = title;
-        this.description = description;
-        this.releaseDate = releaseDate;
-    }
+	private String description;
 
-    public String getTitle() {
-        return title;
-    }
+	private String releaseDate;
 
-    public String getDescription() {
-        return description;
-    }
+	public Album(String title, String description, String releaseDate) {
+		this.title = title;
+		this.description = description;
+		this.releaseDate = releaseDate;
+	}
 
-    public String getReleaseDate() {
-        return releaseDate;
-    }
+	public String getTitle() {
+		return title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getReleaseDate() {
+		return releaseDate;
+	}
 
 }

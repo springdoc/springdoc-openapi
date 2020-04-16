@@ -28,9 +28,10 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.ArraySchema;
-import io.swagger.v3.oas.models.media.MapSchema;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.LinkRelationProvider;
 
 /**
  * Override resolved schema as there is a custom serializer that converts the data to a map before serializing it.
@@ -40,13 +41,10 @@ import io.swagger.v3.oas.models.media.StringSchema;
  */
 public class CollectionModelContentConverter implements ModelConverter {
 
-	private static final CollectionModelContentConverter collectionModelContentConverter = new CollectionModelContentConverter();
+	private LinkRelationProvider linkRelationProvider;
 
-	private CollectionModelContentConverter() {
-	}
-
-	public static CollectionModelContentConverter getConverter() {
-		return collectionModelContentConverter;
+	public CollectionModelContentConverter(LinkRelationProvider linkRelationProvider) {
+		this.linkRelationProvider = linkRelationProvider;
 	}
 
 	@Override
@@ -55,12 +53,23 @@ public class CollectionModelContentConverter implements ModelConverter {
 				&& "_embedded".equalsIgnoreCase(type.getPropertyName())) {
 			Schema<?> schema = chain.next().resolve(type, context, chain);
 			if (schema instanceof ArraySchema) {
-				return new MapSchema()
+				Class<?> entityType = getEntityType(type);
+				String entityClassName = linkRelationProvider.getCollectionResourceRelFor(entityType).value();
+
+				return new ObjectSchema()
 						.name("_embedded")
-						.additionalProperties(new StringSchema())
-						.additionalProperties(schema);
+						.addProperties(entityClassName, schema);
 			}
 		}
 		return chain.hasNext() ? chain.next().resolve(type, context, chain) : null;
+	}
+
+	private Class<?> getEntityType(AnnotatedType type) {
+		Class<?> containerEntityType = ((CollectionType) (type.getType())).getContentType().getRawClass();
+
+		if (containerEntityType.isAssignableFrom(EntityModel.class)) {
+			return ((CollectionType) type.getType()).getContentType().getBindings().getBoundType(0).getRawClass();
+		}
+		return containerEntityType;
 	}
 }

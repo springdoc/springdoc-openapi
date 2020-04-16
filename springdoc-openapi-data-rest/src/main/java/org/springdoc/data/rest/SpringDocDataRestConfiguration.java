@@ -31,6 +31,7 @@ import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.data.rest.converters.CollectionModelContentConverter;
 import org.springdoc.data.rest.converters.Pageable;
 import org.springdoc.data.rest.converters.RepresentationModelLinksOASMixin;
 import org.springdoc.data.rest.customisers.QuerydslPredicateOperationCustomizer;
@@ -46,6 +47,7 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.LinkRelationProvider;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
@@ -82,6 +84,13 @@ public class SpringDocDataRestConfiguration {
 		return new HalProvider(repositoryRestConfiguration);
 	}
 
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	CollectionModelContentConverter collectionModelContentConverter(HalProvider halProvider, LinkRelationProvider linkRelationProvider) {
+		return halProvider.isHalEnabled() ? new CollectionModelContentConverter(linkRelationProvider) : null;
+	}
+
 	/**
 	 * Registers an OpenApiCustomiser and a jackson mixin to ensure the definition of `Links` matches the serialized
 	 * output. This is done because the customer serializer converts the data to a map before serializing it.
@@ -90,8 +99,8 @@ public class SpringDocDataRestConfiguration {
 	 */
 	@Bean
 	@Lazy(false)
-	OpenApiCustomiser linksSchemaCustomiser(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
-		if (!repositoryRestConfiguration.isPresent() || !repositoryRestConfiguration.get().useHalAsDefaultJsonMediaType()) {
+	OpenApiCustomiser linksSchemaCustomiser(HalProvider halProvider) {
+		if (!halProvider.isHalEnabled()) {
 			return openApi -> {
 			};
 		}

@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class AlbumModelAssembler implements RepresentationModelAssembler<Album, EntityModel<Album>> {
 
-    @Override
-    public EntityModel<Album> toModel(Album entity) {
-        List<Link> links = new ArrayList<>();
-        return new EntityModel<>(entity, links);
-    }
+	@Override
+	public EntityModel<Album> toModel(Album entity) {
+		List<Link> links = new ArrayList<>();
+		return new EntityModel<>(entity, links);
+	}
 
 }
