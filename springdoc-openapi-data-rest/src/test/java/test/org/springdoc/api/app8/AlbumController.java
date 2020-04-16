@@ -1,7 +1,5 @@
 package test.org.springdoc.api.app8;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -10,8 +8,10 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+
 @RestController
-public class WebController {
+public class AlbumController {
 
     @Autowired
     private AlbumModelAssembler albumModelAssembler;

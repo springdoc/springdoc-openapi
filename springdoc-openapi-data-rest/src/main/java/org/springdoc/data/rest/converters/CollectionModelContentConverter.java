@@ -18,9 +18,6 @@
 
 package org.springdoc.data.rest.converters;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.type.CollectionType;
@@ -28,9 +25,13 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.ArraySchema;
-import io.swagger.v3.oas.models.media.MapSchema;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.media.StringSchema;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.LinkRelationProvider;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Override resolved schema as there is a custom serializer that converts the data to a map before serializing it.
@@ -40,27 +41,35 @@ import io.swagger.v3.oas.models.media.StringSchema;
  */
 public class CollectionModelContentConverter implements ModelConverter {
 
-	private static final CollectionModelContentConverter collectionModelContentConverter = new CollectionModelContentConverter();
+    private LinkRelationProvider linkRelationProvider;
 
-	private CollectionModelContentConverter() {
-	}
+    public CollectionModelContentConverter(LinkRelationProvider linkRelationProvider) {
+        this.linkRelationProvider = linkRelationProvider;
+    }
 
-	public static CollectionModelContentConverter getConverter() {
-		return collectionModelContentConverter;
-	}
+    @Override
+    public Schema<?> resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+        if (chain.hasNext() && type != null && type.getType() instanceof CollectionType
+                && "_embedded".equalsIgnoreCase(type.getPropertyName())) {
+            Schema<?> schema = chain.next().resolve(type, context, chain);
+            if (schema instanceof ArraySchema) {
+                Class<?> entityType = getEntityType(type);
+                String entityClassName = linkRelationProvider.getCollectionResourceRelFor(entityType).value();
 
-	@Override
-	public Schema<?> resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
-		if (chain.hasNext() && type != null && type.getType() instanceof CollectionType
-				&& "_embedded".equalsIgnoreCase(type.getPropertyName())) {
-			Schema<?> schema = chain.next().resolve(type, context, chain);
-			if (schema instanceof ArraySchema) {
-				return new MapSchema()
-						.name("_embedded")
-						.additionalProperties(new StringSchema())
-						.additionalProperties(schema);
-			}
-		}
-		return chain.hasNext() ? chain.next().resolve(type, context, chain) : null;
-	}
+                return new ObjectSchema()
+                        .name("_embedded")
+                        .addProperties(entityClassName, schema);
+            }
+        }
+        return chain.hasNext() ? chain.next().resolve(type, context, chain) : null;
+    }
+
+    private Class<?> getEntityType(AnnotatedType type) {
+        Class<?> containerEntityType = ((CollectionType) (type.getType())).getContentType().getRawClass();
+
+        if (containerEntityType.isAssignableFrom(EntityModel.class)) {
+            return ((CollectionType) type.getType()).getContentType().getBindings().getBoundType(0).getRawClass();
+        }
+        return containerEntityType;
+    }
 }
