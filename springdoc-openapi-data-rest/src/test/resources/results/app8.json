@@ -14,7 +14,7 @@
     "/api/albums": {
       "get": {
         "tags": [
-          "web-controller"
+          "album-controller"
         ],
         "operationId": "getAllAlbums",
         "responses": {
@@ -80,10 +80,12 @@
         "properties": {
           "_embedded": {
             "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/Album"
+            "properties": {
+              "albums": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Album"
+                }
               }
             }
           },
