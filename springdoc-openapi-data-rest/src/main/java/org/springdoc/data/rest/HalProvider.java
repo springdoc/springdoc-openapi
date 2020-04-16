@@ -18,37 +18,34 @@
 
 package org.springdoc.data.rest;
 
-import io.swagger.v3.core.util.Json;
-import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
-import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.util.Optional;
 
-@Component
+import javax.annotation.PostConstruct;
+
+import io.swagger.v3.core.util.Json;
+
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
+
 public class HalProvider {
 
-    private Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional;
+	private Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional;
 
-    public HalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional) {
-        this.repositoryRestConfigurationOptional = repositoryRestConfigurationOptional;
-    }
+	public HalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional) {
+		this.repositoryRestConfigurationOptional = repositoryRestConfigurationOptional;
+	}
 
-    @PostConstruct
-    private void init() {
-        if (!isEnabled()) {
-            return;
-        }
+	@PostConstruct
+	private void init() {
+		if (!isHalEnabled())
+			return;
+		if (!Jackson2HalModule.isAlreadyRegisteredIn(Json.mapper()))
+			Json.mapper().registerModule(new Jackson2HalModule());
+	}
 
-        if (!Jackson2HalModule.isAlreadyRegisteredIn(Json.mapper())) {
-            Json.mapper().registerModule(new Jackson2HalModule());
-        }
-    }
-
-    public boolean isEnabled() {
-        return repositoryRestConfigurationOptional
-                .map(RepositoryRestConfiguration::useHalAsDefaultJsonMediaType)
-                .orElse(true);
-    }
+	public boolean isHalEnabled() {
+		return repositoryRestConfigurationOptional
+				.map(RepositoryRestConfiguration::useHalAsDefaultJsonMediaType)
+				.orElse(true);
+	}
 }
