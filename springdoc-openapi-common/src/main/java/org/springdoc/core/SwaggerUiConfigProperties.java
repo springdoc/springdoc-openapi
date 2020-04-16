@@ -160,6 +160,8 @@ public class SwaggerUiConfigProperties {
 
 	private Direction groupsOrder = Direction.ASC;
 
+	private String urlsPrimaryName;
+
 	public void addGroup(String group) {
 		SwaggerUrl swaggerUrl = new SwaggerUrl(group);
 		urls.add(swaggerUrl);
@@ -204,6 +206,7 @@ public class SwaggerUiConfigProperties {
 		SpringDocPropertiesUtils.put("oauth2RedirectUrl", oauth2RedirectUrl, params);
 		SpringDocPropertiesUtils.put("url", url, params);
 		put("urls", urls, params);
+		SpringDocPropertiesUtils.put("urls.primaryName", urlsPrimaryName, params);
 		return params;
 	}
 
@@ -405,6 +408,14 @@ public class SwaggerUiConfigProperties {
 		public boolean isAscending() {
 			return this.equals(ASC);
 		}
+	}
+
+	public String getUrlsPrimaryName() {
+		return urlsPrimaryName;
+	}
+
+	public void setUrlsPrimaryName(String urlsPrimaryName) {
+		this.urlsPrimaryName = urlsPrimaryName;
 	}
 
 	static class SwaggerUrl {
