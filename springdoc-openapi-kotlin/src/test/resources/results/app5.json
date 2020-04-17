@@ -11,29 +11,23 @@
     }
   ],
   "paths": {
-    "/test": {
+    "/test/": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "index",
-        "parameters": [
-          {
-            "name": "s",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Person"
-            }
-          }
-        ],
+        "operationId": "foo",
         "responses": {
           "200": {
             "description": "default response",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Person"
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
                 }
               }
             }
@@ -42,22 +36,5 @@
       }
     }
   },
-  "components": {
-    "schemas": {
-      "Person": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "nickname": {
-            "type": "string"
-          }
-        }
-      }
-    }
-  }
+  "components": {}
 }

@@ -33,6 +33,8 @@ public class ConverterUtils {
 
 	private static final List<Class<?>> RESPONSE_TYPES_TO_IGNORE = new ArrayList<>();
 
+	private static final List<Class<?>> FLUX_WRAPPERS_TO_IGNORE = new ArrayList<>();
+
 	static {
 		RESULT_WRAPPERS_TO_IGNORE.add(Callable.class);
 		RESULT_WRAPPERS_TO_IGNORE.add(ResponseEntity.class);
@@ -69,5 +71,19 @@ public class ConverterUtils {
 		List classesToIgnore = Arrays.asList(classes);
 		if (RESPONSE_TYPES_TO_IGNORE.containsAll(classesToIgnore))
 			RESPONSE_TYPES_TO_IGNORE.removeAll(Arrays.asList(classes));
+	}
+
+	public static boolean isFluxTypeWrapper(Class<?> rawClass) {
+		return FLUX_WRAPPERS_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+	}
+
+	public static void removeFluxWrapperToIgnore(Class<?> classes) {
+		List classesToIgnore = Arrays.asList(classes);
+		if (FLUX_WRAPPERS_TO_IGNORE.containsAll(classesToIgnore))
+			FLUX_WRAPPERS_TO_IGNORE.removeAll(Arrays.asList(classes));
+	}
+
+	public static void addFluxWrapperToIgnore(Class<?> cls) {
+		FLUX_WRAPPERS_TO_IGNORE.add(cls);
 	}
 }

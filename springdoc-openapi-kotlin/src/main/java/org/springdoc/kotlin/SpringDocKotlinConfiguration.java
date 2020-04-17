@@ -22,6 +22,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import io.swagger.v3.core.util.Json;
 import kotlin.Deprecated;
 import kotlin.coroutines.Continuation;
+import kotlinx.coroutines.flow.Flow;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +38,8 @@ public class SpringDocKotlinConfiguration {
 
 	static {
 		getConfig().addRequestWrapperToIgnore(Continuation.class)
-				.addDeprecatedType(Deprecated.class);
+				.addDeprecatedType(Deprecated.class)
+				.addFluxWrapperToIgnore(Flow.class);
 		Json.mapper().registerModule(new KotlinModule());
 	}
 
