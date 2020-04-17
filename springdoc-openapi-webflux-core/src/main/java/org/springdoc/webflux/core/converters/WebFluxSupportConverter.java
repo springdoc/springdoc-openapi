@@ -32,13 +32,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static org.springdoc.core.SpringDocUtils.getConfig;
+import static org.springdoc.core.converters.ConverterUtils.isFluxTypeWrapper;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper;
 
 
 public class WebFluxSupportConverter implements ModelConverter {
 
 	static {
-		getConfig().addResponseWrapperToIgnore(Mono.class);
+		getConfig().addResponseWrapperToIgnore(Mono.class)
+				.addFluxWrapperToIgnore(Flux.class);
 	}
 
 	@Override
@@ -46,7 +48,7 @@ public class WebFluxSupportConverter implements ModelConverter {
 		JavaType javaType = Json.mapper().constructType(type.getType());
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
-			if (Flux.class.isAssignableFrom(cls)) {
+			if (isFluxTypeWrapper(cls)) {
 				JavaType innerType = javaType.getBindings().getBoundType(0);
 				if (innerType == null)
 					return new StringSchema();

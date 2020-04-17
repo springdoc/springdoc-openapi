@@ -103,5 +103,15 @@ public class SpringDocUtils {
 		GenericParameterBuilder.removeAnnotationsToIgnore(classes);
 		return this;
 	}
+
+	public SpringDocUtils addFluxWrapperToIgnore(Class<?> cls) {
+		ConverterUtils.addFluxWrapperToIgnore(cls);
+		return this;
+	}
+
+	public SpringDocUtils removeFluxWrapperToIgnore(Class<?> cls) {
+		ConverterUtils.removeFluxWrapperToIgnore(cls);
+		return this;
+	}
 }
 
