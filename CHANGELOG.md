@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.3] - 2020-04-18
+### Added
+- #322 - Make default type of Resource as binary.
+- #560 - Add support kotlin Flow as response type.
+- #572 - Add support for swagger-ui-property 'urls.primaryName'.
+### Changed
+- #561 - remove pageable required.
+- #567 - springdoc.swagger-ui.oauth.additionalQueryStringParams as map instead of list.
+### Fixed
+- #570 - Spring HATEOAS fixing _embedded.
+- #563 - Spring 4 incompatibility using springdoc-openapi 1.2.30+. Fixes. 
+- #562 - Lazy Initialisation breaks WebFlux support. 
+
 ## [1.3.2] - 2020-04-12
 ### Added
 - #541 - Add support for none required fields on @ParameterObject
