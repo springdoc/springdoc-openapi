@@ -197,11 +197,9 @@ public class GenericParameterBuilder {
 		Schema schemaN;
 		String paramName = parameterInfo.getpName();
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
-		Class type = methodParameter.getParameterType();
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
 			if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
-				ParameterizedType parameterizedType = (ParameterizedType) methodParameter.getGenericParameterType();
 				schemaN = SpringDocAnnotationsUtils.extractSchema(components, methodParameter.getGenericParameterType(), jsonView, methodParameter.getParameterAnnotations());
 			}
 			else
@@ -215,11 +213,7 @@ public class GenericParameterBuilder {
 				requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
 				schemaN = requestBodyInfo.getMergedSchema();
 			}
-			else if (schemaN instanceof FileSchema) {
-				schemaN = new ObjectSchema().addProperties(paramName, schemaN);
-				requestBodyInfo.setMergedSchema(schemaN);
-			}
-			else if (schemaN instanceof ArraySchema && ((ArraySchema) schemaN).getItems() instanceof FileSchema) {
+			else if (schemaN instanceof FileSchema || schemaN instanceof ArraySchema && ((ArraySchema) schemaN).getItems() instanceof FileSchema) {
 				schemaN = new ObjectSchema().addProperties(paramName, schemaN);
 				requestBodyInfo.setMergedSchema(schemaN);
 			}
@@ -234,17 +228,6 @@ public class GenericParameterBuilder {
 		return ANNOTATIOSN_TO_IGNORE.stream().anyMatch(
 				annotation -> parameter.getParameterAnnotation(annotation) != null
 						|| AnnotationUtils.findAnnotation(parameter.getParameterType(), annotation) != null);
-	}
-
-	private Schema getFileSchema(RequestBodyInfo requestBodyInfo) {
-		Schema schemaN;
-		if (requestBodyInfo.getMergedSchema() != null)
-			schemaN = requestBodyInfo.getMergedSchema();
-		else {
-			schemaN = new ObjectSchema();
-			requestBodyInfo.setMergedSchema(schemaN);
-		}
-		return schemaN;
 	}
 
 	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
