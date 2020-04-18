@@ -198,15 +198,8 @@ public class GenericParameterBuilder {
 		Class type = methodParameter.getParameterType();
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
-			if (isFile(type)) {
-				schemaN = getFileSchema(requestBodyInfo);
-				schemaN.addProperties(paramName, new FileSchema());
-				return schemaN;
-			}
-			else if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
+			if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
 				ParameterizedType parameterizedType = (ParameterizedType) methodParameter.getGenericParameterType();
-				if (isFile(parameterizedType))
-					return extractFileSchema(paramName, requestBodyInfo);
 				schemaN = SpringDocAnnotationsUtils.extractSchema(components, methodParameter.getGenericParameterType(), jsonView, methodParameter.getParameterAnnotations());
 			}
 			else
@@ -220,6 +213,14 @@ public class GenericParameterBuilder {
 				requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
 				schemaN = requestBodyInfo.getMergedSchema();
 			}
+			else if (schemaN instanceof FileSchema) {
+				schemaN = new ObjectSchema().addProperties(paramName, schemaN);
+				requestBodyInfo.setMergedSchema(schemaN);
+			}
+			else if (schemaN instanceof ArraySchema && ((ArraySchema) schemaN).getItems() instanceof FileSchema) {
+				schemaN = new ObjectSchema().addProperties(paramName, schemaN);
+				requestBodyInfo.setMergedSchema(schemaN);
+			}
 			else
 				requestBodyInfo.addProperties(paramName, schemaN);
 		}
@@ -227,30 +228,10 @@ public class GenericParameterBuilder {
 		return schemaN;
 	}
 
-	public boolean isFile(MethodParameter methodParameter) {
-		if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
-			Type type = methodParameter.getGenericParameterType();
-			ParameterizedType parameterizedType = (ParameterizedType) type;
-			return isFile(parameterizedType);
-		}
-		else {
-			Class type = methodParameter.getParameterType();
-			return isFile(type);
-		}
-	}
-
 	public boolean isAnnotationToIgnore(MethodParameter parameter) {
 		return ANNOTATIOSN_TO_IGNORE.stream().anyMatch(
 				annotation -> parameter.getParameterAnnotation(annotation) != null
 						|| AnnotationUtils.findAnnotation(parameter.getParameterType(), annotation) != null);
-	}
-
-	private Schema extractFileSchema(String paramName, RequestBodyInfo requestBodyInfo) {
-		Schema schemaN = getFileSchema(requestBodyInfo);
-		ArraySchema schemaFile = new ArraySchema();
-		schemaFile.items(new FileSchema());
-		schemaN.addProperties(paramName, new ArraySchema().items(new FileSchema()));
-		return schemaN;
 	}
 
 	private Schema getFileSchema(RequestBodyInfo requestBodyInfo) {
@@ -262,19 +243,6 @@ public class GenericParameterBuilder {
 			requestBodyInfo.setMergedSchema(schemaN);
 		}
 		return schemaN;
-	}
-
-	private boolean isFile(ParameterizedType parameterizedType) {
-		Type type = parameterizedType.getActualTypeArguments()[0];
-		Class fileClass = ResolvableType.forType(type).getRawClass();
-		if (fileClass!=null && isFile(fileClass))
-			return true;
-		else if (type instanceof WildcardType) {
-			WildcardType wildcardType = (WildcardType) type;
-			Type[] upperBounds = wildcardType.getUpperBounds();
-			return MultipartFile.class.getName().equals(upperBounds[0].getTypeName());
-		}
-		return false;
 	}
 
 	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
@@ -328,7 +296,31 @@ public class GenericParameterBuilder {
 		return explode;
 	}
 
-	private boolean isFile(Class type) {
+	public boolean isFile(MethodParameter methodParameter) {
+		if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
+			ParameterizedType parameterizedType = (ParameterizedType) methodParameter.getGenericParameterType();
+			return isFile(parameterizedType);
+		}
+		else {
+			Class type = methodParameter.getParameterType();
+			return isFile(type);
+		}
+	}
+
+	private boolean isFile(ParameterizedType parameterizedType) {
+		Type type = parameterizedType.getActualTypeArguments()[0];
+		Class fileClass = ResolvableType.forType(type).getRawClass();
+		if (fileClass != null && isFile(fileClass))
+			return true;
+		else if (type instanceof WildcardType) {
+			WildcardType wildcardType = (WildcardType) type;
+			Type[] upperBounds = wildcardType.getUpperBounds();
+			return MultipartFile.class.getName().equals(upperBounds[0].getTypeName());
+		}
+		return false;
+	}
+
+	public static boolean isFile(Class type) {
 		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(type));
 	}
 }

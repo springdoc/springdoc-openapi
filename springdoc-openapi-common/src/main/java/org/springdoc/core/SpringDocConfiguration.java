@@ -31,6 +31,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.converters.AdditionalModelsConverter;
+import org.springdoc.core.converters.FileSupportConverter;
 import org.springdoc.core.converters.ModelConverterRegistrar;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
@@ -88,6 +89,13 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	PropertyCustomizingConverter propertyCustomizingConverter(Optional<List<PropertyCustomizer>> customizers) {
 		return new PropertyCustomizingConverter(customizers);
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	FileSupportConverter fileSupportConverter() {
+		return new FileSupportConverter();
 	}
 
 	@Bean
