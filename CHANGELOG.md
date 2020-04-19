@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.4] - 2020-04-19
+### Fixed
+- #583 - Crash on startup with 1.3.3 for kotlin app not using kotlinx-coroutines-reactor.
+
 ## [1.3.3] - 2020-04-18
 ### Added
 - #322 - Make default type of Resource as binary.
