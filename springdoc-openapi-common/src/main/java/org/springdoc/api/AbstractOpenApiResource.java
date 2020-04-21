@@ -134,9 +134,15 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
 			Map<String, Object> findControllerAdvice = openAPIBuilder.getControllerAdviceMap();
+			Map<Boolean, List<Map.Entry<String, Object>>> partitionedControllerAdviceEntries = 
+					findControllerAdvice.entrySet().stream().collect(Collectors.partitioningBy(
+							entry -> OpenAPIBuilder.isTargettingControllerAdvice(entry)));
+			Map<String, Object> targettingControllerAdvice = controllerAdviceEntryListToMap(partitionedControllerAdviceEntries, true);
+			//targettingControllerAdvice must be used in getPaths later maybe after some transformng logic
+			Map<String, Object> genericControllerAdvice = controllerAdviceEntryListToMap(partitionedControllerAdviceEntries, false);
 			// calculate generic responses
 			openApi = openAPIBuilder.getCalculatedOpenAPI();
-			responseBuilder.buildGenericResponse(openApi.getComponents(), findControllerAdvice);
+			responseBuilder.buildGenericResponse(openApi.getComponents(), genericControllerAdvice);
 			getPaths(mappingsMap);
 			// run the optional customisers
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
@@ -151,6 +157,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			openApi = openAPIBuilder.calculateCachedOpenAPI();
 		}
 		return openApi;
+	}
+	
+	private Map<String, Object> controllerAdviceEntryListToMap(
+			Map<Boolean, List<Map.Entry<String, Object>>> partitionedControllerAdviceEntries, boolean isTargetting) {
+		return partitionedControllerAdviceEntries.get(isTargetting).stream().
+		collect(Collectors.toMap(entry ->entry.getKey() , entry -> entry.getValue()));
 	}
 
 	protected abstract void getPaths(Map<String, Object> findRestControllers);

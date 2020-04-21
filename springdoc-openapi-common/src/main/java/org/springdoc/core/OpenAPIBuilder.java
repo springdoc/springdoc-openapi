@@ -124,6 +124,36 @@ public class OpenAPIBuilder {
 				"-")
 				.toLowerCase(Locale.ROOT);
 	}
+	
+	public static boolean isTargettingControllerAdvice(Map.Entry<String, Object> entry)
+	{
+		Object controllerAdvice = entry.getValue();
+		Class<?> objClz = controllerAdvice.getClass();
+		if (org.springframework.aop.support.AopUtils.isAopProxy(controllerAdvice)) {
+			objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerAdvice);
+		}
+		boolean isTargetting = false;
+		if(objClz.isAnnotationPresent(ControllerAdvice.class))
+		{
+			ControllerAdvice advc = objClz.getAnnotation(ControllerAdvice.class);
+			
+			if (advc.assignableTypes() != null && advc.assignableTypes().length > 0) {
+				isTargetting = true;
+			}
+			if (advc.basePackageClasses() != null && advc.basePackageClasses().length > 0) {
+				isTargetting = true;
+			}
+			if (advc.basePackages() != null && advc.basePackages().length > 0) {
+				isTargetting = true;
+			}
+		}
+		else
+		{
+			//not expecting this else
+			//ignoring will check for suggestion
+		}
+		return isTargetting;
+	}
 
 	public void build() {
 		Optional<OpenAPIDefinition> apiDef = getOpenAPIDefinition();
