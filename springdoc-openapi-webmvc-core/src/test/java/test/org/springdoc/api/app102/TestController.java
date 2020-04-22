@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 	@GetMapping("test")
-	public void getTest(@RequestParam @Nullable String param, @ParameterObject RequestParams requestParams) {
+	public void getTest(@RequestParam @Nullable String param, @ParameterObject InheritedRequestParams requestParams) {
 	}
 }

@@ -50,7 +50,7 @@ class DelegatingMethodParameter extends MethodParameter {
 			MethodParameter p = parameters[i];
 			if (p.hasParameterAnnotation(ParameterObject.class)) {
 				Class<?> paramClass = AdditionalModelsConverter.getReplacement(p.getParameterType());
-				Stream.of(paramClass.getDeclaredFields())
+				allFieldsOf(paramClass).stream()
 						.map(f -> fromGetterOfField(paramClass, f))
 						.filter(Objects::nonNull)
 						.forEach(explodedParameters::add);
@@ -185,5 +185,14 @@ class DelegatingMethodParameter extends MethodParameter {
 	private class NullableFieldClass {
 		@Nullable
 		private String nullableField;
+	}
+
+	private static List<Field> allFieldsOf(Class<?> clazz) {
+		List<Field> fields = new ArrayList<>();
+		do {
+			fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+			clazz = clazz.getSuperclass();
+		} while (clazz != null);
+		return fields;
 	}
 }

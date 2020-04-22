@@ -27,6 +27,15 @@
             }
           },
           {
+            "name": "childParam",
+            "in": "query",
+            "description": "parameter from child of RequestParams",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "stringParam",
             "in": "query",
             "description": "string parameter",
