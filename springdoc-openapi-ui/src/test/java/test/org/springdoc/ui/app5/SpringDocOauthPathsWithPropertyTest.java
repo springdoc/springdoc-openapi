@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "springdoc.swagger-ui.oauth2RedirectUrl=http://localhost:8080/toto/test/swagger-ui/oauth2-redirect.html")
+@TestPropertySource(properties = "springdoc.swagger-ui.oauth2-redirect-url=http://localhost:8080/toto/test/swagger-ui/oauth2-redirect.html")
 public class SpringDocOauthPathsWithPropertyTest extends AbstractSpringDocTest {
 
 	@Test

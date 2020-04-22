@@ -26,6 +26,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 
+import static org.springdoc.core.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 @Configuration
@@ -190,7 +191,7 @@ public class SpringDocConfigProperties {
 	}
 
 	public static class Webjars {
-		private String prefix = "/webjars";
+		private String prefix = DEFAULT_WEB_JARS_PREFIX_URL;
 
 		public String getPrefix() {
 			return prefix;

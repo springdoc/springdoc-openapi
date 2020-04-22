@@ -23,14 +23,12 @@ import java.util.Map;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.ui.AbstractSwaggerWelcome;
 import reactor.core.publisher.Mono;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
@@ -44,10 +42,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.Constants.SWAGGER_CONFIG_URL;
-import static org.springdoc.core.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
 import static org.springdoc.core.Constants.SWAGGER_UI_URL;
-import static org.springdoc.core.Constants.WEB_JARS_PREFIX_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @Controller
@@ -55,11 +51,11 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerWelcome extends AbstractSwaggerWelcome {
 
-	@Value(WEB_JARS_PREFIX_URL)
 	private String webJarsPrefixUrl;
 
 	public SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
 		super(swaggerUiConfig, springDocConfigProperties);
+		this.webJarsPrefixUrl = springDocConfigProperties.getWebjars().getPrefix();
 	}
 
 	@Operation(hidden = true)
@@ -95,11 +91,8 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 
 	@Override
 	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
-		if (StringUtils.isEmpty(oauth2RedirectUrl)) {
-			swaggerUiConfig.setOauth2RedirectUrl(uriComponentsBuilder.path(this.uiRootPath).path(webJarsPrefixUrl + SWAGGER_UI_OAUTH_REDIRECT_URL).build().toString());
-		}
-		else if (!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
-			swaggerUiConfig.setOauth2RedirectUrl(uriComponentsBuilder.path(this.uiRootPath).path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
+		if (!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
+			swaggerUiConfig.setOauth2RedirectUrl(uriComponentsBuilder.path(this.uiRootPath).path(webJarsPrefixUrl).path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
 		}
 	}
 

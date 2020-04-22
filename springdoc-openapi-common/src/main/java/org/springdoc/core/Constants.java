@@ -46,21 +46,7 @@ public final class Constants {
 
 	public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
 
-	public static final String SPRINGDOC_SWAGGER_UI_CONFIG_URL = "springdoc.swagger-ui.configUrl";
-
-	public static final String SPRINGDOC_SWAGGER_UI_URL = "springdoc.swagger-ui.url";
-
 	public static final String NULL = ":#{null}";
-
-	public static final String MVC_SERVLET_PATH = "${spring.mvc.servlet.path" + NULL + "}";
-
-	public static final String SPRINGDOC_SWAGGER_UI_URL_VALUE = "${" + SPRINGDOC_SWAGGER_UI_URL + NULL + "}";
-
-	public static final String SPRINGDOC_OAUTH2_REDIRECT_URL = "springdoc.swagger-ui.oauth2RedirectUrl";
-
-	public static final String SPRINGDOC_OAUTH2_REDIRECT_URL_VALUE = "${" + SPRINGDOC_OAUTH2_REDIRECT_URL + NULL + "}";
-
-	public static final String SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE = "${" + SPRINGDOC_SWAGGER_UI_CONFIG_URL + NULL + "}";
 
 	public static final String SPRINGDOC_SHOW_ACTUATOR = "springdoc.show-actuator";
 
@@ -73,8 +59,6 @@ public final class Constants {
 	public static final String SPRINGDOC_ACTUATOR_DOC_DESCRIPTION = "Spring Boot Actuator Web API Documentation";
 
 	public static final String DEFAULT_WEB_JARS_PREFIX_URL = "/webjars";
-
-	public static final String WEB_JARS_PREFIX_URL = "${springdoc.webjars.prefix:" + DEFAULT_WEB_JARS_PREFIX_URL + "}";
 
 	public static final String CLASSPATH_RESOURCE_LOCATION = ResourceUtils.CLASSPATH_URL_PREFIX + "/META-INF/resources";
 

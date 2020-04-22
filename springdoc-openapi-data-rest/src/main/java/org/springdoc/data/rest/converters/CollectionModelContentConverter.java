@@ -30,6 +30,7 @@ import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.LinkRelationProvider;
 
