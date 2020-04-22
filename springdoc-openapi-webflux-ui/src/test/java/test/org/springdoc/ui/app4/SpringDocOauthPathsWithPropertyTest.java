@@ -26,7 +26,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 
-@TestPropertySource(properties = "springdoc.swagger-ui.oauth2RedirectUrl=http://localhost:8080/toto/test/swagger-ui/oauth2-redirect.html")
+@TestPropertySource(properties = "springdoc.swagger-ui.oauth2-redirect-url=http://localhost:8080/toto/test/swagger-ui/oauth2-redirect.html")
 public class SpringDocOauthPathsWithPropertyTest extends AbstractSpringDocTest {
 
 	@Test

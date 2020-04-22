@@ -23,12 +23,8 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigProperties;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static org.springdoc.core.Constants.SPRINGDOC_OAUTH2_REDIRECT_URL_VALUE;
-import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE;
-import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_URL_VALUE;
 import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
@@ -41,18 +37,18 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 
 	protected String uiRootPath;
 
-	@Value(SPRINGDOC_OAUTH2_REDIRECT_URL_VALUE)
 	protected String oauth2RedirectUrl;
 
-	@Value(SPRINGDOC_SWAGGER_UI_CONFIG_URL_VALUE)
 	private String originConfigUrl;
 
-	@Value(SPRINGDOC_SWAGGER_UI_URL_VALUE)
 	private String swaggerUiUrl;
 
 	public AbstractSwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
 		this.swaggerUiConfig = swaggerUiConfig;
 		this.springDocConfigProperties = springDocConfigProperties;
+		this.oauth2RedirectUrl = swaggerUiConfig.getOauth2RedirectUrl();
+		this.originConfigUrl = swaggerUiConfig.getConfigUrl();
+		this.swaggerUiUrl = swaggerUiConfig.getUrl();
 	}
 
 	@Override
@@ -89,9 +85,9 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	protected UriComponentsBuilder getUriComponentsBuilder(String sbUrl) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl);
 		uriBuilder.queryParam(SwaggerUiConfigProperties.CONFIG_URL_PROPERTY, swaggerUiConfig.getConfigUrl());
-		if(StringUtils.isNotEmpty(swaggerUiConfig.getLayout()))
+		if (StringUtils.isNotEmpty(swaggerUiConfig.getLayout()))
 			uriBuilder.queryParam(SwaggerUiConfigProperties.LAYOUT_PROPERTY, swaggerUiConfig.getLayout());
-		if(StringUtils.isNotEmpty(swaggerUiConfig.getFilter()))
+		if (StringUtils.isNotEmpty(swaggerUiConfig.getFilter()))
 			uriBuilder.queryParam(SwaggerUiConfigProperties.FILTER_PROPERTY, swaggerUiConfig.getFilter());
 
 		return uriBuilder;
