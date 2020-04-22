@@ -255,7 +255,9 @@ public abstract class AbstractRequestBuilder {
 	protected boolean isParamToIgnore(MethodParameter parameter) {
 		if (parameterBuilder.isAnnotationToIgnore(parameter))
 			return true;
-		if ((parameter.getParameterAnnotation(PathVariable.class) != null && parameter.getParameterAnnotation(PathVariable.class) .required()) || (parameter.getParameterAnnotation(RequestParam.class) != null && parameter.getParameterAnnotation(RequestParam.class).required()))
+		if ((parameter.getParameterAnnotation(PathVariable.class) != null && parameter.getParameterAnnotation(PathVariable.class) .required())
+				|| (parameter.getParameterAnnotation(RequestParam.class) != null && parameter.getParameterAnnotation(RequestParam.class).required())
+				|| (parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null && parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class).required()))
 			return false;
 		return isRequestTypeToIgnore(parameter.getParameterType());
 	}
