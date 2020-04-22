@@ -41,12 +41,12 @@
         }
       }
     },
-    "/test1": {
+    "/test2": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "test1",
+        "operationId": "test2",
         "parameters": [
           {
             "name": "test_header",
@@ -55,6 +55,14 @@
             "schema": {
               "type": "string",
               "example": "rherherherherh"
+            }
+          },
+          {
+            "name": "param1",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -113,12 +121,12 @@
         }
       }
     },
-    "/test2": {
+    "/test1": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "test2",
+        "operationId": "test1",
         "parameters": [
           {
             "name": "test_header",
@@ -127,14 +135,6 @@
             "schema": {
               "type": "string",
               "example": "rherherherherh"
-            }
-          },
-          {
-            "name": "param1",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
             }
           }
         ],
@@ -145,6 +145,42 @@
               "*/*": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "hello",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "default response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
                 }
               }
             }
