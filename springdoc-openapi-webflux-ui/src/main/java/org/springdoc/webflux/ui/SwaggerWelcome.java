@@ -53,6 +53,8 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 
 	private String webJarsPrefixUrl;
 
+	private UriComponentsBuilder oauthPrefix;
+
 	public SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
 		super(swaggerUiConfig, springDocConfigProperties);
 		this.webJarsPrefixUrl = springDocConfigProperties.getWebjars().getPrefix();
@@ -91,8 +93,9 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 
 	@Override
 	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
-		if (!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
-			swaggerUiConfig.setOauth2RedirectUrl(uriComponentsBuilder.path(this.uiRootPath).path(webJarsPrefixUrl).path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
+		if (oauthPrefix == null && !swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
+			this.oauthPrefix = uriComponentsBuilder.path(this.uiRootPath).path(webJarsPrefixUrl);
+			swaggerUiConfig.setOauth2RedirectUrl(this.oauthPrefix.path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
 		}
 	}
 
