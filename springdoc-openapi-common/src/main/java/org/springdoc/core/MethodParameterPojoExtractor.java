@@ -7,7 +7,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +16,7 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -37,19 +37,16 @@ class MethodParameterPojoExtractor {
 	}
 
 	private static Stream<MethodParameter> fromGetterOfField(Class<?> paramClass, Field field, String fieldNamePrefix) {
-		if (isSimpleType(field.getType())) {
+		if (isSimpleType(field.getType()))
 			return fromSimpleClass(paramClass, field, fieldNamePrefix);
-		}
-		else {
+		else
 			return extractFrom(field.getType(), fieldNamePrefix + field.getName() + ".");
-		}
 	}
 
 	private static Stream<MethodParameter> fromSimpleClass(Class<?> paramClass, Field field, String fieldNamePrefix) {
 		Annotation[] fieldAnnotations = field.getDeclaredAnnotations();
-		if (isOptional(field)) {
+		if (isOptional(field))
 			fieldAnnotations = ArrayUtils.add(fieldAnnotations, NULLABLE_ANNOTATION);
-		}
 		try {
 			Annotation[] finalFieldAnnotations = fieldAnnotations;
 			return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
@@ -79,10 +76,8 @@ class MethodParameterPojoExtractor {
 	}
 
 	private static boolean isSimpleType(Class<?> clazz) {
-		if (clazz.isPrimitive()) return true;
-		if (clazz.isArray()) return true;
-		if (clazz.isEnum()) return true;
-		return SIMPLE_TYPES.stream().anyMatch(c -> c.isAssignableFrom(clazz));
+		return SIMPLE_TYPE_PREDICATES.stream().anyMatch(p -> p.test(clazz)) ||
+				SIMPLE_TYPES.stream().anyMatch(c -> c.isAssignableFrom(clazz));
 	}
 
 	private static final Nullable NULLABLE_ANNOTATION = new Nullable() {
@@ -92,22 +87,37 @@ class MethodParameterPojoExtractor {
 		}
 	};
 
-	private static final Set<Class<?>> SIMPLE_TYPES;
+	private static final List<Predicate<Class<?>>> SIMPLE_TYPE_PREDICATES = new ArrayList<>();
+
+	private static final Set<Class<?>> SIMPLE_TYPES = new HashSet<>();
+
+	static void addSimpleTypePredicate(Predicate<Class<?>> predicate) {
+		SIMPLE_TYPE_PREDICATES.add(predicate);
+	}
+
+	static void addSimpleTypes(Class<?>... classes) {
+		SIMPLE_TYPES.addAll(Arrays.asList(classes));
+	}
+
+	static void removeSimpleTypes(Class<?>... classes) {
+		SIMPLE_TYPES.removeAll(Arrays.asList(classes));
+	}
 
 	static {
-		Set<Class<?>> simpleTypes = new HashSet<>();
-		simpleTypes.add(Boolean.class);
-		simpleTypes.add(Character.class);
-		simpleTypes.add(Number.class);
-		simpleTypes.add(CharSequence.class);
-		simpleTypes.add(Optional.class);
-		simpleTypes.add(OptionalInt.class);
-		simpleTypes.add(OptionalLong.class);
-		simpleTypes.add(OptionalDouble.class);
+		SIMPLE_TYPES.add(Boolean.class);
+		SIMPLE_TYPES.add(Character.class);
+		SIMPLE_TYPES.add(Number.class);
+		SIMPLE_TYPES.add(CharSequence.class);
+		SIMPLE_TYPES.add(Optional.class);
+		SIMPLE_TYPES.add(OptionalInt.class);
+		SIMPLE_TYPES.add(OptionalLong.class);
+		SIMPLE_TYPES.add(OptionalDouble.class);
 
-		simpleTypes.add(Map.class);
-		simpleTypes.add(Iterable.class);
+		SIMPLE_TYPES.add(Map.class);
+		SIMPLE_TYPES.add(Iterable.class);
 
-		SIMPLE_TYPES = Collections.unmodifiableSet(simpleTypes);
+		SIMPLE_TYPE_PREDICATES.add(Class::isPrimitive);
+		SIMPLE_TYPE_PREDICATES.add(Class::isEnum);
+		SIMPLE_TYPE_PREDICATES.add(Class::isArray);
 	}
 }
