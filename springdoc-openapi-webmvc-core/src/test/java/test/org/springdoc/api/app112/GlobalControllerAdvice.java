@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app111;
+package test.org.springdoc.api.app112;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 
-@ControllerAdvice(basePackages = "test.org.springdoc.api.appzzz")
+@ControllerAdvice(basePackages = "test.org.springdoc.api.app112.sample")
 public class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 {
 	/**

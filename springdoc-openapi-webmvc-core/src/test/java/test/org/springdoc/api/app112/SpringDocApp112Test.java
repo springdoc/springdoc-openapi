@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app111;
+package test.org.springdoc.api.app112;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -13,7 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {
 		"application-description=description",
 		"application-version=v1" })
-public class SpringDocApp111Test extends AbstractSpringDocTest {
+public class SpringDocApp112Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {

@@ -1,0 +1,71 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/lol": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response"
+          }
+        }
+      }
+    },
+    "/lol2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "default response"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

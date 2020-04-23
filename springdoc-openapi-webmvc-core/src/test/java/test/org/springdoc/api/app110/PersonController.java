@@ -1,4 +1,4 @@
-package sample;
+package test.org.springdoc.api.app110;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package sample;
+package test.org.springdoc.api.app110;
 
 public class Problem {
 	

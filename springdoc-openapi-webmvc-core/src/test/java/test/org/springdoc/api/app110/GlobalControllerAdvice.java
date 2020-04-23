@@ -1,4 +1,4 @@
-package sample;
+package test.org.springdoc.api.app110;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import javax.validation.ConstraintViolationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +22,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 
-@ControllerAdvice()
-@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE) 
-public class GlobalControllerAdvice //extends ResponseEntityExceptionHandler  
+@ControllerAdvice(assignableTypes = PersonController.class)
+public class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 {
 	/**
 	 * Note use base class if you wish to leverage its handling.

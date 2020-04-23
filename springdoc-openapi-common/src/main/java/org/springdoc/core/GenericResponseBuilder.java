@@ -51,6 +51,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.ControllerAdviceBean;
 import org.springframework.web.method.HandlerMethod;
 
 import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
@@ -59,7 +60,7 @@ import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper
 @SuppressWarnings("rawtypes")
 public class GenericResponseBuilder {
 
-	private final Map<String, ApiResponse> genericMapResponse = new LinkedHashMap<>();
+	private List<ControllerAdviceInfo> controllerAdviceInfos = new ArrayList<>();
 
 	private final OperationBuilder operationBuilder;
 
@@ -81,8 +82,7 @@ public class GenericResponseBuilder {
 
 	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
 			MethodAttributes methodAttributes) {
-		ApiResponses apiResponses = new ApiResponses();
-		genericMapResponse.forEach(apiResponses::addApiResponse);
+		ApiResponses apiResponses = methodAttributes.calculateGenericMapResponse(getGenericMapResponse(handlerMethod.getBeanType()));
 		//Then use the apiResponses from documentation
 		ApiResponses apiResponsesFromDoc = operation.getResponses();
 		if (!CollectionUtils.isEmpty(apiResponsesFromDoc))
@@ -95,32 +95,31 @@ public class GenericResponseBuilder {
 
 	public void buildGenericResponse(Components components, Map<String, Object> findControllerAdvice) {
 		// ControllerAdvice
-		List<Method> methods = getMethods(findControllerAdvice);
-		// for each one build ApiResponse and add it to existing responses
-		for (Method method : methods) {
-			if (!operationBuilder.isHidden(method)) {
-				RequestMapping reqMappringMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
-				String[] methodProduces = { springDocConfigProperties.getDefaultProducesMediaType() };
-				if (reqMappringMethod != null)
-					methodProduces = reqMappringMethod.produces();
-				Map<String, ApiResponse> apiResponses = computeResponse(components, new MethodParameter(method, -1), new ApiResponses(),
-						new MethodAttributes(methodProduces, springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType()), true);
-				apiResponses.forEach(genericMapResponse::put);
-			}
-		}
-	}
-
-	private List<Method> getMethods(Map<String, Object> findControllerAdvice) {
-		List<Method> methods = new ArrayList<>();
 		for (Map.Entry<String, Object> entry : findControllerAdvice.entrySet()) {
+			List<Method> methods = new ArrayList<>();
 			Object controllerAdvice = entry.getValue();
 			// get all methods with annotation @ExceptionHandler
 			Class<?> objClz = controllerAdvice.getClass();
 			if (org.springframework.aop.support.AopUtils.isAopProxy(controllerAdvice))
 				objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerAdvice);
+			ControllerAdviceInfo controllerAdviceInfo = new ControllerAdviceInfo(controllerAdvice);
 			Arrays.stream(objClz.getDeclaredMethods()).filter(m -> m.isAnnotationPresent(ExceptionHandler.class)).forEach(methods::add);
+			// for each one build ApiResponse and add it to existing responses
+			for (Method method : methods) {
+				if (!operationBuilder.isHidden(method)) {
+					RequestMapping reqMappringMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
+					String[] methodProduces = { springDocConfigProperties.getDefaultProducesMediaType() };
+					if (reqMappringMethod != null)
+						methodProduces = reqMappringMethod.produces();
+					Map<String, ApiResponse> controllerAdviceInfoApiResponseMap = controllerAdviceInfo.getApiResponseMap();
+					Map<String, ApiResponse> apiResponses = computeResponse(components, new MethodParameter(method, -1), new ApiResponses(),
+							new MethodAttributes(methodProduces, springDocConfigProperties.getDefaultConsumesMediaType(),
+									springDocConfigProperties.getDefaultProducesMediaType(), controllerAdviceInfoApiResponseMap), true);
+					apiResponses.forEach(controllerAdviceInfoApiResponseMap::put);
+				}
+			}
+			controllerAdviceInfos.add(controllerAdviceInfo);
 		}
-		return methods;
 	}
 
 	private Map<String, ApiResponse> computeResponse(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
@@ -130,7 +129,7 @@ public class GenericResponseBuilder {
 		if (!responsesArray.isEmpty()) {
 			methodAttributes.setWithApiResponseDoc(true);
 			if (!springDocConfigProperties.isOverrideWithGenericResponse())
-				for (String key : genericMapResponse.keySet())
+				for (String key : methodAttributes.getGenericMapResponse().keySet())
 					apiResponsesOp.remove(key);
 			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations : responsesArray) {
 				ApiResponse apiResponse = new ApiResponse();
@@ -181,7 +180,7 @@ public class GenericResponseBuilder {
 
 	private void buildApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes, boolean isGeneric) {
-		if (!CollectionUtils.isEmpty(apiResponsesOp) && (apiResponsesOp.size() != genericMapResponse.size() || isGeneric)) {
+		if (!CollectionUtils.isEmpty(apiResponsesOp) && (apiResponsesOp.size() != methodAttributes.getGenericMapResponse().size() || isGeneric)) {
 			// API Responses at operation and @ApiResponse annotation
 			for (Map.Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
 				String httpCode = entry.getKey();
@@ -194,7 +193,7 @@ public class GenericResponseBuilder {
 			// Use response parameters with no description filled - No documentation
 			// available
 			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getMethod().getClass(), isGeneric);
-			ApiResponse apiResponse = genericMapResponse.containsKey(httpCode) ? genericMapResponse.get(httpCode)
+			ApiResponse apiResponse = methodAttributes.getGenericMapResponse().containsKey(httpCode) ? methodAttributes.getGenericMapResponse().get(httpCode)
 					: new ApiResponse();
 			if (httpCode != null)
 				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse,
@@ -344,5 +343,12 @@ public class GenericResponseBuilder {
 		if (Void.class.equals(returnType))
 			result = true;
 		return result;
+	}
+
+	private Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
+		return controllerAdviceInfos.stream()
+				.filter(controllerAdviceInfo -> new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
+				.map(ControllerAdviceInfo::getApiResponseMap)
+				.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
 	}
 }
