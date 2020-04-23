@@ -23,6 +23,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -56,11 +58,14 @@ public class MethodAttributes {
 
 	private String[] methodConsumes = {};
 
-	public MethodAttributes(String[] methodProducesNew, String defaultConsumesMediaType, String defaultProducesMediaType) {
+	private Map<String, ApiResponse> genericMapResponse = new LinkedHashMap<>();
+
+	public MethodAttributes(String[] methodProducesNew, String defaultConsumesMediaType, String defaultProducesMediaType, Map<String, ApiResponse> genericMapResponse) {
 		this.methodProduces = methodProducesNew;
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
 		this.headers = new LinkedHashMap<>();
+		this.genericMapResponse = genericMapResponse;
 	}
 
 	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType) {
@@ -188,5 +193,16 @@ public class MethodAttributes {
 
 	public Map<String, String> getHeaders() {
 		return headers;
+	}
+
+	public ApiResponses calculateGenericMapResponse(Map<String, ApiResponse> genericMapResponse) {
+		ApiResponses apiResponses = new ApiResponses();
+		genericMapResponse.forEach(apiResponses::addApiResponse);
+		this.genericMapResponse = genericMapResponse;
+		return apiResponses;
+	}
+
+	public Map<String, ApiResponse> getGenericMapResponse() {
+		return genericMapResponse;
 	}
 }

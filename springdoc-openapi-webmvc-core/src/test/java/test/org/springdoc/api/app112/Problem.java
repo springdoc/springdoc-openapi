@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app111;
+package test.org.springdoc.api.app112;
 
 public class Problem {
 	

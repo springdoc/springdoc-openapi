@@ -5,19 +5,17 @@ import java.util.Map;
 
 import io.swagger.v3.oas.models.responses.ApiResponse;
 
-import org.springframework.web.bind.annotation.ControllerAdvice;
-
 public class ControllerAdviceInfo {
 
-	private ControllerAdvice controllerAdvice;
+	private Object controllerAdvice;
 
 	private Map<String, ApiResponse> apiResponseMap = new LinkedHashMap<>();
 
-	public ControllerAdviceInfo(ControllerAdvice controllerAdvice) {
+	public ControllerAdviceInfo(Object controllerAdvice) {
 		this.controllerAdvice = controllerAdvice;
 	}
 
-	public ControllerAdvice getControllerAdvice() {
+	public Object getControllerAdvice() {
 		return controllerAdvice;
 	}
 

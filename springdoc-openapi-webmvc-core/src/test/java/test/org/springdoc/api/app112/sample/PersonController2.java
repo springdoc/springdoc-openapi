@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app111;
+package test.org.springdoc.api.app112.sample;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import test.org.springdoc.api.app112.Person;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;

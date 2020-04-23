@@ -13,7 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {
 		"application-description=description",
 		"application-version=v1" })
-public class SpringDocApp110Test extends AbstractSpringDocTest {
+public class SpringDocApp111Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {

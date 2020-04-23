@@ -85,7 +85,7 @@ public abstract class AbstractRequestBuilder {
 	private static final List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
 
 	// using string litterals to support both validation-api v1 and v2
-	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), org.springframework.web.bind.annotation.RequestBody.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
+	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
 
 	private static final String POSITIVE_OR_ZERO = "javax.validation.constraints.PositiveOrZero";
 
@@ -198,7 +198,7 @@ public abstract class AbstractRequestBuilder {
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyBuilder.calculateRequestBodyInfo(components, methodAttributes,
 							parameterInfo, requestBodyInfo);
-					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations);
+					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 				}
 				customiseParameter(parameter, parameterInfo);
 			}
@@ -372,12 +372,16 @@ public abstract class AbstractRequestBuilder {
 		applyValidationsToSchema(annos, schema);
 	}
 
-	private void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations) {
+	private void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
 		Map<String, Annotation> annos = new HashMap<>();
 		if (annotations != null)
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getName(), annotation));
-		boolean annotationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
-		if (annotationExists)
+		boolean validationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
+		boolean requestBodyRequired = annotations.stream()
+				.filter(annotation -> org.springframework.web.bind.annotation.RequestBody.class.equals(annotation.annotationType()))
+				.anyMatch(annotation -> ((org.springframework.web.bind.annotation.RequestBody) annotation).required());
+
+		if (validationExists || (!isOptional && requestBodyRequired) )
 			requestBody.setRequired(true);
 		Content content = requestBody.getContent();
 		for (MediaType mediaType : content.values()) {

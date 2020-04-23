@@ -1,4 +1,4 @@
-package sample;
+package test.org.springdoc.api.app110;
 
 import java.util.Arrays;
 import java.util.Collections;
