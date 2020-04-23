@@ -375,7 +375,7 @@ public abstract class AbstractRequestBuilder {
 	private void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
 		Map<String, Annotation> annos = new HashMap<>();
 		boolean requestBodyRequired = false;
-		if (annotations != null) {
+		if (!CollectionUtils.isEmpty(annotations)) {
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getName(), annotation));
 			requestBodyRequired = annotations.stream()
 					.filter(annotation -> org.springframework.web.bind.annotation.RequestBody.class.equals(annotation.annotationType()))
