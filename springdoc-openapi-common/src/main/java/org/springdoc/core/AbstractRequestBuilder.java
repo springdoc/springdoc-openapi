@@ -255,7 +255,7 @@ public abstract class AbstractRequestBuilder {
 	protected boolean isParamToIgnore(MethodParameter parameter) {
 		if (parameterBuilder.isAnnotationToIgnore(parameter))
 			return true;
-		if ((parameter.getParameterAnnotation(PathVariable.class) != null && parameter.getParameterAnnotation(PathVariable.class) .required())
+		if ((parameter.getParameterAnnotation(PathVariable.class) != null && parameter.getParameterAnnotation(PathVariable.class).required())
 				|| (parameter.getParameterAnnotation(RequestParam.class) != null && parameter.getParameterAnnotation(RequestParam.class).required())
 				|| (parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null && parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class).required()))
 			return false;
@@ -374,14 +374,16 @@ public abstract class AbstractRequestBuilder {
 
 	private void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
 		Map<String, Annotation> annos = new HashMap<>();
-		if (annotations != null)
+		boolean requestBodyRequired = false;
+		if (annotations != null) {
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getName(), annotation));
+			requestBodyRequired = annotations.stream()
+					.filter(annotation -> org.springframework.web.bind.annotation.RequestBody.class.equals(annotation.annotationType()))
+					.anyMatch(annotation -> ((org.springframework.web.bind.annotation.RequestBody) annotation).required());
+		}
 		boolean validationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
-		boolean requestBodyRequired = annotations.stream()
-				.filter(annotation -> org.springframework.web.bind.annotation.RequestBody.class.equals(annotation.annotationType()))
-				.anyMatch(annotation -> ((org.springframework.web.bind.annotation.RequestBody) annotation).required());
 
-		if (validationExists || (!isOptional && requestBodyRequired) )
+		if (validationExists || (!isOptional && requestBodyRequired))
 			requestBody.setRequired(true);
 		Content content = requestBody.getContent();
 		for (MediaType mediaType : content.values()) {
