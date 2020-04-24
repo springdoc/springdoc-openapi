@@ -38,9 +38,15 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings({ "rawtypes" })
 public class SpringDocAnnotationsUtils extends AnnotationsUtils {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(SpringDocAnnotationsUtils.class);
+
+	private static final String GRACEFUL_EXCEPTION_OCCURRED = "Graceful exception occurred";
 
 	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
 			JsonView jsonView, Annotation[] annotations) {
@@ -55,9 +61,16 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
 	public static Schema extractSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations) {
 		Schema schemaN = null;
-		ResolvedSchema resolvedSchema = ModelConverters.getInstance()
-				.resolveAsResolvedSchema(
-						new AnnotatedType(returnType).resolveAsRef(true).jsonViewAnnotation(jsonView).ctxAnnotations(annotations));
+		ResolvedSchema resolvedSchema = null;
+		try {
+			resolvedSchema = ModelConverters.getInstance()
+					.resolveAsResolvedSchema(
+							new AnnotatedType(returnType).resolveAsRef(true).jsonViewAnnotation(jsonView).ctxAnnotations(annotations));
+		}
+		catch (Exception e) {
+			LOGGER.error(GRACEFUL_EXCEPTION_OCCURRED, e);
+			return new StringSchema();
+		}
 		if (resolvedSchema.schema != null) {
 			schemaN = resolvedSchema.schema;
 			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
@@ -167,7 +180,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		return mediaType;
 	}
 
-	private static boolean isArray(io.swagger.v3.oas.annotations.media.Content annotationContent){
+	private static boolean isArray(io.swagger.v3.oas.annotations.media.Content annotationContent) {
 		Class<?> schemaImplementation = annotationContent.schema().implementation();
 		boolean isArray = false;
 		if (schemaImplementation == Void.class) {
