@@ -88,7 +88,7 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 			return result;
 		}
 
-		@Bean(name = "mvcOpenApiResource")
+		@Bean(name = "openApiResource")
 		public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder, GenericResponseBuilder responseBuilder,
 				OperationBuilder operationParser,
 				@Qualifier("defaultTestHandlerMapping") RequestMappingHandlerMapping requestMappingHandlerMapping,
