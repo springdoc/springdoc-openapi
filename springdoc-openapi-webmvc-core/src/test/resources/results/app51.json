@@ -29,46 +29,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/test2": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "test2",
-        "parameters": [
-          {
-            "name": "test_header",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "rherherherherh"
-            }
-          },
-          {
-            "name": "param1",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -109,7 +70,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -140,7 +101,46 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test2",
+        "parameters": [
+          {
+            "name": "test_header",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "rherherherherh"
+            }
+          },
+          {
+            "name": "param1",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -173,7 +173,7 @@
         },
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {

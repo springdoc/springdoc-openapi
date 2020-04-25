@@ -19,17 +19,7 @@
         "operationId": "getDocuments",
         "responses": {
           "410": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "412": {
-            "description": "default response",
+            "description": "Gone",
             "content": {
               "*/*": {
                 "schema": {
@@ -39,7 +29,17 @@
             }
           },
           "401": {
-            "description": "default response",
+            "description": "Unauthorized",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Precondition Failed",
             "content": {
               "*/*": {
                 "schema": {
@@ -49,7 +49,7 @@
             }
           },
           "413": {
-            "description": "default response",
+            "description": "Payload Too Large",
             "content": {
               "*/*": {
                 "schema": {
@@ -59,7 +59,7 @@
             }
           },
           "402": {
-            "description": "default response",
+            "description": "Payment Required",
             "content": {
               "*/*": {
                 "schema": {
@@ -69,7 +69,7 @@
             }
           },
           "403": {
-            "description": "default response",
+            "description": "Forbidden",
             "content": {
               "*/*": {
                 "schema": {
@@ -79,7 +79,7 @@
             }
           },
           "411": {
-            "description": "default response",
+            "description": "Length Required",
             "content": {
               "*/*": {
                 "schema": {
@@ -89,7 +89,7 @@
             }
           },
           "400": {
-            "description": "default response",
+            "description": "Bad Request",
             "content": {
               "*/*": {
                 "schema": {

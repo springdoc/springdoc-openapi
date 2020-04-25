@@ -28,37 +28,7 @@
         },
         "responses": {
           "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/MealParty_MealPartyAdmin"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/new-parties": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "saveMealNewParty",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MealParty_Public"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -95,6 +65,36 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/MealParty_Public"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/new-parties": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "saveMealNewParty",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MealParty_Public"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MealParty_MealPartyAdmin"
                 }
               }
             }

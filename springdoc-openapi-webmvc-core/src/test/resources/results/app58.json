@@ -19,28 +19,7 @@
         "operationId": "test",
         "responses": {
           "200": {
-            "description": "default response"
-          }
-        }
-      }
-    },
-    "/examplePost": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "schema example",
-        "operationId": "example",
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+            "description": "OK"
           }
         }
       }
@@ -64,7 +43,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response"
+            "description": "OK"
           }
         }
       }
@@ -88,7 +67,28 @@
         ],
         "responses": {
           "200": {
-            "description": "default response"
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/examplePost": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "schema example",
+        "operationId": "example",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         }
       }

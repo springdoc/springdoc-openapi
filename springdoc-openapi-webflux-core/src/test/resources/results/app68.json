@@ -23,21 +23,8 @@
         "description": "Tweets are Sent to the client as Server Sent Events",
         "operationId": "streamAllTweets",
         "responses": {
-          "200": {
-            "description": "stream All Tweets",
-            "content": {
-              "text/event-stream": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TweetDTO"
-                  }
-                }
-              }
-            }
-          },
           "404": {
-            "description": "default response",
+            "description": "Not Found",
             "content": {
               "*/*": {
                 "schema": {
@@ -47,11 +34,24 @@
             }
           },
           "409": {
-            "description": "default response",
+            "description": "Conflict",
             "content": {
               "*/*": {
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "stream All Tweets",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TweetDTO"
+                  }
                 }
               }
             }

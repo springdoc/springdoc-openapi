@@ -19,7 +19,7 @@
         "operationId": "test",
         "responses": {
           "200": {
-            "description": "default response"
+            "description": "OK"
           }
         },
         "deprecated": true

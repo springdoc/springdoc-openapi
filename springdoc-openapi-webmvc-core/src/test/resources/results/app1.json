@@ -41,7 +41,7 @@
         ],
         "responses": {
           "500": {
-            "description": "default response",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -51,7 +51,7 @@
             }
           },
           "418": {
-            "description": "default response",
+            "description": "I'm a teapot",
             "content": {
               "application/json": {
                 "schema": {
@@ -107,7 +107,7 @@
         ],
         "responses": {
           "500": {
-            "description": "default response",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -164,7 +164,7 @@
         },
         "responses": {
           "500": {
-            "description": "default response",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -224,7 +224,7 @@
         ],
         "responses": {
           "500": {
-            "description": "default response",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -234,7 +234,7 @@
             }
           },
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -265,7 +265,7 @@
         },
         "responses": {
           "500": {
-            "description": "default response",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -275,7 +275,7 @@
             }
           },
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -308,7 +308,7 @@
         ],
         "responses": {
           "500": {
-            "description": "default response",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -376,7 +376,7 @@
         ],
         "responses": {
           "500": {
-            "description": "default response",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -434,7 +434,7 @@
         ],
         "responses": {
           "500": {
-            "description": "default response",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -475,7 +475,7 @@
         "operationId": "getPeople",
         "responses": {
           "500": {
-            "description": "default response",
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -561,9 +561,12 @@
           }
         }
       },
-      "ItemLightDTO": {
+      "ItemDTO": {
         "type": "object",
         "properties": {
+          "itemID": {
+            "type": "string"
+          },
           "description": {
             "type": "string"
           },
@@ -573,12 +576,9 @@
           }
         }
       },
-      "ItemDTO": {
+      "ItemLightDTO": {
         "type": "object",
         "properties": {
-          "itemID": {
-            "type": "string"
-          },
           "description": {
             "type": "string"
           },

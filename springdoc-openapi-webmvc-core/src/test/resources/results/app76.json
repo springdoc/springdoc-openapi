@@ -27,7 +27,7 @@
         "operationId": "open",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -48,7 +48,7 @@
         "operationId": "secured",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {

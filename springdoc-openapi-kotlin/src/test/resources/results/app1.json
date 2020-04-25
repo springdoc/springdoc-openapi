@@ -34,7 +34,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {

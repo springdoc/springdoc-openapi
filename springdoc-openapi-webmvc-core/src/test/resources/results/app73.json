@@ -37,7 +37,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -73,7 +73,7 @@
         ],
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         }
       }
@@ -104,7 +104,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -140,7 +140,7 @@
         ],
         "responses": {
           "204": {
-            "description": "default response"
+            "description": "No Content"
           }
         }
       }

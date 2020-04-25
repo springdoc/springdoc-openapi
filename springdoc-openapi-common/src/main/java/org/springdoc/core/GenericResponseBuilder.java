@@ -195,9 +195,8 @@ public class GenericResponseBuilder {
 			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getMethod().getClass(), isGeneric);
 			ApiResponse apiResponse = methodAttributes.getGenericMapResponse().containsKey(httpCode) ? methodAttributes.getGenericMapResponse().get(httpCode)
 					: new ApiResponse();
-			if (httpCode != null)
-				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse,
-						isGeneric);
+			buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse,
+					isGeneric);
 		}
 	}
 
@@ -277,8 +276,15 @@ public class GenericResponseBuilder {
 			}
 			else if (CollectionUtils.isEmpty(apiResponse.getContent()))
 				apiResponse.setContent(null);
-			if (StringUtils.isBlank(apiResponse.getDescription()))
-				apiResponse.setDescription(DEFAULT_DESCRIPTION);
+			if (StringUtils.isBlank(apiResponse.getDescription())) {
+				try {
+					HttpStatus httpStatus = HttpStatus.valueOf(Integer.valueOf(httpCode));
+					apiResponse.setDescription(httpStatus.getReasonPhrase());
+				}
+				catch (IllegalArgumentException e) {
+					apiResponse.setDescription(DEFAULT_DESCRIPTION);
+				}
+			}
 		}
 		if (apiResponse.getContent() != null
 				&& ((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc())) {

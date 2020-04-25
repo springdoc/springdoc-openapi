@@ -34,7 +34,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -54,7 +54,7 @@
         "operationId": "noParametersAndAuthentication",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -84,7 +84,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -104,7 +104,7 @@
         "operationId": "noParametersAndUser",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {

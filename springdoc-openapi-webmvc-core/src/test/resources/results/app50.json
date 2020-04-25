@@ -20,7 +20,7 @@
         "operationId": "list",
         "responses": {
           "401": {
-            "description": "default response",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {

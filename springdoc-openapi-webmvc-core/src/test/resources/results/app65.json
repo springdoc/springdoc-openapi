@@ -27,7 +27,7 @@
         "operationId": "ping",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -49,7 +49,7 @@
         "operationId": "ping_1",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -71,7 +71,7 @@
         "operationId": "ping_2",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {

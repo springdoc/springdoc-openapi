@@ -11,32 +11,6 @@
     }
   ],
   "paths": {
-    "/hello": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "hello",
-        "parameters": [
-          {
-            "in": "header",
-            "$ref": "#/components/parameters/myGlobalHeader"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/test": {
       "post": {
         "tags": [
@@ -63,7 +37,33 @@
         },
         "responses": {
           "200": {
-            "description": "default response"
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/hello": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "hello",
+        "parameters": [
+          {
+            "in": "header",
+            "$ref": "#/components/parameters/myGlobalHeader"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }

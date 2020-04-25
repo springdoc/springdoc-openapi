@@ -17,66 +17,6 @@
     }
   ],
   "paths": {
-    "/person": {
-      "post": {
-        "tags": [
-          "person-controller"
-        ],
-        "operationId": "person",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Person"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "500": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessage"
-                }
-              }
-            }
-          },
-          "415": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessage"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Person"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/personByLastName": {
       "get": {
         "tags": [
@@ -96,18 +36,8 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          },
           "400": {
-            "description": "default response",
+            "description": "Bad Request",
             "content": {
               "*/*": {
                 "schema": {
@@ -116,8 +46,18 @@
               }
             }
           },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
           "415": {
-            "description": "default response",
+            "description": "Unsupported Media Type",
             "content": {
               "*/*": {
                 "schema": {
@@ -127,7 +67,102 @@
             }
           },
           "200": {
-            "description": "default response",
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/person": {
+      "post": {
+        "tags": [
+          "person-controller"
+        ],
+        "operationId": "person",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Person"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported Media Type",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/personByLastName2": {
+      "get": {
+        "tags": [
+          "person-controller-2"
+        ],
+        "operationId": "findByLastName_1",
+        "parameters": [
+          {
+            "name": "lastName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maxLength": 10,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -160,7 +195,7 @@
         },
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -171,56 +206,10 @@
           }
         }
       }
-    },
-    "/personByLastName2": {
-      "get": {
-        "tags": [
-          "person-controller-2"
-        ],
-        "operationId": "findByLastName_1",
-        "parameters": [
-          {
-            "name": "lastName",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "maxLength": 10,
-              "minLength": 0,
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Person"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
-      "Problem": {
-        "type": "object",
-        "properties": {
-          "logRef": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      },
       "ErrorMessage": {
         "type": "object",
         "properties": {
@@ -229,6 +218,17 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "logRef": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
