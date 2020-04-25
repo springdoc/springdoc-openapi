@@ -42,6 +42,7 @@ import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
@@ -58,6 +59,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
+import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
@@ -77,6 +79,20 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
 		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, springDocConfigProperties);
+		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+		this.servletContextProvider = servletContextProvider;
+		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
+	}
+
+	@Autowired
+	public OpenApiResource( OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
+			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			Optional<ActuatorProvider> servletContextProvider,
+			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			SpringDocConfigProperties springDocConfigProperties,
+			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
+		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, springDocConfigProperties);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.servletContextProvider = servletContextProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;

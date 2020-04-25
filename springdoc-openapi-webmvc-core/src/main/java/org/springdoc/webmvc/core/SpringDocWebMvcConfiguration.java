@@ -50,7 +50,6 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
-import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 
@@ -69,7 +68,7 @@ public class SpringDocWebMvcConfiguration {
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
-		return new OpenApiResource(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder,
+		return new OpenApiResource(openAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping, servletContextProvider,
 				openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider);
