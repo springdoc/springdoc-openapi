@@ -92,21 +92,21 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "fileSupportConverter")
+	@ConditionalOnMissingBean
 	@Lazy(false)
 	FileSupportConverter fileSupportConverter() {
 		return new FileSupportConverter();
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "responseSupportConverter")
+	@ConditionalOnMissingBean
 	@Lazy(false)
 	ResponseSupportConverter responseSupportConverter() {
 		return new ResponseSupportConverter();
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "openAPIBuilder")
+	@ConditionalOnMissingBean
 	OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context,
 			SecurityParser securityParser,
 			SpringDocConfigProperties springDocConfigProperties,
@@ -122,7 +122,7 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@ConditionalOnWebApplication
-	@ConditionalOnMissingBean(name = "operationBuilder")
+	@ConditionalOnMissingBean
 	OperationBuilder operationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			SecurityParser securityParser, PropertyResolverUtils propertyResolverUtils) {
 		return new OperationBuilder(parameterBuilder, requestBodyBuilder,
@@ -136,24 +136,25 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@ConditionalOnWebApplication
-	@ConditionalOnMissingBean(name = "requestBodyBuilder")
+	@ConditionalOnMissingBean
 	RequestBodyBuilder requestBodyBuilder(GenericParameterBuilder parameterBuilder) {
 		return new RequestBodyBuilder(parameterBuilder);
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "securityParser")
+	@ConditionalOnMissingBean
 	SecurityParser securityParser(PropertyResolverUtils propertyResolverUtils) {
 		return new SecurityParser(propertyResolverUtils);
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	ReturnTypeParser genericReturnTypeParser() {
 		return new ReturnTypeParser() {};
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "parameterBuilder")
+	@ConditionalOnMissingBean
 	GenericParameterBuilder parameterBuilder(PropertyResolverUtils propertyResolverUtils) {
 		return new GenericParameterBuilder(propertyResolverUtils);
 	}
