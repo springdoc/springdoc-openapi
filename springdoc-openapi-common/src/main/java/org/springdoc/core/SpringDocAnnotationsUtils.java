@@ -46,8 +46,6 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpringDocAnnotationsUtils.class);
 
-	private static final String GRACEFUL_EXCEPTION_OCCURRED = "Graceful exception occurred";
-
 	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
 			JsonView jsonView, Annotation[] annotations) {
 		Schema schemaObject = extractSchema(components, schemaImplementation, jsonView, annotations);
@@ -68,8 +66,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 							new AnnotatedType(returnType).resolveAsRef(true).jsonViewAnnotation(jsonView).ctxAnnotations(annotations));
 		}
 		catch (Exception e) {
-			LOGGER.error(GRACEFUL_EXCEPTION_OCCURRED, e);
-			return new StringSchema();
+			LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
+			return null;
 		}
 		if (resolvedSchema.schema != null) {
 			schemaN = resolvedSchema.schema;

@@ -43,6 +43,8 @@ import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
@@ -56,6 +58,8 @@ public class GenericParameterBuilder {
 	private static final List<Class<?>> FILE_TYPES = new ArrayList<>();
 
 	private static final List<Class> ANNOTATIOSN_TO_IGNORE = new ArrayList<>();
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericParameterBuilder.class);
 
 	static {
 		FILE_TYPES.add(MultipartFile.class);
@@ -178,7 +182,13 @@ public class GenericParameterBuilder {
 		if (StringUtils.isNotBlank(parameterDoc.ref()))
 			parameter.$ref(parameterDoc.ref());
 		else {
-			Schema schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null,false,parameterDoc.schema().implementation(),components,jsonView ).orElse(null);
+			Schema schema = null;
+			try {
+				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null, false, parameterDoc.schema().implementation(), components, jsonView).orElse(null);
+			}
+			catch (Exception e) {
+				LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
+			}
 			if (schema == null) {
 				if (parameterDoc.content().length > 0)
 					schema = AnnotationsUtils.getSchema(parameterDoc.content()[0], components, jsonView).orElse(null);

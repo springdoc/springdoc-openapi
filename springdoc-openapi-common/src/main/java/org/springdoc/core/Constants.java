@@ -106,6 +106,8 @@ public final class Constants {
 
 	public static final String OPENAPI_ARRAY_TYPE = "array";
 
+	public static final String GRACEFUL_EXCEPTION_OCCURRED = "Graceful exception occurred";
+
 	private Constants() {
 		super();
 	}
