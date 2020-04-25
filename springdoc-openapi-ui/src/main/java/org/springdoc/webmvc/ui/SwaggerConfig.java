@@ -26,7 +26,6 @@ import org.springdoc.core.SwaggerUiOAuthProperties;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -39,8 +38,8 @@ import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 public class SwaggerConfig {
 
 	@Bean
-	SwaggerWelcome swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, WebMvcProperties webMvcProperties) {
-		return new SwaggerWelcome(swaggerUiConfig, springDocConfigProperties, webMvcProperties);
+	SwaggerWelcome swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
+		return new SwaggerWelcome(swaggerUiConfig, springDocConfigProperties);
 	}
 
 	@Bean
@@ -49,7 +48,7 @@ public class SwaggerConfig {
 	}
 
 	@Bean
-	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerIndexTransformer swaggerIndexTransformer){
-		return new SwaggerWebMvcConfigurer(swaggerUiConfig,swaggerIndexTransformer);
+	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerIndexTransformer swaggerIndexTransformer) {
+		return new SwaggerWebMvcConfigurer(swaggerUiConfig, swaggerIndexTransformer);
 	}
 }

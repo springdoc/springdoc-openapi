@@ -3,10 +3,15 @@ package test.org.springdoc.api.app108;
 public class ActionResult<T> {
 
 	protected T value;
+
 	protected boolean success;
+
 	protected String errorCode;
+
 	protected String message;
+
 	protected Object errorValue;
+
 	protected String targetUrl;
 
 	public T getValue() {

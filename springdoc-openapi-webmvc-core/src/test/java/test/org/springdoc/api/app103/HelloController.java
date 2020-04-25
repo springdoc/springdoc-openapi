@@ -33,19 +33,19 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class HelloController {
 
-    @PostMapping(value = "/test/103", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(
-            requestBody = @RequestBody(
-                    content = @Content(
-                            encoding = @Encoding(name = "body", contentType = "application/json")
-                    )
-            )
-    )
-    public String postMyRequestBody(
-            @RequestPart("body") ExampleBody body,
-            @RequestParam("file") MultipartFile file
-    ) {
-        return null;
-    }
+	@PostMapping(value = "/test/103", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@Operation(
+			requestBody = @RequestBody(
+					content = @Content(
+							encoding = @Encoding(name = "body", contentType = "application/json")
+					)
+			)
+	)
+	public String postMyRequestBody(
+			@RequestPart("body") ExampleBody body,
+			@RequestParam("file") MultipartFile file
+	) {
+		return null;
+	}
 
 }

@@ -12,14 +12,14 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class OpenApiConfiguration {
 
-    @Bean
+	@Bean
 	OpenAPI customOpenAPI() {
-        return new OpenAPI()
-            .components(new Components())
-            .info(
-                new Info()
-                    .title('Issue OpenAPI with Groovy')
-                    .description('Special Groovy Metaclass Test Issue')
-            )
-    }
+		return new OpenAPI()
+				.components(new Components())
+				.info(
+						new Info()
+								.title('Issue OpenAPI with Groovy')
+								.description('Special Groovy Metaclass Test Issue')
+				)
+	}
 }

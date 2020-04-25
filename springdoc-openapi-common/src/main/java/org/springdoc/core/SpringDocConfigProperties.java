@@ -136,7 +136,9 @@ public class SpringDocConfigProperties {
 		this.pathsToMatch = pathsToMatch;
 	}
 
-	public Cache getCache() { return cache; }
+	public Cache getCache() {
+		return cache;
+	}
 
 	public void setCache(Cache cache) {
 		this.cache = cache;

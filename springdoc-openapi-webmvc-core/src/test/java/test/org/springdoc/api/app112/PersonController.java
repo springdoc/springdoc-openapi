@@ -19,23 +19,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Validated
 public class PersonController {
-	private Random ran = new Random(); 
+	private Random ran = new Random();
+
 	@RequestMapping(path = "/person", method = RequestMethod.POST)
 	public Person person(@Valid @RequestBody Person person) {
 
-	     int nxt = ran.nextInt(10);
-	     if(nxt>=5)
-	     {
-	    	 throw new RuntimeException("Breaking logic");
-	     }
+		int nxt = ran.nextInt(10);
+		if (nxt >= 5) {
+			throw new RuntimeException("Breaking logic");
+		}
 		return person;
 	}
+
 	@RequestMapping(path = "/personByLastName", method = RequestMethod.GET)
-	public List<Person> findByLastName(@RequestParam(name = "lastName", required = true)@NotNull
-			@NotBlank
-			@Size(max = 10)String lastName){
-		List<Person> hardCoded= new ArrayList<>();
-		Person person= new Person();
+	public List<Person> findByLastName(@RequestParam(name = "lastName", required = true) @NotNull
+	@NotBlank
+	@Size(max = 10) String lastName) {
+		List<Person> hardCoded = new ArrayList<>();
+		Person person = new Person();
 		person.setAge(20);
 		person.setCreditCardNumber("4111111111111111");
 		person.setEmail("abc@abc.com");
@@ -45,6 +46,6 @@ public class PersonController {
 		person.setId(1);
 		hardCoded.add(person);
 		return hardCoded;
-		
+
 	}
 }

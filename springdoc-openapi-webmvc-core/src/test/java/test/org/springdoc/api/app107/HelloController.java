@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
 	@GetMapping(path = "/entity-b", produces = { "application/json", "application/xml" })
-	public EntityB getEntityB(){
+	public EntityB getEntityB() {
 		return new EntityB();
 	}
 

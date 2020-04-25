@@ -39,7 +39,7 @@ public class SpringDocApp5Test extends AbstractSpringDocTest {
 				.expectBody().returnResult();
 		String result = new String(getResult.getResponseBody());
 		assertTrue(result.contains("Swagger UI"));
-		String expected = getContent("results/index5.html");
+		String expected = getContent("results/index5");
 		assertEquals(expected, result);
 	}
 

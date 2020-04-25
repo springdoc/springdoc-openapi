@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class CarController {
 
-    CarService carService
+	CarService carService
 
-    CarController(CarService carService) {
-        this.carService = carService
-    }
+	CarController(CarService carService) {
+		this.carService = carService
+	}
 
-    @GetMapping(path = '/cars')
+	@GetMapping(path = '/cars')
 	List<Car> getCars() {
-        return carService.getCars()
-    }
+		return carService.getCars()
+	}
 
-    @GetMapping(path = 'cars/{carId}')
-    Car getCar(@PathVariable(value = 'carId') Long carId) {
-        return carService.getCar(carId)
-    }
+	@GetMapping(path = 'cars/{carId}')
+	Car getCar(@PathVariable(value = 'carId') Long carId) {
+		return carService.getCar(carId)
+	}
 }

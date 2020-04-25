@@ -28,10 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
 	@PostMapping("/lol")
-	public void test(@RequestBody(required = false) Body body) { }
+	public void test(@RequestBody(required = false) Body body) {
+	}
 
 	@PostMapping("/lol2")
-	public void test2(@RequestBody Optional<Body> body) { }
+	public void test2(@RequestBody Optional<Body> body) {
+	}
 
 	public class Body {
 		public String field;

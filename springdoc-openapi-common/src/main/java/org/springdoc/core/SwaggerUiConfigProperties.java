@@ -54,8 +54,11 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public class SwaggerUiConfigProperties {
 
 	public static final String CONFIG_URL_PROPERTY = "configUrl";
+
 	public static final String LAYOUT_PROPERTY = "layout";
+
 	public static final String FILTER_PROPERTY = "filter";
+
 	/**
 	 * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
 	 */
@@ -401,6 +404,14 @@ public class SwaggerUiConfigProperties {
 		this.groupsOrder = groupsOrder;
 	}
 
+	public String getUrlsPrimaryName() {
+		return urlsPrimaryName;
+	}
+
+	public void setUrlsPrimaryName(String urlsPrimaryName) {
+		this.urlsPrimaryName = urlsPrimaryName;
+	}
+
 	enum Direction {
 		ASC,
 		DESC;
@@ -408,14 +419,6 @@ public class SwaggerUiConfigProperties {
 		public boolean isAscending() {
 			return this.equals(ASC);
 		}
-	}
-
-	public String getUrlsPrimaryName() {
-		return urlsPrimaryName;
-	}
-
-	public void setUrlsPrimaryName(String urlsPrimaryName) {
-		this.urlsPrimaryName = urlsPrimaryName;
 	}
 
 	static class SwaggerUrl {

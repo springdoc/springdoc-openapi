@@ -447,12 +447,12 @@ public class OpenAPIBuilder {
 		return cachedOpenAPI;
 	}
 
-	public void setCachedOpenAPI(OpenAPI cachedOpenAPI) {
-		this.cachedOpenAPI = cachedOpenAPI;
-	}
-
 	public OpenAPI getCachedOpenAPI() {
 		return cachedOpenAPI;
+	}
+
+	public void setCachedOpenAPI(OpenAPI cachedOpenAPI) {
+		this.cachedOpenAPI = cachedOpenAPI;
 	}
 
 	public OpenAPI getCalculatedOpenAPI() {

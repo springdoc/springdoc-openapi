@@ -14,12 +14,12 @@ public class HelloController {
 
 	@GetMapping("/api/v1/resource")
 	public Resource getResource() {
-		return new ByteArrayResource(new byte[]{});
+		return new ByteArrayResource(new byte[] {});
 	}
 
 	@GetMapping("/api/v1/bytearray")
 	@ApiResponse(content = @Content(schema = @Schema(type = "string", format = "binary")))
 	public byte[] getByteArray() {
-		return new byte[]{};
+		return new byte[] {};
 	}
 }

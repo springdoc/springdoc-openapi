@@ -51,7 +51,7 @@ public interface SpringDocPropertiesUtils {
 		}
 	}
 
-	static void put(String name, Map<String,String> value, Map<String, Object> params) {
+	static void put(String name, Map<String, String> value, Map<String, Object> params) {
 		if (!CollectionUtils.isEmpty(value)) {
 			params.put(name, value);
 		}
