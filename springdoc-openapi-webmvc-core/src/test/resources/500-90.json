@@ -1,5 +1,0 @@
-{
-  "500": {
-    "$ref": "#/components/examples/http500Example"
-  }
-}
