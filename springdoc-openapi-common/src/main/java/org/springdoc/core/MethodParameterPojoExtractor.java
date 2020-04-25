@@ -44,6 +44,9 @@ import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
 
 class MethodParameterPojoExtractor {
+
+	private MethodParameterPojoExtractor() { }
+
 	private static final Nullable NULLABLE_ANNOTATION = new Nullable() {
 		@Override
 		public Class<? extends Annotation> annotationType() {
