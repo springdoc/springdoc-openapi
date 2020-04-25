@@ -21,7 +21,9 @@
           {
             "name": "name",
             "in": "query",
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
