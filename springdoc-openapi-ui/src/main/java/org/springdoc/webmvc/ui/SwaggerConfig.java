@@ -25,6 +25,7 @@ import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,16 +39,19 @@ import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 public class SwaggerConfig {
 
 	@Bean
+	@ConditionalOnMissingBean
 	SwaggerWelcome swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
 		return new SwaggerWelcome(swaggerUiConfig, springDocConfigProperties);
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	SwaggerIndexTransformer indexPageTransformer(SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
 		return new SwaggerIndexTransformer(swaggerUiOAuthProperties, objectMapper);
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerIndexTransformer swaggerIndexTransformer) {
 		return new SwaggerWebMvcConfigurer(swaggerUiConfig, swaggerIndexTransformer);
 	}

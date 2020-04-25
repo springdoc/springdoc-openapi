@@ -60,7 +60,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 public class SpringDocWebMvcConfiguration {
 
 	@Bean
-	@ConditionalOnMissingBean(name = "openApiResource")
+	@ConditionalOnMissingBean
 	@Lazy(false)
 	OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -76,7 +76,7 @@ public class SpringDocWebMvcConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "requestBuilder")
+	@ConditionalOnMissingBean
 	RequestBuilder requestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<ParameterCustomizer>> parameterCustomizers,
@@ -86,7 +86,7 @@ public class SpringDocWebMvcConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "responseBuilder")
+	@ConditionalOnMissingBean
 	GenericResponseBuilder responseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
 		return new GenericResponseBuilder(operationBuilder, returnTypeParsers, springDocConfigProperties, propertyResolverUtils);
 	}
@@ -96,7 +96,7 @@ public class SpringDocWebMvcConfiguration {
 	class SpringDocWebMvcActuatorConfiguration {
 
 		@Bean
-		@ConditionalOnMissingBean(name = "actuatorProvider")
+		@ConditionalOnMissingBean
 		ActuatorProvider actuatorProvider(WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping) {
 			return new ActuatorProvider(webMvcEndpointHandlerMapping);
 		}

@@ -62,14 +62,14 @@ public class SpringDocDataRestConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "halProvider")
+	@ConditionalOnMissingBean
 	@Lazy(false)
 	HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
 		return new HalProvider(repositoryRestConfiguration);
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "collectionModelContentConverter")
+	@ConditionalOnMissingBean
 	@Lazy(false)
 	CollectionModelContentConverter collectionModelContentConverter(HalProvider halProvider, LinkRelationProvider linkRelationProvider) {
 		return halProvider.isHalEnabled() ? new CollectionModelContentConverter(linkRelationProvider) : null;
@@ -82,7 +82,7 @@ public class SpringDocDataRestConfiguration {
 	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
 	 */
 	@Bean
-	@ConditionalOnMissingBean(name = "linksSchemaCustomiser")
+	@ConditionalOnMissingBean
 	@Lazy(false)
 	OpenApiCustomiser linksSchemaCustomiser(HalProvider halProvider) {
 		if (!halProvider.isHalEnabled()) {
@@ -105,7 +105,7 @@ public class SpringDocDataRestConfiguration {
 	class QuerydslProvider {
 
 		@Bean
-		@ConditionalOnMissingBean(name = "queryDslQuerydslPredicateOperationCustomizer")
+		@ConditionalOnMissingBean
 		@Lazy(false)
 		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
 			if (querydslBindingsFactory.isPresent()) {

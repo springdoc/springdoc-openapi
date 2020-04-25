@@ -54,7 +54,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 public class SpringDocWebFluxConfiguration {
 
 	@Bean
-	@ConditionalOnMissingBean(name = "openApiResource")
+	@ConditionalOnMissingBean
 	@Lazy(false)
 	OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -67,7 +67,7 @@ public class SpringDocWebFluxConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "requestBuilder")
+	@ConditionalOnMissingBean
 	RequestBuilder requestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<ParameterCustomizer>> parameterCustomizers,
@@ -77,13 +77,13 @@ public class SpringDocWebFluxConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "responseBuilder")
+	@ConditionalOnMissingBean
 	GenericResponseBuilder responseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
 		return new GenericResponseBuilder(operationBuilder, returnTypeParsers, springDocConfigProperties, propertyResolverUtils);
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name = "webFluxSupportConverter")
+	@ConditionalOnMissingBean
 	@Lazy(false)
 	WebFluxSupportConverter webFluxSupportConverter() {
 		return new WebFluxSupportConverter();

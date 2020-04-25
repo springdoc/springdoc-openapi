@@ -44,7 +44,7 @@ public class SpringDocKotlinConfiguration {
 
 	@Bean
 	@Lazy(false)
-	@ConditionalOnMissingBean(name = "kotlinCoroutinesReturnTypeParser")
+	@ConditionalOnMissingBean
 	KotlinCoroutinesReturnTypeParser kotlinCoroutinesReturnTypeParser() {
 		return new KotlinCoroutinesReturnTypeParser();
 	}
