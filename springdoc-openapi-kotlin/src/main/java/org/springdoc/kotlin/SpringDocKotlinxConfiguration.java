@@ -18,5 +18,4 @@ public class SpringDocKotlinxConfiguration {
 		getConfig().addFluxWrapperToIgnore(Flow.class);
 	}
 
-	public SpringDocKotlinxConfiguration() { }
 }
