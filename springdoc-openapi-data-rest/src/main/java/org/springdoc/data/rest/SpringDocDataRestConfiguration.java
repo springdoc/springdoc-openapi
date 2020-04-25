@@ -107,7 +107,7 @@ public class SpringDocDataRestConfiguration {
 		Json.mapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
 
 		ResolvedSchema resolvedLinkSchema = ModelConverters.getInstance()
-				.resolveAsResolvedSchema(new AnnotatedType(Link.class).resolveAsRef(true));
+				.resolveAsResolvedSchema(new AnnotatedType(Link.class));
 
 		return openApi -> openApi
 				.schema("Link", resolvedLinkSchema.schema)
