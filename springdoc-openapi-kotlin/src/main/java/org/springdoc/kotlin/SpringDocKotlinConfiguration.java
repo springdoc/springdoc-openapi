@@ -23,6 +23,7 @@ import io.swagger.v3.core.util.Json;
 import kotlin.Deprecated;
 import kotlin.coroutines.Continuation;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +44,7 @@ public class SpringDocKotlinConfiguration {
 
 	@Bean
 	@Lazy(false)
+	@ConditionalOnMissingBean(name = "kotlinCoroutinesReturnTypeParser")
 	KotlinCoroutinesReturnTypeParser kotlinCoroutinesReturnTypeParser() {
 		return new KotlinCoroutinesReturnTypeParser();
 	}

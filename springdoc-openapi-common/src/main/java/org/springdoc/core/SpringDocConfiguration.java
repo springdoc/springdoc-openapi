@@ -92,21 +92,21 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean(name="fileSupportConverter")
 	@Lazy(false)
 	FileSupportConverter fileSupportConverter() {
 		return new FileSupportConverter();
 	}
 
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean(name="responseSupportConverter")
 	@Lazy(false)
 	ResponseSupportConverter responseSupportConverter() {
 		return new ResponseSupportConverter();
 	}
 
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean(name="openAPIBuilder")
 	OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context,
 			SecurityParser securityParser,
 			SpringDocConfigProperties springDocConfigProperties,
@@ -122,7 +122,7 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@ConditionalOnWebApplication
-	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean(name="operationBuilder")
 	OperationBuilder operationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			SecurityParser securityParser, PropertyResolverUtils propertyResolverUtils) {
 		return new OperationBuilder(parameterBuilder, requestBodyBuilder,
@@ -136,13 +136,13 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@ConditionalOnWebApplication
-	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean(name="requestBodyBuilder")
 	RequestBodyBuilder requestBodyBuilder(GenericParameterBuilder parameterBuilder) {
 		return new RequestBodyBuilder(parameterBuilder);
 	}
 
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean(name="securityParser")
 	SecurityParser securityParser(PropertyResolverUtils propertyResolverUtils) {
 		return new SecurityParser(propertyResolverUtils);
 	}
@@ -153,7 +153,7 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean(name="parameterBuilder")
 	GenericParameterBuilder parameterBuilder(PropertyResolverUtils propertyResolverUtils) {
 		return new GenericParameterBuilder(propertyResolverUtils);
 	}
