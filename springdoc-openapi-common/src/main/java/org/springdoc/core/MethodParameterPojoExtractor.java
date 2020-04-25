@@ -44,6 +44,33 @@ import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
 
 class MethodParameterPojoExtractor {
+	private static final Nullable NULLABLE_ANNOTATION = new Nullable() {
+		@Override
+		public Class<? extends Annotation> annotationType() {
+			return Nullable.class;
+		}
+	};
+
+	private static final List<Predicate<Class<?>>> SIMPLE_TYPE_PREDICATES = new ArrayList<>();
+
+	private static final Set<Class<?>> SIMPLE_TYPES = new HashSet<>();
+
+	static {
+		SIMPLE_TYPES.add(CharSequence.class);
+		SIMPLE_TYPES.add(Optional.class);
+		SIMPLE_TYPES.add(OptionalInt.class);
+		SIMPLE_TYPES.add(OptionalLong.class);
+		SIMPLE_TYPES.add(OptionalDouble.class);
+
+		SIMPLE_TYPES.add(Map.class);
+		SIMPLE_TYPES.add(Iterable.class);
+
+		SIMPLE_TYPE_PREDICATES.add(Class::isPrimitive);
+		SIMPLE_TYPE_PREDICATES.add(Class::isEnum);
+		SIMPLE_TYPE_PREDICATES.add(Class::isArray);
+		SIMPLE_TYPE_PREDICATES.add(MethodParameterPojoExtractor::isSwaggerPrimitiveType);
+	}
+
 	static Stream<MethodParameter> extractFrom(Class<?> clazz) {
 		return extractFrom(clazz, "");
 	}
@@ -100,19 +127,8 @@ class MethodParameterPojoExtractor {
 
 	private static boolean isSwaggerPrimitiveType(Class<?> clazz) {
 		PrimitiveType primitiveType = PrimitiveType.fromType(clazz);
-		return  primitiveType != null;
+		return primitiveType != null;
 	}
-
-	private static final Nullable NULLABLE_ANNOTATION = new Nullable() {
-		@Override
-		public Class<? extends Annotation> annotationType() {
-			return Nullable.class;
-		}
-	};
-
-	private static final List<Predicate<Class<?>>> SIMPLE_TYPE_PREDICATES = new ArrayList<>();
-
-	private static final Set<Class<?>> SIMPLE_TYPES = new HashSet<>();
 
 	static void addSimpleTypePredicate(Predicate<Class<?>> predicate) {
 		SIMPLE_TYPE_PREDICATES.add(predicate);
@@ -124,21 +140,5 @@ class MethodParameterPojoExtractor {
 
 	static void removeSimpleTypes(Class<?>... classes) {
 		SIMPLE_TYPES.removeAll(Arrays.asList(classes));
-	}
-
-	static {
-		SIMPLE_TYPES.add(CharSequence.class);
-		SIMPLE_TYPES.add(Optional.class);
-		SIMPLE_TYPES.add(OptionalInt.class);
-		SIMPLE_TYPES.add(OptionalLong.class);
-		SIMPLE_TYPES.add(OptionalDouble.class);
-
-		SIMPLE_TYPES.add(Map.class);
-		SIMPLE_TYPES.add(Iterable.class);
-
-		SIMPLE_TYPE_PREDICATES.add(Class::isPrimitive);
-		SIMPLE_TYPE_PREDICATES.add(Class::isEnum);
-		SIMPLE_TYPE_PREDICATES.add(Class::isArray);
-		SIMPLE_TYPE_PREDICATES.add(MethodParameterPojoExtractor::isSwaggerPrimitiveType);
 	}
 }

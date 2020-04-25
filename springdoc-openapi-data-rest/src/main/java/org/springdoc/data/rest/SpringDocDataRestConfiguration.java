@@ -61,24 +61,8 @@ public class SpringDocDataRestConfiguration {
 				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
 	}
 
-	@ConditionalOnClass(value = { QuerydslBindingsFactory.class })
-	class QuerydslProvider {
-
-		@Bean
-		@ConditionalOnMissingBean(name="queryDslQuerydslPredicateOperationCustomizer")
-		@Lazy(false)
-		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
-			if (querydslBindingsFactory.isPresent()) {
-				getConfig().addRequestWrapperToIgnore(Predicate.class);
-				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get());
-			}
-			return null;
-		}
-	}
-
-
 	@Bean
-	@ConditionalOnMissingBean(name="halProvider")
+	@ConditionalOnMissingBean(name = "halProvider")
 	@Lazy(false)
 	HalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
 		return new HalProvider(repositoryRestConfiguration);
@@ -115,5 +99,20 @@ public class SpringDocDataRestConfiguration {
 				.schema("Links", new MapSchema()
 						.additionalProperties(new StringSchema())
 						.additionalProperties(new ObjectSchema().$ref("#/components/schemas/Link")));
+	}
+
+	@ConditionalOnClass(value = { QuerydslBindingsFactory.class })
+	class QuerydslProvider {
+
+		@Bean
+		@ConditionalOnMissingBean(name = "queryDslQuerydslPredicateOperationCustomizer")
+		@Lazy(false)
+		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
+			if (querydslBindingsFactory.isPresent()) {
+				getConfig().addRequestWrapperToIgnore(Predicate.class);
+				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get());
+			}
+			return null;
+		}
 	}
 }

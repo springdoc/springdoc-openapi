@@ -10,29 +10,6 @@ import org.springframework.lang.Nullable;
 
 public class RequestParams {
 
-	public static class Nested {
-		private String param1;
-		private BigInteger param2;
-
-		@Parameter(description = "nested string parameter")
-		public String getParam1() {
-			return param1;
-		}
-
-		public void setParam1(String param1) {
-			this.param1 = param1;
-		}
-
-		@Parameter(description = "nested BigInteger parameter")
-		public BigInteger getParam2() {
-			return param2;
-		}
-
-		public void setParam2(BigInteger param2) {
-			this.param2 = param2;
-		}
-	}
-
 	@Parameter(description = "string parameter")
 	private String stringParam;
 
@@ -116,5 +93,29 @@ public class RequestParams {
 
 	public void setNestedList(List<Nested> nestedList) {
 		this.nestedList = nestedList;
+	}
+
+	public static class Nested {
+		private String param1;
+
+		private BigInteger param2;
+
+		@Parameter(description = "nested string parameter")
+		public String getParam1() {
+			return param1;
+		}
+
+		public void setParam1(String param1) {
+			this.param1 = param1;
+		}
+
+		@Parameter(description = "nested BigInteger parameter")
+		public BigInteger getParam2() {
+			return param2;
+		}
+
+		public void setParam2(BigInteger param2) {
+			this.param2 = param2;
+		}
 	}
 }

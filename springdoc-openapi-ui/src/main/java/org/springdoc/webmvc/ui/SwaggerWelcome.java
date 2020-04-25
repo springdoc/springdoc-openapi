@@ -24,22 +24,23 @@ import javax.servlet.http.HttpServletRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.ui.AbstractSwaggerWelcome;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.springdoc.core.Constants.MVC_SERVLET_PATH;
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.Constants.SWAGGER_CONFIG_URL;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
@@ -52,11 +53,12 @@ import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerWelcome extends AbstractSwaggerWelcome {
 
+	// To keep compatiblity with spring-boot 1 - WebMvcProperties changed package from srping 4 to spring 5
+	@Value(MVC_SERVLET_PATH)
 	private String mvcServletPath;
 
-	public SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, WebMvcProperties webMvcProperties) {
+	public SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
 		super(swaggerUiConfig, springDocConfigProperties);
-		this.mvcServletPath = webMvcProperties.getServlet().getPath();
 	}
 
 	@Operation(hidden = true)
@@ -79,7 +81,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	@Override
 	protected void calculateUiRootPath(StringBuilder... sbUrls) {
 		StringBuilder sbUrl = new StringBuilder();
-		if(!AntPathMatcher.DEFAULT_PATH_SEPARATOR.equals(mvcServletPath))
+		if (StringUtils.isNotBlank(mvcServletPath))
 			sbUrl.append(mvcServletPath);
 		if (ArrayUtils.isNotEmpty(sbUrls))
 			sbUrl = sbUrls[0];
@@ -91,7 +93,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 
 	@Override
 	protected String buildUrl(String contextPath, final String docsUrl) {
-		if(!AntPathMatcher.DEFAULT_PATH_SEPARATOR.equals(mvcServletPath))
+		if (StringUtils.isNotBlank(mvcServletPath))
 			contextPath += mvcServletPath;
 		return super.buildUrl(contextPath, docsUrl);
 	}

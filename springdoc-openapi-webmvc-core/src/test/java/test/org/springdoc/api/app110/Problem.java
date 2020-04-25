@@ -1,34 +1,35 @@
 package test.org.springdoc.api.app110;
 
 public class Problem {
-	
-private String logRef;
-private String message;
 
-public Problem(String logRef, String message) {
-	super();
-	this.logRef = logRef;
-	this.message = message;
-}
+	private String logRef;
 
-public Problem() {
-	super();
-	
-}
+	private String message;
 
-public String getLogRef() {
-	return logRef;
-}
+	public Problem(String logRef, String message) {
+		super();
+		this.logRef = logRef;
+		this.message = message;
+	}
 
-public void setLogRef(String logRef) {
-	this.logRef = logRef;
-}
+	public Problem() {
+		super();
 
-public String getMessage() {
-	return message;
-}
+	}
 
-public void setMessage(String message) {
-	this.message = message;
-}
+	public String getLogRef() {
+		return logRef;
+	}
+
+	public void setLogRef(String logRef) {
+		this.logRef = logRef;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 }

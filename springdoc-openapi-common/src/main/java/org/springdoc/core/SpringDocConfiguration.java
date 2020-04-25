@@ -68,11 +68,11 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROT
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocConfiguration {
 
+	private static final String BINDRESULT_CLASS = "org.springframework.boot.context.properties.bind.BindResult";
+
 	static {
 		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema());
 	}
-
-	private static final String BINDRESULT_CLASS = "org.springframework.boot.context.properties.bind.BindResult";
 
 	@Bean
 	LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer() {
@@ -92,21 +92,21 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name="fileSupportConverter")
+	@ConditionalOnMissingBean(name = "fileSupportConverter")
 	@Lazy(false)
 	FileSupportConverter fileSupportConverter() {
 		return new FileSupportConverter();
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name="responseSupportConverter")
+	@ConditionalOnMissingBean(name = "responseSupportConverter")
 	@Lazy(false)
 	ResponseSupportConverter responseSupportConverter() {
 		return new ResponseSupportConverter();
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name="openAPIBuilder")
+	@ConditionalOnMissingBean(name = "openAPIBuilder")
 	OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context,
 			SecurityParser securityParser,
 			SpringDocConfigProperties springDocConfigProperties,
@@ -122,7 +122,7 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@ConditionalOnWebApplication
-	@ConditionalOnMissingBean(name="operationBuilder")
+	@ConditionalOnMissingBean(name = "operationBuilder")
 	OperationBuilder operationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			SecurityParser securityParser, PropertyResolverUtils propertyResolverUtils) {
 		return new OperationBuilder(parameterBuilder, requestBodyBuilder,
@@ -136,13 +136,13 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@ConditionalOnWebApplication
-	@ConditionalOnMissingBean(name="requestBodyBuilder")
+	@ConditionalOnMissingBean(name = "requestBodyBuilder")
 	RequestBodyBuilder requestBodyBuilder(GenericParameterBuilder parameterBuilder) {
 		return new RequestBodyBuilder(parameterBuilder);
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name="securityParser")
+	@ConditionalOnMissingBean(name = "securityParser")
 	SecurityParser securityParser(PropertyResolverUtils propertyResolverUtils) {
 		return new SecurityParser(propertyResolverUtils);
 	}
@@ -153,7 +153,7 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(name="parameterBuilder")
+	@ConditionalOnMissingBean(name = "parameterBuilder")
 	GenericParameterBuilder parameterBuilder(PropertyResolverUtils propertyResolverUtils) {
 		return new GenericParameterBuilder(propertyResolverUtils);
 	}
@@ -171,7 +171,7 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@Conditional(CacheOrGroupedOpenApiCondition.class)
-	@ConditionalOnClass(name= BINDRESULT_CLASS)
+	@ConditionalOnClass(name = BINDRESULT_CLASS)
 	@Lazy(false)
 	BeanFactoryPostProcessor springdocBeanFactoryPostProcessor(Environment environment) {
 		return beanFactory -> {

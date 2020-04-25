@@ -87,6 +87,10 @@ public class GenericParameterBuilder {
 			ANNOTATIOSN_TO_IGNORE.removeAll(Arrays.asList(classes));
 	}
 
+	public static boolean isFile(Class type) {
+		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(type));
+	}
+
 	Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
 		Parameter result = paramCalcul;
 		if (paramCalcul != null && paramCalcul.getName() != null) {
@@ -309,9 +313,5 @@ public class GenericParameterBuilder {
 			return MultipartFile.class.getName().equals(upperBounds[0].getTypeName());
 		}
 		return false;
-	}
-
-	public static boolean isFile(Class type) {
-		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(type));
 	}
 }

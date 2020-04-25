@@ -151,6 +151,10 @@ public abstract class AbstractRequestBuilder {
 			PARAM_TYPES_TO_IGNORE.removeAll(Arrays.asList(classes));
 	}
 
+	public static boolean isRequestTypeToIgnore(Class<?> rawClass) {
+		return PARAM_TYPES_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+	}
+
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
 		// Documentation
@@ -261,11 +265,6 @@ public abstract class AbstractRequestBuilder {
 			return false;
 		return isRequestTypeToIgnore(parameter.getParameterType());
 	}
-
-	public static boolean isRequestTypeToIgnore(Class<?> rawClass) {
-		return PARAM_TYPES_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
-	}
-
 
 	private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
 		if (!CollectionUtils.isEmpty(operationParameters))

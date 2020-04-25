@@ -52,7 +52,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 public class MultipleOpenApiSupportConfiguration {
 
 	@Bean
-	@ConditionalOnMissingBean(name ="multipleOpenApiResource")
+	@ConditionalOnMissingBean(name = "multipleOpenApiResource")
 	@Lazy(false)
 	MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,

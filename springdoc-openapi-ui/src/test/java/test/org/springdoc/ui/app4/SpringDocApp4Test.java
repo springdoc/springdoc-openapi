@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = {"springdoc.swagger-ui.groups-order=DESC", "springdoc.swagger-ui.urlsPrimaryName=pets"})
+@TestPropertySource(properties = { "springdoc.swagger-ui.groups-order=DESC", "springdoc.swagger-ui.urlsPrimaryName=pets" })
 public class SpringDocApp4Test extends AbstractSpringDocTest {
 
 	@Test

@@ -13,18 +13,24 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 
 public class Person {
 	private long id;
+
 	private String firstName;
+
 	@NotNull
 	@NotBlank
 	@Size(max = 10)
 	private String lastName;
+
 	@Pattern(regexp = ".+@.+\\..+", message = "Please provide a valid email address")
 	private String email;
+
 	@Email()
 	private String email1;
+
 	@Min(18)
 	@Max(30)
 	private int age;
+
 	@CreditCardNumber
 	private String creditCardNumber;
 

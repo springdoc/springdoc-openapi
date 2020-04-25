@@ -28,12 +28,6 @@ import org.springframework.lang.Nullable;
 
 public interface ReturnTypeParser {
 
-	default Type getReturnType(MethodParameter methodParameter) {
-		if (methodParameter.getGenericParameterType() instanceof ParameterizedType)
-			return ReturnTypeParser.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
-		return methodParameter.getParameterType();
-	}
-
 	/**
 	 * This is a copy of GenericTypeResolver.resolveType which is not available on spring 4.
 	 * This also keeps compatibility with spring-boot 1 applications.
@@ -113,6 +107,12 @@ public interface ReturnTypeParser {
 			}
 		}
 		return ResolvableType.NONE;
+	}
+
+	default Type getReturnType(MethodParameter methodParameter) {
+		if (methodParameter.getGenericParameterType() instanceof ParameterizedType)
+			return ReturnTypeParser.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
+		return methodParameter.getParameterType();
 	}
 }
 

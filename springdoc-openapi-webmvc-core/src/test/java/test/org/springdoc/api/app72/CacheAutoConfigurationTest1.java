@@ -68,7 +68,7 @@ public class CacheAutoConfigurationTest1 {
 	@Test
 	public void group_configuration_loaded() {
 		contextRunner
-				.withPropertyValues("springdoc.group-configs[0].group=stores","springdoc.group-configs[0].paths-to-match=/store/**")
+				.withPropertyValues("springdoc.group-configs[0].group=stores", "springdoc.group-configs[0].paths-to-match=/store/**")
 				.run(context -> assertThat(context)
 						.hasNotFailed()
 						.hasBean("openApiResource")

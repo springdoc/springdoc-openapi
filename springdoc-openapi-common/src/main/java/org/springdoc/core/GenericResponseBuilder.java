@@ -60,8 +60,6 @@ import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper
 @SuppressWarnings("rawtypes")
 public class GenericResponseBuilder {
 
-	private List<ControllerAdviceInfo> controllerAdviceInfos = new ArrayList<>();
-
 	private final OperationBuilder operationBuilder;
 
 	private final List<ReturnTypeParser> returnTypeParsers;
@@ -69,6 +67,8 @@ public class GenericResponseBuilder {
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	private final PropertyResolverUtils propertyResolverUtils;
+
+	private List<ControllerAdviceInfo> controllerAdviceInfos = new ArrayList<>();
 
 	public GenericResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers,
 			SpringDocConfigProperties springDocConfigProperties,

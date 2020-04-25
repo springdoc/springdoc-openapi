@@ -50,7 +50,7 @@ public class SwaggerUiOAuthProperties {
 
 	private String scopeSeparator;
 
-	private Map<String,String> additionalQueryStringParams;
+	private Map<String, String> additionalQueryStringParams;
 
 	private String useBasicAuthenticationWithAccessCodeGrant;
 
