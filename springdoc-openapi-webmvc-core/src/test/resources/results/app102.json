@@ -30,7 +30,7 @@
             "name": "childParam",
             "in": "query",
             "description": "parameter from child of RequestParams",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -47,7 +47,7 @@
           {
             "name": "stringParam1",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -86,6 +86,33 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "nested.param1",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nested.param2",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "nestedList",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Nested"
+              }
+            }
           }
         ],
         "responses": {
@@ -96,5 +123,19 @@
       }
     }
   },
-  "components": {}
+  "components": {
+    "schemas": {
+      "Nested": {
+        "type": "object",
+        "properties": {
+          "param1": {
+            "type": "string"
+          },
+          "param2": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
 }

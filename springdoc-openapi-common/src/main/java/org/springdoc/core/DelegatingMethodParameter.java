@@ -1,13 +1,9 @@
 package org.springdoc.core;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
-import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -15,9 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springdoc.core.converters.AdditionalModelsConverter;
@@ -25,12 +19,12 @@ import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
 /**
  * @author zarebski.m
  */
 class DelegatingMethodParameter extends MethodParameter {
+
 	private MethodParameter delegate;
 
 	private Annotation[] additionalParameterAnnotations;
@@ -50,10 +44,7 @@ class DelegatingMethodParameter extends MethodParameter {
 			MethodParameter p = parameters[i];
 			if (p.hasParameterAnnotation(ParameterObject.class)) {
 				Class<?> paramClass = AdditionalModelsConverter.getReplacement(p.getParameterType());
-				allFieldsOf(paramClass).stream()
-						.map(f -> fromGetterOfField(paramClass, f))
-						.filter(Objects::nonNull)
-						.forEach(explodedParameters::add);
+				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(explodedParameters::add);
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
@@ -139,31 +130,6 @@ class DelegatingMethodParameter extends MethodParameter {
 		delegate.initParameterNameDiscovery(parameterNameDiscoverer);
 	}
 
-	@Nullable
-	static MethodParameter fromGetterOfField(Class<?> paramClass, Field field) {
-		try {
-			Annotation[] filedAnnotations = field.getDeclaredAnnotations();
-			Parameter parameter = field.getAnnotation(Parameter.class);
-			if (parameter != null && !parameter.required()) {
-				Field fieldNullable = NullableFieldClass.class.getDeclaredField("nullableField");
-				Annotation annotation = fieldNullable.getAnnotation(Nullable.class);
-				filedAnnotations = ArrayUtils.add(filedAnnotations, annotation);
-			}
-			Annotation[] filedAnnotationsNew = filedAnnotations;
-			return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
-					.filter(d -> d.getName().equals(field.getName()))
-					.map(PropertyDescriptor::getReadMethod)
-					.filter(Objects::nonNull)
-					.findFirst()
-					.map(method -> new MethodParameter(method, -1))
-					.map(param -> new DelegatingMethodParameter(param, field.getName(), filedAnnotationsNew))
-					.orElse(null);
-		}
-		catch (IntrospectionException | NoSuchFieldException e) {
-			return null;
-		}
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -180,19 +146,5 @@ class DelegatingMethodParameter extends MethodParameter {
 		int result = Objects.hash(super.hashCode(), delegate, parameterName);
 		result = 31 * result + Arrays.hashCode(additionalParameterAnnotations);
 		return result;
-	}
-
-	private class NullableFieldClass {
-		@Nullable
-		private String nullableField;
-	}
-
-	private static List<Field> allFieldsOf(Class<?> clazz) {
-		List<Field> fields = new ArrayList<>();
-		do {
-			fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
-			clazz = clazz.getSuperclass();
-		} while (clazz != null);
-		return fields;
 	}
 }
