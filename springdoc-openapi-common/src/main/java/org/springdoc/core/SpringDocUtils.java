@@ -130,5 +130,11 @@ public class SpringDocUtils {
 		MethodParameterPojoExtractor.addSimpleTypePredicate(predicate);
 		return this;
 	}
+
+	public SpringDocUtils disableReplacement(Class source) {
+		AdditionalModelsConverter.disableReplacement(source);
+		return this;
+	}
+
 }
 

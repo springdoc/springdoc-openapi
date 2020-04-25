@@ -39,6 +39,7 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import reactor.core.publisher.Mono;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -54,6 +55,7 @@ import org.springframework.web.util.pattern.PathPattern;
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
+import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
@@ -66,6 +68,15 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties) {
 		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, springDocConfigProperties);
+		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+	}
+
+	@Autowired
+	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
+			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties) {
+		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, openApiCustomisers, springDocConfigProperties);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 

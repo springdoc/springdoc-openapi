@@ -148,7 +148,7 @@ public class SpringDocConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean
+	@Lazy(false)
 	ReturnTypeParser genericReturnTypeParser() {
 		return new ReturnTypeParser() {};
 	}

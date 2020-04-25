@@ -18,13 +18,22 @@
 
 package test.org.springdoc.api.app2;
 
+import javax.annotation.PostConstruct;
+
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import static org.springdoc.core.SpringDocUtils.getConfig;
 
 public class SpringDocApp2Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
+
+	@PostConstruct
+	public void init (){
+		getConfig().disableReplacement(org.springframework.data.domain.Pageable.class);
+	}
 
 }

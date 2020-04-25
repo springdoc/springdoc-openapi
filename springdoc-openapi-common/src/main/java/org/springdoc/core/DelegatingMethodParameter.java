@@ -35,6 +35,7 @@ import org.springdoc.core.converters.AdditionalModelsConverter;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.lang.NonNull;
 
 /**
@@ -59,8 +60,8 @@ class DelegatingMethodParameter extends MethodParameter {
 		List<MethodParameter> explodedParameters = new ArrayList<>();
 		for (int i = 0; i < parameters.length; ++i) {
 			MethodParameter p = parameters[i];
-			if (p.hasParameterAnnotation(ParameterObject.class)) {
-				Class<?> paramClass = AdditionalModelsConverter.getReplacement(p.getParameterType());
+			Class<?> paramClass = AdditionalModelsConverter.getReplacement(p.getParameterType());
+			if (p.hasParameterAnnotation(ParameterObject.class) || AnnotatedElementUtils.isAnnotated(paramClass, ParameterObject.class)) {
 				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(explodedParameters::add);
 			}
 			else {

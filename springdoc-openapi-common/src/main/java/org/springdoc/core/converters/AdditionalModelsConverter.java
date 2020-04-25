@@ -47,6 +47,11 @@ public class AdditionalModelsConverter implements ModelConverter {
 		return modelToClassMap.getOrDefault(clazz, clazz);
 	}
 
+	public static void disableReplacement(Class clazz) {
+		if(modelToClassMap.containsKey(clazz))
+			modelToClassMap.remove(clazz);
+	}
+
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = Json.mapper().constructType(type.getType());
