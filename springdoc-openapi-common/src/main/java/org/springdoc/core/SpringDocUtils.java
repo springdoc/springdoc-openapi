@@ -18,6 +18,8 @@
 
 package org.springdoc.core;
 
+import java.util.function.Predicate;
+
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.converters.AdditionalModelsConverter;
@@ -111,6 +113,21 @@ public class SpringDocUtils {
 
 	public SpringDocUtils removeFluxWrapperToIgnore(Class<?> cls) {
 		ConverterUtils.removeFluxWrapperToIgnore(cls);
+		return this;
+	}
+
+	public SpringDocUtils addSimpleTypesForParameterObject(Class<?>... classes) {
+		MethodParameterPojoExtractor.addSimpleTypes(classes);
+		return this;
+	}
+
+	public SpringDocUtils removeSimpleTypesForParameterObject(Class<?>... classes) {
+		MethodParameterPojoExtractor.removeSimpleTypes(classes);
+		return this;
+	}
+
+	public SpringDocUtils addSimpleTypePredicateForParameterObject(Predicate<Class<?>> predicate) {
+		MethodParameterPojoExtractor.addSimpleTypePredicate(predicate);
 		return this;
 	}
 }
