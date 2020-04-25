@@ -39,7 +39,7 @@ import org.springframework.util.FileCopyUtils;
 @SpringBootApplication
 class SpringDocTestApp {
 
-	@Value("classpath:/500-90.json")
+	@Value("classpath:/500-90.txt")
 	private Resource http500ExampleResource;
 
 	public static String asString(Resource resource) {
