@@ -45,6 +45,17 @@
   },
   "components": {
     "schemas": {
+      "ExceptionMessage": {
+        "type": "object",
+        "properties": {
+          "cause": {
+            "$ref": "#/components/schemas/ExceptionMessage"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "RepositoryConstraintViolationExceptionMessage": {
         "type": "object",
         "properties": {
@@ -67,17 +78,6 @@
           },
           "invalidValue": {
             "type": "object"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      },
-      "ExceptionMessage": {
-        "type": "object",
-        "properties": {
-          "cause": {
-            "$ref": "#/components/schemas/ExceptionMessage"
           },
           "message": {
             "type": "string"
@@ -130,7 +130,33 @@
         }
       },
       "Link": {
-        "$ref": "#/components/schemas/Link"
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "hreflang": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "deprecation": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
       }
     }
   }
