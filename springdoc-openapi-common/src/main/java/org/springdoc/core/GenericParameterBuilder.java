@@ -178,14 +178,10 @@ public class GenericParameterBuilder {
 		if (StringUtils.isNotBlank(parameterDoc.ref()))
 			parameter.$ref(parameterDoc.ref());
 		else {
-			Schema schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.schema(), components, jsonView).orElse(null);
+			Schema schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null,false,parameterDoc.schema().implementation(),components,jsonView ).orElse(null);
 			if (schema == null) {
-				if (parameterDoc.content().length > 0) {
-					if (AnnotationsUtils.hasSchemaAnnotation(parameterDoc.content()[0].schema()))
-						schema = AnnotationsUtils.getSchemaFromAnnotation(parameterDoc.content()[0].schema(), components, jsonView).orElse(null);
-					else if (AnnotationsUtils.hasArrayAnnotation(parameterDoc.content()[0].array()))
-						schema = AnnotationsUtils.getArraySchema(parameterDoc.content()[0].array(), components, jsonView).orElse(null);
-				}
+				if (parameterDoc.content().length > 0)
+					schema = AnnotationsUtils.getSchema(parameterDoc.content()[0], components, jsonView).orElse(null);
 				else
 					schema = AnnotationsUtils.getArraySchema(parameterDoc.array(), components, jsonView).orElse(null);
 			}

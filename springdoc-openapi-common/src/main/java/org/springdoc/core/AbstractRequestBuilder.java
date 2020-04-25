@@ -180,9 +180,9 @@ public abstract class AbstractRequestBuilder {
 				parameterDoc = parametersDocMap.get(parameterInfo.getpName());
 			// use documentation as reference
 			if (parameterDoc != null) {
-				if (parameterDoc.hidden())
+				if (parameterDoc.hidden() || parameterDoc.schema().hidden())
 					continue;
-				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, null, methodAttributes.getJsonViewAnnotation());
+				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components, methodAttributes.getJsonViewAnnotation());
 				parameterInfo.setParameterModel(parameter);
 			}
 
