@@ -278,7 +278,21 @@ public class GenericResponseBuilder {
 			else if (CollectionUtils.isEmpty(apiResponse.getContent()))
 				apiResponse.setContent(null);
 			if (StringUtils.isBlank(apiResponse.getDescription()))
-				apiResponse.setDescription(DEFAULT_DESCRIPTION);
+			{
+				HttpStatus mappedHttpStatus = null;
+				try
+				{
+					mappedHttpStatus=HttpStatus.valueOf(Integer.parseInt(httpCode));
+				}
+				catch(IllegalArgumentException  e)
+				{
+					//do nothing just in case the httpCode is not numeric
+					//it should be numeric
+					//or not covered in HttpStatus enum ie custom
+				}
+				apiResponse.setDescription(mappedHttpStatus!=null?mappedHttpStatus.getReasonPhrase():DEFAULT_DESCRIPTION);
+
+			}
 		}
 		if (apiResponse.getContent() != null
 				&& ((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc())) {
