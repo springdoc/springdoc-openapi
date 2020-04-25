@@ -17,36 +17,6 @@
     }
   ],
   "paths": {
-    "/person": {
-      "post": {
-        "tags": [
-          "person-controller"
-        ],
-        "operationId": "person",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Person"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Person"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/personByLastName": {
       "get": {
         "tags": [
@@ -67,7 +37,72 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/person": {
+      "post": {
+        "tags": [
+          "person-controller"
+        ],
+        "operationId": "person",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Person"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/personByLastName2": {
+      "get": {
+        "tags": [
+          "person-controller-2"
+        ],
+        "operationId": "findByLastName_1",
+        "parameters": [
+          {
+            "name": "lastName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maxLength": 10,
+              "minLength": 0,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -100,46 +135,11 @@
         },
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/Person"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/personByLastName2": {
-      "get": {
-        "tags": [
-          "person-controller-2"
-        ],
-        "operationId": "findByLastName_1",
-        "parameters": [
-          {
-            "name": "lastName",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "maxLength": 10,
-              "minLength": 0,
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Person"
-                  }
                 }
               }
             }

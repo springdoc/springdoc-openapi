@@ -30,7 +30,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -45,6 +45,45 @@
   },
   "components": {
     "schemas": {
+      "RepositoryConstraintViolationExceptionMessage": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "entity": {
+            "type": "string"
+          },
+          "property": {
+            "type": "string"
+          },
+          "invalidValue": {
+            "type": "object"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ExceptionMessage": {
+        "type": "object",
+        "properties": {
+          "cause": {
+            "$ref": "#/components/schemas/ExceptionMessage"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
       "Employee": {
         "type": "object",
         "properties": {

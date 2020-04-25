@@ -11,37 +11,6 @@
     }
   ],
   "paths": {
-    "/persons2": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "persons2",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "description": "persons name",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/persons3": {
       "get": {
         "tags": [
@@ -61,39 +30,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/persons4": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "persons4",
-        "parameters": [
-          {
-            "name": "age",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -125,7 +62,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -137,16 +74,49 @@
         }
       }
     },
-    "/persons": {
+    "/persons4": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "persons",
+        "operationId": "persons4",
+        "parameters": [
+          {
+            "name": "age",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "persons2",
         "parameters": [
           {
             "name": "name",
             "in": "query",
+            "description": "persons name",
             "required": true,
             "schema": {
               "type": "string"
@@ -155,7 +125,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -186,7 +156,37 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "persons",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {

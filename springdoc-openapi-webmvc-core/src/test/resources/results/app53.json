@@ -11,41 +11,23 @@
     }
   ],
   "paths": {
-    "/hello7": {
+    "/hello5": {
       "get": {
         "tags": [
           "hello-controller"
         ],
         "description": "Some operation",
-        "operationId": "getNestedDTOWithDefaultResponseStatus",
+        "operationId": "listWithDefaultResponseStatus",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HelloDTO1"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/hello4": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "description": "Some operation",
-        "operationId": "getDTOWithExplicitResponseStatus",
-        "responses": {
-          "204": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HelloDTO1"
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -77,16 +59,61 @@
         }
       }
     },
-    "/hello5": {
+    "/hello1": {
       "get": {
         "tags": [
           "hello-controller"
         ],
         "description": "Some operation",
-        "operationId": "listWithDefaultResponseStatus",
+        "operationId": "listWithNoApiResponse",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello4": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Some operation",
+        "operationId": "getDTOWithExplicitResponseStatus",
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelloDTO1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Some operation",
+        "operationId": "listWithExplicitResponseStatus",
+        "responses": {
+          "204": {
+            "description": "No Content",
             "content": {
               "application/json": {
                 "schema": {
@@ -110,7 +137,7 @@
         "operationId": "getDTOWithDefaultResponseStatus",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -122,47 +149,20 @@
         }
       }
     },
-    "/hello1": {
+    "/hello7": {
       "get": {
         "tags": [
           "hello-controller"
         ],
         "description": "Some operation",
-        "operationId": "listWithNoApiResponse",
+        "operationId": "getNestedDTOWithDefaultResponseStatus",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/hello3": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "description": "Some operation",
-        "operationId": "listWithExplicitResponseStatus",
-        "responses": {
-          "204": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
+                  "$ref": "#/components/schemas/HelloDTO1"
                 }
               }
             }

@@ -11,53 +11,6 @@
     }
   ],
   "paths": {
-    "/test3": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "Example api that realize an ECHO operation",
-        "description": "The result of the echo is the input value of the api",
-        "operationId": "postMyRequestBody3",
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "description": "Is the identification of the document",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "other possible response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/test1": {
       "post": {
         "tags": [
@@ -129,6 +82,53 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "other possible response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test3": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Example api that realize an ECHO operation",
+        "description": "The result of the echo is the input value of the api",
+        "operationId": "postMyRequestBody3",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "Is the identification of the document",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
                 }
               }
             }

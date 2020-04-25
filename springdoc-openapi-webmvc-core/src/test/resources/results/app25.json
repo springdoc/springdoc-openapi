@@ -19,7 +19,7 @@
         "operationId": "check",
         "responses": {
           "200": {
-            "description": "default response"
+            "description": "OK"
           }
         }
       }
@@ -63,51 +63,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response"
-          }
-        }
-      }
-    },
-    "/secondlist": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "secondlist",
-        "parameters": [
-          {
-            "name": "trackerId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "the-tracker-id"
-            }
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "example": "1970-01-01T00:00:00.000Z"
-            }
-          },
-          {
-            "name": "end",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "example": "1970-01-01T00:10:00.000Z"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "default response"
+            "description": "OK"
           }
         }
       }
@@ -162,6 +118,50 @@
         "responses": {
           "200": {
             "description": "default response"
+          }
+        }
+      }
+    },
+    "/secondlist": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "secondlist",
+        "parameters": [
+          {
+            "name": "trackerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "the-tracker-id"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:00:00.000Z"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:10:00.000Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }

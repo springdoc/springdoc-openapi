@@ -11,27 +11,34 @@
     }
   ],
   "paths": {
-    "/test3": {
+    "/test2/{username}": {
       "post": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "createTest3",
+        "operationId": "createTest2",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
                   "test": {
                     "$ref": "#/components/schemas/MyTestDto"
-                  },
-                  "doc": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
                   }
                 }
               }
@@ -40,7 +47,7 @@
         },
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -88,7 +95,7 @@
         },
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -100,34 +107,27 @@
         }
       }
     },
-    "/test2/{username}": {
+    "/test3": {
       "post": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "createTest2",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "operationId": "createTest3",
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "image": {
-                    "type": "string",
-                    "format": "binary"
-                  },
                   "test": {
                     "$ref": "#/components/schemas/MyTestDto"
+                  },
+                  "doc": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
                   }
                 }
               }
@@ -136,7 +136,7 @@
         },
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {

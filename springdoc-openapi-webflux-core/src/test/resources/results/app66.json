@@ -37,7 +37,7 @@
             }
           },
           "404": {
-            "description": "default response",
+            "description": "Not Found",
             "content": {
               "*/*": {
                 "schema": {
@@ -47,7 +47,7 @@
             }
           },
           "409": {
-            "description": "default response",
+            "description": "Conflict",
             "content": {
               "*/*": {
                 "schema": {

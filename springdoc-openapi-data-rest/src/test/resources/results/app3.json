@@ -50,7 +50,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {

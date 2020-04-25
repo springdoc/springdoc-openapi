@@ -41,7 +41,7 @@
         ],
         "responses": {
           "400": {
-            "description": "default response",
+            "description": "Bad Request",
             "content": {
               "*/*": {
                 "schema": {
@@ -54,7 +54,7 @@
             }
           },
           "200": {
-            "description": "default response"
+            "description": "OK"
           }
         }
       }

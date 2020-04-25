@@ -33,7 +33,7 @@
         },
         "responses": {
           "200": {
-            "description": "default response"
+            "description": "OK"
           }
         }
       }
@@ -65,7 +65,7 @@
         },
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {

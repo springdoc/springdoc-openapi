@@ -11,36 +11,6 @@
     }
   ],
   "paths": {
-    "/api2": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "test2",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "default response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api3": {
       "post": {
         "tags": [
@@ -59,7 +29,7 @@
         },
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -91,7 +61,37 @@
         },
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {

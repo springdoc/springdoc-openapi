@@ -13,21 +13,28 @@
   "paths": {
     "/test/103": {
       "post": {
-        "tags": [ "hello-controller" ],
+        "tags": [
+          "hello-controller"
+        ],
         "operationId": "postMyRequestBody",
         "requestBody": {
           "content": {
-            "multipart/form-data":{
-              "schema":{
-                "type":"object",
-                "properties":{
-                  "body":{"$ref":"#/components/schemas/ExampleBody"},
-                  "file":{"type":"string","format":"binary"}
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "body": {
+                    "$ref": "#/components/schemas/ExampleBody"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
                 }
               },
-              "encoding":{
-                "body":{
-                  "contentType":"application/json"
+              "encoding": {
+                "body": {
+                  "contentType": "application/json"
                 }
               }
             }
@@ -35,7 +42,7 @@
         },
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
@@ -49,12 +56,17 @@
     }
   },
   "components": {
-    "schemas":{
-      "ExampleBody":{
-        "type":"object",
-        "properties":{
-          "stringParam":{ "type":"string" },
-          "intParam":{ "type":"integer", "format":"int32" }
+    "schemas": {
+      "ExampleBody": {
+        "type": "object",
+        "properties": {
+          "stringParam": {
+            "type": "string"
+          },
+          "intParam": {
+            "type": "integer",
+            "format": "int32"
+          }
         }
       }
     }
