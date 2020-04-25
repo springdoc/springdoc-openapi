@@ -36,6 +36,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -97,6 +98,11 @@ class MethodParameterPojoExtractor {
 				SIMPLE_TYPES.stream().anyMatch(c -> c.isAssignableFrom(clazz));
 	}
 
+	private static boolean isSwaggerPrimitiveType(Class<?> clazz) {
+		PrimitiveType primitiveType = PrimitiveType.fromType(clazz);
+		return  primitiveType != null;
+	}
+
 	private static final Nullable NULLABLE_ANNOTATION = new Nullable() {
 		@Override
 		public Class<? extends Annotation> annotationType() {
@@ -121,9 +127,6 @@ class MethodParameterPojoExtractor {
 	}
 
 	static {
-		SIMPLE_TYPES.add(Boolean.class);
-		SIMPLE_TYPES.add(Character.class);
-		SIMPLE_TYPES.add(Number.class);
 		SIMPLE_TYPES.add(CharSequence.class);
 		SIMPLE_TYPES.add(Optional.class);
 		SIMPLE_TYPES.add(OptionalInt.class);
@@ -136,5 +139,6 @@ class MethodParameterPojoExtractor {
 		SIMPLE_TYPE_PREDICATES.add(Class::isPrimitive);
 		SIMPLE_TYPE_PREDICATES.add(Class::isEnum);
 		SIMPLE_TYPE_PREDICATES.add(Class::isArray);
+		SIMPLE_TYPE_PREDICATES.add(MethodParameterPojoExtractor::isSwaggerPrimitiveType);
 	}
 }
