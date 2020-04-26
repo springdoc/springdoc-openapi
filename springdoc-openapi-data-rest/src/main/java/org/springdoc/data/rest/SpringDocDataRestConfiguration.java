@@ -54,7 +54,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-public class SpringDocDataRestConfiguration {
+class SpringDocDataRestConfiguration {
 
 	static {
 		getConfig().replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)

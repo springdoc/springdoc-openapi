@@ -14,7 +14,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @ConditionalOnClass(MonetaryAmount.class)
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-public class SpringDocMonetaryAmountConfiguration {
+class SpringDocMonetaryAmountConfiguration {
 
 	static {
 		SpringDocUtils.getConfig().replaceWithClass(MonetaryAmount.class, org.springdoc.core.converters.MonetaryAmount.class);
