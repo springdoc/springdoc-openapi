@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 	<name>Spring openapi documentation generator</name>
 	<description>Spring openapi documentation generator</description>
-	<url>https://github.com/springdoc/springdoc-openapi</url>
+	<url>https://springdoc.org/</url>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
