@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema
-public class MonetaryAmount {
+class MonetaryAmount {
 
 	@JsonProperty("amount")
 	@Schema(example = "99.96")

@@ -36,5 +36,10 @@
 			<artifactId>hibernate-validator</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>javax.money</groupId>
+			<artifactId>money-api</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>
