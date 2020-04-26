@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 org.springdoc.core.SpringDocConfiguration,\
 org.springdoc.core.SpringDocConfigProperties,\
-org.springdoc.core.SpringDocMonetaryAmountConfiguration
+org.springdoc.core.converters.SpringDocMonetaryAmountConfiguration

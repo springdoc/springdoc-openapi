@@ -1,7 +1,9 @@
-package org.springdoc.core;
+package org.springdoc.core.converters;
 
 
 import javax.money.MonetaryAmount;
+
+import org.springdoc.core.SpringDocUtils;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
