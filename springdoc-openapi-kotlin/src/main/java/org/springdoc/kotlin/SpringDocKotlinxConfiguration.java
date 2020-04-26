@@ -12,7 +12,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @ConditionalOnClass(Flow.class)
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-public class SpringDocKotlinxConfiguration {
+class SpringDocKotlinxConfiguration {
 
 	static {
 		getConfig().addFluxWrapperToIgnore(Flow.class);

@@ -32,7 +32,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-public class SpringDocSecurityConfiguration {
+class SpringDocSecurityConfiguration {
 
 	static {
 		getConfig().addRequestWrapperToIgnore(Authentication.class)

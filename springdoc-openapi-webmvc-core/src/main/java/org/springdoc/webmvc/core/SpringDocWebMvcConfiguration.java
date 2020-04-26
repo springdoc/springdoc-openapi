@@ -56,7 +56,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-public class SpringDocWebMvcConfiguration {
+class SpringDocWebMvcConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
