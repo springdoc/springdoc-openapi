@@ -47,8 +47,6 @@ public class PropertyCustomizingConverter implements ModelConverter {
 			}
 			return resolvedSchema;
 		}
-		else {
-			return null;
-		}
+		return null;
 	}
 }
