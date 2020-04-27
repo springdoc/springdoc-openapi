@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.4] - 2020-04-19
 ### Fixed
 - #583 - Crash on startup with 1.3.3 for kotlin app not using kotlinx-coroutines-reactor.
+### Changed
+- Upgrade swagger-api to 3.25.1
 
 ## [1.3.3] - 2020-04-18
 ### Added
