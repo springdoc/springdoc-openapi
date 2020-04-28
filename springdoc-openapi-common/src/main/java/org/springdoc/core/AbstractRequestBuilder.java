@@ -53,7 +53,6 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -121,20 +120,15 @@ public abstract class AbstractRequestBuilder {
 
 	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 
-	private final Optional<List<OperationCustomizer>> operationCustomizers;
-
 	private final Optional<List<ParameterCustomizer>> parameterCustomizers;
 
 	protected AbstractRequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<ParameterCustomizer>> parameterCustomizers, LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+			OperationBuilder operationBuilder,Optional<List<ParameterCustomizer>> parameterCustomizers,
+			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyBuilder = requestBodyBuilder;
 		this.operationBuilder = operationBuilder;
-		if (operationCustomizers.isPresent())
-			operationCustomizers.get().removeIf(Objects::isNull);
-		this.operationCustomizers = operationCustomizers;
 		if (parameterCustomizers.isPresent())
 			parameterCustomizers.get().removeIf(Objects::isNull);
 		this.parameterCustomizers = parameterCustomizers;
@@ -210,8 +204,7 @@ public abstract class AbstractRequestBuilder {
 
 		LinkedHashMap<String, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
 		setParams(operation, new ArrayList<>(map.values()), requestBodyInfo);
-		// allow for customisation
-		return customiseOperation(operation, handlerMethod);
+		return operation;
 	}
 
 	private LinkedHashMap<String, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
@@ -244,11 +237,6 @@ public abstract class AbstractRequestBuilder {
 			map.put(entry.getKey(), parameter);
 		}
 		return map;
-	}
-
-	protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
-		operationCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(operation, handlerMethod)));
-		return operation;
 	}
 
 	protected Parameter customiseParameter(Parameter parameter, ParameterInfo parameterInfo) {

@@ -20,6 +20,7 @@ package org.springdoc.webmvc.api;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,7 @@ import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
+import org.springdoc.core.customizers.OperationCustomizer;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
@@ -73,9 +75,11 @@ public class MultipleOpenApiResource implements InitializingBean {
 
 	private Map<String, OpenApiResource> groupedOpenApiResources;
 
+	private final Optional<List<OperationCustomizer>> operationCustomizers;
+
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
-			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
+			GenericResponseBuilder responseBuilder, OperationBuilder operationParser, Optional<List<OperationCustomizer>> operationCustomizers,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
 			SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
 
@@ -88,6 +92,9 @@ public class MultipleOpenApiResource implements InitializingBean {
 		this.servletContextProvider = servletContextProvider;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
+		if (operationCustomizers.isPresent())
+			operationCustomizers.get().removeIf(Objects::isNull);
+		this.operationCustomizers = operationCustomizers;
 	}
 
 	@Override
@@ -104,6 +111,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 									operationParser,
 									requestMappingHandlerMapping,
 									servletContextProvider,
+									operationCustomizers,
 									Optional.of(item.getOpenApiCustomisers()),
 									springDocConfigProperties,
 									springSecurityOAuth2Provider

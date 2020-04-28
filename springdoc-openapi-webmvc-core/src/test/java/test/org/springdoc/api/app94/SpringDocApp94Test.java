@@ -35,6 +35,7 @@ import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
 import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.webmvc.api.ActuatorProvider;
 import org.springdoc.webmvc.api.OpenApiResource;
 import test.org.springdoc.api.AbstractSpringDocTest;
@@ -90,12 +91,12 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 
 		@Bean(name = "openApiResource")
 		public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder, GenericResponseBuilder responseBuilder,
-				OperationBuilder operationParser,
+				OperationBuilder operationParser,Optional<List<OperationCustomizer>> operationCustomizers,
 				@Qualifier("defaultTestHandlerMapping") RequestMappingHandlerMapping requestMappingHandlerMapping,
 				Optional<ActuatorProvider> servletContextProvider, SpringDocConfigProperties springDocConfigProperties,
 				Optional<List<OpenApiCustomiser>> openApiCustomisers, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
 			return new OpenApiResource(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping,
-					servletContextProvider, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider);
+					servletContextProvider,operationCustomizers, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider);
 		}
 
 		@Override

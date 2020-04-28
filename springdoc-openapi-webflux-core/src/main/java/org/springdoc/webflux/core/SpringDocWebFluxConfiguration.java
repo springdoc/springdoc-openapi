@@ -58,21 +58,22 @@ public class SpringDocWebFluxConfiguration {
 	OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties) {
 		return new OpenApiResource(openAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
-				requestMappingHandlerMapping,
+				requestMappingHandlerMapping,operationCustomizers,
 				openApiCustomisers, springDocConfigProperties);
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	RequestBuilder requestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
+			OperationBuilder operationBuilder,
 			Optional<List<ParameterCustomizer>> parameterCustomizers,
 			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		return new RequestBuilder(parameterBuilder, requestBodyBuilder,
-				operationBuilder, operationCustomizers, parameterCustomizers, localSpringDocParameterNameDiscoverer);
+				operationBuilder, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 
 	@Bean
