@@ -4,11 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.5] - 2020-04-28
+### Added
+- Get fields of superclass for parameter objects
+- #606 - Added MonetaryAmount support, out of the box.
+- #605 - Support nested parameter objects.
+- #603 - Request Body can be configured as optional. 
+- #588 - Support of assignableTypes attribute in @ControllerAdvice.
+### Changed
+- Upgrade swagger-ui to 3.25.1
+- Improve Pageable support
+- #608 - Improve override OpenApiResource 
+- #591 - Changing oauth2RedirectUrl to respect relaxed binding. 
+### Fixed
+- #624 -  Change Return type of api-docs to 
+- #622 - Missing extension to schema property. 
+- #609 - ( self ref) for HAL hypermedia types. 
+- #610, #611 - ApiResponse DEFAULT_DESCRIPTION Improvement. 
+- #601 - components schema not generated. 
+- #592 - springdoc.cache is not part of additional-spring-configuration-metadata.json. 
+- #597 - Request Body for Maps not available in Swagger-UI. 
+
 ## [1.3.4] - 2020-04-19
 ### Fixed
 - #583 - Crash on startup with 1.3.3 for kotlin app not using kotlinx-coroutines-reactor.
-### Changed
-- Upgrade swagger-ui to 3.25.1
 
 ## [1.3.3] - 2020-04-18
 ### Added
