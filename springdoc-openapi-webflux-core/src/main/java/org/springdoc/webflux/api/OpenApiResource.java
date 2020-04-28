@@ -81,7 +81,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	}
 
 	@Operation(hidden = true)
-	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = API_DOCS_URL, produces = MediaType.TEXT_PLAIN_VALUE)
 	public Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl)
 			throws JsonProcessingException {
 		calculateServerUrl(serverHttpRequest, apiDocsUrl);
@@ -122,7 +122,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		}
 	}
 
-	private void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
+	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
 		String requestUrl = decode(serverHttpRequest.getURI().toString());
 		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
 		openAPIBuilder.setServerBaseUrl(serverBaseUrl);
