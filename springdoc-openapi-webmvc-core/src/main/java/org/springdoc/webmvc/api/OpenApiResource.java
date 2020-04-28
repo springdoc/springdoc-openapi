@@ -99,7 +99,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	}
 
 	@Operation(hidden = true)
-	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = API_DOCS_URL, produces = MediaType.TEXT_PLAIN_VALUE)
 	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl)
 			throws JsonProcessingException {
 		calculateServerUrl(request, apiDocsUrl);
@@ -159,7 +159,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		}
 	}
 
-	private boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod,
+	protected boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod,
 			String operationPath) {
 		ResponseBody responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
 		if (responseBodyAnnotation == null)
@@ -170,7 +170,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				&& (springDocConfigProperties.isModelAndViewAllowed() || !ModelAndView.class.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}
 
-	private void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
+	protected void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
 		String requestUrl = decode(request.getRequestURL().toString());
 		String calculatedUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
 		openAPIBuilder.setServerBaseUrl(calculatedUrl);
