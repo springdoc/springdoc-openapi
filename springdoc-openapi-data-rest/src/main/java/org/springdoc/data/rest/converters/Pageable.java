@@ -26,9 +26,7 @@ import javax.validation.constraints.Min;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springdoc.api.annotations.ParameterObject;
 
-@ParameterObject
 public class Pageable {
 
 	@Min(0)
