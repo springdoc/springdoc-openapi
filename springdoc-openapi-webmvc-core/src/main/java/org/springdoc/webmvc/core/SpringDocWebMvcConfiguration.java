@@ -66,22 +66,22 @@ class SpringDocWebMvcConfiguration {
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> servletContextProvider,
 			SpringDocConfigProperties springDocConfigProperties,
+			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
 		return new OpenApiResource(openAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
-				requestMappingHandlerMapping, servletContextProvider,
+				requestMappingHandlerMapping, servletContextProvider,operationCustomizers,
 				openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider);
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	RequestBuilder requestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			OperationBuilder operationBuilder, Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<ParameterCustomizer>> parameterCustomizers,
+			OperationBuilder operationBuilder, Optional<List<ParameterCustomizer>> parameterCustomizers,
 			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		return new RequestBuilder(parameterBuilder, requestBodyBuilder,
-				operationBuilder, operationCustomizers, parameterCustomizers, localSpringDocParameterNameDiscoverer);
+				operationBuilder, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 
 	@Bean

@@ -55,6 +55,7 @@ import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OperationCustomizer;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -91,6 +92,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	private final Optional<List<OpenApiCustomiser>> openApiCustomisers;
 
+	private final Optional<List<OperationCustomizer>> operationCustomizers;
+
 	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
 	private final String groupName;
@@ -98,6 +101,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected AbstractOpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder,
 			AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
+			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties) {
 		super();
@@ -108,6 +112,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.operationParser = operationParser;
 		this.openApiCustomisers = openApiCustomisers;
 		this.springDocConfigProperties = springDocConfigProperties;
+		if (operationCustomizers.isPresent())
+			operationCustomizers.get().removeIf(Objects::isNull);
+		this.operationCustomizers = operationCustomizers;
 	}
 
 	public static void addRestControllers(Class<?>... classes) {
@@ -226,6 +233,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			if (!CollectionUtils.isEmpty(apiCallbacks))
 				operationParser.buildCallbacks(apiCallbacks, openAPI, methodAttributes)
 						.ifPresent(operation::setCallbacks);
+
+			// allow for customisation
+			customiseOperation(operation, handlerMethod);
 
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
@@ -393,6 +403,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected Set getDefaultAllowedHttpMethods() {
 		RequestMethod[] allowedRequestMethods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD };
 		return new HashSet<>(Arrays.asList(allowedRequestMethods));
+	}
+
+
+	protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
+		operationCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(operation, handlerMethod)));
+		return operation;
 	}
 
 	private boolean isDeprecatedType(Method method) {
