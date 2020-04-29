@@ -38,6 +38,8 @@ import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.webmvc.api.ActuatorProvider;
 import org.springdoc.webmvc.api.OpenApiResource;
 
+import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
 import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -92,6 +94,7 @@ class SpringDocWebMvcConfiguration {
 
 	@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
 	@ConditionalOnClass(WebMvcEndpointHandlerMapping.class)
+	@ConditionalOnManagementPort(ManagementPortType.SAME)
 	class SpringDocWebMvcActuatorConfiguration {
 
 		@Bean
