@@ -53,6 +53,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -337,6 +338,10 @@ public abstract class AbstractRequestBuilder {
 
 		if (required != null && parameter.getRequired() == null)
 			parameter.setRequired(required);
+
+		if (AbstractOpenApiResource.containsDeprecatedAnnotation(parameterInfo.getMethodParameter().getParameterAnnotations())) {
+			parameter.setDeprecated(true);
+		}
 
 		if (parameter.getSchema() == null) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, null,

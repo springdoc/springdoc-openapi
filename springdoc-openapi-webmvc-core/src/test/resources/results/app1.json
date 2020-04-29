@@ -561,6 +561,23 @@
           }
         }
       },
+      "ItemLightDTO": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "deprecatedPrice": {
+            "type": "integer",
+            "format": "int32",
+            "deprecated": true
+          }
+        }
+      },
       "ItemDTO": {
         "type": "object",
         "properties": {
@@ -573,18 +590,11 @@
           "price": {
             "type": "integer",
             "format": "int32"
-          }
-        }
-      },
-      "ItemLightDTO": {
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string"
           },
-          "price": {
+          "deprecatedPrice": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "deprecated": true
           }
         }
       },

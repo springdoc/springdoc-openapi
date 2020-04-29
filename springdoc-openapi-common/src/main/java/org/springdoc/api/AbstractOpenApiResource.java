@@ -19,6 +19,8 @@
 package org.springdoc.api;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -33,6 +35,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.filter.SpecFilter;
@@ -57,6 +60,7 @@ import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 
+import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.AntPathMatcher;
@@ -74,10 +78,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	private static final List<Class<?>> HIDDEN_REST_CONTROLLERS = new ArrayList<>();
 
-	private static final List<Class> DEPRECATED_TYPES = new ArrayList<>();
+	private static final List<Class<? extends Annotation>> DEPRECATED_ANNOTATIONS = new ArrayList<>();
 
 	static {
-		DEPRECATED_TYPES.add(Deprecated.class);
+		DEPRECATED_ANNOTATIONS.add(Deprecated.class);
 	}
 
 	protected final OpenAPIBuilder openAPIBuilder;
@@ -125,8 +129,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		HIDDEN_REST_CONTROLLERS.addAll(Arrays.asList(classes));
 	}
 
-	public static void addDeprecatedType(Class<?> cls) {
-		DEPRECATED_TYPES.add(cls);
+	public static void addDeprecatedType(Class<? extends Annotation> cls) {
+		DEPRECATED_ANNOTATIONS.add(cls);
 	}
 
 	protected synchronized OpenAPI getOpenApi() {
@@ -196,7 +200,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 			Operation operation = (existingOperation != null) ? existingOperation : new Operation();
 
-			if (isDeprecatedType(method))
+			if (isDeprecated(method))
 				operation.setDeprecated(true);
 
 			// Add documentation from operation annotation
@@ -411,8 +415,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return operation;
 	}
 
-	private boolean isDeprecatedType(Method method) {
-		return DEPRECATED_TYPES.stream().anyMatch(clazz -> (AnnotatedElementUtils.findMergedAnnotation(method, clazz) != null));
+	private static boolean isDeprecated(AnnotatedElement annotatedElement) {
+		return DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(annotatedElement, annoClass) != null);
 	}
 
+	public static boolean containsDeprecatedAnnotation(Annotation[] annotations) {
+		return annotations != null && Stream.of(annotations).map(Annotation::annotationType).anyMatch(DEPRECATED_ANNOTATIONS::contains);
+	}
 }
