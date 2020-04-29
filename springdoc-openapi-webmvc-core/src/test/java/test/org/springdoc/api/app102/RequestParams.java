@@ -13,6 +13,7 @@ public class RequestParams {
 	@Parameter(description = "string parameter")
 	private String stringParam;
 
+	@Deprecated
 	private String stringParam1;
 
 	@Parameter(description = "string parameter2", required = true)

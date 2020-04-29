@@ -40,6 +40,9 @@ public class ItemLightDTO implements Serializable {
 	 */
 	private int price;
 
+	@Deprecated
+	private int deprecatedPrice;
+
 	/**
 	 *
 	 */
@@ -80,4 +83,11 @@ public class ItemLightDTO implements Serializable {
 		this.price = price;
 	}
 
+	public int getDeprecatedPrice() {
+		return deprecatedPrice;
+	}
+
+	public void setDeprecatedPrice(int deprecatedPrice) {
+		this.deprecatedPrice = deprecatedPrice;
+	}
 }
