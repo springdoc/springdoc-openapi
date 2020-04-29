@@ -78,7 +78,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	private static final List<Class<?>> HIDDEN_REST_CONTROLLERS = new ArrayList<>();
 
-	private static final List<Class<? extends Annotation>> DEPRECATED_ANNOTATIONS = new ArrayList<>();
+	public static final List<Class<? extends Annotation>> DEPRECATED_ANNOTATIONS = new ArrayList<>();
 
 	static {
 		DEPRECATED_ANNOTATIONS.add(Deprecated.class);
@@ -415,11 +415,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return operation;
 	}
 
-	private static boolean isDeprecated(AnnotatedElement annotatedElement) {
+	private boolean isDeprecated(AnnotatedElement annotatedElement) {
 		return DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(annotatedElement, annoClass) != null);
-	}
-
-	public static boolean containsDeprecatedAnnotation(Annotation[] annotations) {
-		return annotations != null && Stream.of(annotations).map(Annotation::annotationType).anyMatch(DEPRECATED_ANNOTATIONS::contains);
 	}
 }
