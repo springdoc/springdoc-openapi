@@ -53,7 +53,6 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -79,6 +78,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import static org.springdoc.core.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.Constants.OPENAPI_STRING_TYPE;
 import static org.springdoc.core.Constants.QUERY_PARAM;
+import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.containsDeprecatedAnnotation;
 
 public abstract class AbstractRequestBuilder {
 
@@ -339,9 +339,8 @@ public abstract class AbstractRequestBuilder {
 		if (required != null && parameter.getRequired() == null)
 			parameter.setRequired(required);
 
-		if (AbstractOpenApiResource.containsDeprecatedAnnotation(parameterInfo.getMethodParameter().getParameterAnnotations())) {
+		if (containsDeprecatedAnnotation(parameterInfo.getMethodParameter().getParameterAnnotations()))
 			parameter.setDeprecated(true);
-		}
 
 		if (parameter.getSchema() == null) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, null,
