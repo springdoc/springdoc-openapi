@@ -18,6 +18,7 @@
 
 package org.springdoc.core;
 
+import java.lang.annotation.Annotation;
 import java.util.function.Predicate;
 
 import io.swagger.v3.oas.models.media.Schema;
@@ -36,7 +37,7 @@ public class SpringDocUtils {
 		return springDocConfig;
 	}
 
-	public SpringDocUtils addDeprecatedType(Class<?> cls) {
+	public SpringDocUtils addDeprecatedType(Class<? extends Annotation> cls) {
 		AbstractOpenApiResource.addDeprecatedType(cls);
 		return this;
 	}

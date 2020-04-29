@@ -48,6 +48,7 @@
             "name": "stringParam1",
             "in": "query",
             "required": false,
+            "deprecated": true,
             "schema": {
               "type": "string"
             }
