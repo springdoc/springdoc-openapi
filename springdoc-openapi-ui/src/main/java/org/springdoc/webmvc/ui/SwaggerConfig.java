@@ -36,7 +36,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
-class SwaggerConfig {
+public class SwaggerConfig {
 
 	@Bean
 	@ConditionalOnMissingBean

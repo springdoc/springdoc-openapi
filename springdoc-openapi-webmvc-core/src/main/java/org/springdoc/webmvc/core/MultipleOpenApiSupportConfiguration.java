@@ -50,7 +50,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @Conditional(MultipleOpenApiSupportCondition.class)
-class MultipleOpenApiSupportConfiguration {
+public class MultipleOpenApiSupportConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
