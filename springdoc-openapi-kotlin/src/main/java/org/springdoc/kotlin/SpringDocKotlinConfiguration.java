@@ -34,7 +34,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-class SpringDocKotlinConfiguration {
+public class SpringDocKotlinConfiguration {
 
 	static {
 		getConfig().addRequestWrapperToIgnore(Continuation.class)

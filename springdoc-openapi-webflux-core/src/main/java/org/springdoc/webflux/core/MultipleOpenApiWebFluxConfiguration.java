@@ -48,7 +48,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @Conditional(MultipleOpenApiSupportCondition.class)
-class MultipleOpenApiWebFluxConfiguration {
+public class MultipleOpenApiWebFluxConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
