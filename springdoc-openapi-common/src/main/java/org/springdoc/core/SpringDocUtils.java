@@ -25,6 +25,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.ConverterUtils;
+import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 
 public class SpringDocUtils {
 
@@ -38,7 +39,7 @@ public class SpringDocUtils {
 	}
 
 	public SpringDocUtils addDeprecatedType(Class<? extends Annotation> cls) {
-		addDeprecatedType(cls);
+		SchemaPropertyDeprecatingConverter.addDeprecatedType(cls);
 		return this;
 	}
 
