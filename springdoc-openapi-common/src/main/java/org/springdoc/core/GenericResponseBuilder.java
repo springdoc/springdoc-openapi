@@ -195,8 +195,9 @@ public class GenericResponseBuilder {
 			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getMethod().getClass(), isGeneric);
 			ApiResponse apiResponse = methodAttributes.getGenericMapResponse().containsKey(httpCode) ? methodAttributes.getGenericMapResponse().get(httpCode)
 					: new ApiResponse();
-			buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse,
-					isGeneric);
+			if (httpCode != null)
+				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse,
+						isGeneric);
 		}
 	}
 
