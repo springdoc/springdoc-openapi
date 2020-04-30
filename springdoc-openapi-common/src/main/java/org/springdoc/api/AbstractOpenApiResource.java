@@ -19,8 +19,6 @@
 package org.springdoc.api;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -35,7 +33,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.filter.SpecFilter;
@@ -60,7 +57,6 @@ import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 
-import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.AntPathMatcher;
@@ -70,6 +66,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
+import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.isDeprecated;
+
 public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractOpenApiResource.class);
@@ -77,12 +75,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private static final List<Class<?>> ADDITIONAL_REST_CONTROLLERS = new ArrayList<>();
 
 	private static final List<Class<?>> HIDDEN_REST_CONTROLLERS = new ArrayList<>();
-
-	public static final List<Class<? extends Annotation>> DEPRECATED_ANNOTATIONS = new ArrayList<>();
-
-	static {
-		DEPRECATED_ANNOTATIONS.add(Deprecated.class);
-	}
 
 	protected final OpenAPIBuilder openAPIBuilder;
 
@@ -127,10 +119,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	public static void addHiddenRestControllers(Class<?>... classes) {
 		HIDDEN_REST_CONTROLLERS.addAll(Arrays.asList(classes));
-	}
-
-	public static void addDeprecatedType(Class<? extends Annotation> cls) {
-		DEPRECATED_ANNOTATIONS.add(cls);
 	}
 
 	protected synchronized OpenAPI getOpenApi() {
@@ -415,7 +403,4 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return operation;
 	}
 
-	private boolean isDeprecated(AnnotatedElement annotatedElement) {
-		return DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(annotatedElement, annoClass) != null);
-	}
 }
