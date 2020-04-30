@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.7] - 2020-04-30
+### Added
+- Make use of @Deprecated annotations for parameters and model fields
+### Changed
+- #624 - Revert changes on MediaType.APPLICATION_JSON_VALUE
+- #568 - Improve visibility of configuration classes
+### Fixed
+- #626 - Springdoc with Actuator server in different port that embedded tomcat server
+- #625 - Add access to ApiResponses for OperationCustomizer. 
+
 ## [1.3.6] - 2020-04-28
 ### Changed
 - Revert @ParameterObject annotation from Pageable
