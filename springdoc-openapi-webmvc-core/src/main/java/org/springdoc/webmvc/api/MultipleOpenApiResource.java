@@ -121,7 +121,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 	}
 
 	@Operation(hidden = true)
-	@GetMapping(value = API_DOCS_URL + "/{group}", produces = MediaType.TEXT_PLAIN_VALUE)
+	@GetMapping(value = API_DOCS_URL + "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl,
 			@PathVariable String group)
 			throws JsonProcessingException {
