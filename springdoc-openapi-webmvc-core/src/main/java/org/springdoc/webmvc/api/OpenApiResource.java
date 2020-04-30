@@ -102,7 +102,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	}
 
 	@Operation(hidden = true)
-	@GetMapping(value = API_DOCS_URL, produces = MediaType.TEXT_PLAIN_VALUE)
+	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl)
 			throws JsonProcessingException {
 		calculateServerUrl(request, apiDocsUrl);

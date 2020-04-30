@@ -112,7 +112,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 	}
 
 	@Operation(hidden = true)
-	@GetMapping(value = API_DOCS_URL + "/{group}", produces = MediaType.TEXT_PLAIN_VALUE)
+	@GetMapping(value = API_DOCS_URL + "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Mono<String> openapiJson(ServerHttpRequest
 			serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl, @PathVariable String
 			group)
