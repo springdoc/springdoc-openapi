@@ -38,7 +38,7 @@ public class SpringDocUtils {
 	}
 
 	public SpringDocUtils addDeprecatedType(Class<? extends Annotation> cls) {
-		AbstractOpenApiResource.addDeprecatedType(cls);
+		addDeprecatedType(cls);
 		return this;
 	}
 
