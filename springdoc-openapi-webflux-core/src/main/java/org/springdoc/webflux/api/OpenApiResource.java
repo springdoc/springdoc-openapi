@@ -142,7 +142,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				}
 			}
 		}
+		getRouterFunctionPaths();
+	}
 
+	private void getRouterFunctionPaths() {
 		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
 		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
 
