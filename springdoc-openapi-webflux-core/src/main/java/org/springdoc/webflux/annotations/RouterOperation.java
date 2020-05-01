@@ -65,7 +65,7 @@ public @interface RouterOperation {
 	 *
 	 * @return the class of the Bean
 	 **/
-	Class<?> beanClass() default Void.class;;
+	Class<?> beanClass() default Void.class;
 
 	/**
 	 * The method of the handler Bean.

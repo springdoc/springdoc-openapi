@@ -18,7 +18,6 @@
 
 package org.springdoc.webflux.api;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,10 +52,7 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.type.StandardMethodMetadata;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.CollectionUtils;
@@ -147,7 +143,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			}
 		}
 
-		ApplicationContext applicationContext = (ApplicationContext) requestMappingHandlerMapping.getApplicationContext();
+		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
 		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
 
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
@@ -184,7 +180,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 							catch (NoSuchMethodException e) {
 								LOGGER.error(e.getMessage());
 							}
-							if (handlerMethod != null &&  isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(routerOperation.path()))
+							if (handlerMethod != null && isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(routerOperation.path()))
 								calculatePath(handlerMethod, routerOperation.path(), new HashSet<>(Arrays.asList(routerOperation.method())));
 						}
 					}
@@ -199,23 +195,4 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		openAPIBuilder.setServerBaseUrl(serverBaseUrl);
 	}
 
-	public List<String> getBeansWithAnnotation(ConfigurableListableBeanFactory factory, Class<? extends Annotation> type) {
-
-		List<String> result = new ArrayList<>();
-
-		for (String name : factory.getBeanDefinitionNames()) {
-			BeanDefinition bd = factory.getBeanDefinition(name);
-
-			if (bd.getSource() instanceof StandardMethodMetadata) {
-				StandardMethodMetadata metadata = (StandardMethodMetadata) bd.getSource();
-
-				Map<String, Object> attributes = metadata.getAnnotationAttributes(type.getName());
-				if (null == attributes) {
-					continue;
-				}
-			}
-		}
-
-		return result;
-	}
 }
