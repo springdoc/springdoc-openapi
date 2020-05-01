@@ -184,7 +184,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 							catch (NoSuchMethodException e) {
 								LOGGER.error(e.getMessage());
 							}
-							if (handlerMethod != null)
+							if (handlerMethod != null &&  isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(routerOperation.path()))
 								calculatePath(handlerMethod, routerOperation.path(), new HashSet<>(Arrays.asList(routerOperation.method())));
 						}
 					}
