@@ -132,6 +132,8 @@ public class MethodAttributes {
 		else if (reqMappingClass != null) {
 			fillMethods(reqMappingClass.produces(), reqMappingClass.consumes(), reqMappingClass.headers());
 		}
+		else
+			fillMethods(null, null, null);
 	}
 
 	private void fillMethods(String[] produces, String[] consumes, String[] headers) {

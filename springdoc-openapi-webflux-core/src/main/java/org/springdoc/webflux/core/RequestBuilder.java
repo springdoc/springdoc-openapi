@@ -31,6 +31,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ServerWebExchange;
 
 import static org.springdoc.core.SpringDocUtils.getConfig;
@@ -40,6 +41,7 @@ public class RequestBuilder extends AbstractRequestBuilder {
 	static {
 		getConfig().addRequestWrapperToIgnore(ServerWebExchange.class, ServerHttpRequest.class)
 				.addRequestWrapperToIgnore(ServerHttpResponse.class)
+				.addRequestWrapperToIgnore(ServerRequest.class)
 				.addFileType(FilePart.class);
 	}
 
