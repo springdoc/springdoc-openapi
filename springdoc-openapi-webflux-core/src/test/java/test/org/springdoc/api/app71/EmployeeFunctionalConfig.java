@@ -33,7 +33,7 @@ public class EmployeeFunctionalConfig {
 	}
 
 	@Bean
-	@RouterOperation(path = "/employees", method = RequestMethod.GET, beanClass = EmployeeRepository.class, beanMethod = "findAllEmployees", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RouterOperation(beanClass = EmployeeRepository.class, beanMethod = "findAllEmployees")
 	RouterFunction<ServerResponse> getAllEmployeesRoute() {
 		return route(GET("/employees").and(accept(MediaType.APPLICATION_JSON)),
 				req -> ok().body(
@@ -41,10 +41,9 @@ public class EmployeeFunctionalConfig {
 	}
 
 	@Bean
-	@RouterOperation(path = "/employees/{id}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE,
-			operation = @Operation(operationId = "findEmployeeById", summary = "Find purchase order by ID", tags = { "MyEmployee" },
+	@RouterOperation(operation = @Operation(operationId = "findEmployeeById", summary = "Find purchase order by ID", tags = { "MyEmployee" },
 					parameters = { @Parameter(in = ParameterIn.PATH, name = "id", description = "Employee Id", schema = @Schema(type = "string")) },
-					responses =  { @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Employee.class))),
+					responses = { @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Employee.class))),
 							@ApiResponse(responseCode = "400", description = "Invalid Employee ID supplied"),
 							@ApiResponse(responseCode = "404", description = "Employee not found") }))
 	RouterFunction<ServerResponse> getEmployeeByIdRoute() {
@@ -55,7 +54,7 @@ public class EmployeeFunctionalConfig {
 
 
 	@Bean
-	@RouterOperation(path = "/employees/update", method = RequestMethod.POST, beanClass = EmployeeRepository.class, beanMethod = "updateEmployee", consumes = MediaType.APPLICATION_XML_VALUE)
+	@RouterOperation( beanClass = EmployeeRepository.class, beanMethod = "updateEmployee")
 	RouterFunction<ServerResponse> updateEmployeeRoute() {
 		return route(POST("/employees/update").and(accept(MediaType.APPLICATION_XML)),
 				req -> req.body(BodyExtractors.toMono(Employee.class))

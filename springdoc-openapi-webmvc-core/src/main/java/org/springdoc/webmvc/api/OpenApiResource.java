@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -181,7 +182,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			}
 			else
 				routerOperationList.addAll(Arrays.asList(routerOperations.value()));
-			calculatePath(routerOperationList);
+			calculatePath(routerOperationList.stream().map(routerOperation -> new org.springdoc.core.models.RouterOperation(routerOperation)).collect(Collectors.toList()));
 		}
 	}
 
