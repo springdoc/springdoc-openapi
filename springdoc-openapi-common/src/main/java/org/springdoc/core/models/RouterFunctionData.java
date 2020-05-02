@@ -20,14 +20,7 @@ public class RouterFunctionData {
 
 	private RequestMethod[] methods;
 
-	public RouterFunctionData(String path, String consumes, String header, String queryParam, Set<HttpMethod> methods) {
-		this.path = path;
-		this.queryParam = queryParam;
-		this.methods = getMethod(methods);
-		if (StringUtils.isNotBlank(header))
-			this.headers = new String[] { header };
-		if (StringUtils.isNotBlank(consumes))
-			this.consumes = new String[] { consumes };
+	public RouterFunctionData() {
 	}
 
 	public String getPath() {
@@ -54,12 +47,21 @@ public class RouterFunctionData {
 		this.headers = headers;
 	}
 
+	public void setHeaders(String headers) {
+		if (StringUtils.isNotBlank(headers))
+			this.headers = new String[] { headers };
+	}
+
 	public RequestMethod[] getMethods() {
 		return methods;
 	}
 
 	public void setMethods(RequestMethod[] methods) {
 		this.methods = methods;
+	}
+
+	public void setMethods(Set<HttpMethod> methods) {
+		this.methods = getMethod(methods);
 	}
 
 	public String[] getConsumes() {
@@ -70,6 +72,10 @@ public class RouterFunctionData {
 		this.consumes = consumes;
 	}
 
+	public void setConsumes(String consumes) {
+		if (StringUtils.isNotBlank(consumes))
+			this.consumes = new String[] { consumes };
+	}
 	private RequestMethod[] getMethod(Set<HttpMethod> methods) {
 		if (!CollectionUtils.isEmpty(methods)) {
 			return methods.stream().map(httpMethod -> getRequestMethod(httpMethod)).toArray(RequestMethod[]::new);

@@ -1,22 +1,22 @@
-package org.springdoc.webflux.api;
+package org.springdoc.webmvc.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
 import org.springdoc.core.models.RouterFunctionData;
-import reactor.core.publisher.Mono;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.web.reactive.function.server.HandlerFunction;
-import org.springframework.web.reactive.function.server.RequestPredicate;
-import org.springframework.web.reactive.function.server.RequestPredicates;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
-import org.springframework.web.reactive.function.server.ServerRequest;
+import org.springframework.web.servlet.function.HandlerFunction;
+import org.springframework.web.servlet.function.RequestPredicate;
+import org.springframework.web.servlet.function.RequestPredicates;
+import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.RouterFunctions;
+import org.springframework.web.servlet.function.ServerRequest;
 
 public class RouterFunctionVisitor implements RouterFunctions.Visitor, RequestPredicates.Visitor {
 
@@ -38,6 +38,16 @@ public class RouterFunctionVisitor implements RouterFunctions.Visitor, RequestPr
 	}
 
 	@Override
+	public void resources(Function<ServerRequest, Optional<Resource>> lookupFunction) {
+
+	}
+
+	@Override
+	public void unknown(RouterFunction<?> routerFunction) {
+
+	}
+
+	@Override
 	public void method(Set<HttpMethod> methods) {
 		routerFunctionData.setMethods(methods);
 	}
@@ -48,11 +58,66 @@ public class RouterFunctionVisitor implements RouterFunctions.Visitor, RequestPr
 	}
 
 	@Override
+	public void pathExtension(String extension) {
+
+	}
+
+	@Override
 	public void header(String name, String value) {
 		if (HttpHeaders.ACCEPT.equals(name))
 			routerFunctionData.setConsumes(value);
 		else
 			routerFunctionData.setHeaders(name + "=" + value);
+	}
+
+	@Override
+	public void param(String name, String value) {
+
+	}
+
+	@Override
+	public void startAnd() {
+
+	}
+
+	@Override
+	public void and() {
+
+	}
+
+	@Override
+	public void endAnd() {
+
+	}
+
+	@Override
+	public void startOr() {
+
+	}
+
+	@Override
+	public void or() {
+
+	}
+
+	@Override
+	public void endOr() {
+
+	}
+
+	@Override
+	public void startNegate() {
+
+	}
+
+	@Override
+	public void endNegate() {
+
+	}
+
+	@Override
+	public void unknown(RequestPredicate predicate) {
+
 	}
 
 	public List<RouterFunctionData> getRouterFunctionDatas() {
@@ -68,58 +133,6 @@ public class RouterFunctionVisitor implements RouterFunctions.Visitor, RequestPr
 	public void endNested(RequestPredicate predicate) {
 	}
 
-	@Override
-	public void resources(Function<ServerRequest, Mono<Resource>> lookupFunction) {
-	}
-
-	@Override
-	public void unknown(RouterFunction<?> routerFunction) {
-	}
-
-	@Override
-	public void pathExtension(String extension) {
-	}
-
-
-	@Override
-	public void queryParam(String name, String value) {
-	}
-
-	@Override
-	public void startAnd() {
-	}
-
-	@Override
-	public void and() {
-	}
-
-	@Override
-	public void endAnd() {
-	}
-
-	@Override
-	public void startOr() {
-	}
-
-	@Override
-	public void or() {
-	}
-
-	@Override
-	public void endOr() {
-	}
-
-	@Override
-	public void startNegate() {
-	}
-
-	@Override
-	public void endNegate() {
-	}
-
-	@Override
-	public void unknown(RequestPredicate predicate) {
-	}
 
 }
 

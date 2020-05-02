@@ -42,11 +42,33 @@
       }
     },
     "/people": {
+      "get": {
+        "tags": [
+          "person-service"
+        ],
+        "operationId": "all",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
           "person-service"
         ],
-        "operationId": "all_1",
+        "operationId": "save",
         "requestBody": {
           "content": {
             "application/json": {
@@ -62,18 +84,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Person"
-                    },
-                    {
-                      "uniqueItems": true,
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Person"
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Person"
                 }
               }
             }
