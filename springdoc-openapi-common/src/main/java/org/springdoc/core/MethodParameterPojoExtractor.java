@@ -50,7 +50,6 @@ class MethodParameterPojoExtractor {
 	private MethodParameterPojoExtractor() { }
 
 	private static final Nullable NULLABLE_ANNOTATION = new Nullable() {
-		@Override
 		public Class<? extends Annotation> annotationType() {
 			return Nullable.class;
 		}

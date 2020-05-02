@@ -34,7 +34,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocKotlinxConfiguration {
 
-	static {
+	SpringDocKotlinxConfiguration() {
 		getConfig().addFluxWrapperToIgnore(Flow.class);
 	}
 
