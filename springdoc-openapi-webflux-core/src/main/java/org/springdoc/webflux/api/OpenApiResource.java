@@ -184,8 +184,11 @@ public class OpenApiResource extends AbstractOpenApiResource {
 								LOGGER.error(e.getMessage());
 							}
 							if (handlerMethod != null && isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(routerOperation.path()))
-								calculatePath(handlerMethod, routerOperation.path(), new HashSet<>(Arrays.asList(routerOperation.method())));
+								calculatePath(handlerMethod, routerOperation.path(), new HashSet<>(Arrays.asList(routerOperation.method())), routerOperation.consumes(), routerOperation.produces());
 						}
+					}
+					else if (StringUtils.isNotBlank(routerOperation.operation().operationId())) {
+						calculatePath(routerOperation.path(), new HashSet<>(Arrays.asList(routerOperation.method())), routerOperation.operation(), routerOperation.consumes(), routerOperation.produces());
 					}
 				}
 			}

@@ -155,7 +155,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected abstract void getPaths(Map<String, Object> findRestControllers);
 
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
-			Set<RequestMethod> requestMethods) {
+			Set<RequestMethod> requestMethods, String[] methodConsumes, String[] methodProduces) {
 		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
 		Components components = openAPI.getComponents();
 		Paths paths = openAPI.getPaths();
@@ -176,7 +176,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(handlerMethod.getBeanType(),
 					RequestMapping.class);
 
-			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType());
+			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces);
 			methodAttributes.setMethodOverloaded(existingOperation != null);
 
 			if (reqMappingClass != null) {
@@ -232,6 +232,24 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
 		}
+	}
+
+	protected void calculatePath(String operationPath, Set<RequestMethod> requestMethods, io.swagger.v3.oas.annotations.Operation apiOperation, String[] methodConsumes, String[] methodProduces) {
+		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
+		Paths paths = openAPI.getPaths();
+
+		for (RequestMethod requestMethod : requestMethods) {
+			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces);
+			Operation operation = new Operation();
+			openAPI = operationParser.parse(apiOperation, operation, openAPI, methodAttributes);
+			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
+			paths.addPathItem(operationPath, pathItemObject);
+		}
+	}
+
+	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
+			Set<RequestMethod> requestMethods){
+		this.calculatePath(handlerMethod, operationPath,requestMethods,null, null);
 	}
 
 	private void calculateJsonView(io.swagger.v3.oas.annotations.Operation apiOperation,

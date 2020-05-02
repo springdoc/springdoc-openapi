@@ -37,13 +37,15 @@
     "/employees/{id}": {
       "get": {
         "tags": [
-          "employee-repository"
+          "MyEmployee"
         ],
+        "summary": "Find purchase order by ID",
         "operationId": "findEmployeeById",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "Employee Id",
             "required": true,
             "schema": {
               "type": "string"
@@ -52,14 +54,20 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "successful operation",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Employee"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid Employee ID supplied"
+          },
+          "404": {
+            "description": "Employee not found"
           }
         }
       }
@@ -72,7 +80,7 @@
         "operationId": "updateEmployee",
         "requestBody": {
           "content": {
-            "application/json": {
+            "application/xml": {
               "schema": {
                 "$ref": "#/components/schemas/Employee"
               }
