@@ -12,7 +12,6 @@ import org.springdoc.core.annotations.RouterOperations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -42,10 +41,10 @@ public class EmployeeFunctionalConfig {
 
 	@Bean
 	@RouterOperation(operation = @Operation(operationId = "findEmployeeById", summary = "Find purchase order by ID", tags = { "MyEmployee" },
-					parameters = { @Parameter(in = ParameterIn.PATH, name = "id", description = "Employee Id", schema = @Schema(type = "string")) },
-					responses = { @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Employee.class))),
-							@ApiResponse(responseCode = "400", description = "Invalid Employee ID supplied"),
-							@ApiResponse(responseCode = "404", description = "Employee not found") }))
+			parameters = { @Parameter(in = ParameterIn.PATH, name = "id", description = "Employee Id", schema = @Schema(type = "string")) },
+			responses = { @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Employee.class))),
+					@ApiResponse(responseCode = "400", description = "Invalid Employee ID supplied"),
+					@ApiResponse(responseCode = "404", description = "Employee not found") }))
 	RouterFunction<ServerResponse> getEmployeeByIdRoute() {
 		return route(GET("/employees/{id}"),
 				req -> ok().body(
@@ -54,7 +53,7 @@ public class EmployeeFunctionalConfig {
 
 
 	@Bean
-	@RouterOperation( beanClass = EmployeeRepository.class, beanMethod = "updateEmployee")
+	@RouterOperation(beanClass = EmployeeRepository.class, beanMethod = "updateEmployee")
 	RouterFunction<ServerResponse> updateEmployeeRoute() {
 		return route(POST("/employees/update").and(accept(MediaType.APPLICATION_XML)),
 				req -> req.body(BodyExtractors.toMono(Employee.class))
@@ -63,9 +62,9 @@ public class EmployeeFunctionalConfig {
 	}
 
 	@Bean
-	@RouterOperations({ @RouterOperation(path = "/employees-composed/update", method = RequestMethod.POST, beanClass = EmployeeRepository.class, beanMethod = "updateEmployee"),
-			@RouterOperation(path = "/employees-composed/{id}", method = RequestMethod.GET, beanClass = EmployeeRepository.class, beanMethod = "findEmployeeById"),
-			@RouterOperation(path = "/employees-composed", method = RequestMethod.GET, beanClass = EmployeeRepository.class, beanMethod = "findAllEmployees") })
+	@RouterOperations({ @RouterOperation(path = "/employees-composed/update", beanClass = EmployeeRepository.class, beanMethod = "updateEmployee"),
+			@RouterOperation(path = "/employees-composed/{id}", beanClass = EmployeeRepository.class, beanMethod = "findEmployeeById"),
+			@RouterOperation(path = "/employees-composed", beanClass = EmployeeRepository.class, beanMethod = "findAllEmployees") })
 	RouterFunction<ServerResponse> composedRoutes() {
 		return
 				route(GET("/employees-composed"),

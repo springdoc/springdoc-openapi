@@ -58,6 +58,7 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.models.RouterFunctionData;
 import org.springdoc.core.models.RouterOperation;
 
 import org.springframework.context.ApplicationContext;
@@ -459,6 +460,37 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
 		operationCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(operation, handlerMethod)));
 		return operation;
+	}
+
+	protected void merge(List<RouterFunctionData> routerFunctionDatas, List<org.springdoc.core.models.RouterOperation> routerOperationList) {
+		for (org.springdoc.core.models.RouterOperation routerOperation : routerOperationList) {
+			List<RouterFunctionData> routerFunctionDataList = routerFunctionDatas.stream()
+					.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath()))
+					.collect(Collectors.toList());
+			if (!CollectionUtils.isEmpty(routerFunctionDataList)) {
+				//Try with unique path in the route
+				if (routerFunctionDataList.size() == 1)
+					fillRouterOperation(routerFunctionDataList, routerOperation);
+					//Try with unique path and RequestMethod
+				else {
+					routerFunctionDataList = routerFunctionDatas.stream()
+							.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath()) && ArrayUtils.isNotEmpty(routerOperation.getMethod()) && routerFunctionData1.getMethods()[0].equals(routerOperation.getMethod()[0]))
+							.collect(Collectors.toList());
+					if (routerFunctionDataList.size() == 1)
+						fillRouterOperation(routerFunctionDataList, routerOperation);
+				}
+			}
+		}
+	}
+
+	private void fillRouterOperation(List<RouterFunctionData> routerFunctionDataList, org.springdoc.core.models.RouterOperation routerOperation) {
+		RouterFunctionData routerFunctionData = routerFunctionDataList.get(0);
+		if (ArrayUtils.isEmpty(routerOperation.getConsumes()))
+			routerOperation.setConsumes(routerFunctionData.getConsumes());
+		if (ArrayUtils.isEmpty(routerOperation.getHeaders()))
+			routerOperation.setHeaders(routerFunctionData.getHeaders());
+		if (ArrayUtils.isEmpty(routerOperation.getMethod()))
+			routerOperation.setMethod(routerFunctionData.getMethods());
 	}
 
 }

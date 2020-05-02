@@ -38,8 +38,8 @@ import static org.springframework.web.servlet.function.ServerResponse.ok;
 public class HelloApplication {
 
 	@Bean
-	@RouterOperations({ @RouterOperation(path = "/people", method = RequestMethod.POST, beanClass = PersonService.class, beanMethod = "all"),
-			@RouterOperation(path = "/people/{id}", method = RequestMethod.GET, beanClass = PersonService.class, beanMethod = "byId"),
+	@RouterOperations({ @RouterOperation(path = "/people", method = RequestMethod.GET, beanClass = PersonService.class, beanMethod = "all"),
+			@RouterOperation(path = "/people/{id}", beanClass = PersonService.class, beanMethod = "byId"),
 			@RouterOperation(path = "/people", method = RequestMethod.POST, beanClass = PersonService.class, beanMethod = "save") })
 	RouterFunction<ServerResponse> routes(PersonHandler ph) {
 		String root = "";

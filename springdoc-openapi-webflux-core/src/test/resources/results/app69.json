@@ -35,40 +35,6 @@
         }
       }
     },
-    "/api/user/byFirstName": {
-      "get": {
-        "tags": [
-          "user-repository-impl"
-        ],
-        "description": "get all the users by firstname",
-        "operationId": "getAllUsers_1",
-        "parameters": [
-          {
-            "name": "firstname",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/User"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/user/{id}": {
       "get": {
         "tags": [
