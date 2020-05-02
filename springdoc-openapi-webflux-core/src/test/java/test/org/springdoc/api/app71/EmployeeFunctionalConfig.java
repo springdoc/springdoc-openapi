@@ -6,8 +6,8 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import org.springdoc.webflux.annotations.RouterOperation;
-import org.springdoc.webflux.annotations.RouterOperations;
+import org.springdoc.core.annotations.RouterOperation;
+import org.springdoc.core.annotations.RouterOperations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

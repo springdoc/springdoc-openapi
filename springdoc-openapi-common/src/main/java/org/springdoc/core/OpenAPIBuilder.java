@@ -462,4 +462,8 @@ public class OpenAPIBuilder {
 	public void resetCalculatedOpenAPI() {
 		this.calculatedOpenAPI = null;
 	}
+
+	public ApplicationContext getContext() {
+		return context;
+	}
 }

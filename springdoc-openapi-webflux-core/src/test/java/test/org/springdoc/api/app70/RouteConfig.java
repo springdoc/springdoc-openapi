@@ -1,7 +1,7 @@
 package test.org.springdoc.api.app70;
 
-import org.springdoc.webflux.annotations.RouterOperation;
-import org.springdoc.webflux.annotations.RouterOperations;
+import org.springdoc.core.annotations.RouterOperation;
+import org.springdoc.core.annotations.RouterOperations;
 import reactor.core.publisher.Mono;
 
 import org.springframework.context.annotation.Bean;
