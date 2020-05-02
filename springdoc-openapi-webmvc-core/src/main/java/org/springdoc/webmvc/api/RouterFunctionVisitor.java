@@ -52,7 +52,7 @@ public class RouterFunctionVisitor implements RouterFunctions.Visitor, RequestPr
 	public List<RouterFunctionData> getRouterFunctionDatas() {
 		return routerFunctionDatas;
 	}
-	
+
 	@Override
 	public void resources(Function<ServerRequest, Optional<Resource>> lookupFunction) {
 		// Not yet needed
