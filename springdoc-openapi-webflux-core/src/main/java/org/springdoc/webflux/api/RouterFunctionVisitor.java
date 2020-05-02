@@ -24,14 +24,8 @@ public class RouterFunctionVisitor implements RouterFunctions.Visitor, RequestPr
 
 	private RouterFunctionData routerFunctionData;
 
-	private RequestPredicate routePredicate;
-
-	private HandlerFunction<?> routeHandlerFunction;
-
 	@Override
 	public void route(RequestPredicate predicate, HandlerFunction<?> handlerFunction) {
-		this.routePredicate = predicate;
-		this.routeHandlerFunction = handlerFunction;
 		this.routerFunctionData = new RouterFunctionData();
 		routerFunctionDatas.add(this.routerFunctionData);
 		predicate.accept(this);
@@ -62,63 +56,78 @@ public class RouterFunctionVisitor implements RouterFunctions.Visitor, RequestPr
 
 	@Override
 	public void startNested(RequestPredicate predicate) {
+		// Not yet needed
 	}
 
 	@Override
 	public void endNested(RequestPredicate predicate) {
+		// Not yet needed
 	}
 
 	@Override
 	public void resources(Function<ServerRequest, Mono<Resource>> lookupFunction) {
+		// Not yet needed
 	}
 
 	@Override
 	public void unknown(RouterFunction<?> routerFunction) {
+		// Not yet needed
 	}
 
 	@Override
 	public void pathExtension(String extension) {
+		// Not yet needed
 	}
 
 
 	@Override
 	public void queryParam(String name, String value) {
+		// Not yet needed
 	}
 
 	@Override
 	public void startAnd() {
+		// Not yet needed
 	}
 
 	@Override
 	public void and() {
+		// Not yet needed
 	}
 
 	@Override
 	public void endAnd() {
+		// Not yet needed
 	}
 
 	@Override
 	public void startOr() {
+		// Not yet needed
 	}
 
 	@Override
 	public void or() {
+		// Not yet needed
 	}
 
 	@Override
 	public void endOr() {
+		// Not yet needed
 	}
 
 	@Override
 	public void startNegate() {
+		// Not yet needed
 	}
 
 	@Override
 	public void endNegate() {
+		// Not yet needed
 	}
 
 	@Override
 	public void unknown(RequestPredicate predicate) {
+		// Not yet needed
 	}
 
 }
