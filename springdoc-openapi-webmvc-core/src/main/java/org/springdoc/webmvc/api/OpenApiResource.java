@@ -18,6 +18,8 @@
 
 package org.springdoc.webmvc.api;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,11 +42,14 @@ import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.annotations.RouterOperation;
+import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +58,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
@@ -159,6 +165,23 @@ public class OpenApiResource extends AbstractOpenApiResource {
 					calculatePath(handlerMethod, operationPath, requestMethods);
 				}
 			}
+		}
+		getRouterFunctionPaths();
+	}
+
+	private void getRouterFunctionPaths() {
+		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
+		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
+		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
+			List<RouterOperation> routerOperationList = new ArrayList<>();
+			RouterOperations routerOperations = applicationContext.findAnnotationOnBean(entry.getKey(), RouterOperations.class);
+			if (routerOperations == null) {
+				RouterOperation routerOperation = applicationContext.findAnnotationOnBean(entry.getKey(), RouterOperation.class);
+				routerOperationList.add(routerOperation);
+			}
+			else
+				routerOperationList.addAll(Arrays.asList(routerOperations.value()));
+			calculatePath(routerOperationList);
 		}
 	}
 

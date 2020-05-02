@@ -16,7 +16,7 @@
  *
  */
 
-package org.springdoc.webflux.annotations;
+package org.springdoc.core.annotations;
 
 
 import java.lang.annotation.ElementType;

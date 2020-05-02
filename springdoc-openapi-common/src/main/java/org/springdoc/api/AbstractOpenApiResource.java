@@ -45,6 +45,8 @@ import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.AbstractRequestBuilder;
@@ -54,9 +56,11 @@ import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
+import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.AntPathMatcher;
@@ -237,7 +241,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected void calculatePath(String operationPath, Set<RequestMethod> requestMethods, io.swagger.v3.oas.annotations.Operation apiOperation, String[] methodConsumes, String[] methodProduces) {
 		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
 		Paths paths = openAPI.getPaths();
-
 		for (RequestMethod requestMethod : requestMethods) {
 			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces);
 			Operation operation = new Operation();
@@ -250,6 +253,43 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
 			Set<RequestMethod> requestMethods){
 		this.calculatePath(handlerMethod, operationPath,requestMethods,null, null);
+	}
+
+	protected void calculatePath(List<RouterOperation> routerOperationList) {
+		ApplicationContext applicationContext = openAPIBuilder.getContext();
+		if (!CollectionUtils.isEmpty(routerOperationList)) {
+			for (RouterOperation routerOperation : routerOperationList) {
+				if (!Void.class.equals(routerOperation.beanClass())) {
+					Object handlerBean = applicationContext.getBean(routerOperation.beanClass());
+					HandlerMethod handlerMethod = null;
+					if (StringUtils.isNotBlank(routerOperation.beanMethod())) {
+						try {
+							if (ArrayUtils.isEmpty(routerOperation.parameterTypes())) {
+								Optional<Method> methodOptional = Arrays.stream(handlerBean.getClass().getDeclaredMethods())
+										.filter(method -> routerOperation.beanMethod().equals(method.getName()) && method.getParameters().length == 0)
+										.findAny();
+								if (!methodOptional.isPresent())
+									methodOptional = Arrays.stream(handlerBean.getClass().getDeclaredMethods())
+											.filter(method1 -> routerOperation.beanMethod().equals(method1.getName()))
+											.findAny();
+								if (methodOptional.isPresent())
+									handlerMethod = new HandlerMethod(handlerBean, methodOptional.get());
+							}
+							else
+								handlerMethod = new HandlerMethod(handlerBean, routerOperation.beanMethod(), routerOperation.parameterTypes());
+						}
+						catch (NoSuchMethodException e) {
+							LOGGER.error(e.getMessage());
+						}
+						if (handlerMethod != null && isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(routerOperation.path()))
+							calculatePath(handlerMethod, routerOperation.path(), new HashSet<>(Arrays.asList(routerOperation.method())), routerOperation.consumes(), routerOperation.produces());
+					}
+				}
+				else if (StringUtils.isNotBlank(routerOperation.operation().operationId())) {
+					calculatePath(routerOperation.path(), new HashSet<>(Arrays.asList(routerOperation.method())), routerOperation.operation(), routerOperation.consumes(), routerOperation.produces());
+				}
+			}
+		}
 	}
 
 	private void calculateJsonView(io.swagger.v3.oas.annotations.Operation apiOperation,

@@ -18,10 +18,8 @@
 
 package org.springdoc.webflux.api;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,20 +32,16 @@ import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.annotations.RouterOperation;
+import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
-import org.springdoc.webflux.annotations.RouterOperation;
-import org.springdoc.webflux.annotations.RouterOperations;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +49,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -75,8 +68,6 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestController
 public class OpenApiResource extends AbstractOpenApiResource {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiResource.class);
 
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
@@ -148,7 +139,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	private void getRouterFunctionPaths() {
 		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
 		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
-
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
 			List<RouterOperation> routerOperationList = new ArrayList<>();
 			RouterOperations routerOperations = applicationContext.findAnnotationOnBean(entry.getKey(), RouterOperations.class);
@@ -158,40 +148,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			}
 			else
 				routerOperationList.addAll(Arrays.asList(routerOperations.value()));
-
-			if (!CollectionUtils.isEmpty(routerOperationList)) {
-				for (RouterOperation routerOperation : routerOperationList) {
-					if (!Void.class.equals(routerOperation.beanClass())) {
-						Object handlerBean = applicationContext.getBean(routerOperation.beanClass());
-						HandlerMethod handlerMethod = null;
-						if (StringUtils.isNotBlank(routerOperation.beanMethod())) {
-							try {
-								if (ArrayUtils.isEmpty(routerOperation.parameterTypes())) {
-									Optional<Method> methodOptional = Arrays.stream(handlerBean.getClass().getDeclaredMethods())
-											.filter(method1 -> routerOperation.beanMethod().equals(method1.getName()) && method1.getParameters().length == 0)
-											.findAny();
-									if (!methodOptional.isPresent())
-										methodOptional = Arrays.stream(handlerBean.getClass().getDeclaredMethods())
-												.filter(method1 -> routerOperation.beanMethod().equals(method1.getName()))
-												.findAny();
-									if (methodOptional.isPresent())
-										handlerMethod = new HandlerMethod(handlerBean, methodOptional.get());
-								}
-								else
-									handlerMethod = new HandlerMethod(handlerBean, routerOperation.beanMethod(), routerOperation.parameterTypes());
-							}
-							catch (NoSuchMethodException e) {
-								LOGGER.error(e.getMessage());
-							}
-							if (handlerMethod != null && isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(routerOperation.path()))
-								calculatePath(handlerMethod, routerOperation.path(), new HashSet<>(Arrays.asList(routerOperation.method())), routerOperation.consumes(), routerOperation.produces());
-						}
-					}
-					else if (StringUtils.isNotBlank(routerOperation.operation().operationId())) {
-						calculatePath(routerOperation.path(), new HashSet<>(Arrays.asList(routerOperation.method())), routerOperation.operation(), routerOperation.consumes(), routerOperation.produces());
-					}
-				}
-			}
+			calculatePath(routerOperationList);
 		}
 	}
 
