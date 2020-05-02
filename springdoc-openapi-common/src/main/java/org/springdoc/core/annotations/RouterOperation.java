@@ -32,9 +32,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * The annotation may be used to define an operation method as an OpenAPI Operation, and/or to define additional
- * properties for the Operation.
- * <p>The following fields can also alternatively be defined at method level (as repeatable annotations in case of arrays),
+ * The annotation may be used to define a single Router Operation as an OpenAPI Operation, and/or to define additional
+ * properties using  @Operation annotation.
  *
  **/
 @Target({ ElementType.TYPE, ElementType.METHOD})
