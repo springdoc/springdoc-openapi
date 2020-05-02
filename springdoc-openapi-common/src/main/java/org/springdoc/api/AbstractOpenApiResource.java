@@ -56,9 +56,9 @@ import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
-import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.models.RouterOperation;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -159,7 +159,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected abstract void getPaths(Map<String, Object> findRestControllers);
 
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
-			Set<RequestMethod> requestMethods, String[] methodConsumes, String[] methodProduces) {
+			Set<RequestMethod> requestMethods, String[] methodConsumes, String[] methodProduces, String[] headers) {
 		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
 		Components components = openAPI.getComponents();
 		Paths paths = openAPI.getPaths();
@@ -180,7 +180,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(handlerMethod.getBeanType(),
 					RequestMapping.class);
 
-			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces);
+			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces, headers);
 			methodAttributes.setMethodOverloaded(existingOperation != null);
 
 			if (reqMappingClass != null) {
@@ -238,11 +238,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
-	protected void calculatePath(String operationPath, Set<RequestMethod> requestMethods, io.swagger.v3.oas.annotations.Operation apiOperation, String[] methodConsumes, String[] methodProduces) {
+	protected void calculatePath(String operationPath, Set<RequestMethod> requestMethods, io.swagger.v3.oas.annotations.Operation apiOperation, String[] methodConsumes, String[] methodProduces, String[] headers) {
 		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
 		Paths paths = openAPI.getPaths();
 		for (RequestMethod requestMethod : requestMethods) {
-			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces);
+			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces, headers);
 			Operation operation = new Operation();
 			openAPI = operationParser.parse(apiOperation, operation, openAPI, methodAttributes);
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
@@ -251,42 +251,42 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	}
 
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
-			Set<RequestMethod> requestMethods){
-		this.calculatePath(handlerMethod, operationPath,requestMethods,null, null);
+			Set<RequestMethod> requestMethods) {
+		this.calculatePath(handlerMethod, operationPath, requestMethods, null, null, null);
 	}
 
 	protected void calculatePath(List<RouterOperation> routerOperationList) {
 		ApplicationContext applicationContext = openAPIBuilder.getContext();
 		if (!CollectionUtils.isEmpty(routerOperationList)) {
 			for (RouterOperation routerOperation : routerOperationList) {
-				if (!Void.class.equals(routerOperation.beanClass())) {
-					Object handlerBean = applicationContext.getBean(routerOperation.beanClass());
+				if (!Void.class.equals(routerOperation.getBeanClass())) {
+					Object handlerBean = applicationContext.getBean(routerOperation.getBeanClass());
 					HandlerMethod handlerMethod = null;
-					if (StringUtils.isNotBlank(routerOperation.beanMethod())) {
+					if (StringUtils.isNotBlank(routerOperation.getBeanMethod())) {
 						try {
-							if (ArrayUtils.isEmpty(routerOperation.parameterTypes())) {
+							if (ArrayUtils.isEmpty(routerOperation.getParameterTypes())) {
 								Optional<Method> methodOptional = Arrays.stream(handlerBean.getClass().getDeclaredMethods())
-										.filter(method -> routerOperation.beanMethod().equals(method.getName()) && method.getParameters().length == 0)
+										.filter(method -> routerOperation.getBeanMethod().equals(method.getName()) && method.getParameters().length == 0)
 										.findAny();
 								if (!methodOptional.isPresent())
 									methodOptional = Arrays.stream(handlerBean.getClass().getDeclaredMethods())
-											.filter(method1 -> routerOperation.beanMethod().equals(method1.getName()))
+											.filter(method1 -> routerOperation.getBeanMethod().equals(method1.getName()))
 											.findAny();
 								if (methodOptional.isPresent())
 									handlerMethod = new HandlerMethod(handlerBean, methodOptional.get());
 							}
 							else
-								handlerMethod = new HandlerMethod(handlerBean, routerOperation.beanMethod(), routerOperation.parameterTypes());
+								handlerMethod = new HandlerMethod(handlerBean, routerOperation.getBeanMethod(), routerOperation.getParameterTypes());
 						}
 						catch (NoSuchMethodException e) {
 							LOGGER.error(e.getMessage());
 						}
-						if (handlerMethod != null && isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(routerOperation.path()))
-							calculatePath(handlerMethod, routerOperation.path(), new HashSet<>(Arrays.asList(routerOperation.method())), routerOperation.consumes(), routerOperation.produces());
+						if (handlerMethod != null && isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(routerOperation.getPath()))
+							calculatePath(handlerMethod, routerOperation.getPath(), new HashSet<>(Arrays.asList(routerOperation.getMethod())), routerOperation.getConsumes(), routerOperation.getProduces(), routerOperation.getHeaders());
 					}
 				}
-				else if (StringUtils.isNotBlank(routerOperation.operation().operationId())) {
-					calculatePath(routerOperation.path(), new HashSet<>(Arrays.asList(routerOperation.method())), routerOperation.operation(), routerOperation.consumes(), routerOperation.produces());
+				else if (StringUtils.isNotBlank(routerOperation.getOperation().operationId())) {
+					calculatePath(routerOperation.getPath(), new HashSet<>(Arrays.asList(routerOperation.getMethod())), routerOperation.getOperation(), routerOperation.getConsumes(), routerOperation.getProduces(), routerOperation.getHeaders());
 				}
 			}
 		}

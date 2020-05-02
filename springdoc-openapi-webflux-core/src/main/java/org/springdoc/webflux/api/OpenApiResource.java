@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.Json;
@@ -140,6 +141,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
 		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
+			RouterFunction routerFunction = entry.getValue();
+			RouterFunctionVisitor routerFunctionVisitor = new RouterFunctionVisitor();
+			routerFunction.accept(routerFunctionVisitor);
+
 			List<RouterOperation> routerOperationList = new ArrayList<>();
 			RouterOperations routerOperations = applicationContext.findAnnotationOnBean(entry.getKey(), RouterOperations.class);
 			if (routerOperations == null) {
@@ -148,7 +153,11 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			}
 			else
 				routerOperationList.addAll(Arrays.asList(routerOperations.value()));
-			calculatePath(routerOperationList);
+			if (routerOperationList.size() == 1)
+				calculatePath(routerOperationList.stream().map(routerOperation -> new org.springdoc.core.models.RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionData())).collect(Collectors.toList()));
+			else
+				calculatePath(routerOperationList.stream().map(routerOperation -> new org.springdoc.core.models.RouterOperation(routerOperation)).collect(Collectors.toList()));
+			//TODO
 		}
 	}
 

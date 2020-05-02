@@ -56,7 +56,7 @@
           "200": {
             "description": "successful operation",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/Employee"
                 }

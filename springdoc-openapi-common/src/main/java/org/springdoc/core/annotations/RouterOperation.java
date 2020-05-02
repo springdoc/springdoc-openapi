@@ -43,13 +43,13 @@ public @interface RouterOperation {
 	 * The path mapping URIs (e.g. {@code "/profile"}).
 	 * Path mapping URIs may contain placeholders (e.g. <code>"/${profile_path}"</code>).
 	 */
-	String path();
+	String path() default "";
 
 	/**
 	 * The HTTP request methods to map to, narrowing the primary mapping:
 	 * GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE, TRACE.
 	 */
-	RequestMethod[] method();
+	RequestMethod[] method() default {};
 
 	/**
 	 * Narrows the primary mapping by media types that can be consumed by the
@@ -77,6 +77,14 @@ public @interface RouterOperation {
 	 * </pre>
 	 */
 	String[] produces() default {};
+
+	/**
+	 * The headers of the mapped request, narrowing the primary mapping.
+	 * <p>Same format for any environment: a sequence of "My-Header=myValue" style
+	 * expressions, with a request only mapped if each such header is found
+	 * to have the given value.
+	 */
+	String[] headers() default {};
 
 	/**
 	 * The class of the Handler bean.

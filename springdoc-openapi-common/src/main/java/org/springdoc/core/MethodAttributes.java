@@ -48,7 +48,7 @@ public class MethodAttributes {
 
 	private String defaultProducesMediaType;
 
-	private LinkedHashMap<String, String> headers;
+	private LinkedHashMap<String, String> headers = new LinkedHashMap<>();
 
 	private String[] classProduces;
 
@@ -64,22 +64,20 @@ public class MethodAttributes {
 		this.methodProduces = methodProducesNew;
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
-		this.headers = new LinkedHashMap<>();
 		this.genericMapResponse = genericMapResponse;
 	}
 
 	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType) {
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
-		this.headers = new LinkedHashMap<>();
 	}
 
-	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType, String[] methodConsumes, String[] methodProduces) {
+	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType, String[] methodConsumes, String[] methodProduces, String[] headers) {
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
 		this.methodProduces = methodProduces;
 		this.methodConsumes = methodConsumes;
-		this.headers = new LinkedHashMap<>();
+		setHeaders(headers);
 	}
 
 	public String[] getClassProduces() {
@@ -159,6 +157,10 @@ public class MethodAttributes {
 		else
 			methodConsumes = new String[] { defaultConsumesMediaType };
 
+		setHeaders(headers);
+	}
+
+	private void setHeaders(String[] headers) {
 		if (ArrayUtils.isNotEmpty(headers))
 			for (String header : headers) {
 				String[] keyValueHeader = header.split("=");
