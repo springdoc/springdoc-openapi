@@ -47,7 +47,8 @@ import org.springframework.lang.Nullable;
 
 class MethodParameterPojoExtractor {
 
-	private MethodParameterPojoExtractor() { }
+	private MethodParameterPojoExtractor() {
+	}
 
 	private static final Nullable NULLABLE_ANNOTATION = getNullable();
 
@@ -90,9 +91,10 @@ class MethodParameterPojoExtractor {
 
 	private static Stream<MethodParameter> fromSimpleClass(Class<?> paramClass, Field field, String fieldNamePrefix) {
 		Annotation[] fieldAnnotations = field.getDeclaredAnnotations();
-		if (isOptional(field))
-			fieldAnnotations = ArrayUtils.add(fieldAnnotations, NULLABLE_ANNOTATION);
 		try {
+			Nullable nullableField = NULLABLE_ANNOTATION;
+			if (isOptional(field))
+				fieldAnnotations = ArrayUtils.add(fieldAnnotations, nullableField);
 			Annotation[] finalFieldAnnotations = fieldAnnotations;
 			return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
 					.filter(d -> d.getName().equals(field.getName()))
@@ -142,11 +144,17 @@ class MethodParameterPojoExtractor {
 		SIMPLE_TYPES.removeAll(Arrays.asList(classes));
 	}
 
+	private class NullableFieldClass {
+		@Nullable
+		private String nullableField;
+	}
+
 	private static Nullable getNullable() {
-		return new Nullable() {
-			public Class<? extends Annotation> annotationType() {
-				return Nullable.class;
-			}
-		};
+		try {
+			return NullableFieldClass.class.getDeclaredField("nullableField").getAnnotation(Nullable.class);
+		}
+		catch (NoSuchFieldException e) {
+			return null;
+		}
 	}
 }
