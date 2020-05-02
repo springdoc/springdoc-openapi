@@ -20,15 +20,12 @@
 
 package org.springdoc.webmvc.api;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,8 +42,6 @@ import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.annotations.RouterOperation;
-import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.webmvc.core.visitor.RouterFunctionVisitor;
@@ -149,7 +144,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		}
 	}
 
-	private void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Optional<ActuatorProvider> actuatorProvider) {
+	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Optional<ActuatorProvider> actuatorProvider) {
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
 			HandlerMethod handlerMethod = entry.getValue();
@@ -180,21 +175,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			RouterFunction routerFunction = entry.getValue();
 			RouterFunctionVisitor routerFunctionVisitor = new RouterFunctionVisitor();
 			routerFunction.accept(routerFunctionVisitor);
-			List<RouterOperation> routerOperationList = new ArrayList<>();
-			RouterOperations routerOperations = applicationContext.findAnnotationOnBean(entry.getKey(), RouterOperations.class);
-			if (routerOperations == null) {
-				RouterOperation routerOperation = applicationContext.findAnnotationOnBean(entry.getKey(), RouterOperation.class);
-				routerOperationList.add(routerOperation);
-			}
-			else
-				routerOperationList.addAll(Arrays.asList(routerOperations.value()));
-			if (routerOperationList.size() == 1)
-				calculatePath(routerOperationList.stream().map(routerOperation -> new org.springdoc.core.models.RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()));
-			else {
-				List<org.springdoc.core.models.RouterOperation> operationList = routerOperationList.stream().map(org.springdoc.core.models.RouterOperation::new).collect(Collectors.toList());
-				merge(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
-				calculatePath(operationList);
-			}
+			getRouterFunctionPaths(entry.getKey(), routerFunctionVisitor);
 		}
 	}
 

@@ -58,10 +58,12 @@ import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
+import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.RouterFunctionData;
 import org.springdoc.core.models.RouterOperation;
+import org.springdoc.core.visitor.AbstractRouterFunctionVisitor;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -292,6 +294,25 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					calculatePath(routerOperation.getPath(), new HashSet<>(Arrays.asList(routerOperation.getMethod())), routerOperation.getOperation(), routerOperation.getConsumes(), routerOperation.getProduces(), routerOperation.getHeaders());
 				}
 			}
+		}
+	}
+
+	protected void getRouterFunctionPaths(String beanName, AbstractRouterFunctionVisitor routerFunctionVisitor) {
+		List<org.springdoc.core.annotations.RouterOperation> routerOperationList = new ArrayList<>();
+		ApplicationContext applicationContext = openAPIBuilder.getContext();
+		RouterOperations routerOperations = applicationContext.findAnnotationOnBean(beanName, RouterOperations.class);
+		if (routerOperations == null) {
+			org.springdoc.core.annotations.RouterOperation routerOperation = applicationContext.findAnnotationOnBean(beanName, org.springdoc.core.annotations.RouterOperation.class);
+			routerOperationList.add(routerOperation);
+		}
+		else
+			routerOperationList.addAll(Arrays.asList(routerOperations.value()));
+		if (routerOperationList.size() == 1)
+			calculatePath(routerOperationList.stream().map(routerOperation -> new org.springdoc.core.models.RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()));
+		else {
+			List<org.springdoc.core.models.RouterOperation> operationList = routerOperationList.stream().map(org.springdoc.core.models.RouterOperation::new).collect(Collectors.toList());
+			merge(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
+			calculatePath(operationList);
 		}
 	}
 
