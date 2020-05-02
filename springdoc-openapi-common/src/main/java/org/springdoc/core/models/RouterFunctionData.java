@@ -2,6 +2,7 @@ package org.springdoc.core.models;
 
 import java.util.Set;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.http.HttpMethod;
@@ -19,9 +20,6 @@ public class RouterFunctionData {
 	private String queryParam;
 
 	private RequestMethod[] methods;
-
-	public RouterFunctionData() {
-	}
 
 	public String getPath() {
 		return path;
@@ -78,9 +76,9 @@ public class RouterFunctionData {
 	}
 	private RequestMethod[] getMethod(Set<HttpMethod> methods) {
 		if (!CollectionUtils.isEmpty(methods)) {
-			return methods.stream().map(httpMethod -> getRequestMethod(httpMethod)).toArray(RequestMethod[]::new);
+			return methods.stream().map(this::getRequestMethod).toArray(RequestMethod[]::new);
 		}
-		return null;
+		return ArrayUtils.toArray();
 	}
 
 	private RequestMethod getRequestMethod(HttpMethod httpMethod) {

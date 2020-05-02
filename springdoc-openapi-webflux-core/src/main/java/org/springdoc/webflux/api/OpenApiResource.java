@@ -54,7 +54,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.result.condition.PatternsRequestCondition;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
@@ -71,9 +70,6 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public class OpenApiResource extends AbstractOpenApiResource {
 
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
-
-	@Autowired
-	private List<HandlerMapping> handlerMappings;
 
 	public OpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -134,10 +130,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				}
 			}
 		}
-		getRouterFunctionPaths();
+		getWebFluxRouterFunctionPaths();
 	}
 
-	private void getRouterFunctionPaths() {
+	private void getWebFluxRouterFunctionPaths() {
 		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
 		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
@@ -155,7 +151,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			if (routerOperationList.size() == 1)
 				calculatePath(routerOperationList.stream().map(routerOperation -> new org.springdoc.core.models.RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()));
 			else {
-				List<org.springdoc.core.models.RouterOperation> operationList = routerOperationList.stream().map(routerOperation -> new org.springdoc.core.models.RouterOperation(routerOperation)).collect(Collectors.toList());
+				List<org.springdoc.core.models.RouterOperation> operationList = routerOperationList.stream().map(org.springdoc.core.models.RouterOperation::new).collect(Collectors.toList());
 				merge(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
 				calculatePath(operationList);
 			}
