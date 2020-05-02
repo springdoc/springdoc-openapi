@@ -74,6 +74,14 @@ public class MethodAttributes {
 		this.headers = new LinkedHashMap<>();
 	}
 
+	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType, String[] methodConsumes, String[] methodProduces) {
+		this.defaultConsumesMediaType = defaultConsumesMediaType;
+		this.defaultProducesMediaType = defaultProducesMediaType;
+		this.methodProduces = methodProduces;
+		this.methodConsumes = methodConsumes;
+		this.headers = new LinkedHashMap<>();
+	}
+
 	public String[] getClassProduces() {
 		return classProduces;
 	}
@@ -133,7 +141,7 @@ public class MethodAttributes {
 			fillMethods(reqMappingClass.produces(), reqMappingClass.consumes(), reqMappingClass.headers());
 		}
 		else
-			fillMethods(null, null, null);
+			fillMethods(methodProduces, methodConsumes, null);
 	}
 
 	private void fillMethods(String[] produces, String[] consumes, String[] headers) {
@@ -207,4 +215,5 @@ public class MethodAttributes {
 	public Map<String, ApiResponse> getGenericMapResponse() {
 		return genericMapResponse;
 	}
+
 }
