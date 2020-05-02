@@ -290,7 +290,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 							calculatePath(handlerMethod, routerOperation.getPath(), new HashSet<>(Arrays.asList(routerOperation.getMethod())), routerOperation.getConsumes(), routerOperation.getProduces(), routerOperation.getHeaders());
 					}
 				}
-				else if (StringUtils.isNotBlank(routerOperation.getOperation().operationId())) {
+				else if (StringUtils.isNotBlank(routerOperation.getOperation().operationId()) && isPathToMatch(routerOperation.getPath())) {
 					calculatePath(routerOperation.getPath(), new HashSet<>(Arrays.asList(routerOperation.getMethod())), routerOperation.getOperation(), routerOperation.getConsumes(), routerOperation.getProduces(), routerOperation.getHeaders());
 				}
 			}
