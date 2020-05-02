@@ -47,6 +47,7 @@ import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.webmvc.core.visitor.RouterFunctionVisitor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -170,7 +171,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		getWebMvcRouterFunctionPaths();
 	}
 
-	private void getWebMvcRouterFunctionPaths() {
+	protected void getWebMvcRouterFunctionPaths() {
 		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
 		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
