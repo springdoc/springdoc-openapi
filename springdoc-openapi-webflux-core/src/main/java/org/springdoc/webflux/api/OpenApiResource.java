@@ -43,6 +43,7 @@ import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.webflux.core.visitor.RouterFunctionVisitor;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,7 +134,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		getWebFluxRouterFunctionPaths();
 	}
 
-	private void getWebFluxRouterFunctionPaths() {
+	protected void getWebFluxRouterFunctionPaths() {
 		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
 		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
