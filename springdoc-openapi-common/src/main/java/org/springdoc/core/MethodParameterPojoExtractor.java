@@ -49,11 +49,7 @@ class MethodParameterPojoExtractor {
 
 	private MethodParameterPojoExtractor() { }
 
-	private static final Nullable NULLABLE_ANNOTATION = new Nullable() {
-		public Class<? extends Annotation> annotationType() {
-			return Nullable.class;
-		}
-	};
+	private static final Nullable NULLABLE_ANNOTATION = getNullable();
 
 	private static final List<Predicate<Class<?>>> SIMPLE_TYPE_PREDICATES = new ArrayList<>();
 
@@ -144,5 +140,13 @@ class MethodParameterPojoExtractor {
 
 	static void removeSimpleTypes(Class<?>... classes) {
 		SIMPLE_TYPES.removeAll(Arrays.asList(classes));
+	}
+
+	private static Nullable getNullable() {
+		return new Nullable() {
+			public Class<? extends Annotation> annotationType() {
+				return Nullable.class;
+			}
+		};
 	}
 }
