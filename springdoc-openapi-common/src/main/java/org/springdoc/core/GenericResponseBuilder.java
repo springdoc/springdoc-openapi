@@ -167,9 +167,9 @@ public class GenericResponseBuilder {
 		if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
 			// Merge with the existing content
 			Content existingContent = apiResponsesOp.get(apiResponseAnnotations.responseCode()).getContent();
-			if (optionalContent.isPresent() && existingContent != null) {
+			if (optionalContent.isPresent()) {
 				Content newContent = optionalContent.get();
-				if (methodAttributes.isMethodOverloaded()) {
+				if (methodAttributes.isMethodOverloaded() && existingContent != null) {
 					Arrays.stream(methodAttributes.getMethodProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr));
 					apiResponse.content(existingContent);
 				}

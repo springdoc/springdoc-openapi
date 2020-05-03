@@ -42,6 +42,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
+import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
@@ -50,8 +51,11 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 @Configuration
 public class QuoteRouter {
 
-	@RouterOperations({ @RouterOperation(path = "/hello", operation = @Operation(operationId = "hello", responses = @ApiResponse(responseCode = "200"))),
-			@RouterOperation(path = "/echo", operation = @Operation(operationId = "echo", requestBody = @RequestBody(content = @Content(schema = @Schema(type = "string"))),
+	@RouterOperations({
+			@RouterOperation(path = "/hello", operation = @Operation(operationId = "hello", responses = @ApiResponse(responseCode = "200"))),
+			@RouterOperation(path = "/echo", produces = TEXT_PLAIN_VALUE, operation = @Operation(operationId = "echo", requestBody = @RequestBody(content = @Content(schema = @Schema(type = "string"))),
+					responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(type = "string"))))),
+			@RouterOperation(path = "/echo",produces = APPLICATION_JSON_VALUE,  operation = @Operation(operationId = "echo", requestBody = @RequestBody(content = @Content(schema = @Schema(type = "string"))),
 					responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(type = "string"))))),
 			@RouterOperation(path = "/quotes", produces = APPLICATION_JSON_VALUE, operation = @Operation(operationId = "fetchQuotes", parameters = @Parameter(name = "size", in = ParameterIn.QUERY, schema = @Schema(type = "string")),
 					responses = @ApiResponse(responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Quote.class)))))),
@@ -62,6 +66,7 @@ public class QuoteRouter {
 		return RouterFunctions
 				.route(GET("/hello").and(accept(TEXT_PLAIN)), quoteHandler::hello)
 				.andRoute(POST("/echo").and(accept(TEXT_PLAIN).and(contentType(TEXT_PLAIN))), quoteHandler::echo)
+				.andRoute(POST("/echo").and(accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON))), quoteHandler::echo)
 				.andRoute(GET("/quotes").and(accept(APPLICATION_JSON)), quoteHandler::fetchQuotes)
 				.andRoute(GET("/quotes").and(accept(APPLICATION_STREAM_JSON)), quoteHandler::streamQuotes);
 	}
