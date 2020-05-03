@@ -49,7 +49,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 
-import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
 import static org.springdoc.core.Constants.DELETE_METHOD;
 import static org.springdoc.core.Constants.GET_METHOD;
 import static org.springdoc.core.Constants.HEAD_METHOD;
@@ -111,8 +110,7 @@ public class OperationBuilder {
 		}
 
 		// RequestBody in Operation
-		requestBodyBuilder.buildRequestBodyFromDoc(apiOperation.requestBody(), methodAttributes.getClassConsumes(),
-				methodAttributes.getMethodConsumes(), components, null).ifPresent(operation::setRequestBody);
+		requestBodyBuilder.buildRequestBodyFromDoc(apiOperation.requestBody(), operation.getRequestBody(), methodAttributes, components).ifPresent(operation::setRequestBody);
 
 		// build response
 		buildResponse(components, apiOperation, operation, methodAttributes);
@@ -340,7 +338,7 @@ public class OperationBuilder {
 			apiResponseObject.setDescription(response.description());
 		}
 		else {
-			apiResponseObject.setDescription(DEFAULT_DESCRIPTION);
+			GenericResponseBuilder.setDescription(response.responseCode(), apiResponseObject);
 		}
 	}
 

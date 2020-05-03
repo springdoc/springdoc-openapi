@@ -20,6 +20,7 @@
 
 package org.springdoc.core;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
@@ -34,6 +35,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.annotation.RequestPart;
 
+import static org.springdoc.core.SpringDocAnnotationsUtils.mergeSchema;
+
+
 public class RequestBodyBuilder {
 
 	private final GenericParameterBuilder parameterBuilder;
@@ -44,8 +48,11 @@ public class RequestBodyBuilder {
 	}
 
 	public Optional<RequestBody> buildRequestBodyFromDoc(
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, String[] classConsumes,
-			String[] methodConsumes, Components components, JsonView jsonViewAnnotation) {
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes,
+			Components components, JsonView jsonViewAnnotation) {
+		String[] classConsumes = methodAttributes.getClassConsumes();
+		String[] methodConsumes = methodAttributes.getMethodConsumes();
+
 		if (requestBody == null)
 			return Optional.empty();
 		RequestBody requestBodyObject = new RequestBody();
@@ -77,11 +84,44 @@ public class RequestBodyBuilder {
 		if (isEmpty)
 			return Optional.empty();
 
-		AnnotationsUtils
+		Optional<Content> optionalContent = AnnotationsUtils
 				.getContent(requestBody.content(), classConsumes == null ? new String[0] : classConsumes,
-						methodConsumes == null ? new String[0] : methodConsumes, null, components, jsonViewAnnotation)
-				.ifPresent(requestBodyObject::setContent);
+						methodConsumes == null ? new String[0] : methodConsumes, null, components, jsonViewAnnotation);
+		if (requestBodyOp == null)
+			optionalContent.ifPresent(requestBodyObject::setContent);
+		else {
+			Content existingContent = requestBodyOp.getContent();
+			if (optionalContent.isPresent() && existingContent != null) {
+				Content newContent = optionalContent.get();
+				if (methodAttributes.isMethodOverloaded()) {
+					Arrays.stream(methodAttributes.getMethodProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr));
+					requestBodyObject.content(existingContent);
+				}
+				else
+					requestBodyObject.content(newContent);
+			}
+		}
+
 		return Optional.of(requestBodyObject);
+	}
+
+	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
+			MethodAttributes methodAttributes, Components components) {
+		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes,
+				components, null);
+	}
+
+	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
+			MethodAttributes methodAttributes, Components components,JsonView jsonViewAnnotation) {
+		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes,
+				components, jsonViewAnnotation);
+	}
+
+	public Optional<RequestBody> buildRequestBodyFromDoc(
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes,
+			Components components) {
+		return this.buildRequestBodyFromDoc(requestBody, requestBodyOp, methodAttributes,
+				components, null);
 	}
 
 	public void calculateRequestBodyInfo(Components components, MethodAttributes methodAttributes,
@@ -91,8 +131,7 @@ public class RequestBodyBuilder {
 		// Get it from parameter level, if not present
 		if (requestBody == null) {
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class);
-			requestBody = this.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes.getClassConsumes(),
-					methodAttributes.getMethodConsumes(), components, null).orElse(null);
+			requestBody = this.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes, components).orElse(null);
 		}
 
 		RequestPart requestPart = methodParameter.getParameterAnnotation(RequestPart.class);

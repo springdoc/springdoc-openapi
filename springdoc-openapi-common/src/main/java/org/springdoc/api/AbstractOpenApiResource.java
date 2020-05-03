@@ -218,8 +218,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 			// RequestBody in Operation
 			requestBuilder.getRequestBodyBuilder()
-					.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes.getClassConsumes(),
-							methodAttributes.getMethodConsumes(), components,
+					.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes, components,
 							methodAttributes.getJsonViewAnnotationForRequestBody())
 					.ifPresent(operation::setRequestBody);
 			// requests

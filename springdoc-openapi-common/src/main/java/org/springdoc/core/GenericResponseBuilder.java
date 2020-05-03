@@ -37,7 +37,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
@@ -57,6 +56,9 @@ import org.springframework.web.method.ControllerAdviceBean;
 import org.springframework.web.method.HandlerMethod;
 
 import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
+import static org.springdoc.core.SpringDocAnnotationsUtils.extractSchema;
+import static org.springdoc.core.SpringDocAnnotationsUtils.getContent;
+import static org.springdoc.core.SpringDocAnnotationsUtils.mergeSchema;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper;
 
 @SuppressWarnings("rawtypes")
@@ -160,7 +162,7 @@ public class GenericResponseBuilder {
 			ApiResponse apiResponse) {
 
 		io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
-		Optional<Content> optionalContent = SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
+		Optional<Content> optionalContent = getContent(contentdoc, new String[0],
 				methodAttributes.getMethodProduces(), null, components, methodAttributes.getJsonViewAnnotation());
 		if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
 			// Merge with the existing content
@@ -260,7 +262,7 @@ public class GenericResponseBuilder {
 	}
 
 	public Schema calculateSchema(Components components, Type returnType, JsonView jsonView) {
-		return !isVoid(returnType) ? SpringDocAnnotationsUtils.extractSchema(components, returnType, jsonView) : null;
+		return !isVoid(returnType) ? extractSchema(components, returnType, jsonView) : null;
 	}
 
 	private void setContent(String[] methodProduces, Content content,
@@ -280,13 +282,7 @@ public class GenericResponseBuilder {
 			else if (CollectionUtils.isEmpty(apiResponse.getContent()))
 				apiResponse.setContent(null);
 			if (StringUtils.isBlank(apiResponse.getDescription())) {
-				try {
-					HttpStatus httpStatus = HttpStatus.valueOf(Integer.valueOf(httpCode));
-					apiResponse.setDescription(httpStatus.getReasonPhrase());
-				}
-				catch (IllegalArgumentException e) {
-					apiResponse.setDescription(DEFAULT_DESCRIPTION);
-				}
+				setDescription(httpCode, apiResponse);
 			}
 		}
 		if (apiResponse.getContent() != null
@@ -301,31 +297,14 @@ public class GenericResponseBuilder {
 		apiResponsesOp.addApiResponse(httpCode, apiResponse);
 	}
 
-	private static void mergeSchema(Content existingContent, Schema<?> schemaN, String mediaTypeStr) {
-		if (existingContent.containsKey(mediaTypeStr)) {
-			io.swagger.v3.oas.models.media.MediaType mediaType = existingContent.get(mediaTypeStr);
-			if (!schemaN.equals(mediaType.getSchema())) {
-				// Merge the two schemas for the same mediaType
-				Schema firstSchema = mediaType.getSchema();
-				ComposedSchema schemaObject;
-				if (firstSchema instanceof ComposedSchema) {
-					schemaObject = (ComposedSchema) firstSchema;
-					List<Schema> listOneOf = schemaObject.getOneOf();
-					if (!CollectionUtils.isEmpty(listOneOf) && !listOneOf.contains(schemaN))
-						schemaObject.addOneOfItem(schemaN);
-				}
-				else {
-					schemaObject = new ComposedSchema();
-					schemaObject.addOneOfItem(schemaN);
-					schemaObject.addOneOfItem(firstSchema);
-				}
-				mediaType.setSchema(schemaObject);
-				existingContent.addMediaType(mediaTypeStr, mediaType);
-			}
+	public static void setDescription(String httpCode, ApiResponse apiResponse) {
+		try {
+			HttpStatus httpStatus = HttpStatus.valueOf(Integer.valueOf(httpCode));
+			apiResponse.setDescription(httpStatus.getReasonPhrase());
 		}
-		else
-			// Add the new schema for a different mediaType
-			existingContent.addMediaType(mediaTypeStr, new io.swagger.v3.oas.models.media.MediaType().schema(schemaN));
+		catch (IllegalArgumentException e) {
+			apiResponse.setDescription(DEFAULT_DESCRIPTION);
+		}
 	}
 
 	private String evaluateResponseStatus(Method method, Class<?> beanType, boolean isGeneric) {

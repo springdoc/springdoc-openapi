@@ -3,17 +3,17 @@
   "info": {
     "title": "My title",
     "description": "My description",
-    "version": "My version",
     "termsOfService": "My terms",
+    "contact": {
+      "name": "My contact name",
+      "url": "My contact url",
+      "email": "My contact email"
+    },
     "license": {
       "name": "My license name",
       "url": "My license url"
     },
-    "contact": {
-      "name": "My contact name",
-      "email": "My contact email",
-      "url": "My contact url"
-    }
+    "version": "My version"
   },
   "servers": [
     {
@@ -31,7 +31,7 @@
         "operationId": "persons",
         "responses": {
           "200": {
-            "description": "default response"
+            "description": "OK"
           }
         }
       }
