@@ -20,6 +20,8 @@
 
 package org.springdoc.core.models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -33,11 +35,11 @@ public class RouterFunctionData {
 
 	private String path;
 
-	private String[] consumes;
+	private List<String> consumes = new ArrayList<>();
 
-	private String[] produces;
+	private List<String> produces = new ArrayList<>();
 
-	private String[] headers;
+	private List<String> headers = new ArrayList<>();
 
 	private String queryParam;
 
@@ -60,24 +62,16 @@ public class RouterFunctionData {
 	}
 
 	public String[] getHeaders() {
-		return headers;
+		return headers.toArray(new String[headers.size()]);
 	}
 
-	public void setHeaders(String[] headers) {
-		this.headers = headers;
-	}
-
-	public void setHeaders(String headers) {
+	public void addHeaders(String headers) {
 		if (StringUtils.isNotBlank(headers))
-			this.headers = new String[] { headers };
+			this.headers.add(headers);
 	}
 
 	public RequestMethod[] getMethods() {
 		return methods;
-	}
-
-	public void setMethods(RequestMethod[] methods) {
-		this.methods = methods;
 	}
 
 	public void setMethods(Set<HttpMethod> methods) {
@@ -85,21 +79,17 @@ public class RouterFunctionData {
 	}
 
 	public String[] getConsumes() {
-		return consumes;
+		return consumes.toArray(new String[consumes.size()]);
 	}
 
-	public void setConsumes(String[] consumes) {
-		this.consumes = consumes;
-	}
-
-	public void setConsumes(String consumes) {
+	public void addConsumes(String consumes) {
 		if (StringUtils.isNotBlank(consumes))
-			this.consumes = new String[] { consumes };
+			this.consumes.add(consumes);
 	}
 
-	public void setProduces(String produces) {
+	public void addProduces(String produces) {
 		if (StringUtils.isNotBlank(produces))
-			this.produces = new String[] { produces };
+			 this.produces.add(produces);
 	}
 
 	private RequestMethod[] getMethod(Set<HttpMethod> methods) {
@@ -110,11 +100,7 @@ public class RouterFunctionData {
 	}
 
 	public String[] getProduces() {
-		return produces;
-	}
-
-	public void setProduces(String[] produces) {
-		this.produces = produces;
+		return produces.toArray(new String[produces.size()]);
 	}
 
 	private RequestMethod getRequestMethod(HttpMethod httpMethod) {
