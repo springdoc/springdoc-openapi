@@ -31,7 +31,7 @@ public class RouterOperation {
 
 	private String path;
 
-	private RequestMethod[] method;
+	private RequestMethod[] methods;
 
 	private String[] consumes;
 
@@ -49,7 +49,7 @@ public class RouterOperation {
 
 	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperationAnnotation) {
 		this.path = routerOperationAnnotation.path();
-		this.method = routerOperationAnnotation.method();
+		this.methods = routerOperationAnnotation.method();
 		this.consumes = routerOperationAnnotation.consumes();
 		this.produces = routerOperationAnnotation.produces();
 		this.beanClass = routerOperationAnnotation.beanClass();
@@ -61,7 +61,7 @@ public class RouterOperation {
 
 	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperationAnnotation, RouterFunctionData routerFunctionData) {
 		this.path = StringUtils.isBlank(routerOperationAnnotation.path()) ? routerFunctionData.getPath() : routerOperationAnnotation.path();
-		this.method = ArrayUtils.isEmpty(routerOperationAnnotation.method()) ? routerFunctionData.getMethods() : routerOperationAnnotation.method();
+		this.methods = ArrayUtils.isEmpty(routerOperationAnnotation.method()) ? routerFunctionData.getMethods() : routerOperationAnnotation.method();
 		this.consumes = ArrayUtils.isEmpty(routerOperationAnnotation.consumes()) ? routerFunctionData.getConsumes() : routerOperationAnnotation.consumes();
 		this.produces = ArrayUtils.isEmpty(routerOperationAnnotation.produces()) ? routerFunctionData.getProduces() : routerOperationAnnotation.produces();
 		this.beanClass = routerOperationAnnotation.beanClass();
@@ -80,12 +80,12 @@ public class RouterOperation {
 		this.path = path;
 	}
 
-	public RequestMethod[] getMethod() {
-		return method;
+	public RequestMethod[] getMethods() {
+		return methods;
 	}
 
-	public void setMethod(RequestMethod[] method) {
-		this.method = method;
+	public void setMethods(RequestMethod[] methods) {
+		this.methods = methods;
 	}
 
 	public String[] getConsumes() {

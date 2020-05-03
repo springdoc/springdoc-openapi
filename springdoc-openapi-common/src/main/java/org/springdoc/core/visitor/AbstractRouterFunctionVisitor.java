@@ -45,11 +45,11 @@ public class AbstractRouterFunctionVisitor {
 
 	public void header(String name, String value) {
 		if (HttpHeaders.ACCEPT.equals(name))
-			routerFunctionData.setProduces(value);
+			routerFunctionData.addProduces(value);
 		else if (HttpHeaders.CONTENT_TYPE.equals(name))
-			routerFunctionData.setConsumes(value);
+			routerFunctionData.addConsumes(value);
 		else
-			routerFunctionData.setHeaders(name + "=" + value);
+			routerFunctionData.addHeaders(name + "=" + value);
 	}
 
 	public List<RouterFunctionData> getRouterFunctionDatas() {
