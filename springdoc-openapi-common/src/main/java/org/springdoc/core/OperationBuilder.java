@@ -295,13 +295,7 @@ public class OperationBuilder {
 			setDescription(response, apiResponseObject);
 			setExtensions(response, apiResponseObject);
 
-			if (apiResponsesOp == null)
-				SpringDocAnnotationsUtils.getContent(response.content(),
-						classProduces == null ? new String[0] : classProduces,
-						methodProduces == null ? new String[0] : methodProduces, null, components, null)
-						.ifPresent(apiResponseObject::content);
-			else
-				GenericResponseBuilder.buildContentFromDoc(components, apiResponsesOp, methodAttributes, response, apiResponseObject);
+			buildResponseContent(methodAttributes, components, classProduces, methodProduces, apiResponsesOp, response, apiResponseObject);
 
 			AnnotationsUtils.getHeaders(response.headers(), null).ifPresent(apiResponseObject::headers);
 			// Make schema as string if empty
@@ -318,6 +312,16 @@ public class OperationBuilder {
 		}
 
 		return Optional.of(apiResponsesObject);
+	}
+
+	private void buildResponseContent(MethodAttributes methodAttributes, Components components, String[] classProduces, String[] methodProduces, ApiResponses apiResponsesOp, io.swagger.v3.oas.annotations.responses.ApiResponse response, ApiResponse apiResponseObject) {
+		if (apiResponsesOp == null)
+			SpringDocAnnotationsUtils.getContent(response.content(),
+					classProduces == null ? new String[0] : classProduces,
+					methodProduces == null ? new String[0] : methodProduces, null, components, null)
+					.ifPresent(apiResponseObject::content);
+		else
+			GenericResponseBuilder.buildContentFromDoc(components, apiResponsesOp, methodAttributes, response, apiResponseObject);
 	}
 
 	private boolean isResponseObject(ApiResponse apiResponseObject) {
