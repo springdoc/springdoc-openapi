@@ -23,6 +23,7 @@ package org.springdoc.core;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -34,6 +35,7 @@ import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.ArraySchema;
+import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
@@ -42,6 +44,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.util.CollectionUtils;
 
 @SuppressWarnings({ "rawtypes" })
 public class SpringDocAnnotationsUtils extends AnnotationsUtils {
@@ -124,6 +128,33 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			return Optional.empty();
 		}
 		return Optional.of(content);
+	}
+
+	public static void mergeSchema(Content existingContent, Schema<?> schemaN, String mediaTypeStr) {
+		if (existingContent.containsKey(mediaTypeStr)) {
+			io.swagger.v3.oas.models.media.MediaType mediaType = existingContent.get(mediaTypeStr);
+			if (!schemaN.equals(mediaType.getSchema())) {
+				// Merge the two schemas for the same mediaType
+				Schema firstSchema = mediaType.getSchema();
+				ComposedSchema schemaObject;
+				if (firstSchema instanceof ComposedSchema) {
+					schemaObject = (ComposedSchema) firstSchema;
+					List<Schema> listOneOf = schemaObject.getOneOf();
+					if (!CollectionUtils.isEmpty(listOneOf) && !listOneOf.contains(schemaN))
+						schemaObject.addOneOfItem(schemaN);
+				}
+				else {
+					schemaObject = new ComposedSchema();
+					schemaObject.addOneOfItem(schemaN);
+					schemaObject.addOneOfItem(firstSchema);
+				}
+				mediaType.setSchema(schemaObject);
+				existingContent.addMediaType(mediaTypeStr, mediaType);
+			}
+		}
+		else
+			// Add the new schema for a different mediaType
+			existingContent.addMediaType(mediaTypeStr, new io.swagger.v3.oas.models.media.MediaType().schema(schemaN));
 	}
 
 	private static void addEncodingToMediaType(JsonView jsonViewAnnotation, MediaType mediaType,

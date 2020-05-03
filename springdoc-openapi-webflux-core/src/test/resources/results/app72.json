@@ -132,7 +132,7 @@
         "operationId": "findAll",
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -166,7 +166,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/stream+json": {
                 "schema": {
@@ -196,7 +196,7 @@
         },
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -227,7 +227,7 @@
         ],
         "responses": {
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {}
           }
         }

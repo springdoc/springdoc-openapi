@@ -288,6 +288,40 @@
         }
       }
     },
+    "/people": {
+      "get": {
+        "tags": [
+          "people"
+        ],
+        "description": "List all people",
+        "operationId": "getPeople",
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PersonDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/{email}": {
       "get": {
         "tags": [
@@ -318,7 +352,7 @@
             }
           },
           "200": {
-            "description": "default response",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -386,7 +420,7 @@
             }
           },
           "201": {
-            "description": "default response",
+            "description": "Created",
             "headers": {
               "Location": {
                 "style": "simple",
@@ -465,40 +499,6 @@
           }
         }
       }
-    },
-    "/people": {
-      "get": {
-        "tags": [
-          "people"
-        ],
-        "description": "List all people",
-        "operationId": "getPeople",
-        "responses": {
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorMessage"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "default response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PersonDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -561,9 +561,12 @@
           }
         }
       },
-      "ItemLightDTO": {
+      "ItemDTO": {
         "type": "object",
         "properties": {
+          "itemID": {
+            "type": "string"
+          },
           "description": {
             "type": "string"
           },
@@ -578,12 +581,9 @@
           }
         }
       },
-      "ItemDTO": {
+      "ItemLightDTO": {
         "type": "object",
         "properties": {
-          "itemID": {
-            "type": "string"
-          },
           "description": {
             "type": "string"
           },

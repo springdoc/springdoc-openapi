@@ -38,7 +38,7 @@
         ],
         "responses": {
           "418": {
-            "description": "default response",
+            "description": "I'm a teapot",
             "content": {
               "*/*": {
                 "schema": {
