@@ -28,7 +28,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -40,6 +42,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.filter.SpecFilter;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -47,12 +50,14 @@ import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.GenericParameterBuilder;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.OpenAPIBuilder;
@@ -164,8 +169,15 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	protected abstract void getPaths(Map<String, Object> findRestControllers);
 
-	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
-			Set<RequestMethod> requestMethods, io.swagger.v3.oas.annotations.Operation apiOperation, String[] methodConsumes, String[] methodProduces, String[] headers) {
+	protected void calculatePath(HandlerMethod handlerMethod, RouterOperation routerOperation) {
+		String operationPath = routerOperation.getPath();
+		Set<RequestMethod> requestMethods = new HashSet<>(Arrays.asList(routerOperation.getMethods()));
+		io.swagger.v3.oas.annotations.Operation apiOperation = routerOperation.getOperation();
+		String[] methodConsumes = routerOperation.getConsumes();
+		String[] methodProduces = routerOperation.getProduces();
+		String[] headers = routerOperation.getHeaders();
+		Map<String, String> queryParams = routerOperation.getQueryParams();
+
 		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
 		Components components = openAPI.getComponents();
 		Paths paths = openAPI.getPaths();
@@ -207,9 +219,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 						io.swagger.v3.oas.annotations.Operation.class);
 
 			calculateJsonView(apiOperation, methodAttributes, method);
-
 			if (apiOperation != null)
 				openAPI = operationParser.parse(apiOperation, operation, openAPI, methodAttributes);
+			fillParametersList(operation, queryParams, methodAttributes);
 
 			// compute tags
 			operation = openAPIBuilder.buildTags(handlerMethod, operation, openAPI);
@@ -244,37 +256,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
-	protected void calculatePath(String operationPath, Set<RequestMethod> requestMethods, io.swagger.v3.oas.annotations.Operation apiOperation, String[] methodConsumes, String[] methodProduces, String[] headers) {
-		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
-		Paths paths = openAPI.getPaths();
-		Map<HttpMethod, Operation> operationMap = null;
-		if (paths.containsKey(operationPath)) {
-			PathItem pathItem = paths.get(operationPath);
-			operationMap = pathItem.readOperationsMap();
-		}
-		for (RequestMethod requestMethod : requestMethods) {
-			Operation existingOperation = getExistingOperation(operationMap, requestMethod);
-			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces, headers);
-			methodAttributes.setMethodOverloaded(existingOperation != null);
-			Operation operation = (existingOperation != null) ? existingOperation : new Operation();
-			if (apiOperation != null)
-				openAPI = operationParser.parse(apiOperation, operation, openAPI, methodAttributes);
-			if (!CollectionUtils.isEmpty(operation.getParameters()))
-				operation.getParameters().forEach(parameter -> {
-							if (parameter.getSchema() == null)
-								parameter.setSchema(new StringSchema());
-						}
-				);
-			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
-			paths.addPathItem(operationPath, pathItemObject);
-		}
-	}
-
-	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
-			Set<RequestMethod> requestMethods) {
-		this.calculatePath(handlerMethod, operationPath, requestMethods, null, null, null, null);
-	}
-
 	protected void calculatePath(List<RouterOperation> routerOperationList) {
 		ApplicationContext applicationContext = openAPIBuilder.getContext();
 		if (!CollectionUtils.isEmpty(routerOperationList)) {
@@ -302,14 +283,55 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 							LOGGER.error(e.getMessage());
 						}
 						if (handlerMethod != null && isPackageToScan(handlerMethod.getBeanType().getPackage()) && isPathToMatch(routerOperation.getPath()))
-							calculatePath(handlerMethod, routerOperation.getPath(), new HashSet<>(Arrays.asList(routerOperation.getMethods())), routerOperation.getOperation(), routerOperation.getConsumes(), routerOperation.getProduces(), routerOperation.getHeaders());
+							calculatePath(handlerMethod, routerOperation);
 					}
 				}
 				else if (StringUtils.isNotBlank(routerOperation.getOperation().operationId()) && isPathToMatch(routerOperation.getPath())) {
-					calculatePath(routerOperation.getPath(), new HashSet<>(Arrays.asList(routerOperation.getMethods())), routerOperation.getOperation(), routerOperation.getConsumes(), routerOperation.getProduces(), routerOperation.getHeaders());
+					calculatePath(routerOperation);
 				}
 			}
 		}
+	}
+
+	protected void calculatePath(RouterOperation routerOperation) {
+		String operationPath = routerOperation.getPath();
+		Set<RequestMethod> requestMethods = new HashSet<>(Arrays.asList(routerOperation.getMethods()));
+		io.swagger.v3.oas.annotations.Operation apiOperation = routerOperation.getOperation();
+		String[] methodConsumes = routerOperation.getConsumes();
+		String[] methodProduces = routerOperation.getProduces();
+		String[] headers = routerOperation.getHeaders();
+		Map<String, String> queryParams = routerOperation.getQueryParams();
+
+		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
+		Paths paths = openAPI.getPaths();
+		Map<HttpMethod, Operation> operationMap = null;
+		if (paths.containsKey(operationPath)) {
+			PathItem pathItem = paths.get(operationPath);
+			operationMap = pathItem.readOperationsMap();
+		}
+		for (RequestMethod requestMethod : requestMethods) {
+			Operation existingOperation = getExistingOperation(operationMap, requestMethod);
+			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces, headers);
+			methodAttributes.setMethodOverloaded(existingOperation != null);
+			Operation operation = (existingOperation != null) ? existingOperation : new Operation();
+			openAPI = operationParser.parse(apiOperation, operation, openAPI, methodAttributes);
+			fillParametersList(operation, queryParams, methodAttributes);
+			if (!CollectionUtils.isEmpty(operation.getParameters()))
+				operation.getParameters().forEach(parameter -> {
+							if (parameter.getSchema() == null)
+								parameter.setSchema(new StringSchema());
+							if (parameter.getIn() == null)
+								parameter.setIn(ParameterIn.QUERY.toString());
+						}
+				);
+			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
+			paths.addPathItem(operationPath, pathItemObject);
+		}
+	}
+
+	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
+			Set<RequestMethod> requestMethods) {
+		this.calculatePath(handlerMethod, new RouterOperation(operationPath,requestMethods.toArray(new RequestMethod[requestMethods.size()])));
 	}
 
 	protected void getRouterFunctionPaths(String beanName, AbstractRouterFunctionVisitor routerFunctionVisitor) {
@@ -330,106 +352,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			mergeRouters(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
 			calculatePath(operationList);
 		}
-	}
-
-	private void calculateJsonView(io.swagger.v3.oas.annotations.Operation apiOperation,
-			MethodAttributes methodAttributes, Method method) {
-		JsonView jsonViewAnnotation;
-		JsonView jsonViewAnnotationForRequestBody;
-		if (apiOperation != null && apiOperation.ignoreJsonView()) {
-			jsonViewAnnotation = null;
-			jsonViewAnnotationForRequestBody = null;
-		}
-		else {
-			jsonViewAnnotation = AnnotatedElementUtils.findMergedAnnotation(method, JsonView.class);
-			/*
-			 * If one and only one exists, use the @JsonView annotation from the method
-			 * parameter annotated with @RequestBody. Otherwise fall back to the @JsonView
-			 * annotation for the method itself.
-			 */
-			jsonViewAnnotationForRequestBody = (JsonView) Arrays.stream(ReflectionUtils.getParameterAnnotations(method))
-					.filter(arr -> Arrays.stream(arr)
-							.anyMatch(annotation -> (annotation.annotationType()
-									.equals(io.swagger.v3.oas.annotations.parameters.RequestBody.class) || annotation.annotationType().equals(RequestBody.class))))
-					.flatMap(Arrays::stream).filter(annotation -> annotation.annotationType().equals(JsonView.class))
-					.reduce((a, b) -> null).orElse(jsonViewAnnotation);
-		}
-		methodAttributes.setJsonViewAnnotation(jsonViewAnnotation);
-		methodAttributes.setJsonViewAnnotationForRequestBody(jsonViewAnnotationForRequestBody);
-	}
-
-	private Operation getExistingOperation(Map<HttpMethod, Operation> operationMap, RequestMethod requestMethod) {
-		Operation existingOperation = null;
-		if (!CollectionUtils.isEmpty(operationMap)) {
-			// Get existing operation definition
-			switch (requestMethod) {
-				case GET:
-					existingOperation = operationMap.get(HttpMethod.GET);
-					break;
-				case POST:
-					existingOperation = operationMap.get(HttpMethod.POST);
-					break;
-				case PUT:
-					existingOperation = operationMap.get(HttpMethod.PUT);
-					break;
-				case DELETE:
-					existingOperation = operationMap.get(HttpMethod.DELETE);
-					break;
-				case PATCH:
-					existingOperation = operationMap.get(HttpMethod.PATCH);
-					break;
-				case HEAD:
-					existingOperation = operationMap.get(HttpMethod.HEAD);
-					break;
-				case OPTIONS:
-					existingOperation = operationMap.get(HttpMethod.OPTIONS);
-					break;
-				default:
-					// Do nothing here
-					break;
-			}
-		}
-		return existingOperation;
-	}
-
-	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
-			Paths paths) {
-		PathItem pathItemObject;
-		if (paths.containsKey(operationPath))
-			pathItemObject = paths.get(operationPath);
-		else
-			pathItemObject = new PathItem();
-
-		switch (requestMethod) {
-			case POST:
-				pathItemObject.post(operation);
-				break;
-			case GET:
-				pathItemObject.get(operation);
-				break;
-			case DELETE:
-				pathItemObject.delete(operation);
-				break;
-			case PUT:
-				pathItemObject.put(operation);
-				break;
-			case PATCH:
-				pathItemObject.patch(operation);
-				break;
-			case TRACE:
-				pathItemObject.trace(operation);
-				break;
-			case HEAD:
-				pathItemObject.head(operation);
-				break;
-			case OPTIONS:
-				pathItemObject.options(operation);
-				break;
-			default:
-				// Do nothing here
-				break;
-		}
-		return pathItemObject;
 	}
 
 	protected boolean isPackageToScan(Package aPackage) {
@@ -586,6 +508,32 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
+	private void calculateJsonView(io.swagger.v3.oas.annotations.Operation apiOperation,
+			MethodAttributes methodAttributes, Method method) {
+		JsonView jsonViewAnnotation;
+		JsonView jsonViewAnnotationForRequestBody;
+		if (apiOperation != null && apiOperation.ignoreJsonView()) {
+			jsonViewAnnotation = null;
+			jsonViewAnnotationForRequestBody = null;
+		}
+		else {
+			jsonViewAnnotation = AnnotatedElementUtils.findMergedAnnotation(method, JsonView.class);
+			/*
+			 * If one and only one exists, use the @JsonView annotation from the method
+			 * parameter annotated with @RequestBody. Otherwise fall back to the @JsonView
+			 * annotation for the method itself.
+			 */
+			jsonViewAnnotationForRequestBody = (JsonView) Arrays.stream(ReflectionUtils.getParameterAnnotations(method))
+					.filter(arr -> Arrays.stream(arr)
+							.anyMatch(annotation -> (annotation.annotationType()
+									.equals(io.swagger.v3.oas.annotations.parameters.RequestBody.class) || annotation.annotationType().equals(RequestBody.class))))
+					.flatMap(Arrays::stream).filter(annotation -> annotation.annotationType().equals(JsonView.class))
+					.reduce((a, b) -> null).orElse(jsonViewAnnotation);
+		}
+		methodAttributes.setJsonViewAnnotation(jsonViewAnnotation);
+		methodAttributes.setJsonViewAnnotationForRequestBody(jsonViewAnnotationForRequestBody);
+	}
+
 	private boolean isEqualArrays(String[] array1, String[] array2) {
 		Arrays.sort(array1);
 		Arrays.sort(array2);
@@ -598,6 +546,25 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return Arrays.equals(requestMethods1, requestMethods2);
 	}
 
+	private void fillParametersList(Operation operation, Map<String, String> queryParams, MethodAttributes methodAttributes) {
+		List<Parameter> parametersList = operation.getParameters();
+		if (parametersList == null)
+			parametersList = new ArrayList<>();
+		Collection headersMap = AbstractRequestBuilder.getHeaders(methodAttributes, new LinkedHashMap<>());
+		parametersList.addAll(headersMap);
+		if (!CollectionUtils.isEmpty(queryParams)) {
+			for (Map.Entry<String, String> entry : queryParams.entrySet()) {
+				io.swagger.v3.oas.models.parameters.Parameter parameter = new io.swagger.v3.oas.models.parameters.Parameter();
+				parameter.setName(entry.getKey());
+				parameter.setSchema(new StringSchema()._default(entry.getValue()));
+				parameter.setRequired(true);
+				parameter.setIn(ParameterIn.QUERY.toString());
+				GenericParameterBuilder.mergeParameter(parametersList, parameter);
+			}
+			operation.setParameters(parametersList);
+		}
+	}
+
 	private void fillRouterOperation(RouterFunctionData routerFunctionData, org.springdoc.core.models.RouterOperation routerOperation) {
 		if (ArrayUtils.isEmpty(routerOperation.getConsumes()))
 			routerOperation.setConsumes(routerFunctionData.getConsumes());
@@ -607,6 +574,82 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			routerOperation.setHeaders(routerFunctionData.getHeaders());
 		if (ArrayUtils.isEmpty(routerOperation.getMethods()))
 			routerOperation.setMethods(routerFunctionData.getMethods());
+		if (CollectionUtils.isEmpty(routerOperation.getQueryParams()))
+			routerOperation.setQueryParams(routerFunctionData.getQueryParams());
+	}
+
+	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
+			Paths paths) {
+		PathItem pathItemObject;
+		if (paths.containsKey(operationPath))
+			pathItemObject = paths.get(operationPath);
+		else
+			pathItemObject = new PathItem();
+
+		switch (requestMethod) {
+			case POST:
+				pathItemObject.post(operation);
+				break;
+			case GET:
+				pathItemObject.get(operation);
+				break;
+			case DELETE:
+				pathItemObject.delete(operation);
+				break;
+			case PUT:
+				pathItemObject.put(operation);
+				break;
+			case PATCH:
+				pathItemObject.patch(operation);
+				break;
+			case TRACE:
+				pathItemObject.trace(operation);
+				break;
+			case HEAD:
+				pathItemObject.head(operation);
+				break;
+			case OPTIONS:
+				pathItemObject.options(operation);
+				break;
+			default:
+				// Do nothing here
+				break;
+		}
+		return pathItemObject;
+	}
+
+	private Operation getExistingOperation(Map<HttpMethod, Operation> operationMap, RequestMethod requestMethod) {
+		Operation existingOperation = null;
+		if (!CollectionUtils.isEmpty(operationMap)) {
+			// Get existing operation definition
+			switch (requestMethod) {
+				case GET:
+					existingOperation = operationMap.get(HttpMethod.GET);
+					break;
+				case POST:
+					existingOperation = operationMap.get(HttpMethod.POST);
+					break;
+				case PUT:
+					existingOperation = operationMap.get(HttpMethod.PUT);
+					break;
+				case DELETE:
+					existingOperation = operationMap.get(HttpMethod.DELETE);
+					break;
+				case PATCH:
+					existingOperation = operationMap.get(HttpMethod.PATCH);
+					break;
+				case HEAD:
+					existingOperation = operationMap.get(HttpMethod.HEAD);
+					break;
+				case OPTIONS:
+					existingOperation = operationMap.get(HttpMethod.OPTIONS);
+					break;
+				default:
+					// Do nothing here
+					break;
+			}
+		}
+		return existingOperation;
 	}
 
 }

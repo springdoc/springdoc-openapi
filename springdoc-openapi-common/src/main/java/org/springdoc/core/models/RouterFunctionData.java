@@ -21,7 +21,9 @@
 package org.springdoc.core.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -41,7 +43,7 @@ public class RouterFunctionData {
 
 	private List<String> headers = new ArrayList<>();
 
-	private String queryParam;
+	private Map<String, String> queryParams = new HashMap<>();
 
 	private RequestMethod[] methods;
 
@@ -53,12 +55,12 @@ public class RouterFunctionData {
 		this.path = path;
 	}
 
-	public String getQueryParam() {
-		return queryParam;
+	public Map<String, String> getQueryParams() {
+		return queryParams;
 	}
 
-	public void setQueryParam(String queryParam) {
-		this.queryParam = queryParam;
+	public void addQueryParams(String name, String value) {
+		this.queryParams.put(name, value);
 	}
 
 	public String[] getHeaders() {
@@ -89,7 +91,7 @@ public class RouterFunctionData {
 
 	public void addProduces(String produces) {
 		if (StringUtils.isNotBlank(produces))
-			 this.produces.add(produces);
+			this.produces.add(produces);
 	}
 
 	private RequestMethod[] getMethod(Set<HttpMethod> methods) {

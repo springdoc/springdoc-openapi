@@ -14,6 +14,46 @@
     "/posts": {
       "get": {
         "operationId": "all",
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "description": "sample description",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "value"
+            }
+          },
+          {
+            "name": "test",
+            "in": "query",
+            "description": "sample desc",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-header1",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "test1"
+              ]
+            }
+          },
+          {
+            "name": "x-header2",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "test2"
+              ]
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",

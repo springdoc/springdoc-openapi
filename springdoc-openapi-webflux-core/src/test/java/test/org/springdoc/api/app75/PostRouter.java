@@ -40,12 +40,14 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RequestPredicates.PUT;
+import static org.springframework.web.reactive.function.server.RequestPredicates.queryParam;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
 class PostRouter {
 
-	@RouterOperations({ @RouterOperation(path = "/posts", method = RequestMethod.GET, operation = @Operation(operationId = "all",
+	@RouterOperations({ @RouterOperation(path = "/posts", method = RequestMethod.GET, headers = {"x-header1=test1","x-header2=test2"}, operation = @Operation(operationId = "all",
+			parameters = { @Parameter(name = "key", description = "sample description"),@Parameter(name = "test", description = "sample desc")},
 			responses = @ApiResponse(responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Post.class)))))),
 			@RouterOperation(path = "/posts", method = RequestMethod.POST, operation = @Operation(operationId = "create",
 					requestBody = @RequestBody(content = @Content(schema = @Schema(implementation = Post.class))), responses = @ApiResponse(responseCode = "201"))),
@@ -57,7 +59,7 @@ class PostRouter {
 					responses = @ApiResponse(responseCode = "202", content = @Content(schema = @Schema(implementation = Post.class))))) })
 	@Bean
 	public RouterFunction<ServerResponse> routes(PostHandler postController) {
-		return route(GET("/posts"), postController::all)
+		return route(GET("/posts").and(queryParam("key", "value")), postController::all)
 				.andRoute(POST("/posts"), postController::create)
 				.andRoute(GET("/posts/{id}"), postController::get)
 				.andRoute(PUT("/posts/{id}"), postController::update);

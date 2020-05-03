@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -230,6 +231,11 @@ public abstract class AbstractRequestBuilder {
 			}
 		}
 
+		getHeaders(methodAttributes, map);
+		return map;
+	}
+
+	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, LinkedHashMap<String, Parameter> map) {
 		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
 			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(new StringSchema().addEnumItem(entry.getValue()));
 			if (map.containsKey(entry.getKey())) {
@@ -239,7 +245,7 @@ public abstract class AbstractRequestBuilder {
 			}
 			map.put(entry.getKey(), parameter);
 		}
-		return map;
+		return map.values();
 	}
 
 	protected Parameter customiseParameter(Parameter parameter, ParameterInfo parameterInfo) {

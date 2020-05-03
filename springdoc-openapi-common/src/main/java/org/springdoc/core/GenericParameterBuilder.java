@@ -93,7 +93,7 @@ public class GenericParameterBuilder {
 		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(type));
 	}
 
-	Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
+	public static Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
 		Parameter result = paramCalcul;
 		if (paramCalcul != null && paramCalcul.getName() != null) {
 			final String name = paramCalcul.getName();
@@ -108,7 +108,7 @@ public class GenericParameterBuilder {
 		return result;
 	}
 
-	private void mergeParameter(Parameter paramCalcul, Parameter paramDoc) {
+	private static void mergeParameter(Parameter paramCalcul, Parameter paramDoc) {
 		if (StringUtils.isBlank(paramDoc.getDescription()))
 			paramDoc.setDescription(paramCalcul.getDescription());
 
