@@ -41,7 +41,7 @@ public class EmployeeFunctionalConfig {
 
 	@Bean
 	@RouterOperation(operation = @Operation(operationId = "findEmployeeById", summary = "Find purchase order by ID", tags = { "MyEmployee" },
-			parameters = { @Parameter(in = ParameterIn.PATH, name = "id", description = "Employee Id", schema = @Schema(type = "string")) },
+			parameters = { @Parameter(in = ParameterIn.PATH, name = "id", description = "Employee Id") },
 			responses = { @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = Employee.class))),
 					@ApiResponse(responseCode = "400", description = "Invalid Employee ID supplied"),
 					@ApiResponse(responseCode = "404", description = "Employee not found") }))

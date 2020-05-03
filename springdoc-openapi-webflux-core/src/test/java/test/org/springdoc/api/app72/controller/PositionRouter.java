@@ -31,11 +31,11 @@ public class PositionRouter {
 	@Bean
 	@RouterOperations({ @RouterOperation(path = "/getAllPositions", operation = @Operation(description = "Get all positions", operationId = "findAll",tags = "positions",
 			responses = @ApiResponse(responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Position.class)))))),
-			@RouterOperation(path = "/getPosition/{id}", operation = @Operation(description = "Find all", operationId = "findById", tags = "positions",parameters = @Parameter(name = "id", in = ParameterIn.PATH, schema = @Schema(type = "string")),
+			@RouterOperation(path = "/getPosition/{id}", operation = @Operation(description = "Find all", operationId = "findById", tags = "positions",parameters = @Parameter(name = "id", in = ParameterIn.PATH),
 					 responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Position.class))))),
 			@RouterOperation(path = "/createPosition",  operation = @Operation(description = "Save position", operationId = "save", tags = "positions",requestBody = @RequestBody(content = @Content(schema = @Schema(implementation = Position.class))),
 					responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Position.class))))),
-			@RouterOperation(path = "/deletePosition/{id}", operation = @Operation(description = "Delete By Id", operationId = "deleteBy",tags = "positions", parameters = @Parameter(name = "id", in = ParameterIn.PATH, schema = @Schema(type = "string")),
+			@RouterOperation(path = "/deletePosition/{id}", operation = @Operation(description = "Delete By Id", operationId = "deleteBy",tags = "positions", parameters = @Parameter(name = "id", in = ParameterIn.PATH),
 					responses = @ApiResponse(responseCode = "200", content = @Content)))})
 	public RouterFunction<ServerResponse> positionRoute(PositionHandler handler) {
 		return RouterFunctions

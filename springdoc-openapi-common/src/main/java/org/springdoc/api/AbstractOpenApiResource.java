@@ -46,6 +46,7 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -258,6 +259,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			Operation operation = (existingOperation != null) ? existingOperation : new Operation();
 			if (apiOperation != null)
 				openAPI = operationParser.parse(apiOperation, operation, openAPI, methodAttributes);
+			if (!CollectionUtils.isEmpty(operation.getParameters()))
+				operation.getParameters().forEach(parameter -> {
+							if (parameter.getSchema() == null)
+								parameter.setSchema(new StringSchema());
+						}
+				);
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
 		}
@@ -582,13 +589,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private boolean isEqualArrays(String[] array1, String[] array2) {
 		Arrays.sort(array1);
 		Arrays.sort(array2);
-		return Arrays.equals(array1,array2);
+		return Arrays.equals(array1, array2);
 	}
 
 	private boolean isEqualMethods(RequestMethod[] requestMethods1, RequestMethod[] requestMethods2) {
 		Arrays.sort(requestMethods1);
 		Arrays.sort(requestMethods2);
-		return Arrays.equals(requestMethods1,requestMethods2);
+		return Arrays.equals(requestMethods1, requestMethods2);
 	}
 
 	private void fillRouterOperation(RouterFunctionData routerFunctionData, org.springdoc.core.models.RouterOperation routerOperation) {
