@@ -515,6 +515,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		RouterFunctionData routerFunctionData = routerFunctionDataList.get(0);
 		if (ArrayUtils.isEmpty(routerOperation.getConsumes()))
 			routerOperation.setConsumes(routerFunctionData.getConsumes());
+		if (ArrayUtils.isEmpty(routerOperation.getProduces()))
+			routerOperation.setProduces(routerFunctionData.getProduces());
 		if (ArrayUtils.isEmpty(routerOperation.getHeaders()))
 			routerOperation.setHeaders(routerFunctionData.getHeaders());
 		if (ArrayUtils.isEmpty(routerOperation.getMethod()))

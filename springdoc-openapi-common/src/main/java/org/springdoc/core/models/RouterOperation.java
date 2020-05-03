@@ -63,7 +63,7 @@ public class RouterOperation {
 		this.path = StringUtils.isBlank(routerOperationAnnotation.path()) ? routerFunctionData.getPath() : routerOperationAnnotation.path();
 		this.method = ArrayUtils.isEmpty(routerOperationAnnotation.method()) ? routerFunctionData.getMethods() : routerOperationAnnotation.method();
 		this.consumes = ArrayUtils.isEmpty(routerOperationAnnotation.consumes()) ? routerFunctionData.getConsumes() : routerOperationAnnotation.consumes();
-		this.produces = routerOperationAnnotation.produces();
+		this.produces = ArrayUtils.isEmpty(routerOperationAnnotation.produces()) ? routerFunctionData.getProduces() : routerOperationAnnotation.produces();
 		this.beanClass = routerOperationAnnotation.beanClass();
 		this.beanMethod = routerOperationAnnotation.beanMethod();
 		this.parameterTypes = routerOperationAnnotation.parameterTypes();

@@ -21,7 +21,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -80,7 +80,7 @@
         "operationId": "updateEmployee",
         "requestBody": {
           "content": {
-            "application/xml": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Employee"
               }
@@ -91,7 +91,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
+              "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/Employee"
                 }
