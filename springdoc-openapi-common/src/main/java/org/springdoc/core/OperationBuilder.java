@@ -279,10 +279,15 @@ public class OperationBuilder {
 	}
 
 	private Optional<ApiResponses> getApiResponses(
-			final io.swagger.v3.oas.annotations.responses.ApiResponse[] responses, String[] classProduces,
-			String[] methodProduces, Components components) {
+			final io.swagger.v3.oas.annotations.responses.ApiResponse[] responses,
+			MethodAttributes methodAttributes, Operation operation, Components components) {
 
 		ApiResponses apiResponsesObject = new ApiResponses();
+		String[] classProduces = methodAttributes.getClassProduces();
+		String[] methodProduces = methodAttributes.getMethodProduces();
+
+		ApiResponses apiResponsesOp = operation.getResponses();
+
 		for (io.swagger.v3.oas.annotations.responses.ApiResponse response : responses) {
 			ApiResponse apiResponseObject = new ApiResponse();
 			if (StringUtils.isNotBlank(response.ref())) {
@@ -292,10 +297,14 @@ public class OperationBuilder {
 			setDescription(response, apiResponseObject);
 			setExtensions(response, apiResponseObject);
 
-			SpringDocAnnotationsUtils.getContent(response.content(),
-					classProduces == null ? new String[0] : classProduces,
-					methodProduces == null ? new String[0] : methodProduces, null, components, null)
-					.ifPresent(apiResponseObject::content);
+			if (apiResponsesOp == null)
+				SpringDocAnnotationsUtils.getContent(response.content(),
+						classProduces == null ? new String[0] : classProduces,
+						methodProduces == null ? new String[0] : methodProduces, null, components, null)
+						.ifPresent(apiResponseObject::content);
+			else
+				GenericResponseBuilder.buildContentFromDoc(components, apiResponsesOp, methodAttributes, response, apiResponseObject);
+
 			AnnotationsUtils.getHeaders(response.headers(), null).ifPresent(apiResponseObject::headers);
 			// Make schema as string if empty
 			calculateHeader(apiResponseObject);
@@ -368,10 +377,10 @@ public class OperationBuilder {
 		}
 	}
 
+
 	private void buildResponse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
 			Operation operation, MethodAttributes methodAttributes) {
-		getApiResponses(apiOperation.responses(), methodAttributes.getClassProduces(),
-				methodAttributes.getMethodProduces(), components).ifPresent(responses -> {
+		getApiResponses(apiOperation.responses(), methodAttributes, operation, components).ifPresent(responses -> {
 			if (operation.getResponses() == null) {
 				operation.setResponses(responses);
 			}

@@ -141,9 +141,7 @@ public class GenericResponseBuilder {
 					continue;
 				}
 				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotations.description()));
-				io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
-				buildContentFromDoc(components, apiResponsesOp, methodAttributes,
-						apiResponseAnnotations, apiResponse, contentdoc);
+				buildContentFromDoc(components, apiResponsesOp, methodAttributes, apiResponseAnnotations, apiResponse);
 				Map<String, Object> extensions = AnnotationsUtils.getExtensions(apiResponseAnnotations.extensions());
 				if (!CollectionUtils.isEmpty(extensions))
 					apiResponse.extensions(extensions);
@@ -156,10 +154,12 @@ public class GenericResponseBuilder {
 		return apiResponsesOp;
 	}
 
-	private void buildContentFromDoc(Components components, ApiResponses apiResponsesOp,
+	public static void buildContentFromDoc(Components components, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes,
-			io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations, ApiResponse apiResponse,
-			io.swagger.v3.oas.annotations.media.Content[] contentdoc) {
+			io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations,
+			ApiResponse apiResponse) {
+
+		io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
 		Optional<Content> optionalContent = SpringDocAnnotationsUtils.getContent(contentdoc, new String[0],
 				methodAttributes.getMethodProduces(), null, components, methodAttributes.getJsonViewAnnotation());
 		if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
@@ -301,7 +301,7 @@ public class GenericResponseBuilder {
 		apiResponsesOp.addApiResponse(httpCode, apiResponse);
 	}
 
-	private void mergeSchema(Content existingContent, Schema<?> schemaN, String mediaTypeStr) {
+	private static void mergeSchema(Content existingContent, Schema<?> schemaN, String mediaTypeStr) {
 		if (existingContent.containsKey(mediaTypeStr)) {
 			io.swagger.v3.oas.models.media.MediaType mediaType = existingContent.get(mediaTypeStr);
 			if (!schemaN.equals(mediaType.getSchema())) {
