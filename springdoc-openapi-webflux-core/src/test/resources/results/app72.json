@@ -21,7 +21,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -54,7 +54,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
+              "application/stream+json": {
                 "schema": {
                   "$ref": "#/components/schemas/Person"
                 }
@@ -83,7 +83,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "string"
                 }
@@ -113,7 +113,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "string"
                 }
@@ -134,7 +134,7 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -168,7 +168,7 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/stream+json": {
                 "schema": {
                   "$ref": "#/components/schemas/Position"
                 }
@@ -187,7 +187,7 @@
         "operationId": "save_1",
         "requestBody": {
           "content": {
-            "application/json": {
+            "*/*": {
               "schema": {
                 "$ref": "#/components/schemas/Position"
               }
@@ -198,7 +198,7 @@
           "200": {
             "description": "default response",
             "content": {
-              "*/*": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Position"
                 }

@@ -45,6 +45,8 @@ public class AbstractRouterFunctionVisitor {
 
 	public void header(String name, String value) {
 		if (HttpHeaders.ACCEPT.equals(name))
+			routerFunctionData.setProduces(value);
+		else if (HttpHeaders.CONTENT_TYPE.equals(name))
 			routerFunctionData.setConsumes(value);
 		else
 			routerFunctionData.setHeaders(name + "=" + value);

@@ -35,6 +35,8 @@ public class RouterFunctionData {
 
 	private String[] consumes;
 
+	private String[] produces;
+
 	private String[] headers;
 
 	private String queryParam;
@@ -94,11 +96,25 @@ public class RouterFunctionData {
 		if (StringUtils.isNotBlank(consumes))
 			this.consumes = new String[] { consumes };
 	}
+
+	public void setProduces(String produces) {
+		if (StringUtils.isNotBlank(produces))
+			this.produces = new String[] { produces };
+	}
+
 	private RequestMethod[] getMethod(Set<HttpMethod> methods) {
 		if (!CollectionUtils.isEmpty(methods)) {
 			return methods.stream().map(this::getRequestMethod).toArray(RequestMethod[]::new);
 		}
 		return ArrayUtils.toArray();
+	}
+
+	public String[] getProduces() {
+		return produces;
+	}
+
+	public void setProduces(String[] produces) {
+		this.produces = produces;
 	}
 
 	private RequestMethod getRequestMethod(HttpMethod httpMethod) {
