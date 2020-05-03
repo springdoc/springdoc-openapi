@@ -247,10 +247,18 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected void calculatePath(String operationPath, Set<RequestMethod> requestMethods, io.swagger.v3.oas.annotations.Operation apiOperation, String[] methodConsumes, String[] methodProduces, String[] headers) {
 		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
 		Paths paths = openAPI.getPaths();
+		Map<HttpMethod, Operation> operationMap = null;
+		if (paths.containsKey(operationPath)) {
+			PathItem pathItem = paths.get(operationPath);
+			operationMap = pathItem.readOperationsMap();
+		}
 		for (RequestMethod requestMethod : requestMethods) {
+			Operation existingOperation = getExistingOperation(operationMap, requestMethod);
 			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces, headers);
-			Operation operation = new Operation();
-			openAPI = operationParser.parse(apiOperation, operation, openAPI, methodAttributes);
+			methodAttributes.setMethodOverloaded(existingOperation != null);
+			Operation operation = (existingOperation != null) ? existingOperation : new Operation();
+			if (apiOperation != null)
+				openAPI = operationParser.parse(apiOperation, operation, openAPI, methodAttributes);
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
 		}
@@ -313,7 +321,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			calculatePath(routerOperationList.stream().map(routerOperation -> new org.springdoc.core.models.RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()));
 		else {
 			List<org.springdoc.core.models.RouterOperation> operationList = routerOperationList.stream().map(org.springdoc.core.models.RouterOperation::new).collect(Collectors.toList());
-			merge(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
+			mergeRouters(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
 			calculatePath(operationList);
 		}
 	}
@@ -490,29 +498,89 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return operation;
 	}
 
-	protected void merge(List<RouterFunctionData> routerFunctionDatas, List<org.springdoc.core.models.RouterOperation> routerOperationList) {
+	protected void mergeRouters(List<RouterFunctionData> routerFunctionDatas, List<org.springdoc.core.models.RouterOperation> routerOperationList) {
 		for (org.springdoc.core.models.RouterOperation routerOperation : routerOperationList) {
-			List<RouterFunctionData> routerFunctionDataList = routerFunctionDatas.stream()
-					.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath()))
-					.collect(Collectors.toList());
-			if (!CollectionUtils.isEmpty(routerFunctionDataList)) {
-				//Try with unique path in the route
+			if (StringUtils.isNotBlank(routerOperation.getPath())) {
+				// PATH
+				List<RouterFunctionData> routerFunctionDataList = routerFunctionDatas.stream()
+						.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath()))
+						.collect(Collectors.toList());
 				if (routerFunctionDataList.size() == 1)
-					fillRouterOperation(routerFunctionDataList, routerOperation);
-					//Try with unique path and RequestMethod
-				else {
+					fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
+				else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getMethod())) {
+					// PATH + METHOD
 					routerFunctionDataList = routerFunctionDatas.stream()
-							.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath()) && ArrayUtils.isNotEmpty(routerOperation.getMethod()) && routerFunctionData1.getMethods()[0].equals(routerOperation.getMethod()[0]))
+							.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
+									&& routerFunctionData1.getMethods()[0].equals(routerOperation.getMethod()[0]))
 							.collect(Collectors.toList());
 					if (routerFunctionDataList.size() == 1)
-						fillRouterOperation(routerFunctionDataList, routerOperation);
+						fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
+					else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getProduces())) {
+						// PATH + METHOD + PRODUCES
+						routerFunctionDataList = routerFunctionDatas.stream()
+								.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
+										&& routerFunctionData1.getMethods()[0].equals(routerOperation.getMethod()[0])
+										&& routerFunctionData1.getProduces()[0].equals(routerOperation.getProduces()[0]))
+								.collect(Collectors.toList());
+						if (routerFunctionDataList.size() == 1)
+							fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
+						else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
+							// PATH + METHOD + PRODUCES + CONSUMES
+							routerFunctionDataList = routerFunctionDatas.stream()
+									.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
+											&& routerFunctionData1.getMethods()[0].equals(routerOperation.getMethod()[0])
+											&& routerFunctionData1.getProduces()[0].equals(routerOperation.getProduces()[0])
+											&& routerFunctionData1.getConsumes()[0].equals(routerOperation.getConsumes()[0]))
+									.collect(Collectors.toList());
+							if (routerFunctionDataList.size() == 1)
+								fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
+						}
+					}
+					else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
+						// PATH + METHOD + CONSUMES
+						routerFunctionDataList = routerFunctionDatas.stream()
+								.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
+										&& routerFunctionData1.getMethods()[0].equals(routerOperation.getMethod()[0])
+										&& routerFunctionData1.getConsumes()[0].equals(routerOperation.getConsumes()[0]))
+								.collect(Collectors.toList());
+						if (routerFunctionDataList.size() == 1)
+							fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
+					}
+				}
+				else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getProduces())) {
+					// PATH + PRODUCES
+					routerFunctionDataList = routerFunctionDatas.stream()
+							.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
+									&& routerFunctionData1.getProduces()[0].equals(routerOperation.getProduces()[0]))
+							.collect(Collectors.toList());
+					if (routerFunctionDataList.size() == 1)
+						fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
+					else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
+						// PATH + PRODUCES + CONSUMES
+						routerFunctionDataList = routerFunctionDatas.stream()
+								.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
+										&& routerFunctionData1.getMethods()[0].equals(routerOperation.getMethod()[0])
+										&& routerFunctionData1.getConsumes()[0].equals(routerOperation.getConsumes()[0])
+										&& routerFunctionData1.getProduces()[0].equals(routerOperation.getProduces()[0]))
+								.collect(Collectors.toList());
+						if (routerFunctionDataList.size() == 1)
+							fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
+					}
+				}
+				else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
+					// PATH + CONSUMES
+					routerFunctionDataList = routerFunctionDatas.stream()
+							.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
+									&& routerFunctionData1.getConsumes()[0].equals(routerOperation.getConsumes()[0]))
+							.collect(Collectors.toList());
+					if (routerFunctionDataList.size() == 1)
+						fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 				}
 			}
 		}
 	}
 
-	private void fillRouterOperation(List<RouterFunctionData> routerFunctionDataList, org.springdoc.core.models.RouterOperation routerOperation) {
-		RouterFunctionData routerFunctionData = routerFunctionDataList.get(0);
+	private void fillRouterOperation(RouterFunctionData routerFunctionData, org.springdoc.core.models.RouterOperation routerOperation) {
 		if (ArrayUtils.isEmpty(routerOperation.getConsumes()))
 			routerOperation.setConsumes(routerFunctionData.getConsumes());
 		if (ArrayUtils.isEmpty(routerOperation.getProduces()))
