@@ -57,7 +57,7 @@ public class AbstractRouterFunctionVisitor {
 	}
 
 	public void queryParam(String name, String value) {
-		// Not yet needed
+		routerFunctionData.addQueryParams(name, value);
 	}
 
 	public void pathExtension(String extension) {
@@ -99,8 +99,5 @@ public class AbstractRouterFunctionVisitor {
 	public void endNegate() {
 		// Not yet needed
 	}
-
-
-
 
 }

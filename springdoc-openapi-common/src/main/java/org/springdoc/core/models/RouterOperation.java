@@ -20,6 +20,8 @@
 
 package org.springdoc.core.models;
 
+import java.util.Map;
+
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,6 +47,8 @@ public class RouterOperation {
 
 	private Class<?>[] parameterTypes;
 
+	private Map<String, String> queryParams;
+
 	private Operation operation;
 
 	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperationAnnotation) {
@@ -69,7 +73,12 @@ public class RouterOperation {
 		this.parameterTypes = routerOperationAnnotation.parameterTypes();
 		this.operation = routerOperationAnnotation.operation();
 		this.headers = ArrayUtils.isEmpty(routerOperationAnnotation.headers()) ? routerFunctionData.getHeaders() : routerOperationAnnotation.headers();
+		this.queryParams = routerFunctionData.getQueryParams();
+	}
 
+	public RouterOperation(String path, RequestMethod[] methods) {
+		this.path = path;
+		this.methods = methods;
 	}
 
 	public String getPath() {
@@ -142,5 +151,13 @@ public class RouterOperation {
 
 	public void setHeaders(String[] headers) {
 		this.headers = headers;
+	}
+
+	public Map<String, String> getQueryParams() {
+		return queryParams;
+	}
+
+	public void setQueryParams(Map<String, String> queryParams) {
+		this.queryParams = queryParams;
 	}
 }
