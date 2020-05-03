@@ -164,7 +164,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected abstract void getPaths(Map<String, Object> findRestControllers);
 
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
-			Set<RequestMethod> requestMethods, String[] methodConsumes, String[] methodProduces, String[] headers) {
+			Set<RequestMethod> requestMethods, io.swagger.v3.oas.annotations.Operation apiOperation, String[] methodConsumes, String[] methodProduces, String[] headers) {
 		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
 		Components components = openAPI.getComponents();
 		Paths paths = openAPI.getPaths();
@@ -201,8 +201,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				operation.setDeprecated(true);
 
 			// Add documentation from operation annotation
-			io.swagger.v3.oas.annotations.Operation apiOperation = AnnotatedElementUtils.findMergedAnnotation(method,
-					io.swagger.v3.oas.annotations.Operation.class);
+			if (apiOperation == null || StringUtils.isBlank(apiOperation.operationId()))
+				apiOperation = AnnotatedElementUtils.findMergedAnnotation(method,
+						io.swagger.v3.oas.annotations.Operation.class);
 
 			calculateJsonView(apiOperation, methodAttributes, method);
 
@@ -257,7 +258,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
 			Set<RequestMethod> requestMethods) {
-		this.calculatePath(handlerMethod, operationPath, requestMethods, null, null, null);
+		this.calculatePath(handlerMethod, operationPath, requestMethods, null, null, null, null);
 	}
 
 	protected void calculatePath(List<RouterOperation> routerOperationList) {
@@ -286,8 +287,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 						catch (NoSuchMethodException e) {
 							LOGGER.error(e.getMessage());
 						}
-						if (handlerMethod != null && isPackageToScan(handlerMethod.getBeanType().getPackage().getName()) && isPathToMatch(routerOperation.getPath()))
-							calculatePath(handlerMethod, routerOperation.getPath(), new HashSet<>(Arrays.asList(routerOperation.getMethod())), routerOperation.getConsumes(), routerOperation.getProduces(), routerOperation.getHeaders());
+						if (handlerMethod != null && isPackageToScan(handlerMethod.getBeanType().getPackage()) && isPathToMatch(routerOperation.getPath()))
+							calculatePath(handlerMethod, routerOperation.getPath(), new HashSet<>(Arrays.asList(routerOperation.getMethod())), routerOperation.getOperation(), routerOperation.getConsumes(), routerOperation.getProduces(), routerOperation.getHeaders());
 					}
 				}
 				else if (StringUtils.isNotBlank(routerOperation.getOperation().operationId()) && isPathToMatch(routerOperation.getPath())) {
@@ -303,7 +304,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		RouterOperations routerOperations = applicationContext.findAnnotationOnBean(beanName, RouterOperations.class);
 		if (routerOperations == null) {
 			org.springdoc.core.annotations.RouterOperation routerOperation = applicationContext.findAnnotationOnBean(beanName, org.springdoc.core.annotations.RouterOperation.class);
-			routerOperationList.add(routerOperation);
+			if (routerOperation != null)
+				routerOperationList.add(routerOperation);
 		}
 		else
 			routerOperationList.addAll(Arrays.asList(routerOperations.value()));
@@ -416,7 +418,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return pathItemObject;
 	}
 
-	protected boolean isPackageToScan(String aPackage) {
+	protected boolean isPackageToScan(Package aPackage) {
+		if (aPackage == null)
+			return true;
+		final String packageName = aPackage.getName();
 		List<String> packagesToScan = springDocConfigProperties.getPackagesToScan();
 		List<String> packagesToExclude = springDocConfigProperties.getPackagesToExclude();
 		if (CollectionUtils.isEmpty(packagesToScan)) {
@@ -430,11 +435,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				packagesToExclude = optionalGroupConfig.get().getPackagesToExclude();
 		}
 		boolean include = CollectionUtils.isEmpty(packagesToScan)
-				|| packagesToScan.stream().anyMatch(pack -> aPackage.equals(pack)
-				|| aPackage.startsWith(pack + "."));
+				|| packagesToScan.stream().anyMatch(pack -> packageName.equals(pack)
+				|| packageName.startsWith(pack + "."));
 		boolean exclude = !CollectionUtils.isEmpty(packagesToExclude)
-				&& (packagesToExclude.stream().anyMatch(pack -> aPackage.equals(pack)
-				|| aPackage.startsWith(pack + ".")));
+				&& (packagesToExclude.stream().anyMatch(pack -> packageName.equals(pack)
+				|| packageName.startsWith(pack + ".")));
 
 		return include && !exclude;
 	}

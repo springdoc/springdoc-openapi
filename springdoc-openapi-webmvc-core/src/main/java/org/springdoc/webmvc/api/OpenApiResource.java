@@ -155,7 +155,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				String operationPath = PathUtils.parsePath(pattern, regexMap);
 				if (((actuatorProvider.isPresent() && actuatorProvider.get().isRestController(operationPath))
 						|| isRestController(restControllers, handlerMethod, operationPath))
-						&& isPackageToScan(handlerMethod.getBeanType().getPackage().getName())
+						&& isPackageToScan(handlerMethod.getBeanType().getPackage())
 						&& isPathToMatch(operationPath)) {
 					Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 					// default allowed requestmethods
