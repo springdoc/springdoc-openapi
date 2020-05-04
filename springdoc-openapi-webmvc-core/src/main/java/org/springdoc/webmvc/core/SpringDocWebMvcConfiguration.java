@@ -39,6 +39,7 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.webmvc.api.ActuatorProvider;
 import org.springdoc.webmvc.api.OpenApiResource;
+import org.springdoc.webmvc.api.RouterFunctionProvider;
 
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
@@ -47,11 +48,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
@@ -72,11 +75,13 @@ public class SpringDocWebMvcConfiguration {
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
-			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
+			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
+			Optional<RouterFunctionProvider> routerFunctionProvider) {
 		return new OpenApiResource(openAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
-				requestMappingHandlerMapping, servletContextProvider,operationCustomizers,
-				openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider);
+				requestMappingHandlerMapping, servletContextProvider, operationCustomizers,
+				openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,
+				routerFunctionProvider);
 	}
 
 	@Bean
@@ -92,6 +97,16 @@ public class SpringDocWebMvcConfiguration {
 	@ConditionalOnMissingBean
 	GenericResponseBuilder responseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
 		return new GenericResponseBuilder(operationBuilder, returnTypeParsers, springDocConfigProperties, propertyResolverUtils);
+	}
+
+	@ConditionalOnClass(RouterFunction.class)
+	class SpringDocWebMvcRouterConfiguration {
+
+		@Bean
+		@ConditionalOnMissingBean
+		RouterFunctionProvider routerFunctionProvider(ApplicationContext applicationContext) {
+			return new RouterFunctionProvider(applicationContext);
+		}
 	}
 
 	@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)

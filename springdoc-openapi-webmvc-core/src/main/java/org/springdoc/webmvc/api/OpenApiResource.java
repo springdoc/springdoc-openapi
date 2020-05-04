@@ -44,11 +44,9 @@ import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
-import org.springdoc.webmvc.core.visitor.RouterFunctionVisitor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,7 +55,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
@@ -77,6 +74,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
 
+	private final Optional<RouterFunctionProvider> routerFunctionProvider;
+
 	public OpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
@@ -84,26 +83,30 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
+			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
+			Optional<RouterFunctionProvider> routerFunctionProvider) {
 		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.servletContextProvider = servletContextProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
+		this.routerFunctionProvider = routerFunctionProvider;
 	}
 
 	@Autowired
-	public OpenApiResource( OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> servletContextProvider,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser,operationCustomizers, openApiCustomisers, springDocConfigProperties);
+			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
+			Optional<RouterFunctionProvider> routerFunctionProvider) {
+		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.servletContextProvider = servletContextProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
+		this.routerFunctionProvider = routerFunctionProvider;
 	}
 
 	@Operation(hidden = true)
@@ -165,19 +168,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				}
 			}
 		}
-		getWebMvcRouterFunctionPaths();
+		routerFunctionProvider.ifPresent(routerFunctions -> routerFunctions.getWebMvcRouterFunctionPaths()
+				.ifPresent(routerBeans -> routerBeans.forEach((beanName, routerFunctionVisitor) -> getRouterFunctionPaths(beanName, routerFunctionVisitor))));
 	}
 
-	protected void getWebMvcRouterFunctionPaths() {
-		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
-		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
-		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
-			RouterFunction routerFunction = entry.getValue();
-			RouterFunctionVisitor routerFunctionVisitor = new RouterFunctionVisitor();
-			routerFunction.accept(routerFunctionVisitor);
-			getRouterFunctionPaths(entry.getKey(), routerFunctionVisitor);
-		}
-	}
 
 	protected boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod,
 			String operationPath) {
