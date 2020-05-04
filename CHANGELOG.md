@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.8] - 2020-05-04
+### Added
+- Introduce support of Webflux and Webmvc.fn with Functional Endpoints
+### Changed
+- #624 - Revert changes on MediaType.APPLICATION_JSON_VALUE
+### Fixed
+- #630, #641, #643, #637 - JsonMappingException on UI render
+
 ## [1.3.7] - 2020-04-30
 ### Added
 - Make use of @Deprecated annotations for parameters and model fields
