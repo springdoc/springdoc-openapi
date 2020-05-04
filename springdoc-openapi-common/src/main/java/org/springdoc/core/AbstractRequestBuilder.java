@@ -191,7 +191,7 @@ public abstract class AbstractRequestBuilder {
 			if (!isParamToIgnore(methodParameter)) {
 				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
-				parameter = parameterBuilder.mergeParameter(operationParameters, parameter);
+				parameter = GenericParameterBuilder.mergeParameter(operationParameters, parameter);
 				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
 				if (isValidParameter(parameter))
 					applyBeanValidatorAnnotations(parameter, parameterAnnotations);
@@ -235,7 +235,7 @@ public abstract class AbstractRequestBuilder {
 		return map;
 	}
 
-	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, LinkedHashMap<String, Parameter> map) {
+	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<String, Parameter> map) {
 		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
 			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(new StringSchema().addEnumItem(entry.getValue()));
 			if (map.containsKey(entry.getKey())) {
