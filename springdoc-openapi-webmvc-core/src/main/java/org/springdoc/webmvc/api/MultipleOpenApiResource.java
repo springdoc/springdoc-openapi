@@ -79,11 +79,14 @@ public class MultipleOpenApiResource implements InitializingBean {
 
 	private final Optional<List<OperationCustomizer>> operationCustomizers;
 
+	private final Optional<RouterFunctionProvider> routerFunctionProvider;
+
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser, Optional<List<OperationCustomizer>> operationCustomizers,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
-			SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider) {
+			SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
+			Optional<RouterFunctionProvider> routerFunctionProvider) {
 
 		this.groupedOpenApis = groupedOpenApis;
 		this.defaultOpenAPIBuilder = defaultOpenAPIBuilder;
@@ -94,6 +97,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 		this.servletContextProvider = servletContextProvider;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
+		this.routerFunctionProvider = routerFunctionProvider;
 		if (operationCustomizers.isPresent())
 			operationCustomizers.get().removeIf(Objects::isNull);
 		this.operationCustomizers = operationCustomizers;
@@ -116,7 +120,8 @@ public class MultipleOpenApiResource implements InitializingBean {
 									operationCustomizers,
 									Optional.of(item.getOpenApiCustomisers()),
 									springDocConfigProperties,
-									springSecurityOAuth2Provider
+									springSecurityOAuth2Provider,
+									routerFunctionProvider
 							);
 						}
 				));
