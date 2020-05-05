@@ -170,7 +170,10 @@ public class GenericResponseBuilder {
 			if (optionalContent.isPresent()) {
 				Content newContent = optionalContent.get();
 				if (methodAttributes.isMethodOverloaded() && existingContent != null) {
-					Arrays.stream(methodAttributes.getMethodProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr));
+					Arrays.stream(methodAttributes.getMethodProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> {
+						if (newContent.get(mediaTypeStr).getSchema() != null)
+							mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr);
+					});
 					apiResponse.content(existingContent);
 				}
 				else
