@@ -59,9 +59,9 @@ public class ModelConverterRegistrar {
 					.findFirst();
 		}
 		catch (IllegalAccessException exception) {
-			LOGGER.error(exception.getMessage(), exception);
-			throw new RuntimeException(exception);
+			LOGGER.warn(exception.getMessage());
 		}
+		return Optional.empty();
 	}
 
 	private boolean isSameConverter(ModelConverter modelConverter1, ModelConverter modelConverter2) {
