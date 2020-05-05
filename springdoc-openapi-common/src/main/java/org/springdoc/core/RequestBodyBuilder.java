@@ -100,7 +100,10 @@ public class RequestBodyBuilder {
 			if (optionalContent.isPresent() && existingContent != null) {
 				Content newContent = optionalContent.get();
 				if (methodAttributes.isMethodOverloaded()) {
-					Arrays.stream(methodAttributes.getMethodProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr));
+					Arrays.stream(methodAttributes.getMethodProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> {
+						if (newContent.get(mediaTypeStr).getSchema() != null)
+							mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr);
+					});
 					requestBodyObject.content(existingContent);
 				}
 				else
@@ -116,7 +119,7 @@ public class RequestBodyBuilder {
 	}
 
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
-			MethodAttributes methodAttributes, Components components,JsonView jsonViewAnnotation) {
+			MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation) {
 		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes,
 				components, jsonViewAnnotation);
 	}
