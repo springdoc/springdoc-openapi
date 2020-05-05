@@ -40,14 +40,9 @@ public class ModelConverterRegistrar {
 		for (ModelConverter modelConverter : modelConverters) {
 			Optional<ModelConverter> registeredConverterOptional = getRegisteredConverterSameAs(modelConverter);
 
-			if (!registeredConverterOptional.isPresent()) {
-				ModelConverters.getInstance().addConverter(modelConverter);
-			} else {
-				registeredConverterOptional.ifPresent(alreadyRegisteredModelConverter -> {
-					ModelConverters.getInstance().removeConverter(alreadyRegisteredModelConverter);
-					ModelConverters.getInstance().addConverter(modelConverter);
-				});
-			}
+			ModelConverters modelConvertersInstance = ModelConverters.getInstance();
+			registeredConverterOptional.ifPresent(modelConvertersInstance::removeConverter);
+			modelConvertersInstance.addConverter(modelConverter);
 		}
 	}
 
