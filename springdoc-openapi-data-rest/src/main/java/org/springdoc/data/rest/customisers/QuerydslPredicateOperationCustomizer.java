@@ -21,7 +21,6 @@
 package org.springdoc.data.rest.customisers;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +39,7 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.OperationCustomizer;
@@ -62,8 +62,6 @@ import org.springframework.web.method.HandlerMethod;
 public class QuerydslPredicateOperationCustomizer implements OperationCustomizer {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(QuerydslPredicateOperationCustomizer.class);
-
-	private static final String ACCESS_EXCEPTION_OCCURRED = "NoSuchFieldException or IllegalAccessException occurred : {}";
 
 	private QuerydslBindingsFactory querydslBindingsFactory;
 
@@ -129,28 +127,22 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 
 	private Set<String> getFieldValues(QuerydslBindings instance, String fieldName) {
 		try {
-			Field field = instance.getClass().getDeclaredField(fieldName);
-			if (Modifier.isPrivate(field.getModifiers())) {
-				field.setAccessible(true);
-			}
+			Field field = FieldUtils.getDeclaredField(instance.getClass(),fieldName,true);
 			return (Set<String>) field.get(instance);
 		}
-		catch (NoSuchFieldException | IllegalAccessException e) {
-			LOGGER.warn(ACCESS_EXCEPTION_OCCURRED, e.getMessage());
+		catch (IllegalAccessException e) {
+			LOGGER.warn(e.getMessage());
 		}
 		return Collections.emptySet();
 	}
 
 	private Map<String, Object> getPathSpec(QuerydslBindings instance, String fieldName) {
 		try {
-			Field field = instance.getClass().getDeclaredField(fieldName);
-			if (Modifier.isPrivate(field.getModifiers())) {
-				field.setAccessible(true);
-			}
+			Field field = FieldUtils.getDeclaredField(instance.getClass(),fieldName,true);
 			return (Map<String, Object>) field.get(instance);
 		}
-		catch (NoSuchFieldException | IllegalAccessException e) {
-			LOGGER.warn(ACCESS_EXCEPTION_OCCURRED, e.getMessage());
+		catch (IllegalAccessException e) {
+			LOGGER.warn(e.getMessage());
 		}
 		return Collections.emptyMap();
 	}
@@ -160,14 +152,11 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 			if (instance == null) {
 				return Optional.empty();
 			}
-			Field field = instance.getClass().getDeclaredField("path");
-			if (Modifier.isPrivate(field.getModifiers())) {
-				field.setAccessible(true);
-			}
+			Field field = FieldUtils.getDeclaredField(instance.getClass(),"path",true);
 			return (Optional<Path<?>>) field.get(instance);
 		}
-		catch (NoSuchFieldException | IllegalAccessException e) {
-			LOGGER.warn(ACCESS_EXCEPTION_OCCURRED, e.getMessage());
+		catch (IllegalAccessException e) {
+			LOGGER.warn(e.getMessage());
 		}
 		return Optional.empty();
 	}
