@@ -168,7 +168,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				}
 			}
 		}
-		routerFunctionProvider.flatMap(RouterFunctionProvider::getWebMvcRouterFunctionPaths).ifPresent(routerBeans -> routerBeans.forEach(this::getRouterFunctionPaths));
+		routerFunctionProvider.ifPresent(routerFunctions -> routerFunctions.getWebMvcRouterFunctionPaths()
+				.ifPresent(routerBeans -> routerBeans.forEach(this::getRouterFunctionPaths)));
 	}
 
 
