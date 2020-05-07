@@ -56,7 +56,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			JsonView jsonView, Annotation[] annotations) {
 		Schema schemaObject = extractSchema(components, schemaImplementation, jsonView, annotations);
 		if (schemaObject != null && StringUtils.isBlank(schemaObject.get$ref())
-				&& StringUtils.isBlank(schemaObject.getType())) {
+				&& StringUtils.isBlank(schemaObject.getType()) && !(schemaObject instanceof ComposedSchema)) {
 			// default to string
 			schemaObject.setType("string");
 		}

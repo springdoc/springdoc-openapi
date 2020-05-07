@@ -35,6 +35,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.FileSupportConverter;
 import org.springdoc.core.converters.ModelConverterRegistrar;
+import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
@@ -84,7 +85,7 @@ public class SpringDocConfiguration {
 
 	@Bean
 	@Lazy(false)
-	AdditionalModelsConverter pageableSupportConverter() {
+	AdditionalModelsConverter additionalModelsConverter() {
 		return new AdditionalModelsConverter();
 	}
 
@@ -113,6 +114,13 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	SchemaPropertyDeprecatingConverter schemaPropertyDeprecatingConverter() {
 		return new SchemaPropertyDeprecatingConverter();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	PolymorphicModelConverter polymorphicModelConverter() {
+		return new PolymorphicModelConverter();
 	}
 
 	@Bean
