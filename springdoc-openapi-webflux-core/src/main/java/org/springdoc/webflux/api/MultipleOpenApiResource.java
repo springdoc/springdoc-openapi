@@ -22,7 +22,6 @@ package org.springdoc.webflux.api;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,6 @@ import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
-import org.springdoc.core.customizers.OperationCustomizer;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -72,12 +70,9 @@ public class MultipleOpenApiResource implements InitializingBean {
 
 	private Map<String, OpenApiResource> groupedOpenApiResources;
 
-	private final Optional<List<OperationCustomizer>> operationCustomizers;
-
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
-			Optional<List<OperationCustomizer>> operationCustomizers,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			SpringDocConfigProperties springDocConfigProperties) {
 
@@ -88,9 +83,6 @@ public class MultipleOpenApiResource implements InitializingBean {
 		this.operationParser = operationParser;
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.springDocConfigProperties = springDocConfigProperties;
-		if (operationCustomizers.isPresent())
-			operationCustomizers.get().removeIf(Objects::isNull);
-		this.operationCustomizers = operationCustomizers;
 	}
 
 	@Override
