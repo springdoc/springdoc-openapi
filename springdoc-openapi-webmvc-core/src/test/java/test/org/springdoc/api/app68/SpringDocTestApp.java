@@ -20,14 +20,19 @@ package test.org.springdoc.api.app68;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.Constants;
 import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.customizers.OperationCustomizer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.method.HandlerMethod;
 
 @SpringBootApplication
 public class SpringDocTestApp {
@@ -48,7 +53,18 @@ public class SpringDocTestApp {
 		return GroupedOpenApi.builder()
 				.setGroup("users")
 				.packagesToScan("test.org.springdoc.api.app68.api.user")
+				.addOperationCustomizer(operationCustomizer())
 				.build();
+	}
+
+	OperationCustomizer operationCustomizer() {
+		return (Operation operation, HandlerMethod handlerMethod) -> {
+			CustomizedOperation annotation = handlerMethod.getMethodAnnotation(CustomizedOperation.class);
+			if (annotation != null) {
+				operation.description(StringUtils.defaultIfBlank(operation.getDescription(), Constants.DEFAULT_DESCRIPTION) + ", " + annotation.addition());
+			}
+			return operation;
+		};
 	}
 
 	@Bean

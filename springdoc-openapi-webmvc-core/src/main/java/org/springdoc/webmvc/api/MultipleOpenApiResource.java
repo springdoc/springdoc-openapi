@@ -117,7 +117,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 									operationParser,
 									requestMappingHandlerMapping,
 									servletContextProvider,
-									operationCustomizers,
+									Optional.of(item.getOperationCustomizers()),
 									Optional.of(item.getOpenApiCustomisers()),
 									springDocConfigProperties,
 									springSecurityOAuth2Provider,

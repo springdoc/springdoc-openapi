@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OperationCustomizer;
 
 import org.springframework.util.CollectionUtils;
 
@@ -36,6 +37,8 @@ public class GroupedOpenApi {
 	private final String group;
 
 	private final List<OpenApiCustomiser> openApiCustomisers;
+
+	private final List<OperationCustomizer> operationCustomizers;
 
 	private final List<String> pathsToMatch;
 
@@ -52,12 +55,14 @@ public class GroupedOpenApi {
 		this.packagesToExclude = builder.packagesToExclude;
 		this.pathsToExclude = builder.pathsToExclude;
 		this.openApiCustomisers = Objects.requireNonNull(builder.openApiCustomisers);
+		this.operationCustomizers = Objects.requireNonNull(builder.operationCustomizers);
 		if (CollectionUtils.isEmpty(this.pathsToMatch)
 				&& CollectionUtils.isEmpty(this.packagesToScan)
 				&& CollectionUtils.isEmpty(this.pathsToExclude)
 				&& CollectionUtils.isEmpty(this.packagesToExclude)
-				&& CollectionUtils.isEmpty(openApiCustomisers))
-			throw new IllegalStateException("Packages to scan or paths to filter or openApiCustomisers can not be all null for the group:" + this.group);
+				&& CollectionUtils.isEmpty(openApiCustomisers)
+				&& CollectionUtils.isEmpty(operationCustomizers))
+			throw new IllegalStateException("Packages to scan or paths to filter or openApiCustomisers/operationCustomizers can not be all null for the group:" + this.group);
 	}
 
 	public static Builder builder() {
@@ -88,8 +93,14 @@ public class GroupedOpenApi {
 		return openApiCustomisers;
 	}
 
+	public List<OperationCustomizer> getOperationCustomizers() {
+		return operationCustomizers;
+	}
+
 	public static class Builder {
 		private final List<OpenApiCustomiser> openApiCustomisers = new ArrayList<>();
+
+		private final List<OperationCustomizer> operationCustomizers = new ArrayList<>();
 
 		private String group;
 
@@ -132,6 +143,11 @@ public class GroupedOpenApi {
 
 		public Builder addOpenApiCustomiser(OpenApiCustomiser openApiCustomiser) {
 			this.openApiCustomisers.add(openApiCustomiser);
+			return this;
+		}
+
+		public Builder addOperationCustomizer(OperationCustomizer operationCustomizer) {
+			this.operationCustomizers.add(operationCustomizer);
 			return this;
 		}
 
