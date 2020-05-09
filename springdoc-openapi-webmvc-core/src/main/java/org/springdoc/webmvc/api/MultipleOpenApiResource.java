@@ -22,7 +22,6 @@ package org.springdoc.webmvc.api;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -77,8 +76,6 @@ public class MultipleOpenApiResource implements InitializingBean {
 
 	private Map<String, OpenApiResource> groupedOpenApiResources;
 
-	private final Optional<List<OperationCustomizer>> operationCustomizers;
-
 	private final Optional<RouterFunctionProvider> routerFunctionProvider;
 
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
@@ -98,9 +95,6 @@ public class MultipleOpenApiResource implements InitializingBean {
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
-		if (operationCustomizers.isPresent())
-			operationCustomizers.get().removeIf(Objects::isNull);
-		this.operationCustomizers = operationCustomizers;
 	}
 
 	@Override
