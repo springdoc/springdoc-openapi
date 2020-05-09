@@ -43,6 +43,7 @@ import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import test.org.springdoc.api.app68.CustomizedOperation;
 import test.org.springdoc.api.app68.model.ModelApiResponse;
 import test.org.springdoc.api.app68.model.Pet;
 
@@ -73,6 +74,7 @@ public interface PetApi {
 			@SecurityRequirement(name = "petstore_auth", scopes = { "write:pets", "read:pets" }) }, tags = { "pet" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "405", description = "Invalid input") })
 	@PostMapping(value = "/pet", consumes = { "application/json", "application/xml" })
+	@CustomizedOperation
 	default void addPet(
 			@Parameter(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody Pet pet) {
 		// return getDelegate().addPet(pet);
@@ -83,6 +85,7 @@ public interface PetApi {
 	@ApiResponses(value = { @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
 			@ApiResponse(responseCode = "404", description = "Pet not found") })
 	@DeleteMapping(value = "/pet/{petId}")
+	@CustomizedOperation
 	default ResponseEntity<Void> deletePet(
 			@Parameter(description = "Pet id to delete", required = true) @PathVariable("petId") Long petId,
 			@Parameter(description = "") @RequestHeader(value = "api_key", required = false) String apiKey) {

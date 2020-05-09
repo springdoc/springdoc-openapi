@@ -36,6 +36,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import test.org.springdoc.api.app68.CustomizedOperation;
 import test.org.springdoc.api.app68.model.User;
 
 import org.springframework.http.ResponseEntity;
@@ -60,6 +61,7 @@ public interface UserApi {
 	@Operation(summary = "Create user", tags = { "user" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
 	@PostMapping(value = "/user", consumes = { "application/json" })
+	@CustomizedOperation
 	default ResponseEntity<Void> createUser(
 			@Parameter(description = "Created user object", required = true) @Valid @RequestBody User user) {
 		return getDelegate().createUser(user);
@@ -67,8 +69,8 @@ public interface UserApi {
 
 	@Operation(summary = "Creates list of users with given input array", tags = { "user" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
-
 	@PostMapping(value = "/user/createWithArray", consumes = { "application/json" })
+	@CustomizedOperation
 	default ResponseEntity<Void> createUsersWithArrayInput(
 			@Parameter(description = "List of user object", required = true) @Valid @RequestBody List<User> user) {
 		return getDelegate().createUsersWithArrayInput(user);
@@ -77,6 +79,7 @@ public interface UserApi {
 	@Operation(summary = "Creates list of users with given input array", tags = { "user" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
 	@PostMapping(value = "/user/createWithList", consumes = { "application/json" })
+	@CustomizedOperation
 	default ResponseEntity<Void> createUsersWithListInput(
 			@Parameter(description = "List of user object", required = true) @Valid @RequestBody List<User> user) {
 		return getDelegate().createUsersWithListInput(user);
@@ -84,8 +87,8 @@ public interface UserApi {
 
 	@Operation(summary = "Creates list of users with given input array", tags = { "user" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
-
 	@DeleteMapping(value = "/user/{username}")
+	@CustomizedOperation
 	default ResponseEntity<Void> deleteUser(
 			@Parameter(description = "The name that needs to be deleted", required = true) @PathVariable("username") String username) {
 		return getDelegate().deleteUser(username);
@@ -98,6 +101,7 @@ public interface UserApi {
 			@ApiResponse(responseCode = "404", description = "User not found") })
 
 	@GetMapping(value = "/user/{username}", produces = { "application/xml", "application/json" })
+	@CustomizedOperation
 	default ResponseEntity<User> getUserByName(
 			@Parameter(description = "The name that needs to be fetched. Use user1 for testing.", required = true) @PathVariable("username") String username) {
 		return getDelegate().getUserByName(username);
@@ -108,6 +112,7 @@ public interface UserApi {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = String.class))),
 			@ApiResponse(responseCode = "400", description = "Invalid username/password supplied") })
 	@GetMapping(value = "/user/login", produces = { "application/xml", "application/json" })
+	@CustomizedOperation
 	default ResponseEntity<String> loginUser(
 			@NotNull @Parameter(description = "The user name for login", required = true) @Valid @RequestParam(value = "username", required = true) String username,
 			@NotNull @Parameter(description = "The password for login in clear text", required = true) @Valid @RequestParam(value = "password", required = true) String password) {
@@ -117,6 +122,7 @@ public interface UserApi {
 	@Operation(summary = "Logs out current logged in user session", tags = { "user" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
 	@GetMapping(value = "/user/logout")
+	@CustomizedOperation
 	default ResponseEntity<Void> logoutUser() {
 		return getDelegate().logoutUser();
 	}
@@ -125,6 +131,7 @@ public interface UserApi {
 	@ApiResponses(value = { @ApiResponse(responseCode = "400", description = "Invalid user supplied"),
 			@ApiResponse(responseCode = "404", description = "User not found") })
 	@PutMapping(value = "/user/{username}", consumes = { "application/json" })
+	@CustomizedOperation
 	default ResponseEntity<Void> updateUser(
 			@Parameter(description = "name that need to be deleted", required = true) @PathVariable("username") String username,
 			@Parameter(description = "Updated user object", required = true) @Valid @RequestBody User user) {
@@ -132,6 +139,7 @@ public interface UserApi {
 	}
 
 	@GetMapping(value = "/v1/users")
+	@CustomizedOperation
 	default void users(@Valid @NotBlank String name) {
 
 	}

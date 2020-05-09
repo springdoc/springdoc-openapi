@@ -23,74 +23,23 @@
     }
   ],
   "paths": {
-    "/user/login": {
+    "/v1/users": {
       "get": {
         "tags": [
           "user"
         ],
-        "summary": "Logs user into the system",
-        "operationId": "loginUser",
+        "description": "default response, customized operation!",
+        "operationId": "users",
         "parameters": [
           {
-            "name": "username",
+            "name": "name",
             "in": "query",
-            "description": "The user name for login",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "description": "The password for login in clear text",
             "required": true,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "responses": {
-          "400": {
-            "description": "Invalid username/password supplied",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/logout": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Logs out current logged in user session",
-        "operationId": "logoutUser",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -106,7 +55,7 @@
             }
           },
           "200": {
-            "description": "successful operation"
+            "description": "OK"
           }
         }
       }
@@ -117,6 +66,7 @@
           "user"
         ],
         "summary": "Get user by user name",
+        "description": "default response, customized operation!",
         "operationId": "getUserByName",
         "parameters": [
           {
@@ -182,6 +132,7 @@
           "user"
         ],
         "summary": "Updated user",
+        "description": "default response, customized operation!",
         "operationId": "updateUser",
         "parameters": [
           {
@@ -219,6 +170,7 @@
           "user"
         ],
         "summary": "Creates list of users with given input array",
+        "description": "default response, customized operation!",
         "operationId": "deleteUser",
         "parameters": [
           {
@@ -251,86 +203,13 @@
         }
       }
     },
-    "/v1/users": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "operationId": "users",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/user": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Create user",
-        "operationId": "createUser",
-        "requestBody": {
-          "description": "Created user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
     "/user/createWithArray": {
       "post": {
         "tags": [
           "user"
         ],
         "summary": "Creates list of users with given input array",
+        "description": "default response, customized operation!",
         "operationId": "createUsersWithArrayInput",
         "requestBody": {
           "description": "List of user object",
@@ -372,6 +251,7 @@
           "user"
         ],
         "summary": "Creates list of users with given input array",
+        "description": "default response, customized operation!",
         "operationId": "createUsersWithListInput",
         "requestBody": {
           "description": "List of user object",
@@ -387,6 +267,135 @@
           },
           "required": true
         },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "description": "default response, customized operation!",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "description": "default response, customized operation!",
+        "operationId": "loginUser",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid username/password supplied",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs out current logged in user session",
+        "description": "default response, customized operation!",
+        "operationId": "logoutUser",
         "responses": {
           "400": {
             "description": "Bad Request",
