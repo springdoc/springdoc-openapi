@@ -18,25 +18,15 @@
 
 package test.org.springdoc.api.app86;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = {
+		"springdoc.packagesToScan=test.org.springdoc.api.app86",
+		"springdoc.packagesToExclude=test.org.springdoc.api.app86.test" })
 public class SpringDocApp86Test extends AbstractSpringDocTest {
-
-	@BeforeAll
-	public static void beforeClass() {
-		System.setProperty("springdoc.packagesToScan", "test.org.springdoc.api.app86");
-		System.setProperty("springdoc.packagesToExclude", "test.org.springdoc.api.app86.test");
-	}
-
-	@AfterAll
-	public static void afterClass() {
-		System.clearProperty("springdoc.packagesToScan");
-		System.clearProperty("springdoc.packagesToExclude");
-	}
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
