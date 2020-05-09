@@ -18,24 +18,14 @@
 
 package test.org.springdoc.api.app64;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = "springdoc.paths-to-match=/v1, /api/**")
 public class SpringDocApp64Test extends AbstractSpringDocTest {
-
-	@BeforeAll
-	public static void beforeClass() {
-		System.setProperty("springdoc.pathsToMatch", "/v1, /api/**");
-	}
-
-	@AfterAll
-	public static void afterClass() {
-		System.clearProperty("springdoc.pathsToMatch");
-	}
 
 	@SpringBootApplication
 	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app64" })

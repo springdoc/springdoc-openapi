@@ -24,12 +24,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import nonapi.io.github.classgraph.utils.FileUtils;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.Constants;
-import org.springdoc.data.rest.converters.Pageable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -40,7 +38,6 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.is;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
-import static org.springdoc.core.SpringDocUtils.getConfig;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,12 +63,6 @@ public abstract class AbstractSpringDocTest {
 		catch (Exception e) {
 			throw new RuntimeException("Failed to read file: " + fileName, e);
 		}
-	}
-
-	@AfterAll
-	public static void afterClass() {
-		System.clearProperty("spring.hateoas.use-hal-as-default-json-media-type");
-		getConfig().replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class);
 	}
 
 	@Test

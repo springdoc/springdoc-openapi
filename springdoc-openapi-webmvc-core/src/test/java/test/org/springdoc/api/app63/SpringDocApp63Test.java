@@ -18,25 +18,16 @@
 
 package test.org.springdoc.api.app63;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
+
+@TestPropertySource(properties = {
+		"springdoc.packagesToScan=hell,hello1, hello.me",
+		"springdoc.packagesToExclude=test.org.springdoc.api.app63.65" })
 public class SpringDocApp63Test extends AbstractSpringDocTest {
-
-	@BeforeAll
-	public static void beforeClass() {
-		System.setProperty("springdoc.packagesToScan", "hell,hello1, hello.me");
-		System.setProperty("springdoc.packagesToExclude", "test.org.springdoc.api.app63.65");
-	}
-
-	@AfterAll
-	public static void afterClass() {
-		System.clearProperty("springdoc.packagesToScan");
-		System.clearProperty("springdoc.packagesToExclude");
-	}
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
