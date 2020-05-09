@@ -58,7 +58,7 @@ public class SpringDocApp105Test extends AbstractSpringDocTest {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/stores"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(content().json(getContent("results/app681.json"), true));
+				.andExpect(content().json(getContent("results/app105-1.json"), true));
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class SpringDocApp105Test extends AbstractSpringDocTest {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/users"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(content().json(getContent("results/app682.json"), true));
+				.andExpect(content().json(getContent("results/app105-2.json"), true));
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class SpringDocApp105Test extends AbstractSpringDocTest {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/pets"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(content().json(getContent("results/app683.json"), true));
+				.andExpect(content().json(getContent("results/app105-3.json"), true));
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class SpringDocApp105Test extends AbstractSpringDocTest {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/groups test"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(content().json(getContent("results/app684.json"), true));
+				.andExpect(content().json(getContent("results/app105-4.json"), true));
 	}
 
 
