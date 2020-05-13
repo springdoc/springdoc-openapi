@@ -61,6 +61,8 @@ import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.MergedAnnotation;
+import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
@@ -174,7 +176,13 @@ public abstract class AbstractRequestBuilder {
 		for (MethodParameter methodParameter : parameters) {
 			// check if query param
 			Parameter parameter = null;
-			io.swagger.v3.oas.annotations.Parameter parameterDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
+			MergedAnnotation<io.swagger.v3.oas.annotations.Parameter> parameterMergedAnnotation =
+					MergedAnnotations.from(methodParameter.getParameterAnnotations()).get(io.swagger.v3.oas.annotations.Parameter.class);
+			io.swagger.v3.oas.annotations.Parameter parameterDoc = null;
+			if (parameterMergedAnnotation.isPresent()) {
+				parameterDoc = parameterMergedAnnotation.synthesize();
+			}
+
 			final String pName = methodParameter.getParameterName();
 			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter);
 
