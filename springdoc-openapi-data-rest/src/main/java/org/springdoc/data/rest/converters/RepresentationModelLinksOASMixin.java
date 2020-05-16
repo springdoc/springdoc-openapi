@@ -20,6 +20,7 @@
 
 package org.springdoc.data.rest.converters;
 
+import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import org.springframework.hateoas.Links;
@@ -27,6 +28,6 @@ import org.springframework.hateoas.mediatype.hal.RepresentationModelMixin;
 
 public abstract class RepresentationModelLinksOASMixin extends RepresentationModelMixin {
 	@Override
-	@Schema(ref = "#/components/schemas/Links")
+	@Schema(ref = AnnotationsUtils.COMPONENTS_REF +"Links")
 	public abstract Links getLinks();
 }
