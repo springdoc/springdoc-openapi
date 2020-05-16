@@ -26,7 +26,6 @@ package test.org.springdoc.api.app105.api.pet;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -74,7 +73,7 @@ public interface PetApi {
 	@ApiResponses(value = { @ApiResponse(responseCode = "405", description = "Invalid input") })
 	@PostMapping(value = "/pet", consumes = { "application/json", "application/xml" })
 	default void addPet(
-			@Parameter(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody Pet pet) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody Pet pet) {
 		// return getDelegate().addPet(pet);
 	}
 
@@ -130,7 +129,7 @@ public interface PetApi {
 			@ApiResponse(responseCode = "405", description = "Validation exception") })
 	@PutMapping(value = "/pet", consumes = { "application/json", "application/xml" })
 	default ResponseEntity<Void> updatePet(
-			@Parameter(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody Pet pet) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody Pet pet) {
 		return getDelegate().updatePet(pet);
 	}
 
@@ -158,9 +157,4 @@ public interface PetApi {
 		return getDelegate().uploadFile(petId, additionalMetadata, file);
 	}
 
-
-	@GetMapping(value = "/v1/pets")
-	default void pets(@Valid @NotBlank String name) {
-
-	}
 }

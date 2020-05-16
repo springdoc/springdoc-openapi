@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
+import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Schema;
@@ -52,7 +53,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 				.map(s -> (ComposedSchema) s)
 				.filter(s -> s.getAllOf() != null)
 				.filter(s -> s.getAllOf().stream().anyMatch(s2 -> ref.equals(s2.get$ref())))
-				.map(s -> new Schema().$ref("#/components/schemas/" + s.getName()))
+				.map(s -> new Schema().$ref(AnnotationsUtils.COMPONENTS_REF + s.getName()))
 				.collect(Collectors.toList());
 		if (composedSchemas.isEmpty()) return schema;
 

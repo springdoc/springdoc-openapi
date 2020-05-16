@@ -28,6 +28,7 @@ import com.querydsl.core.types.Predicate;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
+import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
@@ -100,7 +101,7 @@ public class SpringDocDataRestConfiguration {
 				.schema("Link", resolvedLinkSchema.schema)
 				.schema("Links", new MapSchema()
 						.additionalProperties(new StringSchema())
-						.additionalProperties(new ObjectSchema().$ref("#/components/schemas/Link")));
+						.additionalProperties(new ObjectSchema().$ref(AnnotationsUtils.COMPONENTS_REF +"Link")));
 	}
 
 	@ConditionalOnClass(value = { QuerydslBindingsFactory.class })

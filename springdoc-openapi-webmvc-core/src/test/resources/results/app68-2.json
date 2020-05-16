@@ -23,23 +23,27 @@
     }
   ],
   "paths": {
-    "/v1/users": {
-      "get": {
+    "/user/createWithArray": {
+      "post": {
         "tags": [
           "user"
         ],
-        "description": "default response, customized operation!",
-        "operationId": "users",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "summary": "Creates list of users with given input array",
+        "operationId": "createUsersWithArrayInput",
+        "requestBody": {
+          "description": "List of user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -55,7 +59,86 @@
             }
           },
           "200": {
-            "description": "OK"
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/createWithList": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Creates list of users with given input array",
+        "operationId": "createUsersWithListInput",
+        "requestBody": {
+          "description": "List of user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation"
           }
         }
       }
@@ -66,7 +149,6 @@
           "user"
         ],
         "summary": "Get user by user name",
-        "description": "default response, customized operation!",
         "operationId": "getUserByName",
         "parameters": [
           {
@@ -132,7 +214,6 @@
           "user"
         ],
         "summary": "Updated user",
-        "description": "default response, customized operation!",
         "operationId": "updateUser",
         "parameters": [
           {
@@ -170,13 +251,11 @@
           "user"
         ],
         "summary": "Creates list of users with given input array",
-        "description": "default response, customized operation!",
         "operationId": "deleteUser",
         "parameters": [
           {
             "name": "username",
             "in": "path",
-            "description": "The name that needs to be deleted",
             "required": true,
             "schema": {
               "type": "string"
@@ -203,109 +282,13 @@
         }
       }
     },
-    "/user/createWithArray": {
-      "post": {
+    "/user/logout": {
+      "get": {
         "tags": [
           "user"
         ],
-        "summary": "Creates list of users with given input array",
-        "description": "default response, customized operation!",
-        "operationId": "createUsersWithArrayInput",
-        "requestBody": {
-          "description": "List of user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/createWithList": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Creates list of users with given input array",
-        "description": "default response, customized operation!",
-        "operationId": "createUsersWithListInput",
-        "requestBody": {
-          "description": "List of user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Create user",
-        "description": "default response, customized operation!",
-        "operationId": "createUser",
-        "requestBody": {
-          "description": "Created user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          },
-          "required": true
-        },
+        "summary": "Logs out current logged in user session",
+        "operationId": "logoutUser",
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -332,7 +315,6 @@
           "user"
         ],
         "summary": "Logs user into the system",
-        "description": "default response, customized operation!",
         "operationId": "loginUser",
         "parameters": [
           {
@@ -384,34 +366,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/user/logout": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Logs out current logged in user session",
-        "description": "default response, customized operation!",
-        "operationId": "logoutUser",
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation"
           }
         }
       }

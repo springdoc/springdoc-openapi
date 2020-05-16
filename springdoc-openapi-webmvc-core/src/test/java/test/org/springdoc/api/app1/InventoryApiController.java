@@ -51,7 +51,7 @@ public class InventoryApiController implements InventoryApi {
 	}
 
 	public ResponseEntity<Void> addInventory(
-			@Parameter(description = "Inventory item to add") @Valid @RequestBody InventoryItem body) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Inventory item to add") @Valid @RequestBody InventoryItem body) {
 		@SuppressWarnings("unused")
 		String accept = request.getHeader("Accept");
 		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
