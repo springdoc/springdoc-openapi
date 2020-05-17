@@ -15,25 +15,38 @@
  *  * limitations under the License.
  *
  */
-
 package test.org.springdoc.api.app3;
 
-import org.springdoc.core.converters.models.PageableAsQueryParam;
-
-import org.springframework.http.MediaType;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Spring Web {@link RestController} used to generate a REST API.
+ *
+ * @author Greg Turnquist
+ */
 @RestController
-@RequestMapping(path = "/demo",
-		produces = MediaType.TEXT_PLAIN_VALUE)
-public class HelloController {
+class EmployeeController {
 
-	@GetMapping("operation4")
-	@PageableAsQueryParam
-	public String operation4() {
-		return "operation4";
+	private final EmployeeRepository repository;
+
+	EmployeeController(EmployeeRepository repository) {
+		this.repository = repository;
+	}
+
+	/**
+	 * Look up a single {@link Employee} and transform it into a REST resource. Then return it through Spring Web's
+	 * {@link ResponseEntity} fluent API.
+	 *
+	 * @param id
+	 */
+	@GetMapping("/employees/{id}")
+	EntityModel<Employee> findOne(@PathVariable long id) {
+
+		return null;
 	}
 
 }

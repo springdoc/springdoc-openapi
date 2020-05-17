@@ -61,6 +61,7 @@
 		<module>springdoc-openapi-data-rest</module>
 		<module>springdoc-openapi-security</module>
 		<module>springdoc-openapi-groovy</module>
+		<module>springdoc-openapi-hateoas</module>
 	</modules>
 
 	<properties>

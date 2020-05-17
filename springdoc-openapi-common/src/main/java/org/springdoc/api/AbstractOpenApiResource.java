@@ -67,9 +67,9 @@ import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
-import org.springdoc.core.models.RouterFunctionData;
-import org.springdoc.core.models.RouterOperation;
-import org.springdoc.core.visitor.AbstractRouterFunctionVisitor;
+import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
+import org.springdoc.core.fn.RouterFunctionData;
+import org.springdoc.core.fn.RouterOperation;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -346,9 +346,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		else
 			routerOperationList.addAll(Arrays.asList(routerOperations.value()));
 		if (routerOperationList.size() == 1)
-			calculatePath(routerOperationList.stream().map(routerOperation -> new org.springdoc.core.models.RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()));
+			calculatePath(routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()));
 		else {
-			List<org.springdoc.core.models.RouterOperation> operationList = routerOperationList.stream().map(org.springdoc.core.models.RouterOperation::new).collect(Collectors.toList());
+			List<RouterOperation> operationList = routerOperationList.stream().map(RouterOperation::new).collect(Collectors.toList());
 			mergeRouters(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
 			calculatePath(operationList);
 		}
@@ -426,8 +426,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return operation;
 	}
 
-	protected void mergeRouters(List<RouterFunctionData> routerFunctionDatas, List<org.springdoc.core.models.RouterOperation> routerOperationList) {
-		for (org.springdoc.core.models.RouterOperation routerOperation : routerOperationList) {
+	protected void mergeRouters(List<RouterFunctionData> routerFunctionDatas, List<RouterOperation> routerOperationList) {
+		for (RouterOperation routerOperation : routerOperationList) {
 			if (StringUtils.isNotBlank(routerOperation.getPath())) {
 				// PATH
 				List<RouterFunctionData> routerFunctionDataList = routerFunctionDatas.stream()
@@ -565,7 +565,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
-	private void fillRouterOperation(RouterFunctionData routerFunctionData, org.springdoc.core.models.RouterOperation routerOperation) {
+	private void fillRouterOperation(RouterFunctionData routerFunctionData, RouterOperation routerOperation) {
 		if (ArrayUtils.isEmpty(routerOperation.getConsumes()))
 			routerOperation.setConsumes(routerFunctionData.getConsumes());
 		if (ArrayUtils.isEmpty(routerOperation.getProduces()))
