@@ -16,7 +16,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "persons",
+        "operationId": "persons_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -36,7 +36,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "persons_1",
+        "operationId": "persons",
         "parameters": [
           {
             "name": "toto",
