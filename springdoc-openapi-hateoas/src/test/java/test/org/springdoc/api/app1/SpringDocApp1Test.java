@@ -16,24 +16,15 @@
  *
  */
 
-package test.org.springdoc.api.app3;
+package test.org.springdoc.api.app1;
 
-import org.springdoc.core.converters.models.PageableAsQueryParam;
+import test.org.springdoc.api.AbstractSpringDocTest;
 
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@RestController
-@RequestMapping(path = "/demo",
-		produces = MediaType.TEXT_PLAIN_VALUE)
-public class HelloController {
+public class SpringDocApp1Test extends AbstractSpringDocTest {
 
-	@GetMapping("operation4")
-	@PageableAsQueryParam
-	public String operation4() {
-		return "operation4";
-	}
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }
