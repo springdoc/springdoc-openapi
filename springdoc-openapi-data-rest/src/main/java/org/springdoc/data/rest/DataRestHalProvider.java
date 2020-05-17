@@ -39,6 +39,7 @@ public class DataRestHalProvider extends HateoasHalProvider {
 	}
 
 	@PostConstruct
+	@Override
 	protected void init() {
 		if (!isHalEnabled())
 			return;
@@ -46,6 +47,7 @@ public class DataRestHalProvider extends HateoasHalProvider {
 			Json.mapper().registerModule(new Jackson2HalModule());
 	}
 
+	@Override
 	public boolean isHalEnabled() {
 		return repositoryRestConfigurationOptional
 				.map(RepositoryRestConfiguration::useHalAsDefaultJsonMediaType)
