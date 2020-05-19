@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
     "openapi": "3.0.1",
     "info": {
         "title": "OpenAPI definition",
@@ -15,7 +14,7 @@
         "/simpleTest/{accountId}": {
             "get": {
                 "tags": [
-                    "hello-controller"
+                    "meta-annotation-controller"
                 ],
                 "operationId": "simpleTest",
                 "parameters": [
@@ -47,7 +46,7 @@
         "/testTopLevelParamAnnotationOverrides/{accountId}": {
             "get": {
                 "tags": [
-                    "hello-controller"
+                    "meta-annotation-controller"
                 ],
                 "operationId": "testTopLevelParamAnnotationOverrides",
                 "parameters": [
@@ -77,7 +76,7 @@
         "/testQueryParam": {
             "get": {
                 "tags": [
-                    "hello-controller"
+                    "meta-annotation-controller"
                 ],
                 "operationId": "testQueryParam",
                 "parameters": [
@@ -109,7 +108,7 @@
         "/testAliasFor": {
             "get": {
                 "tags": [
-                    "hello-controller"
+                    "meta-annotation-controller"
                 ],
                 "operationId": "testAliasFor",
                 "parameters": [
@@ -141,7 +140,7 @@
         "/testMetaMetaAnnotation/{accountId}": {
             "get": {
                 "tags": [
-                    "hello-controller"
+                    "meta-annotation-controller"
                 ],
                 "operationId": "testMetaMetaAnnotation",
                 "parameters": [
@@ -183,7 +182,7 @@
         "/testAllAttributesAsAlias/": {
             "get": {
                 "tags": [
-                    "hello-controller"
+                    "meta-annotation-controller"
                 ],
                 "operationId": "testAllAttributesAsAlias",
                 "parameters": [
@@ -220,7 +219,7 @@
         "/testNoAliasFors/": {
             "get": {
                 "tags": [
-                    "hello-controller"
+                    "meta-annotation-controller"
                 ],
                 "operationId": "testNoAliasFors",
                 "parameters": [
@@ -256,77 +255,4 @@
         }
     },
     "components": {}
-=======
-  "openapi": "3.0.1",
-  "info": {
-    "title": "OpenAPI definition",
-    "version": "v0"
-  },
-  "servers": [
-    {
-      "url": "http://localhost",
-      "description": "Generated server url"
-    }
-  ],
-  "paths": {
-    "/multi": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "Multiple files and JSON payloads as multi part request",
-        "operationId": "multiFilesInMultiPart",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "params": {
-                    "$ref": "#/components/schemas/JsonRequest"
-                  },
-                  "file1": {
-                    "type": "string",
-                    "description": "This is file1",
-                    "format": "binary"
-                  },
-                  "file2": {
-                    "type": "string",
-                    "description": "This is file2",
-                    "format": "binary"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "JsonRequest": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        },
-        "description": "This is the configuration"
-      }
-    }
-  }
->>>>>>> origin/master
 }
