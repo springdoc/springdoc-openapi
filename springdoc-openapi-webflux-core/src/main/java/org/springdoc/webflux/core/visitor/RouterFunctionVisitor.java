@@ -22,8 +22,8 @@ package org.springdoc.webflux.core.visitor;
 
 import java.util.function.Function;
 
-import org.springdoc.core.models.RouterFunctionData;
-import org.springdoc.core.visitor.AbstractRouterFunctionVisitor;
+import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
+import org.springdoc.core.fn.RouterFunctionData;
 import reactor.core.publisher.Mono;
 
 import org.springframework.core.io.Resource;

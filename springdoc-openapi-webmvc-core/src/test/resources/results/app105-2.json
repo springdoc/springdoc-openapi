@@ -23,13 +23,27 @@
     }
   ],
   "paths": {
-    "/user/logout": {
-      "get": {
+    "/user/createWithArray": {
+      "post": {
         "tags": [
           "user"
         ],
-        "summary": "Logs out current logged in user session",
-        "operationId": "logoutUser",
+        "summary": "Creates list of users with given input array",
+        "operationId": "createUsersWithArrayInput",
+        "requestBody": {
+          "description": "List of user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -50,22 +64,27 @@
         }
       }
     },
-    "/v1/users": {
-      "get": {
+    "/user/createWithList": {
+      "post": {
         "tags": [
           "user"
         ],
-        "operationId": "users",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "summary": "Creates list of users with given input array",
+        "operationId": "createUsersWithListInput",
+        "requestBody": {
+          "description": "List of user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "400": {
             "description": "Bad Request",
@@ -81,7 +100,45 @@
             }
           },
           "200": {
-            "description": "OK"
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation"
           }
         }
       }
@@ -199,7 +256,6 @@
           {
             "name": "username",
             "in": "path",
-            "description": "The name that needs to be deleted",
             "required": true,
             "schema": {
               "type": "string"
@@ -287,106 +343,13 @@
         }
       }
     },
-    "/user": {
-      "post": {
+    "/user/logout": {
+      "get": {
         "tags": [
           "user"
         ],
-        "summary": "Create user",
-        "operationId": "createUser",
-        "requestBody": {
-          "description": "Created user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/createWithList": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Creates list of users with given input array",
-        "operationId": "createUsersWithListInput",
-        "requestBody": {
-          "description": "List of user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/createWithArray": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Creates list of users with given input array",
-        "operationId": "createUsersWithArrayInput",
-        "requestBody": {
-          "description": "List of user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "required": true
-        },
+        "summary": "Logs out current logged in user session",
+        "operationId": "logoutUser",
         "responses": {
           "400": {
             "description": "Bad Request",

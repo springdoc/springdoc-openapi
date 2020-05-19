@@ -23,7 +23,6 @@
         "summary": "Parse Resume",
         "operationId": "parse",
         "requestBody": {
-          "description": "Resume file to be parsed",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -31,6 +30,7 @@
                 "properties": {
                   "resumeFile": {
                     "type": "string",
+                    "description": "Resume file to be parsed",
                     "format": "binary"
                   }
                 }

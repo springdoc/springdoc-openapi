@@ -52,7 +52,7 @@ public interface InventoryApi {
 			@ApiResponse(responseCode = "409", description = "an existing item already exists") })
 	@PostMapping(value = "/inventory", consumes = { "application/json" })
 	ResponseEntity<Void> addInventory(
-			@Parameter(description = "Inventory item to do") @Valid @RequestBody InventoryItem body);
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Inventory item to do") @Valid @RequestBody InventoryItem body);
 
 	@Operation(description = "searches inventory", operationId = "searchInventory", summary = "By passing in the appropriate options, you can search for available inventory in the system ", tags = {
 			"developers", }, parameters = {

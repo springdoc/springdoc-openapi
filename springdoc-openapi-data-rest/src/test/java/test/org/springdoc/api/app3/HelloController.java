@@ -18,7 +18,7 @@
 
 package test.org.springdoc.api.app3;
 
-import org.springdoc.data.rest.converters.PageableAsQueryParam;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
