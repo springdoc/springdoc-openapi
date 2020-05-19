@@ -15,7 +15,7 @@
  *  * limitations under the License.
  *
  */
-package test.org.springdoc.api.app119;
+package test.org.springdoc.api.app120;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

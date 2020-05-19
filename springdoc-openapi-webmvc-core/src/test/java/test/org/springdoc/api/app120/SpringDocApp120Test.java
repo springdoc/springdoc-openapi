@@ -15,7 +15,7 @@
  *  * limitations under the License.
  *
  */
-package test.org.springdoc.api.app119;
+package test.org.springdoc.api.app120;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.AbstractSpringDocTest;
@@ -24,7 +24,7 @@ import test.org.springdoc.api.AbstractSpringDocTest;
 /**
  * Tests Spring meta-annotations as method parameters
  */
-public class SpringDocApp118Test extends AbstractSpringDocTest {
+public class SpringDocApp120Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
