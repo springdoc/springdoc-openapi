@@ -156,14 +156,9 @@ public class RequestBodyBuilder {
 	private RequestBody buildRequestBody(RequestBody requestBody, Components components,
 			MethodAttributes methodAttributes,
 			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
-		if (requestBody == null)
+		if (requestBody == null) {
 			requestBody = new RequestBody();
-
-		if (parameterInfo.getParameterModel() != null) {
-			io.swagger.v3.oas.models.parameters.Parameter parameter = parameterInfo.getParameterModel();
-			if (StringUtils.isNotBlank(parameter.getDescription()))
-				requestBody.setDescription(parameter.getDescription());
-			requestBody.setRequired(parameter.getRequired());
+			requestBodyInfo.setRequestBody(requestBody);
 		}
 
 		if (requestBody.getContent() == null) {
@@ -171,7 +166,7 @@ public class RequestBodyBuilder {
 					methodAttributes.getJsonViewAnnotationForRequestBody());
 			buildContent(requestBody, methodAttributes, schema);
 		}
-		else if (requestBodyInfo.getRequestBody() != null) {
+		else {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
 					methodAttributes.getJsonViewAnnotationForRequestBody());
 			mergeContent(requestBody, methodAttributes, schema);

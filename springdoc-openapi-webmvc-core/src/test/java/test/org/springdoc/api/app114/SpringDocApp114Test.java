@@ -14,6 +14,6 @@ public class SpringDocApp114Test extends AbstractSpringDocTest {
 	static class SpringDocTestApp {}
 
 	static {
-		SpringDocUtils.getConfig().replaceWithClass(MonetaryAmount.class, org.springdoc.core.converters.MonetaryAmount.class);
+		SpringDocUtils.getConfig().replaceWithClass(MonetaryAmount.class, org.springdoc.core.converters.models.MonetaryAmount.class);
 	}
 }

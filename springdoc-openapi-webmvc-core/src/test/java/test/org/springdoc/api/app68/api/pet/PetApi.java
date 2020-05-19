@@ -26,7 +26,6 @@ package test.org.springdoc.api.app68.api.pet;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,7 +42,6 @@ import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import test.org.springdoc.api.app68.CustomizedOperation;
 import test.org.springdoc.api.app68.model.ModelApiResponse;
 import test.org.springdoc.api.app68.model.Pet;
 
@@ -57,15 +55,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @SecurityScheme(name = "petstore_auth", type = SecuritySchemeType.OAUTH2, flows = @OAuthFlows(implicit = @OAuthFlow(authorizationUrl = "http://petstore.swagger.io/oauth/dialog", scopes = {
 		@OAuthScope(name = "write:pets", description = "modify pets in your account"),
 		@OAuthScope(name = "read:pets", description = "read your pets") })))
 @Tag(name = "pet", description = "the pet API")
+@ResponseBody
 public interface PetApi {
 
-	default PetApiDelegate getDelegate() {
+	default test.org.springdoc.api.app68.api.pet.PetApiDelegate getDelegate() {
 		return new PetApiDelegate() {
 		};
 	}
@@ -74,9 +74,8 @@ public interface PetApi {
 			@SecurityRequirement(name = "petstore_auth", scopes = { "write:pets", "read:pets" }) }, tags = { "pet" })
 	@ApiResponses(value = { @ApiResponse(responseCode = "405", description = "Invalid input") })
 	@PostMapping(value = "/pet", consumes = { "application/json", "application/xml" })
-	@CustomizedOperation
 	default void addPet(
-			@Parameter(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody Pet pet) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody Pet pet) {
 		// return getDelegate().addPet(pet);
 	}
 
@@ -85,7 +84,6 @@ public interface PetApi {
 	@ApiResponses(value = { @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
 			@ApiResponse(responseCode = "404", description = "Pet not found") })
 	@DeleteMapping(value = "/pet/{petId}")
-	@CustomizedOperation
 	default ResponseEntity<Void> deletePet(
 			@Parameter(description = "Pet id to delete", required = true) @PathVariable("petId") Long petId,
 			@Parameter(description = "") @RequestHeader(value = "api_key", required = false) String apiKey) {
@@ -133,7 +131,7 @@ public interface PetApi {
 			@ApiResponse(responseCode = "405", description = "Validation exception") })
 	@PutMapping(value = "/pet", consumes = { "application/json", "application/xml" })
 	default ResponseEntity<Void> updatePet(
-			@Parameter(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody Pet pet) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Pet object that needs to be added to the store", required = true) @Valid @RequestBody Pet pet) {
 		return getDelegate().updatePet(pet);
 	}
 
@@ -161,9 +159,4 @@ public interface PetApi {
 		return getDelegate().uploadFile(petId, additionalMetadata, file);
 	}
 
-
-	@GetMapping(value = "/v1/pets")
-	default void pets(@Valid @NotBlank String name) {
-
-	}
 }

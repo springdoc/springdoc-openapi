@@ -60,7 +60,7 @@ public interface UserApi {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
 	@PostMapping(value = "/user", consumes = { "application/json" })
 	default ResponseEntity<Void> createUser(
-			@Parameter(description = "Created user object", required = true) @Valid @RequestBody User user) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Created user object", required = true) @Valid @RequestBody User user) {
 		return getDelegate().createUser(user);
 	}
 
@@ -69,7 +69,7 @@ public interface UserApi {
 
 	@PostMapping(value = "/user/createWithArray", consumes = { "application/json" })
 	default ResponseEntity<Void> createUsersWithArrayInput(
-			@Parameter(description = "List of user object", required = true) @Valid @RequestBody List<User> user) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of user object", required = true) @Valid @RequestBody List<User> user) {
 		return getDelegate().createUsersWithArrayInput(user);
 	}
 
@@ -77,7 +77,7 @@ public interface UserApi {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
 	@PostMapping(value = "/user/createWithList", consumes = { "application/json" })
 	default ResponseEntity<Void> createUsersWithListInput(
-			@Parameter(description = "List of user object", required = true) @Valid @RequestBody List<User> user) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of user object", required = true) @Valid @RequestBody List<User> user) {
 		return getDelegate().createUsersWithListInput(user);
 	}
 
@@ -86,7 +86,7 @@ public interface UserApi {
 
 	@DeleteMapping(value = "/user/{username}")
 	default ResponseEntity<Void> deleteUser(
-			@Parameter(description = "The name that needs to be deleted", required = true) @PathVariable("username") String username) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The name that needs to be deleted", required = true) @PathVariable("username") String username) {
 		return getDelegate().deleteUser(username);
 	}
 
@@ -126,7 +126,7 @@ public interface UserApi {
 	@PutMapping(value = "/user/{username}", consumes = { "application/json" })
 	default ResponseEntity<Void> updateUser(
 			@Parameter(description = "name that need to be deleted", required = true) @PathVariable("username") String username,
-			@Parameter(description = "Updated user object", required = true) @Valid @RequestBody User user) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Updated user object", required = true) @Valid @RequestBody User user) {
 		return getDelegate().updateUser(username, user);
 	}
 
