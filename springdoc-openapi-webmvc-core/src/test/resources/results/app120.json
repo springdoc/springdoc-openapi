@@ -1,0 +1,258 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost",
+            "description": "Generated server url"
+        }
+    ],
+    "paths": {
+        "/simpleTest/{accountId}": {
+            "get": {
+                "tags": [
+                    "meta-annotation-controller"
+                ],
+                "operationId": "simpleTest",
+                "parameters": [
+                    {
+                        "name": "accountId",
+                        "in": "path",
+                        "description": "non alias description",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": 123456
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testTopLevelParamAnnotationOverrides/{accountId}": {
+            "get": {
+                "tags": [
+                    "meta-annotation-controller"
+                ],
+                "operationId": "testTopLevelParamAnnotationOverrides",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testQueryParam": {
+            "get": {
+                "tags": [
+                    "meta-annotation-controller"
+                ],
+                "operationId": "testQueryParam",
+                "parameters": [
+                    {
+                        "name": "accountId",
+                        "in": "query",
+                        "description": "non alias description",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": 123456
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testAliasFor": {
+            "get": {
+                "tags": [
+                    "meta-annotation-controller"
+                ],
+                "operationId": "testAliasFor",
+                "parameters": [
+                    {
+                        "name": "accountId",
+                        "in": "query",
+                        "description": "non alias description",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "OVERRIDDEN EXAMPLE"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testMetaMetaAnnotation/{accountId}": {
+            "get": {
+                "tags": [
+                    "meta-annotation-controller"
+                ],
+                "operationId": "testMetaMetaAnnotation",
+                "parameters": [
+                    {
+                        "name": "queryAccountId",
+                        "in": "query",
+                        "description": "non alias description",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": 123456
+                    },
+                    {
+                        "name": "accountId",
+                        "in": "path",
+                        "description": "non alias description",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": 123456
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testAllAttributesAsAlias/": {
+            "get": {
+                "tags": [
+                    "meta-annotation-controller"
+                ],
+                "operationId": "testAllAttributesAsAlias",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "desc",
+                        "required": true,
+                        "deprecated": true,
+                        "allowEmptyValue": true,
+                        "style": "deepObject",
+                        "explode": true,
+                        "allowReserved": true,
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "example": 1234
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/testNoAliasFors/": {
+            "get": {
+                "tags": [
+                    "meta-annotation-controller"
+                ],
+                "operationId": "testNoAliasFors",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "desc",
+                        "required": true,
+                        "deprecated": true,
+                        "allowEmptyValue": true,
+                        "style": "deepObject",
+                        "explode": true,
+                        "allowReserved": true,
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "example": 1234
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {}
+}

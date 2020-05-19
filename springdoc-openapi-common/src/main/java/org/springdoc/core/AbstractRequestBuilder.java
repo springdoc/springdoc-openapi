@@ -174,7 +174,10 @@ public abstract class AbstractRequestBuilder {
 		for (MethodParameter methodParameter : parameters) {
 			// check if query param
 			Parameter parameter = null;
-			io.swagger.v3.oas.annotations.Parameter parameterDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.Parameter.class);
+			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
+					AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()),
+					io.swagger.v3.oas.annotations.Parameter.class);
+
 			final String pName = methodParameter.getParameterName();
 			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter);
 
