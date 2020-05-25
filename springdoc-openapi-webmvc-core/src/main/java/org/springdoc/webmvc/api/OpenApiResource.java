@@ -40,10 +40,12 @@ import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.fn.RouterOperation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,6 +78,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	private final Optional<RouterFunctionProvider> routerFunctionProvider;
 
+	private final Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider;
+
 	public OpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
@@ -84,12 +88,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RouterFunctionProvider> routerFunctionProvider) {
+			Optional<RouterFunctionProvider> routerFunctionProvider,
+			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.servletContextProvider = servletContextProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
+		this.repositoryRestResourceProvider=repositoryRestResourceProvider;
 	}
 
 	@Autowired
@@ -101,12 +107,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RouterFunctionProvider> routerFunctionProvider) {
+			Optional<RouterFunctionProvider> routerFunctionProvider,
+			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.servletContextProvider = servletContextProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
+		this.repositoryRestResourceProvider=repositoryRestResourceProvider;
 	}
 
 	@Operation(hidden = true)
@@ -145,6 +153,15 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			AbstractOpenApiResource.addRestControllers(additionalRestClasses);
 			calculatePath(requestMappingMapSec, mapOauth, Optional.empty());
 		}
+
+		routerFunctionProvider.ifPresent(routerFunctions -> routerFunctions.getWebMvcRouterFunctionPaths()
+				.ifPresent(routerBeans -> routerBeans.forEach(this::getRouterFunctionPaths)));
+
+		if(repositoryRestResourceProvider.isPresent()){
+			RepositoryRestResourceProvider repositoryRestResourceProvider = this.repositoryRestResourceProvider.get();
+			List<RouterOperation>  operationList = repositoryRestResourceProvider.getRouterOperations(openAPIBuilder.getCalculatedOpenAPI());
+			calculatePath(operationList);
+		}
 	}
 
 	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Optional<ActuatorProvider> actuatorProvider) {
@@ -168,8 +185,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				}
 			}
 		}
-		routerFunctionProvider.ifPresent(routerFunctions -> routerFunctions.getWebMvcRouterFunctionPaths()
-				.ifPresent(routerBeans -> routerBeans.forEach(this::getRouterFunctionPaths)));
 	}
 
 

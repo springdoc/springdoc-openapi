@@ -29,7 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 
-public class RouterOperation {
+public class RouterOperation implements Comparable<RouterOperation> {
 
 	private String path;
 
@@ -50,6 +50,8 @@ public class RouterOperation {
 	private Map<String, String> queryParams;
 
 	private Operation operation;
+
+	private io.swagger.v3.oas.models.Operation operationModel;
 
 	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperationAnnotation) {
 		this.path = routerOperationAnnotation.path();
@@ -159,5 +161,25 @@ public class RouterOperation {
 
 	public void setQueryParams(Map<String, String> queryParams) {
 		this.queryParams = queryParams;
+	}
+
+	public io.swagger.v3.oas.models.Operation getOperationModel() {
+		return operationModel;
+	}
+
+	public void setOperationModel(io.swagger.v3.oas.models.Operation operationModel) {
+		this.operationModel = operationModel;
+	}
+
+	@Override
+	public int compareTo(RouterOperation routerOperation) {
+		int result = path.compareTo(routerOperation.getPath());
+		if (result == 0)
+			result = methods[0].compareTo(routerOperation.getMethods()[0]);
+		if (result == 0 && operationModel != null && routerOperation.getOperationModel() != null)
+			result = operationModel.getOperationId().compareTo(routerOperation.getOperationModel().getOperationId());
+		if (result == 0 && operation != null && operation.operationId() != null && routerOperation.getOperation().operationId() != null)
+			result = operation.operationId().compareTo(routerOperation.getOperation().operationId());
+		return result;
 	}
 }

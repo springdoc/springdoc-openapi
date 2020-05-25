@@ -30,6 +30,7 @@ import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.PropertyResolverUtils;
+import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.RequestBodyBuilder;
 import org.springdoc.core.ReturnTypeParser;
 import org.springdoc.core.SecurityOAuth2Provider;
@@ -76,12 +77,13 @@ public class SpringDocWebMvcConfiguration {
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RouterFunctionProvider> routerFunctionProvider) {
+			Optional<RouterFunctionProvider> routerFunctionProvider,
+			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 		return new OpenApiResource(openAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping, servletContextProvider, operationCustomizers,
 				openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,
-				routerFunctionProvider);
+				routerFunctionProvider, repositoryRestResourceProvider);
 	}
 
 	@Bean

@@ -17,8 +17,9 @@
  */
 package test.org.springdoc.api.app120;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.AbstractSpringDocTest;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 /**

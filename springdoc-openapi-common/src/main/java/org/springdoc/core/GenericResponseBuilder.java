@@ -20,6 +20,7 @@
 
 package org.springdoc.core;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -234,13 +235,17 @@ public class GenericResponseBuilder {
 	}
 
 	private Content buildContent(Components components, MethodParameter methodParameter, String[] methodProduces, JsonView jsonView) {
-		Content content = new Content();
 		Type returnType = getReturnType(methodParameter);
+		return buildContent(components, methodParameter.getParameterAnnotations(), methodProduces, jsonView, returnType);
+	}
+
+	public Content buildContent(Components components, Annotation[] annotations, String[] methodProduces, JsonView jsonView, Type returnType) {
+		Content content = new Content();
 		// if void, no content
 		if (isVoid(returnType))
 			return null;
 		if (ArrayUtils.isNotEmpty(methodProduces)) {
-			Schema<?> schemaN = calculateSchema(components, returnType, jsonView);
+			Schema<?> schemaN = calculateSchema(components, returnType, jsonView, annotations);
 			if (schemaN != null) {
 				io.swagger.v3.oas.models.media.MediaType mediaType = new io.swagger.v3.oas.models.media.MediaType();
 				mediaType.setSchema(schemaN);
@@ -264,8 +269,8 @@ public class GenericResponseBuilder {
 		return returnType;
 	}
 
-	public Schema calculateSchema(Components components, Type returnType, JsonView jsonView) {
-		return !isVoid(returnType) ? extractSchema(components, returnType, jsonView) : null;
+	private Schema calculateSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations) {
+		return !isVoid(returnType) ? extractSchema(components, returnType, jsonView,annotations) : null;
 	}
 
 	private void setContent(String[] methodProduces, Content content,
@@ -293,7 +298,7 @@ public class GenericResponseBuilder {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
 			Schema<?> schemaN = calculateSchema(components, methodParameter.getGenericParameterType(),
-					methodAttributes.getJsonViewAnnotation());
+					methodAttributes.getJsonViewAnnotation(), methodParameter.getParameterAnnotations());
 			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getMethodProduces()))
 				Arrays.stream(methodAttributes.getMethodProduces()).forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));
 		}
@@ -310,7 +315,7 @@ public class GenericResponseBuilder {
 		}
 	}
 
-	private String evaluateResponseStatus(Method method, Class<?> beanType, boolean isGeneric) {
+	public String evaluateResponseStatus(Method method, Class<?> beanType, boolean isGeneric) {
 		String responseStatus = null;
 		ResponseStatus annotation = AnnotatedElementUtils.findMergedAnnotation(method, ResponseStatus.class);
 		if (annotation == null && beanType != null)

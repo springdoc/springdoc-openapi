@@ -32,7 +32,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
+              "application/hal+json": {
                 "schema": {
                   "$ref": "#/components/schemas/EntityModelEmployee"
                 }

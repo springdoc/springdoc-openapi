@@ -23,7 +23,7 @@
     },
     "/echo": {
       "post": {
-        "operationId": "echo_1",
+        "operationId": "echo_1_1",
         "requestBody": {
           "content": {
             "text/plain": {
@@ -59,7 +59,7 @@
     },
     "/quotes": {
       "get": {
-        "operationId": "fetchQuotes_1",
+        "operationId": "fetchQuotes_1_1",
         "parameters": [
           {
             "name": "size",

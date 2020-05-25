@@ -34,6 +34,7 @@ import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
@@ -77,12 +78,15 @@ public class MultipleOpenApiResource implements InitializingBean {
 
 	private final Optional<RouterFunctionProvider> routerFunctionProvider;
 
+	private final Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider;
+
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
 			SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RouterFunctionProvider> routerFunctionProvider) {
+			Optional<RouterFunctionProvider> routerFunctionProvider,
+			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 
 		this.groupedOpenApis = groupedOpenApis;
 		this.defaultOpenAPIBuilder = defaultOpenAPIBuilder;
@@ -94,6 +98,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
+		this.repositoryRestResourceProvider=repositoryRestResourceProvider;
 	}
 
 	@Override
@@ -114,7 +119,8 @@ public class MultipleOpenApiResource implements InitializingBean {
 									Optional.of(item.getOpenApiCustomisers()),
 									springDocConfigProperties,
 									springSecurityOAuth2Provider,
-									routerFunctionProvider
+									routerFunctionProvider,
+									repositoryRestResourceProvider
 							);
 						}
 				));
