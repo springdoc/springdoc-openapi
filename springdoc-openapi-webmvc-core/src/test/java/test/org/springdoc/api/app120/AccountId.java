@@ -24,6 +24,7 @@ import java.lang.annotation.Target;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
+
 import org.springframework.core.annotation.AliasFor;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;

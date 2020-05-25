@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,6 +41,7 @@ import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.callbacks.Callback;
 import io.swagger.v3.oas.models.headers.Header;
 import io.swagger.v3.oas.models.links.Link;
+import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
@@ -220,7 +222,7 @@ public class OperationBuilder {
 		}
 	}
 
-	private String getOperationId(String operationId, OpenAPI openAPI) {
+	public String getOperationId(String operationId, OpenAPI openAPI) {
 		boolean operationIdUsed = existOperationId(operationId, openAPI);
 		String operationIdToFind = null;
 		int counter = 0;
@@ -417,4 +419,22 @@ public class OperationBuilder {
 			return this.getOperationId(operationId, openAPI);
 	}
 
+	public Operation mergeOperation(Operation operation, Operation operationModel) {
+		if (operationModel.getOperationId().length() < operation.getOperationId().length()) {
+			operation.setOperationId(operationModel.getOperationId());
+		}
+
+		ApiResponses apiResponses = operation.getResponses();
+		for (Entry<String, ApiResponse> apiResponseEntry : operationModel.getResponses().entrySet()) {
+			if (apiResponses.containsKey(apiResponseEntry.getKey())) {
+				Content existingContent = apiResponses.get(apiResponseEntry.getKey()).getContent();
+				Content newContent = apiResponseEntry.getValue().getContent();
+				if (newContent != null)
+					newContent.forEach((mediaTypeStr, mediaType) -> SpringDocAnnotationsUtils.mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr));
+			}
+			else
+				apiResponses.addApiResponse(apiResponseEntry.getKey(), apiResponseEntry.getValue());
+		}
+		return operation;
+	}
 }

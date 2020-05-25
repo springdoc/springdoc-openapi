@@ -85,7 +85,7 @@ import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.c
 
 public abstract class AbstractRequestBuilder {
 
-	private static final List<Class> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
+	private static final List<Class<?>> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
 
 	// using string litterals to support both validation-api v1 and v2
 	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
@@ -144,7 +144,7 @@ public abstract class AbstractRequestBuilder {
 	}
 
 	public static void removeRequestWrapperToIgnore(Class<?>... classes) {
-		List classesToIgnore = Arrays.asList(classes);
+		List<Class<?>> classesToIgnore = Arrays.asList(classes);
 		if (PARAM_TYPES_TO_IGNORE.containsAll(classesToIgnore))
 			PARAM_TYPES_TO_IGNORE.removeAll(Arrays.asList(classes));
 	}
@@ -256,7 +256,7 @@ public abstract class AbstractRequestBuilder {
 		return parameter;
 	}
 
-	protected boolean isParamToIgnore(MethodParameter parameter) {
+	public boolean isParamToIgnore(MethodParameter parameter) {
 		if (parameterBuilder.isAnnotationToIgnore(parameter))
 			return true;
 		if ((parameter.getParameterAnnotation(PathVariable.class) != null && parameter.getParameterAnnotation(PathVariable.class).required())
@@ -273,11 +273,11 @@ public abstract class AbstractRequestBuilder {
 			operation.setRequestBody(requestBodyInfo.getRequestBody());
 	}
 
-	private boolean isValidParameter(Parameter parameter) {
+	public boolean isValidParameter(Parameter parameter) {
 		return parameter != null && (parameter.getName() != null || parameter.get$ref() != null);
 	}
 
-	private Parameter buildParams(ParameterInfo parameterInfo, Components components,
+	public Parameter buildParams(ParameterInfo parameterInfo, Components components,
 			RequestMethod requestMethod, JsonView jsonView) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		RequestHeader requestHeader = parameterInfo.getRequestHeader();
@@ -363,7 +363,7 @@ public abstract class AbstractRequestBuilder {
 		return parameter;
 	}
 
-	private void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
+	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
 		Map<String, Annotation> annos = new HashMap<>();
 		if (annotations != null)
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getName(), annotation));
@@ -374,7 +374,7 @@ public abstract class AbstractRequestBuilder {
 		applyValidationsToSchema(annos, schema);
 	}
 
-	private void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
+	public void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
 		Map<String, Annotation> annos = new HashMap<>();
 		boolean requestBodyRequired = false;
 		if (!CollectionUtils.isEmpty(annotations)) {
@@ -389,7 +389,7 @@ public abstract class AbstractRequestBuilder {
 			requestBody.setRequired(true);
 		Content content = requestBody.getContent();
 		for (MediaType mediaType : content.values()) {
-			Schema schema = mediaType.getSchema();
+			Schema<?> schema = mediaType.getSchema();
 			applyValidationsToSchema(annos, schema);
 		}
 	}

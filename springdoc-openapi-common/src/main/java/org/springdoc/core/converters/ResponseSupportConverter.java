@@ -46,11 +46,11 @@ public class ResponseSupportConverter implements ModelConverter {
 				if (innerType == null)
 					return new StringSchema();
 				else if (innerType.getBindings() != null && isResponseTypeWrapper(innerType.getRawClass())) {
-					type = new AnnotatedType(innerType).jsonViewAnnotation(type.getJsonViewAnnotation()).resolveAsRef(true);
+					type = new AnnotatedType(innerType).jsonViewAnnotation(type.getJsonViewAnnotation()).ctxAnnotations(type.getCtxAnnotations()).resolveAsRef(true);
 					return this.resolve(type, context, chain);
 				}
 				else
-					type = new AnnotatedType(innerType).jsonViewAnnotation(type.getJsonViewAnnotation()).resolveAsRef(true);
+					type = new AnnotatedType(innerType).jsonViewAnnotation(type.getJsonViewAnnotation()).ctxAnnotations((type.getCtxAnnotations())).resolveAsRef(true);
 			}
 			else if (isResponseTypeToIgnore(cls))
 				return null;

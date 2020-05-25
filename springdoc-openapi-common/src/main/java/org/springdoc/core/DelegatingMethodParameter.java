@@ -43,7 +43,7 @@ import org.springframework.lang.NonNull;
 /**
  * @author zarebski.m
  */
-class DelegatingMethodParameter extends MethodParameter {
+public class DelegatingMethodParameter extends MethodParameter {
 
 	private MethodParameter delegate;
 

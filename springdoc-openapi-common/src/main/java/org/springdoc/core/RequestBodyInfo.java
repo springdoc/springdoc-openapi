@@ -25,7 +25,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 
 @SuppressWarnings("rawtypes")
-class RequestBodyInfo {
+public class RequestBodyInfo {
 
 	private RequestBody requestBody;
 

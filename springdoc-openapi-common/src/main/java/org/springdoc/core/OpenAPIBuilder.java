@@ -403,7 +403,7 @@ public class OpenAPIBuilder {
 		return null;
 	}
 
-	private boolean isAutoTagClasses(Operation operation) {
+	public boolean isAutoTagClasses(Operation operation) {
 		return CollectionUtils.isEmpty(operation.getTags()) && springDocConfigProperties.isAutoTagClasses();
 	}
 

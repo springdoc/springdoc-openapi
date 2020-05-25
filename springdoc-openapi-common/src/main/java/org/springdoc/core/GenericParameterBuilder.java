@@ -149,7 +149,7 @@ public class GenericParameterBuilder {
 			paramDoc.setExplode(paramCalcul.getExplode());
 	}
 
-	Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
+	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
 			Components components, JsonView jsonView) {
 		Parameter parameter = new Parameter();
 		if (StringUtils.isNotBlank(parameterDoc.description()))
