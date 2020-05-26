@@ -55,6 +55,11 @@ public class SpringDocUtils {
 		return this;
 	}
 
+	public SpringDocUtils addHiddenRestControllers(String... classes) {
+		AbstractOpenApiResource.addHiddenRestControllers(classes);
+		return this;
+	}
+
 	public SpringDocUtils replaceWithClass(Class source, Class target) {
 		AdditionalModelsConverter.replaceWithClass(source, target);
 		return this;
