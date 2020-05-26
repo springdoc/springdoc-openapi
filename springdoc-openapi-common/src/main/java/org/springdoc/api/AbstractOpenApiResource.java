@@ -138,6 +138,19 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		HIDDEN_REST_CONTROLLERS.addAll(Arrays.asList(classes));
 	}
 
+	public static void addHiddenRestControllers(String... classes) {
+		Set<Class<?>> hiddenClasses =new HashSet<>();
+		for (String aClass : classes) {
+			try {
+				hiddenClasses.add(Class.forName(aClass));
+			}
+			catch (ClassNotFoundException e) {
+				LOGGER.warn("The following class doesn't exist and cannot be hidden: "+ aClass);
+			}
+		}
+		HIDDEN_REST_CONTROLLERS.addAll(hiddenClasses);
+	}
+
 	protected synchronized OpenAPI getOpenApi() {
 		OpenAPI openApi;
 		if (openAPIBuilder.getCachedOpenAPI() == null || springDocConfigProperties.isCacheDisabled()) {
@@ -146,7 +159,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			Map<String, Object> mappingsMap = openAPIBuilder.getMappingsMap().entrySet().stream()
 					.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 							Hidden.class) == null))
-					.filter(controller -> !isHiddenRestControllers(controller.getValue().getClass()))
+					.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getClass()))
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
 			Map<String, Object> findControllerAdvice = openAPIBuilder.getControllerAdviceMap();
@@ -425,7 +438,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return ADDITIONAL_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 
-	protected boolean isHiddenRestControllers(Class<?> rawClass) {
+	public static boolean isHiddenRestControllers(Class<?> rawClass) {
 		return HIDDEN_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 

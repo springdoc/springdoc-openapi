@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.data.rest.core.DataRestRouterOperationBuilder;
@@ -51,13 +52,13 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
 public class SpringRepositoryRestResourceProvider implements RepositoryRestResourceProvider {
 
-	private static final String REPOSITORY_ENTITY_CONTROLLER = "org.springframework.data.rest.webmvc.RepositoryEntityController";
+	public static final String REPOSITORY_ENTITY_CONTROLLER = "org.springframework.data.rest.webmvc.RepositoryEntityController";
 
-	private static final String REPOSITORY_SERACH_CONTROLLER = "org.springframework.data.rest.webmvc.RepositorySearchController";
+	public static final String REPOSITORY_SERACH_CONTROLLER = "org.springframework.data.rest.webmvc.RepositorySearchController";
 
-	private static final String REPOSITORY_SCHEMA_CONTROLLER = "org.springframework.data.rest.webmvc.RepositorySchemaController";
+	public static final String REPOSITORY_SCHEMA_CONTROLLER = "org.springframework.data.rest.webmvc.RepositorySchemaController";
 
-	private static final String REPOSITORY_PROPERTY_CONTROLLER = "org.springframework.data.rest.webmvc.RepositoryPropertyReferenceController";
+	public static final String REPOSITORY_PROPERTY_CONTROLLER = "org.springframework.data.rest.webmvc.RepositoryPropertyReferenceController";
 
 	private ResourceMappings mappings;
 
@@ -93,6 +94,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 								.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_ENTITY_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
 										.getValue().getBeanType().getName()) || REPOSITORY_PROPERTY_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
 										.getValue().getBeanType().getName()))
+								.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, domainType, openAPI);
 					}
@@ -102,6 +104,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 						Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
 								.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SCHEMA_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
 										.getValue().getBeanType().getName()))
+								.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
 						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, domainType, openAPI);
@@ -124,6 +127,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 					Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
 							.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SERACH_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
 									.getValue().getBeanType().getName()))
+							.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 							.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 					ResourceMetadata metadata = associations.getMetadataFor(domainType);
 					SearchResourceMappings searchResourceMappings = metadata.getSearchResourceMappings();
