@@ -158,8 +158,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				.ifPresent(routerBeans -> routerBeans.forEach(this::getRouterFunctionPaths)));
 
 		if(repositoryRestResourceProvider.isPresent()){
-			RepositoryRestResourceProvider repositoryRestResourceProvider = this.repositoryRestResourceProvider.get();
-			List<RouterOperation>  operationList = repositoryRestResourceProvider.getRouterOperations(openAPIBuilder.getCalculatedOpenAPI());
+			RepositoryRestResourceProvider restResourceProvider = this.repositoryRestResourceProvider.get();
+			List<RouterOperation>  operationList = restResourceProvider.getRouterOperations(openAPIBuilder.getCalculatedOpenAPI());
 			calculatePath(operationList);
 		}
 	}

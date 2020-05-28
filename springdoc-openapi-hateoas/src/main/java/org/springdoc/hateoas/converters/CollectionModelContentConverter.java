@@ -26,6 +26,7 @@ import java.util.Iterator;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeBindings;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
@@ -35,6 +36,7 @@ import io.swagger.v3.oas.models.media.Schema;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.LinkRelationProvider;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Override resolved schema as there is a custom serializer that converts the data to a map before serializing it.
@@ -69,11 +71,10 @@ public class CollectionModelContentConverter implements ModelConverter {
 
 	private Class<?> getEntityType(AnnotatedType type) {
 		Class<?> containerEntityType = ((CollectionType) (type.getType())).getContentType().getRawClass();
-
-		if(((CollectionType) type.getType()).getContentType().getBindings().getTypeParameters().size()==0)
-			return containerEntityType;
 		if (containerEntityType.isAssignableFrom(EntityModel.class)) {
-			return ((CollectionType) type.getType()).getContentType().getBindings().getBoundType(0).getRawClass();
+			TypeBindings typeBindings = ((CollectionType) type.getType()).getContentType().getBindings() ;
+			if (!CollectionUtils.isEmpty(typeBindings.getTypeParameters()))
+				return typeBindings.getBoundType(0).getRawClass();
 		}
 		return containerEntityType;
 	}
