@@ -37,7 +37,7 @@ public class HelloController {
 	}
 
 	@GetMapping("/testreq")
-	public void testRequestAttribute(RequestAttribute sample, String s) {
+	public void testRequestAttribute(@RequestAttribute String sample, String s) {
 
 	}
 }
