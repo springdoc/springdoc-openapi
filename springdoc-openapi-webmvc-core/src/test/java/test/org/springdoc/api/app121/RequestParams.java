@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
-import com.sun.istack.internal.Nullable;
 import io.swagger.v3.oas.annotations.Parameter;
 
 
@@ -54,12 +53,11 @@ public class RequestParams {
 		this.intParam2 = intParam2;
 	}
 
-	@Nullable
 	public String getIntParam3() {
 		return intParam3;
 	}
 
-	public void setIntParam3(@Nullable String intParam3) {
+	public void setIntParam3(String intParam3) {
 		this.intParam3 = intParam3;
 	}
 
