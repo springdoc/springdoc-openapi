@@ -256,7 +256,7 @@
     "/accounts/{id}/{property}": {
       "get": {
         "tags": [
-          "repository-property-reference-controller"
+          "account-property-reference-controller"
         ],
         "description": "get-account",
         "operationId": "followPropertyReference-account-get_1",
@@ -301,7 +301,7 @@
       },
       "put": {
         "tags": [
-          "repository-property-reference-controller"
+          "account-property-reference-controller"
         ],
         "description": "update-account",
         "operationId": "createPropertyReference-account-put",
@@ -370,7 +370,7 @@
       },
       "post": {
         "tags": [
-          "repository-property-reference-controller"
+          "account-property-reference-controller"
         ],
         "description": "create-account",
         "operationId": "createPropertyReference-account-post",
@@ -426,7 +426,7 @@
       },
       "delete": {
         "tags": [
-          "repository-property-reference-controller"
+          "account-property-reference-controller"
         ],
         "description": "delete-account",
         "operationId": "deletePropertyReference-account-delete",
@@ -459,7 +459,7 @@
       },
       "patch": {
         "tags": [
-          "repository-property-reference-controller"
+          "account-property-reference-controller"
         ],
         "description": "patch-account",
         "operationId": "createPropertyReference-account-patch",
@@ -520,7 +520,7 @@
     "/accounts/{id}/{property}/{propertyId}": {
       "get": {
         "tags": [
-          "repository-property-reference-controller"
+          "account-property-reference-controller"
         ],
         "description": "get-account",
         "operationId": "followPropertyReference-account-get",
@@ -568,7 +568,7 @@
       },
       "delete": {
         "tags": [
-          "repository-property-reference-controller"
+          "account-property-reference-controller"
         ],
         "description": "delete-account",
         "operationId": "deletePropertyReferenceId-account-delete",
@@ -862,7 +862,7 @@
     "/customers/{id}/{property}": {
       "get": {
         "tags": [
-          "repository-property-reference-controller"
+          "customer-property-reference-controller"
         ],
         "description": "get-customer",
         "operationId": "followPropertyReference-customer-get_1",
@@ -907,7 +907,7 @@
       },
       "put": {
         "tags": [
-          "repository-property-reference-controller"
+          "customer-property-reference-controller"
         ],
         "description": "update-customer",
         "operationId": "createPropertyReference-customer-put",
@@ -976,7 +976,7 @@
       },
       "post": {
         "tags": [
-          "repository-property-reference-controller"
+          "customer-property-reference-controller"
         ],
         "description": "create-customer",
         "operationId": "createPropertyReference-customer-post",
@@ -1032,7 +1032,7 @@
       },
       "patch": {
         "tags": [
-          "repository-property-reference-controller"
+          "customer-property-reference-controller"
         ],
         "description": "patch-customer",
         "operationId": "createPropertyReference-customer-patch",
@@ -1093,7 +1093,7 @@
     "/customers/{id}/{property}/{propertyId}": {
       "get": {
         "tags": [
-          "repository-property-reference-controller"
+          "customer-property-reference-controller"
         ],
         "description": "get-customer",
         "operationId": "followPropertyReference-customer-get",
@@ -1303,6 +1303,14 @@
           }
         }
       },
+      "RepresentationModelAccount": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
       "Account": {
         "type": "object",
         "properties": {
@@ -1316,67 +1324,6 @@
           "expiryDate": {
             "type": "string",
             "format": "date-time"
-          }
-        }
-      },
-      "Customer": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "firstname": {
-            "type": "string"
-          },
-          "lastname": {
-            "type": "string"
-          }
-        }
-      },
-      "EntityModelAccount": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "customer": {
-            "$ref": "#/components/schemas/Customer"
-          },
-          "expiryDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelObject": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "objects": {
-                "type": "array",
-                "items": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "RepresentationModelAccount": {
-        "type": "object",
-        "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
           }
         }
       },
@@ -1399,7 +1346,7 @@
           }
         }
       },
-      "EntityModelCustomer": {
+      "Customer": {
         "type": "object",
         "properties": {
           "id": {
@@ -1411,6 +1358,41 @@
           },
           "lastname": {
             "type": "string"
+          }
+        }
+      },
+      "CollectionModelObject": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "objects": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelAccount": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Customer"
+          },
+          "expiryDate": {
+            "type": "string",
+            "format": "date-time"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -1438,6 +1420,24 @@
                 }
               }
             }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelCustomer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"

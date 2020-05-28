@@ -292,7 +292,7 @@
     "/peopleme/{id}/{property}": {
       "get": {
         "tags": [
-          "repository-property-reference-controller"
+          "person-property-reference-controller"
         ],
         "description": "get-person",
         "operationId": "followPropertyReference-person-get_1",
@@ -337,7 +337,7 @@
       },
       "put": {
         "tags": [
-          "repository-property-reference-controller"
+          "person-property-reference-controller"
         ],
         "description": "update-person",
         "operationId": "createPropertyReference-person-put",
@@ -406,7 +406,7 @@
       },
       "post": {
         "tags": [
-          "repository-property-reference-controller"
+          "person-property-reference-controller"
         ],
         "description": "create-person",
         "operationId": "createPropertyReference-person-post",
@@ -462,7 +462,7 @@
       },
       "delete": {
         "tags": [
-          "repository-property-reference-controller"
+          "person-property-reference-controller"
         ],
         "description": "delete-person",
         "operationId": "deletePropertyReference-person-delete",
@@ -495,7 +495,7 @@
       },
       "patch": {
         "tags": [
-          "repository-property-reference-controller"
+          "person-property-reference-controller"
         ],
         "description": "patch-person",
         "operationId": "createPropertyReference-person-patch",
@@ -556,7 +556,7 @@
     "/peopleme/{id}/{property}/{propertyId}": {
       "get": {
         "tags": [
-          "repository-property-reference-controller"
+          "person-property-reference-controller"
         ],
         "description": "get-person",
         "operationId": "followPropertyReference-person-get",
@@ -604,7 +604,7 @@
       },
       "delete": {
         "tags": [
-          "repository-property-reference-controller"
+          "person-property-reference-controller"
         ],
         "description": "delete-person",
         "operationId": "deletePropertyReferenceId-person-delete",
@@ -777,14 +777,11 @@
           }
         }
       },
-      "Person": {
+      "RepresentationModelPerson": {
         "type": "object",
         "properties": {
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
+          "_links": {
+            "$ref": "#/components/schemas/Links"
           }
         }
       },
@@ -807,11 +804,14 @@
           }
         }
       },
-      "RepresentationModelPerson": {
+      "Person": {
         "type": "object",
         "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
           }
         }
       },

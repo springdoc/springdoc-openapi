@@ -39,20 +39,20 @@ public class DataRestTagsBuilder {
 
 	public void buildSearchTags(Operation operation, OpenAPI openAPI, HandlerMethod handlerMethod,
 			Class<?> domainType) {
-		buildTags(operation, openAPI, handlerMethod, domainType, "RepositorySearch", "Search");
+		buildTags(operation, openAPI, handlerMethod, domainType);
 	}
 
 	public void buildEntityTags(Operation operation, OpenAPI openAPI, HandlerMethod handlerMethod,
 			Class<?> domainType) {
-		buildTags(operation, openAPI, handlerMethod, domainType, "RepositoryEntity", "Entity");
+		buildTags(operation, openAPI, handlerMethod, domainType);
 	}
 
 	private void buildTags(Operation operation, OpenAPI openAPI, HandlerMethod handlerMethod,
-			Class<?> domainType, String searchString, String replacement) {
+			Class<?> domainType) {
 		if (openAPIBuilder.isAutoTagClasses(operation)) {
 			String tagName = handlerMethod.getBeanType().getSimpleName();
 			if (domainType != null)
-				tagName = tagName.replace(searchString, domainType.getSimpleName() + replacement);
+				tagName = tagName.replace("Repository", domainType.getSimpleName());
 			operation.addTagsItem(OpenAPIBuilder.splitCamelCase(tagName));
 		}
 		openAPIBuilder.buildTags(handlerMethod, operation, openAPI);
