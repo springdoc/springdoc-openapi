@@ -21,92 +21,13 @@
 package org.springdoc.core.converters.models;
 
 import java.util.List;
-import java.util.Objects;
 
-import javax.validation.constraints.Min;
-
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.springdoc.api.annotations.ParameterObject;
 
 @ParameterObject
-public class DefaultPageable {
-
-	@Min(0)
-	@Parameter(description = "Zero-based page index (0..N)", schema = @Schema(type = "integer", defaultValue = "0"))
-	private Integer page;
-
-	@Min(1)
-	@Parameter(description = "The size of the page to be returned", schema = @Schema(type = "integer", defaultValue = "20"))
-	private Integer size;
-
-	@Parameter(description = "Sorting criteria in the format: property(,asc|desc). "
-			+ "Default sort order is ascending. " + "Multiple sort criteria are supported."
-			, name = "sort"
-			, array = @ArraySchema(schema = @Schema(type = "string")))
-	private List<String> sort;
+public class DefaultPageable extends Pageable {
 
 	public DefaultPageable(int page, int size, List<String> sort) {
-		this.page = page;
-		this.size = size;
-		this.sort = sort;
-	}
-
-	public Integer getPage() {
-		return page;
-	}
-
-	public void setPage(Integer page) {
-		this.page = page;
-	}
-
-	public Integer getSize() {
-		return size;
-	}
-
-	public void setSize(Integer size) {
-		this.size = size;
-	}
-
-	public List<String> getSort() {
-		return sort;
-	}
-
-	public void setSort(List<String> sort) {
-		if (sort == null) {
-			this.sort.clear();
-		}
-		else {
-			this.sort = sort;
-		}
-	}
-
-	public void addSort(String sort) {
-		this.sort.add(sort);
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		DefaultPageable pageable = (DefaultPageable) o;
-		return Objects.equals(page, pageable.page) &&
-				Objects.equals(size, pageable.size) &&
-				Objects.equals(sort, pageable.sort);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(page, size, sort);
-	}
-
-	@Override
-	public String toString() {
-		return "Pageable{" +
-				"page=" + page +
-				", size=" + size +
-				", sort=" + sort +
-				'}';
+		super(page, size, sort);
 	}
 }

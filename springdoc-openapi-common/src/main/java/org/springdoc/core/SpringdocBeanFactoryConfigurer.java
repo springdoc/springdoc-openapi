@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.models.OpenAPI;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.context.properties.bind.BindResult;
@@ -52,7 +51,7 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 	}
 
 	@Override
-	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)  {
 		final BindResult<SpringDocConfigProperties> result = Binder.get(environment)
 				.bind(SPRINGDOC_PREFIX, SpringDocConfigProperties.class);
 		if (result.isBound()) {

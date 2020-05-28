@@ -194,7 +194,7 @@ public class SpringDocConfiguration {
 	@ConditionalOnMissingClass(value = BINDRESULT_CLASS)
 	@Lazy(false)
 	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor2() {
-		return beanFactory -> SpringdocBeanFactoryConfigurer.initBeanFactoryPostProcessor(beanFactory);
+		return SpringdocBeanFactoryConfigurer::initBeanFactoryPostProcessor;
 	}
 
 }

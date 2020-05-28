@@ -20,7 +20,9 @@
 
 package org.springdoc.core.fn;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.ArrayUtils;
@@ -180,6 +182,35 @@ public class RouterOperation implements Comparable<RouterOperation> {
 			result = operationModel.getOperationId().compareTo(routerOperation.getOperationModel().getOperationId());
 		if (result == 0 && operation != null && operation.operationId() != null && routerOperation.getOperation().operationId() != null)
 			result = operation.operationId().compareTo(routerOperation.getOperation().operationId());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		RouterOperation that = (RouterOperation) o;
+		return Objects.equals(path, that.path) &&
+				Arrays.equals(methods, that.methods) &&
+				Arrays.equals(consumes, that.consumes) &&
+				Arrays.equals(produces, that.produces) &&
+				Arrays.equals(headers, that.headers) &&
+				Objects.equals(beanClass, that.beanClass) &&
+				Objects.equals(beanMethod, that.beanMethod) &&
+				Arrays.equals(parameterTypes, that.parameterTypes) &&
+				Objects.equals(queryParams, that.queryParams) &&
+				Objects.equals(operation, that.operation) &&
+				Objects.equals(operationModel, that.operationModel);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = Objects.hash(path, beanClass, beanMethod, queryParams, operation, operationModel);
+		result = 31 * result + Arrays.hashCode(methods);
+		result = 31 * result + Arrays.hashCode(consumes);
+		result = 31 * result + Arrays.hashCode(produces);
+		result = 31 * result + Arrays.hashCode(headers);
+		result = 31 * result + Arrays.hashCode(parameterTypes);
 		return result;
 	}
 }

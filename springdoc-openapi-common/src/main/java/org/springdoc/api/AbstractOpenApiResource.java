@@ -145,7 +145,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				hiddenClasses.add(Class.forName(aClass));
 			}
 			catch (ClassNotFoundException e) {
-				LOGGER.warn("The following class doesn't exist and cannot be hidden: " + aClass);
+				LOGGER.warn("The following class doesn't exist and cannot be hidden: {}",  aClass);
 			}
 		}
 		HIDDEN_REST_CONTROLLERS.addAll(hiddenClasses);
