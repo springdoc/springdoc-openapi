@@ -1,6 +1,5 @@
 package test.org.springdoc.api.app121;
 
-import com.sun.istack.internal.Nullable;
 import org.springdoc.api.annotations.ParameterObject;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
 	@PostMapping("test")
-	public InheritedRequestParams getTest(@RequestParam @Nullable String param, @ParameterObject InheritedRequestParams requestParams) {
+	public InheritedRequestParams getTest(@RequestParam String param, @ParameterObject InheritedRequestParams requestParams) {
 		return requestParams;
 	}
 }
