@@ -52,6 +52,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.io.Resource;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 @SuppressWarnings("rawtypes")
@@ -67,6 +68,7 @@ public class GenericParameterBuilder {
 		FILE_TYPES.add(MultipartFile.class);
 		FILE_TYPES.add(Resource.class);
 		ANNOTATIOSN_TO_IGNORE.add(Hidden.class);
+		ANNOTATIOSN_TO_IGNORE.add(RequestAttribute.class);
 	}
 
 	private final PropertyResolverUtils propertyResolverUtils;
