@@ -223,29 +223,34 @@ public class GenericParameterBuilder {
 			schemaN = parameterInfo.getParameterModel().getSchema();
 
 		if (requestBodyInfo != null) {
-			if (schemaN != null && StringUtils.isEmpty(schemaN.getDescription()) && parameterInfo.getParameterModel() != null) {
-				String description = parameterInfo.getParameterModel().getDescription();
-				if (schemaN.get$ref() != null && schemaN.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
-					String key = schemaN.get$ref().substring(21);
-					Schema existingSchema = components.getSchemas().get(key);
-					existingSchema.setDescription(description);
-				}
-				else
-					schemaN.setDescription(description);
-			}
-
-			if (requestBodyInfo.getMergedSchema() != null) {
-				requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
-				schemaN = requestBodyInfo.getMergedSchema();
-			}
-			else if (schemaN instanceof FileSchema || schemaN instanceof ArraySchema && ((ArraySchema) schemaN).getItems() instanceof FileSchema) {
-				schemaN = new ObjectSchema().addProperties(paramName, schemaN);
-				requestBodyInfo.setMergedSchema(schemaN);
-			}
-			else
-				requestBodyInfo.addProperties(paramName, schemaN);
+			schemaN = calculateRequestBodySchema(components, parameterInfo, requestBodyInfo, schemaN, paramName);
 		}
 
+		return schemaN;
+	}
+
+	private Schema calculateRequestBodySchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, Schema schemaN, String paramName) {
+		if (schemaN != null && StringUtils.isEmpty(schemaN.getDescription()) && parameterInfo.getParameterModel() != null) {
+			String description = parameterInfo.getParameterModel().getDescription();
+			if (schemaN.get$ref() != null && schemaN.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
+				String key = schemaN.get$ref().substring(21);
+				Schema existingSchema = components.getSchemas().get(key);
+				existingSchema.setDescription(description);
+			}
+			else
+				schemaN.setDescription(description);
+		}
+
+		if (requestBodyInfo.getMergedSchema() != null) {
+			requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
+			schemaN = requestBodyInfo.getMergedSchema();
+		}
+		else if (schemaN instanceof FileSchema || schemaN instanceof ArraySchema && ((ArraySchema) schemaN).getItems() instanceof FileSchema) {
+			schemaN = new ObjectSchema().addProperties(paramName, schemaN);
+			requestBodyInfo.setMergedSchema(schemaN);
+		}
+		else
+			requestBodyInfo.addProperties(paramName, schemaN);
 		return schemaN;
 	}
 

@@ -60,22 +60,7 @@ public interface ReturnTypeParser {
 					Class<?>[] generics = new Class<?>[parameterizedType.getActualTypeArguments().length];
 					Type[] typeArguments = parameterizedType.getActualTypeArguments();
 					ResolvableType contextType = ResolvableType.forClass(contextClass);
-					for (int i = 0; i < typeArguments.length; i++) {
-						Type typeArgument = typeArguments[i];
-						if (typeArgument instanceof TypeVariable) {
-							ResolvableType resolvedTypeArgument = resolveVariable(
-									(TypeVariable<?>) typeArgument, contextType);
-							if (resolvedTypeArgument != ResolvableType.NONE) {
-								generics[i] = resolvedTypeArgument.resolve();
-							}
-							else {
-								generics[i] = ResolvableType.forType(typeArgument).resolve();
-							}
-						}
-						else {
-							generics[i] = ResolvableType.forType(typeArgument).resolve();
-						}
-					}
+					findTypeForGenerics(generics, typeArguments, contextType);
 					Class<?> rawClass = resolvedType.getRawClass();
 					if (rawClass != null) {
 						return ResolvableType.forClassWithGenerics(rawClass, generics).getType();
@@ -84,6 +69,25 @@ public interface ReturnTypeParser {
 			}
 		}
 		return genericType;
+	}
+
+	static void findTypeForGenerics(Class<?>[] generics, Type[] typeArguments, ResolvableType contextType) {
+		for (int i = 0; i < typeArguments.length; i++) {
+			Type typeArgument = typeArguments[i];
+			if (typeArgument instanceof TypeVariable) {
+				ResolvableType resolvedTypeArgument = resolveVariable(
+						(TypeVariable<?>) typeArgument, contextType);
+				if (resolvedTypeArgument != ResolvableType.NONE) {
+					generics[i] = resolvedTypeArgument.resolve();
+				}
+				else {
+					generics[i] = ResolvableType.forType(typeArgument).resolve();
+				}
+			}
+			else {
+				generics[i] = ResolvableType.forType(typeArgument).resolve();
+			}
+		}
 	}
 
 	static ResolvableType resolveVariable(TypeVariable<?> typeVariable, ResolvableType contextType) {

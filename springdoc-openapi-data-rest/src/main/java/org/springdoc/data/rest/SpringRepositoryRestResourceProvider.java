@@ -82,7 +82,6 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	public List<RouterOperation> getRouterOperations(OpenAPI openAPI) {
 		List<RouterOperation> routerOperationList = new ArrayList<>();
 		List<HandlerMapping> handlerMappingList = delegatingHandlerMapping.getDelegates();
-		boolean profileIsDone = false;
 		for (Class<?> domainType : repositories) {
 			ResourceMetadata resourceMetadata = mappings.getMetadataFor(domainType);
 			if (resourceMetadata.isExported()) {
@@ -108,8 +107,6 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
 						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, domainType, openAPI);
-						if (profileIsDone)
-							continue;
 						handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
 								.filter(requestMappingInfoHandlerMethodEntry -> ProfileController.class.equals(requestMappingInfoHandlerMethodEntry
 										.getValue().getBeanType()) || AlpsController.class.equals(requestMappingInfoHandlerMethodEntry
@@ -120,24 +117,28 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 				}
 			}
 			// search
-			for (HandlerMapping handlerMapping : handlerMappingList) {
-				if (handlerMapping instanceof RepositoryRestHandlerMapping) {
-					RepositoryRestHandlerMapping repositoryRestHandlerMapping = (RepositoryRestHandlerMapping) handlerMapping;
-					Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
-					Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
-							.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SERACH_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
-									.getValue().getBeanType().getName()))
-							.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
-							.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
-					ResourceMetadata metadata = associations.getMetadataFor(domainType);
-					SearchResourceMappings searchResourceMappings = metadata.getSearchResourceMappings();
-					if (searchResourceMappings.isExported()) {
-						findSearchControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, domainType, openAPI, searchResourceMappings);
-					}
+			findSearchResourceMappings(openAPI, routerOperationList, handlerMappingList, domainType, resourceMetadata);
+		}
+		return routerOperationList;
+	}
+
+	private void findSearchResourceMappings(OpenAPI openAPI, List<RouterOperation> routerOperationList, List<HandlerMapping> handlerMappingList, Class<?> domainType, ResourceMetadata resourceMetadata) {
+		for (HandlerMapping handlerMapping : handlerMappingList) {
+			if (handlerMapping instanceof RepositoryRestHandlerMapping) {
+				RepositoryRestHandlerMapping repositoryRestHandlerMapping = (RepositoryRestHandlerMapping) handlerMapping;
+				Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
+				Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
+						.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SERACH_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
+								.getValue().getBeanType().getName()))
+						.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
+						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+				ResourceMetadata metadata = associations.getMetadataFor(domainType);
+				SearchResourceMappings searchResourceMappings = metadata.getSearchResourceMappings();
+				if (searchResourceMappings.isExported()) {
+					findSearchControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, domainType, openAPI, searchResourceMappings);
 				}
 			}
 		}
-		return routerOperationList;
 	}
 
 	private List<RouterOperation> findSearchControllers(List<RouterOperation> routerOperationList,

@@ -26,7 +26,10 @@ package org.springdoc.data.rest.core;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import org.springdoc.core.OpenAPIBuilder;
+import org.springdoc.data.rest.SpringRepositoryRestResourceProvider;
 
+import org.springframework.data.rest.webmvc.ProfileController;
+import org.springframework.data.rest.webmvc.alps.AlpsController;
 import org.springframework.web.method.HandlerMethod;
 
 public class DataRestTagsBuilder {
@@ -51,7 +54,10 @@ public class DataRestTagsBuilder {
 			Class<?> domainType) {
 		if (openAPIBuilder.isAutoTagClasses(operation)) {
 			String tagName = handlerMethod.getBeanType().getSimpleName();
-			if (domainType != null)
+			if(SpringRepositoryRestResourceProvider.REPOSITORY_SCHEMA_CONTROLLER.equals(handlerMethod.getBeanType().getName())
+			|| AlpsController.class.equals(handlerMethod.getBeanType()))
+				tagName = ProfileController.class.getSimpleName();
+			else if (domainType != null)
 				tagName = tagName.replace("Repository", domainType.getSimpleName());
 			operation.addTagsItem(OpenAPIBuilder.splitCamelCase(tagName));
 		}

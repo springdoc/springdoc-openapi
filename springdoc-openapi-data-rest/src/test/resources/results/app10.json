@@ -1163,7 +1163,7 @@
     "/profile/accounts": {
       "get": {
         "tags": [
-          "alps-controller"
+          "profile-controller"
         ],
         "operationId": "descriptor_1",
         "responses": {
@@ -1193,7 +1193,7 @@
     "/profile/customers": {
       "get": {
         "tags": [
-          "alps-controller"
+          "profile-controller"
         ],
         "operationId": "descriptor_2",
         "responses": {
@@ -1327,25 +1327,6 @@
           }
         }
       },
-      "CollectionModelAccount": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "accounts": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Account"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "Customer": {
         "type": "object",
         "properties": {
@@ -1361,16 +1342,16 @@
           }
         }
       },
-      "CollectionModelObject": {
+      "CollectionModelAccount": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "objects": {
+              "accounts": {
                 "type": "array",
                 "items": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/Account"
                 }
               }
             }
@@ -1393,6 +1374,25 @@
           "expiryDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelObject": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "objects": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
