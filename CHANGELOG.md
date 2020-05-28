@@ -4,9 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.10] - 2020-xx-xx
+## [1.4.0] - 2020-05-29
+### Added
+- #644 - Support for @RepositoryRestResource
+- #668 - Process @Parameter annotations in method parameters as MergedAnnotations
+- #674 - Support @Parameter annotation attached to @RequestPart, for several @RequestParts
+- #658 - Added support for GroupedOpenApi OperationCustomizer
+- #654 - Use oneOf schema for polymorphic types
+- Separate module for spring-hateoas
+- Added SpringDocUtils.addHiddenRestControllers(String ...)
+
 ### Changed
-- Upgrade swagger-ui to 3.25.2
+- Upgrade swagger-ui to 3.25.4
+- Upgrade to spring-boot 2.3.0.RELEASE
+
+### Fixed
+- #267 - @RequestAttribute parameter appears in the UI
+- #695 - Servers OpenAPI block resets after customizing with GroupedOpenApi
+- #689 - Spring-boot 1, warning about bean creation when cache disabled
+- #566 - Wrong hateoas relation
+- #671 - Demo URL link fixed
 
 ## [1.3.9] - 2020-05-05
 ### Changed
