@@ -667,7 +667,7 @@
     "/profile/peopleme": {
       "get": {
         "tags": [
-          "alps-controller"
+          "profile-controller"
         ],
         "operationId": "descriptor_1",
         "responses": {
@@ -785,6 +785,17 @@
           }
         }
       },
+      "Person": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
       "CollectionModelPerson": {
         "type": "object",
         "properties": {
@@ -804,7 +815,7 @@
           }
         }
       },
-      "Person": {
+      "EntityModelPerson": {
         "type": "object",
         "properties": {
           "firstName": {
@@ -812,6 +823,9 @@
           },
           "lastName": {
             "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
           }
         }
       },
@@ -828,20 +842,6 @@
                 }
               }
             }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelPerson": {
-        "type": "object",
-        "properties": {
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
