@@ -12,8 +12,8 @@
   },
   "servers": [
     {
-      "url": "http://localhost",
-      "description": "Generated server url"
+      "url": "http://toto.v1.com",
+      "description": "myserver1"
     }
   ],
   "tags": [
@@ -23,13 +23,13 @@
     }
   ],
   "paths": {
-    "/user/createWithArray": {
+    "/user/createWithList": {
       "post": {
         "tags": [
           "user"
         ],
         "summary": "Creates list of users with given input array",
-        "operationId": "createUsersWithArrayInput",
+        "operationId": "createUsersWithListInput",
         "requestBody": {
           "description": "List of user object",
           "content": {
@@ -64,13 +64,13 @@
         }
       }
     },
-    "/user/createWithList": {
+    "/user/createWithArray": {
       "post": {
         "tags": [
           "user"
         ],
         "summary": "Creates list of users with given input array",
-        "operationId": "createUsersWithListInput",
+        "operationId": "createUsersWithArrayInput",
         "requestBody": {
           "description": "List of user object",
           "content": {

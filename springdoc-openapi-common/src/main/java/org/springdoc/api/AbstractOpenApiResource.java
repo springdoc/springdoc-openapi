@@ -145,7 +145,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				hiddenClasses.add(Class.forName(aClass));
 			}
 			catch (ClassNotFoundException e) {
-				LOGGER.warn("The following class doesn't exist and cannot be hidden: "+ aClass);
+				LOGGER.warn("The following class doesn't exist and cannot be hidden: " + aClass);
 			}
 		}
 		HIDDEN_REST_CONTROLLERS.addAll(hiddenClasses);
@@ -169,6 +169,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			getPaths(mappingsMap);
 			// run the optional customisers
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
+			if (!CollectionUtils.isEmpty(openApi.getServers()))
+				openAPIBuilder.setServersPresent(true);
+			openAPIBuilder.updateServers(openApi);
+
 			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
 				this.removeBrokenReferenceDefinitions(openApi);
 			openAPIBuilder.setCachedOpenAPI(openApi);
@@ -177,7 +181,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					Duration.between(start, Instant.now()).toMillis());
 		}
 		else {
-			openApi = openAPIBuilder.calculateCachedOpenAPI();
+			openApi = openAPIBuilder.updateServers(openAPIBuilder.getCachedOpenAPI());
 		}
 		return openApi;
 	}
@@ -339,7 +343,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			if (apiOperation != null)
 				openAPI = operationParser.parse(apiOperation, operation, openAPI, methodAttributes);
 
-			String operationId = operationParser.getOperationId(operation.getOperationId(),openAPI);
+			String operationId = operationParser.getOperationId(operation.getOperationId(), openAPI);
 			operation.setOperationId(operationId);
 
 			fillParametersList(operation, queryParams, methodAttributes);

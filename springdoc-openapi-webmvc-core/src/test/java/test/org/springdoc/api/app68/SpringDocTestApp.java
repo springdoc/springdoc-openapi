@@ -18,15 +18,20 @@
 
 package test.org.springdoc.api.app68;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.Constants;
 import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 
 import org.springframework.boot.SpringApplication;
@@ -52,9 +57,23 @@ public class SpringDocTestApp {
 	public GroupedOpenApi userOpenApi() {
 		return GroupedOpenApi.builder()
 				.setGroup("users")
-				.packagesToScan("test.org.springdoc.api.app68.api.user")
+				.packagesToScan("test.org.springdoc.api.app68.api.user").addOpenApiCustomiser(serverOpenApiCustomiser1())
 				.addOperationCustomizer(operationCustomizer())
 				.build();
+	}
+
+	public OpenApiCustomiser serverOpenApiCustomiser1() {
+		Server server = new Server().url("http://toto.v1.com").description("myserver1");
+		List<Server> servers = new ArrayList<>();
+		servers.add(server);
+		return openApi -> openApi.setServers(servers);
+	}
+
+	public OpenApiCustomiser serverOpenApiCustomiser2() {
+		Server server = new Server().url("http://toto.v2.com").description("myserver2");
+		List<Server> servers = new ArrayList<>();
+		servers.add(server);
+		return openApi -> openApi.setServers(servers);
 	}
 
 	OperationCustomizer operationCustomizer() {
@@ -71,7 +90,7 @@ public class SpringDocTestApp {
 	public GroupedOpenApi petOpenApi() {
 		return GroupedOpenApi.builder()
 				.setGroup("pets")
-				.pathsToMatch("/pet/**")
+				.pathsToMatch("/pet/**").addOpenApiCustomiser(serverOpenApiCustomiser2())
 				.build();
 	}
 

@@ -151,24 +151,24 @@ public class OpenAPIBuilder {
 		this.mappingsMap.putAll(context.getBeansWithAnnotation(RequestMapping.class));
 		this.mappingsMap.putAll(context.getBeansWithAnnotation(Controller.class));
 
-		// default server value
-		if (CollectionUtils.isEmpty(calculatedOpenAPI.getServers()) || !isServersPresent) {
-			this.updateServers(calculatedOpenAPI);
-		}
 		// add security schemes
 		this.calculateSecuritySchemes(calculatedOpenAPI.getComponents());
 		openApiBuilderCustomisers.ifPresent(customisers -> customisers.forEach(customiser -> customiser.customise(this)));
 	}
 
-	public void updateServers(OpenAPI openAPI) {
-		Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
-		List<Server> servers = new ArrayList();
-		servers.add(server);
-		openAPI.setServers(servers);
+	public OpenAPI updateServers(OpenAPI openAPI) {
+		if (!isServersPresent)        // default server value
+		{
+			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
+			List<Server> servers = new ArrayList();
+			servers.add(server);
+			openAPI.setServers(servers);
+		}
+		return openAPI;
 	}
 
-	public boolean isServersPresent() {
-		return isServersPresent;
+	public void setServersPresent(boolean serversPresent) {
+		isServersPresent = serversPresent;
 	}
 
 	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
@@ -441,12 +441,6 @@ public class OpenAPIBuilder {
 		return Stream.of(controllerAdviceMap).flatMap(mapEl -> mapEl.entrySet().stream()).filter(
 				controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(), Hidden.class) == null))
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
-	}
-
-	public OpenAPI calculateCachedOpenAPI() {
-		if (!this.isServersPresent())
-			this.updateServers(cachedOpenAPI);
-		return cachedOpenAPI;
 	}
 
 	public OpenAPI getCachedOpenAPI() {
