@@ -12,8 +12,8 @@
   },
   "servers": [
     {
-      "url": "http://localhost",
-      "description": "Generated server url"
+      "url": "http://toto.v2.com",
+      "description": "myserver2"
     }
   ],
   "tags": [
