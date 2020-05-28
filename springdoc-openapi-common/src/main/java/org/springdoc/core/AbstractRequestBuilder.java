@@ -127,7 +127,7 @@ public abstract class AbstractRequestBuilder {
 	private final Optional<List<ParameterCustomizer>> parameterCustomizers;
 
 	protected AbstractRequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			OperationBuilder operationBuilder,Optional<List<ParameterCustomizer>> parameterCustomizers,
+			OperationBuilder operationBuilder, Optional<List<ParameterCustomizer>> parameterCustomizers,
 			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super();
 		this.parameterBuilder = parameterBuilder;
@@ -285,34 +285,36 @@ public abstract class AbstractRequestBuilder {
 		PathVariable pathVar = parameterInfo.getPathVar();
 		CookieValue cookieValue = parameterInfo.getCookieValue();
 
-		Parameter parameter = null;
 		RequestInfo requestInfo;
 
 		if (requestHeader != null) {
 			requestInfo = new RequestInfo(ParameterIn.HEADER.toString(), parameterInfo.getpName(), requestHeader.required(),
 					requestHeader.defaultValue());
-			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
+			return buildParam(parameterInfo, components, requestInfo, jsonView);
 
 		}
 		else if (requestParam != null && !parameterBuilder.isFile(parameterInfo.getMethodParameter())) {
 			requestInfo = new RequestInfo(ParameterIn.QUERY.toString(), parameterInfo.getpName(), requestParam.required() && !methodParameter.isOptional(),
 					requestParam.defaultValue());
-			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
+			return buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
 		else if (pathVar != null) {
 			requestInfo = new RequestInfo(ParameterIn.PATH.toString(), parameterInfo.getpName(), !methodParameter.isOptional(), null);
-			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
+			return buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
 		else if (cookieValue != null) {
 			requestInfo = new RequestInfo(ParameterIn.COOKIE.toString(), parameterInfo.getpName(), cookieValue.required(),
 					cookieValue.defaultValue());
-			parameter = buildParam(parameterInfo, components, requestInfo, jsonView);
+			return buildParam(parameterInfo, components, requestInfo, jsonView);
 		}
 		// By default
-		if (RequestMethod.GET.equals(requestMethod) || (parameterInfo.getParameterModel() != null && ParameterIn.PATH.toString().equals(parameterInfo.getParameterModel().getIn())))
-			parameter = this.buildParam(QUERY_PARAM, components, parameterInfo, !methodParameter.isOptional(), null, jsonView);
+		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
+		if (RequestMethod.GET.equals(requestMethod)
+				|| (parameterInfo.getParameterModel() != null && (ParameterIn.PATH.toString().equals(parameterInfo.getParameterModel().getIn())))
+				|| delegatingMethodParameter.isParameterObject())
+			return this.buildParam(QUERY_PARAM, components, parameterInfo, !methodParameter.isOptional(), null, jsonView);
 
-		return parameter;
+		return null;
 	}
 
 	private Parameter buildParam(ParameterInfo parameterInfo, Components components, RequestInfo requestInfo,
