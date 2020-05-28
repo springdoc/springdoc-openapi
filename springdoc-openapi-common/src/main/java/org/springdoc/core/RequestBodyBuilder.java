@@ -91,8 +91,8 @@ public class RequestBodyBuilder {
 
 	private void buildResquestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, String[] classConsumes, String[] methodConsumes, RequestBody requestBodyObject) {
 		Optional<Content> optionalContent = AnnotationsUtils
-				.getContent(requestBody.content(), classConsumes == null ? new String[0] : classConsumes,
-						methodConsumes == null ? new String[0] : methodConsumes, null, components, jsonViewAnnotation);
+				.getContent(requestBody.content(), getConsumes(classConsumes),
+						getConsumes(methodConsumes), null, components, jsonViewAnnotation);
 		if (requestBodyOp == null)
 			optionalContent.ifPresent(requestBodyObject::setContent);
 		else {
@@ -110,6 +110,10 @@ public class RequestBodyBuilder {
 					requestBodyObject.content(newContent);
 			}
 		}
+	}
+
+	private String[] getConsumes(String[] classConsumes) {
+		return classConsumes == null ? new String[0] : classConsumes;
 	}
 
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
