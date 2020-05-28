@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #674 - Support @Parameter annotation attached to @RequestPart, for several @RequestParts
 - #658 - Added support for GroupedOpenApi OperationCustomizer
 - #654 - Use oneOf schema for polymorphic types
-- Separate module for spring-hateoas
+- #693 - Add support for @ParameterObject with POST endpoints 
+- Added separate module for spring-hateoas
 - Added SpringDocUtils.addHiddenRestControllers(String ...)
 
 ### Changed

@@ -51,11 +51,14 @@ public class DelegatingMethodParameter extends MethodParameter {
 
 	private String parameterName;
 
-	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations) {
+	private boolean isParameterObject;
+
+	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, boolean isParameterObject) {
 		super(delegate);
 		this.delegate = delegate;
 		this.additionalParameterAnnotations = additionalParameterAnnotations;
 		this.parameterName = parameterName;
+		this.isParameterObject=isParameterObject;
 	}
 
 	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters) {
@@ -68,7 +71,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
-				explodedParameters.add(new DelegatingMethodParameter(p, name, null));
+				explodedParameters.add(new DelegatingMethodParameter(p, name, null,false));
 			}
 		}
 		return explodedParameters.toArray(new MethodParameter[0]);
@@ -166,5 +169,9 @@ public class DelegatingMethodParameter extends MethodParameter {
 		int result = Objects.hash(super.hashCode(), delegate, parameterName);
 		result = 31 * result + Arrays.hashCode(additionalParameterAnnotations);
 		return result;
+	}
+
+	public boolean isParameterObject() {
+		return isParameterObject;
 	}
 }
