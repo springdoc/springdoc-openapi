@@ -120,5 +120,12 @@ public interface ReturnTypeParser {
 			return ReturnTypeParser.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
 		return methodParameter.getParameterType();
 	}
+
+	static Type getType(MethodParameter methodParameter) {
+		if (methodParameter.getGenericParameterType() instanceof ParameterizedType)
+			return ReturnTypeParser.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
+		return methodParameter.getParameterType();
+	}
+
 }
 
