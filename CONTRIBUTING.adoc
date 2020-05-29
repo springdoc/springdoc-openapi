@@ -30,9 +30,9 @@ Then refer to the relevant documentation:
 3. For swagger-ui configuration:
     - https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/configuration.md
 4. For springdoc-openapi:
-    - https://springdoc.github.io/springdoc-openapi-demos/
-    - https://springdoc.github.io/springdoc-openapi-demos/faq.html
-    - https://springdoc.github.io/springdoc-openapi-demos/migrating-from-springfox.html
+    - https://springdoc.org/
+    - https://springdoc.org/faq.html
+    - https://springdoc.org/migrating-from-springfox.html
   
 
 If you are reporting a bug, please help to speed up problem diagnosis by providing as
