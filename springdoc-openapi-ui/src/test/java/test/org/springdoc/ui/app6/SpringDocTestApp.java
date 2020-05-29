@@ -35,7 +35,7 @@ public class SpringDocTestApp {
 	public GroupedOpenApi storeOpenApi() {
 		String paths[] = { "/store/**" };
 		return GroupedOpenApi.builder()
-				.setGroup("stores")
+				.group("stores")
 				.pathsToMatch(paths)
 				.build();
 	}
@@ -44,7 +44,7 @@ public class SpringDocTestApp {
 	public GroupedOpenApi groupOpenApi() {
 		String paths[] = { "/pet/**" };
 		return GroupedOpenApi.builder()
-				.setGroup("pets")
+				.group("pets")
 				.pathsToMatch(paths)
 				.build();
 	}

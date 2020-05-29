@@ -50,7 +50,7 @@ public class SpringDocTestApp {
 	public GroupedOpenApi streamOpenApi() {
 		String[] paths = { "/stream/**" };
 		String[] packagedToMatch = { "test.org.springdoc.api.app66" };
-		return GroupedOpenApi.builder().setGroup("stream").pathsToMatch(paths)
+		return GroupedOpenApi.builder().group("stream").pathsToMatch(paths)
 				.build();
 	}
 

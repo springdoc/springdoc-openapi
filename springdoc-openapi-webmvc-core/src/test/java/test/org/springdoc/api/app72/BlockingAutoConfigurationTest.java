@@ -99,7 +99,7 @@ public class BlockingAutoConfigurationTest {
 		@Bean
 		GroupedOpenApi testGroupedOpenApi() {
 			return GroupedOpenApi.builder()
-					.setGroup("test-group")
+					.group("test-group")
 					.packagesToScan("org.test")
 					.build();
 		}
