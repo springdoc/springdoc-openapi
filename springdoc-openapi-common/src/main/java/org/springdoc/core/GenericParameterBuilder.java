@@ -213,11 +213,8 @@ public class GenericParameterBuilder {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
-			if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
-				schemaN = SpringDocAnnotationsUtils.extractSchema(components, methodParameter.getGenericParameterType(), jsonView, methodParameter.getParameterAnnotations());
-			}
-			else
-				schemaN = SpringDocAnnotationsUtils.resolveSchemaFromType(methodParameter.getParameterType(), components, jsonView, methodParameter.getParameterAnnotations());
+			Type type = ReturnTypeParser.getType(methodParameter);
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations());
 		}
 		else
 			schemaN = parameterInfo.getParameterModel().getSchema();
