@@ -118,7 +118,7 @@ public class GroupedOpenApi {
 
 		/**
 		 * @deprecated Since v1.4.0, GroupedOpenApi.setGroup is marked as deprecated.
-		 * Use {@link GroupedOpenApi#builder()#group(String)} instead.
+		 * Use {@link #group(String) } instead.
 		 */
 		@Deprecated
 		public Builder setGroup(String group) {
