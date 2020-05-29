@@ -63,7 +63,7 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 							builder.packagesToScan(elt.getPackagesToScan().toArray(new String[0]));
 						if (!CollectionUtils.isEmpty(elt.getPathsToMatch()))
 							builder.pathsToMatch(elt.getPathsToMatch().toArray(new String[0]));
-						return builder.setGroup(elt.getGroup()).build();
+						return builder.group(elt.getGroup()).build();
 					})
 					.collect(Collectors.toList());
 			groupedOpenApis.forEach(elt -> beanFactory.registerSingleton(elt.getGroup(), elt));

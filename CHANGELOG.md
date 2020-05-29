@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added separate module for spring-hateoas
 - Added SpringDocUtils.addHiddenRestControllers(String ...)
 - Added support for wrapper types on request
+- Mark GroupedOpenApi.setGroup as deprecated. Use GroupedOpenApi.group instead.
 ### Changed
 - Upgrade swagger-ui to 3.25.4
 - Upgrade to spring-boot 2.3.0.RELEASE

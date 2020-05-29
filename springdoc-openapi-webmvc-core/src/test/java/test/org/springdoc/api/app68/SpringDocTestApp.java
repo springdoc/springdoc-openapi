@@ -48,7 +48,7 @@ public class SpringDocTestApp {
 	@Bean
 	public GroupedOpenApi storeOpenApi() {
 		return GroupedOpenApi.builder()
-				.setGroup("stores")
+				.group("stores")
 				.pathsToMatch("/store/**")
 				.build();
 	}
@@ -56,7 +56,7 @@ public class SpringDocTestApp {
 	@Bean
 	public GroupedOpenApi userOpenApi() {
 		return GroupedOpenApi.builder()
-				.setGroup("users")
+				.group("users")
 				.packagesToScan("test.org.springdoc.api.app68.api.user").addOpenApiCustomiser(serverOpenApiCustomiser1())
 				.addOperationCustomizer(operationCustomizer())
 				.build();
@@ -89,7 +89,7 @@ public class SpringDocTestApp {
 	@Bean
 	public GroupedOpenApi petOpenApi() {
 		return GroupedOpenApi.builder()
-				.setGroup("pets")
+				.group("pets")
 				.pathsToMatch("/pet/**").addOpenApiCustomiser(serverOpenApiCustomiser2())
 				.build();
 	}
@@ -97,7 +97,7 @@ public class SpringDocTestApp {
 	@Bean
 	public GroupedOpenApi groupOpenApi() {
 		return GroupedOpenApi.builder()
-				.setGroup("groups test")
+				.group("groups test")
 				.pathsToMatch("/v1/**").pathsToExclude("/v1/users")
 				.packagesToScan("test.org.springdoc.api.app68.api.user", "test.org.springdoc.api.app68.api.store")
 				.build();

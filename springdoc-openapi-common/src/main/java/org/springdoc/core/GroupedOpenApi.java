@@ -116,7 +116,13 @@ public class GroupedOpenApi {
 			// use static factory method in parent class
 		}
 
+		@Deprecated
 		public Builder setGroup(String group) {
+			this.group = group;
+			return this;
+		}
+
+		public Builder group(String group) {
 			this.group = group;
 			return this;
 		}
