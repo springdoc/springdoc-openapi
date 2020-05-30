@@ -94,7 +94,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			throws JsonProcessingException {
 		calculateServerUrl(serverHttpRequest, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
-		return Mono.just(Json.mapper().writeValueAsString(openAPI));
+		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
+			return Mono.just(Json.mapper().writeValueAsString(openAPI));
+		else
+			return Mono.just(Json.mapper().writerWithDefaultPrettyPrinter().writeValueAsString(openAPI));
 	}
 
 	@Operation(hidden = true)
@@ -103,7 +106,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl) throws JsonProcessingException {
 		calculateServerUrl(serverHttpRequest, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
-		return Mono.just(Yaml.mapper().writeValueAsString(openAPI));
+		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
+			return Mono.just(Yaml.mapper().writeValueAsString(openAPI));
+		else
+			return Mono.just(Yaml.mapper().writerWithDefaultPrettyPrinter().writeValueAsString(openAPI));
 	}
 
 	@Override

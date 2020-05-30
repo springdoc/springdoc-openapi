@@ -62,6 +62,8 @@ public class SpringDocConfigProperties {
 
 	private boolean removeBrokenReferenceDefinitions = true;
 
+	private boolean writerWithDefaultPrettyPrinter;
+
 	private String defaultConsumesMediaType = MediaType.APPLICATION_JSON_VALUE;
 
 	private String defaultProducesMediaType = MediaType.ALL_VALUE;
@@ -192,6 +194,14 @@ public class SpringDocConfigProperties {
 
 	public void setRemoveBrokenReferenceDefinitions(boolean removeBrokenReferenceDefinitions) {
 		this.removeBrokenReferenceDefinitions = removeBrokenReferenceDefinitions;
+	}
+
+	public boolean isWriterWithDefaultPrettyPrinter() {
+		return writerWithDefaultPrettyPrinter;
+	}
+
+	public void setWriterWithDefaultPrettyPrinter(boolean writerWithDefaultPrettyPrinter) {
+		this.writerWithDefaultPrettyPrinter = writerWithDefaultPrettyPrinter;
 	}
 
 	public static class Webjars {
