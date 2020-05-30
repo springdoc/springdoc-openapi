@@ -95,7 +95,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		this.servletContextProvider = servletContextProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
-		this.repositoryRestResourceProvider=repositoryRestResourceProvider;
+		this.repositoryRestResourceProvider = repositoryRestResourceProvider;
 	}
 
 	@Autowired
@@ -114,7 +114,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		this.servletContextProvider = servletContextProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
-		this.repositoryRestResourceProvider=repositoryRestResourceProvider;
+		this.repositoryRestResourceProvider = repositoryRestResourceProvider;
 	}
 
 	@Operation(hidden = true)
@@ -123,7 +123,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			throws JsonProcessingException {
 		calculateServerUrl(request, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
-		return Json.mapper().writeValueAsString(openAPI);
+		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
+			return Json.mapper().writeValueAsString(openAPI);
+		else
+			return Json.mapper().writerWithDefaultPrettyPrinter().writeValueAsString(openAPI);
 	}
 
 	@Operation(hidden = true)
@@ -132,7 +135,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			throws JsonProcessingException {
 		calculateServerUrl(request, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
-		return Yaml.mapper().writeValueAsString(openAPI);
+		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
+			return Yaml.mapper().writeValueAsString(openAPI);
+		else
+			return Yaml.mapper().writerWithDefaultPrettyPrinter().writeValueAsString(openAPI);
 	}
 
 	@Override
@@ -157,9 +163,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		routerFunctionProvider.ifPresent(routerFunctions -> routerFunctions.getWebMvcRouterFunctionPaths()
 				.ifPresent(routerBeans -> routerBeans.forEach(this::getRouterFunctionPaths)));
 
-		if(repositoryRestResourceProvider.isPresent()){
+		if (repositoryRestResourceProvider.isPresent()) {
 			RepositoryRestResourceProvider restResourceProvider = this.repositoryRestResourceProvider.get();
-			List<RouterOperation>  operationList = restResourceProvider.getRouterOperations(openAPIBuilder.getCalculatedOpenAPI());
+			List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPIBuilder.getCalculatedOpenAPI());
 			calculatePath(operationList);
 		}
 	}
