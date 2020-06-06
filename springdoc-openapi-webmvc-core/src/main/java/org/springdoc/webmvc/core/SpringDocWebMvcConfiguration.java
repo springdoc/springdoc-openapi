@@ -23,8 +23,8 @@ package org.springdoc.webmvc.core;
 import java.util.List;
 import java.util.Optional;
 
-import io.swagger.v3.oas.models.Operation;
 import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericParameterBuilder;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
@@ -35,12 +35,13 @@ import org.springdoc.core.RequestBodyBuilder;
 import org.springdoc.core.ReturnTypeParser;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
-import org.springdoc.webmvc.api.ActuatorProvider;
 import org.springdoc.webmvc.api.OpenApiResource;
 import org.springdoc.webmvc.api.RouterFunctionProvider;
+import org.springdoc.webmvc.api.WebMvcActuatorProvider;
 
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
@@ -54,7 +55,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
@@ -72,7 +72,7 @@ public class SpringDocWebMvcConfiguration {
 	OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
-			Optional<ActuatorProvider> servletContextProvider,
+			Optional<ActuatorProvider> actuatorProvider,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
@@ -81,7 +81,7 @@ public class SpringDocWebMvcConfiguration {
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 		return new OpenApiResource(openAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
-				requestMappingHandlerMapping, servletContextProvider, operationCustomizers,
+				requestMappingHandlerMapping, actuatorProvider, operationCustomizers,
 				openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,
 				routerFunctionProvider, repositoryRestResourceProvider);
 	}
@@ -114,30 +114,18 @@ public class SpringDocWebMvcConfiguration {
 	@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
 	@ConditionalOnClass(WebMvcEndpointHandlerMapping.class)
 	@ConditionalOnManagementPort(ManagementPortType.SAME)
-	class SpringDocWebMvcActuatorConfiguration {
+	static class SpringDocWebMvcActuatorConfiguration {
 
 		@Bean
 		@ConditionalOnMissingBean
 		ActuatorProvider actuatorProvider(WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping) {
-			return new ActuatorProvider(webMvcEndpointHandlerMapping);
+			return new WebMvcActuatorProvider(webMvcEndpointHandlerMapping);
 		}
 
 		@Bean
 		@Lazy(false)
 		OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider) {
-			return new OperationCustomizer() {
-				private int methodCount;
-
-				@Override
-				public Operation customize(Operation operation, HandlerMethod handlerMethod) {
-					if (operation.getTags() != null && operation.getTags().contains(actuatorProvider.getTag().getName())) {
-						operation.setSummary(handlerMethod.toString());
-						operation.setOperationId(operation.getOperationId() + "_" + methodCount++);
-					}
-					return operation;
-				}
-			};
+			return new ActuatorOperationCustomizer(actuatorProvider);
 		}
-
 	}
 }

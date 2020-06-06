@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.MultipleOpenApiSupportCondition;
@@ -32,7 +33,6 @@ import org.springdoc.core.OperationBuilder;
 import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.webmvc.api.ActuatorProvider;
 import org.springdoc.webmvc.api.MultipleOpenApiResource;
 import org.springdoc.webmvc.api.RouterFunctionProvider;
 
@@ -62,7 +62,7 @@ public class MultipleOpenApiSupportConfiguration {
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
-			Optional<ActuatorProvider> servletContextProvider,
+			Optional<ActuatorProvider> actuatorProvider,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
@@ -70,7 +70,7 @@ public class MultipleOpenApiSupportConfiguration {
 		return new MultipleOpenApiResource(groupedOpenApis,
 				defaultOpenAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
-				requestMappingHandlerMapping, servletContextProvider,
+				requestMappingHandlerMapping, actuatorProvider,
 				springDocConfigProperties,
 				springSecurityOAuth2Provider,
 				routerFunctionProvider,repositoryRestResourceProvider);

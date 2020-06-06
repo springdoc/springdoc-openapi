@@ -59,6 +59,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericParameterBuilder;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.MethodAttributes;
@@ -97,6 +98,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	protected final SpringDocConfigProperties springDocConfigProperties;
 
+	protected final Optional<ActuatorProvider> actuatorProvider;
+
 	private final AbstractRequestBuilder requestBuilder;
 
 	private final GenericResponseBuilder responseBuilder;
@@ -116,7 +119,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
-			SpringDocConfigProperties springDocConfigProperties) {
+			SpringDocConfigProperties springDocConfigProperties,
+			Optional<ActuatorProvider> actuatorProvider) {
 		super();
 		this.groupName = Objects.requireNonNull(groupName, "groupName");
 		this.openAPIBuilder = openAPIBuilder;
@@ -128,6 +132,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		if (operationCustomizers.isPresent())
 			operationCustomizers.get().removeIf(Objects::isNull);
 		this.operationCustomizers = operationCustomizers;
+		this.actuatorProvider = actuatorProvider;
 	}
 
 	public static void addRestControllers(Class<?>... classes) {
