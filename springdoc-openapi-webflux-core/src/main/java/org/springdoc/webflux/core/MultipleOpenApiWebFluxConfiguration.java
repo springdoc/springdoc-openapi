@@ -21,8 +21,10 @@
 package org.springdoc.webflux.core;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.MultipleOpenApiSupportCondition;
@@ -56,10 +58,14 @@ public class MultipleOpenApiWebFluxConfiguration {
 	MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
-			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, SpringDocConfigProperties springDocConfigProperties) {
+			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			SpringDocConfigProperties springDocConfigProperties,
+			Optional<ActuatorProvider> actuatorProvider) {
 		return new MultipleOpenApiResource(groupedOpenApis,
 				defaultOpenAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
-				requestMappingHandlerMapping, springDocConfigProperties);
+				requestMappingHandlerMapping,
+				springDocConfigProperties,
+				actuatorProvider);
 	}
 }

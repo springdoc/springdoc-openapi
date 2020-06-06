@@ -37,6 +37,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
@@ -72,8 +73,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
-	private final Optional<ActuatorProvider> servletContextProvider;
-
 	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
 
 	private final Optional<RouterFunctionProvider> routerFunctionProvider;
@@ -83,16 +82,15 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	public OpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
-			Optional<ActuatorProvider> servletContextProvider,
+			Optional<ActuatorProvider> actuatorProvider,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties);
+		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
-		this.servletContextProvider = servletContextProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
 		this.repositoryRestResourceProvider = repositoryRestResourceProvider;
@@ -102,16 +100,15 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
-			Optional<ActuatorProvider> servletContextProvider,
+			Optional<ActuatorProvider> actuatorProvider,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties);
+		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
-		this.servletContextProvider = servletContextProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
 		this.repositoryRestResourceProvider = repositoryRestResourceProvider;
@@ -144,12 +141,12 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	@Override
 	protected void getPaths(Map<String, Object> restControllers) {
 		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-		calculatePath(restControllers, map, Optional.empty());
+		calculatePath(restControllers, map);
 
-		if (servletContextProvider.isPresent()) {
-			map = servletContextProvider.get().getMethods();
-			this.openAPIBuilder.addTag(new HashSet<>(map.values()), servletContextProvider.get().getTag());
-			calculatePath(restControllers, map, servletContextProvider);
+		if (actuatorProvider.isPresent()) {
+			map = actuatorProvider.get().getMethods();
+			this.openAPIBuilder.addTag(new HashSet<>(map.values()), actuatorProvider.get().getTag());
+			calculatePath(restControllers, map);
 		}
 		if (this.springSecurityOAuth2Provider.isPresent()) {
 			SecurityOAuth2Provider securityOAuth2Provider = this.springSecurityOAuth2Provider.get();
@@ -157,7 +154,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			Map<String, Object> requestMappingMapSec = securityOAuth2Provider.getFrameworkEndpoints();
 			Class[] additionalRestClasses = requestMappingMapSec.values().stream().map(Object::getClass).toArray(Class[]::new);
 			AbstractOpenApiResource.addRestControllers(additionalRestClasses);
-			calculatePath(requestMappingMapSec, mapOauth, Optional.empty());
+			calculatePath(requestMappingMapSec, mapOauth);
 		}
 
 		routerFunctionProvider.ifPresent(routerFunctions -> routerFunctions.getWebMvcRouterFunctionPaths()
@@ -170,7 +167,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		}
 	}
 
-	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Optional<ActuatorProvider> actuatorProvider) {
+	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map) {
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
 			HandlerMethod handlerMethod = entry.getValue();

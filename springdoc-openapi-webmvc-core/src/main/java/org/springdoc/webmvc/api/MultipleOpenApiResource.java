@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.OpenAPIBuilder;
@@ -68,7 +69,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
-	private final Optional<ActuatorProvider> servletContextProvider;
+	private final Optional<ActuatorProvider> actuatorProvider;
 
 	private final SpringDocConfigProperties springDocConfigProperties;
 
@@ -83,7 +84,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
-			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> servletContextProvider,
+			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> actuatorProvider,
 			SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
@@ -94,7 +95,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
-		this.servletContextProvider = servletContextProvider;
+		this.actuatorProvider = actuatorProvider;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
@@ -114,7 +115,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 									responseBuilder,
 									operationParser,
 									requestMappingHandlerMapping,
-									servletContextProvider,
+									actuatorProvider,
 									Optional.of(item.getOperationCustomizers()),
 									Optional.of(item.getOpenApiCustomisers()),
 									springDocConfigProperties,

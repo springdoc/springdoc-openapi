@@ -18,33 +18,21 @@
  *
  */
 
-package org.springdoc.webmvc.api;
+package org.springdoc.core;
 
 import java.util.Map;
 
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.tags.Tag;
-import org.springdoc.core.Constants;
 
-import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
 
-public class ActuatorProvider {
+public interface ActuatorProvider {
 
-	private final WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping;
+	Map getMethods();
 
-	public ActuatorProvider(WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping) {
-		this.webMvcEndpointHandlerMapping = webMvcEndpointHandlerMapping;
-	}
-
-	public Map<RequestMappingInfo, HandlerMethod> getMethods() {
-		return webMvcEndpointHandlerMapping.getHandlerMethods();
-	}
-
-	public Tag getTag() {
+	default Tag getTag() {
 		Tag actuatorTag = new Tag();
 		actuatorTag.setName(Constants.SPRINGDOC_ACTUATOR_TAG);
 		actuatorTag.setDescription(Constants.SPRINGDOC_ACTUATOR_DESCRIPTION);
@@ -56,7 +44,7 @@ public class ActuatorProvider {
 		return actuatorTag;
 	}
 
-	public boolean isRestController(String operationPath) {
+	default boolean isRestController(String operationPath) {
 		return operationPath.startsWith(AntPathMatcher.DEFAULT_PATH_SEPARATOR);
 	}
 

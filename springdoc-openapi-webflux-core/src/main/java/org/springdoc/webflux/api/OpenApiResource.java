@@ -20,6 +20,7 @@
 
 package org.springdoc.webflux.api;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
 import org.springdoc.core.OperationBuilder;
@@ -73,8 +75,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties) {
-		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties);
+			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			SpringDocConfigProperties springDocConfigProperties,
+			Optional<ActuatorProvider> actuatorProvider) {
+		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
@@ -83,8 +87,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties);
+			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			SpringDocConfigProperties springDocConfigProperties,
+			Optional<ActuatorProvider> actuatorProvider) {
+		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
@@ -115,6 +121,16 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	@Override
 	protected void getPaths(Map<String, Object> restControllers) {
 		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
+		calculatePath(restControllers, map);
+		if (actuatorProvider.isPresent()) {
+			map = actuatorProvider.get().getMethods();
+			this.openAPIBuilder.addTag(new HashSet<>(map.values()), actuatorProvider.get().getTag());
+			calculatePath(restControllers, map);
+		}
+		getWebFluxRouterFunctionPaths();
+	}
+
+	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map) {
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
 			HandlerMethod handlerMethod = entry.getValue();
@@ -125,7 +141,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				Map<String, String> regexMap = new LinkedHashMap<>();
 				operationPath = PathUtils.parsePath(operationPath, regexMap);
 				if (operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-						&& restControllers.containsKey(handlerMethod.getBean().toString()) && isPackageToScan(handlerMethod.getBeanType().getPackage()) && isPathToMatch(operationPath)) {
+								&& (restControllers.containsKey(handlerMethod.getBean().toString()) || actuatorProvider.isPresent())
+								&& isPackageToScan(handlerMethod.getBeanType().getPackage()) && isPathToMatch(operationPath)) {
 					Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 					// default allowed requestmethods
 					if (requestMethods.isEmpty())
@@ -134,7 +151,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				}
 			}
 		}
-		getWebFluxRouterFunctionPaths();
 	}
 
 	protected void getWebFluxRouterFunctionPaths() {

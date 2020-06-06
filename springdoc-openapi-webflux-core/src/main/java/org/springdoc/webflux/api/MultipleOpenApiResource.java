@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.OpenAPIBuilder;
@@ -70,11 +71,13 @@ public class MultipleOpenApiResource implements InitializingBean {
 
 	private Map<String, OpenApiResource> groupedOpenApiResources;
 
+	private Optional<ActuatorProvider> actuatorProvider;
+
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
-			SpringDocConfigProperties springDocConfigProperties) {
+			SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
 
 		this.groupedOpenApis = groupedOpenApis;
 		this.defaultOpenAPIBuilder = defaultOpenAPIBuilder;
@@ -83,6 +86,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 		this.operationParser = operationParser;
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.springDocConfigProperties = springDocConfigProperties;
+		this.actuatorProvider = actuatorProvider;
 	}
 
 	@Override
@@ -99,7 +103,9 @@ public class MultipleOpenApiResource implements InitializingBean {
 									operationParser,
 									requestMappingHandlerMapping,
 									Optional.of(item.getOperationCustomizers()),
-									Optional.of(item.getOpenApiCustomisers()), springDocConfigProperties
+									Optional.of(item.getOpenApiCustomisers()),
+									springDocConfigProperties,
+									actuatorProvider
 							);
 						}
 				));

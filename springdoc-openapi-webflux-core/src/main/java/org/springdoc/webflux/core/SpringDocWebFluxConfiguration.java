@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericParameterBuilder;
 import org.springdoc.core.GenericResponseBuilder;
 import org.springdoc.core.OpenAPIBuilder;
@@ -32,12 +33,17 @@ import org.springdoc.core.PropertyResolverUtils;
 import org.springdoc.core.RequestBodyBuilder;
 import org.springdoc.core.ReturnTypeParser;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.webflux.api.OpenApiResource;
 import org.springdoc.webflux.core.converters.WebFluxSupportConverter;
 
+import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
+import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -48,6 +54,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
@@ -61,11 +68,13 @@ public class SpringDocWebFluxConfiguration {
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties) {
+			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			SpringDocConfigProperties springDocConfigProperties,
+			Optional<ActuatorProvider> actuatorProvider) {
 		return new OpenApiResource(openAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping,operationCustomizers,
-				openApiCustomisers, springDocConfigProperties);
+				openApiCustomisers, springDocConfigProperties,actuatorProvider);
 	}
 
 	@Bean
@@ -89,5 +98,23 @@ public class SpringDocWebFluxConfiguration {
 	@Lazy(false)
 	WebFluxSupportConverter webFluxSupportConverter() {
 		return new WebFluxSupportConverter();
+	}
+
+	@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
+	@ConditionalOnClass(WebFluxEndpointHandlerMapping.class)
+	@ConditionalOnManagementPort(ManagementPortType.SAME)
+	static class SpringDocWebFluxActuatorConfiguration {
+
+		@Bean
+		@ConditionalOnMissingBean
+		ActuatorProvider actuatorProvider(WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping) {
+			return new WebFluxActuatorProvider(webFluxEndpointHandlerMapping);
+		}
+
+		@Bean
+		@Lazy(false)
+		OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider) {
+			return new ActuatorOperationCustomizer(actuatorProvider);
+		}
 	}
 }
