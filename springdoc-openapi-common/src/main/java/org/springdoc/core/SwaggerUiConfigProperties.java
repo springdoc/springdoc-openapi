@@ -217,7 +217,7 @@ public class SwaggerUiConfigProperties {
 		SpringDocPropertiesUtils.put("tagsSorter", tagsSorter, params);
 		if (!CollectionUtils.isEmpty(supportedSubmitMethods))
 			SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
-		SpringDocPropertiesUtils.put("oauth2RedirectUrl", oauth2RedirectUrl, params);
+		SpringDocPropertiesUtils.put(OAUTH2_REDIRECT_URL_PROPERTY, oauth2RedirectUrl, params);
 		SpringDocPropertiesUtils.put("url", url, params);
 		put(URLS_PROPERTY, urls, params);
 		SpringDocPropertiesUtils.put("urls.primaryName", urlsPrimaryName, params);
