@@ -128,7 +128,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/TweetDTO"
+                  "type": "string"
                 }
               }
             }
@@ -186,7 +186,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/TweetDTO"
+                  "type": "string"
                 }
               }
             }
@@ -230,7 +230,14 @@
         ],
         "responses": {
           "404": {
-            "description": "tweet not found"
+            "description": "tweet not found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           },
           "409": {
             "description": "Conflict",
