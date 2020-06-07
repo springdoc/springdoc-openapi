@@ -86,12 +86,27 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 
 	protected UriComponentsBuilder getUriComponentsBuilder(String sbUrl) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl);
-		uriBuilder.queryParam(SwaggerUiConfigProperties.CONFIG_URL_PROPERTY, swaggerUiConfig.getConfigUrl());
-		if (StringUtils.isNotEmpty(swaggerUiConfig.getLayout()))
-			uriBuilder.queryParam(SwaggerUiConfigProperties.LAYOUT_PROPERTY, swaggerUiConfig.getLayout());
-		if (StringUtils.isNotEmpty(swaggerUiConfig.getFilter()))
-			uriBuilder.queryParam(SwaggerUiConfigProperties.FILTER_PROPERTY, swaggerUiConfig.getFilter());
-
+		if (swaggerUiConfig.isDisplayQueryParams() && StringUtils.isNotEmpty(swaggerUiConfig.getUrl())) {
+			swaggerUiConfig.getConfigParameters().entrySet().stream()
+					.filter(entry -> !SwaggerUiConfigProperties.CONFIG_URL_PROPERTY.equals(entry.getKey()))
+					.filter(entry -> !entry.getKey().startsWith(SwaggerUiConfigProperties.URLS_PROPERTY))
+					.filter(entry -> StringUtils.isNotEmpty((String) entry.getValue()))
+					.forEach(entry -> uriBuilder.queryParam(entry.getKey(), entry.getValue()));
+		} else if (swaggerUiConfig.isDisplayQueryParamsWithoutOauth2() && StringUtils.isNotEmpty(swaggerUiConfig.getUrl())) {
+			swaggerUiConfig.getConfigParameters().entrySet().stream()
+					.filter(entry -> !SwaggerUiConfigProperties.CONFIG_URL_PROPERTY.equals(entry.getKey()))
+					.filter(entry -> !SwaggerUiConfigProperties.OAUTH2_REDIRECT_URL_PROPERTY.equals(entry.getKey()))
+					.filter(entry -> !entry.getKey().startsWith(SwaggerUiConfigProperties.URLS_PROPERTY))
+					.filter(entry -> StringUtils.isNotEmpty((String) entry.getValue()))
+					.forEach(entry -> uriBuilder.queryParam(entry.getKey(), entry.getValue()));
+		}
+		else {
+			uriBuilder.queryParam(SwaggerUiConfigProperties.CONFIG_URL_PROPERTY, swaggerUiConfig.getConfigUrl());
+			if (StringUtils.isNotEmpty(swaggerUiConfig.getLayout()))
+				uriBuilder.queryParam(SwaggerUiConfigProperties.LAYOUT_PROPERTY, swaggerUiConfig.getLayout());
+			if (StringUtils.isNotEmpty(swaggerUiConfig.getFilter()))
+				uriBuilder.queryParam(SwaggerUiConfigProperties.FILTER_PROPERTY, swaggerUiConfig.getFilter());
+		}
 		return uriBuilder;
 	}
 

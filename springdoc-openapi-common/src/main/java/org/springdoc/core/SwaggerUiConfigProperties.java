@@ -61,6 +61,9 @@ public class SwaggerUiConfigProperties {
 
 	public static final String FILTER_PROPERTY = "filter";
 
+	public static final String URLS_PROPERTY = "urls";
+
+	public static final String OAUTH2_REDIRECT_URL_PROPERTY = "oauth2RedirectUrl";
 	/**
 	 * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
 	 */
@@ -169,6 +172,10 @@ public class SwaggerUiConfigProperties {
 
 	private boolean disableSwaggerDefaultUrl;
 
+	private boolean displayQueryParams;
+
+	private boolean displayQueryParamsWithoutOauth2;
+
 	public void addGroup(String group) {
 		SwaggerUrl swaggerUrl = new SwaggerUrl(group);
 		urls.add(swaggerUrl);
@@ -212,7 +219,7 @@ public class SwaggerUiConfigProperties {
 			SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
 		SpringDocPropertiesUtils.put("oauth2RedirectUrl", oauth2RedirectUrl, params);
 		SpringDocPropertiesUtils.put("url", url, params);
-		put("urls", urls, params);
+		put(URLS_PROPERTY, urls, params);
 		SpringDocPropertiesUtils.put("urls.primaryName", urlsPrimaryName, params);
 		return params;
 	}
@@ -383,6 +390,22 @@ public class SwaggerUiConfigProperties {
 
 	public void setDisableSwaggerDefaultUrl(boolean disableSwaggerDefaultUrl) {
 		this.disableSwaggerDefaultUrl = disableSwaggerDefaultUrl;
+	}
+
+	public boolean isDisplayQueryParams() {
+		return displayQueryParams;
+	}
+
+	public void setDisplayQueryParams(boolean displayQueryParams) {
+		this.displayQueryParams = displayQueryParams;
+	}
+
+	public boolean isDisplayQueryParamsWithoutOauth2() {
+		return displayQueryParamsWithoutOauth2;
+	}
+
+	public void setDisplayQueryParamsWithoutOauth2(boolean displayQueryParamsWithoutOauth2) {
+		this.displayQueryParamsWithoutOauth2 = displayQueryParamsWithoutOauth2;
 	}
 
 	public boolean isValidUrl(String url) {
