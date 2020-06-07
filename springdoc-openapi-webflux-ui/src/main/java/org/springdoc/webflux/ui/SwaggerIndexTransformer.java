@@ -21,6 +21,7 @@
 package org.springdoc.webflux.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 import org.springdoc.ui.AbstractSwaggerIndexTransformer;
 import org.springdoc.ui.SpringDocUIException;
@@ -36,8 +37,8 @@ import org.springframework.web.server.ServerWebExchange;
 
 public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer implements ResourceTransformer {
 
-	public SwaggerIndexTransformer(SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
-		super(swaggerUiOAuthProperties, objectMapper);
+	public SwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
+		super(swaggerUiConfig, swaggerUiOAuthProperties, objectMapper);
 	}
 
 	@Override
@@ -46,9 +47,20 @@ public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer imp
 		boolean isIndexFound = false;
 		try {
 			isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
-			if (isIndexFound && !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters())) {
+			if (isIndexFound && !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters()) && swaggerUiConfig.isDisableSwaggerDefaultUrl()) {
 				String html = readFullyAsString(resource.getInputStream());
 				html = addInitOauth(html);
+				html = overwriteSwaggerDefaultUrl(html);
+				return Mono.just(new TransformedResource(resource, html.getBytes()));
+			}
+			else if (isIndexFound && !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters())) {
+				String html = readFullyAsString(resource.getInputStream());
+				html = addInitOauth(html);
+				return Mono.just(new TransformedResource(resource, html.getBytes()));
+			}
+			else if (isIndexFound && swaggerUiConfig.isDisableSwaggerDefaultUrl()) {
+				String html = readFullyAsString(resource.getInputStream());
+				html = overwriteSwaggerDefaultUrl(html);
 				return Mono.just(new TransformedResource(resource, html.getBytes()));
 			}
 			else {

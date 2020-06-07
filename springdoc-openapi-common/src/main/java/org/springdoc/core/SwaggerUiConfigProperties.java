@@ -167,6 +167,8 @@ public class SwaggerUiConfigProperties {
 
 	private String urlsPrimaryName;
 
+	private boolean disableSwaggerDefaultUrl;
+
 	public void addGroup(String group) {
 		SwaggerUrl swaggerUrl = new SwaggerUrl(group);
 		urls.add(swaggerUrl);
@@ -373,6 +375,14 @@ public class SwaggerUiConfigProperties {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public boolean isDisableSwaggerDefaultUrl() {
+		return disableSwaggerDefaultUrl;
+	}
+
+	public void setDisableSwaggerDefaultUrl(boolean disableSwaggerDefaultUrl) {
+		this.disableSwaggerDefaultUrl = disableSwaggerDefaultUrl;
 	}
 
 	public boolean isValidUrl(String url) {
