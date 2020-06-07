@@ -27,6 +27,9 @@ import java.nio.charset.StandardCharsets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.Constants;
+import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 
 public class AbstractSwaggerIndexTransformer {
@@ -35,7 +38,10 @@ public class AbstractSwaggerIndexTransformer {
 
 	protected ObjectMapper objectMapper;
 
-	public AbstractSwaggerIndexTransformer(SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
+	protected SwaggerUiConfigProperties swaggerUiConfig;
+
+	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
+		this.swaggerUiConfig = swaggerUiConfig;
 		this.swaggerUiOAuthProperties = swaggerUiOAuthProperties;
 		this.objectMapper = objectMapper;
 	}
@@ -58,5 +64,9 @@ public class AbstractSwaggerIndexTransformer {
 			baos.write(buffer, 0, length);
 		}
 		return baos.toString(StandardCharsets.UTF_8.name());
+	}
+
+	protected String overwriteSwaggerDefaultUrl(String html) {
+		return html.replace(Constants.SWAGGER_UI_DEFAULT_URL, StringUtils.EMPTY);
 	}
 }

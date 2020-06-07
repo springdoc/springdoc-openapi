@@ -112,6 +112,8 @@ public final class Constants {
 
 	public static final String GRACEFUL_EXCEPTION_OCCURRED = "Graceful exception occurred";
 
+	public static final String SWAGGER_UI_DEFAULT_URL = "https://petstore.swagger.io/v2/swagger.json";
+
 	private Constants() {
 		super();
 	}

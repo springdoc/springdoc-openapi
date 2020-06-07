@@ -25,6 +25,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 import org.springdoc.ui.AbstractSwaggerIndexTransformer;
 
@@ -37,8 +38,8 @@ import org.springframework.web.servlet.resource.TransformedResource;
 
 public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer implements ResourceTransformer {
 
-	public SwaggerIndexTransformer(SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
-		super(swaggerUiOAuthProperties, objectMapper);
+	public SwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
+		super(swaggerUiConfig, swaggerUiOAuthProperties, objectMapper);
 	}
 
 	@Override
@@ -46,9 +47,20 @@ public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer imp
 			ResourceTransformerChain transformerChain) throws IOException {
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
-		if (isIndexFound && !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters())) {
+		if (isIndexFound && !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters()) && swaggerUiConfig.isDisableSwaggerDefaultUrl()) {
 			String html = readFullyAsString(resource.getInputStream());
 			html = addInitOauth(html);
+			html = overwriteSwaggerDefaultUrl(html);
+			return new TransformedResource(resource, html.getBytes());
+		}
+		else if (isIndexFound && !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters())) {
+			String html = readFullyAsString(resource.getInputStream());
+			html = addInitOauth(html);
+			return new TransformedResource(resource, html.getBytes());
+		}
+		else if (isIndexFound && swaggerUiConfig.isDisableSwaggerDefaultUrl()) {
+			String html = readFullyAsString(resource.getInputStream());
+			html = overwriteSwaggerDefaultUrl(html);
 			return new TransformedResource(resource, html.getBytes());
 		}
 		else
