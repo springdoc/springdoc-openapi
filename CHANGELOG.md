@@ -6,11 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.1] - 2020-06-XX
 ### Added
-- 
+- #714 - Ability to disable swagger-ui default petstore url
+- #713 - Add Support of Actuator endpoints using webflux
+- #703 - Pretty print OpenApi spec 
 ### Changed
 - Upgrade swagger-ui to 3.26.0
 ### Fixed
-- 
+- #678 - Multiple file upload Flux<FilePart> error on the swagger-ui
+- #711 - Wrong ApiResponse Schema picked up in ExceptionHandlers returning void
+- #688, #349, #545 - Prevent swagger-config from being loaded twice in case of no groups 
 
 ## [1.4.0] - 2020-05-29
 ### Added
