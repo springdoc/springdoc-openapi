@@ -1,0 +1,10 @@
+description = 'springdoc-openapi-security'
+
+dependencies {
+    api project(':springdoc-openapi-common')
+    api 'org.springframework.security:spring-security-core'
+    implementation 'org.springframework.security.oauth:spring-security-oauth2'
+	testRuntime project(':springdoc-openapi-webmvc-core')
+	testRuntime 'javax.xml:jaxb-impl'
+    testCompile 'jakarta.servlet:jakarta.servlet-api'
+}

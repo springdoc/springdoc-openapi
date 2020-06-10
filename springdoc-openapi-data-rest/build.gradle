@@ -1,0 +1,13 @@
+description = 'springdoc-openapi-data-rest'
+
+dependencies {
+    api project(':springdoc-openapi-hateoas')
+    api 'org.springframework.data:spring-data-rest-core'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'com.querydsl:querydsl-core'
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	testRuntime project(':springdoc-openapi-webmvc-core')
+	testRuntime 'com.h2database:h2'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+}

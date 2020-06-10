@@ -1,0 +1,7 @@
+description = 'springdoc-openapi-webflux-ui'
+
+dependencies {
+    api project(':springdoc-openapi-webflux-core')
+    api 'org.webjars:swagger-ui'
+    api 'org.webjars:webjars-locator-core'
+}

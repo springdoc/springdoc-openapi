@@ -27,6 +27,7 @@ package test.org.springdoc.api.app10;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
@@ -42,5 +43,5 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
 	 * @param customer
 	 * @return
 	 */
-	List<Account> findByCustomer(Customer customer);
+	List<Account> findByCustomer(@Param("customer") Customer customer);
 }
