@@ -1,0 +1,7 @@
+description = 'springdoc-openapi-webflux-core'
+
+dependencies {
+    api project(':springdoc-openapi-common')
+    api 'org.springframework:spring-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+}

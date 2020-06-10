@@ -1,0 +1,12 @@
+description = 'springdoc-openapi-webmvc-core'
+
+dependencies {
+    api project(':springdoc-openapi-common')
+    api 'org.springframework:spring-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    testImplementation 'org.hibernate.validator:hibernate-validator'
+    testImplementation 'javax.money:money-api'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api'
+	testRuntime 'jakarta.servlet:jakarta.servlet-api'
+}
+

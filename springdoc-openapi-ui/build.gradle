@@ -1,0 +1,9 @@
+description = 'springdoc-openapi-ui'
+
+dependencies {
+    api project(':springdoc-openapi-webmvc-core')
+    api 'org.webjars:swagger-ui'
+    api 'org.webjars:webjars-locator-core'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api'
+	testRuntime 'jakarta.servlet:jakarta.servlet-api'
+}

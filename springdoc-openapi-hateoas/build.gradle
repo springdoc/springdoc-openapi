@@ -1,0 +1,12 @@
+description = 'springdoc-openapi-hateoas'
+
+dependencies {
+    api project(':springdoc-openapi-common')
+    api 'org.springframework.hateoas:spring-hateoas'
+    testImplementation project(':springdoc-openapi-webmvc-core')
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'com.h2database:h2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+}
