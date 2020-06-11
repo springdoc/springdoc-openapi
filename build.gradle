@@ -29,7 +29,7 @@ subprojects {
 	apply plugin: 'io.spring.dependency-management'
 
 	configurations {
-		testCompileOnly.extendsFrom compileOnly
+		testImplementation.extendsFrom compileOnly
 	}
 
 	repositories {
