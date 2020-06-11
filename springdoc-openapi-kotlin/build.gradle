@@ -5,7 +5,7 @@ apply plugin: 'kotlin'
 dependencies {
     api project(':springdoc-openapi-common')
     api 'com.fasterxml.jackson.module:jackson-module-kotlin'
-	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-	implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-reactor'
+	compileOnly 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+	compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-reactor'
 	testImplementation project(':springdoc-openapi-webflux-core')
 }
