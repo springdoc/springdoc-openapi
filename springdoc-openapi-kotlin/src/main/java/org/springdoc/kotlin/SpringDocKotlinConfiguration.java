@@ -34,6 +34,10 @@ import org.springframework.context.annotation.Lazy;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
+/**
+ * The type Spring doc kotlin configuration.
+ * @author bnasslahsen
+ */
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocKotlinConfiguration {
@@ -44,6 +48,11 @@ public class SpringDocKotlinConfiguration {
 		Json.mapper().registerModule(new KotlinModule());
 	}
 
+	/**
+	 * Kotlin coroutines return type parser kotlin coroutines return type parser.
+	 *
+	 * @return the kotlin coroutines return type parser
+	 */
 	@Bean
 	@Lazy(false)
 	@ConditionalOnMissingBean

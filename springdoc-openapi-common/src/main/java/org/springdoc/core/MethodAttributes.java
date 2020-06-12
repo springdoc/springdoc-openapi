@@ -36,32 +36,80 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * The type Method attributes.
+ * @author bnasslahsen
+ */
 public class MethodAttributes {
 
+	/**
+	 * The Method overloaded.
+	 */
 	private boolean methodOverloaded;
 
+	/**
+	 * The With api response doc.
+	 */
 	private boolean withApiResponseDoc;
 
+	/**
+	 * The Json view annotation.
+	 */
 	private JsonView jsonViewAnnotation;
 
+	/**
+	 * The Json view annotation for request body.
+	 */
 	private JsonView jsonViewAnnotationForRequestBody;
 
+	/**
+	 * The Default consumes media type.
+	 */
 	private String defaultConsumesMediaType;
 
+	/**
+	 * The Default produces media type.
+	 */
 	private String defaultProducesMediaType;
 
+	/**
+	 * The Headers.
+	 */
 	private LinkedHashMap<String, String> headers = new LinkedHashMap<>();
 
+	/**
+	 * The Class produces.
+	 */
 	private String[] classProduces;
 
+	/**
+	 * The Class consumes.
+	 */
 	private String[] classConsumes;
 
+	/**
+	 * The Method produces.
+	 */
 	private String[] methodProduces = {};
 
+	/**
+	 * The Method consumes.
+	 */
 	private String[] methodConsumes = {};
 
+	/**
+	 * The Generic map response.
+	 */
 	private Map<String, ApiResponse> genericMapResponse = new LinkedHashMap<>();
 
+	/**
+	 * Instantiates a new Method attributes.
+	 *
+	 * @param methodProducesNew the method produces new
+	 * @param defaultConsumesMediaType the default consumes media type
+	 * @param defaultProducesMediaType the default produces media type
+	 * @param genericMapResponse the generic map response
+	 */
 	public MethodAttributes(String[] methodProducesNew, String defaultConsumesMediaType, String defaultProducesMediaType, Map<String, ApiResponse> genericMapResponse) {
 		this.methodProduces = methodProducesNew;
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
@@ -69,11 +117,26 @@ public class MethodAttributes {
 		this.genericMapResponse = genericMapResponse;
 	}
 
+	/**
+	 * Instantiates a new Method attributes.
+	 *
+	 * @param defaultConsumesMediaType the default consumes media type
+	 * @param defaultProducesMediaType the default produces media type
+	 */
 	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType) {
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
 	}
 
+	/**
+	 * Instantiates a new Method attributes.
+	 *
+	 * @param defaultConsumesMediaType the default consumes media type
+	 * @param defaultProducesMediaType the default produces media type
+	 * @param methodConsumes the method consumes
+	 * @param methodProduces the method produces
+	 * @param headers the headers
+	 */
 	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType, String[] methodConsumes, String[] methodProduces, String[] headers) {
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
@@ -82,31 +145,66 @@ public class MethodAttributes {
 		setHeaders(headers);
 	}
 
+	/**
+	 * Get class produces string [ ].
+	 *
+	 * @return the string [ ]
+	 */
 	public String[] getClassProduces() {
 		return classProduces;
 	}
 
+	/**
+	 * Sets class produces.
+	 *
+	 * @param classProduces the class produces
+	 */
 	public void setClassProduces(String[] classProduces) {
 		this.classProduces = classProduces;
 	}
 
+	/**
+	 * Get class consumes string [ ].
+	 *
+	 * @return the string [ ]
+	 */
 	public String[] getClassConsumes() {
 		return classConsumes;
 	}
 
+	/**
+	 * Sets class consumes.
+	 *
+	 * @param classConsumes the class consumes
+	 */
 	public void setClassConsumes(String[] classConsumes) {
 		this.classConsumes = classConsumes;
 	}
 
+	/**
+	 * Get method produces string [ ].
+	 *
+	 * @return the string [ ]
+	 */
 	public String[] getMethodProduces() {
 		return methodProduces;
 	}
 
+	/**
+	 * Get method consumes string [ ].
+	 *
+	 * @return the string [ ]
+	 */
 	public String[] getMethodConsumes() {
 		return methodConsumes;
 	}
 
 
+	/**
+	 * Calculate consumes produces.
+	 *
+	 * @param method the method
+	 */
 	public void calculateConsumesProduces(Method method) {
 		PostMapping reqPostMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, PostMapping.class);
 		if (reqPostMappingMethod != null) {
@@ -144,6 +242,13 @@ public class MethodAttributes {
 			fillMethods(methodProduces, methodConsumes, null);
 	}
 
+	/**
+	 * Fill methods.
+	 *
+	 * @param produces the produces
+	 * @param consumes the consumes
+	 * @param headers the headers
+	 */
 	private void fillMethods(String[] produces, String[] consumes, String[] headers) {
 		if (ArrayUtils.isNotEmpty(produces))
 			methodProduces = produces;
@@ -162,6 +267,11 @@ public class MethodAttributes {
 		setHeaders(headers);
 	}
 
+	/**
+	 * Sets headers.
+	 *
+	 * @param headers the headers
+	 */
 	private void setHeaders(String[] headers) {
 		if (ArrayUtils.isNotEmpty(headers))
 			for (String header : headers) {
@@ -171,44 +281,95 @@ public class MethodAttributes {
 			}
 	}
 
+	/**
+	 * Is method overloaded boolean.
+	 *
+	 * @return the boolean
+	 */
 	public boolean isMethodOverloaded() {
 		return methodOverloaded;
 	}
 
+	/**
+	 * Sets method overloaded.
+	 *
+	 * @param overloaded the overloaded
+	 */
 	public void setMethodOverloaded(boolean overloaded) {
 		methodOverloaded = overloaded;
 	}
 
+	/**
+	 * Sets with api response doc.
+	 *
+	 * @param withApiDoc the with api doc
+	 */
 	public void setWithApiResponseDoc(boolean withApiDoc) {
 		this.withApiResponseDoc = withApiDoc;
 	}
 
+	/**
+	 * Is no api response doc boolean.
+	 *
+	 * @return the boolean
+	 */
 	public boolean isNoApiResponseDoc() {
 		return !withApiResponseDoc;
 	}
 
+	/**
+	 * Gets json view annotation.
+	 *
+	 * @return the json view annotation
+	 */
 	public JsonView getJsonViewAnnotation() {
 		return jsonViewAnnotation;
 	}
 
+	/**
+	 * Sets json view annotation.
+	 *
+	 * @param jsonViewAnnotation the json view annotation
+	 */
 	public void setJsonViewAnnotation(JsonView jsonViewAnnotation) {
 		this.jsonViewAnnotation = jsonViewAnnotation;
 	}
 
+	/**
+	 * Gets json view annotation for request body.
+	 *
+	 * @return the json view annotation for request body
+	 */
 	public JsonView getJsonViewAnnotationForRequestBody() {
 		if (jsonViewAnnotationForRequestBody == null)
 			return jsonViewAnnotation;
 		return jsonViewAnnotationForRequestBody;
 	}
 
+	/**
+	 * Sets json view annotation for request body.
+	 *
+	 * @param jsonViewAnnotationForRequestBody the json view annotation for request body
+	 */
 	public void setJsonViewAnnotationForRequestBody(JsonView jsonViewAnnotationForRequestBody) {
 		this.jsonViewAnnotationForRequestBody = jsonViewAnnotationForRequestBody;
 	}
 
+	/**
+	 * Gets headers.
+	 *
+	 * @return the headers
+	 */
 	public Map<String, String> getHeaders() {
 		return headers;
 	}
 
+	/**
+	 * Calculate generic map response api responses.
+	 *
+	 * @param genericMapResponse the generic map response
+	 * @return the api responses
+	 */
 	public ApiResponses calculateGenericMapResponse(Map<String, ApiResponse> genericMapResponse) {
 		ApiResponses apiResponses = new ApiResponses();
 		genericMapResponse.forEach(apiResponses::addApiResponse);
@@ -216,6 +377,11 @@ public class MethodAttributes {
 		return apiResponses;
 	}
 
+	/**
+	 * Gets generic map response.
+	 *
+	 * @return the generic map response
+	 */
 	public Map<String, ApiResponse> getGenericMapResponse() {
 		return genericMapResponse;
 	}

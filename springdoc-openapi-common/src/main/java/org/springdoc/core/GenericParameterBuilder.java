@@ -55,13 +55,26 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * The type Generic parameter builder.
+ * @author bnasslahsen
+ */
 @SuppressWarnings("rawtypes")
 public class GenericParameterBuilder {
 
+	/**
+	 * The constant FILE_TYPES.
+	 */
 	private static final List<Class<?>> FILE_TYPES = new ArrayList<>();
 
+	/**
+	 * The constant ANNOTATIOSN_TO_IGNORE.
+	 */
 	private static final List<Class> ANNOTATIOSN_TO_IGNORE = new ArrayList<>();
 
+	/**
+	 * The constant LOGGER.
+	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericParameterBuilder.class);
 
 	static {
@@ -71,30 +84,66 @@ public class GenericParameterBuilder {
 		ANNOTATIOSN_TO_IGNORE.add(RequestAttribute.class);
 	}
 
+	/**
+	 * The Property resolver utils.
+	 */
 	private final PropertyResolverUtils propertyResolverUtils;
 
+	/**
+	 * Instantiates a new Generic parameter builder.
+	 *
+	 * @param propertyResolverUtils the property resolver utils
+	 */
 	public GenericParameterBuilder(PropertyResolverUtils propertyResolverUtils) {
 		this.propertyResolverUtils = propertyResolverUtils;
 	}
 
+	/**
+	 * Add file type.
+	 *
+	 * @param classes the classes
+	 */
 	public static void addFileType(Class<?>... classes) {
 		FILE_TYPES.addAll(Arrays.asList(classes));
 	}
 
+	/**
+	 * Add annotations to ignore.
+	 *
+	 * @param classes the classes
+	 */
 	public static void addAnnotationsToIgnore(Class<?>... classes) {
 		ANNOTATIOSN_TO_IGNORE.addAll(Arrays.asList(classes));
 	}
 
+	/**
+	 * Remove annotations to ignore.
+	 *
+	 * @param classes the classes
+	 */
 	public static void removeAnnotationsToIgnore(Class<?>... classes) {
 		List classesToIgnore = Arrays.asList(classes);
 		if (ANNOTATIOSN_TO_IGNORE.containsAll(classesToIgnore))
 			ANNOTATIOSN_TO_IGNORE.removeAll(Arrays.asList(classes));
 	}
 
+	/**
+	 * Is file boolean.
+	 *
+	 * @param type the type
+	 * @return the boolean
+	 */
 	public static boolean isFile(Class type) {
 		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(type));
 	}
 
+	/**
+	 * Merge parameter parameter.
+	 *
+	 * @param existingParamDoc the existing param doc
+	 * @param paramCalcul the param calcul
+	 * @return the parameter
+	 */
 	public static Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
 		Parameter result = paramCalcul;
 		if (paramCalcul != null && paramCalcul.getName() != null) {
@@ -110,6 +159,12 @@ public class GenericParameterBuilder {
 		return result;
 	}
 
+	/**
+	 * Merge parameter.
+	 *
+	 * @param paramCalcul the param calcul
+	 * @param paramDoc the param doc
+	 */
 	private static void mergeParameter(Parameter paramCalcul, Parameter paramDoc) {
 		if (StringUtils.isBlank(paramDoc.getDescription()))
 			paramDoc.setDescription(paramCalcul.getDescription());
@@ -151,6 +206,14 @@ public class GenericParameterBuilder {
 			paramDoc.setExplode(paramCalcul.getExplode());
 	}
 
+	/**
+	 * Build parameter from doc parameter.
+	 *
+	 * @param parameterDoc the parameter doc
+	 * @param components the components
+	 * @param jsonView the json view
+	 * @return the parameter
+	 */
 	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
 			Components components, JsonView jsonView) {
 		Parameter parameter = new Parameter();
@@ -186,6 +249,14 @@ public class GenericParameterBuilder {
 		return parameter;
 	}
 
+	/**
+	 * Sets schema.
+	 *
+	 * @param parameterDoc the parameter doc
+	 * @param components the components
+	 * @param jsonView the json view
+	 * @param parameter the parameter
+	 */
 	private void setSchema(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonView, Parameter parameter) {
 		if (StringUtils.isNotBlank(parameterDoc.ref()))
 			parameter.$ref(parameterDoc.ref());
@@ -207,6 +278,15 @@ public class GenericParameterBuilder {
 		}
 	}
 
+	/**
+	 * Calculate schema schema.
+	 *
+	 * @param components the components
+	 * @param parameterInfo the parameter info
+	 * @param requestBodyInfo the request body info
+	 * @param jsonView the json view
+	 * @return the schema
+	 */
 	Schema calculateSchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, JsonView jsonView) {
 		Schema schemaN;
 		String paramName = parameterInfo.getpName();
@@ -226,6 +306,16 @@ public class GenericParameterBuilder {
 		return schemaN;
 	}
 
+	/**
+	 * Calculate request body schema schema.
+	 *
+	 * @param components the components
+	 * @param parameterInfo the parameter info
+	 * @param requestBodyInfo the request body info
+	 * @param schemaN the schema n
+	 * @param paramName the param name
+	 * @return the schema
+	 */
 	private Schema calculateRequestBodySchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, Schema schemaN, String paramName) {
 		if (schemaN != null && StringUtils.isEmpty(schemaN.getDescription()) && parameterInfo.getParameterModel() != null) {
 			String description = parameterInfo.getParameterModel().getDescription();
@@ -251,12 +341,24 @@ public class GenericParameterBuilder {
 		return schemaN;
 	}
 
+	/**
+	 * Is annotation to ignore boolean.
+	 *
+	 * @param parameter the parameter
+	 * @return the boolean
+	 */
 	public boolean isAnnotationToIgnore(MethodParameter parameter) {
 		return ANNOTATIOSN_TO_IGNORE.stream().anyMatch(
 				annotation -> parameter.getParameterAnnotation(annotation) != null
 						|| AnnotationUtils.findAnnotation(parameter.getParameterType(), annotation) != null);
 	}
 
+	/**
+	 * Sets examples.
+	 *
+	 * @param parameterDoc the parameter doc
+	 * @param parameter the parameter
+	 */
 	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
 		Map<String, Example> exampleMap = new HashMap<>();
 		if (parameterDoc.examples().length == 1 && StringUtils.isBlank(parameterDoc.examples()[0].name())) {
@@ -274,6 +376,12 @@ public class GenericParameterBuilder {
 		}
 	}
 
+	/**
+	 * Sets extensions.
+	 *
+	 * @param parameterDoc the parameter doc
+	 * @param parameter the parameter
+	 */
 	private void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
 		if (parameterDoc.extensions().length > 0) {
 			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
@@ -281,6 +389,12 @@ public class GenericParameterBuilder {
 		}
 	}
 
+	/**
+	 * Sets parameter explode.
+	 *
+	 * @param parameter the parameter
+	 * @param p the p
+	 */
 	private void setParameterExplode(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
 		if (isExplodable(p)) {
 			if (Explode.TRUE.equals(p.explode())) {
@@ -292,12 +406,24 @@ public class GenericParameterBuilder {
 		}
 	}
 
+	/**
+	 * Sets parameter style.
+	 *
+	 * @param parameter the parameter
+	 * @param p the p
+	 */
 	private void setParameterStyle(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
 		if (StringUtils.isNotBlank(p.style().toString())) {
 			parameter.setStyle(Parameter.StyleEnum.valueOf(p.style().toString().toUpperCase()));
 		}
 	}
 
+	/**
+	 * Is explodable boolean.
+	 *
+	 * @param p the p
+	 * @return the boolean
+	 */
 	private boolean isExplodable(io.swagger.v3.oas.annotations.Parameter p) {
 		io.swagger.v3.oas.annotations.media.Schema schema = p.schema();
 		boolean explode = true;
@@ -308,6 +434,12 @@ public class GenericParameterBuilder {
 		return explode;
 	}
 
+	/**
+	 * Is file boolean.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the boolean
+	 */
 	public boolean isFile(MethodParameter methodParameter) {
 		if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) methodParameter.getGenericParameterType();
@@ -319,6 +451,12 @@ public class GenericParameterBuilder {
 		}
 	}
 
+	/**
+	 * Is file boolean.
+	 *
+	 * @param parameterizedType the parameterized type
+	 * @return the boolean
+	 */
 	private boolean isFile(ParameterizedType parameterizedType) {
 		Type type = parameterizedType.getActualTypeArguments()[0];
 		Class fileClass = ResolvableType.forType(type).getRawClass();

@@ -43,14 +43,32 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 
+/**
+ * The type Security parser.
+ * @author bnasslahsen
+ */
 class SecurityParser {
 
+	/**
+	 * The Property resolver utils.
+	 */
 	private final PropertyResolverUtils propertyResolverUtils;
 
+	/**
+	 * Instantiates a new Security parser.
+	 *
+	 * @param propertyResolverUtils the property resolver utils
+	 */
 	public SecurityParser(PropertyResolverUtils propertyResolverUtils) {
 		this.propertyResolverUtils = propertyResolverUtils;
 	}
 
+	/**
+	 * Is empty boolean.
+	 *
+	 * @param oAuthFlows the o auth flows
+	 * @return the boolean
+	 */
 	private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
 		boolean result;
 		if (oAuthFlows == null)
@@ -61,6 +79,12 @@ class SecurityParser {
 		return result;
 	}
 
+	/**
+	 * Is empty boolean.
+	 *
+	 * @param oAuthFlow the o auth flow
+	 * @return the boolean
+	 */
 	private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow) {
 		boolean result;
 		if (oAuthFlow == null)
@@ -71,6 +95,12 @@ class SecurityParser {
 		return result;
 	}
 
+	/**
+	 * Is empty boolean.
+	 *
+	 * @param scopes the scopes
+	 * @return the boolean
+	 */
 	private static boolean isEmpty(OAuthScope[] scopes) {
 		boolean result = false;
 		if (scopes == null || scopes.length == 0)
@@ -78,6 +108,12 @@ class SecurityParser {
 		return result;
 	}
 
+	/**
+	 * Get security requirements io . swagger . v 3 . oas . annotations . security . security requirement [ ].
+	 *
+	 * @param method the method
+	 * @return the io . swagger . v 3 . oas . annotations . security . security requirement [ ]
+	 */
 	public io.swagger.v3.oas.annotations.security.SecurityRequirement[] getSecurityRequirements(
 			HandlerMethod method) {
 		// class SecurityRequirements
@@ -109,6 +145,13 @@ class SecurityParser {
 		return (allSecurityTags != null) ? allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]) : null;
 	}
 
+	/**
+	 * Add security requirements set.
+	 *
+	 * @param allSecurityTags the all security tags
+	 * @param securityRequirementsClassList the security requirements class list
+	 * @return the set
+	 */
 	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> addSecurityRequirements(Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList) {
 		if (allSecurityTags == null)
 			allSecurityTags = new HashSet<>();
@@ -116,6 +159,12 @@ class SecurityParser {
 		return allSecurityTags;
 	}
 
+	/**
+	 * Gets security requirements.
+	 *
+	 * @param securityRequirementsApi the security requirements api
+	 * @return the security requirements
+	 */
 	public Optional<List<SecurityRequirement>> getSecurityRequirements(
 			io.swagger.v3.oas.annotations.security.SecurityRequirement[] securityRequirementsApi) {
 		if (securityRequirementsApi == null || securityRequirementsApi.length == 0)
@@ -136,6 +185,12 @@ class SecurityParser {
 		return Optional.of(securityRequirements);
 	}
 
+	/**
+	 * Gets security scheme.
+	 *
+	 * @param securityScheme the security scheme
+	 * @return the security scheme
+	 */
 	public Optional<SecuritySchemePair> getSecurityScheme(
 			io.swagger.v3.oas.annotations.security.SecurityScheme securityScheme) {
 		if (securityScheme == null)
@@ -183,6 +238,12 @@ class SecurityParser {
 		return Optional.of(result);
 	}
 
+	/**
+	 * Build security requirement.
+	 *
+	 * @param securityRequirements the security requirements
+	 * @param operation the operation
+	 */
 	public void buildSecurityRequirement(
 			io.swagger.v3.oas.annotations.security.SecurityRequirement[] securityRequirements, Operation operation) {
 		Optional<List<SecurityRequirement>> requirementsObject = this.getSecurityRequirements(securityRequirements);
@@ -191,6 +252,12 @@ class SecurityParser {
 				.forEach(operation::addSecurityItem));
 	}
 
+	/**
+	 * Gets o auth flows.
+	 *
+	 * @param oAuthFlows the o auth flows
+	 * @return the o auth flows
+	 */
 	private Optional<OAuthFlows> getOAuthFlows(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
 		if (isEmpty(oAuthFlows))
 			return Optional.empty();
@@ -207,6 +274,12 @@ class SecurityParser {
 		return Optional.of(oAuthFlowsObject);
 	}
 
+	/**
+	 * Gets o auth flow.
+	 *
+	 * @param oAuthFlow the o auth flow
+	 * @return the o auth flow
+	 */
 	private Optional<OAuthFlow> getOAuthFlow(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow) {
 		if (isEmpty(oAuthFlow)) {
 			return Optional.empty();
@@ -229,6 +302,12 @@ class SecurityParser {
 		return Optional.of(oAuthFlowObject);
 	}
 
+	/**
+	 * Gets scopes.
+	 *
+	 * @param scopes the scopes
+	 * @return the scopes
+	 */
 	private Optional<Scopes> getScopes(OAuthScope[] scopes) {
 		if (isEmpty(scopes))
 			return Optional.empty();
@@ -238,11 +317,23 @@ class SecurityParser {
 		return Optional.of(scopesObject);
 	}
 
+	/**
+	 * Gets in.
+	 *
+	 * @param value the value
+	 * @return the in
+	 */
 	private SecurityScheme.In getIn(String value) {
 		return Arrays.stream(SecurityScheme.In.values()).filter(i -> i.toString().equals(value)).findFirst()
 				.orElse(null);
 	}
 
+	/**
+	 * Gets type.
+	 *
+	 * @param value the value
+	 * @return the type
+	 */
 	private SecurityScheme.Type getType(String value) {
 		return Arrays.stream(SecurityScheme.Type.values()).filter(i -> i.toString().equals(value)).findFirst()
 				.orElse(null);

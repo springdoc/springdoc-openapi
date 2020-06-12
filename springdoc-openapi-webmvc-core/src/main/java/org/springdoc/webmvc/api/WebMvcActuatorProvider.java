@@ -29,10 +29,22 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
 
+/**
+ * The type Web mvc actuator provider.
+ * @author bnasslahsen
+ */
 public class WebMvcActuatorProvider implements ActuatorProvider {
 
+	/**
+	 * The Web mvc endpoint handler mapping.
+	 */
 	private final WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping;
 
+	/**
+	 * Instantiates a new Web mvc actuator provider.
+	 *
+	 * @param webMvcEndpointHandlerMapping the web mvc endpoint handler mapping
+	 */
 	public WebMvcActuatorProvider(WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping) {
 		this.webMvcEndpointHandlerMapping = webMvcEndpointHandlerMapping;
 	}

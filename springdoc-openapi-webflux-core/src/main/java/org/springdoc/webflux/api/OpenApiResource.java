@@ -66,11 +66,32 @@ import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
+/**
+ * The type Open api resource.
+ * @author bnasslahsen
+ */
 @RestController
 public class OpenApiResource extends AbstractOpenApiResource {
 
+	/**
+	 * The Request mapping handler mapping.
+	 */
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
+	/**
+	 * Instantiates a new Open api resource.
+	 *
+	 * @param groupName the group name
+	 * @param openAPIBuilder the open api builder
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param actuatorProvider the actuator provider
+	 */
 	public OpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
@@ -82,6 +103,19 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
+	/**
+	 * Instantiates a new Open api resource.
+	 *
+	 * @param openAPIBuilder the open api builder
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param actuatorProvider the actuator provider
+	 */
 	@Autowired
 	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -94,6 +128,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
+	/**
+	 * Openapi json mono.
+	 *
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @return the mono
+	 * @throws JsonProcessingException the json processing exception
+	 */
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl)
@@ -106,6 +148,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			return Mono.just(Json.mapper().writerWithDefaultPrettyPrinter().writeValueAsString(openAPI));
 	}
 
+	/**
+	 * Openapi yaml mono.
+	 *
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @return the mono
+	 * @throws JsonProcessingException the json processing exception
+	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
 	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest,
@@ -130,6 +180,12 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		getWebFluxRouterFunctionPaths();
 	}
 
+	/**
+	 * Calculate path.
+	 *
+	 * @param restControllers the rest controllers
+	 * @param map the map
+	 */
 	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map) {
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
@@ -153,6 +209,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		}
 	}
 
+	/**
+	 * Gets web flux router function paths.
+	 */
 	protected void getWebFluxRouterFunctionPaths() {
 		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
 		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
@@ -164,6 +223,12 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		}
 	}
 
+	/**
+	 * Calculate server url.
+	 *
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 */
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
 		String requestUrl = decode(serverHttpRequest.getURI().toString());
 		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());

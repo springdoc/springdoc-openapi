@@ -20,8 +20,18 @@
 
 package org.springdoc.ui;
 
+/**
+ * The type Spring doc ui exception.
+ * @author bnasslahsen
+ */
 public class SpringDocUIException extends RuntimeException {
 
+	/**
+	 * Instantiates a new Spring doc ui exception.
+	 *
+	 * @param message the message
+	 * @param cause the cause
+	 */
 	public SpringDocUIException(String message, Throwable cause) {
 		super(message, cause);
 	}

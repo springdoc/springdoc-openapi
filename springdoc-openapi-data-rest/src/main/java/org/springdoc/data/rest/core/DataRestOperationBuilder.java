@@ -48,18 +48,44 @@ import org.springframework.data.rest.webmvc.support.DefaultedPageable;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
+/**
+ * The type Data rest operation builder.
+ * @author bnasslahsen
+ */
 public class DataRestOperationBuilder {
 
+	/**
+	 * The constant LOGGER.
+	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataRestOperationBuilder.class);
 
+	/**
+	 * The constant STRING_SEPARATOR.
+	 */
 	private static final String STRING_SEPARATOR = "-";
 
+	/**
+	 * The Data rest request builder.
+	 */
 	private DataRestRequestBuilder dataRestRequestBuilder;
 
+	/**
+	 * The Tags builder.
+	 */
 	private DataRestTagsBuilder tagsBuilder;
 
+	/**
+	 * The Data rest response builder.
+	 */
 	private DataRestResponseBuilder dataRestResponseBuilder;
 
+	/**
+	 * Instantiates a new Data rest operation builder.
+	 *
+	 * @param dataRestRequestBuilder the data rest request builder
+	 * @param tagsBuilder the tags builder
+	 * @param dataRestResponseBuilder the data rest response builder
+	 */
 	public DataRestOperationBuilder(DataRestRequestBuilder dataRestRequestBuilder, DataRestTagsBuilder tagsBuilder,
 			DataRestResponseBuilder dataRestResponseBuilder) {
 		this.dataRestRequestBuilder = dataRestRequestBuilder;
@@ -67,6 +93,20 @@ public class DataRestOperationBuilder {
 		this.dataRestResponseBuilder = dataRestResponseBuilder;
 	}
 
+	/**
+	 * Build operation operation.
+	 *
+	 * @param handlerMethod the handler method
+	 * @param domainType the domain type
+	 * @param openAPI the open api
+	 * @param requestMethod the request method
+	 * @param operationPath the operation path
+	 * @param methodAttributes the method attributes
+	 * @param resourceMetadata the resource metadata
+	 * @param methodResourceMapping the method resource mapping
+	 * @param controllerType the controller type
+	 * @return the operation
+	 */
 	public Operation buildOperation(HandlerMethod handlerMethod, Class<?> domainType,
 			OpenAPI openAPI, RequestMethod requestMethod, String operationPath, MethodAttributes methodAttributes,
 			ResourceMetadata resourceMetadata, MethodResourceMapping methodResourceMapping, ControllerType controllerType) {
@@ -82,6 +122,18 @@ public class DataRestOperationBuilder {
 		return operation;
 	}
 
+	/**
+	 * Build entity operation operation.
+	 *
+	 * @param handlerMethod the handler method
+	 * @param domainType the domain type
+	 * @param openAPI the open api
+	 * @param requestMethod the request method
+	 * @param operationPath the operation path
+	 * @param methodAttributes the method attributes
+	 * @param resourceMetadata the resource metadata
+	 * @return the operation
+	 */
 	private Operation buildEntityOperation(HandlerMethod handlerMethod, Class<?> domainType,
 			OpenAPI openAPI, RequestMethod requestMethod, String operationPath, MethodAttributes methodAttributes,
 			ResourceMetadata resourceMetadata) {
@@ -94,6 +146,17 @@ public class DataRestOperationBuilder {
 		return operation;
 	}
 
+	/**
+	 * Build search operation operation.
+	 *
+	 * @param handlerMethod the handler method
+	 * @param domainType the domain type
+	 * @param openAPI the open api
+	 * @param requestMethod the request method
+	 * @param methodAttributes the method attributes
+	 * @param methodResourceMapping the method resource mapping
+	 * @return the operation
+	 */
 	private Operation buildSearchOperation(HandlerMethod handlerMethod, Class<?> domainType,
 			OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes,
 			MethodResourceMapping methodResourceMapping) {
@@ -131,6 +194,14 @@ public class DataRestOperationBuilder {
 		return operation;
 	}
 
+	/**
+	 * Init operation operation.
+	 *
+	 * @param handlerMethod the handler method
+	 * @param domainType the domain type
+	 * @param requestMethod the request method
+	 * @return the operation
+	 */
 	private Operation initOperation(HandlerMethod handlerMethod, Class<?> domainType, RequestMethod requestMethod) {
 		Operation operation = new Operation();
 		StringBuilder operationIdBuilder = new StringBuilder();
@@ -143,6 +214,13 @@ public class DataRestOperationBuilder {
 		return operation;
 	}
 
+	/**
+	 * Add operation description.
+	 *
+	 * @param operation the operation
+	 * @param requestMethod the request method
+	 * @param entity the entity
+	 */
 	private void addOperationDescription(Operation operation, RequestMethod requestMethod, String entity) {
 		switch (requestMethod) {
 			case GET:

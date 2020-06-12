@@ -36,17 +36,37 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 
 
+/**
+ * The type Swagger config.
+ * @author bnasslahsen
+ */
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerConfig implements WebFluxConfigurer {
 
+	/**
+	 * Swagger web flux configurer swagger web flux configurer.
+	 *
+	 * @param swaggerUiConfig the swagger ui config
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param swaggerIndexTransformer the swagger index transformer
+	 * @return the swagger web flux configurer
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	SwaggerWebFluxConfigurer swaggerWebFluxConfigurer(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer) {
 		return new SwaggerWebFluxConfigurer(swaggerUiConfig, springDocConfigProperties, swaggerIndexTransformer);
 	}
 
+	/**
+	 * Index page transformer swagger index transformer.
+	 *
+	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
+	 * @param objectMapper the object mapper
+	 * @return the swagger index transformer
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig ,SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {

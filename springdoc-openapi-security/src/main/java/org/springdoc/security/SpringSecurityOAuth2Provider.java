@@ -29,14 +29,31 @@ import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpointHa
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
+/**
+ * The type Spring security o auth 2 provider.
+ * @author bnasslahsen
+ */
 public class SpringSecurityOAuth2Provider implements SecurityOAuth2Provider {
 
+	/**
+	 * The Oauth 2 endpoint handler mapping.
+	 */
 	private FrameworkEndpointHandlerMapping oauth2EndpointHandlerMapping;
 
+	/**
+	 * Instantiates a new Spring security o auth 2 provider.
+	 *
+	 * @param oauth2EndpointHandlerMapping the oauth 2 endpoint handler mapping
+	 */
 	public SpringSecurityOAuth2Provider(FrameworkEndpointHandlerMapping oauth2EndpointHandlerMapping) {
 		this.oauth2EndpointHandlerMapping = oauth2EndpointHandlerMapping;
 	}
 
+	/**
+	 * Gets oauth 2 endpoint handler mapping.
+	 *
+	 * @return the oauth 2 endpoint handler mapping
+	 */
 	public FrameworkEndpointHandlerMapping getOauth2EndpointHandlerMapping() {
 		return oauth2EndpointHandlerMapping;
 	}

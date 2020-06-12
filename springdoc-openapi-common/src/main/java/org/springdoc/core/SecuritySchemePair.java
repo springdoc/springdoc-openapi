@@ -22,22 +22,48 @@ package org.springdoc.core;
 
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
+/**
+ * The type Security scheme pair.
+ * @author bnasslahsen
+ */
 class SecuritySchemePair {
 
+	/**
+	 * The Key.
+	 */
 	private final String key;
 
+	/**
+	 * The Security scheme.
+	 */
 	private final SecurityScheme securityScheme;
 
+	/**
+	 * Instantiates a new Security scheme pair.
+	 *
+	 * @param key the key
+	 * @param securityScheme the security scheme
+	 */
 	public SecuritySchemePair(String key, SecurityScheme securityScheme) {
 		super();
 		this.key = key;
 		this.securityScheme = securityScheme;
 	}
 
+	/**
+	 * Gets key.
+	 *
+	 * @return the key
+	 */
 	public String getKey() {
 		return key;
 	}
 
+	/**
+	 * Gets security scheme.
+	 *
+	 * @return the security scheme
+	 */
 	public SecurityScheme getSecurityScheme() {
 		return securityScheme;
 	}

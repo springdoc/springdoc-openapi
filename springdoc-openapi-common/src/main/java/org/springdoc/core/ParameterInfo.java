@@ -30,22 +30,53 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * The type Parameter info.
+ * @author bnasslahsen
+ */
 public class ParameterInfo {
 
+	/**
+	 * The Method parameter.
+	 */
 	private final MethodParameter methodParameter;
 
+	/**
+	 * The P name.
+	 */
 	private String pName;
 
+	/**
+	 * The Parameter model.
+	 */
 	private io.swagger.v3.oas.models.parameters.Parameter parameterModel;
 
+	/**
+	 * The Request header.
+	 */
 	private RequestHeader requestHeader;
 
+	/**
+	 * The Request param.
+	 */
 	private RequestParam requestParam;
 
+	/**
+	 * The Path var.
+	 */
 	private PathVariable pathVar;
 
+	/**
+	 * The Cookie value.
+	 */
 	private CookieValue cookieValue;
 
+	/**
+	 * Instantiates a new Parameter info.
+	 *
+	 * @param pName the p name
+	 * @param methodParameter the method parameter
+	 */
 	public ParameterInfo(String pName, MethodParameter methodParameter) {
 		this.methodParameter = methodParameter;
 		this.requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
@@ -55,46 +86,106 @@ public class ParameterInfo {
 		this.pName = calculateName(pName, requestHeader, requestParam, pathVar, cookieValue);
 	}
 
+	/**
+	 * Gets name.
+	 *
+	 * @return the name
+	 */
 	public String getpName() {
 		return pName;
 	}
 
+	/**
+	 * Sets name.
+	 *
+	 * @param pName the p name
+	 */
 	public void setpName(String pName) {
 		this.pName = pName;
 	}
 
+	/**
+	 * Gets method parameter.
+	 *
+	 * @return the method parameter
+	 */
 	public MethodParameter getMethodParameter() {
 		return methodParameter;
 	}
 
+	/**
+	 * Gets parameter.
+	 *
+	 * @return the parameter
+	 */
 	public Parameter getParameter() {
 		return methodParameter.getParameter();
 	}
 
+	/**
+	 * Gets parameter model.
+	 *
+	 * @return the parameter model
+	 */
 	public io.swagger.v3.oas.models.parameters.Parameter getParameterModel() {
 		return parameterModel;
 	}
 
+	/**
+	 * Sets parameter model.
+	 *
+	 * @param parameterModel the parameter model
+	 */
 	public void setParameterModel(io.swagger.v3.oas.models.parameters.Parameter parameterModel) {
 		this.parameterModel = parameterModel;
 	}
 
+	/**
+	 * Gets request header.
+	 *
+	 * @return the request header
+	 */
 	public RequestHeader getRequestHeader() {
 		return requestHeader;
 	}
 
+	/**
+	 * Gets request param.
+	 *
+	 * @return the request param
+	 */
 	public RequestParam getRequestParam() {
 		return requestParam;
 	}
 
+	/**
+	 * Gets path var.
+	 *
+	 * @return the path var
+	 */
 	public PathVariable getPathVar() {
 		return pathVar;
 	}
 
+	/**
+	 * Gets cookie value.
+	 *
+	 * @return the cookie value
+	 */
 	public CookieValue getCookieValue() {
 		return cookieValue;
 	}
 
+	/**
+	 * Calculate name string.
+	 *
+	 * @param pName the p name
+	 * @param requestHeader the request header
+	 * @param requestParam the request param
+	 * @param pathVar the path var
+	 * @param cookieValue the cookie value
+	 * @return the string
+	 */
 	private String calculateName(String pName, RequestHeader requestHeader, RequestParam requestParam, PathVariable pathVar, CookieValue cookieValue) {
 		String name = pName;
 		if (requestHeader != null && StringUtils.isNotEmpty(requestHeader.value()))

@@ -61,11 +61,32 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 
+/**
+ * The type Spring doc web mvc configuration.
+ * @author bnasslahsen
+ */
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocWebMvcConfiguration {
 
+	/**
+	 * Open api resource open api resource.
+	 *
+	 * @param openAPIBuilder the open api builder
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param actuatorProvider the actuator provider
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
+	 * @param routerFunctionProvider the router function provider
+	 * @param repositoryRestResourceProvider the repository rest resource provider
+	 * @return the open api resource
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
@@ -86,6 +107,16 @@ public class SpringDocWebMvcConfiguration {
 				routerFunctionProvider, repositoryRestResourceProvider);
 	}
 
+	/**
+	 * Request builder request builder.
+	 *
+	 * @param parameterBuilder the parameter builder
+	 * @param requestBodyBuilder the request body builder
+	 * @param operationBuilder the operation builder
+	 * @param parameterCustomizers the parameter customizers
+	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
+	 * @return the request builder
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	RequestBuilder requestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
@@ -95,15 +126,34 @@ public class SpringDocWebMvcConfiguration {
 				operationBuilder, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 
+	/**
+	 * Response builder generic response builder.
+	 *
+	 * @param operationBuilder the operation builder
+	 * @param returnTypeParsers the return type parsers
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param propertyResolverUtils the property resolver utils
+	 * @return the generic response builder
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	GenericResponseBuilder responseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
 		return new GenericResponseBuilder(operationBuilder, returnTypeParsers, springDocConfigProperties, propertyResolverUtils);
 	}
 
+	/**
+	 * The type Spring doc web mvc router configuration.
+	 * @author bnasslahsen
+	 */
 	@ConditionalOnClass(RouterFunction.class)
 	class SpringDocWebMvcRouterConfiguration {
 
+		/**
+		 * Router function provider router function provider.
+		 *
+		 * @param applicationContext the application context
+		 * @return the router function provider
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		RouterFunctionProvider routerFunctionProvider(ApplicationContext applicationContext) {
@@ -111,17 +161,33 @@ public class SpringDocWebMvcConfiguration {
 		}
 	}
 
+	/**
+	 * The type Spring doc web mvc actuator configuration.
+	 * @author bnasslahsen
+	 */
 	@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
 	@ConditionalOnClass(WebMvcEndpointHandlerMapping.class)
 	@ConditionalOnManagementPort(ManagementPortType.SAME)
 	static class SpringDocWebMvcActuatorConfiguration {
 
+		/**
+		 * Actuator provider actuator provider.
+		 *
+		 * @param webMvcEndpointHandlerMapping the web mvc endpoint handler mapping
+		 * @return the actuator provider
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		ActuatorProvider actuatorProvider(WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping) {
 			return new WebMvcActuatorProvider(webMvcEndpointHandlerMapping);
 		}
 
+		/**
+		 * Actuator customizer operation customizer.
+		 *
+		 * @param actuatorProvider the actuator provider
+		 * @return the operation customizer
+		 */
 		@Bean
 		@Lazy(false)
 		OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider) {

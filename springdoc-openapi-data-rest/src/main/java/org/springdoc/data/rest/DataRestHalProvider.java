@@ -33,10 +33,22 @@ import org.springdoc.hateoas.HateoasHalProvider;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 
+/**
+ * The type Data rest hal provider.
+ * @author bnasslahsen
+ */
 public class DataRestHalProvider extends HateoasHalProvider {
 
+	/**
+	 * The Repository rest configuration optional.
+	 */
 	private Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional;
 
+	/**
+	 * Instantiates a new Data rest hal provider.
+	 *
+	 * @param repositoryRestConfigurationOptional the repository rest configuration optional
+	 */
 	public DataRestHalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional) {
 		this.repositoryRestConfigurationOptional = repositoryRestConfigurationOptional;
 	}

@@ -23,6 +23,17 @@
 
 package org.springdoc.data.rest.core;
 
+/**
+ * The enum Controller type.
+ * @author bnasslahsen
+ */
 enum ControllerType {
-	ENTITY, SEARCH
+	/**
+	 *Entity controller type.
+	 */
+	ENTITY,
+	/**
+	 *Search controller type.
+	 */
+	SEARCH
 }

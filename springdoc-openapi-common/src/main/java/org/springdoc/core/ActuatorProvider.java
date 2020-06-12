@@ -28,10 +28,24 @@ import io.swagger.v3.oas.models.tags.Tag;
 import org.springframework.util.AntPathMatcher;
 
 
+/**
+ * The interface Actuator provider.
+ * @author bnasslahsen
+ */
 public interface ActuatorProvider {
 
+	/**
+	 * Gets methods.
+	 *
+	 * @return the methods
+	 */
 	Map getMethods();
 
+	/**
+	 * Gets tag.
+	 *
+	 * @return the tag
+	 */
 	default Tag getTag() {
 		Tag actuatorTag = new Tag();
 		actuatorTag.setName(Constants.SPRINGDOC_ACTUATOR_TAG);
@@ -44,6 +58,12 @@ public interface ActuatorProvider {
 		return actuatorTag;
 	}
 
+	/**
+	 * Is rest controller boolean.
+	 *
+	 * @param operationPath the operation path
+	 * @return the boolean
+	 */
 	default boolean isRestController(String operationPath) {
 		return operationPath.startsWith(AntPathMatcher.DEFAULT_PATH_SEPARATOR);
 	}

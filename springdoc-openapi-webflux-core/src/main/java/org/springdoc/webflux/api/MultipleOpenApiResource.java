@@ -52,27 +52,70 @@ import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
+/**
+ * The type Multiple open api resource.
+ * @author bnasslahsen
+ */
 @RestController
 public class MultipleOpenApiResource implements InitializingBean {
 
+	/**
+	 * The Grouped open apis.
+	 */
 	private final List<GroupedOpenApi> groupedOpenApis;
 
+	/**
+	 * The Default open api builder.
+	 */
 	private final ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder;
 
+	/**
+	 * The Request builder.
+	 */
 	private final AbstractRequestBuilder requestBuilder;
 
+	/**
+	 * The Response builder.
+	 */
 	private final GenericResponseBuilder responseBuilder;
 
+	/**
+	 * The Operation parser.
+	 */
 	private final OperationBuilder operationParser;
 
+	/**
+	 * The Request mapping handler mapping.
+	 */
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
+	/**
+	 * The Spring doc config properties.
+	 */
 	private final SpringDocConfigProperties springDocConfigProperties;
 
+	/**
+	 * The Grouped open api resources.
+	 */
 	private Map<String, OpenApiResource> groupedOpenApiResources;
 
+	/**
+	 * The Actuator provider.
+	 */
 	private Optional<ActuatorProvider> actuatorProvider;
 
+	/**
+	 * Instantiates a new Multiple open api resource.
+	 *
+	 * @param groupedOpenApis the grouped open apis
+	 * @param defaultOpenAPIBuilder the default open api builder
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param actuatorProvider the actuator provider
+	 */
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -111,6 +154,15 @@ public class MultipleOpenApiResource implements InitializingBean {
 				));
 	}
 
+	/**
+	 * Openapi json mono.
+	 *
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @param group the group
+	 * @return the mono
+	 * @throws JsonProcessingException the json processing exception
+	 */
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL + "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Mono<String> openapiJson(ServerHttpRequest
@@ -120,6 +172,15 @@ public class MultipleOpenApiResource implements InitializingBean {
 		return getOpenApiResourceOrThrow(group).openapiJson(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
 	}
 
+	/**
+	 * Openapi yaml mono.
+	 *
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @param group the group
+	 * @return the mono
+	 * @throws JsonProcessingException the json processing exception
+	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML + "/{group}", produces = APPLICATION_OPENAPI_YAML)
 	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest,
@@ -128,6 +189,12 @@ public class MultipleOpenApiResource implements InitializingBean {
 		return getOpenApiResourceOrThrow(group).openapiYaml(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
 	}
 
+	/**
+	 * Gets open api resource or throw.
+	 *
+	 * @param group the group
+	 * @return the open api resource or throw
+	 */
 	private OpenApiResource getOpenApiResourceOrThrow(String group) {
 		OpenApiResource openApiResource = groupedOpenApiResources.get(group);
 		if (openApiResource == null) {

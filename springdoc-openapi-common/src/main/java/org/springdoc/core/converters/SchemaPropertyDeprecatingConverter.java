@@ -34,8 +34,15 @@ import io.swagger.v3.oas.models.media.Schema;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
 
+/**
+ * The type Schema property deprecating converter.
+ * @author bnasslahsen
+ */
 public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 
+	/**
+	 * The constant DEPRECATED_ANNOTATIONS.
+	 */
 	private static final List<Class<? extends Annotation>> DEPRECATED_ANNOTATIONS = new ArrayList<>();
 
 	static {
@@ -53,14 +60,31 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 		return null;
 	}
 
+	/**
+	 * Contains deprecated annotation boolean.
+	 *
+	 * @param annotations the annotations
+	 * @return the boolean
+	 */
 	public static boolean containsDeprecatedAnnotation(Annotation[] annotations) {
 		return annotations != null && Stream.of(annotations).map(Annotation::annotationType).anyMatch(DEPRECATED_ANNOTATIONS::contains);
 	}
 
+	/**
+	 * Add deprecated type.
+	 *
+	 * @param cls the cls
+	 */
 	public static void addDeprecatedType(Class<? extends Annotation> cls) {
 		DEPRECATED_ANNOTATIONS.add(cls);
 	}
 
+	/**
+	 * Is deprecated boolean.
+	 *
+	 * @param annotatedElement the annotated element
+	 * @return the boolean
+	 */
 	public static boolean isDeprecated(AnnotatedElement annotatedElement) {
 		return DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(annotatedElement, annoClass) != null);
 	}

@@ -33,6 +33,10 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
+/**
+ * The type Request builder.
+ * @author bnasslahsen
+ */
 public class RequestBuilder extends AbstractRequestBuilder {
 
 	static {
@@ -44,6 +48,15 @@ public class RequestBuilder extends AbstractRequestBuilder {
 				.addRequestWrapperToIgnore(javax.servlet.http.HttpSession.class);
 	}
 
+	/**
+	 * Instantiates a new Request builder.
+	 *
+	 * @param parameterBuilder the parameter builder
+	 * @param requestBodyBuilder the request body builder
+	 * @param operationBuilder the operation builder
+	 * @param parameterCustomizers the parameter customizers
+	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
+	 */
 	public RequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<ParameterCustomizer>> parameterCustomizers,
 			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {

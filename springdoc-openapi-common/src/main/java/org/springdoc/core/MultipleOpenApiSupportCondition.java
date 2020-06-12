@@ -26,15 +26,30 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 import static org.springdoc.core.Constants.GROUP_CONFIG_FIRST_PROPERTY;
 
+/**
+ * The type Multiple open api support condition.
+ * @author bnasslahsen
+ */
 public class MultipleOpenApiSupportCondition extends AnyNestedCondition {
 
+	/**
+	 * Instantiates a new Multiple open api support condition.
+	 */
 	MultipleOpenApiSupportCondition() {
 		super(ConfigurationPhase.REGISTER_BEAN);
 	}
 
+	/**
+	 * The type On grouped open api bean.
+	 * @author bnasslahsen
+	 */
 	@ConditionalOnBean(GroupedOpenApi.class)
 	static class OnGroupedOpenApiBean {}
 
+	/**
+	 * The type On group config property.
+	 * @author bnasslahsen
+	 */
 	@ConditionalOnProperty(name = GROUP_CONFIG_FIRST_PROPERTY)
 	static class OnGroupConfigProperty {}
 

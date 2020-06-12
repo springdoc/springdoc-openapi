@@ -32,24 +32,60 @@ import org.springframework.data.rest.webmvc.ProfileController;
 import org.springframework.data.rest.webmvc.alps.AlpsController;
 import org.springframework.web.method.HandlerMethod;
 
+/**
+ * The type Data rest tags builder.
+ * @author bnasslahsen
+ */
 public class DataRestTagsBuilder {
 
+	/**
+	 * The Open api builder.
+	 */
 	private OpenAPIBuilder openAPIBuilder;
 
+	/**
+	 * Instantiates a new Data rest tags builder.
+	 *
+	 * @param openAPIBuilder the open api builder
+	 */
 	public DataRestTagsBuilder(OpenAPIBuilder openAPIBuilder) {
 		this.openAPIBuilder = openAPIBuilder;
 	}
 
+	/**
+	 * Build search tags.
+	 *
+	 * @param operation the operation
+	 * @param openAPI the open api
+	 * @param handlerMethod the handler method
+	 * @param domainType the domain type
+	 */
 	public void buildSearchTags(Operation operation, OpenAPI openAPI, HandlerMethod handlerMethod,
 			Class<?> domainType) {
 		buildTags(operation, openAPI, handlerMethod, domainType);
 	}
 
+	/**
+	 * Build entity tags.
+	 *
+	 * @param operation the operation
+	 * @param openAPI the open api
+	 * @param handlerMethod the handler method
+	 * @param domainType the domain type
+	 */
 	public void buildEntityTags(Operation operation, OpenAPI openAPI, HandlerMethod handlerMethod,
 			Class<?> domainType) {
 		buildTags(operation, openAPI, handlerMethod, domainType);
 	}
 
+	/**
+	 * Build tags.
+	 *
+	 * @param operation the operation
+	 * @param openAPI the open api
+	 * @param handlerMethod the handler method
+	 * @param domainType the domain type
+	 */
 	private void buildTags(Operation operation, OpenAPI openAPI, HandlerMethod handlerMethod,
 			Class<?> domainType) {
 		if (openAPIBuilder.isAutoTagClasses(operation)) {

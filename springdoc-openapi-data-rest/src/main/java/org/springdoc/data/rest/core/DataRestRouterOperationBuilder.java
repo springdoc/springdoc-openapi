@@ -53,18 +53,45 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
+/**
+ * The type Data rest router operation builder.
+ * @author bnasslahsen
+ */
 public class DataRestRouterOperationBuilder {
 
+	/**
+	 * The constant UNDOCUMENTED_REQUEST_METHODS.
+	 */
 	private static final List<RequestMethod> UNDOCUMENTED_REQUEST_METHODS = Arrays.asList(RequestMethod.OPTIONS, RequestMethod.HEAD);
 
+	/**
+	 * The constant REPOSITORY_PATH.
+	 */
 	private static final String REPOSITORY_PATH = AntPathMatcher.DEFAULT_PATH_SEPARATOR + "{repository}";
 
+	/**
+	 * The constant SEARCH_PATH.
+	 */
 	private static final String SEARCH_PATH = AntPathMatcher.DEFAULT_PATH_SEPARATOR + "{search}";
 
+	/**
+	 * The Data rest operation builder.
+	 */
 	private DataRestOperationBuilder dataRestOperationBuilder;
 
+	/**
+	 * The Spring doc config properties.
+	 */
 	private SpringDocConfigProperties springDocConfigProperties;
 
+	/**
+	 * Instantiates a new Data rest router operation builder.
+	 *
+	 * @param dataRestOperationBuilder the data rest operation builder
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param repositoryRestConfiguration the repository rest configuration
+	 * @param dataRestHalProvider the data rest hal provider
+	 */
 	public DataRestRouterOperationBuilder(DataRestOperationBuilder dataRestOperationBuilder, SpringDocConfigProperties springDocConfigProperties,
 			RepositoryRestConfiguration repositoryRestConfiguration, DataRestHalProvider dataRestHalProvider) {
 		this.dataRestOperationBuilder = dataRestOperationBuilder;
@@ -73,6 +100,15 @@ public class DataRestRouterOperationBuilder {
 			springDocConfigProperties.setDefaultProducesMediaType(repositoryRestConfiguration.getDefaultMediaType().toString());
 	}
 
+	/**
+	 * Build entity router operation list.
+	 *
+	 * @param routerOperationList the router operation list
+	 * @param handlerMethodMap the handler method map
+	 * @param resourceMetadata the resource metadata
+	 * @param domainType the domain type
+	 * @param openAPI the open api
+	 */
 	public void buildEntityRouterOperationList(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
 			Class<?> domainType, OpenAPI openAPI) {
@@ -82,6 +118,16 @@ public class DataRestRouterOperationBuilder {
 		}
 	}
 
+	/**
+	 * Build search router operation list.
+	 *
+	 * @param routerOperationList the router operation list
+	 * @param handlerMethodMap the handler method map
+	 * @param resourceMetadata the resource metadata
+	 * @param domainType the domain type
+	 * @param openAPI the open api
+	 * @param methodResourceMapping the method resource mapping
+	 */
 	public void buildSearchRouterOperationList(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
 			Class<?> domainType, OpenAPI openAPI, MethodResourceMapping methodResourceMapping) {
@@ -94,6 +140,19 @@ public class DataRestRouterOperationBuilder {
 		}
 	}
 
+	/**
+	 * Build router operation list.
+	 *
+	 * @param routerOperationList the router operation list
+	 * @param resourceMetadata the resource metadata
+	 * @param domainType the domain type
+	 * @param openAPI the open api
+	 * @param path the path
+	 * @param entry the entry
+	 * @param subPath the sub path
+	 * @param entity the entity
+	 * @param methodResourceMapping the method resource mapping
+	 */
 	private void buildRouterOperationList(List<RouterOperation> routerOperationList, ResourceMetadata resourceMetadata,
 			Class<?> domainType, OpenAPI openAPI, String path, Entry<RequestMappingInfo, HandlerMethod> entry,
 			String subPath, ControllerType entity, MethodResourceMapping methodResourceMapping) {
@@ -124,6 +183,16 @@ public class DataRestRouterOperationBuilder {
 		}
 	}
 
+	/**
+	 * Calculate operation path string.
+	 *
+	 * @param path the path
+	 * @param subPath the sub path
+	 * @param patterns the patterns
+	 * @param regexMap the regex map
+	 * @param controllerType the controller type
+	 * @return the string
+	 */
 	private String calculateOperationPath(String path, String subPath, Set<String> patterns,
 			Map<String, String> regexMap, ControllerType controllerType) {
 		String operationPath = null;
@@ -136,6 +205,19 @@ public class DataRestRouterOperationBuilder {
 		return operationPath;
 	}
 
+	/**
+	 * Build router operation.
+	 *
+	 * @param routerOperationList the router operation list
+	 * @param domainType the domain type
+	 * @param openAPI the open api
+	 * @param methodResourceMapping the method resource mapping
+	 * @param handlerMethod the handler method
+	 * @param requestMethod the request method
+	 * @param resourceMetadata the resource metadata
+	 * @param operationPath the operation path
+	 * @param controllerType the controller type
+	 */
 	private void buildRouterOperation(List<RouterOperation> routerOperationList, Class<?> domainType, OpenAPI openAPI,
 			MethodResourceMapping methodResourceMapping, HandlerMethod handlerMethod,
 			RequestMethod requestMethod, ResourceMetadata resourceMetadata, String operationPath, ControllerType controllerType) {
@@ -151,6 +233,12 @@ public class DataRestRouterOperationBuilder {
 	}
 
 
+	/**
+	 * Gets search entry.
+	 *
+	 * @param handlerMethodMap the handler method map
+	 * @return the search entry
+	 */
 	private Optional<Entry<RequestMappingInfo, HandlerMethod>> getSearchEntry(Map<RequestMappingInfo, HandlerMethod> handlerMethodMap) {
 		return handlerMethodMap.entrySet().stream().filter(
 				requestMappingInfoHandlerMethodEntry -> {
@@ -165,6 +253,14 @@ public class DataRestRouterOperationBuilder {
 				}).findAny();
 	}
 
+	/**
+	 * Is search controller present boolean.
+	 *
+	 * @param requestMappingInfo the request mapping info
+	 * @param handlerMethod the handler method
+	 * @param requestMethod the request method
+	 * @return the boolean
+	 */
 	private boolean isSearchControllerPresent(RequestMappingInfo requestMappingInfo, HandlerMethod handlerMethod, RequestMethod requestMethod) {
 		if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
 			PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();

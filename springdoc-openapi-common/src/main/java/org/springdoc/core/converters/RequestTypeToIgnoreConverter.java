@@ -30,6 +30,10 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.AbstractRequestBuilder;
 
+/**
+ * The type Request type to ignore converter.
+ * @author bnasslahsen
+ */
 public class RequestTypeToIgnoreConverter implements ModelConverter {
 
 	@Override

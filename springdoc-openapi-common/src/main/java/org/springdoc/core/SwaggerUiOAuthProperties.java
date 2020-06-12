@@ -35,6 +35,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
  * Please refer to the swagger
  * <a href="https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/oauth2.md">configuration.md</a>
  * to get the idea what each parameter does.
+ * @author bnasslahsen
  */
 @Configuration
 @ConfigurationProperties(prefix = "springdoc.swagger-ui.oauth")
@@ -42,22 +43,51 @@ import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerUiOAuthProperties {
 
+	/**
+	 * The Client id.
+	 */
 	private String clientId;
 
+	/**
+	 * The Client secret.
+	 */
 	private String clientSecret;
 
+	/**
+	 * The Realm.
+	 */
 	private String realm;
 
+	/**
+	 * The App name.
+	 */
 	private String appName;
 
+	/**
+	 * The Scope separator.
+	 */
 	private String scopeSeparator;
 
+	/**
+	 * The Additional query string params.
+	 */
 	private Map<String, String> additionalQueryStringParams;
 
+	/**
+	 * The Use basic authentication with access code grant.
+	 */
 	private String useBasicAuthenticationWithAccessCodeGrant;
 
+	/**
+	 * The Use pkce with authorization code grant.
+	 */
 	private Boolean usePkceWithAuthorizationCodeGrant;
 
+	/**
+	 * Gets config parameters.
+	 *
+	 * @return the config parameters
+	 */
 	public Map<String, Object> getConfigParameters() {
 		final Map<String, Object> params = new TreeMap<>();
 		SpringDocPropertiesUtils.put("clientId", clientId, params);
@@ -71,66 +101,146 @@ public class SwaggerUiOAuthProperties {
 		return params;
 	}
 
+	/**
+	 * Gets client id.
+	 *
+	 * @return the client id
+	 */
 	public String getClientId() {
 		return clientId;
 	}
 
+	/**
+	 * Sets client id.
+	 *
+	 * @param clientId the client id
+	 */
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
 
+	/**
+	 * Gets client secret.
+	 *
+	 * @return the client secret
+	 */
 	public String getClientSecret() {
 		return clientSecret;
 	}
 
+	/**
+	 * Sets client secret.
+	 *
+	 * @param clientSecret the client secret
+	 */
 	public void setClientSecret(String clientSecret) {
 		this.clientSecret = clientSecret;
 	}
 
+	/**
+	 * Gets realm.
+	 *
+	 * @return the realm
+	 */
 	public String getRealm() {
 		return realm;
 	}
 
+	/**
+	 * Sets realm.
+	 *
+	 * @param realm the realm
+	 */
 	public void setRealm(String realm) {
 		this.realm = realm;
 	}
 
+	/**
+	 * Gets app name.
+	 *
+	 * @return the app name
+	 */
 	public String getAppName() {
 		return appName;
 	}
 
+	/**
+	 * Sets app name.
+	 *
+	 * @param appName the app name
+	 */
 	public void setAppName(String appName) {
 		this.appName = appName;
 	}
 
+	/**
+	 * Gets scope separator.
+	 *
+	 * @return the scope separator
+	 */
 	public String getScopeSeparator() {
 		return scopeSeparator;
 	}
 
+	/**
+	 * Sets scope separator.
+	 *
+	 * @param scopeSeparator the scope separator
+	 */
 	public void setScopeSeparator(String scopeSeparator) {
 		this.scopeSeparator = scopeSeparator;
 	}
 
+	/**
+	 * Gets additional query string params.
+	 *
+	 * @return the additional query string params
+	 */
 	public Map<String, String> getAdditionalQueryStringParams() {
 		return additionalQueryStringParams;
 	}
 
+	/**
+	 * Sets additional query string params.
+	 *
+	 * @param additionalQueryStringParams the additional query string params
+	 */
 	public void setAdditionalQueryStringParams(Map<String, String> additionalQueryStringParams) {
 		this.additionalQueryStringParams = additionalQueryStringParams;
 	}
 
+	/**
+	 * Gets use basic authentication with access code grant.
+	 *
+	 * @return the use basic authentication with access code grant
+	 */
 	public String getUseBasicAuthenticationWithAccessCodeGrant() {
 		return useBasicAuthenticationWithAccessCodeGrant;
 	}
 
+	/**
+	 * Sets use basic authentication with access code grant.
+	 *
+	 * @param useBasicAuthenticationWithAccessCodeGrant the use basic authentication with access code grant
+	 */
 	public void setUseBasicAuthenticationWithAccessCodeGrant(String useBasicAuthenticationWithAccessCodeGrant) {
 		this.useBasicAuthenticationWithAccessCodeGrant = useBasicAuthenticationWithAccessCodeGrant;
 	}
 
+	/**
+	 * Gets use pkce with authorization code grant.
+	 *
+	 * @return the use pkce with authorization code grant
+	 */
 	public Boolean getUsePkceWithAuthorizationCodeGrant() {
 		return usePkceWithAuthorizationCodeGrant;
 	}
 
+	/**
+	 * Sets use pkce with authorization code grant.
+	 *
+	 * @param usePkceWithAuthorizationCodeGrant the use pkce with authorization code grant
+	 */
 	public void setUsePkceWithAuthorizationCodeGrant(Boolean usePkceWithAuthorizationCodeGrant) {
 		this.usePkceWithAuthorizationCodeGrant = usePkceWithAuthorizationCodeGrant;
 	}

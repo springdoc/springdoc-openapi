@@ -29,10 +29,22 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
 
 
+/**
+ * The type Web flux actuator provider.
+ * @author bnasslahsen
+ */
 public class WebFluxActuatorProvider implements ActuatorProvider {
 
+	/**
+	 * The Web flux endpoint handler mapping.
+	 */
 	private final WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping;
 
+	/**
+	 * Instantiates a new Web flux actuator provider.
+	 *
+	 * @param webFluxEndpointHandlerMapping the web flux endpoint handler mapping
+	 */
 	public WebFluxActuatorProvider(WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping) {
 		this.webFluxEndpointHandlerMapping = webFluxEndpointHandlerMapping;
 	}

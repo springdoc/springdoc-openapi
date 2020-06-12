@@ -22,9 +22,18 @@ package org.springdoc.core.customizers;
 
 import io.swagger.v3.oas.models.OpenAPI;
 
+/**
+ * The interface Open api customiser.
+ * @author bnasslahsen
+ */
 @FunctionalInterface
 public interface OpenApiCustomiser {
 
+	/**
+	 * Customise.
+	 *
+	 * @param openApi the open api
+	 */
 	void customise(OpenAPI openApi);
 
 }

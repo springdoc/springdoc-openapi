@@ -60,33 +60,61 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
+/**
+ * The type Spring doc configuration.
+ * @author bnasslahsen
+ */
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocConfiguration {
 
+	/**
+	 * The constant BINDRESULT_CLASS.
+	 */
 	private static final String BINDRESULT_CLASS = "org.springframework.boot.context.properties.bind.BindResult";
 
 	static {
 		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema());
 	}
 
+	/**
+	 * Local spring doc parameter name discoverer local variable table parameter name discoverer.
+	 *
+	 * @return the local variable table parameter name discoverer
+	 */
 	@Bean
 	LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer() {
 		return new LocalVariableTableParameterNameDiscoverer();
 	}
 
+	/**
+	 * Additional models converter additional models converter.
+	 *
+	 * @return the additional models converter
+	 */
 	@Bean
 	@Lazy(false)
 	AdditionalModelsConverter additionalModelsConverter() {
 		return new AdditionalModelsConverter();
 	}
 
+	/**
+	 * Property customizing converter property customizing converter.
+	 *
+	 * @param customizers the customizers
+	 * @return the property customizing converter
+	 */
 	@Bean
 	@Lazy(false)
 	PropertyCustomizingConverter propertyCustomizingConverter(Optional<List<PropertyCustomizer>> customizers) {
 		return new PropertyCustomizingConverter(customizers);
 	}
 
+	/**
+	 * File support converter file support converter.
+	 *
+	 * @return the file support converter
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
@@ -94,6 +122,11 @@ public class SpringDocConfiguration {
 		return new FileSupportConverter();
 	}
 
+	/**
+	 * Response support converter response support converter.
+	 *
+	 * @return the response support converter
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
@@ -101,6 +134,11 @@ public class SpringDocConfiguration {
 		return new ResponseSupportConverter();
 	}
 
+	/**
+	 * Schema property deprecating converter schema property deprecating converter.
+	 *
+	 * @return the schema property deprecating converter
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
@@ -108,6 +146,11 @@ public class SpringDocConfiguration {
 		return new SchemaPropertyDeprecatingConverter();
 	}
 
+	/**
+	 * Polymorphic model converter polymorphic model converter.
+	 *
+	 * @return the polymorphic model converter
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
@@ -115,6 +158,16 @@ public class SpringDocConfiguration {
 		return new PolymorphicModelConverter();
 	}
 
+	/**
+	 * Open api builder open api builder.
+	 *
+	 * @param openAPI the open api
+	 * @param context the context
+	 * @param securityParser the security parser
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param openApiBuilderCustomisers the open api builder customisers
+	 * @return the open api builder
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context,
@@ -124,12 +177,27 @@ public class SpringDocConfiguration {
 		return new OpenAPIBuilder(openAPI, context, securityParser, springDocConfigProperties, openApiBuilderCustomisers);
 	}
 
+	/**
+	 * Model converter registrar model converter registrar.
+	 *
+	 * @param modelConverters the model converters
+	 * @return the model converter registrar
+	 */
 	@Bean
 	@Lazy(false)
 	ModelConverterRegistrar modelConverterRegistrar(Optional<List<ModelConverter>> modelConverters) {
 		return new ModelConverterRegistrar(modelConverters.orElse(Collections.emptyList()));
 	}
 
+	/**
+	 * Operation builder operation builder.
+	 *
+	 * @param parameterBuilder the parameter builder
+	 * @param requestBodyBuilder the request body builder
+	 * @param securityParser the security parser
+	 * @param propertyResolverUtils the property resolver utils
+	 * @return the operation builder
+	 */
 	@Bean
 	@ConditionalOnWebApplication
 	@ConditionalOnMissingBean
@@ -139,11 +207,23 @@ public class SpringDocConfiguration {
 				securityParser, propertyResolverUtils);
 	}
 
+	/**
+	 * Property resolver utils property resolver utils.
+	 *
+	 * @param factory the factory
+	 * @return the property resolver utils
+	 */
 	@Bean
 	PropertyResolverUtils propertyResolverUtils(ConfigurableBeanFactory factory) {
 		return new PropertyResolverUtils(factory);
 	}
 
+	/**
+	 * Request body builder request body builder.
+	 *
+	 * @param parameterBuilder the parameter builder
+	 * @return the request body builder
+	 */
 	@Bean
 	@ConditionalOnWebApplication
 	@ConditionalOnMissingBean
@@ -151,24 +231,48 @@ public class SpringDocConfiguration {
 		return new RequestBodyBuilder(parameterBuilder);
 	}
 
+	/**
+	 * Security parser security parser.
+	 *
+	 * @param propertyResolverUtils the property resolver utils
+	 * @return the security parser
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	SecurityParser securityParser(PropertyResolverUtils propertyResolverUtils) {
 		return new SecurityParser(propertyResolverUtils);
 	}
 
+	/**
+	 * Generic return type parser return type parser.
+	 *
+	 * @return the return type parser
+	 */
 	@Bean
 	@Lazy(false)
 	ReturnTypeParser genericReturnTypeParser() {
 		return new ReturnTypeParser() {};
 	}
 
+	/**
+	 * Parameter builder generic parameter builder.
+	 *
+	 * @param propertyResolverUtils the property resolver utils
+	 * @return the generic parameter builder
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	GenericParameterBuilder parameterBuilder(PropertyResolverUtils propertyResolverUtils) {
 		return new GenericParameterBuilder(propertyResolverUtils);
 	}
 
+	/**
+	 * Properties resolver for schema open api customiser.
+	 *
+	 * @param propertyResolverUtils the property resolver utils
+	 * @param openAPIBuilder the open api builder
+	 * @return the open api customiser
+	 */
 	@Bean
 	@ConditionalOnProperty(SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES)
 	@Lazy(false)
@@ -180,6 +284,11 @@ public class SpringDocConfiguration {
 		};
 	}
 
+	/**
+	 * Springdoc bean factory post processor bean factory post processor.
+	 *
+	 * @return the bean factory post processor
+	 */
 	@Bean
 	@Conditional(CacheOrGroupedOpenApiCondition.class)
 	@ConditionalOnClass(name = BINDRESULT_CLASS)
@@ -188,7 +297,12 @@ public class SpringDocConfiguration {
 		return new SpringdocBeanFactoryConfigurer();
 	}
 
-	// For spring-boot-1 compatibility
+	/**
+	 * Springdoc bean factory post processor 2 bean factory post processor.
+	 *
+	 * @return the bean factory post processor
+	 */
+// For spring-boot-1 compatibility
 	@Bean
 	@Conditional(CacheOrGroupedOpenApiCondition.class)
 	@ConditionalOnMissingClass(value = BINDRESULT_CLASS)

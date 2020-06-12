@@ -48,20 +48,43 @@ import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
 import static org.springdoc.core.Constants.SWAGGER_UI_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
+/**
+ * The type Swagger welcome.
+ * @author bnasslahsen
+ */
 @Controller
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerWelcome extends AbstractSwaggerWelcome {
 
+	/**
+	 * The Web jars prefix url.
+	 */
 	private String webJarsPrefixUrl;
 
+	/**
+	 * The Oauth prefix.
+	 */
 	private UriComponentsBuilder oauthPrefix;
 
+	/**
+	 * Instantiates a new Swagger welcome.
+	 *
+	 * @param swaggerUiConfig the swagger ui config
+	 * @param springDocConfigProperties the spring doc config properties
+	 */
 	public SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
 		super(swaggerUiConfig, springDocConfigProperties);
 		this.webJarsPrefixUrl = springDocConfigProperties.getWebjars().getPrefix();
 	}
 
+	/**
+	 * Redirect to ui mono.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @return the mono
+	 */
 	@Operation(hidden = true)
 	@GetMapping(SWAGGER_UI_PATH)
 	public Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
@@ -74,6 +97,12 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	}
 
 
+	/**
+	 * Gets swagger ui config.
+	 *
+	 * @param request the request
+	 * @return the swagger ui config
+	 */
 	@Operation(hidden = true)
 	@GetMapping(value = SWAGGER_CONFIG_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -101,6 +130,12 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 		}
 	}
 
+	/**
+	 * From current context path string.
+	 *
+	 * @param request the request
+	 * @return the string
+	 */
 	private String fromCurrentContextPath(ServerHttpRequest request) {
 		String contextPath = request.getPath().contextPath().value();
 		String url = UriComponentsBuilder.fromHttpRequest(request).toUriString();

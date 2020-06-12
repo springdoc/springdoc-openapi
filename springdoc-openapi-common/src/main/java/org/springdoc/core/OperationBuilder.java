@@ -60,16 +60,40 @@ import static org.springdoc.core.Constants.POST_METHOD;
 import static org.springdoc.core.Constants.PUT_METHOD;
 import static org.springdoc.core.Constants.TRACE_METHOD;
 
+/**
+ * The type Operation builder.
+ * @author bnasslahsen
+ */
 public class OperationBuilder {
 
+	/**
+	 * The Parameter builder.
+	 */
 	private final GenericParameterBuilder parameterBuilder;
 
+	/**
+	 * The Request body builder.
+	 */
 	private final RequestBodyBuilder requestBodyBuilder;
 
+	/**
+	 * The Security parser.
+	 */
 	private final SecurityParser securityParser;
 
+	/**
+	 * The Property resolver utils.
+	 */
 	private final PropertyResolverUtils propertyResolverUtils;
 
+	/**
+	 * Instantiates a new Operation builder.
+	 *
+	 * @param parameterBuilder the parameter builder
+	 * @param requestBodyBuilder the request body builder
+	 * @param securityParser the security parser
+	 * @param propertyResolverUtils the property resolver utils
+	 */
 	public OperationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			SecurityParser securityParser, PropertyResolverUtils propertyResolverUtils) {
 		super();
@@ -79,6 +103,15 @@ public class OperationBuilder {
 		this.propertyResolverUtils = propertyResolverUtils;
 	}
 
+	/**
+	 * Parse open api.
+	 *
+	 * @param apiOperation the api operation
+	 * @param operation the operation
+	 * @param openAPI the open api
+	 * @param methodAttributes the method attributes
+	 * @return the open api
+	 */
 	public OpenAPI parse(io.swagger.v3.oas.annotations.Operation apiOperation,
 			Operation operation, OpenAPI openAPI, MethodAttributes methodAttributes) {
 		Components components = openAPI.getComponents();
@@ -125,6 +158,12 @@ public class OperationBuilder {
 		return openAPI;
 	}
 
+	/**
+	 * Is hidden boolean.
+	 *
+	 * @param method the method
+	 * @return the boolean
+	 */
 	public boolean isHidden(Method method) {
 		io.swagger.v3.oas.annotations.Operation apiOperation = AnnotationUtils.findAnnotation(method,
 				io.swagger.v3.oas.annotations.Operation.class);
@@ -132,6 +171,14 @@ public class OperationBuilder {
 				|| (AnnotationUtils.findAnnotation(method, Hidden.class) != null);
 	}
 
+	/**
+	 * Build callbacks optional.
+	 *
+	 * @param apiCallbacks the api callbacks
+	 * @param openAPI the open api
+	 * @param methodAttributes the method attributes
+	 * @return the optional
+	 */
 	public Optional<Map<String, Callback>> buildCallbacks(
 			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks, OpenAPI openAPI,
 			MethodAttributes methodAttributes) {
@@ -172,6 +219,13 @@ public class OperationBuilder {
 			return Optional.of(callbacks);
 	}
 
+	/**
+	 * Sets path item operation.
+	 *
+	 * @param pathItemObject the path item object
+	 * @param method the method
+	 * @param operation the operation
+	 */
 	private void setPathItemOperation(PathItem pathItemObject, String method, Operation operation) {
 		switch (method) {
 			case POST_METHOD:
@@ -204,6 +258,12 @@ public class OperationBuilder {
 		}
 	}
 
+	/**
+	 * Build extensions.
+	 *
+	 * @param apiOperation the api operation
+	 * @param operation the operation
+	 */
 	private void buildExtensions(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation) {
 		if (apiOperation.extensions().length > 0) {
 			Map<String, Object> extensions = AnnotationsUtils.getExtensions(apiOperation.extensions());
@@ -211,6 +271,12 @@ public class OperationBuilder {
 		}
 	}
 
+	/**
+	 * Build tags.
+	 *
+	 * @param apiOperation the api operation
+	 * @param operation the operation
+	 */
 	private void buildTags(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation) {
 		Optional<List<String>> mlist = getStringListFromStringArray(apiOperation.tags());
 		if (mlist.isPresent()) {
@@ -222,6 +288,13 @@ public class OperationBuilder {
 		}
 	}
 
+	/**
+	 * Gets operation id.
+	 *
+	 * @param operationId the operation id
+	 * @param openAPI the open api
+	 * @return the operation id
+	 */
 	public String getOperationId(String operationId, OpenAPI openAPI) {
 		boolean operationIdUsed = existOperationId(operationId, openAPI);
 		String operationIdToFind = null;
@@ -236,6 +309,13 @@ public class OperationBuilder {
 		return operationId;
 	}
 
+	/**
+	 * Exist operation id boolean.
+	 *
+	 * @param operationId the operation id
+	 * @param openAPI the open api
+	 * @return the boolean
+	 */
 	private boolean existOperationId(String operationId, OpenAPI openAPI) {
 		if (openAPI == null) {
 			return false;
@@ -252,6 +332,12 @@ public class OperationBuilder {
 		return false;
 	}
 
+	/**
+	 * Extract operation id from path item set.
+	 *
+	 * @param path the path
+	 * @return the set
+	 */
 	private Set<String> extractOperationIdFromPathItem(PathItem path) {
 		Set<String> ids = new HashSet<>();
 		if (path.getGet() != null && StringUtils.isNotBlank(path.getGet().getOperationId())) {
@@ -278,6 +364,15 @@ public class OperationBuilder {
 		return ids;
 	}
 
+	/**
+	 * Gets api responses.
+	 *
+	 * @param responses the responses
+	 * @param methodAttributes the method attributes
+	 * @param operation the operation
+	 * @param components the components
+	 * @return the api responses
+	 */
 	private Optional<ApiResponses> getApiResponses(
 			final io.swagger.v3.oas.annotations.responses.ApiResponse[] responses,
 			MethodAttributes methodAttributes, Operation operation, Components components) {
@@ -316,6 +411,17 @@ public class OperationBuilder {
 		return Optional.of(apiResponsesObject);
 	}
 
+	/**
+	 * Build response content.
+	 *
+	 * @param methodAttributes the method attributes
+	 * @param components the components
+	 * @param classProduces the class produces
+	 * @param methodProduces the method produces
+	 * @param apiResponsesOp the api responses op
+	 * @param response the response
+	 * @param apiResponseObject the api response object
+	 */
 	private void buildResponseContent(MethodAttributes methodAttributes, Components components, String[] classProduces, String[] methodProduces, ApiResponses apiResponsesOp, io.swagger.v3.oas.annotations.responses.ApiResponse response, ApiResponse apiResponseObject) {
 		if (apiResponsesOp == null)
 			SpringDocAnnotationsUtils.getContent(response.content(),
@@ -326,11 +432,23 @@ public class OperationBuilder {
 			GenericResponseBuilder.buildContentFromDoc(components, apiResponsesOp, methodAttributes, response, apiResponseObject);
 	}
 
+	/**
+	 * Is response object boolean.
+	 *
+	 * @param apiResponseObject the api response object
+	 * @return the boolean
+	 */
 	private boolean isResponseObject(ApiResponse apiResponseObject) {
 		return StringUtils.isNotBlank(apiResponseObject.getDescription()) || apiResponseObject.getContent() != null
 				|| apiResponseObject.getHeaders() != null;
 	}
 
+	/**
+	 * Sets links.
+	 *
+	 * @param response the response
+	 * @param apiResponseObject the api response object
+	 */
 	private void setLinks(io.swagger.v3.oas.annotations.responses.ApiResponse response, ApiResponse apiResponseObject) {
 		Map<String, Link> links = AnnotationsUtils.getLinks(response.links());
 		if (links.size() > 0) {
@@ -338,6 +456,12 @@ public class OperationBuilder {
 		}
 	}
 
+	/**
+	 * Sets description.
+	 *
+	 * @param response the response
+	 * @param apiResponseObject the api response object
+	 */
 	private void setDescription(io.swagger.v3.oas.annotations.responses.ApiResponse response,
 			ApiResponse apiResponseObject) {
 		if (StringUtils.isNotBlank(response.description())) {
@@ -348,6 +472,11 @@ public class OperationBuilder {
 		}
 	}
 
+	/**
+	 * Calculate header.
+	 *
+	 * @param apiResponseObject the api response object
+	 */
 	private void calculateHeader(ApiResponse apiResponseObject) {
 		Map<String, Header> headers = apiResponseObject.getHeaders();
 		if (!CollectionUtils.isEmpty(headers)) {
@@ -362,6 +491,13 @@ public class OperationBuilder {
 		}
 	}
 
+	/**
+	 * Sets ref.
+	 *
+	 * @param apiResponsesObject the api responses object
+	 * @param response the response
+	 * @param apiResponseObject the api response object
+	 */
 	private void setRef(ApiResponses apiResponsesObject, io.swagger.v3.oas.annotations.responses.ApiResponse response,
 			ApiResponse apiResponseObject) {
 		apiResponseObject.set$ref(response.ref());
@@ -373,6 +509,12 @@ public class OperationBuilder {
 		}
 	}
 
+	/**
+	 * Sets extensions.
+	 *
+	 * @param response the response
+	 * @param apiResponseObject the api response object
+	 */
 	private void setExtensions(io.swagger.v3.oas.annotations.responses.ApiResponse response,
 			ApiResponse apiResponseObject) {
 		if (response.extensions().length > 0) {
@@ -382,6 +524,14 @@ public class OperationBuilder {
 	}
 
 
+	/**
+	 * Build response.
+	 *
+	 * @param components the components
+	 * @param apiOperation the api operation
+	 * @param operation the operation
+	 * @param methodAttributes the method attributes
+	 */
 	private void buildResponse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
 			Operation operation, MethodAttributes methodAttributes) {
 		getApiResponses(apiOperation.responses(), methodAttributes, operation, components).ifPresent(responses -> {
@@ -394,6 +544,12 @@ public class OperationBuilder {
 		});
 	}
 
+	/**
+	 * Gets string list from string array.
+	 *
+	 * @param array the array
+	 * @return the string list from string array
+	 */
 	private Optional<List<String>> getStringListFromStringArray(String[] array) {
 		if (array == null) {
 			return Optional.empty();
@@ -412,6 +568,14 @@ public class OperationBuilder {
 		return Optional.of(list);
 	}
 
+	/**
+	 * Gets operation id.
+	 *
+	 * @param operationId the operation id
+	 * @param oldOperationId the old operation id
+	 * @param openAPI the open api
+	 * @return the operation id
+	 */
 	public String getOperationId(String operationId, String oldOperationId, OpenAPI openAPI) {
 		if (StringUtils.isNotBlank(oldOperationId))
 			return this.getOperationId(oldOperationId, openAPI);
@@ -419,6 +583,13 @@ public class OperationBuilder {
 			return this.getOperationId(operationId, openAPI);
 	}
 
+	/**
+	 * Merge operation operation.
+	 *
+	 * @param operation the operation
+	 * @param operationModel the operation model
+	 * @return the operation
+	 */
 	public Operation mergeOperation(Operation operation, Operation operationModel) {
 		if (operationModel.getOperationId().length() < operation.getOperationId().length()) {
 			operation.setOperationId(operationModel.getOperationId());

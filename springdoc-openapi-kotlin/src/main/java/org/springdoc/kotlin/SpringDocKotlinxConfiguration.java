@@ -29,11 +29,18 @@ import org.springframework.context.annotation.Configuration;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
+/**
+ * The type Spring doc kotlinx configuration.
+ * @author bnasslahsen
+ */
 @ConditionalOnClass(Flow.class)
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocKotlinxConfiguration {
 
+	/**
+	 * Instantiates a new Spring doc kotlinx configuration.
+	 */
 	SpringDocKotlinxConfiguration() {
 		getConfig().addFluxWrapperToIgnore(Flow.class);
 	}

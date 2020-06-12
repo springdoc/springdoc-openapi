@@ -32,15 +32,24 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Wrapper for model converters to only register converters once
+ * @author bnasslahsen
  */
 public class ModelConverterRegistrar {
 
+	/**
+	 * The constant modelConvertersInstance.
+	 */
 	private static final ModelConverters modelConvertersInstance = ModelConverters.getInstance();
+
+	/**
+	 * The constant LOGGER.
+	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ModelConverterRegistrar.class);
 
 	/**
-	 * @param modelConverters spring registered model converter beans which have to be
-	 *                        registered in {@link ModelConverters} instance
+	 * Instantiates a new Model converter registrar.
+	 *
+	 * @param modelConverters spring registered model converter beans which have to be                        registered in {@link ModelConverters} instance
 	 */
 	public ModelConverterRegistrar(List<ModelConverter> modelConverters) {
 		for (ModelConverter modelConverter : modelConverters) {
@@ -50,6 +59,12 @@ public class ModelConverterRegistrar {
 		}
 	}
 
+	/**
+	 * Gets registered converter same as.
+	 *
+	 * @param modelConverter the model converter
+	 * @return the registered converter same as
+	 */
 	private Optional<ModelConverter> getRegisteredConverterSameAs(ModelConverter modelConverter) {
 		try {
 			Field convertersField = FieldUtils.getDeclaredField(ModelConverters.class, "converters", true);
@@ -64,6 +79,13 @@ public class ModelConverterRegistrar {
 		return Optional.empty();
 	}
 
+	/**
+	 * Is same converter boolean.
+	 *
+	 * @param modelConverter1 the model converter 1
+	 * @param modelConverter2 the model converter 2
+	 * @return the boolean
+	 */
 	private boolean isSameConverter(ModelConverter modelConverter1, ModelConverter modelConverter2) {
 		// comparing by the converter type
 		Class<? extends ModelConverter> modelConverter1Class = modelConverter1.getClass();

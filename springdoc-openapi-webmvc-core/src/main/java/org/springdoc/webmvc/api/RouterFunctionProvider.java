@@ -38,15 +38,32 @@ import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.RouterFunctions;
 import org.springframework.web.servlet.function.ServerRequest;
 
+/**
+ * The type Router function provider.
+ * @author bnasslahsen
+ */
 //To keep compatiblity with spring-boot 1
 public class RouterFunctionProvider {
 
+	/**
+	 * The Application context.
+	 */
 	private ApplicationContext applicationContext;
 
+	/**
+	 * Instantiates a new Router function provider.
+	 *
+	 * @param applicationContext the application context
+	 */
 	public RouterFunctionProvider(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
+	/**
+	 * Gets web mvc router function paths.
+	 *
+	 * @return the web mvc router function paths
+	 */
 	protected Optional<Map<String, AbstractRouterFunctionVisitor>> getWebMvcRouterFunctionPaths() {
 		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
 		if (CollectionUtils.isEmpty(routerBeans))
@@ -61,6 +78,10 @@ public class RouterFunctionProvider {
 		return Optional.of(routerFunctionVisitorMap);
 	}
 
+	/**
+	 * The type Router function visitor.
+	 * @author bnasslahsen
+	 */
 	private class RouterFunctionVisitor extends AbstractRouterFunctionVisitor implements RouterFunctions.Visitor, RequestPredicates.Visitor {
 		@Override
 		public void route(RequestPredicate predicate, HandlerFunction<?> handlerFunction) {

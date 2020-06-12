@@ -36,8 +36,19 @@ import org.springframework.web.servlet.resource.ResourceTransformer;
 import org.springframework.web.servlet.resource.ResourceTransformerChain;
 import org.springframework.web.servlet.resource.TransformedResource;
 
+/**
+ * The type Swagger index transformer.
+ * @author bnasslahsen
+ */
 public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer implements ResourceTransformer {
 
+	/**
+	 * Instantiates a new Swagger index transformer.
+	 *
+	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
+	 * @param objectMapper the object mapper
+	 */
 	public SwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
 		super(swaggerUiConfig, swaggerUiOAuthProperties, objectMapper);
 	}

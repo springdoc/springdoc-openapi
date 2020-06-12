@@ -24,9 +24,20 @@ import java.util.List;
 
 import org.springdoc.api.annotations.ParameterObject;
 
+/**
+ * The type Default pageable.
+ * @author bnasslahsen
+ */
 @ParameterObject
 public class DefaultPageable extends Pageable {
 
+	/**
+	 * Instantiates a new Default pageable.
+	 *
+	 * @param page the page
+	 * @param size the size
+	 * @param sort the sort
+	 */
 	public DefaultPageable(int page, int size, List<String> sort) {
 		super(page, size, sort);
 	}

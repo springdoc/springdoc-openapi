@@ -32,6 +32,10 @@ import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpointHa
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
+/**
+ * The type Spring doc security configuration.
+ * @author bnasslahsen
+ */
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocSecurityConfiguration {
@@ -42,9 +46,19 @@ public class SpringDocSecurityConfiguration {
 				.addAnnotationsToIgnore(AuthenticationPrincipal.class);
 	}
 
+	/**
+	 * The type Spring security o auth 2 provider configuration.
+	 * @author bnasslahsen
+	 */
 	@Configuration
 	@ConditionalOnBean(FrameworkEndpointHandlerMapping.class)
 	class SpringSecurityOAuth2ProviderConfiguration {
+		/**
+		 * Spring security o auth 2 provider spring security o auth 2 provider.
+		 *
+		 * @param oauth2EndpointHandlerMapping the oauth 2 endpoint handler mapping
+		 * @return the spring security o auth 2 provider
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		SpringSecurityOAuth2Provider springSecurityOAuth2Provider(FrameworkEndpointHandlerMapping oauth2EndpointHandlerMapping) {

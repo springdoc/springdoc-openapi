@@ -38,15 +38,37 @@ import org.springframework.web.bind.annotation.RequestPart;
 import static org.springdoc.core.SpringDocAnnotationsUtils.mergeSchema;
 
 
+/**
+ * The type Request body builder.
+ * @author bnasslahsen
+ */
 public class RequestBodyBuilder {
 
+	/**
+	 * The Parameter builder.
+	 */
 	private final GenericParameterBuilder parameterBuilder;
 
+	/**
+	 * Instantiates a new Request body builder.
+	 *
+	 * @param parameterBuilder the parameter builder
+	 */
 	public RequestBodyBuilder(GenericParameterBuilder parameterBuilder) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 	}
 
+	/**
+	 * Build request body from doc optional.
+	 *
+	 * @param requestBody the request body
+	 * @param requestBodyOp the request body op
+	 * @param methodAttributes the method attributes
+	 * @param components the components
+	 * @param jsonViewAnnotation the json view annotation
+	 * @return the optional
+	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes,
 			Components components, JsonView jsonViewAnnotation) {
@@ -89,6 +111,18 @@ public class RequestBodyBuilder {
 		return Optional.of(requestBodyObject);
 	}
 
+	/**
+	 * Build resquest body content.
+	 *
+	 * @param requestBody the request body
+	 * @param requestBodyOp the request body op
+	 * @param methodAttributes the method attributes
+	 * @param components the components
+	 * @param jsonViewAnnotation the json view annotation
+	 * @param classConsumes the class consumes
+	 * @param methodConsumes the method consumes
+	 * @param requestBodyObject the request body object
+	 */
 	private void buildResquestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, String[] classConsumes, String[] methodConsumes, RequestBody requestBodyObject) {
 		Optional<Content> optionalContent = AnnotationsUtils
 				.getContent(requestBody.content(), getConsumes(classConsumes),
@@ -112,22 +146,54 @@ public class RequestBodyBuilder {
 		}
 	}
 
+	/**
+	 * Get consumes string [ ].
+	 *
+	 * @param classConsumes the class consumes
+	 * @return the string [ ]
+	 */
 	private String[] getConsumes(String[] classConsumes) {
 		return classConsumes == null ? new String[0] : classConsumes;
 	}
 
+	/**
+	 * Build request body from doc optional.
+	 *
+	 * @param requestBody the request body
+	 * @param methodAttributes the method attributes
+	 * @param components the components
+	 * @return the optional
+	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
 			MethodAttributes methodAttributes, Components components) {
 		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes,
 				components, null);
 	}
 
+	/**
+	 * Build request body from doc optional.
+	 *
+	 * @param requestBody the request body
+	 * @param methodAttributes the method attributes
+	 * @param components the components
+	 * @param jsonViewAnnotation the json view annotation
+	 * @return the optional
+	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
 			MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation) {
 		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes,
 				components, jsonViewAnnotation);
 	}
 
+	/**
+	 * Build request body from doc optional.
+	 *
+	 * @param requestBody the request body
+	 * @param requestBodyOp the request body op
+	 * @param methodAttributes the method attributes
+	 * @param components the components
+	 * @return the optional
+	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes,
 			Components components) {
@@ -135,6 +201,14 @@ public class RequestBodyBuilder {
 				components, null);
 	}
 
+	/**
+	 * Calculate request body info.
+	 *
+	 * @param components the components
+	 * @param methodAttributes the method attributes
+	 * @param parameterInfo the parameter info
+	 * @param requestBodyInfo the request body info
+	 */
 	public void calculateRequestBodyInfo(Components components, MethodAttributes methodAttributes,
 			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
@@ -157,6 +231,16 @@ public class RequestBodyBuilder {
 		requestBodyInfo.setRequestBody(requestBody);
 	}
 
+	/**
+	 * Build request body request body.
+	 *
+	 * @param requestBody the request body
+	 * @param components the components
+	 * @param methodAttributes the method attributes
+	 * @param parameterInfo the parameter info
+	 * @param requestBodyInfo the request body info
+	 * @return the request body
+	 */
 	private RequestBody buildRequestBody(RequestBody requestBody, Components components,
 			MethodAttributes methodAttributes,
 			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
@@ -178,16 +262,38 @@ public class RequestBodyBuilder {
 		return requestBody;
 	}
 
+	/**
+	 * Merge content.
+	 *
+	 * @param requestBody the request body
+	 * @param methodAttributes the method attributes
+	 * @param schema the schema
+	 */
 	private void mergeContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
 		Content content = requestBody.getContent();
 		buildContent(requestBody, methodAttributes, schema, content);
 	}
 
+	/**
+	 * Build content.
+	 *
+	 * @param requestBody the request body
+	 * @param methodAttributes the method attributes
+	 * @param schema the schema
+	 */
 	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
 		Content content = new Content();
 		buildContent(requestBody, methodAttributes, schema, content);
 	}
 
+	/**
+	 * Build content.
+	 *
+	 * @param requestBody the request body
+	 * @param methodAttributes the method attributes
+	 * @param schema the schema
+	 * @param content the content
+	 */
 	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content) {
 		for (String value : methodAttributes.getMethodConsumes()) {
 			io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();

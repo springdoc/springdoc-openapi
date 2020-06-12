@@ -72,32 +72,81 @@ import static org.springdoc.core.Constants.DEFAULT_SERVER_DESCRIPTION;
 import static org.springdoc.core.Constants.DEFAULT_TITLE;
 import static org.springdoc.core.Constants.DEFAULT_VERSION;
 
+/**
+ * The type Open api builder.
+ * @author bnasslahsen
+ */
 public class OpenAPIBuilder {
 
+	/**
+	 * The constant LOGGER.
+	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIBuilder.class);
 
+	/**
+	 * The Context.
+	 */
 	private final ApplicationContext context;
 
+	/**
+	 * The Security parser.
+	 */
 	private final SecurityParser securityParser;
 
+	/**
+	 * The Mappings map.
+	 */
 	private final Map<String, Object> mappingsMap = new HashMap<>();
 
+	/**
+	 * The Springdoc tags.
+	 */
 	private final Map<HandlerMethod, io.swagger.v3.oas.models.tags.Tag> springdocTags = new HashMap<>();
 
+	/**
+	 * The Open api builder customisers.
+	 */
 	private final Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers;
 
+	/**
+	 * The Spring doc config properties.
+	 */
 	private final SpringDocConfigProperties springDocConfigProperties;
 
+	/**
+	 * The Open api.
+	 */
 	private OpenAPI openAPI;
 
+	/**
+	 * The Cached open api.
+	 */
 	private OpenAPI cachedOpenAPI;
 
+	/**
+	 * The Calculated open api.
+	 */
 	private OpenAPI calculatedOpenAPI;
 
+	/**
+	 * The Is servers present.
+	 */
 	private boolean isServersPresent;
 
+	/**
+	 * The Server base url.
+	 */
 	private String serverBaseUrl;
 
+	/**
+	 * Instantiates a new Open api builder.
+	 *
+	 * @param openAPI the open api
+	 * @param context the context
+	 * @param securityParser the security parser
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param openApiBuilderCustomisers the open api builder customisers
+	 */
 	OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers) {
@@ -116,6 +165,12 @@ public class OpenAPIBuilder {
 		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
 	}
 
+	/**
+	 * Split camel case string.
+	 *
+	 * @param str the str
+	 * @return the string
+	 */
 	public static String splitCamelCase(String str) {
 		return str.replaceAll(
 				String.format(
@@ -127,6 +182,9 @@ public class OpenAPIBuilder {
 				.toLowerCase(Locale.ROOT);
 	}
 
+	/**
+	 * Build.
+	 */
 	public void build() {
 		Optional<OpenAPIDefinition> apiDef = getOpenAPIDefinition();
 
@@ -156,6 +214,12 @@ public class OpenAPIBuilder {
 		openApiBuilderCustomisers.ifPresent(customisers -> customisers.forEach(customiser -> customiser.customise(this)));
 	}
 
+	/**
+	 * Update servers open api.
+	 *
+	 * @param openAPI the open api
+	 * @return the open api
+	 */
 	public OpenAPI updateServers(OpenAPI openAPI) {
 		if (!isServersPresent)        // default server value
 		{
@@ -167,10 +231,23 @@ public class OpenAPIBuilder {
 		return openAPI;
 	}
 
+	/**
+	 * Sets servers present.
+	 *
+	 * @param serversPresent the servers present
+	 */
 	public void setServersPresent(boolean serversPresent) {
 		isServersPresent = serversPresent;
 	}
 
+	/**
+	 * Build tags operation.
+	 *
+	 * @param handlerMethod the handler method
+	 * @param operation the operation
+	 * @param openAPI the open api
+	 * @return the operation
+	 */
 	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
 
 		// class tags
@@ -240,6 +317,13 @@ public class OpenAPIBuilder {
 		return operation;
 	}
 
+	/**
+	 * Resolve properties schema.
+	 *
+	 * @param schema the schema
+	 * @param propertyResolverUtils the property resolver utils
+	 * @return the schema
+	 */
 	public Schema resolveProperties(Schema schema, PropertyResolverUtils propertyResolverUtils) {
 		resolveProperty(schema::getName, schema::name, propertyResolverUtils);
 		resolveProperty(schema::getTitle, schema::title, propertyResolverUtils);
@@ -257,10 +341,20 @@ public class OpenAPIBuilder {
 		return schema;
 	}
 
+	/**
+	 * Sets server base url.
+	 *
+	 * @param serverBaseUrl the server base url
+	 */
 	public void setServerBaseUrl(String serverBaseUrl) {
 		this.serverBaseUrl = serverBaseUrl;
 	}
 
+	/**
+	 * Gets open api definition.
+	 *
+	 * @return the open api definition
+	 */
 	private Optional<OpenAPIDefinition> getOpenAPIDefinition() {
 		// Look for OpenAPIDefinition in a spring managed bean
 		Map<String, Object> openAPIDefinitionMap = context.getBeansWithAnnotation(OpenAPIDefinition.class);
@@ -288,6 +382,12 @@ public class OpenAPIBuilder {
 		return Optional.ofNullable(apiDef);
 	}
 
+	/**
+	 * Build open api with open api definition.
+	 *
+	 * @param openAPI the open api
+	 * @param apiDef the api def
+	 */
 	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef) {
 		// info
 		AnnotationsUtils.getInfo(apiDef.info()).map(this::resolveProperties).ifPresent(openAPI::setInfo);
@@ -309,6 +409,12 @@ public class OpenAPIBuilder {
 		}
 	}
 
+	/**
+	 * Resolve properties info.
+	 *
+	 * @param info the info
+	 * @return the info
+	 */
 	private Info resolveProperties(Info info) {
 		PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
 		resolveProperty(info::getTitle, info::title, propertyResolverUtils);
@@ -331,6 +437,13 @@ public class OpenAPIBuilder {
 		return info;
 	}
 
+	/**
+	 * Resolve property.
+	 *
+	 * @param getProperty the get property
+	 * @param setProperty the set property
+	 * @param propertyResolverUtils the property resolver utils
+	 */
 	private void resolveProperty(Supplier<String> getProperty, Consumer<String> setProperty,
 			PropertyResolverUtils propertyResolverUtils) {
 		String value = getProperty.get();
@@ -339,6 +452,11 @@ public class OpenAPIBuilder {
 		}
 	}
 
+	/**
+	 * Calculate security schemes.
+	 *
+	 * @param components the components
+	 */
 	private void calculateSecuritySchemes(Components components) {
 		// Look for SecurityScheme in a spring managed bean
 		Map<String, Object> securitySchemeBeans = context
@@ -367,6 +485,12 @@ public class OpenAPIBuilder {
 		}
 	}
 
+	/**
+	 * Add security scheme.
+	 *
+	 * @param apiSecurityScheme the api security scheme
+	 * @param components the components
+	 */
 	private void addSecurityScheme(Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme,
 			Components components) {
 		for (io.swagger.v3.oas.annotations.security.SecurityScheme securitySchemeAnnotation : apiSecurityScheme) {
@@ -386,6 +510,13 @@ public class OpenAPIBuilder {
 		}
 	}
 
+	/**
+	 * Gets api def class.
+	 *
+	 * @param scanner the scanner
+	 * @param packagesToScan the packages to scan
+	 * @return the api def class
+	 */
 	private OpenAPIDefinition getApiDefClass(ClassPathScanningCandidateComponentProvider scanner,
 			List<String> packagesToScan) {
 		for (String pack : packagesToScan) {
@@ -403,10 +534,23 @@ public class OpenAPIBuilder {
 		return null;
 	}
 
+	/**
+	 * Is auto tag classes boolean.
+	 *
+	 * @param operation the operation
+	 * @return the boolean
+	 */
 	public boolean isAutoTagClasses(Operation operation) {
 		return CollectionUtils.isEmpty(operation.getTags()) && springDocConfigProperties.isAutoTagClasses();
 	}
 
+	/**
+	 * Gets security schemes classes.
+	 *
+	 * @param scanner the scanner
+	 * @param packagesToScan the packages to scan
+	 * @return the security schemes classes
+	 */
 	private Set<io.swagger.v3.oas.annotations.security.SecurityScheme> getSecuritySchemesClasses(
 			ClassPathScanningCandidateComponentProvider scanner, List<String> packagesToScan) {
 		Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = new HashSet<>();
@@ -424,18 +568,39 @@ public class OpenAPIBuilder {
 		return apiSecurityScheme;
 	}
 
+	/**
+	 * Add tag.
+	 *
+	 * @param handlerMethods the handler methods
+	 * @param tag the tag
+	 */
 	public void addTag(Set<HandlerMethod> handlerMethods, io.swagger.v3.oas.models.tags.Tag tag) {
 		handlerMethods.forEach(handlerMethod -> springdocTags.put(handlerMethod, tag));
 	}
 
+	/**
+	 * Gets mappings map.
+	 *
+	 * @return the mappings map
+	 */
 	public Map<String, Object> getMappingsMap() {
 		return this.mappingsMap;
 	}
 
+	/**
+	 * Add mappings.
+	 *
+	 * @param mappings the mappings
+	 */
 	public void addMappings(Map<String, Object> mappings) {
 		this.mappingsMap.putAll(mappings);
 	}
 
+	/**
+	 * Gets controller advice map.
+	 *
+	 * @return the controller advice map
+	 */
 	public Map<String, Object> getControllerAdviceMap() {
 		Map<String, Object> controllerAdviceMap = context.getBeansWithAnnotation(ControllerAdvice.class);
 		return Stream.of(controllerAdviceMap).flatMap(mapEl -> mapEl.entrySet().stream()).filter(
@@ -443,22 +608,45 @@ public class OpenAPIBuilder {
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 	}
 
+	/**
+	 * Gets cached open api.
+	 *
+	 * @return the cached open api
+	 */
 	public OpenAPI getCachedOpenAPI() {
 		return cachedOpenAPI;
 	}
 
+	/**
+	 * Sets cached open api.
+	 *
+	 * @param cachedOpenAPI the cached open api
+	 */
 	public void setCachedOpenAPI(OpenAPI cachedOpenAPI) {
 		this.cachedOpenAPI = cachedOpenAPI;
 	}
 
+	/**
+	 * Gets calculated open api.
+	 *
+	 * @return the calculated open api
+	 */
 	public OpenAPI getCalculatedOpenAPI() {
 		return calculatedOpenAPI;
 	}
 
+	/**
+	 * Reset calculated open api.
+	 */
 	public void resetCalculatedOpenAPI() {
 		this.calculatedOpenAPI = null;
 	}
 
+	/**
+	 * Gets context.
+	 *
+	 * @return the context
+	 */
 	public ApplicationContext getContext() {
 		return context;
 	}

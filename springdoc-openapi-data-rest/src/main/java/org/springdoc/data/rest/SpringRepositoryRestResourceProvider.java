@@ -50,26 +50,66 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
+/**
+ * The type Spring repository rest resource provider.
+ * @author bnasslahsen
+ */
 public class SpringRepositoryRestResourceProvider implements RepositoryRestResourceProvider {
 
+	/**
+	 * The constant REPOSITORY_ENTITY_CONTROLLER.
+	 */
 	public static final String REPOSITORY_ENTITY_CONTROLLER = "org.springframework.data.rest.webmvc.RepositoryEntityController";
 
+	/**
+	 * The constant REPOSITORY_SERACH_CONTROLLER.
+	 */
 	public static final String REPOSITORY_SERACH_CONTROLLER = "org.springframework.data.rest.webmvc.RepositorySearchController";
 
+	/**
+	 * The constant REPOSITORY_SCHEMA_CONTROLLER.
+	 */
 	public static final String REPOSITORY_SCHEMA_CONTROLLER = "org.springframework.data.rest.webmvc.RepositorySchemaController";
 
+	/**
+	 * The constant REPOSITORY_PROPERTY_CONTROLLER.
+	 */
 	public static final String REPOSITORY_PROPERTY_CONTROLLER = "org.springframework.data.rest.webmvc.RepositoryPropertyReferenceController";
 
+	/**
+	 * The Mappings.
+	 */
 	private ResourceMappings mappings;
 
+	/**
+	 * The Repositories.
+	 */
 	private Repositories repositories;
 
+	/**
+	 * The Associations.
+	 */
 	private Associations associations;
 
+	/**
+	 * The Delegating handler mapping.
+	 */
 	private DelegatingHandlerMapping delegatingHandlerMapping;
 
+	/**
+	 * The Data rest router operation builder.
+	 */
 	private DataRestRouterOperationBuilder dataRestRouterOperationBuilder;
 
+	/**
+	 * Instantiates a new Spring repository rest resource provider.
+	 *
+	 * @param mappings the mappings
+	 * @param repositories the repositories
+	 * @param associations the associations
+	 * @param delegatingHandlerMapping the delegating handler mapping
+	 * @param dataRestRouterOperationBuilder the data rest router operation builder
+	 */
 	public SpringRepositoryRestResourceProvider(ResourceMappings mappings, Repositories repositories, Associations associations,
 			DelegatingHandlerMapping delegatingHandlerMapping, DataRestRouterOperationBuilder dataRestRouterOperationBuilder) {
 		this.mappings = mappings;
@@ -122,6 +162,15 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 		return routerOperationList;
 	}
 
+	/**
+	 * Find search resource mappings.
+	 *
+	 * @param openAPI the open api
+	 * @param routerOperationList the router operation list
+	 * @param handlerMappingList the handler mapping list
+	 * @param domainType the domain type
+	 * @param resourceMetadata the resource metadata
+	 */
 	private void findSearchResourceMappings(OpenAPI openAPI, List<RouterOperation> routerOperationList, List<HandlerMapping> handlerMappingList, Class<?> domainType, ResourceMetadata resourceMetadata) {
 		for (HandlerMapping handlerMapping : handlerMappingList) {
 			if (handlerMapping instanceof RepositoryRestHandlerMapping) {
@@ -141,6 +190,17 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 		}
 	}
 
+	/**
+	 * Find search controllers list.
+	 *
+	 * @param routerOperationList the router operation list
+	 * @param handlerMethodMap the handler method map
+	 * @param resourceMetadata the resource metadata
+	 * @param domainType the domain type
+	 * @param openAPI the open api
+	 * @param searchResourceMappings the search resource mappings
+	 * @return the list
+	 */
 	private List<RouterOperation> findSearchControllers(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata, Class<?> domainType, OpenAPI openAPI, SearchResourceMappings searchResourceMappings) {
 		Stream<MethodResourceMapping> methodResourceMappingStream = searchResourceMappings.getExportedMappings();
@@ -150,6 +210,16 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	}
 
 
+	/**
+	 * Find controllers list.
+	 *
+	 * @param routerOperationList the router operation list
+	 * @param handlerMethodMap the handler method map
+	 * @param resourceMetadata the resource metadata
+	 * @param domainType the domain type
+	 * @param openAPI the open api
+	 * @return the list
+	 */
 	private List<RouterOperation> findControllers
 			(List<RouterOperation> routerOperationList,
 					Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,

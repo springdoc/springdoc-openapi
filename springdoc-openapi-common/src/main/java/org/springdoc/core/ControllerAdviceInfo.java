@@ -24,20 +24,45 @@ import java.util.Map;
 
 import io.swagger.v3.oas.models.responses.ApiResponse;
 
+/**
+ * The type Controller advice info.
+ * @author bnasslahsen
+ */
 public class ControllerAdviceInfo {
 
+	/**
+	 * The Controller advice.
+	 */
 	private Object controllerAdvice;
 
+	/**
+	 * The Api response map.
+	 */
 	private Map<String, ApiResponse> apiResponseMap = new LinkedHashMap<>();
 
+	/**
+	 * Instantiates a new Controller advice info.
+	 *
+	 * @param controllerAdvice the controller advice
+	 */
 	public ControllerAdviceInfo(Object controllerAdvice) {
 		this.controllerAdvice = controllerAdvice;
 	}
 
+	/**
+	 * Gets controller advice.
+	 *
+	 * @return the controller advice
+	 */
 	public Object getControllerAdvice() {
 		return controllerAdvice;
 	}
 
+	/**
+	 * Gets api response map.
+	 *
+	 * @return the api response map
+	 */
 	public Map<String, ApiResponse> getApiResponseMap() {
 		return apiResponseMap;
 	}

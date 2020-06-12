@@ -26,6 +26,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.hateoas.Links;
 import org.springframework.hateoas.mediatype.hal.RepresentationModelMixin;
 
+/**
+ * The type Representation model links oas mixin.
+ * @author bnasslahsen
+ */
 public abstract class RepresentationModelLinksOASMixin extends RepresentationModelMixin {
 	@Override
 	@Schema(ref = AnnotationsUtils.COMPONENTS_REF +"Links")

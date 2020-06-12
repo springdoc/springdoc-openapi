@@ -31,7 +31,8 @@ import static java.lang.annotation.ElementType.METHOD;
 /**
  * Container for repeatable {@link RouterOperation} annotation
  *
- * @see RouterOperation
+ * @author bnasslahsen
+ * @see  RouterOperation
  */
 @Target({METHOD, ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)

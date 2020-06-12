@@ -29,13 +29,29 @@ import static org.springdoc.core.Constants.CLASSPATH_RESOURCE_LOCATION;
 import static org.springdoc.core.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
+/**
+ * The type Swagger web mvc configurer.
+ * @author bnasslahsen
+ */
 @SuppressWarnings("deprecation")
 public class SwaggerWebMvcConfigurer extends WebMvcConfigurerAdapter { // NOSONAR
 
+	/**
+	 * The Swagger path.
+	 */
 	private String swaggerPath;
 
+	/**
+	 * The Swagger index transformer.
+	 */
 	private SwaggerIndexTransformer swaggerIndexTransformer;
 
+	/**
+	 * Instantiates a new Swagger web mvc configurer.
+	 *
+	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerIndexTransformer the swagger index transformer
+	 */
 	public SwaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerIndexTransformer swaggerIndexTransformer) {
 		this.swaggerPath = swaggerUiConfig.getPath();
 		this.swaggerIndexTransformer = swaggerIndexTransformer;

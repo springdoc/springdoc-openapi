@@ -31,30 +31,72 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 
+/**
+ * The type Router operation.
+ * @author bnasslahsen
+ */
 public class RouterOperation implements Comparable<RouterOperation> {
 
+	/**
+	 * The Path.
+	 */
 	private String path;
 
+	/**
+	 * The Methods.
+	 */
 	private RequestMethod[] methods;
 
+	/**
+	 * The Consumes.
+	 */
 	private String[] consumes;
 
+	/**
+	 * The Produces.
+	 */
 	private String[] produces;
 
+	/**
+	 * The Headers.
+	 */
 	private String[] headers;
 
+	/**
+	 * The Bean class.
+	 */
 	private Class<?> beanClass;
 
+	/**
+	 * The Bean method.
+	 */
 	private String beanMethod;
 
+	/**
+	 * The Parameter types.
+	 */
 	private Class<?>[] parameterTypes;
 
+	/**
+	 * The Query params.
+	 */
 	private Map<String, String> queryParams;
 
+	/**
+	 * The Operation.
+	 */
 	private Operation operation;
 
+	/**
+	 * The Operation model.
+	 */
 	private io.swagger.v3.oas.models.Operation operationModel;
 
+	/**
+	 * Instantiates a new Router operation.
+	 *
+	 * @param routerOperationAnnotation the router operation annotation
+	 */
 	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperationAnnotation) {
 		this.path = routerOperationAnnotation.path();
 		this.methods = routerOperationAnnotation.method();
@@ -67,6 +109,12 @@ public class RouterOperation implements Comparable<RouterOperation> {
 		this.headers = routerOperationAnnotation.headers();
 	}
 
+	/**
+	 * Instantiates a new Router operation.
+	 *
+	 * @param routerOperationAnnotation the router operation annotation
+	 * @param routerFunctionData the router function data
+	 */
 	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperationAnnotation, RouterFunctionData routerFunctionData) {
 		this.path = StringUtils.isBlank(routerOperationAnnotation.path()) ? routerFunctionData.getPath() : routerOperationAnnotation.path();
 		this.methods = ArrayUtils.isEmpty(routerOperationAnnotation.method()) ? routerFunctionData.getMethods() : routerOperationAnnotation.method();
@@ -80,95 +128,211 @@ public class RouterOperation implements Comparable<RouterOperation> {
 		this.queryParams = routerFunctionData.getQueryParams();
 	}
 
+	/**
+	 * Instantiates a new Router operation.
+	 *
+	 * @param path the path
+	 * @param methods the methods
+	 */
 	public RouterOperation(String path, RequestMethod[] methods) {
 		this.path = path;
 		this.methods = methods;
 	}
 
+	/**
+	 * Gets path.
+	 *
+	 * @return the path
+	 */
 	public String getPath() {
 		return path;
 	}
 
+	/**
+	 * Sets path.
+	 *
+	 * @param path the path
+	 */
 	public void setPath(String path) {
 		this.path = path;
 	}
 
+	/**
+	 * Get methods request method [ ].
+	 *
+	 * @return the request method [ ]
+	 */
 	public RequestMethod[] getMethods() {
 		return methods;
 	}
 
+	/**
+	 * Sets methods.
+	 *
+	 * @param methods the methods
+	 */
 	public void setMethods(RequestMethod[] methods) {
 		this.methods = methods;
 	}
 
+	/**
+	 * Get consumes string [ ].
+	 *
+	 * @return the string [ ]
+	 */
 	public String[] getConsumes() {
 		return consumes;
 	}
 
+	/**
+	 * Sets consumes.
+	 *
+	 * @param consumes the consumes
+	 */
 	public void setConsumes(String[] consumes) {
 		this.consumes = consumes;
 	}
 
+	/**
+	 * Get produces string [ ].
+	 *
+	 * @return the string [ ]
+	 */
 	public String[] getProduces() {
 		return produces;
 	}
 
+	/**
+	 * Sets produces.
+	 *
+	 * @param produces the produces
+	 */
 	public void setProduces(String[] produces) {
 		this.produces = produces;
 	}
 
+	/**
+	 * Gets bean class.
+	 *
+	 * @return the bean class
+	 */
 	public Class<?> getBeanClass() {
 		return beanClass;
 	}
 
+	/**
+	 * Sets bean class.
+	 *
+	 * @param beanClass the bean class
+	 */
 	public void setBeanClass(Class<?> beanClass) {
 		this.beanClass = beanClass;
 	}
 
+	/**
+	 * Gets bean method.
+	 *
+	 * @return the bean method
+	 */
 	public String getBeanMethod() {
 		return beanMethod;
 	}
 
+	/**
+	 * Sets bean method.
+	 *
+	 * @param beanMethod the bean method
+	 */
 	public void setBeanMethod(String beanMethod) {
 		this.beanMethod = beanMethod;
 	}
 
+	/**
+	 * Get parameter types class [ ].
+	 *
+	 * @return the class [ ]
+	 */
 	public Class<?>[] getParameterTypes() {
 		return parameterTypes;
 	}
 
+	/**
+	 * Sets parameter types.
+	 *
+	 * @param parameterTypes the parameter types
+	 */
 	public void setParameterTypes(Class<?>[] parameterTypes) {
 		this.parameterTypes = parameterTypes;
 	}
 
+	/**
+	 * Gets operation.
+	 *
+	 * @return the operation
+	 */
 	public Operation getOperation() {
 		return operation;
 	}
 
+	/**
+	 * Sets operation.
+	 *
+	 * @param operation the operation
+	 */
 	public void setOperation(Operation operation) {
 		this.operation = operation;
 	}
 
+	/**
+	 * Get headers string [ ].
+	 *
+	 * @return the string [ ]
+	 */
 	public String[] getHeaders() {
 		return headers;
 	}
 
+	/**
+	 * Sets headers.
+	 *
+	 * @param headers the headers
+	 */
 	public void setHeaders(String[] headers) {
 		this.headers = headers;
 	}
 
+	/**
+	 * Gets query params.
+	 *
+	 * @return the query params
+	 */
 	public Map<String, String> getQueryParams() {
 		return queryParams;
 	}
 
+	/**
+	 * Sets query params.
+	 *
+	 * @param queryParams the query params
+	 */
 	public void setQueryParams(Map<String, String> queryParams) {
 		this.queryParams = queryParams;
 	}
 
+	/**
+	 * Gets operation model.
+	 *
+	 * @return the operation model
+	 */
 	public io.swagger.v3.oas.models.Operation getOperationModel() {
 		return operationModel;
 	}
 
+	/**
+	 * Sets operation model.
+	 *
+	 * @param operationModel the operation model
+	 */
 	public void setOperationModel(io.swagger.v3.oas.models.Operation operationModel) {
 		this.operationModel = operationModel;
 	}

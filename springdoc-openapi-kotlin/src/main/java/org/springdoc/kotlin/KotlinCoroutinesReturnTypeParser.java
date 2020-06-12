@@ -33,6 +33,10 @@ import org.springdoc.core.ReturnTypeParser;
 
 import org.springframework.core.MethodParameter;
 
+/**
+ * The type Kotlin coroutines return type parser.
+ * @author bnasslahsen
+ */
 public class KotlinCoroutinesReturnTypeParser implements ReturnTypeParser {
 
 	@Override

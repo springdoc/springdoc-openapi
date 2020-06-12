@@ -22,14 +22,32 @@ package org.springdoc.core;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 
+/**
+ * The type Property resolver utils.
+ * @author bnasslahsen
+ */
 public class PropertyResolverUtils {
 
+	/**
+	 * The Factory.
+	 */
 	private final ConfigurableBeanFactory factory;
 
+	/**
+	 * Instantiates a new Property resolver utils.
+	 *
+	 * @param factory the factory
+	 */
 	public PropertyResolverUtils(ConfigurableBeanFactory factory) {
 		this.factory = factory;
 	}
 
+	/**
+	 * Resolve string.
+	 *
+	 * @param parameterProperty the parameter property
+	 * @return the string
+	 */
 	public String resolve(String parameterProperty) {
 		return factory.resolveEmbeddedValue(parameterProperty);
 	}

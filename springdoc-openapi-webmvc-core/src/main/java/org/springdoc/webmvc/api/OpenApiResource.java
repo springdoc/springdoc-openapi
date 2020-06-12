@@ -68,17 +68,50 @@ import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
+/**
+ * The type Open api resource.
+ * @author bnasslahsen
+ */
 @RestController
 public class OpenApiResource extends AbstractOpenApiResource {
 
+	/**
+	 * The Request mapping handler mapping.
+	 */
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
+	/**
+	 * The Spring security o auth 2 provider.
+	 */
 	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
 
+	/**
+	 * The Router function provider.
+	 */
 	private final Optional<RouterFunctionProvider> routerFunctionProvider;
 
+	/**
+	 * The Repository rest resource provider.
+	 */
 	private final Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider;
 
+	/**
+	 * Instantiates a new Open api resource.
+	 *
+	 * @param groupName the group name
+	 * @param openAPIBuilder the open api builder
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param actuatorProvider the actuator provider
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
+	 * @param routerFunctionProvider the router function provider
+	 * @param repositoryRestResourceProvider the repository rest resource provider
+	 */
 	public OpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
@@ -96,6 +129,22 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		this.repositoryRestResourceProvider = repositoryRestResourceProvider;
 	}
 
+	/**
+	 * Instantiates a new Open api resource.
+	 *
+	 * @param openAPIBuilder the open api builder
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param actuatorProvider the actuator provider
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
+	 * @param routerFunctionProvider the router function provider
+	 * @param repositoryRestResourceProvider the repository rest resource provider
+	 */
 	@Autowired
 	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -114,6 +163,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		this.repositoryRestResourceProvider = repositoryRestResourceProvider;
 	}
 
+	/**
+	 * Openapi json string.
+	 *
+	 * @param request the request
+	 * @param apiDocsUrl the api docs url
+	 * @return the string
+	 * @throws JsonProcessingException the json processing exception
+	 */
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl)
@@ -126,6 +183,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			return Json.mapper().writerWithDefaultPrettyPrinter().writeValueAsString(openAPI);
 	}
 
+	/**
+	 * Openapi yaml string.
+	 *
+	 * @param request the request
+	 * @param apiDocsUrl the api docs url
+	 * @return the string
+	 * @throws JsonProcessingException the json processing exception
+	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
 	public String openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl)
@@ -167,6 +232,12 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		}
 	}
 
+	/**
+	 * Calculate path.
+	 *
+	 * @param restControllers the rest controllers
+	 * @param map the map
+	 */
 	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map) {
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
@@ -191,6 +262,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	}
 
 
+	/**
+	 * Is rest controller boolean.
+	 *
+	 * @param restControllers the rest controllers
+	 * @param handlerMethod the handler method
+	 * @param operationPath the operation path
+	 * @return the boolean
+	 */
 	protected boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod,
 			String operationPath) {
 		ResponseBody responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
@@ -202,6 +281,12 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				&& (springDocConfigProperties.isModelAndViewAllowed() || !ModelAndView.class.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}
 
+	/**
+	 * Calculate server url.
+	 *
+	 * @param request the request
+	 * @param apiDocsUrl the api docs url
+	 */
 	protected void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
 		String requestUrl = decode(request.getRequestURL().toString());
 		String calculatedUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
