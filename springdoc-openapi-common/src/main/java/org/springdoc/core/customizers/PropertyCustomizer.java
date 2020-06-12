@@ -26,13 +26,16 @@ import io.swagger.v3.oas.models.media.Schema;
 /**
  * Implement and register a bean of type {@link PropertyCustomizer} to customize a schema property
  * based on annotated type
+ * @author bnasslahsen
  */
 @FunctionalInterface
 public interface PropertyCustomizer {
 
 	/**
+	 * Customize schema.
+	 *
 	 * @param property to be customized
-	 * @param type     form the model class
+	 * @param type form the model class
 	 * @return customized property
 	 */
 	Schema customize(Schema property, AnnotatedType type);

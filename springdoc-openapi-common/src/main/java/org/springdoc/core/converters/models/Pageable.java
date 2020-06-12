@@ -29,48 +29,98 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+/**
+ * The type Pageable.
+ * @author bnasslahsen
+ */
 public class Pageable {
 
+	/**
+	 * The Page.
+	 */
 	@Min(0)
 	@Parameter(description = "Zero-based page index (0..N)", schema = @Schema(type = "integer", defaultValue = "0"))
 	private Integer page;
 
+	/**
+	 * The Size.
+	 */
 	@Min(1)
 	@Parameter(description = "The size of the page to be returned", schema = @Schema(type = "integer", defaultValue = "20"))
 	private Integer size;
 
+	/**
+	 * The Sort.
+	 */
 	@Parameter(description = "Sorting criteria in the format: property(,asc|desc). "
 			+ "Default sort order is ascending. " + "Multiple sort criteria are supported."
 			, name = "sort"
 			, array = @ArraySchema(schema = @Schema(type = "string")))
 	private List<String> sort;
 
+	/**
+	 * Instantiates a new Pageable.
+	 *
+	 * @param page the page
+	 * @param size the size
+	 * @param sort the sort
+	 */
 	public Pageable(int page, int size, List<String> sort) {
 		this.page = page;
 		this.size = size;
 		this.sort = sort;
 	}
 
+	/**
+	 * Gets page.
+	 *
+	 * @return the page
+	 */
 	public Integer getPage() {
 		return page;
 	}
 
+	/**
+	 * Sets page.
+	 *
+	 * @param page the page
+	 */
 	public void setPage(Integer page) {
 		this.page = page;
 	}
 
+	/**
+	 * Gets size.
+	 *
+	 * @return the size
+	 */
 	public Integer getSize() {
 		return size;
 	}
 
+	/**
+	 * Sets size.
+	 *
+	 * @param size the size
+	 */
 	public void setSize(Integer size) {
 		this.size = size;
 	}
 
+	/**
+	 * Gets sort.
+	 *
+	 * @return the sort
+	 */
 	public List<String> getSort() {
 		return sort;
 	}
 
+	/**
+	 * Sets sort.
+	 *
+	 * @param sort the sort
+	 */
 	public void setSort(List<String> sort) {
 		if (sort == null) {
 			this.sort.clear();
@@ -80,6 +130,11 @@ public class Pageable {
 		}
 	}
 
+	/**
+	 * Add sort.
+	 *
+	 * @param sort the sort
+	 */
 	public void addSort(String sort) {
 		this.sort.add(sort);
 	}

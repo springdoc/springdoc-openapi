@@ -30,14 +30,34 @@ import static org.springdoc.core.Constants.CLASSPATH_RESOURCE_LOCATION;
 import static org.springdoc.core.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
+/**
+ * The type Swagger web flux configurer.
+ * @author bnasslahsen
+ */
 public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 
+	/**
+	 * The Swagger path.
+	 */
 	private String swaggerPath;
 
+	/**
+	 * The Web jars prefix url.
+	 */
 	private String webJarsPrefixUrl;
 
+	/**
+	 * The Swagger index transformer.
+	 */
 	private SwaggerIndexTransformer swaggerIndexTransformer;
 
+	/**
+	 * Instantiates a new Swagger web flux configurer.
+	 *
+	 * @param swaggerUiConfig the swagger ui config 
+	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param swaggerIndexTransformer the swagger index transformer
+	 */
 	public SwaggerWebFluxConfigurer(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer) {
 		this.swaggerPath = swaggerUiConfig.getPath();
 		this.webJarsPrefixUrl = springDocConfigProperties.getWebjars().getPrefix();

@@ -20,16 +20,40 @@
 
 package org.springdoc.core;
 
+/**
+ * The type Request info.
+ * @author bnasslahsen
+ */
 public class RequestInfo {
 
+	/**
+	 * The Value.
+	 */
 	private final String value;
 
+	/**
+	 * The Required.
+	 */
 	private final boolean required;
 
+	/**
+	 * The Default value.
+	 */
 	private final String defaultValue;
 
+	/**
+	 * The Param type.
+	 */
 	private final String paramType;
 
+	/**
+	 * Instantiates a new Request info.
+	 *
+	 * @param paramType the param type
+	 * @param value the value
+	 * @param required the required
+	 * @param defaultValue the default value
+	 */
 	public RequestInfo(String paramType, String value, boolean required, String defaultValue) {
 		this.value = value;
 		this.required = required;
@@ -37,18 +61,38 @@ public class RequestInfo {
 		this.paramType = paramType;
 	}
 
+	/**
+	 * Value string.
+	 *
+	 * @return the string
+	 */
 	public String value() {
 		return value;
 	}
 
+	/**
+	 * Required boolean.
+	 *
+	 * @return the boolean
+	 */
 	public boolean required() {
 		return required;
 	}
 
+	/**
+	 * Default value string.
+	 *
+	 * @return the string
+	 */
 	public String defaultValue() {
 		return defaultValue;
 	}
 
+	/**
+	 * Type string.
+	 *
+	 * @return the string
+	 */
 	public String type() {
 		return paramType;
 	}

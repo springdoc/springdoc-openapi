@@ -65,6 +65,10 @@ import org.springframework.data.rest.webmvc.support.ETag;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
+/**
+ * The type Spring doc data rest configuration.
+ * @author bnasslahsen
+ */
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocDataRestConfiguration {
@@ -77,6 +81,12 @@ public class SpringDocDataRestConfiguration {
 				.addResponseWrapperToIgnore(RootResourceInformation.class);
 	}
 
+	/**
+	 * Hal provider data rest hal provider.
+	 *
+	 * @param repositoryRestConfiguration the repository rest configuration 
+	 * @return the data rest hal provider
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Primary
@@ -86,9 +96,19 @@ public class SpringDocDataRestConfiguration {
 	}
 
 
+	/**
+	 * The type Querydsl provider.
+	 * @author bnasslahsen
+	 */
 	@ConditionalOnClass(value = { QuerydslBindingsFactory.class })
 	class QuerydslProvider {
 
+		/**
+		 * Query dsl querydsl predicate operation customizer querydsl predicate operation customizer.
+		 *
+		 * @param querydslBindingsFactory the querydsl bindings factory 
+		 * @return the querydsl predicate operation customizer
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
@@ -101,10 +121,24 @@ public class SpringDocDataRestConfiguration {
 		}
 	}
 
+	/**
+	 * The type Spring repository rest resource provider configuration.
+	 * @author bnasslahsen
+	 */
 	@Configuration
 	@ConditionalOnClass(RepositoryRestHandlerMapping.class)
 	class SpringRepositoryRestResourceProviderConfiguration {
 
+		/**
+		 * Spring repository rest resource provider spring repository rest resource provider.
+		 *
+		 * @param mappings the mappings 
+		 * @param repositories the repositories 
+		 * @param associations the associations 
+		 * @param delegatingHandlerMapping the delegating handler mapping 
+		 * @param dataRestRouterOperationBuilder the data rest router operation builder 
+		 * @return the spring repository rest resource provider
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		SpringRepositoryRestResourceProvider springRepositoryRestResourceProvider(ResourceMappings mappings,
@@ -114,6 +148,15 @@ public class SpringDocDataRestConfiguration {
 					delegatingHandlerMapping, dataRestRouterOperationBuilder);
 		}
 
+		/**
+		 * Data rest router operation builder data rest router operation builder.
+		 *
+		 * @param dataRestOperationBuilder the data rest operation builder 
+		 * @param springDocConfigProperties the spring doc config properties 
+		 * @param repositoryRestConfiguration the repository rest configuration 
+		 * @param dataRestHalProvider the data rest hal provider 
+		 * @return the data rest router operation builder
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		DataRestRouterOperationBuilder dataRestRouterOperationBuilder(DataRestOperationBuilder dataRestOperationBuilder,
@@ -121,6 +164,14 @@ public class SpringDocDataRestConfiguration {
 			return new DataRestRouterOperationBuilder(dataRestOperationBuilder, springDocConfigProperties, repositoryRestConfiguration, dataRestHalProvider);
 		}
 
+		/**
+		 * Data rest operation builder data rest operation builder.
+		 *
+		 * @param dataRestRequestBuilder the data rest request builder 
+		 * @param tagsBuilder the tags builder 
+		 * @param dataRestResponseBuilder the data rest response builder 
+		 * @return the data rest operation builder
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		DataRestOperationBuilder dataRestOperationBuilder(DataRestRequestBuilder dataRestRequestBuilder, DataRestTagsBuilder tagsBuilder,
@@ -128,6 +179,15 @@ public class SpringDocDataRestConfiguration {
 			return new DataRestOperationBuilder(dataRestRequestBuilder, tagsBuilder, dataRestResponseBuilder);
 		}
 
+		/**
+		 * Data rest request builder data rest request builder.
+		 *
+		 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer 
+		 * @param parameterBuilder the parameter builder 
+		 * @param requestBodyBuilder the request body builder 
+		 * @param requestBuilder the request builder 
+		 * @return the data rest request builder
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		DataRestRequestBuilder dataRestRequestBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterBuilder parameterBuilder,
@@ -136,12 +196,24 @@ public class SpringDocDataRestConfiguration {
 					requestBodyBuilder, requestBuilder);
 		}
 
+		/**
+		 * Data rest response builder data rest response builder.
+		 *
+		 * @param genericResponseBuilder the generic response builder 
+		 * @return the data rest response builder
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		DataRestResponseBuilder dataRestResponseBuilder(GenericResponseBuilder genericResponseBuilder) {
 			return new DataRestResponseBuilder(genericResponseBuilder);
 		}
 
+		/**
+		 * Data rest tags builder data rest tags builder.
+		 *
+		 * @param openAPIBuilder the open api builder 
+		 * @return the data rest tags builder
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		DataRestTagsBuilder dataRestTagsBuilder(OpenAPIBuilder openAPIBuilder){

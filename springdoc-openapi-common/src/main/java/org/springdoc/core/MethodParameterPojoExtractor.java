@@ -45,15 +45,31 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.Nullable;
 
+/**
+ * The type Method parameter pojo extractor.
+ * @author bnasslahsen
+ */
 class MethodParameterPojoExtractor {
 
+	/**
+	 * Instantiates a new Method parameter pojo extractor.
+	 */
 	private MethodParameterPojoExtractor() {
 	}
 
+	/**
+	 * The constant NULLABLE_ANNOTATION.
+	 */
 	private static final Nullable NULLABLE_ANNOTATION = getNullable();
 
+	/**
+	 * The constant SIMPLE_TYPE_PREDICATES.
+	 */
 	private static final List<Predicate<Class<?>>> SIMPLE_TYPE_PREDICATES = new ArrayList<>();
 
+	/**
+	 * The constant SIMPLE_TYPES.
+	 */
 	private static final Set<Class<?>> SIMPLE_TYPES = new HashSet<>();
 
 	static {
@@ -72,16 +88,37 @@ class MethodParameterPojoExtractor {
 		SIMPLE_TYPE_PREDICATES.add(MethodParameterPojoExtractor::isSwaggerPrimitiveType);
 	}
 
+	/**
+	 * Extract from stream.
+	 *
+	 * @param clazz the clazz
+	 * @return the stream
+	 */
 	static Stream<MethodParameter> extractFrom(Class<?> clazz) {
 		return extractFrom(clazz, "");
 	}
 
+	/**
+	 * Extract from stream.
+	 *
+	 * @param clazz the clazz
+	 * @param fieldNamePrefix the field name prefix
+	 * @return the stream
+	 */
 	private static Stream<MethodParameter> extractFrom(Class<?> clazz, String fieldNamePrefix) {
 		return allFieldsOf(clazz).stream()
 				.flatMap(f -> fromGetterOfField(clazz, f, fieldNamePrefix))
 				.filter(Objects::nonNull);
 	}
 
+	/**
+	 * From getter of field stream.
+	 *
+	 * @param paramClass the param class
+	 * @param field the field
+	 * @param fieldNamePrefix the field name prefix
+	 * @return the stream
+	 */
 	private static Stream<MethodParameter> fromGetterOfField(Class<?> paramClass, Field field, String fieldNamePrefix) {
 		if (isSimpleType(field.getType()))
 			return fromSimpleClass(paramClass, field, fieldNamePrefix);
@@ -89,6 +126,14 @@ class MethodParameterPojoExtractor {
 			return extractFrom(field.getType(), fieldNamePrefix + field.getName() + ".");
 	}
 
+	/**
+	 * From simple class stream.
+	 *
+	 * @param paramClass the param class
+	 * @param field the field
+	 * @param fieldNamePrefix the field name prefix
+	 * @return the stream
+	 */
 	private static Stream<MethodParameter> fromSimpleClass(Class<?> paramClass, Field field, String fieldNamePrefix) {
 		Annotation[] fieldAnnotations = field.getDeclaredAnnotations();
 		try {
@@ -108,11 +153,23 @@ class MethodParameterPojoExtractor {
 		}
 	}
 
+	/**
+	 * Is optional boolean.
+	 *
+	 * @param field the field
+	 * @return the boolean
+	 */
 	private static boolean isOptional(Field field) {
 		Parameter parameter = field.getAnnotation(Parameter.class);
 		return parameter == null || !parameter.required();
 	}
 
+	/**
+	 * All fields of list.
+	 *
+	 * @param clazz the clazz
+	 * @return the list
+	 */
 	private static List<Field> allFieldsOf(Class<?> clazz) {
 		List<Field> fields = new ArrayList<>();
 		do {
@@ -122,33 +179,72 @@ class MethodParameterPojoExtractor {
 		return fields;
 	}
 
+	/**
+	 * Is simple type boolean.
+	 *
+	 * @param clazz the clazz
+	 * @return the boolean
+	 */
 	private static boolean isSimpleType(Class<?> clazz) {
 		return SIMPLE_TYPE_PREDICATES.stream().anyMatch(p -> p.test(clazz)) ||
 				SIMPLE_TYPES.stream().anyMatch(c -> c.isAssignableFrom(clazz));
 	}
 
+	/**
+	 * Is swagger primitive type boolean.
+	 *
+	 * @param clazz the clazz
+	 * @return the boolean
+	 */
 	private static boolean isSwaggerPrimitiveType(Class<?> clazz) {
 		PrimitiveType primitiveType = PrimitiveType.fromType(clazz);
 		return primitiveType != null;
 	}
 
+	/**
+	 * Add simple type predicate.
+	 *
+	 * @param predicate the predicate
+	 */
 	static void addSimpleTypePredicate(Predicate<Class<?>> predicate) {
 		SIMPLE_TYPE_PREDICATES.add(predicate);
 	}
 
+	/**
+	 * Add simple types.
+	 *
+	 * @param classes the classes
+	 */
 	static void addSimpleTypes(Class<?>... classes) {
 		SIMPLE_TYPES.addAll(Arrays.asList(classes));
 	}
 
+	/**
+	 * Remove simple types.
+	 *
+	 * @param classes the classes
+	 */
 	static void removeSimpleTypes(Class<?>... classes) {
 		SIMPLE_TYPES.removeAll(Arrays.asList(classes));
 	}
 
+	/**
+	 * The type Nullable field class.
+	 * @author bnasslahsen
+	 */
 	private class NullableFieldClass {
+		/**
+		 * The Nullable field.
+		 */
 		@Nullable
 		private String nullableField;
 	}
 
+	/**
+	 * Gets nullable.
+	 *
+	 * @return the nullable
+	 */
 	private static Nullable getNullable() {
 		try {
 			return NullableFieldClass.class.getDeclaredField("nullableField").getAnnotation(Nullable.class);

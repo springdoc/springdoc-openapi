@@ -29,10 +29,19 @@ import org.springframework.context.annotation.Lazy;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
+/**
+ * The type Spring doc groovy configuration.
+ * @author bnasslahsen
+ */
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocGroovyConfiguration {
 
+	/**
+	 * Ignore groovy meta class object.
+	 *
+	 * @return the object
+	 */
 	@Bean
 	@Lazy(false)
 	Object ignoreGroovyMetaClass() {
@@ -40,6 +49,11 @@ public class SpringDocGroovyConfiguration {
 		return null;
 	}
 
+	/**
+	 * Request type to ignore converter request type to ignore converter.
+	 *
+	 * @return the request type to ignore converter
+	 */
 	@Bean
 	@Lazy(false)
 	RequestTypeToIgnoreConverter requestTypeToIgnoreConverter() {

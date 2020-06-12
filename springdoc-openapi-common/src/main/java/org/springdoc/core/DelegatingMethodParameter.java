@@ -41,18 +41,39 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.lang.NonNull;
 
 /**
+ * The type Delegating method parameter.
  * @author zarebski.m
  */
 public class DelegatingMethodParameter extends MethodParameter {
 
+	/**
+	 * The Delegate.
+	 */
 	private MethodParameter delegate;
 
+	/**
+	 * The Additional parameter annotations.
+	 */
 	private Annotation[] additionalParameterAnnotations;
 
+	/**
+	 * The Parameter name.
+	 */
 	private String parameterName;
 
+	/**
+	 * The Is parameter object.
+	 */
 	private boolean isParameterObject;
 
+	/**
+	 * Instantiates a new Delegating method parameter.
+	 *
+	 * @param delegate the delegate
+	 * @param parameterName the parameter name
+	 * @param additionalParameterAnnotations the additional parameter annotations
+	 * @param isParameterObject the is parameter object
+	 */
 	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, boolean isParameterObject) {
 		super(delegate);
 		this.delegate = delegate;
@@ -61,6 +82,13 @@ public class DelegatingMethodParameter extends MethodParameter {
 		this.isParameterObject=isParameterObject;
 	}
 
+	/**
+	 * Customize method parameter [ ].
+	 *
+	 * @param pNames the p names
+	 * @param parameters the parameters
+	 * @return the method parameter [ ]
+	 */
 	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters) {
 		List<MethodParameter> explodedParameters = new ArrayList<>();
 		for (int i = 0; i < parameters.length; ++i) {
@@ -171,6 +199,11 @@ public class DelegatingMethodParameter extends MethodParameter {
 		return result;
 	}
 
+	/**
+	 * Is parameter object boolean.
+	 *
+	 * @return the boolean
+	 */
 	public boolean isParameterObject() {
 		return isParameterObject;
 	}

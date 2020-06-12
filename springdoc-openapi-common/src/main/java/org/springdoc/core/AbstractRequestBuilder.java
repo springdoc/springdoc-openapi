@@ -83,15 +83,31 @@ import static org.springdoc.core.Constants.OPENAPI_STRING_TYPE;
 import static org.springdoc.core.Constants.QUERY_PARAM;
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.containsDeprecatedAnnotation;
 
+/**
+ * The type Abstract request builder.
+ * @author bnasslahsen
+ */
 public abstract class AbstractRequestBuilder {
 
+	/**
+	 * The constant PARAM_TYPES_TO_IGNORE.
+	 */
 	private static final List<Class<?>> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
 
-	// using string litterals to support both validation-api v1 and v2
+	/**
+	 * The constant ANNOTATIONS_FOR_REQUIRED.
+	 */
+// using string litterals to support both validation-api v1 and v2
 	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
 
+	/**
+	 * The constant POSITIVE_OR_ZERO.
+	 */
 	private static final String POSITIVE_OR_ZERO = "javax.validation.constraints.PositiveOrZero";
 
+	/**
+	 * The constant NEGATIVE_OR_ZERO.
+	 */
 	private static final String NEGATIVE_OR_ZERO = "javax.validation.constraints.NegativeOrZero";
 
 	static {
@@ -116,16 +132,40 @@ public abstract class AbstractRequestBuilder {
 		PARAM_TYPES_TO_IGNORE.add(RequestAttribute.class);
 	}
 
+	/**
+	 * The Parameter builder.
+	 */
 	private final GenericParameterBuilder parameterBuilder;
 
+	/**
+	 * The Request body builder.
+	 */
 	private final RequestBodyBuilder requestBodyBuilder;
 
+	/**
+	 * The Operation builder.
+	 */
 	private final OperationBuilder operationBuilder;
 
+	/**
+	 * The Local spring doc parameter name discoverer.
+	 */
 	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 
+	/**
+	 * The Parameter customizers.
+	 */
 	private final Optional<List<ParameterCustomizer>> parameterCustomizers;
 
+	/**
+	 * Instantiates a new Abstract request builder.
+	 *
+	 * @param parameterBuilder the parameter builder
+	 * @param requestBodyBuilder the request body builder
+	 * @param operationBuilder the operation builder
+	 * @param parameterCustomizers the parameter customizers
+	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
+	 */
 	protected AbstractRequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
 			OperationBuilder operationBuilder, Optional<List<ParameterCustomizer>> parameterCustomizers,
 			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
@@ -139,20 +179,46 @@ public abstract class AbstractRequestBuilder {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 	}
 
+	/**
+	 * Add request wrapper to ignore.
+	 *
+	 * @param classes the classes
+	 */
 	public static void addRequestWrapperToIgnore(Class<?>... classes) {
 		PARAM_TYPES_TO_IGNORE.addAll(Arrays.asList(classes));
 	}
 
+	/**
+	 * Remove request wrapper to ignore.
+	 *
+	 * @param classes the classes
+	 */
 	public static void removeRequestWrapperToIgnore(Class<?>... classes) {
 		List<Class<?>> classesToIgnore = Arrays.asList(classes);
 		if (PARAM_TYPES_TO_IGNORE.containsAll(classesToIgnore))
 			PARAM_TYPES_TO_IGNORE.removeAll(Arrays.asList(classes));
 	}
 
+	/**
+	 * Is request type to ignore boolean.
+	 *
+	 * @param rawClass the raw class
+	 * @return the boolean
+	 */
 	public static boolean isRequestTypeToIgnore(Class<?> rawClass) {
 		return PARAM_TYPES_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 
+	/**
+	 * Build operation.
+	 *
+	 * @param handlerMethod the handler method
+	 * @param requestMethod the request method
+	 * @param operation the operation
+	 * @param methodAttributes the method attributes
+	 * @param openAPI the open api
+	 * @return the operation
+	 */
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
 		// Documentation
@@ -214,6 +280,15 @@ public abstract class AbstractRequestBuilder {
 		return operation;
 	}
 
+	/**
+	 * Gets parameter linked hash map.
+	 *
+	 * @param components the components
+	 * @param methodAttributes the method attributes
+	 * @param operationParameters the operation parameters
+	 * @param parametersDocMap the parameters doc map
+	 * @return the parameter linked hash map
+	 */
 	private LinkedHashMap<String, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
 		LinkedHashMap<String, Parameter> map = operationParameters.stream()
 				.collect(Collectors.toMap(
@@ -238,6 +313,13 @@ public abstract class AbstractRequestBuilder {
 		return map;
 	}
 
+	/**
+	 * Gets headers.
+	 *
+	 * @param methodAttributes the method attributes
+	 * @param map the map
+	 * @return the headers
+	 */
 	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<String, Parameter> map) {
 		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
 			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(new StringSchema().addEnumItem(entry.getValue()));
@@ -251,11 +333,24 @@ public abstract class AbstractRequestBuilder {
 		return map.values();
 	}
 
+	/**
+	 * Customise parameter parameter.
+	 *
+	 * @param parameter the parameter
+	 * @param parameterInfo the parameter info
+	 * @return the parameter
+	 */
 	protected Parameter customiseParameter(Parameter parameter, ParameterInfo parameterInfo) {
 		parameterCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(parameter, parameterInfo.getMethodParameter())));
 		return parameter;
 	}
 
+	/**
+	 * Is param to ignore boolean.
+	 *
+	 * @param parameter the parameter
+	 * @return the boolean
+	 */
 	public boolean isParamToIgnore(MethodParameter parameter) {
 		if (parameterBuilder.isAnnotationToIgnore(parameter))
 			return true;
@@ -266,6 +361,13 @@ public abstract class AbstractRequestBuilder {
 		return isRequestTypeToIgnore(parameter.getParameterType());
 	}
 
+	/**
+	 * Sets params.
+	 *
+	 * @param operation the operation
+	 * @param operationParameters the operation parameters
+	 * @param requestBodyInfo the request body info
+	 */
 	private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
 		if (!CollectionUtils.isEmpty(operationParameters))
 			operation.setParameters(operationParameters);
@@ -273,10 +375,25 @@ public abstract class AbstractRequestBuilder {
 			operation.setRequestBody(requestBodyInfo.getRequestBody());
 	}
 
+	/**
+	 * Is valid parameter boolean.
+	 *
+	 * @param parameter the parameter
+	 * @return the boolean
+	 */
 	public boolean isValidParameter(Parameter parameter) {
 		return parameter != null && (parameter.getName() != null || parameter.get$ref() != null);
 	}
 
+	/**
+	 * Build params parameter.
+	 *
+	 * @param parameterInfo the parameter info
+	 * @param components the components
+	 * @param requestMethod the request method
+	 * @param jsonView the json view
+	 * @return the parameter
+	 */
 	public Parameter buildParams(ParameterInfo parameterInfo, Components components,
 			RequestMethod requestMethod, JsonView jsonView) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
@@ -317,6 +434,15 @@ public abstract class AbstractRequestBuilder {
 		return null;
 	}
 
+	/**
+	 * Build param parameter.
+	 *
+	 * @param parameterInfo the parameter info
+	 * @param components the components
+	 * @param requestInfo the request info
+	 * @param jsonView the json view
+	 * @return the parameter
+	 */
 	private Parameter buildParam(ParameterInfo parameterInfo, Components components, RequestInfo requestInfo,
 			JsonView jsonView) {
 		Parameter parameter;
@@ -333,6 +459,17 @@ public abstract class AbstractRequestBuilder {
 		return parameter;
 	}
 
+	/**
+	 * Build param parameter.
+	 *
+	 * @param in the in
+	 * @param components the components
+	 * @param parameterInfo the parameter info
+	 * @param required the required
+	 * @param defaultValue the default value
+	 * @param jsonView the json view
+	 * @return the parameter
+	 */
 	private Parameter buildParam(String in, Components components, ParameterInfo parameterInfo, Boolean required,
 			String defaultValue, JsonView jsonView) {
 		Parameter parameter = parameterInfo.getParameterModel();
@@ -365,6 +502,12 @@ public abstract class AbstractRequestBuilder {
 		return parameter;
 	}
 
+	/**
+	 * Apply bean validator annotations.
+	 *
+	 * @param parameter the parameter
+	 * @param annotations the annotations
+	 */
 	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
 		Map<String, Annotation> annos = new HashMap<>();
 		if (annotations != null)
@@ -376,6 +519,13 @@ public abstract class AbstractRequestBuilder {
 		applyValidationsToSchema(annos, schema);
 	}
 
+	/**
+	 * Apply bean validator annotations.
+	 *
+	 * @param requestBody the request body
+	 * @param annotations the annotations
+	 * @param isOptional the is optional
+	 */
 	public void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
 		Map<String, Annotation> annos = new HashMap<>();
 		boolean requestBodyRequired = false;
@@ -396,6 +546,12 @@ public abstract class AbstractRequestBuilder {
 		}
 	}
 
+	/**
+	 * Calculate size.
+	 *
+	 * @param annos the annos
+	 * @param schema the schema
+	 */
 	private void calculateSize(Map<String, Annotation> annos, Schema<?> schema) {
 		if (annos.containsKey(Size.class.getName())) {
 			Size size = (Size) annos.get(Size.class.getName());
@@ -410,10 +566,21 @@ public abstract class AbstractRequestBuilder {
 		}
 	}
 
+	/**
+	 * Gets request body builder.
+	 *
+	 * @return the request body builder
+	 */
 	public RequestBodyBuilder getRequestBodyBuilder() {
 		return requestBodyBuilder;
 	}
 
+	/**
+	 * Gets api parameters.
+	 *
+	 * @param method the method
+	 * @return the api parameters
+	 */
 	private Map<String, io.swagger.v3.oas.annotations.Parameter> getApiParameters(Method method) {
 		Class<?> declaringClass = method.getDeclaringClass();
 
@@ -447,6 +614,12 @@ public abstract class AbstractRequestBuilder {
 		return apiParametersMap;
 	}
 
+	/**
+	 * Apply validations to schema.
+	 *
+	 * @param annos the annos
+	 * @param schema the schema
+	 */
 	private void applyValidationsToSchema(Map<String, Annotation> annos, Schema<?> schema) {
 		if (annos.containsKey(Min.class.getName())) {
 			Min min = (Min) annos.get(Min.class.getName());

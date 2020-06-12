@@ -46,10 +46,19 @@ import org.springframework.hateoas.server.LinkRelationProvider;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
+/**
+ * The type Spring doc hateoas configuration.
+ * @author bnasslahsen
+ */
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocHateoasConfiguration {
 
+	/**
+	 * Hateoas hal provider hateoas hal provider.
+	 *
+	 * @return the hateoas hal provider
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
@@ -57,6 +66,13 @@ public class SpringDocHateoasConfiguration {
 		return new HateoasHalProvider();
 	}
 
+	/**
+	 * Collection model content converter collection model content converter.
+	 *
+	 * @param halProvider the hal provider
+	 * @param linkRelationProvider the link relation provider
+	 * @return the collection model content converter
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
@@ -68,7 +84,9 @@ public class SpringDocHateoasConfiguration {
 	 * Registers an OpenApiCustomiser and a jackson mixin to ensure the definition of `Links` matches the serialized
 	 * output. This is done because the customer serializer converts the data to a map before serializing it.
 	 *
-	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
+	 * @param halProvider the hal provider
+	 * @return the open api customiser
+	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
 	 */
 	@Bean
 	@ConditionalOnMissingBean

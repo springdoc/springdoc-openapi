@@ -26,8 +26,15 @@ import io.swagger.v3.core.util.Json;
 
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 
+/**
+ * The type Hateoas hal provider.
+ * @author bnasslahsen
+ */
 public class HateoasHalProvider {
 
+	/**
+	 * Init.
+	 */
 	@PostConstruct
 	protected void init() {
 		if (!isHalEnabled())
@@ -36,6 +43,11 @@ public class HateoasHalProvider {
 			Json.mapper().registerModule(new Jackson2HalModule());
 	}
 
+	/**
+	 * Is hal enabled boolean.
+	 *
+	 * @return the boolean
+	 */
 	public boolean isHalEnabled() {
 		return true;
 	}

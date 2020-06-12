@@ -58,16 +58,26 @@ import org.springframework.data.util.TypeInformation;
 import org.springframework.web.method.HandlerMethod;
 
 /**
- * @author Gibah Joseph
- * Email: gibahjoe@gmail.com
- * Mar, 2020
- **/
+ * The type Querydsl predicate operation customizer.
+ * @author Gibah Joseph Email: gibahjoe@gmail.com Mar, 2020
+ */
 public class QuerydslPredicateOperationCustomizer implements OperationCustomizer {
 
+	/**
+	 * The constant LOGGER.
+	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(QuerydslPredicateOperationCustomizer.class);
 
+	/**
+	 * The Querydsl bindings factory.
+	 */
 	private QuerydslBindingsFactory querydslBindingsFactory;
 
+	/**
+	 * Instantiates a new Querydsl predicate operation customizer.
+	 *
+	 * @param querydslBindingsFactory the querydsl bindings factory
+	 */
 	public QuerydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory) {
 		this.querydslBindingsFactory = querydslBindingsFactory;
 	}
@@ -115,6 +125,12 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 		return operation;
 	}
 
+	/**
+	 * Extract qdsl bindings querydsl bindings.
+	 *
+	 * @param predicate the predicate
+	 * @return the querydsl bindings
+	 */
 	private QuerydslBindings extractQdslBindings(QuerydslPredicate predicate) {
 		ClassTypeInformation<?> classTypeInformation = ClassTypeInformation.from(predicate.root());
 		TypeInformation<?> domainType = classTypeInformation.getRequiredActualType();
@@ -128,6 +144,13 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 				.orElseGet(() -> querydslBindingsFactory.createBindingsFor(domainType));
 	}
 
+	/**
+	 * Gets field values.
+	 *
+	 * @param instance the instance
+	 * @param fieldName the field name
+	 * @return the field values
+	 */
 	private Set<String> getFieldValues(QuerydslBindings instance, String fieldName) {
 		try {
 			Field field = FieldUtils.getDeclaredField(instance.getClass(),fieldName,true);
@@ -139,6 +162,13 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 		return Collections.emptySet();
 	}
 
+	/**
+	 * Gets path spec.
+	 *
+	 * @param instance the instance
+	 * @param fieldName the field name
+	 * @return the path spec
+	 */
 	private Map<String, Object> getPathSpec(QuerydslBindings instance, String fieldName) {
 		try {
 			Field field = FieldUtils.getDeclaredField(instance.getClass(),fieldName,true);
@@ -150,6 +180,12 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 		return Collections.emptyMap();
 	}
 
+	/**
+	 * Gets path from path spec.
+	 *
+	 * @param instance the instance
+	 * @return the path from path spec
+	 */
 	private Optional<Path<?>> getPathFromPathSpec(Object instance) {
 		try {
 			if (instance == null) {

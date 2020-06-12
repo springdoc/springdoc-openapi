@@ -28,6 +28,10 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 
+/**
+ * The interface Return type parser.
+ * @author bnasslahsen
+ */
 public interface ReturnTypeParser {
 
 	/**
@@ -36,8 +40,7 @@ public interface ReturnTypeParser {
 	 * Resolve the given generic type against the given context class,
 	 * substituting type variables as far as possible.
 	 * @param genericType the (potentially) generic type
-	 * @param contextClass a context class for the target type, for example a class
-	 * in which the target type appears in a method signature (can be {@code null})
+	 * @param contextClass a context class for the target type, for example a class in which the target type appears in a method signature (can be {@code null})
 	 * @return the resolved type (possibly the given generic type as-is)
 	 * @since 5.0
 	 */
@@ -71,6 +74,13 @@ public interface ReturnTypeParser {
 		return genericType;
 	}
 
+	/**
+	 * Find type for generics.
+	 *
+	 * @param generics the generics
+	 * @param typeArguments the type arguments
+	 * @param contextType the context type
+	 */
 	static void findTypeForGenerics(Class<?>[] generics, Type[] typeArguments, ResolvableType contextType) {
 		for (int i = 0; i < typeArguments.length; i++) {
 			Type typeArgument = typeArguments[i];
@@ -90,6 +100,13 @@ public interface ReturnTypeParser {
 		}
 	}
 
+	/**
+	 * Resolve variable resolvable type.
+	 *
+	 * @param typeVariable the type variable
+	 * @param contextType the context type
+	 * @return the resolvable type
+	 */
 	static ResolvableType resolveVariable(TypeVariable<?> typeVariable, ResolvableType contextType) {
 		ResolvableType resolvedType;
 		if (contextType.hasGenerics()) {
@@ -115,12 +132,24 @@ public interface ReturnTypeParser {
 		return ResolvableType.NONE;
 	}
 
+	/**
+	 * Gets return type.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the return type
+	 */
 	default Type getReturnType(MethodParameter methodParameter) {
 		if (methodParameter.getGenericParameterType() instanceof ParameterizedType)
 			return ReturnTypeParser.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
 		return methodParameter.getParameterType();
 	}
 
+	/**
+	 * Gets type.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the type
+	 */
 	static Type getType(MethodParameter methodParameter) {
 		if (methodParameter.getGenericParameterType() instanceof ParameterizedType)
 			return ReturnTypeParser.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());

@@ -38,6 +38,10 @@ import static org.springdoc.core.converters.ConverterUtils.isFluxTypeWrapper;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper;
 
 
+/**
+ * The type Web flux support converter.
+ * @author bnasslahsen
+ */
 public class WebFluxSupportConverter implements ModelConverter {
 
 	static {

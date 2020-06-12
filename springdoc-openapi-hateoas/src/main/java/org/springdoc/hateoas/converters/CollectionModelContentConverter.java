@@ -41,13 +41,22 @@ import org.springframework.util.CollectionUtils;
 /**
  * Override resolved schema as there is a custom serializer that converts the data to a map before serializing it.
  *
- * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer
- * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider)
+ * @author bnasslahsen
+ * @see  org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer
+ * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider)
  */
 public class CollectionModelContentConverter implements ModelConverter {
 
+	/**
+	 * The Link relation provider.
+	 */
 	private LinkRelationProvider linkRelationProvider;
 
+	/**
+	 * Instantiates a new Collection model content converter.
+	 *
+	 * @param linkRelationProvider the link relation provider
+	 */
 	public CollectionModelContentConverter(LinkRelationProvider linkRelationProvider) {
 		this.linkRelationProvider = linkRelationProvider;
 	}
@@ -69,6 +78,12 @@ public class CollectionModelContentConverter implements ModelConverter {
 		return chain.hasNext() ? chain.next().resolve(type, context, chain) : null;
 	}
 
+	/**
+	 * Gets entity type.
+	 *
+	 * @param type the type 
+	 * @return the entity type
+	 */
 	private Class<?> getEntityType(AnnotatedType type) {
 		Class<?> containerEntityType = ((CollectionType) (type.getType())).getContentType().getRawClass();
 		if (containerEntityType.isAssignableFrom(EntityModel.class)) {

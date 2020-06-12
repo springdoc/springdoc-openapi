@@ -30,10 +30,22 @@ import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.customizers.PropertyCustomizer;
 
+/**
+ * The type Property customizing converter.
+ * @author bnasslahsen
+ */
 public class PropertyCustomizingConverter implements ModelConverter {
 
+	/**
+	 * The Property customizers.
+	 */
 	private final Optional<List<PropertyCustomizer>> propertyCustomizers;
 
+	/**
+	 * Instantiates a new Property customizing converter.
+	 *
+	 * @param customizers the customizers
+	 */
 	public PropertyCustomizingConverter(Optional<List<PropertyCustomizer>> customizers) {
 		this.propertyCustomizers = customizers;
 	}

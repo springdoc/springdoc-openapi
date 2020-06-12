@@ -27,15 +27,30 @@ import org.springframework.context.annotation.Conditional;
 
 import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED;
 
+/**
+ * The type Cache or grouped open api condition.
+ * @author bnasslahsen
+ */
 public class CacheOrGroupedOpenApiCondition extends AnyNestedCondition {
 
+	/**
+	 * Instantiates a new Cache or grouped open api condition.
+	 */
 	CacheOrGroupedOpenApiCondition() {
 		super(ConfigurationPhase.REGISTER_BEAN);
 	}
 
+	/**
+	 * The type On multiple open api support condition.
+	 * @author bnasslahsen
+	 */
 	@Conditional(MultipleOpenApiSupportCondition.class)
 	static class OnMultipleOpenApiSupportCondition {}
 
+	/**
+	 * The type On cache disabled.
+	 * @author bnasslahsen
+	 */
 	@ConditionalOnProperty(name = SPRINGDOC_CACHE_DISABLED)
 	@ConditionalOnMissingBean(GroupedOpenApi.class)
 	static class OnCacheDisabled {}

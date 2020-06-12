@@ -57,16 +57,40 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
+/**
+ * The type Data rest request builder.
+ * @author bnasslahsen
+ */
 public class DataRestRequestBuilder {
 
+	/**
+	 * The Local spring doc parameter name discoverer.
+	 */
 	private LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 
+	/**
+	 * The Parameter builder.
+	 */
 	private GenericParameterBuilder parameterBuilder;
 
+	/**
+	 * The Request body builder.
+	 */
 	private RequestBodyBuilder requestBodyBuilder;
 
+	/**
+	 * The Request builder.
+	 */
 	private AbstractRequestBuilder requestBuilder;
 
+	/**
+	 * Instantiates a new Data rest request builder.
+	 *
+	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
+	 * @param parameterBuilder the parameter builder
+	 * @param requestBodyBuilder the request body builder
+	 * @param requestBuilder the request builder
+	 */
 	public DataRestRequestBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterBuilder parameterBuilder,
 			RequestBodyBuilder requestBodyBuilder, AbstractRequestBuilder requestBuilder) {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
@@ -75,6 +99,17 @@ public class DataRestRequestBuilder {
 		this.requestBuilder = requestBuilder;
 	}
 
+	/**
+	 * Build parameters.
+	 *
+	 * @param domainType the domain type
+	 * @param openAPI the open api
+	 * @param handlerMethod the handler method
+	 * @param requestMethod the request method
+	 * @param methodAttributes the method attributes
+	 * @param operation the operation
+	 * @param resourceMetadata the resource metadata
+	 */
 	public void buildParameters(Class<?> domainType, OpenAPI openAPI, HandlerMethod handlerMethod, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, ResourceMetadata resourceMetadata) {
 		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
 		MethodParameter[] parameters = handlerMethod.getMethodParameters();
@@ -89,6 +124,17 @@ public class DataRestRequestBuilder {
 		buildCommonParameters(domainType, openAPI, requestMethod, methodAttributes, operation, pNames, parameters);
 	}
 
+	/**
+	 * Build common parameters.
+	 *
+	 * @param domainType the domain type
+	 * @param openAPI the open api
+	 * @param requestMethod the request method
+	 * @param methodAttributes the method attributes
+	 * @param operation the operation
+	 * @param pNames the p names
+	 * @param parameters the parameters
+	 */
 	public void buildCommonParameters(Class<?> domainType, OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters) {
 		parameters = DelegatingMethodParameter.customize(pNames, parameters);
 		for (MethodParameter methodParameter : parameters) {
@@ -119,10 +165,27 @@ public class DataRestRequestBuilder {
 		}
 	}
 
+	/**
+	 * Is param to ignore boolean.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the boolean
+	 */
 	private boolean isParamToIgnore(MethodParameter methodParameter) {
 		return !requestBuilder.isParamToIgnore(methodParameter) && !isHeaderToIgnore(methodParameter);
 	}
 
+	/**
+	 * Add parameters.
+	 *
+	 * @param openAPI the open api
+	 * @param requestMethod the request method
+	 * @param methodAttributes the method attributes
+	 * @param operation the operation
+	 * @param methodParameter the method parameter
+	 * @param parameterInfo the parameter info
+	 * @param parameter the parameter
+	 */
 	private void addParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, MethodParameter methodParameter, ParameterInfo parameterInfo, Parameter parameter) {
 		List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
 		if (requestBuilder.isValidParameter(parameter)) {
@@ -141,6 +204,12 @@ public class DataRestRequestBuilder {
 	}
 
 
+	/**
+	 * Is header to ignore boolean.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the boolean
+	 */
 	private boolean isHeaderToIgnore(MethodParameter methodParameter) {
 		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
 		return requestHeader != null && HttpHeaders.ACCEPT.equals(requestHeader.value());

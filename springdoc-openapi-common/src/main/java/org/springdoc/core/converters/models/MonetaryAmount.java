@@ -25,13 +25,23 @@ import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+/**
+ * The type Monetary amount.
+ * @author bnasslahsen
+ */
 @Schema
 public class MonetaryAmount {
 
+	/**
+	 * The Amount.
+	 */
 	@JsonProperty("amount")
 	@Schema(example = "99.96")
 	private BigDecimal amount;
 
+	/**
+	 * The Currency.
+	 */
 	@JsonProperty("currency")
 	@Schema(example = "USD")
 	private String currency;

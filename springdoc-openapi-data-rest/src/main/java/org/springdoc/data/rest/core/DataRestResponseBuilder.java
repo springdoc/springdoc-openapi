@@ -50,14 +50,36 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
+/**
+ * The type Data rest response builder.
+ * @author bnasslahsen
+ */
 public class DataRestResponseBuilder {
 
+	/**
+	 * The Generic response builder.
+	 */
 	private GenericResponseBuilder genericResponseBuilder;
 
+	/**
+	 * Instantiates a new Data rest response builder.
+	 *
+	 * @param genericResponseBuilder the generic response builder
+	 */
 	public DataRestResponseBuilder(GenericResponseBuilder genericResponseBuilder) {
 		this.genericResponseBuilder = genericResponseBuilder;
 	}
 
+	/**
+	 * Build search response.
+	 *
+	 * @param operation the operation
+	 * @param handlerMethod the handler method
+	 * @param openAPI the open api
+	 * @param methodResourceMapping the method resource mapping
+	 * @param domainType the domain type
+	 * @param methodAttributes the method attributes
+	 */
 	public void buildSearchResponse(Operation operation, HandlerMethod handlerMethod, OpenAPI openAPI,
 			MethodResourceMapping methodResourceMapping, Class<?> domainType, MethodAttributes methodAttributes) {
 		MethodParameter methodParameterReturn = handlerMethod.getReturnType();
@@ -72,6 +94,17 @@ public class DataRestResponseBuilder {
 	}
 
 
+	/**
+	 * Build entity response.
+	 *
+	 * @param operation the operation
+	 * @param handlerMethod the handler method
+	 * @param openAPI the open api
+	 * @param requestMethod the request method
+	 * @param operationPath the operation path
+	 * @param domainType the domain type
+	 * @param methodAttributes the method attributes
+	 */
 	public void buildEntityResponse(Operation operation, HandlerMethod handlerMethod, OpenAPI openAPI, RequestMethod requestMethod,
 			String operationPath, Class<?> domainType, MethodAttributes methodAttributes) {
 		MethodParameter methodParameterReturn = handlerMethod.getReturnType();
@@ -85,6 +118,14 @@ public class DataRestResponseBuilder {
 		operation.setResponses(apiResponses);
 	}
 
+	/**
+	 * Add response.
+	 *
+	 * @param requestMethod the request method
+	 * @param operationPath the operation path
+	 * @param apiResponses the api responses
+	 * @param apiResponse the api response
+	 */
 	private void addResponse(RequestMethod requestMethod, String operationPath, ApiResponses apiResponses, ApiResponse apiResponse) {
 		switch (requestMethod) {
 			case GET:
@@ -113,6 +154,14 @@ public class DataRestResponseBuilder {
 		}
 	}
 
+	/**
+	 * Find search return type type.
+	 *
+	 * @param handlerMethod the handler method
+	 * @param methodResourceMapping the method resource mapping
+	 * @param domainType the domain type
+	 * @return the type
+	 */
 	private Type findSearchReturnType(HandlerMethod handlerMethod, MethodResourceMapping methodResourceMapping, Class<?> domainType) {
 		Type returnType = null;
 		Type returnRepoType = ReturnTypeParser.resolveType(methodResourceMapping.getMethod().getGenericReturnType(), methodResourceMapping.getMethod().getDeclaringClass());
@@ -132,6 +181,13 @@ public class DataRestResponseBuilder {
 		return returnType;
 	}
 
+	/**
+	 * Gets type.
+	 *
+	 * @param returnType the return type
+	 * @param domainType the domain type
+	 * @return the type
+	 */
 	private Type getType(Type returnType, Class<?> domainType) {
 		if (returnType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
@@ -174,19 +230,43 @@ public class DataRestResponseBuilder {
 		return returnType;
 	}
 
+	/**
+	 * Resolve generic type type.
+	 *
+	 * @param container the container
+	 * @param generic the generic
+	 * @param domainType the domain type
+	 * @return the type
+	 */
 	private Type resolveGenericType(Class<?> container, Class<?> generic, Class<?> domainType) {
 		Type type = ResolvableType.forClassWithGenerics(generic, domainType).getType();
 		return ResolvableType.forClassWithGenerics(container, ResolvableType.forType(type)).getType();
 	}
 
+	/**
+	 * Add response 200.
+	 *
+	 * @param apiResponses the api responses
+	 * @param apiResponse the api response
+	 */
 	private void addResponse200(ApiResponses apiResponses, ApiResponse apiResponse) {
 		apiResponses.put(String.valueOf(HttpStatus.OK.value()), apiResponse.description(HttpStatus.OK.getReasonPhrase()));
 	}
 
+	/**
+	 * Add response 204.
+	 *
+	 * @param apiResponses the api responses
+	 */
 	private void addResponse204(ApiResponses apiResponses) {
 		apiResponses.put(String.valueOf(HttpStatus.NO_CONTENT.value()), new ApiResponse().description(HttpStatus.NO_CONTENT.getReasonPhrase()));
 	}
 
+	/**
+	 * Add response 404.
+	 *
+	 * @param apiResponses the api responses
+	 */
 	private void addResponse404(ApiResponses apiResponses) {
 		apiResponses.put(String.valueOf(HttpStatus.NOT_FOUND.value()), new ApiResponse().description(HttpStatus.NOT_FOUND.getReasonPhrase()));
 	}

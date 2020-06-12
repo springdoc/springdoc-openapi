@@ -35,23 +35,49 @@ import org.springframework.context.annotation.Configuration;
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 
 
+/**
+ * The type Swagger config.
+ * @author bnasslahsen
+ */
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerConfig {
 
+	/**
+	 * Swagger welcome swagger welcome.
+	 *
+	 * @param swaggerUiConfig the swagger ui config
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return the swagger welcome
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	SwaggerWelcome swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
 		return new SwaggerWelcome(swaggerUiConfig, springDocConfigProperties);
 	}
 
+	/**
+	 * Index page transformer swagger index transformer.
+	 *
+	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
+	 * @param objectMapper the object mapper
+	 * @return the swagger index transformer
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
 		return new SwaggerIndexTransformer(swaggerUiConfig, swaggerUiOAuthProperties, objectMapper);
 	}
 
+	/**
+	 * Swagger web mvc configurer swagger web mvc configurer.
+	 *
+	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerIndexTransformer the swagger index transformer
+	 * @return the swagger web mvc configurer
+	 */
 	@Bean
 	@ConditionalOnMissingBean
 	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerIndexTransformer swaggerIndexTransformer) {

@@ -47,11 +47,27 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.util.CollectionUtils;
 
+/**
+ * The type Spring doc annotations utils.
+ * @author bnasslahsen
+ */
 @SuppressWarnings({ "rawtypes" })
 public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
+	/**
+	 * The constant LOGGER.
+	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpringDocAnnotationsUtils.class);
 
+	/**
+	 * Resolve schema from type schema.
+	 *
+	 * @param schemaImplementation the schema implementation
+	 * @param components the components
+	 * @param jsonView the json view
+	 * @param annotations the annotations
+	 * @return the schema
+	 */
 	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
 			JsonView jsonView, Annotation[] annotations) {
 		Schema schemaObject = extractSchema(components, schemaImplementation, jsonView, annotations);
@@ -63,6 +79,15 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		return schemaObject;
 	}
 
+	/**
+	 * Extract schema schema.
+	 *
+	 * @param components the components
+	 * @param returnType the return type
+	 * @param jsonView the json view
+	 * @param annotations the annotations
+	 * @return the schema
+	 */
 	public static Schema extractSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations) {
 		Schema schemaN = null;
 		ResolvedSchema resolvedSchema = null;
@@ -95,10 +120,29 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		return schemaN;
 	}
 
+	/**
+	 * Extract schema schema.
+	 *
+	 * @param components the components
+	 * @param genericParameterType the generic parameter type
+	 * @param jsonView the json view
+	 * @return the schema
+	 */
 	public static Schema extractSchema(Components components, Type genericParameterType, JsonView jsonView) {
 		return extractSchema(components, genericParameterType, jsonView, null);
 	}
 
+	/**
+	 * Gets content.
+	 *
+	 * @param annotationContents the annotation contents
+	 * @param classTypes the class types
+	 * @param methodTypes the method types
+	 * @param schema the schema
+	 * @param components the components
+	 * @param jsonViewAnnotation the json view annotation
+	 * @return the content
+	 */
 	public static Optional<Content> getContent(io.swagger.v3.oas.annotations.media.Content[] annotationContents,
 			String[] classTypes, String[] methodTypes, Schema schema, Components components,
 			JsonView jsonViewAnnotation) {
@@ -130,6 +174,13 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		return Optional.of(content);
 	}
 
+	/**
+	 * Merge schema.
+	 *
+	 * @param existingContent the existing content
+	 * @param schemaN the schema n
+	 * @param mediaTypeStr the media type str
+	 */
 	public static void mergeSchema(Content existingContent, Schema<?> schemaN, String mediaTypeStr) {
 		if (existingContent.containsKey(mediaTypeStr)) {
 			io.swagger.v3.oas.models.media.MediaType mediaType = existingContent.get(mediaTypeStr);
@@ -157,6 +208,13 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			existingContent.addMediaType(mediaTypeStr, new io.swagger.v3.oas.models.media.MediaType().schema(schemaN));
 	}
 
+	/**
+	 * Add encoding to media type.
+	 *
+	 * @param jsonViewAnnotation the json view annotation
+	 * @param mediaType the media type
+	 * @param encodings the encodings
+	 */
 	private static void addEncodingToMediaType(JsonView jsonViewAnnotation, MediaType mediaType,
 			io.swagger.v3.oas.annotations.media.Encoding[] encodings) {
 		for (io.swagger.v3.oas.annotations.media.Encoding encoding : encodings) {
@@ -164,6 +222,12 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		}
 	}
 
+	/**
+	 * Add extension.
+	 *
+	 * @param annotationContent the annotation content
+	 * @param mediaType the media type
+	 */
 	private static void addExtension(io.swagger.v3.oas.annotations.media.Content annotationContent,
 			MediaType mediaType) {
 		if (annotationContent.extensions().length > 0) {
@@ -172,6 +236,12 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		}
 	}
 
+	/**
+	 * Sets examples.
+	 *
+	 * @param mediaType the media type
+	 * @param examples the examples
+	 */
 	private static void setExamples(MediaType mediaType, ExampleObject[] examples) {
 		if (examples.length == 1 && StringUtils.isBlank(examples[0].name())) {
 			getExample(examples[0], true).ifPresent(exampleObject -> mediaType.example(exampleObject.getValue()));
@@ -189,6 +259,15 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		}
 	}
 
+	/**
+	 * Gets media type.
+	 *
+	 * @param schema the schema
+	 * @param components the components
+	 * @param jsonViewAnnotation the json view annotation
+	 * @param annotationContent the annotation content
+	 * @return the media type
+	 */
 	private static MediaType getMediaType(Schema schema, Components components, JsonView jsonViewAnnotation,
 			io.swagger.v3.oas.annotations.media.Content annotationContent) {
 		MediaType mediaType = new MediaType();
@@ -211,6 +290,12 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		return mediaType;
 	}
 
+	/**
+	 * Is array boolean.
+	 *
+	 * @param annotationContent the annotation content
+	 * @return the boolean
+	 */
 	private static boolean isArray(io.swagger.v3.oas.annotations.media.Content annotationContent) {
 		Class<?> schemaImplementation = annotationContent.schema().implementation();
 		boolean isArray = false;

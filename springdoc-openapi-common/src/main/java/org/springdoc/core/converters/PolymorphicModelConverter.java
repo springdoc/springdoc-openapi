@@ -35,6 +35,10 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Schema;
 
+/**
+ * The type Polymorphic model converter.
+ * @author bnasslahsen
+ */
 public class PolymorphicModelConverter implements ModelConverter {
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
@@ -46,6 +50,14 @@ public class PolymorphicModelConverter implements ModelConverter {
 		return null;
 	}
 
+	/**
+	 * Compose polymorphic schema schema.
+	 *
+	 * @param type the type
+	 * @param schema the schema
+	 * @param schemas the schemas
+	 * @return the schema
+	 */
 	private Schema composePolymorphicSchema(AnnotatedType type, Schema schema, Collection<Schema> schemas) {
 		String ref = schema.get$ref();
 		List<Schema> composedSchemas = schemas.stream()
@@ -63,6 +75,12 @@ public class PolymorphicModelConverter implements ModelConverter {
 		return result;
 	}
 
+	/**
+	 * Is concrete class boolean.
+	 *
+	 * @param type the type
+	 * @return the boolean
+	 */
 	private boolean isConcreteClass(AnnotatedType type) {
 		JavaType javaType = Json.mapper().constructType(type.getType());
 		Class<?> clazz = javaType.getRawClass();

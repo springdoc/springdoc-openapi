@@ -34,6 +34,10 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeToIgnore;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper;
 
+/**
+ * The type Response support converter.
+ * @author bnasslahsen
+ */
 public class ResponseSupportConverter implements ModelConverter {
 
 	@Override

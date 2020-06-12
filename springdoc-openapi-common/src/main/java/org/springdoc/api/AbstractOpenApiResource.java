@@ -86,34 +86,90 @@ import org.springframework.web.method.HandlerMethod;
 
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.isDeprecated;
 
+/**
+ * The type Abstract open api resource.
+ * @author bnasslahsen
+ */
 public abstract class AbstractOpenApiResource extends SpecFilter {
 
+	/**
+	 * The constant LOGGER.
+	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractOpenApiResource.class);
 
+	/**
+	 * The constant ADDITIONAL_REST_CONTROLLERS.
+	 */
 	private static final List<Class<?>> ADDITIONAL_REST_CONTROLLERS = new ArrayList<>();
 
+	/**
+	 * The constant HIDDEN_REST_CONTROLLERS.
+	 */
 	private static final List<Class<?>> HIDDEN_REST_CONTROLLERS = new ArrayList<>();
 
+	/**
+	 * The Open api builder.
+	 */
 	protected final OpenAPIBuilder openAPIBuilder;
 
+	/**
+	 * The Spring doc config properties.
+	 */
 	protected final SpringDocConfigProperties springDocConfigProperties;
 
+	/**
+	 * The Actuator provider.
+	 */
 	protected final Optional<ActuatorProvider> actuatorProvider;
 
+	/**
+	 * The Request builder.
+	 */
 	private final AbstractRequestBuilder requestBuilder;
 
+	/**
+	 * The Response builder.
+	 */
 	private final GenericResponseBuilder responseBuilder;
 
+	/**
+	 * The Operation parser.
+	 */
 	private final OperationBuilder operationParser;
 
+	/**
+	 * The Open api customisers.
+	 */
 	private final Optional<List<OpenApiCustomiser>> openApiCustomisers;
 
+	/**
+	 * The Operation customizers.
+	 */
 	private final Optional<List<OperationCustomizer>> operationCustomizers;
 
+	/**
+	 * The Ant path matcher.
+	 */
 	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
+	/**
+	 * The Group name.
+	 */
 	private final String groupName;
 
+	/**
+	 * Instantiates a new Abstract open api resource.
+	 *
+	 * @param groupName the group name
+	 * @param openAPIBuilder the open api builder
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param actuatorProvider the actuator provider
+	 */
 	protected AbstractOpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder,
 			AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
@@ -135,14 +191,29 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.actuatorProvider = actuatorProvider;
 	}
 
+	/**
+	 * Add rest controllers.
+	 *
+	 * @param classes the classes
+	 */
 	public static void addRestControllers(Class<?>... classes) {
 		ADDITIONAL_REST_CONTROLLERS.addAll(Arrays.asList(classes));
 	}
 
+	/**
+	 * Add hidden rest controllers.
+	 *
+	 * @param classes the classes
+	 */
 	public static void addHiddenRestControllers(Class<?>... classes) {
 		HIDDEN_REST_CONTROLLERS.addAll(Arrays.asList(classes));
 	}
 
+	/**
+	 * Add hidden rest controllers.
+	 *
+	 * @param classes the classes
+	 */
 	public static void addHiddenRestControllers(String... classes) {
 		Set<Class<?>> hiddenClasses =new HashSet<>();
 		for (String aClass : classes) {
@@ -156,6 +227,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		HIDDEN_REST_CONTROLLERS.addAll(hiddenClasses);
 	}
 
+	/**
+	 * Gets open api.
+	 *
+	 * @return the open api
+	 */
 	protected synchronized OpenAPI getOpenApi() {
 		OpenAPI openApi;
 		if (openAPIBuilder.getCachedOpenAPI() == null || springDocConfigProperties.isCacheDisabled()) {
@@ -192,8 +268,19 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return openApi;
 	}
 
+	/**
+	 * Gets paths.
+	 *
+	 * @param findRestControllers the find rest controllers
+	 */
 	protected abstract void getPaths(Map<String, Object> findRestControllers);
 
+	/**
+	 * Calculate path.
+	 *
+	 * @param handlerMethod the handler method
+	 * @param routerOperation the router operation
+	 */
 	protected void calculatePath(HandlerMethod handlerMethod, RouterOperation routerOperation) {
 		String operationPath = routerOperation.getPath();
 		Set<RequestMethod> requestMethods = new HashSet<>(Arrays.asList(routerOperation.getMethods()));
@@ -279,12 +366,25 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
+	/**
+	 * Build callbacks.
+	 *
+	 * @param openAPI the open api
+	 * @param methodAttributes the method attributes
+	 * @param operation the operation
+	 * @param apiCallbacks the api callbacks
+	 */
 	private void buildCallbacks(OpenAPI openAPI, MethodAttributes methodAttributes, Operation operation, Set<Callback> apiCallbacks) {
 		if (!CollectionUtils.isEmpty(apiCallbacks))
 			operationParser.buildCallbacks(apiCallbacks, openAPI, methodAttributes)
 					.ifPresent(operation::setCallbacks);
 	}
 
+	/**
+	 * Calculate path.
+	 *
+	 * @param routerOperationList the router operation list
+	 */
 	protected void calculatePath(List<RouterOperation> routerOperationList) {
 		ApplicationContext applicationContext = openAPIBuilder.getContext();
 		if (!CollectionUtils.isEmpty(routerOperationList)) {
@@ -326,6 +426,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
+	/**
+	 * Calculate path.
+	 *
+	 * @param routerOperation the router operation
+	 */
 	protected void calculatePath(RouterOperation routerOperation) {
 		String operationPath = routerOperation.getPath();
 		io.swagger.v3.oas.annotations.Operation apiOperation = routerOperation.getOperation();
@@ -366,11 +471,24 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
+	/**
+	 * Calculate path.
+	 *
+	 * @param handlerMethod the handler method
+	 * @param operationPath the operation path
+	 * @param requestMethods the request methods
+	 */
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
 			Set<RequestMethod> requestMethods) {
 		this.calculatePath(handlerMethod, new RouterOperation(operationPath, requestMethods.toArray(new RequestMethod[requestMethods.size()])));
 	}
 
+	/**
+	 * Gets router function paths.
+	 *
+	 * @param beanName the bean name
+	 * @param routerFunctionVisitor the router function visitor
+	 */
 	protected void getRouterFunctionPaths(String beanName, AbstractRouterFunctionVisitor routerFunctionVisitor) {
 		List<org.springdoc.core.annotations.RouterOperation> routerOperationList = new ArrayList<>();
 		ApplicationContext applicationContext = openAPIBuilder.getContext();
@@ -391,6 +509,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
+	/**
+	 * Is package to scan boolean.
+	 *
+	 * @param aPackage the a package
+	 * @return the boolean
+	 */
 	protected boolean isPackageToScan(Package aPackage) {
 		if (aPackage == null)
 			return true;
@@ -417,6 +541,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return include && !exclude;
 	}
 
+	/**
+	 * Is path to match boolean.
+	 *
+	 * @param operationPath the operation path
+	 * @return the boolean
+	 */
 	protected boolean isPathToMatch(String operationPath) {
 		List<String> pathsToMatch = springDocConfigProperties.getPathsToMatch();
 		List<String> pathsToExclude = springDocConfigProperties.getPathsToExclude();
@@ -435,6 +565,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return include && !exclude;
 	}
 
+	/**
+	 * Decode string.
+	 *
+	 * @param requestURI the request uri
+	 * @return the string
+	 */
 	protected String decode(String requestURI) {
 		try {
 			return URLDecoder.decode(requestURI, StandardCharsets.UTF_8.toString());
@@ -444,25 +580,55 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
+	/**
+	 * Is additional rest controller boolean.
+	 *
+	 * @param rawClass the raw class
+	 * @return the boolean
+	 */
 	protected boolean isAdditionalRestController(Class<?> rawClass) {
 		return ADDITIONAL_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 
+	/**
+	 * Is hidden rest controllers boolean.
+	 *
+	 * @param rawClass the raw class
+	 * @return the boolean
+	 */
 	public static boolean isHiddenRestControllers(Class<?> rawClass) {
 		return HIDDEN_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 
+	/**
+	 * Gets default allowed http methods.
+	 *
+	 * @return the default allowed http methods
+	 */
 	protected Set<RequestMethod> getDefaultAllowedHttpMethods() {
 		RequestMethod[] allowedRequestMethods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD };
 		return new HashSet<>(Arrays.asList(allowedRequestMethods));
 	}
 
 
+	/**
+	 * Customise operation operation.
+	 *
+	 * @param operation the operation
+	 * @param handlerMethod the handler method
+	 * @return the operation
+	 */
 	protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
 		operationCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(operation, handlerMethod)));
 		return operation;
 	}
 
+	/**
+	 * Merge routers.
+	 *
+	 * @param routerFunctionDatas the router function datas
+	 * @param routerOperationList the router operation list
+	 */
 	protected void mergeRouters(List<RouterFunctionData> routerFunctionDatas, List<RouterOperation> routerOperationList) {
 		for (RouterOperation routerOperation : routerOperationList) {
 			if (StringUtils.isNotBlank(routerOperation.getPath())) {
@@ -545,6 +711,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
+	/**
+	 * Calculate json view.
+	 *
+	 * @param apiOperation the api operation
+	 * @param methodAttributes the method attributes
+	 * @param method the method
+	 */
 	private void calculateJsonView(io.swagger.v3.oas.annotations.Operation apiOperation,
 			MethodAttributes methodAttributes, Method method) {
 		JsonView jsonViewAnnotation;
@@ -571,18 +744,39 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		methodAttributes.setJsonViewAnnotationForRequestBody(jsonViewAnnotationForRequestBody);
 	}
 
+	/**
+	 * Is equal arrays boolean.
+	 *
+	 * @param array1 the array 1
+	 * @param array2 the array 2
+	 * @return the boolean
+	 */
 	private boolean isEqualArrays(String[] array1, String[] array2) {
 		Arrays.sort(array1);
 		Arrays.sort(array2);
 		return Arrays.equals(array1, array2);
 	}
 
+	/**
+	 * Is equal methods boolean.
+	 *
+	 * @param requestMethods1 the request methods 1
+	 * @param requestMethods2 the request methods 2
+	 * @return the boolean
+	 */
 	private boolean isEqualMethods(RequestMethod[] requestMethods1, RequestMethod[] requestMethods2) {
 		Arrays.sort(requestMethods1);
 		Arrays.sort(requestMethods2);
 		return Arrays.equals(requestMethods1, requestMethods2);
 	}
 
+	/**
+	 * Fill parameters list.
+	 *
+	 * @param operation the operation
+	 * @param queryParams the query params
+	 * @param methodAttributes the method attributes
+	 */
 	private void fillParametersList(Operation operation, Map<String, String> queryParams, MethodAttributes methodAttributes) {
 		List<Parameter> parametersList = operation.getParameters();
 		if (parametersList == null)
@@ -602,6 +796,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
+	/**
+	 * Fill router operation.
+	 *
+	 * @param routerFunctionData the router function data
+	 * @param routerOperation the router operation
+	 */
 	private void fillRouterOperation(RouterFunctionData routerFunctionData, RouterOperation routerOperation) {
 		if (ArrayUtils.isEmpty(routerOperation.getConsumes()))
 			routerOperation.setConsumes(routerFunctionData.getConsumes());
@@ -615,6 +815,15 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			routerOperation.setQueryParams(routerFunctionData.getQueryParams());
 	}
 
+	/**
+	 * Build path item path item.
+	 *
+	 * @param requestMethod the request method
+	 * @param operation the operation
+	 * @param operationPath the operation path
+	 * @param paths the paths
+	 * @return the path item
+	 */
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
 			Paths paths) {
 		PathItem pathItemObject;
@@ -655,6 +864,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return pathItemObject;
 	}
 
+	/**
+	 * Gets existing operation.
+	 *
+	 * @param operationMap the operation map
+	 * @param requestMethod the request method
+	 * @return the existing operation
+	 */
 	private Operation getExistingOperation(Map<HttpMethod, Operation> operationMap, RequestMethod requestMethod) {
 		Operation existingOperation = null;
 		if (!CollectionUtils.isEmpty(operationMap)) {
@@ -689,6 +905,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return existingOperation;
 	}
 
+	/**
+	 * Gets operation.
+	 *
+	 * @param routerOperation the router operation
+	 * @param existingOperation the existing operation
+	 * @return the operation
+	 */
 	private Operation getOperation(RouterOperation routerOperation, Operation existingOperation) {
 		Operation operationModel = routerOperation.getOperationModel();
 		Operation operation;

@@ -33,67 +33,151 @@ import org.springframework.http.HttpMethod;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * The type Router function data.
+ * @author bnasslahsen
+ */
 public class RouterFunctionData {
 
+	/**
+	 * The Path.
+	 */
 	private String path;
 
+	/**
+	 * The Consumes.
+	 */
 	private List<String> consumes = new ArrayList<>();
 
+	/**
+	 * The Produces.
+	 */
 	private List<String> produces = new ArrayList<>();
 
+	/**
+	 * The Headers.
+	 */
 	private List<String> headers = new ArrayList<>();
 
+	/**
+	 * The Query params.
+	 */
 	private Map<String, String> queryParams = new HashMap<>();
 
+	/**
+	 * The Methods.
+	 */
 	private RequestMethod[] methods;
 
+	/**
+	 * Gets path.
+	 *
+	 * @return the path
+	 */
 	public String getPath() {
 		return path;
 	}
 
+	/**
+	 * Sets path.
+	 *
+	 * @param path the path
+	 */
 	public void setPath(String path) {
 		this.path = path;
 	}
 
+	/**
+	 * Gets query params.
+	 *
+	 * @return the query params
+	 */
 	public Map<String, String> getQueryParams() {
 		return queryParams;
 	}
 
+	/**
+	 * Add query params.
+	 *
+	 * @param name the name
+	 * @param value the value
+	 */
 	public void addQueryParams(String name, String value) {
 		this.queryParams.put(name, value);
 	}
 
+	/**
+	 * Get headers string [ ].
+	 *
+	 * @return the string [ ]
+	 */
 	public String[] getHeaders() {
 		return headers.toArray(new String[headers.size()]);
 	}
 
+	/**
+	 * Add headers.
+	 *
+	 * @param headers the headers
+	 */
 	public void addHeaders(String headers) {
 		if (StringUtils.isNotBlank(headers))
 			this.headers.add(headers);
 	}
 
+	/**
+	 * Get methods request method [ ].
+	 *
+	 * @return the request method [ ]
+	 */
 	public RequestMethod[] getMethods() {
 		return methods;
 	}
 
+	/**
+	 * Sets methods.
+	 *
+	 * @param methods the methods
+	 */
 	public void setMethods(Set<HttpMethod> methods) {
 		this.methods = getMethod(methods);
 	}
 
+	/**
+	 * Get consumes string [ ].
+	 *
+	 * @return the string [ ]
+	 */
 	public String[] getConsumes() {
 		return consumes.toArray(new String[consumes.size()]);
 	}
 
+	/**
+	 * Add consumes.
+	 *
+	 * @param consumes the consumes
+	 */
 	public void addConsumes(String consumes) {
 		if (StringUtils.isNotBlank(consumes))
 			this.consumes.add(consumes);
 	}
 
+	/**
+	 * Add produces.
+	 *
+	 * @param produces the produces
+	 */
 	public void addProduces(String produces) {
 		if (StringUtils.isNotBlank(produces))
 			this.produces.add(produces);
 	}
 
+	/**
+	 * Get method request method [ ].
+	 *
+	 * @param methods the methods
+	 * @return the request method [ ]
+	 */
 	private RequestMethod[] getMethod(Set<HttpMethod> methods) {
 		if (!CollectionUtils.isEmpty(methods)) {
 			return methods.stream().map(this::getRequestMethod).toArray(RequestMethod[]::new);
@@ -101,10 +185,21 @@ public class RouterFunctionData {
 		return ArrayUtils.toArray();
 	}
 
+	/**
+	 * Get produces string [ ].
+	 *
+	 * @return the string [ ]
+	 */
 	public String[] getProduces() {
 		return produces.toArray(new String[produces.size()]);
 	}
 
+	/**
+	 * Gets request method.
+	 *
+	 * @param httpMethod the http method
+	 * @return the request method
+	 */
 	private RequestMethod getRequestMethod(HttpMethod httpMethod) {
 		RequestMethod requestMethod = null;
 		switch (httpMethod) {

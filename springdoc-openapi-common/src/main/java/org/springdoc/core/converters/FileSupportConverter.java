@@ -33,6 +33,10 @@ import io.swagger.v3.oas.models.media.Schema;
 
 import static org.springdoc.core.GenericParameterBuilder.isFile;
 
+/**
+ * The type File support converter.
+ * @author bnasslahsen
+ */
 public class FileSupportConverter implements ModelConverter {
 
 	@Override

@@ -22,9 +22,23 @@ package org.springdoc.core;
 
 import java.util.Map;
 
+/**
+ * The interface Security o auth 2 provider.
+ * @author bnasslahsen
+ */
 public interface SecurityOAuth2Provider {
 
+	/**
+	 * Gets handler methods.
+	 *
+	 * @return the handler methods
+	 */
 	Map getHandlerMethods();
 
+	/**
+	 * Gets framework endpoints.
+	 *
+	 * @return the framework endpoints
+	 */
 	Map<String, Object> getFrameworkEndpoints();
 }

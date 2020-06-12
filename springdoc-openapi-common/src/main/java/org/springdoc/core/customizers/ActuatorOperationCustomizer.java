@@ -28,11 +28,27 @@ import org.springdoc.core.ActuatorProvider;
 
 import org.springframework.web.method.HandlerMethod;
 
+/**
+ * The type Actuator operation customizer.
+ * @author bnasslahsen
+ */
 public class ActuatorOperationCustomizer implements OperationCustomizer {
 
+	/**
+	 * The Actuator provider.
+	 */
 	private final ActuatorProvider actuatorProvider;
+
+	/**
+	 * The Method count.
+	 */
 	private int methodCount;
 
+	/**
+	 * Instantiates a new Actuator operation customizer.
+	 *
+	 * @param actuatorProvider the actuator provider
+	 */
 	public ActuatorOperationCustomizer(ActuatorProvider actuatorProvider) {
 		this.actuatorProvider = actuatorProvider;
 	}

@@ -35,7 +35,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * The annotation may be used to define a single Router Operation as an OpenAPI Operation, and/or to define additional
  * properties using  @Operation annotation.
  *
- **/
+ * @author bnasslahsen
+ */
 @Target({ ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
@@ -43,12 +44,14 @@ public @interface RouterOperation {
 	/**
 	 * The path mapping URIs (e.g. {@code "/profile"}).
 	 * Path mapping URIs may contain placeholders (e.g. <code>"/${profile_path}"</code>).
+	 * @return the string
 	 */
 	String path() default "";
 
 	/**
 	 * The HTTP request methods to map to, narrowing the primary mapping:
 	 * GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE, TRACE.
+	 * @return the request method [ ]
 	 */
 	RequestMethod[] method() default {};
 
@@ -61,6 +64,7 @@ public @interface RouterOperation {
 	 * consumes = {"text/plain", "application/*"}
 	 * consumes = MediaType.TEXT_PLAIN_VALUE
 	 * </pre>
+	 * @return the string [ ]
 	 */
 	String[] consumes() default {};
 
@@ -76,6 +80,7 @@ public @interface RouterOperation {
 	 * produces = MediaType.TEXT_PLAIN_VALUE
 	 * produces = "text/plain;charset=UTF-8"
 	 * </pre>
+	 * @return the string [ ]
 	 */
 	String[] produces() default {};
 
@@ -84,32 +89,33 @@ public @interface RouterOperation {
 	 * <p>Same format for any environment: a sequence of "My-Header=myValue" style
 	 * expressions, with a request only mapped if each such header is found
 	 * to have the given value.
+	 * @return the string [ ]
 	 */
 	String[] headers() default {};
 
 	/**
 	 * The class of the Handler bean.
 	 * @return the class of the Bean
-	 **/
+	 */
 	Class<?> beanClass() default Void.class;
 
 	/**
 	 * The method of the handler Bean.
 	 * @return The method of the handler Bean.
-	 **/
+	 */
 	String beanMethod() default "";
 
 	/**
 	 * The parameters of the handler method.
 	 * @return The parameters of the handler method.
-	 **/
+	 */
 	Class<?>[] parameterTypes() default {};
 
 	/**
 	 * The swagger operation description
 	 * Alias for {@link Operation}.
 	 * @return The operation
-	 **/
+	 */
 	Operation operation() default @Operation();
 
 

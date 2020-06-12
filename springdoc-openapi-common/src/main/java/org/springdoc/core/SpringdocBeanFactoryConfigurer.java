@@ -40,8 +40,15 @@ import org.springframework.util.CollectionUtils;
 import static org.springdoc.core.Constants.SPRINGDOC_PREFIX;
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
 
+/**
+ * The type Springdoc bean factory configurer.
+ * @author bnasslahsen
+ */
 public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFactoryPostProcessor {
 
+	/**
+	 * The Environment.
+	 */
 	@Nullable
 	private Environment environment;
 
@@ -71,6 +78,11 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 		initBeanFactoryPostProcessor(beanFactory);
 	}
 
+	/**
+	 * Init bean factory post processor.
+	 *
+	 * @param beanFactory the bean factory
+	 */
 	public static void initBeanFactoryPostProcessor(ConfigurableListableBeanFactory beanFactory) {
 		for (String beanName : beanFactory.getBeanNamesForType(OpenAPIBuilder.class))
 			beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
