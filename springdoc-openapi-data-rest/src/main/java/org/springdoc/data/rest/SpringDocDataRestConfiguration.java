@@ -75,10 +75,7 @@ public class SpringDocDataRestConfiguration {
 
 	static {
 		getConfig().replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
-				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class)
-				.replaceWithClass(DefaultedPageable.class, DefaultPageable.class)
-				.addRequestWrapperToIgnore(RootResourceInformation.class, PersistentEntityResourceAssembler.class, ETag.class, Sort.class)
-				.addResponseWrapperToIgnore(RootResourceInformation.class);
+				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
 	}
 
 	/**
@@ -127,7 +124,13 @@ public class SpringDocDataRestConfiguration {
 	 */
 	@Configuration
 	@ConditionalOnClass(RepositoryRestHandlerMapping.class)
-	class SpringRepositoryRestResourceProviderConfiguration {
+	static class SpringRepositoryRestResourceProviderConfiguration {
+
+		static {
+			getConfig().replaceWithClass(DefaultedPageable.class, DefaultPageable.class)
+					.addRequestWrapperToIgnore(RootResourceInformation.class, PersistentEntityResourceAssembler.class, ETag.class, Sort.class)
+					.addResponseWrapperToIgnore(RootResourceInformation.class);
+		}
 
 		/**
 		 * Spring repository rest resource provider spring repository rest resource provider.
