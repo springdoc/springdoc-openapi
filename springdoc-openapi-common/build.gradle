@@ -7,6 +7,5 @@ dependencies {
     api 'io.swagger.core.v3:swagger-models'
     api 'io.swagger.core.v3:swagger-annotations'
     api 'io.swagger.core.v3:swagger-integration'
-    api 'io.github.classgraph:classgraph'
     api 'org.apache.commons:commons-lang3'
 }
