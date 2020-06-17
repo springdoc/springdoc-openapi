@@ -34,6 +34,7 @@ import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.hateoas.converters.CollectionModelContentConverter;
 import org.springdoc.hateoas.converters.RepresentationModelLinksOASMixin;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -52,6 +53,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
  */
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ConditionalOnClass(LinkRelationProvider.class)
 public class SpringDocHateoasConfiguration {
 
 	/**
