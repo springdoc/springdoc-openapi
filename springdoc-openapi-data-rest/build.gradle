@@ -6,8 +6,8 @@ dependencies {
 	compileOnly 'org.springframework.boot:spring-boot-starter-data-rest'
 	compileOnly 'com.querydsl:querydsl-core'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	testRuntime project(':springdoc-openapi-webmvc-core')
-	testRuntime 'com.h2database:h2'
+	testRuntimeOnly  project(':springdoc-openapi-webmvc-core')
+	testRuntimeOnly  'com.h2database:h2'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 }
