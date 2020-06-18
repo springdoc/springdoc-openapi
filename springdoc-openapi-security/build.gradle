@@ -4,7 +4,7 @@ dependencies {
     api project(':springdoc-openapi-common')
     api 'org.springframework.security:spring-security-core'
 	compileOnly 'org.springframework.security.oauth:spring-security-oauth2'
-	testRuntime project(':springdoc-openapi-webmvc-core')
-	testRuntime 'javax.xml:jaxb-impl'
-    testCompile 'jakarta.servlet:jakarta.servlet-api'
+	testRuntimeOnly  project(':springdoc-openapi-webmvc-core')
+	testRuntimeOnly 'javax.xml:jaxb-impl'
+    testImplementation 'jakarta.servlet:jakarta.servlet-api'
 }

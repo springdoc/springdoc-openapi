@@ -61,6 +61,7 @@ subprojects {
 
 	test {
 		useJUnitPlatform()
+		maxParallelForks = Runtime.runtime.availableProcessors()
 	}
 
 	sourceCompatibility = '1.8'

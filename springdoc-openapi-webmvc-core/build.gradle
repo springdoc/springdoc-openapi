@@ -7,6 +7,6 @@ dependencies {
     testImplementation 'org.hibernate.validator:hibernate-validator'
     testImplementation 'javax.money:money-api'
     compileOnly 'jakarta.servlet:jakarta.servlet-api'
-	testRuntime 'jakarta.servlet:jakarta.servlet-api'
+	testRuntimeOnly  'jakarta.servlet:jakarta.servlet-api'
 }
 
