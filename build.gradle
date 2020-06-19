@@ -18,7 +18,7 @@ repositories {
 ext {
 	springBootVersion = '2.3.0.RELEASE'
 	swaggerApiVersion = '2.1.2'
-	swaggerUiVersion = '3.26.0'
+	swaggerUiVersion = '3.27.0'
 }
 
 subprojects {
