@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
+import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.ui.AbstractSwaggerWelcome;
 import reactor.core.publisher.Mono;
@@ -72,9 +73,10 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
-	public SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
-		super(swaggerUiConfig, springDocConfigProperties);
+	public SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters) {
+		super(swaggerUiConfig, springDocConfigProperties,swaggerUiConfigParameters);
 		this.webJarsPrefixUrl = springDocConfigProperties.getWebjars().getPrefix();
 	}
 
@@ -89,7 +91,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	@GetMapping(SWAGGER_UI_PATH)
 	public Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
 		String contextPath = this.fromCurrentContextPath(request);
-		String sbUrl = this.buildUrl(contextPath, this.uiRootPath + springDocConfigProperties.getWebjars().getPrefix() + SWAGGER_UI_URL);
+		String sbUrl = this.buildUrl(contextPath, swaggerUiConfigParameters.getUiRootPath() + springDocConfigProperties.getWebjars().getPrefix() + SWAGGER_UI_URL);
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
 		response.setStatusCode(HttpStatus.TEMPORARY_REDIRECT);
 		response.getHeaders().setLocation(URI.create(uriBuilder.build().encode().toString()));
@@ -108,7 +110,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	@ResponseBody
 	public Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
 		this.fromCurrentContextPath(request);
-		return swaggerUiConfig.getConfigParameters();
+		return swaggerUiConfigParameters.getConfigParameters();
 	}
 
 	@Override
@@ -116,17 +118,17 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 		StringBuilder sbUrl = new StringBuilder();
 		if (ArrayUtils.isNotEmpty(sbUrls))
 			sbUrl = sbUrls[0];
-		String swaggerPath = swaggerUiConfig.getPath();
+		String swaggerPath = swaggerUiConfigParameters.getPath();
 		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
 			sbUrl.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
-		this.uiRootPath = sbUrl.toString();
+		swaggerUiConfigParameters.setUiRootPath(sbUrl.toString());
 	}
 
 	@Override
 	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
-		if (oauthPrefix == null && !swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
-			this.oauthPrefix = uriComponentsBuilder.path(this.uiRootPath).path(webJarsPrefixUrl);
-			swaggerUiConfig.setOauth2RedirectUrl(this.oauthPrefix.path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
+		if (oauthPrefix == null && !swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl())) {
+			this.oauthPrefix = uriComponentsBuilder.path(swaggerUiConfigParameters.getUiRootPath()).path(webJarsPrefixUrl);
+			swaggerUiConfigParameters.setOauth2RedirectUrl(this.oauthPrefix.path(swaggerUiConfigParameters.getOauth2RedirectUrl()).build().toString());
 		}
 	}
 

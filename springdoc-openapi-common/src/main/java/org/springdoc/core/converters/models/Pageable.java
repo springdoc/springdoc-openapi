@@ -61,8 +61,8 @@ public class Pageable {
 	/**
 	 * Instantiates a new Pageable.
 	 *
-	 * @param page the page
-	 * @param size the size
+	 * @param page the page 
+	 * @param size the size 
 	 * @param sort the sort
 	 */
 	public Pageable(int page, int size, List<String> sort) {

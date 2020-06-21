@@ -23,6 +23,7 @@ package org.springdoc.webmvc.ui;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
+import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 
@@ -49,12 +50,13 @@ public class SwaggerConfig {
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @return the swagger welcome
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	SwaggerWelcome swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
-		return new SwaggerWelcome(swaggerUiConfig, springDocConfigProperties);
+	SwaggerWelcome swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters) {
+		return new SwaggerWelcome(swaggerUiConfig, springDocConfigProperties,swaggerUiConfigParameters);
 	}
 
 	/**
@@ -74,13 +76,25 @@ public class SwaggerConfig {
 	/**
 	 * Swagger web mvc configurer swagger web mvc configurer.
 	 *
-	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiConfigParameters the swagger ui calculated config
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 * @return the swagger web mvc configurer
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerIndexTransformer swaggerIndexTransformer) {
-		return new SwaggerWebMvcConfigurer(swaggerUiConfig, swaggerIndexTransformer);
+	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerIndexTransformer swaggerIndexTransformer) {
+		return new SwaggerWebMvcConfigurer(swaggerUiConfigParameters, swaggerIndexTransformer);
+	}
+
+	/**
+	 * Swagger ui config parameters swagger ui config parameters.
+	 *
+	 * @param swaggerUiConfig the swagger ui config
+	 * @return the swagger ui config parameters
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	SwaggerUiConfigParameters swaggerUiConfigParameters (SwaggerUiConfigProperties swaggerUiConfig){
+		return new SwaggerUiConfigParameters(swaggerUiConfig);
 	}
 }

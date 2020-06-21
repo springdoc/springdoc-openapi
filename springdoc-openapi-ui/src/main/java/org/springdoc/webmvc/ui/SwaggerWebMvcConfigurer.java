@@ -20,6 +20,7 @@
 
 package org.springdoc.webmvc.ui;
 
+import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -49,11 +50,11 @@ public class SwaggerWebMvcConfigurer extends WebMvcConfigurerAdapter { // NOSONA
 	/**
 	 * Instantiates a new Swagger web mvc configurer.
 	 *
-	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiConfigParameters the swagger ui calculated config
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 */
-	public SwaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerIndexTransformer swaggerIndexTransformer) {
-		this.swaggerPath = swaggerUiConfig.getPath();
+	public SwaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerIndexTransformer swaggerIndexTransformer) {
+		this.swaggerPath = swaggerUiConfigParameters.getPath();
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
 	}
 

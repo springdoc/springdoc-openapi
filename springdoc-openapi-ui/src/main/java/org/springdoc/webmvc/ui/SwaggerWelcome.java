@@ -29,6 +29,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
+import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.ui.AbstractSwaggerWelcome;
 
@@ -62,7 +63,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	/**
 	 * The Mvc servlet path.
 	 */
-// To keep compatiblity with spring-boot 1 - WebMvcProperties changed package from srping 4 to spring 5
+   // To keep compatiblity with spring-boot 1 - WebMvcProperties changed package from srping 4 to spring 5
 	@Value(MVC_SERVLET_PATH)
 	private String mvcServletPath;
 
@@ -71,9 +72,10 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
-	public SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
-		super(swaggerUiConfig, springDocConfigProperties);
+	public SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters) {
+		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
 	}
 
 	/**
@@ -86,7 +88,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	@GetMapping(SWAGGER_UI_PATH)
 	public String redirectToUi(HttpServletRequest request) {
 		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
-		String sbUrl = REDIRECT_URL_PREFIX + this.uiRootPath + SWAGGER_UI_URL;
+		String sbUrl = REDIRECT_URL_PREFIX + swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
 		return uriBuilder.build().encode().toString();
 	}
@@ -100,9 +102,9 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	@Operation(hidden = true)
 	@GetMapping(value = SWAGGER_CONFIG_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Map<String, Object> openapiYaml(HttpServletRequest request) {
+	public Map<String, Object> openapiJson(HttpServletRequest request) {
 		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
-		return swaggerUiConfig.getConfigParameters();
+		return swaggerUiConfigParameters.getConfigParameters();
 	}
 
 	@Override
@@ -112,10 +114,10 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 			sbUrl.append(mvcServletPath);
 		if (ArrayUtils.isNotEmpty(sbUrls))
 			sbUrl = sbUrls[0];
-		String swaggerPath = swaggerUiConfig.getPath();
+		String swaggerPath = swaggerUiConfigParameters.getPath();
 		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
 			sbUrl.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
-		this.uiRootPath = sbUrl.toString();
+		swaggerUiConfigParameters.setUiRootPath(sbUrl.toString());
 	}
 
 	@Override
@@ -127,7 +129,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 
 	@Override
 	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
-		if (!swaggerUiConfig.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl()))
-			swaggerUiConfig.setOauth2RedirectUrl(uriComponentsBuilder.path(this.uiRootPath).path(swaggerUiConfig.getOauth2RedirectUrl()).build().toString());
+		if (!swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl()))
+			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder.path(swaggerUiConfigParameters.getUiRootPath()).path(swaggerUiConfigParameters.getOauth2RedirectUrl()).build().toString());
 	}
 }

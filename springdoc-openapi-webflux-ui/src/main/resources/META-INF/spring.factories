@@ -2,4 +2,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 org.springdoc.webflux.ui.SwaggerWelcome,\
 org.springdoc.webflux.ui.SwaggerConfig,\
 org.springdoc.core.SwaggerUiConfigProperties,\
+org.springdoc.core.SwaggerUiConfigParameters,\
 org.springdoc.core.SwaggerUiOAuthProperties
