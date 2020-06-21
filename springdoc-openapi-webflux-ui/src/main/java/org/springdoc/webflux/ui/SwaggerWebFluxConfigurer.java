@@ -21,7 +21,7 @@
 package org.springdoc.webflux.ui;
 
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.SwaggerUiConfigProperties;
+import org.springdoc.core.SwaggerUiConfigParameters;
 
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
@@ -54,12 +54,12 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	/**
 	 * Instantiates a new Swagger web flux configurer.
 	 *
-	 * @param swaggerUiConfig the swagger ui config 
-	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param swaggerUiConfigParameters the swagger ui calculated config
+	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 */
-	public SwaggerWebFluxConfigurer(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer) {
-		this.swaggerPath = swaggerUiConfig.getPath();
+	public SwaggerWebFluxConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer) {
+		this.swaggerPath = swaggerUiConfigParameters.getPath();
 		this.webJarsPrefixUrl = springDocConfigProperties.getWebjars().getPrefix();
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
 	}

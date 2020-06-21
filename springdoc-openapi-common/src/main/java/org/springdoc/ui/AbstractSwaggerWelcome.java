@@ -22,9 +22,11 @@ package org.springdoc.ui;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
@@ -38,7 +40,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public abstract class AbstractSwaggerWelcome implements InitializingBean {
 
 	/**
-	 * The Swagger ui config.
+	 * The Swagger ui configuration.
 	 */
 	protected final SwaggerUiConfigProperties swaggerUiConfig;
 
@@ -48,42 +50,27 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	protected final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
-	 * The Ui root path.
+	 * The Swagger ui calculated config.
 	 */
-	protected String uiRootPath;
+	protected final SwaggerUiConfigParameters swaggerUiConfigParameters;
 
-	/**
-	 * The Oauth 2 redirect url.
-	 */
-	protected String oauth2RedirectUrl;
-
-	/**
-	 * The Origin config url.
-	 */
-	private String originConfigUrl;
-
-	/**
-	 * The Swagger ui url.
-	 */
-	private String swaggerUiUrl;
 
 	/**
 	 * Instantiates a new Abstract swagger welcome.
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
-	public AbstractSwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
+	public AbstractSwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters) {
 		this.swaggerUiConfig = swaggerUiConfig;
 		this.springDocConfigProperties = springDocConfigProperties;
-		this.oauth2RedirectUrl = swaggerUiConfig.getOauth2RedirectUrl();
-		this.originConfigUrl = swaggerUiConfig.getConfigUrl();
-		this.swaggerUiUrl = swaggerUiConfig.getUrl();
+		this.swaggerUiConfigParameters = swaggerUiConfigParameters;
 	}
 
 	@Override
 	public void afterPropertiesSet() {
-		springDocConfigProperties.getGroupConfigs().forEach(groupConfig -> swaggerUiConfig.addGroup(groupConfig.getGroup()));
+		springDocConfigProperties.getGroupConfigs().forEach(groupConfig -> swaggerUiConfigParameters.addGroup(groupConfig.getGroup()));
 		calculateUiRootPath();
 	}
 
@@ -109,18 +96,19 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	 */
 	protected void buildConfigUrl(String contextPath, UriComponentsBuilder uriComponentsBuilder) {
 		String apiDocsUrl = springDocConfigProperties.getApiDocs().getPath();
-		if (StringUtils.isEmpty(originConfigUrl)) {
+		if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
 			String url = buildUrl(contextPath, apiDocsUrl);
 			String swaggerConfigUrl = url + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
-			swaggerUiConfig.setConfigUrl(swaggerConfigUrl);
-			if (swaggerUiConfig.getUrls().isEmpty()) {
+			swaggerUiConfigParameters.setConfigUrl(swaggerConfigUrl);
+			if (CollectionUtils.isEmpty(swaggerUiConfigParameters.getUrls())) {
+				String swaggerUiUrl = swaggerUiConfig.getUrl();
 				if (StringUtils.isEmpty(swaggerUiUrl))
-					swaggerUiConfig.setUrl(url);
+					swaggerUiConfigParameters.setUrl(url);
 				else
-					swaggerUiConfig.setUrl(swaggerUiUrl);
+					swaggerUiConfigParameters.setUrl(swaggerUiUrl);
 			}
 			else
-				swaggerUiConfig.addUrl(url);
+				swaggerUiConfigParameters.addUrl(url);
 		}
 		calculateOauth2RedirectUrl(uriComponentsBuilder);
 	}
@@ -133,26 +121,26 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	 */
 	protected UriComponentsBuilder getUriComponentsBuilder(String sbUrl) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl);
-		if (swaggerUiConfig.isDisplayQueryParams() && StringUtils.isNotEmpty(swaggerUiConfig.getUrl())) {
-			swaggerUiConfig.getConfigParameters().entrySet().stream()
-					.filter(entry -> !SwaggerUiConfigProperties.CONFIG_URL_PROPERTY.equals(entry.getKey()))
-					.filter(entry -> !entry.getKey().startsWith(SwaggerUiConfigProperties.URLS_PROPERTY))
+		if (swaggerUiConfig.isDisplayQueryParams() && StringUtils.isNotEmpty(swaggerUiConfigParameters.getUrl())) {
+			swaggerUiConfigParameters.getConfigParameters().entrySet().stream()
+					.filter(entry -> !SwaggerUiConfigParameters.CONFIG_URL_PROPERTY.equals(entry.getKey()))
+					.filter(entry -> !entry.getKey().startsWith(SwaggerUiConfigParameters.URLS_PROPERTY))
 					.filter(entry -> StringUtils.isNotEmpty((String) entry.getValue()))
 					.forEach(entry -> uriBuilder.queryParam(entry.getKey(), entry.getValue()));
-		} else if (swaggerUiConfig.isDisplayQueryParamsWithoutOauth2() && StringUtils.isNotEmpty(swaggerUiConfig.getUrl())) {
-			swaggerUiConfig.getConfigParameters().entrySet().stream()
-					.filter(entry -> !SwaggerUiConfigProperties.CONFIG_URL_PROPERTY.equals(entry.getKey()))
-					.filter(entry -> !SwaggerUiConfigProperties.OAUTH2_REDIRECT_URL_PROPERTY.equals(entry.getKey()))
-					.filter(entry -> !entry.getKey().startsWith(SwaggerUiConfigProperties.URLS_PROPERTY))
+		} else if (swaggerUiConfig.isDisplayQueryParamsWithoutOauth2() && StringUtils.isNotEmpty(swaggerUiConfigParameters.getUrl())) {
+			swaggerUiConfigParameters.getConfigParameters().entrySet().stream()
+					.filter(entry -> !SwaggerUiConfigParameters.CONFIG_URL_PROPERTY.equals(entry.getKey()))
+					.filter(entry -> !SwaggerUiConfigParameters.OAUTH2_REDIRECT_URL_PROPERTY.equals(entry.getKey()))
+					.filter(entry -> !entry.getKey().startsWith(SwaggerUiConfigParameters.URLS_PROPERTY))
 					.filter(entry -> StringUtils.isNotEmpty((String) entry.getValue()))
 					.forEach(entry -> uriBuilder.queryParam(entry.getKey(), entry.getValue()));
 		}
 		else {
-			uriBuilder.queryParam(SwaggerUiConfigProperties.CONFIG_URL_PROPERTY, swaggerUiConfig.getConfigUrl());
-			if (StringUtils.isNotEmpty(swaggerUiConfig.getLayout()))
-				uriBuilder.queryParam(SwaggerUiConfigProperties.LAYOUT_PROPERTY, swaggerUiConfig.getLayout());
-			if (StringUtils.isNotEmpty(swaggerUiConfig.getFilter()))
-				uriBuilder.queryParam(SwaggerUiConfigProperties.FILTER_PROPERTY, swaggerUiConfig.getFilter());
+			uriBuilder.queryParam(SwaggerUiConfigParameters.CONFIG_URL_PROPERTY, swaggerUiConfigParameters.getConfigUrl());
+			if (StringUtils.isNotEmpty(swaggerUiConfigParameters.getLayout()))
+				uriBuilder.queryParam(SwaggerUiConfigParameters.LAYOUT_PROPERTY, swaggerUiConfigParameters.getLayout());
+			if (StringUtils.isNotEmpty(swaggerUiConfigParameters.getFilter()))
+				uriBuilder.queryParam(SwaggerUiConfigParameters.FILTER_PROPERTY, swaggerUiConfigParameters.getFilter());
 		}
 		return uriBuilder;
 	}

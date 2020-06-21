@@ -34,8 +34,8 @@ public interface ParameterCustomizer {
 	/**
 	 * Customize parameter.
 	 *
-	 * @param parameterModel to be customized
-	 * @param methodParameter original parameter from handler method
+	 * @param parameterModel to be customized 
+	 * @param methodParameter original parameter from handler method 
 	 * @return customized parameter
 	 */
 	Parameter customize(Parameter parameterModel, MethodParameter methodParameter);
