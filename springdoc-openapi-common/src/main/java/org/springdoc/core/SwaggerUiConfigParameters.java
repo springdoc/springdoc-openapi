@@ -24,7 +24,6 @@ import java.net.URL;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -48,7 +47,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 @Configuration
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
-public class SwaggerUiConfigParameters {
+public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties {
 
 	/**
 	 * The constant CONFIG_URL_PROPERTY.
@@ -74,124 +73,6 @@ public class SwaggerUiConfigParameters {
 	 * The constant OAUTH2_REDIRECT_URL_PROPERTY.
 	 */
 	public static final String OAUTH2_REDIRECT_URL_PROPERTY = "oauth2RedirectUrl";
-
-	/**
-	 * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
-	 */
-	private String path;
-
-	/**
-	 * The name of a component available via the plugin system to use as the top-level layout for Swagger UI.
-	 */
-	private String layout;
-
-	/**
-	 * URL to fetch external configuration document from.
-	 */
-	private String configUrl;
-
-	/**
-	 * URL to validate specs against.
-	 */
-	private String validatorUrl;
-
-	/**
-	 * If set, enables filtering. The top bar will show an edit box that
-	 * could be used to filter the tagged operations that are shown.
-	 */
-	private String filter;
-
-	/**
-	 * Apply a sort to the operation list of each API
-	 */
-	private String operationsSorter;
-
-	/**
-	 * Apply a sort to the tag list of each API
-	 */
-	private String tagsSorter;
-
-	/**
-	 * Enables or disables deep linking for tags and operations.
-	 *
-	 * @see  <a href="https://github.com/swagger-api/swagger-ui/blob/master/docs/usage/deep-linking.md">deep-linking.md</a>
-	 */
-	private Boolean deepLinking;
-
-	/**
-	 * Controls the display of operationId in operations list.
-	 */
-	private Boolean displayOperationId;
-
-	/**
-	 * The default expansion depth for models (set to -1 completely hide the models).
-	 */
-	private Integer defaultModelsExpandDepth;
-
-	/**
-	 * The default expansion depth for the model on the model-example section.
-	 */
-	private Integer defaultModelExpandDepth;
-
-	/**
-	 * Controls how the model is shown when the API is first rendered.
-	 */
-	private String defaultModelRendering;
-
-	/**
-	 * Controls the display of the request duration (in milliseconds) for Try-It-Out requests.
-	 */
-	private Boolean displayRequestDuration;
-
-	/**
-	 * Controls the default expansion setting for the operations and tags.
-	 */
-	private String docExpansion;
-
-	/**
-	 * If set, limits the number of tagged operations displayed to at most this many.
-	 */
-	private Integer maxDisplayedTags;
-
-	/**
-	 * Controls the display of vendor extension (x-) fields and values.
-	 */
-	private Boolean showExtensions;
-
-	/**
-	 * Controls the display of extensions
-	 */
-	private Boolean showCommonExtensions;
-
-	/**
-	 * The supported try it out methods
-	 */
-	private List<String> supportedSubmitMethods;
-
-	/**
-	 * OAuth redirect URL.
-	 */
-	private String oauth2RedirectUrl = SWAGGER_UI_OAUTH_REDIRECT_URL;
-
-	/**
-	 * The Url.
-	 */
-	private String url;
-
-	/**
-	 * The Urls.
-	 */
-	private Set<SwaggerUrl> urls;
-
-	/**
-	 * The Groups order.
-	 */
-	private Direction groupsOrder;
-
-	/**
-	 * The Urls primary name.
-	 */
-	private String urlsPrimaryName;
 
 	/**
 	 * The Ui root path.
@@ -264,120 +145,6 @@ public class SwaggerUiConfigParameters {
 		);
 	}
 
-	private boolean isSwaggerUrlDefined(String name) {
-		if (!CollectionUtils.isEmpty(swaggerUiConfig.getUrls()))
-			return swaggerUiConfig.getUrls().stream().anyMatch(swaggerUrl -> name.equals(swaggerUrl.getName()) && StringUtils.isNotBlank(swaggerUrl.getUrl()));
-		return false;
-	}
-
-	/**
-	 * Gets path.
-	 *
-	 * @return the path
-	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * Sets path.
-	 *
-	 * @param path the path
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	/**
-	 * Gets layout.
-	 *
-	 * @return the layout
-	 */
-	public String getLayout() {
-		return layout;
-	}
-
-	/**
-	 * Sets layout.
-	 *
-	 * @param layout the layout
-	 */
-	public void setLayout(String layout) {
-		this.layout = layout;
-	}
-
-	/**
-	 * Gets config url.
-	 *
-	 * @return the config url
-	 */
-	public String getConfigUrl() {
-		return configUrl;
-	}
-
-	/**
-	 * Sets config url.
-	 *
-	 * @param configUrl the config url
-	 */
-	public void setConfigUrl(String configUrl) {
-		this.configUrl = configUrl;
-	}
-
-	/**
-	 * Gets filter.
-	 *
-	 * @return the filter
-	 */
-	public String getFilter() {
-		return filter;
-	}
-
-	/**
-	 * Sets filter.
-	 *
-	 * @param filter the filter
-	 */
-	public void setFilter(String filter) {
-		this.filter = filter;
-	}
-
-	/**
-	 * Gets oauth 2 redirect url.
-	 *
-	 * @return the oauth 2 redirect url
-	 */
-	public String getOauth2RedirectUrl() {
-		return oauth2RedirectUrl;
-	}
-
-	/**
-	 * Sets oauth 2 redirect url.
-	 *
-	 * @param oauth2RedirectUrl the oauth 2 redirect url
-	 */
-	public void setOauth2RedirectUrl(String oauth2RedirectUrl) {
-		this.oauth2RedirectUrl = oauth2RedirectUrl;
-	}
-
-	/**
-	 * Gets url.
-	 *
-	 * @return the url
-	 */
-	public String getUrl() {
-		return url;
-	}
-
-	/**
-	 * Sets url.
-	 *
-	 * @param url the url
-	 */
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
 	/**
 	 * Gets ui root path.
 	 *
@@ -443,7 +210,6 @@ public class SwaggerUiConfigParameters {
 		return params;
 	}
 
-
 	/**
 	 * Put.
 	 *
@@ -462,5 +228,17 @@ public class SwaggerUiConfigParameters {
 		if (!CollectionUtils.isEmpty(swaggerUrls)) {
 			params.put(urls, swaggerUrls);
 		}
+	}
+
+	/**
+	 * Is swagger url defined boolean.
+	 *
+	 * @param name the name
+	 * @return the boolean
+	 */
+	private boolean isSwaggerUrlDefined(String name) {
+		if (!CollectionUtils.isEmpty(swaggerUiConfig.getUrls()))
+			return swaggerUiConfig.getUrls().stream().anyMatch(swaggerUrl -> name.equals(swaggerUrl.getName()) && StringUtils.isNotBlank(swaggerUrl.getUrl()));
+		return false;
 	}
 }
