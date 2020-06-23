@@ -570,7 +570,7 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	/**
 	 * The type Swagger url.
 	 */
-	static class SwaggerUrl {
+	public static class SwaggerUrl {
 		/**
 		 * The Url.
 		 */
