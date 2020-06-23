@@ -47,9 +47,14 @@ subprojects {
 			dependency "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
 			dependency "io.swagger.core.v3:swagger-models:${swaggerApiVersion}"
 			dependency "io.swagger.core.v3:swagger-annotations:${swaggerApiVersion}"
-			dependency "io.swagger.core.v3:swagger-integration:${swaggerApiVersion}"
+			dependency("io.swagger.core.v3:swagger-integration:${swaggerApiVersion}") {
+				exclude "io.github.classgraph:classgraph"
+			}
 			dependency "org.webjars:swagger-ui:${swaggerUiVersion}"
-			dependency 'org.webjars:webjars-locator-core:0.45'
+			dependency('org.webjars:webjars-locator-core:0.45') {
+				exclude "io.github.classgraph:classgraph"
+			}
+			dependency 'io.github.classgraph:classgraph:4.8.69'
 			dependency 'org.springframework.security:spring-security-core:5.3.2.RELEASE'
 			dependency 'org.springframework.security.oauth:spring-security-oauth2:2.3.8.RELEASE'
 			dependency 'javax.xml:jaxb-impl:2.1'
