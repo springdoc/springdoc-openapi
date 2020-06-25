@@ -123,15 +123,6 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	}
 
 	/**
-	 * Gets urls.
-	 *
-	 * @return the urls
-	 */
-	public Set<SwaggerUrl> getUrls() {
-		return urls;
-	}
-
-	/**
 	 * Add url.
 	 *
 	 * @param url the url
