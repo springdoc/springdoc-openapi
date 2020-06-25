@@ -77,12 +77,38 @@ subprojects {
 		publications {
 			mavenJava(MavenPublication) {
 				from components.java
+				artifact sourcesJar
+				artifact javadocJar
+
 				versionMapping {
 					usage('java-api') {
 						fromResolutionOf('runtimeClasspath')
 					}
 					usage('java-runtime') {
 						fromResolutionResult()
+					}
+				}
+				pom {
+					name = 'Spring OpenAPI 3.0 documentation generator'
+					description = 'Spring OpenAPI 3.0 documentation generator'
+					url = 'https://springdoc.org/'
+					licenses {
+						license {
+							name = 'The Apache License, Version 2.0'
+							url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+						}
+					}
+					developers {
+						developer {
+							id = 'bnasslahsen'
+							name = 'Badr NASS'
+							email = 'support@springdoc.org'
+						}
+					}
+					scm {
+						connection = 'scm:git:git@github.com:springdoc/springdoc-openapi.git'
+						developerConnection = 'scm:git:ssh://github.com:springdoc/springdoc-openapi.git'
+						url = 'https://springdoc.org/'
 					}
 				}
 			}
