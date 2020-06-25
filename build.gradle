@@ -1,18 +1,10 @@
 plugins {
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'org.jetbrains.kotlin.jvm' version '1.3.72' apply false
+	id 'org.sonarqube' version '2.8'
+	id 'net.researchgate.release' version '2.8.1'
 	id 'java'
-	id "org.sonarqube" version "2.8"
-}
-
-allprojects {
-	group = 'org.springdoc'
-	version = '1.4.2-SNAPSHOT'
-}
-
-repositories {
-	mavenLocal()
-	mavenCentral()
+	id 'signing'
 }
 
 ext {
@@ -22,11 +14,15 @@ ext {
 }
 
 subprojects {
-
-	apply plugin: 'java'
 	apply plugin: 'java-library'
 	apply plugin: 'maven-publish'
 	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'signing'
+
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
+	compileJava.options.encoding = "UTF-8"
+	compileTestJava.options.encoding = "UTF-8"
 
 	configurations {
 		testImplementation.extendsFrom compileOnly
@@ -68,11 +64,14 @@ subprojects {
 		useJUnitPlatform()
 	}
 
-	sourceCompatibility = '1.8'
+	task sourcesJar(type: Jar) {
+		from sourceSets.main.allJava
+		archiveClassifier = "sources"
+	}
 
-	java {
-		withSourcesJar()
-		withJavadocJar()
+	task javadocJar(type: Jar) {
+		from sourceSets.main.allJava
+		archiveClassifier = "javadoc"
 	}
 
 	publishing {
@@ -104,8 +103,8 @@ subprojects {
 		}
 	}
 
-	tasks.withType(JavaCompile) {
-		options.encoding = 'UTF-8'
+	signing {
+		sign publishing.publications.mavenJava
 	}
 }
 
@@ -114,3 +113,10 @@ sonarqube {
 		property("sonar.projectKey", "springdoc_springdoc-openapi")
 	}
 }
+
+
+release {
+	tagTemplate = 'v$version'
+}
+
+afterReleaseBuild.dependsOn subprojects.publish
