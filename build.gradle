@@ -17,7 +17,6 @@ subprojects {
 	apply plugin: 'java-library'
 	apply plugin: 'maven-publish'
 	apply plugin: 'io.spring.dependency-management'
-	apply plugin: 'signing'
 
 	sourceCompatibility = JavaVersion.VERSION_1_8
 	targetCompatibility = JavaVersion.VERSION_1_8
@@ -103,9 +102,13 @@ subprojects {
 		}
 	}
 
-	signing {
-		sign publishing.publications.mavenJava
+	if (project.hasProperty("signing.keyId")) {
+		apply plugin: 'signing'
+		signing {
+			sign publishing.publications.mavenJava
+		}
 	}
+
 }
 
 sonarqube {
