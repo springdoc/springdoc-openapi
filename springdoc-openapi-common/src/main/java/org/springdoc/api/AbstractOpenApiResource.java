@@ -246,8 +246,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			Map<String, Object> findControllerAdvice = openAPIBuilder.getControllerAdviceMap();
 			// calculate generic responses
 			openApi = openAPIBuilder.getCalculatedOpenAPI();
-			if (springDocConfigProperties.isOverrideWithGenericResponse())
+			if (springDocConfigProperties.isOverrideWithGenericResponse() && !CollectionUtils.isEmpty(findControllerAdvice)){
+				if(!CollectionUtils.isEmpty(mappingsMap))
+					findControllerAdvice.putAll(mappingsMap);
 				responseBuilder.buildGenericResponse(openApi.getComponents(), findControllerAdvice);
+			}
 			getPaths(mappingsMap);
 			// run the optional customisers
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
