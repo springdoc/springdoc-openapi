@@ -466,7 +466,7 @@ public class SpringDocConfigProperties {
 		private String path = Constants.DEFAULT_API_DOCS_URL;
 
 		/**
-		 * Weather to generate and serve a OpenAPI document.
+		 * Whether to generate and serve an OpenAPI document.
 		 */
 		private boolean enabled = true;
 
