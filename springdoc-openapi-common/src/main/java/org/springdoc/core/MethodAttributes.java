@@ -53,6 +53,11 @@ public class MethodAttributes {
 	private boolean withApiResponseDoc;
 
 	/**
+	 * The With response body schema doc.
+	 */
+	private boolean withResponseBodySchemaDoc;
+
+	/**
 	 * The Json view annotation.
 	 */
 	private JsonView jsonViewAnnotation;
@@ -386,4 +391,21 @@ public class MethodAttributes {
 		return genericMapResponse;
 	}
 
+	/**
+	 * Is with response body schema doc boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isWithResponseBodySchemaDoc() {
+		return withResponseBodySchemaDoc;
+	}
+
+	/**
+	 * Sets with response body schema doc.
+	 *
+	 * @param withResponseBodySchemaDoc the with response body schema doc
+	 */
+	public void setWithResponseBodySchemaDoc(boolean withResponseBodySchemaDoc) {
+		this.withResponseBodySchemaDoc = withResponseBodySchemaDoc;
+	}
 }
