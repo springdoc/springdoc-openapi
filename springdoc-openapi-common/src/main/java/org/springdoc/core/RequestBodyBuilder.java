@@ -127,8 +127,14 @@ public class RequestBodyBuilder {
 		Optional<Content> optionalContent = AnnotationsUtils
 				.getContent(requestBody.content(), getConsumes(classConsumes),
 						getConsumes(methodConsumes), null, components, jsonViewAnnotation);
-		if (requestBodyOp == null)
-			optionalContent.ifPresent(requestBodyObject::setContent);
+		if (requestBodyOp == null) {
+			if (optionalContent.isPresent()) {
+				Content content = optionalContent.get();
+				requestBodyObject.setContent(content);
+				if (containsResponseBodySchema(content))
+					methodAttributes.setWithResponseBodySchemaDoc(true);
+			}
+		}
 		else {
 			Content existingContent = requestBodyOp.getContent();
 			if (optionalContent.isPresent() && existingContent != null) {
@@ -144,6 +150,10 @@ public class RequestBodyBuilder {
 					requestBodyObject.content(newContent);
 			}
 		}
+	}
+
+	private boolean containsResponseBodySchema(Content content) {
+		return content.entrySet().stream().anyMatch(stringMediaTypeEntry -> stringMediaTypeEntry.getValue().getSchema() != null);
 	}
 
 	/**
@@ -254,7 +264,7 @@ public class RequestBodyBuilder {
 					methodAttributes.getJsonViewAnnotationForRequestBody());
 			buildContent(requestBody, methodAttributes, schema);
 		}
-		else {
+		else if (!methodAttributes.isWithResponseBodySchemaDoc()) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
 					methodAttributes.getJsonViewAnnotationForRequestBody());
 			mergeContent(requestBody, methodAttributes, schema);

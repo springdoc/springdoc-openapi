@@ -62,7 +62,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/User"
               },
               "examples": {
                 "An example request with the minimum required fields to create.": {
