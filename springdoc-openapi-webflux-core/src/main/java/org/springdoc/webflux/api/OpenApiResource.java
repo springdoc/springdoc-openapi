@@ -58,6 +58,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.result.condition.PatternsRequestCondition;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
+import org.springframework.web.server.adapter.ForwardedHeaderTransformer;
 import org.springframework.web.util.pattern.PathPattern;
 
 import static org.springdoc.core.Constants.API_DOCS_URL;
@@ -99,7 +100,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
-		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
+		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
@@ -124,7 +125,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
+		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
@@ -197,8 +198,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				Map<String, String> regexMap = new LinkedHashMap<>();
 				operationPath = PathUtils.parsePath(operationPath, regexMap);
 				if (operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-								&& (restControllers.containsKey(handlerMethod.getBean().toString()) || actuatorProvider.isPresent())
-								&& isPackageToScan(handlerMethod.getBeanType().getPackage()) && isPathToMatch(operationPath)) {
+						&& (restControllers.containsKey(handlerMethod.getBean().toString()) || actuatorProvider.isPresent())
+						&& isPackageToScan(handlerMethod.getBeanType().getPackage()) && isPathToMatch(operationPath)) {
 					Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 					// default allowed requestmethods
 					if (requestMethods.isEmpty())
@@ -230,9 +231,13 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @param apiDocsUrl the api docs url
 	 */
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
-		String requestUrl = decode(serverHttpRequest.getURI().toString());
+		String requestUrl = decodedRequestUrl((new ForwardedHeaderTransformer()).apply(serverHttpRequest));
 		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
 		openAPIBuilder.setServerBaseUrl(serverBaseUrl);
+	}
+
+	protected String decodedRequestUrl(ServerHttpRequest request) {
+		return this.decode(request.getURI().toString());
 	}
 
 }

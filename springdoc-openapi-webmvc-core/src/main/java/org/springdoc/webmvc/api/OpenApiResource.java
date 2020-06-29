@@ -61,6 +61,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
+import org.springframework.web.util.UrlPathHelper;
 
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
@@ -122,7 +123,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
+		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
@@ -156,7 +157,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
+		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
@@ -288,7 +289,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @param apiDocsUrl the api docs url
 	 */
 	protected void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
-		String requestUrl = decode(request.getRequestURL().toString());
+		ForwardedHeaderExtractingRequest forwardedHeaderExtractingRequest = new ForwardedHeaderExtractingRequest(request, new UrlPathHelper());
+		String requestUrl = decode(forwardedHeaderExtractingRequest.adjustedRequestURL());
 		String calculatedUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
 		openAPIBuilder.setServerBaseUrl(calculatedUrl);
 	}
