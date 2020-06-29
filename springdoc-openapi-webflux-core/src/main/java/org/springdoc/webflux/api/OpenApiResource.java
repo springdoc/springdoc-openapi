@@ -45,6 +45,7 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.webflux.core.visitor.RouterFunctionVisitor;
 import reactor.core.publisher.Mono;
 
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -82,7 +83,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * Instantiates a new Open api resource.
 	 *
 	 * @param groupName the group name
-	 * @param openAPIBuilder the open api builder
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
@@ -92,21 +93,21 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
-	public OpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+	public OpenApiResource(String groupName, ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
-		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
 	/**
 	 * Instantiates a new Open api resource.
 	 *
-	 * @param openAPIBuilder the open api builder
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
@@ -117,14 +118,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @param actuatorProvider the actuator provider
 	 */
 	@Autowired
-	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+	public OpenApiResource(ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
+		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
@@ -197,8 +198,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				Map<String, String> regexMap = new LinkedHashMap<>();
 				operationPath = PathUtils.parsePath(operationPath, regexMap);
 				if (operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-								&& (restControllers.containsKey(handlerMethod.getBean().toString()) || actuatorProvider.isPresent())
-								&& isPackageToScan(handlerMethod.getBeanType().getPackage()) && isPathToMatch(operationPath)) {
+						&& (restControllers.containsKey(handlerMethod.getBean().toString()) || actuatorProvider.isPresent())
+						&& isPackageToScan(handlerMethod.getBeanType().getPackage()) && isPathToMatch(operationPath)) {
 					Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 					// default allowed requestmethods
 					if (requestMethods.isEmpty())
@@ -230,6 +231,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @param apiDocsUrl the api docs url
 	 */
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
+		super.initOpenAPIBuilder();
 		String requestUrl = decode(serverHttpRequest.getURI().toString());
 		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
 		openAPIBuilder.setServerBaseUrl(serverBaseUrl);

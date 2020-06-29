@@ -43,6 +43,7 @@ import org.springdoc.webmvc.api.OpenApiResource;
 import org.springdoc.webmvc.api.RouterFunctionProvider;
 import org.springdoc.webmvc.api.WebMvcActuatorProvider;
 
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
 import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
@@ -73,7 +74,7 @@ public class SpringDocWebMvcConfiguration {
 	/**
 	 * Open api resource open api resource.
 	 *
-	 * @param openAPIBuilder the open api builder
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
@@ -90,7 +91,7 @@ public class SpringDocWebMvcConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+	OpenApiResource openApiResource(ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider,
@@ -100,7 +101,7 @@ public class SpringDocWebMvcConfiguration {
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		return new OpenApiResource(openAPIBuilder, requestBuilder,
+		return new OpenApiResource(openAPIBuilderObjectFactory, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping, actuatorProvider, operationCustomizers,
 				openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,
