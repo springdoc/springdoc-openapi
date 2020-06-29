@@ -32,7 +32,6 @@ import org.springdoc.ui.AbstractSwaggerIndexTransformer;
 import org.springframework.core.io.Resource;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.servlet.resource.ResourceTransformer;
 import org.springframework.web.servlet.resource.ResourceTransformerChain;
 import org.springframework.web.servlet.resource.TransformedResource;
 
@@ -40,7 +39,7 @@ import org.springframework.web.servlet.resource.TransformedResource;
  * The type Swagger index transformer.
  * @author bnasslahsen
  */
-public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer implements ResourceTransformer {
+public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer implements SwaggerIndexPageTransformer {
 
 	/**
 	 * Instantiates a new Swagger index transformer.
@@ -58,20 +57,9 @@ public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer imp
 			ResourceTransformerChain transformerChain) throws IOException {
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
-		if (isIndexFound && !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters()) && swaggerUiConfig.isDisableSwaggerDefaultUrl()) {
-			String html = readFullyAsString(resource.getInputStream());
-			html = addInitOauth(html);
-			html = overwriteSwaggerDefaultUrl(html);
-			return new TransformedResource(resource, html.getBytes());
-		}
-		else if (isIndexFound && !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters())) {
-			String html = readFullyAsString(resource.getInputStream());
-			html = addInitOauth(html);
-			return new TransformedResource(resource, html.getBytes());
-		}
-		else if (isIndexFound && swaggerUiConfig.isDisableSwaggerDefaultUrl()) {
-			String html = readFullyAsString(resource.getInputStream());
-			html = overwriteSwaggerDefaultUrl(html);
+
+		if (isIndexFound && hasDefaultTransformations()) {
+			String html = defaultTransformations(resource.getInputStream());
 			return new TransformedResource(resource, html.getBytes());
 		}
 		else

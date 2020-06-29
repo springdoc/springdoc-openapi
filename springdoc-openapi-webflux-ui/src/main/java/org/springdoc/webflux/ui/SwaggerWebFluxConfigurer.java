@@ -49,7 +49,7 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	/**
 	 * The Swagger index transformer.
 	 */
-	private SwaggerIndexTransformer swaggerIndexTransformer;
+	private SwaggerIndexPageTransformer swaggerIndexTransformer;
 
 	/**
 	 * Instantiates a new Swagger web flux configurer.
@@ -58,7 +58,7 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 */
-	public SwaggerWebFluxConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer) {
+	public SwaggerWebFluxConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SpringDocConfigProperties springDocConfigProperties, SwaggerIndexPageTransformer swaggerIndexTransformer) {
 		this.swaggerPath = swaggerUiConfigParameters.getPath();
 		this.webJarsPrefixUrl = springDocConfigProperties.getWebjars().getPrefix();
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
