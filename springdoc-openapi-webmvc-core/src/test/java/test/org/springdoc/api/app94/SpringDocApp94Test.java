@@ -44,6 +44,7 @@ import test.org.springdoc.api.AbstractSpringDocTest;
 import test.org.springdoc.api.app91.Greeting;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -92,13 +93,13 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 		}
 
 		@Bean(name = "openApiResource")
-		public OpenApiResource openApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder, GenericResponseBuilder responseBuilder,
+		public OpenApiResource openApiResource(ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory, AbstractRequestBuilder requestBuilder, GenericResponseBuilder responseBuilder,
 				OperationBuilder operationParser,Optional<List<OperationCustomizer>> operationCustomizers,
 				@Qualifier("defaultTestHandlerMapping") RequestMappingHandlerMapping requestMappingHandlerMapping,
 				Optional<ActuatorProvider> actuatorProvider, SpringDocConfigProperties springDocConfigProperties,
 				Optional<List<OpenApiCustomiser>> openApiCustomisers, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 				Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-			return new OpenApiResource(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping,
+			return new OpenApiResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping,
 					actuatorProvider,operationCustomizers, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,routerFunctionProvider, repositoryRestResourceProvider);
 		}
 

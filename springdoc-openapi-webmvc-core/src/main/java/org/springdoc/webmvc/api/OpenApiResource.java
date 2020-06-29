@@ -48,6 +48,7 @@ import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.fn.RouterOperation;
 
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -99,7 +100,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * Instantiates a new Open api resource.
 	 *
 	 * @param groupName the group name
-	 * @param openAPIBuilder the open api builder
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
@@ -112,7 +113,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @param routerFunctionProvider the router function provider
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 */
-	public OpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+	public OpenApiResource(String groupName, ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider,
@@ -122,7 +123,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		super(groupName, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
@@ -132,7 +133,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Instantiates a new Open api resource.
 	 *
-	 * @param openAPIBuilder the open api builder
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
@@ -146,7 +147,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 */
 	@Autowired
-	public OpenApiResource(OpenAPIBuilder openAPIBuilder, AbstractRequestBuilder requestBuilder,
+	public OpenApiResource(ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory, AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider,
@@ -156,7 +157,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilder, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
+		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.routerFunctionProvider = routerFunctionProvider;
@@ -288,8 +289,10 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @param apiDocsUrl the api docs url
 	 */
 	protected void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
+		super.initOpenAPIBuilder();
 		String requestUrl = decode(request.getRequestURL().toString());
 		String calculatedUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
 		openAPIBuilder.setServerBaseUrl(calculatedUrl);
 	}
+
 }
