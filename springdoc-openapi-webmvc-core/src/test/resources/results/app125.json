@@ -1,0 +1,66 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/search": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "getAllPets",
+        "parameters": [
+          {
+            "name": "toto",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeprecatedEntity"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeprecatedEntity"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DeprecatedEntity": {
+        "type": "object",
+        "properties": {
+          "myNonDeprecatedField": {
+            "type": "string"
+          },
+          "mydeprecatedField": {
+            "type": "string",
+            "deprecated": true
+          }
+        }
+      }
+    }
+  }
+}

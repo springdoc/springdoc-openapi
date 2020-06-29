@@ -70,6 +70,12 @@ public final class Constants {
 	 */
 	public static final String SPRINGDOC_ENABLED = "springdoc.api-docs.enabled";
 
+
+	/**
+	 * The constant SPRINGDOC_DEPRECATING_CONVERTER_ENABLED.
+	 */
+	public static final String SPRINGDOC_DEPRECATING_CONVERTER_ENABLED = "springdoc.model-converters.deprecating-converter.enabled";
+
 	/**
 	 * The constant SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES.
 	 */
