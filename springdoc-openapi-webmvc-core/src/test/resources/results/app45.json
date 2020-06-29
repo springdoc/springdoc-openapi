@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost",
+      "url": "http://localhost:80",
       "description": "Generated server url"
     }
   ],
