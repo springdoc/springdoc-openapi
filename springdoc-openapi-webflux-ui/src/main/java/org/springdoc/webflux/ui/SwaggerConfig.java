@@ -56,7 +56,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	SwaggerWebFluxConfigurer swaggerWebFluxConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer) {
+	SwaggerWebFluxConfigurer swaggerWebFluxConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SpringDocConfigProperties springDocConfigProperties, SwaggerIndexPageTransformer swaggerIndexTransformer) {
 		return new SwaggerWebFluxConfigurer(swaggerUiConfigParameters, springDocConfigProperties, swaggerIndexTransformer);
 	}
 
@@ -70,7 +70,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig ,SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
+	SwaggerIndexPageTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig ,SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
 		return new SwaggerIndexTransformer(swaggerUiConfig, swaggerUiOAuthProperties, objectMapper);
 	}
 
