@@ -99,7 +99,7 @@ public class RouterFunctionData {
 	/**
 	 * Add query params.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @param value the value
 	 */
 	public void addQueryParams(String name, String value) {

@@ -152,6 +152,12 @@ public class RequestBodyBuilder {
 		}
 	}
 
+	/**
+	 * Contains response body schema boolean.
+	 *
+	 * @param content the content
+	 * @return the boolean
+	 */
 	private boolean containsResponseBodySchema(Content content) {
 		return content.entrySet().stream().anyMatch(stringMediaTypeEntry -> stringMediaTypeEntry.getValue().getSchema() != null);
 	}
