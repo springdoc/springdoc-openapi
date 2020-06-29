@@ -44,7 +44,7 @@ public class SwaggerWebMvcConfigurer extends WebMvcConfigurerAdapter { // NOSONA
 	/**
 	 * The Swagger index transformer.
 	 */
-	private SwaggerIndexTransformer swaggerIndexTransformer;
+	private SwaggerIndexPageTransformer swaggerIndexTransformer;
 
 	/**
 	 * Instantiates a new Swagger web mvc configurer.
@@ -52,7 +52,7 @@ public class SwaggerWebMvcConfigurer extends WebMvcConfigurerAdapter { // NOSONA
 	 * @param swaggerUiConfigParameters the swagger ui calculated config
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 */
-	public SwaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerIndexTransformer swaggerIndexTransformer) {
+	public SwaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerIndexPageTransformer swaggerIndexTransformer) {
 		this.swaggerPath = swaggerUiConfigParameters.getPath();
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
 	}
