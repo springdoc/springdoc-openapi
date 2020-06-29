@@ -20,12 +20,49 @@
 
 package org.springdoc.webmvc.ui;
 
-import org.springframework.web.servlet.resource.ResourceTransformer;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springdoc.core.SwaggerUiConfigProperties;
+import org.springdoc.core.SwaggerUiOAuthProperties;
+import org.springdoc.ui.AbstractSwaggerIndexTransformer;
+
+import org.springframework.core.io.Resource;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.web.servlet.resource.ResourceTransformerChain;
+import org.springframework.web.servlet.resource.TransformedResource;
 
 /**
- * The type Swagger index page transformer.
- * @author pverdage
+ * The type Swagger index transformer.
+ * @author bnasslahsen
  */
-public interface SwaggerIndexPageTransformer extends ResourceTransformer {
+public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer implements SwaggerIndexTransformer {
+
+	/**
+	 * Instantiates a new Swagger index transformer.
+	 *
+	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
+	 * @param objectMapper the object mapper
+	 */
+	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
+		super(swaggerUiConfig, swaggerUiOAuthProperties, objectMapper);
+	}
+
+	@Override
+	public Resource transform(HttpServletRequest request, Resource resource,
+			ResourceTransformerChain transformerChain) throws IOException {
+		final AntPathMatcher antPathMatcher = new AntPathMatcher();
+		boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
+
+		if (isIndexFound && hasDefaultTransformations()) {
+			String html = defaultTransformations(resource.getInputStream());
+			return new TransformedResource(resource, html.getBytes());
+		}
+		else
+			return resource;
+	}
 
 }

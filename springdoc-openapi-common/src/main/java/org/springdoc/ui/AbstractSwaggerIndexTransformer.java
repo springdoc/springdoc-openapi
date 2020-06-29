@@ -31,7 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.Constants;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
-import org.springframework.core.io.Resource;
+
 import org.springframework.util.CollectionUtils;
 
 /**

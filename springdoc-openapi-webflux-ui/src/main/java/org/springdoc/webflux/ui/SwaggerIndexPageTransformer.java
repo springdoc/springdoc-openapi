@@ -29,16 +29,44 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.core.io.Resource;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.reactive.resource.ResourceTransformer;
 import org.springframework.web.reactive.resource.ResourceTransformerChain;
 import org.springframework.web.reactive.resource.TransformedResource;
 import org.springframework.web.server.ServerWebExchange;
 
 /**
  * The type Swagger index transformer.
- * @author pverdage
+ * @author bnasslahsen
  */
-public interface SwaggerIndexPageTransformer extends ResourceTransformer {
+public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer implements SwaggerIndexTransformer {
+
+	/**
+	 * Instantiates a new Swagger index transformer.
+	 *
+	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
+	 * @param objectMapper the object mapper
+	 */
+	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
+		super(swaggerUiConfig, swaggerUiOAuthProperties, objectMapper);
+	}
+
+	@Override
+	public Mono<Resource> transform(ServerWebExchange serverWebExchange, Resource resource, ResourceTransformerChain resourceTransformerChain) {
+		final AntPathMatcher antPathMatcher = new AntPathMatcher();
+
+		try {
+			boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
+			if (isIndexFound && hasDefaultTransformations()) {
+				String html = defaultTransformations(resource.getInputStream());
+				return Mono.just(new TransformedResource(resource, html.getBytes()));
+			}
+			else {
+				return Mono.just(resource);
+			}
+		}
+		catch (Exception e) {
+			throw new SpringDocUIException("Failed to transform Index", e);
+		}
+	}
 
 }
