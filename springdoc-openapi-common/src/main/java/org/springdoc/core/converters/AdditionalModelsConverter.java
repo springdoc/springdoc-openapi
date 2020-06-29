@@ -50,7 +50,7 @@ public class AdditionalModelsConverter implements ModelConverter {
 	/**
 	 * Replace with class.
 	 *
-	 * @param source the source 
+	 * @param source the source
 	 * @param target the target
 	 */
 	public static void replaceWithClass(Class source, Class target) {
@@ -60,7 +60,7 @@ public class AdditionalModelsConverter implements ModelConverter {
 	/**
 	 * Replace with schema.
 	 *
-	 * @param source the source 
+	 * @param source the source
 	 * @param target the target
 	 */
 	public static void replaceWithSchema(Class source, Schema target) {
@@ -70,7 +70,7 @@ public class AdditionalModelsConverter implements ModelConverter {
 	/**
 	 * Gets replacement.
 	 *
-	 * @param clazz the clazz 
+	 * @param clazz the clazz
 	 * @return the replacement
 	 */
 	public static Class getReplacement(Class clazz) {

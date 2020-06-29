@@ -940,6 +940,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return operation;
 	}
 
+	/**
+	 * Init open api builder.
+	 */
 	protected void initOpenAPIBuilder() {
 		if (openAPIBuilder.getCachedOpenAPI() != null && springDocConfigProperties.isCacheDisabled()) {
 			openAPIBuilder = openAPIBuilderObjectFactory.getObject();

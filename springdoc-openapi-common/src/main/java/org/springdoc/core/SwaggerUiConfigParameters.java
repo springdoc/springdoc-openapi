@@ -79,6 +79,9 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 */
 	private String uiRootPath;
 
+	/**
+	 * The Swagger ui config.
+	 */
 	private final SwaggerUiConfigProperties swaggerUiConfig;
 
 	/**
