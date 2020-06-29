@@ -30,7 +30,6 @@ import reactor.core.publisher.Mono;
 import org.springframework.core.io.Resource;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.reactive.resource.ResourceTransformer;
 import org.springframework.web.reactive.resource.ResourceTransformerChain;
 import org.springframework.web.reactive.resource.TransformedResource;
 import org.springframework.web.server.ServerWebExchange;
@@ -39,7 +38,7 @@ import org.springframework.web.server.ServerWebExchange;
  * The type Swagger index transformer.
  * @author bnasslahsen
  */
-public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer implements ResourceTransformer {
+public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer implements SwaggerIndexPageTransformer {
 
 	/**
 	 * Instantiates a new Swagger index transformer.
