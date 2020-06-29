@@ -165,7 +165,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude());
 							springDocConfigProperties.addGroupConfig(groupConfig);
 							return new OpenApiResource(item.getGroup(),
-									defaultOpenAPIBuilder.getObject(),
+									defaultOpenAPIBuilder,
 									requestBuilder,
 									responseBuilder,
 									operationParser,

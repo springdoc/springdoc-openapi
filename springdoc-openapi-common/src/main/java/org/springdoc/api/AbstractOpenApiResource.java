@@ -74,6 +74,7 @@ import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 import org.springdoc.core.fn.RouterFunctionData;
 import org.springdoc.core.fn.RouterOperation;
 
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -110,7 +111,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * The Open api builder.
 	 */
-	protected final OpenAPIBuilder openAPIBuilder;
+	protected OpenAPIBuilder openAPIBuilder;
+
+	/**
+	 * The open api builder object factory.
+	 */
+	private final ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory;
 
 	/**
 	 * The Spring doc config properties.
@@ -161,7 +167,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Instantiates a new Abstract open api resource.
 	 *
 	 * @param groupName the group name
-	 * @param openAPIBuilder the open api builder
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
@@ -170,7 +176,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
-	protected AbstractOpenApiResource(String groupName, OpenAPIBuilder openAPIBuilder,
+	protected AbstractOpenApiResource(String groupName, ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory,
 			AbstractRequestBuilder requestBuilder,
 			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
 			Optional<List<OperationCustomizer>> operationCustomizers,
@@ -179,7 +185,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			Optional<ActuatorProvider> actuatorProvider) {
 		super();
 		this.groupName = Objects.requireNonNull(groupName, "groupName");
-		this.openAPIBuilder = openAPIBuilder;
+		this.openAPIBuilderObjectFactory = openAPIBuilderObjectFactory;
+		this.openAPIBuilder = openAPIBuilderObjectFactory.getObject();
 		this.requestBuilder = requestBuilder;
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
@@ -933,4 +940,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return operation;
 	}
 
+	protected void initOpenAPIBuilder() {
+		if (openAPIBuilder.getCachedOpenAPI() != null && springDocConfigProperties.isCacheDisabled()) {
+			openAPIBuilder = openAPIBuilderObjectFactory.getObject();
+		}
+	}
 }
