@@ -427,6 +427,64 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
+	 * The type Model converters.
+	 */
+	public static class ModelConverters {
+
+		/**
+		 * The Deprecating converter.
+		 */
+		private DeprecatingConverter deprecatingConverter = new DeprecatingConverter();
+
+		/**
+		 * Gets deprecating converter.
+		 *
+		 * @return the deprecating converter
+		 */
+		public DeprecatingConverter getDeprecatingConverter() {
+			return deprecatingConverter;
+		}
+
+		/**
+		 * Sets deprecating converter.
+		 *
+		 * @param deprecatingConverter the deprecating converter
+		 */
+		public void setDeprecatingConverter(DeprecatingConverter deprecatingConverter) {
+			this.deprecatingConverter = deprecatingConverter;
+		}
+
+		/**
+		 * The type Deprecating converter.
+		 */
+		public static class DeprecatingConverter {
+
+			/**
+			 * The Enabled.
+			 */
+			private boolean enabled;
+
+			/**
+			 * Is enabled boolean.
+			 *
+			 * @return the boolean
+			 */
+			public boolean isEnabled() {
+				return enabled;
+			}
+
+			/**
+			 * Sets enabled.
+			 *
+			 * @param enabled the enabled
+			 */
+			public void setEnabled(boolean enabled) {
+				this.enabled = enabled;
+			}
+		}
+	}
+
+	/**
 	 * The type Webjars.
 	 * @author bnasslahsen
 	 */

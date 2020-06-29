@@ -56,6 +56,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 
+import static org.springdoc.core.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES;
 import static org.springdoc.core.SpringDocUtils.getConfig;
@@ -141,6 +142,7 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_DEPRECATING_CONVERTER_ENABLED, matchIfMissing = true)
 	@Lazy(false)
 	SchemaPropertyDeprecatingConverter schemaPropertyDeprecatingConverter() {
 		return new SchemaPropertyDeprecatingConverter();
