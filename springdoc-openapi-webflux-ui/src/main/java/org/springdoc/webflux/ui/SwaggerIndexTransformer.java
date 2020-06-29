@@ -54,23 +54,11 @@ public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer imp
 	@Override
 	public Mono<Resource> transform(ServerWebExchange serverWebExchange, Resource resource, ResourceTransformerChain resourceTransformerChain) {
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
-		boolean isIndexFound = false;
+
 		try {
-			isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
-			if (isIndexFound && !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters()) && swaggerUiConfig.isDisableSwaggerDefaultUrl()) {
-				String html = readFullyAsString(resource.getInputStream());
-				html = addInitOauth(html);
-				html = overwriteSwaggerDefaultUrl(html);
-				return Mono.just(new TransformedResource(resource, html.getBytes()));
-			}
-			else if (isIndexFound && !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters())) {
-				String html = readFullyAsString(resource.getInputStream());
-				html = addInitOauth(html);
-				return Mono.just(new TransformedResource(resource, html.getBytes()));
-			}
-			else if (isIndexFound && swaggerUiConfig.isDisableSwaggerDefaultUrl()) {
-				String html = readFullyAsString(resource.getInputStream());
-				html = overwriteSwaggerDefaultUrl(html);
+			boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
+			if (isIndexFound && hasDefaultTransformations()) {
+				String html = defaultTransformations(resource.getInputStream());
 				return Mono.just(new TransformedResource(resource, html.getBytes()));
 			}
 			else {
