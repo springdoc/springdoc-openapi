@@ -20,50 +20,12 @@
 
 package org.springdoc.webmvc.ui;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springdoc.core.SwaggerUiConfigProperties;
-import org.springdoc.core.SwaggerUiOAuthProperties;
-import org.springdoc.ui.AbstractSwaggerIndexTransformer;
-
-import org.springframework.core.io.Resource;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.servlet.resource.ResourceTransformerChain;
-import org.springframework.web.servlet.resource.TransformedResource;
+import org.springframework.web.servlet.resource.ResourceTransformer;
 
 /**
- * The type Swagger index transformer.
- * @author bnasslahsen
+ * The type Swagger index page transformer.
+ * @author pverdage
  */
-public class SwaggerIndexTransformer extends AbstractSwaggerIndexTransformer implements SwaggerIndexPageTransformer {
-
-	/**
-	 * Instantiates a new Swagger index transformer.
-	 *
-	 * @param swaggerUiConfig the swagger ui config
-	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
-	 * @param objectMapper the object mapper
-	 */
-	public SwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
-		super(swaggerUiConfig, swaggerUiOAuthProperties, objectMapper);
-	}
-
-	@Override
-	public Resource transform(HttpServletRequest request, Resource resource,
-			ResourceTransformerChain transformerChain) throws IOException {
-		final AntPathMatcher antPathMatcher = new AntPathMatcher();
-		boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
-
-		if (isIndexFound && hasDefaultTransformations()) {
-			String html = defaultTransformations(resource.getInputStream());
-			return new TransformedResource(resource, html.getBytes());
-		}
-		else
-			return resource;
-	}
+public interface SwaggerIndexTransformer extends ResourceTransformer {
 
 }

@@ -69,8 +69,8 @@ public class SwaggerConfig {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	SwaggerIndexPageTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
-		return new SwaggerIndexTransformer(swaggerUiConfig, swaggerUiOAuthProperties, objectMapper);
+	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
+		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties, objectMapper);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class SwaggerConfig {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerIndexPageTransformer swaggerIndexTransformer) {
+	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerIndexTransformer swaggerIndexTransformer) {
 		return new SwaggerWebMvcConfigurer(swaggerUiConfigParameters, swaggerIndexTransformer);
 	}
 
