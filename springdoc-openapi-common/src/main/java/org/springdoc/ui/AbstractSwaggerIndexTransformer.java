@@ -32,6 +32,8 @@ import org.springdoc.core.Constants;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 
+import org.springframework.util.CollectionUtils;
+
 /**
  * The type Abstract swagger index transformer.
  * @author bnasslahsen
@@ -108,5 +110,22 @@ public class AbstractSwaggerIndexTransformer {
 	 */
 	protected String overwriteSwaggerDefaultUrl(String html) {
 		return html.replace(Constants.SWAGGER_UI_DEFAULT_URL, StringUtils.EMPTY);
+	}
+
+	protected boolean hasDefaultTransformations() {
+		boolean oauth2Configured = !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters());
+		return oauth2Configured || swaggerUiConfig.isDisableSwaggerDefaultUrl();
+	}
+
+	protected String defaultTransformations(InputStream inputStream) throws IOException {
+		String html = readFullyAsString(inputStream);
+		if (!CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters())) {
+			html = addInitOauth(html);
+		}
+		if (swaggerUiConfig.isDisableSwaggerDefaultUrl()) {
+			html = overwriteSwaggerDefaultUrl(html);
+		}
+
+		return html;
 	}
 }
