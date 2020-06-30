@@ -34,6 +34,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 /**
  * The type Spring doc config properties.
  * @author bnasslahsen
+ * @author Maciej Kopeć
  */
 @Configuration
 @ConfigurationProperties(prefix = Constants.SPRINGDOC_PREFIX)
@@ -119,6 +120,16 @@ public class SpringDocConfigProperties {
 	 * The Default produces media type.
 	 */
 	private String defaultProducesMediaType = MediaType.ALL_VALUE;
+
+	/**
+	 * Always add a generated server to server's list
+	 */
+	private boolean alwaysAddGeneratedServer = false;
+
+	/**
+	 * Add a suffix to a generated server's host.
+	 */
+	private String generatedServerSuffix = "";
 
 	/**
 	 * Is auto tag classes boolean.
@@ -424,6 +435,22 @@ public class SpringDocConfigProperties {
 	 */
 	public void setWriterWithDefaultPrettyPrinter(boolean writerWithDefaultPrettyPrinter) {
 		this.writerWithDefaultPrettyPrinter = writerWithDefaultPrettyPrinter;
+	}
+
+	public boolean isAlwaysAddGeneratedServer() {
+		return alwaysAddGeneratedServer;
+	}
+
+	public void setAlwaysAddGeneratedServer(boolean alwaysAddGeneratedServer) {
+		this.alwaysAddGeneratedServer = alwaysAddGeneratedServer;
+	}
+
+	public String getGeneratedServerSuffix() {
+		return generatedServerSuffix;
+	}
+
+	public void setGeneratedServerSuffix(String generatedServerSuffix) {
+		this.generatedServerSuffix = generatedServerSuffix;
 	}
 
 	/**

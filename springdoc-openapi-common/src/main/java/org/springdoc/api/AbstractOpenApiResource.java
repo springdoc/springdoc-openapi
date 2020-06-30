@@ -89,6 +89,7 @@ import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.i
 /**
  * The type Abstract open api resource.
  * @author bnasslahsen
+ * @author Maciej Kopeć
  */
 public abstract class AbstractOpenApiResource extends SpecFilter {
 
@@ -215,16 +216,26 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param classes the classes
 	 */
 	public static void addHiddenRestControllers(String... classes) {
-		Set<Class<?>> hiddenClasses =new HashSet<>();
+		Set<Class<?>> hiddenClasses = new HashSet<>();
 		for (String aClass : classes) {
 			try {
 				hiddenClasses.add(Class.forName(aClass));
 			}
 			catch (ClassNotFoundException e) {
-				LOGGER.warn("The following class doesn't exist and cannot be hidden: {}",  aClass);
+				LOGGER.warn("The following class doesn't exist and cannot be hidden: {}", aClass);
 			}
 		}
 		HIDDEN_REST_CONTROLLERS.addAll(hiddenClasses);
+	}
+
+	/**
+	 * Is hidden rest controllers boolean.
+	 *
+	 * @param rawClass the raw class
+	 * @return the boolean
+	 */
+	public static boolean isHiddenRestControllers(Class<?> rawClass) {
+		return HIDDEN_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 
 	/**
@@ -252,7 +263,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// run the optional customisers
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
 			if (!CollectionUtils.isEmpty(openApi.getServers()))
-				openAPIBuilder.setServersPresent(true);
+				openAPIBuilder.setServersPresent(!springDocConfigProperties.isAlwaysAddGeneratedServer());
 			openAPIBuilder.updateServers(openApi);
 
 			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
@@ -588,16 +599,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected boolean isAdditionalRestController(Class<?> rawClass) {
 		return ADDITIONAL_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
-	}
-
-	/**
-	 * Is hidden rest controllers boolean.
-	 *
-	 * @param rawClass the raw class
-	 * @return the boolean
-	 */
-	public static boolean isHiddenRestControllers(Class<?> rawClass) {
-		return HIDDEN_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
 
 	/**

@@ -49,6 +49,7 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,6 +76,7 @@ import static org.springdoc.core.Constants.DEFAULT_VERSION;
 /**
  * The type Open api builder.
  * @author bnasslahsen
+ * @author Maciej Kopeć
  */
 public class OpenAPIBuilder {
 
@@ -223,10 +225,15 @@ public class OpenAPIBuilder {
 	public OpenAPI updateServers(OpenAPI openAPI) {
 		if (!isServersPresent)        // default server value
 		{
-			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
-			List<Server> servers = new ArrayList();
-			servers.add(server);
-			openAPI.setServers(servers);
+			final Server generatedServer = new Server()
+					.url(serverBaseUrl + springDocConfigProperties.getGeneratedServerSuffix())
+					.description(DEFAULT_SERVER_DESCRIPTION);
+
+			final List<Server> servers = ObjectUtils.defaultIfNull(openAPI.getServers(), new ArrayList<>());
+
+			if (!servers.contains(generatedServer)) {
+				openAPI.addServersItem(generatedServer);
+			}
 		}
 		return openAPI;
 	}
