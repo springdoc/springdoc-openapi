@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.3] - 2020-07-01
+###
+- #747 - Added property to override @Deprecated Model converter
+- #748 - Add support for @ExceptionHandler inside @RestController
+### Changed
+- upgrade swagger-ui version 3.28.0
+- upgrade swagger-api to v2.1.3
+- #745 - Change SwaggerIndexTransformer and SwaggerConfig design to ease customization
+### Fixed
+- #758 - APIResponses constructed programmatically are not correctly analyzed 
+- #725 - Unexpected fields in request body definition for RepresentationModel DTO
+
 ## [1.4.2] - 2020-06-25
 ### Changed
 - Upgrade swagger-ui to 3.27.0
