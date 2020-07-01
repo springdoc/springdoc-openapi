@@ -259,16 +259,18 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				responseBuilder.buildGenericResponse(openApi.getComponents(), findControllerAdvice);
 			}
 			getPaths(mappingsMap);
-			// run the optional customisers
-			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
 			if (!CollectionUtils.isEmpty(openApi.getServers()))
 				openAPIBuilder.setServersPresent(true);
 			openAPIBuilder.updateServers(openApi);
+
+			// run the optional customisers
+			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
 
 			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
 				this.removeBrokenReferenceDefinitions(openApi);
 			openAPIBuilder.setCachedOpenAPI(openApi);
 			openAPIBuilder.resetCalculatedOpenAPI();
+
 			LOGGER.info("Init duration for springdoc-openapi is: {} ms",
 					Duration.between(start, Instant.now()).toMillis());
 		}
