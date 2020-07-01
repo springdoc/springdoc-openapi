@@ -42,7 +42,6 @@ import test.org.springdoc.api.AbstractSpringDocTest;
 /**
  * Tests Spring meta-annotations as method parameters
  */
-@TestPropertySource(properties = "springdoc.remove-broken-reference-definitions=false")
 public class SpringDocApp126Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
