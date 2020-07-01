@@ -263,11 +263,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				openAPIBuilder.setServersPresent(true);
 			openAPIBuilder.updateServers(openApi);
 
+			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
+				this.removeBrokenReferenceDefinitions(openApi);
+
 			// run the optional customisers
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
 
-			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
-				this.removeBrokenReferenceDefinitions(openApi);
 			openAPIBuilder.setCachedOpenAPI(openApi);
 			openAPIBuilder.resetCalculatedOpenAPI();
 
