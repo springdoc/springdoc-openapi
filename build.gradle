@@ -54,6 +54,7 @@ subprojects {
 			dependency 'org.springframework.security.oauth:spring-security-oauth2:2.3.8.RELEASE'
 			dependency 'javax.xml:jaxb-impl:2.1'
 			dependency 'jakarta.servlet:jakarta.servlet-api:4.0.3'
+			dependency 'jakarta.annotation:jakarta.annotation-api:1.3.5'
 			dependency 'org.projectlombok:lombok:1.18.12'
 			dependency 'org.codehaus.groovy:groovy:2.5.11'
 		}
