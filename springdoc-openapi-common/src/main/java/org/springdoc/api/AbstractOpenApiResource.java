@@ -276,6 +276,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					Duration.between(start, Instant.now()).toMillis());
 		}
 		else {
+			if (!CollectionUtils.isEmpty(openAPIBuilder.getCachedOpenAPI().getServers()))
+				openAPIBuilder.setServersPresent(true);
 			openApi = openAPIBuilder.updateServers(openAPIBuilder.getCachedOpenAPI());
 		}
 		return openApi;
