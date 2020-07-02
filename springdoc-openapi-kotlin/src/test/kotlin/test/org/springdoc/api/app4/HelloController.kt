@@ -32,7 +32,6 @@ data class Person(
 @RequestMapping("/test")
 class HelloController {
 	@GetMapping
-	suspend fun index(s: Person) = Person("name", "nickname")
-
+	suspend fun index(s: Person) = s
 
 }
