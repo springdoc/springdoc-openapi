@@ -18,6 +18,9 @@
 
 package test.org.springdoc.api.app4;
 
+import com.fasterxml.jackson.databind.jsontype.impl.TypeNameIdResolver;
+import io.swagger.v3.core.jackson.TypeNameResolver;
+import org.junit.jupiter.api.AfterAll;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,4 +32,8 @@ public class SpringDocApp4Test extends AbstractSpringDocTest {
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 
+	@AfterAll
+	static void restore(){
+		TypeNameResolver.std.setUseFqn(false);
+	}
 }
