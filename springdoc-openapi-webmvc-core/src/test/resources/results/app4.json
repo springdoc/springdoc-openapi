@@ -21,7 +21,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TrackerData"
+                "$ref": "#/components/schemas/test.org.springdoc.api.app4.TrackerData"
               }
             }
           }
@@ -32,7 +32,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/TrackerData"
+                  "$ref": "#/components/schemas/test.org.springdoc.api.app4.TrackerData"
                 }
               }
             }
@@ -43,7 +43,7 @@
   },
   "components": {
     "schemas": {
-      "TrackerData": {
+      "test.org.springdoc.api.app4.TrackerData": {
         "required": [
           "timestamp",
           "trackerId",

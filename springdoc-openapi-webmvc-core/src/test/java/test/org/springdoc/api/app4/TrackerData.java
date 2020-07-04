@@ -23,7 +23,6 @@ import java.time.Instant;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(name = "TrackerData")
 public class TrackerData {
 
 	@Schema(name = "trackerId", type = "string", required = true, example = "the-tracker-id")

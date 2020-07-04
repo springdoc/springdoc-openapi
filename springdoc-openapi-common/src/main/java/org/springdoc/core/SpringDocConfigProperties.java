@@ -121,6 +121,29 @@ public class SpringDocConfigProperties {
 	private String defaultProducesMediaType = MediaType.ALL_VALUE;
 
 	/**
+	 * Use fully qualified name
+	 */
+	private boolean useFqn;
+
+	/**
+	 * Is use fqn boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isUseFqn() {
+		return useFqn;
+	}
+
+	/**
+	 * Sets use fqn.
+	 *
+	 * @param useFqn the use fqn
+	 */
+	public void setUseFqn(boolean useFqn) {
+		this.useFqn = useFqn;
+	}
+
+	/**
 	 * Is auto tag classes boolean.
 	 *
 	 * @return the boolean

@@ -21,7 +21,9 @@ package test.org.springdoc.api.app4;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = "springdoc.use-fqn=true")
 public class SpringDocApp4Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
