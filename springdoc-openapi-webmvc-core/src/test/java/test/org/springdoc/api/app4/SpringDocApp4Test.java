@@ -18,7 +18,6 @@
 
 package test.org.springdoc.api.app4;
 
-import com.fasterxml.jackson.databind.jsontype.impl.TypeNameIdResolver;
 import io.swagger.v3.core.jackson.TypeNameResolver;
 import org.junit.jupiter.api.AfterAll;
 import test.org.springdoc.api.AbstractSpringDocTest;
