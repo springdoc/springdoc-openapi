@@ -103,6 +103,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		this.displayOperationId = swaggerUiConfig.getDisplayOperationId();
 		this.defaultModelExpandDepth = swaggerUiConfig.getDefaultModelExpandDepth();
 		this.defaultModelsExpandDepth = swaggerUiConfig.getDefaultModelsExpandDepth();
+		this.defaultModelRendering = swaggerUiConfig.getDefaultModelRendering();
 		this.displayRequestDuration = swaggerUiConfig.getDisplayRequestDuration();
 		this.docExpansion = swaggerUiConfig.getDocExpansion();
 		this.maxDisplayedTags = swaggerUiConfig.getMaxDisplayedTags();
