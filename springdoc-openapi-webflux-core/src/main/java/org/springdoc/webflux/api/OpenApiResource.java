@@ -82,15 +82,15 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Instantiates a new Open api resource.
 	 *
-	 * @param groupName the group name
-	 * @param openAPIBuilderObjectFactory the open api builder object factory
-	 * @param requestBuilder the request builder
-	 * @param responseBuilder the response builder
-	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
-	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
-	 * @param springDocConfigProperties the spring doc config properties
+	 * @param groupName the group name 
+	 * @param openAPIBuilderObjectFactory the open api builder object factory 
+	 * @param requestBuilder the request builder 
+	 * @param responseBuilder the response builder 
+	 * @param operationParser the operation parser 
+	 * @param requestMappingHandlerMapping the request mapping handler mapping 
+	 * @param operationCustomizers the operation customizers 
+	 * @param openApiCustomisers the open api customisers 
+	 * @param springDocConfigProperties the spring doc config properties 
 	 * @param actuatorProvider the actuator provider
 	 */
 	public OpenApiResource(String groupName, ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory, AbstractRequestBuilder requestBuilder,
@@ -107,14 +107,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Instantiates a new Open api resource.
 	 *
-	 * @param openAPIBuilderObjectFactory the open api builder object factory
-	 * @param requestBuilder the request builder
-	 * @param responseBuilder the response builder
-	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
-	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
-	 * @param springDocConfigProperties the spring doc config properties
+	 * @param openAPIBuilderObjectFactory the open api builder object factory 
+	 * @param requestBuilder the request builder 
+	 * @param responseBuilder the response builder 
+	 * @param operationParser the operation parser 
+	 * @param requestMappingHandlerMapping the request mapping handler mapping 
+	 * @param operationCustomizers the operation customizers 
+	 * @param openApiCustomisers the open api customisers 
+	 * @param springDocConfigProperties the spring doc config properties 
 	 * @param actuatorProvider the actuator provider
 	 */
 	@Autowired
@@ -132,9 +132,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Openapi json mono.
 	 *
-	 * @param serverHttpRequest the server http request
-	 * @param apiDocsUrl the api docs url
-	 * @return the mono
+	 * @param serverHttpRequest the server http request 
+	 * @param apiDocsUrl the api docs url 
+	 * @return the mono 
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
@@ -152,9 +152,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Openapi yaml mono.
 	 *
-	 * @param serverHttpRequest the server http request
-	 * @param apiDocsUrl the api docs url
-	 * @return the mono
+	 * @param serverHttpRequest the server http request 
+	 * @param apiDocsUrl the api docs url 
+	 * @return the mono 
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
@@ -184,7 +184,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Calculate path.
 	 *
-	 * @param restControllers the rest controllers
+	 * @param restControllers the rest controllers 
 	 * @param map the map
 	 */
 	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map) {
@@ -227,7 +227,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Calculate server url.
 	 *
-	 * @param serverHttpRequest the server http request
+	 * @param serverHttpRequest the server http request 
 	 * @param apiDocsUrl the api docs url
 	 */
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {

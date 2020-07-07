@@ -27,10 +27,13 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.core.converter.ModelConverter;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import org.springdoc.api.ErrorMessage;
+import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.FileSupportConverter;
 import org.springdoc.core.converters.ModelConverterRegistrar;
@@ -55,6 +58,12 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 
 import static org.springdoc.core.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
@@ -311,6 +320,26 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor2() {
 		return SpringdocBeanFactoryConfigurer::initBeanFactoryPostProcessor;
+	}
+
+	/**
+	 * The type Open api resource advice.
+	 */
+	@RestControllerAdvice
+	@Hidden
+	class OpenApiResourceAdvice {
+		/**
+		 * Handle no handler found response entity.
+		 *
+		 * @param e the e
+		 * @param request the request
+		 * @return the response entity
+		 */
+		@ExceptionHandler(OpenApiResourceNotFoundException.class)
+		@ResponseStatus(HttpStatus.NOT_FOUND)
+		public ResponseEntity<ErrorMessage> handleNoHandlerFound(OpenApiResourceNotFoundException e, WebRequest request) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(e.getMessage()));
+		}
 	}
 
 }

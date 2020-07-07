@@ -74,18 +74,18 @@ public class SpringDocWebMvcConfiguration {
 	/**
 	 * Open api resource open api resource.
 	 *
-	 * @param openAPIBuilderObjectFactory the open api builder object factory
-	 * @param requestBuilder the request builder
-	 * @param responseBuilder the response builder
-	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
-	 * @param actuatorProvider the actuator provider
-	 * @param springDocConfigProperties the spring doc config properties
-	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
-	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
-	 * @param routerFunctionProvider the router function provider
-	 * @param repositoryRestResourceProvider the repository rest resource provider
+	 * @param openAPIBuilderObjectFactory the open api builder object factory 
+	 * @param requestBuilder the request builder 
+	 * @param responseBuilder the response builder 
+	 * @param operationParser the operation parser 
+	 * @param requestMappingHandlerMapping the request mapping handler mapping 
+	 * @param actuatorProvider the actuator provider 
+	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param operationCustomizers the operation customizers 
+	 * @param openApiCustomisers the open api customisers 
+	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider 
+	 * @param routerFunctionProvider the router function provider 
+	 * @param repositoryRestResourceProvider the repository rest resource provider 
 	 * @return the open api resource
 	 */
 	@Bean
@@ -111,11 +111,11 @@ public class SpringDocWebMvcConfiguration {
 	/**
 	 * Request builder request builder.
 	 *
-	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyBuilder the request body builder
-	 * @param operationBuilder the operation builder
-	 * @param parameterCustomizers the parameter customizers
-	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
+	 * @param parameterBuilder the parameter builder 
+	 * @param requestBodyBuilder the request body builder 
+	 * @param operationBuilder the operation builder 
+	 * @param parameterCustomizers the parameter customizers 
+	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer 
 	 * @return the request builder
 	 */
 	@Bean
@@ -130,10 +130,10 @@ public class SpringDocWebMvcConfiguration {
 	/**
 	 * Response builder generic response builder.
 	 *
-	 * @param operationBuilder the operation builder
-	 * @param returnTypeParsers the return type parsers
-	 * @param springDocConfigProperties the spring doc config properties
-	 * @param propertyResolverUtils the property resolver utils
+	 * @param operationBuilder the operation builder 
+	 * @param returnTypeParsers the return type parsers 
+	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param propertyResolverUtils the property resolver utils 
 	 * @return the generic response builder
 	 */
 	@Bean
@@ -152,7 +152,7 @@ public class SpringDocWebMvcConfiguration {
 		/**
 		 * Router function provider router function provider.
 		 *
-		 * @param applicationContext the application context
+		 * @param applicationContext the application context 
 		 * @return the router function provider
 		 */
 		@Bean
@@ -174,7 +174,7 @@ public class SpringDocWebMvcConfiguration {
 		/**
 		 * Actuator provider actuator provider.
 		 *
-		 * @param webMvcEndpointHandlerMapping the web mvc endpoint handler mapping
+		 * @param webMvcEndpointHandlerMapping the web mvc endpoint handler mapping 
 		 * @return the actuator provider
 		 */
 		@Bean
@@ -186,7 +186,7 @@ public class SpringDocWebMvcConfiguration {
 		/**
 		 * Actuator customizer operation customizer.
 		 *
-		 * @param actuatorProvider the actuator provider
+		 * @param actuatorProvider the actuator provider 
 		 * @return the operation customizer
 		 */
 		@Bean

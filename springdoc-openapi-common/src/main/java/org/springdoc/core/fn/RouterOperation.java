@@ -112,7 +112,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	/**
 	 * Instantiates a new Router operation.
 	 *
-	 * @param routerOperationAnnotation the router operation annotation
+	 * @param routerOperationAnnotation the router operation annotation 
 	 * @param routerFunctionData the router function data
 	 */
 	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperationAnnotation, RouterFunctionData routerFunctionData) {
@@ -131,7 +131,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	/**
 	 * Instantiates a new Router operation.
 	 *
-	 * @param path the path
+	 * @param path the path 
 	 * @param methods the methods
 	 */
 	public RouterOperation(String path, RequestMethod[] methods) {
