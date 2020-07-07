@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseBuilder;
@@ -124,16 +125,16 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Instantiates a new Multiple open api resource.
 	 *
-	 * @param groupedOpenApis the grouped open apis
-	 * @param defaultOpenAPIBuilder the default open api builder
-	 * @param requestBuilder the request builder
-	 * @param responseBuilder the response builder
-	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
-	 * @param actuatorProvider the actuator provider
-	 * @param springDocConfigProperties the spring doc config properties
-	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
-	 * @param routerFunctionProvider the router function provider
+	 * @param groupedOpenApis the grouped open apis 
+	 * @param defaultOpenAPIBuilder the default open api builder 
+	 * @param requestBuilder the request builder 
+	 * @param responseBuilder the response builder 
+	 * @param operationParser the operation parser 
+	 * @param requestMappingHandlerMapping the request mapping handler mapping 
+	 * @param actuatorProvider the actuator provider 
+	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider 
+	 * @param routerFunctionProvider the router function provider 
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 */
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
@@ -185,10 +186,10 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Openapi json string.
 	 *
-	 * @param request the request
-	 * @param apiDocsUrl the api docs url
-	 * @param group the group
-	 * @return the string
+	 * @param request the request 
+	 * @param apiDocsUrl the api docs url 
+	 * @param group the group 
+	 * @return the string 
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
@@ -202,10 +203,10 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Openapi yaml string.
 	 *
-	 * @param request the request
-	 * @param apiDocsUrl the api docs url
-	 * @param group the group
-	 * @return the string
+	 * @param request the request 
+	 * @param apiDocsUrl the api docs url 
+	 * @param group the group 
+	 * @return the string 
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
@@ -226,7 +227,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 	private OpenApiResource getOpenApiResourceOrThrow(String group) {
 		OpenApiResource openApiResource = groupedOpenApiResources.get(group);
 		if (openApiResource == null) {
-			throw new IllegalStateException("No OpenAPI resource found for group " + group);
+			throw new OpenApiResourceNotFoundException("No OpenAPI resource found for group: " + group);
 		}
 		return openApiResource;
 	}

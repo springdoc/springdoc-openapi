@@ -29,7 +29,7 @@ public class SpringDocUIException extends RuntimeException {
 	/**
 	 * Instantiates a new Spring doc ui exception.
 	 *
-	 * @param message the message
+	 * @param message the message 
 	 * @param cause the cause
 	 */
 	public SpringDocUIException(String message, Throwable cause) {

@@ -59,14 +59,14 @@ public class MultipleOpenApiWebFluxConfiguration {
 	/**
 	 * Multiple open api resource multiple open api resource.
 	 *
-	 * @param groupedOpenApis the grouped open apis 
-	 * @param defaultOpenAPIBuilder the default open api builder 
-	 * @param requestBuilder the request builder 
-	 * @param responseBuilder the response builder 
-	 * @param operationParser the operation parser 
-	 * @param requestMappingHandlerMapping the request mapping handler mapping 
-	 * @param springDocConfigProperties the spring doc config properties 
-	 * @param actuatorProvider the actuator provider 
+	 * @param groupedOpenApis the grouped open apis  
+	 * @param defaultOpenAPIBuilder the default open api builder  
+	 * @param requestBuilder the request builder  
+	 * @param responseBuilder the response builder  
+	 * @param operationParser the operation parser  
+	 * @param requestMappingHandlerMapping the request mapping handler mapping  
+	 * @param springDocConfigProperties the spring doc config properties  
+	 * @param actuatorProvider the actuator provider  
 	 * @return the multiple open api resource
 	 */
 	@Bean

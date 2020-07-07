@@ -18,6 +18,8 @@
 
 package test.org.springdoc.api.app66;
 
+import org.junit.jupiter.api.Test;
+import org.springdoc.core.Constants;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 public class SpringDocApp66Test extends AbstractSpringDocTest {
@@ -26,4 +28,9 @@ public class SpringDocApp66Test extends AbstractSpringDocTest {
 		this.groupName = "/stream";
 	}
 
+	@Test
+	public void testApp2() throws Exception {
+		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "streams").exchange()
+				.expectStatus().isNotFound();
+	}
 }

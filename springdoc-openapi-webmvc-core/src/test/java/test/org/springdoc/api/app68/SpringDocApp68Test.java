@@ -90,4 +90,10 @@ public class SpringDocApp68Test extends AbstractSpringDocTest {
 				.andExpect(jsonPath("$.tags[?(@.name == '" + Constants.SPRINGDOC_ACTUATOR_TAG + "')].externalDocs.description", contains(Constants.SPRINGDOC_ACTUATOR_DOC_DESCRIPTION)))
 				.andExpect(jsonPath("$.tags[?(@.name == '" + Constants.SPRINGDOC_ACTUATOR_TAG + "')].externalDocs.url", contains(Constants.SPRINGDOC_ACTUATOR_DOC_URL)));
 	}
+
+	@Test
+	public void testApp5() throws Exception {
+		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/user"))
+				.andExpect(status().isNotFound());
+	}
 }
