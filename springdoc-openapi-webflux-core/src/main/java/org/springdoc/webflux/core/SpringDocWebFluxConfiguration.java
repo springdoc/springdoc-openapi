@@ -33,6 +33,7 @@ import org.springdoc.core.PropertyResolverUtils;
 import org.springdoc.core.RequestBodyBuilder;
 import org.springdoc.core.ReturnTypeParser;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.customizers.ActuatorOpenApiCustomiser;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
@@ -174,6 +175,17 @@ public class SpringDocWebFluxConfiguration {
 		@Lazy(false)
 		OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider) {
 			return new ActuatorOperationCustomizer(actuatorProvider);
+		}
+
+		/**
+		 * Actuator customizer open api customiser.
+		 *
+		 * @return the open api customiser
+		 */
+		@Bean
+		@Lazy(false)
+		OpenApiCustomiser actuatorOpenApiCustomiser() {
+			return new ActuatorOpenApiCustomiser();
 		}
 	}
 }

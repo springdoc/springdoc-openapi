@@ -35,6 +35,7 @@ import org.springdoc.core.RequestBodyBuilder;
 import org.springdoc.core.ReturnTypeParser;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.customizers.ActuatorOpenApiCustomiser;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
@@ -193,6 +194,17 @@ public class SpringDocWebMvcConfiguration {
 		@Lazy(false)
 		OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider) {
 			return new ActuatorOperationCustomizer(actuatorProvider);
+		}
+
+		/**
+		 * Actuator customizer OpenAPI customiser.
+		 *
+		 * @return the OpenAPI customiser
+		 */
+		@Bean
+		@Lazy(false)
+		OpenApiCustomiser actuatorOpenApiCustomiser() {
+			return new ActuatorOpenApiCustomiser();
 		}
 	}
 }
