@@ -31,13 +31,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "springdoc.show-actuator=true")
+@TestPropertySource(properties = {
+		"springdoc.show-actuator=true",
+		"management.endpoints.web.exposure.include=*"})
 public class SpringDocApp36Test extends AbstractSpringDocTest {
 
 	@Test
 	public void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andExpect(jsonPath("$.paths./actuator/info.get.operationId", containsString("handle"))).andExpect(jsonPath("$.paths./actuator/health.get.operationId", containsString("handle")));
+				.andExpect(jsonPath("$.openapi", is("3.0.1")))
+				.andExpect(jsonPath("$.paths./actuator/info.get.operationId", containsString("handle")))
+				.andExpect(jsonPath("$.paths./actuator/health.get.operationId", containsString("handle")))
+				.andExpect(jsonPath("$.paths./actuator/metrics/{requiredMetricName}.get.parameters[0].in", is("path")))
+				.andExpect(jsonPath("$.paths./actuator/metrics/{requiredMetricName}.get.parameters[0].name", is("requiredMetricName")));
 	}
 
 	@SpringBootApplication
