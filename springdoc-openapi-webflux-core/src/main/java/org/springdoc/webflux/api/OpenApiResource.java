@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.core.util.Yaml;
@@ -164,9 +165,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		calculateServerUrl(serverHttpRequest, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
 		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
-			return Mono.just(Yaml.mapper().writeValueAsString(openAPI));
+			return Mono.just(getYamlMapper().writeValueAsString(openAPI));
 		else
-			return Mono.just(Yaml.mapper().writerWithDefaultPrettyPrinter().writeValueAsString(openAPI));
+			return Mono.just(getYamlMapper().writerWithDefaultPrettyPrinter().writeValueAsString(openAPI));
 	}
 
 	@Override

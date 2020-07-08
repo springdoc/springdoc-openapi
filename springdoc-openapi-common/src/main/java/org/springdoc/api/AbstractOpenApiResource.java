@@ -40,8 +40,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 import io.swagger.v3.core.filter.SpecFilter;
 import io.swagger.v3.core.util.ReflectionUtils;
+import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.callbacks.Callback;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -952,5 +956,17 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		if (openAPIBuilder.getCachedOpenAPI() != null && springDocConfigProperties.isCacheDisabled()) {
 			openAPIBuilder = openAPIBuilderObjectFactory.getObject();
 		}
+	}
+
+	/**
+	 * Gets yaml mapper.
+	 *
+	 * @return the yaml mapper
+	 */
+	protected ObjectMapper getYamlMapper() {
+		ObjectMapper objectMapper  =  Yaml.mapper();
+		YAMLFactory factory = (YAMLFactory) objectMapper.getFactory();
+		factory.configure(Feature.USE_NATIVE_TYPE_ID, false);
+		return objectMapper;
 	}
 }
