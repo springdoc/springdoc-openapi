@@ -213,6 +213,6 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	 */
 	public boolean isCsrfEnabled(){
 		return csrf.isEnabled();
-	};
+	}
 
 }
