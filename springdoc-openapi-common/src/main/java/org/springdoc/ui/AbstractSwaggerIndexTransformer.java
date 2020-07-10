@@ -143,7 +143,7 @@ public class AbstractSwaggerIndexTransformer {
 		return html;
 	}
 
-	protected String addCSRF(String html) throws JsonProcessingException {
+	protected String addCSRF(String html) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("requestInterceptor: function() {\n");
 		stringBuilder.append("const value = `; ${document.cookie}`;\n");
