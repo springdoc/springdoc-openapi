@@ -70,7 +70,6 @@ public final class Constants {
 	 */
 	public static final String SPRINGDOC_ENABLED = "springdoc.api-docs.enabled";
 
-
 	/**
 	 * The constant SPRINGDOC_DEPRECATING_CONVERTER_ENABLED.
 	 */
@@ -255,6 +254,16 @@ public final class Constants {
 	 * The constant SWAGGER_UI_DEFAULT_URL.
 	 */
 	public static final String SWAGGER_UI_DEFAULT_URL = "https://petstore.swagger.io/v2/swagger.json";
+
+	/**
+	 * The constant CSRF_DEFAULT_COOKIE_NAME.
+	 */
+	public static final String CSRF_DEFAULT_COOKIE_NAME= "XSRF-TOKEN";
+
+	/**
+	 * The constant CSRF_DEFAULT_HEADER_NAME.
+	 */
+	public static final String CSRF_DEFAULT_HEADER_NAME= "X-XSRF-TOKEN";
 
 	/**
 	 * Instantiates a new Constants.

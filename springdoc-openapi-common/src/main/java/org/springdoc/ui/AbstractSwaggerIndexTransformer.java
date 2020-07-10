@@ -119,7 +119,7 @@ public class AbstractSwaggerIndexTransformer {
 	 */
 	protected boolean hasDefaultTransformations() {
 		boolean oauth2Configured = !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters());
-		return oauth2Configured || swaggerUiConfig.isDisableSwaggerDefaultUrl();
+		return oauth2Configured || swaggerUiConfig.isDisableSwaggerDefaultUrl() || swaggerUiConfig.isCsrfEnabled();
 	}
 
 	/**
@@ -137,7 +137,27 @@ public class AbstractSwaggerIndexTransformer {
 		if (swaggerUiConfig.isDisableSwaggerDefaultUrl()) {
 			html = overwriteSwaggerDefaultUrl(html);
 		}
-
+		if (swaggerUiConfig.isCsrfEnabled()) {
+			html = addCSRF(html);
+		}
 		return html;
+	}
+
+	protected String addCSRF(String html) throws JsonProcessingException {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("requestInterceptor: function() {\n");
+		stringBuilder.append("const value = `; ${document.cookie}`;\n");
+		stringBuilder.append("const parts = value.split(`; ");
+		stringBuilder.append(swaggerUiConfig.getCsrf().getCookieName());
+		stringBuilder.append("=`);\n");
+		stringBuilder.append("console.log(parts);\n");
+		stringBuilder.append("if (parts.length === 2)\n");
+		stringBuilder.append("this.headers['");
+		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
+		stringBuilder.append("'] = parts.pop().split(';').shift();\n");
+		stringBuilder.append("return this;\n");
+		stringBuilder.append("},\n");
+		stringBuilder.append("presets: [");
+		return html.replace("presets: [", stringBuilder.toString());
 	}
 }

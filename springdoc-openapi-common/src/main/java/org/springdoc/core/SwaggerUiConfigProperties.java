@@ -54,6 +54,87 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	private boolean displayQueryParamsWithoutOauth2;
 
 	/**
+	 * The Csrf configuration.
+	 */
+	private Csrf csrf = new Csrf();
+
+
+	/**
+	 * The type Csrf.
+	 */
+	public static class Csrf {
+
+		/**
+		 * The Enabled.
+		 */
+		private boolean enabled;
+
+		/**
+		 * The Cookie name.
+		 */
+		private String cookieName = Constants.CSRF_DEFAULT_COOKIE_NAME;
+
+		/**
+		 * The Header name.
+		 */
+		private String headerName = Constants.CSRF_DEFAULT_HEADER_NAME;
+
+		/**
+		 * Is enabled boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isEnabled() {
+			return enabled;
+		}
+
+		/**
+		 * Sets enabled.
+		 *
+		 * @param enabled the enabled
+		 */
+		public void setEnabled(boolean enabled) {
+			this.enabled = enabled;
+		}
+
+		/**
+		 * Gets cookie name.
+		 *
+		 * @return the cookie name
+		 */
+		public String getCookieName() {
+			return cookieName;
+		}
+
+		/**
+		 * Sets cookie name.
+		 *
+		 * @param cookieName the cookie name
+		 */
+		public void setCookieName(String cookieName) {
+			this.cookieName = cookieName;
+		}
+
+		/**
+		 * Gets header name.
+		 *
+		 * @return the header name
+		 */
+		public String getHeaderName() {
+			return headerName;
+		}
+
+		/**
+		 * Sets header name.
+		 *
+		 * @param headerName the header name
+		 */
+		public void setHeaderName(String headerName) {
+			this.headerName = headerName;
+		}
+	}
+
+	/**
 	 * Is disable swagger default url boolean.
 	 *
 	 * @return the boolean
@@ -106,5 +187,32 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	public void setDisplayQueryParamsWithoutOauth2(boolean displayQueryParamsWithoutOauth2) {
 		this.displayQueryParamsWithoutOauth2 = displayQueryParamsWithoutOauth2;
 	}
+
+	/**
+	 * Gets csrf.
+	 *
+	 * @return the csrf
+	 */
+	public Csrf getCsrf() {
+		return csrf;
+	}
+
+	/**
+	 * Sets csrf.
+	 *
+	 * @param csrf the csrf
+	 */
+	public void setCsrf(Csrf csrf) {
+		this.csrf = csrf;
+	}
+
+	/**
+	 * Is csrf enabled boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isCsrfEnabled(){
+		return csrf.isEnabled();
+	};
 
 }
