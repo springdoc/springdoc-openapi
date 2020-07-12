@@ -65,6 +65,7 @@ public class ModelConverterRegistrar {
 	 * @param modelConverter the model converter
 	 * @return the registered converter same as
 	 */
+	@SuppressWarnings("unchecked")
 	private Optional<ModelConverter> getRegisteredConverterSameAs(ModelConverter modelConverter) {
 		try {
 			Field convertersField = FieldUtils.getDeclaredField(ModelConverters.class, "converters", true);

@@ -36,6 +36,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = "spring.hateoas.use-hal-as-default-json-media-type= false")
+@SuppressWarnings({"deprecation","unchecked"})
 public class SpringDocApp9Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication

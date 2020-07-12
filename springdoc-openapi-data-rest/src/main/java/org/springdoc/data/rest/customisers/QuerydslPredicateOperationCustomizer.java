@@ -61,6 +61,7 @@ import org.springframework.web.method.HandlerMethod;
  * The type Querydsl predicate operation customizer.
  * @author Gibah Joseph Email: gibahjoe@gmail.com Mar, 2020
  */
+@SuppressWarnings("unchecked")
 public class QuerydslPredicateOperationCustomizer implements OperationCustomizer {
 
 	/**

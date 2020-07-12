@@ -347,6 +347,7 @@ public class GenericParameterBuilder {
 	 * @param parameter the parameter
 	 * @return the boolean
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean isAnnotationToIgnore(MethodParameter parameter) {
 		return ANNOTATIOSN_TO_IGNORE.stream().anyMatch(
 				annotation -> parameter.getParameterAnnotation(annotation) != null

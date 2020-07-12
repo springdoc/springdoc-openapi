@@ -39,6 +39,7 @@ public interface ActuatorProvider {
 	 *
 	 * @return the methods
 	 */
+	@SuppressWarnings("unchecked")
 	Map getMethods();
 
 	/**

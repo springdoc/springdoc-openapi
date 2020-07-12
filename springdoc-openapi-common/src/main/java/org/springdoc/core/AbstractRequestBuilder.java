@@ -320,6 +320,7 @@ public abstract class AbstractRequestBuilder {
 	 * @param map the map
 	 * @return the headers
 	 */
+	@SuppressWarnings("unchecked")
 	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<String, Parameter> map) {
 		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
 			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(new StringSchema().addEnumItem(entry.getValue()));

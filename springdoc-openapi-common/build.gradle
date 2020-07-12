@@ -2,7 +2,8 @@ description = 'springdoc-openapi-common'
 
 dependencies {
     api 'org.springframework.boot:spring-boot-autoconfigure'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	compileOnly 'com.google.code.findbugs:jsr305'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     api 'org.springframework:spring-web'
     api 'io.swagger.core.v3:swagger-models'
     api 'io.swagger.core.v3:swagger-annotations'
