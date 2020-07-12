@@ -204,6 +204,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void getPaths(Map<String, Object> restControllers) {
 		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 		calculatePath(restControllers, map);
