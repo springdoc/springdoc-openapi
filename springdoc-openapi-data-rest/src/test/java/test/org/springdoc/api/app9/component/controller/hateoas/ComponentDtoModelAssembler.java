@@ -13,6 +13,7 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 @Component
+@SuppressWarnings({"deprecation","unchecked"})
 public class ComponentDtoModelAssembler implements RepresentationModelAssembler<DemoComponent, RepresentationModel<EntityModel<DemoComponentDto>>> {
 
 	@Autowired

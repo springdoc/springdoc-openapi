@@ -13,6 +13,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @Component
+@SuppressWarnings({"deprecared","unchecked"})
 public class PersonHandler {
 
     private final PersonService personService;

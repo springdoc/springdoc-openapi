@@ -227,7 +227,7 @@ public class OpenAPIBuilder {
 		if (!isServersPresent)        // default server value
 		{
 			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
-			List<Server> servers = new ArrayList();
+			List<Server> servers = new ArrayList<>();
 			servers.add(server);
 			openAPI.setServers(servers);
 		}
@@ -327,6 +327,7 @@ public class OpenAPIBuilder {
 	 * @param propertyResolverUtils the property resolver utils
 	 * @return the schema
 	 */
+	@SuppressWarnings("unchecked")
 	public Schema resolveProperties(Schema schema, PropertyResolverUtils propertyResolverUtils) {
 		resolveProperty(schema::getName, schema::name, propertyResolverUtils);
 		resolveProperty(schema::getTitle, schema::title, propertyResolverUtils);

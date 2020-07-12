@@ -40,12 +40,12 @@ public class AdditionalModelsConverter implements ModelConverter {
 	/**
 	 * The constant modelToClassMap.
 	 */
-	private static final Map<Class, Class> modelToClassMap = new HashMap();
+	private static final Map<Class, Class> modelToClassMap = new HashMap<>();
 
 	/**
 	 * The constant modelToSchemaMap.
 	 */
-	private static final Map<Class, Schema> modelToSchemaMap = new HashMap();
+	private static final Map<Class, Schema> modelToSchemaMap = new HashMap<>();
 
 	/**
 	 * Replace with class.
