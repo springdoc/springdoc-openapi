@@ -117,9 +117,6 @@ To generate documentation automatically, make sure all the methods declare the H
 springdoc.swagger-ui.path=/swagger-ui.html
 ```
 
-## spring-webflux with Functional Endpoints, will be available in the future release
-## Dependencies repository
-
 The `springdoc-openapi` libraries are hosted on maven central repository. 
 The artifacts can be viewed accessed at the following locations:
 
