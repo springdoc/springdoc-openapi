@@ -42,10 +42,14 @@
             "in": "query",
             "description": "createdFrom",
             "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
               }
             }
           },
