@@ -493,7 +493,7 @@ public abstract class AbstractRequestBuilder {
 		if (containsDeprecatedAnnotation(parameterInfo.getMethodParameter().getParameterAnnotations()))
 			parameter.setDeprecated(true);
 
-		if (parameter.getSchema() == null) {
+		if (parameter.getSchema() == null && parameter.getContent() == null) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, null,
 					jsonView);
 			if (defaultValue != null)

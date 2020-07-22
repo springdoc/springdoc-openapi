@@ -24,6 +24,27 @@
         }
       }
     },
+    "/examplePost": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "schema example",
+        "operationId": "example",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/foo": {
       "get": {
         "tags": [
@@ -60,35 +81,18 @@
             "in": "query",
             "description": "User",
             "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/PersonDTO"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
             }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
-          }
-        }
-      }
-    },
-    "/examplePost": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "schema example",
-        "operationId": "example",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
           }
         }
       }

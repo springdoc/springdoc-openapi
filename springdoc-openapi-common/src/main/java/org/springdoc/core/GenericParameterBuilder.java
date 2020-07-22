@@ -40,6 +40,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.ArraySchema;
+import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
@@ -190,7 +191,7 @@ public class GenericParameterBuilder {
 		if (StringUtils.isBlank(paramDoc.get$ref()))
 			paramDoc.set$ref(paramDoc.get$ref());
 
-		if (paramDoc.getSchema() == null)
+		if (paramDoc.getSchema() == null && paramDoc.getContent() == null)
 			paramDoc.setSchema(paramCalcul.getSchema());
 
 		if (paramDoc.getExamples() == null)
@@ -240,7 +241,13 @@ public class GenericParameterBuilder {
 		if (parameterDoc.allowReserved())
 			parameter.setAllowReserved(parameterDoc.allowReserved());
 
-		setSchema(parameterDoc, components, jsonView, parameter);
+		if (parameterDoc.content().length > 0) {
+			Optional<Content> optionalContent = AnnotationsUtils.getContent(parameterDoc.content(), null, null, null, components, jsonView);
+			optionalContent.ifPresent(parameter::setContent);
+		}
+		else
+			setSchema(parameterDoc, components, jsonView, parameter);
+
 		setExamples(parameterDoc, parameter);
 		setExtensions(parameterDoc, parameter);
 		setParameterStyle(parameter, parameterDoc);
@@ -269,10 +276,7 @@ public class GenericParameterBuilder {
 				LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
 			}
 			if (schema == null) {
-				if (parameterDoc.content().length > 0)
-					schema = AnnotationsUtils.getSchema(parameterDoc.content()[0], components, jsonView).orElse(null);
-				else
-					schema = AnnotationsUtils.getArraySchema(parameterDoc.array(), components, jsonView).orElse(null);
+				schema = AnnotationsUtils.getArraySchema(parameterDoc.array(), components, jsonView).orElse(null);
 			}
 			parameter.setSchema(schema);
 		}
