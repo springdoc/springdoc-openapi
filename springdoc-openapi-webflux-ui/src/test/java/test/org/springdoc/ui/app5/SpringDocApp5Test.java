@@ -28,7 +28,7 @@ import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@TestPropertySource(properties = "springdoc.swagger-ui.oauth.clientId=myClientId")
+@TestPropertySource(properties = {"springdoc.swagger-ui.oauth.clientId=myClientId", "springdoc.swagger-ui.oauth.scopes=scope1,scope2"})
 public class SpringDocApp5Test extends AbstractSpringDocTest {
 
 	@Test
