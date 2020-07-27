@@ -32,7 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource(properties = { "springdoc.swagger-ui.oauth.clientId=myClientId",
 		"springdoc.swagger-ui.oauth.additionalQueryStringParams.test1=test1",
-		"springdoc.swagger-ui.oauth.additionalQueryStringParams.test2=test2" })
+		"springdoc.swagger-ui.oauth.additionalQueryStringParams.test2=test2",
+		"springdoc.swagger-ui.oauth.scopes=scope1,scope2" })
 public class SpringDocApp7Test extends AbstractSpringDocTest {
 
 	@Test
