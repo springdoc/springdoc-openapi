@@ -21,6 +21,7 @@
 package org.springdoc.core;
 
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -28,6 +29,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.CollectionUtils;
 
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 
@@ -84,6 +86,11 @@ public class SwaggerUiOAuthProperties {
 	private Boolean usePkceWithAuthorizationCodeGrant;
 
 	/**
+	 * The Scopes selected by default upon authentication.
+	 */
+	private List<String> scopes;
+
+	/**
 	 * Gets config parameters.
 	 *
 	 * @return the config parameters
@@ -95,6 +102,9 @@ public class SwaggerUiOAuthProperties {
 		SpringDocPropertiesUtils.put("realm", realm, params);
 		SpringDocPropertiesUtils.put("scopeSeparator", scopeSeparator, params);
 		SpringDocPropertiesUtils.put("appName", appName, params);
+		if (!CollectionUtils.isEmpty(scopes)) {
+			SpringDocPropertiesUtils.put("scopes", String.join(" ", scopes), params);
+		}
 		SpringDocPropertiesUtils.put("useBasicAuthenticationWithAccessCodeGrant", useBasicAuthenticationWithAccessCodeGrant, params);
 		SpringDocPropertiesUtils.put("usePkceWithAuthorizationCodeGrant", usePkceWithAuthorizationCodeGrant, params);
 		SpringDocPropertiesUtils.put("additionalQueryStringParams", additionalQueryStringParams, params);
@@ -243,5 +253,23 @@ public class SwaggerUiOAuthProperties {
 	 */
 	public void setUsePkceWithAuthorizationCodeGrant(Boolean usePkceWithAuthorizationCodeGrant) {
 		this.usePkceWithAuthorizationCodeGrant = usePkceWithAuthorizationCodeGrant;
+	}
+
+	/**
+	 * Get the pre-selected scopes during authentication.
+	 *
+	 * @return the pre-selected scopes during authentication
+	 */
+	public List<String> getScopes() {
+		return scopes;
+	}
+
+	/**
+	 * Sets the pre-selected scopes during authentication.
+	 *
+	 * @param scopes the pre-selected scopes during authentication
+	 */
+	public void setScopes(List<String> scopes) {
+		this.scopes = scopes;
 	}
 }

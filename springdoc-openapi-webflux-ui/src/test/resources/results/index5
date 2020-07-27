@@ -55,7 +55,7 @@
 
       window.ui = ui
 ui.initOAuth(
-{"clientId":"myClientId"})
+{"clientId":"myClientId","scopes":"scope1 scope2"})
     }
   </script>
   </body>
