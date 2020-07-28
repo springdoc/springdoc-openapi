@@ -87,7 +87,7 @@ springdoc.api-docs.path=/api-docs
 * This step is optional: If you want to disable `springdoc-openapi` endpoints, add a custom springdoc property, in your `spring-boot` configuration file:
 
 ```properties
-# /api-docs endpoint custom path
+# disable api-docs
 springdoc.api-docs.enabled=false
 ```
  
