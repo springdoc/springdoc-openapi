@@ -248,7 +248,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			Map<String, String> regexMap = new LinkedHashMap<>();
 			for (String pattern : patterns) {
 				String operationPath = PathUtils.parsePath(pattern, regexMap);
-				if (((actuatorProvider.isPresent() && actuatorProvider.get().isRestController(operationPath))
+				if (((actuatorProvider.isPresent() && actuatorProvider.get().isRestController(operationPath, handlerMethod.getBeanType()))
 						|| isRestController(restControllers, handlerMethod, operationPath))
 						&& isPackageToScan(handlerMethod.getBeanType().getPackage())
 						&& isPathToMatch(operationPath)) {

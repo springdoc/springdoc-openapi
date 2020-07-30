@@ -20,10 +20,12 @@
 
 package org.springdoc.webmvc.api;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springdoc.core.ActuatorProvider;
 
+import org.springframework.boot.actuate.endpoint.web.servlet.ControllerEndpointHandlerMapping;
 import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
@@ -41,17 +43,27 @@ public class WebMvcActuatorProvider implements ActuatorProvider {
 	private final WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping;
 
 	/**
+	 * The Controller endpoint handler mapping.
+	 */
+	private final ControllerEndpointHandlerMapping controllerEndpointHandlerMapping;
+
+	/**
 	 * Instantiates a new Web mvc actuator provider.
 	 *
 	 * @param webMvcEndpointHandlerMapping the web mvc endpoint handler mapping
+	 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
 	 */
-	public WebMvcActuatorProvider(WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping) {
+	public WebMvcActuatorProvider(WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping, ControllerEndpointHandlerMapping controllerEndpointHandlerMapping) {
 		this.webMvcEndpointHandlerMapping = webMvcEndpointHandlerMapping;
+		this.controllerEndpointHandlerMapping = controllerEndpointHandlerMapping;
 	}
 
 	@Override
 	public Map<RequestMappingInfo, HandlerMethod> getMethods() {
-		return webMvcEndpointHandlerMapping.getHandlerMethods();
+		Map<RequestMappingInfo, HandlerMethod> mappingInfoHandlerMethodMap = new HashMap<>();
+		mappingInfoHandlerMethodMap.putAll(webMvcEndpointHandlerMapping.getHandlerMethods());
+		mappingInfoHandlerMethodMap.putAll(controllerEndpointHandlerMapping.getHandlerMethods());
+		return mappingInfoHandlerMethodMap;
 	}
 
 }

@@ -24,6 +24,7 @@ import java.util.Map;
 
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.tags.Tag;
+import org.springdoc.api.AbstractOpenApiResource;
 
 import org.springframework.util.AntPathMatcher;
 
@@ -64,8 +65,9 @@ public interface ActuatorProvider {
 	 * @param operationPath the operation path
 	 * @return the boolean
 	 */
-	default boolean isRestController(String operationPath) {
-		return operationPath.startsWith(AntPathMatcher.DEFAULT_PATH_SEPARATOR);
+	default boolean isRestController(String operationPath, Class<?>  controllerClass) {
+		return operationPath.startsWith(AntPathMatcher.DEFAULT_PATH_SEPARATOR)
+				&&  !AbstractOpenApiResource.isHiddenRestControllers(controllerClass);
 	}
 
 }

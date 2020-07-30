@@ -20,10 +20,12 @@
 
 package org.springdoc.webflux.core;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springdoc.core.ActuatorProvider;
 
+import org.springframework.boot.actuate.endpoint.web.reactive.ControllerEndpointHandlerMapping;
 import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
@@ -41,15 +43,25 @@ public class WebFluxActuatorProvider implements ActuatorProvider {
 	private final WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping;
 
 	/**
+	 * The Controller endpoint handler mapping.
+	 */
+	private final ControllerEndpointHandlerMapping controllerEndpointHandlerMapping;
+
+	/**
 	 * Instantiates a new Web flux actuator provider.
 	 *
 	 * @param webFluxEndpointHandlerMapping the web flux endpoint handler mapping
+	 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
 	 */
-	public WebFluxActuatorProvider(WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping) {
+	public WebFluxActuatorProvider(WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping, ControllerEndpointHandlerMapping controllerEndpointHandlerMapping) {
 		this.webFluxEndpointHandlerMapping = webFluxEndpointHandlerMapping;
+		this.controllerEndpointHandlerMapping = controllerEndpointHandlerMapping;
 	}
 
 	public Map<RequestMappingInfo, HandlerMethod> getMethods() {
-		return webFluxEndpointHandlerMapping.getHandlerMethods();
+		Map<RequestMappingInfo, HandlerMethod> mappingInfoHandlerMethodMap = new HashMap<>();
+		mappingInfoHandlerMethodMap.putAll(webFluxEndpointHandlerMapping.getHandlerMethods());
+		mappingInfoHandlerMethodMap.putAll(controllerEndpointHandlerMapping.getHandlerMethods());
+		return mappingInfoHandlerMethodMap;
 	}
 }

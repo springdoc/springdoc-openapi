@@ -44,6 +44,7 @@ import org.springdoc.webflux.core.converters.WebFluxSupportConverter;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
+import org.springframework.boot.actuate.endpoint.web.reactive.ControllerEndpointHandlerMapping;
 import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -156,13 +157,14 @@ public class SpringDocWebFluxConfiguration {
 		/**
 		 * Actuator provider actuator provider.
 		 *
-		 * @param webFluxEndpointHandlerMapping the web flux endpoint handler mapping  
+		 * @param webFluxEndpointHandlerMapping the web flux endpoint handler mapping
+		 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
 		 * @return the actuator provider
 		 */
 		@Bean
 		@ConditionalOnMissingBean
-		ActuatorProvider actuatorProvider(WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping) {
-			return new WebFluxActuatorProvider(webFluxEndpointHandlerMapping);
+		ActuatorProvider actuatorProvider(WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping, ControllerEndpointHandlerMapping controllerEndpointHandlerMapping) {
+			return new WebFluxActuatorProvider(webFluxEndpointHandlerMapping, controllerEndpointHandlerMapping);
 		}
 
 		/**
