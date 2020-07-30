@@ -1,16 +1,12 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Tweet API",
-    "license": {
-      "name": "Apache 2.0",
-      "url": "http://springdoc.org"
-    },
+    "title": "OpenAPI definition",
     "version": "v0"
   },
   "servers": [
     {
-      "url": "",
+      "url": "http://localhost",
       "description": "Generated server url"
     }
   ],
@@ -25,12 +21,44 @@
     }
   ],
   "paths": {
+    "/actuator/tenant/customer/{id}": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "test.org.springdoc.api.app128.HelloController#getTenantById(String)",
+        "operationId": "getTenantById_0",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/actuator": {
       "get": {
         "tags": [
           "Actuator"
         ],
-        "operationId": "links",
+        "summary": "Actuator root web endpoint",
+        "operationId": "links_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -44,46 +72,6 @@
                       "$ref": "#/components/schemas/Link"
                     }
                   }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/actuator/info": {
-      "get": {
-        "tags": [
-          "Actuator"
-        ],
-        "operationId": "handle",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/actuator/health": {
-      "get": {
-        "tags": [
-          "Actuator"
-        ],
-        "operationId": "handle_1",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
                 }
               }
             }
@@ -104,15 +92,6 @@
             "type": "boolean"
           }
         }
-      },
-      "PublisherResponseEntityObject": {
-        "type": "object"
-      }
-    },
-    "securitySchemes": {
-      "basicScheme": {
-        "type": "http",
-        "scheme": "basic"
       }
     }
   }
