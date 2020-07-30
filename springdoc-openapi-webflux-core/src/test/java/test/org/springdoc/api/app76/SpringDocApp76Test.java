@@ -23,6 +23,8 @@
 
 package test.org.springdoc.api.app76;
 
+import org.junit.jupiter.api.Test;
+import org.springdoc.core.Constants;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.test.context.TestPropertySource;
@@ -33,4 +35,14 @@ public class SpringDocApp76Test extends AbstractSpringDocTest {
 	public SpringDocApp76Test() {
 		this.groupName = "/actuator";
 	}
+
+
+	@Test
+	public void testApp() throws Exception {
+		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange().expectStatus().isOk().expectBody()
+				.jsonPath("$.openapi").isEqualTo("3.0.1")
+				.jsonPath("$.paths./actuator/info.get.operationId").exists()
+				.jsonPath("$.paths./actuator/health.get.operationId").exists();
+	}
+
 }
