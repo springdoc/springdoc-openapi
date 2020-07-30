@@ -154,8 +154,9 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	 */
 	private Set<String> getFieldValues(QuerydslBindings instance, String fieldName) {
 		try {
-			Field field = FieldUtils.getDeclaredField(instance.getClass(),fieldName,true);
-			return (Set<String>) field.get(instance);
+			Field field = FieldUtils.getDeclaredField(instance.getClass(), fieldName, true);
+			if (field != null)
+				return (Set<String>) field.get(instance);
 		}
 		catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());
@@ -172,7 +173,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	 */
 	private Map<String, Object> getPathSpec(QuerydslBindings instance, String fieldName) {
 		try {
-			Field field = FieldUtils.getDeclaredField(instance.getClass(),fieldName,true);
+			Field field = FieldUtils.getDeclaredField(instance.getClass(), fieldName, true);
 			return (Map<String, Object>) field.get(instance);
 		}
 		catch (IllegalAccessException e) {
@@ -192,7 +193,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 			if (instance == null) {
 				return Optional.empty();
 			}
-			Field field = FieldUtils.getDeclaredField(instance.getClass(),"path",true);
+			Field field = FieldUtils.getDeclaredField(instance.getClass(), "path", true);
 			return (Optional<Path<?>>) field.get(instance);
 		}
 		catch (IllegalAccessException e) {
