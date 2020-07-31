@@ -64,6 +64,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import static org.springdoc.core.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
@@ -84,7 +85,8 @@ public class SpringDocConfiguration {
 	private static final String BINDRESULT_CLASS = "org.springframework.boot.context.properties.bind.BindResult";
 
 	static {
-		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema());
+		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema())
+				.addResponseWrapperToIgnore(DeferredResult.class);
 	}
 
 	/**
