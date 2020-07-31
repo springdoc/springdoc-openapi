@@ -29,7 +29,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "springdoc.swagger-ui.path=/test/swagger.html")
+@TestPropertySource(properties = {
+		"springdoc.swagger-ui.path=/test/swagger.html",
+		"server.servlet.context-path=/context-path",
+		"spring.mvc.servlet.path=/servlet-path"
+})
 public class SpringDocConfigPathsTest extends AbstractSpringDocTest {
 
 	@Test
