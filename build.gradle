@@ -10,7 +10,7 @@ plugins {
 ext {
 	springBootVersion = '2.3.2.RELEASE'
 	swaggerApiVersion = '2.1.4'
-	swaggerUiVersion = '3.30.0'
+	swaggerUiVersion = '3.31.1'
 }
 
 subprojects {
