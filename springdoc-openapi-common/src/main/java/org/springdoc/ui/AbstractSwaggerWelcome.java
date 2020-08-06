@@ -139,8 +139,9 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 			uriBuilder.queryParam(SwaggerUiConfigParameters.CONFIG_URL_PROPERTY, swaggerUiConfigParameters.getConfigUrl());
 			if (StringUtils.isNotEmpty(swaggerUiConfigParameters.getLayout()))
 				uriBuilder.queryParam(SwaggerUiConfigParameters.LAYOUT_PROPERTY, swaggerUiConfigParameters.getLayout());
-			if (StringUtils.isNotEmpty(swaggerUiConfigParameters.getFilter()))
+			if (swaggerUiConfigParameters.getFilter() != null) {
 				uriBuilder.queryParam(SwaggerUiConfigParameters.FILTER_PROPERTY, swaggerUiConfigParameters.getFilter());
+			}
 		}
 		return uriBuilder;
 	}
