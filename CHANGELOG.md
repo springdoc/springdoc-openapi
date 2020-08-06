@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.4] - 2020-08-06
+### Added
+- #815 - Allow swagger-ui property filter to be an empty string
+- #804 - Add Support for DeferredResult
+- #800 - Add support oauth2 pre-selected scope
+- #786 - Generate api-docs for Custom Actuator Endpoint
+- #776 - Enable CSRF support for swagger-ui: Introduce new properties under springdoc.swagger-ui.csrf
+- Added the ability to use fully qualified name with new property: springdoc.use-fqn
+### Changed
+- upgrade swagger-ui version v3.31.1
+- upgrade swagger-api to v2.1.4
+- upgrade spring-boot version to 2.3.2.RELEASE
+### Fixed
+- #802 - Fix comment on api-docs.enabled in README.MD
+- #791 - Unable to generate correct definition for request parameter containing JSON
+- #775 - Fix spring-boot actuator endpoint parameters
+- #774 - Fix Weird YAML tag in section OpenAPI spec file
+- #771 - MultipleOpenApiResource issue
+
 ## [1.4.3] - 2020-07-01
 ### Added
 - #747 - Added property to override @Deprecated Model converter
