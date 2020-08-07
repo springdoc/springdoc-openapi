@@ -1,7 +1,0 @@
-description = 'springdoc-openapi-groovy'
-
-dependencies {
-    api project(':springdoc-openapi-common')
-    compileOnly 'org.codehaus.groovy:groovy'
-    testImplementation project(':springdoc-openapi-webmvc-core')
-}
