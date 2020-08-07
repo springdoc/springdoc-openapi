@@ -22,7 +22,7 @@
  */
 package test.org.springdoc.api.app127;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
 import test.org.springdoc.api.AbstractSpringDocTest;
@@ -48,6 +48,6 @@ public class SpringDocApp127Test extends AbstractSpringDocTest {
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL+".yaml")).andExpect(status().isOk()).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
-		Assert.assertTrue(!result.contains("!<Type A>"));
+		Assertions.assertTrue(!result.contains("!<Type A>"));
 	}
 }
