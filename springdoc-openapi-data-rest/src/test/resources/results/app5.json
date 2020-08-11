@@ -34,13 +34,6 @@
             }
           },
           {
-            "name": "codeISO3166",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "code",
             "in": "query",
             "schema": {
@@ -71,13 +64,6 @@
           },
           {
             "name": "shortName",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "dialingCode",
             "in": "query",
             "schema": {
               "type": "string"
