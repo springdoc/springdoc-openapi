@@ -26,6 +26,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -290,13 +291,15 @@ public class GenericResponseBuilder {
 	private void buildApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes) {
 		Map<String, ApiResponse> genericMapResponse = methodAttributes.getGenericMapResponse();
-		if (!CollectionUtils.isEmpty(apiResponsesOp) &&  apiResponsesOp.size() > genericMapResponse.size()) {
+		if (!CollectionUtils.isEmpty(apiResponsesOp) && apiResponsesOp.size() > genericMapResponse.size()) {
 			// API Responses at operation and @ApiResponse annotation
 			for (Map.Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
 				String httpCode = entry.getKey();
 				if (!genericMapResponse.containsKey(httpCode)) {
-					ApiResponse apiResponse = entry.getValue();
-					buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, false);
+					if (!methodAttributes.isMethodOverloaded() || (methodAttributes.isMethodOverloaded() && isValidHttpCode(httpCode, methodParameter))) {
+						ApiResponse apiResponse = entry.getValue();
+						buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, false);
+					}
 				}
 			}
 		}
@@ -533,4 +536,26 @@ public class GenericResponseBuilder {
 				.map(ControllerAdviceInfo::getApiResponseMap)
 				.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
 	}
+
+	private boolean isValidHttpCode(String httpCode, MethodParameter methodParameter) {
+		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responseSet = getApiResponses(methodParameter.getMethod());
+		if (isHttpCodePresent(httpCode, responseSet))
+			return true;
+		io.swagger.v3.oas.annotations.Operation apiOperation = AnnotatedElementUtils.findMergedAnnotation(methodParameter.getMethod(),
+				io.swagger.v3.oas.annotations.Operation.class);
+		if (apiOperation != null) {
+			responseSet = new HashSet<>(Arrays.asList(apiOperation.responses()));
+			if (isHttpCodePresent(httpCode, responseSet))
+				return true;
+		}
+		String httpCode1 = evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getMethod().getClass(), false);
+		if (httpCode.equals(httpCode1))
+			return true;
+		return false;
+	}
+
+	private boolean isHttpCodePresent(String httpCode, Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responseSet) {
+		return !responseSet.isEmpty() && responseSet.stream().anyMatch(apiResponseAnnotations -> httpCode.equals(apiResponseAnnotations.responseCode()));
+	}
+
 }
