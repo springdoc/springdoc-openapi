@@ -34,7 +34,6 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.Json;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
@@ -51,9 +50,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.io.Resource;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -69,11 +66,6 @@ public class GenericParameterBuilder {
 	private static final List<Class<?>> FILE_TYPES = new ArrayList<>();
 
 	/**
-	 * The constant ANNOTATIOSN_TO_IGNORE.
-	 */
-	private static final List<Class> ANNOTATIOSN_TO_IGNORE = new ArrayList<>();
-
-	/**
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericParameterBuilder.class);
@@ -81,8 +73,6 @@ public class GenericParameterBuilder {
 	static {
 		FILE_TYPES.add(MultipartFile.class);
 		FILE_TYPES.add(Resource.class);
-		ANNOTATIOSN_TO_IGNORE.add(Hidden.class);
-		ANNOTATIOSN_TO_IGNORE.add(RequestAttribute.class);
 	}
 
 	/**
@@ -106,26 +96,6 @@ public class GenericParameterBuilder {
 	 */
 	public static void addFileType(Class<?>... classes) {
 		FILE_TYPES.addAll(Arrays.asList(classes));
-	}
-
-	/**
-	 * Add annotations to ignore.
-	 *
-	 * @param classes the classes
-	 */
-	public static void addAnnotationsToIgnore(Class<?>... classes) {
-		ANNOTATIOSN_TO_IGNORE.addAll(Arrays.asList(classes));
-	}
-
-	/**
-	 * Remove annotations to ignore.
-	 *
-	 * @param classes the classes
-	 */
-	public static void removeAnnotationsToIgnore(Class<?>... classes) {
-		List classesToIgnore = Arrays.asList(classes);
-		if (ANNOTATIOSN_TO_IGNORE.containsAll(classesToIgnore))
-			ANNOTATIOSN_TO_IGNORE.removeAll(Arrays.asList(classes));
 	}
 
 	/**
@@ -343,19 +313,6 @@ public class GenericParameterBuilder {
 		else
 			requestBodyInfo.addProperties(paramName, schemaN);
 		return schemaN;
-	}
-
-	/**
-	 * Is annotation to ignore boolean.
-	 *
-	 * @param parameter the parameter
-	 * @return the boolean
-	 */
-	@SuppressWarnings("unchecked")
-	public boolean isAnnotationToIgnore(MethodParameter parameter) {
-		return ANNOTATIOSN_TO_IGNORE.stream().anyMatch(
-				annotation -> parameter.getParameterAnnotation(annotation) != null
-						|| AnnotationUtils.findAnnotation(parameter.getParameterType(), annotation) != null);
 	}
 
 	/**

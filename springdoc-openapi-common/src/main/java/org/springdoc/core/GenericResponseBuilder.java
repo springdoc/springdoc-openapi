@@ -414,7 +414,9 @@ public class GenericResponseBuilder {
 	 * @return the schema
 	 */
 	private Schema<?> calculateSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations) {
-		return !isVoid(returnType) ? extractSchema(components, returnType, jsonView,annotations) : null;
+		if (!isVoid(returnType) && !SpringDocAnnotationsUtils.isAnnotationToIgnore(returnType))
+			return extractSchema(components, returnType, jsonView, annotations);
+		return null;
 	}
 
 	/**
