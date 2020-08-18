@@ -22,6 +22,8 @@ package org.springdoc.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,7 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.ArraySchema;
@@ -45,7 +48,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestAttribute;
 
 /**
  * The type Spring doc annotations utils.
@@ -58,6 +64,16 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpringDocAnnotationsUtils.class);
+
+	/**
+	 * The constant ANNOTATIOSN_TO_IGNORE.
+	 */
+	private static final List<Class> ANNOTATIONS_TO_IGNORE = new ArrayList<>();
+
+	static {
+		ANNOTATIONS_TO_IGNORE.add(Hidden.class);
+		ANNOTATIONS_TO_IGNORE.add(RequestAttribute.class);
+	}
 
 	/**
 	 * Resolve schema from type schema.
@@ -206,6 +222,51 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		else
 			// Add the new schema for a different mediaType
 			existingContent.addMediaType(mediaTypeStr, new io.swagger.v3.oas.models.media.MediaType().schema(schemaN));
+	}
+
+	/**
+	 * Is annotation to ignore boolean.
+	 *
+	 * @param parameter the parameter
+	 * @return the boolean
+	 */
+	@SuppressWarnings("unchecked")
+	public static boolean isAnnotationToIgnore(MethodParameter parameter) {
+		return ANNOTATIONS_TO_IGNORE.stream().anyMatch(
+				annotation -> parameter.getParameterAnnotation(annotation) != null
+						|| AnnotationUtils.findAnnotation(parameter.getParameterType(), annotation) != null);
+	}
+
+	/**
+	 * Is annotation to ignore boolean.
+	 *
+	 * @param type the type
+	 * @return the boolean
+	 */
+	public static boolean isAnnotationToIgnore(Type type) {
+		return ANNOTATIONS_TO_IGNORE.stream().anyMatch(
+				annotation -> (type instanceof Class
+						&&  AnnotationUtils.findAnnotation((Class<?>) type, annotation) != null));
+	}
+
+	/**
+	 * Add annotations to ignore.
+	 *
+	 * @param classes the classes
+	 */
+	public static void addAnnotationsToIgnore(Class<?>... classes) {
+		ANNOTATIONS_TO_IGNORE.addAll(Arrays.asList(classes));
+	}
+
+	/**
+	 * Remove annotations to ignore.
+	 *
+	 * @param classes the classes
+	 */
+	public static void removeAnnotationsToIgnore(Class<?>... classes) {
+		List classesToIgnore = Arrays.asList(classes);
+		if (ANNOTATIONS_TO_IGNORE.containsAll(classesToIgnore))
+			ANNOTATIONS_TO_IGNORE.removeAll(Arrays.asList(classes));
 	}
 
 	/**

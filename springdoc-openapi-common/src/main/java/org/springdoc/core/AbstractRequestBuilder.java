@@ -353,7 +353,7 @@ public abstract class AbstractRequestBuilder {
 	 * @return the boolean
 	 */
 	public boolean isParamToIgnore(MethodParameter parameter) {
-		if (parameterBuilder.isAnnotationToIgnore(parameter))
+		if (SpringDocAnnotationsUtils.isAnnotationToIgnore(parameter))
 			return true;
 		if ((parameter.getParameterAnnotation(PathVariable.class) != null && parameter.getParameterAnnotation(PathVariable.class).required())
 				|| (parameter.getParameterAnnotation(RequestParam.class) != null && parameter.getParameterAnnotation(RequestParam.class).required())
