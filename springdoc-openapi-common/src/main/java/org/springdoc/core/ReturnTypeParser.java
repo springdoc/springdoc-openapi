@@ -59,19 +59,45 @@ public interface ReturnTypeParser {
 			else if (genericType instanceof ParameterizedType) {
 				ResolvableType resolvedType = ResolvableType.forType(genericType);
 				if (resolvedType.hasUnresolvableGenerics()) {
-					ParameterizedType parameterizedType = (ParameterizedType) genericType;
-					Class<?>[] generics = new Class<?>[parameterizedType.getActualTypeArguments().length];
-					Type[] typeArguments = parameterizedType.getActualTypeArguments();
-					ResolvableType contextType = ResolvableType.forClass(contextClass);
-					findTypeForGenerics(generics, typeArguments, contextType);
-					Class<?> rawClass = resolvedType.getRawClass();
-					if (rawClass != null) {
-						return ResolvableType.forClassWithGenerics(rawClass, generics).getType();
-					}
+					ResolvableType resolvableType = getResolvedType(resolvedType, contextClass);
+					if (resolvableType != null)
+						return resolvableType.getType();
+				}
+				else if (resolvedType.hasGenerics()) {
+					ResolvableType[] resolvableTypes = resolvedType.getGenerics();
+					resolveType(resolvableTypes, contextClass);
+					return ResolvableType.forClassWithGenerics(resolvedType.getRawClass(), resolvableTypes).getType();
 				}
 			}
 		}
 		return genericType;
+	}
+
+	static void resolveType(ResolvableType[] resolvableTypes, Class<?> contextClass) {
+		for (int i = 0; i < resolvableTypes.length; i++) {
+			if (resolvableTypes[i].hasUnresolvableGenerics() && resolvableTypes[i].getType() instanceof ParameterizedType) {
+				ResolvableType resolvableType = getResolvedType(resolvableTypes[i], contextClass);
+				if (resolvableType != null)
+					resolvableTypes[i] = resolvableType;
+			}
+			else if (resolvableTypes[i].hasGenerics()) {
+				resolveType(resolvableTypes[i].getGenerics(), contextClass);
+				if (resolvableTypes[i].getRawClass() != null)
+					resolvableTypes[i] = ResolvableType.forClassWithGenerics(resolvableTypes[i].getRawClass(), resolvableTypes[i].getGenerics());
+			}
+		}
+	}
+
+	static ResolvableType getResolvedType(ResolvableType resolvableType, Class<?> contextClass) {
+		ParameterizedType parameterizedType = (ParameterizedType) resolvableType.getType();
+		Class<?>[] generics = new Class<?>[parameterizedType.getActualTypeArguments().length];
+		Type[] typeArguments = parameterizedType.getActualTypeArguments();
+		ResolvableType contextType = ResolvableType.forClass(contextClass);
+		findTypeForGenerics(generics, typeArguments, contextType);
+		Class<?> rawClass = resolvableType.getRawClass();
+		if (rawClass != null)
+			return ResolvableType.forClassWithGenerics(rawClass, generics);
+		return null;
 	}
 
 	/**
