@@ -30,10 +30,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springdoc.core.converters.AdditionalModelsConverter;
+import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -79,7 +82,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 		this.delegate = delegate;
 		this.additionalParameterAnnotations = additionalParameterAnnotations;
 		this.parameterName = parameterName;
-		this.isParameterObject=isParameterObject;
+		this.isParameterObject = isParameterObject;
 	}
 
 	/**
@@ -87,19 +90,29 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 *
 	 * @param pNames the p names
 	 * @param parameters the parameters
+	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 * @return the method parameter [ ]
 	 */
-	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters) {
+	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
 		List<MethodParameter> explodedParameters = new ArrayList<>();
 		for (int i = 0; i < parameters.length; ++i) {
 			MethodParameter p = parameters[i];
 			Class<?> paramClass = AdditionalModelsConverter.getReplacement(p.getParameterType());
 			if (p.hasParameterAnnotation(ParameterObject.class) || AnnotatedElementUtils.isAnnotated(paramClass, ParameterObject.class)) {
-				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(explodedParameters::add);
+				Stream<MethodParameter> methodParameterStream = MethodParameterPojoExtractor.extractFrom(paramClass);
+				if (!optionalDelegatingMethodParameterCustomizer.isPresent())
+					MethodParameterPojoExtractor.extractFrom(paramClass).forEach(explodedParameters::add);
+				else {
+					DelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer = optionalDelegatingMethodParameterCustomizer.get();
+					methodParameterStream.forEach(methodParameter -> {
+						delegatingMethodParameterCustomizer.customize(p, methodParameter);
+						explodedParameters.add(methodParameter);
+					});
+				}
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
-				explodedParameters.add(new DelegatingMethodParameter(p, name, null,false));
+				explodedParameters.add(new DelegatingMethodParameter(p, name, null, false));
 			}
 		}
 		return explodedParameters.toArray(new MethodParameter[0]);

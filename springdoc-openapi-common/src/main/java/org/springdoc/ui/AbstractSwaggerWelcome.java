@@ -58,8 +58,8 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	/**
 	 * Instantiates a new Abstract swagger welcome.
 	 *
-	 * @param swaggerUiConfig the swagger ui config 
-	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param swaggerUiConfig the swagger ui config
+	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
 	public AbstractSwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters) {
@@ -77,8 +77,8 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	/**
 	 * Build url string.
 	 *
-	 * @param contextPath the context path 
-	 * @param docsUrl the docs url 
+	 * @param contextPath the context path
+	 * @param docsUrl the docs url
 	 * @return the string
 	 */
 	protected String buildUrl(String contextPath, final String docsUrl) {
@@ -91,7 +91,7 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	/**
 	 * Build config url.
 	 *
-	 * @param contextPath the context path 
+	 * @param contextPath the context path
 	 * @param uriComponentsBuilder the uri components builder
 	 */
 	protected void buildConfigUrl(String contextPath, UriComponentsBuilder uriComponentsBuilder) {
@@ -116,7 +116,7 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	/**
 	 * Gets uri components builder.
 	 *
-	 * @param sbUrl the sb url 
+	 * @param sbUrl the sb url
 	 * @return the uri components builder
 	 */
 	protected UriComponentsBuilder getUriComponentsBuilder(String sbUrl) {

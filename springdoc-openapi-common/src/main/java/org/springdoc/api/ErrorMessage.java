@@ -25,8 +25,14 @@ import java.util.UUID;
  */
 public class ErrorMessage {
 
+	/**
+	 * The Id.
+	 */
 	private UUID id;
 
+	/**
+	 * The Message.
+	 */
 	private String message;
 
 	/**

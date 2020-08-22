@@ -47,6 +47,7 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
@@ -64,6 +65,11 @@ public class GenericParameterBuilder {
 	 * The constant FILE_TYPES.
 	 */
 	private static final List<Class<?>> FILE_TYPES = new ArrayList<>();
+
+	/**
+	 * The Optional delegating method parameter customizer.
+	 */
+	private final Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer;
 
 	/**
 	 * The constant LOGGER.
@@ -84,9 +90,11 @@ public class GenericParameterBuilder {
 	 * Instantiates a new Generic parameter builder.
 	 *
 	 * @param propertyResolverUtils the property resolver utils
+	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 */
-	public GenericParameterBuilder(PropertyResolverUtils propertyResolverUtils) {
+	public GenericParameterBuilder(PropertyResolverUtils propertyResolverUtils,   Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
 		this.propertyResolverUtils = propertyResolverUtils;
+		this.optionalDelegatingMethodParameterCustomizer=optionalDelegatingMethodParameterCustomizer;
 	}
 
 	/**
@@ -411,6 +419,15 @@ public class GenericParameterBuilder {
 			Class type = methodParameter.getParameterType();
 			return isFile(type);
 		}
+	}
+
+	/**
+	 * Gets delegating method parameter customizer.
+	 *
+	 * @return the delegating method parameter customizer
+	 */
+	public Optional<DelegatingMethodParameterCustomizer> getDelegatingMethodParameterCustomizer() {
+		return optionalDelegatingMethodParameterCustomizer;
 	}
 
 	/**

@@ -34,11 +34,13 @@ import org.springdoc.core.RequestBodyBuilder;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.converters.models.DefaultPageable;
 import org.springdoc.core.converters.models.Pageable;
+import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.data.rest.core.DataRestOperationBuilder;
 import org.springdoc.data.rest.core.DataRestRequestBuilder;
 import org.springdoc.data.rest.core.DataRestResponseBuilder;
 import org.springdoc.data.rest.core.DataRestRouterOperationBuilder;
 import org.springdoc.data.rest.core.DataRestTagsBuilder;
+import org.springdoc.data.rest.customisers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.data.rest.customisers.QuerydslPredicateOperationCustomizer;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -79,9 +81,21 @@ public class SpringDocDataRestConfiguration {
 	}
 
 	/**
+	 * Delegating method parameter customizer delegating method parameter customizer.
+	 *
+	 * @return the delegating method parameter customizer
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	DelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer() {
+		return new DataRestDelegatingMethodParameterCustomizer();
+	}
+
+	/**
 	 * Hal provider data rest hal provider.
 	 *
-	 * @param repositoryRestConfiguration the repository rest configuration 
+	 * @param repositoryRestConfiguration the repository rest configuration
 	 * @return the data rest hal provider
 	 */
 	@Bean
@@ -103,7 +117,7 @@ public class SpringDocDataRestConfiguration {
 		/**
 		 * Query dsl querydsl predicate operation customizer querydsl predicate operation customizer.
 		 *
-		 * @param querydslBindingsFactory the querydsl bindings factory 
+		 * @param querydslBindingsFactory the querydsl bindings factory
 		 * @return the querydsl predicate operation customizer
 		 */
 		@Bean
@@ -135,11 +149,11 @@ public class SpringDocDataRestConfiguration {
 		/**
 		 * Spring repository rest resource provider spring repository rest resource provider.
 		 *
-		 * @param mappings the mappings 
-		 * @param repositories the repositories 
-		 * @param associations the associations 
-		 * @param delegatingHandlerMapping the delegating handler mapping 
-		 * @param dataRestRouterOperationBuilder the data rest router operation builder 
+		 * @param mappings the mappings
+		 * @param repositories the repositories
+		 * @param associations the associations
+		 * @param delegatingHandlerMapping the delegating handler mapping
+		 * @param dataRestRouterOperationBuilder the data rest router operation builder
 		 * @return the spring repository rest resource provider
 		 */
 		@Bean
@@ -154,25 +168,25 @@ public class SpringDocDataRestConfiguration {
 		/**
 		 * Data rest router operation builder data rest router operation builder.
 		 *
-		 * @param dataRestOperationBuilder the data rest operation builder 
-		 * @param springDocConfigProperties the spring doc config properties 
-		 * @param repositoryRestConfiguration the repository rest configuration 
-		 * @param dataRestHalProvider the data rest hal provider 
+		 * @param dataRestOperationBuilder the data rest operation builder
+		 * @param springDocConfigProperties the spring doc config properties
+		 * @param repositoryRestConfiguration the repository rest configuration
+		 * @param dataRestHalProvider the data rest hal provider
 		 * @return the data rest router operation builder
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		DataRestRouterOperationBuilder dataRestRouterOperationBuilder(DataRestOperationBuilder dataRestOperationBuilder,
-				SpringDocConfigProperties springDocConfigProperties,RepositoryRestConfiguration repositoryRestConfiguration, DataRestHalProvider dataRestHalProvider) {
+				SpringDocConfigProperties springDocConfigProperties, RepositoryRestConfiguration repositoryRestConfiguration, DataRestHalProvider dataRestHalProvider) {
 			return new DataRestRouterOperationBuilder(dataRestOperationBuilder, springDocConfigProperties, repositoryRestConfiguration, dataRestHalProvider);
 		}
 
 		/**
 		 * Data rest operation builder data rest operation builder.
 		 *
-		 * @param dataRestRequestBuilder the data rest request builder 
-		 * @param tagsBuilder the tags builder 
-		 * @param dataRestResponseBuilder the data rest response builder 
+		 * @param dataRestRequestBuilder the data rest request builder
+		 * @param tagsBuilder the tags builder
+		 * @param dataRestResponseBuilder the data rest response builder
 		 * @return the data rest operation builder
 		 */
 		@Bean
@@ -185,10 +199,10 @@ public class SpringDocDataRestConfiguration {
 		/**
 		 * Data rest request builder data rest request builder.
 		 *
-		 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer 
-		 * @param parameterBuilder the parameter builder 
-		 * @param requestBodyBuilder the request body builder 
-		 * @param requestBuilder the request builder 
+		 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
+		 * @param parameterBuilder the parameter builder
+		 * @param requestBodyBuilder the request body builder
+		 * @param requestBuilder the request builder
 		 * @return the data rest request builder
 		 */
 		@Bean
@@ -202,7 +216,7 @@ public class SpringDocDataRestConfiguration {
 		/**
 		 * Data rest response builder data rest response builder.
 		 *
-		 * @param genericResponseBuilder the generic response builder 
+		 * @param genericResponseBuilder the generic response builder
 		 * @return the data rest response builder
 		 */
 		@Bean
@@ -214,12 +228,12 @@ public class SpringDocDataRestConfiguration {
 		/**
 		 * Data rest tags builder data rest tags builder.
 		 *
-		 * @param openAPIBuilder the open api builder 
+		 * @param openAPIBuilder the open api builder
 		 * @return the data rest tags builder
 		 */
 		@Bean
 		@ConditionalOnMissingBean
-		DataRestTagsBuilder dataRestTagsBuilder(OpenAPIBuilder openAPIBuilder){
+		DataRestTagsBuilder dataRestTagsBuilder(OpenAPIBuilder openAPIBuilder) {
 			return new DataRestTagsBuilder(openAPIBuilder);
 		}
 	}

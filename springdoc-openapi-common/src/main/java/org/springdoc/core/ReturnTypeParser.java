@@ -73,6 +73,12 @@ public interface ReturnTypeParser {
 		return genericType;
 	}
 
+	/**
+	 * Resolve type.
+	 *
+	 * @param resolvableTypes the resolvable types
+	 * @param contextClass the context class
+	 */
 	static void resolveType(ResolvableType[] resolvableTypes, Class<?> contextClass) {
 		for (int i = 0; i < resolvableTypes.length; i++) {
 			if (resolvableTypes[i].hasUnresolvableGenerics() && resolvableTypes[i].getType() instanceof ParameterizedType) {
@@ -88,6 +94,13 @@ public interface ReturnTypeParser {
 		}
 	}
 
+	/**
+	 * Gets resolved type.
+	 *
+	 * @param resolvableType the resolvable type
+	 * @param contextClass the context class
+	 * @return the resolved type
+	 */
 	static ResolvableType getResolvedType(ResolvableType resolvableType, Class<?> contextClass) {
 		ParameterizedType parameterizedType = (ParameterizedType) resolvableType.getType();
 		Class<?>[] generics = new Class<?>[parameterizedType.getActualTypeArguments().length];

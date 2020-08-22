@@ -41,6 +41,7 @@ import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
+import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.PropertyCustomizer;
@@ -271,12 +272,13 @@ public class SpringDocConfiguration {
 	 * Parameter builder generic parameter builder.
 	 *
 	 * @param propertyResolverUtils the property resolver utils
+	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 * @return the generic parameter builder
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	GenericParameterBuilder parameterBuilder(PropertyResolverUtils propertyResolverUtils) {
-		return new GenericParameterBuilder(propertyResolverUtils);
+	GenericParameterBuilder parameterBuilder(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
+		return new GenericParameterBuilder(propertyResolverUtils,optionalDelegatingMethodParameterCustomizer);
 	}
 
 	/**
