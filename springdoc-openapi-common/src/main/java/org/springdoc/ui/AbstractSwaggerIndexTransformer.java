@@ -58,8 +58,8 @@ public class AbstractSwaggerIndexTransformer {
 	/**
 	 * Instantiates a new Abstract swagger index transformer.
 	 *
-	 * @param swaggerUiConfig the swagger ui config 
-	 * @param swaggerUiOAuthProperties the swagger ui o auth properties 
+	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
 	 * @param objectMapper the object mapper
 	 */
 	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
@@ -71,8 +71,8 @@ public class AbstractSwaggerIndexTransformer {
 	/**
 	 * Add init oauth string.
 	 *
-	 * @param html the html 
-	 * @return the string 
+	 * @param html the html
+	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	protected String addInitOauth(String html) throws JsonProcessingException {
@@ -87,8 +87,8 @@ public class AbstractSwaggerIndexTransformer {
 	/**
 	 * Read fully as string string.
 	 *
-	 * @param inputStream the input stream 
-	 * @return the string 
+	 * @param inputStream the input stream
+	 * @return the string
 	 * @throws IOException the io exception
 	 */
 	protected String readFullyAsString(InputStream inputStream)
@@ -105,7 +105,7 @@ public class AbstractSwaggerIndexTransformer {
 	/**
 	 * Overwrite swagger default url string.
 	 *
-	 * @param html the html 
+	 * @param html the html
 	 * @return the string
 	 */
 	protected String overwriteSwaggerDefaultUrl(String html) {
@@ -125,8 +125,8 @@ public class AbstractSwaggerIndexTransformer {
 	/**
 	 * Default transformations string.
 	 *
-	 * @param inputStream the input stream 
-	 * @return the string 
+	 * @param inputStream the input stream
+	 * @return the string
 	 * @throws IOException the io exception
 	 */
 	protected String defaultTransformations(InputStream inputStream) throws IOException {
@@ -143,6 +143,12 @@ public class AbstractSwaggerIndexTransformer {
 		return html;
 	}
 
+	/**
+	 * Add csrf string.
+	 *
+	 * @param html the html
+	 * @return the string
+	 */
 	protected String addCSRF(String html) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("requestInterceptor: function() {\n");

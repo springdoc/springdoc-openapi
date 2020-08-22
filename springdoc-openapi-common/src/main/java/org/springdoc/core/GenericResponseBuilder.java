@@ -67,7 +67,6 @@ import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper
  * The type Generic response builder.
  * @author bnasslahsen
  */
-@SuppressWarnings("rawtypes")
 public class GenericResponseBuilder {
 
 	/**
@@ -539,6 +538,13 @@ public class GenericResponseBuilder {
 				.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
 	}
 
+	/**
+	 * Is valid http code boolean.
+	 *
+	 * @param httpCode the http code
+	 * @param methodParameter the method parameter
+	 * @return the boolean
+	 */
 	private boolean isValidHttpCode(String httpCode, MethodParameter methodParameter) {
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responseSet = getApiResponses(methodParameter.getMethod());
 		if (isHttpCodePresent(httpCode, responseSet))
@@ -556,6 +562,13 @@ public class GenericResponseBuilder {
 		return false;
 	}
 
+	/**
+	 * Is http code present boolean.
+	 *
+	 * @param httpCode the http code
+	 * @param responseSet the response set
+	 * @return the boolean
+	 */
 	private boolean isHttpCodePresent(String httpCode, Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responseSet) {
 		return !responseSet.isEmpty() && responseSet.stream().anyMatch(apiResponseAnnotations -> httpCode.equals(apiResponseAnnotations.responseCode()));
 	}

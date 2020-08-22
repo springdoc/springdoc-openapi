@@ -19,6 +19,9 @@ import org.springframework.util.CollectionUtils;
  */
 public class ActuatorOpenApiCustomiser implements OpenApiCustomiser {
 
+	/**
+	 * The Path pathern.
+	 */
 	private final Pattern pathPathern = Pattern.compile("\\{(.*?)}");
 
 	@Override

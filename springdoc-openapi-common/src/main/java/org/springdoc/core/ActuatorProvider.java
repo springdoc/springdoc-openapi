@@ -63,6 +63,7 @@ public interface ActuatorProvider {
 	 * Is rest controller boolean.
 	 *
 	 * @param operationPath the operation path
+	 * @param controllerClass the controller class
 	 * @return the boolean
 	 */
 	default boolean isRestController(String operationPath, Class<?>  controllerClass) {

@@ -136,7 +136,7 @@ public class DataRestRequestBuilder {
 	 * @param parameters the parameters
 	 */
 	public void buildCommonParameters(Class<?> domainType, OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters) {
-		parameters = DelegatingMethodParameter.customize(pNames, parameters);
+		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
 		for (MethodParameter methodParameter : parameters) {
 			final String pName = methodParameter.getParameterName();
 			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter);

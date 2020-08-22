@@ -64,7 +64,7 @@ public class AbstractRouterFunctionVisitor {
 	/**
 	 * Header.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @param value the value
 	 */
 	public void header(String name, String value) {
@@ -88,7 +88,7 @@ public class AbstractRouterFunctionVisitor {
 	/**
 	 * Query param.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @param value the value
 	 */
 	public void queryParam(String name, String value) {
@@ -107,7 +107,7 @@ public class AbstractRouterFunctionVisitor {
 	/**
 	 * Param.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @param value the value
 	 */
 	public void param(String name, String value) {
