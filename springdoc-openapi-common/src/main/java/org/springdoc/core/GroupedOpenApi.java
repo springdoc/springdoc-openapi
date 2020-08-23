@@ -220,6 +220,7 @@ public class GroupedOpenApi {
 		 * @param group the group
 		 * @return the group
 		 * @deprecated Since v1.4.0, GroupedOpenApi.setGroup is marked as deprecated. Use {@link #group(String) } instead.
+		 * will be removed with v1.5.0
 		 */
 		@Deprecated
 		public Builder setGroup(String group) {

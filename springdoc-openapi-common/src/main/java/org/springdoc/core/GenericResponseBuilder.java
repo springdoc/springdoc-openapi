@@ -294,11 +294,10 @@ public class GenericResponseBuilder {
 			// API Responses at operation and @ApiResponse annotation
 			for (Map.Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
 				String httpCode = entry.getKey();
-				if (!genericMapResponse.containsKey(httpCode)) {
-					if (!methodAttributes.isMethodOverloaded() || (methodAttributes.isMethodOverloaded() && isValidHttpCode(httpCode, methodParameter))) {
-						ApiResponse apiResponse = entry.getValue();
-						buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, false);
-					}
+				boolean methodAttributesCondition = !methodAttributes.isMethodOverloaded() || (methodAttributes.isMethodOverloaded() && isValidHttpCode(httpCode, methodParameter));
+				if (!genericMapResponse.containsKey(httpCode) && methodAttributesCondition) {
+					ApiResponse apiResponse = entry.getValue();
+					buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, false);
 				}
 			}
 		}
@@ -546,20 +545,21 @@ public class GenericResponseBuilder {
 	 * @return the boolean
 	 */
 	private boolean isValidHttpCode(String httpCode, MethodParameter methodParameter) {
+		boolean result = false;
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responseSet = getApiResponses(methodParameter.getMethod());
 		if (isHttpCodePresent(httpCode, responseSet))
-			return true;
-		io.swagger.v3.oas.annotations.Operation apiOperation = AnnotatedElementUtils.findMergedAnnotation(methodParameter.getMethod(),
-				io.swagger.v3.oas.annotations.Operation.class);
-		if (apiOperation != null) {
+			result = true;
+		else if (AnnotatedElementUtils.findMergedAnnotation(methodParameter.getMethod(),
+				io.swagger.v3.oas.annotations.Operation.class) != null) {
+			io.swagger.v3.oas.annotations.Operation apiOperation = AnnotatedElementUtils.findMergedAnnotation(methodParameter.getMethod(),
+					io.swagger.v3.oas.annotations.Operation.class);
 			responseSet = new HashSet<>(Arrays.asList(apiOperation.responses()));
 			if (isHttpCodePresent(httpCode, responseSet))
-				return true;
+				result = true;
 		}
-		String httpCode1 = evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getMethod().getClass(), false);
-		if (httpCode.equals(httpCode1))
-			return true;
-		return false;
+		else if (httpCode.equals(evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getMethod().getClass(), false)))
+			result = true;
+		return result;
 	}
 
 	/**
