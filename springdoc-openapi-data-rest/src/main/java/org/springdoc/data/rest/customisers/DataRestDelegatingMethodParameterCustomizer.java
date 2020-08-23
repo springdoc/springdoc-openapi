@@ -249,12 +249,12 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 
 						@Override
 						public boolean readOnly() {
-							return parameter.schema().readOnly();
+							return AccessMode.READ_ONLY.equals(parameter.schema().accessMode());
 						}
 
 						@Override
 						public boolean writeOnly() {
-							return parameter.schema().writeOnly();
+							return AccessMode.WRITE_ONLY.equals(parameter.schema().accessMode());
 						}
 
 						@Override
