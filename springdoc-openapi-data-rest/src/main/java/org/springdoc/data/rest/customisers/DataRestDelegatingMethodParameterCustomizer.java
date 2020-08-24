@@ -2,6 +2,7 @@ package org.springdoc.data.rest.customisers;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +23,7 @@ import org.springdoc.core.DelegatingMethodParameter;
 import org.springdoc.core.converters.models.Pageable;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.web.PageableDefault;
 
@@ -35,11 +37,16 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataRestDelegatingMethodParameterCustomizer.class);
 
+	private final Optional<SpringDataWebProperties> optionalSpringDataWebProperties;
+
+	public DataRestDelegatingMethodParameterCustomizer(Optional<SpringDataWebProperties> optionalSpringDataWebProperties) {
+		this.optionalSpringDataWebProperties = optionalSpringDataWebProperties;
+	}
 
 	@Override
 	public void customize(MethodParameter originalParameter, MethodParameter methodParameter) {
 		PageableDefault pageableDefault = originalParameter.getParameterAnnotation(PageableDefault.class);
-		if (pageableDefault != null) {
+		if (pageableDefault != null || optionalSpringDataWebProperties.isPresent()) {
 			Field field = FieldUtils.getDeclaredField(DelegatingMethodParameter.class, "additionalParameterAnnotations", true);
 			try {
 				Annotation[] parameterAnnotations = (Annotation[]) field.get(methodParameter);
@@ -62,8 +69,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 * @param pageableDefault the pageable default
 	 * @return the new parameter annotation for field
 	 */
-	private static Annotation getNewParameterAnnotationForField(String parameterName, PageableDefault pageableDefault) {
-		String defaultValue = getDefaultValue(parameterName, pageableDefault);
+	private Annotation getNewParameterAnnotationForField(String parameterName, PageableDefault pageableDefault) {
 		Field field;
 		Parameter parameterNew = null;
 		try {
@@ -77,10 +83,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 
 				@Override
 				public String name() {
-					if (parameterName.equals("sort"))
-						return defaultValue;
-					else
-						return parameter.name();
+					return getName(parameterName, pageableDefault, parameter.name());
 				}
 
 				@Override
@@ -289,10 +292,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 
 						@Override
 						public String defaultValue() {
-							if (!parameterName.equals("sort"))
-								return defaultValue;
-							else
-								return parameter.schema().defaultValue();
+							return getDefaultValue(parameterName, pageableDefault, parameter.schema().defaultValue());
 						}
 
 						@Override
@@ -369,27 +369,65 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		return parameterNew;
 	}
 
+	private String getName(String parameterName, PageableDefault pageableDefault, String originalName) {
+		String name = null;
+		switch (parameterName) {
+			case "size":
+				if (optionalSpringDataWebProperties.isPresent())
+					name = optionalSpringDataWebProperties.get().getPageable().getSizeParameter();
+				else
+					name = originalName;
+				break;
+			case "sort":
+				if (pageableDefault != null && ArrayUtils.isNotEmpty(pageableDefault.sort()))
+					name = String.join(",", pageableDefault.sort());
+				else if (optionalSpringDataWebProperties.isPresent())
+					name = optionalSpringDataWebProperties.get().getSort().getSortParameter();
+				break;
+			case "page":
+				if (optionalSpringDataWebProperties.isPresent())
+					name = optionalSpringDataWebProperties.get().getPageable().getPageParameter();
+				else
+					name = originalName;
+				break;
+			case "direction":
+					name = originalName;
+				break;
+			default:
+				// Do nothing here
+				break;
+		}
+		return name;
+	}
+
 	/**
 	 * Gets default value.
 	 *
 	 * @param parameterName the parameter name
 	 * @param pageableDefault the pageable default
+	 * @param defaultSchemaVal the default schema val
 	 * @return the default value
 	 */
-	private static String getDefaultValue(String parameterName, PageableDefault pageableDefault) {
+	private String getDefaultValue(String parameterName, PageableDefault pageableDefault, String defaultSchemaVal) {
 		String defaultValue = null;
 		switch (parameterName) {
 			case "size":
-				defaultValue = String.valueOf(pageableDefault.size());
+				if (pageableDefault != null)
+					defaultValue = String.valueOf(pageableDefault.size());
+				else if (optionalSpringDataWebProperties.isPresent())
+					defaultValue = String.valueOf(optionalSpringDataWebProperties.get().getPageable().getDefaultPageSize());
 				break;
 			case "sort":
-				defaultValue = String.join(",", pageableDefault.sort());
+				if (pageableDefault != null)
+					defaultValue = defaultSchemaVal;
 				break;
 			case "page":
-				defaultValue = String.valueOf(pageableDefault.page());
+				if (pageableDefault != null)
+					defaultValue = String.valueOf(pageableDefault.page());
 				break;
 			case "direction":
-				defaultValue = pageableDefault.direction().name();
+				if (pageableDefault != null)
+					defaultValue = pageableDefault.direction().name();
 				break;
 			default:
 				// Do nothing here
