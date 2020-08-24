@@ -84,13 +84,15 @@ public class SpringDocDataRestConfiguration {
 	/**
 	 * Delegating method parameter customizer delegating method parameter customizer.
 	 *
+	 * @param optionalSpringDataWebProperties the optional spring data web properties
+	 * @param optionalRepositoryRestConfiguration the optional repository rest configuration
 	 * @return the delegating method parameter customizer
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	DelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer(Optional<SpringDataWebProperties> optionalSpringDataWebProperties) {
-		return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebProperties);
+	DelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer(Optional<SpringDataWebProperties> optionalSpringDataWebProperties, Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
+		return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebProperties,optionalRepositoryRestConfiguration);
 	}
 
 	/**

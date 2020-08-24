@@ -19,7 +19,7 @@
         "operationId": "getAllPets",
         "parameters": [
           {
-            "name": "pages",
+            "name": "page",
             "in": "query",
             "description": "Zero-based page index (0..N)",
             "required": false,
@@ -30,18 +30,18 @@
             }
           },
           {
-            "name": "sizes",
+            "name": "size",
             "in": "query",
             "description": "The size of the page to be returned",
             "required": false,
             "schema": {
               "minimum": 1,
               "type": "integer",
-              "default": "25"
+              "default": "50"
             }
           },
           {
-            "name": "sorts",
+            "name": "sort",
             "in": "query",
             "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
             "required": false,

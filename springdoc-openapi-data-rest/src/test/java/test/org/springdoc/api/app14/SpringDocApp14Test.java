@@ -23,21 +23,50 @@
 
 package test.org.springdoc.api.app14;
 
+import java.util.Optional;
+
+import org.springdoc.core.converters.models.Pageable;
+import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
+import org.springdoc.data.rest.SpringDocDataRestConfiguration;
+import org.springdoc.data.rest.customisers.DataRestDelegatingMethodParameterCustomizer;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.test.context.TestPropertySource;
+
+import static org.springdoc.core.SpringDocUtils.getConfig;
 
 @TestPropertySource(properties = { "spring.data.web.pageable.default-page-size=25",
 		"spring.data.web.pageable.page-parameter=pages",
 		"spring.data.web.pageable.size-parameter=sizes",
 		"spring.data.web.sort.sort-parameter=sorts" })
-@EnableConfigurationProperties(value = { SpringDataWebProperties.class})
+@EnableAutoConfiguration(exclude = {
+		RepositoryRestMvcAutoConfiguration.class, SpringDocDataRestConfiguration.class
+})
 public class SpringDocApp14Test extends AbstractSpringDocTest {
 
+	static {
+		getConfig().replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
+				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
+	}
+
+
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+		// We only need to test spring-web with Pageable, without the use of spring-data-rest-starter
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		DelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer(Optional<SpringDataWebProperties> optionalSpringDataWebProperties, Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
+			return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebProperties, optionalRepositoryRestConfiguration);
+		}
+	}
 
 }
