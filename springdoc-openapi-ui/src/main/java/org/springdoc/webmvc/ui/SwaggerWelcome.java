@@ -41,6 +41,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.MVC_SERVLET_PATH;
@@ -49,7 +50,6 @@ import static org.springdoc.core.Constants.SWAGGER_CONFIG_URL;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
 import static org.springdoc.core.Constants.SWAGGER_UI_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
-import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
 
 /**
  * The type Swagger welcome.
@@ -88,9 +88,9 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	@GetMapping(SWAGGER_UI_PATH)
 	public String redirectToUi(HttpServletRequest request) {
 		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
-		String sbUrl = REDIRECT_URL_PREFIX + swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
+		String sbUrl =   swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
-		return uriBuilder.build().encode().toString();
+		return UrlBasedViewResolver.REDIRECT_URL_PREFIX + uriBuilder.build().encode().toString();
 	}
 
 	/**
