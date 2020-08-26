@@ -25,6 +25,7 @@ package org.springdoc.data.rest;
 
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.Predicate;
 import org.springdoc.core.AbstractRequestBuilder;
 import org.springdoc.core.GenericParameterBuilder;
@@ -53,6 +54,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mapping.context.PersistentEntities;
 import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -157,15 +159,18 @@ public class SpringDocDataRestConfiguration {
 		 * @param associations the associations
 		 * @param delegatingHandlerMapping the delegating handler mapping
 		 * @param dataRestRouterOperationBuilder the data rest router operation builder
+		 * @param persistentEntities the persistent entities
+		 * @param mapper the mapper
 		 * @return the spring repository rest resource provider
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		SpringRepositoryRestResourceProvider springRepositoryRestResourceProvider(ResourceMappings mappings,
 				Repositories repositories, Associations associations, DelegatingHandlerMapping delegatingHandlerMapping,
-				DataRestRouterOperationBuilder dataRestRouterOperationBuilder) {
-			return new SpringRepositoryRestResourceProvider(mappings, repositories, associations,
-					delegatingHandlerMapping, dataRestRouterOperationBuilder);
+				DataRestRouterOperationBuilder dataRestRouterOperationBuilder, PersistentEntities persistentEntities,
+				ObjectMapper mapper) {
+			return new SpringRepositoryRestResourceProvider(mappings,repositories,  associations,  delegatingHandlerMapping,
+					 dataRestRouterOperationBuilder,  persistentEntities, mapper);
 		}
 
 		/**

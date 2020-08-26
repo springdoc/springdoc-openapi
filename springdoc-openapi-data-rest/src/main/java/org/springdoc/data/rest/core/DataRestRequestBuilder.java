@@ -172,7 +172,9 @@ public class DataRestRequestBuilder {
 	 * @return the boolean
 	 */
 	private boolean isParamToIgnore(MethodParameter methodParameter) {
-		return !requestBuilder.isParamToIgnore(methodParameter) && !isHeaderToIgnore(methodParameter);
+		return !requestBuilder.isParamToIgnore(methodParameter)
+				&& !isHeaderToIgnore(methodParameter)
+				&& !"property".equals(methodParameter.getParameterName());
 	}
 
 	/**

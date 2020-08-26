@@ -293,7 +293,7 @@
         ]
       }
     },
-    "/accounts/{id}/{property}": {
+    "/accounts/{id}/customer": {
       "get": {
         "tags": [
           "The account Repository"
@@ -303,14 +303,6 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "property",
             "in": "path",
             "required": true,
             "schema": {
@@ -358,14 +350,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "property",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "requestBody": {
@@ -418,67 +402,6 @@
           }
         ]
       },
-      "post": {
-        "tags": [
-          "The account Repository"
-        ],
-        "description": "create-account",
-        "operationId": "createPropertyReference-account-post",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "property",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      },
       "delete": {
         "tags": [
           "The account Repository"
@@ -488,14 +411,6 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "property",
             "in": "path",
             "required": true,
             "schema": {
@@ -526,14 +441,6 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "property",
             "in": "path",
             "required": true,
             "schema": {
@@ -582,7 +489,7 @@
         ]
       }
     },
-    "/accounts/{id}/{property}/{propertyId}": {
+    "/accounts/{id}/customer/{propertyId}": {
       "get": {
         "tags": [
           "The account Repository"
@@ -592,14 +499,6 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "property",
             "in": "path",
             "required": true,
             "schema": {
@@ -645,14 +544,6 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "property",
             "in": "path",
             "required": true,
             "schema": {
@@ -934,287 +825,6 @@
         }
       }
     },
-    "/customers/{id}/{property}": {
-      "get": {
-        "tags": [
-          "The customer Repository"
-        ],
-        "description": "get-customer",
-        "operationId": "followPropertyReference-customer-get_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "property",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
-                }
-              },
-              "text/uri-list": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "The customer Repository"
-        ],
-        "description": "update-customer",
-        "operationId": "createPropertyReference-customer-put",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "property",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "The customer Repository"
-        ],
-        "description": "create-customer",
-        "operationId": "createPropertyReference-customer-post",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "property",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "The customer Repository"
-        ],
-        "description": "patch-customer",
-        "operationId": "createPropertyReference-customer-patch",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "property",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/customers/{id}/{property}/{propertyId}": {
-      "get": {
-        "tags": [
-          "The customer Repository"
-        ],
-        "description": "get-customer",
-        "operationId": "followPropertyReference-customer-get",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "property",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "propertyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
     "/profile": {
       "get": {
         "tags": [
@@ -1378,14 +988,6 @@
           }
         }
       },
-      "RepresentationModelAccount": {
-        "type": "object",
-        "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "Account": {
         "type": "object",
         "properties": {
@@ -1399,6 +1001,25 @@
           "expiryDate": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "CollectionModelAccount": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "accounts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
           }
         }
       },
@@ -1417,20 +1038,9 @@
           }
         }
       },
-      "CollectionModelAccount": {
+      "RepresentationModelAccount": {
         "type": "object",
         "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "accounts": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Account"
-                }
-              }
-            }
-          },
           "_links": {
             "$ref": "#/components/schemas/Links"
           }
@@ -1474,14 +1084,6 @@
           }
         }
       },
-      "RepresentationModelCustomer": {
-        "type": "object",
-        "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "CollectionModelCustomer": {
         "type": "object",
         "properties": {
@@ -1496,6 +1098,14 @@
               }
             }
           },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "RepresentationModelCustomer": {
+        "type": "object",
+        "properties": {
           "_links": {
             "$ref": "#/components/schemas/Links"
           }

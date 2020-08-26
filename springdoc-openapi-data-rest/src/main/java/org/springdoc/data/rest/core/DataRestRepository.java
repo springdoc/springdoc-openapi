@@ -40,6 +40,16 @@ public class DataRestRepository {
 	private Class<?> repositoryType;
 
 	/**
+	 * The Relation name.
+	 */
+	private String relationName;
+
+	/**
+	 * The Controller type.
+	 */
+	private ControllerType controllerType;
+
+	/**
 	 * Instantiates a new Data rest repository.
 	 *
 	 * @param domainType the domain type
@@ -84,5 +94,41 @@ public class DataRestRepository {
 	 */
 	public void setRepositoryType(Class<?> repositoryType) {
 		this.repositoryType = repositoryType;
+	}
+
+	/**
+	 * Gets relation name.
+	 *
+	 * @return the relation name
+	 */
+	public String getRelationName() {
+		return relationName;
+	}
+
+	/**
+	 * Sets relation name.
+	 *
+	 * @param relationName the relation name
+	 */
+	public void setRelationName(String relationName) {
+		this.relationName = relationName;
+	}
+
+	/**
+	 * Gets controller type.
+	 *
+	 * @return the controller type
+	 */
+	public ControllerType getControllerType() {
+		return controllerType;
+	}
+
+	/**
+	 * Sets controller type.
+	 *
+	 * @param controllerType the controller type
+	 */
+	public void setControllerType(ControllerType controllerType) {
+		this.controllerType = controllerType;
 	}
 }
