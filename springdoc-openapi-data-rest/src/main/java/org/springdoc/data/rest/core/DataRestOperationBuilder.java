@@ -143,7 +143,7 @@ public class DataRestOperationBuilder {
 		Operation operation = initOperation(handlerMethod, domainType, requestMethod);
 		dataRestRequestBuilder.buildParameters(domainType, openAPI, handlerMethod, requestMethod, methodAttributes, operation, resourceMetadata);
 		dataRestResponseBuilder.buildEntityResponse(operation, handlerMethod, openAPI, requestMethod, operationPath, domainType, methodAttributes);
-		tagsBuilder.buildEntityTags(operation, openAPI, handlerMethod, dataRestRepository);
+		tagsBuilder.buildEntityTags(operation, handlerMethod, dataRestRepository);
 		if (domainType != null)
 			addOperationDescription(operation, requestMethod, domainType.getSimpleName().toLowerCase());
 		return operation;
@@ -192,7 +192,7 @@ public class DataRestOperationBuilder {
 					.ifPresent(methodParameterPage -> dataRestRequestBuilder.buildCommonParameters(domainType, openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameterPage.getParameterName() }, new MethodParameter[] { methodParameterPage }));
 		}
 		dataRestResponseBuilder.buildSearchResponse(operation, handlerMethod, openAPI, methodResourceMapping, domainType, methodAttributes);
-		tagsBuilder.buildSearchTags(operation, openAPI, handlerMethod, dataRestRepository);
+		tagsBuilder.buildSearchTags(operation, handlerMethod, dataRestRepository);
 		return operation;
 	}
 
