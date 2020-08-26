@@ -26,7 +26,6 @@ package org.springdoc.data.rest.core;
 import java.util.HashSet;
 import java.util.Set;
 
-import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.tags.Tag;
 import org.springdoc.core.OpenAPIBuilder;
@@ -47,7 +46,7 @@ public class DataRestTagsBuilder {
 	/**
 	 * The Open api builder.
 	 */
-	private OpenAPIBuilder openAPIBuilder;
+	private final OpenAPIBuilder openAPIBuilder;
 
 	/**
 	 * Instantiates a new Data rest tags builder.
@@ -62,37 +61,34 @@ public class DataRestTagsBuilder {
 	 * Build search tags.
 	 *
 	 * @param operation the operation
-	 * @param openAPI the open api
 	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
 	 */
-	public void buildSearchTags(Operation operation, OpenAPI openAPI, HandlerMethod handlerMethod,
+	public void buildSearchTags(Operation operation, HandlerMethod handlerMethod,
 			DataRestRepository dataRestRepository) {
-		buildTags(operation, openAPI, handlerMethod, dataRestRepository);
+		buildTags(operation, handlerMethod, dataRestRepository);
 	}
 
 	/**
 	 * Build entity tags.
 	 *
 	 * @param operation the operation
-	 * @param openAPI the open api
 	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
 	 */
-	public void buildEntityTags(Operation operation, OpenAPI openAPI, HandlerMethod handlerMethod,
+	public void buildEntityTags(Operation operation, HandlerMethod handlerMethod,
 			DataRestRepository dataRestRepository) {
-		buildTags(operation, openAPI, handlerMethod, dataRestRepository);
+		buildTags(operation, handlerMethod, dataRestRepository);
 	}
 
 	/**
 	 * Build tags.
 	 *
 	 * @param operation the operation
-	 * @param openAPI the open api
 	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
 	 */
-	private void buildTags(Operation operation, OpenAPI openAPI, HandlerMethod handlerMethod,
+	private void buildTags(Operation operation, HandlerMethod handlerMethod,
 			DataRestRepository dataRestRepository) {
 		String tagName = handlerMethod.getBeanType().getSimpleName();
 		if (SpringRepositoryRestResourceProvider.REPOSITORY_SCHEMA_CONTROLLER.equals(handlerMethod.getBeanType().getName())
