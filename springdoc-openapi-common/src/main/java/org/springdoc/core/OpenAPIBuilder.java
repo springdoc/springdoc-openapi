@@ -20,6 +20,7 @@
 
 package org.springdoc.core;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -253,33 +254,11 @@ public class OpenAPIBuilder {
 	 */
 	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
 
-		// class tags
-		Set<Tags> tagsSet = AnnotatedElementUtils
-				.findAllMergedAnnotations(handlerMethod.getBeanType(), Tags.class);
-		Set<Tag> classTags = tagsSet.stream()
-				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet());
-		classTags.addAll(AnnotatedElementUtils.findAllMergedAnnotations(handlerMethod.getBeanType(), Tag.class));
-
-		// method tags
-		tagsSet = AnnotatedElementUtils
-				.findAllMergedAnnotations(handlerMethod.getMethod(), Tags.class);
-		Set<Tag> methodTags = tagsSet.stream()
-				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet());
-		methodTags.addAll(AnnotatedElementUtils.findAllMergedAnnotations(handlerMethod.getMethod(), Tag.class));
-
-
-		List<Tag> allTags = new ArrayList<>();
+		Set<io.swagger.v3.oas.models.tags.Tag> tags = new HashSet<>();
 		Set<String> tagsStr = new HashSet<>();
 
-		if (!CollectionUtils.isEmpty(methodTags)) {
-			tagsStr.addAll(methodTags.stream().map(Tag::name).collect(Collectors.toSet()));
-			allTags.addAll(methodTags);
-		}
-
-		if (!CollectionUtils.isEmpty(classTags)) {
-			tagsStr.addAll(classTags.stream().map(Tag::name).collect(Collectors.toSet()));
-			allTags.addAll(classTags);
-		}
+		buildTagsFromClass(handlerMethod.getBeanType(), tags, tagsStr);
+		buildTagsFromMethod(handlerMethod.getMethod(), tags, tagsStr);
 
 		if (springdocTags.containsKey(handlerMethod)) {
 			io.swagger.v3.oas.models.tags.Tag tag = springdocTags.get(handlerMethod);
@@ -289,16 +268,18 @@ public class OpenAPIBuilder {
 			}
 		}
 
-		Optional<Set<io.swagger.v3.oas.models.tags.Tag>> tags = AnnotationsUtils
-				.getTags(allTags.toArray(new Tag[0]), true);
+		if (!CollectionUtils.isEmpty(tagsStr))
+			operation.setTags(new ArrayList<>(tagsStr));
 
-		if (tags.isPresent()) {
-			Set<io.swagger.v3.oas.models.tags.Tag> tagSet = tags.get();
+		if (isAutoTagClasses(operation))
+			operation.addTagsItem(splitCamelCase(handlerMethod.getBeanType().getSimpleName()));
+
+		if (!CollectionUtils.isEmpty(tags)) {
 			// Existing tags
 			List<io.swagger.v3.oas.models.tags.Tag> openApiTags = openAPI.getTags();
 			if (!CollectionUtils.isEmpty(openApiTags))
-				tagSet.addAll(openApiTags);
-			openAPI.setTags(new ArrayList<>(tagSet));
+				tags.addAll(openApiTags);
+			openAPI.setTags(new ArrayList<>(tags));
 		}
 
 		// Handle SecurityRequirement at operation level
@@ -310,14 +291,39 @@ public class OpenAPIBuilder {
 			else
 				securityParser.buildSecurityRequirement(securityRequirements, operation);
 		}
-		if (!CollectionUtils.isEmpty(tagsStr))
-			operation.setTags(new ArrayList<>(tagsStr));
-
-
-		if (isAutoTagClasses(operation))
-			operation.addTagsItem(splitCamelCase(handlerMethod.getBeanType().getSimpleName()));
 
 		return operation;
+	}
+
+	private void buildTagsFromMethod(Method method, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr) {
+		// method tags
+		Set<Tags> tagsSet = AnnotatedElementUtils
+				.findAllMergedAnnotations(method, Tags.class);
+		Set<Tag> methodTags = tagsSet.stream()
+				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet());
+		methodTags.addAll(AnnotatedElementUtils.findAllMergedAnnotations(method, Tag.class));
+		if (!CollectionUtils.isEmpty(methodTags)) {
+			tagsStr.addAll(methodTags.stream().map(Tag::name).collect(Collectors.toSet()));
+			List<Tag> allTags = new ArrayList<>(methodTags);
+			AnnotationsUtils
+					.getTags(allTags.toArray(new Tag[0]), true).ifPresent(tags::addAll);
+		}
+	}
+
+	public void buildTagsFromClass(Class<?> beanType, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr) {
+		List<Tag> allTags = new ArrayList<>();
+		// class tags
+		Set<Tags> tagsSet = AnnotatedElementUtils
+				.findAllMergedAnnotations(beanType, Tags.class);
+		Set<Tag> classTags = tagsSet.stream()
+				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet());
+		classTags.addAll(AnnotatedElementUtils.findAllMergedAnnotations(beanType, Tag.class));
+		if (!CollectionUtils.isEmpty(classTags)) {
+			tagsStr.addAll(classTags.stream().map(Tag::name).collect(Collectors.toSet()));
+			allTags.addAll(classTags);
+			AnnotationsUtils
+					.getTags(allTags.toArray(new Tag[0]), true).ifPresent(tags::addAll);
+		}
 	}
 
 	/**
@@ -653,5 +659,9 @@ public class OpenAPIBuilder {
 	 */
 	public ApplicationContext getContext() {
 		return context;
+	}
+
+	public SecurityParser getSecurityParser() {
+		return securityParser;
 	}
 }

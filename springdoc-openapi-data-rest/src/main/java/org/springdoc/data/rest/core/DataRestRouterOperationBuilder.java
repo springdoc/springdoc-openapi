@@ -106,15 +106,15 @@ public class DataRestRouterOperationBuilder {
 	 * @param routerOperationList the router operation list
 	 * @param handlerMethodMap the handler method map
 	 * @param resourceMetadata the resource metadata
-	 * @param domainType the domain type
+	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
 	 */
 	public void buildEntityRouterOperationList(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
-			Class<?> domainType, OpenAPI openAPI) {
+			DataRestRepository dataRestRepository, OpenAPI openAPI) {
 		String path = resourceMetadata.getPath().toString();
 		for (Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethodMap.entrySet()) {
-			buildRouterOperationList(routerOperationList, resourceMetadata, domainType, openAPI, path, entry, null, ControllerType.ENTITY, null);
+			buildRouterOperationList(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path, entry, null, ControllerType.ENTITY, null);
 		}
 	}
 
@@ -124,19 +124,19 @@ public class DataRestRouterOperationBuilder {
 	 * @param routerOperationList the router operation list
 	 * @param handlerMethodMap the handler method map
 	 * @param resourceMetadata the resource metadata
-	 * @param domainType the domain type
+	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
 	 * @param methodResourceMapping the method resource mapping
 	 */
 	public void buildSearchRouterOperationList(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
-			Class<?> domainType, OpenAPI openAPI, MethodResourceMapping methodResourceMapping) {
+			DataRestRepository dataRestRepository, OpenAPI openAPI, MethodResourceMapping methodResourceMapping) {
 		String path = resourceMetadata.getPath().toString();
 		Path subPath = methodResourceMapping.getPath();
 		Optional<Entry<RequestMappingInfo, HandlerMethod>> entryOptional = getSearchEntry(handlerMethodMap);
 		if (entryOptional.isPresent()) {
 			Entry<RequestMappingInfo, HandlerMethod> entry = entryOptional.get();
-			buildRouterOperationList(routerOperationList, null, domainType, openAPI, path, entry, subPath.toString(), ControllerType.SEARCH, methodResourceMapping);
+			buildRouterOperationList(routerOperationList, null, dataRestRepository, openAPI, path, entry, subPath.toString(), ControllerType.SEARCH, methodResourceMapping);
 		}
 	}
 
@@ -145,7 +145,7 @@ public class DataRestRouterOperationBuilder {
 	 *
 	 * @param routerOperationList the router operation list
 	 * @param resourceMetadata the resource metadata
-	 * @param domainType the domain type
+	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
 	 * @param path the path
 	 * @param entry the entry
@@ -154,7 +154,7 @@ public class DataRestRouterOperationBuilder {
 	 * @param methodResourceMapping the method resource mapping
 	 */
 	private void buildRouterOperationList(List<RouterOperation> routerOperationList, ResourceMetadata resourceMetadata,
-			Class<?> domainType, OpenAPI openAPI, String path, Entry<RequestMappingInfo, HandlerMethod> entry,
+			DataRestRepository dataRestRepository, OpenAPI openAPI, String path, Entry<RequestMappingInfo, HandlerMethod> entry,
 			String subPath, ControllerType entity, MethodResourceMapping methodResourceMapping) {
 		RequestMappingInfo requestMappingInfo = entry.getKey();
 		HandlerMethod handlerMethod = entry.getValue();
@@ -177,7 +177,7 @@ public class DataRestRouterOperationBuilder {
 				Set<String> patterns = patternsRequestCondition.getPatterns();
 				Map<String, String> regexMap = new LinkedHashMap<>();
 				String operationPath = calculateOperationPath(path, subPath, patterns, regexMap, entity);
-				buildRouterOperation(routerOperationList, domainType, openAPI, methodResourceMapping,
+				buildRouterOperation(routerOperationList, dataRestRepository, openAPI, methodResourceMapping,
 						handlerMethod, requestMethod, resourceMetadata, operationPath, entity);
 			}
 		}
@@ -209,7 +209,7 @@ public class DataRestRouterOperationBuilder {
 	 * Build router operation.
 	 *
 	 * @param routerOperationList the router operation list
-	 * @param domainType the domain type
+	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
 	 * @param methodResourceMapping the method resource mapping
 	 * @param handlerMethod the handler method
@@ -218,7 +218,7 @@ public class DataRestRouterOperationBuilder {
 	 * @param operationPath the operation path
 	 * @param controllerType the controller type
 	 */
-	private void buildRouterOperation(List<RouterOperation> routerOperationList, Class<?> domainType, OpenAPI openAPI,
+	private void buildRouterOperation(List<RouterOperation> routerOperationList, DataRestRepository dataRestRepository, OpenAPI openAPI,
 			MethodResourceMapping methodResourceMapping, HandlerMethod handlerMethod,
 			RequestMethod requestMethod, ResourceMetadata resourceMetadata, String operationPath, ControllerType controllerType) {
 		RouterOperation routerOperation = new RouterOperation(operationPath, new RequestMethod[] { requestMethod });
@@ -226,7 +226,7 @@ public class DataRestRouterOperationBuilder {
 		methodAttributes.calculateConsumesProduces(handlerMethod.getMethod());
 		routerOperation.setConsumes(methodAttributes.getMethodConsumes());
 		routerOperation.setProduces(methodAttributes.getMethodProduces());
-		Operation operation = dataRestOperationBuilder.buildOperation(handlerMethod, domainType,
+		Operation operation = dataRestOperationBuilder.buildOperation(handlerMethod, dataRestRepository,
 				openAPI, requestMethod, operationPath, methodAttributes, resourceMetadata, methodResourceMapping, controllerType);
 		routerOperation.setOperationModel(operation);
 		routerOperationList.add(routerOperation);

@@ -97,7 +97,7 @@ public class DataRestOperationBuilder {
 	 * Build operation operation.
 	 *
 	 * @param handlerMethod the handler method
-	 * @param domainType the domain type
+	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
 	 * @param requestMethod the request method
 	 * @param operationPath the operation path
@@ -107,16 +107,16 @@ public class DataRestOperationBuilder {
 	 * @param controllerType the controller type
 	 * @return the operation
 	 */
-	public Operation buildOperation(HandlerMethod handlerMethod, Class<?> domainType,
+	public Operation buildOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
 			OpenAPI openAPI, RequestMethod requestMethod, String operationPath, MethodAttributes methodAttributes,
 			ResourceMetadata resourceMetadata, MethodResourceMapping methodResourceMapping, ControllerType controllerType) {
 		Operation operation = null;
 		if (ControllerType.ENTITY.equals(controllerType)) {
-			operation = buildEntityOperation(handlerMethod, domainType,
+			operation = buildEntityOperation(handlerMethod, dataRestRepository,
 					openAPI, requestMethod, operationPath, methodAttributes, resourceMetadata);
 		}
 		else if (ControllerType.SEARCH.equals(controllerType)) {
-			operation = buildSearchOperation(handlerMethod, domainType, openAPI, requestMethod,
+			operation = buildSearchOperation(handlerMethod, dataRestRepository, openAPI, requestMethod,
 					methodAttributes, methodResourceMapping);
 		}
 		return operation;
@@ -126,7 +126,7 @@ public class DataRestOperationBuilder {
 	 * Build entity operation operation.
 	 *
 	 * @param handlerMethod the handler method
-	 * @param domainType the domain type
+	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
 	 * @param requestMethod the request method
 	 * @param operationPath the operation path
@@ -134,13 +134,16 @@ public class DataRestOperationBuilder {
 	 * @param resourceMetadata the resource metadata
 	 * @return the operation
 	 */
-	private Operation buildEntityOperation(HandlerMethod handlerMethod, Class<?> domainType,
+	private Operation buildEntityOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
 			OpenAPI openAPI, RequestMethod requestMethod, String operationPath, MethodAttributes methodAttributes,
 			ResourceMetadata resourceMetadata) {
+		Class<?> domainType = null;
+		if (dataRestRepository != null)
+			domainType = dataRestRepository.getDomainType();
 		Operation operation = initOperation(handlerMethod, domainType, requestMethod);
 		dataRestRequestBuilder.buildParameters(domainType, openAPI, handlerMethod, requestMethod, methodAttributes, operation, resourceMetadata);
 		dataRestResponseBuilder.buildEntityResponse(operation, handlerMethod, openAPI, requestMethod, operationPath, domainType, methodAttributes);
-		tagsBuilder.buildEntityTags(operation, openAPI, handlerMethod, domainType);
+		tagsBuilder.buildEntityTags(operation, openAPI, handlerMethod, dataRestRepository);
 		if (domainType != null)
 			addOperationDescription(operation, requestMethod, domainType.getSimpleName().toLowerCase());
 		return operation;
@@ -150,16 +153,17 @@ public class DataRestOperationBuilder {
 	 * Build search operation operation.
 	 *
 	 * @param handlerMethod the handler method
-	 * @param domainType the domain type
+	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
 	 * @param requestMethod the request method
 	 * @param methodAttributes the method attributes
 	 * @param methodResourceMapping the method resource mapping
 	 * @return the operation
 	 */
-	private Operation buildSearchOperation(HandlerMethod handlerMethod, Class<?> domainType,
+	private Operation buildSearchOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
 			OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes,
 			MethodResourceMapping methodResourceMapping) {
+		Class<?> domainType = dataRestRepository.getDomainType();
 		Operation operation = initOperation(handlerMethod, domainType, requestMethod);
 		// Make schema as string if empty
 		ParametersMetadata parameterMetadata = methodResourceMapping.getParametersMetadata();
@@ -184,13 +188,11 @@ public class DataRestOperationBuilder {
 		}
 		if (methodResourceMapping.isPagingResource()) {
 			MethodParameter[] parameters = handlerMethod.getMethodParameters();
-			MethodParameter methodParameterPage = Arrays.stream(parameters).filter(methodParameter -> DefaultedPageable.class.equals(methodParameter.getParameterType())).findAny().orElse(null);
-			if (methodParameterPage != null) {
-				dataRestRequestBuilder.buildCommonParameters(domainType, openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameterPage.getParameterName() }, new MethodParameter[] { methodParameterPage });
-			}
+			Arrays.stream(parameters).filter(methodParameter -> DefaultedPageable.class.equals(methodParameter.getParameterType())).findAny()
+					.ifPresent(methodParameterPage -> dataRestRequestBuilder.buildCommonParameters(domainType, openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameterPage.getParameterName() }, new MethodParameter[] { methodParameterPage }));
 		}
 		dataRestResponseBuilder.buildSearchResponse(operation, handlerMethod, openAPI, methodResourceMapping, domainType, methodAttributes);
-		tagsBuilder.buildSearchTags(operation, openAPI, handlerMethod, domainType);
+		tagsBuilder.buildSearchTags(operation, openAPI, handlerMethod, dataRestRepository);
 		return operation;
 	}
 
