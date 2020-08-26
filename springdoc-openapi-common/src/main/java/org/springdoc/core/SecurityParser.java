@@ -20,6 +20,7 @@
 
 package org.springdoc.core;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -47,7 +48,7 @@ import org.springframework.web.method.HandlerMethod;
  * The type Security parser.
  * @author bnasslahsen
  */
-class SecurityParser {
+public class SecurityParser {
 
 	/**
 	 * The Property resolver utils.
@@ -111,38 +112,50 @@ class SecurityParser {
 	/**
 	 * Get security requirements io . swagger . v 3 . oas . annotations . security . security requirement [ ].
 	 *
-	 * @param method the method
+	 * @param handlerMethod the handlerMethod
 	 * @return the io . swagger . v 3 . oas . annotations . security . security requirement [ ]
 	 */
 	public io.swagger.v3.oas.annotations.security.SecurityRequirement[] getSecurityRequirements(
-			HandlerMethod method) {
+			HandlerMethod handlerMethod) {
 		// class SecurityRequirements
-		io.swagger.v3.oas.annotations.security.SecurityRequirements classSecurity = AnnotatedElementUtils.findMergedAnnotation(method.getBeanType(), io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
-		// method SecurityRequirements
-		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity = AnnotatedElementUtils.findMergedAnnotation(method.getMethod(), io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
+		Class<?> beanType = handlerMethod.getBeanType();
+		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement>	allSecurityTags = getSecurityRequirementsForClass(beanType);
 
-		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = null;
+		// handlerMethod SecurityRequirements
+		Method method = handlerMethod.getMethod();
+		allSecurityTags = getSecurityRequirementsForMethod(method,allSecurityTags);
 
-		if (classSecurity != null)
-			allSecurityTags = new HashSet<>(Arrays.asList(classSecurity.value()));
+		return (allSecurityTags != null) ? allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]) : null;
+	}
+
+	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForMethod(Method method,Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags) {
+		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity = AnnotatedElementUtils.findMergedAnnotation(method, io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 		if (methodSecurity != null)
 			allSecurityTags = addSecurityRequirements(allSecurityTags, new HashSet<>(Arrays.asList(methodSecurity.value())));
-
 		if (CollectionUtils.isEmpty(allSecurityTags)) {
-			// class SecurityRequirement
-			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList = AnnotatedElementUtils.findMergedRepeatableAnnotations(
-					method.getBeanType(),
+			// handlerMethod SecurityRequirement
+			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsMethodList = AnnotatedElementUtils.findMergedRepeatableAnnotations(method,
 					io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
-			// method SecurityRequirement
-			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsMethodList = AnnotatedElementUtils.findMergedRepeatableAnnotations(method.getMethod(),
-					io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
-			if (!CollectionUtils.isEmpty(securityRequirementsClassList))
-				allSecurityTags = addSecurityRequirements(allSecurityTags, securityRequirementsClassList);
 			if (!CollectionUtils.isEmpty(securityRequirementsMethodList))
 				allSecurityTags = addSecurityRequirements(allSecurityTags, securityRequirementsMethodList);
 		}
+		return allSecurityTags;
+	}
 
-		return (allSecurityTags != null) ? allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]) : null;
+	public Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForClass(Class<?> beanType) {
+		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags =null;
+		io.swagger.v3.oas.annotations.security.SecurityRequirements classSecurity = AnnotatedElementUtils.findMergedAnnotation(beanType, io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
+		if (classSecurity != null)
+			allSecurityTags = new HashSet<>(Arrays.asList(classSecurity.value()));
+		if (CollectionUtils.isEmpty(allSecurityTags)) {
+			// class SecurityRequirement
+			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList = AnnotatedElementUtils.findMergedRepeatableAnnotations(
+					beanType,
+					io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
+			if (!CollectionUtils.isEmpty(securityRequirementsClassList))
+				allSecurityTags = addSecurityRequirements(allSecurityTags, securityRequirementsClassList);
+		}
+		return allSecurityTags;
 	}
 
 	/**

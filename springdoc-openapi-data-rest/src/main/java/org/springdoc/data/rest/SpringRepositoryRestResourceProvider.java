@@ -33,6 +33,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.fn.RouterOperation;
+import org.springdoc.data.rest.core.DataRestRepository;
 import org.springdoc.data.rest.core.DataRestRouterOperationBuilder;
 
 import org.springframework.data.repository.support.Repositories;
@@ -123,6 +124,8 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 		List<RouterOperation> routerOperationList = new ArrayList<>();
 		List<HandlerMapping> handlerMappingList = delegatingHandlerMapping.getDelegates();
 		for (Class<?> domainType : repositories) {
+			Class<?> repository = repositories.getRequiredRepositoryInformation(domainType).getRepositoryInterface();
+			DataRestRepository dataRestRepository = new DataRestRepository(domainType, repository);
 			ResourceMetadata resourceMetadata = mappings.getMetadataFor(domainType);
 			if (resourceMetadata.isExported()) {
 				for (HandlerMapping handlerMapping : handlerMappingList) {
@@ -135,9 +138,9 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 										.getValue().getBeanType().getName()))
 								.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
-						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, domainType, openAPI);
+						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
 					}
-					 else if (handlerMapping instanceof BasePathAwareHandlerMapping) {
+					else if (handlerMapping instanceof BasePathAwareHandlerMapping) {
 						BasePathAwareHandlerMapping beanBasePathAwareHandlerMapping = (BasePathAwareHandlerMapping) handlerMapping;
 						Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = beanBasePathAwareHandlerMapping.getHandlerMethods();
 						Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
@@ -146,7 +149,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 								.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
-						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, domainType, openAPI);
+						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
 						handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
 								.filter(requestMappingInfoHandlerMethodEntry -> ProfileController.class.equals(requestMappingInfoHandlerMethodEntry
 										.getValue().getBeanType()) || AlpsController.class.equals(requestMappingInfoHandlerMethodEntry
@@ -157,7 +160,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 				}
 			}
 			// search
-			findSearchResourceMappings(openAPI, routerOperationList, handlerMappingList, domainType, resourceMetadata);
+			findSearchResourceMappings(openAPI, routerOperationList, handlerMappingList, dataRestRepository, resourceMetadata);
 		}
 		return routerOperationList;
 	}
@@ -168,10 +171,10 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param openAPI the open api
 	 * @param routerOperationList the router operation list
 	 * @param handlerMappingList the handler mapping list
-	 * @param domainType the domain type
+	 * @param dataRestRepository the repository data rest
 	 * @param resourceMetadata the resource metadata
 	 */
-	private void findSearchResourceMappings(OpenAPI openAPI, List<RouterOperation> routerOperationList, List<HandlerMapping> handlerMappingList, Class<?> domainType, ResourceMetadata resourceMetadata) {
+	private void findSearchResourceMappings(OpenAPI openAPI, List<RouterOperation> routerOperationList, List<HandlerMapping> handlerMappingList, DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata) {
 		for (HandlerMapping handlerMapping : handlerMappingList) {
 			if (handlerMapping instanceof RepositoryRestHandlerMapping) {
 				RepositoryRestHandlerMapping repositoryRestHandlerMapping = (RepositoryRestHandlerMapping) handlerMapping;
@@ -181,10 +184,10 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 								.getValue().getBeanType().getName()))
 						.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
-				ResourceMetadata metadata = associations.getMetadataFor(domainType);
+				ResourceMetadata metadata = associations.getMetadataFor(dataRestRepository.getDomainType());
 				SearchResourceMappings searchResourceMappings = metadata.getSearchResourceMappings();
 				if (searchResourceMappings.isExported()) {
-					findSearchControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, domainType, openAPI, searchResourceMappings);
+					findSearchControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI, searchResourceMappings);
 				}
 			}
 		}
@@ -196,16 +199,16 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param routerOperationList the router operation list
 	 * @param handlerMethodMap the handler method map
 	 * @param resourceMetadata the resource metadata
-	 * @param domainType the domain type
+	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
 	 * @param searchResourceMappings the search resource mappings
 	 * @return the list
 	 */
 	private List<RouterOperation> findSearchControllers(List<RouterOperation> routerOperationList,
-			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata, Class<?> domainType, OpenAPI openAPI, SearchResourceMappings searchResourceMappings) {
+			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository, OpenAPI openAPI, SearchResourceMappings searchResourceMappings) {
 		Stream<MethodResourceMapping> methodResourceMappingStream = searchResourceMappings.getExportedMappings();
 		methodResourceMappingStream.forEach(methodResourceMapping -> dataRestRouterOperationBuilder.buildSearchRouterOperationList(
-				routerOperationList, handlerMethodMap, resourceMetadata, domainType, openAPI, methodResourceMapping));
+				routerOperationList, handlerMethodMap, resourceMetadata, dataRestRepository, openAPI, methodResourceMapping));
 		return routerOperationList;
 	}
 
@@ -216,16 +219,16 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param routerOperationList the router operation list
 	 * @param handlerMethodMap the handler method map
 	 * @param resourceMetadata the resource metadata
-	 * @param domainType the domain type
+	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
 	 * @return the list
 	 */
 	private List<RouterOperation> findControllers
-			(List<RouterOperation> routerOperationList,
-					Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
-					Class<?> domainType, OpenAPI openAPI) {
+	(List<RouterOperation> routerOperationList,
+			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
+			DataRestRepository dataRestRepository, OpenAPI openAPI) {
 		dataRestRouterOperationBuilder.buildEntityRouterOperationList(routerOperationList, handlerMethodMap, resourceMetadata,
-				domainType, openAPI);
+				dataRestRepository, openAPI);
 		return routerOperationList;
 	}
 
