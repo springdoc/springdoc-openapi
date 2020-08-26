@@ -11,572 +11,14 @@
     }
   ],
   "paths": {
-    "/accounts": {
+    "/childProperties": {
       "get": {
         "tags": [
-          "account-entity-controller"
+          "child-property-entity-controller"
         ],
-        "description": "get-account",
-        "operationId": "getCollectionResource-account-get_1",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelAccount"
-                }
-              },
-              "application/x-spring-data-compact+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelAccount"
-                }
-              },
-              "text/uri-list": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelAccount"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "account-entity-controller"
-        ],
-        "description": "create-account",
-        "operationId": "postCollectionResource-account-post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Account"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/accounts/search/findByCustomer": {
-      "get": {
-        "tags": [
-          "account-search-controller"
-        ],
-        "operationId": "executeSearch-account-get",
+        "description": "get-childproperty",
+        "operationId": "getCollectionResource-childproperty-get_1",
         "parameters": [
-          {
-            "name": "customer",
-            "in": "query",
-            "schema": {
-              "$ref": "#/components/schemas/Customer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelAccount"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/accounts/{id}": {
-      "get": {
-        "tags": [
-          "account-entity-controller"
-        ],
-        "description": "get-account",
-        "operationId": "getItemResource-account-get",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelAccount"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "account-entity-controller"
-        ],
-        "description": "update-account",
-        "operationId": "putItemResource-account-put",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Account"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "account-entity-controller"
-        ],
-        "description": "delete-account",
-        "operationId": "deleteItemResource-account-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "account-entity-controller"
-        ],
-        "description": "patch-account",
-        "operationId": "patchItemResource-account-patch",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Account"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/accounts/{id}/customer": {
-      "get": {
-        "tags": [
-          "account-property-reference-controller"
-        ],
-        "description": "get-account",
-        "operationId": "followPropertyReference-account-get_1",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
-                }
-              },
-              "text/uri-list": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "account-property-reference-controller"
-        ],
-        "description": "update-account",
-        "operationId": "createPropertyReference-account-put",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "account-property-reference-controller"
-        ],
-        "description": "delete-account",
-        "operationId": "deletePropertyReference-account-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "account-property-reference-controller"
-        ],
-        "description": "patch-account",
-        "operationId": "createPropertyReference-account-patch",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list": {
-              "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/accounts/{id}/customer/{propertyId}": {
-      "get": {
-        "tags": [
-          "account-property-reference-controller"
-        ],
-        "description": "get-account",
-        "operationId": "followPropertyReference-account-get",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "propertyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "account-property-reference-controller"
-        ],
-        "description": "delete-account",
-        "operationId": "deletePropertyReferenceId-account-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "propertyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/customers": {
-      "get": {
-        "tags": [
-          "customer-entity-controller"
-        ],
-        "description": "get-customer",
-        "operationId": "getCollectionResource-customer-get_1",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelCustomer"
-                }
-              },
-              "application/x-spring-data-compact+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelCustomer"
-                }
-              },
-              "text/uri-list": {
-                "schema": {
-                  "$ref": "#/components/schemas/CollectionModelCustomer"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "customer-entity-controller"
-        ],
-        "description": "create-customer",
-        "operationId": "postCollectionResource-customer-post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Customer"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/search/findByLastname": {
-      "get": {
-        "tags": [
-          "customer-search-controller"
-        ],
-        "operationId": "executeSearch-customer-get",
-        "parameters": [
-          {
-            "name": "lastname",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "page",
             "in": "query",
@@ -618,24 +60,59 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PagedModelCustomer"
+                  "$ref": "#/components/schemas/CollectionModelChildProperty"
+                }
+              },
+              "application/x-spring-data-compact+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelChildProperty"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelChildProperty"
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "child-property-entity-controller"
+        ],
+        "description": "create-childproperty",
+        "operationId": "postCollectionResource-childproperty-post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChildProperty"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelChildProperty"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/customers/{id}": {
+    "/childProperties/{id}": {
       "get": {
         "tags": [
-          "customer-entity-controller"
+          "child-property-entity-controller"
         ],
-        "description": "get-customer",
-        "operationId": "getItemResource-customer-get",
+        "description": "get-childproperty",
+        "operationId": "getItemResource-childproperty-get",
         "parameters": [
           {
             "name": "id",
@@ -652,7 +129,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EntityModelCustomer"
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }
@@ -664,10 +141,10 @@
       },
       "put": {
         "tags": [
-          "customer-entity-controller"
+          "child-property-entity-controller"
         ],
-        "description": "update-customer",
-        "operationId": "putItemResource-customer-put",
+        "description": "update-childproperty",
+        "operationId": "putItemResource-childproperty-put",
         "parameters": [
           {
             "name": "id",
@@ -682,7 +159,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Customer"
+                "$ref": "#/components/schemas/ChildProperty"
               }
             }
           }
@@ -693,7 +170,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
+                  "$ref": "#/components/schemas/RepresentationModelChildProperty"
                 }
               }
             }
@@ -703,7 +180,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
+                  "$ref": "#/components/schemas/RepresentationModelChildProperty"
                 }
               }
             }
@@ -713,12 +190,37 @@
           }
         }
       },
+      "delete": {
+        "tags": [
+          "child-property-entity-controller"
+        ],
+        "description": "delete-childproperty",
+        "operationId": "deleteItemResource-childproperty-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
       "patch": {
         "tags": [
-          "customer-entity-controller"
+          "child-property-entity-controller"
         ],
-        "description": "patch-customer",
-        "operationId": "patchItemResource-customer-patch",
+        "description": "patch-childproperty",
+        "operationId": "patchItemResource-childproperty-patch",
         "parameters": [
           {
             "name": "id",
@@ -733,7 +235,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Customer"
+                "$ref": "#/components/schemas/ChildProperty"
               }
             }
           }
@@ -744,7 +246,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
+                  "$ref": "#/components/schemas/RepresentationModelChildProperty"
                 }
               }
             }
@@ -775,7 +277,7 @@
         }
       }
     },
-    "/profile/accounts": {
+    "/profile/childProperties": {
       "get": {
         "tags": [
           "profile-controller"
@@ -805,7 +307,7 @@
         }
       }
     },
-    "/profile/customers": {
+    "/profile/properties": {
       "get": {
         "tags": [
           "profile-controller"
@@ -831,6 +333,503 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/properties": {
+      "get": {
+        "tags": [
+          "property-entity-controller"
+        ],
+        "description": "get-property",
+        "operationId": "getCollectionResource-property-get_1",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": "0"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": "20"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelProperty"
+                }
+              },
+              "application/x-spring-data-compact+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelProperty"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelProperty"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "property-entity-controller"
+        ],
+        "description": "create-property",
+        "operationId": "postCollectionResource-property-post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Property"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/properties/{id}": {
+      "get": {
+        "tags": [
+          "property-entity-controller"
+        ],
+        "description": "get-property",
+        "operationId": "getItemResource-property-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityModelProperty"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "property-entity-controller"
+        ],
+        "description": "update-property",
+        "operationId": "putItemResource-property-put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Property"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "property-entity-controller"
+        ],
+        "description": "delete-property",
+        "operationId": "deleteItemResource-property-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "property-entity-controller"
+        ],
+        "description": "patch-property",
+        "operationId": "patchItemResource-property-patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Property"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/properties/{id}/childProperty": {
+      "get": {
+        "tags": [
+          "property-property-reference-controller"
+        ],
+        "description": "get-property",
+        "operationId": "followPropertyReference-property-get_1",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                }
+              },
+              "text/uri-list": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "property-property-reference-controller"
+        ],
+        "description": "update-property",
+        "operationId": "createPropertyReference-property-put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "property-property-reference-controller"
+        ],
+        "description": "delete-property",
+        "operationId": "deletePropertyReference-property-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "property-property-reference-controller"
+        ],
+        "description": "patch-property",
+        "operationId": "createPropertyReference-property-patch",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list": {
+              "schema": {
+                "$ref": "#/components/schemas/CollectionModelObject"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/properties/{id}/childProperty/{propertyId}": {
+      "get": {
+        "tags": [
+          "property-property-reference-controller"
+        ],
+        "description": "get-property",
+        "operationId": "followPropertyReference-property-get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "property-property-reference-controller"
+        ],
+        "description": "delete-property",
+        "operationId": "deletePropertyReferenceId-property-delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "propertyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -918,16 +917,28 @@
           }
         }
       },
-      "CollectionModelCustomer": {
+      "ChildProperty": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "CollectionModelChildProperty": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "customers": {
+              "childProperties": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Customer"
+                  "$ref": "#/components/schemas/ChildProperty"
                 }
               }
             }
@@ -937,22 +948,7 @@
           }
         }
       },
-      "Customer": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "firstname": {
-            "type": "string"
-          },
-          "lastname": {
-            "type": "string"
-          }
-        }
-      },
-      "RepresentationModelCustomer": {
+      "RepresentationModelChildProperty": {
         "type": "object",
         "properties": {
           "_links": {
@@ -960,17 +956,14 @@
           }
         }
       },
-      "EntityModelCustomer": {
+      "EntityModelChildProperty": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int64"
           },
-          "firstname": {
-            "type": "string"
-          },
-          "lastname": {
+          "name": {
             "type": "string"
           },
           "_links": {
@@ -978,75 +971,16 @@
           }
         }
       },
-      "PageMetadata": {
-        "type": "object",
-        "properties": {
-          "size": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "totalElements": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "number": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
-      },
-      "PagedModelCustomer": {
+      "CollectionModelProperty": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "customers": {
+              "properties": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Customer"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          },
-          "page": {
-            "$ref": "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "Account": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "customer": {
-            "$ref": "#/components/schemas/Customer"
-          },
-          "expiryDate": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "CollectionModelAccount": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "accounts": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Account"
+                  "$ref": "#/components/schemas/Property"
                 }
               }
             }
@@ -1056,7 +990,22 @@
           }
         }
       },
-      "RepresentationModelAccount": {
+      "Property": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "childProperty": {
+            "$ref": "#/components/schemas/ChildProperty"
+          }
+        }
+      },
+      "RepresentationModelProperty": {
         "type": "object",
         "properties": {
           "_links": {
@@ -1064,19 +1013,18 @@
           }
         }
       },
-      "EntityModelAccount": {
+      "EntityModelProperty": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int64"
           },
-          "customer": {
-            "$ref": "#/components/schemas/Customer"
+          "name": {
+            "type": "string"
           },
-          "expiryDate": {
-            "type": "string",
-            "format": "date-time"
+          "childProperty": {
+            "$ref": "#/components/schemas/ChildProperty"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"

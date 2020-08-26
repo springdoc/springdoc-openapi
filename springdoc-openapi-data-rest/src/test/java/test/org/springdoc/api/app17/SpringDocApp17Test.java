@@ -18,30 +18,16 @@
  *  *  *
  *  *
  *
- *
  */
 
-package org.springdoc.data.rest.core;
+package test.org.springdoc.api.app17;
 
-/**
- * The enum Controller type.
- * @author bnasslahsen
- */
-public enum ControllerType {
-	/**
-	 *Entity controller type.
-	 */
-	ENTITY,
-	/**
-	 *Search controller type.
-	 */
-	SEARCH,
-	/**
-	 *Schema controller type.
-	 */
-	SCHEMA,
-	/**
-	 *PROPERTY controller type.
-	 */
-	PROPERTY
+import test.org.springdoc.api.AbstractSpringDocTest;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+public class SpringDocApp17Test extends AbstractSpringDocTest {
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

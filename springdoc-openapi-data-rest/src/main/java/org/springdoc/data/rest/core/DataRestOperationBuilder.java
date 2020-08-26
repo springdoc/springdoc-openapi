@@ -111,7 +111,9 @@ public class DataRestOperationBuilder {
 			OpenAPI openAPI, RequestMethod requestMethod, String operationPath, MethodAttributes methodAttributes,
 			ResourceMetadata resourceMetadata, MethodResourceMapping methodResourceMapping, ControllerType controllerType) {
 		Operation operation = null;
-		if (ControllerType.ENTITY.equals(controllerType)) {
+		if (ControllerType.ENTITY.equals(controllerType)
+				|| ControllerType.PROPERTY.equals(controllerType)
+				|| ControllerType.SCHEMA.equals(controllerType)) {
 			operation = buildEntityOperation(handlerMethod, dataRestRepository,
 					openAPI, requestMethod, operationPath, methodAttributes, resourceMetadata);
 		}
