@@ -74,6 +74,8 @@
 		<webjars-locator-core.version>0.45</webjars-locator-core.version>
 		<gmavenplus-plugin.version>1.8.1</gmavenplus-plugin.version>
 		<jaxb-impl.version>2.1</jaxb-impl.version>
+		<javax.jws-api.version>1.1</javax.jws-api.version>
+		<jjwt.version>0.9.1</jjwt.version>
 	</properties>
 
 	<dependencyManagement>
@@ -131,6 +133,18 @@
 				<groupId>javax.xml</groupId>
 				<artifactId>jaxb-impl</artifactId>
 				<version>${jaxb-impl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.jws</groupId>
+				<artifactId>javax.jws-api</artifactId>
+				<version>${javax.jws-api.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt</artifactId>
+				<version>${jjwt.version}</version>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
