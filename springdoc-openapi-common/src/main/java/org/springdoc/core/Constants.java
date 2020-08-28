@@ -81,6 +81,11 @@ public final class Constants {
 	public static final String SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES = "springdoc.api-docs.resolve-schema-properties";
 
 	/**
+	 * The constant SPRINGDOC_SHOW_LOGIN_ENDPOINT.
+	 */
+	public static final String SPRINGDOC_SHOW_LOGIN_ENDPOINT = "springdoc.show-login-endpoint";
+
+	/**
 	 * The constant SPRINGDOC_CACHE_DISABLED.
 	 */
 	public static final String SPRINGDOC_CACHE_DISABLED = "springdoc.cache.disabled";

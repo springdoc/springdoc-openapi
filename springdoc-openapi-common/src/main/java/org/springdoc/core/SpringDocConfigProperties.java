@@ -126,6 +126,11 @@ public class SpringDocConfigProperties {
 	private boolean useFqn;
 
 	/**
+	 * The Show login endpoint.
+	 */
+	private boolean showLoginEndpoint;
+
+	/**
 	 * Is use fqn boolean.
 	 *
 	 * @return the boolean
@@ -213,6 +218,24 @@ public class SpringDocConfigProperties {
 	 */
 	public void setPathsToExclude(List<String> pathsToExclude) {
 		this.pathsToExclude = pathsToExclude;
+	}
+
+	/**
+	 * Is show login endpoint boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isShowLoginEndpoint() {
+		return showLoginEndpoint;
+	}
+
+	/**
+	 * Sets show login endpoint.
+	 *
+	 * @param showLoginEndpoint the show login endpoint
+	 */
+	public void setShowLoginEndpoint(boolean showLoginEndpoint) {
+		this.showLoginEndpoint = showLoginEndpoint;
 	}
 
 	/**
@@ -662,6 +685,7 @@ public class SpringDocConfigProperties {
 			this.enabled = enabled;
 		}
 	}
+
 
 	/**
 	 * The type Cache.
