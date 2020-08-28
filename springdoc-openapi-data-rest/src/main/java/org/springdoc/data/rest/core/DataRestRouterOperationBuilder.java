@@ -179,9 +179,8 @@ public class DataRestRouterOperationBuilder {
 				PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
 				Set<String> patterns = patternsRequestCondition.getPatterns();
 				Map<String, String> regexMap = new LinkedHashMap<>();
-				String operationPath = calculateOperationPath(path, subPath, patterns, regexMap, controllerType);
-				if (ControllerType.PROPERTY.equals(controllerType))
-					operationPath = operationPath.replace("{property}", dataRestRepository.getRelationName());
+				String relationName = (dataRestRepository!=null) ? dataRestRepository.getRelationName(): null;
+				String operationPath = calculateOperationPath(path, subPath, patterns, regexMap, controllerType, relationName);
 				buildRouterOperation(routerOperationList, dataRestRepository, openAPI, methodResourceMapping,
 						handlerMethod, requestMethod, resourceMetadata, operationPath, controllerType);
 			}
@@ -199,13 +198,15 @@ public class DataRestRouterOperationBuilder {
 	 * @return the string
 	 */
 	private String calculateOperationPath(String path, String subPath, Set<String> patterns,
-			Map<String, String> regexMap, ControllerType controllerType) {
+			Map<String, String> regexMap, ControllerType controllerType, String relationName) {
 		String operationPath = null;
 		for (String pattern : patterns) {
 			operationPath = PathUtils.parsePath(pattern, regexMap);
 			operationPath = operationPath.replace(REPOSITORY_PATH, path);
 			if (ControllerType.SEARCH.equals(controllerType))
 				operationPath = operationPath.replace(SEARCH_PATH, subPath);
+			else if (ControllerType.PROPERTY.equals(controllerType))
+				operationPath = operationPath.replace("{property}", relationName);
 		}
 		return operationPath;
 	}
