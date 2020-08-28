@@ -86,8 +86,8 @@ public class CollectionModelContentConverter implements ModelConverter {
 	 */
 	private Class<?> getEntityType(AnnotatedType type) {
 		Class<?> containerEntityType = ((CollectionType) (type.getType())).getContentType().getRawClass();
-		if (containerEntityType.isAssignableFrom(EntityModel.class)) {
-			TypeBindings typeBindings = ((CollectionType) type.getType()).getContentType().getBindings() ;
+		if (EntityModel.class.isAssignableFrom(containerEntityType)) {
+			TypeBindings typeBindings = ((CollectionType) type.getType()).getContentType().getBindings();
 			if (!CollectionUtils.isEmpty(typeBindings.getTypeParameters()))
 				return typeBindings.getBoundType(0).getRawClass();
 		}
