@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.5] - 2020-08-29
+### Added
+- #826 - Support for @Hidden on response class
+- #831 - Add support for @PageableDefault
+- #814 - Support of denyList, allowList, instead of black and whitelist, for Spring Data Commons. Change since SpringBoot 2.3.2
+- #837 - Add support of swagger annotations @SecurityRequirement and @Tag on @Repository interface
+- #827 - Make Spring Security login-endpoint automatically visible in SwaggerUI
+- #798 - Support for Extending EntityModel - Spring Hateoas
+- Support for spring.data.web properties and spring.data.rest.default... properties
+### Changed
+- upgrade swagger-ui version v3.32.5
+- #829 - Improve management of abstract generic types
+### Fixed
+- #822 - Operation having method for each accept header generate does not always generate the same api-docs
+- #836 - Springdoc is unable to redirect to swagger-ui/index.html with Spring Boot 2.4.0-M2
+- #792 - issues with spring data rest and @ManyToOne relationships
+
 ## [1.4.4] - 2020-08-06
 ### Added
 - #815 - Allow swagger-ui property filter to be an empty string
