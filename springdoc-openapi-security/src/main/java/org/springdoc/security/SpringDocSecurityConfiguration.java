@@ -35,6 +35,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -86,34 +87,39 @@ public class SpringDocSecurityConfiguration {
 		}
 	}
 
-	@Bean
-	@ConditionalOnProperty(SPRINGDOC_SHOW_LOGIN_ENDPOINT)
-	@Lazy(false)
-	OpenApiCustomiser springSecurityLoginEndpointCustomiser(FilterChainProxy filterChainProxy) {
-		return openAPI -> {
-			for (SecurityFilterChain filterChain : filterChainProxy.getFilterChains()) {
-				Optional<UsernamePasswordAuthenticationFilter> optionalFilter =
-						filterChain.getFilters().stream()
-								.filter(filterVar -> filterVar instanceof UsernamePasswordAuthenticationFilter)
-								.map(filter -> (UsernamePasswordAuthenticationFilter) filter)
-								.findAny();
-				if (optionalFilter.isPresent()) {
-					UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter = optionalFilter.get();
-					Operation operation = new Operation();
-					Schema<?> schema = new ObjectSchema()
-							.addProperties(usernamePasswordAuthenticationFilter.getUsernameParameter(), new StringSchema())
-							.addProperties(usernamePasswordAuthenticationFilter.getPasswordParameter(), new StringSchema());
-					RequestBody requestBody = new RequestBody().content(new Content().addMediaType("loginRequestBody", new MediaType().schema(schema)));
-					operation.requestBody(requestBody);
-					ApiResponses apiResponses = new ApiResponses();
-					apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), new ApiResponse().description(HttpStatus.OK.getReasonPhrase()));
-					apiResponses.addApiResponse(String.valueOf(HttpStatus.FORBIDDEN.value()), new ApiResponse().description(HttpStatus.FORBIDDEN.getReasonPhrase()));
-					operation.responses(apiResponses);
-					operation.addTagsItem("login-endpoint");
-					PathItem pathItem = new PathItem().post(operation);
-					openAPI.getPaths().addPathItem("/login", pathItem);
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnClass(javax.servlet.Filter.class)
+	class SpringSecurityLoginEndpointConfiguration {
+
+		@Bean
+		@ConditionalOnProperty(SPRINGDOC_SHOW_LOGIN_ENDPOINT)
+		@Lazy(false)
+		OpenApiCustomiser springSecurityLoginEndpointCustomiser(FilterChainProxy filterChainProxy) {
+			return openAPI -> {
+				for (SecurityFilterChain filterChain : filterChainProxy.getFilterChains()) {
+					Optional<UsernamePasswordAuthenticationFilter> optionalFilter =
+							filterChain.getFilters().stream()
+									.filter(filterVar -> filterVar instanceof UsernamePasswordAuthenticationFilter)
+									.map(filter -> (UsernamePasswordAuthenticationFilter) filter)
+									.findAny();
+					if (optionalFilter.isPresent()) {
+						UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter = optionalFilter.get();
+						Operation operation = new Operation();
+						Schema<?> schema = new ObjectSchema()
+								.addProperties(usernamePasswordAuthenticationFilter.getUsernameParameter(), new StringSchema())
+								.addProperties(usernamePasswordAuthenticationFilter.getPasswordParameter(), new StringSchema());
+						RequestBody requestBody = new RequestBody().content(new Content().addMediaType("loginRequestBody", new MediaType().schema(schema)));
+						operation.requestBody(requestBody);
+						ApiResponses apiResponses = new ApiResponses();
+						apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), new ApiResponse().description(HttpStatus.OK.getReasonPhrase()));
+						apiResponses.addApiResponse(String.valueOf(HttpStatus.FORBIDDEN.value()), new ApiResponse().description(HttpStatus.FORBIDDEN.getReasonPhrase()));
+						operation.responses(apiResponses);
+						operation.addTagsItem("login-endpoint");
+						PathItem pathItem = new PathItem().post(operation);
+						openAPI.getPaths().addPathItem("/login", pathItem);
+					}
 				}
-			}
-		};
+			};
+		}
 	}
 }
