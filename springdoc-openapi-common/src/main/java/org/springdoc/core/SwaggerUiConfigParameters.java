@@ -44,7 +44,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  * The type Swagger ui config parameters.
  * @author bnasslahsen
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties {

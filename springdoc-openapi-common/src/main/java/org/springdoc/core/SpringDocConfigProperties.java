@@ -35,7 +35,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
  * The type Spring doc config properties.
  * @author bnasslahsen
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConfigurationProperties(prefix = Constants.SPRINGDOC_PREFIX)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocConfigProperties {

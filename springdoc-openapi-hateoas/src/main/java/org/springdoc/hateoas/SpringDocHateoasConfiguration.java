@@ -45,7 +45,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
  * The type Spring doc hateoas configuration.
  * @author bnasslahsen
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @ConditionalOnClass(LinkRelationProvider.class)
 public class SpringDocHateoasConfiguration {

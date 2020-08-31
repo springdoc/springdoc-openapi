@@ -34,7 +34,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
  * @author bnasslahsen
  */
 @ConditionalOnClass(Flow.class)
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocKotlinxConfiguration {
 
