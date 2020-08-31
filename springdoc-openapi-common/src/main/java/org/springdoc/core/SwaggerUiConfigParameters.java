@@ -196,7 +196,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		SpringDocPropertiesUtils.put("showCommonExtensions", showCommonExtensions, params);
 		SpringDocPropertiesUtils.put("operationsSorter", operationsSorter, params);
 		SpringDocPropertiesUtils.put("tagsSorter", tagsSorter, params);
-		if (!CollectionUtils.isEmpty(supportedSubmitMethods))
+		if (supportedSubmitMethods!=null)
 			SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
 		SpringDocPropertiesUtils.put(OAUTH2_REDIRECT_URL_PROPERTY, oauth2RedirectUrl, params);
 		SpringDocPropertiesUtils.put("url", url, params);
