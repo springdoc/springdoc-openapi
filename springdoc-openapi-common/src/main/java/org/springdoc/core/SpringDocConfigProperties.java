@@ -131,6 +131,11 @@ public class SpringDocConfigProperties {
 	private boolean showLoginEndpoint;
 
 	/**
+	 * Allow for pre-loading OpenAPI
+	 */
+	private boolean preLoadingEnabled = false;
+
+	/**
 	 * Is use fqn boolean.
 	 *
 	 * @return the boolean
@@ -470,6 +475,14 @@ public class SpringDocConfigProperties {
 	 */
 	public void setWriterWithDefaultPrettyPrinter(boolean writerWithDefaultPrettyPrinter) {
 		this.writerWithDefaultPrettyPrinter = writerWithDefaultPrettyPrinter;
+	}
+
+	public void setPreLoadingEnabled(boolean preLoadingEnabled) {
+		this.preLoadingEnabled = preLoadingEnabled;
+	}
+
+	public boolean isPreLoadingEnabled() {
+		return preLoadingEnabled;
 	}
 
 	/**
