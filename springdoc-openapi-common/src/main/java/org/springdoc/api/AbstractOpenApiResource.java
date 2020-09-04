@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -200,6 +201,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			operationCustomizers.get().removeIf(Objects::isNull);
 		this.operationCustomizers = operationCustomizers;
 		this.actuatorProvider = actuatorProvider;
+		if (springDocConfigProperties.isPreLoadingEnabled()) {
+			Executors.newSingleThreadExecutor()
+					.execute(this::getOpenApi);
+		}
 	}
 
 	/**
