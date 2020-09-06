@@ -23,6 +23,7 @@ package org.springdoc.core;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.util.Objects;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
@@ -66,7 +67,7 @@ public interface ReturnTypeParser {
 				else if (resolvedType.hasGenerics()) {
 					ResolvableType[] resolvableTypes = resolvedType.getGenerics();
 					resolveType(resolvableTypes, contextClass);
-					return ResolvableType.forClassWithGenerics(resolvedType.getRawClass(), resolvableTypes).getType();
+					return ResolvableType.forClassWithGenerics(Objects.requireNonNull(resolvedType.getRawClass()), resolvableTypes).getType();
 				}
 			}
 		}
@@ -89,7 +90,7 @@ public interface ReturnTypeParser {
 			else if (resolvableTypes[i].hasGenerics()) {
 				resolveType(resolvableTypes[i].getGenerics(), contextClass);
 				if (resolvableTypes[i].getRawClass() != null)
-					resolvableTypes[i] = ResolvableType.forClassWithGenerics(resolvableTypes[i].getRawClass(), resolvableTypes[i].getGenerics());
+					resolvableTypes[i] = ResolvableType.forClassWithGenerics(Objects.requireNonNull(resolvableTypes[i].getRawClass()), resolvableTypes[i].getGenerics());
 			}
 		}
 	}

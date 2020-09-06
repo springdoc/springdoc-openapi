@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -215,7 +216,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	protected void getWebFluxRouterFunctionPaths() {
 		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
-		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
+		Map<String, RouterFunction> routerBeans = Objects.requireNonNull(applicationContext).getBeansOfType(RouterFunction.class);
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
 			RouterFunction routerFunction = entry.getValue();
 			RouterFunctionVisitor routerFunctionVisitor = new RouterFunctionVisitor();

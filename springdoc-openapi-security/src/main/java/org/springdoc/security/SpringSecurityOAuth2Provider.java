@@ -21,6 +21,7 @@
 package org.springdoc.security;
 
 import java.util.Map;
+import java.util.Objects;
 
 import org.springdoc.core.SecurityOAuth2Provider;
 
@@ -65,7 +66,7 @@ public class SpringSecurityOAuth2Provider implements SecurityOAuth2Provider {
 
 	@Override
 	public Map getFrameworkEndpoints() {
-		return oauth2EndpointHandlerMapping.getApplicationContext().getBeansWithAnnotation(FrameworkEndpoint.class);
+		return Objects.requireNonNull(oauth2EndpointHandlerMapping.getApplicationContext()).getBeansWithAnnotation(FrameworkEndpoint.class);
 	}
 
 }
