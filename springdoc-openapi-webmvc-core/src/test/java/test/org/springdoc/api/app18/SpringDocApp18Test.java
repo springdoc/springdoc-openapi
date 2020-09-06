@@ -21,7 +21,9 @@ package test.org.springdoc.api.app18;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = "springdoc.pre-loading-enabled=true")
 public class SpringDocApp18Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
