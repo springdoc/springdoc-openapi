@@ -43,6 +43,7 @@ public class KotlinCoroutinesReturnTypeParser implements ReturnTypeParser {
 	public Type getReturnType(MethodParameter methodParameter) {
 		Method method = methodParameter.getMethod();
 		Type returnType = Object.class;
+		assert method != null;
 		Optional<Parameter> continuationParameter = Arrays.stream(method.getParameters())
 				.filter(parameter -> parameter.getType().getCanonicalName().equals(Continuation.class.getCanonicalName()))
 				.findFirst();

@@ -355,11 +355,24 @@ public abstract class AbstractRequestBuilder {
 	public boolean isParamToIgnore(MethodParameter parameter) {
 		if (SpringDocAnnotationsUtils.isAnnotationToIgnore(parameter))
 			return true;
-		if ((parameter.getParameterAnnotation(PathVariable.class) != null && parameter.getParameterAnnotation(PathVariable.class).required())
-				|| (parameter.getParameterAnnotation(RequestParam.class) != null && parameter.getParameterAnnotation(RequestParam.class).required())
-				|| (parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null && parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class).required()))
+		if (isRequiredAnnotation(parameter))
 			return false;
 		return isRequestTypeToIgnore(parameter.getParameterType());
+	}
+
+	/**
+	 * Is required annotation boolean.
+	 *
+	 * @param parameter the parameter
+	 * @return the boolean
+	 */
+	private boolean isRequiredAnnotation(MethodParameter parameter) {
+		RequestParam requestParam = parameter.getParameterAnnotation(RequestParam.class);
+		PathVariable pathVariable = parameter.getParameterAnnotation(PathVariable.class);
+		org.springframework.web.bind.annotation.RequestBody requestBody = parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class);
+		return (requestParam != null && requestParam.required())
+				|| (pathVariable != null && pathVariable.required())
+				|| (requestBody != null && requestBody.required());
 	}
 
 	/**

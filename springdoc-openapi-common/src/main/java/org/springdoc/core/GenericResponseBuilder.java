@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -185,7 +186,7 @@ public class GenericResponseBuilder {
 	private Map<String, ApiResponse> computeResponseFromDoc(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes) {
 		// Parsing documentation, if present
-		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray = getApiResponses(methodParameter.getMethod());
+		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray = getApiResponses(Objects.requireNonNull(methodParameter.getMethod()));
 		if (!responsesArray.isEmpty()) {
 			methodAttributes.setWithApiResponseDoc(true);
 			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations : responsesArray) {
@@ -271,7 +272,7 @@ public class GenericResponseBuilder {
 		else {
 			// Use response parameters with no description filled - No documentation
 			// available
-			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getMethod().getClass(), true);
+			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), true);
 			ApiResponse apiResponse = methodAttributes.getGenericMapResponse().containsKey(httpCode) ? methodAttributes.getGenericMapResponse().get(httpCode)
 					: new ApiResponse();
 			if (httpCode != null)
@@ -304,7 +305,7 @@ public class GenericResponseBuilder {
 		else {
 			// Use response parameters with no description filled - No documentation
 			// available
-			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getMethod().getClass(), false);
+			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), false);
 			ApiResponse apiResponse = new ApiResponse();
 			if (httpCode != null)
 				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, false);
@@ -546,19 +547,23 @@ public class GenericResponseBuilder {
 	 */
 	private boolean isValidHttpCode(String httpCode, MethodParameter methodParameter) {
 		boolean result = false;
-		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responseSet = getApiResponses(methodParameter.getMethod());
-		if (isHttpCodePresent(httpCode, responseSet))
-			result = true;
-		else if (AnnotatedElementUtils.findMergedAnnotation(methodParameter.getMethod(),
-				io.swagger.v3.oas.annotations.Operation.class) != null) {
-			io.swagger.v3.oas.annotations.Operation apiOperation = AnnotatedElementUtils.findMergedAnnotation(methodParameter.getMethod(),
-					io.swagger.v3.oas.annotations.Operation.class);
-			responseSet = new HashSet<>(Arrays.asList(apiOperation.responses()));
+		final Method method = methodParameter.getMethod();
+		if(method!=null){
+			Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responseSet = getApiResponses(method);
 			if (isHttpCodePresent(httpCode, responseSet))
 				result = true;
+			else {
+				final io.swagger.v3.oas.annotations.Operation apiOperation = AnnotatedElementUtils.findMergedAnnotation(method,
+						io.swagger.v3.oas.annotations.Operation.class);
+				if (apiOperation != null) {
+					responseSet = new HashSet<>(Arrays.asList(apiOperation.responses()));
+					if (isHttpCodePresent(httpCode, responseSet))
+						result = true;
+				}
+				else if (httpCode.equals(evaluateResponseStatus(method, method.getClass(), false)))
+					result = true;
+			}
 		}
-		else if (httpCode.equals(evaluateResponseStatus(methodParameter.getMethod(), methodParameter.getMethod().getClass(), false)))
-			result = true;
 		return result;
 	}
 
