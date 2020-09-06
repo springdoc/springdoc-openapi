@@ -225,7 +225,7 @@ public class OpenAPIBuilder {
 	 * @return the open api
 	 */
 	public OpenAPI updateServers(OpenAPI openAPI) {
-		if (!isServersPresent)        // default server value
+		if (!isServersPresent && serverBaseUrl!=null)        // default server value
 		{
 			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
 			List<Server> servers = new ArrayList<>();

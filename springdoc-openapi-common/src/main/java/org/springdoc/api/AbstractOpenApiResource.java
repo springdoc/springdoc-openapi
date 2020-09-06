@@ -37,7 +37,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
+
+import javax.annotation.PostConstruct;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -200,6 +203,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			operationCustomizers.get().removeIf(Objects::isNull);
 		this.operationCustomizers = operationCustomizers;
 		this.actuatorProvider = actuatorProvider;
+		if (springDocConfigProperties.isPreLoadingEnabled())
+			Executors.newSingleThreadExecutor().execute(this::getOpenApi);
 	}
 
 	/**
@@ -226,13 +231,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param classes the classes
 	 */
 	public static void addHiddenRestControllers(String... classes) {
-		Set<Class<?>> hiddenClasses =new HashSet<>();
+		Set<Class<?>> hiddenClasses = new HashSet<>();
 		for (String aClass : classes) {
 			try {
 				hiddenClasses.add(Class.forName(aClass));
 			}
 			catch (ClassNotFoundException e) {
-				LOGGER.warn("The following class doesn't exist and cannot be hidden: {}",  aClass);
+				LOGGER.warn("The following class doesn't exist and cannot be hidden: {}", aClass);
 			}
 		}
 		HIDDEN_REST_CONTROLLERS.addAll(hiddenClasses);
@@ -257,8 +262,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			Map<String, Object> findControllerAdvice = openAPIBuilder.getControllerAdviceMap();
 			// calculate generic responses
 			openApi = openAPIBuilder.getCalculatedOpenAPI();
-			if (springDocConfigProperties.isOverrideWithGenericResponse() && !CollectionUtils.isEmpty(findControllerAdvice)){
-				if(!CollectionUtils.isEmpty(mappingsMap))
+			if (springDocConfigProperties.isOverrideWithGenericResponse() && !CollectionUtils.isEmpty(findControllerAdvice)) {
+				if (!CollectionUtils.isEmpty(mappingsMap))
 					findControllerAdvice.putAll(mappingsMap);
 				responseBuilder.buildGenericResponse(openApi.getComponents(), findControllerAdvice);
 			}
@@ -964,7 +969,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the yaml mapper
 	 */
 	protected ObjectMapper getYamlMapper() {
-		ObjectMapper objectMapper  =  Yaml.mapper();
+		ObjectMapper objectMapper = Yaml.mapper();
 		YAMLFactory factory = (YAMLFactory) objectMapper.getFactory();
 		factory.configure(Feature.USE_NATIVE_TYPE_ID, false);
 		return objectMapper;
