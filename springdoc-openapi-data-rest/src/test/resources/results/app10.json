@@ -904,12 +904,6 @@
           }
         }
       },
-      "Links": {
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/Link"
-        }
-      },
       "RepresentationModelObject": {
         "type": "object",
         "properties": {
@@ -952,12 +946,10 @@
           }
         }
       },
-      "RepresentationModelCustomer": {
+      "Links": {
         "type": "object",
-        "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
         }
       },
       "EntityModelCustomer": {
@@ -978,7 +970,15 @@
           }
         }
       },
-      "PageMetadata": {
+      "RepresentationModelCustomer": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "PageMetadataCustomer": {
         "type": "object",
         "properties": {
           "size": {
@@ -1017,7 +1017,7 @@
             "$ref": "#/components/schemas/Links"
           },
           "page": {
-            "$ref": "#/components/schemas/PageMetadata"
+            "$ref": "#/components/schemas/PageMetadataCustomer"
           }
         }
       },
@@ -1056,14 +1056,6 @@
           }
         }
       },
-      "RepresentationModelAccount": {
-        "type": "object",
-        "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "EntityModelAccount": {
         "type": "object",
         "properties": {
@@ -1078,6 +1070,14 @@
             "type": "string",
             "format": "date-time"
           },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "RepresentationModelAccount": {
+        "type": "object",
+        "properties": {
           "_links": {
             "$ref": "#/components/schemas/Links"
           }

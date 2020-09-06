@@ -974,12 +974,6 @@
           }
         }
       },
-      "Links": {
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/Link"
-        }
-      },
       "RepresentationModelObject": {
         "type": "object",
         "properties": {
@@ -1038,12 +1032,10 @@
           }
         }
       },
-      "RepresentationModelAccount": {
+      "Links": {
         "type": "object",
-        "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
         }
       },
       "EntityModelAccount": {
@@ -1060,6 +1052,14 @@
             "type": "string",
             "format": "date-time"
           },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "RepresentationModelAccount": {
+        "type": "object",
+        "properties": {
           "_links": {
             "$ref": "#/components/schemas/Links"
           }
@@ -1103,14 +1103,6 @@
           }
         }
       },
-      "RepresentationModelCustomer": {
-        "type": "object",
-        "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "EntityModelCustomer": {
         "type": "object",
         "properties": {
@@ -1129,7 +1121,15 @@
           }
         }
       },
-      "PageMetadata": {
+      "RepresentationModelCustomer": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "PageMetadataCustomer": {
         "type": "object",
         "properties": {
           "size": {
@@ -1168,7 +1168,7 @@
             "$ref": "#/components/schemas/Links"
           },
           "page": {
-            "$ref": "#/components/schemas/PageMetadata"
+            "$ref": "#/components/schemas/PageMetadataCustomer"
           }
         }
       },

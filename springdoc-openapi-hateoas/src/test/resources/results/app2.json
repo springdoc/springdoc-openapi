@@ -93,7 +93,7 @@
           "$ref": "#/components/schemas/Link"
         }
       },
-      "PageMetadata": {
+      "PageMetadataEntityModelPost": {
         "type": "object",
         "properties": {
           "size": {
@@ -132,7 +132,7 @@
             "$ref": "#/components/schemas/Links"
           },
           "page": {
-            "$ref": "#/components/schemas/PageMetadata"
+            "$ref": "#/components/schemas/PageMetadataEntityModelPost"
           }
         }
       },
