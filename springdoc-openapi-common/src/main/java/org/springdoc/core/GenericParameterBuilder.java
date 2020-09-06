@@ -304,7 +304,8 @@ public class GenericParameterBuilder {
 			if (schemaN.get$ref() != null && schemaN.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
 				String key = schemaN.get$ref().substring(21);
 				Schema existingSchema = components.getSchemas().get(key);
-				existingSchema.setDescription(description);
+				if (!StringUtils.isEmpty(description))
+					existingSchema.setDescription(description);
 			}
 			else
 				schemaN.setDescription(description);
