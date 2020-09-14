@@ -107,11 +107,11 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 
 			Map<String, Object> pathSpecMap = getPathSpec(bindings, "pathSpecs");
 			//remove blacklisted fields
-			Set<String> blacklist = getFieldValues(bindings, "denyList");
+			Set<String> blacklist = getFieldValues(bindings, "denyList", "blackList");
 			fieldsToAdd.removeIf(blacklist::contains);
 
-			Set<String> whiteList = getFieldValues(bindings, "allowList");
-			Set<String> aliases = getFieldValues(bindings, "aliases");
+			Set<String> whiteList = getFieldValues(bindings, "allowList", "whiteList");
+			Set<String> aliases = getFieldValues(bindings, "aliases", null);
 
 			fieldsToAdd.addAll(aliases);
 			fieldsToAdd.addAll(whiteList);
@@ -152,10 +152,13 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	 * @param fieldName the field name
 	 * @return the field values
 	 */
-	private Set<String> getFieldValues(QuerydslBindings instance, String fieldName) {
+	private Set<String> getFieldValues(QuerydslBindings instance, String fieldName, String alternativeFieldName) {
 		try {
-			Field field = FieldUtils.getDeclaredField(instance.getClass(),fieldName,true);
-			return (Set<String>) field.get(instance);
+			Field field = FieldUtils.getDeclaredField(instance.getClass(), fieldName, true);
+			if (field == null && alternativeFieldName != null)
+				field = FieldUtils.getDeclaredField(instance.getClass(), alternativeFieldName, true);
+			if (field != null)
+				return (Set<String>) field.get(instance);
 		}
 		catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());
@@ -172,7 +175,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	 */
 	private Map<String, Object> getPathSpec(QuerydslBindings instance, String fieldName) {
 		try {
-			Field field = FieldUtils.getDeclaredField(instance.getClass(),fieldName,true);
+			Field field = FieldUtils.getDeclaredField(instance.getClass(), fieldName, true);
 			return (Map<String, Object>) field.get(instance);
 		}
 		catch (IllegalAccessException e) {
@@ -192,7 +195,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 			if (instance == null) {
 				return Optional.empty();
 			}
-			Field field = FieldUtils.getDeclaredField(instance.getClass(),"path",true);
+			Field field = FieldUtils.getDeclaredField(instance.getClass(), "path", true);
 			return (Optional<Path<?>>) field.get(instance);
 		}
 		catch (IllegalAccessException e) {
