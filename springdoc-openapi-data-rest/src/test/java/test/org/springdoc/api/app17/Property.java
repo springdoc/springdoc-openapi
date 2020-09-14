@@ -21,7 +21,7 @@ class Property {
 
     @ManyToOne
     @JoinColumn(name = "child_property_id")
-    private ChildProperty childProperty;
+    private ChildProperty myChildPropertyName;
 
 	public long getId() {
 		return id;
@@ -39,11 +39,11 @@ class Property {
 		this.name = name;
 	}
 
-	public ChildProperty getChildProperty() {
-		return childProperty;
+	public ChildProperty getMyChildPropertyName() {
+		return myChildPropertyName;
 	}
 
-	public void setChildProperty(ChildProperty childProperty) {
-		this.childProperty = childProperty;
+	public void setMyChildPropertyName(ChildProperty myChildPropertyName) {
+		this.myChildPropertyName = myChildPropertyName;
 	}
 }

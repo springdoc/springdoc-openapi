@@ -173,8 +173,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 						entity.doWithAssociations((SimpleAssociationHandler) association -> {
 							PersistentProperty<?> property = association.getInverse();
 							if (jackson.isExported(property) && associations.isLinkableAssociation(property)) {
-								ResourceMetadata targetTypeMetadata = associations.getMetadataFor(property.getActualType());
-								dataRestRepository.setRelationName(targetTypeMetadata.getItemResourceRel().toString());
+								dataRestRepository.setRelationName(resourceMetadata.getMappingFor(property).getRel().value());
 								dataRestRepository.setControllerType(ControllerType.PROPERTY);
 								findControllers(routerOperationList, handlerMethodMapFilteredMethodMap, resourceMetadata, dataRestRepository, openAPI);
 							}
