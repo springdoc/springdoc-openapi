@@ -30,6 +30,7 @@ import javax.annotation.PostConstruct;
 import io.swagger.v3.core.util.Json;
 import org.springdoc.hateoas.HateoasHalProvider;
 
+import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 
@@ -49,7 +50,8 @@ public class DataRestHalProvider extends HateoasHalProvider {
 	 *
 	 * @param repositoryRestConfigurationOptional the repository rest configuration optional
 	 */
-	public DataRestHalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional) {
+	public DataRestHalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional,Optional<HateoasProperties> hateoasPropertiesOptional) {
+		super(hateoasPropertiesOptional);
 		this.repositoryRestConfigurationOptional = repositoryRestConfigurationOptional;
 	}
 

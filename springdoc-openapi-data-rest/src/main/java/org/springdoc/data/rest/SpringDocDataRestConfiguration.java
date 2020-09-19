@@ -48,6 +48,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -101,14 +102,15 @@ public class SpringDocDataRestConfiguration {
 	 * Hal provider data rest hal provider.
 	 *
 	 * @param repositoryRestConfiguration the repository rest configuration
+	 * @param hateoasPropertiesOptional the hateoas properties optional
 	 * @return the data rest hal provider
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Primary
 	@Lazy(false)
-	DataRestHalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration) {
-		return new DataRestHalProvider(repositoryRestConfiguration);
+	DataRestHalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration,Optional<HateoasProperties> hateoasPropertiesOptional) {
+		return new DataRestHalProvider(repositoryRestConfiguration,hateoasPropertiesOptional);
 	}
 
 
