@@ -20,10 +20,13 @@
 
 package org.springdoc.hateoas;
 
+import java.util.Optional;
+
 import javax.annotation.PostConstruct;
 
 import io.swagger.v3.core.util.Json;
 
+import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 
 /**
@@ -31,6 +34,20 @@ import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
  * @author bnasslahsen
  */
 public class HateoasHalProvider {
+
+	/**
+	 * The Hateoas properties optional.
+	 */
+	private final Optional<HateoasProperties> hateoasPropertiesOptional;
+
+	/**
+	 * Instantiates a new Hateoas hal provider.
+	 *
+	 * @param hateoasPropertiesOptional the hateoas properties optional
+	 */
+	public HateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional) {
+		this.hateoasPropertiesOptional = hateoasPropertiesOptional;
+	}
 
 	/**
 	 * Init.
@@ -49,7 +66,9 @@ public class HateoasHalProvider {
 	 * @return the boolean
 	 */
 	public boolean isHalEnabled() {
-		return true;
+		return hateoasPropertiesOptional
+				.map(HateoasProperties::getUseHalAsDefaultJsonMediaType)
+				.orElse(true);
 	}
 
 }

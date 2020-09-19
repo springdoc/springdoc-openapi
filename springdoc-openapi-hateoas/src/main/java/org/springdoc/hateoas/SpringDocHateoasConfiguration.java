@@ -20,6 +20,8 @@
 
 package org.springdoc.hateoas;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import io.swagger.v3.core.util.Json;
@@ -32,6 +34,7 @@ import org.springdoc.hateoas.converters.RepresentationModelLinksOASMixin;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -53,13 +56,14 @@ public class SpringDocHateoasConfiguration {
 	/**
 	 * Hateoas hal provider hateoas hal provider.
 	 *
+	 * @param hateoasPropertiesOptional the hateoas properties optional
 	 * @return the hateoas hal provider
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	HateoasHalProvider hateoasHalProvider() {
-		return new HateoasHalProvider();
+	HateoasHalProvider hateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional) {
+		return new HateoasHalProvider(hateoasPropertiesOptional);
 	}
 
 	/**
