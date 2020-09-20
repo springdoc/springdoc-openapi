@@ -231,7 +231,7 @@ public abstract class AbstractRequestBuilder {
 		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
 		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
-		parameters = DelegatingMethodParameter.customize(pNames, parameters,parameterBuilder.getDelegatingMethodParameterCustomizer());
+		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
@@ -326,7 +326,8 @@ public abstract class AbstractRequestBuilder {
 			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(new StringSchema().addEnumItem(entry.getValue()));
 			if (map.containsKey(entry.getKey())) {
 				parameter = map.get(entry.getKey());
-				parameter.getSchema().addEnumItemObject(entry.getValue());
+				if (StringUtils.isNotEmpty(entry.getValue()))
+					parameter.getSchema().addEnumItemObject(entry.getValue());
 				parameter.setSchema(parameter.getSchema());
 			}
 			map.put(entry.getKey(), parameter);
