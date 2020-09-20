@@ -151,17 +151,16 @@ public class AbstractSwaggerIndexTransformer {
 	 */
 	protected String addCSRF(String html) {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("requestInterceptor: function() {\n");
+		stringBuilder.append("requestInterceptor: (request) => {\n");
 		stringBuilder.append("const value = `; ${document.cookie}`;\n");
 		stringBuilder.append("const parts = value.split(`; ");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getCookieName());
 		stringBuilder.append("=`);\n");
-		stringBuilder.append("console.log(parts);\n");
 		stringBuilder.append("if (parts.length === 2)\n");
-		stringBuilder.append("this.headers['");
+		stringBuilder.append("request.headers['");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
 		stringBuilder.append("'] = parts.pop().split(';').shift();\n");
-		stringBuilder.append("return this;\n");
+		stringBuilder.append("return request;\n");
 		stringBuilder.append("},\n");
 		stringBuilder.append("presets: [");
 		return html.replace("presets: [", stringBuilder.toString());
