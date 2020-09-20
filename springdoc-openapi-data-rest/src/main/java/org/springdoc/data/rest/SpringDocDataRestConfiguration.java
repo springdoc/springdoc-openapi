@@ -49,6 +49,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -65,7 +66,6 @@ import org.springframework.data.rest.webmvc.RepositoryRestHandlerMapping;
 import org.springframework.data.rest.webmvc.RootResourceInformation;
 import org.springframework.data.rest.webmvc.mapping.Associations;
 import org.springframework.data.rest.webmvc.support.DefaultedPageable;
-import org.springframework.data.rest.webmvc.support.DelegatingHandlerMapping;
 import org.springframework.data.rest.webmvc.support.ETag;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
@@ -159,7 +159,7 @@ public class SpringDocDataRestConfiguration {
 		 * @param mappings the mappings
 		 * @param repositories the repositories
 		 * @param associations the associations
-		 * @param delegatingHandlerMapping the delegating handler mapping
+		 * @param applicationContext the application context
 		 * @param dataRestRouterOperationBuilder the data rest router operation builder
 		 * @param persistentEntities the persistent entities
 		 * @param mapper the mapper
@@ -168,10 +168,10 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		SpringRepositoryRestResourceProvider springRepositoryRestResourceProvider(ResourceMappings mappings,
-				Repositories repositories, Associations associations, DelegatingHandlerMapping delegatingHandlerMapping,
+				Repositories repositories, Associations associations, ApplicationContext applicationContext,
 				DataRestRouterOperationBuilder dataRestRouterOperationBuilder, PersistentEntities persistentEntities,
 				ObjectMapper mapper) {
-			return new SpringRepositoryRestResourceProvider(mappings,repositories,  associations,  delegatingHandlerMapping,
+			return new SpringRepositoryRestResourceProvider(mappings,repositories,  associations,  applicationContext,
 					 dataRestRouterOperationBuilder,  persistentEntities, mapper);
 		}
 
