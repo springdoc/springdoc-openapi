@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.Flow;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
@@ -33,6 +34,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
  * The type Spring doc kotlinx configuration.
  * @author bnasslahsen
  */
+@Lazy(false)
 @ConditionalOnClass(Flow.class)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)

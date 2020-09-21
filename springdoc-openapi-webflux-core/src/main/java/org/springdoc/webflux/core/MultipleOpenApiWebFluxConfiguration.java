@@ -50,6 +50,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
  * The type Multiple open api web flux configuration.
  * @author bnasslahsen
  */
+@Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)

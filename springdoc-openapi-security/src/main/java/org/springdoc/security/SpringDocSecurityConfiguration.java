@@ -38,6 +38,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -48,6 +49,7 @@ import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpointHa
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_LOGIN_ENDPOINT;
@@ -57,6 +59,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
  * The type Spring doc security configuration.
  * @author bnasslahsen
  */
+@Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocSecurityConfiguration {
@@ -71,6 +74,7 @@ public class SpringDocSecurityConfiguration {
 	 * The type Spring security o auth 2 provider configuration.
 	 * @author bnasslahsen
 	 */
+	@Lazy(false)
 	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnBean(FrameworkEndpointHandlerMapping.class)
 	class SpringSecurityOAuth2ProviderConfiguration {
@@ -87,6 +91,7 @@ public class SpringDocSecurityConfiguration {
 		}
 	}
 
+	@Lazy(false)
 	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnClass(javax.servlet.Filter.class)
 	class SpringSecurityLoginEndpointConfiguration {
@@ -94,7 +99,8 @@ public class SpringDocSecurityConfiguration {
 		@Bean
 		@ConditionalOnProperty(SPRINGDOC_SHOW_LOGIN_ENDPOINT)
 		@Lazy(false)
-		OpenApiCustomiser springSecurityLoginEndpointCustomiser(FilterChainProxy filterChainProxy) {
+		OpenApiCustomiser springSecurityLoginEndpointCustomiser(ApplicationContext applicationContext) {
+			FilterChainProxy filterChainProxy = applicationContext.getBean(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, FilterChainProxy.class);
 			return openAPI -> {
 				for (SecurityFilterChain filterChain : filterChainProxy.getFilterChains()) {
 					Optional<UsernamePasswordAuthenticationFilter> optionalFilter =

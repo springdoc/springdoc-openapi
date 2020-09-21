@@ -34,7 +34,6 @@ public class SpringDocApp6Test extends AbstractSpringDocTest {
 		MyUserDetailsService userDetailsService() {
 			return new MyUserDetailsService();
 		}
-
 	}
 
 }
