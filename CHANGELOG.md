@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.7] - 2020-09-21
+### Added
+- #854 - Add pre-loading setting to load OpenAPI early
+### Changed
+- #852 - API component schema description incorrectly overwritten by API parameter description
+- Upgrade supported spring-boot version to 2.3.4.RELEASE
+- Upgrade swagger-ui version to v3.34.0
+### Fixed
+- #864 - NPE with QueryDSL configuration - SpringBoot < 2.3.2
+- #861 - Wrong @ManyToOne relationship naming
+- #870 - HAL representation (_embedded and _links) in definitions when application returning plain json
+- #869 - Incorrect schema addition on header if used in Spring mapping
+- #847 - spring-rest-docs api-docs endpoint 500 error using Spring Boot: 2.4.0-M2
+- #872 - Javascript error occurs when I set springdoc.swagger-ui.csrf.enabled=true
+- #873 - lazy initialization bug
+
 ## [1.4.6] - 2020-08-31
 ### Fixed
 - #844 - Cannot disable Try it out button
