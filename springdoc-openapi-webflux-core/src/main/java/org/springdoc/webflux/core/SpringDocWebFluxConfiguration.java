@@ -63,6 +63,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
  * The type Spring doc web flux configuration.
  * @author bnasslahsen
  */
+@Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)

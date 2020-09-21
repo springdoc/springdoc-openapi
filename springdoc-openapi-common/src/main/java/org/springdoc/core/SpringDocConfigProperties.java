@@ -26,6 +26,7 @@ import java.util.List;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 
 import static org.springdoc.core.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
@@ -35,6 +36,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
  * The type Spring doc config properties.
  * @author bnasslahsen
  */
+@Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConfigurationProperties(prefix = Constants.SPRINGDOC_PREFIX)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)

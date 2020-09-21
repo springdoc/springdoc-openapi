@@ -68,6 +68,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
  * The type Spring doc web mvc configuration.
  * @author bnasslahsen
  */
+@Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)

@@ -75,6 +75,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
  * The type Spring doc data rest configuration.
  * @author bnasslahsen
  */
+@Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocDataRestConfiguration {
@@ -143,6 +144,7 @@ public class SpringDocDataRestConfiguration {
 	 * The type Spring repository rest resource provider configuration.
 	 * @author bnasslahsen
 	 */
+	@Lazy(false)
 	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnClass(RepositoryRestHandlerMapping.class)
 	static class SpringRepositoryRestResourceProviderConfiguration {

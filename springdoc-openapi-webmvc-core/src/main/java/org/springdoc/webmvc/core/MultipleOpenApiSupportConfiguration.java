@@ -53,6 +53,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
  * The type Multiple open api support configuration.
  * @author bnasslahsen
  */
+@Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
