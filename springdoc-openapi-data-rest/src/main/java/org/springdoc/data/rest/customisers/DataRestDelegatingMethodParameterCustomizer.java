@@ -62,7 +62,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	@Override
 	public void customize(MethodParameter originalParameter, MethodParameter methodParameter) {
 		PageableDefault pageableDefault = originalParameter.getParameterAnnotation(PageableDefault.class);
-		if (pageableDefault != null || optionalSpringDataWebProperties.isPresent() || optionalRepositoryRestConfiguration.isPresent()) {
+		if (pageableDefault != null || (org.springframework.data.domain.Pageable.class.isAssignableFrom(originalParameter.getParameterType()) && (optionalSpringDataWebProperties.isPresent() || optionalRepositoryRestConfiguration.isPresent())))
+		{
 			Field field = FieldUtils.getDeclaredField(DelegatingMethodParameter.class, "additionalParameterAnnotations", true);
 			try {
 				Annotation[] parameterAnnotations = (Annotation[]) field.get(methodParameter);
