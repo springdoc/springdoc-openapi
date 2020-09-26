@@ -21,6 +21,7 @@
 package org.springdoc.core.fn;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +69,30 @@ public class RouterFunctionData {
 	 * The Methods.
 	 */
 	private RequestMethod[] methods;
+
+	/**
+	 * Instantiates a new Router function data.
+	 */
+	public RouterFunctionData() { }
+
+	/**
+	 * Instantiates a new Router function data.
+	 *
+	 * @param path the path
+	 * @param consumes the consumes
+	 * @param produces the produces
+	 * @param headers the headers
+	 * @param queryParams the query params
+	 * @param methods the methods
+	 */
+	public RouterFunctionData(String path, String[] consumes, String[] produces, String[] headers, Map<String, String> queryParams, RequestMethod[] methods) {
+		this.path = path;
+		this.consumes = Arrays.asList(consumes);
+		this.produces = Arrays.asList(produces);
+		this.headers = Arrays.asList(headers);
+		this.queryParams = queryParams;
+		this.methods = methods;
+	}
 
 	/**
 	 * Gets path.
@@ -170,6 +195,24 @@ public class RouterFunctionData {
 	public void addProduces(String produces) {
 		if (StringUtils.isNotBlank(produces))
 			this.produces.add(produces);
+	}
+
+	/**
+	 * Add produces.
+	 *
+	 * @param produces the produces
+	 */
+	public void addProduces(List<String> produces) {
+		this.produces.addAll(produces);
+	}
+
+	/**
+	 * Add consumes.
+	 *
+	 * @param consumes the consumes
+	 */
+	public void addConsumes(List<String> consumes) {
+		this.consumes.addAll(consumes);
 	}
 
 	/**
