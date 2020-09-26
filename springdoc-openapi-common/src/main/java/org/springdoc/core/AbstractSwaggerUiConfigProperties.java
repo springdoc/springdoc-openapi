@@ -153,6 +153,29 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	protected String urlsPrimaryName;
 
 	/**
+	 * The Syntax highlight.
+	 */
+	protected SyntaxHighlight syntaxHighlight;
+
+	/**
+	 * Gets syntax highlight.
+	 *
+	 * @return the syntax highlight
+	 */
+	public SyntaxHighlight getSyntaxHighlight() {
+		return syntaxHighlight;
+	}
+
+	/**
+	 * Sets syntax highlight.
+	 *
+	 * @param syntaxHighlight the syntax highlight
+	 */
+	public void setSyntaxHighlight(SyntaxHighlight syntaxHighlight) {
+		this.syntaxHighlight = syntaxHighlight;
+	}
+
+	/**
 	 * Gets urls.
 	 *
 	 * @return the urls
@@ -565,6 +588,58 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	 */
 	public void setUrlsPrimaryName(String urlsPrimaryName) {
 		this.urlsPrimaryName = urlsPrimaryName;
+	}
+
+	/**
+	 * The type Syntax highlight.
+	 */
+	public static class SyntaxHighlight{
+
+		/**
+		 * The Activated.
+		 */
+		private Boolean activated;
+
+		/**
+		 * The Theme.
+		 */
+		private String theme;
+
+		/**
+		 * Gets activated.
+		 *
+		 * @return the activated
+		 */
+		public Boolean getActivated() {
+			return activated;
+		}
+
+		/**
+		 * Sets activated.
+		 *
+		 * @param activated the activated
+		 */
+		public void setActivated(Boolean activated) {
+			this.activated = activated;
+		}
+
+		/**
+		 * Gets theme.
+		 *
+		 * @return the theme
+		 */
+		public String getTheme() {
+			return theme;
+		}
+
+		/**
+		 * Sets theme.
+		 *
+		 * @param theme the theme
+		 */
+		public void setTheme(String theme) {
+			this.theme = theme;
+		}
 	}
 
 	/**

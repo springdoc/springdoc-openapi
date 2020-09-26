@@ -119,7 +119,7 @@ public class AbstractSwaggerIndexTransformer {
 	 */
 	protected boolean hasDefaultTransformations() {
 		boolean oauth2Configured = !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters());
-		return oauth2Configured || swaggerUiConfig.isDisableSwaggerDefaultUrl() || swaggerUiConfig.isCsrfEnabled();
+		return oauth2Configured || swaggerUiConfig.isDisableSwaggerDefaultUrl() || swaggerUiConfig.isCsrfEnabled() || swaggerUiConfig.getSyntaxHighlight() != null;
 	}
 
 	/**
@@ -139,6 +139,9 @@ public class AbstractSwaggerIndexTransformer {
 		}
 		if (swaggerUiConfig.isCsrfEnabled()) {
 			html = addCSRF(html);
+		}
+		if (swaggerUiConfig.getSyntaxHighlight() != null) {
+			html = addSyntaxHighlight(html);
 		}
 		return html;
 	}
@@ -165,4 +168,24 @@ public class AbstractSwaggerIndexTransformer {
 		stringBuilder.append("presets: [");
 		return html.replace("presets: [", stringBuilder.toString());
 	}
+
+	protected String addSyntaxHighlight(String html) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("syntaxHighlight: {");
+		if (swaggerUiConfig.getSyntaxHighlight().getActivated() != null) {
+			stringBuilder.append("activated: ");
+			stringBuilder.append(swaggerUiConfig.getSyntaxHighlight().getActivated());
+		}
+		if (StringUtils.isNotEmpty(swaggerUiConfig.getSyntaxHighlight().getTheme())) {
+			if (swaggerUiConfig.getSyntaxHighlight().getActivated() != null)
+				stringBuilder.append(" , ");
+			stringBuilder.append("theme: \"");
+			stringBuilder.append(swaggerUiConfig.getSyntaxHighlight().getTheme());
+			stringBuilder.append("\"");
+		}
+		stringBuilder.append("},\n");
+		stringBuilder.append("presets: [");
+		return html.replace("presets: [", stringBuilder.toString());
+	}
+
 }
