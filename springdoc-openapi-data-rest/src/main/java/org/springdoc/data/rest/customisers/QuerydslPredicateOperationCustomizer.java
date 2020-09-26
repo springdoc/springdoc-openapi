@@ -24,6 +24,7 @@
 package org.springdoc.data.rest.customisers;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,13 +98,12 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 			MethodParameter parameter = methodParameters[i];
 			QuerydslPredicate predicate = parameter.getParameterAnnotation(QuerydslPredicate.class);
 
-			if (predicate == null) {
+			if (predicate == null)
 				continue;
-			}
 
 			QuerydslBindings bindings = extractQdslBindings(predicate);
 
-			Set<String> fieldsToAdd = Arrays.stream(predicate.root().getDeclaredFields()).map(Field::getName).collect(Collectors.toSet());
+			Set<String> fieldsToAdd = Arrays.stream(predicate.root().getDeclaredFields()).filter(field -> !Modifier.isStatic(field.getModifiers())).map(Field::getName).collect(Collectors.toSet());
 
 			Map<String, Object> pathSpecMap = getPathSpec(bindings, "pathSpecs");
 			//remove blacklisted fields
@@ -115,15 +115,38 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 
 			fieldsToAdd.addAll(aliases);
 			fieldsToAdd.addAll(whiteList);
-			for (String fieldName : fieldsToAdd) {
-				Type type = getFieldType(fieldName, pathSpecMap, predicate.root());
-				io.swagger.v3.oas.models.parameters.Parameter newParameter = buildParam(type, fieldName);
 
-				parametersToAddToOperation.add(newParameter);
+			boolean excludeUnlistedProperties = getFieldValueOfBoolean(bindings, "excludeUnlistedProperties");
+
+			for (String fieldName : fieldsToAdd) {
+				Type type = getFieldType(fieldName, pathSpecMap, predicate.root(), excludeUnlistedProperties);
+				if (type != null) {
+					Parameter newParameter = buildParam(type, fieldName);
+					parametersToAddToOperation.add(newParameter);
+				}
 			}
 		}
 		operation.getParameters().addAll(parametersToAddToOperation);
 		return operation;
+	}
+
+	/**
+	 * Gets field value of boolean.
+	 *
+	 * @param instance the instance
+	 * @param fieldName the field name
+	 * @return the field value of boolean
+	 */
+	private boolean getFieldValueOfBoolean(QuerydslBindings instance, String fieldName) {
+		try {
+			Field field = FieldUtils.getDeclaredField(instance.getClass(), fieldName, true);
+			if (field != null)
+				return (boolean) field.get(instance);
+		}
+		catch (IllegalAccessException e) {
+			LOGGER.warn(e.getMessage());
+		}
+		return false;
 	}
 
 	/**
@@ -150,6 +173,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	 *
 	 * @param instance the instance
 	 * @param fieldName the field name
+	 * @param alternativeFieldName the alternative field name
 	 * @return the field values
 	 */
 	private Set<String> getFieldValues(QuerydslBindings instance, String fieldName, String alternativeFieldName) {
@@ -209,30 +233,26 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	 * @param fieldName The name of the field used as reference to get the type
 	 * @param pathSpecMap The Qdsl path specifications as defined in the resolved bindings
 	 * @param root The root type where the paths are gotten
+	 * @param excludeUnlistedProperties the exclude unlisted properties
 	 * @return The type of the field. Returns
 	 */
-	private Type getFieldType(String fieldName, Map<String, Object> pathSpecMap, Class<?> root) {
+	private Type getFieldType(String fieldName, Map<String, Object> pathSpecMap, Class<?> root, boolean excludeUnlistedProperties) {
+		Type genericType = null;
 		try {
 			Object pathAndBinding = pathSpecMap.get(fieldName);
 			Optional<Path<?>> path = getPathFromPathSpec(pathAndBinding);
-
-			Type genericType;
-			Field declaredField = null;
+			Field declaredField;
 			if (path.isPresent()) {
 				genericType = path.get().getType();
-			}
-			else {
+			} else if (!excludeUnlistedProperties) {
 				declaredField = root.getDeclaredField(fieldName);
 				genericType = declaredField.getGenericType();
-			}
-			if (genericType != null) {
-				return genericType;
 			}
 		}
 		catch (NoSuchFieldException e) {
 			LOGGER.warn("Field {} not found on {} : {}", fieldName, root.getName(), e.getMessage());
 		}
-		return String.class;
+		return genericType;
 	}
 
 	/***
