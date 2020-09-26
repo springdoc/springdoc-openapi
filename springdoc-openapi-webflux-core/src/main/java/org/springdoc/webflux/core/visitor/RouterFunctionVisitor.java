@@ -49,12 +49,12 @@ public class RouterFunctionVisitor extends AbstractRouterFunctionVisitor impleme
 
 	@Override
 	public void startNested(RequestPredicate predicate) {
-		// Not yet needed
+		predicate.accept(this);
 	}
 
 	@Override
 	public void endNested(RequestPredicate predicate) {
-		// Not yet needed
+		computeNested();
 	}
 
 	@Override

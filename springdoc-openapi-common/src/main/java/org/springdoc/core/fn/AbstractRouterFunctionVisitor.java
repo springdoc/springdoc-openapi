@@ -21,8 +21,11 @@
 package org.springdoc.core.fn;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -37,6 +40,36 @@ public class AbstractRouterFunctionVisitor {
 	 * The Router function datas.
 	 */
 	protected List<RouterFunctionData> routerFunctionDatas = new ArrayList<>();
+
+	/**
+	 * The Nested or paths.
+	 */
+	protected List<String> nestedOrPaths = new ArrayList<>();
+
+	/**
+	 * The Nested and paths.
+	 */
+	protected List<String> nestedAndPaths = new ArrayList<>();
+
+	/**
+	 * The Nested accept headers.
+	 */
+	protected List<String> nestedAcceptHeaders = new ArrayList<>();
+
+	/**
+	 * The Nested content type headers.
+	 */
+	protected List<String> nestedContentTypeHeaders = new ArrayList<>();
+
+	/**
+	 * The Is or.
+	 */
+	protected boolean isOr;
+
+	/**
+	 * The Is and.
+	 */
+	protected boolean isAnd;
 
 	/**
 	 * The Router function data.
@@ -58,7 +91,12 @@ public class AbstractRouterFunctionVisitor {
 	 * @param pattern the pattern
 	 */
 	public void path(String pattern) {
-		routerFunctionData.setPath(pattern);
+		if (routerFunctionData != null)
+			routerFunctionData.setPath(pattern);
+		else if (isAnd)
+			nestedAndPaths.add(pattern);
+		else if (isOr)
+			nestedOrPaths.add(pattern);
 	}
 
 	/**
@@ -68,10 +106,12 @@ public class AbstractRouterFunctionVisitor {
 	 * @param value the value
 	 */
 	public void header(String name, String value) {
-		if (HttpHeaders.ACCEPT.equals(name))
-			routerFunctionData.addProduces(value);
-		else if (HttpHeaders.CONTENT_TYPE.equals(name))
-			routerFunctionData.addConsumes(value);
+		if (HttpHeaders.ACCEPT.equals(name)) {
+			calculateAccept(value);
+		}
+		else if (HttpHeaders.CONTENT_TYPE.equals(name)) {
+			calculateContentType(value);
+		}
 		else
 			routerFunctionData.addHeaders(name + "=" + value);
 	}
@@ -118,7 +158,7 @@ public class AbstractRouterFunctionVisitor {
 	 * Start and.
 	 */
 	public void startAnd() {
-		// Not yet needed
+		isAnd = true;
 	}
 
 	/**
@@ -139,7 +179,7 @@ public class AbstractRouterFunctionVisitor {
 	 * Start or.
 	 */
 	public void startOr() {
-		// Not yet needed
+		isOr = true;
 	}
 
 	/**
@@ -169,5 +209,71 @@ public class AbstractRouterFunctionVisitor {
 	public void endNegate() {
 		// Not yet needed
 	}
+
+	protected void computeNested() {
+		if (!nestedAndPaths.isEmpty()) {
+			String nestedPath = String.join(StringUtils.EMPTY, nestedAndPaths);
+			routerFunctionDatas.forEach(existingRouterFunctionData -> existingRouterFunctionData.setPath(nestedPath+existingRouterFunctionData.getPath()));
+		}
+		if (!nestedOrPaths.isEmpty()) {
+			List<RouterFunctionData> routerFunctionDatasClone = new ArrayList<>();
+			for (RouterFunctionData functionData : routerFunctionDatas) {
+				for (String nestedOrPath : nestedOrPaths) {
+					RouterFunctionData routerFunctionDataClone = new RouterFunctionData(nestedOrPath +functionData.getPath(),functionData.getConsumes(),functionData.getProduces(), functionData.getHeaders(), functionData.getQueryParams(), functionData.getMethods());
+					routerFunctionDatasClone.add(routerFunctionDataClone);
+				}
+			}
+			this.routerFunctionDatas = routerFunctionDatasClone;
+		}
+		if (!nestedAcceptHeaders.isEmpty())
+			routerFunctionDatas.forEach(existingRouterFunctionData -> existingRouterFunctionData.addProduces(nestedAcceptHeaders));
+		if (!nestedContentTypeHeaders.isEmpty())
+			routerFunctionDatas.forEach(existingRouterFunctionData -> existingRouterFunctionData.addConsumes(nestedContentTypeHeaders));
+	}
+
+	/**
+	 * Calculate content type.
+	 *
+	 * @param value the value
+	 */
+	private void calculateContentType(String value) {
+		if (value.contains(",")) {
+			String[] mediaTypes = value.substring(1, value.length() - 1).split(", ");
+			for (String mediaType : mediaTypes)
+				if (routerFunctionData != null)
+					routerFunctionData.addConsumes(mediaType);
+				else
+					nestedContentTypeHeaders.addAll(Arrays.asList(mediaTypes));
+		}
+		else {
+			if (routerFunctionData != null)
+				routerFunctionData.addConsumes(value);
+			else
+				nestedContentTypeHeaders.add(value);
+		}
+	}
+
+	/**
+	 * Calculate accept.
+	 *
+	 * @param value the value
+	 */
+	private void calculateAccept(String value) {
+		if (value.contains(",")) {
+			String[] mediaTypes = value.substring(1, value.length() - 1).split(", ");
+			for (String mediaType : mediaTypes)
+				if (routerFunctionData != null)
+					routerFunctionData.addProduces(mediaType);
+				else
+					nestedAcceptHeaders.addAll(Arrays.asList(mediaTypes));
+		}
+		else {
+			if (routerFunctionData != null)
+				routerFunctionData.addProduces(value);
+			else
+				nestedAcceptHeaders.add(value);
+		}
+	}
+
 
 }

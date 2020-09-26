@@ -48,8 +48,8 @@ class BookRouter {
 							,parameters = { @Parameter(in = ParameterIn.PATH, name = "author")})) })
 	RouterFunction<?> routes(BookRepository br) {
 		return
-				route(GET("/books").and(accept(MediaType.APPLICATION_JSON)).and(accept(MediaType.APPLICATION_XML)), req -> ok().body(br.findAll(), Book.class))
-						.and(route(GET("/books").and(accept(MediaType.APPLICATION_XML)).and(accept(MediaType.TEXT_PLAIN)), req -> ok().body(br.findAll(), Book.class)))
+				route(GET("/books").and(accept(MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML)), req -> ok().body(br.findAll(), Book.class))
+						.and(route(GET("/books").and(accept(MediaType.APPLICATION_XML,MediaType.TEXT_PLAIN)), req -> ok().body(br.findAll(), Book.class)))
 						.andRoute(GET("/books/{author}"), req -> ok().body(br.findByAuthor(req.pathVariable("author")), Book.class));
 	}
 }
