@@ -73,6 +73,12 @@ public class GroupedOpenApi {
 	 */
 	private final List<String> pathsToExclude;
 
+	private final List<String> producesToMatch;
+
+	private final List<String> headersToMatch;
+
+	private final List<String> consumesToMatch;
+
 	/**
 	 * Instantiates a new Grouped open api.
 	 *
@@ -82,12 +88,18 @@ public class GroupedOpenApi {
 		this.group = Objects.requireNonNull(builder.group, GROUP_NAME_NOT_NULL);
 		this.pathsToMatch = builder.pathsToMatch;
 		this.packagesToScan = builder.packagesToScan;
+		this.producesToMatch = builder.producesToMatch;
+		this.consumesToMatch = builder.consumesToMatch;
+		this.headersToMatch = builder.headersToMatch;
 		this.packagesToExclude = builder.packagesToExclude;
 		this.pathsToExclude = builder.pathsToExclude;
 		this.openApiCustomisers = Objects.requireNonNull(builder.openApiCustomisers);
 		this.operationCustomizers = Objects.requireNonNull(builder.operationCustomizers);
 		if (CollectionUtils.isEmpty(this.pathsToMatch)
 				&& CollectionUtils.isEmpty(this.packagesToScan)
+				&& CollectionUtils.isEmpty(this.producesToMatch)
+				&& CollectionUtils.isEmpty(this.consumesToMatch)
+				&& CollectionUtils.isEmpty(this.headersToMatch)
 				&& CollectionUtils.isEmpty(this.pathsToExclude)
 				&& CollectionUtils.isEmpty(this.packagesToExclude)
 				&& CollectionUtils.isEmpty(openApiCustomisers)
@@ -102,6 +114,18 @@ public class GroupedOpenApi {
 	 */
 	public static Builder builder() {
 		return new Builder();
+	}
+
+	public List<String> getProducesToMatch() {
+		return producesToMatch;
+	}
+
+	public List<String> getHeadersToMatch() {
+		return headersToMatch;
+	}
+
+	public List<String> getConsumesToMatch() {
+		return consumesToMatch;
 	}
 
 	/**
@@ -207,6 +231,12 @@ public class GroupedOpenApi {
 		 */
 		private List<String> pathsToExclude;
 
+		private List<String> producesToMatch;
+
+		private List<String> headersToMatch;
+
+		private List<String> consumesToMatch;
+
 		/**
 		 * Instantiates a new Builder.
 		 */
@@ -260,6 +290,19 @@ public class GroupedOpenApi {
 			return this;
 		}
 
+		public Builder producesToMatch(String... producesToMatch) {
+			this.producesToMatch = Arrays.asList(producesToMatch);
+			return this;
+		}
+
+		public Builder consumesToMatch(String... consumesToMatch) {
+			this.consumesToMatch = Arrays.asList(consumesToMatch);
+			return this;
+		}
+		public Builder headersToMatch(String... headersToMatch) {
+			this.headersToMatch = Arrays.asList(headersToMatch);
+			return this;
+		}
 		/**
 		 * Paths to exclude builder.
 		 *

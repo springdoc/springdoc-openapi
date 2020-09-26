@@ -125,16 +125,16 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Instantiates a new Multiple open api resource.
 	 *
-	 * @param groupedOpenApis the grouped open apis 
-	 * @param defaultOpenAPIBuilder the default open api builder 
-	 * @param requestBuilder the request builder 
-	 * @param responseBuilder the response builder 
-	 * @param operationParser the operation parser 
-	 * @param requestMappingHandlerMapping the request mapping handler mapping 
-	 * @param actuatorProvider the actuator provider 
-	 * @param springDocConfigProperties the spring doc config properties 
-	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider 
-	 * @param routerFunctionProvider the router function provider 
+	 * @param groupedOpenApis the grouped open apis
+	 * @param defaultOpenAPIBuilder the default open api builder
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param actuatorProvider the actuator provider
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
+	 * @param routerFunctionProvider the router function provider
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 */
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
@@ -163,7 +163,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 		this.groupedOpenApiResources = groupedOpenApis.stream()
 				.collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
 						{
-							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude());
+							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude(), item.getProducesToMatch(),item.getConsumesToMatch(), item.getHeadersToMatch());
 							springDocConfigProperties.addGroupConfig(groupConfig);
 							return new OpenApiResource(item.getGroup(),
 									defaultOpenAPIBuilder,
@@ -186,10 +186,10 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Openapi json string.
 	 *
-	 * @param request the request 
-	 * @param apiDocsUrl the api docs url 
-	 * @param group the group 
-	 * @return the string 
+	 * @param request the request
+	 * @param apiDocsUrl the api docs url
+	 * @param group the group
+	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
@@ -203,10 +203,10 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Openapi yaml string.
 	 *
-	 * @param request the request 
-	 * @param apiDocsUrl the api docs url 
-	 * @param group the group 
-	 * @return the string 
+	 * @param request the request
+	 * @param apiDocsUrl the api docs url
+	 * @param group the group
+	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)

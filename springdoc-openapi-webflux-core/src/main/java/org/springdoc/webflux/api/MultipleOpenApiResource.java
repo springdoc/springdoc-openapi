@@ -108,13 +108,13 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Instantiates a new Multiple open api resource.
 	 *
-	 * @param groupedOpenApis the grouped open apis 
-	 * @param defaultOpenAPIBuilder the default open api builder 
-	 * @param requestBuilder the request builder 
-	 * @param responseBuilder the response builder 
-	 * @param operationParser the operation parser 
-	 * @param requestMappingHandlerMapping the request mapping handler mapping 
-	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param groupedOpenApis the grouped open apis
+	 * @param defaultOpenAPIBuilder the default open api builder
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
@@ -138,7 +138,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 		this.groupedOpenApiResources = groupedOpenApis.stream()
 				.collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
 						{
-							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude());
+							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude(), item.getProducesToMatch(), item.getConsumesToMatch(),item.getHeadersToMatch());
 							springDocConfigProperties.addGroupConfig(groupConfig);
 							return new OpenApiResource(item.getGroup(),
 									defaultOpenAPIBuilder,
@@ -158,10 +158,10 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Openapi json mono.
 	 *
-	 * @param serverHttpRequest the server http request 
-	 * @param apiDocsUrl the api docs url 
-	 * @param group the group 
-	 * @return the mono 
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @param group the group
+	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
@@ -176,10 +176,10 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Openapi yaml mono.
 	 *
-	 * @param serverHttpRequest the server http request 
-	 * @param apiDocsUrl the api docs url 
-	 * @param group the group 
-	 * @return the mono 
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @param group the group
+	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)

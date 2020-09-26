@@ -78,6 +78,21 @@ public class SpringDocConfigProperties {
 	private List<String> pathsToExclude;
 
 	/**
+	 * The Produces to match.
+	 */
+	private List<String> producesToMatch;
+
+	/**
+	 * The Headers to match.
+	 */
+	private List<String> headersToMatch;
+
+	/**
+	 * The Consumes to match.
+	 */
+	private List<String> consumesToMatch;
+
+	/**
 	 * The Cache.
 	 */
 	private Cache cache = new Cache();
@@ -136,6 +151,61 @@ public class SpringDocConfigProperties {
 	 * Allow for pre-loading OpenAPI
 	 */
 	private boolean preLoadingEnabled;
+
+
+	/**
+	 * Gets produces to match.
+	 *
+	 * @return the produces to match
+	 */
+	public List<String> getProducesToMatch() {
+		return producesToMatch;
+	}
+
+	/**
+	 * Sets produces to match.
+	 *
+	 * @param producesToMatch the produces to match
+	 */
+	public void setProducesToMatch(List<String> producesToMatch) {
+		this.producesToMatch = producesToMatch;
+	}
+
+	/**
+	 * Gets headers to match.
+	 *
+	 * @return the headers to match
+	 */
+	public List<String> getHeadersToMatch() {
+		return headersToMatch;
+	}
+
+	/**
+	 * Sets headers to match.
+	 *
+	 * @param headersToMatch the headers to match
+	 */
+	public void setHeadersToMatch(List<String> headersToMatch) {
+		this.headersToMatch = headersToMatch;
+	}
+
+	/**
+	 * Gets consumes to match.
+	 *
+	 * @return the consumes to match
+	 */
+	public List<String> getConsumesToMatch() {
+		return consumesToMatch;
+	}
+
+	/**
+	 * Sets consumes to match.
+	 *
+	 * @param consumesToMatch the consumes to match
+	 */
+	public void setConsumesToMatch(List<String> consumesToMatch) {
+		this.consumesToMatch = consumesToMatch;
+	}
 
 	/**
 	 * Is use fqn boolean.
@@ -773,6 +843,21 @@ public class SpringDocConfigProperties {
 		private String group;
 
 		/**
+		 * The Produces to match.
+		 */
+		private List<String> producesToMatch;
+
+		/**
+		 * The Headers to match.
+		 */
+		private List<String> headersToMatch;
+
+		/**
+		 * The Consumes to match.
+		 */
+		private List<String> consumesToMatch;
+
+		/**
 		 * Instantiates a new Group config.
 		 */
 		public GroupConfig() {
@@ -786,13 +871,57 @@ public class SpringDocConfigProperties {
 		 * @param packagesToScan the packages to scan
 		 * @param packagesToExclude the packages to exclude
 		 * @param pathsToExclude the paths to exclude
+		 * @param producesToMatch the produces to match
+		 * @param consumesToMatch the consumes to match
+		 * @param headersToMatch the headers to match
 		 */
-		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan, List<String> packagesToExclude, List<String> pathsToExclude) {
+		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan,
+				List<String> packagesToExclude, List<String> pathsToExclude,
+				List<String> producesToMatch,List<String> consumesToMatch,List<String> headersToMatch) {
 			this.pathsToMatch = pathsToMatch;
 			this.pathsToExclude = pathsToExclude;
 			this.packagesToExclude = packagesToExclude;
 			this.packagesToScan = packagesToScan;
 			this.group = group;
+			this.producesToMatch = producesToMatch;
+			this.consumesToMatch = consumesToMatch;
+			this.headersToMatch = headersToMatch;
+		}
+
+		/**
+		 * Gets headers to match.
+		 *
+		 * @return the headers to match
+		 */
+		public List<String> getHeadersToMatch() {
+			return headersToMatch;
+		}
+
+		/**
+		 * Sets headers to match.
+		 *
+		 * @param headersToMatch the headers to match
+		 */
+		public void setHeadersToMatch(List<String> headersToMatch) {
+			this.headersToMatch = headersToMatch;
+		}
+
+		/**
+		 * Gets consumes to match.
+		 *
+		 * @return the consumes to match
+		 */
+		public List<String> getConsumesToMatch() {
+			return consumesToMatch;
+		}
+
+		/**
+		 * Sets consumes to match.
+		 *
+		 * @param consumesToMatch the consumes to match
+		 */
+		public void setConsumesToMatch(List<String> consumesToMatch) {
+			this.consumesToMatch = consumesToMatch;
 		}
 
 		/**
@@ -883,6 +1012,24 @@ public class SpringDocConfigProperties {
 		 */
 		public void setPathsToExclude(List<String> pathsToExclude) {
 			this.pathsToExclude = pathsToExclude;
+		}
+
+		/**
+		 * Gets produces to match.
+		 *
+		 * @return the produces to match
+		 */
+		public List<String> getProducesToMatch() {
+			return producesToMatch;
+		}
+
+		/**
+		 * Sets produces to match.
+		 *
+		 * @param producesToMatch the produces to match
+		 */
+		public void setProducesToMatch(List<String> producesToMatch) {
+			this.producesToMatch = producesToMatch;
 		}
 	}
 }
