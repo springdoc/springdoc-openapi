@@ -32,10 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource(properties = { "springdoc.swagger-ui.syntaxHighlight.activated=false",
 		"springdoc.swagger-ui.syntaxHighlight.theme=monokai" })
-public class SpringDocApp12Test extends AbstractSpringDocTest {
+class SpringDocApp12Test extends AbstractSpringDocTest {
 
 	@Test
-	public void transformed_index_with_oauth() throws Exception {
+	void transformed_index_with_oauth() throws Exception {
 		MvcResult mvcResult = mockMvc.perform(get("/swagger-ui/index.html")).andExpect(status().isOk()).andReturn();
 		String transformedIndex = mvcResult.getResponse().getContentAsString();
 		assertTrue(transformedIndex.contains("Swagger UI"));

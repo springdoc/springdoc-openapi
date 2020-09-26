@@ -40,6 +40,8 @@ import org.springframework.util.CollectionUtils;
  */
 public class AbstractSwaggerIndexTransformer {
 
+	private static final String PRESETS = "presets: [";
+
 	/**
 	 * The Swagger ui o auth properties.
 	 */
@@ -165,8 +167,8 @@ public class AbstractSwaggerIndexTransformer {
 		stringBuilder.append("'] = parts.pop().split(';').shift();\n");
 		stringBuilder.append("return request;\n");
 		stringBuilder.append("},\n");
-		stringBuilder.append("presets: [");
-		return html.replace("presets: [", stringBuilder.toString());
+		stringBuilder.append(PRESETS);
+		return html.replace(PRESETS, stringBuilder.toString());
 	}
 
 	protected String addSyntaxHighlight(String html) {
@@ -184,8 +186,8 @@ public class AbstractSwaggerIndexTransformer {
 			stringBuilder.append("\"");
 		}
 		stringBuilder.append("},\n");
-		stringBuilder.append("presets: [");
-		return html.replace("presets: [", stringBuilder.toString());
+		stringBuilder.append(PRESETS);
+		return html.replace(PRESETS, stringBuilder.toString());
 	}
 
 }
