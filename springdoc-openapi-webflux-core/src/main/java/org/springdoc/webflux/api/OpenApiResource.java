@@ -199,9 +199,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				String operationPath = pathPattern.getPatternString();
 				Map<String, String> regexMap = new LinkedHashMap<>();
 				operationPath = PathUtils.parsePath(operationPath, regexMap);
-				String[] produces =  requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(mediaType -> mediaType.toString()).toArray(String[]::new);
+				String[] produces =  requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 				String[] consumes =  requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-				String[] headers =  requestMappingInfo.getHeadersCondition().getExpressions().stream().map(stringNameValueExpression -> stringNameValueExpression.toString()).toArray(String[]::new);
+				String[] headers =  requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
 				if (operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
 						&& (restControllers.containsKey(handlerMethod.getBean().toString()) || actuatorProvider.isPresent())
 						&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
