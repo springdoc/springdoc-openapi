@@ -434,14 +434,14 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 						catch (NoSuchMethodException e) {
 							LOGGER.error(e.getMessage());
 						}
-						if (handlerMethod != null && isPackageToScan(handlerMethod.getBeanType().getPackage()) && isPathToMatch(routerOperation.getPath()))
+						if (handlerMethod != null && isFilterCondition(handlerMethod, routerOperation.getPath(), routerOperation.getProduces(), routerOperation.getConsumes(), routerOperation.getHeaders()))
 							calculatePath(handlerMethod, routerOperation);
 					}
 				}
-				else if (routerOperation.getOperation() != null && StringUtils.isNotBlank(routerOperation.getOperation().operationId()) && isPathToMatch(routerOperation.getPath())) {
+				else if (routerOperation.getOperation() != null && StringUtils.isNotBlank(routerOperation.getOperation().operationId()) && isFilterCondition(routerOperation.getPath(), routerOperation.getProduces(), routerOperation.getConsumes(), routerOperation.getHeaders())) {
 					calculatePath(routerOperation);
 				}
-				else if (routerOperation.getOperationModel() != null && StringUtils.isNotBlank(routerOperation.getOperationModel().getOperationId()) && isPathToMatch(routerOperation.getPath())) {
+				else if (routerOperation.getOperationModel() != null && StringUtils.isNotBlank(routerOperation.getOperationModel().getOperationId()) && isFilterCondition(routerOperation.getPath(), routerOperation.getProduces(), routerOperation.getConsumes(), routerOperation.getHeaders())) {
 					calculatePath(routerOperation);
 				}
 			}
@@ -529,6 +529,39 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			mergeRouters(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
 			calculatePath(operationList);
 		}
+	}
+
+	/**
+	 * Is filter condition boolean.
+	 *
+	 * @param handlerMethod the handler method
+	 * @param operationPath the operation path
+	 * @param produces the produces
+	 * @param consumes the consumes
+	 * @param headers the headers
+	 * @return the boolean
+	 */
+	protected boolean isFilterCondition(HandlerMethod handlerMethod, String operationPath, String[] produces, String[] consumes, String[] headers) {
+		return isPackageToScan(handlerMethod.getBeanType().getPackage())
+				&& isFilterCondition(operationPath, produces, consumes, headers);
+	}
+
+	/**
+	 * Is condition to match boolean.
+	 *
+	 * @param existingConditions the existing conditions
+	 * @param conditionType the condition type
+	 * @return the boolean
+	 */
+	protected boolean isConditionToMatch(String[] existingConditions, ConditionType conditionType) {
+		List<String> conditionsToMatch = getConditionsToMatch(conditionType);
+		if (CollectionUtils.isEmpty(conditionsToMatch)) {
+			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
+			if (optionalGroupConfig.isPresent())
+				conditionsToMatch = getConditionsToMatch(conditionType, optionalGroupConfig.get());
+		}
+		return CollectionUtils.isEmpty(conditionsToMatch)
+				|| (!ArrayUtils.isEmpty(existingConditions) && conditionsToMatch.size() == existingConditions.length && conditionsToMatch.containsAll(Arrays.asList(existingConditions)));
 	}
 
 	/**
@@ -971,5 +1004,66 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		YAMLFactory factory = (YAMLFactory) objectMapper.getFactory();
 		factory.configure(Feature.USE_NATIVE_TYPE_ID, false);
 		return objectMapper;
+	}
+
+	/**
+	 * Gets conditions to match.
+	 *
+	 * @param conditionType the condition type
+	 * @param groupConfigs the group configs
+	 * @return the conditions to match
+	 */
+	private List<String> getConditionsToMatch(ConditionType conditionType, GroupConfig... groupConfigs) {
+		List<String> conditionsToMatch = null;
+		GroupConfig groupConfig = null;
+		if (ArrayUtils.isNotEmpty(groupConfigs))
+			groupConfig = groupConfigs[0];
+		switch (conditionType) {
+			case HEADERS:
+				conditionsToMatch = (groupConfig != null) ? groupConfig.getHeadersToMatch() : springDocConfigProperties.getHeadersToMatch();
+				break;
+			case PRODUCES:
+				conditionsToMatch = (groupConfig != null) ? groupConfig.getProducesToMatch() : springDocConfigProperties.getProducesToMatch();
+				break;
+			case CONSUMES:
+				conditionsToMatch = (groupConfig != null) ? groupConfig.getConsumesToMatch(): springDocConfigProperties.getConsumesToMatch();
+				break;
+			default:
+				break;
+		} return conditionsToMatch;
+	}
+
+	/**
+	 * Is filter condition boolean.
+	 *
+	 * @param operationPath the operation path
+	 * @param produces the produces
+	 * @param consumes the consumes
+	 * @param headers the headers
+	 * @return the boolean
+	 */
+	private boolean isFilterCondition(String operationPath, String[] produces, String[] consumes, String[] headers) {
+		return isPathToMatch(operationPath)
+				&& isConditionToMatch(produces, ConditionType.PRODUCES)
+				&& isConditionToMatch(consumes, ConditionType.CONSUMES)
+				&& isConditionToMatch(headers, ConditionType.HEADERS);
+	}
+
+	/**
+	 * The enum Condition type.
+	 */
+	enum ConditionType {
+		/**
+		 *Produces condition type.
+		 */
+		PRODUCES,
+		/**
+		 *Consumes condition type.
+		 */
+		CONSUMES,
+		/**
+		 *Headers condition type.
+		 */
+		HEADERS
 	}
 }

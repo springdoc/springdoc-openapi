@@ -51,6 +51,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -82,15 +83,15 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Instantiates a new Open api resource.
 	 *
-	 * @param groupName the group name 
-	 * @param openAPIBuilderObjectFactory the open api builder object factory 
-	 * @param requestBuilder the request builder 
-	 * @param responseBuilder the response builder 
-	 * @param operationParser the operation parser 
-	 * @param requestMappingHandlerMapping the request mapping handler mapping 
-	 * @param operationCustomizers the operation customizers 
-	 * @param openApiCustomisers the open api customisers 
-	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param groupName the group name
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
 	public OpenApiResource(String groupName, ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory, AbstractRequestBuilder requestBuilder,
@@ -107,14 +108,14 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Instantiates a new Open api resource.
 	 *
-	 * @param openAPIBuilderObjectFactory the open api builder object factory 
-	 * @param requestBuilder the request builder 
-	 * @param responseBuilder the response builder 
-	 * @param operationParser the operation parser 
-	 * @param requestMappingHandlerMapping the request mapping handler mapping 
-	 * @param operationCustomizers the operation customizers 
-	 * @param openApiCustomisers the open api customisers 
-	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
 	@Autowired
@@ -132,9 +133,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Openapi json mono.
 	 *
-	 * @param serverHttpRequest the server http request 
-	 * @param apiDocsUrl the api docs url 
-	 * @return the mono 
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
@@ -152,9 +153,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Openapi yaml mono.
 	 *
-	 * @param serverHttpRequest the server http request 
-	 * @param apiDocsUrl the api docs url 
-	 * @return the mono 
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
@@ -185,7 +186,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Calculate path.
 	 *
-	 * @param restControllers the rest controllers 
+	 * @param restControllers the rest controllers
 	 * @param map the map
 	 */
 	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map) {
@@ -198,9 +199,12 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				String operationPath = pathPattern.getPatternString();
 				Map<String, String> regexMap = new LinkedHashMap<>();
 				operationPath = PathUtils.parsePath(operationPath, regexMap);
+				String[] produces =  requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(mediaType -> mediaType.toString()).toArray(String[]::new);
+				String[] consumes =  requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
+				String[] headers =  requestMappingInfo.getHeadersCondition().getExpressions().stream().map(stringNameValueExpression -> stringNameValueExpression.toString()).toArray(String[]::new);
 				if (operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
 						&& (restControllers.containsKey(handlerMethod.getBean().toString()) || actuatorProvider.isPresent())
-						&& isPackageToScan(handlerMethod.getBeanType().getPackage()) && isPathToMatch(operationPath)) {
+						&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
 					Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 					// default allowed requestmethods
 					if (requestMethods.isEmpty())
@@ -228,7 +232,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * Calculate server url.
 	 *
-	 * @param serverHttpRequest the server http request 
+	 * @param serverHttpRequest the server http request
 	 * @param apiDocsUrl the api docs url
 	 */
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
