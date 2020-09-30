@@ -20,12 +20,7 @@
 
 package org.springdoc.webmvc.api;
 
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -241,7 +236,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @param map the map
 	 */
 	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map) {
-		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {
+		List<Map.Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
+		entries.sort(byReversedRequestMappingInfos());
+		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
 			HandlerMethod handlerMethod = entry.getValue();
 			PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
@@ -263,6 +260,12 @@ public class OpenApiResource extends AbstractOpenApiResource {
 				}
 			}
 		}
+	}
+
+	private Comparator<Map.Entry<RequestMappingInfo, HandlerMethod>> byReversedRequestMappingInfos() {
+		return Comparator.<Map.Entry<RequestMappingInfo, HandlerMethod>, String>
+                comparing(a -> a.getKey().toString())
+                .reversed();
 	}
 
 	/**
