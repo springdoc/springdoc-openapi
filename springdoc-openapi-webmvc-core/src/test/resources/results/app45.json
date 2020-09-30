@@ -28,7 +28,7 @@
           "People"
         ],
         "description": "List all persons",
-        "operationId": "list",
+        "operationId": "list_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -57,7 +57,7 @@
           "People"
         ],
         "description": "List all persons",
-        "operationId": "listTwo",
+        "operationId": "listTwo_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -81,7 +81,7 @@
           "People"
         ],
         "description": "List all persons",
-        "operationId": "list_1",
+        "operationId": "list",
         "responses": {
           "200": {
             "description": "OK",
@@ -110,7 +110,7 @@
           "People"
         ],
         "description": "List all persons",
-        "operationId": "listTwo_1",
+        "operationId": "listTwo",
         "responses": {
           "200": {
             "description": "OK",
