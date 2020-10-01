@@ -22,12 +22,12 @@
       "description": "the user API"
     },
     {
-      "name": "store",
-      "description": "the store API"
-    },
-    {
       "name": "pet",
       "description": "the pet API"
+    },
+    {
+      "name": "store",
+      "description": "the store API"
     }
   ],
   "paths": {
