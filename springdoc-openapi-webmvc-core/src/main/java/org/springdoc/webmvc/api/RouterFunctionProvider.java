@@ -107,6 +107,7 @@ public class RouterFunctionProvider {
 
 		@Override
 		public void startNested(RequestPredicate predicate) {
+			this.isNested = true;
 			predicate.accept(this);
 		}
 

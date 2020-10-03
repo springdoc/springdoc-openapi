@@ -340,7 +340,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	@Override
 	public int compareTo(RouterOperation routerOperation) {
 		int result = path.compareTo(routerOperation.getPath());
-		if (result == 0)
+		if (result == 0 && !ArrayUtils.isEmpty(methods))
 			result = methods[0].compareTo(routerOperation.getMethods()[0]);
 		if (result == 0 && operationModel != null && routerOperation.getOperationModel() != null)
 			result = operationModel.getOperationId().compareTo(routerOperation.getOperationModel().getOperationId());
