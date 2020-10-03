@@ -49,6 +49,7 @@ public class RouterFunctionVisitor extends AbstractRouterFunctionVisitor impleme
 
 	@Override
 	public void startNested(RequestPredicate predicate) {
+		this.isNested = true;
 		predicate.accept(this);
 	}
 

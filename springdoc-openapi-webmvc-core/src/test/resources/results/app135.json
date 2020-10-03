@@ -155,7 +155,7 @@
         }
       }
     },
-    "/greeter/books": {
+    "/test/greeter/greeter2/books": {
       "get": {
         "tags": [
           "book-repository"
@@ -194,7 +194,7 @@
         }
       }
     },
-    "/greeter/books/{author}": {
+    "/test/greeter/greeter2/books/{author}": {
       "get": {
         "tags": [
           "book-repository"
@@ -227,7 +227,7 @@
         }
       }
     },
-    "/greeter2/books": {
+    "/greeter/books": {
       "get": {
         "tags": [
           "book-repository"
@@ -266,12 +266,84 @@
         }
       }
     },
-    "/greeter2/books/{author}": {
+    "/greeter/books/{author}": {
       "get": {
         "tags": [
           "book-repository"
         ],
         "operationId": "findByAuthor_3",
+        "parameters": [
+          {
+            "name": "author",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/greeter2/books": {
+      "get": {
+        "tags": [
+          "book-repository"
+        ],
+        "operationId": "findAll_1_4",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/greeter2/books/{author}": {
+      "get": {
+        "tags": [
+          "book-repository"
+        ],
+        "operationId": "findByAuthor_4",
         "parameters": [
           {
             "name": "author",

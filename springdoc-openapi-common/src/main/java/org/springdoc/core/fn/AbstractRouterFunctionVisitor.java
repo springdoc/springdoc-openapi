@@ -67,9 +67,9 @@ public class AbstractRouterFunctionVisitor {
 	protected boolean isOr;
 
 	/**
-	 * The Is and.
+	 * The Is nested.
 	 */
-	protected boolean isAnd;
+	protected boolean isNested;
 
 	/**
 	 * The Router function data.
@@ -93,10 +93,10 @@ public class AbstractRouterFunctionVisitor {
 	public void path(String pattern) {
 		if (routerFunctionData != null)
 			routerFunctionData.setPath(pattern);
-		else if (isAnd)
-			nestedAndPaths.add(pattern);
 		else if (isOr)
 			nestedOrPaths.add(pattern);
+		else if (isNested)
+			nestedAndPaths.add(pattern);
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class AbstractRouterFunctionVisitor {
 	 * Start and.
 	 */
 	public void startAnd() {
-		isAnd = true;
+		// Not yet needed
 	}
 
 	/**
@@ -210,25 +210,34 @@ public class AbstractRouterFunctionVisitor {
 		// Not yet needed
 	}
 
+	/**
+	 * Compute nested.
+	 */
 	protected void computeNested() {
 		if (!nestedAndPaths.isEmpty()) {
 			String nestedPath = String.join(StringUtils.EMPTY, nestedAndPaths);
-			routerFunctionDatas.forEach(existingRouterFunctionData -> existingRouterFunctionData.setPath(nestedPath+existingRouterFunctionData.getPath()));
+			routerFunctionDatas.forEach(existingRouterFunctionData -> existingRouterFunctionData.setPath(nestedPath + existingRouterFunctionData.getPath()));
+			nestedAndPaths.clear();
 		}
 		if (!nestedOrPaths.isEmpty()) {
 			List<RouterFunctionData> routerFunctionDatasClone = new ArrayList<>();
 			for (RouterFunctionData functionData : routerFunctionDatas) {
 				for (String nestedOrPath : nestedOrPaths) {
-					RouterFunctionData routerFunctionDataClone = new RouterFunctionData(nestedOrPath +functionData.getPath(),functionData.getConsumes(),functionData.getProduces(), functionData.getHeaders(), functionData.getQueryParams(), functionData.getMethods());
+					RouterFunctionData routerFunctionDataClone = new RouterFunctionData(nestedOrPath + functionData.getPath(), functionData.getConsumes(), functionData.getProduces(), functionData.getHeaders(), functionData.getQueryParams(), functionData.getMethods());
 					routerFunctionDatasClone.add(routerFunctionDataClone);
 				}
 			}
 			this.routerFunctionDatas = routerFunctionDatasClone;
+			nestedAndPaths.clear();
 		}
-		if (!nestedAcceptHeaders.isEmpty())
+		if (!nestedAcceptHeaders.isEmpty()){
 			routerFunctionDatas.forEach(existingRouterFunctionData -> existingRouterFunctionData.addProduces(nestedAcceptHeaders));
-		if (!nestedContentTypeHeaders.isEmpty())
+			nestedAcceptHeaders.clear();
+		}
+		if (!nestedContentTypeHeaders.isEmpty()){
 			routerFunctionDatas.forEach(existingRouterFunctionData -> existingRouterFunctionData.addConsumes(nestedContentTypeHeaders));
+			nestedContentTypeHeaders.clear();
+		}
 	}
 
 	/**
@@ -274,6 +283,5 @@ public class AbstractRouterFunctionVisitor {
 				nestedAcceptHeaders.add(value);
 		}
 	}
-
 
 }

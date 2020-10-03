@@ -88,4 +88,20 @@ class BookRouter {
 								.and(route(RequestPredicates.GET("/books").and(RequestPredicates.accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN)), req -> ok().body(br.findAll())))
 								.andRoute(RequestPredicates.GET("/books/{author}"), req -> ok().body(br.findByAuthor(req.pathVariable("author")))));
 	}
+
+	@Bean
+	@RouterOperations({
+			@RouterOperation(path = "/test/greeter/greeter2/books", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, beanClass = BookRepository.class, beanMethod = "findAll"),
+			@RouterOperation(path = "/test/greeter/greeter2/books", produces = { MediaType.TEXT_PLAIN_VALUE, MediaType.APPLICATION_XML_VALUE }, beanClass = BookRepository.class, beanMethod = "findAll"),
+			@RouterOperation(path = "/test/greeter/greeter2/books/{author}", beanClass = BookRepository.class, beanMethod = "findByAuthor",
+					operation = @Operation(operationId = "findByAuthor"
+							, parameters = { @Parameter(in = ParameterIn.PATH, name = "author") })) })
+	RouterFunction<?> routes4(BookRepository br) {
+		return
+				nest(RequestPredicates.path("/test"),
+						nest(RequestPredicates.path("/greeter").and(RequestPredicates.path("/greeter2")),
+								route(RequestPredicates.GET("/books").and(RequestPredicates.accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)), req -> ok().body(br.findAll()))
+										.and(route(RequestPredicates.GET("/books").and(RequestPredicates.accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN)), req -> ok().body(br.findAll())))
+										.andRoute(RequestPredicates.GET("/books/{author}"), req -> ok().body(br.findByAuthor(req.pathVariable("author"))))));
+	}
 }
