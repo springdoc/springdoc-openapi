@@ -1,0 +1,41 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Security API",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://springdoc.org"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/hello": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+  }
+}
