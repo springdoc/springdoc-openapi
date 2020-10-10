@@ -92,8 +92,8 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 * @return the method parameter [ ]
 	 */
-	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
-		List<MethodParameter> explodedParameters = new ArrayList<>();
+	public static DelegatingMethodParameter[] customize(String[] pNames, MethodParameter[] parameters, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
+		List<DelegatingMethodParameter> explodedParameters = new ArrayList<>();
 		for (int i = 0; i < parameters.length; ++i) {
 			MethodParameter p = parameters[i];
 			Class<?> paramClass = AdditionalModelsConverter.getReplacement(p.getParameterType());
@@ -108,7 +108,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 				explodedParameters.add(new DelegatingMethodParameter(p, name, null, false));
 			}
 		}
-		return explodedParameters.toArray(new MethodParameter[0]);
+		return explodedParameters.toArray(new DelegatingMethodParameter[0]);
 	}
 
 	@Override

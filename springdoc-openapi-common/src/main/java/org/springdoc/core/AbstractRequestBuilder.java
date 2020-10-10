@@ -227,17 +227,16 @@ public abstract class AbstractRequestBuilder {
 		operation.setOperationId(operationId);
 		// requests
 		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
-		MethodParameter[] parameters = handlerMethod.getMethodParameters();
 		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
 		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
-		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
+		DelegatingMethodParameter[] parameters = DelegatingMethodParameter.customize(pNames, handlerMethod.getMethodParameters(), parameterBuilder.getDelegatingMethodParameterCustomizer());
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
 		Components components = openAPI.getComponents();
 
-		for (MethodParameter methodParameter : parameters) {
+		for (DelegatingMethodParameter methodParameter : parameters) {
 			// check if query param
 			Parameter parameter = null;
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
