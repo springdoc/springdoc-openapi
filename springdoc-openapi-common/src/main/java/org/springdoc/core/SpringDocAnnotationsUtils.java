@@ -231,9 +231,9 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * @return the boolean
 	 */
 	@SuppressWarnings("unchecked")
-	public static boolean isAnnotationToIgnore(MethodParameter parameter) {
+	public static boolean isAnnotationToIgnore(DelegatingMethodParameter parameter) {
 		return ANNOTATIONS_TO_IGNORE.stream().anyMatch(
-				annotation -> AnnotationUtils.findAnnotation(parameter.getParameter(), annotation) != null
+				annotation -> AnnotationUtils.findAnnotation(parameter.getControllerMethodParameter().getParameter(), annotation) != null
 						|| AnnotationUtils.findAnnotation(parameter.getParameterType(), annotation) != null);
 	}
 
