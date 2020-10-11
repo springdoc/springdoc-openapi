@@ -94,7 +94,7 @@ class MethodParameterPojoExtractor {
 	 * @param clazz the clazz
 	 * @return the stream
 	 */
-	static Stream<MethodParameter> extractFrom(Class<?> clazz) {
+	static Stream<DelegatingMethodParameter> extractFrom(Class<?> clazz) {
 		return extractFrom(clazz, "");
 	}
 
@@ -105,7 +105,7 @@ class MethodParameterPojoExtractor {
 	 * @param fieldNamePrefix the field name prefix
 	 * @return the stream
 	 */
-	private static Stream<MethodParameter> extractFrom(Class<?> clazz, String fieldNamePrefix) {
+	private static Stream<DelegatingMethodParameter> extractFrom(Class<?> clazz, String fieldNamePrefix) {
 		return allFieldsOf(clazz).stream()
 				.flatMap(f -> fromGetterOfField(clazz, f, fieldNamePrefix))
 				.filter(Objects::nonNull);
@@ -119,7 +119,7 @@ class MethodParameterPojoExtractor {
 	 * @param fieldNamePrefix the field name prefix
 	 * @return the stream
 	 */
-	private static Stream<MethodParameter> fromGetterOfField(Class<?> paramClass, Field field, String fieldNamePrefix) {
+	private static Stream<DelegatingMethodParameter> fromGetterOfField(Class<?> paramClass, Field field, String fieldNamePrefix) {
 		if (isSimpleType(field.getType()))
 			return fromSimpleClass(paramClass, field, fieldNamePrefix);
 		else
@@ -134,7 +134,7 @@ class MethodParameterPojoExtractor {
 	 * @param fieldNamePrefix the field name prefix
 	 * @return the stream
 	 */
-	private static Stream<MethodParameter> fromSimpleClass(Class<?> paramClass, Field field, String fieldNamePrefix) {
+	private static Stream<DelegatingMethodParameter> fromSimpleClass(Class<?> paramClass, Field field, String fieldNamePrefix) {
 		Annotation[] fieldAnnotations = field.getDeclaredAnnotations();
 		try {
 			Nullable nullableField = NULLABLE_ANNOTATION;
