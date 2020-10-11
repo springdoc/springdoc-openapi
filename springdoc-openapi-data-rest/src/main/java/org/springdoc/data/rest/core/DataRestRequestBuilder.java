@@ -133,11 +133,11 @@ public class DataRestRequestBuilder {
 	 * @param methodAttributes the method attributes
 	 * @param operation the operation
 	 * @param pNames the p names
-	 * @param methodParameters the parameters
+	 * @param parameters the parameters
 	 */
-	public void buildCommonParameters(Class<?> domainType, OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] methodParameters) {
-		DelegatingMethodParameter[] parameters = DelegatingMethodParameter.customize(pNames, methodParameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
-		for (DelegatingMethodParameter methodParameter : parameters) {
+	public void buildCommonParameters(Class<?> domainType, OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters) {
+		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
+		for (MethodParameter methodParameter : parameters) {
 			final String pName = methodParameter.getParameterName();
 			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter);
 			if (isParamToIgnore(methodParameter)) {
@@ -171,7 +171,7 @@ public class DataRestRequestBuilder {
 	 * @param methodParameter the method parameter
 	 * @return the boolean
 	 */
-	private boolean isParamToIgnore(DelegatingMethodParameter methodParameter) {
+	private boolean isParamToIgnore(MethodParameter methodParameter) {
 		return !requestBuilder.isParamToIgnore(methodParameter)
 				&& !isHeaderToIgnore(methodParameter)
 				&& !"property".equals(methodParameter.getParameterName());
