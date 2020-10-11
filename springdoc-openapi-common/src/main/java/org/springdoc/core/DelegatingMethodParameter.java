@@ -69,12 +69,6 @@ public class DelegatingMethodParameter extends MethodParameter {
 	private boolean isParameterObject;
 
 	/**
-	 * For simple parameters, it is null
-	 * For nested parameter is a controller method parameter
-	 */
-	private MethodParameter controllerMethodParameter;
-
-	/**
 	 * Instantiates a new Delegating method parameter.
 	 *
 	 * @param delegate the delegate
@@ -98,16 +92,15 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 * @return the method parameter [ ]
 	 */
-	public static DelegatingMethodParameter[] customize(String[] pNames, MethodParameter[] parameters, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
-		List<DelegatingMethodParameter> explodedParameters = new ArrayList<>();
+	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
+		List<MethodParameter> explodedParameters = new ArrayList<>();
 		for (int i = 0; i < parameters.length; ++i) {
 			MethodParameter p = parameters[i];
 			Class<?> paramClass = AdditionalModelsConverter.getReplacement(p.getParameterType());
 			if (p.hasParameterAnnotation(ParameterObject.class) || AnnotatedElementUtils.isAnnotated(paramClass, ParameterObject.class)) {
-				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(delegatingMethodParameter -> {
-					optionalDelegatingMethodParameterCustomizer.ifPresent(customizer -> customizer.customize(p, delegatingMethodParameter));
-					delegatingMethodParameter.setControllerMethodParameter(p);
-					explodedParameters.add(delegatingMethodParameter);
+				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
+					optionalDelegatingMethodParameterCustomizer.ifPresent(customizer -> customizer.customize(p, methodParameter));
+					explodedParameters.add(methodParameter);
 				});
 			}
 			else {
@@ -115,7 +108,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 				explodedParameters.add(new DelegatingMethodParameter(p, name, null, false));
 			}
 		}
-		return explodedParameters.toArray(new DelegatingMethodParameter[0]);
+		return explodedParameters.toArray(new MethodParameter[0]);
 	}
 
 	@Override
@@ -220,14 +213,4 @@ public class DelegatingMethodParameter extends MethodParameter {
 	public boolean isParameterObject() {
 		return isParameterObject;
 	}
-
-	public void setControllerMethodParameter(MethodParameter controllerMethodParameter) {
-		this.controllerMethodParameter = controllerMethodParameter;
-	}
-
-	public MethodParameter getControllerMethodParameter() {
-		return controllerMethodParameter == null ? delegate : controllerMethodParameter;
-	}
-
-
 }
