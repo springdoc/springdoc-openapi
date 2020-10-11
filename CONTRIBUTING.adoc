@@ -42,7 +42,7 @@ much information as possible:
  - What version of spring-boot you are using?
  - What modules and versions of springdoc-openapi are you using? 
  - What are the actual and the expected result using OpenAPI Description (yml or json)?
- - **Provide with a sample code (HelloController) or Test that reproduces the problem**
+ - Provide a https://stackoverflow.com/help/minimal-reproducible-example[**Minimal, Reproducible Example - with HelloController**]  that reproduces the problem
 
 
 == Reporting Security Vulnerabilities
