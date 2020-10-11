@@ -352,7 +352,7 @@ public abstract class AbstractRequestBuilder {
 	 * @param parameter the parameter
 	 * @return the boolean
 	 */
-	public boolean isParamToIgnore(MethodParameter parameter) {
+	public boolean isParamToIgnore(DelegatingMethodParameter parameter) {
 		if (SpringDocAnnotationsUtils.isAnnotationToIgnore(parameter))
 			return true;
 		if (isRequiredAnnotation(parameter))
