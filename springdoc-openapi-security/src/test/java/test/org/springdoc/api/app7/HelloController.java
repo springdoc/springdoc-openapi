@@ -18,6 +18,8 @@
 
 package test.org.springdoc.api.app7;
 
+import org.springdoc.api.annotations.ParameterObject;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,8 +29,10 @@ public class HelloController {
 
 	@PostMapping(value = "/hello")
 	public String hello(
-		@AuthenticationPrincipal Person person1,
-		@CurrentUser Person person2) {
+			@AuthenticationPrincipal Person person1,
+			@CurrentUser Person person2,
+			@ParameterObject AnotherPerson person3,
+			@ParameterObject TheOtherPerson person4) {
 		return "OK";
 	}
 
