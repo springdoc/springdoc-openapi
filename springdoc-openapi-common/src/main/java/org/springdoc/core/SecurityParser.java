@@ -119,16 +119,16 @@ public class SecurityParser {
 			HandlerMethod handlerMethod) {
 		// class SecurityRequirements
 		Class<?> beanType = handlerMethod.getBeanType();
-		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement>	allSecurityTags = getSecurityRequirementsForClass(beanType);
+		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = getSecurityRequirementsForClass(beanType);
 
 		// handlerMethod SecurityRequirements
 		Method method = handlerMethod.getMethod();
-		allSecurityTags = getSecurityRequirementsForMethod(method,allSecurityTags);
+		allSecurityTags = getSecurityRequirementsForMethod(method, allSecurityTags);
 
 		return (allSecurityTags != null) ? allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]) : null;
 	}
 
-	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForMethod(Method method,Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags) {
+	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForMethod(Method method, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags) {
 		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity = AnnotatedElementUtils.findMergedAnnotation(method, io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 		if (methodSecurity != null)
 			allSecurityTags = addSecurityRequirements(allSecurityTags, new HashSet<>(Arrays.asList(methodSecurity.value())));
@@ -143,7 +143,7 @@ public class SecurityParser {
 	}
 
 	public Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForClass(Class<?> beanType) {
-		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags =null;
+		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = null;
 		io.swagger.v3.oas.annotations.security.SecurityRequirements classSecurity = AnnotatedElementUtils.findMergedAnnotation(beanType, io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 		if (classSecurity != null)
 			allSecurityTags = new HashSet<>(Arrays.asList(classSecurity.value()));
@@ -322,9 +322,6 @@ public class SecurityParser {
 	 * @return the scopes
 	 */
 	private Optional<Scopes> getScopes(OAuthScope[] scopes) {
-		if (isEmpty(scopes))
-			return Optional.empty();
-
 		Scopes scopesObject = new Scopes();
 		Arrays.stream(scopes).forEach(scope -> scopesObject.addString(scope.name(), scope.description()));
 		return Optional.of(scopesObject);
