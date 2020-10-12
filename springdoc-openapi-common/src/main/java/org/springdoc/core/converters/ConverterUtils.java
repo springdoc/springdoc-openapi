@@ -57,6 +57,14 @@ public class ConverterUtils {
 		RESULT_WRAPPERS_TO_IGNORE.add(CompletionStage.class);
 	}
 
+	static {
+		try {
+			RESPONSE_TYPES_TO_IGNORE.add(Class.forName("org.springframework.security.core.Authentication"));
+		} catch (ClassNotFoundException e) {
+			// Spring security not present
+		}
+	}
+
 	/**
 	 * Instantiates a new Converter utils.
 	 */

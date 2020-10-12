@@ -64,12 +64,6 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocSecurityConfiguration {
 
-	static {
-		getConfig().addRequestWrapperToIgnore(Authentication.class)
-				.addResponseTypeToIgnore(Authentication.class)
-				.addAnnotationsToIgnore(AuthenticationPrincipal.class);
-	}
-
 	/**
 	 * The type Spring security o auth 2 provider configuration.
 	 * @author bnasslahsen

@@ -73,6 +73,11 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	static {
 		ANNOTATIONS_TO_IGNORE.add(Hidden.class);
 		ANNOTATIONS_TO_IGNORE.add(RequestAttribute.class);
+		try {
+			ANNOTATIONS_TO_IGNORE.add(Class.forName("org.springframework.security.core.annotation.AuthenticationPrincipal"));
+		} catch (ClassNotFoundException e) {
+			// Spring security not present
+		}
 	}
 
 	/**

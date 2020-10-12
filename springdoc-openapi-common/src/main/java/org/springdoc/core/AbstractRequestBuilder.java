@@ -130,6 +130,11 @@ public abstract class AbstractRequestBuilder {
 		PARAM_TYPES_TO_IGNORE.add(SessionStatus.class);
 		PARAM_TYPES_TO_IGNORE.add(UriComponentsBuilder.class);
 		PARAM_TYPES_TO_IGNORE.add(RequestAttribute.class);
+		try {
+			PARAM_TYPES_TO_IGNORE.add(Class.forName("org.springframework.security.core.Authentication"));
+		} catch (ClassNotFoundException e) {
+			// Spring security not present
+		}
 	}
 
 	/**
