@@ -128,6 +128,11 @@ public class SpringDocConfigProperties {
 	private boolean writerWithDefaultPrettyPrinter;
 
 	/**
+	 * The Writer with order by keys.
+	 */
+	private boolean writerWithOrderByKeys;
+
+	/**
 	 * The Default consumes media type.
 	 */
 	private String defaultConsumesMediaType = MediaType.APPLICATION_JSON_VALUE;
@@ -529,6 +534,24 @@ public class SpringDocConfigProperties {
 	 */
 	public void setRemoveBrokenReferenceDefinitions(boolean removeBrokenReferenceDefinitions) {
 		this.removeBrokenReferenceDefinitions = removeBrokenReferenceDefinitions;
+	}
+
+	/**
+	 * Is writer wither order by keys boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isWriterWithOrderByKeys() {
+		return writerWithOrderByKeys;
+	}
+
+	/**
+	 * Sets writer wither order by keys.
+	 *
+	 * @param writerWithOrderByKeys the writer wither order by keys
+	 */
+	public void setWriterWithOrderByKeys(boolean writerWithOrderByKeys) {
+		this.writerWithOrderByKeys = writerWithOrderByKeys;
 	}
 
 	/**

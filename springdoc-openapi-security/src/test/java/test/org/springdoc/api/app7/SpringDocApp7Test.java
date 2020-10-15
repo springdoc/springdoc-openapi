@@ -21,9 +21,10 @@ package test.org.springdoc.api.app7;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import test.org.springdoc.api.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import test.org.springdoc.api.AbstractSpringDocTest;
 
 public class SpringDocApp7Test extends AbstractSpringDocTest {
 
