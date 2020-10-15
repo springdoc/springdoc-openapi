@@ -16,35 +16,19 @@
  *
  */
 
-package test.org.springdoc.api.app81;
-
-import reactor.core.publisher.Mono;
+package test.org.springdoc.api.app138;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class OperationIdController {
+public class HelloController {
 
-    @GetMapping(path = "/test_0") // gets operationId opIdTest_3
-    public Mono<String> opIdTest() {
-        return null;
-    }
+	@GetMapping("/testA")
+	public void testA(String hello) {
+	}
 
-    @GetMapping(path = "/test_1") // gets operationId opIdTest_2
-    public Mono<String> opIdTest(@RequestParam String param) {
-        return null;
-    }
-
-    @GetMapping(path = "/test_2") // gets operationId opIdTest_1
-    public Mono<String> opIdTest(@RequestParam Integer param) {
-        return null;
-    }
-
-    @GetMapping(path = "/test_3") // gets operationId opIdTest
-    public Mono<String> opIdTest(@RequestParam Boolean param) {
-        return null;
-    }
-
+	@GetMapping("/testB")
+	public void testB(String hello) {
+	}
 }

@@ -41,10 +41,13 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 import io.swagger.v3.core.filter.SpecFilter;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -995,15 +998,43 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	}
 
 	/**
-	 * Gets yaml mapper.
+	 * Write yaml value string.
 	 *
-	 * @return the yaml mapper
+	 * @param openAPI the open api
+	 * @return the string
+	 * @throws JsonProcessingException the json processing exception
 	 */
-	protected ObjectMapper getYamlMapper() {
+	protected String writeYamlValue(OpenAPI openAPI) throws JsonProcessingException {
+		String result;
 		ObjectMapper objectMapper = Yaml.mapper();
+		if (springDocConfigProperties.isWriterWithOrderByKeys())
+			objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
 		YAMLFactory factory = (YAMLFactory) objectMapper.getFactory();
 		factory.configure(Feature.USE_NATIVE_TYPE_ID, false);
-		return objectMapper;
+		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
+			result = objectMapper.writeValueAsString(openAPI);
+		else
+			result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(openAPI);
+		return result;
+	}
+
+	/**
+	 * Write json value string.
+	 *
+	 * @param openAPI the open api
+	 * @return the string
+	 * @throws JsonProcessingException the json processing exception
+	 */
+	protected String writeJsonValue(OpenAPI openAPI) throws JsonProcessingException {
+		String result;
+		ObjectMapper objectMapper = Json.mapper();
+		if (springDocConfigProperties.isWriterWithOrderByKeys())
+			objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
+		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
+			result = objectMapper.writeValueAsString(openAPI);
+		else
+			result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(openAPI);
+		return result;
 	}
 
 	/**
@@ -1026,7 +1057,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				conditionsToMatch = (groupConfig != null) ? groupConfig.getProducesToMatch() : springDocConfigProperties.getProducesToMatch();
 				break;
 			case CONSUMES:
-				conditionsToMatch = (groupConfig != null) ? groupConfig.getConsumesToMatch(): springDocConfigProperties.getConsumesToMatch();
+				conditionsToMatch = (groupConfig != null) ? groupConfig.getConsumesToMatch() : springDocConfigProperties.getConsumesToMatch();
 				break;
 			default:
 				break;

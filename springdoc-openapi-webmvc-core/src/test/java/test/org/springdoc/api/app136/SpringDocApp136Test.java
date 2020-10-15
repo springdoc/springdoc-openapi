@@ -22,8 +22,17 @@
  */
 package test.org.springdoc.api.app136;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.jupiter.api.RepeatedTest;
 import org.springdoc.webmvc.api.OpenApiResource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,14 +41,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
-
-import javax.servlet.http.HttpServletRequest;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

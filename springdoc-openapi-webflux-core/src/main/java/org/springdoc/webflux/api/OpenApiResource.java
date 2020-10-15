@@ -20,10 +20,17 @@
 
 package org.springdoc.webflux.api;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -138,10 +145,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			throws JsonProcessingException {
 		calculateServerUrl(serverHttpRequest, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
-		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
-			return Mono.just(Json.mapper().writeValueAsString(openAPI));
-		else
-			return Mono.just(Json.mapper().writerWithDefaultPrettyPrinter().writeValueAsString(openAPI));
+		return Mono.just(writeJsonValue(openAPI));
 	}
 
 	/**
@@ -158,10 +162,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl) throws JsonProcessingException {
 		calculateServerUrl(serverHttpRequest, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
-		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
-			return Mono.just(getYamlMapper().writeValueAsString(openAPI));
-		else
-			return Mono.just(getYamlMapper().writerWithDefaultPrettyPrinter().writeValueAsString(openAPI));
+		return Mono.just(writeYamlValue(openAPI));
 	}
 
 	@Override

@@ -20,12 +20,18 @@
 
 package org.springdoc.webmvc.api;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -173,10 +179,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			throws JsonProcessingException {
 		calculateServerUrl(request, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
-		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
-			return Json.mapper().writeValueAsString(openAPI);
-		else
-			return Json.mapper().writerWithDefaultPrettyPrinter().writeValueAsString(openAPI);
+		return writeJsonValue(openAPI);
 	}
 
 	/**
@@ -193,10 +196,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			throws JsonProcessingException {
 		calculateServerUrl(request, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
-		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
-			return getYamlMapper().writeValueAsString(openAPI);
-		else
-			return getYamlMapper().writerWithDefaultPrettyPrinter().writeValueAsString(openAPI);
+		return writeYamlValue(openAPI);
 	}
 
 	@Override
@@ -246,9 +246,9 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			Map<String, String> regexMap = new LinkedHashMap<>();
 			for (String pattern : patterns) {
 				String operationPath = PathUtils.parsePath(pattern, regexMap);
-				String[] produces =  requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-				String[] consumes =  requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-				String[] headers =  requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
+				String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
+				String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
+				String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
 				if (((actuatorProvider.isPresent() && actuatorProvider.get().isRestController(operationPath, handlerMethod.getBeanType()))
 						|| isRestController(restControllers, handlerMethod, operationPath))
 						&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
@@ -264,8 +264,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 
 	private Comparator<Map.Entry<RequestMappingInfo, HandlerMethod>> byReversedRequestMappingInfos() {
 		return Comparator.<Map.Entry<RequestMappingInfo, HandlerMethod>, String>
-                comparing(a -> a.getKey().toString())
-                .reversed();
+				comparing(a -> a.getKey().toString())
+				.reversed();
 	}
 
 	/**
