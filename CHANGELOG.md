@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.9] - 2020-10-xx
+### Added
+- Added property for deterministic and alphabetical orderding: springdoc.writer-with-order-by-keys
+### Changed
+- Upgrade to Swagger-core 2.1.5
+- Upgrade swagger-ui version to 3.35.1
+### Fixed
+- #889 - fix for flaky operationIds
+- #893 - Generate empty `scopes` object
+
 ## [1.4.8] - 2020-09-27
 ### Added
 - #878, #449 - Add options to filter on the GroupedOpenApi by consumes/produces mediaTypes or by header
