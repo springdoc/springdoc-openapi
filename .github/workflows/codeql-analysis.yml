@@ -9,12 +9,14 @@ on:
   push:
     branches: [master]
     paths-ignore: 
-      - '**/src/test/java/**'
+      - 'springdoc-openapi-security/src/test/java/**'
+      - 'springdoc-openapi-webmvc-core/src/test/java/**'
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [master]
     paths-ignore:
-      - '**/src/test/java/**'
+      - 'springdoc-openapi-security/src/test/java/**'
+      - 'springdoc-openapi-webmvc-core/src/test/java/**'
   schedule:
     - cron: '0 2 * * 1'
 
