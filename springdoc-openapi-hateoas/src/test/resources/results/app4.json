@@ -54,7 +54,7 @@
           "$ref": "#/components/schemas/Link"
         }
       },
-      "PageMetadataAlbum": {
+      "PageMetadata": {
         "type": "object",
         "properties": {
           "size": {
@@ -93,7 +93,7 @@
             "$ref": "#/components/schemas/Links"
           },
           "page": {
-            "$ref": "#/components/schemas/PageMetadataAlbum"
+            "$ref": "#/components/schemas/PageMetadata"
           }
         }
       },
