@@ -140,7 +140,7 @@
           }
         }
       },
-      "PageMetadataRepresentationModelEntityModelDemoComponentDto": {
+      "PageMetadata": {
         "type": "object",
         "properties": {
           "size": {
@@ -177,7 +177,7 @@
             }
           },
           "page": {
-            "$ref": "#/components/schemas/PageMetadataRepresentationModelEntityModelDemoComponentDto"
+            "$ref": "#/components/schemas/PageMetadata"
           }
         }
       },
