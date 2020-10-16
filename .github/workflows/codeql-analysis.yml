@@ -8,9 +8,13 @@ name: "CodeQL"
 on:
   push:
     branches: [master]
+    paths-ignore: 
+      - '**/src/test/java/**'
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [master]
+    paths-ignore:
+      - '**/src/test/java/**'
   schedule:
     - cron: '0 2 * * 1'
 
