@@ -177,12 +177,14 @@ public class DataRestRouterOperationBuilder {
 		for (RequestMethod requestMethod : requestMethods) {
 			if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
 				PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
-				Set<String> patterns = patternsRequestCondition.getPatterns();
-				Map<String, String> regexMap = new LinkedHashMap<>();
-				String relationName = (dataRestRepository!=null) ? dataRestRepository.getRelationName(): null;
-				String operationPath = calculateOperationPath(path, subPath, patterns, regexMap, controllerType, relationName);
-				buildRouterOperation(routerOperationList, dataRestRepository, openAPI, methodResourceMapping,
-						handlerMethod, requestMethod, resourceMetadata, operationPath, controllerType);
+				if (patternsRequestCondition != null) {
+					Set<String> patterns = patternsRequestCondition.getPatterns();
+					Map<String, String> regexMap = new LinkedHashMap<>();
+					String relationName = (dataRestRepository != null) ? dataRestRepository.getRelationName() : null;
+					String operationPath = calculateOperationPath(path, subPath, patterns, regexMap, controllerType, relationName);
+					buildRouterOperation(routerOperationList, dataRestRepository, openAPI, methodResourceMapping,
+							handlerMethod, requestMethod, resourceMetadata, operationPath, controllerType);
+				}
 			}
 		}
 	}
@@ -270,16 +272,18 @@ public class DataRestRouterOperationBuilder {
 	private boolean isSearchControllerPresent(RequestMappingInfo requestMappingInfo, HandlerMethod handlerMethod, RequestMethod requestMethod) {
 		if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
 			PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
-			Set<String> patterns = patternsRequestCondition.getPatterns();
-			Map<String, String> regexMap = new LinkedHashMap<>();
-			String operationPath;
-			for (String pattern : patterns) {
-				operationPath = PathUtils.parsePath(pattern, regexMap);
-				if (operationPath.contains(REPOSITORY_PATH) && operationPath.contains(SEARCH_PATH)) {
-					MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType());
-					methodAttributes.calculateConsumesProduces(handlerMethod.getMethod());
-					if (springDocConfigProperties.getDefaultProducesMediaType().equals(methodAttributes.getMethodProduces()[0]))
-						return true;
+			if (patternsRequestCondition != null) {
+				Set<String> patterns = patternsRequestCondition.getPatterns();
+				Map<String, String> regexMap = new LinkedHashMap<>();
+				String operationPath;
+				for (String pattern : patterns) {
+					operationPath = PathUtils.parsePath(pattern, regexMap);
+					if (operationPath.contains(REPOSITORY_PATH) && operationPath.contains(SEARCH_PATH)) {
+						MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType());
+						methodAttributes.calculateConsumesProduces(handlerMethod.getMethod());
+						if (springDocConfigProperties.getDefaultProducesMediaType().equals(methodAttributes.getMethodProduces()[0]))
+							return true;
+					}
 				}
 			}
 		}

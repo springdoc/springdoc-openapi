@@ -242,21 +242,23 @@ public class OpenApiResource extends AbstractOpenApiResource {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
 			HandlerMethod handlerMethod = entry.getValue();
 			PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
-			Set<String> patterns = patternsRequestCondition.getPatterns();
-			Map<String, String> regexMap = new LinkedHashMap<>();
-			for (String pattern : patterns) {
-				String operationPath = PathUtils.parsePath(pattern, regexMap);
-				String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-				String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-				String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
-				if (((actuatorProvider.isPresent() && actuatorProvider.get().isRestController(operationPath, handlerMethod.getBeanType()))
-						|| isRestController(restControllers, handlerMethod, operationPath))
-						&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
-					Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
-					// default allowed requestmethods
-					if (requestMethods.isEmpty())
-						requestMethods = this.getDefaultAllowedHttpMethods();
-					calculatePath(handlerMethod, operationPath, requestMethods);
+			if (patternsRequestCondition != null) {
+				Set<String> patterns = patternsRequestCondition.getPatterns();
+				Map<String, String> regexMap = new LinkedHashMap<>();
+				for (String pattern : patterns) {
+					String operationPath = PathUtils.parsePath(pattern, regexMap);
+					String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
+					String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
+					String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
+					if (((actuatorProvider.isPresent() && actuatorProvider.get().isRestController(operationPath, handlerMethod.getBeanType()))
+							|| isRestController(restControllers, handlerMethod, operationPath))
+							&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
+						Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
+						// default allowed requestmethods
+						if (requestMethods.isEmpty())
+							requestMethods = this.getDefaultAllowedHttpMethods();
+						calculatePath(handlerMethod, operationPath, requestMethods);
+					}
 				}
 			}
 		}
