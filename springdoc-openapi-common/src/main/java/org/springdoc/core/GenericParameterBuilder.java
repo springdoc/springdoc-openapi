@@ -449,4 +449,13 @@ public class GenericParameterBuilder {
 		}
 		return false;
 	}
+
+	/**
+	 * Gets property resolver utils.
+	 *
+	 * @return the property resolver utils
+	 */
+	public PropertyResolverUtils getPropertyResolverUtils() {
+		return propertyResolverUtils;
+	}
 }

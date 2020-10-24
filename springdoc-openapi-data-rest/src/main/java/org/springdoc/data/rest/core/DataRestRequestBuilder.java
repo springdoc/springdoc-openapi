@@ -139,7 +139,7 @@ public class DataRestRequestBuilder {
 		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
 		for (MethodParameter methodParameter : parameters) {
 			final String pName = methodParameter.getParameterName();
-			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter);
+			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder);
 			if (isParamToIgnore(methodParameter)) {
 				if (PersistentEntityResource.class.equals(methodParameter.getParameterType())) {
 					Schema<?> schema = SpringDocAnnotationsUtils.resolveSchemaFromType(domainType, openAPI.getComponents(), null, methodParameter.getParameterAnnotations());
