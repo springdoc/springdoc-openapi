@@ -28,12 +28,12 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.api.OpenApiResourceNotFoundException;
-import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
-import org.springdoc.core.GenericResponseBuilder;
+import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.GroupedOpenApi;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.OpenAPIService;
+import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import reactor.core.publisher.Mono;
@@ -68,22 +68,22 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * The Default open api builder.
 	 */
-	private final ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder;
+	private final ObjectFactory<OpenAPIService> defaultOpenAPIBuilder;
 
 	/**
 	 * The Request builder.
 	 */
-	private final AbstractRequestBuilder requestBuilder;
+	private final AbstractRequestService requestBuilder;
 
 	/**
 	 * The Response builder.
 	 */
-	private final GenericResponseBuilder responseBuilder;
+	private final GenericResponseService responseBuilder;
 
 	/**
 	 * The Operation parser.
 	 */
-	private final OperationBuilder operationParser;
+	private final OperationService operationParser;
 
 	/**
 	 * The Request mapping handler mapping.
@@ -118,8 +118,8 @@ public class MultipleOpenApiResource implements InitializingBean {
 	 * @param actuatorProvider the actuator provider
 	 */
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
-			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
-			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
+			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
+			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
 

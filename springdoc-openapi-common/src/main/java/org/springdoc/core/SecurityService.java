@@ -48,7 +48,7 @@ import org.springframework.web.method.HandlerMethod;
  * The type Security parser.
  * @author bnasslahsen
  */
-public class SecurityParser {
+public class SecurityService {
 
 	/**
 	 * The Property resolver utils.
@@ -60,7 +60,7 @@ public class SecurityParser {
 	 *
 	 * @param propertyResolverUtils the property resolver utils
 	 */
-	public SecurityParser(PropertyResolverUtils propertyResolverUtils) {
+	public SecurityService(PropertyResolverUtils propertyResolverUtils) {
 		this.propertyResolverUtils = propertyResolverUtils;
 	}
 

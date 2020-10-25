@@ -64,22 +64,22 @@ import static org.springdoc.core.Constants.TRACE_METHOD;
  * The type Operation builder.
  * @author bnasslahsen
  */
-public class OperationBuilder {
+public class OperationService {
 
 	/**
 	 * The Parameter builder.
 	 */
-	private final GenericParameterBuilder parameterBuilder;
+	private final GenericParameterService parameterBuilder;
 
 	/**
 	 * The Request body builder.
 	 */
-	private final RequestBodyBuilder requestBodyBuilder;
+	private final RequestBodyService requestBodyService;
 
 	/**
 	 * The Security parser.
 	 */
-	private final SecurityParser securityParser;
+	private final SecurityService securityParser;
 
 	/**
 	 * The Property resolver utils.
@@ -90,15 +90,15 @@ public class OperationBuilder {
 	 * Instantiates a new Operation builder.
 	 *
 	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyBuilder the request body builder
+	 * @param requestBodyService the request body builder
 	 * @param securityParser the security parser
 	 * @param propertyResolverUtils the property resolver utils
 	 */
-	public OperationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			SecurityParser securityParser, PropertyResolverUtils propertyResolverUtils) {
+	public OperationService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
+			SecurityService securityParser, PropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.parameterBuilder = parameterBuilder;
-		this.requestBodyBuilder = requestBodyBuilder;
+		this.requestBodyService = requestBodyService;
 		this.securityParser = securityParser;
 		this.propertyResolverUtils = propertyResolverUtils;
 	}
@@ -145,7 +145,7 @@ public class OperationBuilder {
 		}
 
 		// RequestBody in Operation
-		requestBodyBuilder.buildRequestBodyFromDoc(apiOperation.requestBody(), operation.getRequestBody(), methodAttributes, components).ifPresent(operation::setRequestBody);
+		requestBodyService.buildRequestBodyFromDoc(apiOperation.requestBody(), operation.getRequestBody(), methodAttributes, components).ifPresent(operation::setRequestBody);
 
 		// build response
 		buildResponse(components, apiOperation, operation, methodAttributes);
@@ -429,7 +429,7 @@ public class OperationBuilder {
 					methodProduces == null ? new String[0] : methodProduces, null, components, null)
 					.ifPresent(apiResponseObject::content);
 		else
-			GenericResponseBuilder.buildContentFromDoc(components, apiResponsesOp, methodAttributes, response, apiResponseObject);
+			GenericResponseService.buildContentFromDoc(components, apiResponsesOp, methodAttributes, response, apiResponseObject);
 	}
 
 	/**
@@ -468,7 +468,7 @@ public class OperationBuilder {
 			apiResponseObject.setDescription(response.description());
 		}
 		else {
-			GenericResponseBuilder.setDescription(response.responseCode(), apiResponseObject);
+			GenericResponseService.setDescription(response.responseCode(), apiResponseObject);
 		}
 	}
 

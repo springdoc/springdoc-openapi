@@ -23,10 +23,10 @@ package org.springdoc.webmvc.core;
 import java.util.List;
 import java.util.Optional;
 
-import org.springdoc.core.AbstractRequestBuilder;
-import org.springdoc.core.GenericParameterBuilder;
-import org.springdoc.core.OperationBuilder;
-import org.springdoc.core.RequestBodyBuilder;
+import org.springdoc.core.AbstractRequestService;
+import org.springdoc.core.GenericParameterService;
+import org.springdoc.core.OperationService;
+import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -37,7 +37,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
  * The type Request builder.
  * @author bnasslahsen
  */
-public class RequestBuilder extends AbstractRequestBuilder {
+public class RequestService extends AbstractRequestService {
 
 	static {
 		getConfig().addRequestWrapperToIgnore(javax.servlet.ServletRequest.class)
@@ -52,14 +52,14 @@ public class RequestBuilder extends AbstractRequestBuilder {
 	 * Instantiates a new Request builder.
 	 *
 	 * @param parameterBuilder the parameter builder 
-	 * @param requestBodyBuilder the request body builder 
-	 * @param operationBuilder the operation builder 
+	 * @param requestBodyService the request body builder
+	 * @param operationService the operation builder
 	 * @param parameterCustomizers the parameter customizers 
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
-	public RequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			OperationBuilder operationBuilder, Optional<List<ParameterCustomizer>> parameterCustomizers,
+	public RequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
+			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
 			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
-		super(parameterBuilder, requestBodyBuilder, operationBuilder, parameterCustomizers, localSpringDocParameterNameDiscoverer);
+		super(parameterBuilder, requestBodyService, operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 }
