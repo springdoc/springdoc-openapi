@@ -70,28 +70,21 @@ public class RouterFunctionData {
 	 */
 	private RequestMethod[] methods;
 
+	private Map<String,Object> attributes = new HashMap<>();
+
 	/**
 	 * Instantiates a new Router function data.
 	 */
 	public RouterFunctionData() { }
 
-	/**
-	 * Instantiates a new Router function data.
-	 *
-	 * @param path the path
-	 * @param consumes the consumes
-	 * @param produces the produces
-	 * @param headers the headers
-	 * @param queryParams the query params
-	 * @param methods the methods
-	 */
-	public RouterFunctionData(String path, String[] consumes, String[] produces, String[] headers, Map<String, String> queryParams, RequestMethod[] methods) {
-		this.path = path;
-		this.consumes = Arrays.asList(consumes);
-		this.produces = Arrays.asList(produces);
-		this.headers = Arrays.asList(headers);
-		this.queryParams = queryParams;
-		this.methods = methods;
+	public RouterFunctionData(String nestedOrPath, RouterFunctionData functionData) {
+		this.path = nestedOrPath + functionData.getPath();
+		this.consumes = Arrays.asList(functionData.getConsumes());
+		this.produces = Arrays.asList(functionData.getProduces());
+		this.headers = Arrays.asList(functionData.getHeaders());
+		this.queryParams = functionData.getQueryParams();
+		this.methods = functionData.getMethods();
+		this.attributes = functionData.getAttributes();
 	}
 
 	/**
@@ -272,5 +265,13 @@ public class RouterFunctionData {
 				break;
 		}
 		return requestMethod;
+	}
+
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
+
+	public void addAttributes(Map<String, Object> attributes) {
+		this.attributes.putAll(attributes);
 	}
 }

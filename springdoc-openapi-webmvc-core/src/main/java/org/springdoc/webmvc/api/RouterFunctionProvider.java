@@ -96,6 +96,11 @@ public class RouterFunctionProvider {
 		}
 
 		@Override
+		public void attributes(Map<String, Object> map) {
+
+		}
+
+		@Override
 		public void unknown(RouterFunction<?> routerFunction) {
 			// Not yet needed
 		}

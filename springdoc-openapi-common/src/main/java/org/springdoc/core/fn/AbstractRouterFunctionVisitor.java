@@ -22,7 +22,9 @@ package org.springdoc.core.fn;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -75,6 +77,8 @@ public class AbstractRouterFunctionVisitor {
 	 * The Router function data.
 	 */
 	protected RouterFunctionData routerFunctionData;
+
+	protected Map<String,Object> attributes = new HashMap<>();
 
 	/**
 	 * Method.
@@ -223,18 +227,18 @@ public class AbstractRouterFunctionVisitor {
 			List<RouterFunctionData> routerFunctionDatasClone = new ArrayList<>();
 			for (RouterFunctionData functionData : routerFunctionDatas) {
 				for (String nestedOrPath : nestedOrPaths) {
-					RouterFunctionData routerFunctionDataClone = new RouterFunctionData(nestedOrPath + functionData.getPath(), functionData.getConsumes(), functionData.getProduces(), functionData.getHeaders(), functionData.getQueryParams(), functionData.getMethods());
+					RouterFunctionData routerFunctionDataClone = new RouterFunctionData(nestedOrPath , functionData);
 					routerFunctionDatasClone.add(routerFunctionDataClone);
 				}
 			}
 			this.routerFunctionDatas = routerFunctionDatasClone;
 			nestedAndPaths.clear();
 		}
-		if (!nestedAcceptHeaders.isEmpty()){
+		if (!nestedAcceptHeaders.isEmpty()) {
 			routerFunctionDatas.forEach(existingRouterFunctionData -> existingRouterFunctionData.addProduces(nestedAcceptHeaders));
 			nestedAcceptHeaders.clear();
 		}
-		if (!nestedContentTypeHeaders.isEmpty()){
+		if (!nestedContentTypeHeaders.isEmpty()) {
 			routerFunctionDatas.forEach(existingRouterFunctionData -> existingRouterFunctionData.addConsumes(nestedContentTypeHeaders));
 			nestedContentTypeHeaders.clear();
 		}
@@ -282,6 +286,16 @@ public class AbstractRouterFunctionVisitor {
 			else
 				nestedAcceptHeaders.add(value);
 		}
+	}
+
+	protected void attributes(Map<String, Object> attributes) {
+		this.attributes = attributes;
+	}
+
+	protected void route() {
+		this.routerFunctionData = new RouterFunctionData();
+		routerFunctionDatas.add(this.routerFunctionData);
+		this.routerFunctionData.addAttributes(this.attributes);
 	}
 
 }
