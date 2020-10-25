@@ -1,3 +1,26 @@
+/*
+ *
+ *
+ *  *
+ *  *  *
+ *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  *
+ *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  * You may obtain a copy of the License at
+ *  *  *  *
+ *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *
+ *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  * limitations under the License.
+ *  *  *
+ *  *
+ *
+ */
+
 package org.springdoc.core.fn.builders;
 
 import java.lang.annotation.Annotation;
@@ -7,25 +30,28 @@ import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.servers.ServerVariable;
 import org.apache.commons.lang3.ArrayUtils;
 
+/**
+ * The type Server builder.
+ */
 public class ServerBuilder {
 	/**
 	 * Required. A URL to the target host.
 	 * This URL supports Server Variables and may be relative, to indicate that the host location is relative to the location where the
 	 * OpenAPI definition is being served. Variable substitutions will be made when a variable is named in {brackets}.
 	 *
-	 **/
+	 */
 	private String url = "";
 
 	/**
 	 * An optional string describing the host designated by the URL. CommonMark syntax MAY be used for rich text representation.
 	 *
-	 **/
+	 */
 	private String description = "";
 
 	/**
 	 * An array of variables used for substitution in the server's URL template.
 	 *
-	 **/
+	 */
 	private ServerVariable[] variables = {};
 
 	/**
@@ -35,33 +61,70 @@ public class ServerBuilder {
 	private Extension[] extensions = {};
 
 
+	/**
+	 * Instantiates a new Server builder.
+	 */
 	private ServerBuilder() {
 	}
 
+	/**
+	 * Builder server builder.
+	 *
+	 * @return the server builder
+	 */
 	public static ServerBuilder builder() {
 		return new ServerBuilder();
 	}
 
+	/**
+	 * Url server builder.
+	 *
+	 * @param url the url
+	 * @return the server builder
+	 */
 	public ServerBuilder url(String url) {
 		this.url = url;
 		return this;
 	}
 
+	/**
+	 * Description server builder.
+	 *
+	 * @param description the description
+	 * @return the server builder
+	 */
 	public ServerBuilder description(String description) {
 		this.description = description;
 		return this;
 	}
 
+	/**
+	 * Variables server builder.
+	 *
+	 * @param serverVariableBuilder the server variable builder
+	 * @return the server builder
+	 */
 	public ServerBuilder variables(ServerVariableBuilder serverVariableBuilder) {
 		this.variables = ArrayUtils.add( this.variables, serverVariableBuilder.build());
 		return this;
 	}
 
+	/**
+	 * Extension server builder.
+	 *
+	 * @param extensionBuilder the extension builder
+	 * @return the server builder
+	 */
 	public ServerBuilder  extension(ExtensionBuilder extensionBuilder) {
 		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
 		return this;
 	}
 
+	/**
+	 * Build server.
+	 *
+	 * @return the server
+	 */
 	public Server build() {
 		Server server = new Server() {
 

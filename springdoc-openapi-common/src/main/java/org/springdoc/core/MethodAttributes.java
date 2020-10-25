@@ -110,9 +110,9 @@ public class MethodAttributes {
 	/**
 	 * Instantiates a new Method attributes.
 	 *
-	 * @param methodProducesNew the method produces new
-	 * @param defaultConsumesMediaType the default consumes media type
-	 * @param defaultProducesMediaType the default produces media type
+	 * @param methodProducesNew the method produces new 
+	 * @param defaultConsumesMediaType the default consumes media type 
+	 * @param defaultProducesMediaType the default produces media type 
 	 * @param genericMapResponse the generic map response
 	 */
 	public MethodAttributes(String[] methodProducesNew, String defaultConsumesMediaType, String defaultProducesMediaType, Map<String, ApiResponse> genericMapResponse) {
@@ -125,7 +125,7 @@ public class MethodAttributes {
 	/**
 	 * Instantiates a new Method attributes.
 	 *
-	 * @param defaultConsumesMediaType the default consumes media type
+	 * @param defaultConsumesMediaType the default consumes media type 
 	 * @param defaultProducesMediaType the default produces media type
 	 */
 	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType) {
@@ -136,10 +136,10 @@ public class MethodAttributes {
 	/**
 	 * Instantiates a new Method attributes.
 	 *
-	 * @param defaultConsumesMediaType the default consumes media type
-	 * @param defaultProducesMediaType the default produces media type
-	 * @param methodConsumes the method consumes
-	 * @param methodProduces the method produces
+	 * @param defaultConsumesMediaType the default consumes media type 
+	 * @param defaultProducesMediaType the default produces media type 
+	 * @param methodConsumes the method consumes 
+	 * @param methodProduces the method produces 
 	 * @param headers the headers
 	 */
 	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType, String[] methodConsumes, String[] methodProduces, String[] headers) {
@@ -250,8 +250,8 @@ public class MethodAttributes {
 	/**
 	 * Fill methods.
 	 *
-	 * @param produces the produces
-	 * @param consumes the consumes
+	 * @param produces the produces 
+	 * @param consumes the consumes 
 	 * @param headers the headers
 	 */
 	private void fillMethods(String[] produces, String[] consumes, String[] headers) {
@@ -372,7 +372,7 @@ public class MethodAttributes {
 	/**
 	 * Calculate generic map response api responses.
 	 *
-	 * @param genericMapResponse the generic map response
+	 * @param genericMapResponse the generic map response 
 	 * @return the api responses
 	 */
 	public ApiResponses calculateGenericMapResponse(Map<String, ApiResponse> genericMapResponse) {

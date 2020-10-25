@@ -82,8 +82,8 @@ public class DataRestOperationService {
 	/**
 	 * Instantiates a new Data rest operation builder.
 	 *
-	 * @param dataRestRequestService the data rest request builder
-	 * @param tagsBuilder the tags builder
+	 * @param dataRestRequestService the data rest request builder 
+	 * @param tagsBuilder the tags builder 
 	 * @param dataRestResponseService the data rest response builder
 	 */
 	public DataRestOperationService(DataRestRequestService dataRestRequestService, DataRestTagsService tagsBuilder,
@@ -96,15 +96,15 @@ public class DataRestOperationService {
 	/**
 	 * Build operation operation.
 	 *
-	 * @param handlerMethod the handler method
-	 * @param dataRestRepository the repository data rest
-	 * @param openAPI the open api
-	 * @param requestMethod the request method
-	 * @param operationPath the operation path
-	 * @param methodAttributes the method attributes
-	 * @param resourceMetadata the resource metadata
-	 * @param methodResourceMapping the method resource mapping
-	 * @param controllerType the controller type
+	 * @param handlerMethod the handler method 
+	 * @param dataRestRepository the repository data rest 
+	 * @param openAPI the open api 
+	 * @param requestMethod the request method 
+	 * @param operationPath the operation path 
+	 * @param methodAttributes the method attributes 
+	 * @param resourceMetadata the resource metadata 
+	 * @param methodResourceMapping the method resource mapping 
+	 * @param controllerType the controller type 
 	 * @return the operation
 	 */
 	public Operation buildOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
@@ -127,13 +127,13 @@ public class DataRestOperationService {
 	/**
 	 * Build entity operation operation.
 	 *
-	 * @param handlerMethod the handler method
-	 * @param dataRestRepository the repository data rest
-	 * @param openAPI the open api
-	 * @param requestMethod the request method
-	 * @param operationPath the operation path
-	 * @param methodAttributes the method attributes
-	 * @param resourceMetadata the resource metadata
+	 * @param handlerMethod the handler method 
+	 * @param dataRestRepository the repository data rest 
+	 * @param openAPI the open api 
+	 * @param requestMethod the request method 
+	 * @param operationPath the operation path 
+	 * @param methodAttributes the method attributes 
+	 * @param resourceMetadata the resource metadata 
 	 * @return the operation
 	 */
 	private Operation buildEntityOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
@@ -154,12 +154,12 @@ public class DataRestOperationService {
 	/**
 	 * Build search operation operation.
 	 *
-	 * @param handlerMethod the handler method
-	 * @param dataRestRepository the repository data rest
-	 * @param openAPI the open api
-	 * @param requestMethod the request method
-	 * @param methodAttributes the method attributes
-	 * @param methodResourceMapping the method resource mapping
+	 * @param handlerMethod the handler method 
+	 * @param dataRestRepository the repository data rest 
+	 * @param openAPI the open api 
+	 * @param requestMethod the request method 
+	 * @param methodAttributes the method attributes 
+	 * @param methodResourceMapping the method resource mapping 
 	 * @return the operation
 	 */
 	private Operation buildSearchOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
@@ -201,9 +201,9 @@ public class DataRestOperationService {
 	/**
 	 * Init operation operation.
 	 *
-	 * @param handlerMethod the handler method
-	 * @param domainType the domain type
-	 * @param requestMethod the request method
+	 * @param handlerMethod the handler method 
+	 * @param domainType the domain type 
+	 * @param requestMethod the request method 
 	 * @return the operation
 	 */
 	private Operation initOperation(HandlerMethod handlerMethod, Class<?> domainType, RequestMethod requestMethod) {
@@ -221,8 +221,8 @@ public class DataRestOperationService {
 	/**
 	 * Add operation description.
 	 *
-	 * @param operation the operation
-	 * @param requestMethod the request method
+	 * @param operation the operation 
+	 * @param requestMethod the request method 
 	 * @param entity the entity
 	 */
 	private void addOperationDescription(Operation operation, RequestMethod requestMethod, String entity) {

@@ -62,7 +62,7 @@ public class ModelConverterRegistrar {
 	/**
 	 * Gets registered converter same as.
 	 *
-	 * @param modelConverter the model converter
+	 * @param modelConverter the model converter 
 	 * @return the registered converter same as
 	 */
 	@SuppressWarnings("unchecked")
@@ -83,8 +83,8 @@ public class ModelConverterRegistrar {
 	/**
 	 * Is same converter boolean.
 	 *
-	 * @param modelConverter1 the model converter 1
-	 * @param modelConverter2 the model converter 2
+	 * @param modelConverter1 the model converter 1 
+	 * @param modelConverter2 the model converter 2 
 	 * @return the boolean
 	 */
 	private boolean isSameConverter(ModelConverter modelConverter1, ModelConverter modelConverter2) {
