@@ -1,0 +1,88 @@
+package org.springdoc.core.fn.builders;
+
+import java.lang.annotation.Annotation;
+
+import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
+
+/**
+ * The type Discriminator mapping builder.
+ */
+public class DiscriminatorMappingBuilder {
+
+	/**
+	 * The property value that will be mapped to a Schema
+	 *
+	 */
+	private String value = "";
+
+	/**
+	 * The schema that is being mapped to a property value
+	 *
+	 */
+	private Class<?> schema = Void.class;
+
+
+	/**
+	 * Instantiates a new Discriminator mapping builder.
+	 */
+	private DiscriminatorMappingBuilder() {
+	}
+
+	/**
+	 * A discriminator mapping builde discriminator mapping builder.
+	 *
+	 * @return the discriminator mapping builder
+	 */
+	public static DiscriminatorMappingBuilder builder() {
+		return new DiscriminatorMappingBuilder();
+	}
+
+	/**
+	 * Value discriminator mapping builder.
+	 *
+	 * @param value the value
+	 * @return the discriminator mapping builder
+	 */
+	public DiscriminatorMappingBuilder value(String value) {
+		this.value = value;
+		return this;
+	}
+
+	/**
+	 * Schema discriminator mapping builder.
+	 *
+	 * @param schema the schema
+	 * @return the discriminator mapping builder
+	 */
+	public DiscriminatorMappingBuilder schema(Class<?> schema) {
+		this.schema = schema;
+		return this;
+	}
+
+	/**
+	 * Build discriminator mapping.
+	 *
+	 * @return the discriminator mapping
+	 */
+	public DiscriminatorMapping build() {
+		DiscriminatorMapping discriminatorMapping = new DiscriminatorMapping() {
+
+			@Override
+			public Class<? extends Annotation> annotationType() {
+				return null;
+			}
+
+			@Override
+			public String value() {
+				return value;
+			}
+
+			@Override
+			public Class<?> schema() {
+				return schema;
+			}
+		};
+		return discriminatorMapping;
+	}
+
+}

@@ -20,6 +20,8 @@
 
 package org.springdoc.webflux.core.visitor;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
@@ -42,9 +44,9 @@ public class RouterFunctionVisitor extends AbstractRouterFunctionVisitor impleme
 
 	@Override
 	public void route(RequestPredicate predicate, HandlerFunction<?> handlerFunction) {
-		this.routerFunctionData = new RouterFunctionData();
-		routerFunctionDatas.add(this.routerFunctionData);
+		super.route();
 		predicate.accept(this);
+		this.attributes =  new HashMap<>();
 	}
 
 	@Override
@@ -61,6 +63,11 @@ public class RouterFunctionVisitor extends AbstractRouterFunctionVisitor impleme
 	@Override
 	public void resources(Function<ServerRequest, Mono<Resource>> lookupFunction) {
 		// Not yet needed
+	}
+
+	@Override
+	public void attributes(Map<String, Object> map) {
+		super.attributes(map);
 	}
 
 	@Override

@@ -93,6 +93,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
+import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
+import static org.springdoc.core.Constants.ROUTER_ATTRIBUTE;
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.isDeprecated;
 
 /**
@@ -515,23 +517,32 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param routerFunctionVisitor the router function visitor
 	 */
 	protected void getRouterFunctionPaths(String beanName, AbstractRouterFunctionVisitor routerFunctionVisitor) {
-		List<org.springdoc.core.annotations.RouterOperation> routerOperationList = new ArrayList<>();
-		ApplicationContext applicationContext = openAPIBuilder.getContext();
-		RouterOperations routerOperations = applicationContext.findAnnotationOnBean(beanName, RouterOperations.class);
-		if (routerOperations == null) {
-			org.springdoc.core.annotations.RouterOperation routerOperation = applicationContext.findAnnotationOnBean(beanName, org.springdoc.core.annotations.RouterOperation.class);
-			if (routerOperation != null)
-				routerOperationList.add(routerOperation);
-		}
-		else
-			routerOperationList.addAll(Arrays.asList(routerOperations.value()));
-		if (routerOperationList.size() == 1)
-			calculatePath(routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()));
-		else {
-			List<RouterOperation> operationList = routerOperationList.stream().map(RouterOperation::new).collect(Collectors.toList());
-			mergeRouters(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
+		boolean withRouterOperation = routerFunctionVisitor.getRouterFunctionDatas().stream()
+				.anyMatch(routerFunctionData -> routerFunctionData.getAttributes().containsKey(ROUTER_ATTRIBUTE) || routerFunctionData.getAttributes().containsKey(OPERATION_ATTRIBUTE));
+		if (withRouterOperation) {
+			List<RouterOperation> operationList = routerFunctionVisitor.getRouterFunctionDatas().stream().map(RouterOperation::new).collect(Collectors.toList());
 			calculatePath(operationList);
 		}
+		else {
+			List<org.springdoc.core.annotations.RouterOperation> routerOperationList = new ArrayList<>();
+			ApplicationContext applicationContext = openAPIBuilder.getContext();
+			RouterOperations routerOperations = applicationContext.findAnnotationOnBean(beanName, RouterOperations.class);
+			if (routerOperations == null) {
+				org.springdoc.core.annotations.RouterOperation routerOperation = applicationContext.findAnnotationOnBean(beanName, org.springdoc.core.annotations.RouterOperation.class);
+				if (routerOperation != null)
+					routerOperationList.add(routerOperation);
+			}
+			else
+				routerOperationList.addAll(Arrays.asList(routerOperations.value()));
+			if (routerOperationList.size() == 1)
+				calculatePath(routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()));
+			else {
+				List<RouterOperation> operationList = routerOperationList.stream().map(RouterOperation::new).collect(Collectors.toList());
+				mergeRouters(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
+				calculatePath(operationList);
+			}
+		}
+
 	}
 
 	/**

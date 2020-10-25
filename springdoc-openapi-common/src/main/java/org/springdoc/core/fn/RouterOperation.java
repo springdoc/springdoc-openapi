@@ -27,8 +27,12 @@ import java.util.Objects;
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.fn.builders.OperationBuilder;
 
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
+import static org.springdoc.core.Constants.ROUTER_ATTRIBUTE;
 
 
 /**
@@ -92,6 +96,9 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	 */
 	private io.swagger.v3.oas.models.Operation operationModel;
 
+	private RouterOperation() {
+	}
+
 	/**
 	 * Instantiates a new Router operation.
 	 *
@@ -137,6 +144,32 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	public RouterOperation(String path, RequestMethod[] methods) {
 		this.path = path;
 		this.methods = methods;
+	}
+
+	public RouterOperation(RouterFunctionData routerFunctionData) {
+		this.path = routerFunctionData.getPath();
+		this.methods = routerFunctionData.getMethods();
+		this.consumes = routerFunctionData.getConsumes();
+		this.produces = routerFunctionData.getProduces();
+		this.headers = routerFunctionData.getHeaders();
+		this.queryParams = routerFunctionData.getQueryParams();
+
+		Map<String, Object> attributes = routerFunctionData.getAttributes();
+		if (attributes.containsKey(ROUTER_ATTRIBUTE)) {
+			RouterOperation routerOperation = (RouterOperation) attributes.get(ROUTER_ATTRIBUTE);
+			this.beanClass = routerOperation.getBeanClass();
+			this.beanMethod = routerOperation.getBeanMethod();
+			this.parameterTypes = routerOperation.getParameterTypes();
+			this.operation = routerOperation.getOperation();
+		}
+		else if (attributes.containsKey(OPERATION_ATTRIBUTE)) {
+			this.operation = (Operation) attributes.get(OPERATION_ATTRIBUTE);
+		}
+	}
+
+
+	public static RouterOperationBuilder builder() {
+		return new RouterOperationBuilder();
 	}
 
 	/**
@@ -376,5 +409,61 @@ public class RouterOperation implements Comparable<RouterOperation> {
 		result = 31 * result + Arrays.hashCode(headers);
 		result = 31 * result + Arrays.hashCode(parameterTypes);
 		return result;
+	}
+
+
+	public static final class RouterOperationBuilder {
+		private Class<?> beanClass;
+
+		private String beanMethod;
+
+		private Class<?>[] parameterTypes;
+
+		private Operation operation;
+
+		private RouterOperationBuilder() {
+		}
+
+		public static RouterOperationBuilder builder() {
+			return new RouterOperationBuilder();
+		}
+
+		public RouterOperationBuilder beanClass(Class<?> beanClass) {
+			this.beanClass = beanClass;
+			return this;
+		}
+
+		public RouterOperationBuilder beanMethod(String beanMethod) {
+			this.beanMethod = beanMethod;
+			return this;
+		}
+
+		public RouterOperationBuilder parameterTypes(Class<?>[] parameterTypes) {
+			this.parameterTypes = parameterTypes;
+			return this;
+		}
+
+		public RouterOperationBuilder operation(OperationBuilder operationBuilder) {
+			this.operation = operationBuilder.build();
+			return this;
+		}
+
+		public RouterOperation build() {
+			if (operation == null && (beanClass == null && beanMethod == null && parameterTypes == null))
+				throw new IllegalStateException("You should either fill, the Operation or at least the bean class and the bean method");
+
+			if (beanClass != null && beanMethod == null)
+				throw new IllegalStateException("The bean method, should not null");
+
+			if (operation != null && StringUtils.isEmpty(operation.operationId()))
+				throw new IllegalStateException("operationId can not be empty");
+
+			RouterOperation routerOperation = new RouterOperation();
+			routerOperation.setBeanClass(beanClass);
+			routerOperation.setBeanMethod(beanMethod);
+			routerOperation.setParameterTypes(parameterTypes);
+			routerOperation.setOperation(operation);
+			return routerOperation;
+		}
 	}
 }
