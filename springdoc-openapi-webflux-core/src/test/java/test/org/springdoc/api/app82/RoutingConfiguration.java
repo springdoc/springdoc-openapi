@@ -22,19 +22,19 @@ public class RoutingConfiguration {
 	@Bean
 	public RouterFunction<ServerResponse> monoRouterFunction(UserHandler userHandler) {
 		return route(GET("/api/user/index").and(accept(APPLICATION_JSON)), userHandler::getAll)
-				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("getAllUsers").build())
+				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("getAllUsers"))
 
 				.and(route(GET("/api/user/{id}").and(accept(APPLICATION_JSON)), userHandler::getUser)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("getUserById").build()))
+						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("getUserById")))
 
 				.and(route(POST("/api/user/post").and(accept(APPLICATION_JSON)), userHandler::postUser)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("saveUser").build()))
+						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("saveUser")))
 
 				.and(route(PUT("/api/user/put/{id}").and(accept(APPLICATION_JSON)), userHandler::putUser)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("putUser").build()))
+						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("putUser")))
 
 				.and(route(DELETE("/api/user/delete/{id}").and(accept(APPLICATION_JSON)), userHandler::deleteUser)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("deleteUser").build()));
+						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("deleteUser")));
 	}
 
 }
