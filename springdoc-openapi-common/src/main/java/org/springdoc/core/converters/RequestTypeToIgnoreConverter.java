@@ -28,7 +28,7 @@ import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
-import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.AbstractRequestService;
 
 /**
  * The type Request type to ignore converter.
@@ -41,7 +41,7 @@ public class RequestTypeToIgnoreConverter implements ModelConverter {
 		if (type.isSchemaProperty()) {
 			JavaType javaType = Json.mapper().constructType(type.getType());
 			Class<?> cls = javaType.getRawClass();
-			if (AbstractRequestBuilder.isRequestTypeToIgnore(cls))
+			if (AbstractRequestService.isRequestTypeToIgnore(cls))
 				return null;
 		}
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;

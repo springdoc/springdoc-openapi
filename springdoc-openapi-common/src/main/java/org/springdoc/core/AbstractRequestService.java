@@ -85,7 +85,7 @@ import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.c
  * The type Abstract request builder.
  * @author bnasslahsen
  */
-public abstract class AbstractRequestBuilder {
+public abstract class AbstractRequestService {
 
 	/**
 	 * The constant PARAM_TYPES_TO_IGNORE.
@@ -133,17 +133,17 @@ public abstract class AbstractRequestBuilder {
 	/**
 	 * The Parameter builder.
 	 */
-	private final GenericParameterBuilder parameterBuilder;
+	private final GenericParameterService parameterBuilder;
 
 	/**
 	 * The Request body builder.
 	 */
-	private final RequestBodyBuilder requestBodyBuilder;
+	private final RequestBodyService requestBodyService;
 
 	/**
 	 * The Operation builder.
 	 */
-	private final OperationBuilder operationBuilder;
+	private final OperationService operationService;
 
 	/**
 	 * The Local spring doc parameter name discoverer.
@@ -159,18 +159,18 @@ public abstract class AbstractRequestBuilder {
 	 * Instantiates a new Abstract request builder.
 	 *
 	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyBuilder the request body builder
-	 * @param operationBuilder the operation builder
+	 * @param requestBodyService the request body builder
+	 * @param operationService the operation builder
 	 * @param parameterCustomizers the parameter customizers
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
-	protected AbstractRequestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			OperationBuilder operationBuilder, Optional<List<ParameterCustomizer>> parameterCustomizers,
+	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
+			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
 			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super();
 		this.parameterBuilder = parameterBuilder;
-		this.requestBodyBuilder = requestBodyBuilder;
-		this.operationBuilder = operationBuilder;
+		this.requestBodyService = requestBodyService;
+		this.operationService = operationService;
 		if (parameterCustomizers.isPresent())
 			parameterCustomizers.get().removeIf(Objects::isNull);
 		this.parameterCustomizers = parameterCustomizers;
@@ -220,7 +220,7 @@ public abstract class AbstractRequestBuilder {
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
 		// Documentation
-		String operationId = operationBuilder.getOperationId(handlerMethod.getMethod().getName(),
+		String operationId = operationService.getOperationId(handlerMethod.getMethod().getName(),
 				operation.getOperationId(), openAPI);
 		operation.setOperationId(operationId);
 		// requests
@@ -258,14 +258,14 @@ public abstract class AbstractRequestBuilder {
 			if (!isParamToIgnore(methodParameter)) {
 				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
-				parameter = GenericParameterBuilder.mergeParameter(operationParameters, parameter);
+				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
 				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
 				if (isValidParameter(parameter))
 					applyBeanValidatorAnnotations(parameter, parameterAnnotations);
 				else if (!RequestMethod.GET.equals(requestMethod)) {
 					if (operation.getRequestBody() != null)
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
-					requestBodyBuilder.calculateRequestBodyInfo(components, methodAttributes,
+					requestBodyService.calculateRequestBodyInfo(components, methodAttributes,
 							parameterInfo, requestBodyInfo);
 					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 				}
@@ -538,8 +538,8 @@ public abstract class AbstractRequestBuilder {
 	 *
 	 * @return the request body builder
 	 */
-	public RequestBodyBuilder getRequestBodyBuilder() {
-		return requestBodyBuilder;
+	public RequestBodyService getRequestBodyBuilder() {
+		return requestBodyService;
 	}
 
 	/**

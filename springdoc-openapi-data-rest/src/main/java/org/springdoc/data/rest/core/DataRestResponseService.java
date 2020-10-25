@@ -32,7 +32,7 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-import org.springdoc.core.GenericResponseBuilder;
+import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.ReturnTypeParser;
 
@@ -54,20 +54,20 @@ import org.springframework.web.method.HandlerMethod;
  * The type Data rest response builder.
  * @author bnasslahsen
  */
-public class DataRestResponseBuilder {
+public class DataRestResponseService {
 
 	/**
 	 * The Generic response builder.
 	 */
-	private GenericResponseBuilder genericResponseBuilder;
+	private GenericResponseService genericResponseService;
 
 	/**
 	 * Instantiates a new Data rest response builder.
 	 *
-	 * @param genericResponseBuilder the generic response builder
+	 * @param genericResponseService the generic response builder
 	 */
-	public DataRestResponseBuilder(GenericResponseBuilder genericResponseBuilder) {
-		this.genericResponseBuilder = genericResponseBuilder;
+	public DataRestResponseService(GenericResponseService genericResponseService) {
+		this.genericResponseService = genericResponseService;
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class DataRestResponseBuilder {
 		ApiResponses apiResponses = new ApiResponses();
 		ApiResponse apiResponse = new ApiResponse();
 		Type returnType = findSearchReturnType(handlerMethod, methodResourceMapping, domainType);
-		Content content = genericResponseBuilder.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
+		Content content = genericResponseService.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
 		apiResponse.setContent(content);
 		addResponse200(apiResponses, apiResponse);
 		addResponse404(apiResponses);
@@ -112,7 +112,7 @@ public class DataRestResponseBuilder {
 		returnType = getType(returnType, domainType);
 		ApiResponses apiResponses = new ApiResponses();
 		ApiResponse apiResponse = new ApiResponse();
-		Content content = genericResponseBuilder.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
+		Content content = genericResponseService.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
 		apiResponse.setContent(content);
 		addResponse(requestMethod, operationPath, apiResponses, apiResponse);
 		operation.setResponses(apiResponses);

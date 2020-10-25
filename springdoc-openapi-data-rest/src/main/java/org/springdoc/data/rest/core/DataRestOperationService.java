@@ -52,12 +52,12 @@ import org.springframework.web.method.HandlerMethod;
  * The type Data rest operation builder.
  * @author bnasslahsen
  */
-public class DataRestOperationBuilder {
+public class DataRestOperationService {
 
 	/**
 	 * The constant LOGGER.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(DataRestOperationBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DataRestOperationService.class);
 
 	/**
 	 * The constant STRING_SEPARATOR.
@@ -67,30 +67,30 @@ public class DataRestOperationBuilder {
 	/**
 	 * The Data rest request builder.
 	 */
-	private DataRestRequestBuilder dataRestRequestBuilder;
+	private DataRestRequestService dataRestRequestService;
 
 	/**
 	 * The Tags builder.
 	 */
-	private DataRestTagsBuilder tagsBuilder;
+	private DataRestTagsService tagsBuilder;
 
 	/**
 	 * The Data rest response builder.
 	 */
-	private DataRestResponseBuilder dataRestResponseBuilder;
+	private DataRestResponseService dataRestResponseService;
 
 	/**
 	 * Instantiates a new Data rest operation builder.
 	 *
-	 * @param dataRestRequestBuilder the data rest request builder
+	 * @param dataRestRequestService the data rest request builder
 	 * @param tagsBuilder the tags builder
-	 * @param dataRestResponseBuilder the data rest response builder
+	 * @param dataRestResponseService the data rest response builder
 	 */
-	public DataRestOperationBuilder(DataRestRequestBuilder dataRestRequestBuilder, DataRestTagsBuilder tagsBuilder,
-			DataRestResponseBuilder dataRestResponseBuilder) {
-		this.dataRestRequestBuilder = dataRestRequestBuilder;
+	public DataRestOperationService(DataRestRequestService dataRestRequestService, DataRestTagsService tagsBuilder,
+			DataRestResponseService dataRestResponseService) {
+		this.dataRestRequestService = dataRestRequestService;
 		this.tagsBuilder = tagsBuilder;
-		this.dataRestResponseBuilder = dataRestResponseBuilder;
+		this.dataRestResponseService = dataRestResponseService;
 	}
 
 	/**
@@ -143,8 +143,8 @@ public class DataRestOperationBuilder {
 		if (dataRestRepository != null)
 			domainType = dataRestRepository.getDomainType();
 		Operation operation = initOperation(handlerMethod, domainType, requestMethod);
-		dataRestRequestBuilder.buildParameters(domainType, openAPI, handlerMethod, requestMethod, methodAttributes, operation, resourceMetadata);
-		dataRestResponseBuilder.buildEntityResponse(operation, handlerMethod, openAPI, requestMethod, operationPath, domainType, methodAttributes);
+		dataRestRequestService.buildParameters(domainType, openAPI, handlerMethod, requestMethod, methodAttributes, operation, resourceMetadata);
+		dataRestResponseService.buildEntityResponse(operation, handlerMethod, openAPI, requestMethod, operationPath, domainType, methodAttributes);
 		tagsBuilder.buildEntityTags(operation, handlerMethod, dataRestRepository);
 		if (domainType != null)
 			addOperationDescription(operation, requestMethod, domainType.getSimpleName().toLowerCase());
@@ -191,9 +191,9 @@ public class DataRestOperationBuilder {
 		if (methodResourceMapping.isPagingResource()) {
 			MethodParameter[] parameters = handlerMethod.getMethodParameters();
 			Arrays.stream(parameters).filter(methodParameter -> DefaultedPageable.class.equals(methodParameter.getParameterType())).findAny()
-					.ifPresent(methodParameterPage -> dataRestRequestBuilder.buildCommonParameters(domainType, openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameterPage.getParameterName() }, new MethodParameter[] { methodParameterPage }));
+					.ifPresent(methodParameterPage -> dataRestRequestService.buildCommonParameters(domainType, openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameterPage.getParameterName() }, new MethodParameter[] { methodParameterPage }));
 		}
-		dataRestResponseBuilder.buildSearchResponse(operation, handlerMethod, openAPI, methodResourceMapping, domainType, methodAttributes);
+		dataRestResponseService.buildSearchResponse(operation, handlerMethod, openAPI, methodResourceMapping, domainType, methodAttributes);
 		tagsBuilder.buildSearchTags(operation, handlerMethod, dataRestRepository);
 		return operation;
 	}

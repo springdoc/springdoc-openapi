@@ -36,13 +36,13 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.ArrayUtils;
-import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.DelegatingMethodParameter;
-import org.springdoc.core.GenericParameterBuilder;
+import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.ParameterInfo;
-import org.springdoc.core.RequestBodyBuilder;
 import org.springdoc.core.RequestBodyInfo;
+import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.SpringDocAnnotationsUtils;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -61,7 +61,7 @@ import org.springframework.web.method.HandlerMethod;
  * The type Data rest request builder.
  * @author bnasslahsen
  */
-public class DataRestRequestBuilder {
+public class DataRestRequestService {
 
 	/**
 	 * The Local spring doc parameter name discoverer.
@@ -71,31 +71,31 @@ public class DataRestRequestBuilder {
 	/**
 	 * The Parameter builder.
 	 */
-	private GenericParameterBuilder parameterBuilder;
+	private GenericParameterService parameterBuilder;
 
 	/**
 	 * The Request body builder.
 	 */
-	private RequestBodyBuilder requestBodyBuilder;
+	private RequestBodyService requestBodyService;
 
 	/**
 	 * The Request builder.
 	 */
-	private AbstractRequestBuilder requestBuilder;
+	private AbstractRequestService requestBuilder;
 
 	/**
 	 * Instantiates a new Data rest request builder.
 	 *
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyBuilder the request body builder
+	 * @param requestBodyService the request body builder
 	 * @param requestBuilder the request builder
 	 */
-	public DataRestRequestBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterBuilder parameterBuilder,
-			RequestBodyBuilder requestBodyBuilder, AbstractRequestBuilder requestBuilder) {
+	public DataRestRequestService(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
+			RequestBodyService requestBodyService, AbstractRequestService requestBuilder) {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 		this.parameterBuilder = parameterBuilder;
-		this.requestBodyBuilder = requestBodyBuilder;
+		this.requestBodyService = requestBodyService;
 		this.requestBuilder = requestBuilder;
 	}
 
@@ -198,7 +198,7 @@ public class DataRestRequestBuilder {
 			RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 			if (operation.getRequestBody() != null)
 				requestBodyInfo.setRequestBody(operation.getRequestBody());
-			requestBodyBuilder.calculateRequestBodyInfo(openAPI.getComponents(), methodAttributes,
+			requestBodyService.calculateRequestBodyInfo(openAPI.getComponents(), methodAttributes,
 					parameterInfo, requestBodyInfo);
 			requestBuilder.applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 			operation.setRequestBody(requestBodyInfo.getRequestBody());

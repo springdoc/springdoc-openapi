@@ -66,13 +66,13 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
-import org.springdoc.core.GenericParameterBuilder;
-import org.springdoc.core.GenericResponseBuilder;
+import org.springdoc.core.GenericParameterService;
+import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.MethodAttributes;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.OpenAPIService;
+import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.annotations.RouterOperations;
@@ -121,12 +121,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * The Open api builder.
 	 */
-	protected OpenAPIBuilder openAPIBuilder;
+	protected OpenAPIService openAPIService;
 
 	/**
 	 * The open api builder object factory.
 	 */
-	private final ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory;
+	private final ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory;
 
 	/**
 	 * The Spring doc config properties.
@@ -141,17 +141,17 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * The Request builder.
 	 */
-	private final AbstractRequestBuilder requestBuilder;
+	private final AbstractRequestService requestBuilder;
 
 	/**
 	 * The Response builder.
 	 */
-	private final GenericResponseBuilder responseBuilder;
+	private final GenericResponseService responseBuilder;
 
 	/**
 	 * The Operation parser.
 	 */
-	private final OperationBuilder operationParser;
+	private final OperationService operationParser;
 
 	/**
 	 * The Open api customisers.
@@ -186,9 +186,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
-	protected AbstractOpenApiResource(String groupName, ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory,
-			AbstractRequestBuilder requestBuilder,
-			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
+	protected AbstractOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+			AbstractRequestService requestBuilder,
+			GenericResponseService responseBuilder, OperationService operationParser,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
@@ -196,7 +196,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		super();
 		this.groupName = Objects.requireNonNull(groupName, "groupName");
 		this.openAPIBuilderObjectFactory = openAPIBuilderObjectFactory;
-		this.openAPIBuilder = openAPIBuilderObjectFactory.getObject();
+		this.openAPIService = openAPIBuilderObjectFactory.getObject();
 		this.requestBuilder = requestBuilder;
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
@@ -253,18 +253,18 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected synchronized OpenAPI getOpenApi() {
 		OpenAPI openApi;
-		if (openAPIBuilder.getCachedOpenAPI() == null || springDocConfigProperties.isCacheDisabled()) {
+		if (openAPIService.getCachedOpenAPI() == null || springDocConfigProperties.isCacheDisabled()) {
 			Instant start = Instant.now();
-			openAPIBuilder.build();
-			Map<String, Object> mappingsMap = openAPIBuilder.getMappingsMap().entrySet().stream()
+			openAPIService.build();
+			Map<String, Object> mappingsMap = openAPIService.getMappingsMap().entrySet().stream()
 					.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 							Hidden.class) == null))
 					.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getClass()))
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
-			Map<String, Object> findControllerAdvice = openAPIBuilder.getControllerAdviceMap();
+			Map<String, Object> findControllerAdvice = openAPIService.getControllerAdviceMap();
 			// calculate generic responses
-			openApi = openAPIBuilder.getCalculatedOpenAPI();
+			openApi = openAPIService.getCalculatedOpenAPI();
 			if (springDocConfigProperties.isOverrideWithGenericResponse() && !CollectionUtils.isEmpty(findControllerAdvice)) {
 				if (!CollectionUtils.isEmpty(mappingsMap))
 					findControllerAdvice.putAll(mappingsMap);
@@ -272,8 +272,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			}
 			getPaths(mappingsMap);
 			if (!CollectionUtils.isEmpty(openApi.getServers()))
-				openAPIBuilder.setServersPresent(true);
-			openAPIBuilder.updateServers(openApi);
+				openAPIService.setServersPresent(true);
+			openAPIService.updateServers(openApi);
 
 			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
 				this.removeBrokenReferenceDefinitions(openApi);
@@ -281,16 +281,16 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// run the optional customisers
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
 
-			openAPIBuilder.setCachedOpenAPI(openApi);
-			openAPIBuilder.resetCalculatedOpenAPI();
+			openAPIService.setCachedOpenAPI(openApi);
+			openAPIService.resetCalculatedOpenAPI();
 
 			LOGGER.info("Init duration for springdoc-openapi is: {} ms",
 					Duration.between(start, Instant.now()).toMillis());
 		}
 		else {
-			if (!CollectionUtils.isEmpty(openAPIBuilder.getCachedOpenAPI().getServers()))
-				openAPIBuilder.setServersPresent(true);
-			openApi = openAPIBuilder.updateServers(openAPIBuilder.getCachedOpenAPI());
+			if (!CollectionUtils.isEmpty(openAPIService.getCachedOpenAPI().getServers()))
+				openAPIService.setServersPresent(true);
+			openApi = openAPIService.updateServers(openAPIService.getCachedOpenAPI());
 		}
 		return openApi;
 	}
@@ -317,7 +317,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		String[] headers = routerOperation.getHeaders();
 		Map<String, String> queryParams = routerOperation.getQueryParams();
 
-		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
+		OpenAPI openAPI = openAPIService.getCalculatedOpenAPI();
 		Components components = openAPI.getComponents();
 		Paths paths = openAPI.getPaths();
 
@@ -363,7 +363,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			fillParametersList(operation, queryParams, methodAttributes);
 
 			// compute tags
-			operation = openAPIBuilder.buildTags(handlerMethod, operation, openAPI);
+			operation = openAPIService.buildTags(handlerMethod, operation, openAPI);
 
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = AnnotatedElementUtils.findMergedAnnotation(method,
 					io.swagger.v3.oas.annotations.parameters.RequestBody.class);
@@ -413,7 +413,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param routerOperationList the router operation list
 	 */
 	protected void calculatePath(List<RouterOperation> routerOperationList) {
-		ApplicationContext applicationContext = openAPIBuilder.getContext();
+		ApplicationContext applicationContext = openAPIService.getContext();
 		if (!CollectionUtils.isEmpty(routerOperationList)) {
 			Collections.sort(routerOperationList);
 			for (RouterOperation routerOperation : routerOperationList) {
@@ -466,7 +466,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		String[] headers = routerOperation.getHeaders();
 		Map<String, String> queryParams = routerOperation.getQueryParams();
 
-		OpenAPI openAPI = openAPIBuilder.getCalculatedOpenAPI();
+		OpenAPI openAPI = openAPIService.getCalculatedOpenAPI();
 		Paths paths = openAPI.getPaths();
 		Map<HttpMethod, Operation> operationMap = null;
 		if (paths.containsKey(operationPath)) {
@@ -525,7 +525,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 		else {
 			List<org.springdoc.core.annotations.RouterOperation> routerOperationList = new ArrayList<>();
-			ApplicationContext applicationContext = openAPIBuilder.getContext();
+			ApplicationContext applicationContext = openAPIService.getContext();
 			RouterOperations routerOperations = applicationContext.findAnnotationOnBean(beanName, RouterOperations.class);
 			if (routerOperations == null) {
 				org.springdoc.core.annotations.RouterOperation routerOperation = applicationContext.findAnnotationOnBean(beanName, org.springdoc.core.annotations.RouterOperation.class);
@@ -542,7 +542,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				calculatePath(operationList);
 			}
 		}
-
 	}
 
 	/**
@@ -850,7 +849,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		List<Parameter> parametersList = operation.getParameters();
 		if (parametersList == null)
 			parametersList = new ArrayList<>();
-		Collection<Parameter> headersMap = AbstractRequestBuilder.getHeaders(methodAttributes, new LinkedHashMap<>());
+		Collection<Parameter> headersMap = AbstractRequestService.getHeaders(methodAttributes, new LinkedHashMap<>());
 		parametersList.addAll(headersMap);
 		if (!CollectionUtils.isEmpty(queryParams)) {
 			for (Map.Entry<String, String> entry : queryParams.entrySet()) {
@@ -859,7 +858,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				parameter.setSchema(new StringSchema()._default(entry.getValue()));
 				parameter.setRequired(true);
 				parameter.setIn(ParameterIn.QUERY.toString());
-				GenericParameterBuilder.mergeParameter(parametersList, parameter);
+				GenericParameterService.mergeParameter(parametersList, parameter);
 			}
 			operation.setParameters(parametersList);
 		}
@@ -1003,8 +1002,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Init open api builder.
 	 */
 	protected void initOpenAPIBuilder() {
-		if (openAPIBuilder.getCachedOpenAPI() != null && springDocConfigProperties.isCacheDisabled()) {
-			openAPIBuilder = openAPIBuilderObjectFactory.getObject();
+		if (openAPIService.getCachedOpenAPI() != null && springDocConfigProperties.isCacheDisabled()) {
+			openAPIService = openAPIBuilderObjectFactory.getObject();
 		}
 	}
 

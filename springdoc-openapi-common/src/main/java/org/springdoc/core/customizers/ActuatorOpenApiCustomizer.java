@@ -17,7 +17,7 @@ import org.springframework.util.CollectionUtils;
  * The type Actuator open api customiser.
  * @author bnasslahsen
  */
-public class ActuatorOpenApiCustomiser implements OpenApiCustomiser {
+public class ActuatorOpenApiCustomizer implements OpenApiCustomiser {
 
 	/**
 	 * The Path pathern.
