@@ -23,19 +23,19 @@ package org.springdoc.webmvc.core;
 import java.util.List;
 import java.util.Optional;
 
-import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
-import org.springdoc.core.GenericParameterBuilder;
-import org.springdoc.core.GenericResponseBuilder;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.GenericParameterService;
+import org.springdoc.core.GenericResponseService;
+import org.springdoc.core.OpenAPIService;
+import org.springdoc.core.OperationService;
 import org.springdoc.core.PropertyResolverUtils;
 import org.springdoc.core.RepositoryRestResourceProvider;
-import org.springdoc.core.RequestBodyBuilder;
+import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.ReturnTypeParser;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.customizers.ActuatorOpenApiCustomiser;
+import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
@@ -94,8 +94,8 @@ public class SpringDocWebMvcConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	OpenApiResource openApiResource(ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory, AbstractRequestBuilder requestBuilder,
-			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
+	OpenApiResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
+			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider,
 			SpringDocConfigProperties springDocConfigProperties,
@@ -115,25 +115,25 @@ public class SpringDocWebMvcConfiguration {
 	 * Request builder request builder.
 	 *
 	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyBuilder the request body builder
-	 * @param operationBuilder the operation builder
+	 * @param requestBodyService the request body builder
+	 * @param operationService the operation builder
 	 * @param parameterCustomizers the parameter customizers
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 * @return the request builder
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	RequestBuilder requestBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			OperationBuilder operationBuilder, Optional<List<ParameterCustomizer>> parameterCustomizers,
+	RequestService requestBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
+			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
 			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
-		return new RequestBuilder(parameterBuilder, requestBodyBuilder,
-				operationBuilder, parameterCustomizers, localSpringDocParameterNameDiscoverer);
+		return new RequestService(parameterBuilder, requestBodyService,
+				operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 
 	/**
 	 * Response builder generic response builder.
 	 *
-	 * @param operationBuilder the operation builder
+	 * @param operationService the operation builder
 	 * @param returnTypeParsers the return type parsers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param propertyResolverUtils the property resolver utils
@@ -141,8 +141,8 @@ public class SpringDocWebMvcConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	GenericResponseBuilder responseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
-		return new GenericResponseBuilder(operationBuilder, returnTypeParsers, springDocConfigProperties, propertyResolverUtils);
+	GenericResponseService responseBuilder(OperationService operationService, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
+		return new GenericResponseService(operationService, returnTypeParsers, springDocConfigProperties, propertyResolverUtils);
 	}
 
 	/**
@@ -207,7 +207,7 @@ public class SpringDocWebMvcConfiguration {
 		@Bean
 		@Lazy(false)
 		OpenApiCustomiser actuatorOpenApiCustomiser() {
-			return new ActuatorOpenApiCustomiser();
+			return new ActuatorOpenApiCustomizer();
 		}
 	}
 }

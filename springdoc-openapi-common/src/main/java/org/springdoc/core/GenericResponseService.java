@@ -68,12 +68,12 @@ import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper
  * The type Generic response builder.
  * @author bnasslahsen
  */
-public class GenericResponseBuilder {
+public class GenericResponseService {
 
 	/**
 	 * The Operation builder.
 	 */
-	private final OperationBuilder operationBuilder;
+	private final OperationService operationService;
 
 	/**
 	 * The Return type parsers.
@@ -98,16 +98,16 @@ public class GenericResponseBuilder {
 	/**
 	 * Instantiates a new Generic response builder.
 	 *
-	 * @param operationBuilder the operation builder
+	 * @param operationService the operation builder
 	 * @param returnTypeParsers the return type parsers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param propertyResolverUtils the property resolver utils
 	 */
-	public GenericResponseBuilder(OperationBuilder operationBuilder, List<ReturnTypeParser> returnTypeParsers,
+	public GenericResponseService(OperationService operationService, List<ReturnTypeParser> returnTypeParsers,
 			SpringDocConfigProperties springDocConfigProperties,
 			PropertyResolverUtils propertyResolverUtils) {
 		super();
-		this.operationBuilder = operationBuilder;
+		this.operationService = operationService;
 		this.returnTypeParsers = returnTypeParsers;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.propertyResolverUtils = propertyResolverUtils;
@@ -155,7 +155,7 @@ public class GenericResponseBuilder {
 			Arrays.stream(objClz.getDeclaredMethods()).filter(m -> m.isAnnotationPresent(ExceptionHandler.class)).forEach(methods::add);
 			// for each one build ApiResponse and add it to existing responses
 			for (Method method : methods) {
-				if (!operationBuilder.isHidden(method)) {
+				if (!operationService.isHidden(method)) {
 					RequestMapping reqMappringMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
 					String[] methodProduces = { springDocConfigProperties.getDefaultProducesMediaType() };
 					if (reqMappringMethod != null)

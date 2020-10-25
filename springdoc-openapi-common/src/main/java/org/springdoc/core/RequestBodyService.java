@@ -42,19 +42,19 @@ import static org.springdoc.core.SpringDocAnnotationsUtils.mergeSchema;
  * The type Request body builder.
  * @author bnasslahsen
  */
-public class RequestBodyBuilder {
+public class RequestBodyService {
 
 	/**
 	 * The Parameter builder.
 	 */
-	private final GenericParameterBuilder parameterBuilder;
+	private final GenericParameterService parameterBuilder;
 
 	/**
 	 * Instantiates a new Request body builder.
 	 *
 	 * @param parameterBuilder the parameter builder
 	 */
-	public RequestBodyBuilder(GenericParameterBuilder parameterBuilder) {
+	public RequestBodyService(GenericParameterService parameterBuilder) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 	}

@@ -59,7 +59,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author bnasslahsen
  */
 @SuppressWarnings("rawtypes")
-public class GenericParameterBuilder {
+public class GenericParameterService {
 
 	/**
 	 * The constant FILE_TYPES.
@@ -74,7 +74,7 @@ public class GenericParameterBuilder {
 	/**
 	 * The constant LOGGER.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(GenericParameterBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericParameterService.class);
 
 	static {
 		FILE_TYPES.add(MultipartFile.class);
@@ -92,7 +92,7 @@ public class GenericParameterBuilder {
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 */
-	public GenericParameterBuilder(PropertyResolverUtils propertyResolverUtils,   Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
+	public GenericParameterService(PropertyResolverUtils propertyResolverUtils,   Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
 		this.propertyResolverUtils = propertyResolverUtils;
 		this.optionalDelegatingMethodParameterCustomizer=optionalDelegatingMethodParameterCustomizer;
 	}

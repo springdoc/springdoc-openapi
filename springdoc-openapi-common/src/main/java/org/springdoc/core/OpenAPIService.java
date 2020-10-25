@@ -54,7 +54,7 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
+import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
@@ -78,12 +78,12 @@ import static org.springdoc.core.Constants.DEFAULT_VERSION;
  * The type Open api builder.
  * @author bnasslahsen
  */
-public class OpenAPIBuilder {
+public class OpenAPIService {
 
 	/**
 	 * The constant LOGGER.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIBuilder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIService.class);
 
 	/**
 	 * The Context.
@@ -93,7 +93,7 @@ public class OpenAPIBuilder {
 	/**
 	 * The Security parser.
 	 */
-	private final SecurityParser securityParser;
+	private final SecurityService securityParser;
 
 	/**
 	 * The Mappings map.
@@ -108,7 +108,7 @@ public class OpenAPIBuilder {
 	/**
 	 * The Open api builder customisers.
 	 */
-	private final Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers;
+	private final Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers;
 
 	/**
 	 * The Spring doc config properties.
@@ -149,9 +149,9 @@ public class OpenAPIBuilder {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param openApiBuilderCustomisers the open api builder customisers
 	 */
-	OpenAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityParser securityParser,
+	OpenAPIService(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers) {
+			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
 			if (this.openAPI.getComponents() == null)
@@ -661,7 +661,7 @@ public class OpenAPIBuilder {
 		return context;
 	}
 
-	public SecurityParser getSecurityParser() {
+	public SecurityService getSecurityParser() {
 		return securityParser;
 	}
 }

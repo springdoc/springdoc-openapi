@@ -130,7 +130,7 @@ public class SpringDocUtils {
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addRequestWrapperToIgnore(Class<?>... classes) {
-		AbstractRequestBuilder.addRequestWrapperToIgnore(classes);
+		AbstractRequestService.addRequestWrapperToIgnore(classes);
 		return this;
 	}
 
@@ -141,7 +141,7 @@ public class SpringDocUtils {
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils removeRequestWrapperToIgnore(Class<?>... classes) {
-		AbstractRequestBuilder.removeRequestWrapperToIgnore(classes);
+		AbstractRequestService.removeRequestWrapperToIgnore(classes);
 		return this;
 	}
 
@@ -152,7 +152,7 @@ public class SpringDocUtils {
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addFileType(Class<?>... classes) {
-		GenericParameterBuilder.addFileType(classes);
+		GenericParameterService.addFileType(classes);
 		return this;
 	}
 

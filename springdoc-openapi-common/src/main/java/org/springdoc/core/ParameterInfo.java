@@ -75,7 +75,7 @@ public class ParameterInfo {
 	 * @param methodParameter the method parameter
 	 * @param parameterBuilder the parameter builder
 	 */
-	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterBuilder parameterBuilder) {
+	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService parameterBuilder) {
 		PropertyResolverUtils propertyResolverUtils = parameterBuilder.getPropertyResolverUtils();
 		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
 		RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
