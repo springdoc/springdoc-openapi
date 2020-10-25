@@ -36,7 +36,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springdoc.webflux.core.fn.builders.SpringdocRouteBuilder.route;
+import static org.springdoc.webflux.core.fn.SpringdocRouteBuilder.route;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static test.org.springdoc.api.AbstractSpringDocTest.HANDLER_FUNCTION;
 
