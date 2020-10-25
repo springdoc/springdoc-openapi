@@ -154,7 +154,7 @@ public class RequestBodyBuilder {
 	 * @return the request body
 	 */
 	public RequestBody build() {
-		RequestBody requestBody = new RequestBody(){
+		return new RequestBody(){
 
 			@Override
 			public Class<? extends Annotation> annotationType() {
@@ -186,6 +186,5 @@ public class RequestBodyBuilder {
 				return ref;
 			}
 		};
-		return requestBody;
 	}
 }

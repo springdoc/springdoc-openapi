@@ -201,8 +201,7 @@ public class ApiResponseBuilder {
 	 * @return the api response
 	 */
 	public ApiResponse build() {
-		ApiResponse apiResponse = new ApiResponse() {
-
+		return new ApiResponse() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
 				return null;
@@ -243,6 +242,5 @@ public class ApiResponseBuilder {
 				return ref;
 			}
 		};
-		return apiResponse;
 	}
 }

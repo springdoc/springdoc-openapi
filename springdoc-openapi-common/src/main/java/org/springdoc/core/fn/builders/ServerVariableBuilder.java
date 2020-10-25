@@ -140,7 +140,7 @@ public class ServerVariableBuilder {
 	 * @return the server variable
 	 */
 	public ServerVariable build() {
-		ServerVariable serverVariable = new ServerVariable() {
+		return new ServerVariable() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
 				return null;
@@ -171,6 +171,5 @@ public class ServerVariableBuilder {
 				return extensions;
 			}
 		};
-		return serverVariable;
 	}
 }

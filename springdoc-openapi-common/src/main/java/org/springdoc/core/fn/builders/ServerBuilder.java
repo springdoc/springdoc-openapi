@@ -126,7 +126,7 @@ public class ServerBuilder {
 	 * @return the server
 	 */
 	public Server build() {
-		Server server = new Server() {
+		return new Server() {
 
 			@Override
 			public Class<? extends Annotation> annotationType() {
@@ -153,6 +153,5 @@ public class ServerBuilder {
 				return extensions;
 			}
 		};
-		return server;
 	}
 }

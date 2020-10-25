@@ -43,13 +43,13 @@ public class HeaderBuilder {
 	 * Additional description data to provide on the purpose of the header
 	 *
 	 */
-	private String description="";
+	private String description = "";
 
 	/**
 	 * The schema defining the type used for the header. Ignored if the properties content or array are specified.
 	 *
 	 */
-	private Schema schema=SchemaBuilder.builder().build();
+	private Schema schema = SchemaBuilder.builder().build();
 
 	/**
 	 * Determines whether this header is mandatory. The property may be included and its default value is false.
@@ -156,7 +156,7 @@ public class HeaderBuilder {
 	 * @return the header
 	 */
 	public Header build() {
-		Header header = new Header() {
+		return new Header() {
 
 			@Override
 			public Class<? extends Annotation> annotationType() {
@@ -193,7 +193,6 @@ public class HeaderBuilder {
 				return ref;
 			}
 		};
-		return header;
 	}
 }
 

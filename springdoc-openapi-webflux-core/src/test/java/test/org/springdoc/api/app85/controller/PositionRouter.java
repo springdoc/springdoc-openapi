@@ -30,25 +30,25 @@ public class PositionRouter {
 		return route(GET("/getAllPositions").and(accept(MediaType.APPLICATION_JSON)), handler::findAll)
 				.withAttribute(OPERATION_ATTRIBUTE,
 						OperationBuilder.builder().operationId("findAll").description("Get all positions").tags(new String[] { "positions" })
-								.response(ApiResponseBuilder.builder().responseCode("200").implementationArray(Position.class)).build())
+								.response(ApiResponseBuilder.builder().responseCode("200").implementationArray(Position.class)))
 
 				.and(route(GET("/getPosition/{id}").and(accept(MediaType.APPLICATION_STREAM_JSON)), handler::findById)
 						.withAttribute(OPERATION_ATTRIBUTE,
 								OperationBuilder.builder().operationId("findById").description("Find all").tags(new String[] { "positions" })
 										.parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("id"))
-										.response(ApiResponseBuilder.builder().responseCode("200").implementation(Position.class)).build()))
+										.response(ApiResponseBuilder.builder().responseCode("200").implementation(Position.class))))
 
 				.and(route(POST("/createPosition").and(accept(MediaType.APPLICATION_JSON)), handler::save)
 						.withAttribute(OPERATION_ATTRIBUTE,
 								OperationBuilder.builder().operationId("save").description("Save position").tags(new String[] { "positions" })
 										.requestBody(RequestBodyBuilder.builder().implementation(Position.class))
-										.response(ApiResponseBuilder.builder().responseCode("200").implementation(Position.class)).build()))
+										.response(ApiResponseBuilder.builder().responseCode("200").implementation(Position.class))))
 
 				.and(route(DELETE("/deletePosition/{id}").and(accept(MediaType.APPLICATION_JSON)), handler::delete)
 						.withAttribute(OPERATION_ATTRIBUTE,
 								OperationBuilder.builder().operationId("deleteBy").description("Delete By Id").tags(new String[] { "positions" })
 										.parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("id"))
-										.response(ApiResponseBuilder.builder().responseCode("200").content(ContentBuilder.builder())).build()));
+										.response(ApiResponseBuilder.builder().responseCode("200").content(ContentBuilder.builder()))));
 	}
 
 }

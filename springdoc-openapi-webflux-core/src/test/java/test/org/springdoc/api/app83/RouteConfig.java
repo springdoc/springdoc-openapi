@@ -25,13 +25,13 @@ public class RouteConfig {
 	@Bean
 	RouterFunction<ServerResponse> routerFunction() {
 		return route(GET("/coffees"), this::all)
-				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(CoffeeService.class).beanMethod("getAllCoffees").build())
+				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(CoffeeService.class).beanMethod("getAllCoffees"))
 
 				.and(route(GET("/coffees/{id}"), this::byId)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(CoffeeService.class).beanMethod("getCoffeeById").build()))
+						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(CoffeeService.class).beanMethod("getCoffeeById")))
 
 				.and(route(GET("/coffees/{id}/orders"), this::orders)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(CoffeeService.class).beanMethod("getOrdersForCoffeeById").build()));
+						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(CoffeeService.class).beanMethod("getOrdersForCoffeeById")));
 	}
 
 	private Mono<ServerResponse> all(ServerRequest req) {

@@ -156,14 +156,16 @@ public class RouterOperation implements Comparable<RouterOperation> {
 
 		Map<String, Object> attributes = routerFunctionData.getAttributes();
 		if (attributes.containsKey(ROUTER_ATTRIBUTE)) {
-			RouterOperation routerOperation = (RouterOperation) attributes.get(ROUTER_ATTRIBUTE);
+			RouterOperationBuilder routerOperationBuilder = (RouterOperationBuilder) attributes.get(ROUTER_ATTRIBUTE);
+			RouterOperation routerOperation = routerOperationBuilder.build();
 			this.beanClass = routerOperation.getBeanClass();
 			this.beanMethod = routerOperation.getBeanMethod();
 			this.parameterTypes = routerOperation.getParameterTypes();
 			this.operation = routerOperation.getOperation();
 		}
 		else if (attributes.containsKey(OPERATION_ATTRIBUTE)) {
-			this.operation = (Operation) attributes.get(OPERATION_ATTRIBUTE);
+			OperationBuilder operationBuilder = (OperationBuilder) attributes.get(OPERATION_ATTRIBUTE);
+			this.operation = operationBuilder.build();
 		}
 	}
 

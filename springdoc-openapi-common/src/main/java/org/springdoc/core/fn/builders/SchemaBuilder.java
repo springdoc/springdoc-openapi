@@ -175,22 +175,6 @@ public class SchemaBuilder {
 	private boolean nullable;
 
 	/**
-	 * Sets whether the value should only be read during a response but not read to during a request.
-	 *
-	 * @deprecated As of swagger-core 2.0.0
-	 */
-	@Deprecated
-	private boolean readOnly;
-
-	/**
-	 * Sets whether a value should only be written to during a request but not returned during a response.
-	 *
-	 * @deprecated As of  swagger-core  2.0.0
-	 */
-	@Deprecated
-	private boolean writeOnly;
-
-	/**
 	 * Allows to specify the access mode (AccessMode.READ_ONLY, READ_WRITE)
 	 *
 	 * AccessMode.READ_ONLY: value will not be written to during a request but may be returned during a response.
@@ -545,28 +529,6 @@ public class SchemaBuilder {
 	}
 
 	/**
-	 * Read only schema builder.
-	 *
-	 * @param readOnly the read only
-	 * @return the schema builder
-	 */
-	public SchemaBuilder readOnly(boolean readOnly) {
-		this.readOnly = readOnly;
-		return this;
-	}
-
-	/**
-	 * Write only schema builder.
-	 *
-	 * @param writeOnly the write only
-	 * @return the schema builder
-	 */
-	public SchemaBuilder writeOnly(boolean writeOnly) {
-		this.writeOnly = writeOnly;
-		return this;
-	}
-
-	/**
 	 * Access mode schema builder.
 	 *
 	 * @param accessMode the access mode
@@ -715,7 +677,7 @@ public class SchemaBuilder {
 	 * @return the schema
 	 */
 	public Schema build() {
-		Schema schema = new Schema() {
+		return new Schema() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
 				return null;
@@ -838,12 +800,12 @@ public class SchemaBuilder {
 
 			@Override
 			public boolean readOnly() {
-				return readOnly;
+				return AccessMode.READ_ONLY.equals(accessMode);
 			}
 
 			@Override
 			public boolean writeOnly() {
-				return writeOnly;
+				return AccessMode.WRITE_ONLY.equals(accessMode);
 			}
 
 			@Override
@@ -911,6 +873,5 @@ public class SchemaBuilder {
 				return extensions;
 			}
 		};
-		return schema;
 	}
 }

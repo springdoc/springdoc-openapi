@@ -21,11 +21,9 @@
 package org.springdoc.webflux.core.visitor;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
-import org.springdoc.core.fn.RouterFunctionData;
 import reactor.core.publisher.Mono;
 
 import org.springframework.core.io.Resource;
@@ -63,11 +61,6 @@ public class RouterFunctionVisitor extends AbstractRouterFunctionVisitor impleme
 	@Override
 	public void resources(Function<ServerRequest, Mono<Resource>> lookupFunction) {
 		// Not yet needed
-	}
-
-	@Override
-	public void attributes(Map<String, Object> map) {
-		super.attributes(map);
 	}
 
 	@Override

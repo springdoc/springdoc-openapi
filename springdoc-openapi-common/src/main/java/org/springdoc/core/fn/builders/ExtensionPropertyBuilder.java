@@ -104,7 +104,7 @@ public class ExtensionPropertyBuilder {
 	 * @return the extension property
 	 */
 	public ExtensionProperty build() {
-		ExtensionProperty extensionProperty = new ExtensionProperty() {
+		return new ExtensionProperty() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
 				return null;
@@ -122,6 +122,5 @@ public class ExtensionPropertyBuilder {
 				return parseValue;
 			}
 		};
-		return extensionProperty;
 	}
 }

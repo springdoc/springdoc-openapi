@@ -159,7 +159,7 @@ public class ArraySchemaBuilder {
 	 * @return the array schema
 	 */
 	public ArraySchema build() {
-		ArraySchema arraySchemaResult = new ArraySchema() {
+		return new ArraySchema() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
 				return null;
@@ -195,7 +195,5 @@ public class ArraySchemaBuilder {
 				return extensions;
 			}
 		};
-
-		return arraySchemaResult;
 	}
 }
