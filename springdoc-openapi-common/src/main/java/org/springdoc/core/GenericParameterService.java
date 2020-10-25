@@ -89,7 +89,7 @@ public class GenericParameterService {
 	/**
 	 * Instantiates a new Generic parameter builder.
 	 *
-	 * @param propertyResolverUtils the property resolver utils 
+	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 */
 	public GenericParameterService(PropertyResolverUtils propertyResolverUtils,   Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
@@ -109,7 +109,7 @@ public class GenericParameterService {
 	/**
 	 * Is file boolean.
 	 *
-	 * @param type the type 
+	 * @param type the type
 	 * @return the boolean
 	 */
 	public static boolean isFile(Class type) {
@@ -119,8 +119,8 @@ public class GenericParameterService {
 	/**
 	 * Merge parameter parameter.
 	 *
-	 * @param existingParamDoc the existing param doc 
-	 * @param paramCalcul the param calcul 
+	 * @param existingParamDoc the existing param doc
+	 * @param paramCalcul the param calcul
 	 * @return the parameter
 	 */
 	public static Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
@@ -141,7 +141,7 @@ public class GenericParameterService {
 	/**
 	 * Merge parameter.
 	 *
-	 * @param paramCalcul the param calcul 
+	 * @param paramCalcul the param calcul
 	 * @param paramDoc the param doc
 	 */
 	private static void mergeParameter(Parameter paramCalcul, Parameter paramDoc) {
@@ -188,9 +188,9 @@ public class GenericParameterService {
 	/**
 	 * Build parameter from doc parameter.
 	 *
-	 * @param parameterDoc the parameter doc 
-	 * @param components the components 
-	 * @param jsonView the json view 
+	 * @param parameterDoc the parameter doc
+	 * @param components the components
+	 * @param jsonView the json view
 	 * @return the parameter
 	 */
 	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
@@ -237,9 +237,9 @@ public class GenericParameterService {
 	/**
 	 * Sets schema.
 	 *
-	 * @param parameterDoc the parameter doc 
-	 * @param components the components 
-	 * @param jsonView the json view 
+	 * @param parameterDoc the parameter doc
+	 * @param components the components
+	 * @param jsonView the json view
 	 * @param parameter the parameter
 	 */
 	private void setSchema(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonView, Parameter parameter) {
@@ -263,10 +263,10 @@ public class GenericParameterService {
 	/**
 	 * Calculate schema schema.
 	 *
-	 * @param components the components 
-	 * @param parameterInfo the parameter info 
-	 * @param requestBodyInfo the request body info 
-	 * @param jsonView the json view 
+	 * @param components the components
+	 * @param parameterInfo the parameter info
+	 * @param requestBodyInfo the request body info
+	 * @param jsonView the json view
 	 * @return the schema
 	 */
 	Schema calculateSchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, JsonView jsonView) {
@@ -291,11 +291,11 @@ public class GenericParameterService {
 	/**
 	 * Calculate request body schema schema.
 	 *
-	 * @param components the components 
-	 * @param parameterInfo the parameter info 
-	 * @param requestBodyInfo the request body info 
-	 * @param schemaN the schema n 
-	 * @param paramName the param name 
+	 * @param components the components
+	 * @param parameterInfo the parameter info
+	 * @param requestBodyInfo the request body info
+	 * @param schemaN the schema n
+	 * @param paramName the param name
 	 * @return the schema
 	 */
 	private Schema calculateRequestBodySchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, Schema schemaN, String paramName) {
@@ -327,7 +327,7 @@ public class GenericParameterService {
 	/**
 	 * Sets examples.
 	 *
-	 * @param parameterDoc the parameter doc 
+	 * @param parameterDoc the parameter doc
 	 * @param parameter the parameter
 	 */
 	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
@@ -350,7 +350,7 @@ public class GenericParameterService {
 	/**
 	 * Sets extensions.
 	 *
-	 * @param parameterDoc the parameter doc 
+	 * @param parameterDoc the parameter doc
 	 * @param parameter the parameter
 	 */
 	private void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
@@ -363,7 +363,7 @@ public class GenericParameterService {
 	/**
 	 * Sets parameter explode.
 	 *
-	 * @param parameter the parameter 
+	 * @param parameter the parameter
 	 * @param p the p
 	 */
 	private void setParameterExplode(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
@@ -380,7 +380,7 @@ public class GenericParameterService {
 	/**
 	 * Sets parameter style.
 	 *
-	 * @param parameter the parameter 
+	 * @param parameter the parameter
 	 * @param p the p
 	 */
 	private void setParameterStyle(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
@@ -392,7 +392,7 @@ public class GenericParameterService {
 	/**
 	 * Is explodable boolean.
 	 *
-	 * @param p the p 
+	 * @param p the p
 	 * @return the boolean
 	 */
 	private boolean isExplodable(io.swagger.v3.oas.annotations.Parameter p) {
@@ -408,7 +408,7 @@ public class GenericParameterService {
 	/**
 	 * Is file boolean.
 	 *
-	 * @param methodParameter the method parameter 
+	 * @param methodParameter the method parameter
 	 * @return the boolean
 	 */
 	public boolean isFile(MethodParameter methodParameter) {
@@ -434,7 +434,7 @@ public class GenericParameterService {
 	/**
 	 * Is file boolean.
 	 *
-	 * @param parameterizedType the parameterized type 
+	 * @param parameterizedType the parameterized type
 	 * @return the boolean
 	 */
 	private boolean isFile(ParameterizedType parameterizedType) {

@@ -78,10 +78,10 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Resolve schema from type schema.
 	 *
-	 * @param schemaImplementation the schema implementation 
-	 * @param components the components 
-	 * @param jsonView the json view 
-	 * @param annotations the annotations 
+	 * @param schemaImplementation the schema implementation
+	 * @param components the components
+	 * @param jsonView the json view
+	 * @param annotations the annotations
 	 * @return the schema
 	 */
 	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
@@ -98,10 +98,10 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Extract schema schema.
 	 *
-	 * @param components the components 
-	 * @param returnType the return type 
-	 * @param jsonView the json view 
-	 * @param annotations the annotations 
+	 * @param components the components
+	 * @param returnType the return type
+	 * @param jsonView the json view
+	 * @param annotations the annotations
 	 * @return the schema
 	 */
 	public static Schema extractSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations) {
@@ -139,9 +139,9 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Extract schema schema.
 	 *
-	 * @param components the components 
-	 * @param genericParameterType the generic parameter type 
-	 * @param jsonView the json view 
+	 * @param components the components
+	 * @param genericParameterType the generic parameter type
+	 * @param jsonView the json view
 	 * @return the schema
 	 */
 	public static Schema extractSchema(Components components, Type genericParameterType, JsonView jsonView) {
@@ -151,12 +151,12 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Gets content.
 	 *
-	 * @param annotationContents the annotation contents 
-	 * @param classTypes the class types 
-	 * @param methodTypes the method types 
-	 * @param schema the schema 
-	 * @param components the components 
-	 * @param jsonViewAnnotation the json view annotation 
+	 * @param annotationContents the annotation contents
+	 * @param classTypes the class types
+	 * @param methodTypes the method types
+	 * @param schema the schema
+	 * @param components the components
+	 * @param jsonViewAnnotation the json view annotation
 	 * @return the content
 	 */
 	public static Optional<Content> getContent(io.swagger.v3.oas.annotations.media.Content[] annotationContents,
@@ -193,8 +193,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Merge schema.
 	 *
-	 * @param existingContent the existing content 
-	 * @param schemaN the schema n 
+	 * @param existingContent the existing content
+	 * @param schemaN the schema n
 	 * @param mediaTypeStr the media type str
 	 */
 	public static void mergeSchema(Content existingContent, Schema<?> schemaN, String mediaTypeStr) {
@@ -227,7 +227,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Is annotation to ignore boolean.
 	 *
-	 * @param parameter the parameter 
+	 * @param parameter the parameter
 	 * @return the boolean
 	 */
 	@SuppressWarnings("unchecked")
@@ -246,7 +246,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Is annotation to ignore boolean.
 	 *
-	 * @param type the type 
+	 * @param type the type
 	 * @return the boolean
 	 */
 	public static boolean isAnnotationToIgnore(Type type) {
@@ -278,8 +278,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Add encoding to media type.
 	 *
-	 * @param jsonViewAnnotation the json view annotation 
-	 * @param mediaType the media type 
+	 * @param jsonViewAnnotation the json view annotation
+	 * @param mediaType the media type
 	 * @param encodings the encodings
 	 */
 	private static void addEncodingToMediaType(JsonView jsonViewAnnotation, MediaType mediaType,
@@ -292,7 +292,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Add extension.
 	 *
-	 * @param annotationContent the annotation content 
+	 * @param annotationContent the annotation content
 	 * @param mediaType the media type
 	 */
 	private static void addExtension(io.swagger.v3.oas.annotations.media.Content annotationContent,
@@ -306,7 +306,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Sets examples.
 	 *
-	 * @param mediaType the media type 
+	 * @param mediaType the media type
 	 * @param examples the examples
 	 */
 	private static void setExamples(MediaType mediaType, ExampleObject[] examples) {
@@ -329,10 +329,10 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Gets media type.
 	 *
-	 * @param schema the schema 
-	 * @param components the components 
-	 * @param jsonViewAnnotation the json view annotation 
-	 * @param annotationContent the annotation content 
+	 * @param schema the schema
+	 * @param components the components
+	 * @param jsonViewAnnotation the json view annotation
+	 * @param annotationContent the annotation content
 	 * @return the media type
 	 */
 	private static MediaType getMediaType(Schema schema, Components components, JsonView jsonViewAnnotation,
@@ -360,7 +360,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Is array boolean.
 	 *
-	 * @param annotationContent the annotation content 
+	 * @param annotationContent the annotation content
 	 * @return the boolean
 	 */
 	private static boolean isArray(io.swagger.v3.oas.annotations.media.Content annotationContent) {

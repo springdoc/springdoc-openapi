@@ -71,8 +71,8 @@ public class ParameterInfo {
 	/**
 	 * Instantiates a new Parameter info.
 	 *
-	 * @param pName the parameter name 
-	 * @param methodParameter the method parameter 
+	 * @param pName the parameter name
+	 * @param methodParameter the method parameter
 	 * @param parameterBuilder the parameter builder
 	 */
 	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService parameterBuilder) {
@@ -239,7 +239,7 @@ public class ParameterInfo {
 	/**
 	 * Calculate params.
 	 *
-	 * @param requestParam the request param 
+	 * @param requestParam the request param
 	 * @param isFile the is file
 	 */
 	private void calculateParams(RequestParam requestParam, boolean isFile) {

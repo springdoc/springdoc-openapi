@@ -35,6 +35,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Content builder.
+ * @author bnasslahsen
  */
 public class ContentBuilder {
 

@@ -35,6 +35,8 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.server.HandlerFunction;
+import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
@@ -43,6 +45,8 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 @WebFluxTest
 @ActiveProfiles("test")
 public abstract class AbstractSpringDocTest {
+
+	public static final HandlerFunction<ServerResponse> HANDLER_FUNCTION = request -> ServerResponse.ok().build();
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSpringDocTest.class);
 

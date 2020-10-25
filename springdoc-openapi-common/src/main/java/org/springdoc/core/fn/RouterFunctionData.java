@@ -22,7 +22,7 @@ package org.springdoc.core.fn;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,20 +63,29 @@ public class RouterFunctionData {
 	/**
 	 * The Query params.
 	 */
-	private Map<String, String> queryParams = new HashMap<>();
+	private Map<String, String> queryParams = new LinkedHashMap<>();
 
 	/**
 	 * The Methods.
 	 */
 	private RequestMethod[] methods;
 
-	private Map<String,Object> attributes = new HashMap<>();
+	/**
+	 * The Attributes.
+	 */
+	private Map<String,Object> attributes = new LinkedHashMap<>();
 
 	/**
 	 * Instantiates a new Router function data.
 	 */
 	public RouterFunctionData() { }
 
+	/**
+	 * Instantiates a new Router function data.
+	 *
+	 * @param nestedOrPath the nested or path
+	 * @param functionData the function data
+	 */
 	public RouterFunctionData(String nestedOrPath, RouterFunctionData functionData) {
 		this.path = nestedOrPath + functionData.getPath();
 		this.consumes = Arrays.asList(functionData.getConsumes());
@@ -267,10 +276,20 @@ public class RouterFunctionData {
 		return requestMethod;
 	}
 
+	/**
+	 * Gets attributes.
+	 *
+	 * @return the attributes
+	 */
 	public Map<String, Object> getAttributes() {
 		return attributes;
 	}
 
+	/**
+	 * Add attributes.
+	 *
+	 * @param attributes the attributes
+	 */
 	public void addAttributes(Map<String, Object> attributes) {
 		this.attributes.putAll(attributes);
 	}

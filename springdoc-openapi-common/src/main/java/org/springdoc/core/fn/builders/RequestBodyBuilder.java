@@ -32,6 +32,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Request body builder.
+ * @author bnasslahsen
  */
 public class RequestBodyBuilder {
 

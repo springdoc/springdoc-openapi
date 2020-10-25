@@ -29,6 +29,7 @@ import io.swagger.v3.oas.annotations.links.LinkParameter;
 
 /**
  * The type Link parameter builder.
+ * @author bnasslahsen
  */
 public class LinkParameterBuilder {
 	/**

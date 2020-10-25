@@ -67,7 +67,7 @@ public class SecurityService {
 	/**
 	 * Is empty boolean.
 	 *
-	 * @param oAuthFlows the o auth flows 
+	 * @param oAuthFlows the o auth flows
 	 * @return the boolean
 	 */
 	private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
@@ -83,7 +83,7 @@ public class SecurityService {
 	/**
 	 * Is empty boolean.
 	 *
-	 * @param oAuthFlow the o auth flow 
+	 * @param oAuthFlow the o auth flow
 	 * @return the boolean
 	 */
 	private static boolean isEmpty(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow) {
@@ -99,7 +99,7 @@ public class SecurityService {
 	/**
 	 * Is empty boolean.
 	 *
-	 * @param scopes the scopes 
+	 * @param scopes the scopes
 	 * @return the boolean
 	 */
 	private static boolean isEmpty(OAuthScope[] scopes) {
@@ -112,7 +112,7 @@ public class SecurityService {
 	/**
 	 * Get security requirements io . swagger . v 3 . oas . annotations . security . security requirement [ ].
 	 *
-	 * @param handlerMethod the handlerMethod 
+	 * @param handlerMethod the handlerMethod
 	 * @return the io . swagger . v 3 . oas . annotations . security . security requirement [ ]
 	 */
 	public io.swagger.v3.oas.annotations.security.SecurityRequirement[] getSecurityRequirements(
@@ -131,8 +131,8 @@ public class SecurityService {
 	/**
 	 * Gets security requirements for method.
 	 *
-	 * @param method the method 
-	 * @param allSecurityTags the all security tags 
+	 * @param method the method
+	 * @param allSecurityTags the all security tags
 	 * @return the security requirements for method
 	 */
 	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForMethod(Method method, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags) {
@@ -152,7 +152,7 @@ public class SecurityService {
 	/**
 	 * Gets security requirements for class.
 	 *
-	 * @param beanType the bean type 
+	 * @param beanType the bean type
 	 * @return the security requirements for class
 	 */
 	public Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForClass(Class<?> beanType) {
@@ -174,8 +174,8 @@ public class SecurityService {
 	/**
 	 * Add security requirements set.
 	 *
-	 * @param allSecurityTags the all security tags 
-	 * @param securityRequirementsClassList the security requirements class list 
+	 * @param allSecurityTags the all security tags
+	 * @param securityRequirementsClassList the security requirements class list
 	 * @return the set
 	 */
 	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> addSecurityRequirements(Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList) {
@@ -188,7 +188,7 @@ public class SecurityService {
 	/**
 	 * Gets security requirements.
 	 *
-	 * @param securityRequirementsApi the security requirements api 
+	 * @param securityRequirementsApi the security requirements api
 	 * @return the security requirements
 	 */
 	public Optional<List<SecurityRequirement>> getSecurityRequirements(
@@ -214,7 +214,7 @@ public class SecurityService {
 	/**
 	 * Gets security scheme.
 	 *
-	 * @param securityScheme the security scheme 
+	 * @param securityScheme the security scheme
 	 * @return the security scheme
 	 */
 	public Optional<SecuritySchemePair> getSecurityScheme(
@@ -267,7 +267,7 @@ public class SecurityService {
 	/**
 	 * Build security requirement.
 	 *
-	 * @param securityRequirements the security requirements 
+	 * @param securityRequirements the security requirements
 	 * @param operation the operation
 	 */
 	public void buildSecurityRequirement(
@@ -281,7 +281,7 @@ public class SecurityService {
 	/**
 	 * Gets o auth flows.
 	 *
-	 * @param oAuthFlows the o auth flows 
+	 * @param oAuthFlows the o auth flows
 	 * @return the o auth flows
 	 */
 	private Optional<OAuthFlows> getOAuthFlows(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
@@ -303,7 +303,7 @@ public class SecurityService {
 	/**
 	 * Gets o auth flow.
 	 *
-	 * @param oAuthFlow the o auth flow 
+	 * @param oAuthFlow the o auth flow
 	 * @return the o auth flow
 	 */
 	private Optional<OAuthFlow> getOAuthFlow(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow) {
@@ -331,7 +331,7 @@ public class SecurityService {
 	/**
 	 * Gets scopes.
 	 *
-	 * @param scopes the scopes 
+	 * @param scopes the scopes
 	 * @return the scopes
 	 */
 	private Optional<Scopes> getScopes(OAuthScope[] scopes) {
@@ -343,7 +343,7 @@ public class SecurityService {
 	/**
 	 * Gets in.
 	 *
-	 * @param value the value 
+	 * @param value the value
 	 * @return the in
 	 */
 	private SecurityScheme.In getIn(String value) {
@@ -354,7 +354,7 @@ public class SecurityService {
 	/**
 	 * Gets type.
 	 *
-	 * @param value the value 
+	 * @param value the value
 	 * @return the type
 	 */
 	private SecurityScheme.Type getType(String value) {

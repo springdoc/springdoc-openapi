@@ -91,7 +91,7 @@ class MethodParameterPojoExtractor {
 	/**
 	 * Extract from stream.
 	 *
-	 * @param clazz the clazz 
+	 * @param clazz the clazz
 	 * @return the stream
 	 */
 	static Stream<MethodParameter> extractFrom(Class<?> clazz) {
@@ -101,8 +101,8 @@ class MethodParameterPojoExtractor {
 	/**
 	 * Extract from stream.
 	 *
-	 * @param clazz the clazz 
-	 * @param fieldNamePrefix the field name prefix 
+	 * @param clazz the clazz
+	 * @param fieldNamePrefix the field name prefix
 	 * @return the stream
 	 */
 	private static Stream<MethodParameter> extractFrom(Class<?> clazz, String fieldNamePrefix) {
@@ -114,9 +114,9 @@ class MethodParameterPojoExtractor {
 	/**
 	 * From getter of field stream.
 	 *
-	 * @param paramClass the param class 
-	 * @param field the field 
-	 * @param fieldNamePrefix the field name prefix 
+	 * @param paramClass the param class
+	 * @param field the field
+	 * @param fieldNamePrefix the field name prefix
 	 * @return the stream
 	 */
 	private static Stream<MethodParameter> fromGetterOfField(Class<?> paramClass, Field field, String fieldNamePrefix) {
@@ -129,9 +129,9 @@ class MethodParameterPojoExtractor {
 	/**
 	 * From simple class stream.
 	 *
-	 * @param paramClass the param class 
-	 * @param field the field 
-	 * @param fieldNamePrefix the field name prefix 
+	 * @param paramClass the param class
+	 * @param field the field
+	 * @param fieldNamePrefix the field name prefix
 	 * @return the stream
 	 */
 	private static Stream<MethodParameter> fromSimpleClass(Class<?> paramClass, Field field, String fieldNamePrefix) {
@@ -156,7 +156,7 @@ class MethodParameterPojoExtractor {
 	/**
 	 * Is optional boolean.
 	 *
-	 * @param field the field 
+	 * @param field the field
 	 * @return the boolean
 	 */
 	private static boolean isOptional(Field field) {
@@ -167,7 +167,7 @@ class MethodParameterPojoExtractor {
 	/**
 	 * All fields of list.
 	 *
-	 * @param clazz the clazz 
+	 * @param clazz the clazz
 	 * @return the list
 	 */
 	private static List<Field> allFieldsOf(Class<?> clazz) {
@@ -182,7 +182,7 @@ class MethodParameterPojoExtractor {
 	/**
 	 * Is simple type boolean.
 	 *
-	 * @param clazz the clazz 
+	 * @param clazz the clazz
 	 * @return the boolean
 	 */
 	private static boolean isSimpleType(Class<?> clazz) {
@@ -193,7 +193,7 @@ class MethodParameterPojoExtractor {
 	/**
 	 * Is swagger primitive type boolean.
 	 *
-	 * @param clazz the clazz 
+	 * @param clazz the clazz
 	 * @return the boolean
 	 */
 	private static boolean isSwaggerPrimitiveType(Class<?> clazz) {

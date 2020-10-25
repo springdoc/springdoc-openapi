@@ -1,6 +1,6 @@
 package test.org.springdoc.api.app85.controller;
 
-import org.springdoc.core.fn.RouterOperation;
+import org.springdoc.core.fn.builders.OperationBuilder;
 import test.org.springdoc.api.app85.handler.PersonHandler;
 import test.org.springdoc.api.app85.service.PersonService;
 
@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springdoc.core.Constants.ROUTER_ATTRIBUTE;
+import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
 import static org.springframework.web.reactive.function.server.RequestPredicates.DELETE;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
@@ -24,16 +24,16 @@ public class PersonRouter {
 	@Bean
 	public RouterFunction<ServerResponse> personRoute(PersonHandler handler) {
 		return route(GET("/getAllPersons").and(accept(MediaType.APPLICATION_JSON)), handler::findAll)
-				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(PersonService.class).beanMethod("getAll"))
+				.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(PersonService.class).beanMethod("getAll"))
 
 				.and(route(GET("/getPerson/{id}").and(accept(MediaType.APPLICATION_STREAM_JSON)), handler::findById)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(PersonService.class).beanMethod("getById")))
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(PersonService.class).beanMethod("getById")))
 
 				.and(route(POST("/createPerson").and(accept(MediaType.APPLICATION_JSON)), handler::save)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(PersonService.class).beanMethod("save")))
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(PersonService.class).beanMethod("save")))
 
 				.and(route(DELETE("/deletePerson/{id}").and(accept(MediaType.APPLICATION_JSON)), handler::delete)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(PersonService.class).beanMethod("delete")));
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(PersonService.class).beanMethod("delete")));
 	}
 
 }

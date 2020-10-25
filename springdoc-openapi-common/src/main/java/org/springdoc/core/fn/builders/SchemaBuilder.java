@@ -34,6 +34,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Schema builder.
+ * @author bnasslahsen
  */
 public class SchemaBuilder {
 	/**

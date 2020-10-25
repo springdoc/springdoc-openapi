@@ -21,7 +21,6 @@
 package test.org.springdoc.api.app87;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.fn.builders.OperationBuilder;
 import org.springdoc.core.fn.builders.ParameterBuilder;
 
@@ -30,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
 
-import static org.springdoc.core.Constants.ROUTER_ATTRIBUTE;
+import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -42,14 +41,14 @@ class BookRouter {
 	@Bean
 	RouterFunction<?> routes(BookRepository br) {
 		return route(GET("/books").and(accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)), req -> ok().body(br.findAll(), Book.class))
-				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(BookRepository.class).beanMethod("findAll"))
+				.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(BookRepository.class).beanMethod("findAll"))
 
 				.and(route(GET("/books").and(accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN)), req -> ok().body(br.findAll(), Book.class))
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(BookRepository.class).beanMethod("findAll")))
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(BookRepository.class).beanMethod("findAll")))
 
 				.and(route(GET("/books/{author}"), req -> ok().body(br.findByAuthor(req.pathVariable("author")), Book.class))
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder()
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder()
 								.beanClass(BookRepository.class).beanMethod("findByAuthor")
-								.operation(OperationBuilder.builder().operationId("findByAuthor").parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("author")))));
+								.operationId("findByAuthor").parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("author"))));
 	}
 }
