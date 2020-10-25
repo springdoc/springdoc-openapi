@@ -23,7 +23,10 @@
 
 package test.org.springdoc.api.app90.book;
 
+import java.util.function.Consumer;
+
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import org.springdoc.core.fn.builders.OperationBuilder;
 import org.springdoc.core.fn.builders.ParameterBuilder;
 import reactor.core.publisher.Flux;
 
@@ -33,8 +36,10 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
 
-import static org.springdoc.webflux.core.fn.builders.SpringdocRouteBuilder.route;
+import static org.springdoc.webflux.core.fn.SpringdocRouteBuilder.route;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
+import static org.springframework.web.reactive.function.server.RequestPredicates.path;
+import static org.springframework.web.reactive.function.server.RouterFunctions.nest;
 import static test.org.springdoc.api.AbstractSpringDocTest.HANDLER_FUNCTION;
 
 @Configuration
@@ -43,33 +48,67 @@ class BookRouter {
 
 	@Bean
 	RouterFunction<?> bookRoute(BookRepository br) {
-		return route().GET("/books", accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML), HANDLER_FUNCTION, ops -> ops
+		return route().GET("/books", accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML), HANDLER_FUNCTION, ops -> ops.operationId("findAll").tag("book")
 				.beanClass(BookRepository.class).beanMethod("findAll")).build()
 
 				.and(route().GET("/books", accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN), HANDLER_FUNCTION,
-						ops -> ops.tag("book").beanClass(BookRepository.class).beanMethod("findAll")).build())
+						ops -> ops.operationId("findAll").tag("book").beanClass(BookRepository.class).beanMethod("findAll")).build())
 
 				.and(route().GET("/books/{author}", HANDLER_FUNCTION, ops -> ops.tag("book")
 						.beanClass(BookRepository.class).beanMethod("findByAuthor")
-						.operationId("findByAuthor").parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("author"))).build());
+						.operationId("findByAuthor").tag("book").parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("author"))).build());
 	}
 
-	@Component
-	class  BookRepository {
+	@Bean
+	RouterFunction<?> routes2() {
+		return nest(path("/greeter").and(path("/greeter2")),
+				route().GET("/books", accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML), HANDLER_FUNCTION, getOperation1()).build())
 
-		Flux<Book> findByAuthor(String author){
-			return Flux.just(new Book("1", "title1","author1"));
+				.and(route().GET("/books/nest", accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN), HANDLER_FUNCTION, getOperation1()).build())
+
+				.and(route().GET("/books/nest/{author}", HANDLER_FUNCTION, getOperation2()).build());
+	}
+
+	@Bean
+	RouterFunction<?> routes4() {
+		return nest(path("/test"), nest(path("/greeter").and(path("/greeter2")),
+				route().GET("/books", accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML), HANDLER_FUNCTION, getOperation1()).build()
+
+						.and(route().GET("/books", accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN), HANDLER_FUNCTION, getOperation1()).build())
+
+						.and(route().GET("/books/{author}", HANDLER_FUNCTION, getOperation2()).build())));
+	}
+
+
+	private Consumer<OperationBuilder> getOperation1() {
+		return ops -> ops.operationId("findAll").tag("book").beanClass(BookRepository.class).beanMethod("findAll");
+	}
+
+	private Consumer<OperationBuilder> getOperation2() {
+		return ops -> ops.operationId("findAll").tag("book")
+				.operationId("findByAuthor").parameter(ParameterBuilder.builder().name("author").in(ParameterIn.PATH))
+				.beanClass(BookRepository.class).beanMethod("findByAuthor");
+	}
+
+
+	@Component
+	class BookRepository {
+
+		Flux<Book> findByAuthor(String author) {
+			return Flux.just(new Book("1", "title1", "author1"));
 		}
 
 		Flux<Book> findAll() {
-			return Flux.just(new Book("2", "title2","author2"));
+			return Flux.just(new Book("2", "title2", "author2"));
 		}
 	}
 
-	public class Book {
+	class Book {
 
 		private String id;
+
 		private String title;
+
 		private String author;
 
 		public Book(String id, String title, String author) {

@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.webflux.core.fn.builders;
+package org.springdoc.webflux.core.fn;
 
 
 import java.util.function.BiFunction;
