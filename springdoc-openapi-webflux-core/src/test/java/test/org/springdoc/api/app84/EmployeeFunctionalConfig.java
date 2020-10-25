@@ -37,7 +37,7 @@ public class EmployeeFunctionalConfig {
 		return route(GET("/employees").and(accept(MediaType.APPLICATION_JSON)),
 				req -> ok().body(
 						employeeRepository().findAllEmployees(), Employee.class))
-				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(EmployeeRepository.class).beanMethod("findAllEmployees").build());
+				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(EmployeeRepository.class).beanMethod("findAllEmployees"));
 	}
 
 	@Bean
@@ -50,7 +50,7 @@ public class EmployeeFunctionalConfig {
 								.parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("id").description("Employee Id"))
 								.response(ApiResponseBuilder.builder().responseCode("200").description("successful operation").implementation(Employee.class))
 								.response(ApiResponseBuilder.builder().responseCode("400").description("Invalid Employee ID supplied"))
-								.response(ApiResponseBuilder.builder().responseCode("404").description("Employee not found")).build());
+								.response(ApiResponseBuilder.builder().responseCode("404").description("Employee not found")));
 	}
 
 
@@ -60,7 +60,7 @@ public class EmployeeFunctionalConfig {
 				req -> req.body(BodyExtractors.toMono(Employee.class))
 						.doOnNext(employeeRepository()::updateEmployee)
 						.then(ok().build()))
-				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(EmployeeRepository.class).beanMethod("updateEmployee").build());
+				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(EmployeeRepository.class).beanMethod("updateEmployee"));
 	}
 
 	@Bean
@@ -69,17 +69,17 @@ public class EmployeeFunctionalConfig {
 				route(GET("/employees-composed"),
 						req -> ok().body(
 								employeeRepository().findAllEmployees(), Employee.class))
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(EmployeeRepository.class).beanMethod("findAllEmployees").build())
+						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(EmployeeRepository.class).beanMethod("findAllEmployees"))
 
 						.and(route(GET("/employees-composed/{id}"), req -> ok().body(
 								employeeRepository().findEmployeeById(req.pathVariable("id")), Employee.class))
-								.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(EmployeeRepository.class).beanMethod("findEmployeeById").build()))
+								.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(EmployeeRepository.class).beanMethod("findEmployeeById")))
 
 						.and(route(POST("/employees-composed/update"),
 								req -> req.body(BodyExtractors.toMono(Employee.class))
 										.doOnNext(employeeRepository()::updateEmployee)
 										.then(ok().build()))
-								.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(EmployeeRepository.class).beanMethod("updateEmployee").build()));
+								.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(EmployeeRepository.class).beanMethod("updateEmployee")));
 	}
 
 }

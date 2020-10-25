@@ -374,7 +374,7 @@ public class ParameterBuilder {
 	 * @return the parameter
 	 */
 	public Parameter build() {
-		Parameter parameter = new Parameter(){
+		return new Parameter(){
 
 			@Override
 			public Class<? extends Annotation> annotationType() {
@@ -466,7 +466,6 @@ public class ParameterBuilder {
 				return ref;
 			}
 		};
-		return parameter;
 	}
 }
 

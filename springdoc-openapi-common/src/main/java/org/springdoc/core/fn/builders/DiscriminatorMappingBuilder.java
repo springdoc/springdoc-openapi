@@ -88,7 +88,7 @@ public class DiscriminatorMappingBuilder {
 	 * @return the discriminator mapping
 	 */
 	public DiscriminatorMapping build() {
-		DiscriminatorMapping discriminatorMapping = new DiscriminatorMapping() {
+		return new DiscriminatorMapping() {
 
 			@Override
 			public Class<? extends Annotation> annotationType() {
@@ -105,7 +105,6 @@ public class DiscriminatorMappingBuilder {
 				return schema;
 			}
 		};
-		return discriminatorMapping;
 	}
 
 }

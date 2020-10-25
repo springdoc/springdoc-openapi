@@ -88,7 +88,7 @@ public class SecurityRequirementBuilder {
 	 * @return the security requirement
 	 */
 	public SecurityRequirement build() {
-		SecurityRequirement securityRequirement = new SecurityRequirement(){
+		return new SecurityRequirement(){
 			@Override
 			public Class<? extends Annotation> annotationType() {
 				return null;
@@ -104,6 +104,5 @@ public class SecurityRequirementBuilder {
 				return scopes;
 			}
 		};
-		return securityRequirement;
 	}
 }

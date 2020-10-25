@@ -163,7 +163,7 @@ public class ContentBuilder {
 	 * @return the content
 	 */
 	public Content build() {
-		Content content = new Content(){
+		return new Content(){
 
 			@Override
 			public Class<? extends Annotation> annotationType() {
@@ -200,6 +200,5 @@ public class ContentBuilder {
 				return extensions;
 			}
 		};
-		return content;
 	}
 }

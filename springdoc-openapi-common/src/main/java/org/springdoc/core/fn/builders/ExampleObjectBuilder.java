@@ -167,7 +167,7 @@ public class ExampleObjectBuilder {
 	 * @return the example object
 	 */
 	public ExampleObject build() {
-		ExampleObject exampleObject = new ExampleObject() {
+		return new ExampleObject() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
 				return null;
@@ -208,6 +208,5 @@ public class ExampleObjectBuilder {
 				return description;
 			}
 		};
-		return exampleObject;
 	}
 }

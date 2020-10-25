@@ -87,7 +87,7 @@ public class LinkParameterBuilder {
 	 * @return the link parameter
 	 */
 	public LinkParameter build() {
-		LinkParameter linkParameter = new LinkParameter() {
+		return new LinkParameter() {
 
 			@Override
 			public Class<? extends Annotation> annotationType() {
@@ -104,8 +104,6 @@ public class LinkParameterBuilder {
 				return expression;
 			}
 		};
-
-		return linkParameter;
 	}
 }
 

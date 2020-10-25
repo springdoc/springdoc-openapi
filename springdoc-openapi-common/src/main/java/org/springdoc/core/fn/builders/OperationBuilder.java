@@ -319,7 +319,7 @@ public class OperationBuilder {
 	public Operation build() {
 		Assert.hasLength(operationId, "operationId can not be empty");
 
-		Operation operation = new Operation() {
+		return new Operation() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
 				return null;
@@ -400,6 +400,5 @@ public class OperationBuilder {
 				return ignoreJsonView;
 			}
 		};
-		return operation;
 	}
 }

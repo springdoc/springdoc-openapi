@@ -89,7 +89,7 @@ public class ExtensionBuilder {
 	 * @return the extension
 	 */
 	public Extension build() {
-		Extension extension = new Extension(){
+		return new Extension(){
 			@Override
 			public Class<? extends Annotation> annotationType() {
 				return null;
@@ -105,6 +105,5 @@ public class ExtensionBuilder {
 				return properties;
 			}
 		};
-		return extension;
 	}
 }

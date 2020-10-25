@@ -107,7 +107,7 @@ public class ExternalDocumentationBuilder {
 	 * @return the external documentation
 	 */
 	public ExternalDocumentation build() {
-		ExternalDocumentation externalDocumentation = new ExternalDocumentation() {
+		return new ExternalDocumentation() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
 				return null;
@@ -127,6 +127,5 @@ public class ExternalDocumentationBuilder {
 				return extensions;
 			}
 		};
-		return externalDocumentation;
 	}
 }

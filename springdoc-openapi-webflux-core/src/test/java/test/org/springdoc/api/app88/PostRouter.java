@@ -58,24 +58,24 @@ class PostRouter {
 						OperationBuilder.builder().operationId("all")
 								.parameter(ParameterBuilder.builder().name("key").description("sample description"))
 								.parameter(ParameterBuilder.builder().name("test").description("sample desc"))
-								.response(ApiResponseBuilder.builder().responseCode("200").implementationArray(Post.class)).build())
+								.response(ApiResponseBuilder.builder().responseCode("200").implementationArray(Post.class)))
 
 				.and(route(POST("/posts"), postController::create)
 						.withAttribute(OPERATION_ATTRIBUTE,
 								OperationBuilder.builder().operationId("create")
 										.requestBody(RequestBodyBuilder.builder().implementation(Post.class))
-										.response(ApiResponseBuilder.builder().responseCode("201")).build()))
+										.response(ApiResponseBuilder.builder().responseCode("201"))))
 
 				.and(route(GET("/posts/{id}"), postController::get)
 						.withAttribute(OPERATION_ATTRIBUTE,
 								OperationBuilder.builder().operationId("get")
 										.parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("id"))
-										.response(ApiResponseBuilder.builder().responseCode("200").implementation(Post.class)).build()))
+										.response(ApiResponseBuilder.builder().responseCode("200").implementation(Post.class))))
 
 				.and(route(PUT("/posts/{id}"), postController::update)
 						.withAttribute(OPERATION_ATTRIBUTE,
 								OperationBuilder.builder().operationId("update")
 										.parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("id"))
-										.response(ApiResponseBuilder.builder().responseCode("202").implementation(Post.class)).build()));
+										.response(ApiResponseBuilder.builder().responseCode("202").implementation(Post.class))));
 	}
 }

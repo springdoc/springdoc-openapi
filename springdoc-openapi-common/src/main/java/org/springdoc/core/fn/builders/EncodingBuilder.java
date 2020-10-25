@@ -180,7 +180,7 @@ public class EncodingBuilder {
 	 * @return the encoding
 	 */
 	public Encoding build() {
-		Encoding encoding = new Encoding(){
+		return new Encoding(){
 
 			@Override
 			public Class<? extends Annotation> annotationType() {
@@ -222,6 +222,5 @@ public class EncodingBuilder {
 				return extensions;
 			}
 		};
-		return encoding;
 	}
 }

@@ -211,7 +211,7 @@ public class LinkBuilder {
 	 * @return the link
 	 */
 	public Link build() {
-		Link link = new Link() {
+		return new Link() {
 
 			@Override
 			public Class<? extends Annotation> annotationType() {
@@ -263,7 +263,5 @@ public class LinkBuilder {
 				return ref;
 			}
 		};
-
-		return link;
 	}
 }

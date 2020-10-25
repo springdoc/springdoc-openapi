@@ -288,14 +288,14 @@ public class AbstractRouterFunctionVisitor {
 		}
 	}
 
-	protected void attributes(Map<String, Object> attributes) {
-		this.attributes = attributes;
-	}
-
 	protected void route() {
 		this.routerFunctionData = new RouterFunctionData();
 		routerFunctionDatas.add(this.routerFunctionData);
 		this.routerFunctionData.addAttributes(this.attributes);
+	}
+
+	public void attributes(Map<String, Object> map) {
+		this.attributes = map;
 	}
 
 }

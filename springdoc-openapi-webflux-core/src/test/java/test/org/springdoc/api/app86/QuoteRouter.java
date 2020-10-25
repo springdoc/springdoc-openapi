@@ -59,27 +59,27 @@ public class QuoteRouter {
 	@Bean
 	public RouterFunction<ServerResponse> myroute(QuoteHandler quoteHandler) {
 		return route(GET("/hello").and(accept(TEXT_PLAIN)), quoteHandler::hello)
-				.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().operationId("hello").response(ApiResponseBuilder.builder().responseCode("200")).build())
+				.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().operationId("hello").response(ApiResponseBuilder.builder().responseCode("200")))
 
 				.and(route(POST("/echo").and(accept(TEXT_PLAIN).and(contentType(TEXT_PLAIN))), quoteHandler::echo)
 						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().operationId("echo")
 								.requestBody(RequestBodyBuilder.builder().implementation(String.class))
-								.response(ApiResponseBuilder.builder().responseCode("200").implementation(String.class)).build()))
+								.response(ApiResponseBuilder.builder().responseCode("200").implementation(String.class))))
 
 				.and(route(POST("/echo").and(accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON))), quoteHandler::echo)
 						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().operationId("echo")
 								.requestBody(RequestBodyBuilder.builder().implementation(String.class))
-								.response(ApiResponseBuilder.builder().responseCode("200").implementation(String.class)).build())
+								.response(ApiResponseBuilder.builder().responseCode("200").implementation(String.class)))
 				)
 
 				.and(route(GET("/quotes").and(accept(APPLICATION_JSON)), quoteHandler::fetchQuotes)
 						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().operationId("fetchQuotes")
 								.parameter(ParameterBuilder.builder().in(ParameterIn.QUERY).name("size").implementation(String.class))
-								.response(ApiResponseBuilder.builder().responseCode("200").implementationArray(Quote.class)).build()))
+								.response(ApiResponseBuilder.builder().responseCode("200").implementationArray(Quote.class))))
 
 				.and(route(GET("/quotes").and(accept(APPLICATION_STREAM_JSON)), quoteHandler::streamQuotes)
 						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().operationId("fetchQuotes")
-								.response(ApiResponseBuilder.builder().responseCode("200").implementation(Quote.class)).build()));
+								.response(ApiResponseBuilder.builder().responseCode("200").implementation(Quote.class))));
 	}
 
 }

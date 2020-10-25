@@ -24,16 +24,16 @@ public class PersonRouter {
 	@Bean
 	public RouterFunction<ServerResponse> personRoute(PersonHandler handler) {
 		return route(GET("/getAllPersons").and(accept(MediaType.APPLICATION_JSON)), handler::findAll)
-				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(PersonService.class).beanMethod("getAll").build())
+				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(PersonService.class).beanMethod("getAll"))
 
 				.and(route(GET("/getPerson/{id}").and(accept(MediaType.APPLICATION_STREAM_JSON)), handler::findById)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(PersonService.class).beanMethod("getById").build()))
+						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(PersonService.class).beanMethod("getById")))
 
 				.and(route(POST("/createPerson").and(accept(MediaType.APPLICATION_JSON)), handler::save)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(PersonService.class).beanMethod("save").build()))
+						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(PersonService.class).beanMethod("save")))
 
 				.and(route(DELETE("/deletePerson/{id}").and(accept(MediaType.APPLICATION_JSON)), handler::delete)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(PersonService.class).beanMethod("delete").build()));
+						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(PersonService.class).beanMethod("delete")));
 	}
 
 }
