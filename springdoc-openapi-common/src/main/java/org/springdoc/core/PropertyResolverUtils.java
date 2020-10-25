@@ -45,7 +45,7 @@ public class PropertyResolverUtils {
 	/**
 	 * Resolve string.
 	 *
-	 * @param parameterProperty the parameter property
+	 * @param parameterProperty the parameter property 
 	 * @return the string
 	 */
 	public String resolve(String parameterProperty) {

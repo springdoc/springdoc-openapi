@@ -86,9 +86,9 @@ public class DataRestRequestService {
 	/**
 	 * Instantiates a new Data rest request builder.
 	 *
-	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
-	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyService the request body builder
+	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer 
+	 * @param parameterBuilder the parameter builder 
+	 * @param requestBodyService the request body builder 
 	 * @param requestBuilder the request builder
 	 */
 	public DataRestRequestService(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
@@ -102,12 +102,12 @@ public class DataRestRequestService {
 	/**
 	 * Build parameters.
 	 *
-	 * @param domainType the domain type
-	 * @param openAPI the open api
-	 * @param handlerMethod the handler method
-	 * @param requestMethod the request method
-	 * @param methodAttributes the method attributes
-	 * @param operation the operation
+	 * @param domainType the domain type 
+	 * @param openAPI the open api 
+	 * @param handlerMethod the handler method 
+	 * @param requestMethod the request method 
+	 * @param methodAttributes the method attributes 
+	 * @param operation the operation 
 	 * @param resourceMetadata the resource metadata
 	 */
 	public void buildParameters(Class<?> domainType, OpenAPI openAPI, HandlerMethod handlerMethod, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, ResourceMetadata resourceMetadata) {
@@ -127,12 +127,12 @@ public class DataRestRequestService {
 	/**
 	 * Build common parameters.
 	 *
-	 * @param domainType the domain type
-	 * @param openAPI the open api
-	 * @param requestMethod the request method
-	 * @param methodAttributes the method attributes
-	 * @param operation the operation
-	 * @param pNames the p names
+	 * @param domainType the domain type 
+	 * @param openAPI the open api 
+	 * @param requestMethod the request method 
+	 * @param methodAttributes the method attributes 
+	 * @param operation the operation 
+	 * @param pNames the p names 
 	 * @param parameters the parameters
 	 */
 	public void buildCommonParameters(Class<?> domainType, OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters) {
@@ -168,7 +168,7 @@ public class DataRestRequestService {
 	/**
 	 * Is param to ignore boolean.
 	 *
-	 * @param methodParameter the method parameter
+	 * @param methodParameter the method parameter 
 	 * @return the boolean
 	 */
 	private boolean isParamToIgnore(MethodParameter methodParameter) {
@@ -180,12 +180,12 @@ public class DataRestRequestService {
 	/**
 	 * Add parameters.
 	 *
-	 * @param openAPI the open api
-	 * @param requestMethod the request method
-	 * @param methodAttributes the method attributes
-	 * @param operation the operation
-	 * @param methodParameter the method parameter
-	 * @param parameterInfo the parameter info
+	 * @param openAPI the open api 
+	 * @param requestMethod the request method 
+	 * @param methodAttributes the method attributes 
+	 * @param operation the operation 
+	 * @param methodParameter the method parameter 
+	 * @param parameterInfo the parameter info 
 	 * @param parameter the parameter
 	 */
 	private void addParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, MethodParameter methodParameter, ParameterInfo parameterInfo, Parameter parameter) {
@@ -209,7 +209,7 @@ public class DataRestRequestService {
 	/**
 	 * Is header to ignore boolean.
 	 *
-	 * @param methodParameter the method parameter
+	 * @param methodParameter the method parameter 
 	 * @return the boolean
 	 */
 	private boolean isHeaderToIgnore(MethodParameter methodParameter) {

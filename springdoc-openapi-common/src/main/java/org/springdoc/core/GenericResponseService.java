@@ -98,9 +98,9 @@ public class GenericResponseService {
 	/**
 	 * Instantiates a new Generic response builder.
 	 *
-	 * @param operationService the operation builder
-	 * @param returnTypeParsers the return type parsers
-	 * @param springDocConfigProperties the spring doc config properties
+	 * @param operationService the operation builder 
+	 * @param returnTypeParsers the return type parsers 
+	 * @param springDocConfigProperties the spring doc config properties 
 	 * @param propertyResolverUtils the property resolver utils
 	 */
 	public GenericResponseService(OperationService operationService, List<ReturnTypeParser> returnTypeParsers,
@@ -116,10 +116,10 @@ public class GenericResponseService {
 	/**
 	 * Build api responses.
 	 *
-	 * @param components the components
-	 * @param handlerMethod the handler method
-	 * @param operation the operation
-	 * @param methodAttributes the method attributes
+	 * @param components the components 
+	 * @param handlerMethod the handler method 
+	 * @param operation the operation 
+	 * @param methodAttributes the method attributes 
 	 * @return the api responses
 	 */
 	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
@@ -139,7 +139,7 @@ public class GenericResponseService {
 	/**
 	 * Build generic response.
 	 *
-	 * @param components the components
+	 * @param components the components 
 	 * @param findControllerAdvice the find controller advice
 	 */
 	public void buildGenericResponse(Components components, Map<String, Object> findControllerAdvice) {
@@ -177,10 +177,10 @@ public class GenericResponseService {
 	/**
 	 * Compute response from doc map.
 	 *
-	 * @param components the components
-	 * @param methodParameter the method parameter
-	 * @param apiResponsesOp the api responses op
-	 * @param methodAttributes the method attributes
+	 * @param components the components 
+	 * @param methodParameter the method parameter 
+	 * @param apiResponsesOp the api responses op 
+	 * @param methodAttributes the method attributes 
 	 * @return the map
 	 */
 	private Map<String, ApiResponse> computeResponseFromDoc(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
@@ -213,10 +213,10 @@ public class GenericResponseService {
 	/**
 	 * Build content from doc.
 	 *
-	 * @param components the components
-	 * @param apiResponsesOp the api responses op
-	 * @param methodAttributes the method attributes
-	 * @param apiResponseAnnotations the api response annotations
+	 * @param components the components 
+	 * @param apiResponsesOp the api responses op 
+	 * @param methodAttributes the method attributes 
+	 * @param apiResponseAnnotations the api response annotations 
 	 * @param apiResponse the api response
 	 */
 	public static void buildContentFromDoc(Components components, ApiResponses apiResponsesOp,
@@ -254,9 +254,9 @@ public class GenericResponseService {
 	/**
 	 * Build generic api responses.
 	 *
-	 * @param components the components
-	 * @param methodParameter the method parameter
-	 * @param apiResponsesOp the api responses op
+	 * @param components the components 
+	 * @param methodParameter the method parameter 
+	 * @param apiResponsesOp the api responses op 
 	 * @param methodAttributes the method attributes
 	 */
 	private void buildGenericApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
@@ -283,9 +283,9 @@ public class GenericResponseService {
 	/**
 	 * Build api responses.
 	 *
-	 * @param components the components
-	 * @param methodParameter the method parameter
-	 * @param apiResponsesOp the api responses op
+	 * @param components the components 
+	 * @param methodParameter the method parameter 
+	 * @param apiResponsesOp the api responses op 
 	 * @param methodAttributes the method attributes
 	 */
 	private void buildApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
@@ -315,7 +315,7 @@ public class GenericResponseService {
 	/**
 	 * Gets api responses.
 	 *
-	 * @param method the method
+	 * @param method the method 
 	 * @return the api responses
 	 */
 	private Set<io.swagger.v3.oas.annotations.responses.ApiResponse> getApiResponses(Method method) {
@@ -346,10 +346,10 @@ public class GenericResponseService {
 	/**
 	 * Build content content.
 	 *
-	 * @param components the components
-	 * @param methodParameter the method parameter
-	 * @param methodProduces the method produces
-	 * @param jsonView the json view
+	 * @param components the components 
+	 * @param methodParameter the method parameter 
+	 * @param methodProduces the method produces 
+	 * @param jsonView the json view 
 	 * @return the content
 	 */
 	private Content buildContent(Components components, MethodParameter methodParameter, String[] methodProduces, JsonView jsonView) {
@@ -360,11 +360,11 @@ public class GenericResponseService {
 	/**
 	 * Build content content.
 	 *
-	 * @param components the components
-	 * @param annotations the annotations
-	 * @param methodProduces the method produces
-	 * @param jsonView the json view
-	 * @param returnType the return type
+	 * @param components the components 
+	 * @param annotations the annotations 
+	 * @param methodProduces the method produces 
+	 * @param jsonView the json view 
+	 * @param returnType the return type 
 	 * @return the content
 	 */
 	public Content buildContent(Components components, Annotation[] annotations, String[] methodProduces, JsonView jsonView, Type returnType) {
@@ -387,7 +387,7 @@ public class GenericResponseService {
 	/**
 	 * Gets return type.
 	 *
-	 * @param methodParameter the method parameter
+	 * @param methodParameter the method parameter 
 	 * @return the return type
 	 */
 	private Type getReturnType(MethodParameter methodParameter) {
@@ -406,10 +406,10 @@ public class GenericResponseService {
 	/**
 	 * Calculate schema schema.
 	 *
-	 * @param components the components
-	 * @param returnType the return type
-	 * @param jsonView the json view
-	 * @param annotations the annotations
+	 * @param components the components 
+	 * @param returnType the return type 
+	 * @param jsonView the json view 
+	 * @param annotations the annotations 
 	 * @return the schema
 	 */
 	private Schema<?> calculateSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations) {
@@ -421,8 +421,8 @@ public class GenericResponseService {
 	/**
 	 * Sets content.
 	 *
-	 * @param methodProduces the method produces
-	 * @param content the content
+	 * @param methodProduces the method produces 
+	 * @param content the content 
 	 * @param mediaType the media type
 	 */
 	private void setContent(String[] methodProduces, Content content,
@@ -433,12 +433,12 @@ public class GenericResponseService {
 	/**
 	 * Build api responses.
 	 *
-	 * @param components the components
-	 * @param methodParameter the method parameter
-	 * @param apiResponsesOp the api responses op
-	 * @param methodAttributes the method attributes
-	 * @param httpCode the http code
-	 * @param apiResponse the api response
+	 * @param components the components 
+	 * @param methodParameter the method parameter 
+	 * @param apiResponsesOp the api responses op 
+	 * @param methodAttributes the method attributes 
+	 * @param httpCode the http code 
+	 * @param apiResponse the api response 
 	 * @param isGeneric the is generic
 	 */
 	private void buildApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
@@ -472,7 +472,7 @@ public class GenericResponseService {
 	/**
 	 * Sets description.
 	 *
-	 * @param httpCode the http code
+	 * @param httpCode the http code 
 	 * @param apiResponse the api response
 	 */
 	public static void setDescription(String httpCode, ApiResponse apiResponse) {
@@ -488,9 +488,9 @@ public class GenericResponseService {
 	/**
 	 * Evaluate response status string.
 	 *
-	 * @param method the method
-	 * @param beanType the bean type
-	 * @param isGeneric the is generic
+	 * @param method the method 
+	 * @param beanType the bean type 
+	 * @param isGeneric the is generic 
 	 * @return the string
 	 */
 	public String evaluateResponseStatus(Method method, Class<?> beanType, boolean isGeneric) {
@@ -508,7 +508,7 @@ public class GenericResponseService {
 	/**
 	 * Is void boolean.
 	 *
-	 * @param returnType the return type
+	 * @param returnType the return type 
 	 * @return the boolean
 	 */
 	private boolean isVoid(Type returnType) {
@@ -528,7 +528,7 @@ public class GenericResponseService {
 	/**
 	 * Gets generic map response.
 	 *
-	 * @param beanType the bean type
+	 * @param beanType the bean type 
 	 * @return the generic map response
 	 */
 	private Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
@@ -541,8 +541,8 @@ public class GenericResponseService {
 	/**
 	 * Is valid http code boolean.
 	 *
-	 * @param httpCode the http code
-	 * @param methodParameter the method parameter
+	 * @param httpCode the http code 
+	 * @param methodParameter the method parameter 
 	 * @return the boolean
 	 */
 	private boolean isValidHttpCode(String httpCode, MethodParameter methodParameter) {
@@ -570,8 +570,8 @@ public class GenericResponseService {
 	/**
 	 * Is http code present boolean.
 	 *
-	 * @param httpCode the http code
-	 * @param responseSet the response set
+	 * @param httpCode the http code 
+	 * @param responseSet the response set 
 	 * @return the boolean
 	 */
 	private boolean isHttpCodePresent(String httpCode, Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responseSet) {

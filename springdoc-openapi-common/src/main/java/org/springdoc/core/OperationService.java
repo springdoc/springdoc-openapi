@@ -89,9 +89,9 @@ public class OperationService {
 	/**
 	 * Instantiates a new Operation builder.
 	 *
-	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyService the request body builder
-	 * @param securityParser the security parser
+	 * @param parameterBuilder the parameter builder 
+	 * @param requestBodyService the request body builder 
+	 * @param securityParser the security parser 
 	 * @param propertyResolverUtils the property resolver utils
 	 */
 	public OperationService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
@@ -106,10 +106,10 @@ public class OperationService {
 	/**
 	 * Parse open api.
 	 *
-	 * @param apiOperation the api operation
-	 * @param operation the operation
-	 * @param openAPI the open api
-	 * @param methodAttributes the method attributes
+	 * @param apiOperation the api operation 
+	 * @param operation the operation 
+	 * @param openAPI the open api 
+	 * @param methodAttributes the method attributes 
 	 * @return the open api
 	 */
 	public OpenAPI parse(io.swagger.v3.oas.annotations.Operation apiOperation,
@@ -161,7 +161,7 @@ public class OperationService {
 	/**
 	 * Is hidden boolean.
 	 *
-	 * @param method the method
+	 * @param method the method 
 	 * @return the boolean
 	 */
 	public boolean isHidden(Method method) {
@@ -174,9 +174,9 @@ public class OperationService {
 	/**
 	 * Build callbacks optional.
 	 *
-	 * @param apiCallbacks the api callbacks
-	 * @param openAPI the open api
-	 * @param methodAttributes the method attributes
+	 * @param apiCallbacks the api callbacks 
+	 * @param openAPI the open api 
+	 * @param methodAttributes the method attributes 
 	 * @return the optional
 	 */
 	public Optional<Map<String, Callback>> buildCallbacks(
@@ -222,8 +222,8 @@ public class OperationService {
 	/**
 	 * Sets path item operation.
 	 *
-	 * @param pathItemObject the path item object
-	 * @param method the method
+	 * @param pathItemObject the path item object 
+	 * @param method the method 
 	 * @param operation the operation
 	 */
 	private void setPathItemOperation(PathItem pathItemObject, String method, Operation operation) {
@@ -261,7 +261,7 @@ public class OperationService {
 	/**
 	 * Build extensions.
 	 *
-	 * @param apiOperation the api operation
+	 * @param apiOperation the api operation 
 	 * @param operation the operation
 	 */
 	private void buildExtensions(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation) {
@@ -274,7 +274,7 @@ public class OperationService {
 	/**
 	 * Build tags.
 	 *
-	 * @param apiOperation the api operation
+	 * @param apiOperation the api operation 
 	 * @param operation the operation
 	 */
 	private void buildTags(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation) {
@@ -291,8 +291,8 @@ public class OperationService {
 	/**
 	 * Gets operation id.
 	 *
-	 * @param operationId the operation id
-	 * @param openAPI the open api
+	 * @param operationId the operation id 
+	 * @param openAPI the open api 
 	 * @return the operation id
 	 */
 	public String getOperationId(String operationId, OpenAPI openAPI) {
@@ -312,8 +312,8 @@ public class OperationService {
 	/**
 	 * Exist operation id boolean.
 	 *
-	 * @param operationId the operation id
-	 * @param openAPI the open api
+	 * @param operationId the operation id 
+	 * @param openAPI the open api 
 	 * @return the boolean
 	 */
 	private boolean existOperationId(String operationId, OpenAPI openAPI) {
@@ -335,7 +335,7 @@ public class OperationService {
 	/**
 	 * Extract operation id from path item set.
 	 *
-	 * @param path the path
+	 * @param path the path 
 	 * @return the set
 	 */
 	private Set<String> extractOperationIdFromPathItem(PathItem path) {
@@ -367,10 +367,10 @@ public class OperationService {
 	/**
 	 * Gets api responses.
 	 *
-	 * @param responses the responses
-	 * @param methodAttributes the method attributes
-	 * @param operation the operation
-	 * @param components the components
+	 * @param responses the responses 
+	 * @param methodAttributes the method attributes 
+	 * @param operation the operation 
+	 * @param components the components 
 	 * @return the api responses
 	 */
 	private Optional<ApiResponses> getApiResponses(
@@ -414,12 +414,12 @@ public class OperationService {
 	/**
 	 * Build response content.
 	 *
-	 * @param methodAttributes the method attributes
-	 * @param components the components
-	 * @param classProduces the class produces
-	 * @param methodProduces the method produces
-	 * @param apiResponsesOp the api responses op
-	 * @param response the response
+	 * @param methodAttributes the method attributes 
+	 * @param components the components 
+	 * @param classProduces the class produces 
+	 * @param methodProduces the method produces 
+	 * @param apiResponsesOp the api responses op 
+	 * @param response the response 
 	 * @param apiResponseObject the api response object
 	 */
 	private void buildResponseContent(MethodAttributes methodAttributes, Components components, String[] classProduces, String[] methodProduces, ApiResponses apiResponsesOp, io.swagger.v3.oas.annotations.responses.ApiResponse response, ApiResponse apiResponseObject) {
@@ -435,7 +435,7 @@ public class OperationService {
 	/**
 	 * Is response object boolean.
 	 *
-	 * @param apiResponseObject the api response object
+	 * @param apiResponseObject the api response object 
 	 * @return the boolean
 	 */
 	private boolean isResponseObject(ApiResponse apiResponseObject) {
@@ -446,7 +446,7 @@ public class OperationService {
 	/**
 	 * Sets links.
 	 *
-	 * @param response the response
+	 * @param response the response 
 	 * @param apiResponseObject the api response object
 	 */
 	private void setLinks(io.swagger.v3.oas.annotations.responses.ApiResponse response, ApiResponse apiResponseObject) {
@@ -459,7 +459,7 @@ public class OperationService {
 	/**
 	 * Sets description.
 	 *
-	 * @param response the response
+	 * @param response the response 
 	 * @param apiResponseObject the api response object
 	 */
 	private void setDescription(io.swagger.v3.oas.annotations.responses.ApiResponse response,
@@ -494,8 +494,8 @@ public class OperationService {
 	/**
 	 * Sets ref.
 	 *
-	 * @param apiResponsesObject the api responses object
-	 * @param response the response
+	 * @param apiResponsesObject the api responses object 
+	 * @param response the response 
 	 * @param apiResponseObject the api response object
 	 */
 	private void setRef(ApiResponses apiResponsesObject, io.swagger.v3.oas.annotations.responses.ApiResponse response,
@@ -512,7 +512,7 @@ public class OperationService {
 	/**
 	 * Sets extensions.
 	 *
-	 * @param response the response
+	 * @param response the response 
 	 * @param apiResponseObject the api response object
 	 */
 	private void setExtensions(io.swagger.v3.oas.annotations.responses.ApiResponse response,
@@ -527,9 +527,9 @@ public class OperationService {
 	/**
 	 * Build response.
 	 *
-	 * @param components the components
-	 * @param apiOperation the api operation
-	 * @param operation the operation
+	 * @param components the components 
+	 * @param apiOperation the api operation 
+	 * @param operation the operation 
 	 * @param methodAttributes the method attributes
 	 */
 	private void buildResponse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
@@ -547,7 +547,7 @@ public class OperationService {
 	/**
 	 * Gets string list from string array.
 	 *
-	 * @param array the array
+	 * @param array the array 
 	 * @return the string list from string array
 	 */
 	private Optional<List<String>> getStringListFromStringArray(String[] array) {
@@ -571,9 +571,9 @@ public class OperationService {
 	/**
 	 * Gets operation id.
 	 *
-	 * @param operationId the operation id
-	 * @param oldOperationId the old operation id
-	 * @param openAPI the open api
+	 * @param operationId the operation id 
+	 * @param oldOperationId the old operation id 
+	 * @param openAPI the open api 
 	 * @return the operation id
 	 */
 	public String getOperationId(String operationId, String oldOperationId, OpenAPI openAPI) {
@@ -586,8 +586,8 @@ public class OperationService {
 	/**
 	 * Merge operation operation.
 	 *
-	 * @param operation the operation
-	 * @param operationModel the operation model
+	 * @param operation the operation 
+	 * @param operationModel the operation model 
 	 * @return the operation
 	 */
 	public Operation mergeOperation(Operation operation, Operation operationModel) {
