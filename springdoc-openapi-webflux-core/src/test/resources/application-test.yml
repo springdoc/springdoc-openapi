@@ -3,5 +3,7 @@ spring:
     banner-mode: "off"
     lazy-initialization: true
 logging:
+  level:
+    root: OFF
   pattern:
     console: '%m%n'

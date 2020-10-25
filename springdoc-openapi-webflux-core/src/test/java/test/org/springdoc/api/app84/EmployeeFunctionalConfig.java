@@ -3,10 +3,8 @@ package test.org.springdoc.api.app84;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.fn.builders.ApiResponseBuilder;
-import org.springdoc.core.fn.builders.ContentBuilder;
 import org.springdoc.core.fn.builders.OperationBuilder;
 import org.springdoc.core.fn.builders.ParameterBuilder;
-import org.springdoc.core.fn.builders.SchemaBuilder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
