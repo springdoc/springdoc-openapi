@@ -40,9 +40,9 @@ public interface ReturnTypeParser {
 	 * This also keeps compatibility with spring-boot 1 applications.
 	 * Resolve the given generic type against the given context class,
 	 * substituting type variables as far as possible.
-	 * @param genericType the (potentially) generic type
-	 * @param contextClass a context class for the target type, for example a class in which the target type appears in a method signature (can be {@code null})
-	 * @return the resolved type (possibly the given generic type as-is)
+	 * @param genericType the (potentially) generic type 
+	 * @param contextClass a context class for the target type, for example a class in which the target type appears in a method signature (can be {@code null}) 
+	 * @return the resolved type (possibly the given generic type as-is) 
 	 * @since 5.0
 	 */
 	static Type resolveType(Type genericType, @Nullable Class<?> contextClass) {
@@ -77,7 +77,7 @@ public interface ReturnTypeParser {
 	/**
 	 * Resolve type.
 	 *
-	 * @param resolvableTypes the resolvable types
+	 * @param resolvableTypes the resolvable types 
 	 * @param contextClass the context class
 	 */
 	static void resolveType(ResolvableType[] resolvableTypes, Class<?> contextClass) {
@@ -98,8 +98,8 @@ public interface ReturnTypeParser {
 	/**
 	 * Gets resolved type.
 	 *
-	 * @param resolvableType the resolvable type
-	 * @param contextClass the context class
+	 * @param resolvableType the resolvable type 
+	 * @param contextClass the context class 
 	 * @return the resolved type
 	 */
 	static ResolvableType getResolvedType(ResolvableType resolvableType, Class<?> contextClass) {
@@ -117,8 +117,8 @@ public interface ReturnTypeParser {
 	/**
 	 * Find type for generics.
 	 *
-	 * @param generics the generics
-	 * @param typeArguments the type arguments
+	 * @param generics the generics 
+	 * @param typeArguments the type arguments 
 	 * @param contextType the context type
 	 */
 	static void findTypeForGenerics(Class<?>[] generics, Type[] typeArguments, ResolvableType contextType) {
@@ -143,8 +143,8 @@ public interface ReturnTypeParser {
 	/**
 	 * Resolve variable resolvable type.
 	 *
-	 * @param typeVariable the type variable
-	 * @param contextType the context type
+	 * @param typeVariable the type variable 
+	 * @param contextType the context type 
 	 * @return the resolvable type
 	 */
 	static ResolvableType resolveVariable(TypeVariable<?> typeVariable, ResolvableType contextType) {
@@ -175,7 +175,7 @@ public interface ReturnTypeParser {
 	/**
 	 * Gets return type.
 	 *
-	 * @param methodParameter the method parameter
+	 * @param methodParameter the method parameter 
 	 * @return the return type
 	 */
 	default Type getReturnType(MethodParameter methodParameter) {
@@ -187,7 +187,7 @@ public interface ReturnTypeParser {
 	/**
 	 * Gets type.
 	 *
-	 * @param methodParameter the method parameter
+	 * @param methodParameter the method parameter 
 	 * @return the type
 	 */
 	static Type getType(MethodParameter methodParameter) {

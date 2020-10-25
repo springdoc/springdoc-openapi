@@ -1,3 +1,26 @@
+/*
+ *
+ *
+ *  *
+ *  *  *
+ *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  *
+ *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  * You may obtain a copy of the License at
+ *  *  *  *
+ *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *
+ *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  * limitations under the License.
+ *  *  *
+ *  *
+ *
+ */
+
 package org.springdoc.core.fn.builders;
 
 import java.lang.annotation.Annotation;
@@ -9,152 +32,153 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import org.apache.commons.lang3.ArrayUtils;
 
+/**
+ * The type Schema builder.
+ */
 public class SchemaBuilder {
 	/**
 	 * Provides a java class as implementation for this schema.  When provided, additional information in the Schema annotation (except for type information) will augment the java class after introspection.
 	 *
-	 **/
+	 */
 	private Class<?> implementation = Void.class;
 
 	/**
 	 * Provides a java class to be used to disallow matching properties.
 	 *
-	 **/
+	 */
 	private Class<?> not = Void.class;
 
 	/**
 	 * Provides an array of java class implementations which can be used to describe multiple acceptable schemas.  If more than one match the derived schemas, a validation error will occur.
 	 *
-	 **/
+	 */
 	private Class<?>[] oneOf = {};
 
 	/**
 	 * Provides an array of java class implementations which can be used to describe multiple acceptable schemas.  If any match, the schema will be considered valid.
 	 *
-	 **/
+	 */
 	private Class<?>[] anyOf = {};
 
 	/**
 	 * Provides an array of java class implementations which can be used to describe multiple acceptable schemas.  If all match, the schema will be considered valid
 	 *
-	 **/
+	 */
 	private Class<?>[] allOf = {};
 
 	/**
 	 * The name of the schema or property.
 	 *
-	 **/
+	 */
 	private String name = "";
 
 	/**
 	 * A title to explain the purpose of the schema.
 	 *
-	 **/
+	 */
 	private String title = "";
 
 	/**
 	 * Constrains a value such that when divided by the multipleOf, the remainder must be an integer.  Ignored if the value is 0.
 	 *
-	 **/
+	 */
 	private double multipleOf = 0;
 
 	/**
 	 * Sets the maximum numeric value for a property.  Ignored if the value is an empty string.
 	 *
-	 **/
+	 */
 	private String maximum = "";
 
 	/**
 	 * if true, makes the maximum value exclusive, or a less-than criteria.
 	 *
-	 **/
+	 */
 	private boolean exclusiveMaximum;
 
 	/**
 	 * Sets the minimum numeric value for a property.  Ignored if the value is an empty string or not a number.
 	 *
-	 **/
+	 */
 	private String minimum = "";
 
 	/**
 	 * If true, makes the minimum value exclusive, or a greater-than criteria.
 	 *
-	 **/
+	 */
 	private boolean exclusiveMinimum;
 
 	/**
 	 * Sets the maximum length of a string value.  Ignored if the value is negative.
 	 *
-	 **/
+	 */
 	private int maxLength = Integer.MAX_VALUE;
 
 	/**
 	 * Sets the minimum length of a string value.  Ignored if the value is negative.
 	 *
-	 **/
+	 */
 	private int minLength = 0;
 
 	/**
 	 * A pattern that the value must satisfy. Ignored if the value is an empty string.
 	 *
-	 **/
+	 */
 	private String pattern = "";
 
 	/**
 	 * Constrains the number of arbitrary properties when additionalProperties is defined.  Ignored if value is 0.
 	 *
-	 **/
+	 */
 	private int maxProperties = 0;
 
 	/**
 	 * Constrains the number of arbitrary properties when additionalProperties is defined.  Ignored if value is 0.
 	 *
-	 **/
+	 */
 	private int minProperties = 0;
 
 	/**
 	 * Allows multiple properties in an object to be marked as required.
 	 *
-	 **/
+	 */
 	private String[] requiredProperties = {};
 
 	/**
 	 * Mandates that the annotated item is required or not.
 	 *
-	 **/
+	 */
 	private boolean required;
 
 	/**
 	 * A description of the schema.
 	 *
-	 **/
+	 */
 	private String description = "";
 
 	/**
 	 * Provides an optional override for the format.  If a consumer is unaware of the meaning of the format, they shall fall back to using the basic type without format.  For example, if \&quot;type: integer, format: int128\&quot; were used to designate a very large integer, most consumers will not understand how to handle it, and fall back to simply \&quot;type: integer\&quot;
 	 *
-	 **/
+	 */
 	private String format = "";
 
 	/**
 	 * References a schema definition in an external OpenAPI document.
 	 *
-	 **/
+	 */
 	private String ref = "";
 
 	/**
 	 * If true, designates a value as possibly null.
 	 *
-	 **/
+	 */
 	private boolean nullable;
 
 	/**
 	 * Sets whether the value should only be read during a response but not read to during a request.
 	 *
 	 * @deprecated As of swagger-core 2.0.0
-	 *
-	 *
-	 **/
+	 */
 	@Deprecated
 	private boolean readOnly;
 
@@ -162,8 +186,7 @@ public class SchemaBuilder {
 	 * Sets whether a value should only be written to during a request but not returned during a response.
 	 *
 	 * @deprecated As of  swagger-core  2.0.0
-	 *
-	 **/
+	 */
 	@Deprecated
 	private boolean writeOnly;
 
@@ -181,25 +204,25 @@ public class SchemaBuilder {
 	/**
 	 * Provides an example of the schema.  When associated with a specific media type, the example string shall be parsed by the consumer to be treated as an object or an array.
 	 *
-	 **/
+	 */
 	private String example = "";
 
 	/**
 	 * Additional external documentation for this schema.
 	 *
-	 **/
+	 */
 	private ExternalDocumentation externalDocs = ExternalDocumentationBuilder.builder().build();
 
 	/**
 	 * Specifies that a schema is deprecated and should be transitioned out of usage.
 	 *
-	 **/
+	 */
 	private boolean deprecated;
 
 	/**
 	 * Provides an override for the basic type of the schema.  Must be a valid type per the OpenAPI Specification.
 	 *
-	 **/
+	 */
 	private String type = "";
 
 	/**
@@ -235,7 +258,7 @@ public class SchemaBuilder {
 	/**
 	 * Allows enums to be resolved as a reference to a scheme added to components section.
 	 *
-	 * @since swagger-core 2.1.0
+	 * @since swagger -core 2.1.0
 	 * @return whether or not this must be resolved as a reference
 	 */
 	private boolean enumAsRef;
@@ -253,203 +276,444 @@ public class SchemaBuilder {
 	private Extension[] extensions = {};
 
 
+	/**
+	 * Instantiates a new Schema builder.
+	 */
 	private SchemaBuilder() {
 	}
 
+	/**
+	 * Builder schema builder.
+	 *
+	 * @return the schema builder
+	 */
 	public static SchemaBuilder builder() {
 		return new SchemaBuilder();
 	}
 
+	/**
+	 * Implementation schema builder.
+	 *
+	 * @param implementation the implementation
+	 * @return the schema builder
+	 */
 	public SchemaBuilder implementation(Class<?> implementation) {
 		this.implementation = implementation;
 		return this;
 	}
 
+	/**
+	 * Not schema builder.
+	 *
+	 * @param not the not
+	 * @return the schema builder
+	 */
 	public SchemaBuilder not(Class<?> not) {
 		this.not = not;
 		return this;
 	}
 
+	/**
+	 * One of schema builder.
+	 *
+	 * @param oneOf the one of
+	 * @return the schema builder
+	 */
 	public SchemaBuilder oneOf(Class<?>[] oneOf) {
 		this.oneOf = oneOf;
 		return this;
 	}
 
+	/**
+	 * Any of schema builder.
+	 *
+	 * @param anyOf the any of
+	 * @return the schema builder
+	 */
 	public SchemaBuilder anyOf(Class<?>[] anyOf) {
 		this.anyOf = anyOf;
 		return this;
 	}
 
+	/**
+	 * All of schema builder.
+	 *
+	 * @param allOf the all of
+	 * @return the schema builder
+	 */
 	public SchemaBuilder allOf(Class<?>[] allOf) {
 		this.allOf = allOf;
 		return this;
 	}
 
+	/**
+	 * Name schema builder.
+	 *
+	 * @param name the name
+	 * @return the schema builder
+	 */
 	public SchemaBuilder name(String name) {
 		this.name = name;
 		return this;
 	}
 
+	/**
+	 * Title schema builder.
+	 *
+	 * @param title the title
+	 * @return the schema builder
+	 */
 	public SchemaBuilder title(String title) {
 		this.title = title;
 		return this;
 	}
 
+	/**
+	 * Multiple of schema builder.
+	 *
+	 * @param multipleOf the multiple of
+	 * @return the schema builder
+	 */
 	public SchemaBuilder multipleOf(double multipleOf) {
 		this.multipleOf = multipleOf;
 		return this;
 	}
 
+	/**
+	 * Maximum schema builder.
+	 *
+	 * @param maximum the maximum
+	 * @return the schema builder
+	 */
 	public SchemaBuilder maximum(String maximum) {
 		this.maximum = maximum;
 		return this;
 	}
 
+	/**
+	 * Exclusive maximum schema builder.
+	 *
+	 * @param exclusiveMaximum the exclusive maximum
+	 * @return the schema builder
+	 */
 	public SchemaBuilder exclusiveMaximum(boolean exclusiveMaximum) {
 		this.exclusiveMaximum = exclusiveMaximum;
 		return this;
 	}
 
+	/**
+	 * Minimum schema builder.
+	 *
+	 * @param minimum the minimum
+	 * @return the schema builder
+	 */
 	public SchemaBuilder minimum(String minimum) {
 		this.minimum = minimum;
 		return this;
 	}
 
+	/**
+	 * Exclusive minimum schema builder.
+	 *
+	 * @param exclusiveMinimum the exclusive minimum
+	 * @return the schema builder
+	 */
 	public SchemaBuilder exclusiveMinimum(boolean exclusiveMinimum) {
 		this.exclusiveMinimum = exclusiveMinimum;
 		return this;
 	}
 
+	/**
+	 * Max length schema builder.
+	 *
+	 * @param maxLength the max length
+	 * @return the schema builder
+	 */
 	public SchemaBuilder maxLength(int maxLength) {
 		this.maxLength = maxLength;
 		return this;
 	}
 
+	/**
+	 * Min length schema builder.
+	 *
+	 * @param minLength the min length
+	 * @return the schema builder
+	 */
 	public SchemaBuilder minLength(int minLength) {
 		this.minLength = minLength;
 		return this;
 	}
 
+	/**
+	 * Pattern schema builder.
+	 *
+	 * @param pattern the pattern
+	 * @return the schema builder
+	 */
 	public SchemaBuilder pattern(String pattern) {
 		this.pattern = pattern;
 		return this;
 	}
 
+	/**
+	 * Max properties schema builder.
+	 *
+	 * @param maxProperties the max properties
+	 * @return the schema builder
+	 */
 	public SchemaBuilder maxProperties(int maxProperties) {
 		this.maxProperties = maxProperties;
 		return this;
 	}
 
+	/**
+	 * Min properties schema builder.
+	 *
+	 * @param minProperties the min properties
+	 * @return the schema builder
+	 */
 	public SchemaBuilder minProperties(int minProperties) {
 		this.minProperties = minProperties;
 		return this;
 	}
 
+	/**
+	 * Required properties schema builder.
+	 *
+	 * @param requiredProperties the required properties
+	 * @return the schema builder
+	 */
 	public SchemaBuilder requiredProperties(String[] requiredProperties) {
 		this.requiredProperties = requiredProperties;
 		return this;
 	}
 
+	/**
+	 * Required schema builder.
+	 *
+	 * @param required the required
+	 * @return the schema builder
+	 */
 	public SchemaBuilder required(boolean required) {
 		this.required = required;
 		return this;
 	}
 
+	/**
+	 * Description schema builder.
+	 *
+	 * @param description the description
+	 * @return the schema builder
+	 */
 	public SchemaBuilder description(String description) {
 		this.description = description;
 		return this;
 	}
 
+	/**
+	 * Format schema builder.
+	 *
+	 * @param format the format
+	 * @return the schema builder
+	 */
 	public SchemaBuilder format(String format) {
 		this.format = format;
 		return this;
 	}
 
+	/**
+	 * Ref schema builder.
+	 *
+	 * @param ref the ref
+	 * @return the schema builder
+	 */
 	public SchemaBuilder ref(String ref) {
 		this.ref = ref;
 		return this;
 	}
 
+	/**
+	 * Nullable schema builder.
+	 *
+	 * @param nullable the nullable
+	 * @return the schema builder
+	 */
 	public SchemaBuilder nullable(boolean nullable) {
 		this.nullable = nullable;
 		return this;
 	}
 
+	/**
+	 * Read only schema builder.
+	 *
+	 * @param readOnly the read only
+	 * @return the schema builder
+	 */
 	public SchemaBuilder readOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 		return this;
 	}
 
+	/**
+	 * Write only schema builder.
+	 *
+	 * @param writeOnly the write only
+	 * @return the schema builder
+	 */
 	public SchemaBuilder writeOnly(boolean writeOnly) {
 		this.writeOnly = writeOnly;
 		return this;
 	}
 
+	/**
+	 * Access mode schema builder.
+	 *
+	 * @param accessMode the access mode
+	 * @return the schema builder
+	 */
 	public SchemaBuilder accessMode(AccessMode accessMode) {
 		this.accessMode = accessMode;
 		return this;
 	}
 
+	/**
+	 * Example schema builder.
+	 *
+	 * @param example the example
+	 * @return the schema builder
+	 */
 	public SchemaBuilder example(String example) {
 		this.example = example;
 		return this;
 	}
 
+	/**
+	 * External docs schema builder.
+	 *
+	 * @param externalDocumentationBuilder the external documentation builder
+	 * @return the schema builder
+	 */
 	public SchemaBuilder externalDocs(ExternalDocumentationBuilder externalDocumentationBuilder) {
 		this.externalDocs = externalDocumentationBuilder.build();
 		return this;
 	}
 
+	/**
+	 * Deprecated schema builder.
+	 *
+	 * @param deprecated the deprecated
+	 * @return the schema builder
+	 */
 	public SchemaBuilder deprecated(boolean deprecated) {
 		this.deprecated = deprecated;
 		return this;
 	}
 
+	/**
+	 * Type schema builder.
+	 *
+	 * @param type the type
+	 * @return the schema builder
+	 */
 	public SchemaBuilder type(String type) {
 		this.type = type;
 		return this;
 	}
 
+	/**
+	 * Allowable values schema builder.
+	 *
+	 * @param allowableValues the allowable values
+	 * @return the schema builder
+	 */
 	public SchemaBuilder allowableValues(String[] allowableValues) {
 		this.allowableValues = allowableValues;
 		return this;
 	}
 
+	/**
+	 * Default value schema builder.
+	 *
+	 * @param defaultValue the default value
+	 * @return the schema builder
+	 */
 	public SchemaBuilder defaultValue(String defaultValue) {
 		this.defaultValue = defaultValue;
 		return this;
 	}
 
+	/**
+	 * Discriminator property schema builder.
+	 *
+	 * @param discriminatorProperty the discriminator property
+	 * @return the schema builder
+	 */
 	public SchemaBuilder discriminatorProperty(String discriminatorProperty) {
 		this.discriminatorProperty = discriminatorProperty;
 		return this;
 	}
 
+	/**
+	 * Discriminator mapping schema builder.
+	 *
+	 * @param discriminatorMappingBuilder the discriminator mapping builder
+	 * @return the schema builder
+	 */
 	public SchemaBuilder discriminatorMapping(DiscriminatorMappingBuilder discriminatorMappingBuilder) {
 		this.discriminatorMapping = ArrayUtils.add(this.discriminatorMapping, discriminatorMappingBuilder.build());
 		return this;
 	}
 
+	/**
+	 * Hidden schema builder.
+	 *
+	 * @param hidden the hidden
+	 * @return the schema builder
+	 */
 	public SchemaBuilder hidden(boolean hidden) {
 		this.hidden = hidden;
 		return this;
 	}
 
+	/**
+	 * Enum as ref schema builder.
+	 *
+	 * @param enumAsRef the enum as ref
+	 * @return the schema builder
+	 */
 	public SchemaBuilder enumAsRef(boolean enumAsRef) {
 		this.enumAsRef = enumAsRef;
 		return this;
 	}
 
+	/**
+	 * Sub types schema builder.
+	 *
+	 * @param subTypes the sub types
+	 * @return the schema builder
+	 */
 	public SchemaBuilder subTypes(Class<?>[] subTypes) {
 		this.subTypes = subTypes;
 		return this;
 	}
 
+	/**
+	 * Extensions schema builder.
+	 *
+	 * @param extensionBuilder the extension builder
+	 * @return the schema builder
+	 */
 	public SchemaBuilder extensions(ExtensionBuilder extensionBuilder) {
 		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}
 
+	/**
+	 * Build schema.
+	 *
+	 * @return the schema
+	 */
 	public Schema build() {
 		Schema schema = new Schema() {
 			@Override

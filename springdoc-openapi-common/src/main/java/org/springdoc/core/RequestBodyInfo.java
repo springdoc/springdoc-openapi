@@ -80,7 +80,7 @@ public class RequestBodyInfo {
 	/**
 	 * Add properties.
 	 *
-	 * @param paramName the param name
+	 * @param paramName the param name 
 	 * @param schemaN the schema n
 	 */
 	public void addProperties(String paramName, Schema schemaN) {

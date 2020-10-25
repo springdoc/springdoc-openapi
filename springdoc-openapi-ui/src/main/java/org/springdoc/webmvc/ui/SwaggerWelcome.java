@@ -63,7 +63,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	/**
 	 * The Mvc servlet path.
 	 */
-   // To keep compatiblity with spring-boot 1 - WebMvcProperties changed package from srping 4 to spring 5
+// To keep compatiblity with spring-boot 1 - WebMvcProperties changed package from srping 4 to spring 5
 	@Value(MVC_SERVLET_PATH)
 	private String mvcServletPath;
 

@@ -158,10 +158,10 @@ public abstract class AbstractRequestService {
 	/**
 	 * Instantiates a new Abstract request builder.
 	 *
-	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyService the request body builder
-	 * @param operationService the operation builder
-	 * @param parameterCustomizers the parameter customizers
+	 * @param parameterBuilder the parameter builder 
+	 * @param requestBodyService the request body builder 
+	 * @param operationService the operation builder 
+	 * @param parameterCustomizers the parameter customizers 
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
 	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
@@ -200,7 +200,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * Is request type to ignore boolean.
 	 *
-	 * @param rawClass the raw class
+	 * @param rawClass the raw class 
 	 * @return the boolean
 	 */
 	public static boolean isRequestTypeToIgnore(Class<?> rawClass) {
@@ -210,11 +210,11 @@ public abstract class AbstractRequestService {
 	/**
 	 * Build operation.
 	 *
-	 * @param handlerMethod the handler method
-	 * @param requestMethod the request method
-	 * @param operation the operation
-	 * @param methodAttributes the method attributes
-	 * @param openAPI the open api
+	 * @param handlerMethod the handler method 
+	 * @param requestMethod the request method 
+	 * @param operation the operation 
+	 * @param methodAttributes the method attributes 
+	 * @param openAPI the open api 
 	 * @return the operation
 	 */
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
@@ -281,10 +281,10 @@ public abstract class AbstractRequestService {
 	/**
 	 * Gets parameter linked hash map.
 	 *
-	 * @param components the components
-	 * @param methodAttributes the method attributes
-	 * @param operationParameters the operation parameters
-	 * @param parametersDocMap the parameters doc map
+	 * @param components the components 
+	 * @param methodAttributes the method attributes 
+	 * @param operationParameters the operation parameters 
+	 * @param parametersDocMap the parameters doc map 
 	 * @return the parameter linked hash map
 	 */
 	private LinkedHashMap<String, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
@@ -314,8 +314,8 @@ public abstract class AbstractRequestService {
 	/**
 	 * Gets headers.
 	 *
-	 * @param methodAttributes the method attributes
-	 * @param map the map
+	 * @param methodAttributes the method attributes 
+	 * @param map the map 
 	 * @return the headers
 	 */
 	@SuppressWarnings("unchecked")
@@ -336,8 +336,8 @@ public abstract class AbstractRequestService {
 	/**
 	 * Customise parameter parameter.
 	 *
-	 * @param parameter the parameter
-	 * @param parameterInfo the parameter info
+	 * @param parameter the parameter 
+	 * @param parameterInfo the parameter info 
 	 * @return the parameter
 	 */
 	protected Parameter customiseParameter(Parameter parameter, ParameterInfo parameterInfo) {
@@ -348,7 +348,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * Is param to ignore boolean.
 	 *
-	 * @param parameter the parameter
+	 * @param parameter the parameter 
 	 * @return the boolean
 	 */
 	public boolean isParamToIgnore(MethodParameter parameter) {
@@ -362,7 +362,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * Is required annotation boolean.
 	 *
-	 * @param parameter the parameter
+	 * @param parameter the parameter 
 	 * @return the boolean
 	 */
 	private boolean isRequiredAnnotation(MethodParameter parameter) {
@@ -377,8 +377,8 @@ public abstract class AbstractRequestService {
 	/**
 	 * Sets params.
 	 *
-	 * @param operation the operation
-	 * @param operationParameters the operation parameters
+	 * @param operation the operation 
+	 * @param operationParameters the operation parameters 
 	 * @param requestBodyInfo the request body info
 	 */
 	private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
@@ -391,7 +391,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * Is valid parameter boolean.
 	 *
-	 * @param parameter the parameter
+	 * @param parameter the parameter 
 	 * @return the boolean
 	 */
 	public boolean isValidParameter(Parameter parameter) {
@@ -401,10 +401,10 @@ public abstract class AbstractRequestService {
 	/**
 	 * Build params parameter.
 	 *
-	 * @param parameterInfo the parameter info
-	 * @param components the components
-	 * @param requestMethod the request method
-	 * @param jsonView the json view
+	 * @param parameterInfo the parameter info 
+	 * @param components the components 
+	 * @param requestMethod the request method 
+	 * @param jsonView the json view 
 	 * @return the parameter
 	 */
 	public Parameter buildParams(ParameterInfo parameterInfo, Components components,
@@ -433,9 +433,9 @@ public abstract class AbstractRequestService {
 	/**
 	 * Build param parameter.
 	 *
-	 * @param parameterInfo the parameter info
-	 * @param components the components
-	 * @param jsonView the json view
+	 * @param parameterInfo the parameter info 
+	 * @param components the components 
+	 * @param jsonView the json view 
 	 * @return the parameter
 	 */
 	private Parameter buildParam(ParameterInfo parameterInfo, Components components, JsonView jsonView) {
@@ -472,7 +472,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * Apply bean validator annotations.
 	 *
-	 * @param parameter the parameter
+	 * @param parameter the parameter 
 	 * @param annotations the annotations
 	 */
 	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
@@ -489,8 +489,8 @@ public abstract class AbstractRequestService {
 	/**
 	 * Apply bean validator annotations.
 	 *
-	 * @param requestBody the request body
-	 * @param annotations the annotations
+	 * @param requestBody the request body 
+	 * @param annotations the annotations 
 	 * @param isOptional the is optional
 	 */
 	public void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
@@ -516,7 +516,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * Calculate size.
 	 *
-	 * @param annos the annos
+	 * @param annos the annos 
 	 * @param schema the schema
 	 */
 	private void calculateSize(Map<String, Annotation> annos, Schema<?> schema) {
@@ -545,7 +545,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * Gets api parameters.
 	 *
-	 * @param method the method
+	 * @param method the method 
 	 * @return the api parameters
 	 */
 	private Map<String, io.swagger.v3.oas.annotations.Parameter> getApiParameters(Method method) {
@@ -584,7 +584,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * Apply validations to schema.
 	 *
-	 * @param annos the annos
+	 * @param annos the annos 
 	 * @param schema the schema
 	 */
 	private void applyValidationsToSchema(Map<String, Annotation> annos, Schema<?> schema) {

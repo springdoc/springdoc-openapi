@@ -51,10 +51,10 @@ public class RequestService extends AbstractRequestService {
 	/**
 	 * Instantiates a new Request builder.
 	 *
-	 * @param parameterBuilder the parameter builder 
-	 * @param requestBodyService the request body builder
-	 * @param operationService the operation builder
-	 * @param parameterCustomizers the parameter customizers 
+	 * @param parameterBuilder the parameter builder  
+	 * @param requestBodyService the request body builder 
+	 * @param operationService the operation builder 
+	 * @param parameterCustomizers the parameter customizers  
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
 	public RequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,

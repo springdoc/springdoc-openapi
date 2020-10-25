@@ -42,8 +42,8 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 	/**
 	 * Instantiates a new Swagger index transformer.
 	 *
-	 * @param swaggerUiConfig the swagger ui config
-	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
+	 * @param swaggerUiConfig the swagger ui config 
+	 * @param swaggerUiOAuthProperties the swagger ui o auth properties 
 	 * @param objectMapper the object mapper
 	 */
 	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
