@@ -31,7 +31,7 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.Schema;
 
-import static org.springdoc.core.GenericParameterBuilder.isFile;
+import static org.springdoc.core.GenericParameterService.isFile;
 
 /**
  * The type File support converter.

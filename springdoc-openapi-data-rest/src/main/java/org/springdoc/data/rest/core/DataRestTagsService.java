@@ -28,8 +28,8 @@ import java.util.Set;
 
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.tags.Tag;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.SecurityParser;
+import org.springdoc.core.OpenAPIService;
+import org.springdoc.core.SecurityService;
 import org.springdoc.data.rest.SpringRepositoryRestResourceProvider;
 
 import org.springframework.data.rest.webmvc.ProfileController;
@@ -41,20 +41,20 @@ import org.springframework.web.method.HandlerMethod;
  * The type Data rest tags builder.
  * @author bnasslahsen
  */
-public class DataRestTagsBuilder {
+public class DataRestTagsService {
 
 	/**
 	 * The Open api builder.
 	 */
-	private final OpenAPIBuilder openAPIBuilder;
+	private final OpenAPIService openAPIService;
 
 	/**
 	 * Instantiates a new Data rest tags builder.
 	 *
-	 * @param openAPIBuilder the open api builder
+	 * @param openAPIService the open api builder
 	 */
-	public DataRestTagsBuilder(OpenAPIBuilder openAPIBuilder) {
-		this.openAPIBuilder = openAPIBuilder;
+	public DataRestTagsService(OpenAPIService openAPIService) {
+		this.openAPIService = openAPIService;
 	}
 
 	/**
@@ -95,21 +95,21 @@ public class DataRestTagsBuilder {
 				|| AlpsController.class.equals(handlerMethod.getBeanType())
 				|| ProfileController.class.equals(handlerMethod.getBeanType())) {
 			tagName = ProfileController.class.getSimpleName();
-			operation.addTagsItem(OpenAPIBuilder.splitCamelCase(tagName));
+			operation.addTagsItem(OpenAPIService.splitCamelCase(tagName));
 		}
 		else if (dataRestRepository != null && dataRestRepository.getDomainType() != null) {
 			Class<?> domainType = dataRestRepository.getDomainType();
 			Set<Tag> tags = new HashSet<>();
 			Set<String> tagsStr = new HashSet<>();
 			Class<?> repositoryType = dataRestRepository.getRepositoryType();
-			openAPIBuilder.buildTagsFromClass(repositoryType, tags, tagsStr);
+			openAPIService.buildTagsFromClass(repositoryType, tags, tagsStr);
 			if (!CollectionUtils.isEmpty(tagsStr))
 				tagsStr.forEach(operation::addTagsItem);
 			else {
 				tagName = tagName.replace("Repository", domainType.getSimpleName());
-				operation.addTagsItem(OpenAPIBuilder.splitCamelCase(tagName));
+				operation.addTagsItem(OpenAPIService.splitCamelCase(tagName));
 			}
-			final SecurityParser securityParser = openAPIBuilder.getSecurityParser();
+			final SecurityService securityParser = openAPIService.getSecurityParser();
 			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = securityParser.getSecurityRequirementsForClass(repositoryType);
 			if (!CollectionUtils.isEmpty(allSecurityTags))
 				securityParser.buildSecurityRequirement(allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]), operation);

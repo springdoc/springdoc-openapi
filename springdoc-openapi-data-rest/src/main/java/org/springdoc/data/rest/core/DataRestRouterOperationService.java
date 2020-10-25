@@ -57,7 +57,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
  * The type Data rest router operation builder.
  * @author bnasslahsen
  */
-public class DataRestRouterOperationBuilder {
+public class DataRestRouterOperationService {
 
 	/**
 	 * The constant UNDOCUMENTED_REQUEST_METHODS.
@@ -77,7 +77,7 @@ public class DataRestRouterOperationBuilder {
 	/**
 	 * The Data rest operation builder.
 	 */
-	private DataRestOperationBuilder dataRestOperationBuilder;
+	private DataRestOperationService dataRestOperationService;
 
 	/**
 	 * The Spring doc config properties.
@@ -87,14 +87,14 @@ public class DataRestRouterOperationBuilder {
 	/**
 	 * Instantiates a new Data rest router operation builder.
 	 *
-	 * @param dataRestOperationBuilder the data rest operation builder
+	 * @param dataRestOperationService the data rest operation builder
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param repositoryRestConfiguration the repository rest configuration
 	 * @param dataRestHalProvider the data rest hal provider
 	 */
-	public DataRestRouterOperationBuilder(DataRestOperationBuilder dataRestOperationBuilder, SpringDocConfigProperties springDocConfigProperties,
+	public DataRestRouterOperationService(DataRestOperationService dataRestOperationService, SpringDocConfigProperties springDocConfigProperties,
 			RepositoryRestConfiguration repositoryRestConfiguration, DataRestHalProvider dataRestHalProvider) {
-		this.dataRestOperationBuilder = dataRestOperationBuilder;
+		this.dataRestOperationService = dataRestOperationService;
 		this.springDocConfigProperties = springDocConfigProperties;
 		if (dataRestHalProvider.isHalEnabled())
 			springDocConfigProperties.setDefaultProducesMediaType(repositoryRestConfiguration.getDefaultMediaType().toString());
@@ -234,7 +234,7 @@ public class DataRestRouterOperationBuilder {
 		methodAttributes.calculateConsumesProduces(handlerMethod.getMethod());
 		routerOperation.setConsumes(methodAttributes.getMethodConsumes());
 		routerOperation.setProduces(methodAttributes.getMethodProduces());
-		Operation operation = dataRestOperationBuilder.buildOperation(handlerMethod, dataRestRepository,
+		Operation operation = dataRestOperationService.buildOperation(handlerMethod, dataRestRepository,
 				openAPI, requestMethod, operationPath, methodAttributes, resourceMetadata, methodResourceMapping, controllerType);
 		routerOperation.setOperationModel(operation);
 		routerOperationList.add(routerOperation);
