@@ -34,13 +34,31 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.apache.commons.lang3.ArrayUtils;
-
-import org.springframework.util.Assert;
+import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.fn.RouterOperation;
 
 /**
  * The type Operation builder.
+ * @author bnasslahsen
  */
 public class OperationBuilder {
+
+	/**
+	 * The Bean class.
+	 */
+	private Class<?> beanClass;
+
+	/**
+	 * The Bean method.
+	 */
+	private String beanMethod;
+
+	/**
+	 * The Parameter types.
+	 */
+	private Class<?>[] parameterTypes;
+
+
 	/**
 	 * The HTTP method for this operation.
 	 *
@@ -169,6 +187,17 @@ public class OperationBuilder {
 	}
 
 	/**
+	 * Tag operation builder.
+	 *
+	 * @param tag the tag
+	 * @return the operation builder
+	 */
+	public OperationBuilder tag(String tag) {
+		this.tags = ArrayUtils.add(tags, tag);
+		return this;
+	}
+
+	/**
 	 * Summary operation builder.
 	 *
 	 * @param summary the summary
@@ -230,7 +259,7 @@ public class OperationBuilder {
 	 * @return the operation builder
 	 */
 	public OperationBuilder parameter(ParameterBuilder parameterBuilder) {
-		this.parameters = ArrayUtils.add( this.parameters, parameterBuilder.build() );
+		this.parameters = ArrayUtils.add(this.parameters, parameterBuilder.build());
 		return this;
 	}
 
@@ -241,7 +270,7 @@ public class OperationBuilder {
 	 * @return the operation builder
 	 */
 	public OperationBuilder response(ApiResponseBuilder apiResponseBuilder) {
-		this.responses =  ArrayUtils.add( this.responses, apiResponseBuilder.build() );
+		this.responses = ArrayUtils.add(this.responses, apiResponseBuilder.build());
 		return this;
 	}
 
@@ -263,7 +292,7 @@ public class OperationBuilder {
 	 * @return the operation builder
 	 */
 	public OperationBuilder security(SecurityRequirementBuilder securityRequirementBuilder) {
-		this.security = ArrayUtils.add( this.security, securityRequirementBuilder.build() );
+		this.security = ArrayUtils.add(this.security, securityRequirementBuilder.build());
 		return this;
 	}
 
@@ -274,7 +303,7 @@ public class OperationBuilder {
 	 * @return the operation builder
 	 */
 	public OperationBuilder servers(ServerBuilder serverBuilder) {
-		this.servers = ArrayUtils.add( this.servers, serverBuilder.build() );
+		this.servers = ArrayUtils.add(this.servers, serverBuilder.build());
 		return this;
 	}
 
@@ -285,7 +314,7 @@ public class OperationBuilder {
 	 * @return the operation builder
 	 */
 	public OperationBuilder extensions(ExtensionBuilder extensionBuilder) {
-		this.extensions =  ArrayUtils.add( this.extensions, extensionBuilder.build() );
+		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}
 
@@ -312,14 +341,46 @@ public class OperationBuilder {
 	}
 
 	/**
+	 * Bean class operation builder.
+	 *
+	 * @param beanClass the bean class
+	 * @return the operation builder
+	 */
+	public OperationBuilder beanClass(Class<?> beanClass) {
+		this.beanClass = beanClass;
+		return this;
+	}
+
+	/**
+	 * Bean method operation builder.
+	 *
+	 * @param beanMethod the bean method
+	 * @return the operation builder
+	 */
+	public OperationBuilder beanMethod(String beanMethod) {
+		this.beanMethod = beanMethod;
+		return this;
+	}
+
+	/**
+	 * Parameter types operation builder.
+	 *
+	 * @param parameterTypes the parameter types
+	 * @return the operation builder
+	 */
+	public OperationBuilder parameterTypes(Class<?>[] parameterTypes) {
+		this.parameterTypes = parameterTypes;
+		return this;
+	}
+
+	/**
 	 * Build operation.
 	 *
 	 * @return the operation
 	 */
-	public Operation build() {
-		Assert.hasLength(operationId, "operationId can not be empty");
+	public RouterOperation build() {
 
-		return new Operation() {
+		Operation operation = new Operation() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
 				return null;
@@ -400,5 +461,22 @@ public class OperationBuilder {
 				return ignoreJsonView;
 			}
 		};
+
+		if (StringUtils.isEmpty(operation.operationId()) && (beanClass == null && beanMethod == null && parameterTypes == null))
+			throw new IllegalStateException("You should either fill, the Operation or at least the bean class and the bean method");
+
+		if (beanClass != null && beanMethod == null)
+			throw new IllegalStateException("The bean method, should not null");
+
+		if (StringUtils.isEmpty(operation.operationId()) && (beanClass == null && beanMethod == null))
+			throw new IllegalStateException("operationId can not be empty");
+
+		RouterOperation routerOperation = new RouterOperation();
+		routerOperation.setBeanClass(beanClass);
+		routerOperation.setBeanMethod(beanMethod);
+		routerOperation.setParameterTypes(parameterTypes);
+		routerOperation.setOperation(operation);
+		return routerOperation;
+
 	}
 }

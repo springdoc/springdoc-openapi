@@ -50,7 +50,7 @@ public class WebMvcActuatorProvider implements ActuatorProvider {
 	/**
 	 * Instantiates a new Web mvc actuator provider.
 	 *
-	 * @param webMvcEndpointHandlerMapping the web mvc endpoint handler mapping 
+	 * @param webMvcEndpointHandlerMapping the web mvc endpoint handler mapping
 	 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
 	 */
 	public WebMvcActuatorProvider(WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping, ControllerEndpointHandlerMapping controllerEndpointHandlerMapping) {

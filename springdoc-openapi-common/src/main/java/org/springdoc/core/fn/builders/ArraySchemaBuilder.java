@@ -32,6 +32,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Array schema builder.
+ * @author bnasslahsen
  */
 public class ArraySchemaBuilder {
 	/**

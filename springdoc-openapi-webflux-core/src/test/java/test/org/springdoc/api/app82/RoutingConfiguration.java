@@ -1,13 +1,13 @@
 package test.org.springdoc.api.app82;
 
-import org.springdoc.core.fn.RouterOperation;
+import org.springdoc.core.fn.builders.OperationBuilder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springdoc.core.Constants.ROUTER_ATTRIBUTE;
+import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.RequestPredicates.DELETE;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
@@ -22,19 +22,19 @@ public class RoutingConfiguration {
 	@Bean
 	public RouterFunction<ServerResponse> monoRouterFunction(UserHandler userHandler) {
 		return route(GET("/api/user/index").and(accept(APPLICATION_JSON)), userHandler::getAll)
-				.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("getAllUsers"))
+				.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(UserRepository.class).beanMethod("getAllUsers"))
 
 				.and(route(GET("/api/user/{id}").and(accept(APPLICATION_JSON)), userHandler::getUser)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("getUserById")))
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(UserRepository.class).beanMethod("getUserById")))
 
 				.and(route(POST("/api/user/post").and(accept(APPLICATION_JSON)), userHandler::postUser)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("saveUser")))
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(UserRepository.class).beanMethod("saveUser")))
 
 				.and(route(PUT("/api/user/put/{id}").and(accept(APPLICATION_JSON)), userHandler::putUser)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("putUser")))
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(UserRepository.class).beanMethod("putUser")))
 
 				.and(route(DELETE("/api/user/delete/{id}").and(accept(APPLICATION_JSON)), userHandler::deleteUser)
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(UserRepository.class).beanMethod("deleteUser")));
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(UserRepository.class).beanMethod("deleteUser")));
 	}
 
 }

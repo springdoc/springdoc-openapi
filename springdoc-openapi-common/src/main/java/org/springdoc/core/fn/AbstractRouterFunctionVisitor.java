@@ -22,7 +22,7 @@ package org.springdoc.core.fn;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -78,7 +78,10 @@ public class AbstractRouterFunctionVisitor {
 	 */
 	protected RouterFunctionData routerFunctionData;
 
-	protected Map<String,Object> attributes = new HashMap<>();
+	/**
+	 * The Attributes.
+	 */
+	protected Map<String,Object> attributes = new LinkedHashMap<>();
 
 	/**
 	 * Method.
@@ -288,12 +291,20 @@ public class AbstractRouterFunctionVisitor {
 		}
 	}
 
+	/**
+	 * Route.
+	 */
 	protected void route() {
 		this.routerFunctionData = new RouterFunctionData();
 		routerFunctionDatas.add(this.routerFunctionData);
 		this.routerFunctionData.addAttributes(this.attributes);
 	}
 
+	/**
+	 * Attributes.
+	 *
+	 * @param map the map
+	 */
 	public void attributes(Map<String, Object> map) {
 		this.attributes = map;
 	}

@@ -32,6 +32,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Server builder.
+ * @author bnasslahsen
  */
 public class ServerBuilder {
 	/**

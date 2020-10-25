@@ -36,8 +36,8 @@ public interface SpringDocPropertiesUtils {
 	/**
 	 * Put.
 	 *
-	 * @param name the name 
-	 * @param value the value 
+	 * @param name the name
+	 * @param value the value
 	 * @param params the params
 	 */
 	static void put(String name, List<String> value, Map<String, Object> params) {
@@ -49,8 +49,8 @@ public interface SpringDocPropertiesUtils {
 	/**
 	 * Put.
 	 *
-	 * @param name the name 
-	 * @param value the value 
+	 * @param name the name
+	 * @param value the value
 	 * @param params the params
 	 */
 	static void put(final String name, final Integer value, final Map<String, Object> params) {
@@ -62,8 +62,8 @@ public interface SpringDocPropertiesUtils {
 	/**
 	 * Put.
 	 *
-	 * @param name the name 
-	 * @param value the value 
+	 * @param name the name
+	 * @param value the value
 	 * @param params the params
 	 */
 	static void put(final String name, final Boolean value, final Map<String, Object> params) {
@@ -75,8 +75,8 @@ public interface SpringDocPropertiesUtils {
 	/**
 	 * Put.
 	 *
-	 * @param name the name 
-	 * @param value the value 
+	 * @param name the name
+	 * @param value the value
 	 * @param params the params
 	 */
 	static void put(final String name, final String value, final Map<String, Object> params) {
@@ -88,8 +88,8 @@ public interface SpringDocPropertiesUtils {
 	/**
 	 * Put.
 	 *
-	 * @param name the name 
-	 * @param value the value 
+	 * @param name the name
+	 * @param value the value
 	 * @param params the params
 	 */
 	static void put(String name, Map<String, String> value, Map<String, Object> params) {

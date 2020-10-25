@@ -34,7 +34,7 @@ public interface DelegatingMethodParameterCustomizer {
 	/**
 	 * Customize.
 	 *
-	 * @param originalParameter the original parameter 
+	 * @param originalParameter the original parameter
 	 * @param methodParameter the method parameter
 	 */
 	void customize(MethodParameter originalParameter, MethodParameter methodParameter);

@@ -143,10 +143,10 @@ public class OpenAPIService {
 	/**
 	 * Instantiates a new Open api builder.
 	 *
-	 * @param openAPI the open api 
-	 * @param context the context 
-	 * @param securityParser the security parser 
-	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param openAPI the open api
+	 * @param context the context
+	 * @param securityParser the security parser
+	 * @param springDocConfigProperties the spring doc config properties
 	 * @param openApiBuilderCustomisers the open api builder customisers
 	 */
 	OpenAPIService(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityService securityParser,
@@ -172,7 +172,7 @@ public class OpenAPIService {
 	/**
 	 * Split camel case string.
 	 *
-	 * @param str the str 
+	 * @param str the str
 	 * @return the string
 	 */
 	public static String splitCamelCase(String str) {
@@ -221,7 +221,7 @@ public class OpenAPIService {
 	/**
 	 * Update servers open api.
 	 *
-	 * @param openAPI the open api 
+	 * @param openAPI the open api
 	 * @return the open api
 	 */
 	public OpenAPI updateServers(OpenAPI openAPI) {
@@ -247,9 +247,9 @@ public class OpenAPIService {
 	/**
 	 * Build tags operation.
 	 *
-	 * @param handlerMethod the handler method 
-	 * @param operation the operation 
-	 * @param openAPI the open api 
+	 * @param handlerMethod the handler method
+	 * @param operation the operation
+	 * @param openAPI the open api
 	 * @return the operation
 	 */
 	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
@@ -298,8 +298,8 @@ public class OpenAPIService {
 	/**
 	 * Build tags from method.
 	 *
-	 * @param method the method 
-	 * @param tags the tags 
+	 * @param method the method
+	 * @param tags the tags
 	 * @param tagsStr the tags str
 	 */
 	private void buildTagsFromMethod(Method method, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr) {
@@ -320,8 +320,8 @@ public class OpenAPIService {
 	/**
 	 * Build tags from class.
 	 *
-	 * @param beanType the bean type 
-	 * @param tags the tags 
+	 * @param beanType the bean type
+	 * @param tags the tags
 	 * @param tagsStr the tags str
 	 */
 	public void buildTagsFromClass(Class<?> beanType, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr) {
@@ -343,8 +343,8 @@ public class OpenAPIService {
 	/**
 	 * Resolve properties schema.
 	 *
-	 * @param schema the schema 
-	 * @param propertyResolverUtils the property resolver utils 
+	 * @param schema the schema
+	 * @param propertyResolverUtils the property resolver utils
 	 * @return the schema
 	 */
 	@SuppressWarnings("unchecked")
@@ -409,7 +409,7 @@ public class OpenAPIService {
 	/**
 	 * Build open api with open api definition.
 	 *
-	 * @param openAPI the open api 
+	 * @param openAPI the open api
 	 * @param apiDef the api def
 	 */
 	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef) {
@@ -436,7 +436,7 @@ public class OpenAPIService {
 	/**
 	 * Resolve properties info.
 	 *
-	 * @param info the info 
+	 * @param info the info
 	 * @return the info
 	 */
 	private Info resolveProperties(Info info) {
@@ -464,8 +464,8 @@ public class OpenAPIService {
 	/**
 	 * Resolve property.
 	 *
-	 * @param getProperty the get property 
-	 * @param setProperty the set property 
+	 * @param getProperty the get property
+	 * @param setProperty the set property
 	 * @param propertyResolverUtils the property resolver utils
 	 */
 	private void resolveProperty(Supplier<String> getProperty, Consumer<String> setProperty,
@@ -512,7 +512,7 @@ public class OpenAPIService {
 	/**
 	 * Add security scheme.
 	 *
-	 * @param apiSecurityScheme the api security scheme 
+	 * @param apiSecurityScheme the api security scheme
 	 * @param components the components
 	 */
 	private void addSecurityScheme(Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme,
@@ -537,8 +537,8 @@ public class OpenAPIService {
 	/**
 	 * Gets api def class.
 	 *
-	 * @param scanner the scanner 
-	 * @param packagesToScan the packages to scan 
+	 * @param scanner the scanner
+	 * @param packagesToScan the packages to scan
 	 * @return the api def class
 	 */
 	private OpenAPIDefinition getApiDefClass(ClassPathScanningCandidateComponentProvider scanner,
@@ -561,7 +561,7 @@ public class OpenAPIService {
 	/**
 	 * Is auto tag classes boolean.
 	 *
-	 * @param operation the operation 
+	 * @param operation the operation
 	 * @return the boolean
 	 */
 	public boolean isAutoTagClasses(Operation operation) {
@@ -571,8 +571,8 @@ public class OpenAPIService {
 	/**
 	 * Gets security schemes classes.
 	 *
-	 * @param scanner the scanner 
-	 * @param packagesToScan the packages to scan 
+	 * @param scanner the scanner
+	 * @param packagesToScan the packages to scan
 	 * @return the security schemes classes
 	 */
 	private Set<io.swagger.v3.oas.annotations.security.SecurityScheme> getSecuritySchemesClasses(
@@ -595,7 +595,7 @@ public class OpenAPIService {
 	/**
 	 * Add tag.
 	 *
-	 * @param handlerMethods the handler methods 
+	 * @param handlerMethods the handler methods
 	 * @param tag the tag
 	 */
 	public void addTag(Set<HandlerMethod> handlerMethods, io.swagger.v3.oas.models.tags.Tag tag) {

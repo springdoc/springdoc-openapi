@@ -29,6 +29,7 @@ import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 
 /**
  * The type Discriminator mapping builder.
+ * @author bnasslahsen
  */
 public class DiscriminatorMappingBuilder {
 

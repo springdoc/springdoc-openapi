@@ -31,6 +31,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Example object builder.
+ * @author bnasslahsen
  */
 public class ExampleObjectBuilder {
 

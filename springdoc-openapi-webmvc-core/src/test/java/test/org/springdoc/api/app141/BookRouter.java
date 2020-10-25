@@ -24,7 +24,6 @@
 package test.org.springdoc.api.app141;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.fn.builders.OperationBuilder;
 import org.springdoc.core.fn.builders.ParameterBuilder;
 
@@ -33,7 +32,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.function.RouterFunction;
 
-import static org.springdoc.core.Constants.ROUTER_ATTRIBUTE;
+import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
 import static org.springframework.web.servlet.function.RequestPredicates.GET;
 import static org.springframework.web.servlet.function.RequestPredicates.accept;
 import static org.springframework.web.servlet.function.RequestPredicates.path;
@@ -49,14 +48,14 @@ class BookRouter {
 	RouterFunction<?> routes(BookRepository br) {
 		return nest(path("/greeter").and(path("/greeter2")),
 				route(GET("/books").and(accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)), req -> ok().body(br.findAll()))
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(BookRepository.class).beanMethod("findAll"))
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(BookRepository.class).beanMethod("findAll"))
 
 						.and(route(GET("/books").and(accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN)), req -> ok().body(br.findAll()))
-								.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(BookRepository.class).beanMethod("findAll")))
+								.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(BookRepository.class).beanMethod("findAll")))
 
 						.and(route(GET("/books/{author}"), req -> ok().body(br.findByAuthor(req.pathVariable("author"))))
-								.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder()
-										.operation(OperationBuilder.builder().operationId("findByAuthor").parameter(ParameterBuilder.builder().name("author").in(ParameterIn.PATH)))
+								.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder()
+										.operationId("findByAuthor").parameter(ParameterBuilder.builder().name("author").in(ParameterIn.PATH))
 										.beanClass(BookRepository.class).beanMethod("findByAuthor")))
 		);
 	}
@@ -65,11 +64,11 @@ class BookRouter {
 	RouterFunction<?> routes1(BookRepository br) {
 		return nest(accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML),
 				route(GET("/books"), req -> ok().body(br.findAll()))
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(BookRepository.class).beanMethod("findAll"))
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(BookRepository.class).beanMethod("findAll"))
 
 						.and(route(GET("/books/{author}"), req -> ok().body(br.findByAuthor(req.pathVariable("author"))))
-								.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder()
-										.operation(OperationBuilder.builder().operationId("findByAuthor").parameter(ParameterBuilder.builder().name("author").in(ParameterIn.PATH)))
+								.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder()
+										.operationId("findByAuthor").parameter(ParameterBuilder.builder().name("author").in(ParameterIn.PATH))
 										.beanClass(BookRepository.class).beanMethod("findByAuthor"))));
 	}
 
@@ -77,15 +76,15 @@ class BookRouter {
 	RouterFunction<?> routes3(BookRepository br) {
 		return nest(path("/greeter").or(path("/greeter2")),
 				route(GET("/books").and(accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)), req -> ok().body(br.findAll()))
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(BookRepository.class).beanMethod("findAll"))
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(BookRepository.class).beanMethod("findAll"))
 
 
 						.and(route(GET("/books").and(accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN)), req -> ok().body(br.findAll()))
-								.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(BookRepository.class).beanMethod("findAll")))
+								.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(BookRepository.class).beanMethod("findAll")))
 
 						.and(route(GET("/books/{author}"), req -> ok().body(br.findByAuthor(req.pathVariable("author"))))
-								.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder()
-										.operation(OperationBuilder.builder().operationId("findByAuthor").parameter(ParameterBuilder.builder().name("author").in(ParameterIn.PATH)))
+								.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder()
+										.operationId("findByAuthor").parameter(ParameterBuilder.builder().name("author").in(ParameterIn.PATH))
 										.beanClass(BookRepository.class).beanMethod("findByAuthor"))));
 	}
 
@@ -93,14 +92,14 @@ class BookRouter {
 	RouterFunction<?> routes4(BookRepository br) {
 		return nest(path("/test"), nest(path("/greeter").and(path("/greeter2")),
 				route(GET("/books").and(accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)), req -> ok().body(br.findAll()))
-						.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(BookRepository.class).beanMethod("findAll"))
+						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(BookRepository.class).beanMethod("findAll"))
 
 						.and(route(GET("/books").and(accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN)), req -> ok().body(br.findAll()))
-								.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder().beanClass(BookRepository.class).beanMethod("findAll")))
+								.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(BookRepository.class).beanMethod("findAll")))
 
 						.and(route(GET("/books/{author}"), req -> ok().body(br.findByAuthor(req.pathVariable("author"))))
-								.withAttribute(ROUTER_ATTRIBUTE, RouterOperation.builder()
-										.operation(OperationBuilder.builder().operationId("findByAuthor").parameter(ParameterBuilder.builder().name("author").in(ParameterIn.PATH)))
+								.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder()
+										.operationId("findByAuthor").parameter(ParameterBuilder.builder().name("author").in(ParameterIn.PATH))
 										.beanClass(BookRepository.class).beanMethod("findByAuthor")))));
 	}
 }

@@ -35,8 +35,8 @@ public interface OperationCustomizer {
 	/**
 	 * Customize operation.
 	 *
-	 * @param operation input operation 
-	 * @param handlerMethod original handler method 
+	 * @param operation input operation
+	 * @param handlerMethod original handler method
 	 * @return customized operation
 	 */
 	Operation customize(Operation operation, HandlerMethod handlerMethod);

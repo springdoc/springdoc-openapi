@@ -29,6 +29,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 /**
  * The type Security requirement builder.
+ * @author bnasslahsen
  */
 public class SecurityRequirementBuilder {
 	/**

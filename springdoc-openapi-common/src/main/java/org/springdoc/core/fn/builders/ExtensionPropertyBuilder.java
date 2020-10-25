@@ -29,6 +29,7 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 
 /**
  * The type Extension property builder.
+ * @author bnasslahsen
  */
 public class ExtensionPropertyBuilder {
 

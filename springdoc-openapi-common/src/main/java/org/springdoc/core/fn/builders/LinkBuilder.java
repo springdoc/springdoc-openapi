@@ -33,6 +33,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Link builder.
+ * @author bnasslahsen
  */
 public class LinkBuilder {
 	/**

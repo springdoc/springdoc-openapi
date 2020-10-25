@@ -94,7 +94,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
 import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
-import static org.springdoc.core.Constants.ROUTER_ATTRIBUTE;
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.isDeprecated;
 
 /**
@@ -518,7 +517,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected void getRouterFunctionPaths(String beanName, AbstractRouterFunctionVisitor routerFunctionVisitor) {
 		boolean withRouterOperation = routerFunctionVisitor.getRouterFunctionDatas().stream()
-				.anyMatch(routerFunctionData -> routerFunctionData.getAttributes().containsKey(ROUTER_ATTRIBUTE) || routerFunctionData.getAttributes().containsKey(OPERATION_ATTRIBUTE));
+				.anyMatch(routerFunctionData -> routerFunctionData.getAttributes().containsKey(OPERATION_ATTRIBUTE));
 		if (withRouterOperation) {
 			List<RouterOperation> operationList = routerFunctionVisitor.getRouterFunctionDatas().stream().map(RouterOperation::new).collect(Collectors.toList());
 			calculatePath(operationList);
