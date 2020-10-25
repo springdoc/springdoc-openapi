@@ -264,6 +264,11 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		}
 	}
 
+	/**
+	 * By reversed request mapping infos comparator.
+	 *
+	 * @return the comparator
+	 */
 	private Comparator<Map.Entry<RequestMappingInfo, HandlerMethod>> byReversedRequestMappingInfos() {
 		return Comparator.<Map.Entry<RequestMappingInfo, HandlerMethod>, String>
 				comparing(a -> a.getKey().toString())

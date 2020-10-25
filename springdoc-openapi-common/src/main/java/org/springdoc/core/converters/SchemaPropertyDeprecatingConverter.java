@@ -63,7 +63,7 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 	/**
 	 * Contains deprecated annotation boolean.
 	 *
-	 * @param annotations the annotations
+	 * @param annotations the annotations 
 	 * @return the boolean
 	 */
 	public static boolean containsDeprecatedAnnotation(Annotation[] annotations) {
@@ -82,7 +82,7 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 	/**
 	 * Is deprecated boolean.
 	 *
-	 * @param annotatedElement the annotated element
+	 * @param annotatedElement the annotated element 
 	 * @return the boolean
 	 */
 	public static boolean isDeprecated(AnnotatedElement annotatedElement) {

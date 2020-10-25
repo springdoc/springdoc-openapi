@@ -62,11 +62,11 @@ public class RequestBodyService {
 	/**
 	 * Build request body from doc optional.
 	 *
-	 * @param requestBody the request body
-	 * @param requestBodyOp the request body op
-	 * @param methodAttributes the method attributes
-	 * @param components the components
-	 * @param jsonViewAnnotation the json view annotation
+	 * @param requestBody the request body 
+	 * @param requestBodyOp the request body op 
+	 * @param methodAttributes the method attributes 
+	 * @param components the components 
+	 * @param jsonViewAnnotation the json view annotation 
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(
@@ -114,13 +114,13 @@ public class RequestBodyService {
 	/**
 	 * Build resquest body content.
 	 *
-	 * @param requestBody the request body
-	 * @param requestBodyOp the request body op
-	 * @param methodAttributes the method attributes
-	 * @param components the components
-	 * @param jsonViewAnnotation the json view annotation
-	 * @param classConsumes the class consumes
-	 * @param methodConsumes the method consumes
+	 * @param requestBody the request body 
+	 * @param requestBodyOp the request body op 
+	 * @param methodAttributes the method attributes 
+	 * @param components the components 
+	 * @param jsonViewAnnotation the json view annotation 
+	 * @param classConsumes the class consumes 
+	 * @param methodConsumes the method consumes 
 	 * @param requestBodyObject the request body object
 	 */
 	private void buildResquestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, String[] classConsumes, String[] methodConsumes, RequestBody requestBodyObject) {
@@ -155,7 +155,7 @@ public class RequestBodyService {
 	/**
 	 * Contains response body schema boolean.
 	 *
-	 * @param content the content
+	 * @param content the content 
 	 * @return the boolean
 	 */
 	private boolean containsResponseBodySchema(Content content) {
@@ -165,7 +165,7 @@ public class RequestBodyService {
 	/**
 	 * Get consumes string [ ].
 	 *
-	 * @param classConsumes the class consumes
+	 * @param classConsumes the class consumes 
 	 * @return the string [ ]
 	 */
 	private String[] getConsumes(String[] classConsumes) {
@@ -175,9 +175,9 @@ public class RequestBodyService {
 	/**
 	 * Build request body from doc optional.
 	 *
-	 * @param requestBody the request body
-	 * @param methodAttributes the method attributes
-	 * @param components the components
+	 * @param requestBody the request body 
+	 * @param methodAttributes the method attributes 
+	 * @param components the components 
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
@@ -189,10 +189,10 @@ public class RequestBodyService {
 	/**
 	 * Build request body from doc optional.
 	 *
-	 * @param requestBody the request body
-	 * @param methodAttributes the method attributes
-	 * @param components the components
-	 * @param jsonViewAnnotation the json view annotation
+	 * @param requestBody the request body 
+	 * @param methodAttributes the method attributes 
+	 * @param components the components 
+	 * @param jsonViewAnnotation the json view annotation 
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
@@ -204,10 +204,10 @@ public class RequestBodyService {
 	/**
 	 * Build request body from doc optional.
 	 *
-	 * @param requestBody the request body
-	 * @param requestBodyOp the request body op
-	 * @param methodAttributes the method attributes
-	 * @param components the components
+	 * @param requestBody the request body 
+	 * @param requestBodyOp the request body op 
+	 * @param methodAttributes the method attributes 
+	 * @param components the components 
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(
@@ -220,9 +220,9 @@ public class RequestBodyService {
 	/**
 	 * Calculate request body info.
 	 *
-	 * @param components the components
-	 * @param methodAttributes the method attributes
-	 * @param parameterInfo the parameter info
+	 * @param components the components 
+	 * @param methodAttributes the method attributes 
+	 * @param parameterInfo the parameter info 
 	 * @param requestBodyInfo the request body info
 	 */
 	public void calculateRequestBodyInfo(Components components, MethodAttributes methodAttributes,
@@ -250,11 +250,11 @@ public class RequestBodyService {
 	/**
 	 * Build request body request body.
 	 *
-	 * @param requestBody the request body
-	 * @param components the components
-	 * @param methodAttributes the method attributes
-	 * @param parameterInfo the parameter info
-	 * @param requestBodyInfo the request body info
+	 * @param requestBody the request body 
+	 * @param components the components 
+	 * @param methodAttributes the method attributes 
+	 * @param parameterInfo the parameter info 
+	 * @param requestBodyInfo the request body info 
 	 * @return the request body
 	 */
 	private RequestBody buildRequestBody(RequestBody requestBody, Components components,
@@ -281,8 +281,8 @@ public class RequestBodyService {
 	/**
 	 * Merge content.
 	 *
-	 * @param requestBody the request body
-	 * @param methodAttributes the method attributes
+	 * @param requestBody the request body 
+	 * @param methodAttributes the method attributes 
 	 * @param schema the schema
 	 */
 	private void mergeContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
@@ -293,8 +293,8 @@ public class RequestBodyService {
 	/**
 	 * Build content.
 	 *
-	 * @param requestBody the request body
-	 * @param methodAttributes the method attributes
+	 * @param requestBody the request body 
+	 * @param methodAttributes the method attributes 
 	 * @param schema the schema
 	 */
 	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
@@ -305,9 +305,9 @@ public class RequestBodyService {
 	/**
 	 * Build content.
 	 *
-	 * @param requestBody the request body
-	 * @param methodAttributes the method attributes
-	 * @param schema the schema
+	 * @param requestBody the request body 
+	 * @param methodAttributes the method attributes 
+	 * @param schema the schema 
 	 * @param content the content
 	 */
 	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content) {

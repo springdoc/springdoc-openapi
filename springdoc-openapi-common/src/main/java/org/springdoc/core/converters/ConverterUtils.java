@@ -84,7 +84,7 @@ public class ConverterUtils {
 	/**
 	 * Is response type wrapper boolean.
 	 *
-	 * @param rawClass the raw class
+	 * @param rawClass the raw class 
 	 * @return the boolean
 	 */
 	public static boolean isResponseTypeWrapper(Class<?> rawClass) {
@@ -94,7 +94,7 @@ public class ConverterUtils {
 	/**
 	 * Is response type to ignore boolean.
 	 *
-	 * @param rawClass the raw class
+	 * @param rawClass the raw class 
 	 * @return the boolean
 	 */
 	public static boolean isResponseTypeToIgnore(Class<?> rawClass) {
@@ -126,7 +126,7 @@ public class ConverterUtils {
 	/**
 	 * Is flux type wrapper boolean.
 	 *
-	 * @param rawClass the raw class
+	 * @param rawClass the raw class 
 	 * @return the boolean
 	 */
 	public static boolean isFluxTypeWrapper(Class<?> rawClass) {

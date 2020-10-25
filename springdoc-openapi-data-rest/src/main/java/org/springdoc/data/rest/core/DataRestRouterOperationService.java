@@ -87,9 +87,9 @@ public class DataRestRouterOperationService {
 	/**
 	 * Instantiates a new Data rest router operation builder.
 	 *
-	 * @param dataRestOperationService the data rest operation builder
-	 * @param springDocConfigProperties the spring doc config properties
-	 * @param repositoryRestConfiguration the repository rest configuration
+	 * @param dataRestOperationService the data rest operation builder 
+	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param repositoryRestConfiguration the repository rest configuration 
 	 * @param dataRestHalProvider the data rest hal provider
 	 */
 	public DataRestRouterOperationService(DataRestOperationService dataRestOperationService, SpringDocConfigProperties springDocConfigProperties,
@@ -103,10 +103,10 @@ public class DataRestRouterOperationService {
 	/**
 	 * Build entity router operation list.
 	 *
-	 * @param routerOperationList the router operation list
-	 * @param handlerMethodMap the handler method map
-	 * @param resourceMetadata the resource metadata
-	 * @param dataRestRepository the repository data rest
+	 * @param routerOperationList the router operation list 
+	 * @param handlerMethodMap the handler method map 
+	 * @param resourceMetadata the resource metadata 
+	 * @param dataRestRepository the repository data rest 
 	 * @param openAPI the open api
 	 */
 	public void buildEntityRouterOperationList(List<RouterOperation> routerOperationList,
@@ -122,11 +122,11 @@ public class DataRestRouterOperationService {
 	/**
 	 * Build search router operation list.
 	 *
-	 * @param routerOperationList the router operation list
-	 * @param handlerMethodMap the handler method map
-	 * @param resourceMetadata the resource metadata
-	 * @param dataRestRepository the repository data rest
-	 * @param openAPI the open api
+	 * @param routerOperationList the router operation list 
+	 * @param handlerMethodMap the handler method map 
+	 * @param resourceMetadata the resource metadata 
+	 * @param dataRestRepository the repository data rest 
+	 * @param openAPI the open api 
 	 * @param methodResourceMapping the method resource mapping
 	 */
 	public void buildSearchRouterOperationList(List<RouterOperation> routerOperationList,
@@ -144,14 +144,14 @@ public class DataRestRouterOperationService {
 	/**
 	 * Build router operation list.
 	 *
-	 * @param routerOperationList the router operation list
-	 * @param resourceMetadata the resource metadata
-	 * @param dataRestRepository the repository data rest
-	 * @param openAPI the open api
-	 * @param path the path
-	 * @param entry the entry
-	 * @param subPath the sub path
-	 * @param controllerType the controllerType
+	 * @param routerOperationList the router operation list 
+	 * @param resourceMetadata the resource metadata 
+	 * @param dataRestRepository the repository data rest 
+	 * @param openAPI the open api 
+	 * @param path the path 
+	 * @param entry the entry 
+	 * @param subPath the sub path 
+	 * @param controllerType the controllerType 
 	 * @param methodResourceMapping the method resource mapping
 	 */
 	private void buildRouterOperationList(List<RouterOperation> routerOperationList, ResourceMetadata resourceMetadata,
@@ -192,11 +192,12 @@ public class DataRestRouterOperationService {
 	/**
 	 * Calculate operation path string.
 	 *
-	 * @param path the path
-	 * @param subPath the sub path
-	 * @param patterns the patterns
-	 * @param regexMap the regex map
-	 * @param controllerType the controller type
+	 * @param path the path 
+	 * @param subPath the sub path 
+	 * @param patterns the patterns 
+	 * @param regexMap the regex map 
+	 * @param controllerType the controller type 
+	 * @param relationName the relation name 
 	 * @return the string
 	 */
 	private String calculateOperationPath(String path, String subPath, Set<String> patterns,
@@ -216,14 +217,14 @@ public class DataRestRouterOperationService {
 	/**
 	 * Build router operation.
 	 *
-	 * @param routerOperationList the router operation list
-	 * @param dataRestRepository the repository data rest
-	 * @param openAPI the open api
-	 * @param methodResourceMapping the method resource mapping
-	 * @param handlerMethod the handler method
-	 * @param requestMethod the request method
-	 * @param resourceMetadata the resource metadata
-	 * @param operationPath the operation path
+	 * @param routerOperationList the router operation list 
+	 * @param dataRestRepository the repository data rest 
+	 * @param openAPI the open api 
+	 * @param methodResourceMapping the method resource mapping 
+	 * @param handlerMethod the handler method 
+	 * @param requestMethod the request method 
+	 * @param resourceMetadata the resource metadata 
+	 * @param operationPath the operation path 
 	 * @param controllerType the controller type
 	 */
 	private void buildRouterOperation(List<RouterOperation> routerOperationList, DataRestRepository dataRestRepository, OpenAPI openAPI,
@@ -244,7 +245,7 @@ public class DataRestRouterOperationService {
 	/**
 	 * Gets search entry.
 	 *
-	 * @param handlerMethodMap the handler method map
+	 * @param handlerMethodMap the handler method map 
 	 * @return the search entry
 	 */
 	private Optional<Entry<RequestMappingInfo, HandlerMethod>> getSearchEntry(Map<RequestMappingInfo, HandlerMethod> handlerMethodMap) {
@@ -264,9 +265,9 @@ public class DataRestRouterOperationService {
 	/**
 	 * Is search controller present boolean.
 	 *
-	 * @param requestMappingInfo the request mapping info
-	 * @param handlerMethod the handler method
-	 * @param requestMethod the request method
+	 * @param requestMappingInfo the request mapping info 
+	 * @param handlerMethod the handler method 
+	 * @param requestMethod the request method 
 	 * @return the boolean
 	 */
 	private boolean isSearchControllerPresent(RequestMappingInfo requestMappingInfo, HandlerMethod handlerMethod, RequestMethod requestMethod) {

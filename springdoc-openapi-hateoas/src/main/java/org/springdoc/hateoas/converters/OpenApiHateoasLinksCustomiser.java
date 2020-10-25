@@ -20,8 +20,16 @@ import org.springframework.hateoas.Link;
  */
 public class OpenApiHateoasLinksCustomiser extends SpecFilter implements OpenApiCustomiser {
 
+	/**
+	 * The Spring doc config properties.
+	 */
 	private final SpringDocConfigProperties springDocConfigProperties;
 
+	/**
+	 * Instantiates a new Open api hateoas links customiser.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 */
 	public OpenApiHateoasLinksCustomiser(SpringDocConfigProperties springDocConfigProperties) {
 		this.springDocConfigProperties = springDocConfigProperties;
 	}
