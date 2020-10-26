@@ -58,7 +58,7 @@ public class SpringDocUtils {
 	/**
 	 * Add deprecated type spring doc utils.
 	 *
-	 * @param cls the cls 
+	 * @param cls the cls
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addDeprecatedType(Class<? extends Annotation> cls) {
@@ -69,7 +69,7 @@ public class SpringDocUtils {
 	/**
 	 * Add rest controllers spring doc utils.
 	 *
-	 * @param classes the classes 
+	 * @param classes the classes
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addRestControllers(Class<?>... classes) {
@@ -80,7 +80,7 @@ public class SpringDocUtils {
 	/**
 	 * Add hidden rest controllers spring doc utils.
 	 *
-	 * @param classes the classes 
+	 * @param classes the classes
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addHiddenRestControllers(Class<?>... classes) {
@@ -91,7 +91,7 @@ public class SpringDocUtils {
 	/**
 	 * Add hidden rest controllers spring doc utils.
 	 *
-	 * @param classes the classes 
+	 * @param classes the classes
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addHiddenRestControllers(String... classes) {
@@ -102,8 +102,8 @@ public class SpringDocUtils {
 	/**
 	 * Replace with class spring doc utils.
 	 *
-	 * @param source the source 
-	 * @param target the target 
+	 * @param source the source
+	 * @param target the target
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils replaceWithClass(Class source, Class target) {
@@ -114,8 +114,8 @@ public class SpringDocUtils {
 	/**
 	 * Replace with schema spring doc utils.
 	 *
-	 * @param source the source 
-	 * @param target the target 
+	 * @param source the source
+	 * @param target the target
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils replaceWithSchema(Class source, Schema target) {
@@ -126,7 +126,7 @@ public class SpringDocUtils {
 	/**
 	 * Add request wrapper to ignore spring doc utils.
 	 *
-	 * @param classes the classes 
+	 * @param classes the classes
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addRequestWrapperToIgnore(Class<?>... classes) {
@@ -137,7 +137,7 @@ public class SpringDocUtils {
 	/**
 	 * Remove request wrapper to ignore spring doc utils.
 	 *
-	 * @param classes the classes 
+	 * @param classes the classes
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils removeRequestWrapperToIgnore(Class<?>... classes) {
@@ -148,7 +148,7 @@ public class SpringDocUtils {
 	/**
 	 * Add file type spring doc utils.
 	 *
-	 * @param classes the classes 
+	 * @param classes the classes
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addFileType(Class<?>... classes) {
@@ -159,7 +159,7 @@ public class SpringDocUtils {
 	/**
 	 * Add response wrapper to ignore spring doc utils.
 	 *
-	 * @param cls the cls 
+	 * @param cls the cls
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addResponseWrapperToIgnore(Class<?> cls) {
@@ -170,7 +170,7 @@ public class SpringDocUtils {
 	/**
 	 * Remove response wrapper to ignore spring doc utils.
 	 *
-	 * @param cls the cls 
+	 * @param cls the cls
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils removeResponseWrapperToIgnore(Class<?> cls) {
@@ -181,7 +181,7 @@ public class SpringDocUtils {
 	/**
 	 * Add response type to ignore spring doc utils.
 	 *
-	 * @param cls the cls 
+	 * @param cls the cls
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addResponseTypeToIgnore(Class<?> cls) {
@@ -192,7 +192,7 @@ public class SpringDocUtils {
 	/**
 	 * Remove response type to ignore spring doc utils.
 	 *
-	 * @param cls the cls 
+	 * @param cls the cls
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils removeResponseTypeToIgnore(Class<?> cls) {
@@ -203,7 +203,7 @@ public class SpringDocUtils {
 	/**
 	 * Add annotations to ignore spring doc utils.
 	 *
-	 * @param classes the classes 
+	 * @param classes the classes
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addAnnotationsToIgnore(Class<?>... classes) {
@@ -214,7 +214,7 @@ public class SpringDocUtils {
 	/**
 	 * Remove annotations to ignore spring doc utils.
 	 *
-	 * @param classes the classes 
+	 * @param classes the classes
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils removeAnnotationsToIgnore(Class<?>... classes) {
@@ -225,7 +225,7 @@ public class SpringDocUtils {
 	/**
 	 * Add flux wrapper to ignore spring doc utils.
 	 *
-	 * @param cls the cls 
+	 * @param cls the cls
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addFluxWrapperToIgnore(Class<?> cls) {
@@ -236,7 +236,7 @@ public class SpringDocUtils {
 	/**
 	 * Remove flux wrapper to ignore spring doc utils.
 	 *
-	 * @param cls the cls 
+	 * @param cls the cls
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils removeFluxWrapperToIgnore(Class<?> cls) {
@@ -247,7 +247,7 @@ public class SpringDocUtils {
 	/**
 	 * Add simple types for parameter object spring doc utils.
 	 *
-	 * @param classes the classes 
+	 * @param classes the classes
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addSimpleTypesForParameterObject(Class<?>... classes) {
@@ -258,7 +258,7 @@ public class SpringDocUtils {
 	/**
 	 * Remove simple types for parameter object spring doc utils.
 	 *
-	 * @param classes the classes 
+	 * @param classes the classes
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils removeSimpleTypesForParameterObject(Class<?>... classes) {
@@ -269,7 +269,7 @@ public class SpringDocUtils {
 	/**
 	 * Add simple type predicate for parameter object spring doc utils.
 	 *
-	 * @param predicate the predicate 
+	 * @param predicate the predicate
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils addSimpleTypePredicateForParameterObject(Predicate<Class<?>> predicate) {
@@ -280,7 +280,7 @@ public class SpringDocUtils {
 	/**
 	 * Disable replacement spring doc utils.
 	 *
-	 * @param source the source 
+	 * @param source the source
 	 * @return the spring doc utils
 	 */
 	public SpringDocUtils disableReplacement(Class source) {

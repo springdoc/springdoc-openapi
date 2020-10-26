@@ -53,9 +53,9 @@ public class PolymorphicModelConverter implements ModelConverter {
 	/**
 	 * Compose polymorphic schema schema.
 	 *
-	 * @param type the type 
-	 * @param schema the schema 
-	 * @param schemas the schemas 
+	 * @param type the type
+	 * @param schema the schema
+	 * @param schemas the schemas
 	 * @return the schema
 	 */
 	private Schema composePolymorphicSchema(AnnotatedType type, Schema schema, Collection<Schema> schemas) {
@@ -78,7 +78,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 	/**
 	 * Is concrete class boolean.
 	 *
-	 * @param type the type 
+	 * @param type the type
 	 * @return the boolean
 	 */
 	private boolean isConcreteClass(AnnotatedType type) {

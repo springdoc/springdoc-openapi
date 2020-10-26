@@ -50,7 +50,7 @@ public class WebFluxActuatorProvider implements ActuatorProvider {
 	/**
 	 * Instantiates a new Web flux actuator provider.
 	 *
-	 * @param webFluxEndpointHandlerMapping the web flux endpoint handler mapping 
+	 * @param webFluxEndpointHandlerMapping the web flux endpoint handler mapping
 	 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
 	 */
 	public WebFluxActuatorProvider(WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping, ControllerEndpointHandlerMapping controllerEndpointHandlerMapping) {

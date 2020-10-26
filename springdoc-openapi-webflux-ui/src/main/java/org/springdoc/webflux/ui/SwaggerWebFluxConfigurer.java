@@ -54,8 +54,8 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	/**
 	 * Instantiates a new Swagger web flux configurer.
 	 *
-	 * @param swaggerUiConfigParameters the swagger ui calculated config 
-	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param swaggerUiConfigParameters the swagger ui calculated config
+	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 */
 	public SwaggerWebFluxConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer) {

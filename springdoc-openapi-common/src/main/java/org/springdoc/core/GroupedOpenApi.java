@@ -280,8 +280,8 @@ public class GroupedOpenApi {
 		/**
 		 * Sets group.
 		 *
-		 * @param group the group 
-		 * @return the group 
+		 * @param group the group
+		 * @return the group
 		 * @deprecated Since v1.4.0, GroupedOpenApi.setGroup is marked as deprecated. Use {@link #group(String) } instead. will be removed with v1.5.0
 		 */
 		@Deprecated
@@ -292,7 +292,7 @@ public class GroupedOpenApi {
 		/**
 		 * Group builder.
 		 *
-		 * @param group the group 
+		 * @param group the group
 		 * @return the builder
 		 */
 		public Builder group(String group) {
@@ -303,7 +303,7 @@ public class GroupedOpenApi {
 		/**
 		 * Paths to match builder.
 		 *
-		 * @param pathsToMatch the paths to match 
+		 * @param pathsToMatch the paths to match
 		 * @return the builder
 		 */
 		public Builder pathsToMatch(String... pathsToMatch) {
@@ -314,7 +314,7 @@ public class GroupedOpenApi {
 		/**
 		 * Packages to scan builder.
 		 *
-		 * @param packagesToScan the packages to scan 
+		 * @param packagesToScan the packages to scan
 		 * @return the builder
 		 */
 		public Builder packagesToScan(String... packagesToScan) {
@@ -325,7 +325,7 @@ public class GroupedOpenApi {
 		/**
 		 * Produces to match builder.
 		 *
-		 * @param producesToMatch the produces to match 
+		 * @param producesToMatch the produces to match
 		 * @return the builder
 		 */
 		public Builder producesToMatch(String... producesToMatch) {
@@ -336,7 +336,7 @@ public class GroupedOpenApi {
 		/**
 		 * Consumes to match builder.
 		 *
-		 * @param consumesToMatch the consumes to match 
+		 * @param consumesToMatch the consumes to match
 		 * @return the builder
 		 */
 		public Builder consumesToMatch(String... consumesToMatch) {
@@ -347,7 +347,7 @@ public class GroupedOpenApi {
 		/**
 		 * Headers to match builder.
 		 *
-		 * @param headersToMatch the headers to match 
+		 * @param headersToMatch the headers to match
 		 * @return the builder
 		 */
 		public Builder headersToMatch(String... headersToMatch) {
@@ -358,7 +358,7 @@ public class GroupedOpenApi {
 		/**
 		 * Paths to exclude builder.
 		 *
-		 * @param pathsToExclude the paths to exclude 
+		 * @param pathsToExclude the paths to exclude
 		 * @return the builder
 		 */
 		public Builder pathsToExclude(String... pathsToExclude) {
@@ -369,7 +369,7 @@ public class GroupedOpenApi {
 		/**
 		 * Packages to exclude builder.
 		 *
-		 * @param packagesToExclude the packages to exclude 
+		 * @param packagesToExclude the packages to exclude
 		 * @return the builder
 		 */
 		public Builder packagesToExclude(String... packagesToExclude) {
@@ -380,7 +380,7 @@ public class GroupedOpenApi {
 		/**
 		 * Add open api customiser builder.
 		 *
-		 * @param openApiCustomiser the open api customiser 
+		 * @param openApiCustomiser the open api customiser
 		 * @return the builder
 		 */
 		public Builder addOpenApiCustomiser(OpenApiCustomiser openApiCustomiser) {
@@ -391,7 +391,7 @@ public class GroupedOpenApi {
 		/**
 		 * Add operation customizer builder.
 		 *
-		 * @param operationCustomizer the operation customizer 
+		 * @param operationCustomizer the operation customizer
 		 * @return the builder
 		 */
 		public Builder addOperationCustomizer(OperationCustomizer operationCustomizer) {

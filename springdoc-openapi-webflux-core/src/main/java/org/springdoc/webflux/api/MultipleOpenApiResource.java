@@ -108,13 +108,13 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Instantiates a new Multiple open api resource.
 	 *
-	 * @param groupedOpenApis the grouped open apis 
-	 * @param defaultOpenAPIBuilder the default open api builder 
-	 * @param requestBuilder the request builder 
-	 * @param responseBuilder the response builder 
-	 * @param operationParser the operation parser 
-	 * @param requestMappingHandlerMapping the request mapping handler mapping 
-	 * @param springDocConfigProperties the spring doc config properties 
+	 * @param groupedOpenApis the grouped open apis
+	 * @param defaultOpenAPIBuilder the default open api builder
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
@@ -158,10 +158,10 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Openapi json mono.
 	 *
-	 * @param serverHttpRequest the server http request 
-	 * @param apiDocsUrl the api docs url 
-	 * @param group the group 
-	 * @return the mono 
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @param group the group
+	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
@@ -176,10 +176,10 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Openapi yaml mono.
 	 *
-	 * @param serverHttpRequest the server http request 
-	 * @param apiDocsUrl the api docs url 
-	 * @param group the group 
-	 * @return the mono 
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @param group the group
+	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
@@ -193,7 +193,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Gets open api resource or throw.
 	 *
-	 * @param group the group 
+	 * @param group the group
 	 * @return the open api resource or throw
 	 */
 	private OpenApiResource getOpenApiResourceOrThrow(String group) {

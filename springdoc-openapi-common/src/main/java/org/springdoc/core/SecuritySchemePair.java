@@ -41,7 +41,7 @@ class SecuritySchemePair {
 	/**
 	 * Instantiates a new Security scheme pair.
 	 *
-	 * @param key the key 
+	 * @param key the key
 	 * @param securityScheme the security scheme
 	 */
 	public SecuritySchemePair(String key, SecurityScheme securityScheme) {
