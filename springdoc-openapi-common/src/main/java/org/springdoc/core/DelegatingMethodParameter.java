@@ -71,9 +71,9 @@ public class DelegatingMethodParameter extends MethodParameter {
 	/**
 	 * Instantiates a new Delegating method parameter.
 	 *
-	 * @param delegate the delegate 
-	 * @param parameterName the parameter name 
-	 * @param additionalParameterAnnotations the additional parameter annotations 
+	 * @param delegate the delegate
+	 * @param parameterName the parameter name
+	 * @param additionalParameterAnnotations the additional parameter annotations
 	 * @param isParameterObject the is parameter object
 	 */
 	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, boolean isParameterObject) {
@@ -87,9 +87,9 @@ public class DelegatingMethodParameter extends MethodParameter {
 	/**
 	 * Customize method parameter [ ].
 	 *
-	 * @param pNames the p names 
-	 * @param parameters the parameters 
-	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer 
+	 * @param pNames the p names
+	 * @param parameters the parameters
+	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 * @return the method parameter [ ]
 	 */
 	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {

@@ -78,11 +78,11 @@ public class RouterFunctionData {
 	/**
 	 * Instantiates a new Router function data.
 	 *
-	 * @param path the path 
-	 * @param consumes the consumes 
-	 * @param produces the produces 
-	 * @param headers the headers 
-	 * @param queryParams the query params 
+	 * @param path the path
+	 * @param consumes the consumes
+	 * @param produces the produces
+	 * @param headers the headers
+	 * @param queryParams the query params
 	 * @param methods the methods
 	 */
 	public RouterFunctionData(String path, String[] consumes, String[] produces, String[] headers, Map<String, String> queryParams, RequestMethod[] methods) {
@@ -124,7 +124,7 @@ public class RouterFunctionData {
 	/**
 	 * Add query params.
 	 *
-	 * @param name the name 
+	 * @param name the name
 	 * @param value the value
 	 */
 	public void addQueryParams(String name, String value) {
@@ -218,7 +218,7 @@ public class RouterFunctionData {
 	/**
 	 * Get method request method [ ].
 	 *
-	 * @param methods the methods 
+	 * @param methods the methods
 	 * @return the request method [ ]
 	 */
 	private RequestMethod[] getMethod(Set<HttpMethod> methods) {
@@ -240,7 +240,7 @@ public class RouterFunctionData {
 	/**
 	 * Gets request method.
 	 *
-	 * @param httpMethod the http method 
+	 * @param httpMethod the http method
 	 * @return the request method
 	 */
 	private RequestMethod getRequestMethod(HttpMethod httpMethod) {
