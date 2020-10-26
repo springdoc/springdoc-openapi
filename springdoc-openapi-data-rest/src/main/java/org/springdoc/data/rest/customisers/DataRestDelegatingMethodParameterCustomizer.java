@@ -74,7 +74,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	/**
 	 * Instantiates a new Data rest delegating method parameter customizer.
 	 *
-	 * @param optionalSpringDataWebProperties the optional spring data web properties 
+	 * @param optionalSpringDataWebProperties the optional spring data web properties
 	 * @param optionalRepositoryRestConfiguration the optional repository rest configuration
 	 */
 	public DataRestDelegatingMethodParameterCustomizer(Optional<SpringDataWebProperties> optionalSpringDataWebProperties, Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
@@ -105,8 +105,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	/**
 	 * Gets new parameter annotation for field.
 	 *
-	 * @param parameterName the parameter name 
-	 * @param pageableDefault the pageable default 
+	 * @param parameterName the parameter name
+	 * @param pageableDefault the pageable default
 	 * @return the new parameter annotation for field
 	 */
 	private Annotation getNewParameterAnnotationForField(String parameterName, PageableDefault pageableDefault) {
@@ -412,9 +412,9 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	/**
 	 * Gets name.
 	 *
-	 * @param parameterName the parameter name 
-	 * @param pageableDefault the pageable default 
-	 * @param originalName the original name 
+	 * @param parameterName the parameter name
+	 * @param pageableDefault the pageable default
+	 * @param originalName the original name
 	 * @return the name
 	 */
 	private String getName(String parameterName, PageableDefault pageableDefault, String originalName) {
@@ -459,9 +459,9 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	/**
 	 * Gets default value.
 	 *
-	 * @param parameterName the parameter name 
-	 * @param pageableDefault the pageable default 
-	 * @param defaultSchemaVal the default schema val 
+	 * @param parameterName the parameter name
+	 * @param pageableDefault the pageable default
+	 * @param defaultSchemaVal the default schema val
 	 * @return the default value
 	 */
 	private String getDefaultValue(String parameterName, PageableDefault pageableDefault, String defaultSchemaVal) {

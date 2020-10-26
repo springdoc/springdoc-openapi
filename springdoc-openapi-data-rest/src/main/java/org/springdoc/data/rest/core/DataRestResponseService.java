@@ -73,11 +73,11 @@ public class DataRestResponseService {
 	/**
 	 * Build search response.
 	 *
-	 * @param operation the operation 
-	 * @param handlerMethod the handler method 
-	 * @param openAPI the open api 
-	 * @param methodResourceMapping the method resource mapping 
-	 * @param domainType the domain type 
+	 * @param operation the operation
+	 * @param handlerMethod the handler method
+	 * @param openAPI the open api
+	 * @param methodResourceMapping the method resource mapping
+	 * @param domainType the domain type
 	 * @param methodAttributes the method attributes
 	 */
 	public void buildSearchResponse(Operation operation, HandlerMethod handlerMethod, OpenAPI openAPI,
@@ -97,12 +97,12 @@ public class DataRestResponseService {
 	/**
 	 * Build entity response.
 	 *
-	 * @param operation the operation 
-	 * @param handlerMethod the handler method 
-	 * @param openAPI the open api 
-	 * @param requestMethod the request method 
-	 * @param operationPath the operation path 
-	 * @param domainType the domain type 
+	 * @param operation the operation
+	 * @param handlerMethod the handler method
+	 * @param openAPI the open api
+	 * @param requestMethod the request method
+	 * @param operationPath the operation path
+	 * @param domainType the domain type
 	 * @param methodAttributes the method attributes
 	 */
 	public void buildEntityResponse(Operation operation, HandlerMethod handlerMethod, OpenAPI openAPI, RequestMethod requestMethod,
@@ -121,9 +121,9 @@ public class DataRestResponseService {
 	/**
 	 * Add response.
 	 *
-	 * @param requestMethod the request method 
-	 * @param operationPath the operation path 
-	 * @param apiResponses the api responses 
+	 * @param requestMethod the request method
+	 * @param operationPath the operation path
+	 * @param apiResponses the api responses
 	 * @param apiResponse the api response
 	 */
 	private void addResponse(RequestMethod requestMethod, String operationPath, ApiResponses apiResponses, ApiResponse apiResponse) {
@@ -157,9 +157,9 @@ public class DataRestResponseService {
 	/**
 	 * Find search return type type.
 	 *
-	 * @param handlerMethod the handler method 
-	 * @param methodResourceMapping the method resource mapping 
-	 * @param domainType the domain type 
+	 * @param handlerMethod the handler method
+	 * @param methodResourceMapping the method resource mapping
+	 * @param domainType the domain type
 	 * @return the type
 	 */
 	private Type findSearchReturnType(HandlerMethod handlerMethod, MethodResourceMapping methodResourceMapping, Class<?> domainType) {
@@ -184,8 +184,8 @@ public class DataRestResponseService {
 	/**
 	 * Gets type.
 	 *
-	 * @param returnType the return type 
-	 * @param domainType the domain type 
+	 * @param returnType the return type
+	 * @param domainType the domain type
 	 * @return the type
 	 */
 	private Type getType(Type returnType, Class<?> domainType) {
@@ -233,9 +233,9 @@ public class DataRestResponseService {
 	/**
 	 * Resolve generic type type.
 	 *
-	 * @param container the container 
-	 * @param generic the generic 
-	 * @param domainType the domain type 
+	 * @param container the container
+	 * @param generic the generic
+	 * @param domainType the domain type
 	 * @return the type
 	 */
 	private Type resolveGenericType(Class<?> container, Class<?> generic, Class<?> domainType) {
@@ -246,7 +246,7 @@ public class DataRestResponseService {
 	/**
 	 * Add response 200.
 	 *
-	 * @param apiResponses the api responses 
+	 * @param apiResponses the api responses
 	 * @param apiResponse the api response
 	 */
 	private void addResponse200(ApiResponses apiResponses, ApiResponse apiResponse) {
