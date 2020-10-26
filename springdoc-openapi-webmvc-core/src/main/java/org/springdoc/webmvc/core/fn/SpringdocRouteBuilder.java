@@ -30,6 +30,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import org.springdoc.core.fn.AbstractSpringdocRouteBuilder;
 import org.springdoc.core.fn.builders.OperationBuilder;
@@ -625,7 +626,7 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder before(Function<ServerRequest, ServerRequest> requestProcessor, Consumer<OperationBuilder> operationsConsumer) {
+	public SpringdocRouteBuilder before(UnaryOperator<ServerRequest> requestProcessor, Consumer<OperationBuilder> operationsConsumer) {
 		OperationBuilder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.before(requestProcessor).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
