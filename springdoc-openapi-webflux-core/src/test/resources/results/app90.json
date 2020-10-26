@@ -1,0 +1,591 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/foo": {
+      "get": {
+        "operationId": "hello",
+        "parameters": [
+          {
+            "name": "key1",
+            "in": "query",
+            "description": "My key1 description",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key2",
+            "in": "query",
+            "description": "My key2 description",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "This is normal response description"
+          },
+          "404": {
+            "description": "This is another response description"
+          }
+        }
+      }
+    },
+    "/books": {
+      "get": {
+        "tags": [
+          "book"
+        ],
+        "operationId": "findAll_1_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/{author}": {
+      "get": {
+        "tags": [
+          "book",
+          "book"
+        ],
+        "operationId": "findByAuthor",
+        "parameters": [
+          {
+            "name": "author",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/nest": {
+      "get": {
+        "tags": [
+          "book"
+        ],
+        "operationId": "findAll",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/nest/{author}": {
+      "get": {
+        "tags": [
+          "book"
+        ],
+        "operationId": "findByAuthor_1",
+        "parameters": [
+          {
+            "name": "author",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/greeter/greeter2/books": {
+      "get": {
+        "tags": [
+          "book"
+        ],
+        "operationId": "findAll_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/greeter/greeter2/books": {
+      "get": {
+        "tags": [
+          "book"
+        ],
+        "operationId": "findAll_3_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/greeter/greeter2/books/{author}": {
+      "get": {
+        "tags": [
+          "book"
+        ],
+        "operationId": "findByAuthor_2",
+        "parameters": [
+          {
+            "name": "author",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/{id}": {
+      "get": {
+        "tags": [
+          "MyEmployee"
+        ],
+        "summary": "Find purchase order by ID",
+        "operationId": "findEmployeeById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Employee Id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Employee"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Employee ID supplied"
+          },
+          "404": {
+            "description": "Employee not found"
+          }
+        }
+      }
+    },
+    "/createPosition": {
+      "post": {
+        "tags": [
+          "positions"
+        ],
+        "description": "Save position",
+        "operationId": "save",
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "$ref": "#/components/schemas/Position"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Position"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deletePosition/{id}": {
+      "delete": {
+        "tags": [
+          "positions"
+        ],
+        "description": "Delete By Id",
+        "operationId": "deleteBy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/getAllPositions": {
+      "get": {
+        "tags": [
+          "positions"
+        ],
+        "description": "Get all positions",
+        "operationId": "findAll_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Position"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getPosition/{id}": {
+      "get": {
+        "tags": [
+          "positions"
+        ],
+        "description": "Find all",
+        "operationId": "findById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/stream+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Position"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/echo": {
+      "post": {
+        "tags": [
+          "quotes"
+        ],
+        "operationId": "echo_1_1",
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello": {
+      "get": {
+        "tags": [
+          "quotes"
+        ],
+        "operationId": "hello_1",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/quotes": {
+      "get": {
+        "tags": [
+          "quotes"
+        ],
+        "operationId": "fetchQuotes_1_1",
+        "parameters": [
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Quote"
+                  }
+                }
+              },
+              "application/stream+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quote"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Book": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          }
+        }
+      },
+      "Employee": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "Position": {
+        "required": [
+          "createdAt",
+          "positionName"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "positionName": {
+            "maxLength": 140,
+            "minLength": 0,
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Quote": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "instant": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}

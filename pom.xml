@@ -245,6 +245,29 @@
 	</profiles>
 	<repositories>
 		<repository>
+			<id>central</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-release</id>
+			<name>Spring release</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-snapshot</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
 			<id>spring-milestone</id>
 			<name>Spring Milestone</name>
 			<url>https://repo.spring.io/milestone</url>

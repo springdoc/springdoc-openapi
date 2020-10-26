@@ -4,6 +4,6 @@ spring:
     lazy-initialization: true
 logging:
   level:
-    root: OFF
+    root: ERROR
   pattern:
     console: '%m%n'
