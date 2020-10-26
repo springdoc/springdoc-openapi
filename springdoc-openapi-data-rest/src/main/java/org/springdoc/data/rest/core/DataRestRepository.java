@@ -52,7 +52,7 @@ public class DataRestRepository {
 	/**
 	 * Instantiates a new Data rest repository.
 	 *
-	 * @param domainType the domain type 
+	 * @param domainType the domain type
 	 * @param repositoryType the repository type
 	 */
 	public DataRestRepository(Class<?> domainType, Class<?> repositoryType) {

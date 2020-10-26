@@ -60,8 +60,8 @@ public class DataRestTagsService {
 	/**
 	 * Build search tags.
 	 *
-	 * @param operation the operation 
-	 * @param handlerMethod the handler method 
+	 * @param operation the operation
+	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
 	 */
 	public void buildSearchTags(Operation operation, HandlerMethod handlerMethod,
@@ -72,8 +72,8 @@ public class DataRestTagsService {
 	/**
 	 * Build entity tags.
 	 *
-	 * @param operation the operation 
-	 * @param handlerMethod the handler method 
+	 * @param operation the operation
+	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
 	 */
 	public void buildEntityTags(Operation operation, HandlerMethod handlerMethod,
@@ -84,8 +84,8 @@ public class DataRestTagsService {
 	/**
 	 * Build tags.
 	 *
-	 * @param operation the operation 
-	 * @param handlerMethod the handler method 
+	 * @param operation the operation
+	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
 	 */
 	private void buildTags(Operation operation, HandlerMethod handlerMethod,

@@ -70,8 +70,8 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	/**
 	 * Instantiates a new Swagger welcome.
 	 *
-	 * @param swaggerUiConfig the swagger ui config
-	 * @param springDocConfigProperties the spring doc config properties
+	 * @param swaggerUiConfig the swagger ui config 
+	 * @param springDocConfigProperties the spring doc config properties 
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
 	public SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters) {
@@ -81,7 +81,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	/**
 	 * Redirect to ui string.
 	 *
-	 * @param request the request
+	 * @param request the request 
 	 * @return the string
 	 */
 	@Operation(hidden = true)
@@ -96,7 +96,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	/**
 	 * Openapi yaml map.
 	 *
-	 * @param request the request
+	 * @param request the request 
 	 * @return the map
 	 */
 	@Operation(hidden = true)
