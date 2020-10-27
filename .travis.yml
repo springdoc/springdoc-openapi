@@ -17,7 +17,7 @@ script:
 
 deploy:
   provider: script
-  script: mvn deploy -DskipTests --settings settings.xml
+  script: mvn clean deploy -DskipTests --settings settings.xml
   on:
     branch: master
   
