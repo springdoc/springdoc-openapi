@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.content;
 
 import java.lang.annotation.Annotation;
 
@@ -37,7 +37,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type Content builder.
  * @author bnasslahsen
  */
-public class ContentBuilder {
+public class Builder {
 
 	/**
 	 * The media type that this object applies to.
@@ -55,13 +55,13 @@ public class ContentBuilder {
 	 * The schema defining the type used for the content.
 	 *
 	 */
-	private Schema schema = SchemaBuilder.builder().build();
+	private Schema schema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * The schema of the array that defines the type used for the content.
 	 *
 	 */
-	private ArraySchema array = ArraySchemaBuilder.builder().build();
+	private ArraySchema array = org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().build();
 
 	/**
 	 * An array of encodings
@@ -80,7 +80,7 @@ public class ContentBuilder {
 	/**
 	 * Instantiates a new Content builder.
 	 */
-	private ContentBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -88,8 +88,8 @@ public class ContentBuilder {
 	 *
 	 * @return the content builder
 	 */
-	public static ContentBuilder builder() {
-		return new ContentBuilder();
+	public static Builder contentBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class ContentBuilder {
 	 * @param mediaType the media type
 	 * @return the content builder
 	 */
-	public ContentBuilder mediaType(String mediaType) {
+	public Builder mediaType(String mediaType) {
 		this.mediaType = mediaType;
 		return this;
 	}
@@ -109,7 +109,7 @@ public class ContentBuilder {
 	 * @param exampleObjectBuilder the example object builder
 	 * @return the content builder
 	 */
-	public ContentBuilder example(ExampleObjectBuilder exampleObjectBuilder) {
+	public Builder example(org.springdoc.core.fn.builders.exampleobject.Builder exampleObjectBuilder) {
 		this.examples =  ArrayUtils.add( this.examples, exampleObjectBuilder.build());
 		return this;
 	}
@@ -120,7 +120,7 @@ public class ContentBuilder {
 	 * @param schemaBuilder the schema builder
 	 * @return the content builder
 	 */
-	public ContentBuilder schema(SchemaBuilder schemaBuilder) {
+	public Builder schema(org.springdoc.core.fn.builders.schema.Builder schemaBuilder) {
 		this.schema = schemaBuilder.build();
 		return this;
 	}
@@ -131,7 +131,7 @@ public class ContentBuilder {
 	 * @param arraySchemaBuilder the array schema builder
 	 * @return the content builder
 	 */
-	public ContentBuilder array(ArraySchemaBuilder arraySchemaBuilder) {
+	public Builder array(org.springdoc.core.fn.builders.arrayschema.Builder arraySchemaBuilder) {
 		this.array = arraySchemaBuilder.build();
 		return this;
 	}
@@ -142,7 +142,7 @@ public class ContentBuilder {
 	 * @param encodingBuilder the encoding builder
 	 * @return the content builder
 	 */
-	public ContentBuilder encoding(EncodingBuilder encodingBuilder) {
+	public Builder encoding(org.springdoc.core.fn.builders.encoding.Builder encodingBuilder) {
 		this.encodings = ArrayUtils.add( this.encodings, encodingBuilder.build());
 		return this;
 	}
@@ -153,7 +153,7 @@ public class ContentBuilder {
 	 * @param extensionBuilder the extension builder
 	 * @return the content builder
 	 */
-	public ContentBuilder extension(ExtensionBuilder extensionBuilder) {
+	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
 		return this;
 	}

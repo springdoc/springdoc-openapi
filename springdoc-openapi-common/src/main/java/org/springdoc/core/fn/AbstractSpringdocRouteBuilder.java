@@ -25,15 +25,15 @@ package org.springdoc.core.fn;
 
 import java.util.function.Consumer;
 
-import org.springdoc.core.fn.builders.OperationBuilder;
+import org.springdoc.core.fn.builders.operation.Builder;
 
 /**
  * @author bnasslahsen
  */
 public abstract class AbstractSpringdocRouteBuilder {
 
-	protected OperationBuilder getOperationBuilder(Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = OperationBuilder.builder();
+	protected Builder getOperationBuilder(Consumer<Builder> operationsConsumer) {
+		Builder builder = Builder.operationBuilder();
 		operationsConsumer.accept(builder);
 		return builder;
 	}

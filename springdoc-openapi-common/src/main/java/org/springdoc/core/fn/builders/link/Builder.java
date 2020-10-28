@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.link;
 
 import java.lang.annotation.Annotation;
 
@@ -35,7 +35,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type Link builder.
  * @author bnasslahsen
  */
-public class LinkBuilder {
+public class Builder {
 	/**
 	 * The name of this link.
 	 *
@@ -76,7 +76,7 @@ public class LinkBuilder {
 	 * An alternative server to service this operation.
 	 *
 	 */
-	private Server server = ServerBuilder.builder().build();
+	private Server server = org.springdoc.core.fn.builders.server.Builder.serverBuilder().build();
 
 	/**
 	 * The list of optional extensions
@@ -95,7 +95,7 @@ public class LinkBuilder {
 	/**
 	 * Instantiates a new Link builder.
 	 */
-	private LinkBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -103,8 +103,8 @@ public class LinkBuilder {
 	 *
 	 * @return the link builder
 	 */
-	public static LinkBuilder builder() {
-		return new LinkBuilder();
+	public static Builder linkBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class LinkBuilder {
 	 * @param name the name
 	 * @return the link builder
 	 */
-	public LinkBuilder name(String name) {
+	public Builder name(String name) {
 		this.name = name;
 		return this;
 	}
@@ -124,7 +124,7 @@ public class LinkBuilder {
 	 * @param operationRef the operation ref
 	 * @return the link builder
 	 */
-	public LinkBuilder operationRef(String operationRef) {
+	public Builder operationRef(String operationRef) {
 		this.operationRef = operationRef;
 		return this;
 	}
@@ -135,7 +135,7 @@ public class LinkBuilder {
 	 * @param operationId the operation id
 	 * @return the link builder
 	 */
-	public LinkBuilder operationId(String operationId) {
+	public Builder operationId(String operationId) {
 		this.operationId = operationId;
 		return this;
 	}
@@ -146,7 +146,7 @@ public class LinkBuilder {
 	 * @param linkParameterBuilder the link parameter builder
 	 * @return the link builder
 	 */
-	public LinkBuilder parameter(LinkParameterBuilder linkParameterBuilder) {
+	public Builder parameter(org.springdoc.core.fn.builders.linkparameter.Builder linkParameterBuilder) {
 		this.parameters = ArrayUtils.add( this.parameters, linkParameterBuilder.build());
 		return this;
 	}
@@ -157,7 +157,7 @@ public class LinkBuilder {
 	 * @param description the description
 	 * @return the link builder
 	 */
-	public LinkBuilder description(String description) {
+	public Builder description(String description) {
 		this.description = description;
 		return this;
 	}
@@ -168,7 +168,7 @@ public class LinkBuilder {
 	 * @param requestBody the request body
 	 * @return the link builder
 	 */
-	public LinkBuilder requestBody(String requestBody) {
+	public Builder requestBody(String requestBody) {
 		this.requestBody = requestBody;
 		return this;
 	}
@@ -179,7 +179,7 @@ public class LinkBuilder {
 	 * @param serverBuilder the server builder
 	 * @return the link builder
 	 */
-	public LinkBuilder server(ServerBuilder serverBuilder) {
+	public Builder server(org.springdoc.core.fn.builders.server.Builder serverBuilder) {
 		this.server = serverBuilder.build();
 		return this;
 	}
@@ -190,7 +190,7 @@ public class LinkBuilder {
 	 * @param extensionBuilder the extension builder
 	 * @return the link builder
 	 */
-	public LinkBuilder extension(ExtensionBuilder extensionBuilder) {
+	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
 		return this;
 	}
@@ -201,7 +201,7 @@ public class LinkBuilder {
 	 * @param ref the ref
 	 * @return the link builder
 	 */
-	public LinkBuilder ref(String ref) {
+	public Builder ref(String ref) {
 		this.ref = ref;
 		return this;
 	}

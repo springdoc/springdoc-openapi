@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.linkparameter;
 
 import java.lang.annotation.Annotation;
 
@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.links.LinkParameter;
  * The type Link parameter builder.
  * @author bnasslahsen
  */
-public class LinkParameterBuilder {
+public class Builder {
 	/**
 	 * The name of this link parameter.
 	 *
@@ -48,7 +48,7 @@ public class LinkParameterBuilder {
 	/**
 	 * Instantiates a new Link parameter builder.
 	 */
-	private LinkParameterBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -56,8 +56,8 @@ public class LinkParameterBuilder {
 	 *
 	 * @return the link parameter builder
 	 */
-	public static LinkParameterBuilder builder() {
-		return new LinkParameterBuilder();
+	public static Builder linkParameterBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class LinkParameterBuilder {
 	 * @param name the name
 	 * @return the link parameter builder
 	 */
-	public LinkParameterBuilder name(String name) {
+	public Builder name(String name) {
 		this.name = name;
 		return this;
 	}
@@ -77,7 +77,7 @@ public class LinkParameterBuilder {
 	 * @param expression the expression
 	 * @return the link parameter builder
 	 */
-	public LinkParameterBuilder expression(String expression) {
+	public Builder expression(String expression) {
 		this.expression = expression;
 		return this;
 	}

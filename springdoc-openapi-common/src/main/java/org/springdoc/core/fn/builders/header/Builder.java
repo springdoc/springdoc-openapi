@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.header;
 
 import java.lang.annotation.Annotation;
 
@@ -32,7 +32,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * The type Header builder.
  * @author bnasslahsen
  */
-public class HeaderBuilder {
+public class Builder {
 
 	/**
 	 * Required: The name of the header. The name is only used as the key to store this header in a map.
@@ -50,7 +50,7 @@ public class HeaderBuilder {
 	 * The schema defining the type used for the header. Ignored if the properties content or array are specified.
 	 *
 	 */
-	private Schema schema = SchemaBuilder.builder().build();
+	private Schema schema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * Determines whether this header is mandatory. The property may be included and its default value is false.
@@ -73,7 +73,7 @@ public class HeaderBuilder {
 	/**
 	 * Instantiates a new Header builder.
 	 */
-	private HeaderBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -81,8 +81,8 @@ public class HeaderBuilder {
 	 *
 	 * @return the header builder
 	 */
-	public static HeaderBuilder builder() {
-		return new HeaderBuilder();
+	public static Builder headerBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class HeaderBuilder {
 	 * @param name the name
 	 * @return the header builder
 	 */
-	public HeaderBuilder name(String name) {
+	public Builder name(String name) {
 		this.name = name;
 		return this;
 	}
@@ -102,7 +102,7 @@ public class HeaderBuilder {
 	 * @param description the description
 	 * @return the header builder
 	 */
-	public HeaderBuilder description(String description) {
+	public Builder description(String description) {
 		this.description = description;
 		return this;
 	}
@@ -113,7 +113,7 @@ public class HeaderBuilder {
 	 * @param schemaBuilder the schema builder
 	 * @return the header builder
 	 */
-	public HeaderBuilder schema(SchemaBuilder schemaBuilder) {
+	public Builder schema(org.springdoc.core.fn.builders.schema.Builder schemaBuilder) {
 		this.schema = schemaBuilder.build();
 		return this;
 	}
@@ -124,7 +124,7 @@ public class HeaderBuilder {
 	 * @param required the required
 	 * @return the header builder
 	 */
-	public HeaderBuilder required(boolean required) {
+	public Builder required(boolean required) {
 		this.required = required;
 		return this;
 	}
@@ -135,7 +135,7 @@ public class HeaderBuilder {
 	 * @param deprecated the deprecated
 	 * @return the header builder
 	 */
-	public HeaderBuilder deprecated(boolean deprecated) {
+	public Builder deprecated(boolean deprecated) {
 		this.deprecated = deprecated;
 		return this;
 	}
@@ -146,7 +146,7 @@ public class HeaderBuilder {
 	 * @param ref the ref
 	 * @return the header builder
 	 */
-	public HeaderBuilder ref(String ref) {
+	public Builder ref(String ref) {
 		this.ref = ref;
 		return this;
 	}

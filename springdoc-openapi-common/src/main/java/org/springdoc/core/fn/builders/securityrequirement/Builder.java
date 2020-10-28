@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.securityrequirement;
 
 import java.lang.annotation.Annotation;
 
@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
  * The type Security requirement builder.
  * @author bnasslahsen
  */
-public class SecurityRequirementBuilder {
+public class Builder {
 	/**
 	 * This name must correspond to a declared SecurityRequirement.
 	 *
@@ -49,7 +49,7 @@ public class SecurityRequirementBuilder {
 	/**
 	 * Instantiates a new Security requirement builder.
 	 */
-	private SecurityRequirementBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -57,8 +57,8 @@ public class SecurityRequirementBuilder {
 	 *
 	 * @return the security requirement builder
 	 */
-	public static SecurityRequirementBuilder builder() {
-		return new SecurityRequirementBuilder();
+	public static Builder securityRequirementBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class SecurityRequirementBuilder {
 	 * @param name the name
 	 * @return the security requirement builder
 	 */
-	public SecurityRequirementBuilder name(String name) {
+	public Builder name(String name) {
 		this.name = name;
 		return this;
 	}
@@ -78,7 +78,7 @@ public class SecurityRequirementBuilder {
 	 * @param scopes the scopes
 	 * @return the security requirement builder
 	 */
-	public SecurityRequirementBuilder scopes(String[] scopes) {
+	public Builder scopes(String[] scopes) {
 		this.scopes = scopes;
 		return this;
 	}

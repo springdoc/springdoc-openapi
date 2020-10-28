@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.encoding;
 
 import java.lang.annotation.Annotation;
 
@@ -34,7 +34,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type Encoding builder.
  * @author bnasslahsen
  */
-public class EncodingBuilder {
+public class Builder {
 
 	/**
 	 * The name of this encoding object instance.
@@ -86,7 +86,7 @@ public class EncodingBuilder {
 	/**
 	 * Instantiates a new Encoding builder.
 	 */
-	private EncodingBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -94,8 +94,8 @@ public class EncodingBuilder {
 	 *
 	 * @return the encoding builder
 	 */
-	public static EncodingBuilder builder() {
-		return new EncodingBuilder();
+	public static Builder encodingBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class EncodingBuilder {
 	 * @param name the name
 	 * @return the encoding builder
 	 */
-	public EncodingBuilder name(String name) {
+	public Builder name(String name) {
 		this.name = name;
 		return this;
 	}
@@ -115,7 +115,7 @@ public class EncodingBuilder {
 	 * @param contentType the content type
 	 * @return the encoding builder
 	 */
-	public EncodingBuilder contentType(String contentType) {
+	public Builder contentType(String contentType) {
 		this.contentType = contentType;
 		return this;
 	}
@@ -126,7 +126,7 @@ public class EncodingBuilder {
 	 * @param style the style
 	 * @return the encoding builder
 	 */
-	public EncodingBuilder style(String style) {
+	public Builder style(String style) {
 		this.style = style;
 		return this;
 	}
@@ -137,7 +137,7 @@ public class EncodingBuilder {
 	 * @param explode the explode
 	 * @return the encoding builder
 	 */
-	public EncodingBuilder explode(boolean explode) {
+	public Builder explode(boolean explode) {
 		this.explode = explode;
 		return this;
 	}
@@ -148,7 +148,7 @@ public class EncodingBuilder {
 	 * @param allowReserved the allow reserved
 	 * @return the encoding builder
 	 */
-	public EncodingBuilder allowReserved(boolean allowReserved) {
+	public Builder allowReserved(boolean allowReserved) {
 		this.allowReserved = allowReserved;
 		return this;
 	}
@@ -159,7 +159,7 @@ public class EncodingBuilder {
 	 * @param headerBuilder the header builder
 	 * @return the encoding builder
 	 */
-	public EncodingBuilder headers(HeaderBuilder headerBuilder) {
+	public Builder headers(org.springdoc.core.fn.builders.header.Builder headerBuilder) {
 		this.headers = ArrayUtils.add( this.headers, headerBuilder.build());
 		return this;
 	}
@@ -170,7 +170,7 @@ public class EncodingBuilder {
 	 * @param extensionBuilder the extension builder
 	 * @return the encoding builder
 	 */
-	public EncodingBuilder extension(ExtensionBuilder extensionBuilder) {
+	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
 		return this;
 	}

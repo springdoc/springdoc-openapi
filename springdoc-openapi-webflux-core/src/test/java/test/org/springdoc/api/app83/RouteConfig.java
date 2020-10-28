@@ -1,6 +1,5 @@
 package test.org.springdoc.api.app83;
 
-import org.springdoc.core.fn.builders.OperationBuilder;
 import reactor.core.publisher.Mono;
 
 import org.springframework.context.annotation.Bean;
@@ -11,6 +10,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
+import static org.springdoc.core.fn.builders.operation.Builder.operationBuilder;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
@@ -25,13 +25,13 @@ public class RouteConfig {
 	@Bean
 	RouterFunction<ServerResponse> routerFunction() {
 		return route(GET("/coffees"), this::all)
-				.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(CoffeeService.class).beanMethod("getAllCoffees"))
+				.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(CoffeeService.class).beanMethod("getAllCoffees"))
 
 				.and(route(GET("/coffees/{id}"), this::byId)
-						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(CoffeeService.class).beanMethod("getCoffeeById")))
+						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(CoffeeService.class).beanMethod("getCoffeeById")))
 
 				.and(route(GET("/coffees/{id}/orders"), this::orders)
-						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(CoffeeService.class).beanMethod("getOrdersForCoffeeById")));
+						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(CoffeeService.class).beanMethod("getOrdersForCoffeeById")));
 	}
 
 	private Mono<ServerResponse> all(ServerRequest req) {

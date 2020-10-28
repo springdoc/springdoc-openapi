@@ -26,8 +26,6 @@ package test.org.springdoc.api.app90.book;
 import java.util.function.Consumer;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import org.springdoc.core.fn.builders.OperationBuilder;
-import org.springdoc.core.fn.builders.ParameterBuilder;
 import reactor.core.publisher.Flux;
 
 import org.springframework.context.annotation.Bean;
@@ -36,6 +34,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
 
+import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
 import static org.springdoc.webflux.core.fn.SpringdocRouteBuilder.route;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RequestPredicates.path;
@@ -56,7 +55,7 @@ class BookRouter {
 
 				.and(route().GET("/books/{author}", HANDLER_FUNCTION, ops -> ops.tag("book")
 						.beanClass(BookRepository.class).beanMethod("findByAuthor")
-						.operationId("findByAuthor").tag("book").parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("author"))).build());
+						.operationId("findByAuthor").tag("book").parameter(parameterBuilder().in(ParameterIn.PATH).name("author"))).build());
 	}
 
 	@Bean
@@ -80,13 +79,13 @@ class BookRouter {
 	}
 
 
-	private Consumer<OperationBuilder> getOperation1() {
+	private Consumer<org.springdoc.core.fn.builders.operation.Builder> getOperation1() {
 		return ops -> ops.operationId("findAll").tag("book").beanClass(BookRepository.class).beanMethod("findAll");
 	}
 
-	private Consumer<OperationBuilder> getOperation2() {
+	private Consumer<org.springdoc.core.fn.builders.operation.Builder> getOperation2() {
 		return ops -> ops.operationId("findAll").tag("book")
-				.operationId("findByAuthor").parameter(ParameterBuilder.builder().name("author").in(ParameterIn.PATH))
+				.operationId("findByAuthor").parameter(parameterBuilder().name("author").in(ParameterIn.PATH))
 				.beanClass(BookRepository.class).beanMethod("findByAuthor");
 	}
 

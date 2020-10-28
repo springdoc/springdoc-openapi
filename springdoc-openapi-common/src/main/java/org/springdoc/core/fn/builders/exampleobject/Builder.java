@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.exampleobject;
 
 import java.lang.annotation.Annotation;
 
@@ -33,7 +33,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type Example object builder.
  * @author bnasslahsen
  */
-public class ExampleObjectBuilder {
+public class Builder {
 
 	/**
 	 * A unique name to identify this particular example
@@ -73,7 +73,7 @@ public class ExampleObjectBuilder {
 	/**
 	 * Instantiates a new Example object builder.
 	 */
-	private ExampleObjectBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -81,8 +81,8 @@ public class ExampleObjectBuilder {
 	 *
 	 * @return the example object builder
 	 */
-	public static ExampleObjectBuilder builder() {
-		return new ExampleObjectBuilder();
+	public static Builder exampleOjectBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class ExampleObjectBuilder {
 	 * @param name the name
 	 * @return the example object builder
 	 */
-	public ExampleObjectBuilder name(String name) {
+	public Builder name(String name) {
 		this.name = name;
 		return this;
 	}
@@ -102,7 +102,7 @@ public class ExampleObjectBuilder {
 	 * @param summary the summary
 	 * @return the example object builder
 	 */
-	public ExampleObjectBuilder summary(String summary) {
+	public Builder summary(String summary) {
 		this.summary = summary;
 		return this;
 	}
@@ -113,7 +113,7 @@ public class ExampleObjectBuilder {
 	 * @param value the value
 	 * @return the example object builder
 	 */
-	public ExampleObjectBuilder value(String value) {
+	public Builder value(String value) {
 		this.value = value;
 		return this;
 	}
@@ -124,7 +124,7 @@ public class ExampleObjectBuilder {
 	 * @param externalValue the external value
 	 * @return the example object builder
 	 */
-	public ExampleObjectBuilder externalValue(String externalValue) {
+	public Builder externalValue(String externalValue) {
 		this.externalValue = externalValue;
 		return this;
 	}
@@ -135,7 +135,7 @@ public class ExampleObjectBuilder {
 	 * @param extensionBuilder the extensions
 	 * @return the example object builder
 	 */
-	public ExampleObjectBuilder extension(ExtensionBuilder extensionBuilder) {
+	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
 		return this;
 	}
@@ -146,7 +146,7 @@ public class ExampleObjectBuilder {
 	 * @param ref the ref
 	 * @return the example object builder
 	 */
-	public ExampleObjectBuilder ref(String ref) {
+	public Builder ref(String ref) {
 		this.ref = ref;
 		return this;
 	}
@@ -157,7 +157,7 @@ public class ExampleObjectBuilder {
 	 * @param description the description
 	 * @return the example object builder
 	 */
-	public ExampleObjectBuilder description(String description) {
+	public Builder description(String description) {
 		this.description = description;
 		return this;
 	}

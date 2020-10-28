@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.server;
 
 import java.lang.annotation.Annotation;
 
@@ -34,7 +34,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type Server builder.
  * @author bnasslahsen
  */
-public class ServerBuilder {
+public class Builder {
 	/**
 	 * Required. A URL to the target host.
 	 * This URL supports Server Variables and may be relative, to indicate that the host location is relative to the location where the
@@ -65,7 +65,7 @@ public class ServerBuilder {
 	/**
 	 * Instantiates a new Server builder.
 	 */
-	private ServerBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -73,8 +73,8 @@ public class ServerBuilder {
 	 *
 	 * @return the server builder
 	 */
-	public static ServerBuilder builder() {
-		return new ServerBuilder();
+	public static Builder serverBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class ServerBuilder {
 	 * @param url the url
 	 * @return the server builder
 	 */
-	public ServerBuilder url(String url) {
+	public Builder url(String url) {
 		this.url = url;
 		return this;
 	}
@@ -94,7 +94,7 @@ public class ServerBuilder {
 	 * @param description the description
 	 * @return the server builder
 	 */
-	public ServerBuilder description(String description) {
+	public Builder description(String description) {
 		this.description = description;
 		return this;
 	}
@@ -105,7 +105,7 @@ public class ServerBuilder {
 	 * @param serverVariableBuilder the server variable builder
 	 * @return the server builder
 	 */
-	public ServerBuilder variables(ServerVariableBuilder serverVariableBuilder) {
+	public Builder variables(org.springdoc.core.fn.builders.servervariable.Builder serverVariableBuilder) {
 		this.variables = ArrayUtils.add( this.variables, serverVariableBuilder.build());
 		return this;
 	}
@@ -116,7 +116,7 @@ public class ServerBuilder {
 	 * @param extensionBuilder the extension builder
 	 * @return the server builder
 	 */
-	public ServerBuilder  extension(ExtensionBuilder extensionBuilder) {
+	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
 		return this;
 	}

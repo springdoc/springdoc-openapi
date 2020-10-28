@@ -33,7 +33,7 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 import org.springdoc.core.fn.AbstractSpringdocRouteBuilder;
-import org.springdoc.core.fn.builders.OperationBuilder;
+import org.springdoc.core.fn.builders.operation.Builder;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.function.HandlerFilterFunction;
@@ -41,7 +41,6 @@ import org.springframework.web.servlet.function.HandlerFunction;
 import org.springframework.web.servlet.function.RequestPredicate;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.RouterFunctions;
-import org.springframework.web.servlet.function.RouterFunctions.Builder;
 import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
 
@@ -92,8 +91,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @return the springdoc route builder
 	 */
 	public SpringdocRouteBuilder GET(String pattern, HandlerFunction<ServerResponse> handlerFunction,
-			Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+			Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.GET(pattern, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -105,8 +104,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder GET(HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder GET(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.GET(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -120,8 +119,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder GET(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder GET(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.GET(predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -136,8 +135,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder GET(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder GET(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.GET(pattern, predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -150,8 +149,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder HEAD(HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder HEAD(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.HEAD(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -165,8 +164,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder HEAD(String pattern, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder HEAD(String pattern, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.HEAD(pattern, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -180,8 +179,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder HEAD(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder HEAD(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.HEAD(predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -196,8 +195,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder HEAD(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder HEAD(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.HEAD(pattern, predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -210,8 +209,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder POST(HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder POST(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.POST(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -225,8 +224,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder POST(String pattern, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder POST(String pattern, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.POST(pattern, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -240,8 +239,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder POST(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder POST(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.POST(predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -256,8 +255,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder POST(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder POST(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.POST(pattern, predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -270,8 +269,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder PUT(HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder PUT(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.PUT(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -285,8 +284,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder PUT(String pattern, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder PUT(String pattern, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.PUT(pattern, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -300,8 +299,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder PUT(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder PUT(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.PUT(predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -316,8 +315,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder PUT(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder PUT(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.PUT(pattern, predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -330,8 +329,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder PATCH(HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder PATCH(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.PATCH(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -345,8 +344,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder PATCH(String pattern, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder PATCH(String pattern, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.PATCH(pattern, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -360,8 +359,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder PATCH(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder PATCH(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.PATCH(predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -376,8 +375,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder PATCH(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder PATCH(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.PATCH(pattern, predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -390,8 +389,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder DELETE(HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder DELETE(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.DELETE(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -405,8 +404,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder DELETE(String pattern, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder DELETE(String pattern, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.DELETE(pattern, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -420,8 +419,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder DELETE(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder DELETE(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.DELETE(predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -436,8 +435,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder DELETE(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder DELETE(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.DELETE(pattern, predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -450,8 +449,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder OPTIONS(HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder OPTIONS(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.OPTIONS(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -465,8 +464,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder OPTIONS(String pattern, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder OPTIONS(String pattern, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.OPTIONS(pattern, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -480,8 +479,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder OPTIONS(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder OPTIONS(RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.OPTIONS(predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -496,8 +495,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder OPTIONS(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder OPTIONS(String pattern, RequestPredicate predicate, HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.OPTIONS(pattern, predicate, handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -509,8 +508,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder add(RouterFunction<ServerResponse> routerFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder add(RouterFunction<ServerResponse> routerFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.add(routerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -524,8 +523,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder resources(String pattern, Resource location, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder resources(String pattern, Resource location, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.resources(pattern, location).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -538,8 +537,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder resources(Function<ServerRequest, Optional<Resource>> lookupFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder resources(Function<ServerRequest, Optional<Resource>> lookupFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.resources(lookupFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -553,8 +552,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder nest(RequestPredicate predicate, Supplier<RouterFunction<ServerResponse>> routerFunctionSupplier, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder nest(RequestPredicate predicate, Supplier<RouterFunction<ServerResponse>> routerFunctionSupplier, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.nest(predicate, routerFunctionSupplier).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -568,8 +567,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder nest(RequestPredicate predicate, Consumer<Builder> builderConsumer, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder nest(RequestPredicate predicate, Consumer<RouterFunctions.Builder> builderConsumer, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.nest(predicate, builderConsumer).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -583,8 +582,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder path(String pattern, Supplier<RouterFunction<ServerResponse>> routerFunctionSupplier, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder path(String pattern, Supplier<RouterFunction<ServerResponse>> routerFunctionSupplier, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.path(pattern, routerFunctionSupplier).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -598,8 +597,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder path(String pattern, Consumer<Builder> builderConsumer, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder path(String pattern, Consumer<RouterFunctions.Builder> builderConsumer, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.path(pattern, builderConsumer).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -612,8 +611,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder filter(HandlerFilterFunction<ServerResponse, ServerResponse> filterFunction, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder filter(HandlerFilterFunction<ServerResponse, ServerResponse> filterFunction, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.filter(filterFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -626,8 +625,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder before(UnaryOperator<ServerRequest> requestProcessor, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder before(UnaryOperator<ServerRequest> requestProcessor, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.before(requestProcessor).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -640,8 +639,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder after(BiFunction<ServerRequest, ServerResponse, ServerResponse> responseProcessor, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder after(BiFunction<ServerRequest, ServerResponse, ServerResponse> responseProcessor, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.after(responseProcessor).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -655,8 +654,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder onError(Predicate<Throwable> predicate, BiFunction<Throwable, ServerRequest, ServerResponse>  responseProvider, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public SpringdocRouteBuilder onError(Predicate<Throwable> predicate, BiFunction<Throwable, ServerRequest, ServerResponse>  responseProvider, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.onError(predicate, responseProvider).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
@@ -671,8 +670,8 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public <T extends Throwable> SpringdocRouteBuilder onError(Class<T> exceptionType, BiFunction<Throwable, ServerRequest, ServerResponse>  responseProvider, Consumer<OperationBuilder> operationsConsumer) {
-		OperationBuilder builder = getOperationBuilder(operationsConsumer);
+	public <T extends Throwable> SpringdocRouteBuilder onError(Class<T> exceptionType, BiFunction<Throwable, ServerRequest, ServerResponse>  responseProvider, Consumer<Builder> operationsConsumer) {
+		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.onError(exceptionType, responseProvider).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}

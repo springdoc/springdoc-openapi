@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.extension;
 
 import java.lang.annotation.Annotation;
 
@@ -33,7 +33,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type Extension builder.
  * @author bnasslahsen
  */
-public class ExtensionBuilder {
+public class Builder {
 
 	/**
 	 * An option name for these extensions.
@@ -50,7 +50,7 @@ public class ExtensionBuilder {
 	/**
 	 * Instantiates a new Extension builder.
 	 */
-	private ExtensionBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -58,8 +58,8 @@ public class ExtensionBuilder {
 	 *
 	 * @return the extension builder
 	 */
-	public static ExtensionBuilder builder() {
-		return new ExtensionBuilder();
+	public static Builder extensionBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class ExtensionBuilder {
 	 * @param name the name
 	 * @return the extension builder
 	 */
-	public ExtensionBuilder name(String name) {
+	public Builder name(String name) {
 		this.name = name;
 		return this;
 	}
@@ -79,7 +79,7 @@ public class ExtensionBuilder {
 	 * @param extensionPropertyBuilder the properties
 	 * @return the extension builder
 	 */
-	public ExtensionBuilder propertie(ExtensionPropertyBuilder extensionPropertyBuilder) {
+	public Builder propertie(org.springdoc.core.fn.builders.extensionproperty.Builder extensionPropertyBuilder) {
 		this.properties = ArrayUtils.add( this.properties, extensionPropertyBuilder.build());
 		return this;
 	}

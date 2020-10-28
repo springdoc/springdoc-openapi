@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.parameter;
 
 import java.lang.annotation.Annotation;
 
@@ -40,7 +40,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type Parameter builder.
  * @author bnasslahsen
  */
-public class ParameterBuilder {
+public class Builder {
 	/**
 	 * The name of the parameter.
 	 *
@@ -99,13 +99,13 @@ public class ParameterBuilder {
 	 * The schema defining the type used for the parameter.  Ignored if the properties content or array are specified.
 	 *
 	 */
-	private Schema schema = SchemaBuilder.builder().build();
+	private Schema schema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * The schema of the array that defines this parameter.  Ignored if the property content is specified.
 	 *
 	 */
-	private ArraySchema array = ArraySchemaBuilder.builder().build();
+	private ArraySchema array = org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().build();
 
 	/**
 	 * The representation of this parameter, for different media types.
@@ -148,7 +148,7 @@ public class ParameterBuilder {
 	/**
 	 * Instantiates a new Parameter builder.
 	 */
-	private ParameterBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -156,8 +156,8 @@ public class ParameterBuilder {
 	 *
 	 * @return the parameter builder
 	 */
-	public static ParameterBuilder builder() {
-		return new ParameterBuilder();
+	public static Builder parameterBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -166,7 +166,7 @@ public class ParameterBuilder {
 	 * @param name the name
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder name(String name) {
+	public Builder name(String name) {
 		this.name = name;
 		return this;
 	}
@@ -177,7 +177,7 @@ public class ParameterBuilder {
 	 * @param in the in
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder in(ParameterIn in) {
+	public Builder in(ParameterIn in) {
 		this.in = in;
 		return this;
 	}
@@ -188,7 +188,7 @@ public class ParameterBuilder {
 	 * @param description the description
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder description(String description) {
+	public Builder description(String description) {
 		this.description = description;
 		return this;
 	}
@@ -199,7 +199,7 @@ public class ParameterBuilder {
 	 * @param required the required
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder required(boolean required) {
+	public Builder required(boolean required) {
 		this.required = required;
 		return this;
 	}
@@ -210,7 +210,7 @@ public class ParameterBuilder {
 	 * @param deprecated the deprecated
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder deprecated(boolean deprecated) {
+	public Builder deprecated(boolean deprecated) {
 		this.deprecated = deprecated;
 		return this;
 	}
@@ -221,7 +221,7 @@ public class ParameterBuilder {
 	 * @param allowEmptyValue the allow empty value
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder allowEmptyValue(boolean allowEmptyValue) {
+	public Builder allowEmptyValue(boolean allowEmptyValue) {
 		this.allowEmptyValue = allowEmptyValue;
 		return this;
 	}
@@ -232,7 +232,7 @@ public class ParameterBuilder {
 	 * @param style the style
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder style(ParameterStyle style) {
+	public Builder style(ParameterStyle style) {
 		this.style = style;
 		return this;
 	}
@@ -243,7 +243,7 @@ public class ParameterBuilder {
 	 * @param explode the explode
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder explode(Explode explode) {
+	public Builder explode(Explode explode) {
 		this.explode = explode;
 		return this;
 	}
@@ -254,7 +254,7 @@ public class ParameterBuilder {
 	 * @param allowReserved the allow reserved
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder allowReserved(boolean allowReserved) {
+	public Builder allowReserved(boolean allowReserved) {
 		this.allowReserved = allowReserved;
 		return this;
 	}
@@ -265,7 +265,7 @@ public class ParameterBuilder {
 	 * @param schemaBuilder the schema builder
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder schema(SchemaBuilder schemaBuilder) {
+	public Builder schema(org.springdoc.core.fn.builders.schema.Builder schemaBuilder) {
 		this.schema = schemaBuilder.build();
 		return this;
 	}
@@ -276,7 +276,7 @@ public class ParameterBuilder {
 	 * @param arraySchemaBuilder the array schema builder
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder array(ArraySchemaBuilder arraySchemaBuilder) {
+	public Builder array(org.springdoc.core.fn.builders.arrayschema.Builder arraySchemaBuilder) {
 		this.array = arraySchemaBuilder.build();
 		return this;
 	}
@@ -287,8 +287,8 @@ public class ParameterBuilder {
 	 * @param clazz the clazz
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder implementationArray(Class clazz) {
-		this.array = ArraySchemaBuilder.builder().schema(SchemaBuilder.builder().implementation(clazz)).build();
+	public Builder implementationArray(Class clazz) {
+		this.array = org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().schema(org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().implementation(clazz)).build();
 		return this;
 	}
 
@@ -298,8 +298,8 @@ public class ParameterBuilder {
 	 * @param clazz the clazz
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder implementation(Class clazz) {
-		this.schema =  SchemaBuilder.builder().implementation(clazz).build();
+	public Builder implementation(Class clazz) {
+		this.schema =  org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().implementation(clazz).build();
 		return this;
 	}
 
@@ -309,7 +309,7 @@ public class ParameterBuilder {
 	 * @param contentBuilder the content builder
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder content(ContentBuilder contentBuilder) {
+	public Builder content(org.springdoc.core.fn.builders.content.Builder contentBuilder) {
 		this.content = ArrayUtils.add( this.content, contentBuilder.build());
 		return this;
 	}
@@ -320,7 +320,7 @@ public class ParameterBuilder {
 	 * @param hidden the hidden
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder hidden(boolean hidden) {
+	public Builder hidden(boolean hidden) {
 		this.hidden = hidden;
 		return this;
 	}
@@ -331,7 +331,7 @@ public class ParameterBuilder {
 	 * @param exampleObjectBuilder the example object builder
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder examples(ExampleObjectBuilder exampleObjectBuilder) {
+	public Builder examples(org.springdoc.core.fn.builders.exampleobject.Builder exampleObjectBuilder) {
 		this.examples = ArrayUtils.add( this.examples, exampleObjectBuilder.build());
 		return this;
 	}
@@ -342,7 +342,7 @@ public class ParameterBuilder {
 	 * @param example the example
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder example(String example) {
+	public Builder example(String example) {
 		this.example = example;
 		return this;
 	}
@@ -353,7 +353,7 @@ public class ParameterBuilder {
 	 * @param extensionBuilder the extension builder
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder extensions(ExtensionBuilder extensionBuilder) {
+	public Builder extensions(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions =  ArrayUtils.add( this.extensions, extensionBuilder.build() );
 		return this;
 	}
@@ -364,7 +364,7 @@ public class ParameterBuilder {
 	 * @param ref the ref
 	 * @return the parameter builder
 	 */
-	public ParameterBuilder ref(String ref) {
+	public Builder ref(String ref) {
 		this.ref = ref;
 		return this;
 	}
