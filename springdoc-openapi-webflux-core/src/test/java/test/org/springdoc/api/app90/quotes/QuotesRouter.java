@@ -28,15 +28,15 @@ import java.math.MathContext;
 import java.time.Instant;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import org.springdoc.core.fn.builders.ApiResponseBuilder;
-import org.springdoc.core.fn.builders.ParameterBuilder;
-import org.springdoc.core.fn.builders.RequestBodyBuilder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import static org.springdoc.core.fn.builders.apiresponse.Builder.responseBuilder;
+import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
+import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
 import static org.springdoc.webflux.core.fn.SpringdocRouteBuilder.route;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
@@ -51,26 +51,26 @@ class QuotesRouter {
 	@Bean
 	 RouterFunction<ServerResponse> myroute() {
 		return route().GET("/hello", accept(TEXT_PLAIN), HANDLER_FUNCTION, ops -> ops.tag("quotes")
-				.operationId("hello").response(ApiResponseBuilder.builder().responseCode("200"))).build()
+				.operationId("hello").response(responseBuilder().responseCode("200"))).build()
 
 				.and(route().POST("/echo", accept(TEXT_PLAIN).and(contentType(TEXT_PLAIN)), HANDLER_FUNCTION, ops -> ops.tag("quotes")
 						.operationId("echo")
-						.requestBody(RequestBodyBuilder.builder().implementation(String.class))
-						.response(ApiResponseBuilder.builder().responseCode("200").implementation(String.class))).build())
+						.requestBody(requestBodyBuilder().implementation(String.class))
+						.response(responseBuilder().responseCode("200").implementation(String.class))).build())
 
 				.and(route().POST("/echo", accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON)), HANDLER_FUNCTION, ops -> ops.tag("quotes")
 						.operationId("echo")
-						.requestBody(RequestBodyBuilder.builder().implementation(String.class))
-						.response(ApiResponseBuilder.builder().responseCode("200").implementation(String.class))).build())
+						.requestBody(requestBodyBuilder().implementation(String.class))
+						.response(responseBuilder().responseCode("200").implementation(String.class))).build())
 
 				.and(route().GET("/quotes", accept(APPLICATION_JSON), HANDLER_FUNCTION, ops -> ops.tag("quotes")
 						.operationId("fetchQuotes")
-						.parameter(ParameterBuilder.builder().in(ParameterIn.QUERY).name("size").implementation(String.class))
-						.response(ApiResponseBuilder.builder().responseCode("200").implementationArray(Quote.class))).build())
+						.parameter(parameterBuilder().in(ParameterIn.QUERY).name("size").implementation(String.class))
+						.response(responseBuilder().responseCode("200").implementationArray(Quote.class))).build())
 
 				.and(route().GET("/quotes", accept(APPLICATION_STREAM_JSON), HANDLER_FUNCTION, ops -> ops.tag("quotes")
 						.operationId("fetchQuotes")
-						.response(ApiResponseBuilder.builder().responseCode("200").implementation(Quote.class))).build());
+						.response(responseBuilder().responseCode("200").implementation(Quote.class))).build());
 	}
 
 

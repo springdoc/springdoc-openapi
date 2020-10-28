@@ -21,8 +21,6 @@
 package test.org.springdoc.api.app87;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import org.springdoc.core.fn.builders.OperationBuilder;
-import org.springdoc.core.fn.builders.ParameterBuilder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +28,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
 
 import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
+import static org.springdoc.core.fn.builders.operation.Builder.operationBuilder;
+import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -41,14 +41,14 @@ class BookRouter {
 	@Bean
 	RouterFunction<?> routes(BookRepository br) {
 		return route(GET("/books").and(accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML)), req -> ok().body(br.findAll(), Book.class))
-				.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(BookRepository.class).beanMethod("findAll"))
+				.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(BookRepository.class).beanMethod("findAll"))
 
 				.and(route(GET("/books").and(accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN)), req -> ok().body(br.findAll(), Book.class))
-						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(BookRepository.class).beanMethod("findAll")))
+						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(BookRepository.class).beanMethod("findAll")))
 
 				.and(route(GET("/books/{author}"), req -> ok().body(br.findByAuthor(req.pathVariable("author")), Book.class))
-						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder()
+						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder()
 								.beanClass(BookRepository.class).beanMethod("findByAuthor")
-								.operationId("findByAuthor").parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("author"))));
+								.operationId("findByAuthor").parameter(parameterBuilder().in(ParameterIn.PATH).name("author"))));
 	}
 }

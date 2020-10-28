@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.discriminatormapping;
 
 import java.lang.annotation.Annotation;
 
@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
  * The type Discriminator mapping builder.
  * @author bnasslahsen
  */
-public class DiscriminatorMappingBuilder {
+public class Builder {
 
 	/**
 	 * The property value that will be mapped to a Schema
@@ -49,7 +49,7 @@ public class DiscriminatorMappingBuilder {
 	/**
 	 * Instantiates a new Discriminator mapping builder.
 	 */
-	private DiscriminatorMappingBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -57,8 +57,8 @@ public class DiscriminatorMappingBuilder {
 	 *
 	 * @return the discriminator mapping builder
 	 */
-	public static DiscriminatorMappingBuilder builder() {
-		return new DiscriminatorMappingBuilder();
+	public static Builder discriminatorMappingBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class DiscriminatorMappingBuilder {
 	 * @param value the value
 	 * @return the discriminator mapping builder
 	 */
-	public DiscriminatorMappingBuilder value(String value) {
+	public Builder value(String value) {
 		this.value = value;
 		return this;
 	}
@@ -78,7 +78,7 @@ public class DiscriminatorMappingBuilder {
 	 * @param schema the schema
 	 * @return the discriminator mapping builder
 	 */
-	public DiscriminatorMappingBuilder schema(Class<?> schema) {
+	public Builder schema(Class<?> schema) {
 		this.schema = schema;
 		return this;
 	}

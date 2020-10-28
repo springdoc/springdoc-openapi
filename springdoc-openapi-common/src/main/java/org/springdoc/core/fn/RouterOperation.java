@@ -27,7 +27,7 @@ import java.util.Objects;
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.core.fn.builders.OperationBuilder;
+import org.springdoc.core.fn.builders.operation.Builder;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -161,7 +161,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 
 		Map<String, Object> attributes = routerFunctionData.getAttributes();
 		if (attributes.containsKey(OPERATION_ATTRIBUTE)) {
-			OperationBuilder routerOperationBuilder = (OperationBuilder) attributes.get(OPERATION_ATTRIBUTE);
+			Builder routerOperationBuilder = (Builder) attributes.get(OPERATION_ATTRIBUTE);
 			RouterOperation routerOperation = routerOperationBuilder.build();
 			this.beanClass = routerOperation.getBeanClass();
 			this.beanMethod = routerOperation.getBeanMethod();

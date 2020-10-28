@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.requestbody;
 
 import java.lang.annotation.Annotation;
 
@@ -34,7 +34,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type Request body builder.
  * @author bnasslahsen
  */
-public class RequestBodyBuilder {
+public class Builder {
 
 	/**
 	 * A brief description of the request body.
@@ -71,7 +71,7 @@ public class RequestBodyBuilder {
 	/**
 	 * Instantiates a new Request body builder.
 	 */
-	private RequestBodyBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -79,8 +79,8 @@ public class RequestBodyBuilder {
 	 *
 	 * @return the request body builder
 	 */
-	public static RequestBodyBuilder builder() {
-		return new RequestBodyBuilder();
+	public static Builder requestBodyBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class RequestBodyBuilder {
 	 * @param description the description
 	 * @return the request body builder
 	 */
-	public RequestBodyBuilder description(String description) {
+	public Builder description(String description) {
 		this.description = description;
 		return this;
 	}
@@ -100,7 +100,7 @@ public class RequestBodyBuilder {
 	 * @param contentBuilder the content builder
 	 * @return the request body builder
 	 */
-	public RequestBodyBuilder content(ContentBuilder contentBuilder) {
+	public Builder content(org.springdoc.core.fn.builders.content.Builder contentBuilder) {
 		this.content = ArrayUtils.add( this.content, contentBuilder.build());
 		return this;
 	}
@@ -111,8 +111,8 @@ public class RequestBodyBuilder {
 	 * @param clazz the clazz
 	 * @return the request body builder
 	 */
-	public RequestBodyBuilder implementation(Class clazz) {
-		this.content = ArrayUtils.add(this.content, ContentBuilder.builder().schema(SchemaBuilder.builder().implementation(clazz)).build());
+	public Builder implementation(Class clazz) {
+		this.content = ArrayUtils.add(this.content, org.springdoc.core.fn.builders.content.Builder.contentBuilder().schema(org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().implementation(clazz)).build());
 		return this;
 	}
 
@@ -122,7 +122,7 @@ public class RequestBodyBuilder {
 	 * @param required the required
 	 * @return the request body builder
 	 */
-	public RequestBodyBuilder required(boolean required) {
+	public Builder required(boolean required) {
 		this.required = required;
 		return this;
 	}
@@ -133,7 +133,7 @@ public class RequestBodyBuilder {
 	 * @param extensionBuilder the extension builder
 	 * @return the request body builder
 	 */
-	public RequestBodyBuilder extension(ExtensionBuilder extensionBuilder) {
+	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
 		return this;
 	}
@@ -144,7 +144,7 @@ public class RequestBodyBuilder {
 	 * @param ref the ref
 	 * @return the request body builder
 	 */
-	public RequestBodyBuilder ref(String ref) {
+	public Builder ref(String ref) {
 		this.ref = ref;
 		return this;
 	}

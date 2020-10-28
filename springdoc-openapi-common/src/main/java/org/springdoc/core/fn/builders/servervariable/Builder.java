@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.servervariable;
 
 import java.lang.annotation.Annotation;
 
@@ -33,7 +33,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type Server variable builder.
  * @author bnasslahsen
  */
-public class ServerVariableBuilder {
+public class Builder {
 	/**
 	 * Required.  The name of this variable.
 	 *
@@ -68,7 +68,7 @@ public class ServerVariableBuilder {
 	/**
 	 * Instantiates a new Server variable builder.
 	 */
-	private ServerVariableBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -76,8 +76,8 @@ public class ServerVariableBuilder {
 	 *
 	 * @return the server variable builder
 	 */
-	public static ServerVariableBuilder builder() {
-		return new ServerVariableBuilder();
+	public static Builder serverVariableBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class ServerVariableBuilder {
 	 * @param name the name
 	 * @return the server variable builder
 	 */
-	public ServerVariableBuilder name(String name) {
+	public Builder name(String name) {
 		this.name = name;
 		return this;
 	}
@@ -97,7 +97,7 @@ public class ServerVariableBuilder {
 	 * @param allowableValues the allowable values
 	 * @return the server variable builder
 	 */
-	public ServerVariableBuilder allowableValues(String[] allowableValues) {
+	public Builder allowableValues(String[] allowableValues) {
 		this.allowableValues = allowableValues;
 		return this;
 	}
@@ -108,7 +108,7 @@ public class ServerVariableBuilder {
 	 * @param defaultValue the default value
 	 * @return the server variable builder
 	 */
-	public ServerVariableBuilder defaultValue(String defaultValue) {
+	public Builder defaultValue(String defaultValue) {
 		this.defaultValue = defaultValue;
 		return this;
 	}
@@ -119,7 +119,7 @@ public class ServerVariableBuilder {
 	 * @param description the description
 	 * @return the server variable builder
 	 */
-	public ServerVariableBuilder description(String description) {
+	public Builder description(String description) {
 		this.description = description;
 		return this;
 	}
@@ -130,7 +130,7 @@ public class ServerVariableBuilder {
 	 * @param extensionBuilder the extension builder
 	 * @return the server variable builder
 	 */
-	public ServerVariableBuilder extension(ExtensionBuilder extensionBuilder) {
+	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}

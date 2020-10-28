@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.externaldocumentation;
 
 import java.lang.annotation.Annotation;
 
@@ -33,7 +33,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type External documentation builder.
  * @author bnasslahsen
  */
-public class ExternalDocumentationBuilder {
+public class Builder {
 
 	/**
 	 * A short description of the target documentation.
@@ -57,7 +57,7 @@ public class ExternalDocumentationBuilder {
 	/**
 	 * Instantiates a new External documentation builder.
 	 */
-	private ExternalDocumentationBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -65,8 +65,8 @@ public class ExternalDocumentationBuilder {
 	 *
 	 * @return the external documentation builder
 	 */
-	public static ExternalDocumentationBuilder builder() {
-		return new ExternalDocumentationBuilder();
+	public static Builder externalDocumentationBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class ExternalDocumentationBuilder {
 	 * @param description the description
 	 * @return the external documentation builder
 	 */
-	public ExternalDocumentationBuilder description(String description) {
+	public Builder description(String description) {
 		this.description = description;
 		return this;
 	}
@@ -86,7 +86,7 @@ public class ExternalDocumentationBuilder {
 	 * @param url the url
 	 * @return the external documentation builder
 	 */
-	public ExternalDocumentationBuilder url(String url) {
+	public Builder url(String url) {
 		this.url = url;
 		return this;
 	}
@@ -97,7 +97,7 @@ public class ExternalDocumentationBuilder {
 	 * @param extensionBuilder the extensions
 	 * @return the external documentation builder
 	 */
-	public ExternalDocumentationBuilder extension(ExtensionBuilder extensionBuilder) {
+	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
 		return this;
 	}

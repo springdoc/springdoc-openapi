@@ -39,7 +39,6 @@ import javax.servlet.ServletResponse;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import org.springdoc.core.fn.builders.OperationBuilder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,6 +53,7 @@ import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
 
 import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
+import static org.springdoc.core.fn.builders.operation.Builder.operationBuilder;
 import static org.springframework.web.servlet.function.RouterFunctions.route;
 import static org.springframework.web.servlet.function.ServerResponse.ok;
 
@@ -69,11 +69,11 @@ public class HelloApplication {
 		String root = "";
 		return route()
 				.GET(root + "/people", ph::handleGetAllPeople)
-				.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(PersonService.class).beanMethod("all"))
+				.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(PersonService.class).beanMethod("all"))
 				.GET(root + "/people/{id}", ph::handleGetPersonById)
-				.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(PersonService.class).beanMethod("byId"))
+				.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(PersonService.class).beanMethod("byId"))
 				.POST(root + "/people", ph::handlePostPerson)
-				.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().beanClass(PersonService.class).beanMethod("save"))
+				.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(PersonService.class).beanMethod("save"))
 				.filter(HelloApplication::filter)
 				.build();
 	}

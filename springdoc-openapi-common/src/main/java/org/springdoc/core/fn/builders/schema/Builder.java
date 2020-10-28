@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.schema;
 
 import java.lang.annotation.Annotation;
 
@@ -36,7 +36,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type Schema builder.
  * @author bnasslahsen
  */
-public class SchemaBuilder {
+public class Builder {
 	/**
 	 * Provides a java class as implementation for this schema.  When provided, additional information in the Schema annotation (except for type information) will augment the java class after introspection.
 	 *
@@ -196,7 +196,7 @@ public class SchemaBuilder {
 	 * Additional external documentation for this schema.
 	 *
 	 */
-	private ExternalDocumentation externalDocs = ExternalDocumentationBuilder.builder().build();
+	private ExternalDocumentation externalDocs = org.springdoc.core.fn.builders.externaldocumentation.Builder.externalDocumentationBuilder().build();
 
 	/**
 	 * Specifies that a schema is deprecated and should be transitioned out of usage.
@@ -264,7 +264,7 @@ public class SchemaBuilder {
 	/**
 	 * Instantiates a new Schema builder.
 	 */
-	private SchemaBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -272,8 +272,8 @@ public class SchemaBuilder {
 	 *
 	 * @return the schema builder
 	 */
-	public static SchemaBuilder builder() {
-		return new SchemaBuilder();
+	public static Builder schemaBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -282,7 +282,7 @@ public class SchemaBuilder {
 	 * @param implementation the implementation
 	 * @return the schema builder
 	 */
-	public SchemaBuilder implementation(Class<?> implementation) {
+	public Builder implementation(Class<?> implementation) {
 		this.implementation = implementation;
 		return this;
 	}
@@ -293,7 +293,7 @@ public class SchemaBuilder {
 	 * @param not the not
 	 * @return the schema builder
 	 */
-	public SchemaBuilder not(Class<?> not) {
+	public Builder not(Class<?> not) {
 		this.not = not;
 		return this;
 	}
@@ -304,7 +304,7 @@ public class SchemaBuilder {
 	 * @param oneOf the one of
 	 * @return the schema builder
 	 */
-	public SchemaBuilder oneOf(Class<?>[] oneOf) {
+	public Builder oneOf(Class<?>[] oneOf) {
 		this.oneOf = oneOf;
 		return this;
 	}
@@ -315,7 +315,7 @@ public class SchemaBuilder {
 	 * @param anyOf the any of
 	 * @return the schema builder
 	 */
-	public SchemaBuilder anyOf(Class<?>[] anyOf) {
+	public Builder anyOf(Class<?>[] anyOf) {
 		this.anyOf = anyOf;
 		return this;
 	}
@@ -326,7 +326,7 @@ public class SchemaBuilder {
 	 * @param allOf the all of
 	 * @return the schema builder
 	 */
-	public SchemaBuilder allOf(Class<?>[] allOf) {
+	public Builder allOf(Class<?>[] allOf) {
 		this.allOf = allOf;
 		return this;
 	}
@@ -337,7 +337,7 @@ public class SchemaBuilder {
 	 * @param name the name
 	 * @return the schema builder
 	 */
-	public SchemaBuilder name(String name) {
+	public Builder name(String name) {
 		this.name = name;
 		return this;
 	}
@@ -348,7 +348,7 @@ public class SchemaBuilder {
 	 * @param title the title
 	 * @return the schema builder
 	 */
-	public SchemaBuilder title(String title) {
+	public Builder title(String title) {
 		this.title = title;
 		return this;
 	}
@@ -359,7 +359,7 @@ public class SchemaBuilder {
 	 * @param multipleOf the multiple of
 	 * @return the schema builder
 	 */
-	public SchemaBuilder multipleOf(double multipleOf) {
+	public Builder multipleOf(double multipleOf) {
 		this.multipleOf = multipleOf;
 		return this;
 	}
@@ -370,7 +370,7 @@ public class SchemaBuilder {
 	 * @param maximum the maximum
 	 * @return the schema builder
 	 */
-	public SchemaBuilder maximum(String maximum) {
+	public Builder maximum(String maximum) {
 		this.maximum = maximum;
 		return this;
 	}
@@ -381,7 +381,7 @@ public class SchemaBuilder {
 	 * @param exclusiveMaximum the exclusive maximum
 	 * @return the schema builder
 	 */
-	public SchemaBuilder exclusiveMaximum(boolean exclusiveMaximum) {
+	public Builder exclusiveMaximum(boolean exclusiveMaximum) {
 		this.exclusiveMaximum = exclusiveMaximum;
 		return this;
 	}
@@ -392,7 +392,7 @@ public class SchemaBuilder {
 	 * @param minimum the minimum
 	 * @return the schema builder
 	 */
-	public SchemaBuilder minimum(String minimum) {
+	public Builder minimum(String minimum) {
 		this.minimum = minimum;
 		return this;
 	}
@@ -403,7 +403,7 @@ public class SchemaBuilder {
 	 * @param exclusiveMinimum the exclusive minimum
 	 * @return the schema builder
 	 */
-	public SchemaBuilder exclusiveMinimum(boolean exclusiveMinimum) {
+	public Builder exclusiveMinimum(boolean exclusiveMinimum) {
 		this.exclusiveMinimum = exclusiveMinimum;
 		return this;
 	}
@@ -414,7 +414,7 @@ public class SchemaBuilder {
 	 * @param maxLength the max length
 	 * @return the schema builder
 	 */
-	public SchemaBuilder maxLength(int maxLength) {
+	public Builder maxLength(int maxLength) {
 		this.maxLength = maxLength;
 		return this;
 	}
@@ -425,7 +425,7 @@ public class SchemaBuilder {
 	 * @param minLength the min length
 	 * @return the schema builder
 	 */
-	public SchemaBuilder minLength(int minLength) {
+	public Builder minLength(int minLength) {
 		this.minLength = minLength;
 		return this;
 	}
@@ -436,7 +436,7 @@ public class SchemaBuilder {
 	 * @param pattern the pattern
 	 * @return the schema builder
 	 */
-	public SchemaBuilder pattern(String pattern) {
+	public Builder pattern(String pattern) {
 		this.pattern = pattern;
 		return this;
 	}
@@ -447,7 +447,7 @@ public class SchemaBuilder {
 	 * @param maxProperties the max properties
 	 * @return the schema builder
 	 */
-	public SchemaBuilder maxProperties(int maxProperties) {
+	public Builder maxProperties(int maxProperties) {
 		this.maxProperties = maxProperties;
 		return this;
 	}
@@ -458,7 +458,7 @@ public class SchemaBuilder {
 	 * @param minProperties the min properties
 	 * @return the schema builder
 	 */
-	public SchemaBuilder minProperties(int minProperties) {
+	public Builder minProperties(int minProperties) {
 		this.minProperties = minProperties;
 		return this;
 	}
@@ -469,7 +469,7 @@ public class SchemaBuilder {
 	 * @param requiredProperties the required properties
 	 * @return the schema builder
 	 */
-	public SchemaBuilder requiredProperties(String[] requiredProperties) {
+	public Builder requiredProperties(String[] requiredProperties) {
 		this.requiredProperties = requiredProperties;
 		return this;
 	}
@@ -480,7 +480,7 @@ public class SchemaBuilder {
 	 * @param required the required
 	 * @return the schema builder
 	 */
-	public SchemaBuilder required(boolean required) {
+	public Builder required(boolean required) {
 		this.required = required;
 		return this;
 	}
@@ -491,7 +491,7 @@ public class SchemaBuilder {
 	 * @param description the description
 	 * @return the schema builder
 	 */
-	public SchemaBuilder description(String description) {
+	public Builder description(String description) {
 		this.description = description;
 		return this;
 	}
@@ -502,7 +502,7 @@ public class SchemaBuilder {
 	 * @param format the format
 	 * @return the schema builder
 	 */
-	public SchemaBuilder format(String format) {
+	public Builder format(String format) {
 		this.format = format;
 		return this;
 	}
@@ -513,7 +513,7 @@ public class SchemaBuilder {
 	 * @param ref the ref
 	 * @return the schema builder
 	 */
-	public SchemaBuilder ref(String ref) {
+	public Builder ref(String ref) {
 		this.ref = ref;
 		return this;
 	}
@@ -524,7 +524,7 @@ public class SchemaBuilder {
 	 * @param nullable the nullable
 	 * @return the schema builder
 	 */
-	public SchemaBuilder nullable(boolean nullable) {
+	public Builder nullable(boolean nullable) {
 		this.nullable = nullable;
 		return this;
 	}
@@ -535,7 +535,7 @@ public class SchemaBuilder {
 	 * @param accessMode the access mode
 	 * @return the schema builder
 	 */
-	public SchemaBuilder accessMode(AccessMode accessMode) {
+	public Builder accessMode(AccessMode accessMode) {
 		this.accessMode = accessMode;
 		return this;
 	}
@@ -546,7 +546,7 @@ public class SchemaBuilder {
 	 * @param example the example
 	 * @return the schema builder
 	 */
-	public SchemaBuilder example(String example) {
+	public Builder example(String example) {
 		this.example = example;
 		return this;
 	}
@@ -557,7 +557,7 @@ public class SchemaBuilder {
 	 * @param externalDocumentationBuilder the external documentation builder
 	 * @return the schema builder
 	 */
-	public SchemaBuilder externalDocs(ExternalDocumentationBuilder externalDocumentationBuilder) {
+	public Builder externalDocs(org.springdoc.core.fn.builders.externaldocumentation.Builder externalDocumentationBuilder) {
 		this.externalDocs = externalDocumentationBuilder.build();
 		return this;
 	}
@@ -568,7 +568,7 @@ public class SchemaBuilder {
 	 * @param deprecated the deprecated
 	 * @return the schema builder
 	 */
-	public SchemaBuilder deprecated(boolean deprecated) {
+	public Builder deprecated(boolean deprecated) {
 		this.deprecated = deprecated;
 		return this;
 	}
@@ -579,7 +579,7 @@ public class SchemaBuilder {
 	 * @param type the type
 	 * @return the schema builder
 	 */
-	public SchemaBuilder type(String type) {
+	public Builder type(String type) {
 		this.type = type;
 		return this;
 	}
@@ -590,7 +590,7 @@ public class SchemaBuilder {
 	 * @param allowableValues the allowable values
 	 * @return the schema builder
 	 */
-	public SchemaBuilder allowableValues(String[] allowableValues) {
+	public Builder allowableValues(String[] allowableValues) {
 		this.allowableValues = allowableValues;
 		return this;
 	}
@@ -601,7 +601,7 @@ public class SchemaBuilder {
 	 * @param defaultValue the default value
 	 * @return the schema builder
 	 */
-	public SchemaBuilder defaultValue(String defaultValue) {
+	public Builder defaultValue(String defaultValue) {
 		this.defaultValue = defaultValue;
 		return this;
 	}
@@ -612,7 +612,7 @@ public class SchemaBuilder {
 	 * @param discriminatorProperty the discriminator property
 	 * @return the schema builder
 	 */
-	public SchemaBuilder discriminatorProperty(String discriminatorProperty) {
+	public Builder discriminatorProperty(String discriminatorProperty) {
 		this.discriminatorProperty = discriminatorProperty;
 		return this;
 	}
@@ -623,7 +623,7 @@ public class SchemaBuilder {
 	 * @param discriminatorMappingBuilder the discriminator mapping builder
 	 * @return the schema builder
 	 */
-	public SchemaBuilder discriminatorMapping(DiscriminatorMappingBuilder discriminatorMappingBuilder) {
+	public Builder discriminatorMapping(org.springdoc.core.fn.builders.discriminatormapping.Builder discriminatorMappingBuilder) {
 		this.discriminatorMapping = ArrayUtils.add(this.discriminatorMapping, discriminatorMappingBuilder.build());
 		return this;
 	}
@@ -634,7 +634,7 @@ public class SchemaBuilder {
 	 * @param hidden the hidden
 	 * @return the schema builder
 	 */
-	public SchemaBuilder hidden(boolean hidden) {
+	public Builder hidden(boolean hidden) {
 		this.hidden = hidden;
 		return this;
 	}
@@ -645,7 +645,7 @@ public class SchemaBuilder {
 	 * @param enumAsRef the enum as ref
 	 * @return the schema builder
 	 */
-	public SchemaBuilder enumAsRef(boolean enumAsRef) {
+	public Builder enumAsRef(boolean enumAsRef) {
 		this.enumAsRef = enumAsRef;
 		return this;
 	}
@@ -656,7 +656,7 @@ public class SchemaBuilder {
 	 * @param subTypes the sub types
 	 * @return the schema builder
 	 */
-	public SchemaBuilder subTypes(Class<?>[] subTypes) {
+	public Builder subTypes(Class<?>[] subTypes) {
 		this.subTypes = subTypes;
 		return this;
 	}
@@ -667,7 +667,7 @@ public class SchemaBuilder {
 	 * @param extensionBuilder the extension builder
 	 * @return the schema builder
 	 */
-	public SchemaBuilder extensions(ExtensionBuilder extensionBuilder) {
+	public Builder extensions(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}

@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.apiresponse;
 
 import java.lang.annotation.Annotation;
 
@@ -36,7 +36,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type Api response builder.
  * @author bnasslahsen
  */
-public class ApiResponseBuilder {
+public class Builder {
 
 	/**
 	 * A short description of the response.
@@ -85,7 +85,7 @@ public class ApiResponseBuilder {
 	/**
 	 * Instantiates a new Api response builder.
 	 */
-	private ApiResponseBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -93,8 +93,8 @@ public class ApiResponseBuilder {
 	 *
 	 * @return the api response builder
 	 */
-	public static ApiResponseBuilder builder() {
-		return new ApiResponseBuilder();
+	public static Builder responseBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class ApiResponseBuilder {
 	 * @param description the description
 	 * @return the api response builder
 	 */
-	public ApiResponseBuilder description(String description) {
+	public Builder description(String description) {
 		this.description = description;
 		return this;
 	}
@@ -114,7 +114,7 @@ public class ApiResponseBuilder {
 	 * @param responseCode the response code
 	 * @return the api response builder
 	 */
-	public ApiResponseBuilder responseCode(String responseCode) {
+	public Builder responseCode(String responseCode) {
 		this.responseCode = responseCode;
 		return this;
 	}
@@ -125,7 +125,7 @@ public class ApiResponseBuilder {
 	 * @param headers the headers
 	 * @return the api response builder
 	 */
-	public ApiResponseBuilder header(HeaderBuilder headers) {
+	public Builder header(org.springdoc.core.fn.builders.header.Builder headers) {
 		this.headers = ArrayUtils.add(this.headers, headers.build());
 		return this;
 	}
@@ -136,7 +136,7 @@ public class ApiResponseBuilder {
 	 * @param linkBuilder the link builder
 	 * @return the api response builder
 	 */
-	public ApiResponseBuilder link(LinkBuilder linkBuilder) {
+	public Builder link(org.springdoc.core.fn.builders.link.Builder linkBuilder) {
 		this.links = ArrayUtils.add(this.links, linkBuilder.build());
 		return this;
 	}
@@ -147,7 +147,7 @@ public class ApiResponseBuilder {
 	 * @param contentBuilder the content builder
 	 * @return the api response builder
 	 */
-	public ApiResponseBuilder content(ContentBuilder contentBuilder) {
+	public Builder content(org.springdoc.core.fn.builders.content.Builder contentBuilder) {
 		this.content = ArrayUtils.add(this.content, contentBuilder.build());
 		return this;
 	}
@@ -158,8 +158,8 @@ public class ApiResponseBuilder {
 	 * @param clazz the clazz
 	 * @return the api response builder
 	 */
-	public ApiResponseBuilder implementation(Class clazz) {
-		this.content = ArrayUtils.add(this.content, ContentBuilder.builder().schema(SchemaBuilder.builder().implementation(clazz)).build());
+	public Builder implementation(Class clazz) {
+		this.content = ArrayUtils.add(this.content, org.springdoc.core.fn.builders.content.Builder.contentBuilder().schema(org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().implementation(clazz)).build());
 		return this;
 	}
 
@@ -169,8 +169,8 @@ public class ApiResponseBuilder {
 	 * @param clazz the clazz
 	 * @return the api response builder
 	 */
-	public ApiResponseBuilder implementationArray(Class clazz) {
-		this.content = ArrayUtils.add(this.content, ContentBuilder.builder().array(ArraySchemaBuilder.builder().schema(SchemaBuilder.builder().implementation(clazz))).build());
+	public Builder implementationArray(Class clazz) {
+		this.content = ArrayUtils.add(this.content, org.springdoc.core.fn.builders.content.Builder.contentBuilder().array(org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().schema(org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().implementation(clazz))).build());
 		return this;
 	}
 
@@ -180,7 +180,7 @@ public class ApiResponseBuilder {
 	 * @param extensionBuilder the extension builder
 	 * @return the api response builder
 	 */
-	public ApiResponseBuilder extension(ExtensionBuilder extensionBuilder) {
+	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}
@@ -191,7 +191,7 @@ public class ApiResponseBuilder {
 	 * @param ref the ref
 	 * @return the api response builder
 	 */
-	public ApiResponseBuilder ref(String ref) {
+	public Builder ref(String ref) {
 		this.ref = ref;
 		return this;
 	}

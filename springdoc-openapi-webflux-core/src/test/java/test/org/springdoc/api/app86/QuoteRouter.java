@@ -21,10 +21,6 @@
 package test.org.springdoc.api.app86;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import org.springdoc.core.fn.builders.ApiResponseBuilder;
-import org.springdoc.core.fn.builders.OperationBuilder;
-import org.springdoc.core.fn.builders.ParameterBuilder;
-import org.springdoc.core.fn.builders.RequestBodyBuilder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +28,10 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
+import static org.springdoc.core.fn.builders.apiresponse.Builder.responseBuilder;
+import static org.springdoc.core.fn.builders.operation.Builder.operationBuilder;
+import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
+import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
@@ -47,27 +47,27 @@ public class QuoteRouter {
 	@Bean
 	public RouterFunction<ServerResponse> myroute(QuoteHandler quoteHandler) {
 		return route(GET("/hello").and(accept(TEXT_PLAIN)), quoteHandler::hello)
-				.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().operationId("hello").response(ApiResponseBuilder.builder().responseCode("200")))
+				.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("hello").response(responseBuilder().responseCode("200")))
 
 				.and(route(POST("/echo").and(accept(TEXT_PLAIN).and(contentType(TEXT_PLAIN))), quoteHandler::echo)
-						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().operationId("echo")
-								.requestBody(RequestBodyBuilder.builder().implementation(String.class))
-								.response(ApiResponseBuilder.builder().responseCode("200").implementation(String.class))))
+						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("echo")
+								.requestBody(requestBodyBuilder().implementation(String.class))
+								.response(responseBuilder().responseCode("200").implementation(String.class))))
 
 				.and(route(POST("/echo").and(accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON))), quoteHandler::echo)
-						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().operationId("echo")
-								.requestBody(RequestBodyBuilder.builder().implementation(String.class))
-								.response(ApiResponseBuilder.builder().responseCode("200").implementation(String.class)))
+						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("echo")
+								.requestBody(requestBodyBuilder().implementation(String.class))
+								.response(responseBuilder().responseCode("200").implementation(String.class)))
 				)
 
 				.and(route(GET("/quotes").and(accept(APPLICATION_JSON)), quoteHandler::fetchQuotes)
-						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().operationId("fetchQuotes")
-								.parameter(ParameterBuilder.builder().in(ParameterIn.QUERY).name("size").implementation(String.class))
-								.response(ApiResponseBuilder.builder().responseCode("200").implementationArray(Quote.class))))
+						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("fetchQuotes")
+								.parameter(parameterBuilder().in(ParameterIn.QUERY).name("size").implementation(String.class))
+								.response(responseBuilder().responseCode("200").implementationArray(Quote.class))))
 
 				.and(route(GET("/quotes").and(accept(APPLICATION_STREAM_JSON)), quoteHandler::streamQuotes)
-						.withAttribute(OPERATION_ATTRIBUTE, OperationBuilder.builder().operationId("fetchQuotes")
-								.response(ApiResponseBuilder.builder().responseCode("200").implementation(Quote.class))));
+						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("fetchQuotes")
+								.response(responseBuilder().responseCode("200").implementation(Quote.class))));
 	}
 
 }

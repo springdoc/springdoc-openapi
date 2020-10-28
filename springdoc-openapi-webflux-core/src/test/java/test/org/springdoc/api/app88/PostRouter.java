@@ -21,10 +21,6 @@
 package test.org.springdoc.api.app88;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import org.springdoc.core.fn.builders.ApiResponseBuilder;
-import org.springdoc.core.fn.builders.OperationBuilder;
-import org.springdoc.core.fn.builders.ParameterBuilder;
-import org.springdoc.core.fn.builders.RequestBodyBuilder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +28,10 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
+import static org.springdoc.core.fn.builders.apiresponse.Builder.responseBuilder;
+import static org.springdoc.core.fn.builders.operation.Builder.operationBuilder;
+import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
+import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RequestPredicates.PUT;
@@ -45,27 +45,27 @@ class PostRouter {
 	public RouterFunction<ServerResponse> routes(PostHandler postController) {
 		return route(GET("/posts").and(queryParam("key", "value")), postController::all)
 				.withAttribute(OPERATION_ATTRIBUTE,
-						OperationBuilder.builder().operationId("all")
-								.parameter(ParameterBuilder.builder().name("key").description("sample description"))
-								.parameter(ParameterBuilder.builder().name("test").description("sample desc"))
-								.response(ApiResponseBuilder.builder().responseCode("200").implementationArray(Post.class)))
+						operationBuilder().operationId("all")
+								.parameter(parameterBuilder().name("key").description("sample description"))
+								.parameter(parameterBuilder().name("test").description("sample desc"))
+								.response(responseBuilder().responseCode("200").implementationArray(Post.class)))
 
 				.and(route(POST("/posts"), postController::create)
 						.withAttribute(OPERATION_ATTRIBUTE,
-								OperationBuilder.builder().operationId("create")
-										.requestBody(RequestBodyBuilder.builder().implementation(Post.class))
-										.response(ApiResponseBuilder.builder().responseCode("201"))))
+								operationBuilder().operationId("create")
+										.requestBody(requestBodyBuilder().implementation(Post.class))
+										.response(responseBuilder().responseCode("201"))))
 
 				.and(route(GET("/posts/{id}"), postController::get)
 						.withAttribute(OPERATION_ATTRIBUTE,
-								OperationBuilder.builder().operationId("get")
-										.parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("id"))
-										.response(ApiResponseBuilder.builder().responseCode("200").implementation(Post.class))))
+								operationBuilder().operationId("get")
+										.parameter(parameterBuilder().in(ParameterIn.PATH).name("id"))
+										.response(responseBuilder().responseCode("200").implementation(Post.class))))
 
 				.and(route(PUT("/posts/{id}"), postController::update)
 						.withAttribute(OPERATION_ATTRIBUTE,
-								OperationBuilder.builder().operationId("update")
-										.parameter(ParameterBuilder.builder().in(ParameterIn.PATH).name("id"))
-										.response(ApiResponseBuilder.builder().responseCode("202").implementation(Post.class))));
+								operationBuilder().operationId("update")
+										.parameter(parameterBuilder().in(ParameterIn.PATH).name("id"))
+										.response(responseBuilder().responseCode("202").implementation(Post.class))));
 	}
 }

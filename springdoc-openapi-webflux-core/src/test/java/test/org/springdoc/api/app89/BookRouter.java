@@ -21,8 +21,6 @@
 package test.org.springdoc.api.app89;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import org.springdoc.core.fn.builders.OperationBuilder;
-import org.springdoc.core.fn.builders.ParameterBuilder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +28,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
 
 import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
+import static org.springdoc.core.fn.builders.operation.Builder.operationBuilder;
+import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RequestPredicates.path;
@@ -91,13 +91,13 @@ class BookRouter {
 								.withAttribute(OPERATION_ATTRIBUTE, getRouterAttribute()))));
 	}
 
-	private OperationBuilder getFindAll() {
-		return OperationBuilder.builder().beanClass(BookRepository.class).beanMethod("findAll");
+	private org.springdoc.core.fn.builders.operation.Builder getFindAll() {
+		return operationBuilder().beanClass(BookRepository.class).beanMethod("findAll");
 	}
 
-	private OperationBuilder getRouterAttribute() {
-		return OperationBuilder.builder()
-				.operationId("findByAuthor").parameter(ParameterBuilder.builder().name("author").in(ParameterIn.PATH))
+	private org.springdoc.core.fn.builders.operation.Builder getRouterAttribute() {
+		return operationBuilder()
+				.operationId("findByAuthor").parameter(parameterBuilder().name("author").in(ParameterIn.PATH))
 				.beanClass(BookRepository.class).beanMethod("findByAuthor");
 	}
 }

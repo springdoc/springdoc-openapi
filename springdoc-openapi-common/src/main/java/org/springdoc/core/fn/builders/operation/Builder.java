@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.operation;
 
 import java.lang.annotation.Annotation;
 
@@ -41,7 +41,7 @@ import org.springdoc.core.fn.RouterOperation;
  * The type Operation builder.
  * @author bnasslahsen
  */
-public class OperationBuilder {
+public class Builder {
 
 	/**
 	 * The Bean class.
@@ -87,13 +87,13 @@ public class OperationBuilder {
 	 * Request body associated to the operation.
 	 *
 	 */
-	private RequestBody requestBody = RequestBodyBuilder.builder().build();
+	private RequestBody requestBody = org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder().build();
 
 	/**
 	 * Additional external documentation for this operation.
 	 *
 	 */
-	private ExternalDocumentation externalDocs = ExternalDocumentationBuilder.builder().build();
+	private ExternalDocumentation externalDocs = org.springdoc.core.fn.builders.externaldocumentation.Builder.externalDocumentationBuilder().build();
 
 	/**
 	 * The operationId is used by third-party tools to uniquely identify this operation.
@@ -152,7 +152,7 @@ public class OperationBuilder {
 	/**
 	 * Instantiates a new Operation builder.
 	 */
-	private OperationBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -160,8 +160,8 @@ public class OperationBuilder {
 	 *
 	 * @return the operation builder
 	 */
-	public static OperationBuilder builder() {
-		return new OperationBuilder();
+	public static Builder operationBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class OperationBuilder {
 	 * @param method the method
 	 * @return the operation builder
 	 */
-	public OperationBuilder method(String method) {
+	public Builder method(String method) {
 		this.method = method;
 		return this;
 	}
@@ -181,7 +181,7 @@ public class OperationBuilder {
 	 * @param tags the tags
 	 * @return the operation builder
 	 */
-	public OperationBuilder tags(String[] tags) {
+	public Builder tags(String[] tags) {
 		this.tags = tags;
 		return this;
 	}
@@ -192,7 +192,7 @@ public class OperationBuilder {
 	 * @param tag the tag
 	 * @return the operation builder
 	 */
-	public OperationBuilder tag(String tag) {
+	public Builder tag(String tag) {
 		this.tags = ArrayUtils.add(tags, tag);
 		return this;
 	}
@@ -203,7 +203,7 @@ public class OperationBuilder {
 	 * @param summary the summary
 	 * @return the operation builder
 	 */
-	public OperationBuilder summary(String summary) {
+	public Builder summary(String summary) {
 		this.summary = summary;
 		return this;
 	}
@@ -214,7 +214,7 @@ public class OperationBuilder {
 	 * @param description the description
 	 * @return the operation builder
 	 */
-	public OperationBuilder description(String description) {
+	public Builder description(String description) {
 		this.description = description;
 		return this;
 	}
@@ -225,7 +225,7 @@ public class OperationBuilder {
 	 * @param requestBodyBuilder the request body builder
 	 * @return the operation builder
 	 */
-	public OperationBuilder requestBody(RequestBodyBuilder requestBodyBuilder) {
+	public Builder requestBody(org.springdoc.core.fn.builders.requestbody.Builder requestBodyBuilder) {
 		this.requestBody = requestBodyBuilder.build();
 		return this;
 	}
@@ -236,7 +236,7 @@ public class OperationBuilder {
 	 * @param externalDocumentationBuilder the external documentation builder
 	 * @return the operation builder
 	 */
-	public OperationBuilder externalDocs(ExternalDocumentationBuilder externalDocumentationBuilder) {
+	public Builder externalDocs(org.springdoc.core.fn.builders.externaldocumentation.Builder externalDocumentationBuilder) {
 		this.externalDocs = externalDocumentationBuilder.build();
 		return this;
 	}
@@ -247,7 +247,7 @@ public class OperationBuilder {
 	 * @param operationId the operation id
 	 * @return the operation builder
 	 */
-	public OperationBuilder operationId(String operationId) {
+	public Builder operationId(String operationId) {
 		this.operationId = operationId;
 		return this;
 	}
@@ -258,7 +258,7 @@ public class OperationBuilder {
 	 * @param parameterBuilder the parameter builder
 	 * @return the operation builder
 	 */
-	public OperationBuilder parameter(ParameterBuilder parameterBuilder) {
+	public Builder parameter(org.springdoc.core.fn.builders.parameter.Builder parameterBuilder) {
 		this.parameters = ArrayUtils.add(this.parameters, parameterBuilder.build());
 		return this;
 	}
@@ -269,7 +269,7 @@ public class OperationBuilder {
 	 * @param apiResponseBuilder the api response builder
 	 * @return the operation builder
 	 */
-	public OperationBuilder response(ApiResponseBuilder apiResponseBuilder) {
+	public Builder response(org.springdoc.core.fn.builders.apiresponse.Builder apiResponseBuilder) {
 		this.responses = ArrayUtils.add(this.responses, apiResponseBuilder.build());
 		return this;
 	}
@@ -280,7 +280,7 @@ public class OperationBuilder {
 	 * @param deprecated the deprecated
 	 * @return the operation builder
 	 */
-	public OperationBuilder deprecated(boolean deprecated) {
+	public Builder deprecated(boolean deprecated) {
 		this.deprecated = deprecated;
 		return this;
 	}
@@ -291,7 +291,7 @@ public class OperationBuilder {
 	 * @param securityRequirementBuilder the security requirement builder
 	 * @return the operation builder
 	 */
-	public OperationBuilder security(SecurityRequirementBuilder securityRequirementBuilder) {
+	public Builder security(org.springdoc.core.fn.builders.securityrequirement.Builder securityRequirementBuilder) {
 		this.security = ArrayUtils.add(this.security, securityRequirementBuilder.build());
 		return this;
 	}
@@ -302,7 +302,7 @@ public class OperationBuilder {
 	 * @param serverBuilder the server builder
 	 * @return the operation builder
 	 */
-	public OperationBuilder servers(ServerBuilder serverBuilder) {
+	public Builder servers(org.springdoc.core.fn.builders.server.Builder serverBuilder) {
 		this.servers = ArrayUtils.add(this.servers, serverBuilder.build());
 		return this;
 	}
@@ -313,7 +313,7 @@ public class OperationBuilder {
 	 * @param extensionBuilder the extension builder
 	 * @return the operation builder
 	 */
-	public OperationBuilder extensions(ExtensionBuilder extensionBuilder) {
+	public Builder extensions(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}
@@ -324,7 +324,7 @@ public class OperationBuilder {
 	 * @param hidden the hidden
 	 * @return the operation builder
 	 */
-	public OperationBuilder hidden(boolean hidden) {
+	public Builder hidden(boolean hidden) {
 		this.hidden = hidden;
 		return this;
 	}
@@ -335,7 +335,7 @@ public class OperationBuilder {
 	 * @param ignoreJsonView the ignore json view
 	 * @return the operation builder
 	 */
-	public OperationBuilder ignoreJsonView(boolean ignoreJsonView) {
+	public Builder ignoreJsonView(boolean ignoreJsonView) {
 		this.ignoreJsonView = ignoreJsonView;
 		return this;
 	}
@@ -346,7 +346,7 @@ public class OperationBuilder {
 	 * @param beanClass the bean class
 	 * @return the operation builder
 	 */
-	public OperationBuilder beanClass(Class<?> beanClass) {
+	public Builder beanClass(Class<?> beanClass) {
 		this.beanClass = beanClass;
 		return this;
 	}
@@ -357,7 +357,7 @@ public class OperationBuilder {
 	 * @param beanMethod the bean method
 	 * @return the operation builder
 	 */
-	public OperationBuilder beanMethod(String beanMethod) {
+	public Builder beanMethod(String beanMethod) {
 		this.beanMethod = beanMethod;
 		return this;
 	}
@@ -368,7 +368,7 @@ public class OperationBuilder {
 	 * @param parameterTypes the parameter types
 	 * @return the operation builder
 	 */
-	public OperationBuilder parameterTypes(Class<?>[] parameterTypes) {
+	public Builder parameterTypes(Class<?>[] parameterTypes) {
 		this.parameterTypes = parameterTypes;
 		return this;
 	}

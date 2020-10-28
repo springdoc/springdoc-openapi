@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.extensionproperty;
 
 import java.lang.annotation.Annotation;
 
@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
  * The type Extension property builder.
  * @author bnasslahsen
  */
-public class ExtensionPropertyBuilder {
+public class Builder {
 
 	/**
 	 * The name of the property.
@@ -54,7 +54,7 @@ public class ExtensionPropertyBuilder {
 	/**
 	 * Instantiates a new Extension property builder.
 	 */
-	private ExtensionPropertyBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -62,8 +62,8 @@ public class ExtensionPropertyBuilder {
 	 *
 	 * @return the extension property builder
 	 */
-	public static ExtensionPropertyBuilder builder() {
-		return new ExtensionPropertyBuilder();
+	public static Builder extensionPropertyBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class ExtensionPropertyBuilder {
 	 * @param name the name
 	 * @return the extension property builder
 	 */
-	public ExtensionPropertyBuilder name(String name) {
+	public Builder name(String name) {
 		this.name = name;
 		return this;
 	}
@@ -83,7 +83,7 @@ public class ExtensionPropertyBuilder {
 	 * @param value the value
 	 * @return the extension property builder
 	 */
-	public ExtensionPropertyBuilder value(String value) {
+	public Builder value(String value) {
 		this.value = value;
 		return this;
 	}
@@ -94,7 +94,7 @@ public class ExtensionPropertyBuilder {
 	 * @param parseValue the parse value
 	 * @return the extension property builder
 	 */
-	public ExtensionPropertyBuilder parseValue(boolean parseValue) {
+	public Builder parseValue(boolean parseValue) {
 		this.parseValue = parseValue;
 		return this;
 	}

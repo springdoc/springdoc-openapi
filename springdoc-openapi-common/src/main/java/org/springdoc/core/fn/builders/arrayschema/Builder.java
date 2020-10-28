@@ -21,7 +21,7 @@
  *
  */
 
-package org.springdoc.core.fn.builders;
+package org.springdoc.core.fn.builders.arrayschema;
 
 import java.lang.annotation.Annotation;
 
@@ -34,19 +34,19 @@ import org.apache.commons.lang3.ArrayUtils;
  * The type Array schema builder.
  * @author bnasslahsen
  */
-public class ArraySchemaBuilder {
+public class Builder {
 	/**
 	 * The schema of the items in the array
 	 *
 	 */
-	private Schema schema = SchemaBuilder.builder().build();
+	private Schema schema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * Allows to define the properties to be resolved into properties of the schema of type `array` (not the ones of the
 	 * `items` of such schema which are defined in schema}.
 	 *
 	 */
-	private Schema arraySchema = SchemaBuilder.builder().build();
+	private Schema arraySchema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * sets the maximum number of items in an array.  Ignored if value is Integer.MIN_VALUE.
@@ -76,7 +76,7 @@ public class ArraySchemaBuilder {
 	/**
 	 * Instantiates a new Array schema builder.
 	 */
-	private ArraySchemaBuilder() {
+	private Builder() {
 	}
 
 	/**
@@ -84,8 +84,8 @@ public class ArraySchemaBuilder {
 	 *
 	 * @return the array schema builder
 	 */
-	public static ArraySchemaBuilder builder() {
-		return new ArraySchemaBuilder();
+	public static Builder arraySchemaBuilder() {
+		return new Builder();
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class ArraySchemaBuilder {
 	 * @param schemaBuilder the schema builder
 	 * @return the array schema builder
 	 */
-	public ArraySchemaBuilder schema(SchemaBuilder schemaBuilder) {
+	public Builder schema(org.springdoc.core.fn.builders.schema.Builder schemaBuilder) {
 		this.schema = schemaBuilder.build();
 		return this;
 	}
@@ -105,7 +105,7 @@ public class ArraySchemaBuilder {
 	 * @param schemaBuilder the schema builder
 	 * @return the array schema builder
 	 */
-	public ArraySchemaBuilder arraySchema(SchemaBuilder schemaBuilder) {
+	public Builder arraySchema(org.springdoc.core.fn.builders.schema.Builder schemaBuilder) {
 		this.arraySchema = schemaBuilder.build();
 		return this;
 	}
@@ -116,7 +116,7 @@ public class ArraySchemaBuilder {
 	 * @param maxItems the max items
 	 * @return the array schema builder
 	 */
-	public ArraySchemaBuilder maxItems(int maxItems) {
+	public Builder maxItems(int maxItems) {
 		this.maxItems = maxItems;
 		return this;
 	}
@@ -127,7 +127,7 @@ public class ArraySchemaBuilder {
 	 * @param minItems the min items
 	 * @return the array schema builder
 	 */
-	public ArraySchemaBuilder minItems(int minItems) {
+	public Builder minItems(int minItems) {
 		this.minItems = minItems;
 		return this;
 	}
@@ -138,7 +138,7 @@ public class ArraySchemaBuilder {
 	 * @param uniqueItems the unique items
 	 * @return the array schema builder
 	 */
-	public ArraySchemaBuilder uniqueItems(boolean uniqueItems) {
+	public Builder uniqueItems(boolean uniqueItems) {
 		this.uniqueItems = uniqueItems;
 		return this;
 	}
@@ -149,7 +149,7 @@ public class ArraySchemaBuilder {
 	 * @param extensionBuilder the extension builder
 	 * @return the array schema builder
 	 */
-	public ArraySchemaBuilder extension(ExtensionBuilder extensionBuilder) {
+	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
 		return this;
 	}
