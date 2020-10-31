@@ -58,6 +58,7 @@ import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
+import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -73,6 +74,7 @@ import org.springframework.web.method.HandlerMethod;
 import static org.springdoc.core.Constants.DEFAULT_SERVER_DESCRIPTION;
 import static org.springdoc.core.Constants.DEFAULT_TITLE;
 import static org.springdoc.core.Constants.DEFAULT_VERSION;
+import static org.springdoc.core.SpringDocUtils.getConfig;
 
 /**
  * The type Open api builder.
@@ -213,9 +215,21 @@ public class OpenAPIBuilder {
 		this.mappingsMap.putAll(context.getBeansWithAnnotation(RequestMapping.class));
 		this.mappingsMap.putAll(context.getBeansWithAnnotation(Controller.class));
 
+		initializeHiddenRestController();
+
 		// add security schemes
 		this.calculateSecuritySchemes(calculatedOpenAPI.getComponents());
 		openApiBuilderCustomisers.ifPresent(customisers -> customisers.forEach(customiser -> customiser.customise(this)));
+	}
+
+	private void initializeHiddenRestController() {
+		getConfig().addHiddenRestControllers(BasicErrorController.class);
+		List<Class<?>> hiddenRestControllers = this.mappingsMap.entrySet().parallelStream()
+				.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
+						Hidden.class) != null)).map(controller -> controller.getValue().getClass())
+				.collect(Collectors.toList());
+		if(!CollectionUtils.isEmpty(hiddenRestControllers))
+			getConfig().addHiddenRestControllers(hiddenRestControllers.toArray(new Class<?>[hiddenRestControllers.size()]));
 	}
 
 	/**
