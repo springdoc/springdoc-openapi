@@ -49,7 +49,7 @@ public class SwaggerWebMvcConfigurer extends WebMvcConfigurerAdapter { // NOSONA
 	/**
 	 * Instantiates a new Swagger web mvc configurer.
 	 *
-	 * @param swaggerUiConfigParameters the swagger ui calculated config
+	 * @param swaggerUiConfigParameters the swagger ui calculated config  
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 */
 	public SwaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerIndexTransformer swaggerIndexTransformer) {

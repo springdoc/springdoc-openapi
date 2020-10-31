@@ -48,7 +48,8 @@ public class DataRestHalProvider extends HateoasHalProvider {
 	/**
 	 * Instantiates a new Data rest hal provider.
 	 *
-	 * @param repositoryRestConfigurationOptional the repository rest configuration optional
+	 * @param repositoryRestConfigurationOptional the repository rest configuration optional 
+	 * @param hateoasPropertiesOptional the hateoas properties optional
 	 */
 	public DataRestHalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional,Optional<HateoasProperties> hateoasPropertiesOptional) {
 		super(hateoasPropertiesOptional);

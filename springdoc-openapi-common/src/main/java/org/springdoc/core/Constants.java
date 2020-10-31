@@ -271,6 +271,11 @@ public final class Constants {
 	public static final String CSRF_DEFAULT_HEADER_NAME= "X-XSRF-TOKEN";
 
 	/**
+	 * The constant OPERATION_ATTRIBUTE.
+	 */
+	public static final String OPERATION_ATTRIBUTE = Constants.class.getName() + ".operation";
+
+	/**
 	 * Instantiates a new Constants.
 	 */
 	private Constants() {
