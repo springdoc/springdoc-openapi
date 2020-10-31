@@ -43,7 +43,7 @@ import org.springframework.util.CollectionUtils;
  *
  * @author bnasslahsen
  * @see  org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer
- * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider)
+ * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalResourcesSerializer#serialize(Collection, JsonGenerator, SerializerProvider)
  */
 public class CollectionModelContentConverter implements ModelConverter {
 
@@ -81,7 +81,7 @@ public class CollectionModelContentConverter implements ModelConverter {
 	/**
 	 * Gets entity type.
 	 *
-	 * @param type the type 
+	 * @param type the type   
 	 * @return the entity type
 	 */
 	private Class<?> getEntityType(AnnotatedType type) {
