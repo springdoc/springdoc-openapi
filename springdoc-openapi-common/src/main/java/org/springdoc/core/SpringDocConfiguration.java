@@ -42,7 +42,7 @@ import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
-import org.springdoc.core.customizers.OpenApiBuilderCustomiser;
+import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.PropertyCustomizer;
 
@@ -185,11 +185,11 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	OpenAPIBuilder openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context,
-			SecurityParser securityParser,
+	OpenAPIService openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context,
+			SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<List<OpenApiBuilderCustomiser>> openApiBuilderCustomisers) {
-		return new OpenAPIBuilder(openAPI, context, securityParser, springDocConfigProperties, openApiBuilderCustomisers);
+			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers) {
+		return new OpenAPIService(openAPI, context, securityParser, springDocConfigProperties, openApiBuilderCustomisers);
 	}
 
 	/**
@@ -208,7 +208,7 @@ public class SpringDocConfiguration {
 	 * Operation builder operation builder.
 	 *
 	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyBuilder the request body builder
+	 * @param requestBodyService the request body builder
 	 * @param securityParser the security parser
 	 * @param propertyResolverUtils the property resolver utils
 	 * @return the operation builder
@@ -216,9 +216,9 @@ public class SpringDocConfiguration {
 	@Bean
 	@ConditionalOnWebApplication
 	@ConditionalOnMissingBean
-	OperationBuilder operationBuilder(GenericParameterBuilder parameterBuilder, RequestBodyBuilder requestBodyBuilder,
-			SecurityParser securityParser, PropertyResolverUtils propertyResolverUtils) {
-		return new OperationBuilder(parameterBuilder, requestBodyBuilder,
+	OperationService operationBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
+			SecurityService securityParser, PropertyResolverUtils propertyResolverUtils) {
+		return new OperationService(parameterBuilder, requestBodyService,
 				securityParser, propertyResolverUtils);
 	}
 
@@ -242,8 +242,8 @@ public class SpringDocConfiguration {
 	@Bean
 	@ConditionalOnWebApplication
 	@ConditionalOnMissingBean
-	RequestBodyBuilder requestBodyBuilder(GenericParameterBuilder parameterBuilder) {
-		return new RequestBodyBuilder(parameterBuilder);
+	RequestBodyService requestBodyBuilder(GenericParameterService parameterBuilder) {
+		return new RequestBodyService(parameterBuilder);
 	}
 
 	/**
@@ -254,8 +254,8 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	SecurityParser securityParser(PropertyResolverUtils propertyResolverUtils) {
-		return new SecurityParser(propertyResolverUtils);
+	SecurityService securityParser(PropertyResolverUtils propertyResolverUtils) {
+		return new SecurityService(propertyResolverUtils);
 	}
 
 	/**
@@ -278,25 +278,25 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	GenericParameterBuilder parameterBuilder(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
-		return new GenericParameterBuilder(propertyResolverUtils,optionalDelegatingMethodParameterCustomizer);
+	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
+		return new GenericParameterService(propertyResolverUtils,optionalDelegatingMethodParameterCustomizer);
 	}
 
 	/**
 	 * Properties resolver for schema open api customiser.
 	 *
 	 * @param propertyResolverUtils the property resolver utils
-	 * @param openAPIBuilder the open api builder
+	 * @param openAPIService the open api builder
 	 * @return the open api customiser
 	 */
 	@Bean
 	@ConditionalOnProperty(SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES)
 	@Lazy(false)
-	OpenApiCustomiser propertiesResolverForSchema(PropertyResolverUtils propertyResolverUtils, OpenAPIBuilder openAPIBuilder) {
+	OpenApiCustomiser propertiesResolverForSchema(PropertyResolverUtils propertyResolverUtils, OpenAPIService openAPIService) {
 		return openApi -> {
 			Components components = openApi.getComponents();
 			Map<String, Schema> schemas = components.getSchemas();
-			schemas.values().forEach(schema -> openAPIBuilder.resolveProperties(schema, propertyResolverUtils));
+			schemas.values().forEach(schema -> openAPIService.resolveProperties(schema, propertyResolverUtils));
 		};
 	}
 

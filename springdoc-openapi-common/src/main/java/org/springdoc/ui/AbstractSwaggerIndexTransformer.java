@@ -40,6 +40,9 @@ import org.springframework.util.CollectionUtils;
  */
 public class AbstractSwaggerIndexTransformer {
 
+	/**
+	 * The constant PRESETS.
+	 */
 	private static final String PRESETS = "presets: [";
 
 	/**
@@ -171,6 +174,12 @@ public class AbstractSwaggerIndexTransformer {
 		return html.replace(PRESETS, stringBuilder.toString());
 	}
 
+	/**
+	 * Add syntax highlight string.
+	 *
+	 * @param html the html
+	 * @return the string
+	 */
 	protected String addSyntaxHighlight(String html) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("syntaxHighlight: {");

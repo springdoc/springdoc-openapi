@@ -22,7 +22,7 @@ package org.springdoc.core.fn;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,12 +63,17 @@ public class RouterFunctionData {
 	/**
 	 * The Query params.
 	 */
-	private Map<String, String> queryParams = new HashMap<>();
+	private Map<String, String> queryParams = new LinkedHashMap<>();
 
 	/**
 	 * The Methods.
 	 */
 	private RequestMethod[] methods;
+
+	/**
+	 * The Attributes.
+	 */
+	private Map<String,Object> attributes = new LinkedHashMap<>();
 
 	/**
 	 * Instantiates a new Router function data.
@@ -78,20 +83,17 @@ public class RouterFunctionData {
 	/**
 	 * Instantiates a new Router function data.
 	 *
-	 * @param path the path
-	 * @param consumes the consumes
-	 * @param produces the produces
-	 * @param headers the headers
-	 * @param queryParams the query params
-	 * @param methods the methods
+	 * @param nestedOrPath the nested or path
+	 * @param functionData the function data
 	 */
-	public RouterFunctionData(String path, String[] consumes, String[] produces, String[] headers, Map<String, String> queryParams, RequestMethod[] methods) {
-		this.path = path;
-		this.consumes = Arrays.asList(consumes);
-		this.produces = Arrays.asList(produces);
-		this.headers = Arrays.asList(headers);
-		this.queryParams = queryParams;
-		this.methods = methods;
+	public RouterFunctionData(String nestedOrPath, RouterFunctionData functionData) {
+		this.path = nestedOrPath + functionData.getPath();
+		this.consumes = Arrays.asList(functionData.getConsumes());
+		this.produces = Arrays.asList(functionData.getProduces());
+		this.headers = Arrays.asList(functionData.getHeaders());
+		this.queryParams = functionData.getQueryParams();
+		this.methods = functionData.getMethods();
+		this.attributes = functionData.getAttributes();
 	}
 
 	/**
@@ -272,5 +274,23 @@ public class RouterFunctionData {
 				break;
 		}
 		return requestMethod;
+	}
+
+	/**
+	 * Gets attributes.
+	 *
+	 * @return the attributes
+	 */
+	public Map<String, Object> getAttributes() {
+		return attributes;
+	}
+
+	/**
+	 * Add attributes.
+	 *
+	 * @param attributes the attributes
+	 */
+	public void addAttributes(Map<String, Object> attributes) {
+		this.attributes.putAll(attributes);
 	}
 }

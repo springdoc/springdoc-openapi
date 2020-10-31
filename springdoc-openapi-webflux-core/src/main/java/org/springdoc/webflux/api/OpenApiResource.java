@@ -35,11 +35,11 @@ import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
-import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
-import org.springdoc.core.GenericResponseBuilder;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.GenericResponseService;
+import org.springdoc.core.OpenAPIService;
+import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
@@ -95,8 +95,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
-	public OpenApiResource(String groupName, ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory, AbstractRequestBuilder requestBuilder,
-			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
+	public OpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
+			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
@@ -120,8 +120,8 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @param actuatorProvider the actuator provider
 	 */
 	@Autowired
-	public OpenApiResource(ObjectFactory<OpenAPIBuilder> openAPIBuilderObjectFactory, AbstractRequestBuilder requestBuilder,
-			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
+	public OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
+			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
@@ -172,7 +172,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		calculatePath(restControllers, map);
 		if (actuatorProvider.isPresent()) {
 			map = actuatorProvider.get().getMethods();
-			this.openAPIBuilder.addTag(new HashSet<>(map.values()), actuatorProvider.get().getTag());
+			this.openAPIService.addTag(new HashSet<>(map.values()), actuatorProvider.get().getTag());
 			calculatePath(restControllers, map);
 		}
 		getWebFluxRouterFunctionPaths();
@@ -212,6 +212,11 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		}
 	}
 
+	/**
+	 * By reversed request mapping infos comparator.
+	 *
+	 * @return the comparator
+	 */
 	private Comparator<Map.Entry<RequestMappingInfo, HandlerMethod>> byReversedRequestMappingInfos() {
 		return Comparator.<Map.Entry<RequestMappingInfo, HandlerMethod>, String>
 				comparing(a -> a.getKey().toString())
@@ -242,7 +247,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 		super.initOpenAPIBuilder();
 		String requestUrl = decode(serverHttpRequest.getURI().toString());
 		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
-		openAPIBuilder.setServerBaseUrl(serverBaseUrl);
+		openAPIService.setServerBaseUrl(serverBaseUrl);
 	}
 
 }

@@ -27,9 +27,11 @@ import java.util.Objects;
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.fn.builders.operation.Builder;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
 
 /**
  * The type Router operation.
@@ -94,6 +96,11 @@ public class RouterOperation implements Comparable<RouterOperation> {
 
 	/**
 	 * Instantiates a new Router operation.
+	 */
+	public RouterOperation() { }
+
+	/**
+	 * Instantiates a new Router operation.
 	 *
 	 * @param routerOperationAnnotation the router operation annotation
 	 */
@@ -137,6 +144,30 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	public RouterOperation(String path, RequestMethod[] methods) {
 		this.path = path;
 		this.methods = methods;
+	}
+
+	/**
+	 * Instantiates a new Router operation.
+	 *
+	 * @param routerFunctionData the router function data
+	 */
+	public RouterOperation(RouterFunctionData routerFunctionData) {
+		this.path = routerFunctionData.getPath();
+		this.methods = routerFunctionData.getMethods();
+		this.consumes = routerFunctionData.getConsumes();
+		this.produces = routerFunctionData.getProduces();
+		this.headers = routerFunctionData.getHeaders();
+		this.queryParams = routerFunctionData.getQueryParams();
+
+		Map<String, Object> attributes = routerFunctionData.getAttributes();
+		if (attributes.containsKey(OPERATION_ATTRIBUTE)) {
+			Builder routerOperationBuilder = (Builder) attributes.get(OPERATION_ATTRIBUTE);
+			RouterOperation routerOperation = routerOperationBuilder.build();
+			this.beanClass = routerOperation.getBeanClass();
+			this.beanMethod = routerOperation.getBeanMethod();
+			this.parameterTypes = routerOperation.getParameterTypes();
+			this.operation = routerOperation.getOperation();
+		}
 	}
 
 	/**

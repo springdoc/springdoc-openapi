@@ -23,13 +23,13 @@ package org.springdoc.webmvc.core;
 import java.util.List;
 import java.util.Optional;
 
-import org.springdoc.core.AbstractRequestBuilder;
+import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
-import org.springdoc.core.GenericResponseBuilder;
+import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.MultipleOpenApiSupportCondition;
-import org.springdoc.core.OpenAPIBuilder;
-import org.springdoc.core.OperationBuilder;
+import org.springdoc.core.OpenAPIService;
+import org.springdoc.core.OperationService;
 import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
@@ -63,25 +63,25 @@ public class MultipleOpenApiSupportConfiguration {
 	/**
 	 * Multiple open api resource multiple open api resource.
 	 *
-	 * @param groupedOpenApis the grouped open apis  
-	 * @param defaultOpenAPIBuilder the default open api builder  
-	 * @param requestBuilder the request builder  
-	 * @param responseBuilder the response builder  
-	 * @param operationParser the operation parser  
-	 * @param requestMappingHandlerMapping the request mapping handler mapping  
-	 * @param actuatorProvider the actuator provider  
-	 * @param springDocConfigProperties the spring doc config properties  
-	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider  
-	 * @param routerFunctionProvider the router function provider  
-	 * @param repositoryRestResourceProvider the repository rest resource provider  
+	 * @param groupedOpenApis the grouped open apis
+	 * @param defaultOpenAPIBuilder the default open api builder
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param actuatorProvider the actuator provider
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
+	 * @param routerFunctionProvider the router function provider
+	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 * @return the multiple open api resource
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
-			ObjectFactory<OpenAPIBuilder> defaultOpenAPIBuilder, AbstractRequestBuilder requestBuilder,
-			GenericResponseBuilder responseBuilder, OperationBuilder operationParser,
+			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
+			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider,
 			SpringDocConfigProperties springDocConfigProperties,

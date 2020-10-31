@@ -22,6 +22,7 @@ package org.springdoc.core;
 
 import java.lang.reflect.Parameter;
 
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.core.MethodParameter;
@@ -52,38 +53,54 @@ public class ParameterInfo {
 	private io.swagger.v3.oas.models.parameters.Parameter parameterModel;
 
 	/**
-	 * The Request header.
+	 * The Required.
 	 */
-	private RequestHeader requestHeader;
+	private boolean required;
 
 	/**
-	 * The Request param.
+	 * The Default value.
 	 */
-	private RequestParam requestParam;
+	private String defaultValue;
 
 	/**
-	 * The Path var.
+	 * The Param type.
 	 */
-	private PathVariable pathVar;
+	private String paramType;
 
-	/**
-	 * The Cookie value.
-	 */
-	private CookieValue cookieValue;
 
 	/**
 	 * Instantiates a new Parameter info.
 	 *
-	 * @param pName the p name
+	 * @param pName the parameter name
 	 * @param methodParameter the method parameter
+	 * @param parameterBuilder the parameter builder
 	 */
-	public ParameterInfo(String pName, MethodParameter methodParameter) {
+	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService parameterBuilder) {
+		PropertyResolverUtils propertyResolverUtils = parameterBuilder.getPropertyResolverUtils();
+		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
+		RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
+		PathVariable pathVar = methodParameter.getParameterAnnotation(PathVariable.class);
+		CookieValue cookieValue = methodParameter.getParameterAnnotation(CookieValue.class);
+		boolean isFile = parameterBuilder.isFile(methodParameter);
+
 		this.methodParameter = methodParameter;
-		this.requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
-		this.requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
-		this.pathVar = methodParameter.getParameterAnnotation(PathVariable.class);
-		this.cookieValue = methodParameter.getParameterAnnotation(CookieValue.class);
-		this.pName = calculateName(pName, requestHeader, requestParam, pathVar, cookieValue);
+		this.pName = pName;
+
+		if (requestHeader != null)
+			calculateParams(requestHeader);
+		else if (requestParam != null)
+			calculateParams(requestParam, isFile);
+		else if (pathVar != null)
+			calculateParams(pathVar);
+		else if (cookieValue != null)
+			calculateParams(cookieValue);
+
+		if (StringUtils.isNotBlank(this.pName))
+			this.pName = propertyResolverUtils.resolve(this.pName);
+		if (StringUtils.isNotBlank(this.defaultValue))
+			this.defaultValue = propertyResolverUtils.resolve(this.defaultValue);
+
+		this.required = this.required && !methodParameter.isOptional();
 	}
 
 	/**
@@ -141,61 +158,109 @@ public class ParameterInfo {
 	}
 
 	/**
-	 * Gets request header.
+	 * Is required boolean.
 	 *
-	 * @return the request header
+	 * @return the boolean
 	 */
-	public RequestHeader getRequestHeader() {
-		return requestHeader;
+	public boolean isRequired() {
+		return required;
 	}
 
 	/**
-	 * Gets request param.
+	 * Gets default value.
 	 *
-	 * @return the request param
+	 * @return the default value
 	 */
-	public RequestParam getRequestParam() {
-		return requestParam;
+	public String getDefaultValue() {
+		return defaultValue;
 	}
 
 	/**
-	 * Gets path var.
+	 * Gets param type.
 	 *
-	 * @return the path var
+	 * @return the param type
 	 */
-	public PathVariable getPathVar() {
-		return pathVar;
+	public String getParamType() {
+		return paramType;
 	}
 
 	/**
-	 * Gets cookie value.
+	 * Sets param type.
 	 *
-	 * @return the cookie value
+	 * @param paramType the param type
 	 */
-	public CookieValue getCookieValue() {
-		return cookieValue;
+	public void setParamType(String paramType) {
+		this.paramType = paramType;
 	}
 
 	/**
-	 * Calculate name string.
+	 * Sets required.
 	 *
-	 * @param pName the p name
-	 * @param requestHeader the request header
-	 * @param requestParam the request param
-	 * @param pathVar the path var
+	 * @param required the required
+	 */
+	public void setRequired(boolean required) {
+		this.required = required;
+	}
+
+	/**
+	 * Sets default value.
+	 *
+	 * @param defaultValue the default value
+	 */
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	/**
+	 * Calculate params.
+	 *
 	 * @param cookieValue the cookie value
-	 * @return the string
 	 */
-	private String calculateName(String pName, RequestHeader requestHeader, RequestParam requestParam, PathVariable pathVar, CookieValue cookieValue) {
-		String name = pName;
-		if (requestHeader != null && StringUtils.isNotEmpty(requestHeader.value()))
-			name = requestHeader.value();
-		else if (requestParam != null && StringUtils.isNotEmpty(requestParam.value()))
-			name = requestParam.value();
-		else if (pathVar != null && StringUtils.isNotEmpty(pathVar.value()))
-			name = pathVar.value();
-		else if (cookieValue != null && StringUtils.isNotEmpty(cookieValue.value()))
-			name = cookieValue.value();
-		return name;
+	private void calculateParams(CookieValue cookieValue) {
+		if (StringUtils.isNotEmpty(cookieValue.value()))
+			this.pName = cookieValue.value();
+		this.required = cookieValue.required();
+		this.defaultValue = cookieValue.defaultValue();
+		this.paramType = ParameterIn.COOKIE.toString();
+	}
+
+	/**
+	 * Calculate params.
+	 *
+	 * @param pathVar the path var
+	 */
+	private void calculateParams(PathVariable pathVar) {
+		if (StringUtils.isNotEmpty(pathVar.value()))
+			this.pName = pathVar.value();
+		this.required = pathVar.required();
+		this.paramType = ParameterIn.PATH.toString();
+	}
+
+	/**
+	 * Calculate params.
+	 *
+	 * @param requestParam the request param
+	 * @param isFile the is file
+	 */
+	private void calculateParams(RequestParam requestParam, boolean isFile) {
+		if (StringUtils.isNotEmpty(requestParam.value()))
+			this.pName = requestParam.value();
+		this.required = requestParam.required();
+		this.defaultValue = requestParam.defaultValue();
+		if (!isFile)
+			this.paramType = ParameterIn.QUERY.toString();
+	}
+
+	/**
+	 * Calculate params.
+	 *
+	 * @param requestHeader the request header
+	 */
+	private void calculateParams(RequestHeader requestHeader) {
+		if (StringUtils.isNotEmpty(requestHeader.value()))
+			this.pName = requestHeader.value();
+		this.required = requestHeader.required();
+		this.defaultValue = requestHeader.defaultValue();
+		this.paramType = ParameterIn.HEADER.toString();
 	}
 }
