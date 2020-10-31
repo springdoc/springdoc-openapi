@@ -18,21 +18,10 @@
 
 package test.org.springdoc.api.app143;
 
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springdoc.core.Constants;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Test issue 907 fix.
@@ -44,16 +33,4 @@ public class SpringDocApp143Test extends AbstractSpringDocTest {
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 
-	@Test
-	public void testApp() throws Exception {
-		MvcResult mockMvcResult = mockMvc.perform(MockMvcRequestBuilders.get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(jsonPath("$.paths./actuator/info.get.operationId", containsString("handle_")))
-				.andExpect(jsonPath("$.paths./actuator/info.get.summary", Matchers.is("Actuator web endpoint 'info'")))
-				.andExpect(jsonPath("$.paths./actuator/health.get.operationId", containsString("handle_")))
-				.andReturn();
-		String result = mockMvcResult.getResponse().getContentAsString();
-		String expected = getContent("results/app143.json");
-		Assertions.assertEquals(expected, result);
-	}
 }
