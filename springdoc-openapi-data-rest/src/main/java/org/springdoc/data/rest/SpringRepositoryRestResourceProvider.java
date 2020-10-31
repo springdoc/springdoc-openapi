@@ -40,7 +40,7 @@ import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.data.rest.core.ControllerType;
 import org.springdoc.data.rest.core.DataRestRepository;
-import org.springdoc.data.rest.core.DataRestRouterOperationBuilder;
+import org.springdoc.data.rest.core.DataRestRouterOperationService;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.mapping.PersistentEntity;
@@ -121,7 +121,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	/**
 	 * The Data rest router operation builder.
 	 */
-	private DataRestRouterOperationBuilder dataRestRouterOperationBuilder;
+	private DataRestRouterOperationService dataRestRouterOperationService;
 
 	/**
 	 * The Persistent entities.
@@ -145,16 +145,16 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param repositories the repositories
 	 * @param associations the associations
 	 * @param applicationContext the application context
-	 * @param dataRestRouterOperationBuilder the data rest router operation builder
+	 * @param dataRestRouterOperationService the data rest router operation builder
 	 * @param persistentEntities the persistent entities
 	 * @param mapper the mapper
 	 */
-	public SpringRepositoryRestResourceProvider(ResourceMappings mappings, Repositories repositories, Associations associations, ApplicationContext applicationContext, DataRestRouterOperationBuilder dataRestRouterOperationBuilder, PersistentEntities persistentEntities, ObjectMapper mapper) {
+	public SpringRepositoryRestResourceProvider(ResourceMappings mappings, Repositories repositories, Associations associations, ApplicationContext applicationContext, DataRestRouterOperationService dataRestRouterOperationService, PersistentEntities persistentEntities, ObjectMapper mapper) {
 		this.mappings = mappings;
 		this.repositories = repositories;
 		this.associations = associations;
 		this.applicationContext = applicationContext;
-		this.dataRestRouterOperationBuilder = dataRestRouterOperationBuilder;
+		this.dataRestRouterOperationService = dataRestRouterOperationService;
 		this.persistentEntities = persistentEntities;
 		this.mapper = mapper;
 	}
@@ -296,7 +296,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	private List<RouterOperation> findSearchControllers(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository, OpenAPI openAPI, SearchResourceMappings searchResourceMappings) {
 		Stream<MethodResourceMapping> methodResourceMappingStream = searchResourceMappings.getExportedMappings();
-		methodResourceMappingStream.forEach(methodResourceMapping -> dataRestRouterOperationBuilder.buildSearchRouterOperationList(
+		methodResourceMappingStream.forEach(methodResourceMapping -> dataRestRouterOperationService.buildSearchRouterOperationList(
 				routerOperationList, handlerMethodMap, resourceMetadata, dataRestRepository, openAPI, methodResourceMapping));
 		return routerOperationList;
 	}
@@ -316,7 +316,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
 			DataRestRepository dataRestRepository, OpenAPI openAPI) {
-		dataRestRouterOperationBuilder.buildEntityRouterOperationList(routerOperationList, handlerMethodMap, resourceMetadata,
+		dataRestRouterOperationService.buildEntityRouterOperationList(routerOperationList, handlerMethodMap, resourceMetadata,
 				dataRestRepository, openAPI);
 		return routerOperationList;
 	}
