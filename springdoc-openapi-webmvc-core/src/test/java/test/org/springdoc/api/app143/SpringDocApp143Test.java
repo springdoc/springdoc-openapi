@@ -53,7 +53,7 @@ public class SpringDocApp143Test extends AbstractSpringDocTest {
 				.andExpect(jsonPath("$.paths./actuator/health.get.operationId", containsString("handle_")))
 				.andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
-		String expected = getContent("results/app139.json");
+		String expected = getContent("results/app143.json");
 		Assertions.assertEquals(expected, result);
 	}
 }
