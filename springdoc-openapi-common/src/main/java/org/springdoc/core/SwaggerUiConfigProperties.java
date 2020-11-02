@@ -60,6 +60,28 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	 */
 	private Csrf csrf = new Csrf();
 
+	/**
+	 * Whether to generate and serve an OpenAPI document.
+	 */
+	private boolean enabled = true;
+
+	/**
+	 * Is enabled boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	/**
+	 * Sets enabled.
+	 *
+	 * @param enabled the enabled
+	 */
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
 	/**
 	 * The type Csrf.
