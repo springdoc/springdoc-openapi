@@ -32,6 +32,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "icon",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {

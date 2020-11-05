@@ -116,10 +116,13 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 			fieldsToAdd.addAll(aliases);
 			fieldsToAdd.addAll(whiteList);
 
-			boolean excludeUnlistedProperties = getFieldValueOfBoolean(bindings, "excludeUnlistedProperties");
+			// if only listed properties should be included, remove all other fields from fieldsToAdd
+			if (getFieldValueOfBoolean(bindings, "excludeUnlistedProperties")) {
+				fieldsToAdd.removeIf(s -> !whiteList.contains(s));
+			}
 
 			for (String fieldName : fieldsToAdd) {
-				Type type = getFieldType(fieldName, pathSpecMap, predicate.root(), excludeUnlistedProperties);
+				Type type = getFieldType(fieldName, pathSpecMap, predicate.root());
 				if (type != null) {
 					Parameter newParameter = buildParam(type, fieldName);
 					parametersToAddToOperation.add(newParameter);
@@ -232,11 +235,10 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	 * Tries to figure out the Type of the field. It first checks the Qdsl pathSpecMap before checking the root class. Defaults to String.class
 	 * @param fieldName The name of the field used as reference to get the type  
 	 * @param pathSpecMap The Qdsl path specifications as defined in the resolved bindings  
-	 * @param root The root type where the paths are gotten  
-	 * @param excludeUnlistedProperties the exclude unlisted properties  
+	 * @param root The root type where the paths are gotten
 	 * @return The type of the field. Returns
 	 */
-	private Type getFieldType(String fieldName, Map<String, Object> pathSpecMap, Class<?> root, boolean excludeUnlistedProperties) {
+	private Type getFieldType(String fieldName, Map<String, Object> pathSpecMap, Class<?> root) {
 		Type genericType = null;
 		try {
 			Object pathAndBinding = pathSpecMap.get(fieldName);
@@ -244,7 +246,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 			Field declaredField;
 			if (path.isPresent()) {
 				genericType = path.get().getType();
-			} else if (!excludeUnlistedProperties) {
+			} else {
 				declaredField = root.getDeclaredField(fieldName);
 				genericType = declaredField.getGenericType();
 			}
