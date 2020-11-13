@@ -11,6 +11,8 @@ public class ApplicationPredicate implements QuerydslBinderCustomizer<QApplicati
 	public void customize(QuerydslBindings bindings, QApplication root) {
 		bindings.excludeUnlistedProperties(true);
 		bindings.bind(root.name).first(StringExpression::containsIgnoreCase);
+		bindings.including(root.icon);
+		bindings.including(root.name);
 	}
 
 }
