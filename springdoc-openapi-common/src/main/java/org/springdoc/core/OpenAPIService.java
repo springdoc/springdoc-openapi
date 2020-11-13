@@ -58,7 +58,6 @@ import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
-import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -167,7 +166,7 @@ public class OpenAPIService {
 		this.securityParser = securityParser;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
-		if(springDocConfigProperties.isUseFqn())
+		if (springDocConfigProperties.isUseFqn())
 			TypeNameResolver.std.setUseFqn(true);
 	}
 
@@ -223,12 +222,28 @@ public class OpenAPIService {
 	}
 
 	private void initializeHiddenRestController() {
-		getConfig().addHiddenRestControllers(BasicErrorController.class);
+		Class basicErrorController = null;
+		try {
+			//spring-boot 2
+			basicErrorController = Class.forName("org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController");
+		}
+		catch (ClassNotFoundException e) {
+			//spring-boot 1
+			try {
+				basicErrorController = Class.forName("org.springframework.boot.autoconfigure.web.BasicErrorController");
+			}
+			catch (ClassNotFoundException classNotFoundException) {
+				//Basic error controller class not found
+				LOGGER.warn(classNotFoundException.getMessage());
+			}
+		}
+		if (basicErrorController != null)
+			getConfig().addHiddenRestControllers(basicErrorController);
 		List<Class<?>> hiddenRestControllers = this.mappingsMap.entrySet().parallelStream()
 				.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 						Hidden.class) != null)).map(controller -> controller.getValue().getClass())
 				.collect(Collectors.toList());
-		if(!CollectionUtils.isEmpty(hiddenRestControllers))
+		if (!CollectionUtils.isEmpty(hiddenRestControllers))
 			getConfig().addHiddenRestControllers(hiddenRestControllers.toArray(new Class<?>[hiddenRestControllers.size()]));
 	}
 
@@ -239,7 +254,7 @@ public class OpenAPIService {
 	 * @return the open api
 	 */
 	public OpenAPI updateServers(OpenAPI openAPI) {
-		if (!isServersPresent && serverBaseUrl!=null)        // default server value
+		if (!isServersPresent && serverBaseUrl != null)        // default server value
 		{
 			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
 			List<Server> servers = new ArrayList<>();
