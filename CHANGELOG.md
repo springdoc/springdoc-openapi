@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.5.0] - 2020-11-13 
+## [1.5.0] - 2020-11-14 
 ### Added
 - #891 - Provide a WebMvc.fn / WebFlux.fn functional DSL 
 - #904 - Add support for placeholders for default value in @RequestParam Annotation.
@@ -21,6 +21,7 @@ _ Removal of deprecated method: GroupedOpenApi.setGroup
 - #920 - Define explicitly metadata for springdoc.swagger-ui.enabled
 - #907 - Hidden controller showing up in swagger UI when springdoc.show-actuator is enabled
 - #885 - Flaky operationIds for controller-methods with same name 
+- #688, #349, #545 - swagger-config not being loaded twice out of the box, thanks to the swagger-ui v3.36.0.
 
 ## [1.4.8] - 2020-09-27
 ### Added
