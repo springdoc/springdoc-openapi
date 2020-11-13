@@ -4,15 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.9] - 2020-10-xx 
+## [1.5.0] - 2020-11-13 
 ### Added
+- #891 - Provide a WebMvc.fn / WebFlux.fn functional DSL 
+- #904 - Add support for placeholders for default value in @RequestParam Annotation.
 - Added property for deterministic and alphabetical orderding: springdoc.writer-with-order-by-keys
+_ Removal of deprecated method: GroupedOpenApi.setGroup
 ### Changed
 - Upgrade to Swagger-core 2.1.5
-- Upgrade swagger-ui version to 3.35.1
+- Upgrade swagger-ui version to 3.36.2
+- Upgrade to spring-boot v2.4.0
 ### Fixed
 - #889 - fix for flaky operationIds
 - #893 - Generate empty `scopes` object
+- #925 - Always add all properties to include if excludeUnlistedProperties=true
+- #920 - Define explicitly metadata for springdoc.swagger-ui.enabled
+- #907 - Hidden controller showing up in swagger UI when springdoc.show-actuator is enabled
+- #885 - Flaky operationIds for controller-methods with same name 
 
 ## [1.4.8] - 2020-09-27
 ### Added
