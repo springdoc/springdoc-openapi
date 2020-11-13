@@ -32,6 +32,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "icon",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
