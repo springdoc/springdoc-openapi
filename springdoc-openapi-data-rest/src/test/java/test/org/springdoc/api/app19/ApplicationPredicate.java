@@ -12,6 +12,7 @@ public class ApplicationPredicate implements QuerydslBinderCustomizer<QApplicati
 		bindings.excludeUnlistedProperties(true);
 		bindings.bind(root.name).first(StringExpression::containsIgnoreCase);
 		bindings.including(root.icon);
+		bindings.including(root.name);
 	}
 
 }
