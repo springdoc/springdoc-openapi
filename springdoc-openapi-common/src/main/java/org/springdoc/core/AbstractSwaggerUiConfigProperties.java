@@ -155,7 +155,7 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	/**
 	 * The Syntax highlight.
 	 */
-	protected SyntaxHighlight syntaxHighlight;
+	protected final SyntaxHighlight syntaxHighlight = new SyntaxHighlight();
 
 	/**
 	 * Gets syntax highlight.
@@ -164,15 +164,6 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	 */
 	public SyntaxHighlight getSyntaxHighlight() {
 		return syntaxHighlight;
-	}
-
-	/**
-	 * Sets syntax highlight.
-	 *
-	 * @param syntaxHighlight the syntax highlight
-	 */
-	public void setSyntaxHighlight(SyntaxHighlight syntaxHighlight) {
-		this.syntaxHighlight = syntaxHighlight;
 	}
 
 	/**
