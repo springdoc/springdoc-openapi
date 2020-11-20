@@ -58,7 +58,7 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	/**
 	 * The Csrf configuration.
 	 */
-	private Csrf csrf = new Csrf();
+	private final Csrf csrf = new Csrf();
 
 	/**
 	 * Whether to generate and serve an OpenAPI document.
@@ -219,15 +219,6 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	 */
 	public Csrf getCsrf() {
 		return csrf;
-	}
-
-	/**
-	 * Sets csrf.
-	 *
-	 * @param csrf the csrf
-	 */
-	public void setCsrf(Csrf csrf) {
-		this.csrf = csrf;
 	}
 
 	/**
