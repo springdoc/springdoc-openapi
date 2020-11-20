@@ -50,12 +50,12 @@ public class SpringDocConfigProperties {
 	/**
 	 * The Webjars.
 	 */
-	private Webjars webjars = new Webjars();
+	private final Webjars webjars = new Webjars();
 
 	/**
 	 * The Api docs.
 	 */
-	private ApiDocs apiDocs = new ApiDocs();
+	private final ApiDocs apiDocs = new ApiDocs();
 
 	/**
 	 * The Packages to scan.
@@ -95,7 +95,7 @@ public class SpringDocConfigProperties {
 	/**
 	 * The Cache.
 	 */
-	private Cache cache = new Cache();
+	private final Cache cache = new Cache();
 
 	/**
 	 * The Group configs.
@@ -366,30 +366,12 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
-	 * Sets webjars.
-	 *
-	 * @param webjars the webjars
-	 */
-	public void setWebjars(Webjars webjars) {
-		this.webjars = webjars;
-	}
-
-	/**
 	 * Gets api docs.
 	 *
 	 * @return the api docs
 	 */
 	public ApiDocs getApiDocs() {
 		return apiDocs;
-	}
-
-	/**
-	 * Sets api docs.
-	 *
-	 * @param apiDocs the api docs
-	 */
-	public void setApiDocs(ApiDocs apiDocs) {
-		this.apiDocs = apiDocs;
 	}
 
 	/**
@@ -417,15 +399,6 @@ public class SpringDocConfigProperties {
 	 */
 	public Cache getCache() {
 		return cache;
-	}
-
-	/**
-	 * Sets cache.
-	 *
-	 * @param cache the cache
-	 */
-	public void setCache(Cache cache) {
-		this.cache = cache;
 	}
 
 	/**
@@ -598,7 +571,7 @@ public class SpringDocConfigProperties {
 		/**
 		 * The Deprecating converter.
 		 */
-		private DeprecatingConverter deprecatingConverter = new DeprecatingConverter();
+		private final DeprecatingConverter deprecatingConverter = new DeprecatingConverter();
 
 		/**
 		 * Gets deprecating converter.
@@ -607,15 +580,6 @@ public class SpringDocConfigProperties {
 		 */
 		public DeprecatingConverter getDeprecatingConverter() {
 			return deprecatingConverter;
-		}
-
-		/**
-		 * Sets deprecating converter.
-		 *
-		 * @param deprecatingConverter the deprecating converter
-		 */
-		public void setDeprecatingConverter(DeprecatingConverter deprecatingConverter) {
-			this.deprecatingConverter = deprecatingConverter;
 		}
 
 		/**
@@ -700,7 +664,7 @@ public class SpringDocConfigProperties {
 		/**
 		 * The Groups.
 		 */
-		private Groups groups = new Groups();
+		private final Groups groups = new Groups();
 
 		/**
 		 * Gets path.
@@ -745,15 +709,6 @@ public class SpringDocConfigProperties {
 		 */
 		public Groups getGroups() {
 			return groups;
-		}
-
-		/**
-		 * Sets groups.
-		 *
-		 * @param groups the groups
-		 */
-		public void setGroups(Groups groups) {
-			this.groups = groups;
 		}
 
 		/**
