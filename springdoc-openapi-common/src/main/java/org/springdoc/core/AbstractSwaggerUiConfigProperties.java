@@ -157,7 +157,7 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	/**
 	 * The Syntax highlight.
 	 */
-	protected SyntaxHighlight syntaxHighlight = new SyntaxHighlight();
+	protected SyntaxHighlight syntaxHighlight;
 
 	/**
 	 * The Persist authorization.
