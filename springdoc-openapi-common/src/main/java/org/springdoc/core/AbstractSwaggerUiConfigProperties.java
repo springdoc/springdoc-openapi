@@ -160,6 +160,29 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	protected SyntaxHighlight syntaxHighlight = new SyntaxHighlight();
 
 	/**
+	 * The Persist authorization.
+	 */
+	protected Boolean persistAuthorization;
+
+	/**
+	 * Gets persist authorization.
+	 *
+	 * @return the persist authorization
+	 */
+	public Boolean getPersistAuthorization() {
+		return persistAuthorization;
+	}
+
+	/**
+	 * Sets persist authorization.
+	 *
+	 * @param persistAuthorization the persist authorization
+	 */
+	public void setPersistAuthorization(Boolean persistAuthorization) {
+		this.persistAuthorization = persistAuthorization;
+	}
+
+	/**
 	 * Gets syntax highlight.
 	 *
 	 * @return the syntax highlight
