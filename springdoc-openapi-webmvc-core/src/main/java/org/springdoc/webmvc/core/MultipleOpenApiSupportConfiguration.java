@@ -33,20 +33,28 @@ import org.springdoc.core.OperationService;
 import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.webmvc.api.MultipleOpenApiActuatorResource;
 import org.springdoc.webmvc.api.MultipleOpenApiResource;
+import org.springdoc.webmvc.api.MultipleOpenApiRouter;
 import org.springdoc.webmvc.api.RouterFunctionProvider;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
+import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 
 
 /**
@@ -58,6 +66,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @Conditional(MultipleOpenApiSupportCondition.class)
+@Import(MultipleOpenApiRouter.class)
 public class MultipleOpenApiSupportConfiguration {
 
 	/**
@@ -95,5 +104,27 @@ public class MultipleOpenApiSupportConfiguration {
 				springDocConfigProperties,
 				springSecurityOAuth2Provider,
 				routerFunctionProvider,repositoryRestResourceProvider);
+	}
+
+
+	@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
+	@ConditionalOnClass(WebMvcEndpointHandlerMapping.class)
+	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
+	static class SpringDocWebMvcActuatorDifferentConfiguration {
+
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		MultipleOpenApiResource multipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis,
+				ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
+				GenericResponseService responseBuilder, OperationService operationParser,
+				RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> actuatorProvider,
+				SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
+				Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider){
+
+			return new MultipleOpenApiActuatorResource(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder,
+					responseBuilder, operationParser, requestMappingHandlerMapping, actuatorProvider,
+					springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
+		}
 	}
 }
