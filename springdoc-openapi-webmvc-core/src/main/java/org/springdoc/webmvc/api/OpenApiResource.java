@@ -33,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.PathUtils;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.AbstractRequestService;
@@ -49,24 +48,16 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.fn.RouterOperation;
 
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.http.MediaType;
 import org.springframework.util.MimeType;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
-import static org.springdoc.core.Constants.API_DOCS_URL;
-import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
-import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
@@ -74,13 +65,12 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  * The type Open api resource.
  * @author bnasslahsen
  */
-@RestController
 public class OpenApiResource extends AbstractOpenApiResource {
 
 	/**
 	 * The Request mapping handler mapping.
 	 */
-	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
+	protected final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
 	/**
 	 * The Spring security o auth 2 provider.
@@ -147,7 +137,6 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @param routerFunctionProvider the router function provider
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 */
-	@Autowired
 	public OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
@@ -173,9 +162,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	@Operation(hidden = true)
-	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl)
+	public String openapiJson(HttpServletRequest request, String apiDocsUrl)
 			throws JsonProcessingException {
 		calculateServerUrl(request, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();
@@ -190,9 +177,7 @@ public class OpenApiResource extends AbstractOpenApiResource {
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	@Operation(hidden = true)
-	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
-	public String openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl)
+	public String openapiYaml(HttpServletRequest request, String apiDocsUrl)
 			throws JsonProcessingException {
 		calculateServerUrl(request, apiDocsUrl);
 		OpenAPI openAPI = this.getOpenApi();

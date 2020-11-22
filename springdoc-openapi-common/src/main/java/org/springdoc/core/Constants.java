@@ -95,6 +95,19 @@ public final class Constants {
 	 */
 	public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
 
+
+	/**
+	 * The constant SPRINGDOC_USE_MANAGEMENT_PORT.
+	 */
+	public static final String SPRINGDOC_USE_MANAGEMENT_PORT = "springdoc.use-management-port";
+
+	/**
+	 * The constant DEFAULT_SWAGGER_UI_ACTUATOR_PATH.
+	 */
+	public static final String DEFAULT_SWAGGER_UI_ACTUATOR_PATH= "swagger-ui";
+
+	public static final String DEFAULT_API_DOCS_ACTUATOR_URL = "openapi";
+
 	/**
 	 * The constant NULL.
 	 */

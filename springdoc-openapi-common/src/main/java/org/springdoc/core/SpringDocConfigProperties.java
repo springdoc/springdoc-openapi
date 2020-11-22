@@ -157,6 +157,28 @@ public class SpringDocConfigProperties {
 	 */
 	private boolean preLoadingEnabled;
 
+	/**
+	 * If set to true, exposes the swagger-ui on the actuator management port.
+	 */
+	private boolean useManagementPort;
+
+	/**
+	 * Is use management port boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isUseManagementPort() {
+		return useManagementPort;
+	}
+
+	/**
+	 * Sets use management port.
+	 *
+	 * @param useManagementPort the use management port
+	 */
+	public void setUseManagementPort(boolean useManagementPort) {
+		this.useManagementPort = useManagementPort;
+	}
 
 	/**
 	 * Gets produces to match.

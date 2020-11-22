@@ -40,7 +40,9 @@ import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.webmvc.api.OpenApiActuatorResource;
 import org.springdoc.webmvc.api.OpenApiResource;
+import org.springdoc.webmvc.api.OpenApiRouter;
 import org.springdoc.webmvc.api.RouterFunctionProvider;
 import org.springdoc.webmvc.api.WebMvcActuatorProvider;
 
@@ -53,9 +55,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.servlet.function.RouterFunction;
@@ -63,6 +67,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
+import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 
 /**
  * The type Spring doc web mvc configuration.
@@ -72,6 +77,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@Import(OpenApiRouter.class)
 public class SpringDocWebMvcConfiguration {
 
 	/**
@@ -93,6 +99,7 @@ public class SpringDocWebMvcConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
 	OpenApiResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
@@ -210,4 +217,33 @@ public class SpringDocWebMvcConfiguration {
 			return new ActuatorOpenApiCustomizer();
 		}
 	}
+
+	@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
+	@ConditionalOnClass(WebMvcEndpointHandlerMapping.class)
+	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
+	static class SpringDocWebMvcActuatorDifferentConfiguration {
+
+		@Bean
+		@ConditionalOnMissingBean(MultipleOpenApiSupportConfiguration.class)
+		@Lazy(false)
+		OpenApiResource openApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
+				GenericResponseService responseBuilder, OperationService operationParser,
+				RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+				Optional<ActuatorProvider> actuatorProvider,
+				SpringDocConfigProperties springDocConfigProperties,
+				Optional<List<OperationCustomizer>> operationCustomizers,
+				Optional<List<OpenApiCustomiser>> openApiCustomisers,
+				Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
+				Optional<RouterFunctionProvider> routerFunctionProvider,
+				Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider,
+				ServletWebServerApplicationContext serverApplicationContext) {
+			return new OpenApiActuatorResource(openAPIBuilderObjectFactory, requestBuilder,
+					responseBuilder, operationParser,
+					requestMappingHandlerMapping, actuatorProvider, operationCustomizers,
+					openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,
+					routerFunctionProvider, repositoryRestResourceProvider,serverApplicationContext);
+		}
+
+	}
+
 }

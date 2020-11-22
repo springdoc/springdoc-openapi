@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
@@ -43,23 +42,14 @@ import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
-import static org.springdoc.core.Constants.API_DOCS_URL;
-import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
-import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Multiple open api resource.
  * @author bnasslahsen
  */
-@RestController
 public class MultipleOpenApiResource implements InitializingBean {
 
 	/**
@@ -192,10 +182,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	@Operation(hidden = true)
-	@GetMapping(value = API_DOCS_URL + "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl,
-			@PathVariable String group)
+	public String openapiJson(HttpServletRequest request, String apiDocsUrl, String group)
 			throws JsonProcessingException {
 		return getOpenApiResourceOrThrow(group).openapiJson(request, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
 	}
@@ -209,10 +196,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	@Operation(hidden = true)
-	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML + "/{group}", produces = APPLICATION_OPENAPI_YAML)
-	public String openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl,
-			@PathVariable String group)
+	public String openapiYaml(HttpServletRequest request, String apiDocsUrl, String group)
 			throws JsonProcessingException {
 		return getOpenApiResourceOrThrow(group).openapiYaml(request, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
 	}
@@ -224,7 +208,7 @@ public class MultipleOpenApiResource implements InitializingBean {
 	 * @param group the group
 	 * @return the open api resource or throw
 	 */
-	private OpenApiResource getOpenApiResourceOrThrow(String group) {
+	protected OpenApiResource getOpenApiResourceOrThrow(String group) {
 		OpenApiResource openApiResource = groupedOpenApiResources.get(group);
 		if (openApiResource == null) {
 			throw new OpenApiResourceNotFoundException("No OpenAPI resource found for group: " + group);
