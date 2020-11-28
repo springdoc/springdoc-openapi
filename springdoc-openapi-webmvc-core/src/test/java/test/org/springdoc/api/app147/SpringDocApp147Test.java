@@ -20,7 +20,7 @@ package test.org.springdoc.api.app147;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
-import test.org.springdoc.api.AbstractSpringDocTest;
+import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,11 +39,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 				"server.servlet.context-path=/sample",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })
-public class SpringDocApp147Test extends AbstractSpringDocTest {
+public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
-
 
 	@Test
 	public void testApp() throws Exception {
@@ -60,8 +59,5 @@ public class SpringDocApp147Test extends AbstractSpringDocTest {
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(content().json(getContent("results/app147-2.json"), true));
 	}
-
-
-
 
 }

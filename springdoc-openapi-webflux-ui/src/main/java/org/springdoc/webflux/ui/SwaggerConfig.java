@@ -91,6 +91,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	}
 
 
+
 	@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
 	@ConditionalOnClass(WebFluxEndpointHandlerMapping.class)
 	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)

@@ -1,0 +1,6 @@
+{
+  "configUrl": "/application/swagger-ui/swagger-config",
+  "oauth2RedirectUrl": "http://localhost:9092/application/webjars/swagger-ui/oauth2-redirect.html",
+  "url": "/application/openapi",
+  "validatorUrl": ""
+}

@@ -18,17 +18,13 @@
 
 package test.org.springdoc.api.app148;
 
-import javax.annotation.PostConstruct;
-
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.api.TestCommon;
+import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
-import org.springframework.boot.actuate.autoconfigure.web.server.LocalManagementPort;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
@@ -41,22 +37,12 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"springdoc.use-management-port=true",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })
-public class SpringDocApp148Test extends TestCommon {
+public class SpringDocApp148Test  extends AbstractSpringDocActuatorTest {
 
 	@SpringBootApplication
 	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app148" })
 	static class SpringDocTestApp {}
 
-	@LocalManagementPort
-	private int managementPort;
-
-	private WebClient webClient;
-
-	@PostConstruct
-	void init() {
-		webClient =	WebClient.builder().baseUrl("http://localhost:" + this.managementPort)
-				.build();
-	}
 
 	@Test
 	public void testApp() throws Exception {

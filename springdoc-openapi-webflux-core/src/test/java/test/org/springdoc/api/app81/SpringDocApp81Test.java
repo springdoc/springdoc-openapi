@@ -31,7 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.springdoc.webflux.api.OpenApiResource;
-import test.org.springdoc.api.TestCommon;
+import test.org.springdoc.api.AbstractCommonTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -52,7 +52,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED;
  * Tests deterministic creation of operationIds
  */
 @WebFluxTest(properties = SPRINGDOC_CACHE_DISABLED + "=true")
-public class SpringDocApp81Test extends TestCommon {
+public class SpringDocApp81Test extends AbstractCommonTest {
 
     @SpringBootApplication
     @ComponentScan(basePackages = {"org.springdoc", "test.org.springdoc.api.app81"})

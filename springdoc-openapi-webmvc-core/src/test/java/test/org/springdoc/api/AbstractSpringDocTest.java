@@ -18,22 +18,10 @@
 
 package test.org.springdoc.api;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import nonapi.io.github.classgraph.utils.FileUtils;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springdoc.core.Constants;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.is;
@@ -42,28 +30,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ActiveProfiles("test")
 @SpringBootTest
-@AutoConfigureMockMvc
-public abstract class AbstractSpringDocTest {
-
-	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractSpringDocTest.class);
+public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	public static String className;
-
-	@Autowired
-	protected MockMvc mockMvc;
-
-	public static String getContent(String fileName) throws Exception {
-		try {
-			Path path = Paths.get(FileUtils.class.getClassLoader().getResource(fileName).toURI());
-			byte[] fileBytes = Files.readAllBytes(path);
-			return new String(fileBytes, StandardCharsets.UTF_8);
-		}
-		catch (Exception e) {
-			throw new RuntimeException("Failed to read file: " + fileName, e);
-		}
-	}
 
 	@Test
 	public void testApp() throws Exception {

@@ -30,7 +30,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @WebFluxTest
-public abstract class AbstractSpringDocTest extends TestCommon {
+public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	public static final HandlerFunction<ServerResponse> HANDLER_FUNCTION = request -> ServerResponse.ok().build();
 

@@ -18,21 +18,15 @@
 
 package test.org.springdoc.api.app145;
 
-import javax.annotation.PostConstruct;
-
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
-import test.org.springdoc.api.AbstractSpringDocTest;
+import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.web.server.LocalManagementPort;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -49,24 +43,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 				"springdoc.group-configs[0].packages-to-scan=test.org.springdoc.api.app145",
 				"management.server.port=9091",
 				"management.endpoints.web.base-path=/application" })
-public class SpringDocApp145Test extends AbstractSpringDocTest {
+public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
-
-	@LocalManagementPort
-	private int managementPort;
-
-	@Autowired
-	private RestTemplateBuilder restTemplateBuilder;
-
-	private RestTemplate actuatorRestTemplate;
-
-	@PostConstruct
-	void init() {
-		actuatorRestTemplate = restTemplateBuilder
-				.rootUri("http://localhost:" + this.managementPort).build();
-	}
 
 	@Test
 	public void testApp() throws Exception {
