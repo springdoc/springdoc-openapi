@@ -60,23 +60,6 @@ public class SwaggerConfig implements WebFluxConfigurer {
 
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
-	SwaggerWelcome SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig,
-			SpringDocConfigProperties springDocConfigProperties,
-			SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		return new SwaggerWelcome(swaggerUiConfig,springDocConfigProperties,swaggerUiConfigParameters);
-	}
-
-		/**
-		 * Swagger web flux configurer swagger web flux configurer.
-		 *
-		 * @param swaggerUiConfigParameters the swagger ui calculated config
-		 * @param springDocConfigProperties the spring doc config properties
-		 * @param swaggerIndexTransformer the swagger index transformer
-		 * @return the swagger web flux configurer
-		 */
-	@Bean
-	@ConditionalOnMissingBean
 	SwaggerWebFluxConfigurer swaggerWebFluxConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider) {
 		return new SwaggerWebFluxConfigurer(swaggerUiConfigParameters, springDocConfigProperties, swaggerIndexTransformer,actuatorProvider);
 	}
