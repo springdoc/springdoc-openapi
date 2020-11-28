@@ -18,19 +18,15 @@
 
 package test.org.springdoc.api.app145;
 
-import javax.annotation.PostConstruct;
-
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
-import test.org.springdoc.api.TestCommon;
+import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
-import org.springframework.boot.actuate.autoconfigure.web.server.LocalManagementPort;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -46,22 +42,11 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"springdoc.group-configs[0].packages-to-scan=test.org.springdoc.api.app145",
 				"management.server.port=9091",
 				"management.endpoints.web.base-path=/application" })
-public class SpringDocApp145Test extends TestCommon {
+public class SpringDocApp145Test  extends AbstractSpringDocActuatorTest {
 
 	@SpringBootApplication
 	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app145" })
 	static class SpringDocTestApp {}
-
-	@LocalManagementPort
-	private int managementPort;
-
-	private WebClient webClient;
-
-	@PostConstruct
-	void init() {
-		webClient = WebClient.builder().baseUrl("http://localhost:" + this.managementPort)
-				.build();
-	}
 
 	@Test
 	public void testApp()  {

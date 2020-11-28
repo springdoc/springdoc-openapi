@@ -18,18 +18,14 @@
 
 package test.org.springdoc.api.app144;
 
-import javax.annotation.PostConstruct;
-
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
-import test.org.springdoc.api.TestCommon;
+import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
-import org.springframework.boot.actuate.autoconfigure.web.server.LocalManagementPort;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
@@ -40,28 +36,15 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"springdoc.use-management-port=true",
 				"management.server.port=9090",
 				"management.endpoints.web.base-path=/application" })
-public class SpringDocApp144Test extends TestCommon {
+public class SpringDocApp144Test extends AbstractSpringDocActuatorTest {
 
 	@SpringBootApplication
 	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app144" })
 	static class SpringDocTestApp {}
 
-	@LocalManagementPort
-	private int managementPort;
-
-	protected String groupName = "";
-
-	private WebClient webClient;
-
-	@PostConstruct
-	void init(){
-		webClient =	WebClient.builder().baseUrl("http://localhost:" + this.managementPort)
-				.build();
-	}
-
 	@Test
 	public void testApp() throws Exception {
-		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange()
+		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
 				.expectStatus().isNotFound();
 	}
 
@@ -72,6 +55,5 @@ public class SpringDocApp144Test extends TestCommon {
 		String expected = getContent("results/app144.json");
 		assertEquals(expected, result, true);
 	}
-
 
 }

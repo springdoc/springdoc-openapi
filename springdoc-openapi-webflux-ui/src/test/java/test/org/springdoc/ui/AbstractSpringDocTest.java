@@ -34,15 +34,13 @@ import org.springdoc.webflux.ui.SwaggerWelcome;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 
-@ActiveProfiles("test")
 @WebFluxTest
 @ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class, SwaggerConfig.class, SwaggerWelcome.class, SwaggerUiOAuthProperties.class })
-public abstract class AbstractSpringDocTest {
+public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	@Autowired
 	protected WebTestClient webTestClient;

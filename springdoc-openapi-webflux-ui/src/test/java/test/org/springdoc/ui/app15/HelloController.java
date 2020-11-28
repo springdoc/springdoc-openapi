@@ -16,18 +16,21 @@
  *
  */
 
-package test.org.springdoc.ui;
+package test.org.springdoc.ui.app15;
 
-import org.springframework.boot.test.context.SpringBootTest;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
-@SpringBootTest
-public abstract class AbstractSpringDocTest extends AbstractCommonTest {
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-	public static String className;
+@RestController
+public class HelloController {
 
-	protected String getExpectedResult() throws Exception {
-		className = getClass().getSimpleName();
-		String testNumber = className.replaceAll("[^0-9]", "");
-		return getContent("results/app" + testNumber);
+	@GetMapping(value = "/persons")
+	public void persons(@Valid @RequestParam @Size(min = 4, max = 6) String name) {
+
 	}
+
 }

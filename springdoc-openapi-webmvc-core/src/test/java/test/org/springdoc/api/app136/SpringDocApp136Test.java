@@ -32,12 +32,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.springdoc.webmvc.api.OpenApiResource;
+import test.org.springdoc.api.AbstractCommonTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
@@ -46,16 +45,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED;
-import static test.org.springdoc.api.AbstractSpringDocTest.getContent;
 
 
 /**
  * Tests deterministic creation of operationIds
  */
-@ActiveProfiles("test")
 @SpringBootTest(properties = {SPRINGDOC_CACHE_DISABLED + "=true"})
-@AutoConfigureMockMvc
-public class SpringDocApp136Test {
+public class SpringDocApp136Test extends AbstractCommonTest {
 
     @Autowired
     OpenApiResource resource;
@@ -64,8 +60,7 @@ public class SpringDocApp136Test {
     RequestMappingInfoHandlerMapping mappingInfoHandlerMapping;
 
     @SpringBootApplication
-    static class SpringDocTestApp {
-    }
+    static class SpringDocTestApp {}
 
     @RepeatedTest(10)
     public void shouldGenerateOperationIdsDeterministically() throws Exception {

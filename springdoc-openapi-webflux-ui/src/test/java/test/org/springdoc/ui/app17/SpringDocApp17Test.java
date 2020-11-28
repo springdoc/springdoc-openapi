@@ -16,50 +16,37 @@
  *
  */
 
-package test.org.springdoc.ui.app15;
+package test.org.springdoc.ui.app17;
 
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties = { "management.endpoints.web.exposure.include:*",
-				"springdoc.use-management-port=true",
-				"management.server.port=9094",
+				"springdoc.show-actuator=true",
+				"management.server.port=9096",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })
-class SpringDocApp15Test extends AbstractSpringDocActuatorTest {
+class SpringDocApp17Test extends AbstractSpringDocActuatorTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 
 	@Test
-	void testIndex() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(get("/application/swagger-ui/index.html")).andExpect(status().isOk()).andReturn();
-		String contentAsString = mvcResult.getResponse().getContentAsString();
+	void testIndex() {
+		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/webjars/swagger-ui/index.html")
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody().returnResult();
+		String contentAsString = new String(getResult.getResponseBody());
 		assertTrue(contentAsString.contains("Swagger UI"));
-	}
-
-	@Test
-	public void testIndexActuator() {
-		String contentAsString = actuatorRestTemplate.getForObject("/test/application/swagger-ui", String.class);
-		assertTrue(contentAsString.contains("Swagger UI"));
-	}
-
-	@Test
-	public void testIndexSwaggerConfig() throws Exception {
-		String contentAsString = actuatorRestTemplate.getForObject("/test/application/swagger-ui/swagger-config", String.class);
-		String expected = getContent("results/app15-1.json");
-		assertEquals(expected, contentAsString, true);
 	}
 
 }

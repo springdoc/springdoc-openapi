@@ -16,58 +16,55 @@
  *
  */
 
-package test.org.springdoc.api.app147;
+package test.org.springdoc.ui.app16;
 
 import org.junit.jupiter.api.Test;
-import org.springdoc.core.Constants;
-import test.org.springdoc.api.AbstractSpringDocActuatorTest;
+import reactor.core.publisher.Mono;
+import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties = { "management.endpoints.web.exposure.include:*",
-				"springdoc.show-actuator=true",
-				"management.server.port=9097",
+				"springdoc.use-management-port=true",
+				"management.server.port=9095",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })
-public class SpringDocApp147Test  extends AbstractSpringDocActuatorTest {
+class SpringDocApp16Test extends AbstractSpringDocActuatorTest {
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app147" })
 	static class SpringDocTestApp {}
 
-
 	@Test
-	public void testApp() throws Exception {
-		EntityExchangeResult<byte[]> getResult =  webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/"+Constants.ACTUATOR_DEFAULT_GROUP)
+	void testIndex() throws Exception {
+		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/application/webjars/swagger-ui/index.html")
 				.exchange()
 				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$.openapi").isEqualTo("3.0.1")
-				.returnResult();
-	   String result = new String(getResult.getResponseBody());
-	   String expected = getContent("results/app147-1.json");
-	   assertEquals(expected, result, true);
+				.expectBody().returnResult();
+		String contentAsString = new String(getResult.getResponseBody());
+		assertTrue(contentAsString.contains("Swagger UI"));
 	}
 
 	@Test
-	public void testApp1() throws Exception {
-		EntityExchangeResult<byte[]> getResult =  webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/users")
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$.openapi").isEqualTo("3.0.1")
-				.returnResult();
-		String result = new String(getResult.getResponseBody());
-		String expected = getContent("results/app147-2.json");
-		assertEquals(expected, result, true);
+	public void testIndexActuator() {
+		HttpStatus httpStatusMono = webClient.get().uri("/test/application/swagger-ui")
+				.exchangeToMono( clientResponse -> Mono.just(clientResponse.statusCode())).block();
+		assertTrue(httpStatusMono.equals(HttpStatus.TEMPORARY_REDIRECT));
 	}
 
+	@Test
+	public void testIndexSwaggerConfig() throws Exception {
+		String contentAsString = webClient.get().uri("/test/application/swagger-ui/swagger-config").retrieve()
+				.bodyToMono(String.class).block();
+		String expected = getContent("results/app16-1.json");
+		assertEquals(expected, contentAsString, true);
+	}
 
 }

@@ -20,7 +20,7 @@ package test.org.springdoc.api.app146;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
-import test.org.springdoc.api.TestCommon;
+import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,7 +37,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"server.servlet.context-path=/sample",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })
-public class SpringDocApp146Test extends TestCommon {
+public class SpringDocApp146Test  extends AbstractSpringDocActuatorTest {
 
 	@SpringBootApplication
 	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app146" })
