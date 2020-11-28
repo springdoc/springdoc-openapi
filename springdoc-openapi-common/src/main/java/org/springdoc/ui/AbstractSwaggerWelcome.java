@@ -81,10 +81,12 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	 * @param docsUrl the docs url
 	 * @return the string
 	 */
-	protected String buildUrl(String contextPath, final String docsUrl) {
+	protected String buildUrl(String contextPath, String docsUrl) {
 		if (contextPath.endsWith(DEFAULT_PATH_SEPARATOR)) {
 			return contextPath.substring(0, contextPath.length() - 1) + docsUrl;
 		}
+		if (!docsUrl.startsWith(DEFAULT_PATH_SEPARATOR))
+			docsUrl = DEFAULT_PATH_SEPARATOR + docsUrl;
 		return contextPath + docsUrl;
 	}
 
@@ -127,7 +129,8 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 					.filter(entry -> !entry.getKey().startsWith(SwaggerUiConfigParameters.URLS_PROPERTY))
 					.filter(entry -> StringUtils.isNotEmpty((String) entry.getValue()))
 					.forEach(entry -> uriBuilder.queryParam(entry.getKey(), entry.getValue()));
-		} else if (swaggerUiConfig.isDisplayQueryParamsWithoutOauth2() && StringUtils.isNotEmpty(swaggerUiConfigParameters.getUrl())) {
+		}
+		else if (swaggerUiConfig.isDisplayQueryParamsWithoutOauth2() && StringUtils.isNotEmpty(swaggerUiConfigParameters.getUrl())) {
 			swaggerUiConfigParameters.getConfigParameters().entrySet().stream()
 					.filter(entry -> !SwaggerUiConfigParameters.CONFIG_URL_PROPERTY.equals(entry.getKey()))
 					.filter(entry -> !SwaggerUiConfigParameters.OAUTH2_REDIRECT_URL_PROPERTY.equals(entry.getKey()))

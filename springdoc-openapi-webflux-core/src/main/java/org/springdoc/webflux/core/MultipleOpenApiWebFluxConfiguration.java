@@ -27,13 +27,20 @@ import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.GroupedOpenApi;
-import org.springdoc.core.MultipleOpenApiSupportCondition;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringdocActuatorBeanFactoryConfigurer;
+import org.springdoc.webflux.api.ActuatorMultipleOpenApiResource;
 import org.springdoc.webflux.api.MultipleOpenApiResource;
+import org.springdoc.webflux.api.WebFluxMultipleOpenApiResource;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
+import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -44,6 +51,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
+import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 
 
 /**
@@ -54,7 +63,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-@Conditional(MultipleOpenApiSupportCondition.class)
+@Conditional(MultipleOpenApiWebFluxSupportCondition.class)
 public class MultipleOpenApiWebFluxConfiguration {
 
 	/**
@@ -72,6 +81,7 @@ public class MultipleOpenApiWebFluxConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
 	MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
@@ -85,5 +95,34 @@ public class MultipleOpenApiWebFluxConfiguration {
 				requestMappingHandlerMapping,
 				springDocConfigProperties,
 				actuatorProvider);
+	}
+
+	@ConditionalOnClass(WebFluxEndpointHandlerMapping.class)
+	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
+	static class SpringDocWebMvcActuatorDifferentConfiguration {
+
+		@Bean
+		@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
+		@Lazy(false)
+		static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor3(List<GroupedOpenApi> groupedOpenApis) {
+			return new SpringdocActuatorBeanFactoryConfigurer(groupedOpenApis);
+		}
+
+
+		@Bean
+		@ConditionalOnMissingBean
+		@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
+		@Lazy(false)
+		WebFluxMultipleOpenApiResource multipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis,
+				ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
+				GenericResponseService responseBuilder, OperationService operationParser,
+				RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+				SpringDocConfigProperties springDocConfigProperties,
+				Optional<ActuatorProvider> actuatorProvider) {
+
+			return new ActuatorMultipleOpenApiResource(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder,
+					responseBuilder, operationParser, requestMappingHandlerMapping,
+					springDocConfigProperties, actuatorProvider);
+		}
 	}
 }

@@ -135,7 +135,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * The Actuator provider.
 	 */
-	protected final Optional<ActuatorProvider> actuatorProvider;
+	protected final Optional<ActuatorProvider> optionalActuatorProvider;
 
 	/**
 	 * The Request builder.
@@ -170,7 +170,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * The Group name.
 	 */
-	private final String groupName;
+	protected final String groupName;
 
 	/**
 	 * Instantiates a new Abstract open api resource.
@@ -204,7 +204,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		if (operationCustomizers.isPresent())
 			operationCustomizers.get().removeIf(Objects::isNull);
 		this.operationCustomizers = operationCustomizers;
-		this.actuatorProvider = actuatorProvider;
+		this.optionalActuatorProvider = actuatorProvider;
 		if (springDocConfigProperties.isPreLoadingEnabled())
 			Executors.newSingleThreadExecutor().execute(this::getOpenApi);
 	}

@@ -18,53 +18,24 @@
 
 package test.org.springdoc.api;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import nonapi.io.github.classgraph.utils.FileUtils;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springdoc.core.Constants;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
-import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
-@AutoConfigureWebTestClient(timeout = "3600000")
 @WebFluxTest
-@ActiveProfiles("test")
-public abstract class AbstractSpringDocTest {
+public abstract class AbstractSpringDocTest extends TestCommon {
 
 	public static final HandlerFunction<ServerResponse> HANDLER_FUNCTION = request -> ServerResponse.ok().build();
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSpringDocTest.class);
-
 	protected String groupName = "";
 
-	@Autowired
-	protected WebTestClient webTestClient;
-
-	public static String getContent(String fileName) throws Exception {
-		try {
-			Path path = Paths.get(FileUtils.class.getClassLoader().getResource(fileName).toURI());
-			byte[] fileBytes = Files.readAllBytes(path);
-			return new String(fileBytes, StandardCharsets.UTF_8);
-		}
-		catch (Exception e) {
-			throw new RuntimeException("Failed to read file: " + fileName, e);
-		}
-	}
 
 	@Test
 	public void testApp() throws Exception {

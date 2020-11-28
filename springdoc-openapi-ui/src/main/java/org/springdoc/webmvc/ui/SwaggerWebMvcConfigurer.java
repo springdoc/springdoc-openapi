@@ -20,6 +20,9 @@
 
 package org.springdoc.webmvc.ui;
 
+import java.util.Optional;
+
+import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.SwaggerUiConfigParameters;
 
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -46,15 +49,20 @@ public class SwaggerWebMvcConfigurer extends WebMvcConfigurerAdapter { // NOSONA
 	 */
 	private SwaggerIndexTransformer swaggerIndexTransformer;
 
+	private Optional<ActuatorProvider> actuatorProvider;
+
 	/**
 	 * Instantiates a new Swagger web mvc configurer.
 	 *
 	 * @param swaggerUiConfigParameters the swagger ui calculated config  
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 */
-	public SwaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerIndexTransformer swaggerIndexTransformer) {
+	public SwaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters,
+			SwaggerIndexTransformer swaggerIndexTransformer,
+			Optional<ActuatorProvider> actuatorProvider) {
 		this.swaggerPath = swaggerUiConfigParameters.getPath();
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
+		this.actuatorProvider = actuatorProvider;
 	}
 
 	@Override
@@ -62,6 +70,9 @@ public class SwaggerWebMvcConfigurer extends WebMvcConfigurerAdapter { // NOSONA
 		StringBuilder uiRootPath = new StringBuilder();
 		if (swaggerPath.contains("/"))
 			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf('/'));
+		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
+			uiRootPath.append(actuatorProvider.get().getBasePath());
+
 		uiRootPath.append("/**");
 		registry.addResourceHandler(uiRootPath + "/swagger-ui/**")
 				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)

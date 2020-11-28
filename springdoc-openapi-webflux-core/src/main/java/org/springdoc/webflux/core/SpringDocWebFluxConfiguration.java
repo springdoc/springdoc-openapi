@@ -38,12 +38,15 @@ import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.webflux.api.ActuatorOpenApiResource;
 import org.springdoc.webflux.api.OpenApiResource;
 import org.springdoc.webflux.core.converters.WebFluxSupportConverter;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.boot.actuate.endpoint.web.reactive.ControllerEndpointHandlerMapping;
 import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -57,7 +60,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
+import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 
 /**
  * The type Spring doc web flux configuration.
@@ -85,6 +88,7 @@ public class SpringDocWebFluxConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
 	OpenApiResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
@@ -150,9 +154,7 @@ public class SpringDocWebFluxConfiguration {
 	 * The type Spring doc web flux actuator configuration.
 	 * @author bnasslahsen
 	 */
-	@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
 	@ConditionalOnClass(WebFluxEndpointHandlerMapping.class)
-	@ConditionalOnManagementPort(ManagementPortType.SAME)
 	static class SpringDocWebFluxActuatorConfiguration {
 
 		/**
@@ -164,8 +166,14 @@ public class SpringDocWebFluxConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
-		ActuatorProvider actuatorProvider(WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping, ControllerEndpointHandlerMapping controllerEndpointHandlerMapping) {
-			return new WebFluxActuatorProvider(webFluxEndpointHandlerMapping, controllerEndpointHandlerMapping);
+		ActuatorProvider actuatorProvider(Optional<WebFluxEndpointHandlerMapping> webFluxEndpointHandlerMapping,
+				Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping,
+				Optional<ManagementServerProperties> managementServerProperties,
+				Optional<WebEndpointProperties> webEndpointProperties,
+				SpringDocConfigProperties springDocConfigProperties) {
+			return new WebFluxActuatorProvider(webFluxEndpointHandlerMapping,
+					controllerEndpointHandlerMapping, managementServerProperties,
+					webEndpointProperties, springDocConfigProperties);
 		}
 
 		/**
@@ -189,6 +197,27 @@ public class SpringDocWebFluxConfiguration {
 		@Lazy(false)
 		OpenApiCustomiser actuatorOpenApiCustomiser() {
 			return new ActuatorOpenApiCustomizer();
+		}
+	}
+
+	@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
+	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
+	static class SpringDocWebMvcActuatorDifferentConfiguration {
+
+		@Bean
+		@ConditionalOnMissingBean(MultipleOpenApiWebFluxConfiguration.class)
+		@Lazy(false)
+		ActuatorOpenApiResource actuatorOpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
+				GenericResponseService responseBuilder, OperationService operationParser,
+				RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+				Optional<List<OperationCustomizer>> operationCustomizers,
+				Optional<List<OpenApiCustomiser>> openApiCustomisers,
+				SpringDocConfigProperties springDocConfigProperties,
+				Optional<ActuatorProvider> actuatorProvider) {
+			return new ActuatorOpenApiResource(openAPIBuilderObjectFactory, requestBuilder,
+					responseBuilder, operationParser,
+					requestMappingHandlerMapping,operationCustomizers,
+					openApiCustomisers, springDocConfigProperties,actuatorProvider);
 		}
 	}
 }

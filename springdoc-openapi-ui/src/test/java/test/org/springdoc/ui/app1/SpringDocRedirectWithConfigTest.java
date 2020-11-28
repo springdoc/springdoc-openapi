@@ -45,7 +45,7 @@ public class SpringDocRedirectWithConfigTest extends AbstractSpringDocTest {
 		String locationHeader = mvcResult.getResponse().getHeader("Location");
 		assertEquals("/swagger-ui/index.html?configUrl=/baf/batz/swagger-config", locationHeader);
 
-		mvcResult = mockMvc.perform(get("/baf/batz/swagger-config"))
+		mockMvc.perform(get("/baf/batz/swagger-config"))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.validatorUrl", is("/foo/validate"))).andReturn();
 
 	}
