@@ -31,14 +31,13 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.junit.jupiter.api.RepeatedTest;
 import org.springdoc.webflux.api.OpenApiResource;
+import test.org.springdoc.api.TestCommon;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
@@ -47,16 +46,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED;
-import static test.org.springdoc.api.AbstractSpringDocTest.getContent;
 
 
 /**
  * Tests deterministic creation of operationIds
  */
-@AutoConfigureWebTestClient(timeout = "3600000")
 @WebFluxTest(properties = SPRINGDOC_CACHE_DISABLED + "=true")
-@ActiveProfiles("test")
-public class SpringDocApp81Test {
+public class SpringDocApp81Test extends TestCommon {
 
     @SpringBootApplication
     @ComponentScan(basePackages = {"org.springdoc", "test.org.springdoc.api.app81"})

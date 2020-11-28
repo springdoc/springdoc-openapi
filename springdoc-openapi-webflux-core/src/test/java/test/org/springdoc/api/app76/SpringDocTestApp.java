@@ -30,7 +30,6 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.GroupedOpenApi;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.reactive.WebFluxEndpointManagementContextConfiguration;
@@ -51,9 +50,6 @@ import org.springframework.context.annotation.Import;
 		ReactiveManagementContextAutoConfiguration.class})
 @ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app76" })
 public class SpringDocTestApp {
-	public static void main(String[] args) {
-		SpringApplication.run(SpringDocTestApp.class, args);
-	}
 
 	@Bean
 	public OpenAPI customOpenAPI() {

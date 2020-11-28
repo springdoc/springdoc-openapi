@@ -29,7 +29,8 @@ import static org.springdoc.core.Constants.DEFAULT_API_DOCS_ACTUATOR_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestControllerEndpoint(id = DEFAULT_API_DOCS_ACTUATOR_URL)
-public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
+public class ActuatorMultipleOpenApiResource extends WebMvcMultipleOpenApiResource {
+
 
 	/**
 	 * Instantiates a new Multiple open api resource.
@@ -45,15 +46,9 @@ public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 	 * @param routerFunctionProvider the router function provider
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 */
-	public MultipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis,
-			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
-			GenericResponseService responseBuilder, OperationService operationParser,
-			RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> actuatorProvider,
-			SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
+	public ActuatorMultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis, ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> actuatorProvider, SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, actuatorProvider, springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
 	}
-
 
 	/**
 	 * Openapi json string.
@@ -65,8 +60,7 @@ public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value =   "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String openapiJson(HttpServletRequest request,
-			@PathVariable String group)
+	public String openapiJson(HttpServletRequest request, @PathVariable String group)
 			throws JsonProcessingException {
 		return getOpenApiResourceOrThrow(group).openapiJson(request, "" + DEFAULT_PATH_SEPARATOR + group);
 	}
@@ -81,8 +75,7 @@ public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value =  "/{group}/yaml", produces = APPLICATION_OPENAPI_YAML)
-	public String openapiYaml(HttpServletRequest request,
-			@PathVariable String group)
+	public String openapiYaml(HttpServletRequest request, @PathVariable String group)
 			throws JsonProcessingException {
 		return getOpenApiResourceOrThrow(group).openapiYaml(request, "" + DEFAULT_PATH_SEPARATOR + group);
 	}

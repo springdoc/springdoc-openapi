@@ -71,4 +71,16 @@ public interface ActuatorProvider {
 				&&  !AbstractOpenApiResource.isHiddenRestControllers(controllerClass);
 	}
 
+	int getApplicationPort();
+
+	int getActuatorPort();
+
+	String getActuatorPath();
+
+	boolean isUseManagementPort();
+
+	String getBasePath();
+
+	String getServletContextPath();
+
 }

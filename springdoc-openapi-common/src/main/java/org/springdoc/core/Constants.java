@@ -95,7 +95,6 @@ public final class Constants {
 	 */
 	public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
 
-
 	/**
 	 * The constant SPRINGDOC_USE_MANAGEMENT_PORT.
 	 */
@@ -117,6 +116,8 @@ public final class Constants {
 	 * The constant MVC_SERVLET_PATH.
 	 */
 	public static final String MVC_SERVLET_PATH = "${spring.mvc.servlet.path" + NULL + "}";
+
+	public static final String ACTUATOR_DEFAULT_GROUP = "x-actuator";
 
 	/**
 	 * The constant SPRINGDOC_SHOW_ACTUATOR.

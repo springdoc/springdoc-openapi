@@ -1,0 +1,463 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:9096/test",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Actuator",
+      "description": "Monitor and interact",
+      "externalDocs": {
+        "description": "Spring Boot Actuator Web API Documentation",
+        "url": "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
+      }
+    }
+  ],
+  "paths": {
+    "/application/loggers/{name}": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_5",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/threaddump": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_1_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/scheduledtasks": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/metrics/{requiredMetricName}": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/metrics": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_3",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/mappings": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_4",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/loggers": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_6",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/info": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_7",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/heapdump": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_8",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/health": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_9",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/env/{toMatch}": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_10",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/env": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_11",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/configprops": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_12",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/conditions": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_13",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/caches/{cache}": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_14",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_18",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/caches": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_15",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_17",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/beans": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_16",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "links",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PublisherResponseEntityObject": {
+        "type": "object"
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
