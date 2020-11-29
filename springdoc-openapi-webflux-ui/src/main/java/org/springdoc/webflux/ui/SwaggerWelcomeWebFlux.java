@@ -71,7 +71,6 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 		return super.redirectToUi(request, response);
 	}
 
-
 	/**
 	 * Gets swagger ui config.
 	 *
@@ -90,6 +89,5 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 		StringBuilder sbUrl = new StringBuilder();
 		calculateUiRootCommon(sbUrl, sbUrls);
 	}
-
 
 }

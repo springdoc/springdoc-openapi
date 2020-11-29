@@ -31,9 +31,7 @@ import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointPr
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.boot.actuate.endpoint.web.reactive.ControllerEndpointHandlerMapping;
 import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
-import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebServerApplicationContext;
-import org.springframework.boot.web.reactive.context.ReactiveWebServerInitializedEvent;
-import org.springframework.context.ApplicationListener;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
 
@@ -42,7 +40,7 @@ import org.springframework.web.reactive.result.method.RequestMappingInfo;
  * The type Web flux actuator provider.
  * @author bnasslahsen
  */
-public class WebFluxActuatorProvider implements ActuatorProvider, ApplicationListener<ReactiveWebServerInitializedEvent> {
+public class ActuatorWebFluxProvider extends ActuatorProvider {
 
 	/**
 	 * The Web flux endpoint handler mapping.
@@ -54,34 +52,25 @@ public class WebFluxActuatorProvider implements ActuatorProvider, ApplicationLis
 	 */
 	private ControllerEndpointHandlerMapping controllerEndpointHandlerMapping;
 
-	private AnnotationConfigReactiveWebServerApplicationContext managementApplicationContext;
-
-	private AnnotationConfigReactiveWebServerApplicationContext applicationContext;
-
-	private ManagementServerProperties managementServerProperties;
-
-	private WebEndpointProperties webEndpointProperties;
-
-	private SpringDocConfigProperties springDocConfigProperties;
-
-
 	/**
-	 * Instantiates a new Web flux actuator provider.
+	 * Instantiates a new Actuator web flux provider.
 	 *
+	 * @param serverProperties the server properties
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param managementServerProperties the management server properties
+	 * @param webEndpointProperties the web endpoint properties
 	 * @param webFluxEndpointHandlerMapping the web flux endpoint handler mapping
 	 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
 	 */
-	public WebFluxActuatorProvider(Optional<WebFluxEndpointHandlerMapping> webFluxEndpointHandlerMapping,
-			Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping,
+	public ActuatorWebFluxProvider(ServerProperties serverProperties,
+			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ManagementServerProperties> managementServerProperties,
 			Optional<WebEndpointProperties> webEndpointProperties,
-			SpringDocConfigProperties springDocConfigProperties) {
+			Optional<WebFluxEndpointHandlerMapping> webFluxEndpointHandlerMapping,
+			Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping) {
+		super(managementServerProperties, webEndpointProperties, serverProperties, springDocConfigProperties);
 		webFluxEndpointHandlerMapping.ifPresent(webFluxEndpointHandlerMapping1 -> this.webFluxEndpointHandlerMapping = webFluxEndpointHandlerMapping1);
 		controllerEndpointHandlerMapping.ifPresent(controllerEndpointHandlerMapping1 -> this.controllerEndpointHandlerMapping = controllerEndpointHandlerMapping1);
-		managementServerProperties.ifPresent(managementServerProperties1 -> this.managementServerProperties=managementServerProperties1);
-		webEndpointProperties.ifPresent(webEndpointProperties1 -> this.webEndpointProperties=webEndpointProperties1);
-		this.springDocConfigProperties = springDocConfigProperties;
-
 	}
 
 	public Map<RequestMappingInfo, HandlerMethod> getMethods() {
@@ -98,42 +87,5 @@ public class WebFluxActuatorProvider implements ActuatorProvider, ApplicationLis
 		return mappingInfoHandlerMethodMap;
 	}
 
-	public int getApplicationPort() {
-		return applicationContext.getWebServer().getPort();
-	}
-
-	@Override
-	public int getActuatorPort() {
-		return managementApplicationContext.getWebServer().getPort();
-	}
-
-	@Override
-	public String getActuatorPath() {
-		return managementServerProperties.getBasePath();
-	}
-
-	@Override
-	public void onApplicationEvent(ReactiveWebServerInitializedEvent event) {
-		if ("application".equals(event.getApplicationContext().getId()))
-			applicationContext = (AnnotationConfigReactiveWebServerApplicationContext) event.getApplicationContext();
-		else if ("application:management".equals(event.getApplicationContext().getId()))
-			managementApplicationContext = (AnnotationConfigReactiveWebServerApplicationContext) event.getApplicationContext();
-
-	}
-
-	@Override
-	public boolean isUseManagementPort() {
-		return springDocConfigProperties.isUseManagementPort();
-	}
-
-	@Override
-	public String getBasePath() {
-		return webEndpointProperties.getBasePath();
-	}
-
-	@Override
-	public String getContextPath() {
-		return "";
-	}
 
 }

@@ -57,7 +57,7 @@ public class MultipleOpenApiWebFluxResource extends MultipleOpenApiResource {
 
 	/**
 	 * Instantiates a new Multiple open api resource.
-	 *  @param groupedOpenApis the grouped open apis
+	 * @param groupedOpenApis the grouped open apis
 	 * @param defaultOpenAPIBuilder the default open api builder
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder

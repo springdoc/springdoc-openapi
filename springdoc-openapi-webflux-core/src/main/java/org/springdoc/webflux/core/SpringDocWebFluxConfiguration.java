@@ -50,9 +50,11 @@ import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServe
 import org.springframework.boot.actuate.endpoint.web.reactive.ControllerEndpointHandlerMapping;
 import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -161,20 +163,29 @@ public class SpringDocWebFluxConfiguration {
 		/**
 		 * Actuator provider actuator provider.
 		 *
+		 * @param serverProperties the server properties
+		 * @param springDocConfigProperties the spring doc config properties
+		 * @param managementServerProperties the management server properties
+		 * @param webEndpointProperties the web endpoint properties
 		 * @param webFluxEndpointHandlerMapping the web flux endpoint handler mapping
 		 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
 		 * @return the actuator provider
 		 */
 		@Bean
 		@ConditionalOnMissingBean
-		ActuatorProvider actuatorProvider(Optional<WebFluxEndpointHandlerMapping> webFluxEndpointHandlerMapping,
-				Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping,
+		@ConditionalOnExpression("${springdoc.show-actuator:false} or ${springdoc.use-management-port:false}")
+		ActuatorProvider actuatorProvider(ServerProperties serverProperties,
+				SpringDocConfigProperties springDocConfigProperties,
 				Optional<ManagementServerProperties> managementServerProperties,
 				Optional<WebEndpointProperties> webEndpointProperties,
-				SpringDocConfigProperties springDocConfigProperties) {
-			return new WebFluxActuatorProvider(webFluxEndpointHandlerMapping,
-					controllerEndpointHandlerMapping, managementServerProperties,
-					webEndpointProperties, springDocConfigProperties);
+				Optional<WebFluxEndpointHandlerMapping> webFluxEndpointHandlerMapping,
+				Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping) {
+			return new ActuatorWebFluxProvider(serverProperties,
+					springDocConfigProperties,
+					managementServerProperties,
+					webEndpointProperties,
+					webFluxEndpointHandlerMapping,
+					controllerEndpointHandlerMapping);
 		}
 
 		/**
@@ -202,6 +213,20 @@ public class SpringDocWebFluxConfiguration {
 			return new ActuatorOpenApiCustomizer();
 		}
 
+		/**
+		 * Actuator open api resource open api actuator resource.
+		 *
+		 * @param openAPIBuilderObjectFactory the open api builder object factory
+		 * @param requestBuilder the request builder
+		 * @param responseBuilder the response builder
+		 * @param operationParser the operation parser
+		 * @param requestMappingHandlerMapping the request mapping handler mapping
+		 * @param operationCustomizers the operation customizers
+		 * @param openApiCustomisers the open api customisers
+		 * @param springDocConfigProperties the spring doc config properties
+		 * @param actuatorProvider the actuator provider
+		 * @return the open api actuator resource
+		 */
 		@Bean
 		@ConditionalOnMissingBean(MultipleOpenApiWebFluxConfiguration.class)
 		@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
@@ -220,5 +245,4 @@ public class SpringDocWebFluxConfiguration {
 					openApiCustomisers, springDocConfigProperties, actuatorProvider);
 		}
 	}
-
 }

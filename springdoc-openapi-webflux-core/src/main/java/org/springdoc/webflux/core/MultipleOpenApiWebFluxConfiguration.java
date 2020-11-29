@@ -97,10 +97,20 @@ public class MultipleOpenApiWebFluxConfiguration {
 				actuatorProvider);
 	}
 
+	/**
+	 * The type Spring doc web mvc actuator different configuration.
+	 * @author bnasslashen
+	 */
 	@ConditionalOnClass(WebFluxEndpointHandlerMapping.class)
 	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 	static class SpringDocWebMvcActuatorDifferentConfiguration {
 
+		/**
+		 * Springdoc bean factory post processor 3 bean factory post processor.
+		 *
+		 * @param groupedOpenApis the grouped open apis
+		 * @return the bean factory post processor
+		 */
 		@Bean
 		@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
 		@Lazy(false)
@@ -108,6 +118,19 @@ public class MultipleOpenApiWebFluxConfiguration {
 			return new SpringdocActuatorBeanFactoryConfigurer(groupedOpenApis);
 		}
 
+		/**
+		 * Multiple open api actuator resource multiple open api actuator resource.
+		 *
+		 * @param groupedOpenApis the grouped open apis
+		 * @param defaultOpenAPIBuilder the default open api builder
+		 * @param requestBuilder the request builder
+		 * @param responseBuilder the response builder
+		 * @param operationParser the operation parser
+		 * @param requestMappingHandlerMapping the request mapping handler mapping
+		 * @param springDocConfigProperties the spring doc config properties
+		 * @param actuatorProvider the actuator provider
+		 * @return the multiple open api actuator resource
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)

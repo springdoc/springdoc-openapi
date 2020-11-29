@@ -55,7 +55,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	 * @return the string
 	 */
 	@Operation(hidden = true)
-	@GetMapping("/")
+	@GetMapping(DEFAULT_PATH_SEPARATOR)
 	public String redirectToUi(HttpServletRequest request) {
 		return super.redirectToUi(request);
 	}

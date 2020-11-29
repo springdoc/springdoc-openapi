@@ -50,7 +50,7 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 	 * The Environment.
 	 */
 	@Nullable
-	private Environment environment;
+	protected Environment environment;
 
 	@Override
 	public void setEnvironment(Environment environment) {

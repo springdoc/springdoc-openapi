@@ -56,10 +56,37 @@ import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
 public class OpenApiWebfluxResource extends OpenApiResource {
 
 
+	/**
+	 * Instantiates a new Open api webflux resource.
+	 *
+	 * @param groupName the group name
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param actuatorProvider the actuator provider
+	 */
 	public OpenApiWebfluxResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
 		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 	}
 
+	/**
+	 * Instantiates a new Open api webflux resource.
+	 *
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param actuatorProvider the actuator provider
+	 */
 	@Autowired
 	public OpenApiWebfluxResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
 		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
@@ -94,4 +121,11 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl) throws JsonProcessingException {
 		return super.openapiYaml(serverHttpRequest, apiDocsUrl);
 	}
+
+	@Override
+	protected String getServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
+		String requestUrl = decode(serverHttpRequest.getURI().toString());
+		return  requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
+	}
+
 }

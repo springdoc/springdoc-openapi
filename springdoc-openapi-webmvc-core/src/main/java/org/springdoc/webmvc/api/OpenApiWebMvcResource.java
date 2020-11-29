@@ -56,14 +56,47 @@ import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
  * @author bnasslahsen
  */
 @RestController
-public class OpenApiMvcResource extends OpenApiResource {
+public class OpenApiWebMvcResource extends OpenApiResource {
 
-	public OpenApiMvcResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> actuatorProvider, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
+	/**
+	 * Instantiates a new Open api web mvc resource.
+	 *
+	 * @param groupName the group name
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param actuatorProvider the actuator provider
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
+	 * @param routerFunctionProvider the router function provider
+	 * @param repositoryRestResourceProvider the repository rest resource provider
+	 */
+	public OpenApiWebMvcResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> actuatorProvider, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, actuatorProvider, operationCustomizers, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
 	}
 
+	/**
+	 * Instantiates a new Open api web mvc resource.
+	 *
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param actuatorProvider the actuator provider
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
+	 * @param routerFunctionProvider the router function provider
+	 * @param repositoryRestResourceProvider the repository rest resource provider
+	 */
 	@Autowired
-	public OpenApiMvcResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> actuatorProvider, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
+	public OpenApiWebMvcResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> actuatorProvider, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, actuatorProvider, operationCustomizers, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
 	}
 
@@ -95,6 +128,12 @@ public class OpenApiMvcResource extends OpenApiResource {
 	public String openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl)
 			throws JsonProcessingException {
 		return super.openapiYaml(request, apiDocsUrl);
+	}
+
+	@Override
+	protected String getServerUrl(HttpServletRequest request, String apiDocsUrl) {
+		String requestUrl = decode(request.getRequestURL().toString());
+		return requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
 	}
 
 }

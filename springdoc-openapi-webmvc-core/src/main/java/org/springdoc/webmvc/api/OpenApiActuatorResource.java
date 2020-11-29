@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
-import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
@@ -22,18 +21,40 @@ import org.springdoc.webmvc.core.RouterFunctionProvider;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
-import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
-import static org.springdoc.core.Constants.ACTUATOR_DEFAULT_GROUP;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_ACTUATOR_URL;
+import static org.springdoc.core.Constants.DEFAULT_YAML_API_DOCS_ACTUATOR_PATH;
+import static org.springdoc.core.Constants.YAML;
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
+/**
+ * The type Open api actuator resource.
+ * @author bnasslashen
+ */
 @RestControllerEndpoint(id = DEFAULT_API_DOCS_ACTUATOR_URL)
 public class OpenApiActuatorResource extends OpenApiResource {
 
+	/**
+	 * Instantiates a new Open api actuator resource.
+	 *
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param actuatorProvider the actuator provider
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
+	 * @param routerFunctionProvider the router function provider
+	 * @param repositoryRestResourceProvider the repository rest resource provider
+	 */
 	public OpenApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
 			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
 			OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
@@ -47,6 +68,23 @@ public class OpenApiActuatorResource extends OpenApiResource {
 		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, actuatorProvider, operationCustomizers, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
 	}
 
+	/**
+	 * Instantiates a new Open api actuator resource.
+	 *
+	 * @param groupName the group name
+	 * @param openAPIBuilderObjectFactory the open api builder object factory
+	 * @param requestBuilder the request builder
+	 * @param responseBuilder the response builder
+	 * @param operationParser the operation parser
+	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param actuatorProvider the actuator provider
+	 * @param operationCustomizers the operation customizers
+	 * @param openApiCustomisers the open api customisers
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
+	 * @param routerFunctionProvider the router function provider
+	 * @param repositoryRestResourceProvider the repository rest resource provider
+	 */
 	public OpenApiActuatorResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
 			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
 			OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
@@ -59,41 +97,39 @@ public class OpenApiActuatorResource extends OpenApiResource {
 				springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
 	}
 
+	/**
+	 * Openapi json string.
+	 *
+	 * @param request the request
+	 * @return the string
+	 * @throws JsonProcessingException the json processing exception
+	 */
 	@Operation(hidden = true)
-	@GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = DEFAULT_PATH_SEPARATOR, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String openapiJson(HttpServletRequest request)
 			throws JsonProcessingException {
-		return super.openapiJson(request, "");
+		return super.openapiJson(request, EMPTY);
 	}
 
 
+	/**
+	 * Openapi yaml string.
+	 *
+	 * @param request the request
+	 * @return the string
+	 * @throws JsonProcessingException the json processing exception
+	 */
 	@Operation(hidden = true)
-	@GetMapping(value = "/yaml", produces = APPLICATION_OPENAPI_YAML)
+	@GetMapping(value = DEFAULT_YAML_API_DOCS_ACTUATOR_PATH, produces = APPLICATION_OPENAPI_YAML)
 	public String openapiYaml(HttpServletRequest request)
 			throws JsonProcessingException {
-		return super.openapiYaml(request, "yaml");
+		return super.openapiYaml(request, YAML);
 	}
 
-	protected void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
-		super.initOpenAPIBuilder();
 
-		ActuatorProvider actuatorProvider = optionalActuatorProvider.get();
-		String path;
-		int port;
-		if (ACTUATOR_DEFAULT_GROUP.equals(this.groupName)) {
-			port = actuatorProvider.getActuatorPort();
-			path = actuatorProvider.getActuatorPath();
-		}
-		else {
-			port = actuatorProvider.getApplicationPort();
-			path = actuatorProvider.getContextPath();
-			String mvcServletPath = this.openAPIService.getContext().getBean(Environment.class).getProperty("spring.mvc.servlet.path");
-			if (StringUtils.isNotEmpty(mvcServletPath))
-				path = path + mvcServletPath;
-		}
-
-		String calculatedUrl = request.getScheme() + "://" + request.getServerName() + ":" + port + path;
-		openAPIService.setServerBaseUrl(calculatedUrl);
+	@Override
+	protected String getServerUrl(HttpServletRequest request, String apiDocsUrl) {
+		return getActuatorURI(request.getScheme(), request.getServerName()).toString();
 	}
 
 }
