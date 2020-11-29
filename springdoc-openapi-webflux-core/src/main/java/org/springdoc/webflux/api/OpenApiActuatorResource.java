@@ -27,14 +27,13 @@ import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_ACTUATOR_URL;
 
 @RestControllerEndpoint(id = DEFAULT_API_DOCS_ACTUATOR_URL)
-public class ActuatorOpenApiResource extends WebFluxOpenApiResource {
+public class OpenApiActuatorResource extends OpenApiResource {
 
-
-	public ActuatorOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
+	public OpenApiActuatorResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
 		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 	}
 
-	public ActuatorOpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
+	public OpenApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
 		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 	}
 
@@ -54,21 +53,20 @@ public class ActuatorOpenApiResource extends WebFluxOpenApiResource {
 	}
 
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
-		ActuatorProvider actuatorProvider = optionalActuatorProvider.get();
-		String scheme = (serverHttpRequest.getURI().getScheme()  !=null) ? serverHttpRequest.getURI().getScheme() : "http";
-		String host = (serverHttpRequest.getURI().getHost() !=null ) ?serverHttpRequest.getURI().getHost() : "localhost";
-		String path ="";
-		int port;
 		super.initOpenAPIBuilder();
+		ActuatorProvider actuatorProvider = optionalActuatorProvider.get();
+		String scheme = (serverHttpRequest.getURI().getScheme() != null) ? serverHttpRequest.getURI().getScheme() : "http";
+		String host = (serverHttpRequest.getURI().getHost() != null) ? serverHttpRequest.getURI().getHost() : "localhost";
+		String path;
+		int port;
 		if (ACTUATOR_DEFAULT_GROUP.equals(this.groupName)) {
 			port = actuatorProvider.getActuatorPort();
 			path = actuatorProvider.getActuatorPath();
 		}
-		else{
+		else {
 			port = actuatorProvider.getApplicationPort();
-			path = actuatorProvider.getServletContextPath();
+			path = actuatorProvider.getContextPath();
 		}
-
 		String calculatedUrl = scheme + "://" + host + ":" + port + path;
 		openAPIService.setServerBaseUrl(calculatedUrl);
 	}

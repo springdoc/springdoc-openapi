@@ -18,7 +18,7 @@
  *
  */
 
-package org.springdoc.webmvc.api;
+package org.springdoc.webmvc.core;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -131,7 +131,7 @@ public class WebMvcActuatorProvider implements ActuatorProvider, ApplicationList
 	}
 
 	@Override
-	public String getServletContextPath() {
+	public String getContextPath() {
 		return applicationContext.getServletContext().getContextPath();
 	}
 

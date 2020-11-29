@@ -38,8 +38,8 @@ import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
-import org.springdoc.webflux.api.ActuatorOpenApiResource;
-import org.springdoc.webflux.api.OpenApiResource;
+import org.springdoc.webflux.api.OpenApiActuatorResource;
+import org.springdoc.webflux.api.OpenApiWebfluxResource;
 import org.springdoc.webflux.core.converters.WebFluxSupportConverter;
 
 import org.springframework.beans.factory.ObjectFactory;
@@ -60,6 +60,7 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 
 /**
@@ -90,17 +91,17 @@ public class SpringDocWebFluxConfiguration {
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
-	OpenApiResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
+	OpenApiWebfluxResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
-		return new OpenApiResource(openAPIBuilderObjectFactory, requestBuilder,
+		return new OpenApiWebfluxResource(openAPIBuilderObjectFactory, requestBuilder,
 				responseBuilder, operationParser,
-				requestMappingHandlerMapping,operationCustomizers,
-				openApiCustomisers, springDocConfigProperties,actuatorProvider);
+				requestMappingHandlerMapping, operationCustomizers,
+				openApiCustomisers, springDocConfigProperties, actuatorProvider);
 	}
 
 	/**
@@ -184,6 +185,7 @@ public class SpringDocWebFluxConfiguration {
 		 */
 		@Bean
 		@Lazy(false)
+		@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
 		OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider) {
 			return new ActuatorOperationCustomizer(actuatorProvider);
 		}
@@ -195,29 +197,28 @@ public class SpringDocWebFluxConfiguration {
 		 */
 		@Bean
 		@Lazy(false)
+		@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
 		OpenApiCustomiser actuatorOpenApiCustomiser() {
 			return new ActuatorOpenApiCustomizer();
 		}
-	}
-
-	@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
-	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
-	static class SpringDocWebMvcActuatorDifferentConfiguration {
 
 		@Bean
 		@ConditionalOnMissingBean(MultipleOpenApiWebFluxConfiguration.class)
+		@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
+		@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 		@Lazy(false)
-		ActuatorOpenApiResource actuatorOpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
+		OpenApiActuatorResource actuatorOpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 				GenericResponseService responseBuilder, OperationService operationParser,
 				RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 				Optional<List<OperationCustomizer>> operationCustomizers,
 				Optional<List<OpenApiCustomiser>> openApiCustomisers,
 				SpringDocConfigProperties springDocConfigProperties,
 				Optional<ActuatorProvider> actuatorProvider) {
-			return new ActuatorOpenApiResource(openAPIBuilderObjectFactory, requestBuilder,
+			return new OpenApiActuatorResource(openAPIBuilderObjectFactory, requestBuilder,
 					responseBuilder, operationParser,
-					requestMappingHandlerMapping,operationCustomizers,
-					openApiCustomisers, springDocConfigProperties,actuatorProvider);
+					requestMappingHandlerMapping, operationCustomizers,
+					openApiCustomisers, springDocConfigProperties, actuatorProvider);
 		}
 	}
+
 }

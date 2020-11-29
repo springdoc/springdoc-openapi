@@ -27,16 +27,15 @@ import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.MultipleOpenApiSupportCondition;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringdocActuatorBeanFactoryConfigurer;
-import org.springdoc.webmvc.api.ActuatorMultipleOpenApiResource;
-import org.springdoc.webmvc.api.MultipleOpenApiResource;
-import org.springdoc.webmvc.api.RouterFunctionProvider;
-import org.springdoc.webmvc.api.WebMvcMultipleOpenApiResource;
+import org.springdoc.webmvc.api.MultipleOpenApiActuatorResource;
+import org.springdoc.webmvc.api.MultipleOpenApiWebMvcResource;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -66,7 +65,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-@Conditional(MultipleOpenApiMvcSupportCondition.class)
+@Conditional(MultipleOpenApiSupportCondition.class)
 public class MultipleOpenApiSupportConfiguration {
 
 	/**
@@ -89,7 +88,7 @@ public class MultipleOpenApiSupportConfiguration {
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
-	MultipleOpenApiResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
+	MultipleOpenApiWebMvcResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
@@ -98,7 +97,7 @@ public class MultipleOpenApiSupportConfiguration {
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		return new MultipleOpenApiResource(groupedOpenApis,
+		return new MultipleOpenApiWebMvcResource(groupedOpenApis,
 				defaultOpenAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping, actuatorProvider,
@@ -123,14 +122,14 @@ public class MultipleOpenApiSupportConfiguration {
 		@ConditionalOnMissingBean
 		@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
 		@Lazy(false)
-		WebMvcMultipleOpenApiResource multipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis,
+		MultipleOpenApiActuatorResource multipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis,
 				ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 				GenericResponseService responseBuilder, OperationService operationParser,
 				RequestMappingInfoHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> actuatorProvider,
 				SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 				Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 
-			return new ActuatorMultipleOpenApiResource(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder,
+			return new MultipleOpenApiActuatorResource(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder,
 					responseBuilder, operationParser, requestMappingHandlerMapping, actuatorProvider,
 					springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
 		}

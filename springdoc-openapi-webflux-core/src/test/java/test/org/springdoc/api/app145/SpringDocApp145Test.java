@@ -25,7 +25,6 @@ import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
@@ -45,7 +44,6 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 public class SpringDocApp145Test  extends AbstractSpringDocActuatorTest {
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app145" })
 	static class SpringDocTestApp {}
 
 	@Test
@@ -56,7 +54,7 @@ public class SpringDocApp145Test  extends AbstractSpringDocActuatorTest {
 	}
 
 	@Test
-	public void testApp1() throws Exception {
+	public void testApp1() {
 		try {
 			webClient.get().uri("/application/openapi").retrieve()
 					.bodyToMono(String.class).block();

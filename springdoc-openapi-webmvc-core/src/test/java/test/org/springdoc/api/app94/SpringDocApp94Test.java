@@ -38,8 +38,8 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
-import org.springdoc.webmvc.api.OpenApiResource;
-import org.springdoc.webmvc.api.RouterFunctionProvider;
+import org.springdoc.webmvc.api.OpenApiMvcResource;
+import org.springdoc.webmvc.core.RouterFunctionProvider;
 import test.org.springdoc.api.AbstractSpringDocTest;
 import test.org.springdoc.api.app91.Greeting;
 
@@ -93,13 +93,13 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 		}
 
 		@Bean(name = "openApiResource")
-		public OpenApiResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
+		public OpenApiMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
 				OperationService operationParser,Optional<List<OperationCustomizer>> operationCustomizers,
 				@Qualifier("defaultTestHandlerMapping") RequestMappingHandlerMapping requestMappingHandlerMapping,
 				Optional<ActuatorProvider> actuatorProvider, SpringDocConfigProperties springDocConfigProperties,
 				Optional<List<OpenApiCustomiser>> openApiCustomisers, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 				Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-			return new OpenApiResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping,
+			return new OpenApiMvcResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping,
 					actuatorProvider,operationCustomizers, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,routerFunctionProvider, repositoryRestResourceProvider);
 		}
 

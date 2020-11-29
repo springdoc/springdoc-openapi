@@ -28,7 +28,7 @@ import org.springframework.test.context.TestPropertySource;
 public class SpringDocApp2Test extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldDisplaySwaggerUiPage() throws Exception {
+	public void shouldDisplaySwaggerUiPage() {
 		webTestClient.get().uri("/swagger-ui.html").exchange()
 				.expectStatus().isNotFound();
 	}

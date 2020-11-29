@@ -30,7 +30,6 @@ import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 import org.springdoc.webflux.core.SpringDocWebFluxConfiguration;
 import org.springdoc.webflux.ui.SwaggerConfig;
-import org.springdoc.webflux.ui.SwaggerWelcome;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -39,7 +38,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 
 @WebFluxTest
-@ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class, SwaggerConfig.class, SwaggerWelcome.class, SwaggerUiOAuthProperties.class })
+@ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class, SwaggerConfig.class, SwaggerUiOAuthProperties.class })
 public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	@Autowired

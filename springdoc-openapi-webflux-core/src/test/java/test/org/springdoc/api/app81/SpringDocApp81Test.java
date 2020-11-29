@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.junit.jupiter.api.RepeatedTest;
-import org.springdoc.webflux.api.OpenApiResource;
+import org.springdoc.webflux.api.OpenApiWebfluxResource;
 import test.org.springdoc.api.AbstractCommonTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class SpringDocApp81Test extends AbstractCommonTest {
     }
 
     @Autowired
-    OpenApiResource resource;
+	OpenApiWebfluxResource resource;
 
     @Autowired
     RequestMappingInfoHandlerMapping mappingInfoHandlerMapping;

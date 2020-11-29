@@ -18,7 +18,7 @@
  *
  */
 
-package org.springdoc.webmvc.api;
+package org.springdoc.webmvc.core;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +63,7 @@ public class RouterFunctionProvider {
 	 *
 	 * @return the web mvc router function paths
 	 */
-	protected Optional<Map<String, AbstractRouterFunctionVisitor>> getWebMvcRouterFunctionPaths() {
+	public Optional<Map<String, AbstractRouterFunctionVisitor>> getWebMvcRouterFunctionPaths() {
 		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
 		if (CollectionUtils.isEmpty(routerBeans))
 			return Optional.empty();
