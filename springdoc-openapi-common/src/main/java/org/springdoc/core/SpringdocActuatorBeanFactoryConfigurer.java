@@ -26,6 +26,9 @@ package org.springdoc.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
+import org.springdoc.core.customizers.ActuatorOperationCustomizer;
+
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.context.properties.bind.BindResult;
@@ -69,6 +72,8 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 			GroupedOpenApi actuatorGroup = GroupedOpenApi.builder().group(ACTUATOR_DEFAULT_GROUP)
 					.pathsToMatch(webEndpointProperties.getBasePath() + ALL_PATTERN)
 					.pathsToExclude(webEndpointProperties.getBasePath() + HEALTH_PATTERN)
+					.addOperationCustomizer(new ActuatorOperationCustomizer())
+					.addOpenApiCustomiser(new ActuatorOpenApiCustomizer(webEndpointProperties))
 					.build();
 			// Add the actuator group
 			newGroups.add(actuatorGroup);

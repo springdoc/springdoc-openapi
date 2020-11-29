@@ -41,13 +41,17 @@ import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
+import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
+import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
@@ -70,6 +74,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import static org.springdoc.core.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES;
+import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
 /**
@@ -347,4 +352,35 @@ public class SpringDocConfiguration {
 		}
 	}
 
+	/**
+	 * The type Spring doc web mvc actuator configuration.
+	 * @author bnasslashen
+	 */
+	@ConditionalOnClass(WebEndpointProperties.class)
+	@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
+	static class SpringDocWebMvcActuatorConfiguration {
+
+		/**
+		 * Actuator customizer operation customizer.
+		 *
+		 * @return the operation customizer
+		 */
+		@Bean
+		@Lazy(false)
+		OperationCustomizer actuatorCustomizer() {
+			return new ActuatorOperationCustomizer();
+		}
+
+		/**
+		 * Actuator customizer OpenAPI customiser.
+		 *
+		 * @return the OpenAPI customiser
+		 */
+		@Bean
+		@Lazy(false)
+		OpenApiCustomiser actuatorOpenApiCustomiser(WebEndpointProperties webEndpointProperties) {
+			return new ActuatorOpenApiCustomizer(webEndpointProperties);
+		}
+
+	}
 }

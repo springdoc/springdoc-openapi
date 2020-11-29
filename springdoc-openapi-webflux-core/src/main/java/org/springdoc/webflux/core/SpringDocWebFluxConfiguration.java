@@ -33,8 +33,6 @@ import org.springdoc.core.PropertyResolverUtils;
 import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.ReturnTypeParser;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
-import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
@@ -62,7 +60,6 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 
 /**
@@ -189,31 +186,6 @@ public class SpringDocWebFluxConfiguration {
 		}
 
 		/**
-		 * Actuator customizer operation customizer.
-		 *
-		 * @param actuatorProvider the actuator provider
-		 * @return the operation customizer
-		 */
-		@Bean
-		@Lazy(false)
-		@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
-		OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider) {
-			return new ActuatorOperationCustomizer(actuatorProvider);
-		}
-
-		/**
-		 * Actuator customizer open api customiser.
-		 *
-		 * @return the open api customiser
-		 */
-		@Bean
-		@Lazy(false)
-		@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
-		OpenApiCustomiser actuatorOpenApiCustomiser() {
-			return new ActuatorOpenApiCustomizer();
-		}
-
-		/**
 		 * Actuator open api resource open api actuator resource.
 		 *
 		 * @param openAPIBuilderObjectFactory the open api builder object factory
@@ -228,7 +200,7 @@ public class SpringDocWebFluxConfiguration {
 		 * @return the open api actuator resource
 		 */
 		@Bean
-		@ConditionalOnMissingBean(MultipleOpenApiWebFluxConfiguration.class)
+		@ConditionalOnMissingBean(MultipleOpenApiSupportConfiguration.class)
 		@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
 		@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 		@Lazy(false)
