@@ -114,7 +114,7 @@ public abstract class ActuatorProvider  implements ApplicationListener<WebServer
 	 *
 	 * @return the tag
 	 */
-	public Tag getTag() {
+	public static Tag getTag() {
 		Tag actuatorTag = new Tag();
 		actuatorTag.setName(Constants.SPRINGDOC_ACTUATOR_TAG);
 		actuatorTag.setDescription(Constants.SPRINGDOC_ACTUATOR_DESCRIPTION);

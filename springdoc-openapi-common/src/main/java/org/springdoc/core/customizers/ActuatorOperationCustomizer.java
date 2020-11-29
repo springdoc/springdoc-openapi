@@ -24,9 +24,10 @@
 package org.springdoc.core.customizers;
 
 import io.swagger.v3.oas.models.Operation;
-import org.springdoc.core.ActuatorProvider;
 
 import org.springframework.web.method.HandlerMethod;
+
+import static org.springdoc.core.ActuatorProvider.getTag;
 
 /**
  * The type Actuator operation customizer.
@@ -35,28 +36,17 @@ import org.springframework.web.method.HandlerMethod;
 public class ActuatorOperationCustomizer implements OperationCustomizer {
 
 	/**
-	 * The Actuator provider.
-	 */
-	private final ActuatorProvider actuatorProvider;
-
-	/**
 	 * The Method count.
 	 */
 	private int methodCount;
 
-	/**
-	 * Instantiates a new Actuator operation customizer.
-	 *
-	 * @param actuatorProvider the actuator provider
-	 */
-	public ActuatorOperationCustomizer(ActuatorProvider actuatorProvider) {
-		this.actuatorProvider = actuatorProvider;
-	}
 
 	@Override
 	public Operation customize(Operation operation, HandlerMethod handlerMethod) {
-		if (operation.getTags() != null && operation.getTags().contains(actuatorProvider.getTag().getName())) {
-			operation.setSummary(handlerMethod.toString());
+		if (operation.getTags() != null && operation.getTags().contains(getTag().getName())) {
+			String summary = handlerMethod.toString();
+			if (!summary.contains("$"))
+				operation.setSummary(summary);
 			operation.setOperationId(operation.getOperationId() + "_" + methodCount++);
 		}
 		return operation;

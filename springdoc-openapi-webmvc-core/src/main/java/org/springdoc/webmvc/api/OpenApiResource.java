@@ -60,6 +60,7 @@ import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
+import static org.springdoc.core.ActuatorProvider.getTag;
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
@@ -196,7 +197,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 
 		if (isShowActuator()) {
 			map = optionalActuatorProvider.get().getMethods();
-			this.openAPIService.addTag(new HashSet<>(map.values()), optionalActuatorProvider.get().getTag());
+			this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
 			calculatePath(restControllers, map);
 		}
 		if (this.springSecurityOAuth2Provider.isPresent()) {

@@ -26,7 +26,17 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_5",
+        "operationId": "handle_7",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -44,7 +54,17 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle",
+        "operationId": "handle_0",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -64,7 +84,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_1",
+        "operationId": "handle_1_1_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -84,7 +104,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1",
+        "operationId": "handle_3",
         "responses": {
           "200": {
             "description": "OK",
@@ -104,7 +124,17 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_2",
+        "operationId": "handle_4",
+        "parameters": [
+          {
+            "name": "requiredMetricName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -124,7 +154,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_3",
+        "operationId": "handle_5",
         "responses": {
           "200": {
             "description": "OK",
@@ -144,7 +174,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_4",
+        "operationId": "handle_6",
         "responses": {
           "200": {
             "description": "OK",
@@ -164,7 +194,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_6",
+        "operationId": "handle_8",
         "responses": {
           "200": {
             "description": "OK",
@@ -184,7 +214,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_7",
+        "operationId": "handle_9",
         "responses": {
           "200": {
             "description": "OK",
@@ -204,7 +234,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_8",
+        "operationId": "handle_10",
         "responses": {
           "200": {
             "description": "OK",
@@ -224,7 +254,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_9",
+        "operationId": "handle_11",
         "responses": {
           "200": {
             "description": "OK",
@@ -244,7 +274,17 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_10",
+        "operationId": "handle_12",
+        "parameters": [
+          {
+            "name": "toMatch",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -264,7 +304,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_11",
+        "operationId": "handle_13",
         "responses": {
           "200": {
             "description": "OK",
@@ -284,7 +324,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_12",
+        "operationId": "handle_14",
         "responses": {
           "200": {
             "description": "OK",
@@ -304,7 +344,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_13",
+        "operationId": "handle_15",
         "responses": {
           "200": {
             "description": "OK",
@@ -324,7 +364,17 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_14",
+        "operationId": "handle_16",
+        "parameters": [
+          {
+            "name": "cache",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -342,7 +392,17 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_18",
+        "operationId": "handle_21",
+        "parameters": [
+          {
+            "name": "cache",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -362,7 +422,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_15",
+        "operationId": "handle_17",
         "responses": {
           "200": {
             "description": "OK",
@@ -380,7 +440,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_17",
+        "operationId": "handle_20",
         "responses": {
           "200": {
             "description": "OK",
@@ -400,7 +460,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_16",
+        "operationId": "handle_18",
         "responses": {
           "200": {
             "description": "OK",
@@ -420,7 +480,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "links",
+        "summary": "Actuator root web endpoint",
+        "operationId": "links_19",
         "responses": {
           "200": {
             "description": "OK",

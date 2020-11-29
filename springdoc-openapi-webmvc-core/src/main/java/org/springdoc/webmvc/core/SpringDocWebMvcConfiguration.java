@@ -35,8 +35,6 @@ import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.ReturnTypeParser;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
-import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
@@ -65,7 +63,6 @@ import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 
 /**
@@ -203,31 +200,6 @@ public class SpringDocWebMvcConfiguration {
 					webEndpointProperties,
 					webMvcEndpointHandlerMapping,
 					controllerEndpointHandlerMapping);
-		}
-
-		/**
-		 * Actuator customizer operation customizer.
-		 *
-		 * @param actuatorProvider the actuator provider
-		 * @return the operation customizer
-		 */
-		@Bean
-		@Lazy(false)
-		@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
-		OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider) {
-			return new ActuatorOperationCustomizer(actuatorProvider);
-		}
-
-		/**
-		 * Actuator customizer OpenAPI customiser.
-		 *
-		 * @return the OpenAPI customiser
-		 */
-		@Bean
-		@Lazy(false)
-		@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
-		OpenApiCustomiser actuatorOpenApiCustomiser() {
-			return new ActuatorOpenApiCustomizer();
 		}
 
 		/**

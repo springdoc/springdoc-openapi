@@ -26,7 +26,18 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_6",
+        "summary": "Actuator web endpoint 'loggers-name'",
+        "operationId": "handle_9",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -44,7 +55,18 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle",
+        "summary": "Actuator web endpoint 'loggers-name'",
+        "operationId": "handle_0",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -64,7 +86,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "links",
+        "summary": "Actuator root web endpoint",
+        "operationId": "links_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -90,7 +113,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_1",
+        "summary": "Actuator web endpoint 'threaddump'",
+        "operationId": "handle_2_1_3",
         "responses": {
           "200": {
             "description": "OK",
@@ -110,7 +134,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1",
+        "summary": "Actuator web endpoint 'scheduledtasks'",
+        "operationId": "handle_4",
         "responses": {
           "200": {
             "description": "OK",
@@ -130,7 +155,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_2",
+        "summary": "Actuator web endpoint 'metrics'",
+        "operationId": "handle_5",
         "responses": {
           "200": {
             "description": "OK",
@@ -150,7 +176,18 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_3",
+        "summary": "Actuator web endpoint 'metrics-requiredMetricName'",
+        "operationId": "handle_6",
+        "parameters": [
+          {
+            "name": "requiredMetricName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -170,7 +207,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_4",
+        "summary": "Actuator web endpoint 'mappings'",
+        "operationId": "handle_7",
         "responses": {
           "200": {
             "description": "OK",
@@ -190,7 +228,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_5",
+        "summary": "Actuator web endpoint 'loggers'",
+        "operationId": "handle_8",
         "responses": {
           "200": {
             "description": "OK",
@@ -210,7 +249,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_7",
+        "summary": "Actuator web endpoint 'info'",
+        "operationId": "handle_10",
         "responses": {
           "200": {
             "description": "OK",
@@ -230,7 +270,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_8",
+        "summary": "Actuator web endpoint 'heapdump'",
+        "operationId": "handle_11",
         "responses": {
           "200": {
             "description": "OK",
@@ -250,7 +291,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_9",
+        "summary": "Actuator web endpoint 'health'",
+        "operationId": "handle_12",
         "responses": {
           "200": {
             "description": "OK",
@@ -270,7 +312,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_10",
+        "summary": "Actuator web endpoint 'env'",
+        "operationId": "handle_13",
         "responses": {
           "200": {
             "description": "OK",
@@ -290,7 +333,18 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_11",
+        "summary": "Actuator web endpoint 'env-toMatch'",
+        "operationId": "handle_14",
+        "parameters": [
+          {
+            "name": "toMatch",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -310,7 +364,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_12",
+        "summary": "Actuator web endpoint 'configprops'",
+        "operationId": "handle_15",
         "responses": {
           "200": {
             "description": "OK",
@@ -330,7 +385,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_13",
+        "summary": "Actuator web endpoint 'conditions'",
+        "operationId": "handle_16",
         "responses": {
           "200": {
             "description": "OK",
@@ -350,7 +406,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_14",
+        "summary": "Actuator web endpoint 'caches'",
+        "operationId": "handle_17",
         "responses": {
           "200": {
             "description": "OK",
@@ -368,7 +425,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_17",
+        "summary": "Actuator web endpoint 'caches'",
+        "operationId": "handle_20",
         "responses": {
           "200": {
             "description": "OK",
@@ -388,7 +446,18 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_15",
+        "summary": "Actuator web endpoint 'caches-cache'",
+        "operationId": "handle_18",
+        "parameters": [
+          {
+            "name": "cache",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -406,7 +475,18 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_18",
+        "summary": "Actuator web endpoint 'caches-cache'",
+        "operationId": "handle_21",
+        "parameters": [
+          {
+            "name": "cache",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -426,7 +506,8 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_16",
+        "summary": "Actuator web endpoint 'beans'",
+        "operationId": "handle_19",
         "responses": {
           "200": {
             "description": "OK",

@@ -64,7 +64,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @Conditional(MultipleOpenApiSupportCondition.class)
-public class MultipleOpenApiWebFluxConfiguration {
+public class MultipleOpenApiSupportConfiguration {
 
 	/**
 	 * Multiple open api resource multiple open api resource.

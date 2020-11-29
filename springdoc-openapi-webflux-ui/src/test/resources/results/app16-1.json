@@ -1,5 +1,5 @@
 {
-  "configUrl": "/test/application/swagger-ui/swagger-config",
+  "configUrl": "/test/application/swaggerui/swagger-config",
   "oauth2RedirectUrl": "http://localhost:9095/application/webjars/swagger-ui/oauth2-redirect.html",
   "urls": [
     {

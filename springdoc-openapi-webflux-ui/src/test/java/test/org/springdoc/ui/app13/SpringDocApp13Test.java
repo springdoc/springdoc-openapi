@@ -55,14 +55,14 @@ class SpringDocApp13Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	public void testIndexActuator() {
-		HttpStatus httpStatusMono = webClient.get().uri("/application/swagger-ui")
+		HttpStatus httpStatusMono = webClient.get().uri("/application/swaggerui")
 				.exchangeToMono( clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertTrue(httpStatusMono.equals(HttpStatus.TEMPORARY_REDIRECT));
 	}
 
 	@Test
 	public void testIndexSwaggerConfig() throws Exception {
-		String contentAsString = webClient.get().uri("/application/swagger-ui/swagger-config").retrieve()
+		String contentAsString = webClient.get().uri("/application/swaggerui/swagger-config").retrieve()
 				.bodyToMono(String.class).block();
 		String expected = getContent("results/app13-1.json");
 		assertEquals(expected, contentAsString, true);

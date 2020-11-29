@@ -57,6 +57,7 @@ import org.springframework.web.reactive.result.method.RequestMappingInfo;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
 import org.springframework.web.util.pattern.PathPattern;
 
+import static org.springdoc.core.ActuatorProvider.getTag;
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
@@ -158,7 +159,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		calculatePath(restControllers, map);
 		if (isShowActuator()) {
 			map = optionalActuatorProvider.get().getMethods();
-			this.openAPIService.addTag(new HashSet<>(map.values()), optionalActuatorProvider.get().getTag());
+			this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
 			calculatePath(restControllers, map);
 		}
 		getWebFluxRouterFunctionPaths();
