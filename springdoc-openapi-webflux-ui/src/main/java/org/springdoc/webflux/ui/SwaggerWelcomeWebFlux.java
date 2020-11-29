@@ -28,7 +28,6 @@ import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import reactor.core.publisher.Mono;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -44,7 +43,6 @@ import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
  * @author bnasslahsen
  */
 @Controller
-@ConditionalOnMissingBean(SwaggerWelcomeWebFlux.class)
 public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 
 	/**
