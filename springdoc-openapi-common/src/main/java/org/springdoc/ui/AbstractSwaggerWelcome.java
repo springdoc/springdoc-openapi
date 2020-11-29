@@ -36,7 +36,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Abstract swagger welcome.
- * @author bnasslahsen
+ * @author bnasslashen
  */
 public abstract class AbstractSwaggerWelcome implements InitializingBean {
 
@@ -150,15 +150,6 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 		return uriBuilder;
 	}
 
-	protected void calculateUiRootCommon(StringBuilder sbUrl, StringBuilder[] sbUrls) {
-		if (ArrayUtils.isNotEmpty(sbUrls))
-			sbUrl = sbUrls[0];
-		String swaggerPath = swaggerUiConfigParameters.getPath();
-		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
-			sbUrl.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
-		swaggerUiConfigParameters.setUiRootPath(sbUrl.toString());
-	}
-
 	/**
 	 * Calculate oauth 2 redirect url.
 	 *
@@ -173,4 +164,18 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	 */
 	protected abstract void calculateUiRootPath(StringBuilder... sbUrls);
 
+	/**
+	 * Calculate ui root common.
+	 *
+	 * @param sbUrl the sb url
+	 * @param sbUrls the sb urls
+	 */
+	protected void calculateUiRootCommon(StringBuilder sbUrl, StringBuilder[] sbUrls) {
+		if (ArrayUtils.isNotEmpty(sbUrls))
+			sbUrl = sbUrls[0];
+		String swaggerPath = swaggerUiConfigParameters.getPath();
+		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
+			sbUrl.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
+		swaggerUiConfigParameters.setUiRootPath(sbUrl.toString());
+	}
 }

@@ -16,6 +16,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.SWAGGER_UI_URL;
 
+/**
+ * The type Swagger welcome common.
+ * @author bnasslashen
+ */
 public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 
 	/**
@@ -30,7 +34,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 
 	/**
 	 * Instantiates a new Abstract swagger welcome.
-	 *  @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
@@ -39,6 +43,13 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 		this.webJarsPrefixUrl = springDocConfigProperties.getWebjars().getPrefix();
 	}
 
+	/**
+	 * Redirect to ui mono.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @return the mono
+	 */
 	protected Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
 		String contextPath = this.fromCurrentContextPath(request);
 		String sbUrl = this.buildUrl(contextPath, swaggerUiConfigParameters.getUiRootPath() + springDocConfigProperties.getWebjars().getPrefix() + SWAGGER_UI_URL);
@@ -48,6 +59,12 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 		return response.setComplete();
 	}
 
+	/**
+	 * Gets swagger ui config.
+	 *
+	 * @param request the request
+	 * @return the swagger ui config
+	 */
 	protected Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
 		this.fromCurrentContextPath(request);
 		return swaggerUiConfigParameters.getConfigParameters();

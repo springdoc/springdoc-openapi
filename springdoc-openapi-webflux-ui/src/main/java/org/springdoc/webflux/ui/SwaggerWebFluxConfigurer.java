@@ -29,6 +29,7 @@ import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
+import static org.springdoc.core.Constants.ALL_PATTERN;
 import static org.springdoc.core.Constants.CLASSPATH_RESOURCE_LOCATION;
 import static org.springdoc.core.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
@@ -54,8 +55,10 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	 */
 	private SwaggerIndexTransformer swaggerIndexTransformer;
 
+	/**
+	 * The Actuator provider.
+	 */
 	private Optional<ActuatorProvider> actuatorProvider;
-
 
 	/**
 	 * Instantiates a new Swagger web flux configurer.
@@ -63,6 +66,7 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	 * @param swaggerUiConfigParameters the swagger ui calculated config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerIndexTransformer the swagger index transformer
+	 * @param actuatorProvider the actuator provider
 	 */
 	public SwaggerWebFluxConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters,
 			SpringDocConfigProperties springDocConfigProperties,
@@ -77,11 +81,11 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		StringBuilder uiRootPath = new StringBuilder();
-		if (swaggerPath.contains("/"))
-			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf('/'));
+		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
+			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
 		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
 			uiRootPath.append(actuatorProvider.get().getBasePath());
-		registry.addResourceHandler(uiRootPath + webJarsPrefixUrl + "/**")
+		registry.addResourceHandler(uiRootPath + webJarsPrefixUrl + ALL_PATTERN)
 				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
 				.resourceChain(false)
 				.addTransformer(swaggerIndexTransformer);

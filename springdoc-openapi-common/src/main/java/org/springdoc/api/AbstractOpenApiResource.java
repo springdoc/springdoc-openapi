@@ -22,6 +22,8 @@ package org.springdoc.api;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -86,6 +88,7 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -93,7 +96,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
+import static org.springdoc.core.Constants.ACTUATOR_DEFAULT_GROUP;
 import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
+import static org.springdoc.core.Constants.SPRING_MVC_SERVLET_PATH;
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.isDeprecated;
 
 /**
@@ -1025,6 +1030,50 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		else
 			result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(openAPI);
 		return result;
+	}
+
+	/**
+	 * Gets actuator uri.
+	 *
+	 * @param scheme the scheme
+	 * @param host the host
+	 * @return the actuator uri
+	 */
+	protected URI getActuatorURI(String scheme, String host) {
+		int port;
+		String path;
+		URI uri = null;
+		if (optionalActuatorProvider.isPresent()) {
+			ActuatorProvider actuatorProvider = optionalActuatorProvider.get();
+			if (ACTUATOR_DEFAULT_GROUP.equals(this.groupName)) {
+				port = actuatorProvider.getActuatorPort();
+				path = actuatorProvider.getActuatorPath();
+			}
+			else {
+				port = actuatorProvider.getApplicationPort();
+				path = actuatorProvider.getContextPath();
+				String mvcServletPath = this.openAPIService.getContext().getBean(Environment.class).getProperty(SPRING_MVC_SERVLET_PATH);
+				if (StringUtils.isNotEmpty(mvcServletPath))
+					path = path + mvcServletPath;
+			}
+			try {
+				uri = new URI(StringUtils.defaultIfEmpty(scheme, "http"), null, StringUtils.defaultIfEmpty(host, "localhost"), port, path, null, null);
+			}
+			catch (URISyntaxException e) {
+				LOGGER.error("Unable to parse the URL: scheme {}, host {}, port {}, path {}", scheme, host, port, path);
+			}
+		}
+
+		return uri;
+	}
+
+	/**
+	 * Is show actuator boolean.
+	 *
+	 * @return the boolean
+	 */
+	protected boolean isShowActuator() {
+		return springDocConfigProperties.isShowActuator() && optionalActuatorProvider.isPresent();
 	}
 
 	/**

@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.SpringDocConfigProperties;
 
@@ -31,55 +32,34 @@ import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointPr
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.boot.actuate.endpoint.web.servlet.ControllerEndpointHandlerMapping;
 import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
-import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
-import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
-import org.springframework.context.ApplicationListener;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+
+;
 
 
 /**
  * The type Web mvc actuator provider.
  * @author bnasslahsen
  */
-public class WebMvcActuatorProvider implements ActuatorProvider, ApplicationListener<ServletWebServerInitializedEvent> {
+public class ActuatorWebMvcProvider extends ActuatorProvider {
 
-	/**
-	 * The Web mvc endpoint handler mapping.
-	 */
 	private WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping;
 
-	/**
-	 * The Controller endpoint handler mapping.
-	 */
 	private ControllerEndpointHandlerMapping controllerEndpointHandlerMapping;
 
-	private AnnotationConfigServletWebServerApplicationContext managementApplicationContext;
-
-	private AnnotationConfigServletWebServerApplicationContext applicationContext;
-
-	private ManagementServerProperties managementServerProperties;
-
-	private WebEndpointProperties webEndpointProperties;
-
-	private SpringDocConfigProperties springDocConfigProperties;
-
-	/**
-	 * Instantiates a new Web mvc actuator provider.
-	 *
-	 * @param webMvcEndpointHandlerMapping the web mvc endpoint handler mapping
-	 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
-	 */
-	public WebMvcActuatorProvider(Optional<WebMvcEndpointHandlerMapping> webMvcEndpointHandlerMapping,
-			Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping,
-			ManagementServerProperties managementServerProperties,
-			WebEndpointProperties webEndpointProperties,
-			SpringDocConfigProperties springDocConfigProperties) {
+	public ActuatorWebMvcProvider(ServerProperties serverProperties,
+			SpringDocConfigProperties springDocConfigProperties,
+			Optional<ManagementServerProperties> managementServerProperties,
+			Optional<WebEndpointProperties> webEndpointProperties,
+			Optional<WebMvcEndpointHandlerMapping> webMvcEndpointHandlerMapping,
+			Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping) {
+		super(managementServerProperties, webEndpointProperties, serverProperties, springDocConfigProperties);
 		webMvcEndpointHandlerMapping.ifPresent(webMvcEndpointHandlerMapping1 -> this.webMvcEndpointHandlerMapping = webMvcEndpointHandlerMapping1);
 		controllerEndpointHandlerMapping.ifPresent(controllerEndpointHandlerMapping1 -> this.controllerEndpointHandlerMapping = controllerEndpointHandlerMapping1);
-		this.managementServerProperties = managementServerProperties;
-		this.springDocConfigProperties = springDocConfigProperties;
-		this.webEndpointProperties = webEndpointProperties;
 	}
 
 	@Override
@@ -97,43 +77,9 @@ public class WebMvcActuatorProvider implements ActuatorProvider, ApplicationList
 		return mappingInfoHandlerMethodMap;
 	}
 
-
-	public int getApplicationPort() {
-		return applicationContext.getWebServer().getPort();
-	}
-
-	@Override
-	public int getActuatorPort() {
-		return managementApplicationContext.getWebServer().getPort();
-	}
-
-	@Override
-	public String getActuatorPath() {
-		return managementServerProperties.getBasePath();
-	}
-
-	@Override
-	public void onApplicationEvent(ServletWebServerInitializedEvent event) {
-		if ("application".equals(event.getApplicationContext().getId()))
-			applicationContext = (AnnotationConfigServletWebServerApplicationContext) event.getApplicationContext();
-		else if ("application:management".equals(event.getApplicationContext().getId()))
-			managementApplicationContext = (AnnotationConfigServletWebServerApplicationContext) event.getApplicationContext();
-	}
-
-	@Override
-	public boolean isUseManagementPort() {
-		return springDocConfigProperties.isUseManagementPort();
-	}
-
-	@Override
-	public String getBasePath() {
-		return webEndpointProperties.getBasePath();
-	}
-
 	@Override
 	public String getContextPath() {
-		return applicationContext.getServletContext().getContextPath();
+		return StringUtils.defaultIfEmpty(serverProperties.getServlet().getContextPath(),EMPTY);
 	}
-
 
 }

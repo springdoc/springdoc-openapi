@@ -44,7 +44,7 @@ public class CacheOrGroupedOpenApiCondition extends AnyNestedCondition {
 	 * The type On multiple open api support condition.
 	 * @author bnasslahsen
 	 */
-	@Conditional(MultipleOpenApiGroupsCondition.class)
+	@Conditional(MultipleOpenApiSupportCondition.class)
 	static class OnMultipleOpenApiSupportCondition {}
 
 	/**

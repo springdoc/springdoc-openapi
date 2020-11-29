@@ -26,40 +26,34 @@ package org.springdoc.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.swagger.v3.oas.models.OpenAPI;
-
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.core.env.Environment;
-import org.springframework.lang.Nullable;
+import org.springframework.util.CollectionUtils;
 
 import static org.springdoc.core.Constants.ACTUATOR_DEFAULT_GROUP;
+import static org.springdoc.core.Constants.ALL_PATTERN;
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
-import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
+import static org.springdoc.core.Constants.HEALTH_PATTERN;
+import static org.springdoc.core.Constants.MANAGEMENT_ENDPOINTS_WEB;
 
 /**
  * The type Springdoc bean factory configurer.
  * @author bnasslahsen
  */
-public class SpringdocActuatorBeanFactoryConfigurer implements EnvironmentAware, BeanFactoryPostProcessor {
+public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactoryConfigurer{
 
 	/**
-	 * The Environment.
+	 * The Grouped open apis.
 	 */
-	@Nullable
-	private Environment environment;
-
-	@Override
-	public void setEnvironment(Environment environment) {
-		this.environment = environment;
-	}
-
 	private List<GroupedOpenApi> groupedOpenApis;
 
+	/**
+	 * Instantiates a new Springdoc actuator bean factory configurer.
+	 *
+	 * @param groupedOpenApis the grouped open apis
+	 */
 	public SpringdocActuatorBeanFactoryConfigurer(List<GroupedOpenApi> groupedOpenApis) {
 		this.groupedOpenApis = groupedOpenApis;
 	}
@@ -67,22 +61,22 @@ public class SpringdocActuatorBeanFactoryConfigurer implements EnvironmentAware,
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)  {
 		final BindResult<WebEndpointProperties> result = Binder.get(environment)
-				.bind("management.endpoints.web", WebEndpointProperties.class);
+				.bind(MANAGEMENT_ENDPOINTS_WEB, WebEndpointProperties.class);
 		if (result.isBound()) {
 			WebEndpointProperties webEndpointProperties = result.get();
 
 			List<GroupedOpenApi> newGroups = new ArrayList<>();
 			GroupedOpenApi actuatorGroup = GroupedOpenApi.builder().group(ACTUATOR_DEFAULT_GROUP)
-					.pathsToMatch(webEndpointProperties.getBasePath() + "/**")
-					.pathsToExclude(webEndpointProperties.getBasePath() + "/health/*")
+					.pathsToMatch(webEndpointProperties.getBasePath() + ALL_PATTERN)
+					.pathsToExclude(webEndpointProperties.getBasePath() + HEALTH_PATTERN)
 					.build();
 			// Add the actuator group
 			newGroups.add(actuatorGroup);
 
-			if (groupedOpenApis.size() == 0) {
+			if (CollectionUtils.isEmpty(groupedOpenApis)) {
 				GroupedOpenApi defaultGroup = GroupedOpenApi.builder().group(DEFAULT_GROUP_NAME)
-						.pathsToMatch("/**")
-						.pathsToExclude(webEndpointProperties.getBasePath() + "/**")
+						.pathsToMatch(ALL_PATTERN)
+						.pathsToExclude(webEndpointProperties.getBasePath() + ALL_PATTERN)
 						.build();
 				// Register the default group
 				newGroups.add(defaultGroup);
@@ -93,15 +87,4 @@ public class SpringdocActuatorBeanFactoryConfigurer implements EnvironmentAware,
 		initBeanFactoryPostProcessor(beanFactory);
 	}
 
-	/**
-	 * Init bean factory post processor.
-	 *
-	 * @param beanFactory the bean factory
-	 */
-	public static void initBeanFactoryPostProcessor(ConfigurableListableBeanFactory beanFactory) {
-		for (String beanName : beanFactory.getBeanNamesForType(OpenAPIService.class))
-			beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
-		for (String beanName : beanFactory.getBeanNamesForType(OpenAPI.class))
-			beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
-	}
 }

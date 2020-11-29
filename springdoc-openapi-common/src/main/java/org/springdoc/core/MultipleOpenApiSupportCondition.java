@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Conditional;
 
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 
+/**
+ * The type Multiple open api support condition.
+ * @author bnasslashen
+ */
 public class MultipleOpenApiSupportCondition extends AnyNestedCondition {
 
 	/**
@@ -24,6 +28,10 @@ public class MultipleOpenApiSupportCondition extends AnyNestedCondition {
 	@Conditional(MultipleOpenApiGroupsCondition.class)
 	static class OnMultipleOpenApiSupportCondition {}
 
+	/**
+	 * The type On actuator different port.
+	 * @author bnasslashen
+	 */
 	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 	@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
 	static class OnActuatorDifferentPort{}

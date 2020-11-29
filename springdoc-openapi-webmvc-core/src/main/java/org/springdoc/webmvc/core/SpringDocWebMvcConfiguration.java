@@ -41,7 +41,7 @@ import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.webmvc.api.OpenApiActuatorResource;
-import org.springdoc.webmvc.api.OpenApiMvcResource;
+import org.springdoc.webmvc.api.OpenApiWebMvcResource;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
@@ -51,9 +51,11 @@ import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServe
 import org.springframework.boot.actuate.endpoint.web.servlet.ControllerEndpointHandlerMapping;
 import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -97,7 +99,7 @@ public class SpringDocWebMvcConfiguration {
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
-	OpenApiMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
+	OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider,
@@ -107,7 +109,7 @@ public class SpringDocWebMvcConfiguration {
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		return new OpenApiMvcResource(openAPIBuilderObjectFactory, requestBuilder,
+		return new OpenApiWebMvcResource(openAPIBuilderObjectFactory, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping, actuatorProvider, operationCustomizers,
 				openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,
@@ -168,23 +170,39 @@ public class SpringDocWebMvcConfiguration {
 		}
 	}
 
+	/**
+	 * The type Spring doc web mvc actuator configuration.
+	 * @author bnasslashen
+	 */
 	@ConditionalOnClass(WebMvcEndpointHandlerMapping.class)
 	static class SpringDocWebMvcActuatorConfiguration {
 
 		/**
 		 * Actuator provider actuator provider.
 		 *
+		 * @param serverProperties the server properties
+		 * @param springDocConfigProperties the spring doc config properties
+		 * @param managementServerProperties the management server properties
+		 * @param webEndpointProperties the web endpoint properties
 		 * @param webMvcEndpointHandlerMapping the web mvc endpoint handler mapping
 		 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
 		 * @return the actuator provider
 		 */
 		@Bean
 		@ConditionalOnMissingBean
-		ActuatorProvider actuatorProvider(Optional<WebMvcEndpointHandlerMapping> webMvcEndpointHandlerMapping, Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping,
-				ManagementServerProperties managementServerProperties,
-				WebEndpointProperties webEndpointProperties,
-				SpringDocConfigProperties springDocConfigProperties) {
-			return new WebMvcActuatorProvider(webMvcEndpointHandlerMapping, controllerEndpointHandlerMapping, managementServerProperties, webEndpointProperties, springDocConfigProperties);
+		@ConditionalOnExpression("${springdoc.show-actuator:false} or ${springdoc.use-management-port:false}")
+		ActuatorProvider actuatorProvider(ServerProperties serverProperties,
+				SpringDocConfigProperties springDocConfigProperties,
+				Optional<ManagementServerProperties> managementServerProperties,
+				Optional<WebEndpointProperties> webEndpointProperties,
+				Optional<WebMvcEndpointHandlerMapping> webMvcEndpointHandlerMapping,
+				Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping) {
+			return new ActuatorWebMvcProvider(serverProperties,
+					springDocConfigProperties,
+					managementServerProperties,
+					webEndpointProperties,
+					webMvcEndpointHandlerMapping,
+					controllerEndpointHandlerMapping);
 		}
 
 		/**
@@ -212,6 +230,23 @@ public class SpringDocWebMvcConfiguration {
 			return new ActuatorOpenApiCustomizer();
 		}
 
+		/**
+		 * Open api actuator resource open api actuator resource.
+		 *
+		 * @param openAPIBuilderObjectFactory the open api builder object factory
+		 * @param requestBuilder the request builder
+		 * @param responseBuilder the response builder
+		 * @param operationParser the operation parser
+		 * @param requestMappingHandlerMapping the request mapping handler mapping
+		 * @param actuatorProvider the actuator provider
+		 * @param springDocConfigProperties the spring doc config properties
+		 * @param operationCustomizers the operation customizers
+		 * @param openApiCustomisers the open api customisers
+		 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
+		 * @param routerFunctionProvider the router function provider
+		 * @param repositoryRestResourceProvider the repository rest resource provider
+		 * @return the open api actuator resource
+		 */
 		@Bean
 		@ConditionalOnMissingBean(MultipleOpenApiSupportConfiguration.class)
 		@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
@@ -235,5 +270,4 @@ public class SpringDocWebMvcConfiguration {
 					routerFunctionProvider, repositoryRestResourceProvider);
 		}
 	}
-
 }

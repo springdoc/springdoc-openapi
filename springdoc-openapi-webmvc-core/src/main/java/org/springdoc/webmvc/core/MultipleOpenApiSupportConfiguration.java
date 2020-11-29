@@ -106,10 +106,20 @@ public class MultipleOpenApiSupportConfiguration {
 				routerFunctionProvider, repositoryRestResourceProvider);
 	}
 
+	/**
+	 * The type Spring doc web mvc actuator different configuration.
+	 * @author bnasslashen
+	 */
 	@ConditionalOnClass(WebMvcEndpointHandlerMapping.class)
 	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 	static class SpringDocWebMvcActuatorDifferentConfiguration {
 
+		/**
+		 * Springdoc bean factory post processor 3 bean factory post processor.
+		 *
+		 * @param groupedOpenApis the grouped open apis
+		 * @return the bean factory post processor
+		 */
 		@Bean
 		@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
 		@Lazy(false)
@@ -118,6 +128,22 @@ public class MultipleOpenApiSupportConfiguration {
 		}
 
 
+		/**
+		 * Multiple open api actuator resource multiple open api actuator resource.
+		 *
+		 * @param groupedOpenApis the grouped open apis
+		 * @param defaultOpenAPIBuilder the default open api builder
+		 * @param requestBuilder the request builder
+		 * @param responseBuilder the response builder
+		 * @param operationParser the operation parser
+		 * @param requestMappingHandlerMapping the request mapping handler mapping
+		 * @param actuatorProvider the actuator provider
+		 * @param springDocConfigProperties the spring doc config properties
+		 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
+		 * @param routerFunctionProvider the router function provider
+		 * @param repositoryRestResourceProvider the repository rest resource provider
+		 * @return the multiple open api actuator resource
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)

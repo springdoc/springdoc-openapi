@@ -158,9 +158,15 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 				));
 	}
 
+	/**
+	 * Build web mvc open api resource open api resource.
+	 *
+	 * @param item the item
+	 * @return the open api resource
+	 */
 	private OpenApiResource buildWebMvcOpenApiResource(GroupedOpenApi item) {
 		if (!springDocConfigProperties.isUseManagementPort() && !ACTUATOR_DEFAULT_GROUP.equals(item.getGroup()))
-			return new OpenApiMvcResource(item.getGroup(),
+			return new OpenApiWebMvcResource(item.getGroup(),
 					defaultOpenAPIBuilder,
 					requestBuilder,
 					responseBuilder,

@@ -16,6 +16,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import static org.springdoc.core.Constants.ALL_PATTERN;
+
 
 @EnableWebSecurity
 @Order(200)
@@ -57,7 +59,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				.csrf()
 				.disable()
 				.authorizeRequests()
-				.antMatchers(apiDocsPath + "/**")
+				.antMatchers(apiDocsPath + ALL_PATTERN)
 				.permitAll()
 				.antMatchers(apiDocsPath.substring(0, apiDocsPath.lastIndexOf("/") + 1) + "api-docs.yaml")
 				.permitAll()
@@ -88,7 +90,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
 
 		configuration.addExposedHeader(HeaderString);
-		source.registerCorsConfiguration("/**", configuration);
+		source.registerCorsConfiguration( ALL_PATTERN, configuration);
 
 		return source;
 	}

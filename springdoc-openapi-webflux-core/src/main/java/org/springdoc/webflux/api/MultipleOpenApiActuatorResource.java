@@ -29,12 +29,16 @@ import static org.springdoc.core.Constants.DEFAULT_API_DOCS_ACTUATOR_URL;
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
+/**
+ * The type Multiple open api actuator resource.
+ * @author bnasslashen
+ */
 @RestControllerEndpoint(id = DEFAULT_API_DOCS_ACTUATOR_URL)
 public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 
 	/**
 	 * Instantiates a new Multiple open api resource.
-	 *  @param groupedOpenApis the grouped open apis
+	 * @param groupedOpenApis the grouped open apis
 	 * @param defaultOpenAPIBuilder the default open api builder
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder

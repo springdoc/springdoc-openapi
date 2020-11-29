@@ -121,6 +121,14 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	}
 
 
+	/**
+	 * Openapi json mono.
+	 *
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @return the mono
+	 * @throws JsonProcessingException the json processing exception
+	 */
 	protected Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, String apiDocsUrl)
 			throws JsonProcessingException {
 		calculateServerUrl(serverHttpRequest, apiDocsUrl);
@@ -128,6 +136,14 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		return Mono.just(writeJsonValue(openAPI));
 	}
 
+	/**
+	 * Openapi yaml mono.
+	 *
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @return the mono
+	 * @throws JsonProcessingException the json processing exception
+	 */
 	protected Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest, String apiDocsUrl)
 			throws JsonProcessingException {
 		calculateServerUrl(serverHttpRequest, apiDocsUrl);
@@ -140,7 +156,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	protected void getPaths(Map<String, Object> restControllers) {
 		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 		calculatePath(restControllers, map);
-		if (springDocConfigProperties.isShowActuator() && optionalActuatorProvider.isPresent()) {
+		if (isShowActuator()) {
 			map = optionalActuatorProvider.get().getMethods();
 			this.openAPIService.addTag(new HashSet<>(map.values()), optionalActuatorProvider.get().getTag());
 			calculatePath(restControllers, map);
@@ -170,7 +186,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 				String[] consumes =  requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 				String[] headers =  requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
 				if (operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-						&& (restControllers.containsKey(handlerMethod.getBean().toString()) || (springDocConfigProperties.isShowActuator() && optionalActuatorProvider.isPresent()))
+						&& (restControllers.containsKey(handlerMethod.getBean().toString()) || (isShowActuator()))
 						&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
 					Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 					// default allowed requestmethods
@@ -207,6 +223,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		}
 	}
 
+
 	/**
 	 * Calculate server url.
 	 *
@@ -214,10 +231,18 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param apiDocsUrl the api docs url
 	 */
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
-		super.initOpenAPIBuilder();
-		String requestUrl = decode(serverHttpRequest.getURI().toString());
-		String serverBaseUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
-		openAPIService.setServerBaseUrl(serverBaseUrl);
+		initOpenAPIBuilder();
+		String serverUrl = getServerUrl(serverHttpRequest,apiDocsUrl);
+		openAPIService.setServerBaseUrl(serverUrl);
 	}
+
+	/**
+	 * Gets server url.
+	 *
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @return the server url
+	 */
+	protected abstract String getServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl);
 
 }

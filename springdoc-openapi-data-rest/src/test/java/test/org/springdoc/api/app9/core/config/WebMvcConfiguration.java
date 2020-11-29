@@ -6,6 +6,8 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import static org.springdoc.core.Constants.ALL_PATTERN;
+
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
@@ -13,7 +15,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**") //
+		registry.addMapping(ALL_PATTERN  ) //
 				.allowedOrigins("http://localhost") //
 				.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS") //
 				.allowedHeaders("*") //

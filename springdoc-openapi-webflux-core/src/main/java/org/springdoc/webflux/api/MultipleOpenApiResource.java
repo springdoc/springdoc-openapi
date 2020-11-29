@@ -132,6 +132,12 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 				));
 	}
 
+	/**
+	 * Build web flux open api resource open api resource.
+	 *
+	 * @param item the item
+	 * @return the open api resource
+	 */
 	private OpenApiResource buildWebFluxOpenApiResource(GroupedOpenApi item) {
 		if (!springDocConfigProperties.isUseManagementPort() && !ACTUATOR_DEFAULT_GROUP.equals(item.getGroup()))
 			return new OpenApiWebfluxResource(item.getGroup(),

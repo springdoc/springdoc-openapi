@@ -174,7 +174,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 		calculatePath(restControllers, map);
 
-		if (springDocConfigProperties.isShowActuator() && optionalActuatorProvider.isPresent()) {
+		if (isShowActuator()) {
 			map = optionalActuatorProvider.get().getMethods();
 			this.openAPIService.addTag(new HashSet<>(map.values()), optionalActuatorProvider.get().getTag());
 			calculatePath(restControllers, map);
@@ -219,7 +219,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 					String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 					String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 					String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
-					if (((springDocConfigProperties.isShowActuator() && optionalActuatorProvider.isPresent() && optionalActuatorProvider.get().isRestController(operationPath, handlerMethod.getBeanType()))
+					if (((isShowActuator() && optionalActuatorProvider.get().isRestController(operationPath, handlerMethod.getBeanType()))
 							|| isRestController(restControllers, handlerMethod, operationPath))
 							&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
 						Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
@@ -271,9 +271,17 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	protected void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
 		super.initOpenAPIBuilder();
-		String requestUrl = decode(request.getRequestURL().toString());
-		String calculatedUrl = requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
+		String calculatedUrl = getServerUrl(request,apiDocsUrl);
 		openAPIService.setServerBaseUrl(calculatedUrl);
 	}
+
+	/**
+	 * Gets server url.
+	 *
+	 * @param request the request
+	 * @param apiDocsUrl the api docs url
+	 * @return the server url
+	 */
+	protected abstract String getServerUrl(HttpServletRequest request, String apiDocsUrl);
 
 }

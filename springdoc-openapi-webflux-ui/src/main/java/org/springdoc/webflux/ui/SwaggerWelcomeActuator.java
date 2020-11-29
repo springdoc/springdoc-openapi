@@ -26,6 +26,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Swagger actuator welcome.
+ * @author bnasslashen
  */
 @ControllerEndpoint(id = DEFAULT_SWAGGER_UI_ACTUATOR_PATH)
 public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
@@ -35,6 +36,9 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	 */
 	private WebEndpointProperties webEndpointProperties;
 
+	/**
+	 * The constant SWAGGER_CONFIG_ACTUATOR_URL.
+	 */
 	private static final String SWAGGER_CONFIG_ACTUATOR_URL = DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
 
 	/**
@@ -43,6 +47,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
+	 * @param webEndpointProperties the web endpoint properties
 	 */
 	public SwaggerWelcomeActuator(SwaggerUiConfigProperties swaggerUiConfig
 			, SpringDocConfigProperties springDocConfigProperties,
@@ -60,7 +65,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	 * @return the mono
 	 */
 	@Operation(hidden = true)
-	@GetMapping("/")
+	@GetMapping(DEFAULT_PATH_SEPARATOR)
 	public Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
 	  return super.redirectToUi(request,response);
 	}
