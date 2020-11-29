@@ -40,10 +40,8 @@ import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
-import org.springdoc.webmvc.api.ActuatorOpenApiResource;
-import org.springdoc.webmvc.api.OpenApiResource;
-import org.springdoc.webmvc.api.RouterFunctionProvider;
-import org.springdoc.webmvc.api.WebMvcActuatorProvider;
+import org.springdoc.webmvc.api.OpenApiActuatorResource;
+import org.springdoc.webmvc.api.OpenApiMvcResource;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
@@ -65,6 +63,7 @@ import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 
 /**
@@ -98,7 +97,7 @@ public class SpringDocWebMvcConfiguration {
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
-	OpenApiResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
+	OpenApiMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider,
@@ -108,7 +107,7 @@ public class SpringDocWebMvcConfiguration {
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		return new OpenApiResource(openAPIBuilderObjectFactory, requestBuilder,
+		return new OpenApiMvcResource(openAPIBuilderObjectFactory, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping, actuatorProvider, operationCustomizers,
 				openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,
@@ -196,6 +195,7 @@ public class SpringDocWebMvcConfiguration {
 		 */
 		@Bean
 		@Lazy(false)
+		@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
 		OperationCustomizer actuatorCustomizer(ActuatorProvider actuatorProvider) {
 			return new ActuatorOperationCustomizer(actuatorProvider);
 		}
@@ -207,24 +207,17 @@ public class SpringDocWebMvcConfiguration {
 		 */
 		@Bean
 		@Lazy(false)
+		@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
 		OpenApiCustomiser actuatorOpenApiCustomiser() {
 			return new ActuatorOpenApiCustomizer();
 		}
-	}
-
-
-	/**
-	 * The type Spring doc web mvc actuator configuration.
-	 * @author bnasslahsen
-	 */
-	@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
-	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
-	static class SpringDocWebMvcActuatorDifferentConfiguration {
 
 		@Bean
 		@ConditionalOnMissingBean(MultipleOpenApiSupportConfiguration.class)
+		@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
+		@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 		@Lazy(false)
-		ActuatorOpenApiResource openApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
+		OpenApiActuatorResource openApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 				GenericResponseService responseBuilder, OperationService operationParser,
 				RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 				Optional<ActuatorProvider> actuatorProvider,
@@ -234,7 +227,7 @@ public class SpringDocWebMvcConfiguration {
 				Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 				Optional<RouterFunctionProvider> routerFunctionProvider,
 				Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-			return new ActuatorOpenApiResource(openAPIBuilderObjectFactory,
+			return new OpenApiActuatorResource(openAPIBuilderObjectFactory,
 					requestBuilder, responseBuilder,
 					operationParser, requestMappingHandlerMapping,
 					actuatorProvider, operationCustomizers, openApiCustomisers,
@@ -242,4 +235,5 @@ public class SpringDocWebMvcConfiguration {
 					routerFunctionProvider, repositoryRestResourceProvider);
 		}
 	}
+
 }

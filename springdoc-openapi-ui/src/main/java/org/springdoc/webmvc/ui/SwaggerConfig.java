@@ -66,8 +66,9 @@ public class SwaggerConfig {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	SwaggerWelcome swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		return new SwaggerWelcome(swaggerUiConfig, springDocConfigProperties,swaggerUiConfigParameters);
+	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
+	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters) {
+		return new SwaggerWelcomeWebMvc(swaggerUiConfig, springDocConfigProperties,swaggerUiConfigParameters);
 	}
 
 	/**
@@ -116,8 +117,8 @@ public class SwaggerConfig {
 
 		@Bean
 		@ConditionalOnMissingBean
-		ActuatorSwaggerWelcome swaggerActuatorWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, WebEndpointProperties webEndpointProperties) {
-			return new ActuatorSwaggerWelcome(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters, webEndpointProperties);
+		SwaggerWelcomeActuator swaggerActuatorWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, WebEndpointProperties webEndpointProperties) {
+			return new SwaggerWelcomeActuator(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters, webEndpointProperties);
 		}
 
 	}

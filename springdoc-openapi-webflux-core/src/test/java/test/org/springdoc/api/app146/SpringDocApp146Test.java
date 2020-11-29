@@ -24,7 +24,6 @@ import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
@@ -34,13 +33,11 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 		properties = { "management.endpoints.web.exposure.include:*",
 				"springdoc.show-actuator=true",
 				"management.server.port=9096",
-				"server.servlet.context-path=/sample",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp146Test  extends AbstractSpringDocActuatorTest {
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app146" })
 	static class SpringDocTestApp {}
 
 

@@ -54,7 +54,6 @@ public class WebFluxActuatorProvider implements ActuatorProvider, ApplicationLis
 	 */
 	private ControllerEndpointHandlerMapping controllerEndpointHandlerMapping;
 
-
 	private AnnotationConfigReactiveWebServerApplicationContext managementApplicationContext;
 
 	private AnnotationConfigReactiveWebServerApplicationContext applicationContext;
@@ -133,7 +132,7 @@ public class WebFluxActuatorProvider implements ActuatorProvider, ApplicationLis
 	}
 
 	@Override
-	public String getServletContextPath() {
+	public String getContextPath() {
 		return "";
 	}
 

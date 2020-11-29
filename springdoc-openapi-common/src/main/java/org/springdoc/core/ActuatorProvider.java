@@ -81,6 +81,6 @@ public interface ActuatorProvider {
 
 	String getBasePath();
 
-	String getServletContextPath();
+	String getContextPath();
 
 }

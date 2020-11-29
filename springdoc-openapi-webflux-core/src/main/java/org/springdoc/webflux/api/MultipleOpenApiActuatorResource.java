@@ -30,7 +30,7 @@ import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 @RestControllerEndpoint(id = DEFAULT_API_DOCS_ACTUATOR_URL)
-public class ActuatorMultipleOpenApiResource extends WebFluxMultipleOpenApiResource{
+public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 
 	/**
 	 * Instantiates a new Multiple open api resource.
@@ -43,10 +43,9 @@ public class ActuatorMultipleOpenApiResource extends WebFluxMultipleOpenApiResou
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
-	public ActuatorMultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis, ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
+	public MultipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis, ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
 		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, springDocConfigProperties, actuatorProvider);
 	}
-
 
 	/**
 	 * Openapi json mono.
@@ -60,8 +59,8 @@ public class ActuatorMultipleOpenApiResource extends WebFluxMultipleOpenApiResou
 	@Operation(hidden = true)
 	@GetMapping(value =   "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Mono<String> openapiJson(ServerHttpRequest
-			serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl, @PathVariable String
-			group)
+			serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl,
+			@PathVariable String group)
 			throws JsonProcessingException {
 		return getOpenApiResourceOrThrow(group).openapiJson(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
 	}

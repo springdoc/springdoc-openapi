@@ -18,6 +18,7 @@ import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.webmvc.core.RouterFunctionProvider;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
@@ -31,9 +32,9 @@ import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_ACTUATOR_URL;
 
 @RestControllerEndpoint(id = DEFAULT_API_DOCS_ACTUATOR_URL)
-public class ActuatorOpenApiResource extends WebMvcOpenApiResource {
+public class OpenApiActuatorResource extends OpenApiResource {
 
-	public ActuatorOpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+	public OpenApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
 			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
 			OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider,
@@ -46,7 +47,7 @@ public class ActuatorOpenApiResource extends WebMvcOpenApiResource {
 		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, actuatorProvider, operationCustomizers, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
 	}
 
-	public ActuatorOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+	public OpenApiActuatorResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
 			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
 			OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider, Optional<List<OperationCustomizer>> operationCustomizers,
@@ -74,19 +75,20 @@ public class ActuatorOpenApiResource extends WebMvcOpenApiResource {
 	}
 
 	protected void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
-		ActuatorProvider actuatorProvider = optionalActuatorProvider.get();
-		String path ="";
-		int port;
 		super.initOpenAPIBuilder();
+
+		ActuatorProvider actuatorProvider = optionalActuatorProvider.get();
+		String path;
+		int port;
 		if (ACTUATOR_DEFAULT_GROUP.equals(this.groupName)) {
 			port = actuatorProvider.getActuatorPort();
 			path = actuatorProvider.getActuatorPath();
 		}
-		else{
+		else {
 			port = actuatorProvider.getApplicationPort();
-			path = actuatorProvider.getServletContextPath();
+			path = actuatorProvider.getContextPath();
 			String mvcServletPath = this.openAPIService.getContext().getBean(Environment.class).getProperty("spring.mvc.servlet.path");
-			if(StringUtils.isNotEmpty(mvcServletPath))
+			if (StringUtils.isNotEmpty(mvcServletPath))
 				path = path + mvcServletPath;
 		}
 

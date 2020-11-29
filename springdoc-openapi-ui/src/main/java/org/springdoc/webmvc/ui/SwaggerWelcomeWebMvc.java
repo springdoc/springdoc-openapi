@@ -25,34 +25,27 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
-import org.springdoc.ui.AbstractSwaggerWelcome;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.MVC_SERVLET_PATH;
 import static org.springdoc.core.Constants.SWAGGER_CONFIG_URL;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
-import static org.springdoc.core.Constants.SWAGGER_UI_URL;
-import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Swagger welcome.
  * @author bnasslahsen
  */
 @Controller
-public class SwaggerWelcome extends AbstractSwaggerWelcome {
+public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 
 	/**
 	 * The Mvc servlet path.
@@ -68,7 +61,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	 * @param springDocConfigProperties the spring doc config properties 
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
-	public SwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters) {
+	public SwaggerWelcomeWebMvc(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
 	}
 
@@ -81,10 +74,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	@Operation(hidden = true)
 	@GetMapping(SWAGGER_UI_PATH)
 	public String redirectToUi(HttpServletRequest request) {
-		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
-		String sbUrl =   swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
-		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
-		return UrlBasedViewResolver.REDIRECT_URL_PREFIX + uriBuilder.build().encode().toString();
+		return super.redirectToUi(request);
 	}
 
 	/**
@@ -97,8 +87,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 	@GetMapping(value = SWAGGER_CONFIG_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Map<String, Object> openapiJson(HttpServletRequest request) {
-		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
-		return swaggerUiConfigParameters.getConfigParameters();
+		return super.openapiJson(request);
 	}
 
 	@Override
@@ -106,12 +95,7 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 		StringBuilder sbUrl = new StringBuilder();
 		if (StringUtils.isNotBlank(mvcServletPath))
 			sbUrl.append(mvcServletPath);
-		if (ArrayUtils.isNotEmpty(sbUrls))
-			sbUrl = sbUrls[0];
-		String swaggerPath = swaggerUiConfigParameters.getPath();
-		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
-			sbUrl.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
-		swaggerUiConfigParameters.setUiRootPath(sbUrl.toString());
+		calculateUiRootCommon(sbUrl, sbUrls);
 	}
 
 	@Override
@@ -121,9 +105,4 @@ public class SwaggerWelcome extends AbstractSwaggerWelcome {
 		return super.buildUrl(contextPath, docsUrl);
 	}
 
-	@Override
-	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
-		if (!swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl()))
-			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder.path(swaggerUiConfigParameters.getUiRootPath()).path(swaggerUiConfigParameters.getOauth2RedirectUrl()).build().toString());
-	}
 }

@@ -17,42 +17,40 @@
  *  *
  *
  */
-
 package org.springdoc.core;
 
-import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Conditional;
 
-import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED;
+import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+
+import static org.springdoc.core.Constants.GROUP_CONFIG_FIRST_PROPERTY;
 
 /**
- * The type Cache or grouped open api condition.
+ * The type Multiple open api support condition.
  * @author bnasslahsen
  */
-public class CacheOrGroupedOpenApiCondition extends AnyNestedCondition {
+public class MultipleOpenApiGroupsCondition extends AnyNestedCondition {
 
 	/**
-	 * Instantiates a new Cache or grouped open api condition.
+	 * Instantiates a new Multiple open api support condition.
 	 */
-	CacheOrGroupedOpenApiCondition() {
+	MultipleOpenApiGroupsCondition() {
 		super(ConfigurationPhase.REGISTER_BEAN);
 	}
 
 	/**
-	 * The type On multiple open api support condition.
+	 * The type On grouped open api bean.
 	 * @author bnasslahsen
 	 */
-	@Conditional(MultipleOpenApiGroupsCondition.class)
-	static class OnMultipleOpenApiSupportCondition {}
+	@ConditionalOnBean(GroupedOpenApi.class)
+	static class OnGroupedOpenApiBean {}
 
 	/**
-	 * The type On cache disabled.
+	 * The type On group config property.
 	 * @author bnasslahsen
 	 */
-	@ConditionalOnProperty(name = SPRINGDOC_CACHE_DISABLED)
-	@ConditionalOnMissingBean(GroupedOpenApi.class)
-	static class OnCacheDisabled {}
+	@ConditionalOnProperty(name = GROUP_CONFIG_FIRST_PROPERTY)
+	static class OnGroupConfigProperty {}
 
 }

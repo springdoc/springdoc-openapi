@@ -20,6 +20,7 @@
 
 package org.springdoc.ui;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigParameters;
@@ -147,6 +148,15 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 			}
 		}
 		return uriBuilder;
+	}
+
+	protected void calculateUiRootCommon(StringBuilder sbUrl, StringBuilder[] sbUrls) {
+		if (ArrayUtils.isNotEmpty(sbUrls))
+			sbUrl = sbUrls[0];
+		String swaggerPath = swaggerUiConfigParameters.getPath();
+		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
+			sbUrl.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
+		swaggerUiConfigParameters.setUiRootPath(sbUrl.toString());
 	}
 
 	/**
