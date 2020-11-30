@@ -73,6 +73,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	 */
 	@Operation(hidden = true)
 	@GetMapping(SWAGGER_UI_PATH)
+	@Override
 	public String redirectToUi(HttpServletRequest request) {
 		return super.redirectToUi(request);
 	}
@@ -86,6 +87,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	@Operation(hidden = true)
 	@GetMapping(value = SWAGGER_CONFIG_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
+	@Override
 	public Map<String, Object> openapiJson(HttpServletRequest request) {
 		return super.openapiJson(request);
 	}

@@ -121,6 +121,7 @@ public class OpenApiActuatorResource extends OpenApiResource {
 		return super.openapiYaml(serverHttpRequest, YAML);
 	}
 
+	@Override
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
 		super.initOpenAPIBuilder();
 		URI uri = getActuatorURI(serverHttpRequest.getURI().getScheme(), serverHttpRequest.getURI().getHost());

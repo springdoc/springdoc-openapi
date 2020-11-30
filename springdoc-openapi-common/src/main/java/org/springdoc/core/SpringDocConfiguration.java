@@ -52,6 +52,8 @@ import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
+import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
+import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
@@ -358,8 +360,21 @@ public class SpringDocConfiguration {
 	 */
 	@ConditionalOnClass(WebEndpointProperties.class)
 	@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
-	static class SpringDocWebMvcActuatorConfiguration {
+	static class SpringDocActuatorConfiguration {
 
+		/**
+		 * Springdoc bean factory post processor 3 bean factory post processor.
+		 *
+		 * @param groupedOpenApis the grouped open apis
+		 * @return the bean factory post processor
+		 */
+		@Bean
+		@Lazy(false)
+		@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
+		@Conditional(MultipleOpenApiSupportCondition.class)
+		static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor3(List<GroupedOpenApi> groupedOpenApis) {
+			return new SpringdocActuatorBeanFactoryConfigurer(groupedOpenApis);
+		}
 		/**
 		 * Actuator customizer operation customizer.
 		 *

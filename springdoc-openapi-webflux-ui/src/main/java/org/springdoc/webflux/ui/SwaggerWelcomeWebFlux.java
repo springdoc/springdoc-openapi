@@ -65,6 +65,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 */
 	@Operation(hidden = true)
 	@GetMapping(SWAGGER_UI_PATH)
+	@Override
 	public Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
 		return super.redirectToUi(request, response);
 	}
@@ -78,6 +79,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	@Operation(hidden = true)
 	@GetMapping(value = SWAGGER_CONFIG_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
+	@Override
 	public Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
 		return super.getSwaggerUiConfig(request);
 	}

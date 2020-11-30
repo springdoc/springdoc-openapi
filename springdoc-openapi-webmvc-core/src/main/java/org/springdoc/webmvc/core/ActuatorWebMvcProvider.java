@@ -38,9 +38,6 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-;
-
-
 /**
  * The type Web mvc actuator provider.
  * @author bnasslahsen

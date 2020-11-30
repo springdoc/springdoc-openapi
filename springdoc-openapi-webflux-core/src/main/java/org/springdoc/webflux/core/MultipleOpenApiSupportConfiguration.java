@@ -31,12 +31,10 @@ import org.springdoc.core.MultipleOpenApiSupportCondition;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.SpringdocActuatorBeanFactoryConfigurer;
 import org.springdoc.webflux.api.MultipleOpenApiActuatorResource;
 import org.springdoc.webflux.api.MultipleOpenApiWebFluxResource;
 
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
 import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
@@ -51,7 +49,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 
 
@@ -104,19 +101,6 @@ public class MultipleOpenApiSupportConfiguration {
 	@ConditionalOnClass(WebFluxEndpointHandlerMapping.class)
 	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 	static class SpringDocWebMvcActuatorDifferentConfiguration {
-
-		/**
-		 * Springdoc bean factory post processor 3 bean factory post processor.
-		 *
-		 * @param groupedOpenApis the grouped open apis
-		 * @return the bean factory post processor
-		 */
-		@Bean
-		@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
-		@Lazy(false)
-		static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor3(List<GroupedOpenApi> groupedOpenApis) {
-			return new SpringdocActuatorBeanFactoryConfigurer(groupedOpenApis);
-		}
 
 		/**
 		 * Multiple open api actuator resource multiple open api actuator resource.
