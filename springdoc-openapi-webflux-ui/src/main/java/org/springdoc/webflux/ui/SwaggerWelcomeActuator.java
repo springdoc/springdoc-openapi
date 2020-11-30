@@ -86,6 +86,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	 */
 	@Operation(hidden = true)
 	@GetMapping(DEFAULT_PATH_SEPARATOR)
+	@Override
 	public Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
 	  return super.redirectToUi(request,response);
 	}
@@ -100,6 +101,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	@Operation(hidden = true)
 	@GetMapping(value = SWAGGER_CONFIG_ACTUATOR_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
+	@Override
 	public Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
 		return super.getSwaggerUiConfig(request);
 	}

@@ -36,6 +36,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.util.AntPathMatcher;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+
 
 /**
  * The type Actuator provider.
@@ -162,7 +164,7 @@ public abstract class ActuatorProvider  implements ApplicationListener<WebServer
 	 * @return the context path
 	 */
 	public String getContextPath() {
-		return "";
+		return EMPTY;
 	}
 
 	/**

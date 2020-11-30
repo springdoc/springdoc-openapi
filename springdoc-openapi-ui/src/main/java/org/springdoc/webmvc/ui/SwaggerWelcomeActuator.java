@@ -56,6 +56,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	 */
 	@Operation(hidden = true)
 	@GetMapping(DEFAULT_PATH_SEPARATOR)
+	@Override
 	public String redirectToUi(HttpServletRequest request) {
 		return super.redirectToUi(request);
 	}
@@ -69,6 +70,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	@Operation(hidden = true)
 	@GetMapping(value = SWAGGER_CONFIG_ACTUATOR_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
+	@Override
 	public Map<String, Object> openapiJson(HttpServletRequest request) {
 		return super.openapiJson(request);
 	}
@@ -80,7 +82,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 		calculateUiRootCommon(sbUrl, sbUrls);
 	}
 
-
+	@Override
 	protected void buildConfigUrl(String contextPath, UriComponentsBuilder uriComponentsBuilder) {
 		String apiDocsUrl = DEFAULT_API_DOCS_ACTUATOR_URL;
 		if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
