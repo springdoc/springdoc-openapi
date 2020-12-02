@@ -462,7 +462,7 @@ public abstract class AbstractRequestService {
 		if (parameter.getSchema() == null && parameter.getContent() == null) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, null,
 					jsonView);
-			if (parameterInfo.getDefaultValue() != null)
+			if (parameterInfo.getDefaultValue() != null && schema !=null)
 				schema.setDefault(parameterInfo.getDefaultValue());
 			parameter.setSchema(schema);
 		}
