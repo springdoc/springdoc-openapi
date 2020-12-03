@@ -11,7 +11,7 @@
 The springdoc-openapi Java library helps automating the generation of API documentation using Spring Boot projects.
 springdoc-openapi works by examining an application at runtime to infer API semantics based on Spring configurations, class structure and various annotations.
 
-The library automatically generates documentation in JSON/YAML and HTML formatted pages. The generateed documentation can be complemented using `swagger-api` annotations.
+The library automatically generates documentation in JSON/YAML and HTML formatted pages. The generated documentation can be complemented using `swagger-api` annotations.
 
 This library supports:
 *  OpenAPI 3
