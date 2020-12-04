@@ -2,7 +2,7 @@
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=springdoc_springdoc-openapi&metric=alert_status)](https://sonarcloud.io/dashboard?id=springdoc_springdoc-openapi)
 [![Known Vulnerabilities](https://snyk.io/test/github/springdoc/springdoc-openapi.git/badge.svg)](https://snyk.io/test/github/springdoc/springdoc-openapi.git)
 
-![Octocat](https://springdoc.org/assets/images/springdoc-openapi.png)
+![Octocat](https://springdoc.org/images/springdoc-openapi.png)
 
 # [Full documentation](https://springdoc.org)
 
@@ -11,7 +11,7 @@
 The springdoc-openapi Java library helps automating the generation of API documentation using Spring Boot projects.
 springdoc-openapi works by examining an application at runtime to infer API semantics based on Spring configurations, class structure and various annotations.
 
-The library automatically generates documentation in JSON/YAML and HTML formatted pages. The generateed documentation can be complemented using `swagger-api` annotations.
+The library automatically generates documentation in JSON/YAML and HTML formatted pages. The generated documentation can be complemented using `swagger-api` annotations.
 
 This library supports:
 *  OpenAPI 3
@@ -57,7 +57,7 @@ springdoc.swagger-ui.path=/swagger-ui.html
 ## [Demo Spring Boot 1 Web MVC with OpenAPI 3](https://springdoc-openapi-test-app1-exhausted-civet.eu-de.mybluemix.net/).
 ## [Demo Spring Boot 2 WebFlux with Functional endpoints OpenAPI 3](https://springdoc-openapi-test-app4-happy-ostrich.eu-de.mybluemix.net/swagger-ui.html).
 
-![Branching](https://springdoc.org/assets/images/pets.png)
+![Branching](https://springdoc.org/images/pets.png)
 
 ## Source code of the Demo Applications
 * [https://github.com/springdoc/springdoc-openapi-demos.git](https://github.com/springdoc/springdoc-openapi-demos.git).
@@ -130,4 +130,4 @@ Snapshots:
 
 * Thanks a lot [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi) for supporting springdoc-openapi project.
 
-![JenBrains logo](https://springdoc.org/assets/images/jetbrains.svg)
+![JenBrains logo](https://springdoc.org/images/jetbrains.svg)
