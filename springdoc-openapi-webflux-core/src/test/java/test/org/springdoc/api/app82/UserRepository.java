@@ -18,7 +18,7 @@ public interface UserRepository {
 
     public Mono<Void> saveUser(Mono<User> user);
 
-    public Mono<User> putUser(@Parameter(in = ParameterIn.PATH) Long id, Mono<User> user);
+    public Mono<User> putUser(@Parameter(in = ParameterIn.QUERY) Long id, Mono<User> user);
 
     public Mono<String> deleteUser(@Parameter(in = ParameterIn.PATH) Long id);
 }
