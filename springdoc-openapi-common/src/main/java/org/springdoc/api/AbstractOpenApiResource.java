@@ -84,6 +84,7 @@ import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 import org.springdoc.core.fn.RouterFunctionData;
 import org.springdoc.core.fn.RouterOperation;
 
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -424,14 +425,16 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				if (routerOperation.getBeanClass() != null && !Void.class.equals(routerOperation.getBeanClass())) {
 					Object handlerBean = applicationContext.getBean(routerOperation.getBeanClass());
 					HandlerMethod handlerMethod = null;
+
 					if (StringUtils.isNotBlank(routerOperation.getBeanMethod())) {
 						try {
 							if (ArrayUtils.isEmpty(routerOperation.getParameterTypes())) {
-								Optional<Method> methodOptional = Arrays.stream(handlerBean.getClass().getDeclaredMethods())
+								Method[] declaredMethods = AopUtils.getTargetClass(handlerBean).getDeclaredMethods();
+								Optional<Method> methodOptional = Arrays.stream(declaredMethods)
 										.filter(method -> routerOperation.getBeanMethod().equals(method.getName()) && method.getParameters().length == 0)
 										.findAny();
 								if (!methodOptional.isPresent())
-									methodOptional = Arrays.stream(handlerBean.getClass().getDeclaredMethods())
+									methodOptional = Arrays.stream(declaredMethods)
 											.filter(method1 -> routerOperation.getBeanMethod().equals(method1.getName()))
 											.findAny();
 								if (methodOptional.isPresent())
