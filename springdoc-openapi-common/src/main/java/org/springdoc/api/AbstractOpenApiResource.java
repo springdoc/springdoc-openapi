@@ -44,6 +44,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -61,6 +62,7 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -68,6 +70,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.api.mixins.SortedOpenAPIMixin;
+import org.springdoc.api.mixins.SortedSchemaMixin;
 import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericParameterService;
@@ -1025,7 +1029,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		String result;
 		ObjectMapper objectMapper = Yaml.mapper();
 		if (springDocConfigProperties.isWriterWithOrderByKeys())
-			objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
+			sortOutput(objectMapper);
 		YAMLFactory factory = (YAMLFactory) objectMapper.getFactory();
 		factory.configure(Feature.USE_NATIVE_TYPE_ID, false);
 		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
@@ -1090,7 +1094,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		String result;
 		ObjectMapper objectMapper = Json.mapper();
 		if (springDocConfigProperties.isWriterWithOrderByKeys())
-			objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
+			sortOutput(objectMapper);
 		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
 			result = objectMapper.writeValueAsString(openAPI);
 		else
@@ -1157,5 +1161,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		 *Headers condition type.
 		 */
 		HEADERS
+	}
+
+	private void sortOutput(ObjectMapper objectMapper) {
+		objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
+		objectMapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
+		objectMapper.addMixIn(OpenAPI.class, SortedOpenAPIMixin.class);
+		objectMapper.addMixIn(Schema.class, SortedSchemaMixin.class);
 	}
 }
