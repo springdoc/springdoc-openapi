@@ -420,7 +420,7 @@ public abstract class AbstractRequestService {
 		// By default
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
 		if (RequestMethod.GET.equals(requestMethod)
-				|| (parameterInfo.getParameterModel() != null && (ParameterIn.PATH.toString().equals(parameterInfo.getParameterModel().getIn())))
+				|| (parameterInfo.getParameterModel() != null && parameterInfo.getParameterModel().getIn() !=null)
 				|| delegatingMethodParameter.isParameterObject()){
 			parameterInfo.setRequired(!methodParameter.isOptional());
 			parameterInfo.setParamType(QUERY_PARAM);

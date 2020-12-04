@@ -29,7 +29,7 @@ public class RoutingConfiguration {
 				.and(route(POST("/api/user/post").and(accept(APPLICATION_JSON)), userHandler::postUser)
 						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(UserRepository.class).beanMethod("saveUser")))
 
-				.and(route(PUT("/api/user/put/{id}").and(accept(APPLICATION_JSON)), userHandler::putUser)
+				.and(route(PUT("/api/user/put").and(accept(APPLICATION_JSON)), userHandler::putUser)
 						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(UserRepository.class).beanMethod("putUser")))
 
 				.and(route(DELETE("/api/user/delete/{id}").and(accept(APPLICATION_JSON)), userHandler::deleteUser)
