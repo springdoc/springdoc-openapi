@@ -40,7 +40,6 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -96,17 +95,17 @@ public abstract class AbstractRequestService {
 	 * The constant ANNOTATIONS_FOR_REQUIRED.
 	 */
 // using string litterals to support both validation-api v1 and v2
-	private static final String[] ANNOTATIONS_FOR_REQUIRED = { NotNull.class.getName(), "javax.validation.constraints.NotBlank", "javax.validation.constraints.NotEmpty" };
+	private static final String[] ANNOTATIONS_FOR_REQUIRED = {"NotNull", "NonNull", "NotBlank", "NotEmpty"};
 
 	/**
 	 * The constant POSITIVE_OR_ZERO.
 	 */
-	private static final String POSITIVE_OR_ZERO = "javax.validation.constraints.PositiveOrZero";
+	private static final String POSITIVE_OR_ZERO = "PositiveOrZero";
 
 	/**
 	 * The constant NEGATIVE_OR_ZERO.
 	 */
-	private static final String NEGATIVE_OR_ZERO = "javax.validation.constraints.NegativeOrZero";
+	private static final String NEGATIVE_OR_ZERO = "NegativeOrZero";
 
 	static {
 		PARAM_TYPES_TO_IGNORE.add(WebRequest.class);
@@ -171,8 +170,7 @@ public abstract class AbstractRequestService {
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
 		this.operationService = operationService;
-		if (parameterCustomizers.isPresent())
-			parameterCustomizers.get().removeIf(Objects::isNull);
+		parameterCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
 		this.parameterCustomizers = parameterCustomizers;
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 	}
@@ -478,7 +476,7 @@ public abstract class AbstractRequestService {
 	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
 		Map<String, Annotation> annos = new HashMap<>();
 		if (annotations != null)
-			annotations.forEach(annotation -> annos.put(annotation.annotationType().getName(), annotation));
+			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
 		boolean annotationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
 		if (annotationExists)
 			parameter.setRequired(true);
@@ -497,7 +495,7 @@ public abstract class AbstractRequestService {
 		Map<String, Annotation> annos = new HashMap<>();
 		boolean requestBodyRequired = false;
 		if (!CollectionUtils.isEmpty(annotations)) {
-			annotations.forEach(annotation -> annos.put(annotation.annotationType().getName(), annotation));
+			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
 			requestBodyRequired = annotations.stream()
 					.filter(annotation -> org.springframework.web.bind.annotation.RequestBody.class.equals(annotation.annotationType()))
 					.anyMatch(annotation -> ((org.springframework.web.bind.annotation.RequestBody) annotation).required());
@@ -520,8 +518,8 @@ public abstract class AbstractRequestService {
 	 * @param schema the schema
 	 */
 	private void calculateSize(Map<String, Annotation> annos, Schema<?> schema) {
-		if (annos.containsKey(Size.class.getName())) {
-			Size size = (Size) annos.get(Size.class.getName());
+		if (annos.containsKey(Size.class.getSimpleName())) {
+			Size size = (Size) annos.get(Size.class.getSimpleName());
 			if (OPENAPI_ARRAY_TYPE.equals(schema.getType())) {
 				schema.setMinItems(size.min());
 				schema.setMaxItems(size.max());
@@ -588,35 +586,35 @@ public abstract class AbstractRequestService {
 	 * @param schema the schema
 	 */
 	private void applyValidationsToSchema(Map<String, Annotation> annos, Schema<?> schema) {
-		if (annos.containsKey(Min.class.getName())) {
-			Min min = (Min) annos.get(Min.class.getName());
+		if (annos.containsKey(Min.class.getSimpleName())) {
+			Min min = (Min) annos.get(Min.class.getSimpleName());
 			schema.setMinimum(BigDecimal.valueOf(min.value()));
 		}
-		if (annos.containsKey(Max.class.getName())) {
-			Max max = (Max) annos.get(Max.class.getName());
+		if (annos.containsKey(Max.class.getSimpleName())) {
+			Max max = (Max) annos.get(Max.class.getSimpleName());
 			schema.setMaximum(BigDecimal.valueOf(max.value()));
 		}
 		calculateSize(annos, schema);
-		if (annos.containsKey(DecimalMin.class.getName())) {
-			DecimalMin min = (DecimalMin) annos.get(DecimalMin.class.getName());
+		if (annos.containsKey(DecimalMin.class.getSimpleName())) {
+			DecimalMin min = (DecimalMin) annos.get(DecimalMin.class.getSimpleName());
 			if (min.inclusive())
 				schema.setMinimum(BigDecimal.valueOf(Double.parseDouble(min.value())));
 			else
-				schema.setExclusiveMinimum(!min.inclusive());
+				schema.setExclusiveMinimum(true);
 		}
-		if (annos.containsKey(DecimalMax.class.getName())) {
-			DecimalMax max = (DecimalMax) annos.get(DecimalMax.class.getName());
+		if (annos.containsKey(DecimalMax.class.getSimpleName())) {
+			DecimalMax max = (DecimalMax) annos.get(DecimalMax.class.getSimpleName());
 			if (max.inclusive())
 				schema.setMaximum(BigDecimal.valueOf(Double.parseDouble(max.value())));
 			else
-				schema.setExclusiveMaximum(!max.inclusive());
+				schema.setExclusiveMaximum(true);
 		}
 		if (annos.containsKey(POSITIVE_OR_ZERO))
 			schema.setMinimum(BigDecimal.ZERO);
 		if (annos.containsKey(NEGATIVE_OR_ZERO))
 			schema.setMaximum(BigDecimal.ZERO);
-		if (annos.containsKey(Pattern.class.getName())) {
-			Pattern pattern = (Pattern) annos.get(Pattern.class.getName());
+		if (annos.containsKey(Pattern.class.getSimpleName())) {
+			Pattern pattern = (Pattern) annos.get(Pattern.class.getSimpleName());
 			schema.setPattern(pattern.regexp());
 		}
 	}
