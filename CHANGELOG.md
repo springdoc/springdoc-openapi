@@ -4,12 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.1] - 2020-12-07 
+### Added
+- #923 - Exposing swagger-ui on the management port.
+- #938 - Swagger-UI Property persistAuthorization. 
+### Changed
+- Update swagger-core to v2.1.6
+- Update swagger-ui to 3.37.2
+### Fixed
+- #973 - Nullable meta annotations are ignored
+- #971 - WebFlux functional DSL does not recognise query parameters. 
+- #962 - NPE within AbstractRequestService
+- #948 - Swagger ui syntax highlighting configuration properties do not autocomplete.
+
 ## [1.5.0] - 2020-11-14 
 ### Added
 - #891 - Provide a WebMvc.fn / WebFlux.fn functional DSL 
 - #904 - Add support for placeholders for default value in @RequestParam Annotation.
 - Added property for deterministic and alphabetical orderding: springdoc.writer-with-order-by-keys
-_ Removal of deprecated method: GroupedOpenApi.setGroup
+- Removal of deprecated method: GroupedOpenApi.setGroup
 ### Changed
 - Upgrade to Swagger-core 2.1.5
 - Upgrade swagger-ui version to 3.36.2
