@@ -33,15 +33,15 @@ import io.swagger.v3.oas.models.Paths;
  * @author bnasslashen
  */
 @JsonPropertyOrder(value = {"openapi", "info", "externalDocs", "servers", "security", "tags", "paths", "components"}, alphabetic = true)
-public abstract class SortedOpenAPIMixin {
+public interface SortedOpenAPIMixin {
 
 	@JsonAnyGetter
 	@JsonPropertyOrder(alphabetic = true)
-	public abstract Map<String, Object> getExtensions();
+	Map<String, Object> getExtensions();
 
 	@JsonAnySetter
-	public abstract void addExtension(String name, Object value);
+	void addExtension(String name, Object value);
 
 	@JsonSerialize(using = PathsSerializer.class)
-	public abstract Paths getPaths();
+	Paths getPaths();
 }

@@ -32,19 +32,19 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * @author bnasslashen
  */
 @JsonPropertyOrder(value = {"type", "format"}, alphabetic = true)
-public abstract class SortedSchemaMixin {
+public interface SortedSchemaMixin {
 
 	@JsonAnyGetter
 	@JsonPropertyOrder(alphabetic = true)
-	public abstract Map<String, Object> getExtensions();
+	Map<String, Object> getExtensions();
 
 	@JsonAnySetter
-	public abstract void addExtension(String name, Object value);
+	void addExtension(String name, Object value);
 
 	@JsonIgnore
-	public abstract boolean getExampleSetFlag();
+	boolean getExampleSetFlag();
 
 	@JsonInclude(JsonInclude.Include.CUSTOM)
-	public abstract Object getExample();
+	Object getExample();
 
 }
