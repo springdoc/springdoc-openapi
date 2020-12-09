@@ -109,6 +109,7 @@ import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.i
 /**
  * The type Abstract open api resource.
  * @author bnasslahsen
+ * @author kevinraddatz
  */
 public abstract class AbstractOpenApiResource extends SpecFilter {
 
@@ -1033,9 +1034,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		YAMLFactory factory = (YAMLFactory) objectMapper.getFactory();
 		factory.configure(Feature.USE_NATIVE_TYPE_ID, false);
 		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
-			result = objectMapper.writeValueAsString(openAPI);
+			result = objectMapper.writerFor(OpenAPI.class).writeValueAsString(openAPI);
 		else
-			result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(openAPI);
+			result = objectMapper.writerWithDefaultPrettyPrinter().forType(OpenAPI.class).writeValueAsString(openAPI);
 		return result;
 	}
 
@@ -1096,9 +1097,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		if (springDocConfigProperties.isWriterWithOrderByKeys())
 			sortOutput(objectMapper);
 		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
-			result = objectMapper.writeValueAsString(openAPI);
+			result = objectMapper.writerFor(OpenAPI.class).writeValueAsString(openAPI);
 		else
-			result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(openAPI);
+			result = objectMapper.writerWithDefaultPrettyPrinter().forType(OpenAPI.class).writeValueAsString(openAPI);
 		return result;
 	}
 
