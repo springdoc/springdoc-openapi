@@ -28,7 +28,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -47,7 +49,8 @@ public class ItemController {
 	@GetMapping("/items")
 	public List<ItemDTO> showItems(@RequestParam("cusID") @Size(min = 4, max = 6) final String customerID,
 			@Size(min = 4, max = 6) int toto,
-			@Parameter(name = "start", in = ParameterIn.QUERY, required = false, schema = @Schema(type = "string", format = "date-time", required = false, example = "1970-01-01T00:00:00.000Z")) @RequestParam(value = "start", required = false) Instant startDate) {
+			@Parameter(name = "start", in = ParameterIn.QUERY, required = false, schema = @Schema(type = "string", format = "date-time", required = false, example = "1970-01-01T00:00:00.000Z")) @RequestParam(value = "start", required = false) Instant startDate,
+			@Parameter(name = "filterIds", in = ParameterIn.QUERY, array = @ArraySchema(schema = @Schema(type = "string")), explode = Explode.FALSE) @RequestParam(required = false) List<String> filterIds) {
 		return new ArrayList<ItemDTO>();
 	}
 
