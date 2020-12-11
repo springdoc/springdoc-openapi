@@ -54,9 +54,11 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import static java.util.Objects.isNull;
+
 /**
  * The type Generic parameter builder.
- * @author bnasslahsen
+ * @author bnasslahsen, coutin
  */
 @SuppressWarnings("rawtypes")
 public class GenericParameterService {
@@ -397,9 +399,10 @@ public class GenericParameterService {
 	 */
 	private boolean isExplodable(io.swagger.v3.oas.annotations.Parameter p) {
 		io.swagger.v3.oas.annotations.media.Schema schema = p.schema();
+		io.swagger.v3.oas.annotations.media.ArraySchema arraySchema = p.array();
 		boolean explode = true;
 		Class<?> implementation = schema.implementation();
-		if (implementation == Void.class && !schema.type().equals("object") && !schema.type().equals("array")) {
+		if (implementation == Void.class && !schema.type().equals("object") && !schema.type().equals("array") && isNull(arraySchema)) {
 			explode = false;
 		}
 		return explode;
