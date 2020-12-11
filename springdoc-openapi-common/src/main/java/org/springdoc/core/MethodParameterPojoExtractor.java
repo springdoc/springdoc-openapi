@@ -35,6 +35,8 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.OptionalLong;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -78,6 +80,8 @@ class MethodParameterPojoExtractor {
 		SIMPLE_TYPES.add(OptionalInt.class);
 		SIMPLE_TYPES.add(OptionalLong.class);
 		SIMPLE_TYPES.add(OptionalDouble.class);
+		SIMPLE_TYPES.add(AtomicLong.class);
+		SIMPLE_TYPES.add(AtomicInteger.class);
 
 		SIMPLE_TYPES.add(Map.class);
 		SIMPLE_TYPES.add(Iterable.class);
