@@ -21,16 +21,18 @@
 package org.springdoc.core.fn;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.util.CollectionUtils;
 
 /**
  * The type Abstract router function visitor.
@@ -46,22 +48,12 @@ public class AbstractRouterFunctionVisitor {
 	/**
 	 * The Nested or paths.
 	 */
-	protected List<String> nestedOrPaths = new ArrayList<>();
+	protected List<String> orPaths = new ArrayList<>();
 
 	/**
 	 * The Nested and paths.
 	 */
-	protected List<String> nestedAndPaths = new ArrayList<>();
-
-	/**
-	 * The Nested accept headers.
-	 */
-	protected List<String> nestedAcceptHeaders = new ArrayList<>();
-
-	/**
-	 * The Nested content type headers.
-	 */
-	protected List<String> nestedContentTypeHeaders = new ArrayList<>();
+	protected Map<Integer, List<String>> nestedPaths = new LinkedHashMap<>();
 
 	/**
 	 * The Is or.
@@ -69,19 +61,39 @@ public class AbstractRouterFunctionVisitor {
 	protected boolean isOr;
 
 	/**
-	 * The Is nested.
-	 */
-	protected boolean isNested;
-
-	/**
 	 * The Router function data.
 	 */
-	protected RouterFunctionData routerFunctionData;
+	protected List<RouterFunctionData> currentRouterFunctionDatas;
 
 	/**
 	 * The Attributes.
 	 */
-	protected Map<String,Object> attributes = new LinkedHashMap<>();
+	protected Map<String, Object> attributes = new LinkedHashMap<>();
+
+	/**
+	 * The Level.
+	 */
+	private int level;
+
+	/**
+	 * The Methods.
+	 */
+	private Set<HttpMethod> methods;
+
+	/**
+	 * The Consumes.
+	 */
+	private final List<String> consumes = new ArrayList<>();
+
+	/**
+	 * The Produces.
+	 */
+	private final List<String> produces = new ArrayList<>();
+
+	/**
+	 * The Query params.
+	 */
+	private final Map<String, String> queryParams = new LinkedHashMap<>();
 
 	/**
 	 * Method.
@@ -89,7 +101,10 @@ public class AbstractRouterFunctionVisitor {
 	 * @param methods the methods
 	 */
 	public void method(Set<HttpMethod> methods) {
-		routerFunctionData.setMethods(methods);
+		if (CollectionUtils.isEmpty(currentRouterFunctionDatas))
+			this.methods = methods;
+		else
+			currentRouterFunctionDatas.forEach(routerFunctionData -> routerFunctionData.setMethods(methods));
 	}
 
 	/**
@@ -98,12 +113,26 @@ public class AbstractRouterFunctionVisitor {
 	 * @param pattern the pattern
 	 */
 	public void path(String pattern) {
-		if (routerFunctionData != null)
-			routerFunctionData.setPath(pattern);
+		if (currentRouterFunctionDatas != null) {
+			if (!nestedPaths.isEmpty()) {
+				List<String> nestedPathsList = this.nestedPaths.values().stream().flatMap(List::stream).collect(Collectors.toList());
+				if (!orPaths.isEmpty())
+					orPaths.forEach(nestedOrPath -> createRouterFunctionData(String.join(StringUtils.EMPTY, nestedPathsList) + nestedOrPath + pattern));
+				else
+					createRouterFunctionData(String.join(StringUtils.EMPTY, nestedPathsList) + pattern);
+			}
+			else if (!orPaths.isEmpty())
+				orPaths.forEach(nestedOrPath -> createRouterFunctionData(nestedOrPath + pattern));
+			else
+				createRouterFunctionData(pattern);
+		}
 		else if (isOr)
-			nestedOrPaths.add(pattern);
-		else if (isNested)
-			nestedAndPaths.add(pattern);
+			orPaths.add(pattern);
+		else if (this.level > 0) {
+			List<String> paths = CollectionUtils.isEmpty(this.nestedPaths.get(this.level)) ? new ArrayList<>() : this.nestedPaths.get(this.level);
+			paths.add(pattern);
+			this.nestedPaths.put(this.level, paths);
+		}
 	}
 
 	/**
@@ -113,14 +142,12 @@ public class AbstractRouterFunctionVisitor {
 	 * @param value the value
 	 */
 	public void header(String name, String value) {
-		if (HttpHeaders.ACCEPT.equals(name)) {
-			calculateAccept(value);
-		}
-		else if (HttpHeaders.CONTENT_TYPE.equals(name)) {
-			calculateContentType(value);
-		}
+		if (HttpHeaders.ACCEPT.equals(name))
+			calculateHeader(value, this.produces, name);
+		else if (HttpHeaders.CONTENT_TYPE.equals(name))
+			calculateHeader(value, this.consumes, name);
 		else
-			routerFunctionData.addHeaders(name + "=" + value);
+			currentRouterFunctionDatas.forEach(routerFunctionData -> routerFunctionData.addHeaders(name + "=" + value));
 	}
 
 	/**
@@ -139,7 +166,10 @@ public class AbstractRouterFunctionVisitor {
 	 * @param value the value
 	 */
 	public void queryParam(String name, String value) {
-		routerFunctionData.addQueryParams(name, value);
+		if (CollectionUtils.isEmpty(currentRouterFunctionDatas))
+			queryParams.put(name, value);
+		else
+			currentRouterFunctionDatas.forEach(routerFunctionData -> routerFunctionData.addQueryParams(name, value));
 	}
 
 	/**
@@ -200,7 +230,7 @@ public class AbstractRouterFunctionVisitor {
 	 * End or.
 	 */
 	public void endOr() {
-		// Not yet needed
+		this.isOr = false;
 	}
 
 	/**
@@ -218,89 +248,6 @@ public class AbstractRouterFunctionVisitor {
 	}
 
 	/**
-	 * Compute nested.
-	 */
-	protected void computeNested() {
-		if (!nestedAndPaths.isEmpty()) {
-			String nestedPath = String.join(StringUtils.EMPTY, nestedAndPaths);
-			routerFunctionDatas.forEach(existingRouterFunctionData -> existingRouterFunctionData.setPath(nestedPath + existingRouterFunctionData.getPath()));
-			nestedAndPaths.clear();
-		}
-		if (!nestedOrPaths.isEmpty()) {
-			List<RouterFunctionData> routerFunctionDatasClone = new ArrayList<>();
-			for (RouterFunctionData functionData : routerFunctionDatas) {
-				for (String nestedOrPath : nestedOrPaths) {
-					RouterFunctionData routerFunctionDataClone = new RouterFunctionData(nestedOrPath , functionData);
-					routerFunctionDatasClone.add(routerFunctionDataClone);
-				}
-			}
-			this.routerFunctionDatas = routerFunctionDatasClone;
-			nestedAndPaths.clear();
-		}
-		if (!nestedAcceptHeaders.isEmpty()) {
-			routerFunctionDatas.forEach(existingRouterFunctionData -> existingRouterFunctionData.addProduces(nestedAcceptHeaders));
-			nestedAcceptHeaders.clear();
-		}
-		if (!nestedContentTypeHeaders.isEmpty()) {
-			routerFunctionDatas.forEach(existingRouterFunctionData -> existingRouterFunctionData.addConsumes(nestedContentTypeHeaders));
-			nestedContentTypeHeaders.clear();
-		}
-	}
-
-	/**
-	 * Calculate content type.
-	 *
-	 * @param value the value
-	 */
-	private void calculateContentType(String value) {
-		if (value.contains(",")) {
-			String[] mediaTypes = value.substring(1, value.length() - 1).split(", ");
-			for (String mediaType : mediaTypes)
-				if (routerFunctionData != null)
-					routerFunctionData.addConsumes(mediaType);
-				else
-					nestedContentTypeHeaders.addAll(Arrays.asList(mediaTypes));
-		}
-		else {
-			if (routerFunctionData != null)
-				routerFunctionData.addConsumes(value);
-			else
-				nestedContentTypeHeaders.add(value);
-		}
-	}
-
-	/**
-	 * Calculate accept.
-	 *
-	 * @param value the value
-	 */
-	private void calculateAccept(String value) {
-		if (value.contains(",")) {
-			String[] mediaTypes = value.substring(1, value.length() - 1).split(", ");
-			for (String mediaType : mediaTypes)
-				if (routerFunctionData != null)
-					routerFunctionData.addProduces(mediaType);
-				else
-					nestedAcceptHeaders.addAll(Arrays.asList(mediaTypes));
-		}
-		else {
-			if (routerFunctionData != null)
-				routerFunctionData.addProduces(value);
-			else
-				nestedAcceptHeaders.add(value);
-		}
-	}
-
-	/**
-	 * Route.
-	 */
-	protected void route() {
-		this.routerFunctionData = new RouterFunctionData();
-		routerFunctionDatas.add(this.routerFunctionData);
-		this.routerFunctionData.addAttributes(this.attributes);
-	}
-
-	/**
 	 * Attributes.
 	 *
 	 * @param map the map
@@ -309,4 +256,81 @@ public class AbstractRouterFunctionVisitor {
 		this.attributes = map;
 	}
 
+	/**
+	 * Compute nested.
+	 */
+	protected void commonEndNested() {
+		nestedPaths.remove(this.level);
+		this.level--;
+	}
+
+	/**
+	 * Common start nested.
+	 */
+	protected void commonStartNested() {
+		this.level++;
+		this.currentRouterFunctionDatas = null;
+	}
+
+	/**
+	 * Common route.
+	 */
+	protected void commonRoute() {
+		this.routerFunctionDatas.addAll(currentRouterFunctionDatas);
+		currentRouterFunctionDatas.forEach(routerFunctionData -> routerFunctionData.addAttributes(this.attributes));
+		this.attributes = new HashMap<>();
+	}
+
+	/**
+	 * Calculate header.
+	 *
+	 * @param value the value
+	 * @param headers the headers
+	 * @param header the header
+	 */
+	private void calculateHeader(String value, List<String> headers, String header) {
+		if (value.contains(",")) {
+			String[] mediaTypes = value.substring(1, value.length() - 1).split(", ");
+			for (String mediaType : mediaTypes)
+				if (CollectionUtils.isEmpty(currentRouterFunctionDatas))
+					headers.add(mediaType);
+				else
+					currentRouterFunctionDatas.forEach(routerFunctionData -> addHeader(mediaType, header, routerFunctionData));
+		}
+		else {
+			if (CollectionUtils.isEmpty(currentRouterFunctionDatas))
+				headers.add(value);
+			else
+				currentRouterFunctionDatas.forEach(routerFunctionData -> addHeader(value, header, routerFunctionData));
+		}
+	}
+
+	/**
+	 * Create router function data.
+	 *
+	 * @param path the path
+	 */
+	private void createRouterFunctionData(String path) {
+		RouterFunctionData routerFunctionData = new RouterFunctionData();
+		routerFunctionData.setPath(path);
+		routerFunctionData.setMethods(methods);
+		routerFunctionData.addConsumes(consumes);
+		routerFunctionData.addProduces(produces);
+		this.queryParams.forEach(routerFunctionData::addQueryParams);
+		this.currentRouterFunctionDatas.add(routerFunctionData);
+	}
+
+	/**
+	 * Add header.
+	 *
+	 * @param mediaType the media type
+	 * @param header the header
+	 * @param routerFunctionData the router function data
+	 */
+	private void addHeader(String mediaType, String header,RouterFunctionData routerFunctionData) {
+		if (HttpHeaders.CONTENT_TYPE.equals(header))
+			routerFunctionData.addConsumes(mediaType);
+		else if (HttpHeaders.ACCEPT.equals(header))
+			routerFunctionData.addProduces(mediaType);
+	}
 }

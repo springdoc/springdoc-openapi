@@ -20,6 +20,7 @@
 
 package org.springdoc.webmvc.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -84,9 +85,9 @@ public class RouterFunctionProvider {
 	private class RouterFunctionVisitor extends AbstractRouterFunctionVisitor implements RouterFunctions.Visitor, RequestPredicates.Visitor {
 		@Override
 		public void route(RequestPredicate predicate, HandlerFunction<?> handlerFunction) {
-			super.route();
+			this.currentRouterFunctionDatas = new ArrayList<>();
 			predicate.accept(this);
-			this.attributes =  new HashMap<>();
+			commonRoute();
 		}
 
 		@Override
@@ -106,14 +107,14 @@ public class RouterFunctionProvider {
 
 		@Override
 		public void startNested(RequestPredicate predicate) {
-			this.isNested = true;
+			commonStartNested();
 			predicate.accept(this);
 		}
 
 
 		@Override
 		public void endNested(RequestPredicate predicate) {
-			computeNested();
+			commonEndNested();
 		}
 
 	}
