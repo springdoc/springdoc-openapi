@@ -107,9 +107,9 @@ public class OpenAPIService {
 	private final Map<HandlerMethod, io.swagger.v3.oas.models.tags.Tag> springdocTags = new HashMap<>();
 
 	/**
-	 * The Open api builder customisers.
+	 * The Open api builder customizers.
 	 */
-	private final Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers;
+	private final Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers;
 
 	/**
 	 * The Spring doc config properties.
@@ -148,11 +148,11 @@ public class OpenAPIService {
 	 * @param context the context
 	 * @param securityParser the security parser
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param openApiBuilderCustomisers the open api builder customisers
+	 * @param openApiBuilderCustomizers the open api builder customizers
 	 */
 	OpenAPIService(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers) {
+			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
 			if (this.openAPI.getComponents() == null)
@@ -165,7 +165,7 @@ public class OpenAPIService {
 		this.context = context;
 		this.securityParser = securityParser;
 		this.springDocConfigProperties = springDocConfigProperties;
-		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
+		this.openApiBuilderCustomizers = openApiBuilderCustomizers;
 		if (springDocConfigProperties.isUseFqn())
 			TypeNameResolver.std.setUseFqn(true);
 	}
@@ -218,7 +218,7 @@ public class OpenAPIService {
 
 		// add security schemes
 		this.calculateSecuritySchemes(calculatedOpenAPI.getComponents());
-		openApiBuilderCustomisers.ifPresent(customisers -> customisers.forEach(customiser -> customiser.customise(this)));
+		openApiBuilderCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(this)));
 	}
 
 	private void initializeHiddenRestController() {

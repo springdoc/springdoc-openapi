@@ -17,29 +17,29 @@ import org.springframework.util.CollectionUtils;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
- * The type Actuator open api customiser.
+ * The type Actuator open api customizer.
  * @author bnasslahsen
  */
-public class ActuatorOpenApiCustomizer implements OpenApiCustomiser {
+public class ActuatorOpenApiCustomizer implements OpenApiCustomizer {
 
 	/**
-	 * The Path pathern.
+	 * The Path pattern.
 	 */
-	private final Pattern pathPathern = Pattern.compile("\\{(.*?)}");
+	private final Pattern pathPattern = Pattern.compile("\\{(.*?)}");
 
-	private WebEndpointProperties webEndpointProperties;
+	private final WebEndpointProperties webEndpointProperties;
 
 	public ActuatorOpenApiCustomizer(WebEndpointProperties webEndpointProperties) {
 		this.webEndpointProperties = webEndpointProperties;
 	}
 
 	@Override
-	public void customise(OpenAPI openApi) {
+	public void customize(OpenAPI openApi) {
 		openApi.getPaths().entrySet().stream()
 				.filter(stringPathItemEntry -> stringPathItemEntry.getKey().startsWith(webEndpointProperties.getBasePath()+DEFAULT_PATH_SEPARATOR))
 				.forEach(stringPathItemEntry -> {
 					String path = stringPathItemEntry.getKey();
-					Matcher matcher = pathPathern.matcher(path);
+					Matcher matcher = pathPattern.matcher(path);
 					while (matcher.find()) {
 						String pathParam = matcher.group(1);
 						PathItem pathItem = stringPathItemEntry.getValue();

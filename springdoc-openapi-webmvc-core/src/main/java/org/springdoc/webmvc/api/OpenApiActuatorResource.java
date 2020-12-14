@@ -35,7 +35,7 @@ import org.springdoc.core.OperationService;
 import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.webmvc.core.RouterFunctionProvider;
 
@@ -69,7 +69,7 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param actuatorProvider the actuator provider
 	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
+	 * @param openApiCustomizers the open api customizers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
 	 * @param routerFunctionProvider the router function provider
@@ -80,12 +80,12 @@ public class OpenApiActuatorResource extends OpenApiResource {
 			OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider,
 			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			Optional<List<OpenApiCustomizer>> openApiCustomizers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, actuatorProvider, operationCustomizers, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
+		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, actuatorProvider, operationCustomizers, openApiCustomizers, springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param actuatorProvider the actuator provider
 	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
+	 * @param openApiCustomizers the open api customizers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
 	 * @param routerFunctionProvider the router function provider
@@ -109,11 +109,11 @@ public class OpenApiActuatorResource extends OpenApiResource {
 			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
 			OperationService operationParser, RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider, Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties,
+			Optional<List<OpenApiCustomizer>> openApiCustomizers, SpringDocConfigProperties springDocConfigProperties,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
-				requestMappingHandlerMapping, actuatorProvider, operationCustomizers, openApiCustomisers,
+				requestMappingHandlerMapping, actuatorProvider, operationCustomizers, openApiCustomizers,
 				springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
 	}
 

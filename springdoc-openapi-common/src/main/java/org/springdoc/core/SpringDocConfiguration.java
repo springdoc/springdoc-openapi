@@ -45,7 +45,7 @@ import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
 
@@ -187,7 +187,7 @@ public class SpringDocConfiguration {
 	 * @param context the context
 	 * @param securityParser the security parser
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param openApiBuilderCustomisers the open api builder customisers
+	 * @param openApiBuilderCustomizers the open api builder customizers
 	 * @return the open api builder
 	 */
 	@Bean
@@ -195,8 +195,8 @@ public class SpringDocConfiguration {
 	OpenAPIService openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context,
 			SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers) {
-		return new OpenAPIService(openAPI, context, securityParser, springDocConfigProperties, openApiBuilderCustomisers);
+			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers) {
+		return new OpenAPIService(openAPI, context, securityParser, springDocConfigProperties, openApiBuilderCustomizers);
 	}
 
 	/**
@@ -290,16 +290,16 @@ public class SpringDocConfiguration {
 	}
 
 	/**
-	 * Properties resolver for schema open api customiser.
+	 * Properties resolver for schema open api customizer.
 	 *
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param openAPIService the open api builder
-	 * @return the open api customiser
+	 * @return the open api customizer
 	 */
 	@Bean
 	@ConditionalOnProperty(SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES)
 	@Lazy(false)
-	OpenApiCustomiser propertiesResolverForSchema(PropertyResolverUtils propertyResolverUtils, OpenAPIService openAPIService) {
+	OpenApiCustomizer propertiesResolverForSchema(PropertyResolverUtils propertyResolverUtils, OpenAPIService openAPIService) {
 		return openApi -> {
 			Components components = openApi.getComponents();
 			Map<String, Schema> schemas = components.getSchemas();
@@ -387,13 +387,13 @@ public class SpringDocConfiguration {
 		}
 
 		/**
-		 * Actuator customizer OpenAPI customiser.
+		 * Actuator customizer OpenAPI customizer.
 		 *
-		 * @return the OpenAPI customiser
+		 * @return the OpenAPI customizer
 		 */
 		@Bean
 		@Lazy(false)
-		OpenApiCustomiser actuatorOpenApiCustomiser(WebEndpointProperties webEndpointProperties) {
+		OpenApiCustomizer actuatorOpenApiCustomizer(WebEndpointProperties webEndpointProperties) {
 			return new ActuatorOpenApiCustomizer(webEndpointProperties);
 		}
 

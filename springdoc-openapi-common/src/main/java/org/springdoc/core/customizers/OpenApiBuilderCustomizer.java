@@ -23,17 +23,17 @@ package org.springdoc.core.customizers;
 import org.springdoc.core.OpenAPIService;
 
 /**
- * The interface Open api builder customiser.
+ * The interface Open api builder customizer.
  * @author bnasslahsen
  */
 @FunctionalInterface
 public interface OpenApiBuilderCustomizer {
 
 	/**
-	 * Customise.
+	 * Customize.
 	 *
 	 * @param openApiService the open api builder
 	 */
-	void customise(OpenAPIService openApiService);
+	void customize(OpenAPIService openApiService);
 
 }
