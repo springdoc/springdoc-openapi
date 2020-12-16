@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.2] - 2020-12-16 
+### Added
+- #978 - Add explode support in combination with arrayShema annotation
+- #938 - Swagger-UI Property persistAuthorization. 
+### Changed
+- Update swagger-ui to 3.38.0
+### Fixed
+- #985 - StackOverflowError when using ObjectId with @ParameterObject
+- #980, #968 - Functional DSL incorrect path mapping
+
 ## [1.5.1] - 2020-12-07 
 ### Added
 - #923 - Exposing swagger-ui on the management port.
