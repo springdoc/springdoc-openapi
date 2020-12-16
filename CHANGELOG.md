@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.5.2] - 2020-12-16 
 ### Added
 - #978 - Add explode support in combination with arrayShema annotation
-- #938 - Swagger-UI Property persistAuthorization. 
 ### Changed
 - Update swagger-ui to 3.38.0
 ### Fixed
