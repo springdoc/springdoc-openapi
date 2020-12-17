@@ -136,7 +136,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #744 - Impossible to configure swaggerurl programmatically 
 
 ## [1.4.1] - 2020-06-09
-### Addedgrr
+### Added
 - #714 - Ability to disable swagger-ui default petstore url
 - #713 - Add Support of Actuator endpoints using webflux
 - #703 - Pretty print OpenApi spec 
