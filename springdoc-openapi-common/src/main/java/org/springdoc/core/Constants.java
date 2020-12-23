@@ -306,11 +306,6 @@ public final class Constants {
 	public static final String HEALTH_PATTERN = "/health/*";
 
 	/**
-	 * The constant SWAGGER_UI_PATTERN.
-	 */
-	public static final String SWAGGER_UI_PATTERN = SWAGGER_UI_PREFIX + ALL_PATTERN;
-
-	/**
 	 * The constant SPRINGDOC_USE_MANAGEMENT_PORT.
 	 */
 	public static final String SPRINGDOC_USE_MANAGEMENT_PORT = "springdoc.use-management-port";
