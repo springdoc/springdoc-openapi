@@ -6,6 +6,14 @@
 
 # [Full documentation](https://springdoc.org)
 
+# Acknowledgements
+
+[springdoc-openapi is made possible thanks to all of its contributors.](https://github.com/springdoc/springdoc-openapi/graphs/contributors)
+
+<a href="https://github.com/springdoc/springdoc-openapi/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=springdoc/springdoc-openapi" />
+</a>
+
 # **Introduction**
 
 The springdoc-openapi Java library helps automating the generation of API documentation using Spring Boot projects.
