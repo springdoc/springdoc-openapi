@@ -168,7 +168,8 @@ public class DataRestResponseService {
 		if (methodResourceMapping.isPagingResource()) {
 			returnType = ResolvableType.forClassWithGenerics(PagedModel.class, domainType).getType();
 		}
-		else if (Iterable.class.isAssignableFrom(ResolvableType.forType(returnRepoType).getRawClass())) {
+		else if (ResolvableType.forType(returnRepoType).getRawClass() != null
+				&& Iterable.class.isAssignableFrom(ResolvableType.forType(returnRepoType).getRawClass())) {
 			returnType = ResolvableType.forClassWithGenerics(CollectionModel.class, domainType).getType();
 		}
 		else if (!ClassUtils.isPrimitiveOrWrapper(domainType)) {
