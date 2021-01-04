@@ -30,6 +30,7 @@ import org.springdoc.api.AbstractOpenApiResource;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.web.context.WebServerApplicationContext;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.context.ApplicationContext;
@@ -102,12 +103,11 @@ public abstract class ActuatorProvider  implements ApplicationListener<WebServer
 
 	@Override
 	public void onApplicationEvent(WebServerInitializedEvent event) {
-		if ("application".equals(event.getApplicationContext().getId())) {
-			applicationWebServer = event.getWebServer();
-		}
-		else if ("application:management".equals(event.getApplicationContext().getId())) {
+		if (WebServerApplicationContext.hasServerNamespace(event.getApplicationContext(), "management")) {
 			managementApplicationContext = event.getApplicationContext();
 			actuatorWebServer = event.getWebServer();
+		} else {
+			applicationWebServer = event.getWebServer();
 		}
 	}
 
