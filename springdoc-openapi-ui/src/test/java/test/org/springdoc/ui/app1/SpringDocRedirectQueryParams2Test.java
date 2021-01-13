@@ -19,14 +19,12 @@
 package test.org.springdoc.ui.app1;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MvcResult;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = "springdoc.swagger-ui.display-query-params=true")
@@ -34,11 +32,9 @@ public class SpringDocRedirectQueryParams2Test extends AbstractSpringDocTest {
 
 	@Test
 	public void shouldRedirectWithQueryParams() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(get("/swagger-ui.html"))
-				.andExpect(status().isFound()).andReturn();
-
-		String locationHeader = mvcResult.getResponse().getHeader("Location");
-		assertEquals("/swagger-ui/index.html?oauth2RedirectUrl=http://localhost/swagger-ui/oauth2-redirect.html&url=/v3/api-docs", locationHeader);
+        mockMvc.perform(get("/swagger-ui.html"))
+                .andExpect(status().isFound())
+                .andExpect(header().string("Location", "/swagger-ui/index.html?oauth2RedirectUrl=http://localhost/swagger-ui/oauth2-redirect.html&url=/v3/api-docs"));
 	}
 
 	@SpringBootApplication
