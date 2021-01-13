@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = "springdoc.swagger-ui.display-query-params-without-oauth2=true")
@@ -34,11 +35,9 @@ public class SpringDocRedirectQueryParams1Test extends AbstractSpringDocTest {
 
 	@Test
 	public void shouldRedirectWithQueryParamsWithoutOauth2() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(get("/swagger-ui.html"))
-				.andExpect(status().isFound()).andReturn();
-
-		String locationHeader = mvcResult.getResponse().getHeader("Location");
-		assertEquals("/swagger-ui/index.html?url=/v3/api-docs", locationHeader);
+		mockMvc.perform(get("/swagger-ui.html"))
+				.andExpect(status().isFound())
+				.andExpect(header().string("Location", "/swagger-ui/index.html?url=/v3/api-docs"));
 	}
 
 	@SpringBootApplication
