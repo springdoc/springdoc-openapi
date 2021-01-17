@@ -20,24 +20,32 @@ package test.org.springdoc.ui.app1;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.test.context.TestPropertySource;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "springdoc.swagger-ui.display-query-params=true")
-public class SpringDocRedirectQueryParams2Test extends AbstractSpringDocTest {
+public class SpringDocRedirectOriginalQueryParamsTest extends AbstractSpringDocTest {
 
-	@Test
-	public void shouldRedirectWithQueryParams() throws Exception {
-        mockMvc.perform(get("/swagger-ui.html"))
+    @Test
+    public void shouldRedirectWithOriginalQueryParams() throws Exception {
+        mockMvc.perform(get("/swagger-ui.html").queryParam("paramA", "123").queryParam("paramB", "e n c o d e d ! % &"))
                 .andExpect(status().isFound())
-                .andExpect(header().string("Location", "/swagger-ui/index.html?oauth2RedirectUrl=http://localhost/swagger-ui/oauth2-redirect.html&url=/v3/api-docs"));
-	}
+                .andExpect(header().string("Location",
+                        "/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config&paramA=123&paramB=e%20n%20c%20o%20d%20e%20d%20!%20%25%20%26"));
+    }
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
+    @Test
+    public void shouldRedirectWithOriginalQueryParamsHavingMultipleValues() throws Exception {
+        mockMvc.perform(get("/swagger-ui.html").queryParam("paramA", "1", "2", "3"))
+                .andExpect(status().isFound())
+                .andExpect(header().string("Location",
+                        "/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config&paramA=1&paramA=2&paramA=3"));
+    }
+
+    @SpringBootApplication
+    static class SpringDocTestApp {
+    }
 
 }
