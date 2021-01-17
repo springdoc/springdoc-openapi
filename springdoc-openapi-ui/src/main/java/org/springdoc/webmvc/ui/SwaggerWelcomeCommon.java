@@ -30,6 +30,10 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
 		String sbUrl =   swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
+
+		// forward all queryParams from original request
+		request.getParameterMap().forEach(uriBuilder::queryParam);
+
 		return UrlBasedViewResolver.REDIRECT_URL_PREFIX + uriBuilder.build().encode().toString();
 	}
 

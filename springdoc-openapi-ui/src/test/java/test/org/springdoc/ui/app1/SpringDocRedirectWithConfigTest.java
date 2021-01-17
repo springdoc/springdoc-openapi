@@ -19,17 +19,13 @@
 package test.org.springdoc.ui.app1;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MvcResult;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @TestPropertySource(properties = {
 		"springdoc.swagger-ui.validatorUrl=/foo/validate",
@@ -39,14 +35,12 @@ public class SpringDocRedirectWithConfigTest extends AbstractSpringDocTest {
 
 	@Test
 	public void shouldRedirectWithConfiguredParams() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(get("/swagger-ui.html"))
-				.andExpect(status().isFound()).andReturn();
-
-		String locationHeader = mvcResult.getResponse().getHeader("Location");
-		assertEquals("/swagger-ui/index.html?configUrl=/baf/batz/swagger-config", locationHeader);
+		mockMvc.perform(get("/swagger-ui.html"))
+				.andExpect(status().isFound())
+				.andExpect(header().string("Location", "/swagger-ui/index.html?configUrl=/baf/batz/swagger-config"));
 
 		mockMvc.perform(get("/baf/batz/swagger-config"))
-				.andExpect(status().isOk()).andExpect(jsonPath("$.validatorUrl", is("/foo/validate"))).andReturn();
+				.andExpect(status().isOk()).andExpect(jsonPath("$.validatorUrl", is("/foo/validate")));
 
 	}
 
