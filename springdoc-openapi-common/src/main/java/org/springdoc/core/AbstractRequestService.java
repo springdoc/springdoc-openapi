@@ -44,6 +44,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -460,8 +461,17 @@ public abstract class AbstractRequestService {
 		if (parameter.getSchema() == null && parameter.getContent() == null) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, null,
 					jsonView);
-			if (parameterInfo.getDefaultValue() != null && schema !=null)
-				schema.setDefault(parameterInfo.getDefaultValue());
+			if (parameterInfo.getDefaultValue() != null && schema != null) {
+				Object defaultValue = parameterInfo.getDefaultValue();
+				// Cast default value
+				PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
+				if (primitiveType != null) {
+					Schema<?> primitiveSchema = primitiveType.createProperty();
+					primitiveSchema.setDefault(parameterInfo.getDefaultValue());
+					defaultValue = primitiveSchema.getDefault();
+				}
+				schema.setDefault(defaultValue);
+			}
 			parameter.setSchema(schema);
 		}
 		return parameter;

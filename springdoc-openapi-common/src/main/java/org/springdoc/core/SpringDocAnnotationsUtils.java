@@ -106,7 +106,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 */
 	public static Schema extractSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations) {
 		Schema schemaN = null;
-		ResolvedSchema resolvedSchema = null;
+		ResolvedSchema resolvedSchema;
 		try {
 			resolvedSchema = ModelConverters.getInstance()
 					.resolveAsResolvedSchema(

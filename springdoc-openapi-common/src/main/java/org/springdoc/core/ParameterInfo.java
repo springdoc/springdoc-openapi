@@ -25,11 +25,13 @@ import java.lang.reflect.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.apache.commons.lang3.StringUtils;
 
+import org.springframework.boot.autoconfigure.web.format.WebConversionService;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ValueConstants;
 
 /**
  * The type Parameter info.
@@ -60,7 +62,7 @@ public class ParameterInfo {
 	/**
 	 * The Default value.
 	 */
-	private String defaultValue;
+	private Object defaultValue;
 
 	/**
 	 * The Param type.
@@ -97,8 +99,11 @@ public class ParameterInfo {
 
 		if (StringUtils.isNotBlank(this.pName))
 			this.pName = propertyResolverUtils.resolve(this.pName);
-		if (StringUtils.isNotBlank(this.defaultValue))
-			this.defaultValue = propertyResolverUtils.resolve(this.defaultValue);
+		if (this.defaultValue !=null && !ValueConstants.DEFAULT_NONE.equals(this.defaultValue.toString())){
+			this.defaultValue = propertyResolverUtils.resolve(this.defaultValue.toString());
+			WebConversionService conversionService = parameterBuilder.getWebConversionService();
+			this.defaultValue= conversionService.convert(this.defaultValue, methodParameter.getParameterType());
+		}
 
 		this.required = this.required && !methodParameter.isOptional();
 	}
@@ -171,7 +176,7 @@ public class ParameterInfo {
 	 *
 	 * @return the default value
 	 */
-	public String getDefaultValue() {
+	public Object getDefaultValue() {
 		return defaultValue;
 	}
 
@@ -207,7 +212,7 @@ public class ParameterInfo {
 	 *
 	 * @param defaultValue the default value
 	 */
-	public void setDefaultValue(String defaultValue) {
+	public void setDefaultValue(Object defaultValue) {
 		this.defaultValue = defaultValue;
 	}
 

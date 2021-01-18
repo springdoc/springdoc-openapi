@@ -275,7 +275,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 		}
 
 		if (parameter.getSchema() == null) {
-			Schema<?> schema = null;
+			Schema<?> schema ;
 			PrimitiveType primitiveType = PrimitiveType.fromType(type);
 			if (primitiveType != null) {
 				schema = primitiveType.createProperty();
