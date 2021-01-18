@@ -59,6 +59,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.web.format.WebConversionService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -281,12 +282,15 @@ public class SpringDocConfiguration {
 	 *
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
+	 * @param webConversionServiceOptional the web conversion service
 	 * @return the generic parameter builder
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
-		return new GenericParameterService(propertyResolverUtils,optionalDelegatingMethodParameterCustomizer);
+	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils,
+			Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
+			Optional<WebConversionService> webConversionServiceOptional) {
+		return new GenericParameterService(propertyResolverUtils,optionalDelegatingMethodParameterCustomizer, webConversionServiceOptional);
 	}
 
 	/**

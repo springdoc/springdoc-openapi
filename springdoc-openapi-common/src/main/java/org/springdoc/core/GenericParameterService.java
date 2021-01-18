@@ -34,6 +34,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.Json;
+import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
@@ -49,6 +50,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
+import org.springframework.boot.autoconfigure.web.format.WebConversionService;
+import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties.Format;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.Resource;
@@ -72,6 +76,11 @@ public class GenericParameterService {
 	private final Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer;
 
 	/**
+	 * The Web conversion service.
+	 */
+	private final WebConversionService webConversionService;
+
+	/**
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericParameterService.class);
@@ -88,13 +97,20 @@ public class GenericParameterService {
 
 	/**
 	 * Instantiates a new Generic parameter builder.
-	 *
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
+	 * @param webConversionServiceOptional the web conversion service optional
 	 */
-	public GenericParameterService(PropertyResolverUtils propertyResolverUtils,   Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
+	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer, Optional<WebConversionService> webConversionServiceOptional) {
 		this.propertyResolverUtils = propertyResolverUtils;
-		this.optionalDelegatingMethodParameterCustomizer=optionalDelegatingMethodParameterCustomizer;
+		this.optionalDelegatingMethodParameterCustomizer = optionalDelegatingMethodParameterCustomizer;
+		if (webConversionServiceOptional.isPresent())
+			this.webConversionService = webConversionServiceOptional.get();
+		else {
+			final Format format = new Format();
+			this.webConversionService = new WebConversionService(new DateTimeFormatters()
+					.dateFormat(format.getDate()).timeFormat(format.getTime()).dateTimeFormat(format.getDateTime()));
+		}
 	}
 
 	/**
@@ -256,6 +272,16 @@ public class GenericParameterService {
 			if (schema == null) {
 				schema = AnnotationsUtils.getArraySchema(parameterDoc.array(), components, jsonView).orElse(null);
 			}
+			// Cast default value
+			if (schema != null && schema.getDefault() != null) {
+				PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
+				if (primitiveType != null) {
+					Schema<?> primitiveSchema = primitiveType.createProperty();
+					primitiveSchema.setDefault(schema.getDefault());
+					schema.setDefault(primitiveSchema.getDefault());
+				}
+			}
+
 			parameter.setSchema(schema);
 		}
 	}
@@ -459,5 +485,15 @@ public class GenericParameterService {
 	 */
 	public PropertyResolverUtils getPropertyResolverUtils() {
 		return propertyResolverUtils;
+	}
+
+
+	/**
+	 * Gets web conversion service.
+	 *
+	 * @return the web conversion service
+	 */
+	public WebConversionService getWebConversionService() {
+		return webConversionService;
 	}
 }
