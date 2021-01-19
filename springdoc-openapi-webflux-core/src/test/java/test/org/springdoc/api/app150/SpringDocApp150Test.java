@@ -27,7 +27,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.context.annotation.ComponentScan;
 
 @AutoConfigureWebTestClient(timeout = "3600000")
-public class SpringDocApp149Test extends AbstractSpringDocTest {
+public class SpringDocApp150Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app150" })
