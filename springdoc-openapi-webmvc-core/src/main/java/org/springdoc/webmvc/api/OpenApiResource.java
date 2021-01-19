@@ -51,6 +51,7 @@ import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.webmvc.core.RouterFunctionProvider;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -241,10 +242,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 					String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 					String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 					String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
-					Operation operationAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), Operation.class);
 					if (((isShowActuator() && optionalActuatorProvider.get().isRestController(operationPath, handlerMethod.getBeanType()))
-							|| isRestController(restControllers, handlerMethod, operationPath)
-							|| operationAnnotation != null)
+							|| isRestController(restControllers, handlerMethod, operationPath))
 							&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
 						Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 						// default allowed requestmethods
@@ -278,6 +277,9 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	protected boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod,
 			String operationPath) {
+		boolean hasOperationAnnotation = AnnotatedElementUtils.hasAnnotation(handlerMethod.getMethod(), Operation.class);
+		if (hasOperationAnnotation)
+			return true;
 		ResponseBody responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
 		if (responseBodyAnnotation == null)
 			responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ResponseBody.class);
