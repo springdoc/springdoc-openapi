@@ -1,0 +1,76 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/users/test/greeter": {
+      "get": {
+        "operationId": "get-users",
+        "responses": {}
+      }
+    },
+    "/users/test/greeter/greeter3/titi": {
+      "post": {
+        "operationId": "create-user-group-special",
+        "responses": {}
+      }
+    },
+    "/users/test/greeter/greeter3/toto": {
+      "get": {
+        "operationId": "get-user-groups",
+        "responses": {}
+      }
+    },
+    "/users/test/greeter/greeter4/titi": {
+      "post": {
+        "operationId": "create-user-group-special_1",
+        "responses": {}
+      }
+    },
+    "/users/test/greeter/greeter4/toto": {
+      "get": {
+        "operationId": "get-user-groups_1",
+        "responses": {}
+      }
+    },
+    "/users/test/greeter/groups/titi": {
+      "post": {
+        "operationId": "create-user-group-special_2",
+        "responses": {}
+      }
+    },
+    "/users/test/greeter/groups/toto": {
+      "get": {
+        "operationId": "get-user-groups_2",
+        "responses": {}
+      }
+    },
+    "/users/test/greeter/groups2/titi": {
+      "post": {
+        "operationId": "create-user-group-special_3",
+        "responses": {}
+      }
+    },
+    "/users/test/greeter/groups2/toto": {
+      "get": {
+        "operationId": "get-user-groups_3",
+        "responses": {}
+      }
+    },
+    "/users/test/greeter/special": {
+      "post": {
+        "operationId": "create-user-special",
+        "responses": {}
+      }
+    }
+  },
+  "components": {}
+}
