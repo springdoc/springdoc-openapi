@@ -18,7 +18,7 @@
  *
  */
 
-package test.org.springdoc.api.app149;
+package test.org.springdoc.api.app150;
 
 import test.org.springdoc.api.AbstractSpringDocTest;
 
@@ -30,6 +30,6 @@ import org.springframework.context.annotation.ComponentScan;
 public class SpringDocApp149Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app149" })
+	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app150" })
 	static class SpringDocTestApp {}
 }
