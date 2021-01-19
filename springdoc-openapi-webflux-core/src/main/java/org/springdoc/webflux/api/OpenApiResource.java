@@ -32,6 +32,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.PathUtils;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.AbstractRequestService;
@@ -47,6 +48,7 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,7 +65,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Open api resource.
- * @author bnasslahsen
+ * @author bnasslahsen, Azige
  */
 public abstract class OpenApiResource extends AbstractOpenApiResource {
 
@@ -183,11 +185,11 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 				String operationPath = pathPattern.getPatternString();
 				Map<String, String> regexMap = new LinkedHashMap<>();
 				operationPath = PathUtils.parsePath(operationPath, regexMap);
-				String[] produces =  requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-				String[] consumes =  requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-				String[] headers =  requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
-				if (operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-						&& (restControllers.containsKey(handlerMethod.getBean().toString()) || (isShowActuator()))
+				String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
+				String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
+				String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
+				if ((operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
+						&& (isRestController(restControllers,handlerMethod) || (isShowActuator())))
 						&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
 					Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 					// default allowed requestmethods
@@ -246,4 +248,15 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	protected abstract String getServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl);
 
+	/**
+	 * Is rest controller boolean.
+	 *
+	 * @param restControllers the rest controllers
+	 * @param handlerMethod the handler method
+	 * @return the boolean
+	 */
+	private boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod) {
+		boolean hasOperationAnnotation = AnnotatedElementUtils.hasAnnotation(handlerMethod.getMethod(), Operation.class);
+		return hasOperationAnnotation || restControllers.containsKey(handlerMethod.getBean().toString());
+	}
 }

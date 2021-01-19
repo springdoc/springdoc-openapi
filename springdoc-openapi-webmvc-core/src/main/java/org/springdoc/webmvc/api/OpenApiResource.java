@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.PathUtils;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.AbstractRequestService;
@@ -50,6 +51,7 @@ import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.webmvc.core.RouterFunctionProvider;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -66,7 +68,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Web mvc open api resource.
- * @author bnasslahsen
+ * @author bnasslahsen, Azige
  */
 public abstract class OpenApiResource extends AbstractOpenApiResource {
 
@@ -275,6 +277,9 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	protected boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod,
 			String operationPath) {
+		boolean hasOperationAnnotation = AnnotatedElementUtils.hasAnnotation(handlerMethod.getMethod(), Operation.class);
+		if (hasOperationAnnotation)
+			return true;
 		ResponseBody responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
 		if (responseBodyAnnotation == null)
 			responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ResponseBody.class);
