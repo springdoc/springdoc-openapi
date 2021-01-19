@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.api.app149;
+package test.org.springdoc.api.app150;
 
 
 import test.org.springdoc.api.AbstractSpringDocTest;
@@ -26,7 +26,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Tests Spring meta-annotations as method parameters
  */
-public class SpringDocApp149Test extends AbstractSpringDocTest {
+public class SpringDocApp150Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}

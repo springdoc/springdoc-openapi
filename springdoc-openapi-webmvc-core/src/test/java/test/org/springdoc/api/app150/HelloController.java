@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.api.app149;
+package test.org.springdoc.api.app150;
 
 import java.util.List;
 
