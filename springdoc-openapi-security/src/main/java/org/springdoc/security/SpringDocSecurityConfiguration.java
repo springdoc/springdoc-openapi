@@ -32,8 +32,8 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-import org.springdoc.core.customizers.OpenApiCustomiser;
 
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -100,15 +100,15 @@ public class SpringDocSecurityConfiguration {
 	class SpringSecurityLoginEndpointConfiguration {
 
 		/**
-		 * Spring security login endpoint customiser open api customiser.
+		 * Spring security login endpoint customizer open api customizer.
 		 *
 		 * @param applicationContext the application context
-		 * @return the open api customiser
+		 * @return the open api customizer
 		 */
 		@Bean
 		@ConditionalOnProperty(SPRINGDOC_SHOW_LOGIN_ENDPOINT)
 		@Lazy(false)
-		OpenApiCustomiser springSecurityLoginEndpointCustomiser(ApplicationContext applicationContext) {
+		OpenApiCustomizer springSecurityLoginEndpointCustomizer(ApplicationContext applicationContext) {
 			FilterChainProxy filterChainProxy = applicationContext.getBean(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, FilterChainProxy.class);
 			return openAPI -> {
 				for (SecurityFilterChain filterChain : filterChainProxy.getFilterChains()) {

@@ -28,8 +28,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import io.swagger.v3.oas.models.examples.Example;
-import org.springdoc.core.customizers.OpenApiCustomiser;
 
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -52,7 +52,7 @@ class SpringDocTestApp {
 	}
 
 	@Bean
-	public OpenApiCustomiser openApiCustomiser(Collection<Entry<String, Example>> examples) {
+	public OpenApiCustomizer openApiCustomizer(Collection<Entry<String, Example>> examples) {
 		return openAPI -> {
 			examples.forEach(example -> {
 				openAPI.getComponents().addExamples(example.getKey(), example.getValue());

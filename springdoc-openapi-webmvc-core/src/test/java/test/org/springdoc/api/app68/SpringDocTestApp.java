@@ -31,7 +31,7 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.Constants;
 import org.springdoc.core.GroupedOpenApi;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 
 import org.springframework.boot.SpringApplication;
@@ -41,6 +41,7 @@ import org.springframework.web.method.HandlerMethod;
 
 @SpringBootApplication
 public class SpringDocTestApp {
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringDocTestApp.class, args);
 	}
@@ -57,19 +58,20 @@ public class SpringDocTestApp {
 	public GroupedOpenApi userOpenApi() {
 		return GroupedOpenApi.builder()
 				.group("users")
-				.packagesToScan("test.org.springdoc.api.app68.api.user").addOpenApiCustomiser(serverOpenApiCustomiser1())
+				.packagesToScan("test.org.springdoc.api.app68.api.user")
+				.addOpenApiCustomizer(serverOpenApiCustomizer1())
 				.addOperationCustomizer(operationCustomizer())
 				.build();
 	}
 
-	public OpenApiCustomiser serverOpenApiCustomiser1() {
+	public OpenApiCustomizer serverOpenApiCustomizer1() {
 		Server server = new Server().url("http://toto.v1.com").description("myserver1");
 		List<Server> servers = new ArrayList<>();
 		servers.add(server);
 		return openApi -> openApi.setServers(servers);
 	}
 
-	public OpenApiCustomiser serverOpenApiCustomiser2() {
+	public OpenApiCustomizer serverOpenApiCustomizer2() {
 		Server server = new Server().url("http://toto.v2.com").description("myserver2");
 		List<Server> servers = new ArrayList<>();
 		servers.add(server);
@@ -90,7 +92,8 @@ public class SpringDocTestApp {
 	public GroupedOpenApi petOpenApi() {
 		return GroupedOpenApi.builder()
 				.group("pets")
-				.pathsToMatch("/pet/**").addOpenApiCustomiser(serverOpenApiCustomiser2())
+				.pathsToMatch("/pet/**")
+				.addOpenApiCustomizer(serverOpenApiCustomizer2())
 				.build();
 	}
 
@@ -102,7 +105,6 @@ public class SpringDocTestApp {
 				.packagesToScan("test.org.springdoc.api.app68.api.user", "test.org.springdoc.api.app68.api.store")
 				.build();
 	}
-
 
 	@Bean
 	public OpenAPI customOpenAPI() {

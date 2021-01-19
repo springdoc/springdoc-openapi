@@ -24,8 +24,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 
 import org.springframework.util.CollectionUtils;
@@ -44,9 +47,9 @@ public class GroupedOpenApi {
 	private final String group;
 
 	/**
-	 * The Open api customisers.
+	 * The Open api customizers.
 	 */
-	private final List<OpenApiCustomiser> openApiCustomisers;
+	private final List<OpenApiCustomizer> openApiCustomizers;
 
 	/**
 	 * The Operation customizers.
@@ -102,7 +105,7 @@ public class GroupedOpenApi {
 		this.headersToMatch = builder.headersToMatch;
 		this.packagesToExclude = builder.packagesToExclude;
 		this.pathsToExclude = builder.pathsToExclude;
-		this.openApiCustomisers = Objects.requireNonNull(builder.openApiCustomisers);
+		this.openApiCustomizers = Objects.requireNonNull(builder.openApiCustomizers);
 		this.operationCustomizers = Objects.requireNonNull(builder.operationCustomizers);
 		if (CollectionUtils.isEmpty(this.pathsToMatch)
 				&& CollectionUtils.isEmpty(this.packagesToScan)
@@ -111,9 +114,9 @@ public class GroupedOpenApi {
 				&& CollectionUtils.isEmpty(this.headersToMatch)
 				&& CollectionUtils.isEmpty(this.pathsToExclude)
 				&& CollectionUtils.isEmpty(this.packagesToExclude)
-				&& CollectionUtils.isEmpty(openApiCustomisers)
+				&& CollectionUtils.isEmpty(openApiCustomizers)
 				&& CollectionUtils.isEmpty(operationCustomizers))
-			throw new IllegalStateException("Packages to scan or paths to filter or openApiCustomisers/operationCustomizers can not be all null for the group:" + this.group);
+			throw new IllegalStateException("Packages to scan or paths to filter or openApiCustomizers/operationCustomizers can not be all null for the group: " + this.group);
 	}
 
 	/**
@@ -198,12 +201,22 @@ public class GroupedOpenApi {
 	}
 
 	/**
+	 * Will be deleted in 2.0.
+	 */
+	@Deprecated
+	public List<OpenApiCustomiser> getOpenApiCustomisers() {
+		return openApiCustomizers.stream()
+				.map(customizer -> (OpenApiCustomiser) customizer::customize)
+				.collect(Collectors.toList());
+	}
+
+	/**
 	 * Gets open api customisers.
 	 *
 	 * @return the open api customisers
 	 */
-	public List<OpenApiCustomiser> getOpenApiCustomisers() {
-		return openApiCustomisers;
+	public List<OpenApiCustomizer> getOpenApiCustomizers() {
+		return openApiCustomizers;
 	}
 
 	/**
@@ -221,9 +234,9 @@ public class GroupedOpenApi {
 	 */
 	public static class Builder {
 		/**
-		 * The Open api customisers.
+		 * The Open api customizers.
 		 */
-		private final List<OpenApiCustomiser> openApiCustomisers = new ArrayList<>();
+		private final List<OpenApiCustomizer> openApiCustomizers = new ArrayList<>();
 
 		/**
 		 * The Operation customizers.
@@ -366,14 +379,24 @@ public class GroupedOpenApi {
 		}
 
 		/**
-		 * Add open api customiser builder.
+		 * Add open api customizer builder.
 		 *
-		 * @param openApiCustomiser the open api customiser
+		 * @param openApiCustomizer the open api customizer
 		 * @return the builder
 		 */
-		public Builder addOpenApiCustomiser(OpenApiCustomiser openApiCustomiser) {
-			this.openApiCustomisers.add(openApiCustomiser);
+		public Builder addOpenApiCustomizer(OpenApiCustomizer openApiCustomizer) {
+			this.openApiCustomizers.add(openApiCustomizer);
 			return this;
+		}
+
+		/**
+		 * This method kept only for back compatibility, will be deleted in 2.0.
+		 *
+		 * @see #addOpenApiCustomizer(OpenApiCustomizer)
+		 */
+		@Deprecated
+		public Builder addOpenApiCustomiser(OpenApiCustomiser openApiCustomiser) {
+			return addOpenApiCustomizer(openApiCustomiser);
 		}
 
 		/**

@@ -26,9 +26,9 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import io.swagger.v3.core.util.Json;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.hateoas.converters.CollectionModelContentConverter;
-import org.springdoc.hateoas.converters.OpenApiHateoasLinksCustomiser;
+import org.springdoc.hateoas.converters.OpenApiHateoasLinksCustomizer;
 import org.springdoc.hateoas.converters.RepresentationModelLinksOASMixin;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -82,24 +82,24 @@ public class SpringDocHateoasConfiguration {
 	}
 
 	/**
-	 * Registers an OpenApiCustomiser and a jackson mixin to ensure the definition of `Links` matches the serialized
+	 * Registers an OpenApiCustomizer and a jackson mixin to ensure the definition of `Links` matches the serialized
 	 * output. This is done because the customer serializer converts the data to a map before serializing it.
 	 *
 	 * @param halProvider the hal provider
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @return the open api customiser
+	 * @return the open api customizer
 	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	OpenApiCustomiser linksSchemaCustomiser(HateoasHalProvider halProvider, SpringDocConfigProperties springDocConfigProperties) {
+	OpenApiCustomizer linksSchemaCustomizer(HateoasHalProvider halProvider, SpringDocConfigProperties springDocConfigProperties) {
 		if (!halProvider.isHalEnabled()) {
 			return openApi -> {
 			};
 		}
 		Json.mapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
-		return new OpenApiHateoasLinksCustomiser(springDocConfigProperties);
+		return new OpenApiHateoasLinksCustomizer(springDocConfigProperties);
 	}
 
 }

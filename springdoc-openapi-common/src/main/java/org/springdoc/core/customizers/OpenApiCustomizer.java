@@ -24,26 +24,17 @@ import io.swagger.v3.oas.models.OpenAPI;
 
 /**
  * The interface Open api customizer.
- * Please use {@link OpenApiCustomizer}, this class kept for back compatibility,
- * this class will be removed in 2.0.
- * @author bnasslahsen
  *
- * @see OpenApiCustomizer
+ * @author seregamorph
  */
-@Deprecated
 @FunctionalInterface
-public interface OpenApiCustomiser extends OpenApiCustomizer {
+public interface OpenApiCustomizer {
 
 	/**
-	 * Customise.
+	 * Customize.
 	 *
 	 * @param openApi the open api
 	 */
-	void customise(OpenAPI openApi);
-
-	@Override
-	default void customize(OpenAPI openApi) {
-		customise(openApi);
-	}
+	void customize(OpenAPI openApi);
 
 }

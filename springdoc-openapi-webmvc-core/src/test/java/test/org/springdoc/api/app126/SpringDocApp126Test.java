@@ -29,7 +29,7 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -45,7 +45,7 @@ public class SpringDocApp126Test extends AbstractSpringDocTest {
 	static class SpringDocTestApp {
 
 		@Bean
-		public OpenApiCustomiser responseRegistrationCustomizer(List<Map.Entry<String, ApiResponse>> responsesToRegister) {
+		public OpenApiCustomizer responseRegistrationCustomizer(List<Map.Entry<String, ApiResponse>> responsesToRegister) {
 			ResolvedSchema resolvedSchema = ModelConverters.getInstance()
 					.resolveAsResolvedSchema(new AnnotatedType(Problem.class));
 			return openApi -> {

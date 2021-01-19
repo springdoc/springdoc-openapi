@@ -36,7 +36,7 @@ import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.webmvc.api.OpenApiWebMvcResource;
 import org.springdoc.webmvc.core.RouterFunctionProvider;
@@ -97,10 +97,10 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 				OperationService operationParser,Optional<List<OperationCustomizer>> operationCustomizers,
 				@Qualifier("defaultTestHandlerMapping") RequestMappingHandlerMapping requestMappingHandlerMapping,
 				Optional<ActuatorProvider> actuatorProvider, SpringDocConfigProperties springDocConfigProperties,
-				Optional<List<OpenApiCustomiser>> openApiCustomisers, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
+				Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 				Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 			return new OpenApiWebMvcResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping,
-					actuatorProvider,operationCustomizers, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,routerFunctionProvider, repositoryRestResourceProvider);
+					actuatorProvider,operationCustomizers, openApiCustomizers, springDocConfigProperties, springSecurityOAuth2Provider,routerFunctionProvider, repositoryRestResourceProvider);
 		}
 
 		@Override

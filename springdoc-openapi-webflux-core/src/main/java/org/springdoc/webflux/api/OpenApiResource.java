@@ -40,7 +40,7 @@ import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.webflux.core.visitor.RouterFunctionVisitor;
 import reactor.core.publisher.Mono;
@@ -82,7 +82,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param operationParser the operation parser
 	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
+	 * @param openApiCustomizers the open api customizers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
@@ -90,10 +90,10 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			Optional<List<OpenApiCustomizer>> openApiCustomizers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomizers, springDocConfigProperties, actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
@@ -106,7 +106,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param operationParser the operation parser
 	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
+	 * @param openApiCustomizers the open api customizers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
@@ -114,10 +114,10 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			Optional<List<OpenApiCustomizer>> openApiCustomizers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
+		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomizers, springDocConfigProperties, actuatorProvider);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 

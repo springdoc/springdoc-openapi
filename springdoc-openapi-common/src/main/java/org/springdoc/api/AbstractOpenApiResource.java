@@ -82,7 +82,7 @@ import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.annotations.RouterOperations;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 import org.springdoc.core.fn.RouterFunctionData;
@@ -164,9 +164,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private final OperationService operationParser;
 
 	/**
-	 * The Open api customisers.
+	 * The Open api customizers.
 	 */
-	private final Optional<List<OpenApiCustomiser>> openApiCustomisers;
+	private final Optional<List<OpenApiCustomizer>> openApiCustomizers;
 
 	/**
 	 * The Operation customizers.
@@ -192,7 +192,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
 	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
+	 * @param openApiCustomizers the open api customizers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
@@ -200,7 +200,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			Optional<List<OpenApiCustomizer>> openApiCustomizers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
 		super();
@@ -210,7 +210,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.requestBuilder = requestBuilder;
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
-		this.openApiCustomisers = openApiCustomisers;
+		this.openApiCustomizers = openApiCustomizers;
 		this.springDocConfigProperties = springDocConfigProperties;
 		if (operationCustomizers.isPresent())
 			operationCustomizers.get().removeIf(Objects::isNull);
@@ -288,8 +288,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
 				this.removeBrokenReferenceDefinitions(openApi);
 
-			// run the optional customisers
-			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
+			// run the optional customizers
+			openApiCustomizers.ifPresent(apiCustomizers -> apiCustomizers.forEach(openApiCustomizer -> openApiCustomizer.customize(openApi)));
 
 			openAPIService.setCachedOpenAPI(openApi);
 			openAPIService.resetCalculatedOpenAPI();

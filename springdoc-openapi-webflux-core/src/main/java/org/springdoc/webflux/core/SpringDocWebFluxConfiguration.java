@@ -33,7 +33,7 @@ import org.springdoc.core.PropertyResolverUtils;
 import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.ReturnTypeParser;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.webflux.api.OpenApiActuatorResource;
@@ -81,7 +81,7 @@ public class SpringDocWebFluxConfiguration {
 	 * @param operationParser the operation parser
 	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
+	 * @param openApiCustomizers the open api customizers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 * @return the open api resource
@@ -94,13 +94,13 @@ public class SpringDocWebFluxConfiguration {
 			GenericResponseService responseBuilder, OperationService operationParser,
 			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			Optional<List<OpenApiCustomizer>> openApiCustomizers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
 		return new OpenApiWebfluxResource(openAPIBuilderObjectFactory, requestBuilder,
 				responseBuilder, operationParser,
 				requestMappingHandlerMapping, operationCustomizers,
-				openApiCustomisers, springDocConfigProperties, actuatorProvider);
+				openApiCustomizers, springDocConfigProperties, actuatorProvider);
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class SpringDocWebFluxConfiguration {
 		 * @param operationParser the operation parser
 		 * @param requestMappingHandlerMapping the request mapping handler mapping
 		 * @param operationCustomizers the operation customizers
-		 * @param openApiCustomisers the open api customisers
+		 * @param openApiCustomizers the open api customizers
 		 * @param springDocConfigProperties the spring doc config properties
 		 * @param actuatorProvider the actuator provider
 		 * @return the open api actuator resource
@@ -208,13 +208,13 @@ public class SpringDocWebFluxConfiguration {
 				GenericResponseService responseBuilder, OperationService operationParser,
 				RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
 				Optional<List<OperationCustomizer>> operationCustomizers,
-				Optional<List<OpenApiCustomiser>> openApiCustomisers,
+				Optional<List<OpenApiCustomizer>> openApiCustomizers,
 				SpringDocConfigProperties springDocConfigProperties,
 				Optional<ActuatorProvider> actuatorProvider) {
 			return new OpenApiActuatorResource(openAPIBuilderObjectFactory, requestBuilder,
 					responseBuilder, operationParser,
 					requestMappingHandlerMapping, operationCustomizers,
-					openApiCustomisers, springDocConfigProperties, actuatorProvider);
+					openApiCustomizers, springDocConfigProperties, actuatorProvider);
 		}
 	}
 }

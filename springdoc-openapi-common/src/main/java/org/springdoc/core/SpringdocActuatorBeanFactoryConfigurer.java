@@ -73,7 +73,7 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 					.pathsToMatch(webEndpointProperties.getBasePath() + ALL_PATTERN)
 					.pathsToExclude(webEndpointProperties.getBasePath() + HEALTH_PATTERN)
 					.addOperationCustomizer(new ActuatorOperationCustomizer())
-					.addOpenApiCustomiser(new ActuatorOpenApiCustomizer(webEndpointProperties))
+					.addOpenApiCustomizer(new ActuatorOpenApiCustomizer(webEndpointProperties))
 					.build();
 			// Add the actuator group
 			newGroups.add(actuatorGroup);
