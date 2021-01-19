@@ -62,8 +62,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	@Override
 	public void customize(MethodParameter originalParameter, MethodParameter methodParameter) {
 		PageableDefault pageableDefault = originalParameter.getParameterAnnotation(PageableDefault.class);
-		if (pageableDefault != null || (org.springframework.data.domain.Pageable.class.isAssignableFrom(originalParameter.getParameterType()) && (optionalSpringDataWebProperties.isPresent() || optionalRepositoryRestConfiguration.isPresent())))
-		{
+		if (pageableDefault != null || (org.springframework.data.domain.Pageable.class.isAssignableFrom(originalParameter.getParameterType()) && (optionalSpringDataWebProperties.isPresent() || optionalRepositoryRestConfiguration.isPresent()))) {
 			Field field = FieldUtils.getDeclaredField(DelegatingMethodParameter.class, "additionalParameterAnnotations", true);
 			try {
 				Annotation[] parameterAnnotations = (Annotation[]) field.get(methodParameter);
@@ -100,7 +99,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 
 				@Override
 				public String name() {
-					return getName(parameterName, pageableDefault, parameter.name());
+					return getName(parameterName, parameter.name());
 				}
 
 				@Override
@@ -390,11 +389,10 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 * Gets name.
 	 *
 	 * @param parameterName the parameter name
-	 * @param pageableDefault the pageable default
 	 * @param originalName the original name
 	 * @return the name
 	 */
-	private String getName(String parameterName, PageableDefault pageableDefault, String originalName) {
+	private String getName(String parameterName , String originalName) {
 		String name = null;
 		switch (parameterName) {
 			case "size":
@@ -406,9 +404,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 					name = originalName;
 				break;
 			case "sort":
-				if (pageableDefault != null && ArrayUtils.isNotEmpty(pageableDefault.sort()))
-					name = String.join(",", pageableDefault.sort());
-				else if (optionalRepositoryRestConfiguration.isPresent())
+				if (optionalRepositoryRestConfiguration.isPresent())
 					name = optionalRepositoryRestConfiguration.get().getSortParamName();
 				else if (optionalSpringDataWebProperties.isPresent())
 					name = optionalSpringDataWebProperties.get().getSort().getSortParameter();
