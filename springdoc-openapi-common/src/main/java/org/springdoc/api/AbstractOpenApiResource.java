@@ -400,7 +400,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			buildCallbacks(openAPI, methodAttributes, operation, apiCallbacks);
 
 			// allow for customisation
-			customiseOperation(operation, handlerMethod);
+			operation = customiseOperation(operation, handlerMethod);
+			if (operation == null)
+				continue;
 
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
@@ -703,8 +705,15 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the operation
 	 */
 	protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
-		operationCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(operation, handlerMethod)));
-		return operation;
+		if (!operationCustomizers.isPresent())
+			return operation;
+		Operation customizedOperation = operation;
+		for (OperationCustomizer customizer : operationCustomizers.get()) {
+			customizedOperation = customizer.customize(customizedOperation, handlerMethod);
+			if (customizedOperation == null)
+				return null;
+		}
+		return customizedOperation;
 	}
 
 	/**
