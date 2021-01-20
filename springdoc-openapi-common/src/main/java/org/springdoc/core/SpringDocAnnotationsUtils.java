@@ -20,6 +20,7 @@
 
 package org.springdoc.core;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
@@ -375,4 +377,16 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		return isArray;
 	}
 
+	public static Object resolveDefaultValue(String defaultValueStr) {
+		Object defaultValue = null;
+		if (StringUtils.isNotEmpty(defaultValueStr)) {
+			try {
+				defaultValue = Json.mapper().readTree(defaultValueStr);
+			}
+			catch (IOException e) {
+				defaultValue = defaultValueStr;
+			}
+		}
+		return defaultValue;
+	}
 }

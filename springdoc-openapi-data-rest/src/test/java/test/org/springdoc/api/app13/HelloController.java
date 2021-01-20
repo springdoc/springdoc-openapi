@@ -23,6 +23,7 @@ import java.util.List;
 import org.springdoc.api.annotations.ParameterObject;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,4 +37,24 @@ public class HelloController {
 		return null;
 	}
 
+
+	@GetMapping("/test1")
+	public String getPatientList1(@PageableDefault(size = 100, sort = { "someField", "someoTHER" },
+			direction = Direction.DESC)
+	@ParameterObject Pageable pageable) {
+		return "bla";
+	}
+
+	@GetMapping("/test2")
+	public String getPatientList2(@PageableDefault(size = 100, sort = "someField",
+			direction = Direction.DESC)
+	@ParameterObject Pageable pageable) {
+		return "bla";
+	}
+
+	@GetMapping("/test3")
+	public String getPatientList3(@PageableDefault(size = 100)
+	@ParameterObject Pageable pageable) {
+		return "bla";
+	}
 }

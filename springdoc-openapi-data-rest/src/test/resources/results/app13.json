@@ -11,6 +11,181 @@
     }
   ],
   "paths": {
+    "/test3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "getPatientList3",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 100
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "getPatientList2",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 100
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": [
+                "someField,DESC"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "getPatientList1",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Zero-based page index (0..N)",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The size of the page to be returned",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer",
+              "default": 100
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": [
+                "someField,DESC",
+                "someoTHER,DESC"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/search": {
       "get": {
         "tags": [
@@ -49,7 +224,10 @@
               "type": "array",
               "items": {
                 "type": "string"
-              }
+              },
+              "default": [
+                "name,ASC"
+              ]
             }
           }
         ],
