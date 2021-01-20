@@ -265,23 +265,27 @@ public class GenericParameterService {
 			Schema schema = null;
 			try {
 				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null, false, parameterDoc.schema().implementation(), components, jsonView).orElse(null);
+				// Cast default value
+				if (schema != null && schema.getDefault() != null) {
+					PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
+					if (primitiveType != null) {
+						Schema<?> primitiveSchema = primitiveType.createProperty();
+						primitiveSchema.setDefault(schema.getDefault());
+						schema.setDefault(primitiveSchema.getDefault());
+					}
+				}
 			}
 			catch (Exception e) {
 				LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
 			}
 			if (schema == null) {
 				schema = AnnotationsUtils.getArraySchema(parameterDoc.array(), components, jsonView).orElse(null);
-			}
-			// Cast default value
-			if (schema != null && schema.getDefault() != null) {
-				PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
-				if (primitiveType != null) {
-					Schema<?> primitiveSchema = primitiveType.createProperty();
-					primitiveSchema.setDefault(schema.getDefault());
-					schema.setDefault(primitiveSchema.getDefault());
+				// default value not set by swagger-core for array !
+				if (schema != null) {
+					Object defaultValue = SpringDocAnnotationsUtils.resolveDefaultValue(parameterDoc.array().arraySchema().defaultValue());
+					schema.setDefault(defaultValue);
 				}
 			}
-
 			parameter.setSchema(schema);
 		}
 	}
