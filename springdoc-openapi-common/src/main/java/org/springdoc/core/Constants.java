@@ -331,6 +331,10 @@ public final class Constants {
 	public static final String ACTUATOR_DEFAULT_GROUP = "x-actuator";
 
 	/**
+	 * The constant LINKS_SCHEMA_CUSTOMISER.
+	 */
+	public static final String LINKS_SCHEMA_CUSTOMISER  = "linksSchemaCustomiser";
+	/**
 	 * Instantiates a new Constants.
 	 */
 	private Constants() {

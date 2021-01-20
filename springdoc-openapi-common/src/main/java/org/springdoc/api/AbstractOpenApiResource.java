@@ -102,6 +102,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
 import static org.springdoc.core.Constants.ACTUATOR_DEFAULT_GROUP;
+import static org.springdoc.core.Constants.LINKS_SCHEMA_CUSTOMISER;
 import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
 import static org.springdoc.core.Constants.SPRING_MVC_SERVLET_PATH;
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.isDeprecated;
@@ -211,9 +212,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
 		this.openApiCustomisers = openApiCustomisers;
+		//add the default customizers
+		Map<String, OpenApiCustomiser> existingOpenApiCustomisers = openAPIService.getContext().getBeansOfType(OpenApiCustomiser.class);
+		if (!CollectionUtils.isEmpty(existingOpenApiCustomisers) && existingOpenApiCustomisers.containsKey(LINKS_SCHEMA_CUSTOMISER))
+			openApiCustomisers.ifPresent(openApiCustomisersList -> openApiCustomisersList.add(existingOpenApiCustomisers.get(LINKS_SCHEMA_CUSTOMISER)));
 		this.springDocConfigProperties = springDocConfigProperties;
-		if (operationCustomizers.isPresent())
-			operationCustomizers.get().removeIf(Objects::isNull);
+		operationCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
 		this.operationCustomizers = operationCustomizers;
 		this.optionalActuatorProvider = actuatorProvider;
 		if (springDocConfigProperties.isPreLoadingEnabled())

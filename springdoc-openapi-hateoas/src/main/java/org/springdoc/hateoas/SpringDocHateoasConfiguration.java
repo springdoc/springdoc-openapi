@@ -42,6 +42,7 @@ import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.LinkRelationProvider;
 
+import static org.springdoc.core.Constants.LINKS_SCHEMA_CUSTOMISER;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 /**
@@ -90,7 +91,7 @@ public class SpringDocHateoasConfiguration {
 	 * @return the open api customiser
 	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
 	 */
-	@Bean
+	@Bean(LINKS_SCHEMA_CUSTOMISER)
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	OpenApiCustomiser linksSchemaCustomiser(HateoasHalProvider halProvider, SpringDocConfigProperties springDocConfigProperties) {
