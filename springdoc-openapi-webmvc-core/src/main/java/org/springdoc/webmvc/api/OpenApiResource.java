@@ -53,11 +53,13 @@ import org.springdoc.webmvc.core.RouterFunctionProvider;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
@@ -233,9 +235,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
 			HandlerMethod handlerMethod = entry.getValue();
-			PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
-			if (patternsRequestCondition != null) {
-				Set<String> patterns = patternsRequestCondition.getPatterns();
+			Set<String> patterns = getActivePatterns(requestMappingInfo);
+			if (!CollectionUtils.isEmpty(patterns)) {
 				Map<String, String> regexMap = new LinkedHashMap<>();
 				for (String pattern : patterns) {
 					String operationPath = PathUtils.parsePath(pattern, regexMap);
@@ -254,6 +255,25 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Gets active patterns.
+	 *
+	 * @param requestMappingInfo the request mapping info
+	 * @return the active patterns
+	 */
+	private Set<String> getActivePatterns(RequestMappingInfo requestMappingInfo) {
+		Set<String> patterns = null;
+		PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
+		if (patternsRequestCondition != null)
+			patterns = patternsRequestCondition.getPatterns();
+		else {
+			PathPatternsRequestCondition pathPatternsRequestCondition = requestMappingInfo.getPathPatternsCondition();
+			if (pathPatternsRequestCondition != null)
+				patterns = pathPatternsRequestCondition.getPatternValues();
+		}
+		return patterns;
 	}
 
 	/**
@@ -297,7 +317,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	protected void calculateServerUrl(HttpServletRequest request, String apiDocsUrl) {
 		super.initOpenAPIBuilder();
-		String calculatedUrl = getServerUrl(request,apiDocsUrl);
+		String calculatedUrl = getServerUrl(request, apiDocsUrl);
 		openAPIService.setServerBaseUrl(calculatedUrl);
 	}
 
@@ -309,5 +329,6 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @return the server url
 	 */
 	protected abstract String getServerUrl(HttpServletRequest request, String apiDocsUrl);
+
 
 }
