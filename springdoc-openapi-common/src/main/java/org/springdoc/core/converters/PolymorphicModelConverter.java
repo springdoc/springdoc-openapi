@@ -62,7 +62,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 		String ref = schema.get$ref();
 		List<Schema> composedSchemas = schemas.stream()
 				.filter(s -> s instanceof ComposedSchema)
-				.map(s -> (ComposedSchema) s)
+				.map(ComposedSchema.class::cast)
 				.filter(s -> s.getAllOf() != null)
 				.filter(s -> s.getAllOf().stream().anyMatch(s2 -> ref.equals(s2.get$ref())))
 				.map(s -> new Schema().$ref(AnnotationsUtils.COMPONENTS_REF + s.getName()))
