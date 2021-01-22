@@ -282,15 +282,16 @@ public class SpringDocConfiguration {
 	 *
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
-	 * @param webConversionServiceOptional the web conversion service
+	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
 	 * @return the generic parameter builder
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils,
 			Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
-			Optional<WebConversionService> webConversionServiceOptional) {
-		return new GenericParameterService(propertyResolverUtils,optionalDelegatingMethodParameterCustomizer, webConversionServiceOptional);
+			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider) {
+		return new GenericParameterService(propertyResolverUtils, optionalDelegatingMethodParameterCustomizer,
+				optionalWebConversionServiceProvider);
 	}
 
 	/**
@@ -340,6 +341,7 @@ public class SpringDocConfiguration {
 
 	/**
 	 * The type Open api resource advice.
+	 * @author bnasslashen
 	 */
 	@RestControllerAdvice
 	@Hidden
@@ -379,6 +381,7 @@ public class SpringDocConfiguration {
 		static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor3(List<GroupedOpenApi> groupedOpenApis) {
 			return new SpringdocActuatorBeanFactoryConfigurer(groupedOpenApis);
 		}
+
 		/**
 		 * Actuator customizer operation customizer.
 		 *
@@ -393,6 +396,7 @@ public class SpringDocConfiguration {
 		/**
 		 * Actuator customizer OpenAPI customiser.
 		 *
+		 * @param webEndpointProperties the web endpoint properties
 		 * @return the OpenAPI customiser
 		 */
 		@Bean
@@ -402,4 +406,25 @@ public class SpringDocConfiguration {
 		}
 
 	}
+
+	/**
+	 * The type Web conversion service configuration.
+	 * @author bnasslashen
+	 */
+	@ConditionalOnClass(WebConversionService.class)
+	static class WebConversionServiceConfiguration {
+
+		/**
+		 * Web conversion service provider web conversion service provider.
+		 *
+		 * @param webConversionServiceOptional the web conversion service optional
+		 * @return the web conversion service provider
+		 */
+		@Bean
+		@Lazy(false)
+		WebConversionServiceProvider webConversionServiceProvider(Optional<WebConversionService> webConversionServiceOptional) {
+			return new WebConversionServiceProvider(webConversionServiceOptional);
+		}
+	}
+
 }

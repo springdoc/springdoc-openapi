@@ -50,9 +50,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 
-import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
-import org.springframework.boot.autoconfigure.web.format.WebConversionService;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties.Format;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.Resource;
@@ -78,7 +75,7 @@ public class GenericParameterService {
 	/**
 	 * The Web conversion service.
 	 */
-	private final WebConversionService webConversionService;
+	private final Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider;
 
 	/**
 	 * The constant LOGGER.
@@ -99,18 +96,12 @@ public class GenericParameterService {
 	 * Instantiates a new Generic parameter builder.
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
-	 * @param webConversionServiceOptional the web conversion service optional
+	 * @param optionalWebConversionServiceProvider
 	 */
-	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer, Optional<WebConversionService> webConversionServiceOptional) {
+	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer, Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider) {
 		this.propertyResolverUtils = propertyResolverUtils;
 		this.optionalDelegatingMethodParameterCustomizer = optionalDelegatingMethodParameterCustomizer;
-		if (webConversionServiceOptional.isPresent())
-			this.webConversionService = webConversionServiceOptional.get();
-		else {
-			final Format format = new Format();
-			this.webConversionService = new WebConversionService(new DateTimeFormatters()
-					.dateFormat(format.getDate()).timeFormat(format.getTime()).dateTimeFormat(format.getDateTime()));
-		}
+		this.optionalWebConversionServiceProvider = optionalWebConversionServiceProvider;
 	}
 
 	/**
@@ -491,13 +482,7 @@ public class GenericParameterService {
 		return propertyResolverUtils;
 	}
 
-
-	/**
-	 * Gets web conversion service.
-	 *
-	 * @return the web conversion service
-	 */
-	public WebConversionService getWebConversionService() {
-		return webConversionService;
+	public Optional<WebConversionServiceProvider> getOptionalWebConversionServiceProvider() {
+		return optionalWebConversionServiceProvider;
 	}
 }
