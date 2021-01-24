@@ -31,6 +31,7 @@ import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.OpenAPIService;
+import org.springdoc.core.OperationService;
 import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.converters.models.DefaultPageable;
@@ -199,13 +200,14 @@ public class SpringDocDataRestConfiguration {
 		 * @param dataRestRequestService the data rest request builder
 		 * @param tagsBuilder the tags builder
 		 * @param dataRestResponseService the data rest response builder
+		 * @param operationService the operation service
 		 * @return the data rest operation builder
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		DataRestOperationService dataRestOperationBuilder(DataRestRequestService dataRestRequestService, DataRestTagsService tagsBuilder,
-				DataRestResponseService dataRestResponseService) {
-			return new DataRestOperationService(dataRestRequestService, tagsBuilder, dataRestResponseService);
+				DataRestResponseService dataRestResponseService, OperationService operationService) {
+			return new DataRestOperationService(dataRestRequestService, tagsBuilder, dataRestResponseService,operationService);
 		}
 
 		/**
