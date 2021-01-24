@@ -1,7 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Core API"
+    "title": "OpenAPI definition",
+    "version": "v0"
   },
   "servers": [
     {
@@ -10,13 +11,13 @@
     }
   ],
   "paths": {
-    "/banks": {
+    "/peopleme": {
       "get": {
         "tags": [
-          "bank-entity-controller"
+          "person-entity-controller"
         ],
-        "description": "get-bank",
-        "operationId": "getCollectionResource-bank-get_1",
+        "description": "get-person",
+        "operationId": "getCollectionResource-person-get_1",
         "parameters": [
           {
             "name": "page",
@@ -59,17 +60,17 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelBank"
+                  "$ref": "#/components/schemas/CollectionModelPerson"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelBank"
+                  "$ref": "#/components/schemas/CollectionModelPerson"
                 }
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelBank"
+                  "$ref": "#/components/schemas/CollectionModelPerson"
                 }
               }
             }
@@ -78,15 +79,15 @@
       },
       "post": {
         "tags": [
-          "bank-entity-controller"
+          "person-entity-controller"
         ],
-        "description": "create-bank",
-        "operationId": "postCollectionResource-bank-post",
+        "description": "create-person",
+        "operationId": "postCollectionResource-person-post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Bank"
+                "$ref": "#/components/schemas/Person"
               }
             }
           }
@@ -97,7 +98,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelBank"
+                  "$ref": "#/components/schemas/RepresentationModelPerson"
                 }
               }
             }
@@ -105,78 +106,132 @@
         }
       }
     },
-    "/banks/search/countByCode": {
+    "/peopleme/search/findByFirstName": {
       "get": {
         "tags": [
-          "bank-search-controller"
+          "person-search-controller"
         ],
-        "operationId": "executeSearch-bank-get",
+        "description": "this is another test",
+        "operationId": "executeSearch-person-get",
         "parameters": [
           {
-            "name": "code",
+            "name": "firstName",
             "in": "query",
+            "description": "this is for first Name",
             "schema": {
-              "type": "object"
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "another successful operation",
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int64"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
                 }
               }
             }
           },
           "404": {
-            "description": "Not Found"
+            "description": "another Contact not found",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "/banks/search/findOneByCode": {
+    "/peopleme/search/findByLastName": {
       "get": {
         "tags": [
-          "bank-search-controller"
+          "person-search-controller"
         ],
-        "operationId": "executeSearch-bank-get_1",
+        "description": "this is my test",
+        "operationId": "executeSearch-person-get_1",
         "parameters": [
           {
-            "name": "code",
+            "name": "lastName",
             "in": "query",
             "schema": {
-              "type": "object"
+              "type": "string"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
+          "404": {
+            "description": "Contact not found",
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EntityModelBank"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found"
+          "405": {
+            "description": "Validation exception",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Person"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "/banks/{id}": {
+    "/peopleme/{id}": {
       "get": {
         "tags": [
-          "bank-entity-controller"
+          "person-entity-controller"
         ],
-        "description": "get-bank",
-        "operationId": "getItemResource-bank-get",
+        "description": "get-person",
+        "operationId": "getItemResource-person-get",
         "parameters": [
           {
             "name": "id",
@@ -193,7 +248,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EntityModelBank"
+                  "$ref": "#/components/schemas/EntityModelPerson"
                 }
               }
             }
@@ -205,10 +260,10 @@
       },
       "put": {
         "tags": [
-          "bank-entity-controller"
+          "person-entity-controller"
         ],
-        "description": "update-bank",
-        "operationId": "putItemResource-bank-put",
+        "description": "update-person",
+        "operationId": "putItemResource-person-put",
         "parameters": [
           {
             "name": "id",
@@ -223,7 +278,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Bank"
+                "$ref": "#/components/schemas/Person"
               }
             }
           }
@@ -234,7 +289,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelBank"
+                  "$ref": "#/components/schemas/RepresentationModelPerson"
                 }
               }
             }
@@ -244,7 +299,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelBank"
+                  "$ref": "#/components/schemas/RepresentationModelPerson"
                 }
               }
             }
@@ -256,10 +311,10 @@
       },
       "delete": {
         "tags": [
-          "bank-entity-controller"
+          "person-entity-controller"
         ],
-        "description": "delete-bank",
-        "operationId": "deleteItemResource-bank-delete",
+        "description": "delete-person",
+        "operationId": "deleteItemResource-person-delete",
         "parameters": [
           {
             "name": "id",
@@ -281,10 +336,10 @@
       },
       "patch": {
         "tags": [
-          "bank-entity-controller"
+          "person-entity-controller"
         ],
-        "description": "patch-bank",
-        "operationId": "patchItemResource-bank-patch",
+        "description": "patch-person",
+        "operationId": "patchItemResource-person-patch",
         "parameters": [
           {
             "name": "id",
@@ -299,7 +354,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Bank"
+                "$ref": "#/components/schemas/Person"
               }
             }
           }
@@ -310,7 +365,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelBank"
+                  "$ref": "#/components/schemas/RepresentationModelPerson"
                 }
               }
             }
@@ -341,7 +396,7 @@
         }
       }
     },
-    "/profile/banks": {
+    "/profile/peopleme": {
       "get": {
         "tags": [
           "profile-controller"
@@ -454,61 +509,53 @@
           }
         }
       },
-      "Bank": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "code": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "EntityModelBank": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "code": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "RepresentationModelBank": {
-        "type": "object",
-        "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelBank": {
+      "CollectionModelPerson": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "banks": {
+              "people": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Bank"
+                  "$ref": "#/components/schemas/Person"
                 }
               }
             }
           },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "Person": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
+      "EntityModelPerson": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "RepresentationModelPerson": {
+        "type": "object",
+        "properties": {
           "_links": {
             "$ref": "#/components/schemas/Links"
           }

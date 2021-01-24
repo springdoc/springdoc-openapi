@@ -26,6 +26,8 @@ package org.springdoc.data.rest.core;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
+import java.util.Objects;
+import java.util.Set;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -47,6 +49,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
@@ -83,13 +86,22 @@ public class DataRestResponseService {
 	public void buildSearchResponse(Operation operation, HandlerMethod handlerMethod, OpenAPI openAPI,
 			MethodResourceMapping methodResourceMapping, Class<?> domainType, MethodAttributes methodAttributes) {
 		MethodParameter methodParameterReturn = handlerMethod.getReturnType();
-		ApiResponses apiResponses = new ApiResponses();
-		ApiResponse apiResponse = new ApiResponse();
-		Type returnType = findSearchReturnType(handlerMethod, methodResourceMapping, domainType);
-		Content content = genericResponseService.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
-		apiResponse.setContent(content);
-		addResponse200(apiResponses, apiResponse);
-		addResponse404(apiResponses);
+		ApiResponses apiResponses;
+		// check if @ApiResponse(s) is available on from @Operation annotation or method level
+		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray = genericResponseService.getApiResponses(methodResourceMapping.getMethod());
+		if (!responsesArray.isEmpty() || !CollectionUtils.isEmpty(operation.getResponses())) {
+			apiResponses = genericResponseService.build(openAPI.getComponents(), new HandlerMethod(methodResourceMapping.getMethod().getDeclaringClass(), methodResourceMapping.getMethod()), operation, methodAttributes);
+		}
+		else {
+			// Construct default response
+			apiResponses = new ApiResponses();
+			ApiResponse apiResponse = new ApiResponse();
+			Type returnType = findSearchReturnType(handlerMethod, methodResourceMapping, domainType);
+			Content content = genericResponseService.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
+			apiResponse.setContent(content);
+			addResponse200(apiResponses, apiResponse);
+			addResponse404(apiResponses);
+		}
 		operation.setResponses(apiResponses);
 	}
 
@@ -163,21 +175,20 @@ public class DataRestResponseService {
 	 * @return the type
 	 */
 	private Type findSearchReturnType(HandlerMethod handlerMethod, MethodResourceMapping methodResourceMapping, Class<?> domainType) {
-		Type returnType = null;
+		Type returnType;
 		Type returnRepoType = ReturnTypeParser.resolveType(methodResourceMapping.getMethod().getGenericReturnType(), methodResourceMapping.getMethod().getDeclaringClass());
 		if (methodResourceMapping.isPagingResource()) {
 			returnType = ResolvableType.forClassWithGenerics(PagedModel.class, domainType).getType();
 		}
 		else if (ResolvableType.forType(returnRepoType).getRawClass() != null
-				&& Iterable.class.isAssignableFrom(ResolvableType.forType(returnRepoType).getRawClass())) {
+				&& Iterable.class.isAssignableFrom(Objects.requireNonNull(ResolvableType.forType(returnRepoType).getRawClass()))) {
 			returnType = ResolvableType.forClassWithGenerics(CollectionModel.class, domainType).getType();
 		}
-		else if (!ClassUtils.isPrimitiveOrWrapper(domainType)) {
-			returnType = ResolvableType.forClassWithGenerics(EntityModel.class, domainType).getType();
+		else if (ClassUtils.isPrimitiveOrWrapper(methodResourceMapping.getReturnedDomainType())) {
+			returnType = methodResourceMapping.getReturnedDomainType();
 		}
-		if (returnType == null) {
-			returnType = ReturnTypeParser.resolveType(handlerMethod.getMethod().getGenericReturnType(), handlerMethod.getBeanType());
-			returnType = getType(returnType, domainType);
+		else {
+			returnType = ResolvableType.forClassWithGenerics(EntityModel.class, domainType).getType();
 		}
 		return returnType;
 	}

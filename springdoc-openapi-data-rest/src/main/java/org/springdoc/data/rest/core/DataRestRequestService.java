@@ -29,7 +29,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Schema;
@@ -163,6 +165,18 @@ public class DataRestRequestService {
 				addParameters(openAPI, requestMethod, methodAttributes, operation, methodParameter, parameterInfo, parameter);
 			}
 		}
+	}
+
+	/**
+	 * Build parameter from doc parameter.
+	 *
+	 * @param parameterDoc the parameter doc
+	 * @param components the components
+	 * @param jsonViewAnnotation the json view annotation
+	 * @return the parameter
+	 */
+	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonViewAnnotation) {
+		return parameterBuilder.buildParameterFromDoc(parameterDoc, components, jsonViewAnnotation);
 	}
 
 	/**

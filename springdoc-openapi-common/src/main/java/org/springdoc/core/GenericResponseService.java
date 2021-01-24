@@ -318,7 +318,7 @@ public class GenericResponseService {
 	 * @param method the method
 	 * @return the api responses
 	 */
-	private Set<io.swagger.v3.oas.annotations.responses.ApiResponse> getApiResponses(Method method) {
+	public Set<io.swagger.v3.oas.annotations.responses.ApiResponse> getApiResponses(Method method) {
 		Class<?> declaringClass = method.getDeclaringClass();
 
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponses> apiResponsesDoc = AnnotatedElementUtils

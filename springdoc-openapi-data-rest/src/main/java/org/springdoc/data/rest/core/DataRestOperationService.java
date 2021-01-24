@@ -24,6 +24,7 @@
 package org.springdoc.data.rest.core;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -35,9 +36,12 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.MethodAttributes;
+import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocAnnotationsUtils;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.mapping.MethodResourceMapping;
 import org.springframework.data.rest.core.mapping.ParameterMetadata;
 import org.springframework.data.rest.core.mapping.ParametersMetadata;
@@ -45,6 +49,7 @@ import org.springframework.data.rest.core.mapping.ResourceDescription;
 import org.springframework.data.rest.core.mapping.ResourceMetadata;
 import org.springframework.data.rest.core.mapping.TypedResourceDescription;
 import org.springframework.data.rest.webmvc.support.DefaultedPageable;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
@@ -80,6 +85,11 @@ public class DataRestOperationService {
 	private DataRestResponseService dataRestResponseService;
 
 	/**
+	 * The Operation service.
+	 */
+	private OperationService operationService;
+
+	/**
 	 * Instantiates a new Data rest operation builder.
 	 *
 	 * @param dataRestRequestService the data rest request builder
@@ -87,10 +97,11 @@ public class DataRestOperationService {
 	 * @param dataRestResponseService the data rest response builder
 	 */
 	public DataRestOperationService(DataRestRequestService dataRestRequestService, DataRestTagsService tagsBuilder,
-			DataRestResponseService dataRestResponseService) {
+			DataRestResponseService dataRestResponseService, OperationService operationService) {
 		this.dataRestRequestService = dataRestRequestService;
 		this.tagsBuilder = tagsBuilder;
 		this.dataRestResponseService = dataRestResponseService;
+		this.operationService = operationService;
 	}
 
 	/**
@@ -167,8 +178,25 @@ public class DataRestOperationService {
 			MethodResourceMapping methodResourceMapping) {
 		Class<?> domainType = dataRestRepository.getDomainType();
 		Operation operation = initOperation(handlerMethod, domainType, requestMethod);
-		// Make schema as string if empty
+
+		// Add support for operation annotation
+		io.swagger.v3.oas.annotations.Operation apiOperation = AnnotatedElementUtils.findMergedAnnotation(methodResourceMapping.getMethod(),
+				io.swagger.v3.oas.annotations.Operation.class);
+
+		if (apiOperation != null)
+			operationService.parse(apiOperation, operation, openAPI, methodAttributes);
+
 		ParametersMetadata parameterMetadata = methodResourceMapping.getParametersMetadata();
+		Method method = methodResourceMapping.getMethod();
+
+		if (!CollectionUtils.isEmpty(parameterMetadata.getParameterNames())) {
+			HandlerMethod repositoryHandlerMethod = new HandlerMethod(methodResourceMapping.getMethod().getDeclaringClass(), methodResourceMapping.getMethod());
+			MethodParameter[] parameters = repositoryHandlerMethod.getMethodParameters();
+			for (MethodParameter methodParameter : parameters) {
+				dataRestRequestService.buildCommonParameters(domainType, openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameter.getParameterName() }, new MethodParameter[] { methodParameter });
+			}
+		}
+
 		for (ParameterMetadata parameterMetadatum : parameterMetadata) {
 			String pName = parameterMetadatum.getName();
 			ResourceDescription description = parameterMetadatum.getDescription();
@@ -184,10 +212,13 @@ public class DataRestOperationService {
 					type = String.class;
 				}
 				Schema<?> schema = SpringDocAnnotationsUtils.resolveSchemaFromType(type, openAPI.getComponents(), null, null);
-				Parameter parameter = new Parameter().name(pName).in(ParameterIn.QUERY.toString()).schema(schema);
+				Parameter parameter = getParameterFromAnnotations(openAPI, methodAttributes, method, pName);
+				if (parameter == null)
+					parameter = new Parameter().name(pName).in(ParameterIn.QUERY.toString()).schema(schema);
 				operation.addParametersItem(parameter);
 			}
 		}
+
 		if (methodResourceMapping.isPagingResource()) {
 			MethodParameter[] parameters = handlerMethod.getMethodParameters();
 			Arrays.stream(parameters).filter(methodParameter -> DefaultedPageable.class.equals(methodParameter.getParameterType())).findAny()
@@ -196,6 +227,32 @@ public class DataRestOperationService {
 		dataRestResponseService.buildSearchResponse(operation, handlerMethod, openAPI, methodResourceMapping, domainType, methodAttributes);
 		tagsBuilder.buildSearchTags(operation, handlerMethod, dataRestRepository);
 		return operation;
+	}
+
+	/**
+	 * Update parameter from annotations parameter.
+	 *
+	 * @param openAPI the open api
+	 * @param methodAttributes the method attributes
+	 * @param method the method
+	 * @param pName the p name
+	 * @return the parameter
+	 */
+	private Parameter getParameterFromAnnotations(OpenAPI openAPI, MethodAttributes methodAttributes, Method method, String pName) {
+		Parameter parameter = null;
+		for (java.lang.reflect.Parameter reflectParameter : method.getParameters()) {
+			Param paramAnnotation  = reflectParameter.getAnnotation(Param.class);
+			if (paramAnnotation!=null && paramAnnotation.value().equals(pName)) {
+				io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
+						AnnotatedElementUtils.forAnnotations(reflectParameter.getAnnotations()),
+						io.swagger.v3.oas.annotations.Parameter.class);
+				if (parameterDoc != null && (!parameterDoc.hidden() || parameterDoc.schema().hidden())) {
+					parameter = dataRestRequestService.buildParameterFromDoc(parameterDoc, openAPI.getComponents(), methodAttributes.getJsonViewAnnotation());
+					parameter.setName(pName);
+				}
+			}
+		}
+		return parameter;
 	}
 
 	/**
