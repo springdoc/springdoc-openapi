@@ -96,7 +96,7 @@ public class DataRestResponseService {
 			// Construct default response
 			apiResponses = new ApiResponses();
 			ApiResponse apiResponse = new ApiResponse();
-			Type returnType = findSearchReturnType(handlerMethod, methodResourceMapping, domainType);
+			Type returnType = findSearchReturnType(methodResourceMapping, domainType);
 			Content content = genericResponseService.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
 			apiResponse.setContent(content);
 			addResponse200(apiResponses, apiResponse);
@@ -169,12 +169,11 @@ public class DataRestResponseService {
 	/**
 	 * Find search return type type.
 	 *
-	 * @param handlerMethod the handler method
 	 * @param methodResourceMapping the method resource mapping
 	 * @param domainType the domain type
 	 * @return the type
 	 */
-	private Type findSearchReturnType(HandlerMethod handlerMethod, MethodResourceMapping methodResourceMapping, Class<?> domainType) {
+	private Type findSearchReturnType(MethodResourceMapping methodResourceMapping, Class<?> domainType) {
 		Type returnType;
 		Type returnRepoType = ReturnTypeParser.resolveType(methodResourceMapping.getMethod().getGenericReturnType(), methodResourceMapping.getMethod().getDeclaringClass());
 		if (methodResourceMapping.isPagingResource()) {
