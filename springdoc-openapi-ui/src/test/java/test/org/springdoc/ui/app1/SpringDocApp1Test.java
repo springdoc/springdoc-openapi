@@ -19,8 +19,9 @@
 package test.org.springdoc.ui.app1;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.ui.AbstractSpringDocTest;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
