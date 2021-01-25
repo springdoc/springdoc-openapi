@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.3] - 2021-01-26
+### Added
+- #965,#1034 - Improve compatibility with new PathMatcher / PathPatternParser
+- #1012 - Forward queryParameters to swagger-ui when redirecting
+- #1020 - Change handler methods scanning strategy
+- #1026 - Support for @Operation in @RepositoryRestResource Spring Data Repositories.
+- #1027 - Detect automatically @Controller with @Operation. 
+
+### Changed
+- Upgrade versions: spring-boot to 2.4.2 and swagger-ui to 3.40
+### Fixed
+- #996 - Fix NPE when using management port and spring.application.name is set
+- #1004 - NPE in DataRestResponseService.findSearchReturnType
+- #1015 - Default value for List/Array RequestParameter has wrong type.
+- #1010 - Wrong Parameter Name with Default Sort.
+- #1014 - HATOEAS Links produces a circular reference.
+
 ## [1.5.2] - 2020-12-16 
 ### Added
 - #978 - Add explode support in combination with arrayShema annotation
