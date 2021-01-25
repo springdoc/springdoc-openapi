@@ -1,0 +1,11 @@
+{
+  "configUrl": "/test/documentation/v3/api-docs/swagger-config",
+  "oauth2RedirectUrl": "http://localhost:9018/test/documentation/webjars-pref/swagger-ui/oauth2-redirect.html",
+  "urls": [
+    {
+      "url": "/test/documentation/v3/api-docs/users",
+      "name": "users"
+    }
+  ],
+  "validatorUrl": ""
+}
