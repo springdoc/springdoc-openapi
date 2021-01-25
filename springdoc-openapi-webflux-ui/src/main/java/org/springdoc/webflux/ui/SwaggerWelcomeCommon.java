@@ -32,6 +32,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.SWAGGER_UI_URL;
@@ -90,15 +91,6 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 		return swaggerUiConfigParameters.getConfigParameters();
 	}
 
-
-	@Override
-	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
-		if (oauthPrefix == null && !swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl())) {
-			this.oauthPrefix = uriComponentsBuilder.path(swaggerUiConfigParameters.getUiRootPath()).path(webJarsPrefixUrl);
-			swaggerUiConfigParameters.setOauth2RedirectUrl(this.oauthPrefix.path(swaggerUiConfigParameters.getOauth2RedirectUrl()).build().toString());
-		}
-	}
-
 	/**
 	 * From current context path string.
 	 *
@@ -108,7 +100,8 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	private String fromCurrentContextPath(ServerHttpRequest request) {
 		String contextPath = request.getPath().contextPath().value();
 		String url = UriComponentsBuilder.fromHttpRequest(request).toUriString();
-		url = url.replace(request.getPath().toString(), "/");
+		if (!AntPathMatcher.DEFAULT_PATH_SEPARATOR.equals(request.getPath().toString()))
+			url = url.replace(request.getPath().toString(), "");
 		buildConfigUrl(contextPath, UriComponentsBuilder.fromUriString(url));
 		return contextPath;
 	}

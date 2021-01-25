@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #1020 - Change handler methods scanning strategy
 - #1026 - Support for @Operation in @RepositoryRestResource Spring Data Repositories.
 - #1027 - Detect automatically @Controller with @Operation. 
-
 ### Changed
 - Upgrade versions: spring-boot to 2.4.2 and swagger-ui to 3.40
 ### Fixed
@@ -20,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #1015 - Default value for List/Array RequestParameter has wrong type.
 - #1010 - Wrong Parameter Name with Default Sort.
 - #1014 - HATOEAS Links produces a circular reference.
+- #1035 - oauth2 redirect url calculated incorrectly when springdoc.swagger-ui.path=/ 
 
 ## [1.5.2] - 2020-12-16 
 ### Added

@@ -28,12 +28,14 @@ import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import reactor.core.publisher.Mono;
 
+import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.SWAGGER_CONFIG_URL;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
@@ -46,14 +48,21 @@ import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
 public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 
 	/**
+	 * The Webflux base path.
+	 */
+	private String webfluxBasePath;
+
+	/**
 	 * Instantiates a new Swagger welcome.
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
+	 * @param webFluxProperties the web flux properties
 	 */
-	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters) {
+	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, WebFluxProperties webFluxProperties) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
+		webfluxBasePath = webFluxProperties.getBasePath();
 	}
 
 	/**
@@ -90,4 +99,11 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 		calculateUiRootCommon(sbUrl, sbUrls);
 	}
 
+	@Override
+	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
+		if (oauthPrefix == null && !swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl())) {
+			this.oauthPrefix = uriComponentsBuilder.path(webfluxBasePath).path(swaggerUiConfigParameters.getUiRootPath()).path(webJarsPrefixUrl);
+			swaggerUiConfigParameters.setOauth2RedirectUrl(this.oauthPrefix.path(swaggerUiConfigParameters.getOauth2RedirectUrl()).build().toString());
+		}
+	}
 }
