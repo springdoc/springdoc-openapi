@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.5.3] - 2021-01-26
 ### Added
+- Added Support for spring.webflux.base-path
 - #965,#1034 - Improve compatibility with new PathMatcher / PathPatternParser
 - #1012 - Forward queryParameters to swagger-ui when redirecting
 - #1020 - Change handler methods scanning strategy
