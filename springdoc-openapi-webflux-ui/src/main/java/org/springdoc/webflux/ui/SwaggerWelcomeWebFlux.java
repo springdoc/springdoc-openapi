@@ -21,8 +21,10 @@
 package org.springdoc.webflux.ui;
 
 import java.util.Map;
+import java.util.Optional;
 
 import io.swagger.v3.oas.annotations.Operation;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
@@ -50,7 +52,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	/**
 	 * The Webflux base path.
 	 */
-	private String webfluxBasePath;
+	private String webfluxBasePath = StringUtils.EMPTY ;
 
 	/**
 	 * Instantiates a new Swagger welcome.
@@ -58,11 +60,11 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param webFluxProperties the web flux properties
+	 * @param webFluxPropertiesOptional the web flux properties
 	 */
-	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, WebFluxProperties webFluxProperties) {
+	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, Optional<WebFluxProperties> webFluxPropertiesOptional) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
-		webfluxBasePath = webFluxProperties.getBasePath();
+		webFluxPropertiesOptional.ifPresent(webFluxProperties -> webfluxBasePath = webFluxProperties.getBasePath());
 	}
 
 	/**
