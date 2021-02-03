@@ -71,7 +71,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import static org.springdoc.core.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
@@ -350,12 +349,11 @@ public class SpringDocConfiguration {
 		 * Handle no handler found response entity.
 		 *
 		 * @param e the e
-		 * @param request the request
 		 * @return the response entity
 		 */
 		@ExceptionHandler(OpenApiResourceNotFoundException.class)
 		@ResponseStatus(HttpStatus.NOT_FOUND)
-		public ResponseEntity<ErrorMessage> handleNoHandlerFound(OpenApiResourceNotFoundException e, WebRequest request) {
+		public ResponseEntity<ErrorMessage> handleNoHandlerFound(OpenApiResourceNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(e.getMessage()));
 		}
 	}
