@@ -74,9 +74,9 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	private static final String REPOSITORY_ENTITY_CONTROLLER = "org.springframework.data.rest.webmvc.RepositoryEntityController";
 
 	/**
-	 * The constant REPOSITORY_SERACH_CONTROLLER.
+	 * The constant REPOSITORY_SEARCH_CONTROLLER.
 	 */
-	private static final String REPOSITORY_SERACH_CONTROLLER = "org.springframework.data.rest.webmvc.RepositorySearchController";
+	private static final String REPOSITORY_SEARCH_CONTROLLER = "org.springframework.data.rest.webmvc.RepositorySearchController";
 
 	/**
 	 * The constant REPOSITORY_SCHEMA_CONTROLLER.
@@ -269,7 +269,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 				RepositoryRestHandlerMapping repositoryRestHandlerMapping = (RepositoryRestHandlerMapping) handlerMapping;
 				Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
 				Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
-						.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SERACH_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
+						.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SEARCH_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
 								.getValue().getBeanType().getName()))
 						.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
