@@ -46,7 +46,6 @@ import org.springdoc.core.ParameterInfo;
 import org.springdoc.core.RequestBodyInfo;
 import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.SpringDocAnnotationsUtils;
-
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -61,6 +60,7 @@ import org.springframework.web.method.HandlerMethod;
 
 /**
  * The type Data rest request builder.
+ * 
  * @author bnasslahsen
  */
 public class DataRestRequestService {
@@ -87,14 +87,15 @@ public class DataRestRequestService {
 
 	/**
 	 * Instantiates a new Data rest request builder.
-	 *
-	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
+	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name
+	 * discoverer
 	 * @param parameterBuilder the parameter builder
 	 * @param requestBodyService the request body builder
 	 * @param requestBuilder the request builder
 	 */
-	public DataRestRequestService(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
-			RequestBodyService requestBodyService, AbstractRequestService requestBuilder) {
+	public DataRestRequestService(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
+			GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
+			AbstractRequestService requestBuilder) {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
@@ -103,7 +104,6 @@ public class DataRestRequestService {
 
 	/**
 	 * Build parameters.
-	 *
 	 * @param domainType the domain type
 	 * @param openAPI the open api
 	 * @param handlerMethod the handler method
@@ -112,15 +112,20 @@ public class DataRestRequestService {
 	 * @param operation the operation
 	 * @param resourceMetadata the resource metadata
 	 */
-	public void buildParameters(Class<?> domainType, OpenAPI openAPI, HandlerMethod handlerMethod, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, ResourceMetadata resourceMetadata) {
+	public void buildParameters(Class<?> domainType, OpenAPI openAPI, HandlerMethod handlerMethod,
+			RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation,
+			ResourceMetadata resourceMetadata) {
 		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
 		MethodParameter[] parameters = handlerMethod.getMethodParameters();
-		if (!resourceMetadata.isPagingResource()) {
-			Optional<MethodParameter> methodParameterPage = Arrays.stream(parameters).filter(methodParameter -> DefaultedPageable.class.equals(methodParameter.getParameterType())).findFirst();
+		if (resourceMetadata == null || !resourceMetadata.isPagingResource()) {
+			Optional<MethodParameter> methodParameterPage = Arrays.stream(parameters)
+					.filter(methodParameter -> DefaultedPageable.class.equals(methodParameter.getParameterType()))
+					.findFirst();
 			if (methodParameterPage.isPresent())
 				parameters = ArrayUtils.removeElement(parameters, methodParameterPage.get());
 		}
-		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
+		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters())
+				.map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
 		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
 		buildCommonParameters(domainType, openAPI, requestMethod, methodAttributes, operation, pNames, parameters);
@@ -128,7 +133,6 @@ public class DataRestRequestService {
 
 	/**
 	 * Build common parameters.
-	 *
 	 * @param domainType the domain type
 	 * @param openAPI the open api
 	 * @param requestMethod the request method
@@ -137,18 +141,22 @@ public class DataRestRequestService {
 	 * @param pNames the p names
 	 * @param parameters the parameters
 	 */
-	public void buildCommonParameters(Class<?> domainType, OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters) {
-		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
+	public void buildCommonParameters(Class<?> domainType, OpenAPI openAPI, RequestMethod requestMethod,
+			MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters) {
+		parameters = DelegatingMethodParameter.customize(pNames, parameters,
+				parameterBuilder.getDelegatingMethodParameterCustomizer());
 		for (MethodParameter methodParameter : parameters) {
 			final String pName = methodParameter.getParameterName();
 			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder);
 			if (isParamToIgnore(methodParameter)) {
 				if (PersistentEntityResource.class.equals(methodParameter.getParameterType())) {
-					Schema<?> schema = SpringDocAnnotationsUtils.resolveSchemaFromType(domainType, openAPI.getComponents(), null, methodParameter.getParameterAnnotations());
+					Schema<?> schema = SpringDocAnnotationsUtils.resolveSchemaFromType(domainType,
+							openAPI.getComponents(), null, methodParameter.getParameterAnnotations());
 					parameterInfo.setParameterModel(new Parameter().schema(schema));
 				}
 				else if (methodParameter.getParameterAnnotation(BackendId.class) != null) {
-					parameterInfo.setParameterModel(new Parameter().name("id").in(ParameterIn.PATH.toString()).schema(new StringSchema()));
+					parameterInfo.setParameterModel(
+							new Parameter().name("id").in(ParameterIn.PATH.toString()).schema(new StringSchema()));
 				}
 				Parameter parameter;
 				io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
@@ -157,43 +165,42 @@ public class DataRestRequestService {
 				if (parameterDoc != null) {
 					if (parameterDoc.hidden() || parameterDoc.schema().hidden())
 						continue;
-					parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, openAPI.getComponents(), methodAttributes.getJsonViewAnnotation());
+					parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, openAPI.getComponents(),
+							methodAttributes.getJsonViewAnnotation());
 					parameterInfo.setParameterModel(parameter);
 				}
 				parameter = requestBuilder.buildParams(parameterInfo, openAPI.getComponents(), requestMethod, null);
 
-				addParameters(openAPI, requestMethod, methodAttributes, operation, methodParameter, parameterInfo, parameter);
+				addParameters(openAPI, requestMethod, methodAttributes, operation, methodParameter, parameterInfo,
+						parameter);
 			}
 		}
 	}
 
 	/**
 	 * Build parameter from doc parameter.
-	 *
 	 * @param parameterDoc the parameter doc
 	 * @param components the components
 	 * @param jsonViewAnnotation the json view annotation
 	 * @return the parameter
 	 */
-	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonViewAnnotation) {
+	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components,
+			JsonView jsonViewAnnotation) {
 		return parameterBuilder.buildParameterFromDoc(parameterDoc, components, jsonViewAnnotation);
 	}
 
 	/**
 	 * Is param to ignore boolean.
-	 *
 	 * @param methodParameter the method parameter
 	 * @return the boolean
 	 */
 	private boolean isParamToIgnore(MethodParameter methodParameter) {
-		return !requestBuilder.isParamToIgnore(methodParameter)
-				&& !isHeaderToIgnore(methodParameter)
+		return !requestBuilder.isParamToIgnore(methodParameter) && !isHeaderToIgnore(methodParameter)
 				&& !"property".equals(methodParameter.getParameterName());
 	}
 
 	/**
 	 * Add parameters.
-	 *
 	 * @param openAPI the open api
 	 * @param requestMethod the request method
 	 * @param methodAttributes the method attributes
@@ -202,7 +209,8 @@ public class DataRestRequestService {
 	 * @param parameterInfo the parameter info
 	 * @param parameter the parameter
 	 */
-	private void addParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, MethodParameter methodParameter, ParameterInfo parameterInfo, Parameter parameter) {
+	private void addParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes,
+			Operation operation, MethodParameter methodParameter, ParameterInfo parameterInfo, Parameter parameter) {
 		List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
 		if (requestBuilder.isValidParameter(parameter)) {
 			requestBuilder.applyBeanValidatorAnnotations(parameter, parameterAnnotations);
@@ -212,17 +220,16 @@ public class DataRestRequestService {
 			RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 			if (operation.getRequestBody() != null)
 				requestBodyInfo.setRequestBody(operation.getRequestBody());
-			requestBodyService.calculateRequestBodyInfo(openAPI.getComponents(), methodAttributes,
-					parameterInfo, requestBodyInfo);
-			requestBuilder.applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
+			requestBodyService.calculateRequestBodyInfo(openAPI.getComponents(), methodAttributes, parameterInfo,
+					requestBodyInfo);
+			requestBuilder.applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations,
+					methodParameter.isOptional());
 			operation.setRequestBody(requestBodyInfo.getRequestBody());
 		}
 	}
 
-
 	/**
 	 * Is header to ignore boolean.
-	 *
 	 * @param methodParameter the method parameter
 	 * @return the boolean
 	 */
@@ -230,4 +237,5 @@ public class DataRestRequestService {
 		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
 		return requestHeader != null && HttpHeaders.ACCEPT.equals(requestHeader.value());
 	}
+
 }

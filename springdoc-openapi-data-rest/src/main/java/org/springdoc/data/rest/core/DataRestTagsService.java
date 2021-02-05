@@ -31,7 +31,6 @@ import io.swagger.v3.oas.models.tags.Tag;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.SecurityService;
 import org.springdoc.data.rest.SpringRepositoryRestResourceProvider;
-
 import org.springframework.data.rest.webmvc.ProfileController;
 import org.springframework.data.rest.webmvc.alps.AlpsController;
 import org.springframework.util.CollectionUtils;
@@ -39,6 +38,7 @@ import org.springframework.web.method.HandlerMethod;
 
 /**
  * The type Data rest tags builder.
+ * 
  * @author bnasslahsen
  */
 public class DataRestTagsService {
@@ -50,7 +50,6 @@ public class DataRestTagsService {
 
 	/**
 	 * Instantiates a new Data rest tags builder.
-	 *
 	 * @param openAPIService the open api builder
 	 */
 	public DataRestTagsService(OpenAPIService openAPIService) {
@@ -59,7 +58,6 @@ public class DataRestTagsService {
 
 	/**
 	 * Build search tags.
-	 *
 	 * @param operation the operation
 	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
@@ -71,7 +69,6 @@ public class DataRestTagsService {
 
 	/**
 	 * Build entity tags.
-	 *
 	 * @param operation the operation
 	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
@@ -82,17 +79,46 @@ public class DataRestTagsService {
 	}
 
 	/**
+	 * Build entity tags.
+	 * @param operation the operation
+	 * @param returnType the return type
+	 * @param handlerMethod the handler method
+	 */
+	public void buildCustomTags(Operation operation, Class<?> returnType, HandlerMethod handlerMethod) {
+		String tagName = handlerMethod.getBeanType().getSimpleName();
+		if (SpringRepositoryRestResourceProvider.REPOSITORY_SCHEMA_CONTROLLER.equals(
+				handlerMethod.getBeanType().getName()) || AlpsController.class.equals(handlerMethod.getBeanType())
+				|| ProfileController.class.equals(handlerMethod.getBeanType())) {
+			tagName = ProfileController.class.getSimpleName();
+			operation.addTagsItem(OpenAPIService.splitCamelCase(tagName));
+		}
+		else {
+			Set<Tag> tags = new HashSet<>();
+			Set<String> tagsStr = new HashSet<>();
+			openAPIService.buildTagsFromClass(returnType, tags, tagsStr);
+			if (!CollectionUtils.isEmpty(tagsStr)) {
+				tagsStr.forEach(operation::addTagsItem);
+			}
+			final SecurityService securityParser = openAPIService.getSecurityParser();
+			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = securityParser
+					.getSecurityRequirementsForClass(handlerMethod.getBean().getClass());
+			if (!CollectionUtils.isEmpty(allSecurityTags))
+				securityParser.buildSecurityRequirement(
+						allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]),
+						operation);
+		}
+	}
+
+	/**
 	 * Build tags.
-	 *
 	 * @param operation the operation
 	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
 	 */
-	private void buildTags(Operation operation, HandlerMethod handlerMethod,
-			DataRestRepository dataRestRepository) {
+	private void buildTags(Operation operation, HandlerMethod handlerMethod, DataRestRepository dataRestRepository) {
 		String tagName = handlerMethod.getBeanType().getSimpleName();
-		if (SpringRepositoryRestResourceProvider.REPOSITORY_SCHEMA_CONTROLLER.equals(handlerMethod.getBeanType().getName())
-				|| AlpsController.class.equals(handlerMethod.getBeanType())
+		if (SpringRepositoryRestResourceProvider.REPOSITORY_SCHEMA_CONTROLLER.equals(
+				handlerMethod.getBeanType().getName()) || AlpsController.class.equals(handlerMethod.getBeanType())
 				|| ProfileController.class.equals(handlerMethod.getBeanType())) {
 			tagName = ProfileController.class.getSimpleName();
 			operation.addTagsItem(OpenAPIService.splitCamelCase(tagName));
@@ -110,9 +136,13 @@ public class DataRestTagsService {
 				operation.addTagsItem(OpenAPIService.splitCamelCase(tagName));
 			}
 			final SecurityService securityParser = openAPIService.getSecurityParser();
-			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = securityParser.getSecurityRequirementsForClass(repositoryType);
+			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = securityParser
+					.getSecurityRequirementsForClass(repositoryType);
 			if (!CollectionUtils.isEmpty(allSecurityTags))
-				securityParser.buildSecurityRequirement(allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]), operation);
+				securityParser.buildSecurityRequirement(
+						allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]),
+						operation);
 		}
 	}
+
 }
