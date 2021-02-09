@@ -220,6 +220,11 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			RepositoryRestResourceProvider restResourceProvider = this.repositoryRestResourceProvider.get();
 			List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPIService.getCalculatedOpenAPI());
 			calculatePath(operationList);
+			Map<RequestMappingInfo, HandlerMethod> mapDataRest = restResourceProvider.getHandlerMethods();
+			Map<String, Object> requestMappingMap =  restResourceProvider.getRepositoryRestControllerEndpoints();
+			Class[] additionalRestClasses = requestMappingMap.values().stream().map(Object::getClass).toArray(Class[]::new);
+			AbstractOpenApiResource.addRestControllers(additionalRestClasses);
+			calculatePath(requestMappingMap, mapDataRest);
 		}
 	}
 

@@ -67,7 +67,7 @@
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 		<swagger-api.version>2.1.6</swagger-api.version>
-		<swagger-ui.version>3.40.0</swagger-ui.version>
+		<swagger-ui.version>3.42.0</swagger-ui.version>
 		<spring-security-oauth2.version>2.3.8.RELEASE</spring-security-oauth2.version>
 		<classgraph.version>4.8.69</classgraph.version>
 		<webjars-locator-core.version>0.45</webjars-locator-core.version>

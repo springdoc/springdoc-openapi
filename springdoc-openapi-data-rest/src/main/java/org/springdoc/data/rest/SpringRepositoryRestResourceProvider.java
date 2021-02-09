@@ -43,6 +43,7 @@ import org.springdoc.data.rest.core.DataRestRepository;
 import org.springdoc.data.rest.core.DataRestRouterOperationService;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.data.mapping.PersistentEntity;
 import org.springframework.data.mapping.PersistentProperty;
 import org.springframework.data.mapping.SimpleAssociationHandler;
@@ -54,6 +55,7 @@ import org.springframework.data.rest.core.mapping.ResourceMetadata;
 import org.springframework.data.rest.core.mapping.SearchResourceMappings;
 import org.springframework.data.rest.webmvc.BasePathAwareHandlerMapping;
 import org.springframework.data.rest.webmvc.ProfileController;
+import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.RepositoryRestHandlerMapping;
 import org.springframework.data.rest.webmvc.alps.AlpsController;
 import org.springframework.data.rest.webmvc.json.JacksonMetadata;
@@ -61,6 +63,7 @@ import org.springframework.data.rest.webmvc.mapping.Associations;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 /**
  * The type Spring repository rest resource provider.
@@ -69,34 +72,39 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 public class SpringRepositoryRestResourceProvider implements RepositoryRestResourceProvider {
 
 	/**
-	 * The constant REPOSITORY_ENTITY_CONTROLLER.
+	 * The constant SPRING_DATA_REST_PACKAGE.
 	 */
-	private static final String REPOSITORY_ENTITY_CONTROLLER = "org.springframework.data.rest.webmvc.RepositoryEntityController";
-
-	/**
-	 * The constant REPOSITORY_SERACH_CONTROLLER.
-	 */
-	private static final String REPOSITORY_SERACH_CONTROLLER = "org.springframework.data.rest.webmvc.RepositorySearchController";
+	private static final String SPRING_DATA_REST_PACKAGE = "org.springframework.data.rest";
 
 	/**
 	 * The constant REPOSITORY_SCHEMA_CONTROLLER.
 	 */
-	public static final String REPOSITORY_SCHEMA_CONTROLLER = "org.springframework.data.rest.webmvc.RepositorySchemaController";
+	public static final String REPOSITORY_SCHEMA_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositorySchemaController";
+
+	/**
+	 * The constant REPOSITORY_ENTITY_CONTROLLER.
+	 */
+	private static final String REPOSITORY_ENTITY_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositoryEntityController";
+
+	/**
+	 * The constant REPOSITORY_SEARCH_CONTROLLER.
+	 */
+	private static final String REPOSITORY_SERACH_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositorySearchController";
 
 	/**
 	 * The constant REPOSITORY_PROPERTY_CONTROLLER.
 	 */
-	private static final String REPOSITORY_PROPERTY_CONTROLLER = "org.springframework.data.rest.webmvc.RepositoryPropertyReferenceController";
+	private static final String REPOSITORY_PROPERTY_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositoryPropertyReferenceController";
 
 	/**
 	 * The Delegating handler mapping class.
 	 */
-	private static final String DELEGATING_HANDLER_MAPPING_CLASS = "org.springframework.data.rest.webmvc.config.DelegatingHandlerMapping";
+	private static final String DELEGATING_HANDLER_MAPPING_CLASS = SPRING_DATA_REST_PACKAGE + ".webmvc.config.DelegatingHandlerMapping";
 
 	/**
 	 * The Delegating handler mapping interface.
 	 */
-	private static final String DELEGATING_HANDLER_MAPPING_INTERFACE = "org.springframework.data.rest.webmvc.support.DelegatingHandlerMapping";
+	private static final String DELEGATING_HANDLER_MAPPING_INTERFACE = SPRING_DATA_REST_PACKAGE + ".webmvc.support.DelegatingHandlerMapping";
 
 	/**
 	 * The constant LOGGER.
@@ -139,6 +147,11 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	private ApplicationContext applicationContext;
 
 	/**
+	 * The Handler mapping list.
+	 */
+	private List<HandlerMapping> handlerMappingList;
+
+	/**
 	 * Instantiates a new Spring repository rest resource provider.
 	 *
 	 * @param mappings the mappings
@@ -159,9 +172,10 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 		this.mapper = mapper;
 	}
 
+
 	public List<RouterOperation> getRouterOperations(OpenAPI openAPI) {
 		List<RouterOperation> routerOperationList = new ArrayList<>();
-		List<HandlerMapping> handlerMappingList = getHandlerMappingList();
+		handlerMappingList = getHandlerMappingList();
 		for (Class<?> domainType : repositories) {
 			Class<?> repository = repositories.getRequiredRepositoryInformation(domainType).getRepositoryInterface();
 			DataRestRepository dataRestRepository = new DataRestRepository(domainType, repository);
@@ -224,33 +238,60 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	}
 
 	/**
+	 * Gets repository rest controller endpoints.
+	 *
+	 * @return the repository rest controller endpoints
+	 */
+	@Override
+	public Map<String, Object> getRepositoryRestControllerEndpoints() {
+		return applicationContext.getBeansWithAnnotation(RepositoryRestController.class);
+	}
+
+	/**
+	 * Gets handler methods.
+	 *
+	 * @return the handler methods
+	 */
+	@Override
+	public Map getHandlerMethods() {
+		handlerMappingList = getHandlerMappingList();
+		return handlerMappingList.stream().filter(RequestMappingInfoHandlerMapping.class::isInstance)
+				.flatMap(
+						handler -> ((RequestMappingInfoHandlerMapping) handler).getHandlerMethods().entrySet().stream())
+				.filter(entry -> !entry.getValue().getBeanType().getName().startsWith(SPRING_DATA_REST_PACKAGE) && AnnotatedElementUtils.hasAnnotation(entry.getValue().getBeanType(), RepositoryRestController.class))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+	}
+	/**
 	 * Gets handler mapping list.
 	 *
 	 * @return the handler mapping list
 	 */
 	private List<HandlerMapping> getHandlerMappingList() {
-		List<HandlerMapping> handlerMappingList = new ArrayList<>();
-		Class delegatingHandlerMappingClass = null;
-		try {
-			delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_CLASS);
-		}
-		catch (ClassNotFoundException e) {
+		if (handlerMappingList == null) {
+			handlerMappingList = new ArrayList<>();
+			Class delegatingHandlerMappingClass = null;
 			try {
-				delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_INTERFACE);
+				delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_CLASS);
 			}
-			catch (ClassNotFoundException exception) {
-				LOGGER.warn(e.getMessage());
+			catch (ClassNotFoundException e) {
+				try {
+					delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_INTERFACE);
+				}
+				catch (ClassNotFoundException exception) {
+					LOGGER.warn(e.getMessage());
+				}
+			}
+			if (delegatingHandlerMappingClass != null) {
+				Object object = applicationContext.getBean(delegatingHandlerMappingClass);
+				try {
+					handlerMappingList = (List<HandlerMapping>) MethodUtils.invokeMethod(object, "getDelegates");
+				}
+				catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+					LOGGER.warn(e.getMessage());
+				}
 			}
 		}
-		if (delegatingHandlerMappingClass != null) {
-			Object object = applicationContext.getBean(delegatingHandlerMappingClass);
-			try {
-				handlerMappingList = (List<HandlerMapping>) MethodUtils.invokeMethod(object, "getDelegates");
-			}
-			catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-				LOGGER.warn(e.getMessage());
-			}
-		}
+
 		return handlerMappingList;
 	}
 
@@ -312,8 +353,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param openAPI the open api
 	 * @return the list
 	 */
-	private List<RouterOperation> findControllers
-	(List<RouterOperation> routerOperationList,
+	private List<RouterOperation> findControllers(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
 			DataRestRepository dataRestRepository, OpenAPI openAPI) {
 		dataRestRouterOperationService.buildEntityRouterOperationList(routerOperationList, handlerMethodMap, resourceMetadata,
