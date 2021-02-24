@@ -21,10 +21,13 @@
 package org.springdoc.webflux.api;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
@@ -43,6 +46,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
+import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
@@ -127,7 +131,13 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	@Override
 	protected String getServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
 		String requestUrl = decode(serverHttpRequest.getURI().toString());
-		return  requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length());
+		Map<String, Predicate<Class<?>>> paths = ((RequestMappingHandlerMapping) requestMappingHandlerMapping).getPathPrefixes();
+		final String[] prefix = { StringUtils.EMPTY };
+		paths.forEach((path, classPredicate) -> {
+			if (classPredicate.test(this.getClass()))
+				prefix[0] = path;
+		});
+		return requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length()- prefix[0].length());
 	}
 
 }

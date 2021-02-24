@@ -16,10 +16,12 @@
  *
  */
 
-package test.org.springdoc.ui.app19;
+package test.org.springdoc.ui.app20;
+
 
 import javax.annotation.PostConstruct;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import test.org.springdoc.ui.AbstractCommonTest;
@@ -31,14 +33,12 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "server.port=9019",
-				"springdoc.swagger-ui.path=/" })
-class SpringDocApp19Test extends AbstractCommonTest {
+		properties = { "server.port=9020" })
+class SpringDocApp20Test extends AbstractCommonTest {
 
 	@LocalServerPort
 	private int port;
@@ -56,17 +56,17 @@ class SpringDocApp19Test extends AbstractCommonTest {
 
 	@Test
 	public void testIndex() throws Exception {
-		HttpStatus httpStatusMono = webClient.get().uri("/")
+		HttpStatus httpStatusMono = webClient.get().uri("/test/swagger-ui.html")
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
-		assertTrue(httpStatusMono.equals(HttpStatus.TEMPORARY_REDIRECT));
+		Assertions.assertTrue(httpStatusMono.equals(HttpStatus.TEMPORARY_REDIRECT));
 
 		httpStatusMono = webClient.get().uri("/webjars/swagger-ui/index.html")
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
-		assertTrue(httpStatusMono.equals(HttpStatus.OK));
+		Assertions.assertTrue(httpStatusMono.equals(HttpStatus.OK));
 
-		String contentAsString  = webClient.get().uri("/v3/api-docs/swagger-config").retrieve()
+		String contentAsString  = webClient.get().uri("/test/v3/api-docs/swagger-config").retrieve()
 				.bodyToMono(String.class).block();
-		String expected = getContent("results/app19-1.json");
+		String expected = getContent("results/app20-1.json");
 		assertEquals(expected, contentAsString, true);
 	}
 

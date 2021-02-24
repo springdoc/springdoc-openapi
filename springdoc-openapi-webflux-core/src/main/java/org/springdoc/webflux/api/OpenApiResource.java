@@ -72,7 +72,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * The Request mapping handler mapping.
 	 */
-	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
+	protected final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
 	/**
 	 * Instantiates a new Open api resource.
