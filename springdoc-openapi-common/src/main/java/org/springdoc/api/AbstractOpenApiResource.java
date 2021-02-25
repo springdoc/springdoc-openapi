@@ -359,6 +359,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				methodAttributes.setClassProduces(reqMappingClass.produces());
 			}
 
+			methodAttributes.calculateHeadersForClass(method.getDeclaringClass());
 			methodAttributes.calculateConsumesProduces(method);
 
 			Operation operation = (existingOperation != null) ? existingOperation : new Operation();

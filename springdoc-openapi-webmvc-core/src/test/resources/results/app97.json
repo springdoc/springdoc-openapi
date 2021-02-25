@@ -22,10 +22,7 @@
             "name": "X-API-VERSION",
             "in": "header",
             "schema": {
-              "type": "string",
-              "enum": [
-                ""
-              ]
+              "type": "string"
             }
           }
         ],

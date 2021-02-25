@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(path = "/api", headers = {"userId", "registrationId"})
 public class HelloController {
 
 	@GetMapping("/test")

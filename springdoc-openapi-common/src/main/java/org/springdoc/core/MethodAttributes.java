@@ -408,4 +408,16 @@ public class MethodAttributes {
 	public void setWithResponseBodySchemaDoc(boolean withResponseBodySchemaDoc) {
 		this.withResponseBodySchemaDoc = withResponseBodySchemaDoc;
 	}
+
+	/**
+	 * Calculate headers for class.
+	 *
+	 * @param declaringClass the declaring class
+	 */
+	public void calculateHeadersForClass(Class<?> declaringClass) {
+		RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(declaringClass, RequestMapping.class);
+		if (reqMappingClass != null) {
+			fillMethods(reqMappingClass.produces(), reqMappingClass.consumes(), reqMappingClass.headers());
+		}
+	}
 }
