@@ -84,7 +84,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	/**
 	 * The constant REPOSITORY_ENTITY_CONTROLLER.
 	 */
-	private static final String REPOSITORY_ENTITY_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositoryEntityController";
+	public static final String REPOSITORY_ENTITY_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositoryEntityController";
 
 	/**
 	 * The constant REPOSITORY_SEARCH_CONTROLLER.

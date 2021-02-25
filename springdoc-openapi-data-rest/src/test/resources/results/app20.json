@@ -97,7 +97,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelBank"
+                  "$ref": "#/components/schemas/EntityModelBank"
                 }
               }
             }
@@ -234,7 +234,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelBank"
+                  "$ref": "#/components/schemas/EntityModelBank"
                 }
               }
             }
@@ -244,7 +244,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelBank"
+                  "$ref": "#/components/schemas/EntityModelBank"
                 }
               }
             }
@@ -310,7 +310,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelBank"
+                  "$ref": "#/components/schemas/EntityModelBank"
                 }
               }
             }
@@ -469,32 +469,6 @@
           }
         }
       },
-      "EntityModelBank": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "code": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "RepresentationModelBank": {
-        "type": "object",
-        "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "CollectionModelBank": {
         "type": "object",
         "properties": {
@@ -508,6 +482,24 @@
                 }
               }
             }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelBank": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"

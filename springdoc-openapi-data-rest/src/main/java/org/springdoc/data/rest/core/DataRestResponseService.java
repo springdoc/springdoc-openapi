@@ -26,6 +26,7 @@ package org.springdoc.data.rest.core;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 
@@ -37,6 +38,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.ReturnTypeParser;
+import org.springdoc.data.rest.SpringRepositoryRestResourceProvider;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
@@ -63,6 +65,11 @@ public class DataRestResponseService {
 	 * The Generic response builder.
 	 */
 	private GenericResponseService genericResponseService;
+
+	/**
+	 * The constant requestMethodsEntityModel.
+	 */
+	private static final RequestMethod[] requestMethodsEntityModel = { RequestMethod.PATCH, RequestMethod.POST, RequestMethod.PUT };
 
 	/**
 	 * Instantiates a new Data rest response builder.
@@ -120,8 +127,7 @@ public class DataRestResponseService {
 	public void buildEntityResponse(Operation operation, HandlerMethod handlerMethod, OpenAPI openAPI, RequestMethod requestMethod,
 			String operationPath, Class<?> domainType, MethodAttributes methodAttributes) {
 		MethodParameter methodParameterReturn = handlerMethod.getReturnType();
-		Type returnType = ReturnTypeParser.resolveType(methodParameterReturn.getGenericParameterType(), methodParameterReturn.getContainingClass());
-		returnType = getType(returnType, domainType);
+		Type returnType = getType(methodParameterReturn, domainType, requestMethod);
 		ApiResponses apiResponses = new ApiResponses();
 		ApiResponse apiResponse = new ApiResponse();
 		Content content = genericResponseService.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
@@ -195,11 +201,13 @@ public class DataRestResponseService {
 	/**
 	 * Gets type.
 	 *
-	 * @param returnType the return type
+	 * @param methodParameterReturn the method parameter return
 	 * @param domainType the domain type
+	 * @param requestMethod the request method
 	 * @return the type
 	 */
-	private Type getType(Type returnType, Class<?> domainType) {
+	private Type getType(MethodParameter methodParameterReturn, Class<?> domainType, RequestMethod requestMethod) {
+		Type returnType = ReturnTypeParser.resolveType(methodParameterReturn.getGenericParameterType(), methodParameterReturn.getContainingClass());
 		if (returnType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
 			if ((ResponseEntity.class.equals(parameterizedType.getRawType()))) {
@@ -210,7 +218,8 @@ public class DataRestResponseService {
 					ParameterizedType parameterizedType1 = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
 					Class<?> rawType = ResolvableType.forType(parameterizedType1.getRawType()).getRawClass();
 					if (rawType != null && rawType.isAssignableFrom(RepresentationModel.class)) {
-						return resolveGenericType(ResponseEntity.class, RepresentationModel.class, domainType);
+						Class<?> type = findType(methodParameterReturn, requestMethod);
+						return resolveGenericType(ResponseEntity.class, type, domainType);
 					}
 					else if (EntityModel.class.equals(parameterizedType1.getRawType())) {
 						return resolveGenericType(ResponseEntity.class, EntityModel.class, domainType);
@@ -221,7 +230,8 @@ public class DataRestResponseService {
 					if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType) {
 						ParameterizedType wildcardTypeUpperBound = (ParameterizedType) wildcardType.getUpperBounds()[0];
 						if (RepresentationModel.class.equals(wildcardTypeUpperBound.getRawType())) {
-							return resolveGenericType(ResponseEntity.class, RepresentationModel.class, domainType);
+							Class<?> type = findType(methodParameterReturn, requestMethod);
+							return resolveGenericType(ResponseEntity.class, type, domainType);
 						}
 					}
 				}
@@ -239,6 +249,21 @@ public class DataRestResponseService {
 			}
 		}
 		return returnType;
+	}
+
+	/**
+	 * Find type class.
+	 *
+	 * @param methodParameterReturn the method parameter return
+	 * @param requestMethod the request method
+	 * @return the class
+	 */
+	private Class findType(MethodParameter methodParameterReturn, RequestMethod requestMethod) {
+		if (SpringRepositoryRestResourceProvider.REPOSITORY_ENTITY_CONTROLLER.equals(methodParameterReturn.getContainingClass().getCanonicalName())
+				&& Arrays.stream(requestMethodsEntityModel).anyMatch(requestMethod::equals))
+			return EntityModel.class;
+		else
+			return RepresentationModel.class;
 	}
 
 	/**

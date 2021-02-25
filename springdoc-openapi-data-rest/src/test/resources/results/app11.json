@@ -98,7 +98,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelPerson"
+                  "$ref": "#/components/schemas/EntityModelPerson"
                 }
               }
             }
@@ -202,7 +202,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelPerson"
+                  "$ref": "#/components/schemas/EntityModelPerson"
                 }
               }
             }
@@ -212,7 +212,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelPerson"
+                  "$ref": "#/components/schemas/EntityModelPerson"
                 }
               }
             }
@@ -278,7 +278,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelPerson"
+                  "$ref": "#/components/schemas/EntityModelPerson"
                 }
               }
             }
@@ -422,6 +422,17 @@
           }
         }
       },
+      "Person": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
       "CollectionModelPerson": {
         "type": "object",
         "properties": {
@@ -436,25 +447,6 @@
               }
             }
           },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "Person": {
-        "type": "object",
-        "properties": {
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          }
-        }
-      },
-      "RepresentationModelPerson": {
-        "type": "object",
-        "properties": {
           "_links": {
             "$ref": "#/components/schemas/Links"
           }
