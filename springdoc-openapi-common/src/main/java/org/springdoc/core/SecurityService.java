@@ -135,7 +135,7 @@ public class SecurityService {
 	 * @param allSecurityTags the all security tags
 	 * @return the security requirements for method
 	 */
-	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForMethod(Method method, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags) {
+	public Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForMethod(Method method, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags) {
 		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity = AnnotatedElementUtils.findMergedAnnotation(method, io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 		if (methodSecurity != null)
 			allSecurityTags = addSecurityRequirements(allSecurityTags, new HashSet<>(Arrays.asList(methodSecurity.value())));

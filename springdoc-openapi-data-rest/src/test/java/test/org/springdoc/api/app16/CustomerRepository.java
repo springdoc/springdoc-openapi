@@ -23,6 +23,7 @@
 
 package test.org.springdoc.api.app16;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.data.domain.Page;
@@ -49,6 +50,7 @@ public interface CustomerRepository extends CrudRepository<Customer, Long>, JpaS
 	 * @param pageable
 	 * @return
 	 */
+	@SecurityRequirement(name = "bearer")
 	Page<Customer> findByLastname(@Param("lastname")  String lastname, Pageable pageable);
 
 	@Override

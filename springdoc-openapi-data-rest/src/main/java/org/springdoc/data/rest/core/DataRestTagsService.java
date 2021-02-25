@@ -23,6 +23,7 @@
 
 package org.springdoc.data.rest.core;
 
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,8 +66,8 @@ public class DataRestTagsService {
 	 * @param dataRestRepository the repository data rest
 	 */
 	public void buildSearchTags(Operation operation, HandlerMethod handlerMethod,
-			DataRestRepository dataRestRepository) {
-		buildTags(operation, handlerMethod, dataRestRepository);
+			DataRestRepository dataRestRepository, Method method) {
+		buildTags(operation, handlerMethod, dataRestRepository, method);
 	}
 
 	/**
@@ -78,18 +79,18 @@ public class DataRestTagsService {
 	 */
 	public void buildEntityTags(Operation operation, HandlerMethod handlerMethod,
 			DataRestRepository dataRestRepository) {
-		buildTags(operation, handlerMethod, dataRestRepository);
+		buildTags(operation, handlerMethod, dataRestRepository, null);
 	}
 
 	/**
 	 * Build tags.
-	 *
-	 * @param operation the operation
+	 *  @param operation the operation
 	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
+	 * @param method
 	 */
 	private void buildTags(Operation operation, HandlerMethod handlerMethod,
-			DataRestRepository dataRestRepository) {
+			DataRestRepository dataRestRepository, Method method) {
 		String tagName = handlerMethod.getBeanType().getSimpleName();
 		if (SpringRepositoryRestResourceProvider.REPOSITORY_SCHEMA_CONTROLLER.equals(handlerMethod.getBeanType().getName())
 				|| AlpsController.class.equals(handlerMethod.getBeanType())
@@ -111,6 +112,8 @@ public class DataRestTagsService {
 			}
 			final SecurityService securityParser = openAPIService.getSecurityParser();
 			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = securityParser.getSecurityRequirementsForClass(repositoryType);
+			if (method != null)
+				allSecurityTags = securityParser.getSecurityRequirementsForMethod(method, allSecurityTags);
 			if (!CollectionUtils.isEmpty(allSecurityTags))
 				securityParser.buildSecurityRequirement(allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]), operation);
 		}
