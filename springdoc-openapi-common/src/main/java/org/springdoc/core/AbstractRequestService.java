@@ -320,7 +320,10 @@ public abstract class AbstractRequestService {
 	@SuppressWarnings("unchecked")
 	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<String, Parameter> map) {
 		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
-			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(new StringSchema().addEnumItem(entry.getValue()));
+			StringSchema schema = new StringSchema();
+			if(StringUtils.isNotEmpty(entry.getValue()))
+				schema.addEnumItem(entry.getValue());
+			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(schema);
 			if (map.containsKey(entry.getKey())) {
 				parameter = map.get(entry.getKey());
 				if (StringUtils.isNotEmpty(entry.getValue()))

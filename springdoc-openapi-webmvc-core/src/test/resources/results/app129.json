@@ -25,6 +25,20 @@
             "schema": {
               "$ref": "#/components/schemas/ActualReturnedEntity"
             }
+          },
+          {
+            "name": "userId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "registrationId",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
