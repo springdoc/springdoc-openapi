@@ -62,7 +62,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
+                  "$ref": "#/components/schemas/EntityModelAccount"
                 }
               }
             }
@@ -166,7 +166,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
+                  "$ref": "#/components/schemas/EntityModelAccount"
                 }
               }
             }
@@ -176,7 +176,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
+                  "$ref": "#/components/schemas/EntityModelAccount"
                 }
               }
             }
@@ -242,7 +242,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelAccount"
+                  "$ref": "#/components/schemas/EntityModelAccount"
                 }
               }
             }
@@ -555,7 +555,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
+                  "$ref": "#/components/schemas/EntityModelCustomer"
                 }
               }
             }
@@ -693,7 +693,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
+                  "$ref": "#/components/schemas/EntityModelCustomer"
                 }
               }
             }
@@ -703,7 +703,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
+                  "$ref": "#/components/schemas/EntityModelCustomer"
                 }
               }
             }
@@ -744,7 +744,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelCustomer"
+                  "$ref": "#/components/schemas/EntityModelCustomer"
                 }
               }
             }
@@ -968,14 +968,6 @@
           }
         }
       },
-      "RepresentationModelAccount": {
-        "type": "object",
-        "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "EntityModelAccount": {
         "type": "object",
         "properties": {
@@ -990,6 +982,14 @@
             "type": "string",
             "format": "date-time"
           },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "RepresentationModelAccount": {
+        "type": "object",
+        "properties": {
           "_links": {
             "$ref": "#/components/schemas/Links"
           }
@@ -1028,14 +1028,6 @@
               }
             }
           },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "RepresentationModelCustomer": {
-        "type": "object",
-        "properties": {
           "_links": {
             "$ref": "#/components/schemas/Links"
           }

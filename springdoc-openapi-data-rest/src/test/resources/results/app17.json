@@ -98,7 +98,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelChildProperty"
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }
@@ -170,7 +170,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelChildProperty"
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }
@@ -180,7 +180,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelChildProperty"
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }
@@ -246,7 +246,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelChildProperty"
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }
@@ -424,7 +424,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                  "$ref": "#/components/schemas/EntityModelProperty"
                 }
               }
             }
@@ -496,7 +496,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                  "$ref": "#/components/schemas/EntityModelProperty"
                 }
               }
             }
@@ -506,7 +506,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                  "$ref": "#/components/schemas/EntityModelProperty"
                 }
               }
             }
@@ -572,7 +572,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                  "$ref": "#/components/schemas/EntityModelProperty"
                 }
               }
             }
@@ -903,6 +903,12 @@
           }
         }
       },
+      "Links": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Link"
+        }
+      },
       "RepresentationModelObject": {
         "type": "object",
         "properties": {
@@ -923,82 +929,16 @@
           }
         }
       },
-      "Property": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "myChildPropertyName": {
-            "$ref": "#/components/schemas/ChildProperty"
-          }
-        }
-      },
-      "EntityModelProperty": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "myChildPropertyName": {
-            "$ref": "#/components/schemas/ChildProperty"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "Links": {
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/Link"
-        }
-      },
-      "RepresentationModelProperty": {
-        "type": "object",
-        "properties": {
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelProperty": {
+      "CollectionModelChildProperty": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "properties": {
+              "childProperties": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Property"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelObject": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "objects": {
-                "type": "array",
-                "items": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/ChildProperty"
                 }
               }
             }
@@ -1023,7 +963,59 @@
           }
         }
       },
-      "RepresentationModelChildProperty": {
+      "Property": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "myChildPropertyName": {
+            "$ref": "#/components/schemas/ChildProperty"
+          }
+        }
+      },
+      "CollectionModelProperty": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "properties": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Property"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelProperty": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "myChildPropertyName": {
+            "$ref": "#/components/schemas/ChildProperty"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "RepresentationModelProperty": {
         "type": "object",
         "properties": {
           "_links": {
@@ -1031,16 +1023,16 @@
           }
         }
       },
-      "CollectionModelChildProperty": {
+      "CollectionModelObject": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "childProperties": {
+              "objects": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/ChildProperty"
+                  "type": "object"
                 }
               }
             }
