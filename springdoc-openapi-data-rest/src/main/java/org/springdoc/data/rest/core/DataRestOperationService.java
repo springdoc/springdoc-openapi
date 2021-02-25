@@ -225,7 +225,7 @@ public class DataRestOperationService {
 					.ifPresent(methodParameterPage -> dataRestRequestService.buildCommonParameters(domainType, openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameterPage.getParameterName() }, new MethodParameter[] { methodParameterPage }));
 		}
 		dataRestResponseService.buildSearchResponse(operation, handlerMethod, openAPI, methodResourceMapping, domainType, methodAttributes);
-		tagsBuilder.buildSearchTags(operation, handlerMethod, dataRestRepository);
+		tagsBuilder.buildSearchTags(operation, handlerMethod, dataRestRepository, method);
 		return operation;
 	}
 
