@@ -84,7 +84,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	/**
 	 * The constant REPOSITORY_ENTITY_CONTROLLER.
 	 */
-	public static final String REPOSITORY_ENTITY_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositoryEntityController";
+	private static final String REPOSITORY_ENTITY_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositoryEntityController";
 
 	/**
 	 * The constant REPOSITORY_SEARCH_CONTROLLER.
@@ -208,6 +208,9 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 							if (jackson.isExported(property) && associations.isLinkableAssociation(property)) {
 								dataRestRepository.setRelationName(resourceMetadata.getMappingFor(property).getRel().value());
 								dataRestRepository.setControllerType(ControllerType.PROPERTY);
+								dataRestRepository.setCollectionLike(property.isCollectionLike());
+								dataRestRepository.setMap(property.isMap());
+								dataRestRepository.setPropertyType(property.getActualType());
 								findControllers(routerOperationList, handlerMethodMapFilteredMethodMap, resourceMetadata, dataRestRepository, openAPI);
 							}
 						});

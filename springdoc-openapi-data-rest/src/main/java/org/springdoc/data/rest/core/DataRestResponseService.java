@@ -27,9 +27,11 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Content;
@@ -38,13 +40,13 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.ReturnTypeParser;
-import org.springdoc.data.rest.SpringRepositoryRestResourceProvider;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.rest.core.mapping.MethodResourceMapping;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpEntity;
@@ -123,11 +125,12 @@ public class DataRestResponseService {
 	 * @param operationPath the operation path
 	 * @param domainType the domain type
 	 * @param methodAttributes the method attributes
+	 * @param dataRestRepository the data rest repository
 	 */
 	public void buildEntityResponse(Operation operation, HandlerMethod handlerMethod, OpenAPI openAPI, RequestMethod requestMethod,
-			String operationPath, Class<?> domainType, MethodAttributes methodAttributes) {
+			String operationPath, Class<?> domainType, MethodAttributes methodAttributes, DataRestRepository dataRestRepository) {
 		MethodParameter methodParameterReturn = handlerMethod.getReturnType();
-		Type returnType = getType(methodParameterReturn, domainType, requestMethod);
+		Type returnType = getType(methodParameterReturn, domainType, requestMethod, dataRestRepository);
 		ApiResponses apiResponses = new ApiResponses();
 		ApiResponse apiResponse = new ApiResponse();
 		Content content = genericResponseService.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
@@ -204,25 +207,31 @@ public class DataRestResponseService {
 	 * @param methodParameterReturn the method parameter return
 	 * @param domainType the domain type
 	 * @param requestMethod the request method
+	 * @param dataRestRepository the data rest repository
 	 * @return the type
 	 */
-	private Type getType(MethodParameter methodParameterReturn, Class<?> domainType, RequestMethod requestMethod) {
+	private Type getType(MethodParameter methodParameterReturn, Class<?> domainType, RequestMethod requestMethod, DataRestRepository dataRestRepository) {
 		Type returnType = ReturnTypeParser.resolveType(methodParameterReturn.getGenericParameterType(), methodParameterReturn.getContainingClass());
+		Class returnedEntityType = domainType;
+
+		if (dataRestRepository!=null &&  ControllerType.PROPERTY.equals(dataRestRepository.getControllerType()))
+			returnedEntityType = dataRestRepository.getPropertyType();
+
 		if (returnType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
 			if ((ResponseEntity.class.equals(parameterizedType.getRawType()))) {
 				if (Object.class.equals(parameterizedType.getActualTypeArguments()[0])) {
-					return ResolvableType.forClassWithGenerics(ResponseEntity.class, domainType).getType();
+					return ResolvableType.forClassWithGenerics(ResponseEntity.class, returnedEntityType).getType();
 				}
 				else if (parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType) {
 					ParameterizedType parameterizedType1 = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
 					Class<?> rawType = ResolvableType.forType(parameterizedType1.getRawType()).getRawClass();
 					if (rawType != null && rawType.isAssignableFrom(RepresentationModel.class)) {
-						Class<?> type = findType(methodParameterReturn, requestMethod);
-						return resolveGenericType(ResponseEntity.class, type, domainType);
+						Class<?> type = findType(requestMethod, dataRestRepository);
+						return resolveGenericType(ResponseEntity.class, type, returnedEntityType);
 					}
 					else if (EntityModel.class.equals(parameterizedType1.getRawType())) {
-						return resolveGenericType(ResponseEntity.class, EntityModel.class, domainType);
+						return resolveGenericType(ResponseEntity.class, EntityModel.class, returnedEntityType);
 					}
 				}
 				else if (parameterizedType.getActualTypeArguments()[0] instanceof WildcardType) {
@@ -230,8 +239,8 @@ public class DataRestResponseService {
 					if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType) {
 						ParameterizedType wildcardTypeUpperBound = (ParameterizedType) wildcardType.getUpperBounds()[0];
 						if (RepresentationModel.class.equals(wildcardTypeUpperBound.getRawType())) {
-							Class<?> type = findType(methodParameterReturn, requestMethod);
-							return resolveGenericType(ResponseEntity.class, type, domainType);
+							Class<?> type = findType(requestMethod, dataRestRepository);
+							return resolveGenericType(ResponseEntity.class, type, returnedEntityType);
 						}
 					}
 				}
@@ -240,12 +249,12 @@ public class DataRestResponseService {
 					&& parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType)) {
 				ParameterizedType wildcardTypeUpperBound = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
 				if (RepresentationModel.class.equals(wildcardTypeUpperBound.getRawType())) {
-					return resolveGenericType(HttpEntity.class, RepresentationModel.class, domainType);
+					return resolveGenericType(HttpEntity.class, RepresentationModel.class, returnedEntityType);
 				}
 			}
 			else if ((CollectionModel.class.equals(parameterizedType.getRawType())
 					&& Object.class.equals(parameterizedType.getActualTypeArguments()[0]))) {
-				return ResolvableType.forClassWithGenerics(CollectionModel.class, domainType).getType();
+				return ResolvableType.forClassWithGenerics(CollectionModel.class, returnedEntityType).getType();
 			}
 		}
 		return returnType;
@@ -254,14 +263,22 @@ public class DataRestResponseService {
 	/**
 	 * Find type class.
 	 *
-	 * @param methodParameterReturn the method parameter return
 	 * @param requestMethod the request method
+	 * @param dataRestRepository the data rest repository
 	 * @return the class
 	 */
-	private Class findType(MethodParameter methodParameterReturn, RequestMethod requestMethod) {
-		if (SpringRepositoryRestResourceProvider.REPOSITORY_ENTITY_CONTROLLER.equals(methodParameterReturn.getContainingClass().getCanonicalName())
+	private Class findType(RequestMethod requestMethod, DataRestRepository dataRestRepository) {
+		if (ControllerType.ENTITY.equals(dataRestRepository.getControllerType())
 				&& Arrays.stream(requestMethodsEntityModel).anyMatch(requestMethod::equals))
 			return EntityModel.class;
+		else if (dataRestRepository!=null && ControllerType.PROPERTY.equals(dataRestRepository.getControllerType())) {
+			if (dataRestRepository.isCollectionLike())
+				return CollectionModel.class;
+			else if (dataRestRepository.isMap())
+				return MapModel.class;
+			else
+				return EntityModel.class;
+		}
 		else
 			return RepresentationModel.class;
 	}
@@ -306,4 +323,37 @@ public class DataRestResponseService {
 	private void addResponse404(ApiResponses apiResponses) {
 		apiResponses.put(String.valueOf(HttpStatus.NOT_FOUND.value()), new ApiResponse().description(HttpStatus.NOT_FOUND.getReasonPhrase()));
 	}
+
+	/**
+	 * The type Map model.
+	 * @author bnasslashen
+	 */
+	private static class MapModel extends RepresentationModel<MapModel> {
+		/**
+		 * The Content.
+		 */
+		private Map<? extends Object, ? extends Object> content;
+
+		/**
+		 * Instantiates a new Map model.
+		 *
+		 * @param content the content
+		 * @param links the links
+		 */
+		public MapModel(Map<? extends Object, ? extends Object> content, Link... links) {
+			super(Arrays.asList(links));
+			this.content = content;
+		}
+
+		/**
+		 * Gets content.
+		 *
+		 * @return the content
+		 */
+		@JsonAnyGetter
+		public Map<? extends Object, ? extends Object> getContent() {
+			return content;
+		}
+	}
+
 }
