@@ -155,10 +155,10 @@ public class DataRestOperationService {
 			domainType = dataRestRepository.getDomainType();
 		Operation operation = initOperation(handlerMethod, domainType, requestMethod);
 		dataRestRequestService.buildParameters(domainType, openAPI, handlerMethod, requestMethod, methodAttributes, operation, resourceMetadata);
-		dataRestResponseService.buildEntityResponse(operation, handlerMethod, openAPI, requestMethod, operationPath, domainType, methodAttributes);
+		dataRestResponseService.buildEntityResponse(operation, handlerMethod, openAPI, requestMethod, operationPath, domainType, methodAttributes, dataRestRepository);
 		tagsBuilder.buildEntityTags(operation, handlerMethod, dataRestRepository);
 		if (domainType != null)
-			addOperationDescription(operation, requestMethod, domainType.getSimpleName().toLowerCase());
+			addOperationDescription(operation, requestMethod, domainType.getSimpleName().toLowerCase(), dataRestRepository);
 		return operation;
 	}
 
@@ -241,8 +241,8 @@ public class DataRestOperationService {
 	private Parameter getParameterFromAnnotations(OpenAPI openAPI, MethodAttributes methodAttributes, Method method, String pName) {
 		Parameter parameter = null;
 		for (java.lang.reflect.Parameter reflectParameter : method.getParameters()) {
-			Param paramAnnotation  = reflectParameter.getAnnotation(Param.class);
-			if (paramAnnotation!=null && paramAnnotation.value().equals(pName)) {
+			Param paramAnnotation = reflectParameter.getAnnotation(Param.class);
+			if (paramAnnotation != null && paramAnnotation.value().equals(pName)) {
 				io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
 						AnnotatedElementUtils.forAnnotations(reflectParameter.getAnnotations()),
 						io.swagger.v3.oas.annotations.Parameter.class);
@@ -277,30 +277,45 @@ public class DataRestOperationService {
 
 	/**
 	 * Add operation description.
-	 *
 	 * @param operation the operation
 	 * @param requestMethod the request method
 	 * @param entity the entity
+	 * @param dataRestRepository the data rest repository
 	 */
-	private void addOperationDescription(Operation operation, RequestMethod requestMethod, String entity) {
+	private void addOperationDescription(Operation operation, RequestMethod requestMethod, String entity, DataRestRepository dataRestRepository) {
 		switch (requestMethod) {
 			case GET:
-				operation.setDescription("get-" + entity);
+				operation.setDescription(createDescription("get-", entity, dataRestRepository));
 				break;
 			case POST:
-				operation.setDescription("create-" + entity);
+				operation.setDescription(createDescription("create-", entity, dataRestRepository));
 				break;
 			case DELETE:
-				operation.setDescription("delete-" + entity);
+				operation.setDescription(createDescription("delete-", entity, dataRestRepository));
 				break;
 			case PUT:
-				operation.setDescription("update-" + entity);
+				operation.setDescription(createDescription("update-", entity, dataRestRepository));
 				break;
 			case PATCH:
-				operation.setDescription("patch-" + entity);
+				operation.setDescription(createDescription("patch-", entity, dataRestRepository));
 				break;
 			default:
 				throw new IllegalArgumentException(requestMethod.name());
 		}
+	}
+
+	/**
+	 * Create description.
+	 *
+	 * @param entity the entity
+	 * @param dataRestRepository the data rest repository
+	 */
+	private String createDescription( String action, String entity, DataRestRepository dataRestRepository) {
+		String description;
+		if (dataRestRepository != null && ControllerType.PROPERTY.equals(dataRestRepository.getControllerType()))
+			description = action + dataRestRepository.getPropertyType().getSimpleName().toLowerCase()+ "-by-"+ entity +"-Id";
+		else
+			description = action + entity;
+		return description;
 	}
 }

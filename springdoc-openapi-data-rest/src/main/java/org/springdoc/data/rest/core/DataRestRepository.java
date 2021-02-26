@@ -50,6 +50,21 @@ public class DataRestRepository {
 	private ControllerType controllerType;
 
 	/**
+	 * The Is collection like.
+	 */
+	private boolean isCollectionLike;
+
+	/**
+	 * The Is map.
+	 */
+	private boolean isMap;
+
+	/**
+	 * The Property type.
+	 */
+	private Class<?> propertyType;
+
+	/**
 	 * Instantiates a new Data rest repository.
 	 *
 	 * @param domainType the domain type
@@ -130,5 +145,59 @@ public class DataRestRepository {
 	 */
 	public void setControllerType(ControllerType controllerType) {
 		this.controllerType = controllerType;
+	}
+
+	/**
+	 * Is collection like boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isCollectionLike() {
+		return isCollectionLike;
+	}
+
+	/**
+	 * Sets collection like.
+	 *
+	 * @param collectionLike the collection like
+	 */
+	public void setCollectionLike(boolean collectionLike) {
+		isCollectionLike = collectionLike;
+	}
+
+	/**
+	 * Is map boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isMap() {
+		return isMap;
+	}
+
+	/**
+	 * Sets map.
+	 *
+	 * @param map the map
+	 */
+	public void setMap(boolean map) {
+		isMap = map;
+	}
+
+	/**
+	 * Gets property type.
+	 *
+	 * @return the property type
+	 */
+	public Class<?> getPropertyType() {
+		return propertyType;
+	}
+
+	/**
+	 * Sets property type.
+	 *
+	 * @param propertyType the property type
+	 */
+	public void setPropertyType(Class<?> propertyType) {
+		this.propertyType = propertyType;
 	}
 }

@@ -588,7 +588,7 @@
         "tags": [
           "property-property-reference-controller"
         ],
-        "description": "get-property",
+        "description": "get-childproperty-by-property-Id",
         "operationId": "followPropertyReference-property-get_1",
         "parameters": [
           {
@@ -606,12 +606,12 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }
@@ -625,7 +625,7 @@
         "tags": [
           "property-property-reference-controller"
         ],
-        "description": "update-property",
+        "description": "update-childproperty-by-property-Id",
         "operationId": "createPropertyReference-property-put",
         "parameters": [
           {
@@ -662,7 +662,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }
@@ -672,7 +672,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }
@@ -686,7 +686,7 @@
         "tags": [
           "property-property-reference-controller"
         ],
-        "description": "delete-property",
+        "description": "delete-childproperty-by-property-Id",
         "operationId": "deletePropertyReference-property-delete",
         "parameters": [
           {
@@ -711,7 +711,7 @@
         "tags": [
           "property-property-reference-controller"
         ],
-        "description": "patch-property",
+        "description": "patch-childproperty-by-property-Id",
         "operationId": "createPropertyReference-property-patch",
         "parameters": [
           {
@@ -748,7 +748,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }
@@ -764,7 +764,7 @@
         "tags": [
           "property-property-reference-controller"
         ],
-        "description": "get-property",
+        "description": "get-childproperty-by-property-Id",
         "operationId": "followPropertyReference-property-get",
         "parameters": [
           {
@@ -790,7 +790,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RepresentationModelProperty"
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }
@@ -804,7 +804,7 @@
         "tags": [
           "property-property-reference-controller"
         ],
-        "description": "delete-property",
+        "description": "delete-childproperty-by-property-Id",
         "operationId": "deletePropertyReferenceId-property-delete",
         "parameters": [
           {
@@ -963,21 +963,6 @@
           }
         }
       },
-      "Property": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "myChildPropertyName": {
-            "$ref": "#/components/schemas/ChildProperty"
-          }
-        }
-      },
       "CollectionModelProperty": {
         "type": "object",
         "properties": {
@@ -997,6 +982,21 @@
           }
         }
       },
+      "Property": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "myChildPropertyName": {
+            "$ref": "#/components/schemas/ChildProperty"
+          }
+        }
+      },
       "EntityModelProperty": {
         "type": "object",
         "properties": {
@@ -1010,14 +1010,6 @@
           "myChildPropertyName": {
             "$ref": "#/components/schemas/ChildProperty"
           },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "RepresentationModelProperty": {
-        "type": "object",
-        "properties": {
           "_links": {
             "$ref": "#/components/schemas/Links"
           }
