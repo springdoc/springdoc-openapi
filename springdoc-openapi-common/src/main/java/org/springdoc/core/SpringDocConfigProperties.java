@@ -808,6 +808,11 @@ public class SpringDocConfigProperties {
 		private boolean enabled;
 
 		/**
+		 * whether or not using customizers in spring container
+		 */
+		private boolean usingDefaultCustomisers;
+
+		/**
 		 * Is enabled boolean.
 		 *
 		 * @return the boolean
@@ -823,6 +828,14 @@ public class SpringDocConfigProperties {
 		 */
 		public void setEnabled(boolean enabled) {
 			this.enabled = enabled;
+		}
+
+		public boolean isUsingDefaultCustomisers() {
+			return usingDefaultCustomisers;
+		}
+
+		public void setUsingDefaultCustomisers(boolean usingDefaultCustomisers) {
+			this.usingDefaultCustomisers = usingDefaultCustomisers;
 		}
 	}
 

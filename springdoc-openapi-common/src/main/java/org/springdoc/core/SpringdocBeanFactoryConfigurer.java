@@ -24,10 +24,13 @@
 package org.springdoc.core;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.models.OpenAPI;
 
+import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.context.properties.bind.BindResult;
@@ -70,6 +73,22 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 							builder.packagesToScan(elt.getPackagesToScan().toArray(new String[0]));
 						if (!CollectionUtils.isEmpty(elt.getPathsToMatch()))
 							builder.pathsToMatch(elt.getPathsToMatch().toArray(new String[0]));
+
+						if (springDocGroupConfig.getApiDocs().getGroups().isUsingDefaultCustomisers()) {
+							final Map<String, OpenApiCustomiser> openApiCustomisers = beanFactory.getBeansOfType(OpenApiCustomiser.class);
+							if (!CollectionUtils.isEmpty(openApiCustomisers)) {
+								for (OpenApiCustomiser openApiCustomiser : openApiCustomisers.values()) {
+									builder.addOpenApiCustomiser(openApiCustomiser);
+								}
+							}
+
+							final Map<String, OperationCustomizer> operationCustomizers = beanFactory.getBeansOfType(OperationCustomizer.class);
+							if (!CollectionUtils.isEmpty(operationCustomizers)) {
+								for (OperationCustomizer operationCustomizer : operationCustomizers.values()) {
+									builder.addOperationCustomizer(operationCustomizer);
+								}
+							}
+						}
 						return builder.group(elt.getGroup()).build();
 					})
 					.collect(Collectors.toList());
