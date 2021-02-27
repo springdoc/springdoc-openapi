@@ -214,7 +214,7 @@ public class DataRestResponseService {
 		Type returnType = ReturnTypeParser.resolveType(methodParameterReturn.getGenericParameterType(), methodParameterReturn.getContainingClass());
 		Class returnedEntityType = domainType;
 
-		if (dataRestRepository!=null &&  ControllerType.PROPERTY.equals(dataRestRepository.getControllerType()))
+		if (dataRestRepository != null && ControllerType.PROPERTY.equals(dataRestRepository.getControllerType()))
 			returnedEntityType = dataRestRepository.getPropertyType();
 
 		if (returnType instanceof ParameterizedType) {
@@ -268,10 +268,10 @@ public class DataRestResponseService {
 	 * @return the class
 	 */
 	private Class findType(RequestMethod requestMethod, DataRestRepository dataRestRepository) {
-		if (ControllerType.ENTITY.equals(dataRestRepository.getControllerType())
+		if (dataRestRepository != null && ControllerType.ENTITY.equals(dataRestRepository.getControllerType())
 				&& Arrays.stream(requestMethodsEntityModel).anyMatch(requestMethod::equals))
 			return EntityModel.class;
-		else if (dataRestRepository!=null && ControllerType.PROPERTY.equals(dataRestRepository.getControllerType())) {
+		else if (dataRestRepository != null && ControllerType.PROPERTY.equals(dataRestRepository.getControllerType())) {
 			if (dataRestRepository.isCollectionLike())
 				return CollectionModel.class;
 			else if (dataRestRepository.isMap())
@@ -353,6 +353,20 @@ public class DataRestResponseService {
 		@JsonAnyGetter
 		public Map<? extends Object, ? extends Object> getContent() {
 			return content;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			if (!super.equals(o)) return false;
+			MapModel mapModel = (MapModel) o;
+			return Objects.equals(getContent(), mapModel.getContent());
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(super.hashCode(), getContent());
 		}
 	}
 

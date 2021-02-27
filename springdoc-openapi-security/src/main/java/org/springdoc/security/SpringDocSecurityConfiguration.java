@@ -114,7 +114,7 @@ public class SpringDocSecurityConfiguration {
 				for (SecurityFilterChain filterChain : filterChainProxy.getFilterChains()) {
 					Optional<UsernamePasswordAuthenticationFilter> optionalFilter =
 							filterChain.getFilters().stream()
-									.filter(filterVar -> filterVar instanceof UsernamePasswordAuthenticationFilter)
+									.filter(UsernamePasswordAuthenticationFilter.class::isInstance)
 									.map(UsernamePasswordAuthenticationFilter.class::cast)
 									.findAny();
 					if (optionalFilter.isPresent()) {
