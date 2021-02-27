@@ -48,8 +48,10 @@ import org.springframework.data.rest.core.mapping.ResourceMetadata;
 import org.springframework.data.rest.core.mapping.ResourceType;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
@@ -176,9 +178,8 @@ public class DataRestRouterOperationService {
 
 		for (RequestMethod requestMethod : requestMethods) {
 			if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
-				PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
-				if (patternsRequestCondition != null) {
-					Set<String> patterns = patternsRequestCondition.getPatterns();
+				Set<String> patterns = getActivePatterns(requestMappingInfo);
+				if (!CollectionUtils.isEmpty(patterns)) {
 					Map<String, String> regexMap = new LinkedHashMap<>();
 					String relationName = dataRestRepository.getRelationName();
 					String operationPath = calculateOperationPath(path, subPath, patterns, regexMap, controllerType, relationName);
@@ -273,8 +274,8 @@ public class DataRestRouterOperationService {
 	private boolean isSearchControllerPresent(RequestMappingInfo requestMappingInfo, HandlerMethod handlerMethod, RequestMethod requestMethod) {
 		if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
 			PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
-			if (patternsRequestCondition != null) {
-				Set<String> patterns = patternsRequestCondition.getPatterns();
+			Set<String> patterns = getActivePatterns(requestMappingInfo);
+			if (!CollectionUtils.isEmpty(patterns)) {
 				Map<String, String> regexMap = new LinkedHashMap<>();
 				String operationPath;
 				for (String pattern : patterns) {
@@ -291,4 +292,22 @@ public class DataRestRouterOperationService {
 		return false;
 	}
 
+	/**
+	 * Gets active patterns.
+	 *
+	 * @param requestMappingInfo the request mapping info
+	 * @return the active patterns
+	 */
+	private Set<String> getActivePatterns(RequestMappingInfo requestMappingInfo) {
+		Set<String> patterns = null;
+		PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
+		if (patternsRequestCondition != null)
+			patterns = patternsRequestCondition.getPatterns();
+		else {
+			PathPatternsRequestCondition pathPatternsRequestCondition = requestMappingInfo.getPathPatternsCondition();
+			if (pathPatternsRequestCondition != null)
+				patterns = pathPatternsRequestCondition.getPatternValues();
+		}
+		return patterns;
+	}
 }
