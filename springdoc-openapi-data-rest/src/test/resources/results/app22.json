@@ -60,17 +60,17 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelPerson"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelPerson"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelPerson"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelPerson"
                 }
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelPerson"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelPerson"
                 }
               }
             }
@@ -410,18 +410,7 @@
           }
         }
       },
-      "Person": {
-        "type": "object",
-        "properties": {
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          }
-        }
-      },
-      "CollectionModelPerson": {
+      "CollectionModelEntityModelPerson": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -430,7 +419,7 @@
               "people": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Person"
+                  "$ref": "#/components/schemas/EntityModelPerson"
                 }
               }
             }
@@ -451,6 +440,17 @@
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "Person": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
           }
         }
       },

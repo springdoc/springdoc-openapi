@@ -60,17 +60,17 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelChildProperty"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelChildProperty"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelChildProperty"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelChildProperty"
                 }
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelChildProperty"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelChildProperty"
                 }
               }
             }
@@ -386,17 +386,17 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelProperty"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelProperty"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelProperty"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelProperty"
                 }
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelProperty"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelProperty"
                 }
               }
             }
@@ -929,41 +929,7 @@
           }
         }
       },
-      "CollectionModelChildProperty": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "childProperties": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ChildProperty"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelChildProperty": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelProperty": {
+      "CollectionModelEntityModelProperty": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -972,28 +938,13 @@
               "properties": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Property"
+                  "$ref": "#/components/schemas/EntityModelProperty"
                 }
               }
             }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "Property": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "myChildPropertyName": {
-            "$ref": "#/components/schemas/ChildProperty"
           }
         }
       },
@@ -1015,6 +966,36 @@
           }
         }
       },
+      "Property": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "myChildPropertyName": {
+            "$ref": "#/components/schemas/ChildProperty"
+          }
+        }
+      },
+      "EntityModelChildProperty": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
       "CollectionModelObject": {
         "type": "object",
         "properties": {
@@ -1025,6 +1006,25 @@
                 "type": "array",
                 "items": {
                   "type": "object"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelChildProperty": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "childProperties": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }

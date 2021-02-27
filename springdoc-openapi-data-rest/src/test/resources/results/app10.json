@@ -24,17 +24,17 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelAccount"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelAccount"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelAccount"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelAccount"
                 }
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelAccount"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelAccount"
                 }
               }
             }
@@ -517,17 +517,17 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelCustomer"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelCustomer"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelCustomer"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelCustomer"
                 }
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelCustomer"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelCustomer"
                 }
               }
             }
@@ -934,7 +934,7 @@
           }
         }
       },
-      "CollectionModelAccount": {
+      "CollectionModelEntityModelAccount": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -943,7 +943,7 @@
               "accounts": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Account"
+                  "$ref": "#/components/schemas/EntityModelAccount"
                 }
               }
             }
@@ -1024,7 +1024,26 @@
           }
         }
       },
-      "CollectionModelCustomer": {
+      "CollectionModelAccount": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "accounts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelCustomer": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -1033,7 +1052,7 @@
               "customers": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Customer"
+                  "$ref": "#/components/schemas/EntityModelCustomer"
                 }
               }
             }
