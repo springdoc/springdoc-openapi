@@ -273,7 +273,6 @@ public class DataRestRouterOperationService {
 	 */
 	private boolean isSearchControllerPresent(RequestMappingInfo requestMappingInfo, HandlerMethod handlerMethod, RequestMethod requestMethod) {
 		if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
-			PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
 			Set<String> patterns = getActivePatterns(requestMappingInfo);
 			if (!CollectionUtils.isEmpty(patterns)) {
 				Map<String, String> regexMap = new LinkedHashMap<>();
