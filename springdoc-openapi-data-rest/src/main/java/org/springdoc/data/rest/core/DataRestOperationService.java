@@ -124,7 +124,7 @@ public class DataRestOperationService {
 		Operation operation = null;
 		if (ControllerType.ENTITY.equals(controllerType)
 				|| ControllerType.PROPERTY.equals(controllerType)
-				|| ControllerType.SCHEMA.equals(controllerType)) {
+				|| ControllerType.SCHEMA.equals(controllerType) || ControllerType.GENERAL.equals(controllerType)) {
 			operation = buildEntityOperation(handlerMethod, dataRestRepository,
 					openAPI, requestMethod, operationPath, methodAttributes, resourceMetadata);
 		}
@@ -151,7 +151,7 @@ public class DataRestOperationService {
 			OpenAPI openAPI, RequestMethod requestMethod, String operationPath, MethodAttributes methodAttributes,
 			ResourceMetadata resourceMetadata) {
 		Class<?> domainType = null;
-		if (dataRestRepository != null)
+		if (!ControllerType.GENERAL.equals(dataRestRepository.getControllerType()))
 			domainType = dataRestRepository.getDomainType();
 		Operation operation = initOperation(handlerMethod, domainType, requestMethod);
 		dataRestRequestService.buildParameters(domainType, openAPI, handlerMethod, requestMethod, methodAttributes, operation, resourceMetadata);
@@ -312,7 +312,7 @@ public class DataRestOperationService {
 	 */
 	private String createDescription( String action, String entity, DataRestRepository dataRestRepository) {
 		String description;
-		if (dataRestRepository != null && ControllerType.PROPERTY.equals(dataRestRepository.getControllerType()))
+		if (ControllerType.PROPERTY.equals(dataRestRepository.getControllerType()))
 			description = action + dataRestRepository.getPropertyType().getSimpleName().toLowerCase()+ "-by-"+ entity +"-Id";
 		else
 			description = action + entity;

@@ -43,5 +43,9 @@ public enum ControllerType {
 	/**
 	 *PROPERTY controller type.
 	 */
-	PROPERTY
+	PROPERTY,
+	/**
+	 *GENERAL controller type.
+	 */
+	GENERAL
 }
