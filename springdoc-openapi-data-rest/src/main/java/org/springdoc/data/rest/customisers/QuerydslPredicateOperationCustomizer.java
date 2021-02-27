@@ -118,7 +118,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 
 			// if only listed properties should be included, remove all other fields from fieldsToAdd
 			if (getFieldValueOfBoolean(bindings, "excludeUnlistedProperties")) {
-				fieldsToAdd.removeIf(s -> !whiteList.contains(s));
+				fieldsToAdd.removeIf(s -> !whiteList.contains(s) && !aliases.contains(s) );
 			}
 
 			for (String fieldName : fieldsToAdd) {
