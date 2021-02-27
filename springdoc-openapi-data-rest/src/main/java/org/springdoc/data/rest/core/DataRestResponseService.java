@@ -254,7 +254,7 @@ public class DataRestResponseService {
 			}
 			else if ((CollectionModel.class.equals(parameterizedType.getRawType())
 					&& Object.class.equals(parameterizedType.getActualTypeArguments()[0]))) {
-				return ResolvableType.forClassWithGenerics(CollectionModel.class, returnedEntityType).getType();
+				return resolveGenericType(CollectionModel.class, EntityModel.class, returnedEntityType);
 			}
 		}
 		return returnType;

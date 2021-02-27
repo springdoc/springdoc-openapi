@@ -29,17 +29,17 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelAccount"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelAccount"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelAccount"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelAccount"
                 }
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelAccount"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelAccount"
                 }
               }
             }
@@ -587,17 +587,17 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelCustomer"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelCustomer"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelCustomer"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelCustomer"
                 }
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelCustomer"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelCustomer"
                 }
               }
             }
@@ -993,32 +993,16 @@
           }
         }
       },
-      "Account": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "customer": {
-            "$ref": "#/components/schemas/Customer"
-          },
-          "expiryDate": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "CollectionModelAccount": {
+      "CollectionModelEntityModelCustomer": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "accounts": {
+              "customers": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Account"
+                  "$ref": "#/components/schemas/EntityModelCustomer"
                 }
               }
             }
@@ -1043,25 +1027,6 @@
           }
         }
       },
-      "EntityModelAccount": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "customer": {
-            "$ref": "#/components/schemas/Customer"
-          },
-          "expiryDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "EntityModelCustomer": {
         "type": "object",
         "properties": {
@@ -1074,44 +1039,6 @@
           },
           "lastname": {
             "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelObject": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "objects": {
-                "type": "array",
-                "items": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelCustomer": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "customers": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Customer"
-                }
-              }
-            }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -1158,6 +1085,98 @@
           },
           "page": {
             "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Customer"
+          },
+          "expiryDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CollectionModelEntityModelAccount": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "accounts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelAccount"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelAccount": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Customer"
+          },
+          "expiryDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelObject": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "objects": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelAccount": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "accounts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
           }
         }
       },

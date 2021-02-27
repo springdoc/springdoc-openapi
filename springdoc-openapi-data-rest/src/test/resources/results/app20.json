@@ -59,17 +59,17 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelBank"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelBank"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelBank"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelBank"
                 }
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelBank"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelBank"
                 }
               }
             }
@@ -469,7 +469,7 @@
           }
         }
       },
-      "CollectionModelBank": {
+      "CollectionModelEntityModelBank": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -478,7 +478,7 @@
               "banks": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Bank"
+                  "$ref": "#/components/schemas/EntityModelBank"
                 }
               }
             }

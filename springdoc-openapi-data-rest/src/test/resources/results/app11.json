@@ -60,17 +60,17 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelPerson"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelPerson"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelPerson"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelPerson"
                 }
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelPerson"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelPerson"
                 }
               }
             }
@@ -422,6 +422,39 @@
           }
         }
       },
+      "CollectionModelEntityModelPerson": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "people": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelPerson"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelPerson": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
       "Person": {
         "type": "object",
         "properties": {
@@ -446,20 +479,6 @@
                 }
               }
             }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelPerson": {
-        "type": "object",
-        "properties": {
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
