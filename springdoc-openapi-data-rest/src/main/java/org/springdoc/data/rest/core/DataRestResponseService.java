@@ -332,7 +332,7 @@ public class DataRestResponseService {
 		/**
 		 * The Content.
 		 */
-		private Map<? extends Object, ? extends Object> content;
+		private Map content;
 
 		/**
 		 * Instantiates a new Map model.
@@ -351,7 +351,7 @@ public class DataRestResponseService {
 		 * @return the content
 		 */
 		@JsonAnyGetter
-		public Map<? extends Object, ? extends Object> getContent() {
+		public Map getContent() {
 			return content;
 		}
 
