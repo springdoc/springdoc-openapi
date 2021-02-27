@@ -214,7 +214,7 @@ public class DataRestResponseService {
 		Type returnType = ReturnTypeParser.resolveType(methodParameterReturn.getGenericParameterType(), methodParameterReturn.getContainingClass());
 		Class returnedEntityType = domainType;
 
-		if (dataRestRepository != null && ControllerType.PROPERTY.equals(dataRestRepository.getControllerType()))
+		if (ControllerType.PROPERTY.equals(dataRestRepository.getControllerType()))
 			returnedEntityType = dataRestRepository.getPropertyType();
 
 		if (returnType instanceof ParameterizedType) {
@@ -268,10 +268,10 @@ public class DataRestResponseService {
 	 * @return the class
 	 */
 	private Class findType(RequestMethod requestMethod, DataRestRepository dataRestRepository) {
-		if (dataRestRepository != null && ControllerType.ENTITY.equals(dataRestRepository.getControllerType())
+		if (ControllerType.ENTITY.equals(dataRestRepository.getControllerType())
 				&& Arrays.stream(requestMethodsEntityModel).anyMatch(requestMethod::equals))
 			return EntityModel.class;
-		else if (dataRestRepository != null && ControllerType.PROPERTY.equals(dataRestRepository.getControllerType())) {
+		else if (ControllerType.PROPERTY.equals(dataRestRepository.getControllerType())) {
 			if (dataRestRepository.isCollectionLike())
 				return CollectionModel.class;
 			else if (dataRestRepository.isMap())

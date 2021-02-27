@@ -113,7 +113,7 @@ public class DataRestRouterOperationService {
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
 			DataRestRepository dataRestRepository, OpenAPI openAPI) {
 		String path = resourceMetadata.getPath().toString();
-		ControllerType controllerType = (dataRestRepository == null) ? ControllerType.SCHEMA : dataRestRepository.getControllerType();
+		ControllerType controllerType = dataRestRepository.getControllerType();
 		for (Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethodMap.entrySet()) {
 			buildRouterOperationList(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path, entry, null, controllerType, null);
 		}
@@ -180,7 +180,7 @@ public class DataRestRouterOperationService {
 				if (patternsRequestCondition != null) {
 					Set<String> patterns = patternsRequestCondition.getPatterns();
 					Map<String, String> regexMap = new LinkedHashMap<>();
-					String relationName = (dataRestRepository != null) ? dataRestRepository.getRelationName() : null;
+					String relationName = dataRestRepository.getRelationName();
 					String operationPath = calculateOperationPath(path, subPath, patterns, regexMap, controllerType, relationName);
 					buildRouterOperation(routerOperationList, dataRestRepository, openAPI, methodResourceMapping,
 							handlerMethod, requestMethod, resourceMetadata, operationPath, controllerType);

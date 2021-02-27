@@ -98,7 +98,7 @@ public class DataRestTagsService {
 			tagName = ProfileController.class.getSimpleName();
 			operation.addTagsItem(OpenAPIService.splitCamelCase(tagName));
 		}
-		else if (dataRestRepository != null && dataRestRepository.getDomainType() != null) {
+		else {
 			Class<?> domainType = dataRestRepository.getDomainType();
 			Set<Tag> tags = new HashSet<>();
 			Set<String> tagsStr = new HashSet<>();

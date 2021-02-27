@@ -230,7 +230,8 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 										.getValue().getBeanType()) || AlpsController.class.equals(requestMappingInfoHandlerMethodEntry
 										.getValue().getBeanType()))
 								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
-						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, null, openAPI);
+						dataRestRepository.setControllerType(ControllerType.GENERAL);
+						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
 					}
 				}
 			}
