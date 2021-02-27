@@ -39,6 +39,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import static org.springdoc.core.Constants.MVC_SERVLET_PATH;
 import static org.springdoc.core.Constants.SWAGGER_CONFIG_URL;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
+import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Swagger welcome.
@@ -107,4 +109,13 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 		return super.buildUrl(contextPath, docsUrl);
 	}
 
+	@Override
+	protected String buildApiDocUrl(String contextPath) {
+		return buildUrl(contextPath, springDocConfigProperties.getApiDocs().getPath());
+	}
+
+	@Override
+	protected String buildSwaggerConfigUrl(String contextPath) {
+		return  apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+	}
 }

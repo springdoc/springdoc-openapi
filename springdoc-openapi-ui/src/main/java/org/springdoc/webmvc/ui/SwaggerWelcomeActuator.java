@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
@@ -13,10 +12,8 @@ import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
 import org.springframework.http.MediaType;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_ACTUATOR_URL;
 import static org.springdoc.core.Constants.DEFAULT_SWAGGER_UI_ACTUATOR_PATH;
@@ -83,26 +80,15 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	}
 
 	@Override
-	protected void buildConfigUrl(String contextPath, UriComponentsBuilder uriComponentsBuilder) {
-		String apiDocsUrl = DEFAULT_API_DOCS_ACTUATOR_URL;
-		if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
-			String url = buildUrl(contextPath + webEndpointProperties.getBasePath(), apiDocsUrl);
-			String swaggerConfigUrl = contextPath + webEndpointProperties.getBasePath()
-					+ DEFAULT_PATH_SEPARATOR + DEFAULT_SWAGGER_UI_ACTUATOR_PATH
-					+ DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+	protected String buildApiDocUrl(String contextPath) {
+		return buildUrl(contextPath + webEndpointProperties.getBasePath(), DEFAULT_API_DOCS_ACTUATOR_URL);
+	}
 
-			swaggerUiConfigParameters.setConfigUrl(swaggerConfigUrl);
-			if (CollectionUtils.isEmpty(swaggerUiConfigParameters.getUrls())) {
-				String swaggerUiUrl = swaggerUiConfig.getUrl();
-				if (StringUtils.isEmpty(swaggerUiUrl))
-					swaggerUiConfigParameters.setUrl(url);
-				else
-					swaggerUiConfigParameters.setUrl(swaggerUiUrl);
-			}
-			else
-				swaggerUiConfigParameters.addUrl(url);
-		}
-		calculateOauth2RedirectUrl(uriComponentsBuilder);
+	@Override
+	protected String buildSwaggerConfigUrl(String contextPath) {
+		return contextPath + webEndpointProperties.getBasePath()
+				+ DEFAULT_PATH_SEPARATOR + DEFAULT_SWAGGER_UI_ACTUATOR_PATH
+				+ DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
 	}
 
 }

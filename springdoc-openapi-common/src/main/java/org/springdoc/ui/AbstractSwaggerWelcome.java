@@ -30,7 +30,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 
@@ -55,6 +54,15 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	 */
 	protected final SwaggerUiConfigParameters swaggerUiConfigParameters;
 
+	/**
+	 * The Swagger config url.
+	 */
+	protected String swaggerConfigUrl;
+
+	/**
+	 * The Api docs url.
+	 */
+	protected String apiDocsUrl;
 
 	/**
 	 * Instantiates a new Abstract swagger welcome.
@@ -98,20 +106,19 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	 * @param uriComponentsBuilder the uri components builder
 	 */
 	protected void buildConfigUrl(String contextPath, UriComponentsBuilder uriComponentsBuilder) {
-		String apiDocsUrl = springDocConfigProperties.getApiDocs().getPath();
 		if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
-			String url = buildUrl(contextPath, apiDocsUrl);
-			String swaggerConfigUrl = url + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+			apiDocsUrl =  StringUtils.defaultIfEmpty(apiDocsUrl, buildApiDocUrl(contextPath));
+			swaggerConfigUrl = StringUtils.defaultIfEmpty(swaggerConfigUrl, buildSwaggerConfigUrl(contextPath));
 			swaggerUiConfigParameters.setConfigUrl(swaggerConfigUrl);
 			if (CollectionUtils.isEmpty(swaggerUiConfigParameters.getUrls())) {
 				String swaggerUiUrl = swaggerUiConfig.getUrl();
 				if (StringUtils.isEmpty(swaggerUiUrl))
-					swaggerUiConfigParameters.setUrl(url);
+					swaggerUiConfigParameters.setUrl(apiDocsUrl);
 				else
 					swaggerUiConfigParameters.setUrl(swaggerUiUrl);
 			}
 			else
-				swaggerUiConfigParameters.addUrl(url);
+				swaggerUiConfigParameters.addUrl(apiDocsUrl);
 		}
 		calculateOauth2RedirectUrl(uriComponentsBuilder);
 	}
@@ -177,5 +184,25 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
 			sbUrl.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
 		swaggerUiConfigParameters.setUiRootPath(sbUrl.toString());
+	}
+
+	/**
+	 * Build api doc url string.
+	 *
+	 * @param contextPath the context path
+	 * @return the string
+	 */
+	protected String buildApiDocUrl(String contextPath) {
+		return this.apiDocsUrl;
+	}
+
+	/**
+	 * Build swagger config url string.
+	 *
+	 * @param contextPath the context path
+	 * @return the string
+	 */
+	protected String buildSwaggerConfigUrl(String contextPath) {
+		return this.swaggerConfigUrl;
 	}
 }
