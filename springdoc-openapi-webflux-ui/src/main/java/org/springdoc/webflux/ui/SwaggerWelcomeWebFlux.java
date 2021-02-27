@@ -41,7 +41,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
@@ -66,16 +65,6 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 * The Webflux base path.
 	 */
 	private String webfluxBasePath = StringUtils.EMPTY;
-
-	/**
-	 * The Swagger config url.
-	 */
-	private String swaggerConfigUrl;
-
-	/**
-	 * The Api docs url.
-	 */
-	private String apiDocsUrl;
 
 	/**
 	 * The Request mapping handler mapping.
@@ -151,23 +140,6 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	protected void calculateUiRootPath(StringBuilder... sbUrls) {
 		StringBuilder sbUrl = new StringBuilder();
 		calculateUiRootCommon(sbUrl, sbUrls);
-	}
-
-	@Override
-	protected void buildConfigUrl(String contextPath, UriComponentsBuilder uriComponentsBuilder) {
-		if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
-			swaggerUiConfigParameters.setConfigUrl(swaggerConfigUrl);
-			if (CollectionUtils.isEmpty(swaggerUiConfigParameters.getUrls())) {
-				String swaggerUiUrl = swaggerUiConfig.getUrl();
-				if (StringUtils.isEmpty(swaggerUiUrl))
-					swaggerUiConfigParameters.setUrl(apiDocsUrl);
-				else
-					swaggerUiConfigParameters.setUrl(swaggerUiUrl);
-			}
-			else
-				swaggerUiConfigParameters.addUrl(apiDocsUrl);
-		}
-		calculateOauth2RedirectUrl(uriComponentsBuilder);
 	}
 
 	@Override
