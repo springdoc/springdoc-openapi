@@ -340,7 +340,7 @@ public class DataRestResponseService {
 		 * @param content the content
 		 * @param links the links
 		 */
-		public MapModel(Map<? extends Object, ? extends Object> content, Link... links) {
+		public MapModel(Map content, Link... links) {
 			super(Arrays.asList(links));
 			this.content = content;
 		}
