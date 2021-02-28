@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.5] - 2021-02-28
+### Added
+- #1050 - Add support for addPathPrefix with Webflux swagger-ui. 
+- #1059 - Support per method security requirement in RepositoryRestResource. 
+### Changed
+- Upgrade versions: spring-boot to 2.4.3 and swagger-ui to 3.44
+### Fixed
+- #1068 - Spring Data Rest: Wrong response schema after POST,PUT,PATCH operations.  
+- #1073 - Springdocs doesn't detect header declarations in class level `@RequestMapping`s.
+- #1069 - Spring Data Rest: Wrong response schema for collection relations. 
+- #1070 - Spring Data Rest: Collection models generated with non-HAL content.
+- #1075 - QuerydslBinderCustomizer alias being removed when using excludeUnlistedProperties. 
+
 ## [1.5.4] - 2021-02-10
 ### Added
 - #1053 - Add @RepositoryRestController documentation generation
