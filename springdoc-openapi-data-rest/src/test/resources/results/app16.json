@@ -64,7 +64,8 @@
                 "$ref": "#/components/schemas/Account"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "201": {
@@ -183,7 +184,8 @@
                 "$ref": "#/components/schemas/Account"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -269,7 +271,8 @@
                 "$ref": "#/components/schemas/Account"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -369,7 +372,8 @@
                 "$ref": "#/components/schemas/CollectionModelObject"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -465,7 +469,8 @@
                 "$ref": "#/components/schemas/CollectionModelObject"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -617,7 +622,8 @@
                 "$ref": "#/components/schemas/Customer"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "201": {
@@ -760,7 +766,8 @@
                 "$ref": "#/components/schemas/Customer"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -811,7 +818,8 @@
                 "$ref": "#/components/schemas/Customer"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -993,25 +1001,6 @@
           }
         }
       },
-      "CollectionModelEntityModelCustomer": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "customers": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelCustomer"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "Customer": {
         "type": "object",
         "properties": {
@@ -1039,6 +1028,25 @@
           },
           "lastname": {
             "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelCustomer": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "customers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelCustomer"
+                }
+              }
+            }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -1104,25 +1112,6 @@
           }
         }
       },
-      "CollectionModelEntityModelAccount": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "accounts": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelAccount"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "EntityModelAccount": {
         "type": "object",
         "properties": {
@@ -1136,6 +1125,25 @@
           "expiryDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelAccount": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "accounts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelAccount"
+                }
+              }
+            }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
