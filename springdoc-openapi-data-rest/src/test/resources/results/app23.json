@@ -34,7 +34,7 @@
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelClinic"
+                  "type": "string"
                 }
               }
             }
@@ -247,7 +247,7 @@
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelDoctor"
+                  "type": "string"
                 }
               }
             }
@@ -465,7 +465,7 @@
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelClinic"
+                  "type": "string"
                 }
               }
             }

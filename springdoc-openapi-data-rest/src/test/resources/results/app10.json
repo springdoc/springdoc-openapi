@@ -34,7 +34,7 @@
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelAccount"
+                  "type": "string"
                 }
               }
             }
@@ -284,7 +284,7 @@
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/EntityModelCustomer"
+                  "type": "string"
                 }
               }
             }
@@ -532,7 +532,7 @@
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelCustomer"
+                  "type": "string"
                 }
               }
             }
