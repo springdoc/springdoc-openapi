@@ -90,7 +90,8 @@
                 "$ref": "#/components/schemas/ChildProperty"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "201": {
@@ -162,7 +163,8 @@
                 "$ref": "#/components/schemas/ChildProperty"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -238,7 +240,8 @@
                 "$ref": "#/components/schemas/ChildProperty"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -416,7 +419,8 @@
                 "$ref": "#/components/schemas/Property"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "201": {
@@ -488,7 +492,8 @@
                 "$ref": "#/components/schemas/Property"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -564,7 +569,8 @@
                 "$ref": "#/components/schemas/Property"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -654,7 +660,8 @@
                 "$ref": "#/components/schemas/CollectionModelObject"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -740,7 +747,8 @@
                 "$ref": "#/components/schemas/CollectionModelObject"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -929,26 +937,7 @@
           }
         }
       },
-      "CollectionModelEntityModelProperty": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "properties": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelProperty"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelProperty": {
+      "EntityModelChildProperty": {
         "type": "object",
         "properties": {
           "id": {
@@ -958,8 +947,24 @@
           "name": {
             "type": "string"
           },
-          "myChildPropertyName": {
-            "$ref": "#/components/schemas/ChildProperty"
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelChildProperty": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "childProperties": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
+                }
+              }
+            }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -981,7 +986,7 @@
           }
         }
       },
-      "EntityModelChildProperty": {
+      "EntityModelProperty": {
         "type": "object",
         "properties": {
           "id": {
@@ -990,6 +995,28 @@
           },
           "name": {
             "type": "string"
+          },
+          "myChildPropertyName": {
+            "$ref": "#/components/schemas/ChildProperty"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelProperty": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "properties": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelProperty"
+                }
+              }
+            }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -1006,25 +1033,6 @@
                 "type": "array",
                 "items": {
                   "type": "object"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelChildProperty": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "childProperties": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }

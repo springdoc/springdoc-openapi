@@ -89,7 +89,8 @@
                 "$ref": "#/components/schemas/Bank"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "201": {
@@ -226,7 +227,8 @@
                 "$ref": "#/components/schemas/Bank"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -302,7 +304,8 @@
                 "$ref": "#/components/schemas/Bank"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -469,6 +472,24 @@
           }
         }
       },
+      "EntityModelBank": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
       "CollectionModelEntityModelBank": {
         "type": "object",
         "properties": {
@@ -482,24 +503,6 @@
                 }
               }
             }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelBank": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "code": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"

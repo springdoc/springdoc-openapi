@@ -216,6 +216,7 @@ public class DataRestRequestService {
 					parameterInfo, requestBodyInfo);
 			requestBuilder.applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 			operation.setRequestBody(requestBodyInfo.getRequestBody());
+			operation.getRequestBody().setRequired(true);
 		}
 	}
 

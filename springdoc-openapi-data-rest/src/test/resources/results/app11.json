@@ -90,7 +90,8 @@
                 "$ref": "#/components/schemas/Person"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "201": {
@@ -194,7 +195,8 @@
                 "$ref": "#/components/schemas/Person"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -270,7 +272,8 @@
                 "$ref": "#/components/schemas/Person"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -422,22 +425,14 @@
           }
         }
       },
-      "CollectionModelEntityModelPerson": {
+      "Person": {
         "type": "object",
         "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "people": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelPerson"
-                }
-              }
-            }
+          "firstName": {
+            "type": "string"
           },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
+          "lastName": {
+            "type": "string"
           }
         }
       },
@@ -455,14 +450,22 @@
           }
         }
       },
-      "Person": {
+      "CollectionModelEntityModelPerson": {
         "type": "object",
         "properties": {
-          "firstName": {
-            "type": "string"
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "people": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelPerson"
+                }
+              }
+            }
           },
-          "lastName": {
-            "type": "string"
+          "_links": {
+            "$ref": "#/components/schemas/Links"
           }
         }
       },
