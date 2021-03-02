@@ -34,6 +34,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
@@ -58,6 +59,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
+
+import static org.springdoc.data.rest.utils.SpringDocDataRestUtils.buildTextUriContent;
 
 /**
  * The type Data rest request builder.
@@ -216,6 +219,8 @@ public class DataRestRequestService {
 					parameterInfo, requestBodyInfo);
 			requestBuilder.applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 			operation.setRequestBody(requestBodyInfo.getRequestBody());
+			Content content = operation.getRequestBody().getContent();
+			buildTextUriContent(content);
 			operation.getRequestBody().setRequired(true);
 		}
 	}

@@ -657,7 +657,7 @@
             },
             "text/uri-list": {
               "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
+                "type": "string"
               }
             }
           },
@@ -744,7 +744,7 @@
             },
             "text/uri-list": {
               "schema": {
-                "$ref": "#/components/schemas/CollectionModelObject"
+                "type": "string"
               }
             }
           },
