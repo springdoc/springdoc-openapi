@@ -59,12 +59,12 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelBank"
+                  "$ref": "#/components/schemas/PagedModelEntityModelBank"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelBank"
+                  "$ref": "#/components/schemas/PagedModelEntityModelBank"
                 }
               },
               "text/uri-list": {
@@ -490,7 +490,28 @@
           }
         }
       },
-      "CollectionModelEntityModelBank": {
+      "PageMetadata": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "PagedModelEntityModelBank": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -506,6 +527,9 @@
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
           }
         }
       },
