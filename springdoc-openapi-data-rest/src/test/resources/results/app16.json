@@ -694,7 +694,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PagedModelCustomer"
+                  "$ref": "#/components/schemas/PagedModelEntityModelCustomer"
                 }
               }
             }
@@ -1166,7 +1166,7 @@
           }
         }
       },
-      "PagedModelCustomer": {
+      "PagedModelEntityModelCustomer": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -1175,7 +1175,7 @@
               "customers": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Customer"
+                  "$ref": "#/components/schemas/EntityModelCustomer"
                 }
               }
             }
