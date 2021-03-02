@@ -35,8 +35,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Content;
-import io.swagger.v3.oas.models.media.MediaType;
-import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.springdoc.core.GenericResponseService;
@@ -47,7 +45,6 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.rest.core.mapping.MethodResourceMapping;
 import org.springframework.data.rest.core.mapping.ResourceMetadata;
-import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -60,6 +57,10 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
+
+import static org.springdoc.data.rest.utils.SpringDocDataRestUtils.buildTextUriContent;
+
+;
 
 /**
  * The type Data rest response builder.
@@ -138,8 +139,7 @@ public class DataRestResponseService {
 		ApiResponses apiResponses = new ApiResponses();
 		ApiResponse apiResponse = new ApiResponse();
 		Content content = genericResponseService.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
-		if (content.get(RestMediaTypes.TEXT_URI_LIST_VALUE) != null)
-			content.put(RestMediaTypes.TEXT_URI_LIST_VALUE, new MediaType().schema(new StringSchema()));
+		buildTextUriContent(content);
 		apiResponse.setContent(content);
 		addResponse(requestMethod, operationPath, apiResponses, apiResponse);
 		operation.setResponses(apiResponses);
