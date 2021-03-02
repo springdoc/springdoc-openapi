@@ -46,6 +46,7 @@ import org.springdoc.core.ReturnTypeParser;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.rest.core.mapping.MethodResourceMapping;
+import org.springframework.data.rest.core.mapping.ResourceMetadata;
 import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -120,7 +121,6 @@ public class DataRestResponseService {
 
 	/**
 	 * Build entity response.
-	 *
 	 * @param operation the operation
 	 * @param handlerMethod the handler method
 	 * @param openAPI the open api
@@ -129,11 +129,12 @@ public class DataRestResponseService {
 	 * @param domainType the domain type
 	 * @param methodAttributes the method attributes
 	 * @param dataRestRepository the data rest repository
+	 * @param resourceMetadata the resource metadata
 	 */
 	public void buildEntityResponse(Operation operation, HandlerMethod handlerMethod, OpenAPI openAPI, RequestMethod requestMethod,
-			String operationPath, Class<?> domainType, MethodAttributes methodAttributes, DataRestRepository dataRestRepository) {
+			String operationPath, Class<?> domainType, MethodAttributes methodAttributes, DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata) {
 		MethodParameter methodParameterReturn = handlerMethod.getReturnType();
-		Type returnType = getType(methodParameterReturn, domainType, requestMethod, dataRestRepository);
+		Type returnType = getType(methodParameterReturn, domainType, requestMethod, dataRestRepository, resourceMetadata);
 		ApiResponses apiResponses = new ApiResponses();
 		ApiResponse apiResponse = new ApiResponse();
 		Content content = genericResponseService.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
@@ -213,9 +214,10 @@ public class DataRestResponseService {
 	 * @param domainType the domain type
 	 * @param requestMethod the request method
 	 * @param dataRestRepository the data rest repository
+	 * @param resourceMetadata the resource metadata
 	 * @return the type
 	 */
-	private Type getType(MethodParameter methodParameterReturn, Class<?> domainType, RequestMethod requestMethod, DataRestRepository dataRestRepository) {
+	private Type getType(MethodParameter methodParameterReturn, Class<?> domainType, RequestMethod requestMethod, DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata) {
 		Type returnType = ReturnTypeParser.resolveType(methodParameterReturn.getGenericParameterType(), methodParameterReturn.getContainingClass());
 		Class returnedEntityType = domainType;
 
@@ -259,7 +261,10 @@ public class DataRestResponseService {
 			}
 			else if ((CollectionModel.class.equals(parameterizedType.getRawType())
 					&& Object.class.equals(parameterizedType.getActualTypeArguments()[0]))) {
-				return resolveGenericType(CollectionModel.class, EntityModel.class, returnedEntityType);
+				if (resourceMetadata.isPagingResource())
+					return resolveGenericType(PagedModel.class, EntityModel.class, returnedEntityType);
+				else
+					return resolveGenericType(CollectionModel.class, EntityModel.class, returnedEntityType);
 			}
 		}
 		return returnType;

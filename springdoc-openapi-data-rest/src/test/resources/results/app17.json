@@ -60,12 +60,12 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelChildProperty"
+                  "$ref": "#/components/schemas/PagedModelEntityModelChildProperty"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelChildProperty"
+                  "$ref": "#/components/schemas/PagedModelEntityModelChildProperty"
                 }
               },
               "text/uri-list": {
@@ -389,12 +389,12 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelProperty"
+                  "$ref": "#/components/schemas/PagedModelEntityModelProperty"
                 }
               },
               "application/x-spring-data-compact+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelProperty"
+                  "$ref": "#/components/schemas/PagedModelEntityModelProperty"
                 }
               },
               "text/uri-list": {
@@ -952,7 +952,28 @@
           }
         }
       },
-      "CollectionModelEntityModelChildProperty": {
+      "PageMetadata": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "PagedModelEntityModelChildProperty": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -968,6 +989,9 @@
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
           }
         }
       },
@@ -1004,7 +1028,7 @@
           }
         }
       },
-      "CollectionModelEntityModelProperty": {
+      "PagedModelEntityModelProperty": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -1020,6 +1044,9 @@
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
           }
         }
       },

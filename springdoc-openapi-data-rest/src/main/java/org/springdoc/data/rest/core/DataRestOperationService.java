@@ -155,7 +155,7 @@ public class DataRestOperationService {
 			domainType = dataRestRepository.getDomainType();
 		Operation operation = initOperation(handlerMethod, domainType, requestMethod);
 		dataRestRequestService.buildParameters(domainType, openAPI, handlerMethod, requestMethod, methodAttributes, operation, resourceMetadata);
-		dataRestResponseService.buildEntityResponse(operation, handlerMethod, openAPI, requestMethod, operationPath, domainType, methodAttributes, dataRestRepository);
+		dataRestResponseService.buildEntityResponse(operation, handlerMethod, openAPI, requestMethod, operationPath, domainType, methodAttributes, dataRestRepository, resourceMetadata);
 		tagsBuilder.buildEntityTags(operation, handlerMethod, dataRestRepository);
 		if (domainType != null)
 			addOperationDescription(operation, requestMethod, domainType.getSimpleName().toLowerCase(), dataRestRepository);
