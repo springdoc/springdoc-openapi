@@ -69,7 +69,7 @@
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelBank"
+                  "type": "string"
                 }
               }
             }

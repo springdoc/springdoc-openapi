@@ -70,7 +70,7 @@
               },
               "text/uri-list": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelEntityModelPerson"
+                  "type": "string"
                 }
               }
             }
