@@ -16,6 +16,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import static org.springdoc.core.Constants.SWAGGER_UI_URL;
 
 public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
+	private String originalRelativeOauth2RedirectUrl;
+
 	/**
 	 * Instantiates a new Abstract swagger welcome.
 	 *  @param swaggerUiConfig the swagger ui config
@@ -28,7 +30,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 
 	protected String redirectToUi(HttpServletRequest request) {
 		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
-		String sbUrl =   swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
+		String sbUrl = swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
 
 		// forward all queryParams from original request
@@ -44,7 +46,11 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 
 	@Override
 	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
-		if (!swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl()))
+		if (!swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl())) {
+			originalRelativeOauth2RedirectUrl = swaggerUiConfigParameters.getOauth2RedirectUrl();
 			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder.path(swaggerUiConfigParameters.getUiRootPath()).path(swaggerUiConfigParameters.getOauth2RedirectUrl()).build().toString());
+		} else if (springDocConfigProperties.isCacheDisabled() && originalRelativeOauth2RedirectUrl != null) {
+			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder.path(swaggerUiConfigParameters.getUiRootPath()).path(originalRelativeOauth2RedirectUrl).build().toString());
+		}
 	}
 }
