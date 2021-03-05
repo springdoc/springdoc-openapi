@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class helloController2 {
+public class HelloController {
 
 	@GetMapping("/test1")
 	public void test1(String hello) {
