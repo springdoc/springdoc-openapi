@@ -23,6 +23,8 @@
 
 package org.springdoc.data.rest.core;
 
+import org.springframework.data.mapping.PersistentEntity;
+
 /**
  * The type Data rest repository.
  * @author bnasslahsen
@@ -65,6 +67,11 @@ public class DataRestRepository {
 	private Class<?> propertyType;
 
 	/**
+	 * The Persistent entity.
+	 */
+	PersistentEntity<?, ?> persistentEntity;
+
+	/**
 	 * Instantiates a new Data rest repository.
 	 *
 	 * @param domainType the domain type
@@ -81,7 +88,9 @@ public class DataRestRepository {
 	 * @return the domain type
 	 */
 	public Class<?> getDomainType() {
-		return domainType;
+		if (!ControllerType.GENERAL.equals(controllerType))
+			return domainType;
+		return null;
 	}
 
 	/**
@@ -199,5 +208,40 @@ public class DataRestRepository {
 	 */
 	public void setPropertyType(Class<?> propertyType) {
 		this.propertyType = propertyType;
+	}
+
+	/**
+	 * Gets persistent entity.
+	 *
+	 * @return the persistent entity
+	 */
+	public PersistentEntity<?, ?> getPersistentEntity() {
+		return persistentEntity;
+	}
+
+	/**
+	 * Sets persistent entity.
+	 *
+	 * @param persistentEntity the persistent entity
+	 */
+	public void setPersistentEntity(PersistentEntity<?, ?> persistentEntity) {
+		this.persistentEntity = persistentEntity;
+	}
+
+	/**
+	 * Gets return type.
+	 *
+	 * @return the return type
+	 */
+	public Class getReturnType() {
+		Class returnedEntityType = domainType;
+
+		if (ControllerType.PROPERTY.equals(controllerType))
+			returnedEntityType = propertyType;
+
+		else if (ControllerType.GENERAL.equals(controllerType))
+			returnedEntityType = null;
+
+		return returnedEntityType;
 	}
 }

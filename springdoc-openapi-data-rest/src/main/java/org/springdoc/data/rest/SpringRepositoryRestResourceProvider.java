@@ -181,6 +181,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 			DataRestRepository dataRestRepository = new DataRestRepository(domainType, repository);
 			ResourceMetadata resourceMetadata = mappings.getMetadataFor(domainType);
 			final PersistentEntity<?, ?> entity = persistentEntities.getRequiredPersistentEntity(domainType);
+			dataRestRepository.setPersistentEntity(entity);
 			final JacksonMetadata jackson = new JacksonMetadata(mapper, domainType);
 
 			if (resourceMetadata.isExported()) {
@@ -339,7 +340,8 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @return the list
 	 */
 	private List<RouterOperation> findSearchControllers(List<RouterOperation> routerOperationList,
-			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository, OpenAPI openAPI, SearchResourceMappings searchResourceMappings) {
+			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository,
+			OpenAPI openAPI, SearchResourceMappings searchResourceMappings) {
 		Stream<MethodResourceMapping> methodResourceMappingStream = searchResourceMappings.getExportedMappings();
 		methodResourceMappingStream.forEach(methodResourceMapping -> dataRestRouterOperationService.buildSearchRouterOperationList(
 				routerOperationList, handlerMethodMap, resourceMetadata, dataRestRepository, openAPI, methodResourceMapping));

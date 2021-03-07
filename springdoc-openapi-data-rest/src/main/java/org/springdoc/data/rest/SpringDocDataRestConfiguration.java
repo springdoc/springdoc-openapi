@@ -44,6 +44,7 @@ import org.springdoc.data.rest.core.DataRestRouterOperationService;
 import org.springdoc.data.rest.core.DataRestTagsService;
 import org.springdoc.data.rest.customisers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.data.rest.customisers.QuerydslPredicateOperationCustomizer;
+import org.springdoc.data.rest.utils.SpringDocDataRestUtils;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -68,13 +69,14 @@ import org.springframework.data.rest.webmvc.RootResourceInformation;
 import org.springframework.data.rest.webmvc.mapping.Associations;
 import org.springframework.data.rest.webmvc.support.DefaultedPageable;
 import org.springframework.data.rest.webmvc.support.ETag;
+import org.springframework.hateoas.server.LinkRelationProvider;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
 /**
  * The type Spring doc data rest configuration.
- * @author bnasslahsen
+ * @author bnasslashen
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
@@ -97,7 +99,7 @@ public class SpringDocDataRestConfiguration {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	DelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer(Optional<SpringDataWebProperties> optionalSpringDataWebProperties, Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
-		return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebProperties,optionalRepositoryRestConfiguration);
+		return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebProperties, optionalRepositoryRestConfiguration);
 	}
 
 	/**
@@ -111,14 +113,14 @@ public class SpringDocDataRestConfiguration {
 	@ConditionalOnMissingBean
 	@Primary
 	@Lazy(false)
-	DataRestHalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration,Optional<HateoasProperties> hateoasPropertiesOptional) {
-		return new DataRestHalProvider(repositoryRestConfiguration,hateoasPropertiesOptional);
+	DataRestHalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration, Optional<HateoasProperties> hateoasPropertiesOptional) {
+		return new DataRestHalProvider(repositoryRestConfiguration, hateoasPropertiesOptional);
 	}
 
 
 	/**
 	 * The type Querydsl provider.
-	 * @author bnasslahsen
+	 * @author bnasslashen
 	 */
 	@ConditionalOnClass(value = { QuerydslBindingsFactory.class })
 	class QuerydslProvider {
@@ -143,7 +145,7 @@ public class SpringDocDataRestConfiguration {
 
 	/**
 	 * The type Spring repository rest resource provider configuration.
-	 * @author bnasslahsen
+	 * @author bnasslashen
 	 */
 	@Lazy(false)
 	@Configuration(proxyBeanMethods = false)
@@ -163,7 +165,7 @@ public class SpringDocDataRestConfiguration {
 		 * @param repositories the repositories
 		 * @param associations the associations
 		 * @param applicationContext the application context
-		 * @param dataRestRouterOperationService the data rest router operation builder
+		 * @param dataRestRouterOperationService the data rest router operation service
 		 * @param persistentEntities the persistent entities
 		 * @param mapper the mapper
 		 * @return the spring repository rest resource provider
@@ -174,18 +176,18 @@ public class SpringDocDataRestConfiguration {
 				Repositories repositories, Associations associations, ApplicationContext applicationContext,
 				DataRestRouterOperationService dataRestRouterOperationService, PersistentEntities persistentEntities,
 				ObjectMapper mapper) {
-			return new SpringRepositoryRestResourceProvider(mappings,repositories,  associations,  applicationContext,
-					dataRestRouterOperationService,  persistentEntities, mapper);
+			return new SpringRepositoryRestResourceProvider(mappings, repositories, associations, applicationContext,
+					dataRestRouterOperationService, persistentEntities, mapper);
 		}
 
 		/**
-		 * Data rest router operation builder data rest router operation builder.
+		 * Data rest router operation builder data rest router operation service.
 		 *
-		 * @param dataRestOperationService the data rest operation builder
+		 * @param dataRestOperationService the data rest operation service
 		 * @param springDocConfigProperties the spring doc config properties
 		 * @param repositoryRestConfiguration the repository rest configuration
 		 * @param dataRestHalProvider the data rest hal provider
-		 * @return the data rest router operation builder
+		 * @return the data rest router operation service
 		 */
 		@Bean
 		@ConditionalOnMissingBean
@@ -207,7 +209,7 @@ public class SpringDocDataRestConfiguration {
 		@ConditionalOnMissingBean
 		DataRestOperationService dataRestOperationBuilder(DataRestRequestService dataRestRequestService, DataRestTagsService tagsBuilder,
 				DataRestResponseService dataRestResponseService, OperationService operationService) {
-			return new DataRestOperationService(dataRestRequestService, tagsBuilder, dataRestResponseService,operationService);
+			return new DataRestOperationService(dataRestRequestService, tagsBuilder, dataRestResponseService, operationService);
 		}
 
 		/**
@@ -217,26 +219,28 @@ public class SpringDocDataRestConfiguration {
 		 * @param parameterBuilder the parameter builder
 		 * @param requestBodyService the request body builder
 		 * @param requestBuilder the request builder
+		 * @param springDocDataRestUtils the spring doc data rest utils
 		 * @return the data rest request builder
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		DataRestRequestService dataRestRequestBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
-				RequestBodyService requestBodyService, AbstractRequestService requestBuilder) {
+				RequestBodyService requestBodyService, AbstractRequestService requestBuilder,SpringDocDataRestUtils springDocDataRestUtils) {
 			return new DataRestRequestService(localSpringDocParameterNameDiscoverer, parameterBuilder,
-					requestBodyService, requestBuilder);
+					requestBodyService, requestBuilder, springDocDataRestUtils);
 		}
 
 		/**
 		 * Data rest response builder data rest response builder.
 		 *
 		 * @param genericResponseService the generic response builder
+		 * @param springDocDataRestUtils the spring doc data rest utils
 		 * @return the data rest response builder
 		 */
 		@Bean
 		@ConditionalOnMissingBean
-		DataRestResponseService dataRestResponseBuilder(GenericResponseService genericResponseService) {
-			return new DataRestResponseService(genericResponseService);
+		DataRestResponseService dataRestResponseBuilder(GenericResponseService genericResponseService, SpringDocDataRestUtils springDocDataRestUtils) {
+			return new DataRestResponseService(genericResponseService, springDocDataRestUtils);
 		}
 
 		/**
@@ -249,6 +253,18 @@ public class SpringDocDataRestConfiguration {
 		@ConditionalOnMissingBean
 		DataRestTagsService dataRestTagsBuilder(OpenAPIService openAPIService) {
 			return new DataRestTagsService(openAPIService);
+		}
+
+		/**
+		 * Spring doc data rest utils spring doc data rest utils.
+		 *
+		 * @param linkRelationProvider the link relation provider
+		 * @return the spring doc data rest utils
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		SpringDocDataRestUtils springDocDataRestUtils(LinkRelationProvider linkRelationProvider) {
+			return new SpringDocDataRestUtils(linkRelationProvider);
 		}
 	}
 

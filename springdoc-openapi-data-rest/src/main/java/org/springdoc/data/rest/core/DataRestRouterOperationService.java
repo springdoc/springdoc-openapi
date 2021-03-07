@@ -139,7 +139,7 @@ public class DataRestRouterOperationService {
 		Optional<Entry<RequestMappingInfo, HandlerMethod>> entryOptional = getSearchEntry(handlerMethodMap);
 		if (entryOptional.isPresent()) {
 			Entry<RequestMappingInfo, HandlerMethod> entry = entryOptional.get();
-			buildRouterOperationList(routerOperationList, null, dataRestRepository, openAPI, path, entry, subPath.toString(), ControllerType.SEARCH, methodResourceMapping);
+			buildRouterOperationList(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path, entry, subPath.toString(), ControllerType.SEARCH, methodResourceMapping);
 		}
 	}
 
@@ -162,7 +162,7 @@ public class DataRestRouterOperationService {
 		RequestMappingInfo requestMappingInfo = entry.getKey();
 		HandlerMethod handlerMethod = entry.getValue();
 		Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
-		if (resourceMetadata != null) {
+		if (resourceMetadata != null && !controllerType.equals(ControllerType.SEARCH) ) {
 			HttpMethods httpMethodsItem = resourceMetadata.getSupportedHttpMethods().getMethodsFor(ResourceType.ITEM);
 			Set<RequestMethod> requestMethodsItem = requestMethods.stream().filter(requestMethod -> httpMethodsItem.contains(HttpMethod.valueOf(requestMethod.toString())))
 					.collect(Collectors.toSet());
