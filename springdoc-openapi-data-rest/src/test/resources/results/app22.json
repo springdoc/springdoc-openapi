@@ -87,7 +87,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Person"
+                "$ref": "#/components/schemas/PersonRequestBody"
               }
             }
           },
@@ -160,7 +160,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Person"
+                "$ref": "#/components/schemas/PersonRequestBody"
               }
             }
           },
@@ -237,7 +237,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Person"
+                "$ref": "#/components/schemas/PersonRequestBody"
               }
             }
           },
@@ -414,6 +414,17 @@
         }
       },
       "Person": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
+      "PersonRequestBody": {
         "type": "object",
         "properties": {
           "firstName": {

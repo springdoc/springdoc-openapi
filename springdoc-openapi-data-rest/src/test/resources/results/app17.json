@@ -87,7 +87,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ChildProperty"
+                "$ref": "#/components/schemas/ChildPropertyRequestBody"
               }
             }
           },
@@ -160,7 +160,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ChildProperty"
+                "$ref": "#/components/schemas/ChildPropertyRequestBody"
               }
             }
           },
@@ -237,7 +237,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ChildProperty"
+                "$ref": "#/components/schemas/ChildPropertyRequestBody"
               }
             }
           },
@@ -416,7 +416,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Property"
+                "$ref": "#/components/schemas/PropertyRequestBody"
               }
             }
           },
@@ -489,7 +489,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Property"
+                "$ref": "#/components/schemas/PropertyRequestBody"
               }
             }
           },
@@ -566,7 +566,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Property"
+                "$ref": "#/components/schemas/PropertyRequestBody"
               }
             }
           },
@@ -925,7 +925,7 @@
           }
         }
       },
-      "ChildProperty": {
+      "ChildPropertyRequestBody": {
         "type": "object",
         "properties": {
           "id": {
@@ -940,10 +940,6 @@
       "EntityModelChildProperty": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
           "name": {
             "type": "string"
           },
@@ -995,7 +991,7 @@
           }
         }
       },
-      "Property": {
+      "PropertyRequestBody": {
         "type": "object",
         "properties": {
           "id": {
@@ -1006,22 +1002,15 @@
             "type": "string"
           },
           "myChildPropertyName": {
-            "$ref": "#/components/schemas/ChildProperty"
+            "type": "string"
           }
         }
       },
       "EntityModelProperty": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
           "name": {
             "type": "string"
-          },
-          "myChildPropertyName": {
-            "$ref": "#/components/schemas/ChildProperty"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"

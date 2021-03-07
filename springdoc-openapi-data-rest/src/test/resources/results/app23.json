@@ -51,7 +51,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Clinic"
+                "$ref": "#/components/schemas/ClinicRequestBody"
               }
             }
           },
@@ -124,7 +124,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Clinic"
+                "$ref": "#/components/schemas/ClinicRequestBody"
               }
             }
           },
@@ -201,7 +201,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Clinic"
+                "$ref": "#/components/schemas/ClinicRequestBody"
               }
             }
           },
@@ -264,7 +264,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Doctor"
+                "$ref": "#/components/schemas/DoctorRequestBody"
               }
             }
           },
@@ -337,7 +337,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Doctor"
+                "$ref": "#/components/schemas/DoctorRequestBody"
               }
             }
           },
@@ -414,7 +414,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Doctor"
+                "$ref": "#/components/schemas/DoctorRequestBody"
               }
             }
           },
@@ -853,42 +853,53 @@
           }
         }
       },
-      "Doctor": {
+      "CollectionModelEntityModelClinic": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "clinics": {
-            "maxItems": 2147483647,
-            "minItems": 1,
-            "type": "array",
-            "writeOnly": true,
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "EntityModelDoctor": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "clinics": {
-            "maxItems": 2147483647,
-            "minItems": 1,
-            "type": "array",
-            "writeOnly": true,
-            "items": {
-              "type": "string"
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "clinics": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelClinic"
+                }
+              }
             }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelClinic": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "ClinicResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "ClinicRequestBody": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
           }
         }
       },
@@ -911,37 +922,26 @@
           }
         }
       },
-      "Clinic": {
-        "required": [
-          "name"
-        ],
+      "EntityModelDoctor": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "DoctorRequestBody": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int64"
           },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "CollectionModelClinic": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "clinics": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Clinic"
-                }
-              }
+          "clinics": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
           }
         }
       },
@@ -964,22 +964,7 @@
           }
         }
       },
-      "EntityModelClinic": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelClinic": {
+      "CollectionModelClinic": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -988,7 +973,7 @@
               "clinics": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelClinic"
+                  "$ref": "#/components/schemas/ClinicResponse"
                 }
               }
             }

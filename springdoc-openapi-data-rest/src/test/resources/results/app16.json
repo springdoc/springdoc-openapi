@@ -61,7 +61,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Account"
+                "$ref": "#/components/schemas/AccountRequestBody"
               }
             }
           },
@@ -107,7 +107,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelAccount"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelAccount"
                 }
               }
             }
@@ -181,7 +181,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Account"
+                "$ref": "#/components/schemas/AccountRequestBody"
               }
             }
           },
@@ -268,7 +268,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Account"
+                "$ref": "#/components/schemas/AccountRequestBody"
               }
             }
           },
@@ -619,7 +619,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Customer"
+                "$ref": "#/components/schemas/CustomerRequestBody"
               }
             }
           },
@@ -763,7 +763,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Customer"
+                "$ref": "#/components/schemas/CustomerRequestBody"
               }
             }
           },
@@ -815,7 +815,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Customer"
+                "$ref": "#/components/schemas/CustomerRequestBody"
               }
             }
           },
@@ -1001,22 +1001,6 @@
           }
         }
       },
-      "Account": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "customer": {
-            "$ref": "#/components/schemas/Customer"
-          },
-          "expiryDate": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
       "Customer": {
         "type": "object",
         "properties": {
@@ -1032,7 +1016,7 @@
           }
         }
       },
-      "EntityModelAccount": {
+      "AccountRequestBody": {
         "type": "object",
         "properties": {
           "id": {
@@ -1040,8 +1024,17 @@
             "format": "int64"
           },
           "customer": {
-            "$ref": "#/components/schemas/Customer"
+            "type": "string"
           },
+          "expiryDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "EntityModelAccount": {
+        "type": "object",
+        "properties": {
           "expiryDate": {
             "type": "string",
             "format": "date-time"
@@ -1073,10 +1066,6 @@
       "EntityModelCustomer": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
           "firstname": {
             "type": "string"
           },
@@ -1107,22 +1096,18 @@
           }
         }
       },
-      "CollectionModelAccount": {
+      "CustomerRequestBody": {
         "type": "object",
         "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "accounts": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Account"
-                }
-              }
-            }
+          "id": {
+            "type": "integer",
+            "format": "int64"
           },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
           }
         }
       },

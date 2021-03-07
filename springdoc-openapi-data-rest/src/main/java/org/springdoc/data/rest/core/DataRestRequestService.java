@@ -47,6 +47,7 @@ import org.springdoc.core.ParameterInfo;
 import org.springdoc.core.RequestBodyInfo;
 import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.SpringDocAnnotationsUtils;
+import org.springdoc.data.rest.utils.SpringDocDataRestUtils;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
@@ -59,8 +60,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
-
-import static org.springdoc.data.rest.utils.SpringDocDataRestUtils.buildTextUriContent;
 
 /**
  * The type Data rest request builder.
@@ -89,33 +88,41 @@ public class DataRestRequestService {
 	private AbstractRequestService requestBuilder;
 
 	/**
+	 * The Spring doc data rest utils.
+	 */
+	private SpringDocDataRestUtils springDocDataRestUtils;
+
+	/**
 	 * Instantiates a new Data rest request builder.
 	 *
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 * @param parameterBuilder the parameter builder
 	 * @param requestBodyService the request body builder
 	 * @param requestBuilder the request builder
+	 * @param springDocDataRestUtils the spring doc data rest utils
 	 */
 	public DataRestRequestService(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
-			RequestBodyService requestBodyService, AbstractRequestService requestBuilder) {
+			RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
 		this.requestBuilder = requestBuilder;
+		this.springDocDataRestUtils = springDocDataRestUtils;
 	}
 
 	/**
 	 * Build parameters.
 	 *
-	 * @param domainType the domain type
 	 * @param openAPI the open api
 	 * @param handlerMethod the handler method
 	 * @param requestMethod the request method
 	 * @param methodAttributes the method attributes
 	 * @param operation the operation
 	 * @param resourceMetadata the resource metadata
+	 * @param dataRestRepository the data rest repository
 	 */
-	public void buildParameters(Class<?> domainType, OpenAPI openAPI, HandlerMethod handlerMethod, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, ResourceMetadata resourceMetadata) {
+	public void buildParameters( OpenAPI openAPI, HandlerMethod handlerMethod, RequestMethod requestMethod, MethodAttributes methodAttributes,
+			Operation operation, ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository) {
 		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
 		MethodParameter[] parameters = handlerMethod.getMethodParameters();
 		if (!resourceMetadata.isPagingResource()) {
@@ -126,22 +133,25 @@ public class DataRestRequestService {
 		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
 		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
-		buildCommonParameters(domainType, openAPI, requestMethod, methodAttributes, operation, pNames, parameters);
+		buildCommonParameters(openAPI, requestMethod, methodAttributes, operation, pNames, parameters, resourceMetadata,dataRestRepository);
 	}
 
 	/**
 	 * Build common parameters.
 	 *
-	 * @param domainType the domain type
 	 * @param openAPI the open api
 	 * @param requestMethod the request method
 	 * @param methodAttributes the method attributes
 	 * @param operation the operation
 	 * @param pNames the p names
 	 * @param parameters the parameters
+	 * @param resourceMetadata the resource metadata
+	 * @param dataRestRepository the data rest repository
 	 */
-	public void buildCommonParameters(Class<?> domainType, OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters) {
+	public void buildCommonParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters,
+			ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository) {
 		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
+		Class<?> domainType = dataRestRepository.getDomainType();
 		for (MethodParameter methodParameter : parameters) {
 			final String pName = methodParameter.getParameterName();
 			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder);
@@ -165,7 +175,7 @@ public class DataRestRequestService {
 				}
 				parameter = requestBuilder.buildParams(parameterInfo, openAPI.getComponents(), requestMethod, null);
 
-				addParameters(openAPI, requestMethod, methodAttributes, operation, methodParameter, parameterInfo, parameter);
+				addParameters(openAPI, requestMethod, methodAttributes, operation, methodParameter, parameterInfo, parameter, resourceMetadata, dataRestRepository);
 			}
 		}
 	}
@@ -204,8 +214,11 @@ public class DataRestRequestService {
 	 * @param methodParameter the method parameter
 	 * @param parameterInfo the parameter info
 	 * @param parameter the parameter
+	 * @param resourceMetadata the resource metadata
+	 * @param dataRestRepository the data rest repository
 	 */
-	private void addParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, MethodParameter methodParameter, ParameterInfo parameterInfo, Parameter parameter) {
+	private void addParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, MethodParameter methodParameter,
+			ParameterInfo parameterInfo, Parameter parameter,  ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository) {
 		List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
 		if (requestBuilder.isValidParameter(parameter)) {
 			requestBuilder.applyBeanValidatorAnnotations(parameter, parameterAnnotations);
@@ -220,7 +233,7 @@ public class DataRestRequestService {
 			requestBuilder.applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 			operation.setRequestBody(requestBodyInfo.getRequestBody());
 			Content content = operation.getRequestBody().getContent();
-			buildTextUriContent(content);
+			springDocDataRestUtils.enhanceRequestBodyContent(openAPI, resourceMetadata, content, dataRestRepository);
 			operation.getRequestBody().setRequired(true);
 		}
 	}

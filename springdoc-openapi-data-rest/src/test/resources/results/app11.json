@@ -87,7 +87,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Person"
+                "$ref": "#/components/schemas/PersonRequestBody"
               }
             }
           },
@@ -128,7 +128,7 @@
             "content": {
               "application/hal+json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CollectionModelPerson"
+                  "$ref": "#/components/schemas/CollectionModelEntityModelPerson"
                 }
               }
             }
@@ -192,7 +192,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Person"
+                "$ref": "#/components/schemas/PersonRequestBody"
               }
             }
           },
@@ -269,7 +269,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Person"
+                "$ref": "#/components/schemas/PersonRequestBody"
               }
             }
           },
@@ -425,7 +425,7 @@
           }
         }
       },
-      "Person": {
+      "PersonRequestBody": {
         "type": "object",
         "properties": {
           "firstName": {
@@ -493,7 +493,7 @@
           }
         }
       },
-      "CollectionModelPerson": {
+      "CollectionModelEntityModelPerson": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -502,7 +502,7 @@
               "people": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/Person"
+                  "$ref": "#/components/schemas/EntityModelPerson"
                 }
               }
             }

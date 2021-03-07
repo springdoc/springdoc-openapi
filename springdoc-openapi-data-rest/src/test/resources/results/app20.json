@@ -86,7 +86,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Bank"
+                "$ref": "#/components/schemas/BankRequestBody"
               }
             }
           },
@@ -224,7 +224,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Bank"
+                "$ref": "#/components/schemas/BankRequestBody"
               }
             }
           },
@@ -301,7 +301,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Bank"
+                "$ref": "#/components/schemas/BankRequestBody"
               }
             }
           },
@@ -457,7 +457,7 @@
           }
         }
       },
-      "Bank": {
+      "BankRequestBody": {
         "type": "object",
         "properties": {
           "id": {
@@ -475,10 +475,6 @@
       "EntityModelBank": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
           "code": {
             "type": "string"
           },

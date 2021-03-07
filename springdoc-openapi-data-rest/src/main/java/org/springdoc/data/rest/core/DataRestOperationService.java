@@ -95,6 +95,7 @@ public class DataRestOperationService {
 	 * @param dataRestRequestService the data rest request builder
 	 * @param tagsBuilder the tags builder
 	 * @param dataRestResponseService the data rest response builder
+	 * @param operationService the operation service
 	 */
 	public DataRestOperationService(DataRestRequestService dataRestRequestService, DataRestTagsService tagsBuilder,
 			DataRestResponseService dataRestResponseService, OperationService operationService) {
@@ -130,7 +131,7 @@ public class DataRestOperationService {
 		}
 		else if (ControllerType.SEARCH.equals(controllerType)) {
 			operation = buildSearchOperation(handlerMethod, dataRestRepository, openAPI, requestMethod,
-					methodAttributes, methodResourceMapping);
+					methodAttributes, methodResourceMapping, resourceMetadata);
 		}
 		return operation;
 	}
@@ -154,7 +155,7 @@ public class DataRestOperationService {
 		if (!ControllerType.GENERAL.equals(dataRestRepository.getControllerType()))
 			domainType = dataRestRepository.getDomainType();
 		Operation operation = initOperation(handlerMethod, domainType, requestMethod);
-		dataRestRequestService.buildParameters(domainType, openAPI, handlerMethod, requestMethod, methodAttributes, operation, resourceMetadata);
+		dataRestRequestService.buildParameters(openAPI, handlerMethod, requestMethod, methodAttributes, operation, resourceMetadata, dataRestRepository);
 		dataRestResponseService.buildEntityResponse(operation, handlerMethod, openAPI, requestMethod, operationPath, domainType, methodAttributes, dataRestRepository, resourceMetadata);
 		tagsBuilder.buildEntityTags(operation, handlerMethod, dataRestRepository);
 		if (domainType != null)
@@ -171,11 +172,12 @@ public class DataRestOperationService {
 	 * @param requestMethod the request method
 	 * @param methodAttributes the method attributes
 	 * @param methodResourceMapping the method resource mapping
+	 * @param resourceMetadata the resource metadata
 	 * @return the operation
 	 */
 	private Operation buildSearchOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
 			OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes,
-			MethodResourceMapping methodResourceMapping) {
+			MethodResourceMapping methodResourceMapping, ResourceMetadata resourceMetadata) {
 		Class<?> domainType = dataRestRepository.getDomainType();
 		Operation operation = initOperation(handlerMethod, domainType, requestMethod);
 
@@ -193,7 +195,7 @@ public class DataRestOperationService {
 			HandlerMethod repositoryHandlerMethod = new HandlerMethod(methodResourceMapping.getMethod().getDeclaringClass(), methodResourceMapping.getMethod());
 			MethodParameter[] parameters = repositoryHandlerMethod.getMethodParameters();
 			for (MethodParameter methodParameter : parameters) {
-				dataRestRequestService.buildCommonParameters(domainType, openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameter.getParameterName() }, new MethodParameter[] { methodParameter });
+				dataRestRequestService.buildCommonParameters(openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameter.getParameterName() }, new MethodParameter[] { methodParameter }, resourceMetadata, dataRestRepository);
 			}
 		}
 
@@ -222,9 +224,10 @@ public class DataRestOperationService {
 		if (methodResourceMapping.isPagingResource()) {
 			MethodParameter[] parameters = handlerMethod.getMethodParameters();
 			Arrays.stream(parameters).filter(methodParameter -> DefaultedPageable.class.equals(methodParameter.getParameterType())).findAny()
-					.ifPresent(methodParameterPage -> dataRestRequestService.buildCommonParameters(domainType, openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameterPage.getParameterName() }, new MethodParameter[] { methodParameterPage }));
+					.ifPresent(methodParameterPage -> dataRestRequestService.buildCommonParameters(openAPI, requestMethod, methodAttributes, operation,
+							new String[] { methodParameterPage.getParameterName() }, new MethodParameter[] { methodParameterPage }, resourceMetadata, dataRestRepository));
 		}
-		dataRestResponseService.buildSearchResponse(operation, handlerMethod, openAPI, methodResourceMapping, domainType, methodAttributes);
+		dataRestResponseService.buildSearchResponse(operation, handlerMethod, openAPI, methodResourceMapping, domainType, methodAttributes, resourceMetadata, dataRestRepository);
 		tagsBuilder.buildSearchTags(operation, handlerMethod, dataRestRepository, method);
 		return operation;
 	}
@@ -307,8 +310,10 @@ public class DataRestOperationService {
 	/**
 	 * Create description.
 	 *
+	 * @param action the action
 	 * @param entity the entity
 	 * @param dataRestRepository the data rest repository
+	 * @return the string
 	 */
 	private String createDescription( String action, String entity, DataRestRepository dataRestRepository) {
 		String description;
