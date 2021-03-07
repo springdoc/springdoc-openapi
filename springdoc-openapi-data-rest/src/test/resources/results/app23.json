@@ -853,53 +853,26 @@
           }
         }
       },
-      "CollectionModelEntityModelClinic": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "clinics": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelClinic"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelClinic": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "ClinicResponse": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "ClinicRequestBody": {
+      "DoctorRequestBody": {
         "type": "object",
         "properties": {
           "id": {
             "type": "integer",
             "format": "int64"
           },
-          "name": {
-            "type": "string"
+          "clinics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "EntityModelDoctor": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "$ref": "#/components/schemas/Links"
           }
         }
       },
@@ -922,26 +895,22 @@
           }
         }
       },
-      "EntityModelDoctor": {
+      "CollectionModelClinic": {
         "type": "object",
         "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "clinics": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ClinicResponse"
+                }
+              }
+            }
+          },
           "_links": {
             "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "DoctorRequestBody": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "clinics": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },
@@ -964,7 +933,44 @@
           }
         }
       },
-      "CollectionModelClinic": {
+      "ClinicRequestBody": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "EntityModelClinic": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "ClinicResponse": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "CollectionModelEntityModelClinic": {
         "type": "object",
         "properties": {
           "_embedded": {
@@ -973,7 +979,7 @@
               "clinics": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/ClinicResponse"
+                  "$ref": "#/components/schemas/EntityModelClinic"
                 }
               }
             }
