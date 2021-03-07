@@ -78,6 +78,7 @@ public class SpringDocDataRestUtils {
 					if (!key.endsWith(RESPONSE) && key.toLowerCase().contains(returnType.getSimpleName().toLowerCase())) {
 						String newKey = key + RESPONSE;
 						Schema newSchema = new ObjectSchema();
+						newSchema.setRequired(existingSchema.getRequired());
 						Map<String, Schema> properties = existingSchema.getProperties();
 						properties.forEach((propId, val) -> updateResponseSchema(newSchema, returnType, ignoredFields, propId, val));
 						if (key.equals(returnType.getSimpleName()))
@@ -111,6 +112,7 @@ public class SpringDocDataRestUtils {
 				if (!key.endsWith(REQUEST_BODY) && returnType.getSimpleName().equals(key)) {
 					String newKey = key + REQUEST_BODY;
 					Schema newSchema = new ObjectSchema();
+					newSchema.setRequired(existingSchema.getRequired());
 					Map<String, Schema> properties = existingSchema.getProperties();
 					properties.forEach((propId, val) -> updateRequestBodySchema(associationsFields, newSchema, propId, val));
 					schemas.put(newKey, newSchema);
