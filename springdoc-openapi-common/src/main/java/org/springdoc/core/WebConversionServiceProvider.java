@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.boot.autoconfigure.web.format.WebConversionService;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties.Format;
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.lang.Nullable;
 
 /**
@@ -34,15 +35,14 @@ public class WebConversionServiceProvider {
 	}
 
 	/**
-	 * Convert t.
+	 * Attempts to convert {@code source} into the target type as described by {@code targetTypeDescriptor}.
 	 *
-	 * @param <T>  the type parameter
 	 * @param source the source
-	 * @param targetType the target type
-	 * @return the t
+	 * @param targetTypeDescriptor the target type descriptor
+	 * @return the converted source
 	 */
 	@Nullable
-	public <T> T convert(@Nullable Object source, Class<T> targetType) {
-		return webConversionService.convert(source, targetType);
+	public Object convert(@Nullable Object source, TypeDescriptor targetTypeDescriptor) {
+		return webConversionService.convert(source, targetTypeDescriptor);
 	}
 }
