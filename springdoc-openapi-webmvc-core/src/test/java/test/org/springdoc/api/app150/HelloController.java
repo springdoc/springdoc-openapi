@@ -18,12 +18,16 @@
 
 package test.org.springdoc.api.app150;
 
+import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,6 +55,13 @@ public class HelloController {
 	@ApiResponse(responseCode = "204", description = "No content")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void test3(@RequestParam(defaultValue = "users,123") List<String> toto) {
+
+	}
+
+	@GetMapping("/test4")
+	@ApiResponse(responseCode = "204", description = "No content")
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
+	public void test4(@DateTimeFormat(iso = DATE) @RequestParam(defaultValue = "2021-03-08") LocalDate localDate) {
 
 	}
 
