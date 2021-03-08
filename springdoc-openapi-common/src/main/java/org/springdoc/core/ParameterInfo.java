@@ -26,6 +26,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -101,7 +102,7 @@ public class ParameterInfo {
 		if (this.defaultValue !=null && !ValueConstants.DEFAULT_NONE.equals(this.defaultValue.toString())){
 			this.defaultValue = propertyResolverUtils.resolve(this.defaultValue.toString());
 			parameterBuilder.getOptionalWebConversionServiceProvider()
-					.ifPresent(conversionService ->this.defaultValue= conversionService.convert(this.defaultValue, methodParameter.getParameterType()));
+					.ifPresent(conversionService ->this.defaultValue= conversionService.convert(this.defaultValue, new TypeDescriptor(methodParameter)));
 		}
 
 		this.required = this.required && !methodParameter.isOptional();

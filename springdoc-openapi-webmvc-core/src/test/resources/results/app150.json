@@ -11,6 +11,30 @@
     }
   ],
   "paths": {
+    "/test4": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test4",
+        "parameters": [
+          {
+            "name": "localDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          }
+        }
+      }
+    },
     "/test3": {
       "get": {
         "tags": [
