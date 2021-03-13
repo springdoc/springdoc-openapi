@@ -24,6 +24,8 @@ import java.lang.reflect.Parameter;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.TypeDescriptor;
@@ -69,6 +71,8 @@ public class ParameterInfo {
 	 */
 	private String paramType;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterInfo.class);
+
 
 	/**
 	 * Instantiates a new Parameter info.
@@ -99,10 +103,18 @@ public class ParameterInfo {
 
 		if (StringUtils.isNotBlank(this.pName))
 			this.pName = propertyResolverUtils.resolve(this.pName);
-		if (this.defaultValue !=null && !ValueConstants.DEFAULT_NONE.equals(this.defaultValue.toString())){
+		if (this.defaultValue != null && !ValueConstants.DEFAULT_NONE.equals(this.defaultValue.toString())) {
 			this.defaultValue = propertyResolverUtils.resolve(this.defaultValue.toString());
 			parameterBuilder.getOptionalWebConversionServiceProvider()
-					.ifPresent(conversionService ->this.defaultValue= conversionService.convert(this.defaultValue, new TypeDescriptor(methodParameter)));
+					.ifPresent(conversionService -> {
+								try {
+									this.defaultValue = conversionService.convert(this.defaultValue, new TypeDescriptor(methodParameter));
+								}
+								catch (Exception e) {
+									LOGGER.warn("Using the following default value : {}, without spring conversionService", this.defaultValue);
+								}
+							}
+					);
 		}
 
 		this.required = this.required && !methodParameter.isOptional();
