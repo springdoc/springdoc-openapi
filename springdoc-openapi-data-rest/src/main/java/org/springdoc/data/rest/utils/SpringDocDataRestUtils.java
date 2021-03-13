@@ -114,7 +114,8 @@ public class SpringDocDataRestUtils {
 					Schema newSchema = new ObjectSchema();
 					newSchema.setRequired(existingSchema.getRequired());
 					Map<String, Schema> properties = existingSchema.getProperties();
-					properties.forEach((propId, val) -> updateRequestBodySchema(associationsFields, newSchema, propId, val));
+					if (!CollectionUtils.isEmpty(properties))
+						properties.forEach((propId, val) -> updateRequestBodySchema(associationsFields, newSchema, propId, val));
 					schemas.put(newKey, newSchema);
 					schema.set$ref(Components.COMPONENTS_SCHEMAS_REF + newKey);
 				}
@@ -208,7 +209,7 @@ public class SpringDocDataRestUtils {
 	 * @param propId the prop id
 	 * @param val the val
 	 */
-	private void updateResponseSchema(Schema newSchema, Class<?> returnType, List<String> ignoredFields,  String propId, Schema val) {
+	private void updateResponseSchema(Schema newSchema, Class<?> returnType, List<String> ignoredFields, String propId, Schema val) {
 		if (EMBEDDED.equals(propId)) {
 			String entityClassName = linkRelationProvider.getCollectionResourceRelFor(returnType).value();
 			ArraySchema arraySchema = (ArraySchema) ((ObjectSchema) val).getProperties().get(entityClassName);
