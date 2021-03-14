@@ -12,6 +12,7 @@ import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -54,7 +55,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	@Operation(hidden = true)
 	@GetMapping(DEFAULT_PATH_SEPARATOR)
 	@Override
-	public String redirectToUi(HttpServletRequest request) {
+	public ResponseEntity<Void> redirectToUi(HttpServletRequest request) {
 		return super.redirectToUi(request);
 	}
 
