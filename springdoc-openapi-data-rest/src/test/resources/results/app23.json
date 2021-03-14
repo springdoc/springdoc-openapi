@@ -715,7 +715,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_1",
+        "operationId": "descriptor_1_1_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -745,7 +745,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_2",
+        "operationId": "descriptor_1_1_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -853,18 +853,33 @@
           }
         }
       },
-      "DoctorRequestBody": {
+      "EntityModelClinic": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
+          "name": {
+            "type": "string"
           },
-          "clinics": {
-            "type": "array",
-            "items": {
-              "type": "string"
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelClinic": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "clinics": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelClinic"
+                }
+              }
             }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
           }
         }
       },
@@ -948,14 +963,18 @@
           }
         }
       },
-      "EntityModelClinic": {
+      "DoctorRequestBody": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string"
+          "id": {
+            "type": "integer",
+            "format": "int64"
           },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
+          "clinics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -967,25 +986,6 @@
         "properties": {
           "name": {
             "type": "string"
-          }
-        }
-      },
-      "CollectionModelEntityModelClinic": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "clinics": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelClinic"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
           }
         }
       },
