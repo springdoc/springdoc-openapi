@@ -175,7 +175,7 @@ public class DataRestRequestService {
 				}
 				parameter = requestBuilder.buildParams(parameterInfo, openAPI.getComponents(), requestMethod, null);
 
-				addParameters(openAPI, requestMethod, methodAttributes, operation, methodParameter, parameterInfo, parameter, resourceMetadata, dataRestRepository);
+				addParameters(openAPI, requestMethod, methodAttributes, operation, methodParameter, parameterInfo, parameter);
 			}
 		}
 	}
@@ -214,11 +214,9 @@ public class DataRestRequestService {
 	 * @param methodParameter the method parameter
 	 * @param parameterInfo the parameter info
 	 * @param parameter the parameter
-	 * @param resourceMetadata the resource metadata
-	 * @param dataRestRepository the data rest repository
 	 */
-	private void addParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, MethodParameter methodParameter,
-			ParameterInfo parameterInfo, Parameter parameter,  ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository) {
+	private void addParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation,
+			MethodParameter methodParameter, ParameterInfo parameterInfo, Parameter parameter) {
 		List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
 		if (requestBuilder.isValidParameter(parameter)) {
 			requestBuilder.applyBeanValidatorAnnotations(parameter, parameterAnnotations);

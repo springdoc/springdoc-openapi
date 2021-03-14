@@ -59,8 +59,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
-;
-
 /**
  * The type Data rest response builder.
  * @author bnasslahsen

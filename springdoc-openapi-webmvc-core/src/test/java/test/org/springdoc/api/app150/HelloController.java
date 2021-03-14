@@ -18,8 +18,6 @@
 
 package test.org.springdoc.api.app150;
 
-import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,6 +31,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 
 @RestController
 public class HelloController {
