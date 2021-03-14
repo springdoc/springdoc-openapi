@@ -23,6 +23,9 @@
 
 package test.org.springdoc.api.app10;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -55,4 +58,16 @@ public interface CustomerRepository extends CrudRepository<Customer, Long>, JpaS
 	@Override
 	@RestResource(exported = false)
 	void delete(Customer entity);
+
+	@Override
+	@RestResource
+	List<Customer> findAll();
+
+	@Override
+	@RestResource(exported = false)
+	Optional<Customer> findById(Long aLong);
+
+	@Override
+	@RestResource(exported = false)
+	<S extends Customer> S save(S entity);
 }

@@ -538,35 +538,6 @@
             }
           }
         }
-      },
-      "post": {
-        "tags": [
-          "customer-entity-controller"
-        ],
-        "description": "create-customer",
-        "operationId": "postCollectionResource-customer-post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomerRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelCustomer"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/customers/search/findByLastname": {
@@ -635,134 +606,6 @@
         }
       }
     },
-    "/customers/{id}": {
-      "get": {
-        "tags": [
-          "customer-entity-controller"
-        ],
-        "description": "get-customer",
-        "operationId": "getItemResource-customer-get",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelCustomer"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "customer-entity-controller"
-        ],
-        "description": "update-customer",
-        "operationId": "putItemResource-customer-put",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomerRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelCustomer"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelCustomer"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "customer-entity-controller"
-        ],
-        "description": "patch-customer",
-        "operationId": "patchItemResource-customer-patch",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomerRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelCustomer"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
     "/profile": {
       "get": {
         "tags": [
@@ -788,7 +631,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_1",
+        "operationId": "descriptor_1_1_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -818,7 +661,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_2",
+        "operationId": "descriptor_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -926,6 +769,25 @@
           }
         }
       },
+      "CollectionModelEntityModelCustomer": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "customers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelCustomer"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
       "Customer": {
         "type": "object",
         "properties": {
@@ -941,53 +803,6 @@
           }
         }
       },
-      "AccountRequestBody": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "customer": {
-            "type": "string"
-          },
-          "expiryDate": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "EntityModelAccount": {
-        "type": "object",
-        "properties": {
-          "expiryDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelAccount": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "accounts": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelAccount"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "EntityModelCustomer": {
         "type": "object",
         "properties": {
@@ -996,59 +811,6 @@
           },
           "lastname": {
             "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelObject": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "objects": {
-                "type": "array",
-                "items": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CustomerRequestBody": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "firstname": {
-            "type": "string"
-          },
-          "lastname": {
-            "type": "string"
-          }
-        }
-      },
-      "CollectionModelEntityModelCustomer": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "customers": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelCustomer"
-                }
-              }
-            }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -1095,6 +857,72 @@
           },
           "page": {
             "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "EntityModelAccount": {
+        "type": "object",
+        "properties": {
+          "expiryDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelAccount": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "accounts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelAccount"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelObject": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "objects": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "AccountRequestBody": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "customer": {
+            "type": "string"
+          },
+          "expiryDate": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },

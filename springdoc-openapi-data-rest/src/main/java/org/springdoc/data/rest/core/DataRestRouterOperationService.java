@@ -77,6 +77,11 @@ public class DataRestRouterOperationService {
 	private static final String SEARCH_PATH = AntPathMatcher.DEFAULT_PATH_SEPARATOR + "{search}";
 
 	/**
+	 * The constant ID.
+	 */
+	private static final String ID = "/{id}";
+
+	/**
 	 * The Data rest operation builder.
 	 */
 	private DataRestOperationService dataRestOperationService;
@@ -161,33 +166,68 @@ public class DataRestRouterOperationService {
 			String subPath, ControllerType controllerType, MethodResourceMapping methodResourceMapping) {
 		RequestMappingInfo requestMappingInfo = entry.getKey();
 		HandlerMethod handlerMethod = entry.getValue();
+		Set<RequestMethod> requestMethodsItem = null;
+		Set<RequestMethod> requestMethodsCollection = null;
+
 		Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
-		if (resourceMetadata != null && !controllerType.equals(ControllerType.SEARCH) ) {
+		if (resourceMetadata != null && !controllerType.equals(ControllerType.SEARCH)) {
 			HttpMethods httpMethodsItem = resourceMetadata.getSupportedHttpMethods().getMethodsFor(ResourceType.ITEM);
-			Set<RequestMethod> requestMethodsItem = requestMethods.stream().filter(requestMethod -> httpMethodsItem.contains(HttpMethod.valueOf(requestMethod.toString())))
+			requestMethodsItem = requestMethods.stream().filter(requestMethod -> httpMethodsItem.contains(HttpMethod.valueOf(requestMethod.toString())))
 					.collect(Collectors.toSet());
+
+			buildRouterOperation(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path,
+					subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethodsItem, ResourceType.ITEM);
+
 			if (!ControllerType.PROPERTY.equals(controllerType)) {
 				HttpMethods httpMethodsCollection = resourceMetadata.getSupportedHttpMethods().getMethodsFor(ResourceType.COLLECTION);
-				Set<RequestMethod> requestMethodsCollection = requestMethods.stream().filter(requestMethod -> httpMethodsCollection.contains(HttpMethod.valueOf(requestMethod.toString())))
+				requestMethodsCollection = requestMethods.stream().filter(requestMethod -> httpMethodsCollection.contains(HttpMethod.valueOf(requestMethod.toString())))
 						.collect(Collectors.toSet());
-				requestMethodsItem.addAll(requestMethodsCollection);
+
+				buildRouterOperation(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path,
+						subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethodsCollection, ResourceType.COLLECTION);
 			}
-			requestMethods = requestMethodsItem;
+
+		}
+		else {
+			buildRouterOperation(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path,
+					subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethods, null);
 		}
 
+	}
 
-		for (RequestMethod requestMethod : requestMethods) {
-			if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
-				Set<String> patterns = getActivePatterns(requestMappingInfo);
-				if (!CollectionUtils.isEmpty(patterns)) {
-					Map<String, String> regexMap = new LinkedHashMap<>();
-					String relationName = dataRestRepository.getRelationName();
-					String operationPath = calculateOperationPath(path, subPath, patterns, regexMap, controllerType, relationName);
-					buildRouterOperation(routerOperationList, dataRestRepository, openAPI, methodResourceMapping,
-							handlerMethod, requestMethod, resourceMetadata, operationPath, controllerType);
+	/**
+	 * Build router operation.
+	 *
+	 * @param routerOperationList the router operation list
+	 * @param resourceMetadata the resource metadata
+	 * @param dataRestRepository the data rest repository
+	 * @param openAPI the open api
+	 * @param path the path
+	 * @param subPath the sub path
+	 * @param controllerType the controller type
+	 * @param methodResourceMapping the method resource mapping
+	 * @param requestMappingInfo the request mapping info
+	 * @param handlerMethod the handler method
+	 * @param requestMethodsCollection the request methods collection
+	 * @param collection the collection
+	 */
+	private void buildRouterOperation(List<RouterOperation> routerOperationList, ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository,
+			OpenAPI openAPI, String path, String subPath, ControllerType controllerType, MethodResourceMapping methodResourceMapping, RequestMappingInfo requestMappingInfo,
+			HandlerMethod handlerMethod, Set<RequestMethod> requestMethodsCollection, ResourceType collection) {
+		if (!CollectionUtils.isEmpty(requestMethodsCollection))
+			for (RequestMethod requestMethod : requestMethodsCollection) {
+				if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
+					Set<String> patterns = getActivePatterns(requestMappingInfo);
+					if (!CollectionUtils.isEmpty(patterns)) {
+						Map<String, String> regexMap = new LinkedHashMap<>();
+						String relationName = dataRestRepository.getRelationName();
+						String operationPath = calculateOperationPath(path, subPath, patterns, regexMap, controllerType, relationName, collection);
+						if (operationPath != null)
+							buildRouterOperation(routerOperationList, dataRestRepository, openAPI, methodResourceMapping,
+									handlerMethod, requestMethod, resourceMetadata, operationPath, controllerType);
+					}
 				}
 			}
-		}
 	}
 
 	/**
@@ -199,15 +239,20 @@ public class DataRestRouterOperationService {
 	 * @param regexMap the regex map
 	 * @param controllerType the controller type
 	 * @param relationName the relation name
+	 * @param resourceType the resource type
 	 * @return the string
 	 */
 	private String calculateOperationPath(String path, String subPath, Set<String> patterns,
-			Map<String, String> regexMap, ControllerType controllerType, String relationName) {
+			Map<String, String> regexMap, ControllerType controllerType, String relationName, ResourceType resourceType) {
 		String operationPath = null;
 		for (String pattern : patterns) {
 			operationPath = PathUtils.parsePath(pattern, regexMap);
 			operationPath = operationPath.replace(REPOSITORY_PATH, path);
-			if (ControllerType.SEARCH.equals(controllerType))
+			if (ControllerType.ENTITY.equals(controllerType)) {
+				if ((ResourceType.ITEM.equals(resourceType) && !operationPath.endsWith(ID)) || (ResourceType.COLLECTION.equals(resourceType) && operationPath.endsWith(ID)))
+					operationPath = null;
+			}
+			else if (ControllerType.SEARCH.equals(controllerType))
 				operationPath = operationPath.replace(SEARCH_PATH, subPath);
 			else if (ControllerType.PROPERTY.equals(controllerType))
 				operationPath = operationPath.replace("{property}", relationName);
@@ -228,9 +273,12 @@ public class DataRestRouterOperationService {
 	 * @param operationPath the operation path
 	 * @param controllerType the controller type
 	 */
-	private void buildRouterOperation(List<RouterOperation> routerOperationList, DataRestRepository dataRestRepository, OpenAPI openAPI,
+	private void buildRouterOperation
+	(List<RouterOperation> routerOperationList, DataRestRepository
+			dataRestRepository, OpenAPI openAPI,
 			MethodResourceMapping methodResourceMapping, HandlerMethod handlerMethod,
-			RequestMethod requestMethod, ResourceMetadata resourceMetadata, String operationPath, ControllerType controllerType) {
+			RequestMethod requestMethod, ResourceMetadata resourceMetadata, String
+			operationPath, ControllerType controllerType) {
 		RouterOperation routerOperation = new RouterOperation(operationPath, new RequestMethod[] { requestMethod });
 		MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType());
 		methodAttributes.calculateConsumesProduces(handlerMethod.getMethod());
@@ -249,7 +297,8 @@ public class DataRestRouterOperationService {
 	 * @param handlerMethodMap the handler method map
 	 * @return the search entry
 	 */
-	private Optional<Entry<RequestMappingInfo, HandlerMethod>> getSearchEntry(Map<RequestMappingInfo, HandlerMethod> handlerMethodMap) {
+	private Optional<Entry<RequestMappingInfo, HandlerMethod>> getSearchEntry
+	(Map<RequestMappingInfo, HandlerMethod> handlerMethodMap) {
 		return handlerMethodMap.entrySet().stream().filter(
 				requestMappingInfoHandlerMethodEntry -> {
 					RequestMappingInfo requestMappingInfo = requestMappingInfoHandlerMethodEntry.getKey();
@@ -271,7 +320,8 @@ public class DataRestRouterOperationService {
 	 * @param requestMethod the request method
 	 * @return the boolean
 	 */
-	private boolean isSearchControllerPresent(RequestMappingInfo requestMappingInfo, HandlerMethod handlerMethod, RequestMethod requestMethod) {
+	private boolean isSearchControllerPresent(RequestMappingInfo
+			requestMappingInfo, HandlerMethod handlerMethod, RequestMethod requestMethod) {
 		if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
 			Set<String> patterns = getActivePatterns(requestMappingInfo);
 			if (!CollectionUtils.isEmpty(patterns)) {

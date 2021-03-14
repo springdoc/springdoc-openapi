@@ -1781,7 +1781,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_1",
+        "operationId": "descriptor_1_1_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -1811,7 +1811,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_2",
+        "operationId": "descriptor_1_1_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -1841,7 +1841,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_3",
+        "operationId": "descriptor_1_1_3",
         "responses": {
           "200": {
             "description": "OK",
@@ -1871,7 +1871,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_4",
+        "operationId": "descriptor_1_1_4",
         "responses": {
           "200": {
             "description": "OK",
@@ -2065,17 +2065,14 @@
           }
         }
       },
-      "EntityModelOwner": {
+      "EntityModelPet": {
         "type": "object",
         "properties": {
-          "firstname": {
+          "name": {
             "type": "string"
           },
-          "lastname": {
+          "_type": {
             "type": "string"
-          },
-          "addresses": {
-            "$ref": "#/components/schemas/Address"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -2103,16 +2100,16 @@
           }
         }
       },
-      "PagedModelEntityModelOwner": {
+      "PagedModelEntityModelPet": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "owners": {
+              "pets": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelOwner"
+                  "$ref": "#/components/schemas/EntityModelPet"
                 }
               }
             }
@@ -2125,29 +2122,17 @@
           }
         }
       },
-      "CollectionModelPet": {
+      "EntityModelOwner": {
         "type": "object",
         "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "pets": {
-                "type": "array",
-                "items": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/PetResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/CatResponse"
-                    },
-                    {
-                      "$ref": "#/components/schemas/DogResponse"
-                    }
-                  ]
-                }
-              }
-            }
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "addresses": {
+            "$ref": "#/components/schemas/Address"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -2303,30 +2288,16 @@
           }
         }
       },
-      "EntityModelPet": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "_type": {
-            "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "PagedModelEntityModelPet": {
+      "PagedModelEntityModelOwner": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "pets": {
+              "owners": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelPet"
+                  "$ref": "#/components/schemas/EntityModelOwner"
                 }
               }
             }
@@ -2336,6 +2307,35 @@
           },
           "page": {
             "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "CollectionModelPet": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "pets": {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PetResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CatResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/DogResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
           }
         }
       },

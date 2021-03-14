@@ -265,7 +265,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "listAllFormsOfMetadata",
+        "operationId": "listAllFormsOfMetadata_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -285,7 +285,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_1",
+        "operationId": "descriptor_1_1_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -424,17 +424,6 @@
           }
         }
       },
-      "PersonRequestBody": {
-        "type": "object",
-        "properties": {
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          }
-        }
-      },
       "EntityModelPerson": {
         "type": "object",
         "properties": {
@@ -489,6 +478,17 @@
           },
           "page": {
             "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "PersonRequestBody": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
           }
         }
       },
