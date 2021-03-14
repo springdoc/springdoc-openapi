@@ -69,7 +69,7 @@ public class DataRestRepository {
 	/**
 	 * The Persistent entity.
 	 */
-	PersistentEntity<?, ?> persistentEntity;
+	private PersistentEntity persistentEntity;
 
 	/**
 	 * Instantiates a new Data rest repository.
@@ -215,7 +215,7 @@ public class DataRestRepository {
 	 *
 	 * @return the persistent entity
 	 */
-	public PersistentEntity<?, ?> getPersistentEntity() {
+	public PersistentEntity getPersistentEntity() {
 		return persistentEntity;
 	}
 
@@ -224,7 +224,7 @@ public class DataRestRepository {
 	 *
 	 * @param persistentEntity the persistent entity
 	 */
-	public void setPersistentEntity(PersistentEntity<?, ?> persistentEntity) {
+	public void setPersistentEntity(PersistentEntity persistentEntity) {
 		this.persistentEntity = persistentEntity;
 	}
 

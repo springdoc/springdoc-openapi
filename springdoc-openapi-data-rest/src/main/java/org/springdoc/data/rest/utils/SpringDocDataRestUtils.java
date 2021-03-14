@@ -192,7 +192,8 @@ public class SpringDocDataRestUtils {
 									referencedSchema.addProperties(propId, new StringSchema());
 							}
 						}
-					} if (referencedSchema instanceof ComposedSchema)
+					}
+					if (referencedSchema instanceof ComposedSchema)
 						updateComposedSchema((ComposedSchema) referencedSchema, REQUEST_BODY, components);
 				});
 			}
@@ -312,15 +313,13 @@ public class SpringDocDataRestUtils {
 					if (!allKey.endsWith(REQUEST_BODY) && !allKey.endsWith(RESPONSE)) {
 						String newAllKey = allKey + suffix;
 						allSchema.set$ref(newAllKey);
-						if (components!=null && !components.getSchemas().containsKey(newAllKey)) {
-							if (entityInoMap.containsKey(allKey)) {
-								if (RESPONSE.equals(suffix))
-									createNewResponseSchema(allKey, components);
-							}
+						if (components != null && !components.getSchemas().containsKey(newAllKey) && entityInoMap.containsKey(allKey) && RESPONSE.equals(suffix)) {
+							createNewResponseSchema(allKey, components);
 						}
 					}
 				}
 			}
+
 	}
 
 	/**
@@ -354,12 +353,12 @@ public class SpringDocDataRestUtils {
 		if (entity != null && entity.getIdProperty() != null) {
 			String idField = entity.getIdProperty().getName();
 			ignoredFields.add(idField);
+			entity.doWithAssociations((SimpleAssociationHandler) association -> {
+				PersistentProperty<?> property = association.getInverse();
+				String filedName = resourceMetadata.getMappingFor(property).getRel().value();
+				ignoredFields.add(filedName);
+			});
 		}
-		entity.doWithAssociations((SimpleAssociationHandler) association -> {
-			PersistentProperty<?> property = association.getInverse();
-			String filedName = resourceMetadata.getMappingFor(property).getRel().value();
-			ignoredFields.add(filedName);
-		});
 		return ignoredFields;
 	}
 
@@ -369,7 +368,7 @@ public class SpringDocDataRestUtils {
 	 * @param content the content
 	 */
 	public void buildTextUriContent(Content content) {
-		if (content.get(RestMediaTypes.TEXT_URI_LIST_VALUE) != null)
+		if (content.containsKey(RestMediaTypes.TEXT_URI_LIST_VALUE))
 			content.put(RestMediaTypes.TEXT_URI_LIST_VALUE, new MediaType().schema(new StringSchema()));
 	}
 

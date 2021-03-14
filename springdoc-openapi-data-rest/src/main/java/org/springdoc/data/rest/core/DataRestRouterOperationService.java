@@ -320,8 +320,7 @@ public class DataRestRouterOperationService {
 	 * @param requestMethod the request method
 	 * @return the boolean
 	 */
-	private boolean isSearchControllerPresent(RequestMappingInfo
-			requestMappingInfo, HandlerMethod handlerMethod, RequestMethod requestMethod) {
+	private boolean isSearchControllerPresent(RequestMappingInfo requestMappingInfo, HandlerMethod handlerMethod, RequestMethod requestMethod) {
 		if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
 			Set<String> patterns = getActivePatterns(requestMappingInfo);
 			if (!CollectionUtils.isEmpty(patterns)) {
