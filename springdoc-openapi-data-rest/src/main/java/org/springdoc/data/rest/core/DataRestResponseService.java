@@ -120,7 +120,7 @@ public class DataRestResponseService {
 			ApiResponse apiResponse = new ApiResponse();
 			Type returnType = findSearchReturnType(methodResourceMapping, domainType);
 			Content content = genericResponseService.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
-			springDocDataRestUtils.enhanceResponseContent(openAPI, resourceMetadata, content, dataRestRepository);
+			springDocDataRestUtils.buildTextUriContent(content);
 			apiResponse.setContent(content);
 			addResponse200(apiResponses, apiResponse);
 			addResponse404(apiResponses);
@@ -136,19 +136,18 @@ public class DataRestResponseService {
 	 * @param openAPI the open api
 	 * @param requestMethod the request method
 	 * @param operationPath the operation path
-	 * @param domainType the domain type
 	 * @param methodAttributes the method attributes
 	 * @param dataRestRepository the data rest repository
 	 * @param resourceMetadata the resource metadata
 	 */
 	public void buildEntityResponse(Operation operation, HandlerMethod handlerMethod, OpenAPI openAPI, RequestMethod requestMethod,
-			String operationPath, Class<?> domainType, MethodAttributes methodAttributes, DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata) {
+			String operationPath, MethodAttributes methodAttributes, DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata) {
 		MethodParameter methodParameterReturn = handlerMethod.getReturnType();
 		Type returnType = getType(methodParameterReturn, requestMethod, dataRestRepository, resourceMetadata);
 		ApiResponses apiResponses = new ApiResponses();
 		ApiResponse apiResponse = new ApiResponse();
 		Content content = genericResponseService.buildContent(openAPI.getComponents(), methodParameterReturn.getParameterAnnotations(), methodAttributes.getMethodProduces(), null, returnType);
-		springDocDataRestUtils.enhanceResponseContent(openAPI, resourceMetadata, content, dataRestRepository);
+		springDocDataRestUtils.buildTextUriContent(content);
 		apiResponse.setContent(content);
 		addResponse(requestMethod, operationPath, apiResponses, apiResponse);
 		operation.setResponses(apiResponses);

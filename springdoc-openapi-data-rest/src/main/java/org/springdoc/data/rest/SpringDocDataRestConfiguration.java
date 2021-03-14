@@ -175,9 +175,9 @@ public class SpringDocDataRestConfiguration {
 		SpringRepositoryRestResourceProvider springRepositoryRestResourceProvider(ResourceMappings mappings,
 				Repositories repositories, Associations associations, ApplicationContext applicationContext,
 				DataRestRouterOperationService dataRestRouterOperationService, PersistentEntities persistentEntities,
-				ObjectMapper mapper) {
+				ObjectMapper mapper,SpringDocDataRestUtils springDocDataRestUtils) {
 			return new SpringRepositoryRestResourceProvider(mappings, repositories, associations, applicationContext,
-					dataRestRouterOperationService, persistentEntities, mapper);
+					dataRestRouterOperationService, persistentEntities, mapper, springDocDataRestUtils);
 		}
 
 		/**

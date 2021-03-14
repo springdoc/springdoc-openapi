@@ -197,6 +197,19 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	@SuppressWarnings("unchecked")
 	protected void getPaths(Map<String, Object> restControllers) {
 		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
+
+		if (repositoryRestResourceProvider.isPresent()) {
+			RepositoryRestResourceProvider restResourceProvider = this.repositoryRestResourceProvider.get();
+			List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPIService.getCalculatedOpenAPI());
+			calculatePath(operationList);
+			restResourceProvider.customize(openAPIService.getCalculatedOpenAPI());
+			Map<RequestMappingInfo, HandlerMethod> mapDataRest = restResourceProvider.getHandlerMethods();
+			Map<String, Object> requestMappingMap =  restResourceProvider.getRepositoryRestControllerEndpoints();
+			Class[] additionalRestClasses = requestMappingMap.values().stream().map(Object::getClass).toArray(Class[]::new);
+			AbstractOpenApiResource.addRestControllers(additionalRestClasses);
+			calculatePath(requestMappingMap, mapDataRest);
+		}
+
 		calculatePath(restControllers, map);
 
 		if (isShowActuator()) {
@@ -216,16 +229,6 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		routerFunctionProvider.ifPresent(routerFunctions -> routerFunctions.getWebMvcRouterFunctionPaths()
 				.ifPresent(routerBeans -> routerBeans.forEach(this::getRouterFunctionPaths)));
 
-		if (repositoryRestResourceProvider.isPresent()) {
-			RepositoryRestResourceProvider restResourceProvider = this.repositoryRestResourceProvider.get();
-			List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPIService.getCalculatedOpenAPI());
-			calculatePath(operationList);
-			Map<RequestMappingInfo, HandlerMethod> mapDataRest = restResourceProvider.getHandlerMethods();
-			Map<String, Object> requestMappingMap =  restResourceProvider.getRepositoryRestControllerEndpoints();
-			Class[] additionalRestClasses = requestMappingMap.values().stream().map(Object::getClass).toArray(Class[]::new);
-			AbstractOpenApiResource.addRestControllers(additionalRestClasses);
-			calculatePath(requestMappingMap, mapDataRest);
-		}
 	}
 
 	/**
