@@ -32,6 +32,7 @@ import org.springdoc.core.SwaggerUiConfigProperties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -76,7 +77,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	@Operation(hidden = true)
 	@GetMapping(SWAGGER_UI_PATH)
 	@Override
-	public String redirectToUi(HttpServletRequest request) {
+	public ResponseEntity<Void> redirectToUi(HttpServletRequest request) {
 		return super.redirectToUi(request);
 	}
 
