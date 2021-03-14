@@ -34,4 +34,11 @@ public interface RepositoryRestResourceProvider {
 	 */
 	Map getHandlerMethods();
 
+	/**
+	 * Customize.
+	 *
+	 * @param openAPI the open api
+	 */
+	void customize(OpenAPI openAPI);
+
 }

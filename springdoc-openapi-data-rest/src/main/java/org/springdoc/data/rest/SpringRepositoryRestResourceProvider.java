@@ -41,6 +41,7 @@ import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.data.rest.core.ControllerType;
 import org.springdoc.data.rest.core.DataRestRepository;
 import org.springdoc.data.rest.core.DataRestRouterOperationService;
+import org.springdoc.data.rest.utils.SpringDocDataRestUtils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -152,6 +153,11 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	private List<HandlerMapping> handlerMappingList;
 
 	/**
+	 * The Spring doc data rest utils.
+	 */
+	private SpringDocDataRestUtils springDocDataRestUtils;
+
+	/**
 	 * Instantiates a new Spring repository rest resource provider.
 	 *
 	 * @param mappings the mappings
@@ -162,7 +168,9 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param persistentEntities the persistent entities
 	 * @param mapper the mapper
 	 */
-	public SpringRepositoryRestResourceProvider(ResourceMappings mappings, Repositories repositories, Associations associations, ApplicationContext applicationContext, DataRestRouterOperationService dataRestRouterOperationService, PersistentEntities persistentEntities, ObjectMapper mapper) {
+	public SpringRepositoryRestResourceProvider(ResourceMappings mappings, Repositories repositories,
+			Associations associations, ApplicationContext applicationContext, DataRestRouterOperationService dataRestRouterOperationService,
+			PersistentEntities persistentEntities, ObjectMapper mapper, SpringDocDataRestUtils springDocDataRestUtils) {
 		this.mappings = mappings;
 		this.repositories = repositories;
 		this.associations = associations;
@@ -170,6 +178,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 		this.dataRestRouterOperationService = dataRestRouterOperationService;
 		this.persistentEntities = persistentEntities;
 		this.mapper = mapper;
+		this.springDocDataRestUtils = springDocDataRestUtils;
 	}
 
 
@@ -266,6 +275,17 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 				.filter(entry -> !entry.getValue().getBeanType().getName().startsWith(SPRING_DATA_REST_PACKAGE) && AnnotatedElementUtils.hasAnnotation(entry.getValue().getBeanType(), RepositoryRestController.class))
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
+
+	/**
+	 * Customize.
+	 *
+	 * @param openAPI the open api
+	 */
+	@Override
+	public void customize(OpenAPI openAPI) {
+		springDocDataRestUtils.customise(openAPI, mappings, persistentEntities);
+	}
+
 	/**
 	 * Gets handler mapping list.
 	 *

@@ -233,7 +233,7 @@ public class DataRestRequestService {
 			requestBuilder.applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 			operation.setRequestBody(requestBodyInfo.getRequestBody());
 			Content content = operation.getRequestBody().getContent();
-			springDocDataRestUtils.enhanceRequestBodyContent(openAPI, resourceMetadata, content, dataRestRepository);
+			springDocDataRestUtils.buildTextUriContent(content);
 			operation.getRequestBody().setRequired(true);
 		}
 	}
