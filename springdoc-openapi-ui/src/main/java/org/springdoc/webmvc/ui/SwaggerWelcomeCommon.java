@@ -9,8 +9,9 @@ import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.ui.AbstractSwaggerWelcome;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.SWAGGER_UI_URL;
@@ -26,15 +27,17 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
 	}
 
-	protected String redirectToUi(HttpServletRequest request) {
+	protected ResponseEntity<Void> redirectToUi(HttpServletRequest request) {
 		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
-		String sbUrl =   swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
+		String sbUrl = request.getContextPath() + swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
 
 		// forward all queryParams from original request
 		request.getParameterMap().forEach(uriBuilder::queryParam);
 
-		return UrlBasedViewResolver.REDIRECT_URL_PREFIX + uriBuilder.build().encode().toString();
+		return ResponseEntity.status(HttpStatus.FOUND)
+				.location(uriBuilder.build().encode().toUri())
+				.build();
 	}
 
 	protected Map<String, Object> openapiJson(HttpServletRequest request) {
