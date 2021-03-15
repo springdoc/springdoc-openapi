@@ -39,6 +39,7 @@ import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.data.rest.DataRestHalProvider;
+import org.springdoc.webmvc.api.OpenApiResource;
 
 import org.springframework.data.rest.core.Path;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -51,9 +52,9 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
-import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+
+import static org.springdoc.webmvc.api.OpenApiResource.getActivePatterns;
 
 /**
  * The type Data rest router operation builder.
@@ -170,7 +171,7 @@ public class DataRestRouterOperationService {
 		Set<RequestMethod> requestMethodsCollection = null;
 
 		Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
-		if (resourceMetadata != null && !controllerType.equals(ControllerType.SEARCH)) {
+		if (andCheck(resourceMetadata != null, !controllerType.equals(ControllerType.SEARCH))) {
 			HttpMethods httpMethodsItem = resourceMetadata.getSupportedHttpMethods().getMethodsFor(ResourceType.ITEM);
 			requestMethodsItem = requestMethods.stream().filter(requestMethod -> httpMethodsItem.contains(HttpMethod.valueOf(requestMethod.toString())))
 					.collect(Collectors.toSet());
@@ -217,7 +218,7 @@ public class DataRestRouterOperationService {
 		if (!CollectionUtils.isEmpty(requestMethodsCollection))
 			for (RequestMethod requestMethod : requestMethodsCollection) {
 				if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
-					Set<String> patterns = getActivePatterns(requestMappingInfo);
+					Set<String> patterns = OpenApiResource.getActivePatterns(requestMappingInfo);
 					if (!CollectionUtils.isEmpty(patterns)) {
 						Map<String, String> regexMap = new LinkedHashMap<>();
 						String relationName = dataRestRepository.getRelationName();
@@ -249,7 +250,7 @@ public class DataRestRouterOperationService {
 			operationPath = PathUtils.parsePath(pattern, regexMap);
 			operationPath = operationPath.replace(REPOSITORY_PATH, path);
 			if (ControllerType.ENTITY.equals(controllerType)) {
-				if ((ResourceType.ITEM.equals(resourceType) && !operationPath.endsWith(ID)) || (ResourceType.COLLECTION.equals(resourceType) && operationPath.endsWith(ID)))
+				if ((andCheck(ResourceType.ITEM.equals(resourceType), !operationPath.endsWith(ID))) || (andCheck(ResourceType.COLLECTION.equals(resourceType), operationPath.endsWith(ID))))
 					operationPath = null;
 			}
 			else if (ControllerType.SEARCH.equals(controllerType))
@@ -328,7 +329,7 @@ public class DataRestRouterOperationService {
 				String operationPath;
 				for (String pattern : patterns) {
 					operationPath = PathUtils.parsePath(pattern, regexMap);
-					if (operationPath.contains(REPOSITORY_PATH) && operationPath.contains(SEARCH_PATH)) {
+					if (andCheck(operationPath.contains(REPOSITORY_PATH), operationPath.contains(SEARCH_PATH))) {
 						MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType());
 						methodAttributes.calculateConsumesProduces(handlerMethod.getMethod());
 						if (springDocConfigProperties.getDefaultProducesMediaType().equals(methodAttributes.getMethodProduces()[0]))
@@ -341,21 +342,14 @@ public class DataRestRouterOperationService {
 	}
 
 	/**
-	 * Gets active patterns.
+	 * Is condition one and condition two boolean.
 	 *
-	 * @param requestMappingInfo the request mapping info
-	 * @return the active patterns
+	 * @param conditionOne the condition one
+	 * @param conditionTwo the condition two
+	 * @return the boolean
 	 */
-	private Set<String> getActivePatterns(RequestMappingInfo requestMappingInfo) {
-		Set<String> patterns = null;
-		PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
-		if (patternsRequestCondition != null)
-			patterns = patternsRequestCondition.getPatterns();
-		else {
-			PathPatternsRequestCondition pathPatternsRequestCondition = requestMappingInfo.getPathPatternsCondition();
-			if (pathPatternsRequestCondition != null)
-				patterns = pathPatternsRequestCondition.getPatternValues();
-		}
-		return patterns;
+	private boolean andCheck(boolean conditionOne, boolean conditionTwo) {
+		return conditionOne && conditionTwo;
 	}
+
 }

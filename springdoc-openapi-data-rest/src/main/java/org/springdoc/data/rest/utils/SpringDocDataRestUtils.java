@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -179,23 +180,27 @@ public class SpringDocDataRestUtils {
 				schemaMap.forEach((key, referencedSchema) -> {
 					components.addSchemas(key + REQUEST_BODY, referencedSchema);
 					referencedSchema.setName(key + REQUEST_BODY);
-					Map<String, Schema> properties = referencedSchema.getProperties();
-					if (!CollectionUtils.isEmpty(referencedSchema.getProperties())) {
-						Iterator<Entry<String, Schema>> it = properties.entrySet().iterator();
-						while (it.hasNext()) {
-							Entry<String, Schema> entry = it.next();
-							String propId = entry.getKey();
-							if (entityInoMap.containsKey(key) && entityInoMap.get(key).getAssociationsFields().contains(propId)) {
-								if (entry.getValue() instanceof ArraySchema)
-									referencedSchema.addProperties(propId, new ArraySchema().items(new StringSchema()));
-								else
-									referencedSchema.addProperties(propId, new StringSchema());
-							}
-						}
-					}
+					Map properties = referencedSchema.getProperties();
+					updateRequestBodySchemaProperties(key, referencedSchema, properties);
 					if (referencedSchema instanceof ComposedSchema)
 						updateComposedSchema((ComposedSchema) referencedSchema, REQUEST_BODY, components);
 				});
+			}
+		}
+	}
+
+	private void updateRequestBodySchemaProperties(String key, Schema referencedSchema, Map properties) {
+		if (!CollectionUtils.isEmpty(referencedSchema.getProperties())) {
+			Iterator<Entry<String, Schema>> it = properties.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<String, Schema> entry = it.next();
+				String propId = entry.getKey();
+				if (entityInoMap.containsKey(key) && entityInoMap.get(key).getAssociationsFields().contains(propId)) {
+					if (entry.getValue() instanceof ArraySchema)
+						referencedSchema.addProperties(propId, new ArraySchema().items(new StringSchema()));
+					else
+						referencedSchema.addProperties(propId, new StringSchema());
+				}
 			}
 		}
 	}
@@ -219,27 +224,38 @@ public class SpringDocDataRestUtils {
 				if (entityInfo.getIgnoredFields().contains(propId))
 					it.remove();
 				else if (EMBEDDED.equals(propId)) {
-					String entityClassName = linkRelationProvider.getCollectionResourceRelFor(entityInfo.getDomainType()).value();
-					ArraySchema arraySchema = (ArraySchema) ((ObjectSchema) entry.getValue()).getProperties().get(entityClassName);
-					if (arraySchema != null) {
-						Schema itemsSchema = arraySchema.getItems();
-						Set<String> entitiesNames = entityInoMap.keySet();
-						if (itemsSchema.get$ref() != null && !itemsSchema.get$ref().endsWith(RESPONSE)) {
-							String key = itemsSchema.get$ref().substring(21);
-							if (entitiesNames.contains(key)) {
-								String newKey = itemsSchema.get$ref() + RESPONSE;
-								createNewResponseSchema(key, components);
-								itemsSchema.set$ref(newKey);
-							}
-						}
-						else if (itemsSchema instanceof ComposedSchema) {
-							updateComposedSchema((ComposedSchema) itemsSchema, RESPONSE, components);
-						}
-					}
+					updateResponseSchemaEmbedded(components, entityInfo, entry);
 				}
 			}
 		}
 		return existingSchema;
+	}
+
+	/**
+	 * Update response schema embedded.
+	 *
+	 * @param components the components
+	 * @param entityInfo the entity info
+	 * @param entry the entry
+	 */
+	private void updateResponseSchemaEmbedded(Components components, EntityInfo entityInfo, Entry<String, Schema> entry) {
+		String entityClassName = linkRelationProvider.getCollectionResourceRelFor(entityInfo.getDomainType()).value();
+		ArraySchema arraySchema = (ArraySchema) ((ObjectSchema) entry.getValue()).getProperties().get(entityClassName);
+		if (arraySchema != null) {
+			Schema itemsSchema = arraySchema.getItems();
+			Set<String> entitiesNames = entityInoMap.keySet();
+			if (itemsSchema.get$ref() != null && !itemsSchema.get$ref().endsWith(RESPONSE)) {
+				String key = itemsSchema.get$ref().substring(21);
+				if (entitiesNames.contains(key)) {
+					String newKey = itemsSchema.get$ref() + RESPONSE;
+					createNewResponseSchema(key, components);
+					itemsSchema.set$ref(newKey);
+				}
+			}
+			else if (itemsSchema instanceof ComposedSchema) {
+				updateComposedSchema((ComposedSchema) itemsSchema, RESPONSE, components);
+			}
+		}
 	}
 
 	/**
@@ -257,28 +273,38 @@ public class SpringDocDataRestUtils {
 		if (resolvedSchema != null) {
 			schemaMap = resolvedSchema.referencedSchemas;
 			if (schemaMap != null) {
-				schemaMap.forEach((key, referencedSchema) -> {
-					Map<String, Schema> properties = referencedSchema.getProperties();
-					if (!CollectionUtils.isEmpty(referencedSchema.getProperties())) {
-						Iterator<Entry<String, Schema>> it = properties.entrySet().iterator();
-						while (it.hasNext()) {
-							Entry<String, Schema> entry = it.next();
-							String propId = entry.getKey();
-							if (entityInoMap.containsKey(key) && entityInoMap.get(key).getIgnoredFields().contains(propId)) {
-								it.remove();
-							}
-						}
-					}
-					if (referencedSchema instanceof ComposedSchema) {
-						updateComposedSchema((ComposedSchema) referencedSchema, RESPONSE, null);
-					}
-					components.addSchemas(key + RESPONSE, referencedSchema);
-				});
+				schemaMap.forEach((key, referencedSchema) ->
+						addSchemas(components, key, referencedSchema));
 			}
 			schemaObject = resolvedSchema.schema;
 		}
 		return schemaObject;
 
+	}
+
+	/**
+	 * Add schemas.
+	 *
+	 * @param components the components
+	 * @param key the key
+	 * @param referencedSchema the referenced schema
+	 */
+	private void addSchemas(Components components, String key, Schema referencedSchema) {
+		Map<String, Schema> properties = referencedSchema.getProperties();
+		if (!CollectionUtils.isEmpty(referencedSchema.getProperties())) {
+			Iterator<Entry<String, Schema>> it = properties.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<String, Schema> entry = it.next();
+				String propId = entry.getKey();
+				if (entityInoMap.containsKey(key) && entityInoMap.get(key).getIgnoredFields().contains(propId)) {
+					it.remove();
+				}
+			}
+		}
+		if (referencedSchema instanceof ComposedSchema) {
+			updateComposedSchema((ComposedSchema) referencedSchema, RESPONSE, null);
+		}
+		components.addSchemas(key + RESPONSE, referencedSchema);
 	}
 
 	/**
@@ -310,16 +336,27 @@ public class SpringDocDataRestUtils {
 			for (Schema allSchema : allSchemas) {
 				if (allSchema.get$ref() != null) {
 					String allKey = allSchema.get$ref().substring(21);
-					if (!allKey.endsWith(REQUEST_BODY) && !allKey.endsWith(RESPONSE)) {
-						String newAllKey = allKey + suffix;
-						allSchema.set$ref(newAllKey);
-						if (components != null && !components.getSchemas().containsKey(newAllKey) && entityInoMap.containsKey(allKey) && RESPONSE.equals(suffix)) {
-							createNewResponseSchema(allKey, components);
-						}
-					}
+					updateSingleKey(suffix, components, allSchema, allKey);
 				}
 			}
+	}
 
+	/**
+	 * Update single key.
+	 *
+	 * @param suffix the suffix
+	 * @param components the components
+	 * @param allSchema the all schema
+	 * @param allKey the all key
+	 */
+	private void updateSingleKey(String suffix, Components components, Schema allSchema, String allKey) {
+		if (!allKey.endsWith(REQUEST_BODY) && !allKey.endsWith(RESPONSE)) {
+			String newAllKey = allKey + suffix;
+			allSchema.set$ref(newAllKey);
+			if (components != null && !components.getSchemas().containsKey(newAllKey) && entityInoMap.containsKey(allKey) && RESPONSE.equals(suffix)) {
+				createNewResponseSchema(allKey, components);
+			}
+		}
 	}
 
 	/**
@@ -351,7 +388,7 @@ public class SpringDocDataRestUtils {
 			resourceMetadata, PersistentEntity<?, ?> entity) {
 		List<String> ignoredFields = new ArrayList<>();
 		if (entity != null && entity.getIdProperty() != null) {
-			String idField = entity.getIdProperty().getName();
+			String idField = Objects.requireNonNull(entity.getIdProperty()).getName();
 			ignoredFields.add(idField);
 			entity.doWithAssociations((SimpleAssociationHandler) association -> {
 				PersistentProperty<?> property = association.getInverse();
