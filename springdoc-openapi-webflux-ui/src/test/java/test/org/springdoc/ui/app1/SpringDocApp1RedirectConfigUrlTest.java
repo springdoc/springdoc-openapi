@@ -34,10 +34,10 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 public class SpringDocApp1RedirectConfigUrlTest extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithConfigUrlIgnoringQueryParams() throws Exception {
+	public void shouldRedirectWithConfigUrlIgnoringQueryParams() {
 
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/swagger-ui.html").exchange()
-				.expectStatus().isTemporaryRedirect();
+				.expectStatus().isFound();
 		responseSpec.expectHeader()
 				.value("Location", Matchers.is("/webjars/swagger-ui/index.html?configUrl=/foo/bar"));
 

@@ -21,7 +21,6 @@ package test.org.springdoc.ui.app20;
 
 import javax.annotation.PostConstruct;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import test.org.springdoc.ui.AbstractCommonTest;
@@ -33,6 +32,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
@@ -58,11 +58,11 @@ class SpringDocApp20Test extends AbstractCommonTest {
 	public void testIndex() throws Exception {
 		HttpStatus httpStatusMono = webClient.get().uri("/test/swagger-ui.html")
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
-		Assertions.assertTrue(httpStatusMono.equals(HttpStatus.TEMPORARY_REDIRECT));
+		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 
 		httpStatusMono = webClient.get().uri("/webjars/swagger-ui/index.html")
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
-		Assertions.assertTrue(httpStatusMono.equals(HttpStatus.OK));
+		assertThat(httpStatusMono).isEqualTo(HttpStatus.OK);
 
 		String contentAsString  = webClient.get().uri("/test/v3/api-docs/swagger-config").retrieve()
 				.bodyToMono(String.class).block();

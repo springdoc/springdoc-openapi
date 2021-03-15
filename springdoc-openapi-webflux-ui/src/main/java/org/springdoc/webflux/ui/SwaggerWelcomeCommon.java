@@ -75,7 +75,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 		String contextPath = this.fromCurrentContextPath(request);
 		String sbUrl = this.buildUrl(contextPath, swaggerUiConfigParameters.getUiRootPath() + springDocConfigProperties.getWebjars().getPrefix() + SWAGGER_UI_URL);
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
-		response.setStatusCode(HttpStatus.TEMPORARY_REDIRECT);
+		response.setStatusCode(HttpStatus.FOUND);
 		response.getHeaders().setLocation(URI.create(uriBuilder.build().encode().toString()));
 		return response.setComplete();
 	}
