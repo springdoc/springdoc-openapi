@@ -271,7 +271,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param requestMappingInfo the request mapping info
 	 * @return the active patterns
 	 */
-	private Set<String> getActivePatterns(RequestMappingInfo requestMappingInfo) {
+	public static Set<String> getActivePatterns(RequestMappingInfo requestMappingInfo) {
 		Set<String> patterns = null;
 		PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
 		if (patternsRequestCondition != null)

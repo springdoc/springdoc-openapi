@@ -202,12 +202,7 @@ public class DataRestResponseService {
 		}
 		else if (ResolvableType.forType(returnRepoType).getRawClass() != null
 				&& Iterable.class.isAssignableFrom(Objects.requireNonNull(ResolvableType.forType(returnRepoType).getRawClass()))) {
-
-			if (methodResourceMapping.isPagingResource())
-				return resolveGenericType(PagedModel.class, EntityModel.class, domainType);
-			else
-				return resolveGenericType(CollectionModel.class, EntityModel.class, domainType);
-
+			return getTypeForCollectionModel(domainType, methodResourceMapping.isPagingResource());
 		}
 		else if (ClassUtils.isPrimitiveOrWrapper(methodResourceMapping.getReturnedDomainType())) {
 			returnType = methodResourceMapping.getReturnedDomainType();
@@ -234,30 +229,7 @@ public class DataRestResponseService {
 		if (returnType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) returnType;
 			if ((ResponseEntity.class.equals(parameterizedType.getRawType()))) {
-				if (Object.class.equals(parameterizedType.getActualTypeArguments()[0])) {
-					return ResolvableType.forClassWithGenerics(ResponseEntity.class, returnedEntityType).getType();
-				}
-				else if (parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType) {
-					ParameterizedType parameterizedType1 = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
-					Class<?> rawType = ResolvableType.forType(parameterizedType1.getRawType()).getRawClass();
-					if (rawType != null && rawType.isAssignableFrom(RepresentationModel.class)) {
-						Class<?> type = findType(requestMethod, dataRestRepository);
-						return resolveGenericType(ResponseEntity.class, type, returnedEntityType);
-					}
-					else if (EntityModel.class.equals(parameterizedType1.getRawType())) {
-						return resolveGenericType(ResponseEntity.class, EntityModel.class, returnedEntityType);
-					}
-				}
-				else if (parameterizedType.getActualTypeArguments()[0] instanceof WildcardType) {
-					WildcardType wildcardType = (WildcardType) parameterizedType.getActualTypeArguments()[0];
-					if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType) {
-						ParameterizedType wildcardTypeUpperBound = (ParameterizedType) wildcardType.getUpperBounds()[0];
-						if (RepresentationModel.class.equals(wildcardTypeUpperBound.getRawType())) {
-							Class<?> type = findType(requestMethod, dataRestRepository);
-							return resolveGenericType(ResponseEntity.class, type, returnedEntityType);
-						}
-					}
-				}
+				return getTypeForResponseEntity(requestMethod, dataRestRepository, returnedEntityType, parameterizedType);
 			}
 			else if ((HttpEntity.class.equals(parameterizedType.getRawType())
 					&& parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType)) {
@@ -268,13 +240,90 @@ public class DataRestResponseService {
 			}
 			else if ((CollectionModel.class.equals(parameterizedType.getRawType())
 					&& Object.class.equals(parameterizedType.getActualTypeArguments()[0]))) {
-				if (resourceMetadata.isPagingResource())
-					return resolveGenericType(PagedModel.class, EntityModel.class, returnedEntityType);
-				else
-					return resolveGenericType(CollectionModel.class, EntityModel.class, returnedEntityType);
+				return getTypeForCollectionModel(returnedEntityType, resourceMetadata.isPagingResource());
 			}
 		}
 		return returnType;
+	}
+
+	/**
+	 * Gets type for response entity.
+	 *
+	 * @param requestMethod the request method
+	 * @param dataRestRepository the data rest repository
+	 * @param returnedEntityType the returned entity type
+	 * @param parameterizedType the parameterized type
+	 * @return the type for response entity
+	 */
+	private Type getTypeForResponseEntity(RequestMethod requestMethod, DataRestRepository dataRestRepository, Class returnedEntityType, ParameterizedType parameterizedType) {
+		if (Object.class.equals(parameterizedType.getActualTypeArguments()[0])) {
+			return ResolvableType.forClassWithGenerics(ResponseEntity.class, returnedEntityType).getType();
+		}
+		else if (parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType) {
+			return getTypeForParameterizedType(requestMethod, dataRestRepository, returnedEntityType, parameterizedType);
+		}
+		else if (parameterizedType.getActualTypeArguments()[0] instanceof WildcardType) {
+			Type type = getTypeForWildcardType(requestMethod, dataRestRepository, returnedEntityType, parameterizedType);
+			if (type != null) return type;
+		}
+		return null;
+	}
+
+	/**
+	 * Gets type for collection model.
+	 *
+	 * @param returnedEntityType the returned entity type
+	 * @param pagingResource the paging resource
+	 * @return the type for collection model
+	 */
+	private Type getTypeForCollectionModel(Class returnedEntityType, boolean pagingResource) {
+		if (pagingResource)
+			return resolveGenericType(PagedModel.class, EntityModel.class, returnedEntityType);
+		else
+			return resolveGenericType(CollectionModel.class, EntityModel.class, returnedEntityType);
+	}
+
+	/**
+	 * Gets type for wildcard type.
+	 *
+	 * @param requestMethod the request method
+	 * @param dataRestRepository the data rest repository
+	 * @param returnedEntityType the returned entity type
+	 * @param parameterizedType the parameterized type
+	 * @return the type for wildcard type
+	 */
+	private Type getTypeForWildcardType(RequestMethod requestMethod, DataRestRepository dataRestRepository, Class returnedEntityType, ParameterizedType parameterizedType) {
+		WildcardType wildcardType = (WildcardType) parameterizedType.getActualTypeArguments()[0];
+		if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType) {
+			ParameterizedType wildcardTypeUpperBound = (ParameterizedType) wildcardType.getUpperBounds()[0];
+			if (RepresentationModel.class.equals(wildcardTypeUpperBound.getRawType())) {
+				Class<?> type = findType(requestMethod, dataRestRepository);
+				return resolveGenericType(ResponseEntity.class, type, returnedEntityType);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Gets type.
+	 *
+	 * @param requestMethod the request method
+	 * @param dataRestRepository the data rest repository
+	 * @param returnedEntityType the returned entity type
+	 * @param parameterizedType the parameterized type
+	 * @return the type
+	 */
+	private Type getTypeForParameterizedType(RequestMethod requestMethod, DataRestRepository dataRestRepository, Class returnedEntityType, ParameterizedType parameterizedType) {
+		ParameterizedType parameterizedType1 = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
+		Class<?> rawType = ResolvableType.forType(parameterizedType1.getRawType()).getRawClass();
+		if (rawType != null && rawType.isAssignableFrom(RepresentationModel.class)) {
+			Class<?> type = findType(requestMethod, dataRestRepository);
+			return resolveGenericType(ResponseEntity.class, type, returnedEntityType);
+		}
+		else if (EntityModel.class.equals(parameterizedType1.getRawType())) {
+			return resolveGenericType(ResponseEntity.class, EntityModel.class, returnedEntityType);
+		}
+		return null;
 	}
 
 	/**
