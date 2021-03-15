@@ -405,8 +405,8 @@ public class SpringDocDataRestUtils {
 	 * @param content the content
 	 */
 	public void buildTextUriContent(Content content) {
-		if (content.containsKey(RestMediaTypes.TEXT_URI_LIST_VALUE))
-			content.put(RestMediaTypes.TEXT_URI_LIST_VALUE, new MediaType().schema(new StringSchema()));
+		content.computeIfPresent(RestMediaTypes.TEXT_URI_LIST_VALUE,
+				(key, value) -> new MediaType().schema(new StringSchema()));
 	}
 
 }
