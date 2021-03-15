@@ -21,6 +21,10 @@
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "body",
+                  "file"
+                ],
                 "type": "object",
                 "properties": {
                   "body": {

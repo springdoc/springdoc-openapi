@@ -21,6 +21,9 @@
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "doc"
+                ],
                 "type": "object",
                 "properties": {
                   "doc": {
