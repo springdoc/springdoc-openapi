@@ -122,9 +122,9 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 
 	@Override
 	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
-		if (oauthPrefix == null && !swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl())) {
+		if ((oauthPrefix == null && !swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl())) || springDocConfigProperties.isCacheDisabled()) {
 			this.oauthPrefix = uriComponentsBuilder.path(managementServerProperties.getBasePath() + swaggerUiConfigParameters.getUiRootPath()).path(webJarsPrefixUrl);
-			swaggerUiConfigParameters.setOauth2RedirectUrl(this.oauthPrefix.path(swaggerUiConfigParameters.getOauth2RedirectUrl()).build().toString());
+			swaggerUiConfigParameters.setOauth2RedirectUrl(this.oauthPrefix.path(getOauth2RedirectUrl()).build().toString());
 		}
 	}
 
