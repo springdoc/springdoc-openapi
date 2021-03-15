@@ -16,17 +16,28 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.SWAGGER_UI_URL;
 
+/**
+ * The type Swagger welcome common.
+ * @author bnasslashen
+ */
 public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	/**
 	 * Instantiates a new Abstract swagger welcome.
-	 *  @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
-	public SwaggerWelcomeCommon(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters) {
+	public SwaggerWelcomeCommon(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,
+			SwaggerUiConfigParameters swaggerUiConfigParameters) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
 	}
 
+	/**
+	 * Redirect to ui response entity.
+	 *
+	 * @param request the request
+	 * @return the response entity
+	 */
 	protected ResponseEntity<Void> redirectToUi(HttpServletRequest request) {
 		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
 		String sbUrl = request.getContextPath() + swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
@@ -40,6 +51,12 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 				.build();
 	}
 
+	/**
+	 * Openapi json map.
+	 *
+	 * @param request the request
+	 * @return the map
+	 */
 	protected Map<String, Object> openapiJson(HttpServletRequest request) {
 		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
 		return swaggerUiConfigParameters.getConfigParameters();
@@ -47,7 +64,9 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 
 	@Override
 	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
-		if (!swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl()))
-			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder.path(swaggerUiConfigParameters.getUiRootPath()).path(swaggerUiConfigParameters.getOauth2RedirectUrl()).build().toString());
+		if (!swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl()) || springDocConfigProperties.isCacheDisabled())
+			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder
+					.path(swaggerUiConfigParameters.getUiRootPath())
+					.path(getOauth2RedirectUrl()).build().toString());
 	}
 }
