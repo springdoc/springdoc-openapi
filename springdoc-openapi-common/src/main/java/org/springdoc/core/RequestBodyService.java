@@ -237,8 +237,10 @@ public class RequestBodyService {
 
 		RequestPart requestPart = methodParameter.getParameterAnnotation(RequestPart.class);
 		String paramName = null;
-		if (requestPart != null)
+		if (requestPart != null){
 			paramName = StringUtils.defaultIfEmpty(requestPart.value(), requestPart.name());
+			parameterInfo.setRequired(requestPart.required());
+		}
 		paramName = StringUtils.defaultIfEmpty(paramName, parameterInfo.getpName());
 		parameterInfo.setpName(paramName);
 

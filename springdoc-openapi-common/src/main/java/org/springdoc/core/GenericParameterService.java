@@ -342,6 +342,10 @@ public class GenericParameterService {
 		}
 		else
 			requestBodyInfo.addProperties(paramName, schemaN);
+
+		if(requestBodyInfo.getMergedSchema() !=null && parameterInfo.isRequired())
+			requestBodyInfo.getMergedSchema().addRequiredItem(parameterInfo.getpName());
+
 		return schemaN;
 	}
 

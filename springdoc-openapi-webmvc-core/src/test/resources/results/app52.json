@@ -11,12 +11,12 @@
     }
   ],
   "paths": {
-    "/test2/{username}": {
+    "/test1/{username}": {
       "post": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "createTest2",
+        "operationId": "createTest1",
         "parameters": [
           {
             "name": "username",
@@ -31,6 +31,10 @@
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "image",
+                  "test"
+                ],
                 "type": "object",
                 "properties": {
                   "image": {
@@ -59,12 +63,12 @@
         }
       }
     },
-    "/test1/{username}": {
+    "/test2/{username}": {
       "post": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "createTest1",
+        "operationId": "createTest2",
         "parameters": [
           {
             "name": "username",
@@ -79,14 +83,18 @@
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "image",
+                  "test"
+                ],
                 "type": "object",
                 "properties": {
-                  "test": {
-                    "$ref": "#/components/schemas/MyTestDto"
-                  },
                   "image": {
                     "type": "string",
                     "format": "binary"
+                  },
+                  "test": {
+                    "$ref": "#/components/schemas/MyTestDto"
                   }
                 }
               }
@@ -117,17 +125,21 @@
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "doc",
+                  "test"
+                ],
                 "type": "object",
                 "properties": {
-                  "test": {
-                    "$ref": "#/components/schemas/MyTestDto"
-                  },
                   "doc": {
                     "type": "array",
                     "items": {
                       "type": "string",
                       "format": "binary"
                     }
+                  },
+                  "test": {
+                    "$ref": "#/components/schemas/MyTestDto"
                   }
                 }
               }

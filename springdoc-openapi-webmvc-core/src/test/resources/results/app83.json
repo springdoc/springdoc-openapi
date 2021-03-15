@@ -31,6 +31,10 @@
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "configuration",
+                  "file"
+                ],
                 "type": "object",
                 "properties": {
                   "configuration": {

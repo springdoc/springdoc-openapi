@@ -26,6 +26,9 @@
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "resumeFile"
+                ],
                 "type": "object",
                 "properties": {
                   "resumeFile": {

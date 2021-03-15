@@ -21,6 +21,10 @@
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "one",
+                  "two"
+                ],
                 "type": "object",
                 "properties": {
                   "one": {

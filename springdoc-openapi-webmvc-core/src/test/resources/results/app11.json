@@ -11,21 +11,27 @@
     }
   ],
   "paths": {
-    "/tracks": {
+    "/documents": {
       "post": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "postTrack",
+        "operationId": "uploadDocuments",
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "doc"
+                ],
                 "type": "object",
                 "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
+                  "doc": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
                   }
                 }
               }
@@ -46,24 +52,24 @@
         }
       }
     },
-    "/documents": {
+    "/tracks": {
       "post": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "uploadDocuments",
+        "operationId": "postTrack",
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
+                "required": [
+                  "file"
+                ],
                 "type": "object",
                 "properties": {
-                  "doc": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }
