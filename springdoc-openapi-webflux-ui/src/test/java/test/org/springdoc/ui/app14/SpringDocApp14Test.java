@@ -27,7 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
@@ -41,21 +41,21 @@ class SpringDocApp14Test extends AbstractSpringDocActuatorTest {
 
 
 	@Test
-	void testIndex() throws Exception {
+	void testIndex() {
 		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/application/webjars/swagger-ui/index.html")
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody().returnResult();
-
+		assertThat(getResult.getResponseBody()).isNotNull();
 		String contentAsString = new String(getResult.getResponseBody());
-		assertTrue(contentAsString.contains("Swagger UI"));
+		assertThat(contentAsString).contains("Swagger UI");
 	}
 
 	@Test
 	public void testIndexActuator() {
 		HttpStatus httpStatusMono = webClient.get().uri("/application/swaggerui")
 				.exchangeToMono( clientResponse -> Mono.just(clientResponse.statusCode())).block();
-		assertTrue(httpStatusMono.equals(HttpStatus.TEMPORARY_REDIRECT));
+		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 	}
 
 	@Test
