@@ -29,9 +29,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 public class SpringDocApp1RedirectDefaultTest extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithDefaultQueryParams() throws Exception {
+	public void shouldRedirectWithDefaultQueryParams() {
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/swagger-ui.html").exchange()
-				.expectStatus().isTemporaryRedirect();
+				.expectStatus().isFound();
 		responseSpec.expectHeader()
 				.value("Location", Matchers.is("/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config"));
 

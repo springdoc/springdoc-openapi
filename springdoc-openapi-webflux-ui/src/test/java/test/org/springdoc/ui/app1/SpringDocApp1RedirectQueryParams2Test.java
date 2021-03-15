@@ -31,10 +31,10 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 public class SpringDocApp1RedirectQueryParams2Test extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithQueryParams() throws Exception {
+	public void shouldRedirectWithQueryParams() {
 
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/swagger-ui.html").exchange()
-				.expectStatus().isTemporaryRedirect();
+				.expectStatus().isFound();
 		responseSpec.expectHeader()
 				.value("Location", Matchers.is("/webjars/swagger-ui/index.html?oauth2RedirectUrl=/webjars/swagger-ui/oauth2-redirect.html&url=/v3/api-docs"));
 
