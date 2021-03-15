@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.ui.app5;
+package test.org.springdoc.ui.app4;
 
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
@@ -24,23 +24,29 @@ import test.org.springdoc.ui.AbstractSpringDocTest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @TestPropertySource(properties = {"server.forward-headers-strategy=framework", "springdoc.cache.disabled=true"})
 public class SpringDocOauthRedirectUrlRecalculateTest extends AbstractSpringDocTest {
 
 	@Test
 	public void oauth2_redirect_url_recalculation() throws Exception {
-		mockMvc.perform(get("/v3/api-docs/swagger-config").header("X-Forwarded-Proto", "https").header("X-Forwarded-Host", "host1"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("oauth2RedirectUrl", equalTo("https://host1/swagger-ui/oauth2-redirect.html")));
 
-		mockMvc.perform(get("/v3/api-docs/swagger-config").header("X-Forwarded-Proto", "http").header("X-Forwarded-Host", "host2:8080"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://host2:8080/swagger-ui/oauth2-redirect.html")));
+		webTestClient.get().uri("/v3/api-docs/swagger-config")
+				.header("X-Forwarded-Proto", "https")
+				.header("X-Forwarded-Host", "host1")
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.jsonPath("$.oauth2RedirectUrl").isEqualTo("https://host1/webjars/swagger-ui/oauth2-redirect.html");
+
+
+		webTestClient.get().uri("/v3/api-docs/swagger-config")
+				.header("X-Forwarded-Proto", "http")
+				.header("X-Forwarded-Host", "host2:8080")
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody()
+				.jsonPath("$.oauth2RedirectUrl").isEqualTo("http://host2:8080/webjars/swagger-ui/oauth2-redirect.html");
+
 	}
 
 	@SpringBootApplication

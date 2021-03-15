@@ -30,6 +30,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.springdoc.core.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 
@@ -204,5 +205,17 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	 */
 	protected String buildSwaggerConfigUrl(String contextPath) {
 		return this.swaggerConfigUrl;
+	}
+
+	/**
+	 * Gets oauth2 redirect url.
+	 *
+	 * @return the oauth2 redirect url
+	 */
+	protected String getOauth2RedirectUrl() {
+		if (springDocConfigProperties.isCacheDisabled())
+			return StringUtils.defaultIfBlank(swaggerUiConfig.getOauth2RedirectUrl(), SWAGGER_UI_OAUTH_REDIRECT_URL);
+		else
+			return swaggerUiConfigParameters.getOauth2RedirectUrl();
 	}
 }
