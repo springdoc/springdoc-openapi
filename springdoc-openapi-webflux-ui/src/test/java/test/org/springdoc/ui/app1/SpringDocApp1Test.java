@@ -27,9 +27,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringDocApp1Test extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldDisplaySwaggerUiPage() throws Exception {
+	public void shouldDisplaySwaggerUiPage() {
 		webTestClient.get().uri("/swagger-ui.html").exchange()
-				.expectStatus().isTemporaryRedirect();
+				.expectStatus().isFound();
 	}
 
 	@SpringBootApplication
