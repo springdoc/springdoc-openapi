@@ -117,6 +117,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		this.urlsPrimaryName = swaggerUiConfig.getUrlsPrimaryName();
 		this.groupsOrder = swaggerUiConfig.getGroupsOrder();
 		this.syntaxHighlight = swaggerUiConfig.getSyntaxHighlight();
+		this.tryItOutEnabled = swaggerUiConfig.getTryItOutEnabled();
 		this.persistAuthorization = swaggerUiConfig.getPersistAuthorization();
 	}
 
@@ -206,6 +207,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		SpringDocPropertiesUtils.put("url", url, params);
 		put(URLS_PROPERTY, urls, params);
 		SpringDocPropertiesUtils.put("urls.primaryName", urlsPrimaryName, params);
+		SpringDocPropertiesUtils.put("tryItOutEnabled", tryItOutEnabled, params);
 		SpringDocPropertiesUtils.put("persistAuthorization", persistAuthorization, params);
 		return params;
 	}
