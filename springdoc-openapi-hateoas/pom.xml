@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>springdoc-openapi</artifactId>
 		<groupId>org.springdoc</groupId>
-		<version>1.5.6</version>
+		<version>1.5.7-SNAPSHOT</version>
 	</parent>
 	<artifactId>springdoc-openapi-hateoas</artifactId>
 	<dependencies>
