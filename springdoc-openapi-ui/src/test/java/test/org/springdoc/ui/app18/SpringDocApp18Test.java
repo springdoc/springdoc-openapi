@@ -19,27 +19,25 @@
 package test.org.springdoc.ui.app18;
 
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
+import test.org.springdoc.ui.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.SpringBootTest;
-import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
+import org.springframework.test.context.TestPropertySource;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"management.endpoints.web.exposure.include:*",
-                "springdoc.use-management-port=true",
-                "springdoc.swagger-ui.try-it-out-enabled=true",
-                "management.server.port=9095",
-                "management.server.base-path=/test",
-                "management.endpoints.web.base-path=/application"
-        })
-class SpringDocApp18Test extends AbstractSpringDocActuatorTest {
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-    @Test
-    public void testIndexSwaggerConfigTryItOutEnabledExists() throws Exception {
-        String contentAsString = actuatorRestTemplate.getForObject("/test/application/swaggerui/swagger-config", String.class);
-        String expected = getContent("results/app18-1.json");
-        JSONAssert.assertEquals(expected, contentAsString, true);
-    }
+@TestPropertySource(properties = "springdoc.swagger-ui.try-it-out-enabled=true" )
+public class SpringDocApp18Test extends AbstractSpringDocTest {
+
+	@Test
+	public void testTryItOutEnabled() throws Exception {
+		mockMvc.perform(get("/v3/api-docs/swagger-config"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("tryItOutEnabled", equalTo("true")));
+	}
 
     @SpringBootApplication
     static class SpringDocTestApp {
