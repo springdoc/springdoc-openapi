@@ -160,9 +160,30 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	protected SyntaxHighlight syntaxHighlight;
 
 	/**
+	 * Try it out enabled
+	 */
+	protected Boolean tryItOutEnabled;
+
+	/**
 	 * The Persist authorization.
 	 */
 	protected Boolean persistAuthorization;
+
+	/**
+	 * Gets try it out enabled
+	 * @return try it out enabled
+	 */
+	public Boolean getTryItOutEnabled() {
+		return tryItOutEnabled;
+	}
+
+	/**
+	 * Sets try it out enabled
+	 * @param tryItOutEnabled try it out enabled
+	 */
+	public void setTryItOutEnabled(Boolean tryItOutEnabled) {
+		this.tryItOutEnabled = tryItOutEnabled;
+	}
 
 	/**
 	 * Gets persist authorization.
