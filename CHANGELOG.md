@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.6] - 2021-03-16
+### Added
+- #1107 - use HTTP 302 status for UI redirect 
+- #1104 - switch from 'redirect:' prefix to ResponseEntity for redirecting UI index 
+- #1085 - enable recalculating oauth2 redirect url while cache is disable
+### Changed
+- Upgrade swagger-ui version to: 3.45.0
+- Upgrade swagger-core to v2.1.7
+### Fixed
+- #1081 - Spring Data Rest: RequestBody for POST, PUT, PATCH should be required.
+- #1082 - Spring Data Rest: Wrong schema for request body in association controllers. 
+- #1083 - Spring Data Rest: No model for Paged Collection. 
+- #1082 - Spring Data Rest: Wrong schema for request body in association controllers. 
+- #1084 - Spring Data Rest: Relations to exported Repositories are handled as if they were embedded. 
+- #1095 - Spring Data Rest: Exception while generating api doc with inheritance
+- #1098 - NullPointerException: Cannot invoke "java.util.Map.forEach(java.util.function.BiConsumer)" because "properties" is null. 
+- #1097 - ConversionFailedException: When accessing v3/api-docs. 
+- #1105 - Collection methods are added to the supported entity methods.  
+- #1106 - Required `multipart/form-data` parameters not reflected in generated schema. 
+- #1096 - Fix certain `WebConversionServiceProvider#convert` calls by supplying contextual information
+ 
 ## [1.5.5] - 2021-02-28
 ### Added
 - #1050 - Add support for addPathPrefix with Webflux swagger-ui. 
