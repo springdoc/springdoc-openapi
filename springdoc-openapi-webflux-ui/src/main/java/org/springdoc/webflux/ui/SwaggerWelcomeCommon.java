@@ -72,7 +72,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @return the mono
 	 */
 	protected Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
-		String contextPath = this.fromCurrentContextPath(request);
+		this.buildFromCurrentContextPath(request);
 		String sbUrl = this.buildUrl(contextPath, swaggerUiConfigParameters.getUiRootPath() + springDocConfigProperties.getWebjars().getPrefix() + SWAGGER_UI_URL);
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
 		response.setStatusCode(HttpStatus.FOUND);
@@ -87,7 +87,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @return the swagger ui config
 	 */
 	protected Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
-		this.fromCurrentContextPath(request);
+		this.buildFromCurrentContextPath(request);
 		return swaggerUiConfigParameters.getConfigParameters();
 	}
 
@@ -97,13 +97,12 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @param request the request
 	 * @return the string
 	 */
-	private String fromCurrentContextPath(ServerHttpRequest request) {
-		String contextPath = request.getPath().contextPath().value();
+	private void buildFromCurrentContextPath(ServerHttpRequest request) {
+		contextPath = request.getPath().contextPath().value();
 		String url = UriComponentsBuilder.fromHttpRequest(request).toUriString();
 		if (!AntPathMatcher.DEFAULT_PATH_SEPARATOR.equals(request.getPath().toString()))
 			url = url.replace(request.getPath().toString(), "");
-		buildConfigUrl(contextPath, UriComponentsBuilder.fromUriString(url));
-		return contextPath;
+		buildConfigUrl(UriComponentsBuilder.fromUriString(url));
 	}
 
 }
