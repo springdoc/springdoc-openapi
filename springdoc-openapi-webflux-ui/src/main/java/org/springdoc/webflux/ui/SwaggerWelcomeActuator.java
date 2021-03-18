@@ -129,12 +129,12 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	}
 
 	@Override
-	protected String buildApiDocUrl(String contextPath) {
+	protected String buildApiDocUrl() {
 		return buildUrl(contextPath + webEndpointProperties.getBasePath(), DEFAULT_API_DOCS_ACTUATOR_URL);
 	}
 
 	@Override
-	protected String buildSwaggerConfigUrl(String contextPath) {
+	protected String buildSwaggerConfigUrl() {
 		return contextPath + webEndpointProperties.getBasePath()
 				+ DEFAULT_PATH_SEPARATOR + DEFAULT_SWAGGER_UI_ACTUATOR_PATH
 				+ DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;

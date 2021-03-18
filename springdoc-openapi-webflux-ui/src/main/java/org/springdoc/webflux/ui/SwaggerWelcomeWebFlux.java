@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -36,7 +35,6 @@ import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import reactor.core.publisher.Mono;
 
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -53,6 +51,7 @@ import org.springframework.web.util.pattern.PathPattern;
 import static org.springdoc.core.Constants.SWAGGER_CONFIG_URL;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
 import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Swagger welcome.
@@ -62,14 +61,14 @@ import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
 public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 
 	/**
-	 * The Webflux base path.
-	 */
-	private String webfluxBasePath = StringUtils.EMPTY;
-
-	/**
 	 * The Request mapping handler mapping.
 	 */
 	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
+
+	/**
+	 * The Path prefix.
+	 */
+	private String pathPrefix;
 
 	/**
 	 * Instantiates a new Swagger welcome.
@@ -77,14 +76,12 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param webFluxPropertiesOptional the web flux properties
 	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 */
-	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters,
-			Optional<WebFluxProperties> webFluxPropertiesOptional, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
+	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,
+			SwaggerUiConfigParameters swaggerUiConfigParameters, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
 		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
-		webFluxPropertiesOptional.ifPresent(webFluxProperties -> webfluxBasePath = webFluxProperties.getBasePath());
 	}
 
 	/**
@@ -100,10 +97,8 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 			Set<PathPattern> patterns = patternsRequestCondition.getPatterns();
 			for (PathPattern pathPattern : patterns) {
 				String operationPath = pathPattern.getPatternString();
-				if (operationPath.endsWith(SWAGGGER_CONFIG_FILE))
-					swaggerConfigUrl = StringUtils.defaultString(webfluxBasePath) + operationPath;
-				else if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
-					apiDocsUrl = StringUtils.defaultString(webfluxBasePath) + operationPath;
+				if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
+					pathPrefix =  operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
 			}
 		}
 	}
@@ -145,8 +140,18 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	@Override
 	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
 		if ((oauthPrefix == null && !swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl())) || springDocConfigProperties.isCacheDisabled())  {
-			this.oauthPrefix = uriComponentsBuilder.path(webfluxBasePath).path(swaggerUiConfigParameters.getUiRootPath()).path(webJarsPrefixUrl);
+			this.oauthPrefix = uriComponentsBuilder.path(contextPath).path(swaggerUiConfigParameters.getUiRootPath()).path(webJarsPrefixUrl);
 			swaggerUiConfigParameters.setOauth2RedirectUrl(this.oauthPrefix.path(getOauth2RedirectUrl()).build().toString());
 		}
+	}
+
+	@Override
+	protected String buildApiDocUrl() {
+		return buildUrl(this.contextPath + this.pathPrefix, springDocConfigProperties.getApiDocs().getPath());
+	}
+
+	@Override
+	protected String buildSwaggerConfigUrl() {
+		return this.apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
 	}
 }

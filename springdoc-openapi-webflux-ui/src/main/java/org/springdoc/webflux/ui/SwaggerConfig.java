@@ -39,7 +39,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -66,15 +65,14 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param optionalWebFluxProperties the optional web flux properties
 	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @return the swagger welcome web flux
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
-	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters, Optional<WebFluxProperties> optionalWebFluxProperties, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
-		return new SwaggerWelcomeWebFlux(swaggerUiConfig,springDocConfigProperties,swaggerUiConfigParameters,optionalWebFluxProperties,requestMappingHandlerMapping);
+	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
+		return new SwaggerWelcomeWebFlux(swaggerUiConfig,springDocConfigProperties,swaggerUiConfigParameters,requestMappingHandlerMapping);
 	}
 
 	/**

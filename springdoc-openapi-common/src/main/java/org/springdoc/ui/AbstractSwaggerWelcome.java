@@ -66,6 +66,11 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	protected String apiDocsUrl;
 
 	/**
+	 * The Context path.
+	 */
+	protected String contextPath;
+
+	/**
 	 * Instantiates a new Abstract swagger welcome.
 	 *
 	 * @param swaggerUiConfig the swagger ui config
@@ -103,13 +108,12 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	/**
 	 * Build config url.
 	 *
-	 * @param contextPath the context path
 	 * @param uriComponentsBuilder the uri components builder
 	 */
-	protected void buildConfigUrl(String contextPath, UriComponentsBuilder uriComponentsBuilder) {
+	protected void buildConfigUrl( UriComponentsBuilder uriComponentsBuilder) {
 		if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
-			apiDocsUrl =  StringUtils.defaultIfEmpty(apiDocsUrl, buildApiDocUrl(contextPath));
-			swaggerConfigUrl = StringUtils.defaultIfEmpty(swaggerConfigUrl, buildSwaggerConfigUrl(contextPath));
+			apiDocsUrl = buildApiDocUrl();
+			swaggerConfigUrl = buildSwaggerConfigUrl();
 			swaggerUiConfigParameters.setConfigUrl(swaggerConfigUrl);
 			if (CollectionUtils.isEmpty(swaggerUiConfigParameters.getUrls())) {
 				String swaggerUiUrl = swaggerUiConfig.getUrl();
@@ -190,22 +194,15 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	/**
 	 * Build api doc url string.
 	 *
-	 * @param contextPath the context path
 	 * @return the string
 	 */
-	protected String buildApiDocUrl(String contextPath) {
-		return this.apiDocsUrl;
-	}
+	protected abstract String buildApiDocUrl();
 
 	/**
 	 * Build swagger config url string.
 	 *
-	 * @param contextPath the context path
-	 * @return the string
 	 */
-	protected String buildSwaggerConfigUrl(String contextPath) {
-		return this.swaggerConfigUrl;
-	}
+	protected abstract String buildSwaggerConfigUrl();
 
 	/**
 	 * Gets oauth2 redirect url.

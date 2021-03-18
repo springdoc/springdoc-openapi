@@ -39,8 +39,8 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @return the response entity
 	 */
 	protected ResponseEntity<Void> redirectToUi(HttpServletRequest request) {
-		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
-		String sbUrl = request.getContextPath() + swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
+		buildFromCurrentContextPath(request);
+		String sbUrl = contextPath + swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
 
 		// forward all queryParams from original request
@@ -58,7 +58,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @return the map
 	 */
 	protected Map<String, Object> openapiJson(HttpServletRequest request) {
-		buildConfigUrl(request.getContextPath(), ServletUriComponentsBuilder.fromCurrentContextPath());
+		buildFromCurrentContextPath(request);
 		return swaggerUiConfigParameters.getConfigParameters();
 	}
 
@@ -68,5 +68,15 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder
 					.path(swaggerUiConfigParameters.getUiRootPath())
 					.path(getOauth2RedirectUrl()).build().toString());
+	}
+
+	/**
+	 * From current context path.
+	 *
+	 * @param request the request
+	 */
+	private void buildFromCurrentContextPath(HttpServletRequest request) {
+		contextPath = request.getContextPath();
+		buildConfigUrl(ServletUriComponentsBuilder.fromCurrentContextPath());
 	}
 }

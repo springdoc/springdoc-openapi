@@ -40,7 +40,6 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"server.port=9018",
 				"springdoc.swagger-ui.path=/documentation/swagger-ui.html",
 				"springdoc.api-docs.path=/documentation/v3/api-docs",
-				"spring.webflux.base-path=/test",
 				"springdoc.webjars.prefix= /webjars-pref" })
 class SpringDocApp18Test extends AbstractCommonTest {
 
@@ -59,7 +58,7 @@ class SpringDocApp18Test extends AbstractCommonTest {
 	}
 
 	@Test
-	public void testIndexActuator() throws Exception {
+	public void testIndex() throws Exception {
 		HttpStatus httpStatusMono = webClient.get().uri("/test/documentation/swagger-ui.html")
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
