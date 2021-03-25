@@ -24,6 +24,8 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -85,6 +87,8 @@ class MethodParameterPojoExtractor {
 
 		SIMPLE_TYPES.add(Map.class);
 		SIMPLE_TYPES.add(Iterable.class);
+		SIMPLE_TYPES.add(Duration.class);
+		SIMPLE_TYPES.add(LocalTime.class);
 
 		SIMPLE_TYPE_PREDICATES.add(Class::isPrimitive);
 		SIMPLE_TYPE_PREDICATES.add(Class::isEnum);
