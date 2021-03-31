@@ -115,6 +115,7 @@ class MethodParameterPojoExtractor {
 	 */
 	private static Stream<MethodParameter> extractFrom(Class<?> clazz, String fieldNamePrefix) {
 		return allFieldsOf(clazz).stream()
+				.filter(field -> !field.getType().equals(clazz))
 				.flatMap(f -> fromGetterOfField(clazz, f, fieldNamePrefix))
 				.filter(Objects::nonNull);
 	}
