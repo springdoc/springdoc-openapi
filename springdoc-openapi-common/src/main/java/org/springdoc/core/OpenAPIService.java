@@ -22,6 +22,7 @@ package org.springdoc.core;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,6 +40,7 @@ import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.security.SecuritySchemes;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import io.swagger.v3.oas.models.Components;
@@ -51,6 +53,7 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -526,6 +529,7 @@ public class OpenAPIService {
 		else {
 			ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(
 					false);
+			scanner.addIncludeFilter(new AnnotationTypeFilter(io.swagger.v3.oas.annotations.security.SecuritySchemes.class));
 			scanner.addIncludeFilter(
 					new AnnotationTypeFilter(io.swagger.v3.oas.annotations.security.SecurityScheme.class));
 			if (AutoConfigurationPackages.has(context)) {
@@ -612,6 +616,10 @@ public class OpenAPIService {
 				try {
 					apiSecurityScheme.add(AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()),
 							io.swagger.v3.oas.annotations.security.SecurityScheme.class));
+					SecuritySchemes apiSecuritySchemes
+							= AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()), io.swagger.v3.oas.annotations.security.SecuritySchemes.class);
+					if (apiSecuritySchemes!=null && !ArrayUtils.isEmpty(apiSecuritySchemes.value()))
+						Arrays.stream(apiSecuritySchemes.value()).forEach(apiSecurityScheme::add);
 				}
 				catch (ClassNotFoundException e) {
 					LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
