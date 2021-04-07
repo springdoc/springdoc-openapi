@@ -24,6 +24,8 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -131,8 +133,32 @@ class MethodParameterPojoExtractor {
 	private static Stream<MethodParameter> fromGetterOfField(Class<?> paramClass, Field field, String fieldNamePrefix) {
 		if (isSimpleType(field.getType()))
 			return fromSimpleClass(paramClass, field, fieldNamePrefix);
+		else if (field.getGenericType() instanceof TypeVariable<?>)
+			return extractTypeParameter(paramClass, (TypeVariable<?>) field.getGenericType(), field, fieldNamePrefix);
 		else
 			return extractFrom(field.getType(), fieldNamePrefix + field.getName() + ".");
+	}
+
+	/**
+	 * Extract type parameter stream.
+	 *
+	 * @param owningClass the owning class
+	 * @param genericType the generic type
+	 * @param field the field
+	 * @param fieldNamePrefix the field name prefix
+	 * @return the stream
+	 */
+	private static Stream<MethodParameter> extractTypeParameter(
+			Class<?> owningClass,
+			TypeVariable<?> genericType,
+			Field field,
+			String fieldNamePrefix) {
+
+		Type resolvedType = ReturnTypeParser.resolveType(genericType, owningClass);
+		if (resolvedType instanceof Class<?> && isSimpleType((Class<?>) resolvedType)) {
+			return fromSimpleClass(owningClass, field, fieldNamePrefix);
+		}
+		return Stream.empty();
 	}
 
 	/**
