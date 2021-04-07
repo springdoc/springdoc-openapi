@@ -191,10 +191,10 @@ public interface ReturnTypeParser {
 	 * @return the type
 	 */
 	static Type getType(MethodParameter methodParameter) {
-		if (methodParameter.getGenericParameterType() instanceof ParameterizedType)
-			return ReturnTypeParser.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
+		Type genericParameterType = methodParameter.getGenericParameterType();
+		if (genericParameterType instanceof ParameterizedType || genericParameterType instanceof TypeVariable )
+			return ReturnTypeParser.resolveType(genericParameterType, methodParameter.getContainingClass());
 		return methodParameter.getParameterType();
 	}
 
 }
-
