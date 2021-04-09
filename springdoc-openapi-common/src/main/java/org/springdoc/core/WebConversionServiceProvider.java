@@ -2,10 +2,10 @@ package org.springdoc.core;
 
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.boot.autoconfigure.web.format.WebConversionService;
-import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties.Format;
 import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.lang.Nullable;
 
 /**
@@ -15,9 +15,9 @@ import org.springframework.lang.Nullable;
 public class WebConversionServiceProvider {
 
 	/**
-	 * The Web conversion service.
+	 * The Formatting conversion service.
 	 */
-	private final WebConversionService webConversionService;
+	private final FormattingConversionService formattingConversionService;
 
 	/**
 	 * Instantiates a new Web conversion service provider.
@@ -26,12 +26,9 @@ public class WebConversionServiceProvider {
 	 */
 	public WebConversionServiceProvider(Optional<WebConversionService> webConversionServiceOptional) {
 		if (webConversionServiceOptional.isPresent())
-			this.webConversionService = webConversionServiceOptional.get();
-		else {
-			final Format format = new Format();
-			this.webConversionService = new WebConversionService(new DateTimeFormatters()
-					.dateFormat(format.getDate()).timeFormat(format.getTime()).dateTimeFormat(format.getDateTime()));
-		}
+			this.formattingConversionService = webConversionServiceOptional.get();
+		else
+			formattingConversionService = new DefaultFormattingConversionService();
 	}
 
 	/**
@@ -43,6 +40,6 @@ public class WebConversionServiceProvider {
 	 */
 	@Nullable
 	public Object convert(@Nullable Object source, TypeDescriptor targetTypeDescriptor) {
-		return webConversionService.convert(source, targetTypeDescriptor);
+			return formattingConversionService.convert(source, targetTypeDescriptor);
 	}
 }
