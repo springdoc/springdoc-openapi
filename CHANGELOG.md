@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.7] - 2021-04-09
+### Added
+- #1110 - Add configuration flag for tryItOutEnabled
+- #1128 - Add support for Generic fields in ParameterObject are not resolved 
+### Changed
+- Upgrade swagger-ui version to 3.46.0
+### Fixed
+- #1109 - webflux: contextPath not used while behind a load balancer/reverse proxy.
+- #1122 - StackOverflowError when using Kotlin companion object's field
+- #1125 - Multiple @SecurityScheme inside a @SecuritySchemes are not present in the openapi spec
+- #1134 - NoClassDefFoundError: WebFluxProperties$Format.
+
 ## [1.5.6] - 2021-03-16
 ### Added
 - #1107 - use HTTP 302 status for UI redirect 
