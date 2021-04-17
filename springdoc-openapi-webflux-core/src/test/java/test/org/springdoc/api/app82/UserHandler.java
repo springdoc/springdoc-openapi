@@ -35,7 +35,7 @@ public class UserHandler {
      */
     public Mono<ServerResponse> getUser(ServerRequest request) {
         // parse path-variable
-        long customerId = Long.valueOf(request.pathVariable("id"));
+		long customerId = Long.valueOf(request.queryParam("id").get());
 
         // build notFound response 
         Mono<ServerResponse> notFound = ServerResponse.notFound().build();

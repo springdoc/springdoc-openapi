@@ -17,26 +17,32 @@
           "hello-controller"
         ],
         "operationId": "put",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "configuration": {
-                    "type": "string"
-                  },
-                  "second": {
-                    "type": "string"
-                  },
-                  "personDTO": {
-                    "$ref": "#/components/schemas/PersonDTO"
-                  }
-                }
-              }
+        "parameters": [
+          {
+            "name": "configuration",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "second",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "personDTO",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PersonDTO"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK",
