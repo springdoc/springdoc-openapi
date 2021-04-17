@@ -12,20 +12,12 @@
   ],
   "paths": {
     "/api/test": {
-      "get": {
+      "post": {
         "tags": [
           "hello-controller"
         ],
         "operationId": "update",
         "parameters": [
-          {
-            "name": "entity",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ActualReturnedEntity"
-            }
-          },
           {
             "name": "userId",
             "in": "header",
@@ -41,6 +33,16 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualReturnedEntity"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "OK",

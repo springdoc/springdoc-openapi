@@ -19,31 +19,115 @@
     }
   ],
   "paths": {
+    "/personsone": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "createone",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/persons": {
       "post": {
         "tags": [
           "hello-controller"
         ],
         "operationId": "create",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "integer",
-                    "format": "int64"
-                  },
-                  "o": {
-                    "type": "object"
-                  }
-                }
+                "type": "object"
               }
             }
           },
           "required": true
         },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/createtwo": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "createtwo",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/createthree": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "createthree",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"

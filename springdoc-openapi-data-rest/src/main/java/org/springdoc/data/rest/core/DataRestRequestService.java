@@ -121,7 +121,7 @@ public class DataRestRequestService {
 	 * @param resourceMetadata the resource metadata
 	 * @param dataRestRepository the data rest repository
 	 */
-	public void buildParameters( OpenAPI openAPI, HandlerMethod handlerMethod, RequestMethod requestMethod, MethodAttributes methodAttributes,
+	public void buildParameters(OpenAPI openAPI, HandlerMethod handlerMethod, RequestMethod requestMethod, MethodAttributes methodAttributes,
 			Operation operation, ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository) {
 		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
 		MethodParameter[] parameters = handlerMethod.getMethodParameters();
@@ -133,7 +133,7 @@ public class DataRestRequestService {
 		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
 		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
-		buildCommonParameters(openAPI, requestMethod, methodAttributes, operation, pNames, parameters, resourceMetadata,dataRestRepository);
+		buildCommonParameters(openAPI, requestMethod, methodAttributes, operation, pNames, parameters, resourceMetadata, dataRestRepository);
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class DataRestRequestService {
 				else if (methodParameter.getParameterAnnotation(BackendId.class) != null) {
 					parameterInfo.setParameterModel(new Parameter().name("id").in(ParameterIn.PATH.toString()).schema(new StringSchema()));
 				}
-				Parameter parameter;
+				Parameter parameter = null;
 				io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
 						AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()),
 						io.swagger.v3.oas.annotations.Parameter.class);
@@ -173,7 +173,8 @@ public class DataRestRequestService {
 					parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, openAPI.getComponents(), methodAttributes.getJsonViewAnnotation());
 					parameterInfo.setParameterModel(parameter);
 				}
-				parameter = requestBuilder.buildParams(parameterInfo, openAPI.getComponents(), requestMethod, null);
+				if (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()))
+					parameter = requestBuilder.buildParams(parameterInfo, parameters.length, openAPI.getComponents(), requestMethod, null);
 
 				addParameters(openAPI, requestMethod, methodAttributes, operation, methodParameter, parameterInfo, parameter);
 			}

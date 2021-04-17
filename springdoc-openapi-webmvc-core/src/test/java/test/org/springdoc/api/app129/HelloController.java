@@ -21,7 +21,7 @@ package test.org.springdoc.api.app129;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +31,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 @RequestMapping(path = "/api", headers = {"userId", "registrationId"})
 public class HelloController {
 
-	@GetMapping("/test")
+	@PostMapping("/test")
 	@ApiResponses({@ApiResponse(responseCode = "200")})
 	public DeferredResult<OperationResponse<ActualReturnedEntity>> update(
 			@RequestBody ActualReturnedEntity entity) throws Exception {

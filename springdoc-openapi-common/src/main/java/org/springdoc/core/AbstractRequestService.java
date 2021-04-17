@@ -55,6 +55,8 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
@@ -96,7 +98,7 @@ public abstract class AbstractRequestService {
 	 * The constant ANNOTATIONS_FOR_REQUIRED.
 	 */
 // using string litterals to support both validation-api v1 and v2
-	private static final String[] ANNOTATIONS_FOR_REQUIRED = {"NotNull", "NonNull", "NotBlank", "NotEmpty"};
+	private static final String[] ANNOTATIONS_FOR_REQUIRED = { "NotNull", "NonNull", "NotBlank", "NotEmpty" };
 
 	/**
 	 * The constant POSITIVE_OR_ZERO.
@@ -255,7 +257,7 @@ public abstract class AbstractRequestService {
 			}
 
 			if (!isParamToIgnore(methodParameter)) {
-				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation());
+				parameter = buildParams(parameterInfo, parameters.length, components, requestMethod, methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
 				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
 				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
@@ -321,7 +323,7 @@ public abstract class AbstractRequestService {
 	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<String, Parameter> map) {
 		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
 			StringSchema schema = new StringSchema();
-			if(StringUtils.isNotEmpty(entry.getValue()))
+			if (StringUtils.isNotEmpty(entry.getValue()))
 				schema.addEnumItem(entry.getValue());
 			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(schema);
 			if (map.containsKey(entry.getKey())) {
@@ -404,15 +406,16 @@ public abstract class AbstractRequestService {
 	 * Build params parameter.
 	 *
 	 * @param parameterInfo the parameter info
+	 * @param length the length
 	 * @param components the components
 	 * @param requestMethod the request method
 	 * @param jsonView the json view
 	 * @return the parameter
 	 */
-	public Parameter buildParams(ParameterInfo parameterInfo, Components components,
+	public Parameter buildParams(ParameterInfo parameterInfo, int length, Components components,
 			RequestMethod requestMethod, JsonView jsonView) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
-		if (parameterInfo.getParamType() != null){
+		if (parameterInfo.getParamType() != null) {
 			if (!ValueConstants.DEFAULT_NONE.equals(parameterInfo.getDefaultValue()))
 				parameterInfo.setRequired(false);
 			else
@@ -420,10 +423,7 @@ public abstract class AbstractRequestService {
 			return this.buildParam(parameterInfo, components, jsonView);
 		}
 		// By default
-		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
-		if (RequestMethod.GET.equals(requestMethod)
-				|| (parameterInfo.getParameterModel() != null && parameterInfo.getParameterModel().getIn() !=null)
-				|| delegatingMethodParameter.isParameterObject()){
+		if (!isRequestBodyParam(requestMethod, parameterInfo, length)) {
 			parameterInfo.setRequired(!methodParameter.isOptional());
 			parameterInfo.setParamType(QUERY_PARAM);
 			parameterInfo.setDefaultValue(null);
@@ -440,7 +440,7 @@ public abstract class AbstractRequestService {
 	 * @param jsonView the json view
 	 * @return the parameter
 	 */
-	private Parameter buildParam(ParameterInfo parameterInfo, Components components, JsonView jsonView) {
+	public Parameter buildParam(ParameterInfo parameterInfo, Components components, JsonView jsonView) {
 		Parameter parameter = parameterInfo.getParameterModel();
 		String name = parameterInfo.getpName();
 
@@ -630,6 +630,25 @@ public abstract class AbstractRequestService {
 			Pattern pattern = (Pattern) annos.get(Pattern.class.getSimpleName());
 			schema.setPattern(pattern.regexp());
 		}
+	}
+
+	/**
+	 * Is RequestBody param boolean.
+	 *
+	 * @param requestMethod the request method
+	 * @param parameterInfo the parameter info
+	 * @param length the length
+	 * @return the boolean
+	 */
+	private boolean isRequestBodyParam(RequestMethod requestMethod, ParameterInfo parameterInfo, int length) {
+		MethodParameter methodParameter = parameterInfo.getMethodParameter();
+		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
+
+		return (!RequestMethod.GET.equals(requestMethod) && (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getIn() == null) && !delegatingMethodParameter.isParameterObject())
+				&&
+				((methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
+						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null)
+						|| (!ClassUtils.isPrimitiveOrWrapper(methodParameter.getParameter().getType()) && (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()) || length == 1)));
 	}
 
 }

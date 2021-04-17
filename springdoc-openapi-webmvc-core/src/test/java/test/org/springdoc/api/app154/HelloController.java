@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
+
 	@GetMapping(path = "/")
 	public String hello() {
 		return "Hello world at " + Instant.now().toString();
@@ -39,4 +40,20 @@ public class HelloController {
 	public void create(@ParameterObject Long id, @RequestBody Object o){
 
 	}
+
+	@PostMapping(value = "/personsone")
+	public void createone(Long id, @RequestBody Object o){
+
+	}
+
+	@PostMapping(value = "/createtwo")
+	public void createtwo(int id){
+
+	}
+
+	@PostMapping(value = "/createthree")
+	public void createthree(Integer id){
+
+	}
+
 }
