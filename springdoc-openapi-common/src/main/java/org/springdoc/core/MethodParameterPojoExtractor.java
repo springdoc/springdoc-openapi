@@ -220,7 +220,7 @@ class MethodParameterPojoExtractor {
 	 * @param clazz the clazz
 	 * @return the boolean
 	 */
-	private static boolean isSimpleType(Class<?> clazz) {
+	static boolean isSimpleType(Class<?> clazz) {
 		return SIMPLE_TYPE_PREDICATES.stream().anyMatch(p -> p.test(clazz)) ||
 				SIMPLE_TYPES.stream().anyMatch(c -> c.isAssignableFrom(clazz));
 	}
