@@ -20,7 +20,11 @@ package test.org.springdoc.api.app154;
 
 import java.time.Instant;
 
+import org.springdoc.api.annotations.ParameterObject;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,4 +35,8 @@ public class HelloController {
 		return "Hello world at " + Instant.now().toString();
 	}
 
+	@PostMapping(value = "/persons")
+	public void create(@ParameterObject Long id, @RequestBody Object o){
+
+	}
 }
