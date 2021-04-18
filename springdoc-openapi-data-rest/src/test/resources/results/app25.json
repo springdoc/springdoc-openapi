@@ -2027,6 +2027,9 @@
         }
       },
       "EntityModelClinic": {
+        "required": [
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -2066,6 +2069,10 @@
         }
       },
       "EntityModelPet": {
+        "required": [
+          "_type",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -2122,23 +2129,6 @@
           }
         }
       },
-      "EntityModelOwner": {
-        "type": "object",
-        "properties": {
-          "firstname": {
-            "type": "string"
-          },
-          "lastname": {
-            "type": "string"
-          },
-          "addresses": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "CollectionModelObject": {
         "type": "object",
         "properties": {
@@ -2158,7 +2148,32 @@
           }
         }
       },
+      "EntityModelOwner": {
+        "required": [
+          "addresses",
+          "lastname"
+        ],
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "addresses": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
       "EntityModelDoctor": {
+        "required": [
+          "firstname",
+          "lastname"
+        ],
         "type": "object",
         "properties": {
           "firstname": {
