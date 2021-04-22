@@ -1,19 +1,30 @@
+![Octocat](https://springdoc.org/images/springdoc-openapi.png)
 [![Build Status](https://travis-ci.org/springdoc/springdoc-openapi.svg?branch=master)](https://travis-ci.org/springdoc/springdoc-openapi)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=springdoc_springdoc-openapi&metric=alert_status)](https://sonarcloud.io/dashboard?id=springdoc_springdoc-openapi)
 [![Known Vulnerabilities](https://snyk.io/test/github/springdoc/springdoc-openapi.git/badge.svg)](https://snyk.io/test/github/springdoc/springdoc-openapi.git)
 ![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/springdoc)
 
-![Octocat](https://springdoc.org/images/springdoc-openapi.png)
+# Table of Contents
+- [Full documentation](#full-documentation)
+- [**Introduction**](#introduction)
+- [**Getting Started**](#getting-started)
+  - [Library for springdoc-openapi integration with spring-boot and swagger-ui](#library-for-springdoc-openapi-integration-with-spring-boot-and-swagger-ui)
+  - [Spring-boot with OpenAPI Demo applications.](#spring-boot-with-openapi-demo-applications)
+    - [Source Code for Demo Applications.](#source-code-for-demo-applications)
+    - [Demo Spring Boot 2 Web MVC with OpenAPI 3.](#demo-spring-boot-2-web-mvc-with-openapi-3)
+    - [Demo Spring Boot 2 WebFlux with OpenAPI 3.](#demo-spring-boot-2-webflux-with-openapi-3)
+    - [Demo Spring Boot 1 Web MVC with OpenAPI 3.](#demo-spring-boot-1-web-mvc-with-openapi-3)
+    - [Demo Spring Boot 2 WebFlux with Functional endpoints OpenAPI 3.](#demo-spring-boot-2-webflux-with-functional-endpoints-openapi-3)
+    - [Demo Spring Boot 2 and Spring Hateoas with OpenAPI 3.](#demo-spring-boot-2-and-spring-hateoas-with-openapi-3)
+  - [Integration of the library in a Spring Boot 2.x.x project without the swagger-ui:](#integration-of-the-library-in-a-spring-boot-2xx-project-without-the-swagger-ui)
+  - [Error Handling for REST using @ControllerAdvice](#error-handling-for-rest-using-controlleradvice)
+  - [Adding API Information and Security documentation](#adding-api-information-and-security-documentation)
+  - [spring-webflux support with Annotated Controllers](#spring-webflux-support-with-annotated-controllers)
+- [Acknowledgements](#acknowledgements)
+  - [Contributors](#contributors)
+  - [Additional Support](#additional-support)
 
 # [Full documentation](https://springdoc.org)
-
-# Acknowledgements
-
-[springdoc-openapi is made possible thanks to all of its contributors.](https://github.com/springdoc/springdoc-openapi/graphs/contributors)
-
-<a href="https://github.com/springdoc/springdoc-openapi/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=springdoc/springdoc-openapi" />
-</a>
 
 # **Introduction**
 
@@ -61,17 +72,14 @@ This is a community-based project, not maintained by the Spring Framework Contri
 springdoc.swagger-ui.path=/swagger-ui.html
 ```
 
-## Source code of the Demo Applications
-* [https://github.com/springdoc/springdoc-openapi-demos.git](https://github.com/springdoc/springdoc-openapi-demos.git).
-
-
 ## Spring-boot with OpenAPI Demo applications.
 
-## [Demo Spring Boot 2 Web MVC with OpenAPI 3](http://158.101.164.60:8081/).
-## [Demo Spring Boot 2 WebFlux with OpenAPI 3](http://158.101.164.60:8082/).
-## [Demo Spring Boot 1 Web MVC with OpenAPI 3](http://158.101.164.60:8083/).
-## [Demo Spring Boot 2 WebFlux with Functional endpoints OpenAPI 3](http://158.101.164.60:8084/swagger-ui.html).
-## [Demo Spring Boot 2 and Spring Hateoas with OpenAPI 3](http://158.101.164.60:8085/swagger-ui.html).
+### [Source Code for Demo Applications](https://github.com/springdoc/springdoc-openapi-demos.git).
+### [Demo Spring Boot 2 Web MVC with OpenAPI 3](http://158.101.164.60:8081/).
+### [Demo Spring Boot 2 WebFlux with OpenAPI 3](http://158.101.164.60:8082/).
+### [Demo Spring Boot 1 Web MVC with OpenAPI 3](http://158.101.164.60:8083/).
+### [Demo Spring Boot 2 WebFlux with Functional endpoints OpenAPI 3](http://158.101.164.60:8084/swagger-ui.html).
+### [Demo Spring Boot 2 and Spring Hateoas with OpenAPI 3](http://158.101.164.60:8085/swagger-ui.html).
 
 ![Branching](https://springdoc.org/images/pets.png)
 
@@ -139,8 +147,19 @@ Releases:
 Snapshots:
 * [https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/](https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/).
 
-# **Thank you for the support**
+# Acknowledgements
 
-* Thanks a lot [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi) for supporting springdoc-openapi project.
+## Contributors
+springdoc-openapi is relevant and updated regularly due to the valuable contributions from its [contributors](https://github.com/springdoc/springdoc-openapi/graphs/contributors).
+
+<a href="https://github.com/springdoc/springdoc-openapi/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=springdoc/springdoc-openapi" width="50%"/>
+</a>
+
+Thanks a lot for your support!
+
+## Additional Support
+* [Spring Team](https://spring.io/team) - Thanks for their support by sharing all relevant resources around Spring projects.
+* [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi) - Thanks a lot for supporting springdoc-openapi project.
 
 ![JenBrains logo](https://springdoc.org/images/jetbrains.svg)
