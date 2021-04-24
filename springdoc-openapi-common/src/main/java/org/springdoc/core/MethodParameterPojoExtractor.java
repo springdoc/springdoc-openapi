@@ -46,10 +46,8 @@ import java.util.stream.Stream;
 
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.apache.commons.lang3.ArrayUtils;
 
 import org.springframework.core.MethodParameter;
-import org.springframework.lang.Nullable;
 
 /**
  * The type Method parameter pojo extractor.
@@ -62,11 +60,6 @@ class MethodParameterPojoExtractor {
 	 */
 	private MethodParameterPojoExtractor() {
 	}
-
-	/**
-	 * The constant NULLABLE_ANNOTATION.
-	 */
-	private static final Nullable NULLABLE_ANNOTATION = getNullable();
 
 	/**
 	 * The constant SIMPLE_TYPE_PREDICATES.
@@ -172,31 +165,19 @@ class MethodParameterPojoExtractor {
 	private static Stream<MethodParameter> fromSimpleClass(Class<?> paramClass, Field field, String fieldNamePrefix) {
 		Annotation[] fieldAnnotations = field.getDeclaredAnnotations();
 		try {
-			Nullable nullableField = NULLABLE_ANNOTATION;
-			if (isOptional(field))
-				fieldAnnotations = ArrayUtils.add(fieldAnnotations, nullableField);
+			Parameter parameter = field.getAnnotation(Parameter.class);
+			boolean isNotRequired  = parameter == null || !parameter.required();
 			Annotation[] finalFieldAnnotations = fieldAnnotations;
 			return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
 					.filter(d -> d.getName().equals(field.getName()))
 					.map(PropertyDescriptor::getReadMethod)
 					.filter(Objects::nonNull)
 					.map(method -> new MethodParameter(method, -1))
-					.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true));
+					.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));
 		}
 		catch (IntrospectionException e) {
 			return Stream.of();
 		}
-	}
-
-	/**
-	 * Is optional boolean.
-	 *
-	 * @param field the field
-	 * @return the boolean
-	 */
-	private static boolean isOptional(Field field) {
-		Parameter parameter = field.getAnnotation(Parameter.class);
-		return parameter == null || !parameter.required();
 	}
 
 	/**
@@ -263,29 +244,4 @@ class MethodParameterPojoExtractor {
 		SIMPLE_TYPES.removeAll(Arrays.asList(classes));
 	}
 
-	/**
-	 * The type Nullable field class.
-	 * @author bnasslahsen
-	 */
-	private class NullableFieldClass {
-		/**
-		 * The Nullable field.
-		 */
-		@Nullable
-		private String nullableField;
-	}
-
-	/**
-	 * Gets nullable.
-	 *
-	 * @return the nullable
-	 */
-	private static Nullable getNullable() {
-		try {
-			return NullableFieldClass.class.getDeclaredField("nullableField").getAnnotation(Nullable.class);
-		}
-		catch (NoSuchFieldException e) {
-			return null;
-		}
-	}
 }

@@ -69,19 +69,26 @@ public class DelegatingMethodParameter extends MethodParameter {
 	private boolean isParameterObject;
 
 	/**
+	 * The Is not required.
+	 */
+	private boolean isNotRequired;
+
+	/**
 	 * Instantiates a new Delegating method parameter.
 	 *
 	 * @param delegate the delegate
 	 * @param parameterName the parameter name
 	 * @param additionalParameterAnnotations the additional parameter annotations
 	 * @param isParameterObject the is parameter object
+	 * @param isNotRequired the is required
 	 */
-	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, boolean isParameterObject) {
+	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, boolean isParameterObject, boolean isNotRequired) {
 		super(delegate);
 		this.delegate = delegate;
 		this.additionalParameterAnnotations = additionalParameterAnnotations;
 		this.parameterName = parameterName;
 		this.isParameterObject = isParameterObject;
+		this.isNotRequired = isNotRequired;
 	}
 
 	/**
@@ -106,7 +113,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
-				explodedParameters.add(new DelegatingMethodParameter(p, name, null, false));
+				explodedParameters.add(new DelegatingMethodParameter(p, name, null, false, false));
 			}
 		}
 		return explodedParameters.toArray(new MethodParameter[0]);
@@ -186,6 +193,24 @@ public class DelegatingMethodParameter extends MethodParameter {
 	@Override
 	public void initParameterNameDiscovery(ParameterNameDiscoverer parameterNameDiscoverer) {
 		delegate.initParameterNameDiscovery(parameterNameDiscoverer);
+	}
+
+	/**
+	 * Is not required boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isNotRequired() {
+		return isNotRequired;
+	}
+
+	/**
+	 * Sets not required.
+	 *
+	 * @param notRequired the not required
+	 */
+	public void setNotRequired(boolean notRequired) {
+		isNotRequired = notRequired;
 	}
 
 	@Override
