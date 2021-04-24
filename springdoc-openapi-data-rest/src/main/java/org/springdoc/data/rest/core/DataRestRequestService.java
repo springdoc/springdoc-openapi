@@ -133,7 +133,7 @@ public class DataRestRequestService {
 		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
 		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
-		buildCommonParameters(openAPI, requestMethod, methodAttributes, operation, pNames, parameters, resourceMetadata, dataRestRepository);
+		buildCommonParameters(openAPI, requestMethod, methodAttributes, operation, pNames, parameters, dataRestRepository);
 	}
 
 	/**
@@ -145,11 +145,10 @@ public class DataRestRequestService {
 	 * @param operation the operation
 	 * @param pNames the p names
 	 * @param parameters the parameters
-	 * @param resourceMetadata the resource metadata
 	 * @param dataRestRepository the data rest repository
 	 */
 	public void buildCommonParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters,
-			ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository) {
+			DataRestRepository dataRestRepository) {
 		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
 		Class<?> domainType = dataRestRepository.getDomainType();
 		for (MethodParameter methodParameter : parameters) {

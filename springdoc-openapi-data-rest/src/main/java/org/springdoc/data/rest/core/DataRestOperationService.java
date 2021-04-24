@@ -195,7 +195,7 @@ public class DataRestOperationService {
 			HandlerMethod repositoryHandlerMethod = new HandlerMethod(methodResourceMapping.getMethod().getDeclaringClass(), methodResourceMapping.getMethod());
 			MethodParameter[] parameters = repositoryHandlerMethod.getMethodParameters();
 			for (MethodParameter methodParameter : parameters) {
-				dataRestRequestService.buildCommonParameters(openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameter.getParameterName() }, new MethodParameter[] { methodParameter }, resourceMetadata, dataRestRepository);
+				dataRestRequestService.buildCommonParameters(openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameter.getParameterName() }, new MethodParameter[] { methodParameter }, dataRestRepository);
 			}
 		}
 
@@ -225,7 +225,7 @@ public class DataRestOperationService {
 			MethodParameter[] parameters = handlerMethod.getMethodParameters();
 			Arrays.stream(parameters).filter(methodParameter -> DefaultedPageable.class.equals(methodParameter.getParameterType())).findAny()
 					.ifPresent(methodParameterPage -> dataRestRequestService.buildCommonParameters(openAPI, requestMethod, methodAttributes, operation,
-							new String[] { methodParameterPage.getParameterName() }, new MethodParameter[] { methodParameterPage }, resourceMetadata, dataRestRepository));
+							new String[] { methodParameterPage.getParameterName() }, new MethodParameter[] { methodParameterPage }, dataRestRepository));
 		}
 		dataRestResponseService.buildSearchResponse(operation, handlerMethod, openAPI, methodResourceMapping, domainType, methodAttributes, resourceMetadata, dataRestRepository);
 		tagsBuilder.buildSearchTags(operation, handlerMethod, dataRestRepository, method);
