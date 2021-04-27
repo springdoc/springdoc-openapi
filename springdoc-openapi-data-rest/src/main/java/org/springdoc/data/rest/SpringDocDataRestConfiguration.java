@@ -259,12 +259,13 @@ public class SpringDocDataRestConfiguration {
 		 * Spring doc data rest utils spring doc data rest utils.
 		 *
 		 * @param linkRelationProvider the link relation provider
+		 * @param repositoryRestConfiguration the repository rest configuration
 		 * @return the spring doc data rest utils
 		 */
 		@Bean
 		@ConditionalOnMissingBean
-		SpringDocDataRestUtils springDocDataRestUtils(LinkRelationProvider linkRelationProvider) {
-			return new SpringDocDataRestUtils(linkRelationProvider);
+		SpringDocDataRestUtils springDocDataRestUtils(LinkRelationProvider linkRelationProvider, RepositoryRestConfiguration repositoryRestConfiguration) {
+			return new SpringDocDataRestUtils(linkRelationProvider, repositoryRestConfiguration);
 		}
 	}
 
