@@ -30,6 +30,7 @@ import org.springframework.data.mapping.PersistentEntity;
 import org.springframework.data.mapping.PersistentProperty;
 import org.springframework.data.mapping.SimpleAssociationHandler;
 import org.springframework.data.mapping.context.PersistentEntities;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.mapping.ResourceMappings;
 import org.springframework.data.rest.core.mapping.ResourceMetadata;
 import org.springframework.data.rest.webmvc.RestMediaTypes;
@@ -68,12 +69,19 @@ public class SpringDocDataRestUtils {
 	private HashMap<String, EntityInfo> entityInoMap = new HashMap();
 
 	/**
+	 * The Repository rest configuration.
+	 */
+	private RepositoryRestConfiguration repositoryRestConfiguration;
+
+	/**
 	 * Instantiates a new Spring doc data rest utils.
 	 *
 	 * @param linkRelationProvider the link relation provider
+	 * @param repositoryRestConfiguration the repository rest configuration
 	 */
-	public SpringDocDataRestUtils(LinkRelationProvider linkRelationProvider) {
+	public SpringDocDataRestUtils(LinkRelationProvider linkRelationProvider, RepositoryRestConfiguration repositoryRestConfiguration) {
 		this.linkRelationProvider = linkRelationProvider;
+		this.repositoryRestConfiguration = repositoryRestConfiguration;
 	}
 
 	/**
@@ -93,7 +101,8 @@ public class SpringDocDataRestUtils {
 					EntityInfo entityInfo = new EntityInfo();
 					entityInfo.setDomainType(domainType);
 					List<String> ignoredFields = getIgnoredFields(resourceMetadata, entity);
-					entityInfo.setIgnoredFields(ignoredFields);
+					if (!repositoryRestConfiguration.isIdExposedFor(entity.getType()))
+						entityInfo.setIgnoredFields(ignoredFields);
 					List<String> associationsFields = getAssociationsFields(resourceMetadata, entity);
 					entityInfo.setAssociationsFields(associationsFields);
 					entityInoMap.put(domainType.getSimpleName(), entityInfo);

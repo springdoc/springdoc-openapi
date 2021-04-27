@@ -1,5 +1,6 @@
 package org.springdoc.data.rest.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ public class EntityInfo {
 	/**
 	 * The Ignored fields.
 	 */
-	private List<String> ignoredFields;
+	private List<String> ignoredFields = new ArrayList<>();
 
 	/**
 	 * The Associations fields.
