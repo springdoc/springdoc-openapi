@@ -2,6 +2,10 @@ package test.org.springdoc.api.app157;
 
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.util.Json;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
 import org.springdoc.core.converters.ModelConverterRegistrar;
@@ -26,10 +30,21 @@ public class SpringDocApp157Test extends AbstractSpringDocTest {
   @SpringBootApplication
   static class SpringBootApp {}
 
+  private StringyConverter myConverter = new StringyConverter();
+  private ModelConverters converters = ModelConverters.getInstance();
+
+  @BeforeEach
+  public void registerConverter() {
+    converters.addConverter(myConverter);
+  }
+
+  @AfterEach
+  public void unregisterConverter() {
+    converters.removeConverter(myConverter);
+  }
+
   @Test
   public void testApp() throws Exception {
-    // Not sure why the converter isn't registered automatically. Register it here.
-    new ModelConverterRegistrar(List.of(new StringyConverter()));
     mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.openapi", is("3.0.1")))
