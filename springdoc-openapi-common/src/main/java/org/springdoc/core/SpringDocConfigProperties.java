@@ -163,6 +163,29 @@ public class SpringDocConfigProperties {
 	private boolean useManagementPort;
 
 	/**
+	 * The Enable native support.
+	 */
+	protected boolean enableNativeImageSupport;
+
+	/**
+	 * Is enable native image support boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isEnableNativeImageSupport() {
+		return enableNativeImageSupport;
+	}
+
+	/**
+	 * Sets enable native image support.
+	 *
+	 * @param enableNativeImageSupport the enable native image support
+	 */
+	public void setEnableNativeImageSupport(boolean enableNativeImageSupport) {
+		this.enableNativeImageSupport = enableNativeImageSupport;
+	}
+
+	/**
 	 * Is use management port boolean.
 	 *
 	 * @return the boolean
@@ -614,6 +637,7 @@ public class SpringDocConfigProperties {
 
 	/**
 	 * The type Model converters.
+	 * @author bnasslashen
 	 */
 	public static class ModelConverters {
 
@@ -642,6 +666,7 @@ public class SpringDocConfigProperties {
 
 		/**
 		 * The type Deprecating converter.
+		 * @author bnasslashen
 		 */
 		public static class DeprecatingConverter {
 

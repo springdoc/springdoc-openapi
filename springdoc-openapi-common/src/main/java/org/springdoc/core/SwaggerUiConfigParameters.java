@@ -31,14 +31,18 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.CollectionUtils;
 
+import static org.springdoc.core.Constants.SPRINGDOC_CONFIG_FILE;
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
+import static org.springdoc.core.Constants.SWAGGER_UI_VERSION;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -49,6 +53,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
+@PropertySource(SPRINGDOC_CONFIG_FILE)
 public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties {
 
 	/**
@@ -87,6 +92,12 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	private final SwaggerUiConfigProperties swaggerUiConfig;
 
 	/**
+	 * The Swagger ui version.
+	 */
+	@Value(SWAGGER_UI_VERSION)
+	private String swaggerUiVersion;
+
+	/**
 	 * Instantiates a new Swagger ui config parameters.
 	 *
 	 * @param swaggerUiConfig the swagger ui config
@@ -119,6 +130,24 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		this.syntaxHighlight = swaggerUiConfig.getSyntaxHighlight();
 		this.tryItOutEnabled = swaggerUiConfig.getTryItOutEnabled();
 		this.persistAuthorization = swaggerUiConfig.getPersistAuthorization();
+	}
+
+	/**
+	 * Gets swagger ui version.
+	 *
+	 * @return the swagger ui version
+	 */
+	public String getSwaggerUiVersion() {
+		return swaggerUiVersion;
+	}
+
+	/**
+	 * Sets swagger ui version.
+	 *
+	 * @param swaggerUiVersion the swagger ui version
+	 */
+	public void setSwaggerUiVersion(String swaggerUiVersion) {
+		this.swaggerUiVersion = swaggerUiVersion;
 	}
 
 	/**
