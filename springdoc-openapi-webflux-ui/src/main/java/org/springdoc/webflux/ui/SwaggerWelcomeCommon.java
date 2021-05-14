@@ -35,8 +35,6 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static org.springdoc.core.Constants.SWAGGER_UI_URL;
-
 /**
  * The type Swagger welcome common.
  * @author bnasslashen
@@ -73,7 +71,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 */
 	protected Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
 		this.buildFromCurrentContextPath(request);
-		String sbUrl = this.buildUrl(contextPath, swaggerUiConfigParameters.getUiRootPath() + springDocConfigProperties.getWebjars().getPrefix() + SWAGGER_UI_URL);
+		String sbUrl = this.buildUrl(contextPath, swaggerUiConfigParameters.getUiRootPath() + springDocConfigProperties.getWebjars().getPrefix() + getSwaggerUiUrl());
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
 		response.setStatusCode(HttpStatus.FOUND);
 		response.getHeaders().setLocation(URI.create(uriBuilder.build().encode().toString()));

@@ -47,6 +47,7 @@ import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerM
 
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
+import static org.springdoc.core.Constants.SPRINGDOC_USE_ROOT_PATH;
 
 
 /**
@@ -73,6 +74,18 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
 		return new SwaggerWelcomeWebFlux(swaggerUiConfig,springDocConfigProperties,swaggerUiConfigParameters,requestMappingHandlerMapping);
+	}
+
+	/**
+	 * Swagger ui home swagger ui home.
+	 *
+	 * @return the swagger ui home
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_USE_ROOT_PATH, havingValue = "true")
+	SwaggerUiHome swaggerUiHome(){
+		return new SwaggerUiHome();
 	}
 
 	/**

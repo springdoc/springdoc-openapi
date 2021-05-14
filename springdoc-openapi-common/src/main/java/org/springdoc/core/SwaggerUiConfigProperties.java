@@ -66,6 +66,29 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	private boolean enabled = true;
 
 	/**
+	 * The Use root path.
+	 */
+	private boolean useRootPath;
+
+	/**
+	 * Is use root path boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isUseRootPath() {
+		return useRootPath;
+	}
+
+	/**
+	 * Sets use root path.
+	 *
+	 * @param useRootPath the use root path
+	 */
+	public void setUseRootPath(boolean useRootPath) {
+		this.useRootPath = useRootPath;
+	}
+
+	/**
 	 * Is enabled boolean.
 	 *
 	 * @return the boolean
@@ -85,6 +108,7 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 
 	/**
 	 * The type Csrf.
+	 * @author bnasslashen
 	 */
 	public static class Csrf {
 
@@ -241,6 +265,7 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 
 	/**
 	 * The type Syntax highlight.
+	 * @author bnasslashen
 	 */
 	public static class SyntaxHighlight{
 

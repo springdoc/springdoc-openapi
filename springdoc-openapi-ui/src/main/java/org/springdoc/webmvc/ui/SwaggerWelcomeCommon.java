@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static org.springdoc.core.Constants.SWAGGER_UI_URL;
-
 /**
  * The type Swagger welcome common.
  * @author bnasslashen
@@ -40,7 +38,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 */
 	protected ResponseEntity<Void> redirectToUi(HttpServletRequest request) {
 		buildFromCurrentContextPath(request);
-		String sbUrl = contextPath + swaggerUiConfigParameters.getUiRootPath() + SWAGGER_UI_URL;
+		String sbUrl = contextPath + swaggerUiConfigParameters.getUiRootPath() + getSwaggerUiUrl();
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
 
 		// forward all queryParams from original request

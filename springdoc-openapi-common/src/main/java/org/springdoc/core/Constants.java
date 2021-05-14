@@ -101,6 +101,11 @@ public final class Constants {
 	public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
 
 	/**
+	 * The constant SPRINGDOC_ENABLE_NATIVE_IMAGE_SUPPORT.
+	 */
+	public static final String SPRINGDOC_ENABLE_NATIVE_IMAGE_SUPPORT = "springdoc.enable-native-image-support";
+
+	/**
 	 * The constant NULL.
 	 */
 	public static final String NULL = ":#{null}";
@@ -151,14 +156,29 @@ public final class Constants {
 	public static final String CLASSPATH_RESOURCE_LOCATION = ResourceUtils.CLASSPATH_URL_PREFIX + "/META-INF/resources";
 
 	/**
+	 * The constant SPRINGDOC_CONFIG_FILE.
+	 */
+	public static final String SPRINGDOC_CONFIG_FILE = ResourceUtils.CLASSPATH_URL_PREFIX   + "springdoc.swagger-ui.config";
+
+	/**
+	 * The constant SWAGGER_UI_VERSION.
+	 */
+	public static final String SWAGGER_UI_VERSION= "${springdoc.swagger-ui.version}";
+
+	/**
 	 * The constant SWAGGER_UI_PREFIX.
 	 */
 	public static final String SWAGGER_UI_PREFIX = "/swagger-ui";
 
 	/**
+	 * The constant INDEX_PAGE.
+	 */
+	public static final String INDEX_PAGE = "/index.html";
+
+	/**
 	 * The constant SWAGGER_UI_URL.
 	 */
-	public static final String SWAGGER_UI_URL = SWAGGER_UI_PREFIX + "/index.html";
+	public static final String SWAGGER_UI_URL = SWAGGER_UI_PREFIX + INDEX_PAGE;
 
 	/**
 	 * The constant SWAGGER_UI_OAUTH_REDIRECT_URL.
@@ -311,6 +331,11 @@ public final class Constants {
 	public static final String SPRINGDOC_USE_MANAGEMENT_PORT = "springdoc.use-management-port";
 
 	/**
+	 * The constant SPRINGDOC_USE_ROOT_PATH.
+	 */
+	public static final String SPRINGDOC_USE_ROOT_PATH ="springdoc.swagger-ui.use-root-path";
+
+	/**
 	 * The constant DEFAULT_SWAGGER_UI_ACTUATOR_PATH.
 	 */
 	public static final String DEFAULT_SWAGGER_UI_ACTUATOR_PATH= "swaggerui";
@@ -334,6 +359,7 @@ public final class Constants {
 	 * The constant LINKS_SCHEMA_CUSTOMISER.
 	 */
 	public static final String LINKS_SCHEMA_CUSTOMISER  = "linksSchemaCustomiser";
+
 	/**
 	 * Instantiates a new Constants.
 	 */

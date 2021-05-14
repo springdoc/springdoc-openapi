@@ -26,6 +26,7 @@ import java.nio.file.Paths;
 import nonapi.io.github.classgraph.utils.FileUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
+import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 import org.springdoc.webflux.core.SpringDocWebFluxConfiguration;
@@ -38,7 +39,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 
 @WebFluxTest
-@ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigProperties.class, SwaggerConfig.class, SwaggerUiOAuthProperties.class })
+@ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigParameters.class,  SwaggerUiConfigProperties.class, SwaggerConfig.class, SwaggerUiOAuthProperties.class })
 public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	@Autowired

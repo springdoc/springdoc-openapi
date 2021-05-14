@@ -75,6 +75,7 @@
 		<jaxb-impl.version>2.1</jaxb-impl.version>
 		<javax.jws-api.version>1.1</javax.jws-api.version>
 		<jjwt.version>0.9.1</jjwt.version>
+		<spring-native.version>0.9.2</spring-native.version>
 	</properties>
 
 	<dependencyManagement>
@@ -144,6 +145,11 @@
 				<artifactId>jjwt</artifactId>
 				<version>${jjwt.version}</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.experimental</groupId>
+				<artifactId>spring-native</artifactId>
+				<version>${spring-native.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

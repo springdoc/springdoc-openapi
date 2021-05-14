@@ -30,7 +30,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.springdoc.core.Constants.INDEX_PAGE;
 import static org.springdoc.core.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
+import static org.springdoc.core.Constants.SWAGGER_UI_PREFIX;
+import static org.springdoc.core.Constants.SWAGGER_UI_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 
@@ -110,7 +113,7 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	 *
 	 * @param uriComponentsBuilder the uri components builder
 	 */
-	protected void buildConfigUrl( UriComponentsBuilder uriComponentsBuilder) {
+	protected void buildConfigUrl(UriComponentsBuilder uriComponentsBuilder) {
 		if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
 			apiDocsUrl = buildApiDocUrl();
 			swaggerConfigUrl = buildSwaggerConfigUrl();
@@ -201,6 +204,7 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	/**
 	 * Build swagger config url string.
 	 *
+	 * @return the string
 	 */
 	protected abstract String buildSwaggerConfigUrl();
 
@@ -214,5 +218,17 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 			return StringUtils.defaultIfBlank(swaggerUiConfig.getOauth2RedirectUrl(), SWAGGER_UI_OAUTH_REDIRECT_URL);
 		else
 			return swaggerUiConfigParameters.getOauth2RedirectUrl();
+	}
+
+	/**
+	 * Gets swagger ui url.
+	 *
+	 * @return the swagger ui url
+	 */
+	protected String getSwaggerUiUrl() {
+		if (springDocConfigProperties.isEnableNativeImageSupport())
+			return SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfigParameters.getSwaggerUiVersion() + INDEX_PAGE;
+		else
+			return SWAGGER_UI_URL;
 	}
 }

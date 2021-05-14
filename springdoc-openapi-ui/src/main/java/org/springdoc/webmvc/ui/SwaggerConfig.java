@@ -44,6 +44,7 @@ import org.springframework.context.annotation.Lazy;
 
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
+import static org.springdoc.core.Constants.SPRINGDOC_USE_ROOT_PATH;
 
 
 /**
@@ -69,6 +70,18 @@ public class SwaggerConfig {
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters) {
 		return new SwaggerWelcomeWebMvc(swaggerUiConfig, springDocConfigProperties,swaggerUiConfigParameters);
+	}
+
+	/**
+	 * Swagger ui home swagger ui home.
+	 *
+	 * @return the swagger ui home
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_USE_ROOT_PATH, havingValue = "true")
+	SwaggerUiHome swaggerUiHome(){
+		return new SwaggerUiHome();
 	}
 
 	/**
