@@ -60,7 +60,7 @@ import io.swagger.v3.oas.models.media.XML;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.servers.ServerVariables;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.nativex.hint.AccessBits;
@@ -68,10 +68,9 @@ import org.springframework.nativex.hint.ProxyHint;
 import org.springframework.nativex.hint.ResourceHint;
 import org.springframework.nativex.hint.TypeHint;
 
-import static org.springdoc.core.Constants.SPRINGDOC_ENABLE_NATIVE_IMAGE_SUPPORT;
+import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 
 @ProxyHint(typeNames = "javax.servlet.http.HttpServletRequest")
-
 @ProxyHint(typeNames = { "org.springframework.web.bind.annotation.RestController", "org.springframework.core.annotation.SynthesizedAnnotation" })
 @ProxyHint(typeNames = { "org.springframework.stereotype.Controller", "org.springframework.core.annotation.SynthesizedAnnotation" })
 @ProxyHint(typeNames = { "org.springframework.web.bind.annotation.SessionAttribute", "org.springframework.core.annotation.SynthesizedAnnotation" })
@@ -87,25 +86,23 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLE_NATIVE_IMAGE_SUPPORT
 @ProxyHint(typeNames = { "org.springframework.web.bind.annotation.PatchMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
 @ProxyHint(typeNames = { "org.springframework.web.bind.annotation.DeleteMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
 @ProxyHint(typeNames = { "org.springframework.web.bind.annotation.ControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = {"org.springframework.web.bind.annotation.RequestParam", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@ProxyHint(typeNames = {"org.springframework.web.bind.annotation.RequestHeader", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@ProxyHint(typeNames = {"org.springframework.web.bind.annotation.RequestBody", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@ProxyHint(typeNames = {"org.springframework.web.bind.annotation.PathVariable", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@ProxyHint(typeNames = {"org.springframework.web.bind.annotation.ModelAttribute", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@ProxyHint(typeNames = {"org.springframework.stereotype.Controller", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@ProxyHint(typeNames = {"org.springframework.web.bind.annotation.ControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation"})
+@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.RequestParam", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.RequestHeader", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.RequestBody", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.PathVariable", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.ModelAttribute", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@ProxyHint(typeNames = { "org.springframework.stereotype.Controller", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.ControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation" })
 
 @TypeHint(typeNames = { "org.springdoc.core.CacheOrGroupedOpenApiCondition$OnCacheDisabled", "io.swagger.v3.oas.models.parameters.Parameter$StyleEnum",
-		"io.swagger.v3.oas.models.security.SecurityScheme$In" , "io.swagger.v3.oas.models.security.SecurityScheme$Type", 
+		"io.swagger.v3.oas.models.security.SecurityScheme$In", "io.swagger.v3.oas.models.security.SecurityScheme$Type",
 		"org.springdoc.core.CacheOrGroupedOpenApiCondition$OnMultipleOpenApiSupportCondition" }, access = AccessBits.ALL)
-
-@TypeHint(types = { Constants.class,  ModelConverter.class , ModelConverters.class})
+@TypeHint(types = { Constants.class, ModelConverter.class, ModelConverters.class })
 @TypeHint(types = { SecurityRequirements.class, SecurityRequirement.class, ApiResponses.class, Callbacks.class, PropertySource.class, ExternalDocumentation.class, Hidden.class,
 		Operation.class, Parameter.class, Callbacks.class, Extension.class, ExtensionProperty.class, Header.class, Link.class, LinkParameter.class,
 		ArraySchema.class, Content.class, DiscriminatorMapping.class, Encoding.class, ExampleObject.class, Schema.class, RequestBody.class, ApiResponse.class,
-		Info.class, Server.class, ServerVariable.class, OpenAPIDefinition.class,  Tag.class, SecuritySchemes.class, SecurityScheme.class, SecuritySchemeType.class,
+		Info.class, Server.class, ServerVariable.class, OpenAPIDefinition.class, Tag.class, SecuritySchemes.class, SecurityScheme.class, SecuritySchemeType.class,
 		OAuthFlow.class, OAuthFlows.class, OAuthScope.class })
-
 @TypeHint(types = {
 		SpecFilter.class,
 		MediaType.class,
@@ -153,6 +150,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLE_NATIVE_IMAGE_SUPPORT
 })
 
 @ResourceHint(patterns = "springdoc.swagger-ui.config")
+
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(name = SPRINGDOC_ENABLE_NATIVE_IMAGE_SUPPORT, havingValue = "true")
+@ConditionalOnClass(name = SPRING_NATIVE_LISTENER)
 public class SpringDocHints {}
