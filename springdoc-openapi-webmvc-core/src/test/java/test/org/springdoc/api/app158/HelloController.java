@@ -16,29 +16,22 @@
  *
  */
 
-package test.org.springdoc.api.app157;
+package test.org.springdoc.api.app158;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Put Foo and Bar in the schema's components, make sure there is an ignored wrapper
- * ({@code ResponseEntity}).
- */
 @RestController
+@RequestMapping("/api")
+@OpenAPIDefinition(info = @Info(title = "API Examples", version = "1.0"), tags = @Tag(name = "Operations"))
 public class HelloController {
 
-	@GetMapping( "/foo")
-	public ResponseEntity<Foo> getFoo() {
-		return new ResponseEntity<Foo>(HttpStatus.OK);
+	@GetMapping("/foo")
+	public SimpleDTO hello() {
+		return new SimpleDTO("foo");
 	}
-
-	@GetMapping( "/bar")
-	public ResponseEntity<Bar> getBar() {
-		return new ResponseEntity<Bar>(HttpStatus.OK);
-	}
-
-
 }
