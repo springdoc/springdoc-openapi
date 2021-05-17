@@ -23,7 +23,7 @@ public abstract class AbstractCommonTest {
 	@Autowired
 	protected WebTestClient webTestClient;
 
-	protected String getContent(String fileName) throws Exception {
+	protected String getContent(String fileName) {
 		try {
 			Path path = Paths.get(FileUtils.class.getClassLoader().getResource(fileName).toURI());
 			byte[] fileBytes = Files.readAllBytes(path);

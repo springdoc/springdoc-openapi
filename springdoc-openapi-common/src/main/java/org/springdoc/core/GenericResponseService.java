@@ -52,6 +52,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -152,7 +153,7 @@ public class GenericResponseService {
 			if (org.springframework.aop.support.AopUtils.isAopProxy(controllerAdvice))
 				objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerAdvice);
 			ControllerAdviceInfo controllerAdviceInfo = new ControllerAdviceInfo(controllerAdvice);
-			Arrays.stream(objClz.getDeclaredMethods()).filter(m -> m.isAnnotationPresent(ExceptionHandler.class)).forEach(methods::add);
+			Arrays.stream(ReflectionUtils.getAllDeclaredMethods(objClz)).filter(m -> m.isAnnotationPresent(ExceptionHandler.class)).forEach(methods::add);
 			// for each one build ApiResponse and add it to existing responses
 			for (Method method : methods) {
 				if (!operationService.isHidden(method)) {
