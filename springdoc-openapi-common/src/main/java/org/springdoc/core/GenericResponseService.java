@@ -166,6 +166,8 @@ public class GenericResponseService {
 					ApiResponses apiResponsesOp = new ApiResponses();
 					MethodAttributes methodAttributes = new MethodAttributes(methodProduces, springDocConfigProperties.getDefaultConsumesMediaType(),
 							springDocConfigProperties.getDefaultProducesMediaType(), controllerAdviceInfoApiResponseMap);
+					//calculate JsonView Annotation
+					methodAttributes.setJsonViewAnnotation(AnnotatedElementUtils.findMergedAnnotation(method, JsonView.class));
 					Map<String, ApiResponse> apiResponses = computeResponseFromDoc(components, methodParameter, apiResponsesOp, methodAttributes);
 					buildGenericApiResponses(components, methodParameter, apiResponsesOp, methodAttributes);
 					apiResponses.forEach(controllerAdviceInfoApiResponseMap::put);
