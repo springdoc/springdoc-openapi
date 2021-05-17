@@ -5,6 +5,9 @@
 		<artifactId>springdoc-openapi</artifactId>
 		<version>1.5.9-SNAPSHOT</version>
 	</parent>
+    <properties>
+		<spring.version>5.3.6</spring.version>
+	</properties>
 	<artifactId>springdoc-openapi-kotlin</artifactId>
 	<dependencies>
 		<!-- springdoc-common -->
@@ -31,7 +34,19 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-webflux-core</artifactId>
 			<version>${project.version}</version>
-			<scope>test</scope>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-webflux-ui</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webflux</artifactId>
+			<version>${spring.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
@@ -61,6 +76,7 @@
 						<configuration>
 							<sourceDirs>
 								<sourceDir>${project.basedir}/src/main/java</sourceDir>
+								<sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
 							</sourceDirs>
 						</configuration>
 					</execution>
