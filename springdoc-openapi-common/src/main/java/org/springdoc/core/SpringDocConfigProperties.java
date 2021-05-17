@@ -22,7 +22,6 @@ package org.springdoc.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -166,13 +165,7 @@ public class SpringDocConfigProperties {
 	/**
 	 * The Enable native support.
 	 */
-	protected Boolean enableNativeImageSupport;
-
-	private final Optional<SpringDocHints> springDocHintsOptional;
-
-	public SpringDocConfigProperties(Optional<SpringDocHints> springDocHintsOptional) {
-		this.springDocHintsOptional = springDocHintsOptional;
-	}
+	protected boolean enableNativeImageSupport;
 
 	/**
 	 * Is enable native image support boolean.
@@ -180,10 +173,7 @@ public class SpringDocConfigProperties {
 	 * @return the boolean
 	 */
 	public boolean isEnableNativeImageSupport() {
-		if (enableNativeImageSupport != null)
-			return enableNativeImageSupport;
-		else
-			return springDocHintsOptional.isPresent();
+		return enableNativeImageSupport;
 	}
 
 	/**
@@ -957,7 +947,7 @@ public class SpringDocConfigProperties {
 		 */
 		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan,
 				List<String> packagesToExclude, List<String> pathsToExclude,
-				List<String> producesToMatch, List<String> consumesToMatch, List<String> headersToMatch) {
+				List<String> producesToMatch,List<String> consumesToMatch,List<String> headersToMatch) {
 			this.pathsToMatch = pathsToMatch;
 			this.pathsToExclude = pathsToExclude;
 			this.packagesToExclude = packagesToExclude;
