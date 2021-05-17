@@ -60,6 +60,7 @@ import io.swagger.v3.oas.models.media.XML;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.servers.ServerVariables;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -68,7 +69,8 @@ import org.springframework.nativex.hint.ProxyHint;
 import org.springframework.nativex.hint.ResourceHint;
 import org.springframework.nativex.hint.TypeHint;
 
-import static org.springdoc.core.Constants.SPRINGDOC_ENABLE_NATIVE_IMAGE_SUPPORT;
+import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 
 @ProxyHint(typeNames = "javax.servlet.http.HttpServletRequest")
 
@@ -154,5 +156,6 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLE_NATIVE_IMAGE_SUPPORT
 
 @ResourceHint(patterns = "springdoc.swagger-ui.config")
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(name = SPRINGDOC_ENABLE_NATIVE_IMAGE_SUPPORT, havingValue = "true")
+@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(type = SPRING_NATIVE_LISTENER)
 public class SpringDocHints {}
