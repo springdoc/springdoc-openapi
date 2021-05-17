@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app157;
+package test.org.springdoc.api.app158;
 
 public class SimpleDTO {
 
