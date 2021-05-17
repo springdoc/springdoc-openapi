@@ -101,9 +101,9 @@ public final class Constants {
 	public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
 
 	/**
-	 * The constant SPRINGDOC_ENABLE_NATIVE_IMAGE_SUPPORT.
+	 * The constant SPRING_NATIVE_LISTENER.
 	 */
-	public static final String SPRINGDOC_ENABLE_NATIVE_IMAGE_SUPPORT = "springdoc.enable-native-image-support";
+	public static final String SPRING_NATIVE_LISTENER = "org.springframework.nativex.NativeListener";
 
 	/**
 	 * The constant NULL.
