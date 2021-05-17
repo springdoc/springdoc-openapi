@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -98,12 +99,19 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	private String swaggerUiVersion;
 
 	/**
+	 * The Spring doc hints optional.
+	 */
+	private final Optional<SpringDocHints> springDocHintsOptional;
+
+	/**
 	 * Instantiates a new Swagger ui config parameters.
 	 *
 	 * @param swaggerUiConfig the swagger ui config
+	 * @param springDocHintsOptional the spring doc hints optional
 	 */
-	public SwaggerUiConfigParameters(SwaggerUiConfigProperties swaggerUiConfig) {
+	public SwaggerUiConfigParameters(SwaggerUiConfigProperties swaggerUiConfig, Optional<SpringDocHints> springDocHintsOptional) {
 		this.swaggerUiConfig = swaggerUiConfig;
+		this.springDocHintsOptional = springDocHintsOptional;
 		this.path = StringUtils.defaultIfBlank(swaggerUiConfig.getPath(), Constants.DEFAULT_SWAGGER_UI_PATH);
 		this.oauth2RedirectUrl = StringUtils.defaultIfBlank(swaggerUiConfig.getOauth2RedirectUrl(), SWAGGER_UI_OAUTH_REDIRECT_URL);
 		this.layout = swaggerUiConfig.getLayout();
@@ -130,6 +138,15 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		this.syntaxHighlight = swaggerUiConfig.getSyntaxHighlight();
 		this.tryItOutEnabled = swaggerUiConfig.getTryItOutEnabled();
 		this.persistAuthorization = swaggerUiConfig.getPersistAuthorization();
+	}
+
+	/**
+	 * Gets spring doc hints optional.
+	 *
+	 * @return the spring doc hints optional
+	 */
+	public Optional<SpringDocHints> getSpringDocHintsOptional() {
+		return springDocHintsOptional;
 	}
 
 	/**

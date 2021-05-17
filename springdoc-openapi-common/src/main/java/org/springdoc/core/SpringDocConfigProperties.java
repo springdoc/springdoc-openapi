@@ -165,14 +165,14 @@ public class SpringDocConfigProperties {
 	/**
 	 * The Enable native support.
 	 */
-	protected boolean enableNativeImageSupport;
+	protected Boolean enableNativeImageSupport;
 
 	/**
-	 * Is enable native image support boolean.
+	 * Gets enable native image support.
 	 *
-	 * @return the boolean
+	 * @return the enable native image support
 	 */
-	public boolean isEnableNativeImageSupport() {
+	public Boolean getEnableNativeImageSupport() {
 		return enableNativeImageSupport;
 	}
 
@@ -181,7 +181,7 @@ public class SpringDocConfigProperties {
 	 *
 	 * @param enableNativeImageSupport the enable native image support
 	 */
-	public void setEnableNativeImageSupport(boolean enableNativeImageSupport) {
+	public void setEnableNativeImageSupport(Boolean enableNativeImageSupport) {
 		this.enableNativeImageSupport = enableNativeImageSupport;
 	}
 
