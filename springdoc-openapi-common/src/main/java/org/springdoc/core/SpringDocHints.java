@@ -60,7 +60,7 @@ import io.swagger.v3.oas.models.media.XML;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.servers.ServerVariables;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -73,6 +73,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 
 @ProxyHint(typeNames = "javax.servlet.http.HttpServletRequest")
+@ProxyHint(typeNames =  "org.springframework.web.context.request.NativeWebRequest" )
 
 @ProxyHint(typeNames = { "org.springframework.web.bind.annotation.RestController", "org.springframework.core.annotation.SynthesizedAnnotation" })
 @ProxyHint(typeNames = { "org.springframework.stereotype.Controller", "org.springframework.core.annotation.SynthesizedAnnotation" })
@@ -99,7 +100,11 @@ import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 
 @TypeHint(typeNames = { "org.springdoc.core.CacheOrGroupedOpenApiCondition$OnCacheDisabled", "io.swagger.v3.oas.models.parameters.Parameter$StyleEnum",
 		"io.swagger.v3.oas.models.security.SecurityScheme$In" , "io.swagger.v3.oas.models.security.SecurityScheme$Type", 
-		"org.springdoc.core.CacheOrGroupedOpenApiCondition$OnMultipleOpenApiSupportCondition" }, access = AccessBits.ALL)
+		"org.springdoc.core.CacheOrGroupedOpenApiCondition$OnMultipleOpenApiSupportCondition", "org.springdoc.core.SpringDocConfigProperties$GroupConfig" ,
+		"org.springdoc.core.SpringDocConfigProperties$Cache" ,  "org.springdoc.core.SpringDocConfigProperties$GroupConfig" ,
+		"org.springdoc.core.AbstractSwaggerUiConfigProperties$SwaggerUrl" ,"org.springdoc.core.AbstractSwaggerUiConfigProperties$Direction" ,
+		"org.springdoc.core.AbstractSwaggerUiConfigProperties$SyntaxHighlight" ,
+		"org.springdoc.core.SpringDocConfigProperties$Webjars" ,  "org.springdoc.core.SpringDocConfigProperties$ApiDocs" }, access = AccessBits.ALL)
 
 @TypeHint(types = { Constants.class,  ModelConverter.class , ModelConverters.class})
 @TypeHint(types = { SecurityRequirements.class, SecurityRequirement.class, ApiResponses.class, Callbacks.class, PropertySource.class, ExternalDocumentation.class, Hidden.class,
@@ -157,5 +162,6 @@ import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 @ResourceHint(patterns = "springdoc.swagger-ui.config")
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-@ConditionalOnBean(type = SPRING_NATIVE_LISTENER)
+@ConditionalOnClass(name = SPRING_NATIVE_LISTENER)
 public class SpringDocHints {}
+
