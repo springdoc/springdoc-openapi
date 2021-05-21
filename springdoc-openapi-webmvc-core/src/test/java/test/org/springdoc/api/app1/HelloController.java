@@ -18,7 +18,8 @@
 
 package test.org.springdoc.api.app1;
 
-import org.hibernate.validator.constraints.SafeHtml.Tag;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;

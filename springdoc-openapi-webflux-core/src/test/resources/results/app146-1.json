@@ -319,12 +319,22 @@
         }
       }
     },
-    "/application/configprops": {
+    "/application/configprops/{prefix}": {
       "get": {
         "tags": [
           "Actuator"
         ],
         "operationId": "handle_14",
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -339,7 +349,7 @@
         }
       }
     },
-    "/application/conditions": {
+    "/application/configprops": {
       "get": {
         "tags": [
           "Actuator"
@@ -359,12 +369,32 @@
         }
       }
     },
-    "/application/caches/{cache}": {
+    "/application/conditions": {
       "get": {
         "tags": [
           "Actuator"
         ],
         "operationId": "handle_16",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/application/caches/{cache}": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "operationId": "handle_17",
         "parameters": [
           {
             "name": "cache",
@@ -392,7 +422,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_21",
+        "operationId": "handle_22",
         "parameters": [
           {
             "name": "cache",
@@ -422,7 +452,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_17",
+        "operationId": "handle_18",
         "responses": {
           "200": {
             "description": "OK",
@@ -440,7 +470,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_20",
+        "operationId": "handle_21",
         "responses": {
           "200": {
             "description": "OK",
@@ -460,7 +490,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_18",
+        "operationId": "handle_19",
         "responses": {
           "200": {
             "description": "OK",
@@ -481,7 +511,7 @@
           "Actuator"
         ],
         "summary": "Actuator root web endpoint",
-        "operationId": "links_19",
+        "operationId": "links_20",
         "responses": {
           "200": {
             "description": "OK",

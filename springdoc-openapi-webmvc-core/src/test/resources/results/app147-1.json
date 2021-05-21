@@ -380,13 +380,44 @@
         }
       }
     },
+    "/application/configprops/{prefix}": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint 'configprops-prefix'",
+        "operationId": "handle_16",
+        "parameters": [
+          {
+            "name": "prefix",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/application/conditions": {
       "get": {
         "tags": [
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'conditions'",
-        "operationId": "handle_16",
+        "operationId": "handle_17",
         "responses": {
           "200": {
             "description": "OK",
@@ -407,7 +438,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches'",
-        "operationId": "handle_17",
+        "operationId": "handle_18",
         "responses": {
           "200": {
             "description": "OK",
@@ -426,7 +457,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches'",
-        "operationId": "handle_20",
+        "operationId": "handle_21",
         "responses": {
           "200": {
             "description": "OK",
@@ -447,7 +478,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches-cache'",
-        "operationId": "handle_18",
+        "operationId": "handle_19",
         "parameters": [
           {
             "name": "cache",
@@ -476,7 +507,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches-cache'",
-        "operationId": "handle_21",
+        "operationId": "handle_22",
         "parameters": [
           {
             "name": "cache",
@@ -507,7 +538,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'beans'",
-        "operationId": "handle_19",
+        "operationId": "handle_20",
         "responses": {
           "200": {
             "description": "OK",

@@ -469,7 +469,7 @@
     "/hello/{numTelco}": {
       "get": {
         "tags": [
-          "hello-controller"
+          "tea"
         ],
         "operationId": "index",
         "parameters": [
