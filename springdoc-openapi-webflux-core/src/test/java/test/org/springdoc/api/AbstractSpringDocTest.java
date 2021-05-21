@@ -47,7 +47,6 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 			result = new String(getResult.getResponseBody());
 			String className = getClass().getSimpleName();
 			String testNumber = className.replaceAll("[^0-9]", "");
-
 			String expected = getContent("results/app" + testNumber + ".json");
 			assertEquals(expected, result, true);
 		}

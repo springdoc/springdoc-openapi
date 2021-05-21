@@ -54,7 +54,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'health'",
-        "operationId": "handle_2",
+        "operationId": "handle_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -75,28 +75,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'health-path'",
-        "operationId": "handle_3",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/actuator/info": {
-      "get": {
-        "tags": [
-          "Actuator"
-        ],
-        "summary": "Actuator web endpoint 'info'",
-        "operationId": "handle_1",
+        "operationId": "handle_2",
         "responses": {
           "200": {
             "description": "OK",
