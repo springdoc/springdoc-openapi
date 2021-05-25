@@ -139,6 +139,22 @@
         }
       }
     },
+    "/peopleme/search/testQuery": {
+      "get": {
+        "tags": [
+          "person-search-controller"
+        ],
+        "operationId": "executeSearch-person-get_1",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/peopleme/{id}": {
       "get": {
         "tags": [
