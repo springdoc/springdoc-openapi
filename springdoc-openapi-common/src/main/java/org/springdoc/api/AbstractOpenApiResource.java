@@ -500,7 +500,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 			fillParametersList(operation, queryParams, methodAttributes);
 			if (!CollectionUtils.isEmpty(operation.getParameters()))
-				operation.getParameters().forEach(parameter -> {
+				operation.getParameters().stream()
+						.filter(parameter -> StringUtils.isEmpty(parameter.get$ref()))
+						.forEach(parameter -> {
 							if (parameter.getSchema() == null)
 								parameter.setSchema(new StringSchema());
 							if (parameter.getIn() == null)
