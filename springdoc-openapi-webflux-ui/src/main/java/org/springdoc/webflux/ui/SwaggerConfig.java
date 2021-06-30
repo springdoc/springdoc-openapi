@@ -73,7 +73,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
-	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
+	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters, Optional<RequestMappingInfoHandlerMapping>  requestMappingHandlerMapping) {
 		return new SwaggerWelcomeWebFlux(swaggerUiConfig,springDocConfigProperties,swaggerUiConfigParameters,requestMappingHandlerMapping);
 	}
 

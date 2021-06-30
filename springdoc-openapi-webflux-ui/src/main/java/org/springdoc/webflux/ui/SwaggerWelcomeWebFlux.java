@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -63,7 +64,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	/**
 	 * The Request mapping handler mapping.
 	 */
-	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
+	private final Optional<RequestMappingInfoHandlerMapping>  requestMappingInfoHandlerMappingOptional;
 
 	/**
 	 * The Path prefix.
@@ -76,12 +77,12 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param requestMappingInfoHandlerMappingOptional the request mapping handler mapping
 	 */
 	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,
-			SwaggerUiConfigParameters swaggerUiConfigParameters, RequestMappingInfoHandlerMapping requestMappingHandlerMapping) {
+			SwaggerUiConfigParameters swaggerUiConfigParameters, Optional<RequestMappingInfoHandlerMapping>  requestMappingInfoHandlerMappingOptional) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
-		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+		this.requestMappingInfoHandlerMappingOptional = requestMappingInfoHandlerMappingOptional;
 	}
 
 	/**
@@ -89,18 +90,20 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 */
 	@PostConstruct
 	private void init() {
-		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-		List<Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
-		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
-			RequestMappingInfo requestMappingInfo = entry.getKey();
-			PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
-			Set<PathPattern> patterns = patternsRequestCondition.getPatterns();
-			for (PathPattern pathPattern : patterns) {
-				String operationPath = pathPattern.getPatternString();
-				if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
-					pathPrefix =  operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
+		requestMappingInfoHandlerMappingOptional.ifPresent(requestMappingHandlerMapping -> {
+			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
+			List<Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
+			for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
+				RequestMappingInfo requestMappingInfo = entry.getKey();
+				PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
+				Set<PathPattern> patterns = patternsRequestCondition.getPatterns();
+				for (PathPattern pathPattern : patterns) {
+					String operationPath = pathPattern.getPatternString();
+					if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
+						pathPrefix =  operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
+				}
 			}
-		}
+		});
 	}
 
 	/**
