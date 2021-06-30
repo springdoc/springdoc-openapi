@@ -240,6 +240,7 @@ public class RequestBodyService {
 		if (requestPart != null){
 			paramName = StringUtils.defaultIfEmpty(requestPart.value(), requestPart.name());
 			parameterInfo.setRequired(requestPart.required());
+			parameterInfo.setRequestPart(true);
 		}
 		paramName = StringUtils.defaultIfEmpty(paramName, parameterInfo.getpName());
 		parameterInfo.setpName(paramName);
