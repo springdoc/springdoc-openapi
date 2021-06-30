@@ -7,8 +7,9 @@
   },
   "servers": [
     {
-      "url": "http://localhost",
-      "description": "Generated server url"
+      "url": "http://test.toto.com",
+      "description": "toto desc",
+      "variables": {}
     }
   ],
   "paths": {

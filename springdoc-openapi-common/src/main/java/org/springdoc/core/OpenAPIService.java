@@ -455,14 +455,30 @@ public class OpenAPIService {
 		AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
 		// OpenApiDefinition servers
 		Optional<List<Server>> optionalServers = AnnotationsUtils.getServers(apiDef.servers());
-		if (optionalServers.isPresent()) {
-			openAPI.setServers(optionalServers.get());
-			this.isServersPresent = true;
-		}
+		optionalServers.map(this::resolveProperties).ifPresent(servers -> {
+					this.isServersPresent = true;
+					openAPI.servers(servers);
+				}
+		);
 		// OpenApiDefinition extensions
 		if (apiDef.extensions().length > 0) {
 			openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
 		}
+	}
+
+	/**
+	 * Resolve properties info.
+	 *
+	 * @param servers the servers
+	 * @return the servers
+	 */
+	private List<Server> resolveProperties(List<Server> servers) {
+		PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
+		servers.forEach(server -> {
+			resolveProperty(server::getUrl, server::url, propertyResolverUtils);
+			resolveProperty(server::getDescription, server::description, propertyResolverUtils);
+		});
+		return servers;
 	}
 
 	/**
@@ -618,7 +634,7 @@ public class OpenAPIService {
 							io.swagger.v3.oas.annotations.security.SecurityScheme.class));
 					SecuritySchemes apiSecuritySchemes
 							= AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()), io.swagger.v3.oas.annotations.security.SecuritySchemes.class);
-					if (apiSecuritySchemes!=null && !ArrayUtils.isEmpty(apiSecuritySchemes.value()))
+					if (apiSecuritySchemes != null && !ArrayUtils.isEmpty(apiSecuritySchemes.value()))
 						Arrays.stream(apiSecuritySchemes.value()).forEach(apiSecurityScheme::add);
 				}
 				catch (ClassNotFoundException e) {
