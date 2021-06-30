@@ -336,7 +336,7 @@ public class GenericParameterService {
 			requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
 			schemaN = requestBodyInfo.getMergedSchema();
 		}
-		else if (schemaN instanceof FileSchema || schemaN instanceof ArraySchema && ((ArraySchema) schemaN).getItems() instanceof FileSchema) {
+		else if (parameterInfo.isRequestPart() || schemaN instanceof FileSchema || schemaN instanceof ArraySchema && ((ArraySchema) schemaN).getItems() instanceof FileSchema) {
 			schemaN = new ObjectSchema().addProperties(paramName, schemaN);
 			requestBodyInfo.setMergedSchema(schemaN);
 		}

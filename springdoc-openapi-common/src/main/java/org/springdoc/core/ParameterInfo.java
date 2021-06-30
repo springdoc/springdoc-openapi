@@ -71,6 +71,11 @@ public class ParameterInfo {
 	 */
 	private String paramType;
 
+	/**
+	 * if the paramater type is RequestPart
+	 */
+	private boolean requestPart;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterInfo.class);
 
 
@@ -279,5 +284,23 @@ public class ParameterInfo {
 		this.required = requestHeader.required();
 		this.defaultValue = requestHeader.defaultValue();
 		this.paramType = ParameterIn.HEADER.toString();
+	}
+
+	/**
+	 * Is request part boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isRequestPart() {
+		return requestPart;
+	}
+
+	/**
+	 * Sets request part.
+	 *
+	 * @param requestPart the request part
+	 */
+	public void setRequestPart(boolean requestPart) {
+		this.requestPart = requestPart;
 	}
 }
