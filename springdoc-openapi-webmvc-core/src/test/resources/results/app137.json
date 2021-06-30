@@ -8,8 +8,7 @@
   "servers": [
     {
       "url": "http://test.toto.com",
-      "description": "toto desc",
-      "variables": {}
+      "description": "toto desc"
     }
   ],
   "paths": {

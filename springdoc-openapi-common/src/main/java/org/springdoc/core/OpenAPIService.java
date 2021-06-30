@@ -477,6 +477,8 @@ public class OpenAPIService {
 		servers.forEach(server -> {
 			resolveProperty(server::getUrl, server::url, propertyResolverUtils);
 			resolveProperty(server::getDescription, server::description, propertyResolverUtils);
+			if(CollectionUtils.isEmpty(server.getVariables()))
+				server.setVariables(null);
 		});
 		return servers;
 	}
