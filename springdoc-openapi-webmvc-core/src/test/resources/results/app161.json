@@ -11,6 +11,42 @@
     }
   ],
   "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "test",
+        "operationId": "test",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "intValue",
+                  "strValue"
+                ],
+                "type": "object",
+                "properties": {
+                  "strValue": {
+                    "type": "string"
+                  },
+                  "intValue": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/add": {
       "post": {
         "tags": [

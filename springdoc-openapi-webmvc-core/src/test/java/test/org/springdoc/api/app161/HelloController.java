@@ -46,4 +46,10 @@ public class HelloController {
 	)  {
 		return null;
 	}
+
+	@PostMapping( produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@Operation(summary = "test")
+	public void test(@RequestPart("strValue") String strValue,
+			@RequestPart("intValue") Integer intValue) {
+	}
 }
