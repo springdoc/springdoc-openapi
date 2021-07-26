@@ -65,38 +65,38 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.nativex.hint.AccessBits;
-import org.springframework.nativex.hint.ProxyHint;
+import org.springframework.nativex.hint.JdkProxyHint;
 import org.springframework.nativex.hint.ResourceHint;
 import org.springframework.nativex.hint.TypeHint;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 
-@ProxyHint(typeNames = "javax.servlet.http.HttpServletRequest")
-@ProxyHint(typeNames =  "org.springframework.web.context.request.NativeWebRequest" )
+@JdkProxyHint(typeNames = "javax.servlet.http.HttpServletRequest")
+@JdkProxyHint(typeNames =  "org.springframework.web.context.request.NativeWebRequest" )
 
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.RestController", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.stereotype.Controller", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.SessionAttribute", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.RestControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.ResponseStatus", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.ResponseBody", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.RequestPart", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.RequestPart", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.RequestMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.GetMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.PostMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.PutMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.PatchMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.DeleteMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = { "org.springframework.web.bind.annotation.ControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@ProxyHint(typeNames = {"org.springframework.web.bind.annotation.RequestParam", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@ProxyHint(typeNames = {"org.springframework.web.bind.annotation.RequestHeader", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@ProxyHint(typeNames = {"org.springframework.web.bind.annotation.RequestBody", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@ProxyHint(typeNames = {"org.springframework.web.bind.annotation.PathVariable", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@ProxyHint(typeNames = {"org.springframework.web.bind.annotation.ModelAttribute", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@ProxyHint(typeNames = {"org.springframework.stereotype.Controller", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@ProxyHint(typeNames = {"org.springframework.web.bind.annotation.ControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation"})
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.RestController", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.stereotype.Controller", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.SessionAttribute", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.RestControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.ResponseStatus", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.ResponseBody", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.RequestPart", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.RequestPart", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.RequestMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.GetMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.PostMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.PutMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.PatchMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.DeleteMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.ControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.RequestParam", "org.springframework.core.annotation.SynthesizedAnnotation"})
+@JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.RequestHeader", "org.springframework.core.annotation.SynthesizedAnnotation"})
+@JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.RequestBody", "org.springframework.core.annotation.SynthesizedAnnotation"})
+@JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.PathVariable", "org.springframework.core.annotation.SynthesizedAnnotation"})
+@JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.ModelAttribute", "org.springframework.core.annotation.SynthesizedAnnotation"})
+@JdkProxyHint(typeNames = {"org.springframework.stereotype.Controller", "org.springframework.core.annotation.SynthesizedAnnotation"})
+@JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.ControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation"})
 
 @TypeHint(typeNames = { "org.springdoc.core.CacheOrGroupedOpenApiCondition$OnCacheDisabled", "io.swagger.v3.oas.models.parameters.Parameter$StyleEnum",
 		"io.swagger.v3.oas.models.security.SecurityScheme$In" , "io.swagger.v3.oas.models.security.SecurityScheme$Type", 
