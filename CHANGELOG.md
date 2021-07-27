@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.10] - 2021-07-27
+### Added
+- #1197 - Add default values for parameter references.
+- #1188 - Ability to override servers in api-docs.yaml using OpenApiCustomiser.
+- #1163 - Add a way for knowing the springdoc-openapi made the request or not.
+- #1225 - Support for spring-native 0.10.1. 
+### Changed
+- Upgrade swagger-ui version to 3.51.1.
+- Upgrade swagger-core to 2.1.10.
+- Upgrade spring-boot to 2.5.2.
+### Fixed
+- #1171 - NullPointerException loading Swagger UI with SpringDoc 1.5.6.
+- #1182 - Parameter 3 of method swaggerWelcome in org.springdoc.webflux.ui.SwaggerConfig required a bean of type 'org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping' that could not be found.
+- #1185 - multpart/form-data single paramter cannot resolve in ui.
+- #1196 - RequestPart Integer Param Is shown in the Parameters parameter.
+ 
 ## [1.5.9] - 2021-05-23
 ### Added
 - #1164 - Provide GraalVM native image support.
