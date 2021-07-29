@@ -143,7 +143,11 @@ public class AbstractSwaggerIndexTransformer {
 			html = overwriteSwaggerDefaultUrl(html);
 		}
 		if (swaggerUiConfig.isCsrfEnabled()) {
-			html = addCSRF(html);
+			if (swaggerUiConfig.getCsrf().isUseLocalStorage()) {
+				html = addCSRFLocalStorage(html);
+			} else {
+				html = addCSRF(html);
+			}
 		}
 		if (swaggerUiConfig.getSyntaxHighlight() != null) {
 			html = addSyntaxHighlight(html);
@@ -168,6 +172,26 @@ public class AbstractSwaggerIndexTransformer {
 		stringBuilder.append("request.headers['");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
 		stringBuilder.append("'] = parts.pop().split(';').shift();\n");
+		stringBuilder.append("return request;\n");
+		stringBuilder.append("},\n");
+		stringBuilder.append(PRESETS);
+		return html.replace(PRESETS, stringBuilder.toString());
+	}
+
+	/**
+	 * Add csrf string.
+	 *
+	 * @param html the html
+	 * @return the string
+	 */
+	protected String addCSRFLocalStorage(String html) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("requestInterceptor: (request) => {\n");
+		stringBuilder.append("const value = window.localStorage.getItem('");
+		stringBuilder.append(swaggerUiConfig.getCsrf().getLocalStorageKey() + "');\n");
+		stringBuilder.append("request.headers['");
+		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
+		stringBuilder.append("'] = value;\n");
 		stringBuilder.append("return request;\n");
 		stringBuilder.append("},\n");
 		stringBuilder.append(PRESETS);
