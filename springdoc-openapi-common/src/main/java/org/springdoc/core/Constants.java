@@ -298,12 +298,17 @@ public final class Constants {
 	/**
 	 * The constant CSRF_DEFAULT_COOKIE_NAME.
 	 */
-	public static final String CSRF_DEFAULT_COOKIE_NAME= "XSRF-TOKEN";
+	public static final String CSRF_DEFAULT_COOKIE_NAME = "XSRF-TOKEN";
+
+	/**
+	 * The constant CSRF_DEFAULT_LOCAL_STORAGE_KEY
+	 */
+	public static final String CSRF_DEFAULT_LOCAL_STORAGE_KEY = "XSRF-TOKEN";
 
 	/**
 	 * The constant CSRF_DEFAULT_HEADER_NAME.
 	 */
-	public static final String CSRF_DEFAULT_HEADER_NAME= "X-XSRF-TOKEN";
+	public static final String CSRF_DEFAULT_HEADER_NAME = "X-XSRF-TOKEN";
 
 	/**
 	 * The constant OPERATION_ATTRIBUTE.
