@@ -118,9 +118,19 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		private boolean enabled;
 
 		/**
+		 * Use Local storage.
+		 */
+		private boolean useLocalStorage;
+
+		/**
 		 * The Cookie name.
 		 */
 		private String cookieName = Constants.CSRF_DEFAULT_COOKIE_NAME;
+
+		/**
+		 * The Local storage key.
+		 */
+		private String localStorageKey = Constants.CSRF_DEFAULT_LOCAL_STORAGE_KEY;
 
 		/**
 		 * The Header name.
@@ -146,6 +156,24 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		}
 
 		/**
+		 * Use Local storage boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isUseLocalStorage() {
+			return useLocalStorage;
+		}
+
+		/**
+		 * Sets useLocalStorage.
+		 *
+		 * @param useLocalStorage the use local storage
+		 */
+		public void setUseLocalStorage(boolean useLocalStorage) {
+			this.useLocalStorage = useLocalStorage;
+		}
+
+		/**
 		 * Gets cookie name.
 		 *
 		 * @return the cookie name
@@ -161,6 +189,24 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		 */
 		public void setCookieName(String cookieName) {
 			this.cookieName = cookieName;
+		}
+
+		/**
+		 * Gets local storage key.
+		 *
+		 * @return the cookie name
+		 */
+		public String getLocalStorageKey() {
+			return localStorageKey;
+		}
+
+		/**
+		 * Sets local storage key.
+		 *
+		 * @param localStorageKey the local storage key
+		 */
+		public void setLocalStorageKey(String localStorageKey) {
+			this.localStorageKey = localStorageKey;
 		}
 
 		/**
