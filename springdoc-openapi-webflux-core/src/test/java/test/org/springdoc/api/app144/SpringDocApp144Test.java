@@ -31,7 +31,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
 		properties = { "management.endpoints.web.exposure.include:*",
-				"server.port=55555",
+				"server.port=55554",
 				"springdoc.use-management-port=true",
 				"management.server.port=9090",
 				"management.endpoints.web.base-path=/application" })

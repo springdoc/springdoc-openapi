@@ -23,10 +23,15 @@
 
 package org.springdoc.core.customizers;
 
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import io.swagger.v3.oas.models.Operation;
 
 import org.springframework.web.method.HandlerMethod;
 
+import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ONE;
 import static org.springdoc.core.ActuatorProvider.getTag;
 
 /**
@@ -38,16 +43,34 @@ public class ActuatorOperationCustomizer implements OperationCustomizer {
 	/**
 	 * The Method count.
 	 */
-	private int methodCount;
+	private HashMap<String, Integer> methodCountMap = new HashMap<>();
 
+
+	/**
+	 * The regex pattern for operationId lookup.
+	 */
+	private static final Pattern pattern = Pattern.compile(".*'([^']*)'.*");
 
 	@Override
 	public Operation customize(Operation operation, HandlerMethod handlerMethod) {
 		if (operation.getTags() != null && operation.getTags().contains(getTag().getName())) {
 			String summary = handlerMethod.toString();
+			Matcher matcher = pattern.matcher(summary);
+			String operationId = operation.getOperationId();
+			while (matcher.find()) {
+				operationId = matcher.group(1);
+			}
+			if (methodCountMap.containsKey(operationId)) {
+				Integer methodCount = methodCountMap.get(operationId)+1;
+				methodCountMap.put(operationId, methodCount);
+				operationId = operationId + "_" + methodCount;
+			}
+			else
+				methodCountMap.put(operationId, INTEGER_ONE);
+
 			if (!summary.contains("$"))
 				operation.setSummary(summary);
-			operation.setOperationId(operation.getOperationId() + "_" + methodCount++);
+			operation.setOperationId(operationId);
 		}
 		return operation;
 	}

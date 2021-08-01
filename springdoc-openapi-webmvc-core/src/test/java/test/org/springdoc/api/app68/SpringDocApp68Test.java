@@ -76,7 +76,7 @@ public class SpringDocApp68Test extends AbstractSpringDocTest {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(jsonPath("$.paths./actuator/health.get.summary", Matchers.is("Actuator web endpoint 'health'")))
-				.andExpect(jsonPath("$.paths./actuator/health.get.operationId", containsString("handle_")));
+				.andExpect(jsonPath("$.paths./actuator/health.get.operationId", containsString("health")));
 	}
 
 	@Test
