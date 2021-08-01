@@ -35,7 +35,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"management.server.port=9097",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })
-public class SpringDocApp147Test  extends AbstractSpringDocActuatorTest {
+public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
@@ -43,20 +43,20 @@ public class SpringDocApp147Test  extends AbstractSpringDocActuatorTest {
 
 	@Test
 	public void testApp() throws Exception {
-		EntityExchangeResult<byte[]> getResult =  webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/"+Constants.ACTUATOR_DEFAULT_GROUP)
+		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.ACTUATOR_DEFAULT_GROUP)
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody()
 				.jsonPath("$.openapi").isEqualTo("3.0.1")
 				.returnResult();
-	   String result = new String(getResult.getResponseBody());
-	   String expected = getContent("results/app147-1.json");
-	   assertEquals(expected, result, true);
+		String result = new String(getResult.getResponseBody());
+		String expected = getContent("results/app147-1.json");
+		assertEquals(expected, result, true);
 	}
 
 	@Test
 	public void testApp1() throws Exception {
-		EntityExchangeResult<byte[]> getResult =  webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/users")
+		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/users")
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody()
@@ -66,6 +66,5 @@ public class SpringDocApp147Test  extends AbstractSpringDocActuatorTest {
 		String expected = getContent("results/app147-2.json");
 		assertEquals(expected, result, true);
 	}
-
 
 }

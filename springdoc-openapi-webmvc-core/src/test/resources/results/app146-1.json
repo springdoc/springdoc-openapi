@@ -27,7 +27,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'loggers-name'",
-        "operationId": "handle_9",
+        "operationId": "loggers-name_2",
         "parameters": [
           {
             "name": "name",
@@ -56,7 +56,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'loggers-name'",
-        "operationId": "handle_0",
+        "operationId": "loggers-name",
         "parameters": [
           {
             "name": "name",
@@ -87,7 +87,7 @@
           "Actuator"
         ],
         "summary": "Actuator root web endpoint",
-        "operationId": "links_1",
+        "operationId": "links",
         "responses": {
           "200": {
             "description": "OK",
@@ -114,7 +114,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'threaddump'",
-        "operationId": "handle_2_1_3",
+        "operationId": "threaddump_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -135,7 +135,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'scheduledtasks'",
-        "operationId": "handle_4",
+        "operationId": "scheduledtasks",
         "responses": {
           "200": {
             "description": "OK",
@@ -156,7 +156,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'metrics'",
-        "operationId": "handle_5",
+        "operationId": "metrics",
         "responses": {
           "200": {
             "description": "OK",
@@ -177,7 +177,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'metrics-requiredMetricName'",
-        "operationId": "handle_6",
+        "operationId": "metrics-requiredMetricName",
         "parameters": [
           {
             "name": "requiredMetricName",
@@ -208,7 +208,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'mappings'",
-        "operationId": "handle_7",
+        "operationId": "mappings",
         "responses": {
           "200": {
             "description": "OK",
@@ -229,7 +229,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'loggers'",
-        "operationId": "handle_8",
+        "operationId": "loggers",
         "responses": {
           "200": {
             "description": "OK",
@@ -250,7 +250,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'info'",
-        "operationId": "handle_10",
+        "operationId": "info",
         "responses": {
           "200": {
             "description": "OK",
@@ -271,7 +271,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'heapdump'",
-        "operationId": "handle_11",
+        "operationId": "heapdump",
         "responses": {
           "200": {
             "description": "OK",
@@ -292,7 +292,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'health'",
-        "operationId": "handle_12",
+        "operationId": "health",
         "responses": {
           "200": {
             "description": "OK",
@@ -313,7 +313,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'env'",
-        "operationId": "handle_13",
+        "operationId": "env",
         "responses": {
           "200": {
             "description": "OK",
@@ -334,7 +334,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'env-toMatch'",
-        "operationId": "handle_14",
+        "operationId": "env-toMatch",
         "parameters": [
           {
             "name": "toMatch",
@@ -365,7 +365,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'configprops'",
-        "operationId": "handle_15",
+        "operationId": "configprops",
         "responses": {
           "200": {
             "description": "OK",
@@ -386,7 +386,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'configprops-prefix'",
-        "operationId": "handle_16",
+        "operationId": "configprops-prefix",
         "parameters": [
           {
             "name": "prefix",
@@ -417,7 +417,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'conditions'",
-        "operationId": "handle_17",
+        "operationId": "conditions",
         "responses": {
           "200": {
             "description": "OK",
@@ -438,7 +438,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches'",
-        "operationId": "handle_18",
+        "operationId": "caches",
         "responses": {
           "200": {
             "description": "OK",
@@ -457,7 +457,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches'",
-        "operationId": "handle_21",
+        "operationId": "caches_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -478,7 +478,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches-cache'",
-        "operationId": "handle_19",
+        "operationId": "caches-cache",
         "parameters": [
           {
             "name": "cache",
@@ -507,7 +507,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches-cache'",
-        "operationId": "handle_22",
+        "operationId": "caches-cache_2",
         "parameters": [
           {
             "name": "cache",
@@ -538,7 +538,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'beans'",
-        "operationId": "handle_20",
+        "operationId": "beans",
         "responses": {
           "200": {
             "description": "OK",

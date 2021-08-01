@@ -27,7 +27,7 @@
           "Actuator"
         ],
         "summary": "Actuator root web endpoint",
-        "operationId": "links_0",
+        "operationId": "links",
         "responses": {
           "200": {
             "description": "OK",
@@ -54,7 +54,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'health'",
-        "operationId": "handle_1",
+        "operationId": "health",
         "responses": {
           "200": {
             "description": "OK",
@@ -75,7 +75,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'health-path'",
-        "operationId": "handle_2",
+        "operationId": "health-path",
         "responses": {
           "200": {
             "description": "OK",
