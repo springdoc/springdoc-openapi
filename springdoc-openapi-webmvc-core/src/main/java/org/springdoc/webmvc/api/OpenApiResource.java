@@ -52,11 +52,9 @@ import org.springdoc.webmvc.core.RouterFunctionProvider;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
@@ -251,7 +249,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 					String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 					String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 					String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
-					if (((isShowActuator() && optionalActuatorProvider.get().isRestController(operationPath, handlerMethod.getBeanType()))
+					if (((isShowActuator() && optionalActuatorProvider.get().isRestController(operationPath, handlerMethod))
 							|| isRestController(restControllers, handlerMethod, operationPath))
 							&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
 						Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
@@ -308,11 +306,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		boolean hasOperationAnnotation = AnnotatedElementUtils.hasAnnotation(handlerMethod.getMethod(), Operation.class);
 		if (hasOperationAnnotation)
 			return true;
-		ResponseBody responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
-		if (responseBodyAnnotation == null)
-			responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ResponseBody.class);
 
-		return (responseBodyAnnotation != null && restControllers.containsKey(handlerMethod.getBean().toString()) || isAdditionalRestController(handlerMethod.getBeanType()))
+		return (containsResponseBody(handlerMethod) & restControllers.containsKey(handlerMethod.getBean().toString()) || isAdditionalRestController(handlerMethod.getBeanType()))
 				&& operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
 				&& (springDocConfigProperties.isModelAndViewAllowed() || !ModelAndView.class.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}

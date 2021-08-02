@@ -36,6 +36,7 @@ import org.springframework.boot.web.server.WebServer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.util.AntPathMatcher;
+import org.springframework.web.method.HandlerMethod;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
@@ -132,12 +133,13 @@ public abstract class ActuatorProvider  implements ApplicationListener<WebServer
 	 * Is rest controller boolean.
 	 *
 	 * @param operationPath the operation path
-	 * @param controllerClass the controller class
+	 * @param handlerMethod the handler method
 	 * @return the boolean
 	 */
-	public boolean isRestController(String operationPath, Class<?> controllerClass) {
+	public boolean isRestController(String operationPath, HandlerMethod handlerMethod) {
 		return operationPath.startsWith(AntPathMatcher.DEFAULT_PATH_SEPARATOR)
-				&&  !AbstractOpenApiResource.isHiddenRestControllers(controllerClass);
+				&&  !AbstractOpenApiResource.isHiddenRestControllers(handlerMethod.getBeanType())
+				&& AbstractOpenApiResource.containsResponseBody(handlerMethod);
 	}
 
 	/**
