@@ -99,6 +99,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
 
 import static org.springdoc.core.Constants.ACTUATOR_DEFAULT_GROUP;
@@ -675,6 +676,20 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected boolean isAdditionalRestController(Class<?> rawClass) {
 		return ADDITIONAL_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
 	}
+
+	/**
+	 * Contains response body boolean.
+	 *
+	 * @param handlerMethod the handler method
+	 * @return the boolean
+	 */
+	public static boolean containsResponseBody(HandlerMethod handlerMethod) {
+		ResponseBody responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
+		if (responseBodyAnnotation == null)
+			responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ResponseBody.class);
+		return responseBodyAnnotation!=null;
+	}
+
 
 	/**
 	 * Is hidden rest controllers boolean.
