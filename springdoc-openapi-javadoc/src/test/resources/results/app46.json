@@ -1,0 +1,58 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/persons/{subscriptionId}": {
+      "get": {
+        "tags": [
+          "Example Tag"
+        ],
+        "summary": "Operation Summary",
+        "description": "Operation Description",
+        "externalDocs": {
+          "description": "External documentation description",
+          "url": "http://url.com"
+        },
+        "operationId": "operationId",
+        "parameters": [
+          {
+            "name": "subscriptionId",
+            "in": "path",
+            "description": "parameter description",
+            "required": true,
+            "allowEmptyValue": true,
+            "allowReserved": true,
+            "schema": {
+              "type": "string",
+              "description": "the generated UUID",
+              "format": "uuid",
+              "readOnly": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "voila!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

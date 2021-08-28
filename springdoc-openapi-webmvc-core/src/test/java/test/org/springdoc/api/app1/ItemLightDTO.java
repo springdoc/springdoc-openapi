@@ -21,7 +21,7 @@ package test.org.springdoc.api.app1;
 import java.io.Serializable;
 
 /**
- * @author 472957
+ * @author bnasslahsen
  */
 public class ItemLightDTO implements Serializable {
 

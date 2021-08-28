@@ -1,0 +1,69 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/persons": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Persons string.",
+        "operationId": "persons",
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/persons1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Persons string.",
+        "operationId": "persons_1",
+        "parameters": [
+          {
+            "name": "toto",
+            "in": "query",
+            "description": "the toto",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

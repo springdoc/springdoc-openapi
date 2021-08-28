@@ -1,0 +1,258 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/class-hierarchy/abstract-parent": {
+      "post": {
+        "tags": [
+          "controller"
+        ],
+        "description": "Abstract parent response.",
+        "operationId": "abstractParent",
+        "requestBody": {
+          "description": "the payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ChildOfAbstract1"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ChildOfAbstract2"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "the response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/class-hierarchy/concrete-parent": {
+      "post": {
+        "tags": [
+          "controller"
+        ],
+        "description": "Concrete parent response.",
+        "operationId": "concreteParent",
+        "requestBody": {
+          "description": "the payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ConcreteParent"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ChildOfConcrete1"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ChildOfConcrete2"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "the response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AbstractParent": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "ChildOfAbstract1": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AbstractParent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "abstrachChild1Param": {
+                "type": "string",
+                "description": "The Abstrach child 1 param."
+              },
+              "id": {
+                "type": "integer",
+                "description": "The Id.",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "ChildOfAbstract2": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AbstractParent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "abstractChild2Param": {
+                "type": "string",
+                "description": "The Abstract child 2 param."
+              },
+              "id": {
+                "type": "integer",
+                "description": "The Id.",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "ChildOfConcrete1": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConcreteParent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "concreteChild1Param": {
+                "type": "string",
+                "description": "The Concrete child 1 param."
+              },
+              "id": {
+                "type": "integer",
+                "description": "The Id.",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "ChildOfConcrete2": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConcreteParent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "concreteChild2Param": {
+                "type": "string",
+                "description": "The Concrete child 2 param."
+              },
+              "id": {
+                "type": "integer",
+                "description": "The Id.",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "ConcreteParent": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id.",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "Response": {
+        "type": "object",
+        "properties": {
+          "abstractParent": {
+            "description": "The Abstract parent.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ChildOfAbstract1"
+              },
+              {
+                "$ref": "#/components/schemas/ChildOfAbstract2"
+              }
+            ]
+          },
+          "concreteParents": {
+            "type": "array",
+            "description": "The Concrete parents.",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ConcreteParent"
+                },
+                {
+                  "$ref": "#/components/schemas/ChildOfConcrete1"
+                },
+                {
+                  "$ref": "#/components/schemas/ChildOfConcrete2"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

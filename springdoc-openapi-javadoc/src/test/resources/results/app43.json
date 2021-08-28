@@ -1,0 +1,59 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/documents": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Upload documents response entity.",
+        "operationId": "uploadDocuments",
+        "requestBody": {
+          "description": "the multipart files",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "doc"
+                ],
+                "type": "object",
+                "properties": {
+                  "doc": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the response entity",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

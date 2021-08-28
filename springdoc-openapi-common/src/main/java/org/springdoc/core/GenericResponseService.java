@@ -168,6 +168,11 @@ public class GenericResponseService {
 							springDocConfigProperties.getDefaultProducesMediaType(), controllerAdviceInfoApiResponseMap);
 					//calculate JsonView Annotation
 					methodAttributes.setJsonViewAnnotation(AnnotatedElementUtils.findMergedAnnotation(method, JsonView.class));
+					//use the javadoc return if present
+					if (operationService.getJavadocProvider() != null) {
+						JavadocProvider javadocProvider = operationService.getJavadocProvider();
+						methodAttributes.setJavadocReturn(javadocProvider.getMethodJavadocReturn(methodParameter.getMethod()));
+					}
 					Map<String, ApiResponse> apiResponses = computeResponseFromDoc(components, methodParameter, apiResponsesOp, methodAttributes);
 					buildGenericApiResponses(components, methodParameter, apiResponsesOp, methodAttributes);
 					apiResponses.forEach(controllerAdviceInfoApiResponseMap::put);
@@ -456,7 +461,11 @@ public class GenericResponseService {
 			else if (CollectionUtils.isEmpty(apiResponse.getContent()))
 				apiResponse.setContent(null);
 			if (StringUtils.isBlank(apiResponse.getDescription())) {
-				setDescription(httpCode, apiResponse);
+				// use javadoc
+				if (!StringUtils.isBlank(methodAttributes.getJavadocReturn()))
+					apiResponse.setDescription(methodAttributes.getJavadocReturn());
+				else
+					setDescription(httpCode, apiResponse);
 			}
 		}
 		if (apiResponse.getContent() != null
@@ -551,7 +560,7 @@ public class GenericResponseService {
 	private boolean isValidHttpCode(String httpCode, MethodParameter methodParameter) {
 		boolean result = false;
 		final Method method = methodParameter.getMethod();
-		if(method!=null){
+		if (method != null) {
 			Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responseSet = getApiResponses(method);
 			if (isHttpCodePresent(httpCode, responseSet))
 				result = true;
