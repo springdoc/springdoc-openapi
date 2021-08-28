@@ -76,6 +76,7 @@ import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.GenericResponseService;
+import org.springdoc.core.JavadocProvider;
 import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
@@ -302,7 +303,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			LOGGER.info("Init duration for springdoc-openapi is: {} ms",
 					Duration.between(start, Instant.now()).toMillis());
 		}
-		else{
+		else {
 			LOGGER.debug("Fetching openApi document from cache");
 			openApi = openAPIService.updateServers(openAPIService.getCachedOpenAPI());
 		}
@@ -341,6 +342,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			operationMap = pathItem.readOperationsMap();
 		}
 
+		JavadocProvider javadocProvider = operationParser.getJavadocProvider();
+
 		for (RequestMethod requestMethod : requestMethods) {
 			Operation existingOperation = getExistingOperation(operationMap, requestMethod);
 			Method method = handlerMethod.getMethod();
@@ -353,6 +356,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces, headers);
 			methodAttributes.setMethodOverloaded(existingOperation != null);
+			//Use the javadoc return if present
+			if (javadocProvider != null) {
+				methodAttributes.setJavadocReturn(javadocProvider.getMethodJavadocReturn(handlerMethod.getMethod()));
+			}
 
 			if (reqMappingClass != null) {
 				methodAttributes.setClassConsumes(reqMappingClass.consumes());
@@ -394,6 +401,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// responses
 			ApiResponses apiResponses = responseBuilder.build(components, handlerMethod, operation, methodAttributes);
 			operation.setResponses(apiResponses);
+
+			// get javadoc method description
+			if (javadocProvider != null) {
+				String description = javadocProvider.getMethodJavadocDescription(handlerMethod.getMethod());
+				if (!StringUtils.isEmpty(description) && StringUtils.isEmpty(operation.getDescription()))
+					operation.setDescription(description);
+			}
 
 			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks = AnnotatedElementUtils.findMergedRepeatableAnnotations(method, io.swagger.v3.oas.annotations.callbacks.Callback.class);
 
@@ -506,12 +520,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				operation.getParameters().stream()
 						.filter(parameter -> StringUtils.isEmpty(parameter.get$ref()))
 						.forEach(parameter -> {
-							if (parameter.getSchema() == null)
-								parameter.setSchema(new StringSchema());
-							if (parameter.getIn() == null)
-								parameter.setIn(ParameterIn.QUERY.toString());
-						}
-				);
+									if (parameter.getSchema() == null)
+										parameter.setSchema(new StringSchema());
+									if (parameter.getIn() == null)
+										parameter.setIn(ParameterIn.QUERY.toString());
+								}
+						);
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
 		}
@@ -687,7 +701,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		ResponseBody responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
 		if (responseBodyAnnotation == null)
 			responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ResponseBody.class);
-		return responseBodyAnnotation!=null;
+		return responseBodyAnnotation != null;
 	}
 
 

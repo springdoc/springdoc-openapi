@@ -1,0 +1,126 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "test",
+        "description": "Test.",
+        "operationId": "test",
+        "requestBody": {
+          "description": "the str value",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "intValue",
+                  "strValue"
+                ],
+                "type": "object",
+                "properties": {
+                  "strValue": {
+                    "type": "string"
+                  },
+                  "intValue": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/add": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "add",
+        "description": "Add response entity.",
+        "operationId": "add",
+        "requestBody": {
+          "description": "the content",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "content"
+                ],
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "description": "content"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the response entity"
+          }
+        }
+      }
+    },
+    "/add2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "add2",
+        "description": "Add 2 response entity.",
+        "operationId": "add2",
+        "requestBody": {
+          "description": "the content",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "content",
+                  "type"
+                ],
+                "type": "object",
+                "properties": {
+                  "content": {
+                    "type": "string",
+                    "description": "content"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the response entity"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

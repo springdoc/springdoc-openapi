@@ -108,6 +108,11 @@ public class MethodAttributes {
 	private Map<String, ApiResponse> genericMapResponse = new LinkedHashMap<>();
 
 	/**
+	 * The javadoc Return.
+	 */
+	private String javadocReturn;
+
+	/**
 	 * Instantiates a new Method attributes.
 	 *
 	 * @param methodProducesNew the method produces new
@@ -419,5 +424,23 @@ public class MethodAttributes {
 		if (reqMappingClass != null) {
 			fillMethods(reqMappingClass.produces(), reqMappingClass.consumes(), reqMappingClass.headers());
 		}
+	}
+
+	/**
+	 * Gets javadoc return value
+	 *
+	 * @return the javadoc return
+	 */
+	public String getJavadocReturn() {
+		return javadocReturn;
+	}
+
+	/**
+	 * Sets javadoc return value.
+	 *
+	 * @param javadocReturn the javadoc return value
+	 */
+	public void setJavadocReturn(String javadocReturn) {
+		this.javadocReturn = javadocReturn;
 	}
 }

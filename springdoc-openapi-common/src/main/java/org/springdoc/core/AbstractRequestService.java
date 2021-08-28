@@ -236,6 +236,8 @@ public abstract class AbstractRequestService {
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
 		Components components = openAPI.getComponents();
 
+		JavadocProvider javadocProvider = operationService.getJavadocProvider();
+
 		for (MethodParameter methodParameter : parameters) {
 			// check if query param
 			Parameter parameter;
@@ -252,6 +254,7 @@ public abstract class AbstractRequestService {
 			if (parameterDoc != null) {
 				if (parameterDoc.hidden() || parameterDoc.schema().hidden())
 					continue;
+
 				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components, methodAttributes.getJsonViewAnnotation());
 				parameterInfo.setParameterModel(parameter);
 			}
@@ -261,15 +264,31 @@ public abstract class AbstractRequestService {
 				// Merge with the operation parameters
 				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
 				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
-				if (isValidParameter(parameter))
+				if (isValidParameter(parameter)) {
+					// Add param javadoc
+					if (StringUtils.isBlank(parameter.getDescription()) && javadocProvider != null) {
+						String paramJavadocDescription = javadocProvider.getParamJavadoc(handlerMethod.getMethod(), pName);
+						if (!StringUtils.isBlank(paramJavadocDescription)) {
+							parameter.setDescription(paramJavadocDescription);
+						}
+					}
 					applyBeanValidatorAnnotations(parameter, parameterAnnotations);
+				}
 				else if (!RequestMethod.GET.equals(requestMethod)) {
 					if (operation.getRequestBody() != null)
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyService.calculateRequestBodyInfo(components, methodAttributes,
 							parameterInfo, requestBodyInfo);
+					// Add requestBody javadoc
+					if (StringUtils.isBlank(requestBodyInfo.getRequestBody().getDescription()) && javadocProvider != null) {
+						String paramJavadocDescription = javadocProvider.getParamJavadoc(handlerMethod.getMethod(), pName);
+						if (!StringUtils.isBlank(paramJavadocDescription)) {
+							requestBodyInfo.getRequestBody().setDescription(paramJavadocDescription);
+						}
+					}
 					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 				}
+
 				customiseParameter(parameter, parameterInfo);
 			}
 		}

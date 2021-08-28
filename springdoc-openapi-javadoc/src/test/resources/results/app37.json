@@ -1,0 +1,135 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/bar/baz": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Process car.",
+        "operationId": "process_1_1",
+        "requestBody": {
+          "description": "the c",
+          "content": {
+            "application/x.a+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Foo"
+              }
+            },
+            "application/x.b+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Bar"
+              }
+            },
+            "application/x.c+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Car"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the car",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Foo"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Bar"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pets": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "petsPost_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pet"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Bar": {
+        "type": "object",
+        "properties": {
+          "bar": {
+            "type": "string",
+            "description": "The Bar."
+          }
+        }
+      },
+      "Car": {
+        "type": "object",
+        "properties": {
+          "car": {
+            "type": "string",
+            "description": "The Car."
+          }
+        }
+      },
+      "Foo": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string",
+            "description": "The Foo."
+          }
+        }
+      },
+      "Pet": {
+        "type": "object",
+        "properties": {
+          "pet": {
+            "type": "string",
+            "description": "The Pet."
+          }
+        }
+      }
+    }
+  }
+}

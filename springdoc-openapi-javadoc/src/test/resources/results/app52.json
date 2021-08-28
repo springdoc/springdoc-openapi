@@ -1,0 +1,193 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/test1/{username}": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Create test 1 string.",
+        "operationId": "createTest1",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "the username",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "the test",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "image",
+                  "test"
+                ],
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "test": {
+                    "$ref": "#/components/schemas/MyTestDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test2/{username}": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Create test 2 string.",
+        "operationId": "createTest2",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "the username",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "the image file",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "image",
+                  "test"
+                ],
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "test": {
+                    "$ref": "#/components/schemas/MyTestDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test3": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Create test 3 string.",
+        "operationId": "createTest3",
+        "requestBody": {
+          "description": "the test",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "doc",
+                  "test"
+                ],
+                "type": "object",
+                "properties": {
+                  "doc": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "test": {
+                    "$ref": "#/components/schemas/MyTestDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MyTestDto": {
+        "type": "object",
+        "properties": {
+          "object1": {
+            "type": "string",
+            "description": "The Object 1."
+          },
+          "object2": {
+            "type": "string",
+            "description": "The Object 2."
+          },
+          "object3": {
+            "type": "string",
+            "description": "The Object 3."
+          }
+        }
+      }
+    }
+  }
+}

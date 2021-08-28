@@ -139,18 +139,6 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	}
 
 	/**
-	 * Extract schema schema.
-	 *
-	 * @param components the components
-	 * @param genericParameterType the generic parameter type
-	 * @param jsonView the json view
-	 * @return the schema
-	 */
-	public static Schema extractSchema(Components components, Type genericParameterType, JsonView jsonView) {
-		return extractSchema(components, genericParameterType, jsonView, null);
-	}
-
-	/**
 	 * Gets content.
 	 *
 	 * @param annotationContents the annotation contents

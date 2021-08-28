@@ -212,21 +212,22 @@ public class SpringDocConfiguration {
 	}
 
 	/**
-	 * Operation builder operation builder.
+	 * Operation builder operation service.
 	 *
 	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyService the request body builder
+	 * @param requestBodyService the request body service
 	 * @param securityParser the security parser
 	 * @param propertyResolverUtils the property resolver utils
-	 * @return the operation builder
+	 * @param javadocProvider the javadoc provider
+	 * @return the operation service
 	 */
 	@Bean
 	@ConditionalOnWebApplication
 	@ConditionalOnMissingBean
 	OperationService operationBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			SecurityService securityParser, PropertyResolverUtils propertyResolverUtils) {
+			SecurityService securityParser, PropertyResolverUtils propertyResolverUtils, Optional<JavadocProvider> javadocProvider) {
 		return new OperationService(parameterBuilder, requestBodyService,
-				securityParser, propertyResolverUtils);
+				securityParser, propertyResolverUtils, javadocProvider);
 	}
 
 	/**
