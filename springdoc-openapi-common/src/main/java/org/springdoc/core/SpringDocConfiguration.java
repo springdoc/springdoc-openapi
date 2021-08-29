@@ -177,7 +177,7 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnProperty(name = SPRINGDOC_PAGEABLE_CONVERTER_ENABLED, matchIfMissing = true)
+	@ConditionalOnProperty(name = SPRINGDOC_PAGEABLE_CONVERTER_ENABLED)
 	@Lazy(false)
 	PageableOpenAPIConverter pageableOpenAPIConverter() {
 		return new PageableOpenAPIConverter();
