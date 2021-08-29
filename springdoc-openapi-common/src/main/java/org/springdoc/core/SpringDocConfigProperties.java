@@ -647,6 +647,11 @@ public class SpringDocConfigProperties {
 		private DeprecatingConverter deprecatingConverter = new DeprecatingConverter();
 
 		/**
+		 * The Pageable converter.
+		 */
+		private PageableConverter pageableConverter = new PageableConverter();
+
+		/**
 		 * Gets deprecating converter.
 		 *
 		 * @return the deprecating converter
@@ -665,10 +670,58 @@ public class SpringDocConfigProperties {
 		}
 
 		/**
+		 * Gets pageable converter.
+		 *
+		 * @return the pageable converter
+		 */
+		public PageableConverter getPageableConverter() {
+			return pageableConverter;
+		}
+
+		/**
+		 * Sets pageable converter.
+		 *
+		 * @param pageableConverter the pageable converter
+		 */
+		public void setPageableConverter(PageableConverter pageableConverter) {
+			this.pageableConverter = pageableConverter;
+		}
+
+		/**
 		 * The type Deprecating converter.
 		 * @author bnasslashen
 		 */
 		public static class DeprecatingConverter {
+
+			/**
+			 * The Enabled.
+			 */
+			private boolean enabled;
+
+			/**
+			 * Is enabled boolean.
+			 *
+			 * @return the boolean
+			 */
+			public boolean isEnabled() {
+				return enabled;
+			}
+
+			/**
+			 * Sets enabled.
+			 *
+			 * @param enabled the enabled
+			 */
+			public void setEnabled(boolean enabled) {
+				this.enabled = enabled;
+			}
+		}
+
+		/**
+		 * The type Deprecating converter.
+		 * @author bnasslashen
+		 */
+		public static class PageableConverter {
 
 			/**
 			 * The Enabled.

@@ -53,8 +53,8 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 public class SpringDocApp14Test extends AbstractSpringDocTest {
 
 	static {
-		getConfig().replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
-				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
+		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
+				.replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
 	}
 
 

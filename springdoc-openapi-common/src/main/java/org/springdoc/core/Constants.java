@@ -81,6 +81,11 @@ public final class Constants {
 	public static final String SPRINGDOC_DEPRECATING_CONVERTER_ENABLED = "springdoc.model-converters.deprecating-converter.enabled";
 
 	/**
+	 * The constant SPRINGDOC_PAGEABLE_CONVERTER_ENABLED.
+	 */
+	public static final String SPRINGDOC_PAGEABLE_CONVERTER_ENABLED = "springdoc.model-converters.pageable-converter.enabled";
+
+	/**
 	 * The constant SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES.
 	 */
 	public static final String SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES = "springdoc.api-docs.resolve-schema-properties";

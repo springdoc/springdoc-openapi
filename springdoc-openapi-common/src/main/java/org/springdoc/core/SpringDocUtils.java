@@ -288,5 +288,16 @@ public class SpringDocUtils {
 		return this;
 	}
 
+	/**
+	 * Replace the ParameterObject with the target class.
+	 *
+	 * @param source the source
+	 * @param target the target
+	 * @return the spring doc utils
+	 */
+	public SpringDocUtils replaceParameterObjectWithClass(Class source, Class target) {
+		AdditionalModelsConverter.replaceParameterObjectWithClass(source, target);
+		return this;
+	}
 }
 
