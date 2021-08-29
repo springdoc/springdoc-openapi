@@ -18,19 +18,13 @@
 
 package test.org.springdoc.api.app2;
 
-import org.springdoc.core.converters.models.Pageable;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
-import static org.springdoc.core.SpringDocUtils.getConfig;
-
+@TestPropertySource(properties = "springdoc.model-converters.pageable-converter.enabled=true")
 public class SpringDocApp2Test extends AbstractSpringDocTest {
-
-	static {
-		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
-				.replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
-	}
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
