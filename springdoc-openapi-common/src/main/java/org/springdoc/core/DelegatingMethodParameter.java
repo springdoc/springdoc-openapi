@@ -103,7 +103,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 		List<MethodParameter> explodedParameters = new ArrayList<>();
 		for (int i = 0; i < parameters.length; ++i) {
 			MethodParameter p = parameters[i];
-			Class<?> paramClass = AdditionalModelsConverter.getReplacement(p.getParameterType());
+			Class<?> paramClass = AdditionalModelsConverter.getParameterObjectReplacement(p.getParameterType());
 
 			if (!MethodParameterPojoExtractor.isSimpleType(paramClass) && (p.hasParameterAnnotation(ParameterObject.class) || AnnotatedElementUtils.isAnnotated(paramClass, ParameterObject.class))) {
 				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {

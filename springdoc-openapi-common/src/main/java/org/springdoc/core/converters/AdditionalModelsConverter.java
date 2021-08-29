@@ -48,6 +48,11 @@ public class AdditionalModelsConverter implements ModelConverter {
 	private static final Map<Class, Schema> modelToSchemaMap = new HashMap<>();
 
 	/**
+	 * The constant paramObjectReplacementMap.
+	 */
+	private static final Map<Class, Class> paramObjectReplacementMap = new HashMap<>();
+
+	/**
 	 * Replace with class.
 	 *
 	 * @param source the source
@@ -68,13 +73,23 @@ public class AdditionalModelsConverter implements ModelConverter {
 	}
 
 	/**
+	 * Replace ParameterObject with class.
+	 *
+	 * @param source the source
+	 * @param target the target
+	 */
+	public static void replaceParameterObjectWithClass(Class source, Class target) {
+		paramObjectReplacementMap.put(source, target);
+	}
+
+	/**
 	 * Gets replacement.
 	 *
 	 * @param clazz the clazz
 	 * @return the replacement
 	 */
-	public static Class getReplacement(Class clazz) {
-		return modelToClassMap.getOrDefault(clazz, clazz);
+	public static Class getParameterObjectReplacement(Class clazz) {
+		return paramObjectReplacementMap.getOrDefault(clazz, clazz);
 	}
 
 	/**
@@ -83,10 +98,18 @@ public class AdditionalModelsConverter implements ModelConverter {
 	 * @param clazz the clazz
 	 */
 	public static void disableReplacement(Class clazz) {
-		if(modelToClassMap.containsKey(clazz))
+		if (modelToClassMap.containsKey(clazz))
 			modelToClassMap.remove(clazz);
 	}
 
+	/**
+	 * Resolve schema.
+	 *
+	 * @param type the type
+	 * @param context the context
+	 * @param chain the chain
+	 * @return the schema
+	 */
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = Json.mapper().constructType(type.getType());

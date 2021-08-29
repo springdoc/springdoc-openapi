@@ -16,23 +16,23 @@
  *
  */
 
-package test.org.springdoc.api.app2;
+package test.org.springdoc.api.app27;
 
-import org.springdoc.core.converters.models.Pageable;
-import test.org.springdoc.api.AbstractSpringDocTest;
+import java.util.List;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import javax.validation.constraints.NotNull;
 
-import static org.springdoc.core.SpringDocUtils.getConfig;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-public class SpringDocApp2Test extends AbstractSpringDocTest {
+@RestController
+public class HelloController {
 
-	static {
-		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
-				.replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
+	@GetMapping(value = "/search", produces = { "application/xml", "application/json" })
+	public ResponseEntity<List<PersonDTO>> getAllPets(@NotNull Pageable pageable) {
+		return null;
 	}
-
-	@SpringBootApplication
-	static class SpringDocTestApp {}
 
 }

@@ -16,23 +16,28 @@
  *
  */
 
-package test.org.springdoc.api.app2;
+package test.org.springdoc.api.app27;
 
-import org.springdoc.core.converters.models.Pageable;
+import java.util.Optional;
+
+import io.swagger.v3.core.converter.ModelConverter;
+import io.swagger.v3.core.converter.ModelConverters;
+import org.springdoc.core.converters.PageableOpenAPIConverter;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
-import static org.springdoc.core.SpringDocUtils.getConfig;
-
-public class SpringDocApp2Test extends AbstractSpringDocTest {
-
-	static {
-		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
-				.replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
-	}
+@TestPropertySource(properties = "springdoc.model-converters.pageable-converter.enabled=false")
+public class SpringDocApp27Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 
+	static {
+		Optional<ModelConverter> pageabeConverter =
+				ModelConverters.getInstance().getConverters()
+						.stream().filter(modelConverter -> modelConverter instanceof PageableOpenAPIConverter).findAny();
+		pageabeConverter.ifPresent(ModelConverters.getInstance()::removeConverter);
+	}
 }

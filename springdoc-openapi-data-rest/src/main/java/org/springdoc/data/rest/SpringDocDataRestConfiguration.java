@@ -84,9 +84,10 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 public class SpringDocDataRestConfiguration {
 
 	static {
-		getConfig().replaceWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
-				.replaceWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
+		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
+				.replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
 	}
+
 
 	/**
 	 * Delegating method parameter customizer delegating method parameter customizer.
@@ -153,7 +154,7 @@ public class SpringDocDataRestConfiguration {
 	static class SpringRepositoryRestResourceProviderConfiguration {
 
 		static {
-			getConfig().replaceWithClass(DefaultedPageable.class, DefaultPageable.class)
+			getConfig().replaceParameterObjectWithClass(DefaultedPageable.class, DefaultPageable.class)
 					.addRequestWrapperToIgnore(RootResourceInformation.class, PersistentEntityResourceAssembler.class, ETag.class, Sort.class)
 					.addResponseWrapperToIgnore(RootResourceInformation.class);
 		}
@@ -175,7 +176,7 @@ public class SpringDocDataRestConfiguration {
 		SpringRepositoryRestResourceProvider springRepositoryRestResourceProvider(ResourceMappings mappings,
 				Repositories repositories, Associations associations, ApplicationContext applicationContext,
 				DataRestRouterOperationService dataRestRouterOperationService, PersistentEntities persistentEntities,
-				ObjectMapper mapper,SpringDocDataRestUtils springDocDataRestUtils) {
+				ObjectMapper mapper, SpringDocDataRestUtils springDocDataRestUtils) {
 			return new SpringRepositoryRestResourceProvider(mappings, repositories, associations, applicationContext,
 					dataRestRouterOperationService, persistentEntities, mapper, springDocDataRestUtils);
 		}
@@ -225,7 +226,7 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		DataRestRequestService dataRestRequestBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
-				RequestBodyService requestBodyService, AbstractRequestService requestBuilder,SpringDocDataRestUtils springDocDataRestUtils) {
+				RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
 			return new DataRestRequestService(localSpringDocParameterNameDiscoverer, parameterBuilder,
 					requestBodyService, requestBuilder, springDocDataRestUtils);
 		}

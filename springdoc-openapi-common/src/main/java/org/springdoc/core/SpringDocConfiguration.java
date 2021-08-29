@@ -37,6 +37,7 @@ import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.FileSupportConverter;
 import org.springdoc.core.converters.ModelConverterRegistrar;
+import org.springdoc.core.converters.PageableOpenAPIConverter;
 import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
@@ -75,6 +76,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import static org.springdoc.core.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.Constants.SPRINGDOC_PAGEABLE_CONVERTER_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 import static org.springdoc.core.SpringDocUtils.getConfig;
@@ -166,6 +168,19 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	SchemaPropertyDeprecatingConverter schemaPropertyDeprecatingConverter() {
 		return new SchemaPropertyDeprecatingConverter();
+	}
+
+	/**
+	 * Pageable open api converter pageable open api converter.
+	 *
+	 * @return the pageable open api converter
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_PAGEABLE_CONVERTER_ENABLED, matchIfMissing = true)
+	@Lazy(false)
+	PageableOpenAPIConverter pageableOpenAPIConverter() {
+		return new PageableOpenAPIConverter();
 	}
 
 	/**
