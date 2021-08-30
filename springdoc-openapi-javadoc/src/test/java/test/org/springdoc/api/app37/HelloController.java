@@ -67,16 +67,6 @@ public class HelloController {
 		return c;
 	}
 
-	/**
-	 * Pets post response entity.
-	 *
-	 * @param pet the pet 
-	 * @return the response entity
-	 */
-	@PostMapping(value = "/pets", consumes = "application/json")
-	public ResponseEntity<Void> petsPost(@Valid @RequestBody Pet pet) {
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
-	}
 
 	/**
 	 * Pets post response entity.
@@ -84,9 +74,19 @@ public class HelloController {
 	 * @param pet the pet 
 	 * @return the response entity
 	 */
-	@PostMapping(value = "/pets", consumes = "text/plain")
-	public ResponseEntity<Void> petsPost(@Valid @RequestBody String pet) {
+	@PostMapping(value = "/pets1", consumes = "text/plain")
+	public ResponseEntity<Void> petsPost1(@Valid @RequestBody String pet) {
 		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
+	/**
+	 * Pets post response entity.
+	 *
+	 * @param pet the pet
+	 * @return the response entity
+	 */
+	@PostMapping(value = "/pets2", consumes = "application/json")
+	public ResponseEntity<Void> petsPost2(@Valid @RequestBody Pet pet) {
+		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+	}
 }
