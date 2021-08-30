@@ -17,11 +17,13 @@
           "person"
         ],
         "summary": "Add a new person to the store",
+        "description": "Persons.",
         "operationId": "persons",
         "parameters": [
           {
             "name": "name",
             "in": "query",
+            "description": "the name",
             "required": true,
             "schema": {
               "type": "string"

@@ -37,11 +37,13 @@
         "tags": [
           "hello-controller"
         ],
+        "description": "Persons.",
         "operationId": "persons",
         "parameters": [
           {
             "name": "name",
             "in": "query",
+            "description": "the name",
             "required": true,
             "schema": {
               "type": "string"

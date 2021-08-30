@@ -47,6 +47,7 @@
         "tags": [
           "hello-controller"
         ],
+        "description": "Persons 3 string.",
         "operationId": "persons3",
         "requestBody": {
           "description": "requestBody inside operation annotation",
@@ -61,7 +62,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "the string",
             "content": {
               "*/*": {
                 "schema": {

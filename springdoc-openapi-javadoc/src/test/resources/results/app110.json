@@ -22,8 +22,10 @@
         "tags": [
           "person-controller"
         ],
+        "description": "Person person.",
         "operationId": "person",
         "requestBody": {
+          "description": "the person",
           "content": {
             "application/json": {
               "schema": {
@@ -34,12 +36,12 @@
           "required": true
         },
         "responses": {
-          "500": {
+          "415": {
             "description": "the response entity",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "$ref": "#/components/schemas/ErrorMessage"
                 }
               }
             }
@@ -54,18 +56,18 @@
               }
             }
           },
-          "415": {
+          "500": {
             "description": "the response entity",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorMessage"
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
           },
           "200": {
-            "description": "OK",
+            "description": "the person",
             "content": {
               "*/*": {
                 "schema": {
@@ -82,8 +84,10 @@
         "tags": [
           "person-controller-2"
         ],
+        "description": "Person person.",
         "operationId": "person_1",
         "requestBody": {
+          "description": "the person",
           "content": {
             "application/json": {
               "schema": {
@@ -95,7 +99,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "the person",
             "content": {
               "*/*": {
                 "schema": {
@@ -112,11 +116,13 @@
         "tags": [
           "person-controller"
         ],
+        "description": "Find by last name list.",
         "operationId": "findByLastName",
         "parameters": [
           {
             "name": "lastName",
             "in": "query",
+            "description": "the last name",
             "required": true,
             "schema": {
               "maxLength": 10,
@@ -126,12 +132,12 @@
           }
         ],
         "responses": {
-          "500": {
+          "415": {
             "description": "the response entity",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "$ref": "#/components/schemas/ErrorMessage"
                 }
               }
             }
@@ -146,18 +152,18 @@
               }
             }
           },
-          "415": {
+          "500": {
             "description": "the response entity",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorMessage"
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
           },
           "200": {
-            "description": "OK",
+            "description": "the list",
             "content": {
               "*/*": {
                 "schema": {
@@ -177,11 +183,13 @@
         "tags": [
           "person-controller-2"
         ],
+        "description": "Find by last name list.",
         "operationId": "findByLastName_1",
         "parameters": [
           {
             "name": "lastName",
             "in": "query",
+            "description": "the last name",
             "required": true,
             "schema": {
               "maxLength": 10,
@@ -192,7 +200,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "the list",
             "content": {
               "*/*": {
                 "schema": {
@@ -210,6 +218,18 @@
   },
   "components": {
     "schemas": {
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "description": "The Errors.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "Problem": {
         "type": "object",
         "properties": {
@@ -220,18 +240,6 @@
           "message": {
             "type": "string",
             "description": "The Message."
-          }
-        }
-      },
-      "ErrorMessage": {
-        "type": "object",
-        "properties": {
-          "errors": {
-            "type": "array",
-            "description": "The Errors.",
-            "items": {
-              "type": "string"
-            }
           }
         }
       },

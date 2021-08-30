@@ -11,17 +11,18 @@
     }
   ],
   "paths": {
-    "/persons3": {
+    "/persons": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "persons3",
+        "description": "Persons string.",
+        "operationId": "persons",
         "parameters": [
           {
             "name": "name",
             "in": "query",
-            "description": "persons name",
+            "description": "the name",
             "required": true,
             "schema": {
               "type": "string"
@@ -30,102 +31,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/persons5": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "persons5",
-        "parameters": [
-          {
-            "name": "age",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "maximum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/persons4": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "persons4",
-        "parameters": [
-          {
-            "name": "age",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/persons2": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "persons2",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "description": "persons name",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
+            "description": "the string",
             "content": {
               "*/*": {
                 "schema": {
@@ -142,6 +48,7 @@
         "tags": [
           "hello-controller"
         ],
+        "description": "Persons 6 string.",
         "operationId": "persons6",
         "parameters": [
           {
@@ -156,7 +63,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "the string",
             "content": {
               "*/*": {
                 "schema": {
@@ -168,16 +75,86 @@
         }
       }
     },
-    "/persons": {
+    "/persons5": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "persons",
+        "description": "Persons 5 string.",
+        "operationId": "persons5",
+        "parameters": [
+          {
+            "name": "age",
+            "in": "query",
+            "description": "the age",
+            "required": true,
+            "schema": {
+              "maximum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons4": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Persons 4 string.",
+        "operationId": "persons4",
+        "parameters": [
+          {
+            "name": "age",
+            "in": "query",
+            "description": "the age",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Persons 3 string.",
+        "operationId": "persons3",
         "parameters": [
           {
             "name": "name",
             "in": "query",
+            "description": "persons name",
             "required": true,
             "schema": {
               "type": "string"
@@ -186,7 +163,39 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Persons 2 string.",
+        "operationId": "persons2",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "persons name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
             "content": {
               "*/*": {
                 "schema": {

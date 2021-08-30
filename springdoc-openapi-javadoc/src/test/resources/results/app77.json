@@ -11,16 +11,18 @@
     }
   ],
   "paths": {
-    "/persons2": {
+    "/persons": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "persons2",
+        "description": "Persons.",
+        "operationId": "persons",
         "parameters": [
           {
             "name": "name",
             "in": "query",
+            "description": "the name",
             "required": true,
             "schema": {
               "type": "string"
@@ -42,16 +44,18 @@
         }
       }
     },
-    "/persons": {
+    "/persons2": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "persons",
+        "description": "Persons 2.",
+        "operationId": "persons2",
         "parameters": [
           {
             "name": "name",
             "in": "query",
+            "description": "the name",
             "required": true,
             "schema": {
               "type": "string"
