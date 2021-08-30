@@ -23,6 +23,217 @@
     }
   ],
   "paths": {
+    "/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "description": "Create user response entity.",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "Created user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "the map",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/createWithArray": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Creates list of users with given input array",
+        "description": "Create users with array input response entity.",
+        "operationId": "createUsersWithArrayInput",
+        "requestBody": {
+          "description": "List of user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "the map",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/createWithList": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Creates list of users with given input array",
+        "description": "Create users with list input response entity.",
+        "operationId": "createUsersWithListInput",
+        "requestBody": {
+          "description": "List of user object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "the map",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "description": "Login user response entity.",
+        "operationId": "loginUser",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs out current logged in user session",
+        "description": "Logout user response entity.",
+        "operationId": "logoutUser",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "the map",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/{username}": {
       "get": {
         "tags": [
@@ -43,6 +254,21 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Invalid username supplied",
             "content": {
@@ -56,30 +282,15 @@
               }
             }
           },
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
           "404": {
             "description": "User not found",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/User"
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/User"
                 }
@@ -93,6 +304,7 @@
           "user"
         ],
         "summary": "Updated user",
+        "description": "Update user response entity.",
         "operationId": "updateUser",
         "parameters": [
           {
@@ -154,6 +366,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "successful operation"
+          },
           "400": {
             "description": "the map",
             "content": {
@@ -163,216 +378,6 @@
                   "additionalProperties": {
                     "type": "object"
                   }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Create user",
-        "operationId": "createUser",
-        "requestBody": {
-          "description": "Created user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "the map",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/createWithList": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Creates list of users with given input array",
-        "operationId": "createUsersWithListInput",
-        "requestBody": {
-          "description": "List of user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "the map",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/createWithArray": {
-      "post": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Creates list of users with given input array",
-        "operationId": "createUsersWithArrayInput",
-        "requestBody": {
-          "description": "List of user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "400": {
-            "description": "the map",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/logout": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Logs out current logged in user session",
-        "description": "Logout user response entity.",
-        "operationId": "logoutUser",
-        "responses": {
-          "400": {
-            "description": "the map",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/user/login": {
-      "get": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Logs user into the system",
-        "operationId": "loginUser",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "query",
-            "description": "The user name for login",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "description": "The password for login in clear text",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid username/password supplied",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "string"
                 }
               }
             }
@@ -386,26 +391,22 @@
       "User": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "description": "The Id.",
-            "format": "int64"
-          },
-          "username": {
+          "email": {
             "type": "string",
-            "description": "The Username."
+            "description": "The Email."
           },
           "firstName": {
             "type": "string",
             "description": "The First name."
           },
+          "id": {
+            "type": "integer",
+            "description": "The Id.",
+            "format": "int64"
+          },
           "lastName": {
             "type": "string",
             "description": "The Last name."
-          },
-          "email": {
-            "type": "string",
-            "description": "The Email."
           },
           "password": {
             "type": "string",
@@ -419,6 +420,10 @@
             "type": "integer",
             "description": "User Status",
             "format": "int32"
+          },
+          "username": {
+            "type": "string",
+            "description": "The Username."
           }
         }
       }
@@ -434,8 +439,8 @@
           "implicit": {
             "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
             "scopes": {
-              "write:pets": "modify pets in your account",
-              "read:pets": "read your pets"
+              "read:pets": "read your pets",
+              "write:pets": "modify pets in your account"
             }
           }
         }

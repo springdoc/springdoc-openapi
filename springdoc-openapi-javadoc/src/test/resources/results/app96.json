@@ -16,8 +16,10 @@
         "tags": [
           "hello-controller"
         ],
+        "description": "Test 1 string.",
         "operationId": "test1",
         "requestBody": {
+          "description": "the test",
           "content": {
             "application/json": {
               "schema": {
@@ -31,7 +33,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "the string",
             "content": {
               "*/*": {
                 "schema": {
@@ -80,8 +82,10 @@
         "tags": [
           "hello-controller"
         ],
+        "description": "Test 3 string.",
         "operationId": "test3",
         "requestBody": {
+          "description": "the test",
           "content": {
             "application/json": {
               "schema": {
@@ -93,7 +97,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "the string",
             "content": {
               "*/*": {
                 "schema": {

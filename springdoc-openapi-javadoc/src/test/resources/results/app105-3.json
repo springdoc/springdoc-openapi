@@ -29,6 +29,7 @@
           "pet"
         ],
         "summary": "Update an existing pet",
+        "description": "Update pet response entity.",
         "operationId": "updatePet",
         "requestBody": {
           "description": "Pet object that needs to be added to the store",
@@ -60,11 +61,11 @@
               }
             }
           },
-          "405": {
-            "description": "Validation exception"
-          },
           "404": {
             "description": "Pet not found"
+          },
+          "405": {
+            "description": "Validation exception"
           }
         },
         "security": [
@@ -81,6 +82,7 @@
           "pet"
         ],
         "summary": "Add a new pet to the store",
+        "description": "Add pet.",
         "operationId": "addPet",
         "requestBody": {
           "description": "Pet object that needs to be added to the store",
@@ -126,6 +128,142 @@
         ]
       }
     },
+    "/pet/findByStatus": {
+      "get": {
+        "tags": [
+          "pet"
+        ],
+        "summary": "Finds Pets by status",
+        "description": "Multiple status values can be provided with comma separated strings",
+        "operationId": "findPetsByStatus",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status values that need to be considered for filter",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
+    "/pet/findByTags": {
+      "get": {
+        "tags": [
+          "pet"
+        ],
+        "summary": "Finds Pets by tags",
+        "description": "Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing.",
+        "operationId": "findPetsByTags",
+        "parameters": [
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "Tags to filter by",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Pet"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid tag value",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
     "/pet/{petId}": {
       "get": {
         "tags": [
@@ -147,6 +285,21 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Pet"
+                }
+              }
+            }
+          },
           "400": {
             "description": "Invalid ID supplied",
             "content": {
@@ -160,30 +313,15 @@
               }
             }
           },
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pet"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pet"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Pet not found",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Pet"
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "$ref": "#/components/schemas/Pet"
                 }
@@ -323,6 +461,7 @@
           "pet"
         ],
         "summary": "uploads an image",
+        "description": "Upload file response entity.",
         "operationId": "uploadFile",
         "parameters": [
           {
@@ -346,6 +485,7 @@
           }
         ],
         "requestBody": {
+          "description": "the file",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -365,19 +505,6 @@
           }
         },
         "responses": {
-          "400": {
-            "description": "the map",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
           "200": {
             "description": "successful operation",
             "content": {
@@ -387,138 +514,15 @@
                 }
               }
             }
-          }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
-      }
-    },
-    "/pet/findByTags": {
-      "get": {
-        "tags": [
-          "pet"
-        ],
-        "summary": "Finds Pets by tags",
-        "description": "Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing.",
-        "operationId": "findPetsByTags",
-        "parameters": [
-          {
-            "name": "tags",
-            "in": "query",
-            "description": "Tags to filter by",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        ],
-        "responses": {
+          },
           "400": {
-            "description": "Invalid tag value",
+            "description": "the map",
             "content": {
               "*/*": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
                     "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Pet"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Pet"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
-      }
-    },
-    "/pet/findByStatus": {
-      "get": {
-        "tags": [
-          "pet"
-        ],
-        "summary": "Finds Pets by status",
-        "description": "Multiple status values can be provided with comma separated strings",
-        "operationId": "findPetsByStatus",
-        "parameters": [
-          {
-            "name": "status",
-            "in": "query",
-            "description": "Status values that need to be considered for filter",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid status value",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "successful operation",
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Pet"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Pet"
                   }
                 }
               }
@@ -550,6 +554,24 @@
           }
         }
       },
+      "ModelApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "The Code.",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "The Message."
+          },
+          "type": {
+            "type": "string",
+            "description": "The Type."
+          }
+        }
+      },
       "Pet": {
         "required": [
           "name",
@@ -557,13 +579,13 @@
         ],
         "type": "object",
         "properties": {
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
           "id": {
             "type": "integer",
             "description": "The Id.",
             "format": "int64"
-          },
-          "category": {
-            "$ref": "#/components/schemas/Category"
           },
           "name": {
             "type": "string",
@@ -577,13 +599,6 @@
               "type": "string"
             }
           },
-          "tags": {
-            "type": "array",
-            "description": "The Tags.",
-            "items": {
-              "$ref": "#/components/schemas/Tag"
-            }
-          },
           "status": {
             "type": "string",
             "description": "pet status in the store",
@@ -592,6 +607,13 @@
               "pending",
               "sold"
             ]
+          },
+          "tags": {
+            "type": "array",
+            "description": "The Tags.",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
           }
         }
       },
@@ -604,24 +626,6 @@
           },
           "name": {
             "type": "string"
-          }
-        }
-      },
-      "ModelApiResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "description": "The Code.",
-            "format": "int32"
-          },
-          "type": {
-            "type": "string",
-            "description": "The Type."
-          },
-          "message": {
-            "type": "string",
-            "description": "The Message."
           }
         }
       }
@@ -637,8 +641,8 @@
           "implicit": {
             "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
             "scopes": {
-              "write:pets": "modify pets in your account",
-              "read:pets": "read your pets"
+              "read:pets": "read your pets",
+              "write:pets": "modify pets in your account"
             }
           }
         }

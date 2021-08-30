@@ -198,11 +198,13 @@
         "tags": [
           "items"
         ],
+        "description": "Show items list.",
         "operationId": "showItems",
         "parameters": [
           {
             "name": "cusID",
             "in": "query",
+            "description": "the customer id",
             "required": true,
             "schema": {
               "maxLength": 6,
@@ -213,6 +215,7 @@
           {
             "name": "toto",
             "in": "query",
+            "description": "the toto",
             "required": true,
             "schema": {
               "maximum": 6,
@@ -224,6 +227,7 @@
           {
             "name": "start",
             "in": "query",
+            "description": "the start date",
             "required": false,
             "schema": {
               "type": "string",
@@ -234,6 +238,7 @@
           {
             "name": "filterIds",
             "in": "query",
+            "description": "the filter ids",
             "required": false,
             "explode": false,
             "schema": {
@@ -256,7 +261,7 @@
             }
           },
           "200": {
-            "description": "OK",
+            "description": "the list",
             "content": {
               "application/json": {
                 "schema": {
@@ -274,8 +279,10 @@
         "tags": [
           "items"
         ],
+        "description": "Add item response entity.",
         "operationId": "addItem",
         "requestBody": {
+          "description": "the item dto",
           "content": {
             "application/json": {
               "schema": {
@@ -297,7 +304,7 @@
             }
           },
           "200": {
-            "description": "OK",
+            "description": "the response entity",
             "content": {
               "application/json": {
                 "schema": {

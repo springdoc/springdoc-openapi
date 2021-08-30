@@ -22,8 +22,10 @@
         "tags": [
           "person-controller"
         ],
+        "description": "Person person.",
         "operationId": "person",
         "requestBody": {
+          "description": "the person",
           "content": {
             "application/json": {
               "schema": {
@@ -35,7 +37,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "the person",
             "content": {
               "*/*": {
                 "schema": {
@@ -52,8 +54,10 @@
         "tags": [
           "person-controller-2"
         ],
+        "description": "Person person.",
         "operationId": "person_1",
         "requestBody": {
+          "description": "the person",
           "content": {
             "application/json": {
               "schema": {
@@ -95,7 +99,7 @@
             }
           },
           "200": {
-            "description": "OK",
+            "description": "the person",
             "content": {
               "*/*": {
                 "schema": {
@@ -112,11 +116,13 @@
         "tags": [
           "person-controller"
         ],
+        "description": "Find by last name list.",
         "operationId": "findByLastName",
         "parameters": [
           {
             "name": "lastName",
             "in": "query",
+            "description": "the last name",
             "required": true,
             "schema": {
               "maxLength": 10,
@@ -127,7 +133,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "the list",
             "content": {
               "*/*": {
                 "schema": {
@@ -147,11 +153,13 @@
         "tags": [
           "person-controller-2"
         ],
+        "description": "Find by last name list.",
         "operationId": "findByLastName_1",
         "parameters": [
           {
             "name": "lastName",
             "in": "query",
+            "description": "the last name",
             "required": true,
             "schema": {
               "maxLength": 10,
@@ -192,7 +200,7 @@
             }
           },
           "200": {
-            "description": "OK",
+            "description": "the list",
             "content": {
               "*/*": {
                 "schema": {

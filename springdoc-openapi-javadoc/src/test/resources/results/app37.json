@@ -69,8 +69,10 @@
         "tags": [
           "hello-controller"
         ],
+        "description": "Pets post response entity.",
         "operationId": "petsPost_1",
         "requestBody": {
+          "description": "the pet",
           "content": {
             "application/json": {
               "schema": {
@@ -86,7 +88,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "the response entity"
           }
         }
       }

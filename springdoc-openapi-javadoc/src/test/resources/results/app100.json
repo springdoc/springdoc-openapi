@@ -17,11 +17,13 @@
           "hello-ap1",
           "hello-ap2"
         ],
+        "description": "Gets all pets.",
         "operationId": "getAllPets",
         "parameters": [
           {
             "name": "toto",
             "in": "query",
+            "description": "the toto",
             "required": true,
             "schema": {
               "type": "string"
@@ -30,7 +32,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "the all pets",
             "content": {
               "application/xml": {
                 "schema": {

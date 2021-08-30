@@ -16,11 +16,13 @@
         "tags": [
           "hello-controller"
         ],
+        "description": "Index string.",
         "operationId": "index",
         "parameters": [
           {
             "name": "test",
             "in": "query",
+            "description": "the test",
             "required": false,
             "schema": {
               "type": "string"
@@ -29,7 +31,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "the string",
             "content": {
               "*/*": {
                 "schema": {
