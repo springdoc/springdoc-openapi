@@ -6,7 +6,10 @@ import io.swagger.v3.core.filter.SpecFilter;
 import io.swagger.v3.core.jackson.ApiResponsesSerializer;
 import io.swagger.v3.core.jackson.PathsSerializer;
 import io.swagger.v3.core.jackson.mixin.ComponentsMixin;
+import io.swagger.v3.core.jackson.mixin.DateSchemaMixin;
+import io.swagger.v3.core.jackson.mixin.ExampleMixin;
 import io.swagger.v3.core.jackson.mixin.ExtensionsMixin;
+import io.swagger.v3.core.jackson.mixin.MediaTypeMixin;
 import io.swagger.v3.core.jackson.mixin.OpenAPIMixin;
 import io.swagger.v3.core.jackson.mixin.OperationMixin;
 import io.swagger.v3.core.jackson.mixin.SchemaMixin;
@@ -20,7 +23,9 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.links.Link;
 import io.swagger.v3.oas.annotations.links.LinkParameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -46,19 +51,34 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.examples.Example;
+import io.swagger.v3.oas.models.media.BinarySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
+import io.swagger.v3.oas.models.media.ByteArraySchema;
+import io.swagger.v3.oas.models.media.ComposedSchema;
+import io.swagger.v3.oas.models.media.DateSchema;
 import io.swagger.v3.oas.models.media.DateTimeSchema;
 import io.swagger.v3.oas.models.media.Discriminator;
+import io.swagger.v3.oas.models.media.EmailSchema;
+import io.swagger.v3.oas.models.media.EncodingProperty;
 import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.IntegerSchema;
 import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.MediaType;
+import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
+import io.swagger.v3.oas.models.media.PasswordSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.media.UUIDSchema;
 import io.swagger.v3.oas.models.media.XML;
+import io.swagger.v3.oas.models.parameters.CookieParameter;
+import io.swagger.v3.oas.models.parameters.HeaderParameter;
+import io.swagger.v3.oas.models.parameters.PathParameter;
+import io.swagger.v3.oas.models.parameters.QueryParameter;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.servers.ServerVariables;
+import org.springdoc.api.mixins.SortedOpenAPIMixin;
+import org.springdoc.api.mixins.SortedSchemaMixin;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -111,7 +131,7 @@ import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 		Operation.class, Parameter.class, Callbacks.class, Extension.class, ExtensionProperty.class, Header.class, Link.class, LinkParameter.class,
 		ArraySchema.class, Content.class, DiscriminatorMapping.class, Encoding.class, ExampleObject.class, Schema.class, RequestBody.class, ApiResponse.class,
 		Info.class, Server.class, ServerVariable.class, OpenAPIDefinition.class,  Tag.class, SecuritySchemes.class, SecurityScheme.class, SecuritySchemeType.class,
-		OAuthFlow.class, OAuthFlows.class, OAuthScope.class })
+		OAuthFlow.class, OAuthFlows.class, OAuthScope.class, License.class, Contact.class })
 
 @TypeHint(types = {
 		SpecFilter.class,
@@ -139,6 +159,29 @@ import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 		MapSchema.class,
 		ObjectSchema.class,
 		Scopes.class,
+		DateSchema.class,
+		ComposedSchema.class,
+		BinarySchema.class,
+		ByteArraySchema.class,
+		EmailSchema.class,
+		Example.class,
+		EncodingProperty.class,
+		NumberSchema.class,
+		PasswordSchema.class,
+		CookieParameter.class,
+		HeaderParameter.class,
+		PathParameter.class,
+		QueryParameter.class,
+		DateSchemaMixin.class,
+		ExampleMixin.class,
+		MediaTypeMixin.class,
+		SortedOpenAPIMixin.class,
+		SortedSchemaMixin.class,
+		io.swagger.v3.oas.models.security.SecurityScheme.Type.class,
+		io.swagger.v3.oas.models.security.SecurityScheme.In.class,
+		io.swagger.v3.oas.models.media.Encoding.class,
+		io.swagger.v3.oas.models.info.Contact.class,
+		io.swagger.v3.oas.models.info.License.class,
 		io.swagger.v3.oas.models.security.OAuthFlow.class, io.swagger.v3.oas.models.security.OAuthFlows.class,
 		io.swagger.v3.oas.models.security.SecurityScheme.class,
 		io.swagger.v3.oas.models.tags.Tag.class,
@@ -157,6 +200,7 @@ import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 		io.swagger.v3.oas.models.links.Link.class,
 		io.swagger.v3.oas.models.parameters.Parameter.class,
 		io.swagger.v3.oas.models.Operation.class,
+		io.swagger.v3.oas.models.headers.Header.class
 })
 
 @ResourceHint(patterns = "springdoc.swagger-ui.config")
