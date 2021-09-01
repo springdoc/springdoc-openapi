@@ -307,7 +307,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		if (hasOperationAnnotation)
 			return true;
 
-		return (containsResponseBody(handlerMethod) & restControllers.containsKey(handlerMethod.getBean().toString()) || isAdditionalRestController(handlerMethod.getBeanType()))
+		return (containsResponseBody(handlerMethod) && restControllers.containsKey(handlerMethod.getBean().toString()) || isAdditionalRestController(handlerMethod.getBeanType()))
 				&& operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
 				&& (springDocConfigProperties.isModelAndViewAllowed() || !ModelAndView.class.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}
