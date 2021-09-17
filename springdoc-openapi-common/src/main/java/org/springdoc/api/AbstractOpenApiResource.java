@@ -66,6 +66,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -295,7 +296,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				this.removeBrokenReferenceDefinitions(openApi);
 
 			// run the optional customisers
+			List<Server> servers = openApi.getServers();
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
+			if(!servers.equals(openApi.getServers()))
+				openAPIService.setServersPresent(true);
 
 			openAPIService.setCachedOpenAPI(openApi);
 			openAPIService.resetCalculatedOpenAPI();
