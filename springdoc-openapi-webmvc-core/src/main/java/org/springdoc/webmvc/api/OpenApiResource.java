@@ -75,7 +75,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * The Request mapping handler mapping.
 	 */
-	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
+	protected final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
 
 	/**
 	 * The Spring security o auth 2 provider.
