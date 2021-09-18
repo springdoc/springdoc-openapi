@@ -11,6 +11,56 @@
     }
   ],
   "paths": {
+    "/hello": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "hello",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HelloBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "An unknown error occurred",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is malformed or information is missing.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "The server accepted your hello.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/example": {
       "get": {
         "tags": [
@@ -18,6 +68,26 @@
         ],
         "operationId": "test",
         "responses": {
+          "500": {
+            "description": "An unknown error occurred",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is malformed or information is missing.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
           "200": {
             "description": "OK"
           }
@@ -26,5 +96,19 @@
       }
     }
   },
-  "components": {}
+  "components": {
+    "schemas": {
+      "HelloBody": {
+        "required": [
+          "helloValue"
+        ],
+        "type": "object",
+        "properties": {
+          "helloValue": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
 }
