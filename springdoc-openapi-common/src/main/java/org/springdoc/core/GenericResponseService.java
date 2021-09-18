@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -150,8 +151,9 @@ public class GenericResponseService {
 	 *
 	 * @param components the components
 	 * @param findControllerAdvice the find controller advice
+	 * @param locale the locale
 	 */
-	public void buildGenericResponse(Components components, Map<String, Object> findControllerAdvice) {
+	public void buildGenericResponse(Components components, Map<String, Object> findControllerAdvice, Locale locale) {
 		// ControllerAdvice
 		for (Map.Entry<String, Object> entry : findControllerAdvice.entrySet()) {
 			List<Method> methods = new ArrayList<>();
@@ -177,7 +179,7 @@ public class GenericResponseService {
 					MethodParameter methodParameter = new MethodParameter(method, -1);
 					ApiResponses apiResponsesOp = new ApiResponses();
 					MethodAttributes methodAttributes = new MethodAttributes(methodProduces, springDocConfigProperties.getDefaultConsumesMediaType(),
-							springDocConfigProperties.getDefaultProducesMediaType(), controllerAdviceInfoApiResponseMap);
+							springDocConfigProperties.getDefaultProducesMediaType(), controllerAdviceInfoApiResponseMap, locale);
 					//calculate JsonView Annotation
 					methodAttributes.setJsonViewAnnotation(AnnotatedElementUtils.findMergedAnnotation(method, JsonView.class));
 					//use the javadoc return if present
@@ -237,7 +239,7 @@ public class GenericResponseService {
 					apiResponsesOp.addApiResponse(apiResponseAnnotations.responseCode(), apiResponse);
 					continue;
 				}
-				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotations.description()));
+				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotations.description(),methodAttributes.getLocale()));
 				buildContentFromDoc(components, apiResponsesOp, methodAttributes, apiResponseAnnotations, apiResponse);
 				Map<String, Object> extensions = AnnotationsUtils.getExtensions(apiResponseAnnotations.extensions());
 				if (!CollectionUtils.isEmpty(extensions))

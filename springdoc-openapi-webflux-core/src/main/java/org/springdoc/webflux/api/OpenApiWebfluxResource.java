@@ -21,6 +21,7 @@
 package org.springdoc.webflux.api;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -101,15 +102,16 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 *
 	 * @param serverHttpRequest the server http request
 	 * @param apiDocsUrl the api docs url
+	 * @param locale the locale
 	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Override
-	public Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl)
+	public Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
-		return super.openapiJson(serverHttpRequest, apiDocsUrl);
+		return super.openapiJson(serverHttpRequest, apiDocsUrl, locale);
 	}
 
 	/**
@@ -117,6 +119,7 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 *
 	 * @param serverHttpRequest the server http request
 	 * @param apiDocsUrl the api docs url
+	 * @param locale the locale
 	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
@@ -124,8 +127,8 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
 	@Override
 	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest,
-			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl) throws JsonProcessingException {
-		return super.openapiYaml(serverHttpRequest, apiDocsUrl);
+			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, Locale locale) throws JsonProcessingException {
+		return super.openapiYaml(serverHttpRequest, apiDocsUrl, locale);
 	}
 
 	@Override

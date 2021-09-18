@@ -21,6 +21,7 @@
 package org.springdoc.core;
 
 import java.lang.reflect.Parameter;
+import java.util.Locale;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.apache.commons.lang3.StringUtils;
@@ -81,12 +82,12 @@ public class ParameterInfo {
 
 	/**
 	 * Instantiates a new Parameter info.
-	 *
 	 * @param pName the parameter name
 	 * @param methodParameter the method parameter
 	 * @param parameterBuilder the parameter builder
+	 * @param locale the locale
 	 */
-	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService parameterBuilder) {
+	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService parameterBuilder, Locale locale) {
 		PropertyResolverUtils propertyResolverUtils = parameterBuilder.getPropertyResolverUtils();
 		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
 		RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
@@ -107,9 +108,9 @@ public class ParameterInfo {
 			calculateParams(cookieValue);
 
 		if (StringUtils.isNotBlank(this.pName))
-			this.pName = propertyResolverUtils.resolve(this.pName);
+			this.pName = propertyResolverUtils.resolve(this.pName, locale);
 		if (this.defaultValue != null && !ValueConstants.DEFAULT_NONE.equals(this.defaultValue.toString())) {
-			this.defaultValue = propertyResolverUtils.resolve(this.defaultValue.toString());
+			this.defaultValue = propertyResolverUtils.resolve(this.defaultValue.toString(), locale);
 			parameterBuilder.getOptionalWebConversionServiceProvider()
 					.ifPresent(conversionService -> {
 								try {

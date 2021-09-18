@@ -22,6 +22,7 @@ package org.springdoc.webflux.api;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -96,14 +97,15 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * Openapi json mono.
 	 *
 	 * @param serverHttpRequest the server http request
+	 * @param locale the locale
 	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_PATH_SEPARATOR, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Mono<String> openapiJson(ServerHttpRequest serverHttpRequest)
+	public Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, Locale locale)
 			throws JsonProcessingException {
-		return super.openapiJson(serverHttpRequest, EMPTY);
+		return super.openapiJson(serverHttpRequest, EMPTY, locale);
 	}
 
 
@@ -111,14 +113,15 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * Openapi yaml mono.
 	 *
 	 * @param serverHttpRequest the server http request
+	 * @param locale the locale
 	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_YAML_API_DOCS_ACTUATOR_PATH, produces = APPLICATION_OPENAPI_YAML)
-	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest)
+	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest, Locale locale)
 			throws JsonProcessingException {
-		return super.openapiYaml(serverHttpRequest, YAML);
+		return super.openapiYaml(serverHttpRequest, YAML, locale);
 	}
 
 	@Override

@@ -21,6 +21,7 @@
 package org.springdoc.webflux.api;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -76,6 +77,7 @@ public class MultipleOpenApiWebFluxResource extends MultipleOpenApiResource {
 	 * @param serverHttpRequest the server http request
 	 * @param apiDocsUrl the api docs url
 	 * @param group the group
+	 * @param locale the locale
 	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
@@ -83,8 +85,8 @@ public class MultipleOpenApiWebFluxResource extends MultipleOpenApiResource {
 	@GetMapping(value = API_DOCS_URL + "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Mono<String> openapiJson(ServerHttpRequest
 			serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl, @PathVariable String
-			group) throws JsonProcessingException {
-		return getOpenApiResourceOrThrow(group).openapiJson(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
+			group, Locale locale) throws JsonProcessingException {
+		return getOpenApiResourceOrThrow(group).openapiJson(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group, locale);
 	}
 
 	/**
@@ -93,6 +95,7 @@ public class MultipleOpenApiWebFluxResource extends MultipleOpenApiResource {
 	 * @param serverHttpRequest the server http request
 	 * @param apiDocsUrl the api docs url
 	 * @param group the group
+	 * @param locale the locale
 	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
@@ -100,8 +103,8 @@ public class MultipleOpenApiWebFluxResource extends MultipleOpenApiResource {
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML + "/{group}", produces = APPLICATION_OPENAPI_YAML)
 	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest,
 			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, @PathVariable String
-			group) throws JsonProcessingException {
-		return getOpenApiResourceOrThrow(group).openapiYaml(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group);
+			group, Locale locale) throws JsonProcessingException {
+		return getOpenApiResourceOrThrow(group).openapiYaml(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group, locale);
 	}
 
 }

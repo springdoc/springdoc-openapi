@@ -192,8 +192,9 @@ public class OpenAPIService {
 
 	/**
 	 * Build.
+	 * @param locale the locale
 	 */
-	public void build() {
+	public void build(Locale locale) {
 		Optional<OpenAPIDefinition> apiDef = getOpenAPIDefinition();
 
 		if (openAPI == null) {
@@ -205,7 +206,7 @@ public class OpenAPIService {
 			this.calculatedOpenAPI = openAPI;
 
 		if (apiDef.isPresent()) {
-			buildOpenAPIWithOpenAPIDefinition(calculatedOpenAPI, apiDef.get());
+			buildOpenAPIWithOpenAPIDefinition(calculatedOpenAPI, apiDef.get(), locale);
 		}
 		// Set default info
 		else if (calculatedOpenAPI.getInfo() == null) {
@@ -220,7 +221,7 @@ public class OpenAPIService {
 		initializeHiddenRestController();
 
 		// add security schemes
-		this.calculateSecuritySchemes(calculatedOpenAPI.getComponents());
+		this.calculateSecuritySchemes(calculatedOpenAPI.getComponents(), locale);
 		openApiBuilderCustomisers.ifPresent(customisers -> customisers.forEach(customiser -> customiser.customise(this)));
 	}
 
@@ -282,15 +283,22 @@ public class OpenAPIService {
 	 * @param handlerMethod the handler method
 	 * @param operation the operation
 	 * @param openAPI the open api
+	 * @param locale the locale
 	 * @return the operation
 	 */
-	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI) {
+	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI, Locale locale) {
 
 		Set<io.swagger.v3.oas.models.tags.Tag> tags = new HashSet<>();
 		Set<String> tagsStr = new HashSet<>();
 
 		buildTagsFromClass(handlerMethod.getBeanType(), tags, tagsStr);
 		buildTagsFromMethod(handlerMethod.getMethod(), tags, tagsStr);
+
+		PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
+		if (!CollectionUtils.isEmpty(tagsStr))
+			tagsStr = tagsStr.stream()
+					.map(str -> propertyResolverUtils.resolve(str, locale))
+					.collect(Collectors.toSet());
 
 		if (springdocTags.containsKey(handlerMethod)) {
 			io.swagger.v3.oas.models.tags.Tag tag = springdocTags.get(handlerMethod);
@@ -377,18 +385,19 @@ public class OpenAPIService {
 	 *
 	 * @param schema the schema
 	 * @param propertyResolverUtils the property resolver utils
+	 * @param locale the locale
 	 * @return the schema
 	 */
 	@SuppressWarnings("unchecked")
-	public Schema resolveProperties(Schema schema, PropertyResolverUtils propertyResolverUtils) {
-		resolveProperty(schema::getName, schema::name, propertyResolverUtils);
-		resolveProperty(schema::getTitle, schema::title, propertyResolverUtils);
-		resolveProperty(schema::getDescription, schema::description, propertyResolverUtils);
+	public Schema resolveProperties(Schema schema, PropertyResolverUtils propertyResolverUtils, Locale locale) {
+		resolveProperty(schema::getName, schema::name, propertyResolverUtils, locale);
+		resolveProperty(schema::getTitle, schema::title, propertyResolverUtils, locale);
+		resolveProperty(schema::getDescription, schema::description, propertyResolverUtils, locale);
 
 		Map<String, Schema> properties = schema.getProperties();
 		if (!CollectionUtils.isEmpty(properties)) {
 			Map<String, Schema> resolvedSchemas = properties.entrySet().stream().map(es -> {
-				es.setValue(resolveProperties(es.getValue(), propertyResolverUtils));
+				es.setValue(resolveProperties(es.getValue(), propertyResolverUtils, locale));
 				return es;
 			}).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 			schema.setProperties(resolvedSchemas);
@@ -443,10 +452,11 @@ public class OpenAPIService {
 	 *
 	 * @param openAPI the open api
 	 * @param apiDef the api def
+	 * @param locale the locale
 	 */
-	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef) {
+	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef, Locale locale) {
 		// info
-		AnnotationsUtils.getInfo(apiDef.info()).map(this::resolveProperties).ifPresent(openAPI::setInfo);
+		AnnotationsUtils.getInfo(apiDef.info()).map(info -> resolveProperties(info, locale)).ifPresent(openAPI::setInfo);
 		// OpenApiDefinition security requirements
 		securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
 		// OpenApiDefinition external docs
@@ -455,7 +465,7 @@ public class OpenAPIService {
 		AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
 		// OpenApiDefinition servers
 		Optional<List<Server>> optionalServers = AnnotationsUtils.getServers(apiDef.servers());
-		optionalServers.map(this::resolveProperties).ifPresent(servers -> {
+		optionalServers.map(servers -> resolveProperties(servers, locale)).ifPresent(servers -> {
 					this.isServersPresent = true;
 					openAPI.servers(servers);
 				}
@@ -470,14 +480,15 @@ public class OpenAPIService {
 	 * Resolve properties info.
 	 *
 	 * @param servers the servers
+	 * @param locale the locale
 	 * @return the servers
 	 */
-	private List<Server> resolveProperties(List<Server> servers) {
+	private List<Server> resolveProperties(List<Server> servers, Locale locale) {
 		PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
 		servers.forEach(server -> {
-			resolveProperty(server::getUrl, server::url, propertyResolverUtils);
-			resolveProperty(server::getDescription, server::description, propertyResolverUtils);
-			if(CollectionUtils.isEmpty(server.getVariables()))
+			resolveProperty(server::getUrl, server::url, propertyResolverUtils, locale);
+			resolveProperty(server::getDescription, server::description, propertyResolverUtils, locale);
+			if (CollectionUtils.isEmpty(server.getVariables()))
 				server.setVariables(null);
 		});
 		return servers;
@@ -487,26 +498,27 @@ public class OpenAPIService {
 	 * Resolve properties info.
 	 *
 	 * @param info the info
+	 * @param locale the locale
 	 * @return the info
 	 */
-	private Info resolveProperties(Info info) {
+	private Info resolveProperties(Info info, Locale locale) {
 		PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
-		resolveProperty(info::getTitle, info::title, propertyResolverUtils);
-		resolveProperty(info::getDescription, info::description, propertyResolverUtils);
-		resolveProperty(info::getVersion, info::version, propertyResolverUtils);
-		resolveProperty(info::getTermsOfService, info::termsOfService, propertyResolverUtils);
+		resolveProperty(info::getTitle, info::title, propertyResolverUtils, locale);
+		resolveProperty(info::getDescription, info::description, propertyResolverUtils, locale);
+		resolveProperty(info::getVersion, info::version, propertyResolverUtils, locale);
+		resolveProperty(info::getTermsOfService, info::termsOfService, propertyResolverUtils, locale);
 
 		License license = info.getLicense();
 		if (license != null) {
-			resolveProperty(license::getName, license::name, propertyResolverUtils);
-			resolveProperty(license::getUrl, license::url, propertyResolverUtils);
+			resolveProperty(license::getName, license::name, propertyResolverUtils, locale);
+			resolveProperty(license::getUrl, license::url, propertyResolverUtils, locale);
 		}
 
 		Contact contact = info.getContact();
 		if (contact != null) {
-			resolveProperty(contact::getName, contact::name, propertyResolverUtils);
-			resolveProperty(contact::getEmail, contact::email, propertyResolverUtils);
-			resolveProperty(contact::getUrl, contact::url, propertyResolverUtils);
+			resolveProperty(contact::getName, contact::name, propertyResolverUtils, locale);
+			resolveProperty(contact::getEmail, contact::email, propertyResolverUtils, locale);
+			resolveProperty(contact::getUrl, contact::url, propertyResolverUtils, locale);
 		}
 		return info;
 	}
@@ -517,12 +529,13 @@ public class OpenAPIService {
 	 * @param getProperty the get property
 	 * @param setProperty the set property
 	 * @param propertyResolverUtils the property resolver utils
+	 * @param locale the locale
 	 */
 	private void resolveProperty(Supplier<String> getProperty, Consumer<String> setProperty,
-			PropertyResolverUtils propertyResolverUtils) {
+			PropertyResolverUtils propertyResolverUtils, Locale locale) {
 		String value = getProperty.get();
 		if (StringUtils.isNotBlank(value)) {
-			setProperty.accept(propertyResolverUtils.resolve(value));
+			setProperty.accept(propertyResolverUtils.resolve(value, locale));
 		}
 	}
 
@@ -531,7 +544,7 @@ public class OpenAPIService {
 	 *
 	 * @param components the components
 	 */
-	private void calculateSecuritySchemes(Components components) {
+	private void calculateSecuritySchemes(Components components,Locale locale) {
 		// Look for SecurityScheme in a spring managed bean
 		Map<String, Object> securitySchemeBeans = context
 				.getBeansWithAnnotation(io.swagger.v3.oas.annotations.security.SecurityScheme.class);
@@ -539,7 +552,7 @@ public class OpenAPIService {
 			for (Map.Entry<String, Object> entry : securitySchemeBeans.entrySet()) {
 				Class<?> objClz = entry.getValue().getClass();
 				Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = AnnotatedElementUtils.findMergedRepeatableAnnotations(objClz, io.swagger.v3.oas.annotations.security.SecurityScheme.class);
-				this.addSecurityScheme(apiSecurityScheme, components);
+				this.addSecurityScheme(apiSecurityScheme, components, locale);
 			}
 		}
 
@@ -554,7 +567,7 @@ public class OpenAPIService {
 				List<String> packagesToScan = AutoConfigurationPackages.get(context);
 				Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = getSecuritySchemesClasses(
 						scanner, packagesToScan);
-				this.addSecurityScheme(apiSecurityScheme, components);
+				this.addSecurityScheme(apiSecurityScheme, components, locale);
 			}
 
 		}
@@ -565,11 +578,12 @@ public class OpenAPIService {
 	 *
 	 * @param apiSecurityScheme the api security scheme
 	 * @param components the components
+	 * @param locale the locale
 	 */
 	private void addSecurityScheme(Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme,
-			Components components) {
+			Components components, Locale locale) {
 		for (io.swagger.v3.oas.annotations.security.SecurityScheme securitySchemeAnnotation : apiSecurityScheme) {
-			Optional<SecuritySchemePair> securityScheme = securityParser.getSecurityScheme(securitySchemeAnnotation);
+			Optional<SecuritySchemePair> securityScheme = securityParser.getSecurityScheme(securitySchemeAnnotation, locale);
 			if (securityScheme.isPresent()) {
 				Map<String, SecurityScheme> securitySchemeMap = new HashMap<>();
 				if (StringUtils.isNotBlank(securityScheme.get().getKey())) {

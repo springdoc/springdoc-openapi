@@ -26,6 +26,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -73,7 +74,7 @@ public class SpringDocApp81Test extends AbstractCommonTest {
         when(request.getURI()).thenReturn(URI.create("http://localhost"));
 
         String expected = getContent("results/app81.json");
-        String openApi = resource.openapiJson(request, "").block();
+        String openApi = resource.openapiJson(request, "", Locale.US).block();
         assertEquals(expected, openApi, true);
     }
 

@@ -26,6 +26,7 @@ package org.springdoc.data.rest;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -182,7 +183,14 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	}
 
 
-	public List<RouterOperation> getRouterOperations(OpenAPI openAPI) {
+	/**
+	 * Gets router operations.
+	 *
+	 * @param openAPI the open api
+	 * @param locale the locale
+	 * @return the router operations
+	 */
+	public List<RouterOperation> getRouterOperations(OpenAPI openAPI, Locale locale) {
 		List<RouterOperation> routerOperationList = new ArrayList<>();
 		handlerMappingList = getHandlerMappingList();
 		for (Class<?> domainType : repositories) {
@@ -205,7 +213,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 								.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 						dataRestRepository.setControllerType(ControllerType.ENTITY);
-						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
+						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI, locale);
 
 						Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFilteredMethodMap = handlerMethodMap.entrySet().stream()
 								.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_PROPERTY_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
@@ -221,7 +229,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 								dataRestRepository.setCollectionLike(property.isCollectionLike());
 								dataRestRepository.setMap(property.isMap());
 								dataRestRepository.setPropertyType(property.getActualType());
-								findControllers(routerOperationList, handlerMethodMapFilteredMethodMap, resourceMetadata, dataRestRepository, openAPI);
+								findControllers(routerOperationList, handlerMethodMapFilteredMethodMap, resourceMetadata, dataRestRepository, openAPI, locale);
 							}
 						});
 					}
@@ -234,19 +242,19 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 								.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 						dataRestRepository.setControllerType(ControllerType.SCHEMA);
-						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
+						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI, locale);
 						handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
 								.filter(requestMappingInfoHandlerMethodEntry -> ProfileController.class.equals(requestMappingInfoHandlerMethodEntry
 										.getValue().getBeanType()) || AlpsController.class.equals(requestMappingInfoHandlerMethodEntry
 										.getValue().getBeanType()))
 								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 						dataRestRepository.setControllerType(ControllerType.GENERAL);
-						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
+						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI, locale);
 					}
 				}
 			}
 			// search
-			findSearchResourceMappings(openAPI, routerOperationList, handlerMappingList, dataRestRepository, resourceMetadata);
+			findSearchResourceMappings(openAPI, routerOperationList, handlerMappingList, dataRestRepository, resourceMetadata, locale);
 		}
 		return routerOperationList;
 	}
@@ -328,8 +336,10 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param handlerMappingList the handler mapping list
 	 * @param dataRestRepository the repository data rest
 	 * @param resourceMetadata the resource metadata
+	 * @param locale the locale
 	 */
-	private void findSearchResourceMappings(OpenAPI openAPI, List<RouterOperation> routerOperationList, List<HandlerMapping> handlerMappingList, DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata) {
+	private void findSearchResourceMappings(OpenAPI openAPI, List<RouterOperation> routerOperationList, List<HandlerMapping> handlerMappingList,
+			DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata, Locale locale) {
 		for (HandlerMapping handlerMapping : handlerMappingList) {
 			if (handlerMapping instanceof RepositoryRestHandlerMapping) {
 				RepositoryRestHandlerMapping repositoryRestHandlerMapping = (RepositoryRestHandlerMapping) handlerMapping;
@@ -342,7 +352,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 				ResourceMetadata metadata = associations.getMetadataFor(dataRestRepository.getDomainType());
 				SearchResourceMappings searchResourceMappings = metadata.getSearchResourceMappings();
 				if (searchResourceMappings.isExported()) {
-					findSearchControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI, searchResourceMappings);
+					findSearchControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI, searchResourceMappings, locale);
 				}
 			}
 		}
@@ -357,14 +367,15 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
 	 * @param searchResourceMappings the search resource mappings
+	 * @param locale the locale
 	 * @return the list
 	 */
 	private List<RouterOperation> findSearchControllers(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository,
-			OpenAPI openAPI, SearchResourceMappings searchResourceMappings) {
+			OpenAPI openAPI, SearchResourceMappings searchResourceMappings, Locale locale) {
 		Stream<MethodResourceMapping> methodResourceMappingStream = searchResourceMappings.getExportedMappings();
 		methodResourceMappingStream.forEach(methodResourceMapping -> dataRestRouterOperationService.buildSearchRouterOperationList(
-				routerOperationList, handlerMethodMap, resourceMetadata, dataRestRepository, openAPI, methodResourceMapping));
+				routerOperationList, handlerMethodMap, resourceMetadata, dataRestRepository, openAPI, methodResourceMapping, locale));
 		return routerOperationList;
 	}
 
@@ -377,13 +388,14 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param resourceMetadata the resource metadata
 	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
+	 * @param locale the locale
 	 * @return the list
 	 */
 	private List<RouterOperation> findControllers(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
-			DataRestRepository dataRestRepository, OpenAPI openAPI) {
+			DataRestRepository dataRestRepository, OpenAPI openAPI, Locale locale) {
 		dataRestRouterOperationService.buildEntityRouterOperationList(routerOperationList, handlerMethodMap, resourceMetadata,
-				dataRestRepository, openAPI);
+				dataRestRepository, openAPI,locale );
 		return routerOperationList;
 	}
 

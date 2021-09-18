@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -215,10 +216,11 @@ public class SecurityService {
 	 * Gets security scheme.
 	 *
 	 * @param securityScheme the security scheme
+	 * @param locale the locale
 	 * @return the security scheme
 	 */
 	public Optional<SecuritySchemePair> getSecurityScheme(
-			io.swagger.v3.oas.annotations.security.SecurityScheme securityScheme) {
+			io.swagger.v3.oas.annotations.security.SecurityScheme securityScheme, Locale locale) {
 		if (securityScheme == null)
 			return Optional.empty();
 		String key = null;
@@ -231,7 +233,7 @@ public class SecurityService {
 			securitySchemeObject.setType(getType(securityScheme.type().toString()));
 
 		if (StringUtils.isNotBlank(securityScheme.openIdConnectUrl()))
-			securitySchemeObject.setOpenIdConnectUrl(propertyResolverUtils.resolve(securityScheme.openIdConnectUrl()));
+			securitySchemeObject.setOpenIdConnectUrl(propertyResolverUtils.resolve(securityScheme.openIdConnectUrl(), locale));
 
 		if (StringUtils.isNotBlank(securityScheme.scheme()))
 			securitySchemeObject.setScheme(securityScheme.scheme());
@@ -258,7 +260,7 @@ public class SecurityService {
 			extensions.forEach(securitySchemeObject::addExtension);
 		}
 
-		getOAuthFlows(securityScheme.flows()).ifPresent(securitySchemeObject::setFlows);
+		getOAuthFlows(securityScheme.flows(), locale).ifPresent(securitySchemeObject::setFlows);
 
 		SecuritySchemePair result = new SecuritySchemePair(key, securitySchemeObject);
 		return Optional.of(result);
@@ -282,9 +284,10 @@ public class SecurityService {
 	 * Gets o auth flows.
 	 *
 	 * @param oAuthFlows the o auth flows
+	 * @param locale the locale
 	 * @return the o auth flows
 	 */
-	private Optional<OAuthFlows> getOAuthFlows(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows) {
+	private Optional<OAuthFlows> getOAuthFlows(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows, Locale locale) {
 		if (isEmpty(oAuthFlows))
 			return Optional.empty();
 
@@ -293,10 +296,10 @@ public class SecurityService {
 			Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlows.extensions());
 			extensions.forEach(oAuthFlowsObject::addExtension);
 		}
-		getOAuthFlow(oAuthFlows.authorizationCode()).ifPresent(oAuthFlowsObject::setAuthorizationCode);
-		getOAuthFlow(oAuthFlows.clientCredentials()).ifPresent(oAuthFlowsObject::setClientCredentials);
-		getOAuthFlow(oAuthFlows.implicit()).ifPresent(oAuthFlowsObject::setImplicit);
-		getOAuthFlow(oAuthFlows.password()).ifPresent(oAuthFlowsObject::setPassword);
+		getOAuthFlow(oAuthFlows.authorizationCode(), locale).ifPresent(oAuthFlowsObject::setAuthorizationCode);
+		getOAuthFlow(oAuthFlows.clientCredentials(), locale).ifPresent(oAuthFlowsObject::setClientCredentials);
+		getOAuthFlow(oAuthFlows.implicit(), locale).ifPresent(oAuthFlowsObject::setImplicit);
+		getOAuthFlow(oAuthFlows.password(), locale).ifPresent(oAuthFlowsObject::setPassword);
 		return Optional.of(oAuthFlowsObject);
 	}
 
@@ -304,21 +307,22 @@ public class SecurityService {
 	 * Gets o auth flow.
 	 *
 	 * @param oAuthFlow the o auth flow
+	 * @param locale the locale
 	 * @return the o auth flow
 	 */
-	private Optional<OAuthFlow> getOAuthFlow(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow) {
+	private Optional<OAuthFlow> getOAuthFlow(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow, Locale locale) {
 		if (isEmpty(oAuthFlow)) {
 			return Optional.empty();
 		}
 		OAuthFlow oAuthFlowObject = new OAuthFlow();
 		if (StringUtils.isNotBlank(oAuthFlow.authorizationUrl()))
-			oAuthFlowObject.setAuthorizationUrl(propertyResolverUtils.resolve(oAuthFlow.authorizationUrl()));
+			oAuthFlowObject.setAuthorizationUrl(propertyResolverUtils.resolve(oAuthFlow.authorizationUrl(), locale));
 
 		if (StringUtils.isNotBlank(oAuthFlow.refreshUrl()))
-			oAuthFlowObject.setRefreshUrl(propertyResolverUtils.resolve(oAuthFlow.refreshUrl()));
+			oAuthFlowObject.setRefreshUrl(propertyResolverUtils.resolve(oAuthFlow.refreshUrl(), locale));
 
 		if (StringUtils.isNotBlank(oAuthFlow.tokenUrl()))
-			oAuthFlowObject.setTokenUrl(propertyResolverUtils.resolve(oAuthFlow.tokenUrl()));
+			oAuthFlowObject.setTokenUrl(propertyResolverUtils.resolve(oAuthFlow.tokenUrl(), locale));
 
 		if (oAuthFlow.extensions().length > 0) {
 			Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlow.extensions());

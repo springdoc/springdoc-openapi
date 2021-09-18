@@ -1,6 +1,7 @@
 package org.springdoc.core;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import io.swagger.v3.oas.models.OpenAPI;
@@ -16,9 +17,10 @@ public interface RepositoryRestResourceProvider {
 	 * Gets router operations.
 	 *
 	 * @param openAPI the open api
+	 * @param locale the locale
 	 * @return the router operations
 	 */
-	List<RouterOperation> getRouterOperations(OpenAPI openAPI);
+	List<RouterOperation> getRouterOperations(OpenAPI openAPI, Locale locale);
 
 	/**
 	 * Gets repository rest controller endpoints.

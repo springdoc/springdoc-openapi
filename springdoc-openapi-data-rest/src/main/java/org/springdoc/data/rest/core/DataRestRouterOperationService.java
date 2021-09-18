@@ -26,6 +26,7 @@ package org.springdoc.data.rest.core;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -116,14 +117,15 @@ public class DataRestRouterOperationService {
 	 * @param resourceMetadata the resource metadata
 	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
+	 * @param locale the locale
 	 */
 	public void buildEntityRouterOperationList(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
-			DataRestRepository dataRestRepository, OpenAPI openAPI) {
+			DataRestRepository dataRestRepository, OpenAPI openAPI, Locale locale) {
 		String path = resourceMetadata.getPath().toString();
 		ControllerType controllerType = dataRestRepository.getControllerType();
 		for (Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethodMap.entrySet()) {
-			buildRouterOperationList(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path, entry, null, controllerType, null);
+			buildRouterOperationList(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path, entry, null, controllerType, null, locale);
 		}
 	}
 
@@ -136,16 +138,17 @@ public class DataRestRouterOperationService {
 	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
 	 * @param methodResourceMapping the method resource mapping
+	 * @param locale the locale
 	 */
 	public void buildSearchRouterOperationList(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
-			DataRestRepository dataRestRepository, OpenAPI openAPI, MethodResourceMapping methodResourceMapping) {
+			DataRestRepository dataRestRepository, OpenAPI openAPI, MethodResourceMapping methodResourceMapping, Locale locale) {
 		String path = resourceMetadata.getPath().toString();
 		Path subPath = methodResourceMapping.getPath();
-		Optional<Entry<RequestMappingInfo, HandlerMethod>> entryOptional = getSearchEntry(handlerMethodMap);
+		Optional<Entry<RequestMappingInfo, HandlerMethod>> entryOptional = getSearchEntry(handlerMethodMap, locale);
 		if (entryOptional.isPresent()) {
 			Entry<RequestMappingInfo, HandlerMethod> entry = entryOptional.get();
-			buildRouterOperationList(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path, entry, subPath.toString(), ControllerType.SEARCH, methodResourceMapping);
+			buildRouterOperationList(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path, entry, subPath.toString(), ControllerType.SEARCH, methodResourceMapping, locale);
 		}
 	}
 
@@ -161,10 +164,11 @@ public class DataRestRouterOperationService {
 	 * @param subPath the sub path
 	 * @param controllerType the controllerType
 	 * @param methodResourceMapping the method resource mapping
+	 * @param locale the locale
 	 */
 	private void buildRouterOperationList(List<RouterOperation> routerOperationList, ResourceMetadata resourceMetadata,
 			DataRestRepository dataRestRepository, OpenAPI openAPI, String path, Entry<RequestMappingInfo, HandlerMethod> entry,
-			String subPath, ControllerType controllerType, MethodResourceMapping methodResourceMapping) {
+			String subPath, ControllerType controllerType, MethodResourceMapping methodResourceMapping, Locale locale) {
 		RequestMappingInfo requestMappingInfo = entry.getKey();
 		HandlerMethod handlerMethod = entry.getValue();
 		Set<RequestMethod> requestMethodsItem = null;
@@ -177,7 +181,7 @@ public class DataRestRouterOperationService {
 					.collect(Collectors.toSet());
 
 			buildRouterOperation(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path,
-					subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethodsItem, ResourceType.ITEM);
+					subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethodsItem, ResourceType.ITEM, locale);
 
 			if (!ControllerType.PROPERTY.equals(controllerType)) {
 				HttpMethods httpMethodsCollection = resourceMetadata.getSupportedHttpMethods().getMethodsFor(ResourceType.COLLECTION);
@@ -185,13 +189,13 @@ public class DataRestRouterOperationService {
 						.collect(Collectors.toSet());
 
 				buildRouterOperation(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path,
-						subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethodsCollection, ResourceType.COLLECTION);
+						subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethodsCollection, ResourceType.COLLECTION, locale);
 			}
 
 		}
 		else {
 			buildRouterOperation(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path,
-					subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethods, null);
+					subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethods, null, locale);
 		}
 
 	}
@@ -211,10 +215,11 @@ public class DataRestRouterOperationService {
 	 * @param handlerMethod the handler method
 	 * @param requestMethodsCollection the request methods collection
 	 * @param collection the collection
+	 * @param locale the locale
 	 */
 	private void buildRouterOperation(List<RouterOperation> routerOperationList, ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository,
 			OpenAPI openAPI, String path, String subPath, ControllerType controllerType, MethodResourceMapping methodResourceMapping, RequestMappingInfo requestMappingInfo,
-			HandlerMethod handlerMethod, Set<RequestMethod> requestMethodsCollection, ResourceType collection) {
+			HandlerMethod handlerMethod, Set<RequestMethod> requestMethodsCollection, ResourceType collection, Locale locale) {
 		if (!CollectionUtils.isEmpty(requestMethodsCollection))
 			for (RequestMethod requestMethod : requestMethodsCollection) {
 				if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
@@ -225,7 +230,7 @@ public class DataRestRouterOperationService {
 						String operationPath = calculateOperationPath(path, subPath, patterns, regexMap, controllerType, relationName, collection);
 						if (operationPath != null)
 							buildRouterOperation(routerOperationList, dataRestRepository, openAPI, methodResourceMapping,
-									handlerMethod, requestMethod, resourceMetadata, operationPath, controllerType);
+									handlerMethod, requestMethod, resourceMetadata, operationPath, controllerType, locale);
 					}
 				}
 			}
@@ -273,15 +278,16 @@ public class DataRestRouterOperationService {
 	 * @param resourceMetadata the resource metadata
 	 * @param operationPath the operation path
 	 * @param controllerType the controller type
+	 * @param locale the locale
 	 */
 	private void buildRouterOperation
 	(List<RouterOperation> routerOperationList, DataRestRepository
 			dataRestRepository, OpenAPI openAPI,
 			MethodResourceMapping methodResourceMapping, HandlerMethod handlerMethod,
 			RequestMethod requestMethod, ResourceMetadata resourceMetadata, String
-			operationPath, ControllerType controllerType) {
+			operationPath, ControllerType controllerType, Locale locale) {
 		RouterOperation routerOperation = new RouterOperation(operationPath, new RequestMethod[] { requestMethod });
-		MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType());
+		MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), locale);
 		methodAttributes.calculateConsumesProduces(handlerMethod.getMethod());
 		routerOperation.setConsumes(methodAttributes.getMethodConsumes());
 		routerOperation.setProduces(methodAttributes.getMethodProduces());
@@ -296,17 +302,18 @@ public class DataRestRouterOperationService {
 	 * Gets search entry.
 	 *
 	 * @param handlerMethodMap the handler method map
+	 * @param locale the locale
 	 * @return the search entry
 	 */
 	private Optional<Entry<RequestMappingInfo, HandlerMethod>> getSearchEntry
-	(Map<RequestMappingInfo, HandlerMethod> handlerMethodMap) {
+	(Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, Locale locale) {
 		return handlerMethodMap.entrySet().stream().filter(
 				requestMappingInfoHandlerMethodEntry -> {
 					RequestMappingInfo requestMappingInfo = requestMappingInfoHandlerMethodEntry.getKey();
 					HandlerMethod handlerMethod = requestMappingInfoHandlerMethodEntry.getValue();
 					Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 					for (RequestMethod requestMethod : requestMethods) {
-						if (isSearchControllerPresent(requestMappingInfo, handlerMethod, requestMethod))
+						if (isSearchControllerPresent(requestMappingInfo, handlerMethod, requestMethod, locale))
 							return true;
 					}
 					return false;
@@ -319,9 +326,10 @@ public class DataRestRouterOperationService {
 	 * @param requestMappingInfo the request mapping info
 	 * @param handlerMethod the handler method
 	 * @param requestMethod the request method
+	 * @param locale the locale
 	 * @return the boolean
 	 */
-	private boolean isSearchControllerPresent(RequestMappingInfo requestMappingInfo, HandlerMethod handlerMethod, RequestMethod requestMethod) {
+	private boolean isSearchControllerPresent(RequestMappingInfo requestMappingInfo, HandlerMethod handlerMethod, RequestMethod requestMethod, Locale locale) {
 		if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
 			Set<String> patterns = getActivePatterns(requestMappingInfo);
 			if (!CollectionUtils.isEmpty(patterns)) {
@@ -330,7 +338,7 @@ public class DataRestRouterOperationService {
 				for (String pattern : patterns) {
 					operationPath = PathUtils.parsePath(pattern, regexMap);
 					if (andCheck(operationPath.contains(REPOSITORY_PATH), operationPath.contains(SEARCH_PATH))) {
-						MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType());
+						MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), locale);
 						methodAttributes.calculateConsumesProduces(handlerMethod.getMethod());
 						if (springDocConfigProperties.getDefaultProducesMediaType().equals(methodAttributes.getMethodProduces()[0]))
 							return true;

@@ -25,6 +25,7 @@ package test.org.springdoc.api.app136;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -70,7 +71,7 @@ public class SpringDocApp136Test extends AbstractCommonTest {
         when(request.getRequestURL()).thenReturn(new StringBuffer("http://localhost"));
 
         String expected = getContent("results/app136.json");
-        String openApi = resource.openapiJson(request, "");
+        String openApi = resource.openapiJson(request, "", Locale.getDefault());
         assertEquals(expected, openApi, true);
     }
 

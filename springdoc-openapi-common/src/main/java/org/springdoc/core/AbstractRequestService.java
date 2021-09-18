@@ -246,7 +246,7 @@ public abstract class AbstractRequestService {
 					io.swagger.v3.oas.annotations.Parameter.class);
 
 			final String pName = methodParameter.getParameterName();
-			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder);
+			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder, methodAttributes.getLocale());
 
 			if (parameterDoc == null)
 				parameterDoc = parametersDocMap.get(parameterInfo.getpName());
@@ -255,7 +255,7 @@ public abstract class AbstractRequestService {
 				if (parameterDoc.hidden() || parameterDoc.schema().hidden())
 					continue;
 
-				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components, methodAttributes.getJsonViewAnnotation());
+				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components, methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
 				parameterInfo.setParameterModel(parameter);
 			}
 
@@ -322,7 +322,7 @@ public abstract class AbstractRequestService {
 			if (entry.getKey() != null && !map.containsKey(entry.getKey()) && !entry.getValue().hidden()) {
 				//Convert
 				Parameter parameter = parameterBuilder.buildParameterFromDoc(entry.getValue(), components,
-						methodAttributes.getJsonViewAnnotation());
+						methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
 				map.put(entry.getKey(), parameter);
 			}
 		}
