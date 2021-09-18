@@ -46,6 +46,8 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
@@ -53,6 +55,7 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -95,6 +98,11 @@ public class GenericResponseService {
 	 * The Controller advice infos.
 	 */
 	private List<ControllerAdviceInfo> controllerAdviceInfos = new ArrayList<>();
+
+	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericResponseService.class);
 
 	/**
 	 * Instantiates a new Generic response builder.
@@ -153,7 +161,11 @@ public class GenericResponseService {
 			if (org.springframework.aop.support.AopUtils.isAopProxy(controllerAdvice))
 				objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerAdvice);
 			ControllerAdviceInfo controllerAdviceInfo = new ControllerAdviceInfo(controllerAdvice);
-			Arrays.stream(ReflectionUtils.getAllDeclaredMethods(objClz)).filter(m -> m.isAnnotationPresent(ExceptionHandler.class)).forEach(methods::add);
+			Class<?> finalObjClz = objClz;
+			Arrays.stream(ReflectionUtils.getAllDeclaredMethods(objClz))
+					.filter(m -> m.isAnnotationPresent(ExceptionHandler.class)
+							|| isResponseEntityExceptionHandlerMethod(m)
+					).forEach(methods::add);
 			// for each one build ApiResponse and add it to existing responses
 			for (Method method : methods) {
 				if (!operationService.isHidden(method)) {
@@ -180,6 +192,26 @@ public class GenericResponseService {
 			}
 			controllerAdviceInfos.add(controllerAdviceInfo);
 		}
+	}
+
+	/**
+	 * Is response entity exception handler method boolean.
+	 *
+	 * @param m the m
+	 * @return the boolean
+	 */
+	private boolean isResponseEntityExceptionHandlerMethod(Method m) {
+		if (AnnotatedElementUtils.hasAnnotation(m.getDeclaringClass(), ControllerAdvice.class)) {
+			try {
+				Class aClass = Class.forName("org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler");
+				if (aClass.isAssignableFrom(m.getDeclaringClass()) && ReflectionUtils.findMethod(aClass, m.getName(), m.getParameterTypes()) != null)
+					return true;
+			}
+			catch (ClassNotFoundException e) {
+				LOGGER.trace(e.getMessage());
+			}
+		}
+		return false;
 	}
 
 	/**
