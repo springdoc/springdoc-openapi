@@ -21,11 +21,14 @@ package test.org.springdoc.api.app14;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "greeting")
 public class HelloController {
 
 	@GetMapping("/persons")
@@ -34,6 +37,7 @@ public class HelloController {
 	}
 
 	@GetMapping("/test")
+	@Tag(name = "lang.change")
 	public HttpEntity<String> demo2() {
 		return null;
 	}

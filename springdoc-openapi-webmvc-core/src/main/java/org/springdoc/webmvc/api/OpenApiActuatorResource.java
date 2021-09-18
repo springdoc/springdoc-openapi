@@ -21,6 +21,7 @@
 package org.springdoc.webmvc.api;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -121,14 +122,15 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * Openapi json string.
 	 *
 	 * @param request the request
+	 * @param locale the locale
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_PATH_SEPARATOR, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String openapiJson(HttpServletRequest request)
+	public String openapiJson(HttpServletRequest request,  Locale locale)
 			throws JsonProcessingException {
-		return super.openapiJson(request, EMPTY);
+		return super.openapiJson(request, EMPTY, locale);
 	}
 
 
@@ -136,14 +138,15 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * Openapi yaml string.
 	 *
 	 * @param request the request
+	 * @param locale the locale
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_YAML_API_DOCS_ACTUATOR_PATH, produces = APPLICATION_OPENAPI_YAML)
-	public String openapiYaml(HttpServletRequest request)
+	public String openapiYaml(HttpServletRequest request, Locale locale)
 			throws JsonProcessingException {
-		return super.openapiYaml(request, YAML);
+		return super.openapiYaml(request, YAML, locale);
 	}
 
 

@@ -20,7 +20,14 @@
 
 package org.springdoc.core;
 
+import java.util.Locale;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 
 /**
  * The type Property resolver utils.
@@ -34,21 +41,46 @@ public class PropertyResolverUtils {
 	private final ConfigurableBeanFactory factory;
 
 	/**
+	 * The Message source.
+	 */
+	private final MessageSource messageSource;
+
+	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(PropertyResolverUtils.class);
+
+	/**
 	 * Instantiates a new Property resolver utils.
 	 *
 	 * @param factory the factory
+	 * @param messageSource the message source
 	 */
-	public PropertyResolverUtils(ConfigurableBeanFactory factory) {
+	public PropertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource) {
 		this.factory = factory;
+		this.messageSource = messageSource;
 	}
 
 	/**
 	 * Resolve string.
 	 *
 	 * @param parameterProperty the parameter property
+	 * @param locale the locale
 	 * @return the string
 	 */
-	public String resolve(String parameterProperty) {
-		return factory.resolveEmbeddedValue(parameterProperty);
+	public String resolve(String parameterProperty, Locale locale) {
+		try {
+			return messageSource.getMessage(parameterProperty, null, locale);
+		}
+		catch (NoSuchMessageException ex) {
+			LOGGER.trace(ex.getMessage());
+		}
+		try {
+			return factory.resolveEmbeddedValue(parameterProperty);
+		}
+		catch (IllegalArgumentException ex) {
+			LOGGER.warn(ex.getMessage());
+		}
+		return parameterProperty;
 	}
 }

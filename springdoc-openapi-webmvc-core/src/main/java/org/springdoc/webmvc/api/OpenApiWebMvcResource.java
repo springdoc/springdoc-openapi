@@ -21,6 +21,7 @@
 package org.springdoc.webmvc.api;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -109,15 +110,16 @@ public class OpenApiWebMvcResource extends OpenApiResource {
 	 *
 	 * @param request the request
 	 * @param apiDocsUrl the api docs url
+	 * @param locale the locale
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Override
-	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl)
+	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
-		return super.openapiJson(request, apiDocsUrl);
+		return super.openapiJson(request, apiDocsUrl, locale);
 	}
 
 	/**
@@ -125,15 +127,16 @@ public class OpenApiWebMvcResource extends OpenApiResource {
 	 *
 	 * @param request the request
 	 * @param apiDocsUrl the api docs url
+	 * @param locale the locale
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
 	@Override
-	public String openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl)
+	public String openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
-		return super.openapiYaml(request, apiDocsUrl);
+		return super.openapiYaml(request, apiDocsUrl, locale);
 	}
 
 	@Override

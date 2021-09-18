@@ -22,6 +22,7 @@ package org.springdoc.core;
 
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -113,45 +114,53 @@ public class MethodAttributes {
 	private String javadocReturn;
 
 	/**
+	 * The Locale.
+	 */
+	private final Locale locale;
+
+	/**
 	 * Instantiates a new Method attributes.
-	 *
 	 * @param methodProducesNew the method produces new
 	 * @param defaultConsumesMediaType the default consumes media type
 	 * @param defaultProducesMediaType the default produces media type
 	 * @param genericMapResponse the generic map response
+	 * @param locale the locale
 	 */
-	public MethodAttributes(String[] methodProducesNew, String defaultConsumesMediaType, String defaultProducesMediaType, Map<String, ApiResponse> genericMapResponse) {
+	public MethodAttributes(String[] methodProducesNew, String defaultConsumesMediaType, String defaultProducesMediaType, Map<String, ApiResponse> genericMapResponse, Locale locale) {
 		this.methodProduces = methodProducesNew;
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
 		this.genericMapResponse = genericMapResponse;
+		this.locale = locale;
 	}
 
 	/**
 	 * Instantiates a new Method attributes.
-	 *
 	 * @param defaultConsumesMediaType the default consumes media type
 	 * @param defaultProducesMediaType the default produces media type
+	 * @param locale the locale
 	 */
-	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType) {
+	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType, Locale locale) {
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
+		this.locale = locale;
 	}
 
 	/**
 	 * Instantiates a new Method attributes.
-	 *
 	 * @param defaultConsumesMediaType the default consumes media type
 	 * @param defaultProducesMediaType the default produces media type
 	 * @param methodConsumes the method consumes
 	 * @param methodProduces the method produces
 	 * @param headers the headers
+	 * @param locale the locale
 	 */
-	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType, String[] methodConsumes, String[] methodProduces, String[] headers) {
+	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType, String[] methodConsumes, String[] methodProduces, String[] headers, Locale locale) {
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
 		this.methodProduces = methodProduces;
 		this.methodConsumes = methodConsumes;
+		this.locale = locale;
 		setHeaders(headers);
 	}
 
@@ -442,5 +451,14 @@ public class MethodAttributes {
 	 */
 	public void setJavadocReturn(String javadocReturn) {
 		this.javadocReturn = javadocReturn;
+	}
+
+	/**
+	 * Gets locale.
+	 *
+	 * @return the locale
+	 */
+	public Locale getLocale() {
+		return locale;
 	}
 }

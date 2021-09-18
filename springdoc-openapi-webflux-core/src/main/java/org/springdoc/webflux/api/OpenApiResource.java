@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -129,13 +130,14 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 *
 	 * @param serverHttpRequest the server http request
 	 * @param apiDocsUrl the api docs url
+	 * @param locale the locale
 	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	protected Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, String apiDocsUrl)
+	protected Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		calculateServerUrl(serverHttpRequest, apiDocsUrl);
-		OpenAPI openAPI = this.getOpenApi();
+		OpenAPI openAPI = this.getOpenApi(locale);
 		return Mono.just(writeJsonValue(openAPI));
 	}
 
@@ -144,27 +146,28 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 *
 	 * @param serverHttpRequest the server http request
 	 * @param apiDocsUrl the api docs url
+	 * @param locale the locale
 	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	protected Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest, String apiDocsUrl)
+	protected Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		calculateServerUrl(serverHttpRequest, apiDocsUrl);
-		OpenAPI openAPI = this.getOpenApi();
+		OpenAPI openAPI = this.getOpenApi(locale);
 		return Mono.just(writeYamlValue(openAPI));
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected void getPaths(Map<String, Object> restControllers) {
+	protected void getPaths(Map<String, Object> restControllers, Locale locale) {
 		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-		calculatePath(restControllers, map);
+		calculatePath(restControllers, map, locale);
 		if (isShowActuator()) {
 			map = optionalActuatorProvider.get().getMethods();
 			this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
-			calculatePath(restControllers, map);
+			calculatePath(restControllers, map, locale);
 		}
-		getWebFluxRouterFunctionPaths();
+		getWebFluxRouterFunctionPaths(locale);
 	}
 
 	/**
@@ -172,8 +175,9 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 *
 	 * @param restControllers the rest controllers
 	 * @param map the map
+	 * @param locale the locale
 	 */
-	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map) {
+	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Locale locale) {
 		List<Map.Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
 		entries.sort(byReversedRequestMappingInfos());
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
@@ -195,7 +199,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 					// default allowed requestmethods
 					if (requestMethods.isEmpty())
 						requestMethods = this.getDefaultAllowedHttpMethods();
-					calculatePath(handlerMethod, operationPath, requestMethods);
+					calculatePath(handlerMethod, operationPath, requestMethods, locale);
 				}
 			}
 		}
@@ -214,15 +218,16 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 
 	/**
 	 * Gets web flux router function paths.
+	 * @param locale the locale
 	 */
-	protected void getWebFluxRouterFunctionPaths() {
+	protected void getWebFluxRouterFunctionPaths(Locale locale) {
 		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
 		Map<String, RouterFunction> routerBeans = Objects.requireNonNull(applicationContext).getBeansOfType(RouterFunction.class);
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
 			RouterFunction routerFunction = entry.getValue();
 			RouterFunctionVisitor routerFunctionVisitor = new RouterFunctionVisitor();
 			routerFunction.accept(routerFunctionVisitor);
-			getRouterFunctionPaths(entry.getKey(), routerFunctionVisitor);
+			getRouterFunctionPaths(entry.getKey(), routerFunctionVisitor, locale);
 		}
 	}
 

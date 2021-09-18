@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -121,11 +122,12 @@ public class OperationService {
 	public OpenAPI parse(io.swagger.v3.oas.annotations.Operation apiOperation,
 			Operation operation, OpenAPI openAPI, MethodAttributes methodAttributes) {
 		Components components = openAPI.getComponents();
+		Locale locale = methodAttributes.getLocale();
 		if (StringUtils.isNotBlank(apiOperation.summary()))
-			operation.setSummary(propertyResolverUtils.resolve(apiOperation.summary()));
+			operation.setSummary(propertyResolverUtils.resolve(apiOperation.summary(),locale));
 
 		if (StringUtils.isNotBlank(apiOperation.description()))
-			operation.setDescription(propertyResolverUtils.resolve(apiOperation.description()));
+			operation.setDescription(propertyResolverUtils.resolve(apiOperation.description(),locale));
 
 		if (StringUtils.isNotBlank(apiOperation.operationId()))
 			operation.setOperationId(getOperationId(apiOperation.operationId(), openAPI));
@@ -146,7 +148,7 @@ public class OperationService {
 		// build parameters
 		for (io.swagger.v3.oas.annotations.Parameter parameterDoc : apiOperation.parameters()) {
 			Parameter parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components,
-					methodAttributes.getJsonViewAnnotation());
+					methodAttributes.getJsonViewAnnotation(),locale);
 			operation.addParametersItem(parameter);
 		}
 

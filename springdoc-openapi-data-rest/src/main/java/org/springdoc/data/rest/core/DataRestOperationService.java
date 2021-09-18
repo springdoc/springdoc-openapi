@@ -250,7 +250,7 @@ public class DataRestOperationService {
 						AnnotatedElementUtils.forAnnotations(reflectParameter.getAnnotations()),
 						io.swagger.v3.oas.annotations.Parameter.class);
 				if (parameterDoc != null && (!parameterDoc.hidden() || parameterDoc.schema().hidden())) {
-					parameter = dataRestRequestService.buildParameterFromDoc(parameterDoc, openAPI.getComponents(), methodAttributes.getJsonViewAnnotation());
+					parameter = dataRestRequestService.buildParameterFromDoc(parameterDoc, openAPI.getComponents(), methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
 					parameter.setName(pName);
 				}
 			}

@@ -32,7 +32,7 @@ public class HelloController {
 
 	@GetMapping(value = "/hello/{numTelco}")
 	@ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
-	@Tag(name = "tea")
+	@Tag(name = "${prop.toto}")
 	public String index(@PathVariable("numTelco") String numTel, String adresse) {
 		return "Greetings from Spring Boot!";
 	}

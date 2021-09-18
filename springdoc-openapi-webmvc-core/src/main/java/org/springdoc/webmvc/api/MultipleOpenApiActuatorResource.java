@@ -21,6 +21,7 @@
 package org.springdoc.webmvc.api;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,14 +82,15 @@ public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 	 *
 	 * @param request the request
 	 * @param group the group
+	 * @param locale the locale
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value =   "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public String openapiJson(HttpServletRequest request, @PathVariable String group)
+	public String openapiJson(HttpServletRequest request, @PathVariable String group,  Locale locale)
 			throws JsonProcessingException {
-		return getOpenApiResourceOrThrow(group).openapiJson(request, "" + DEFAULT_PATH_SEPARATOR + group);
+		return getOpenApiResourceOrThrow(group).openapiJson(request, "" + DEFAULT_PATH_SEPARATOR + group, locale);
 	}
 
 	/**
@@ -96,14 +98,15 @@ public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 	 *
 	 * @param request the request
 	 * @param group the group
+	 * @param locale the locale
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value =  "/{group}/yaml", produces = APPLICATION_OPENAPI_YAML)
-	public String openapiYaml(HttpServletRequest request, @PathVariable String group)
+	public String openapiYaml(HttpServletRequest request, @PathVariable String group, Locale locale)
 			throws JsonProcessingException {
-		return getOpenApiResourceOrThrow(group).openapiYaml(request, "" + DEFAULT_PATH_SEPARATOR + group);
+		return getOpenApiResourceOrThrow(group).openapiYaml(request, "" + DEFAULT_PATH_SEPARATOR + group, locale);
 	}
 
 }

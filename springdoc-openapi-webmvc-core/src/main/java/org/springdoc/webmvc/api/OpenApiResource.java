@@ -26,6 +26,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -164,14 +165,15 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 *
 	 * @param request the request
 	 * @param apiDocsUrl the api docs url
+	 * @param locale the locale
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	public String openapiJson(HttpServletRequest request,
-			String apiDocsUrl)
+			String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		calculateServerUrl(request, apiDocsUrl);
-		OpenAPI openAPI = this.getOpenApi();
+		OpenAPI openAPI = this.getOpenApi(locale);
 		return writeJsonValue(openAPI);
 	}
 
@@ -180,40 +182,41 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 *
 	 * @param request the request
 	 * @param apiDocsUrl the api docs url
+	 * @param locale the locale
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	public String openapiYaml(HttpServletRequest request,
-			String apiDocsUrl)
+			String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		calculateServerUrl(request, apiDocsUrl);
-		OpenAPI openAPI = this.getOpenApi();
+		OpenAPI openAPI = this.getOpenApi(locale);
 		return writeYamlValue(openAPI);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected void getPaths(Map<String, Object> restControllers) {
+	protected void getPaths(Map<String, Object> restControllers, Locale locale) {
 		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 
 		if (repositoryRestResourceProvider.isPresent()) {
 			RepositoryRestResourceProvider restResourceProvider = this.repositoryRestResourceProvider.get();
-			List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPIService.getCalculatedOpenAPI());
-			calculatePath(operationList);
+			List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPIService.getCalculatedOpenAPI(), locale);
+			calculatePath(operationList, locale);
 			restResourceProvider.customize(openAPIService.getCalculatedOpenAPI());
 			Map<RequestMappingInfo, HandlerMethod> mapDataRest = restResourceProvider.getHandlerMethods();
 			Map<String, Object> requestMappingMap =  restResourceProvider.getRepositoryRestControllerEndpoints();
 			Class[] additionalRestClasses = requestMappingMap.values().stream().map(Object::getClass).toArray(Class[]::new);
 			AbstractOpenApiResource.addRestControllers(additionalRestClasses);
-			calculatePath(requestMappingMap, mapDataRest);
+			calculatePath(requestMappingMap, mapDataRest, locale);
 		}
 
-		calculatePath(restControllers, map);
+		calculatePath(restControllers, map, locale);
 
 		if (isShowActuator()) {
 			map = optionalActuatorProvider.get().getMethods();
 			this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
-			calculatePath(restControllers, map);
+			calculatePath(restControllers, map, locale);
 		}
 		if (this.springSecurityOAuth2Provider.isPresent()) {
 			SecurityOAuth2Provider securityOAuth2Provider = this.springSecurityOAuth2Provider.get();
@@ -221,11 +224,11 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			Map<String, Object> requestMappingMapSec = securityOAuth2Provider.getFrameworkEndpoints();
 			Class[] additionalRestClasses = requestMappingMapSec.values().stream().map(Object::getClass).toArray(Class[]::new);
 			AbstractOpenApiResource.addRestControllers(additionalRestClasses);
-			calculatePath(requestMappingMapSec, mapOauth);
+			calculatePath(requestMappingMapSec, mapOauth, locale);
 		}
 
 		routerFunctionProvider.ifPresent(routerFunctions -> routerFunctions.getWebMvcRouterFunctionPaths()
-				.ifPresent(routerBeans -> routerBeans.forEach(this::getRouterFunctionPaths)));
+				.ifPresent(routerBeans -> routerBeans.forEach((beanName, routerFunctionVisitor) -> getRouterFunctionPaths(beanName, routerFunctionVisitor, locale))));
 
 	}
 
@@ -234,8 +237,9 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 *
 	 * @param restControllers the rest controllers
 	 * @param map the map
+	 * @param locale the locale
 	 */
-	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map) {
+	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Locale locale) {
 		List<Map.Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
 		entries.sort(byReversedRequestMappingInfos());
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
@@ -256,7 +260,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 						// default allowed requestmethods
 						if (requestMethods.isEmpty())
 							requestMethods = this.getDefaultAllowedHttpMethods();
-						calculatePath(handlerMethod, operationPath, requestMethods);
+						calculatePath(handlerMethod, operationPath, requestMethods, locale);
 					}
 				}
 			}

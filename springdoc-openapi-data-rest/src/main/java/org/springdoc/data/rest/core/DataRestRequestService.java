@@ -26,6 +26,7 @@ package org.springdoc.data.rest.core;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -153,7 +154,7 @@ public class DataRestRequestService {
 		Class<?> domainType = dataRestRepository.getDomainType();
 		for (MethodParameter methodParameter : parameters) {
 			final String pName = methodParameter.getParameterName();
-			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder);
+			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder, methodAttributes.getLocale());
 			if (isParamToIgnore(methodParameter)) {
 				if (PersistentEntityResource.class.equals(methodParameter.getParameterType())) {
 					Schema<?> schema = SpringDocAnnotationsUtils.resolveSchemaFromType(domainType, openAPI.getComponents(), null, methodParameter.getParameterAnnotations());
@@ -169,7 +170,7 @@ public class DataRestRequestService {
 				if (parameterDoc != null) {
 					if (parameterDoc.hidden() || parameterDoc.schema().hidden())
 						continue;
-					parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, openAPI.getComponents(), methodAttributes.getJsonViewAnnotation());
+					parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, openAPI.getComponents(), methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
 					parameterInfo.setParameterModel(parameter);
 				}
 				if (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()))
@@ -186,10 +187,11 @@ public class DataRestRequestService {
 	 * @param parameterDoc the parameter doc
 	 * @param components the components
 	 * @param jsonViewAnnotation the json view annotation
+	 * @param locale the locale
 	 * @return the parameter
 	 */
-	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonViewAnnotation) {
-		return parameterBuilder.buildParameterFromDoc(parameterDoc, components, jsonViewAnnotation);
+	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonViewAnnotation, Locale locale) {
+		return parameterBuilder.buildParameterFromDoc(parameterDoc, components, jsonViewAnnotation, locale);
 	}
 
 	/**

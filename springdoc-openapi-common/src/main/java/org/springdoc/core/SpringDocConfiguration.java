@@ -22,6 +22,7 @@ package org.springdoc.core;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -62,6 +63,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.format.WebConversionService;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -249,11 +251,12 @@ public class SpringDocConfiguration {
 	 * Property resolver utils property resolver utils.
 	 *
 	 * @param factory the factory
+	 * @param messageSource the message source
 	 * @return the property resolver utils
 	 */
 	@Bean
-	PropertyResolverUtils propertyResolverUtils(ConfigurableBeanFactory factory) {
-		return new PropertyResolverUtils(factory);
+	PropertyResolverUtils propertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource) {
+		return new PropertyResolverUtils(factory, messageSource);
 	}
 
 	/**
@@ -323,7 +326,7 @@ public class SpringDocConfiguration {
 		return openApi -> {
 			Components components = openApi.getComponents();
 			Map<String, Schema> schemas = components.getSchemas();
-			schemas.values().forEach(schema -> openAPIService.resolveProperties(schema, propertyResolverUtils));
+			schemas.values().forEach(schema -> openAPIService.resolveProperties(schema, propertyResolverUtils, Locale.getDefault()));
 		};
 	}
 

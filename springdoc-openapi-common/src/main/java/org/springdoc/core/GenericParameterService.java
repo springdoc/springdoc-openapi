@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -198,15 +199,16 @@ public class GenericParameterService {
 	 * @param parameterDoc the parameter doc
 	 * @param components the components
 	 * @param jsonView the json view
+	 * @param locale the locale
 	 * @return the parameter
 	 */
 	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
-			Components components, JsonView jsonView) {
+			Components components, JsonView jsonView, Locale locale) {
 		Parameter parameter = new Parameter();
 		if (StringUtils.isNotBlank(parameterDoc.description()))
-			parameter.setDescription(propertyResolverUtils.resolve(parameterDoc.description()));
+			parameter.setDescription(propertyResolverUtils.resolve(parameterDoc.description(),locale));
 		if (StringUtils.isNotBlank(parameterDoc.name()))
-			parameter.setName(propertyResolverUtils.resolve(parameterDoc.name()));
+			parameter.setName(propertyResolverUtils.resolve(parameterDoc.name(),locale));
 		if (StringUtils.isNotBlank(parameterDoc.in().toString()))
 			parameter.setIn(parameterDoc.in().toString());
 		if (StringUtils.isNotBlank(parameterDoc.example())) {

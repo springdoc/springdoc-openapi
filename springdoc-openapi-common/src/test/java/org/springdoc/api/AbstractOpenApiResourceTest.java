@@ -20,6 +20,11 @@
 
 package org.springdoc.api;
 
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -39,13 +44,10 @@ import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.fn.RouterOperation;
+
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -109,7 +111,7 @@ class AbstractOpenApiResourceTest {
 		) {
 
 			@Override
-			protected void getPaths(final Map<String, Object> findRestControllers) { }
+			protected void getPaths(final Map<String, Object> findRestControllers, Locale locale) { }
 		};
 	}
 
@@ -137,9 +139,9 @@ class AbstractOpenApiResourceTest {
 		routerOperation.setOperationModel(operation);
 		routerOperation.setPath(PATH);
 
-		resource.calculatePath(routerOperation);
+		resource.calculatePath(routerOperation, Locale.getDefault());
 
-		final List<Parameter> parameters = resource.getOpenApi().getPaths().get(PATH).getGet().getParameters();
+		final List<Parameter> parameters = resource.getOpenApi(Locale.getDefault()).getPaths().get(PATH).getGet().getParameters();
 		assertThat(parameters.size(), is(3));
 		assertThat(parameters, containsInAnyOrder(refParameter, numberParameterInPath, parameterWithoutSchema));
 

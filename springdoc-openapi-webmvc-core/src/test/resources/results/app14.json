@@ -11,10 +11,31 @@
     }
   ],
   "paths": {
+    "/test": {
+      "get": {
+        "tags": [
+          "Change the language",
+          "Hello! Welcome to our website!"
+        ],
+        "operationId": "demo2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/persons": {
       "get": {
         "tags": [
-          "hello-controller"
+          "Hello! Welcome to our website!"
         ],
         "operationId": "persons",
         "parameters": [
@@ -30,26 +51,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          }
-        }
-      }
-    },
-    "/test": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "demo2",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
           }
         }
       }
