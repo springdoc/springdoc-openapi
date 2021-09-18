@@ -36,12 +36,10 @@ import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import reactor.core.publisher.Mono;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.result.condition.PatternsRequestCondition;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
@@ -49,7 +47,6 @@ import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerM
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.pattern.PathPattern;
 
-import static org.springdoc.core.Constants.SWAGGER_CONFIG_URL;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
 import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
@@ -118,20 +115,6 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	@Override
 	public Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
 		return super.redirectToUi(request, response);
-	}
-
-	/**
-	 * Gets swagger ui config.
-	 *
-	 * @param request the request
-	 * @return the swagger ui config
-	 */
-	@Operation(hidden = true)
-	@GetMapping(value = SWAGGER_CONFIG_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	@Override
-	public Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
-		return super.getSwaggerUiConfig(request);
 	}
 
 	@Override

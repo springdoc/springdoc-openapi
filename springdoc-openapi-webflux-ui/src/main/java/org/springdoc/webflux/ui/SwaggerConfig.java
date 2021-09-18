@@ -78,6 +78,18 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	}
 
 	/**
+	 * Swagger config resource swagger config resource.
+	 *
+	 * @param swaggerWelcomeCommon the swagger welcome common
+	 * @return the swagger config resource
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
+	SwaggerConfigResource swaggerConfigResource(SwaggerWelcomeCommon swaggerWelcomeCommon){
+		return new SwaggerConfigResource(swaggerWelcomeCommon);
+	}
+	/**
 	 * Swagger ui home swagger ui home.
 	 *
 	 * @return the swagger ui home
