@@ -163,7 +163,6 @@ public class GenericResponseService {
 			if (org.springframework.aop.support.AopUtils.isAopProxy(controllerAdvice))
 				objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerAdvice);
 			ControllerAdviceInfo controllerAdviceInfo = new ControllerAdviceInfo(controllerAdvice);
-			Class<?> finalObjClz = objClz;
 			Arrays.stream(ReflectionUtils.getAllDeclaredMethods(objClz))
 					.filter(m -> m.isAnnotationPresent(ExceptionHandler.class)
 							|| isResponseEntityExceptionHandlerMethod(m)
