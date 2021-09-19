@@ -31,6 +31,8 @@ import javax.servlet.http.HttpServletRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
@@ -63,6 +65,10 @@ import static org.springdoc.core.Constants.DEFAULT_API_DOCS_URL_YAML;
 @RestController
 public class OpenApiWebMvcResource extends OpenApiResource {
 
+	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(OpenApiWebMvcResource.class);
 	/**
 	 * Instantiates a new Open api web mvc resource.
 	 *
@@ -142,12 +148,16 @@ public class OpenApiWebMvcResource extends OpenApiResource {
 	@Override
 	protected String getServerUrl(HttpServletRequest request, String apiDocsUrl) {
 		String requestUrl = decode(request.getRequestURL().toString());
-		Map<String, Predicate<Class<?>>> paths = ((RequestMappingHandlerMapping) requestMappingHandlerMapping).getPathPrefixes();
 		final String[] prefix = { StringUtils.EMPTY };
-		paths.forEach((path, classPredicate) -> {
-			if (classPredicate.test(this.getClass()))
-				prefix[0] = path;
-		});
+		try {
+			Map<String, Predicate<Class<?>>> paths = ((RequestMappingHandlerMapping) requestMappingHandlerMapping).getPathPrefixes();
+			paths.forEach((path, classPredicate) -> {
+				if (classPredicate.test(this.getClass()))
+					prefix[0] = path;
+			});
+		} catch (NoSuchMethodError exc){
+			LOGGER.warn(" Ignoring Path Prefix. Unable to find getPathPrefixes method using requestMappingHandlerMapping.: {}", exc.getMessage());
+		}
 		return requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length()- prefix[0].length());
 	}
 
