@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springdoc.core.SwaggerUiConfigProperties.SyntaxHighlight;
 
 import static org.springdoc.core.Constants.GROUP_NAME_NOT_NULL;
@@ -643,11 +644,13 @@ public abstract class AbstractSwaggerUiConfigProperties {
 		/**
 		 * The Url.
 		 */
+		@JsonProperty("url")
 		private String url;
 
 		/**
 		 * The Name.
 		 */
+		@JsonProperty("name")
 		private String name;
 
 		/**
