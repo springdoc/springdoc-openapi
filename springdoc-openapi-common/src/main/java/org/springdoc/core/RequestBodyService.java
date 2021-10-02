@@ -124,8 +124,8 @@ public class RequestBodyService {
 	 * @param requestBodyObject the request body object
 	 */
 	private void buildResquestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, String[] classConsumes, String[] methodConsumes, RequestBody requestBodyObject) {
-		Optional<Content> optionalContent = AnnotationsUtils
-				.getContent(requestBody.content(), getConsumes(classConsumes),
+		Optional<Content> optionalContent = SpringDocAnnotationsUtils
+				.getContent(requestBody.content(),getConsumes(classConsumes),
 						getConsumes(methodConsumes), null, components, jsonViewAnnotation);
 		if (requestBodyOp == null) {
 			if (optionalContent.isPresent()) {

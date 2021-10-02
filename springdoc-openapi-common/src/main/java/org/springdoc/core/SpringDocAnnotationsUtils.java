@@ -169,7 +169,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 				content.addMediaType(annotationContent.mediaType(), mediaType);
 			}
 			else {
-				if (mediaType.getSchema() != null)
+				if (mediaType.getSchema() != null || mediaType.getEncoding() != null || mediaType.getExample() != null || mediaType.getExamples() != null || mediaType.getExtensions() != null)
 					applyTypes(classTypes, methodTypes, content, mediaType);
 			}
 		}
