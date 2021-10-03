@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.11] - 2021-10-03
+### Added
+- #1232 - Get CSRF token from local storage 
+- #1256 - Added parent pom.xml as BOM
+- #1258 - Add support for HandlerTypePredicate in spring-web. 
+- #1265 - adding spring support with the official jetbrains compiler plugin
+- #1268 - Added I18n support. 
+- #38   - Derive documentation from javadoc.
+### Changed
+- Upgrade swagger-ui to 3.52.3
+- Upgrade swagger-api to 2.1.11
+- Upgrade spring-boot to 2.5.5
+- #1233 - Operation ids for actuator endpoints.
+### Fixed
+- #1230 - Feign clients that uses SpringMVCContract appears in OpenApi like controllers exposed if spring-boot-starter-actuator is in classpath.
+- #1215 - Bad Pageable description in Page<DumbBuzModel> description.
+- #1215 - Change default behavior of pageable reoslution, outside of spring data rest. 
+- #1252 - Schemas for subclasses not rendered in GraalVM native image builds.
+- #1261 - Removal of SpringdocRouterFunctionDsl.
+- #1188 -  Cannot override servers in api-docs.yaml using OpenApiCustomiser.
+- #1208 - Response schema for overridden methods of ResponseEntityExceptionHandler is not generated.
+- #1276 - Cannot referenced example in RequestBody. 
+- #1277 - Inconsistent casing of swagger-config causes fetch error.
+
 ## [1.5.10] - 2021-07-27
 ### Added
 - #1197 - Add default values for parameter references.
