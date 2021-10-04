@@ -31,6 +31,7 @@ import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
@@ -67,14 +68,14 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
+	 * @param requestMappingInfoHandlerMappingObjectProvider the request mapping handler mapping object provider
 	 * @return the swagger welcome web flux
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
-	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters, Optional<RequestMappingInfoHandlerMapping>  requestMappingHandlerMapping) {
-		return new SwaggerWelcomeWebFlux(swaggerUiConfig,springDocConfigProperties,swaggerUiConfigParameters,requestMappingHandlerMapping);
+	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectProvider<RequestMappingInfoHandlerMapping> requestMappingInfoHandlerMappingObjectProvider) {
+		return new SwaggerWelcomeWebFlux(swaggerUiConfig,springDocConfigProperties,swaggerUiConfigParameters,requestMappingInfoHandlerMappingObjectProvider);
 	}
 
 	/**
