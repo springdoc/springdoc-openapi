@@ -718,7 +718,7 @@ public class SpringDocConfigProperties {
 		}
 
 		/**
-		 * The type Deprecating converter.
+		 * The type Pageable converter.
 		 * @author bnasslashen
 		 */
 		public static class PageableConverter {
