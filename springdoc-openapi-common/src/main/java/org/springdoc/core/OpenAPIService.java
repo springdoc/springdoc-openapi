@@ -26,9 +26,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -396,10 +398,11 @@ public class OpenAPIService {
 
 		Map<String, Schema> properties = schema.getProperties();
 		if (!CollectionUtils.isEmpty(properties)) {
-			Map<String, Schema> resolvedSchemas = properties.entrySet().stream().map(es -> {
+			LinkedHashMap<String, Schema> resolvedSchemas = properties.entrySet().stream().map(es -> {
 				es.setValue(resolveProperties(es.getValue(), propertyResolverUtils, locale));
 				return es;
-			}).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+			}).collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e2,
+					LinkedHashMap::new));
 			schema.setProperties(resolvedSchemas);
 		}
 
@@ -544,7 +547,7 @@ public class OpenAPIService {
 	 *
 	 * @param components the components
 	 */
-	private void calculateSecuritySchemes(Components components,Locale locale) {
+	private void calculateSecuritySchemes(Components components, Locale locale) {
 		// Look for SecurityScheme in a spring managed bean
 		Map<String, Object> securitySchemeBeans = context
 				.getBeansWithAnnotation(io.swagger.v3.oas.annotations.security.SecurityScheme.class);

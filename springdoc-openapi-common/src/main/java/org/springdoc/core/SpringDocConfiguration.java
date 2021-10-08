@@ -71,6 +71,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -326,7 +327,8 @@ public class SpringDocConfiguration {
 		return openApi -> {
 			Components components = openApi.getComponents();
 			Map<String, Schema> schemas = components.getSchemas();
-			schemas.values().forEach(schema -> openAPIService.resolveProperties(schema, propertyResolverUtils, Locale.getDefault()));
+			if (!CollectionUtils.isEmpty(schemas))
+				schemas.values().forEach(schema -> openAPIService.resolveProperties(schema, propertyResolverUtils, Locale.getDefault()));
 		};
 	}
 
