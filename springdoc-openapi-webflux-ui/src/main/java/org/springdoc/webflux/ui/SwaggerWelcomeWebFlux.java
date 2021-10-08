@@ -34,6 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
+import org.springframework.beans.factory.ObjectProvider;
 import reactor.core.publisher.Mono;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -61,7 +62,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	/**
 	 * The Request mapping handler mapping.
 	 */
-	private final Optional<RequestMappingInfoHandlerMapping>  requestMappingInfoHandlerMappingOptional;
+	private final ObjectProvider<RequestMappingInfoHandlerMapping>  requestMappingInfoHandlerMappingObjectProvider;
 
 	/**
 	 * The Path prefix.
@@ -74,12 +75,12 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param requestMappingInfoHandlerMappingOptional the request mapping handler mapping
+	 * @param requestMappingInfoHandlerMappingObjectProvider the request mapping handler mapping object provider
 	 */
 	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,
-			SwaggerUiConfigParameters swaggerUiConfigParameters, Optional<RequestMappingInfoHandlerMapping>  requestMappingInfoHandlerMappingOptional) {
+			SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectProvider<RequestMappingInfoHandlerMapping> requestMappingInfoHandlerMappingObjectProvider) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
-		this.requestMappingInfoHandlerMappingOptional = requestMappingInfoHandlerMappingOptional;
+		this.requestMappingInfoHandlerMappingObjectProvider = requestMappingInfoHandlerMappingObjectProvider;
 	}
 
 	/**
@@ -87,7 +88,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 */
 	@PostConstruct
 	private void init() {
-		requestMappingInfoHandlerMappingOptional.ifPresent(requestMappingHandlerMapping -> {
+		requestMappingInfoHandlerMappingObjectProvider.orderedStream().forEach(requestMappingHandlerMapping -> {
 			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 			List<Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
 			for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
