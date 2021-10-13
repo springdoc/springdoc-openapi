@@ -113,7 +113,7 @@ springdoc.api-docs.enabled=false
 ```
  
 ## Error Handling for REST using @ControllerAdvice
-To generate documentation automatically, make sure all the methods declare the HTTP Code responses using the annotation: @ResponseStatus
+To generate documentation automatically, make sure all the methods declare the HTTP Code responses using the annotation: @ResponseStatus.
 
 ## Adding API Information and Security documentation
   The library uses spring-boot application auto-configured packages to scan for the following annotations in spring beans: OpenAPIDefinition and Info.
