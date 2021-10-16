@@ -156,7 +156,7 @@ springdoc-openapi is relevant and updated regularly due to the valuable contribu
   <img src="https://contrib.rocks/image?repo=springdoc/springdoc-openapi" width="50%"/>
 </a>
 
-Thanks a lot for your support!
+Thanks you all for your support!
 
 ## Additional Support
 * [Spring Team](https://spring.io/team) - Thanks for their support by sharing all relevant resources around Spring projects.
