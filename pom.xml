@@ -4,7 +4,7 @@
 	<artifactId>springdoc-openapi</artifactId>
 	<version>1.5.12-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Spring openapi documentation generator</name>
+	<name>Spring openapi documentation</name>
 	<description>Spring openapi documentation</description>
 	<url>https://springdoc.org/</url>
 
