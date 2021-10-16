@@ -5,7 +5,7 @@
 	<version>1.5.12-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Spring openapi documentation generator</name>
-	<description>Spring openapi documentation generator</description>
+	<description>Spring openapi documentation</description>
 	<url>https://springdoc.org/</url>
 
 	<parent>
