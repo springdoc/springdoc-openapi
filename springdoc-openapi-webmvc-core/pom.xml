@@ -7,7 +7,7 @@
 	</parent>
 	<artifactId>springdoc-openapi-webmvc-core</artifactId>
 	<dependencies>
-		<!-- springdoc-common -->
+		<!-- springdoc-commons -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-common</artifactId>
