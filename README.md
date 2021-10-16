@@ -5,7 +5,7 @@
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/springdoc)](https://stackoverflow.com/questions/tagged/springdoc?tab=Votes)
 
 # Table of Contents
-- [Full documentation](#full-documentation)
+- [Full ](#full-documentation)
 - [**Introduction**](#introduction)
 - [**Getting Started**](#getting-started)
   - [Library for springdoc-openapi integration with spring-boot and swagger-ui](#library-for-springdoc-openapi-integration-with-spring-boot-and-swagger-ui)
