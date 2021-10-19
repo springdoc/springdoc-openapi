@@ -30,8 +30,8 @@ import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import static org.springdoc.core.SpringDocUtils.getConfig;
 import static org.springdoc.core.converters.ConverterUtils.isFluxTypeWrapper;
@@ -45,7 +45,7 @@ import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper
 public class WebFluxSupportConverter implements ModelConverter {
 
 	static {
-		getConfig().addResponseWrapperToIgnore(Mono.class)
+		getConfig().addResponseWrapperToIgnore(Publisher.class)
 				.addFluxWrapperToIgnore(Flux.class);
 	}
 
