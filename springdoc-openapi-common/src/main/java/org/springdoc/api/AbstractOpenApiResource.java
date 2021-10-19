@@ -306,7 +306,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// run the optional customisers
 			List<Server> servers = openApi.getServers();
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
-			if (servers != null && !servers.equals(openApi.getServers()))
+			if ((!CollectionUtils.isEmpty(openApi.getServers()) && !Objects.equals(servers, openApi.getServers())))
 				openAPIService.setServersPresent(true);
 
 			openAPIService.setCachedOpenAPI(openApi);
