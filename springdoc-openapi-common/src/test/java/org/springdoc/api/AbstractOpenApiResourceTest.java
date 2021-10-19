@@ -20,10 +20,7 @@
 
 package org.springdoc.api;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -33,16 +30,16 @@ import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.media.NumberSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.servers.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.GenericResponseService;
-import org.springdoc.core.OpenAPIService;
-import org.springdoc.core.OperationService;
-import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.*;
+import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.fn.RouterOperation;
 
 import org.springframework.beans.factory.ObjectFactory;
@@ -50,10 +47,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -97,8 +97,11 @@ class AbstractOpenApiResourceTest {
 		when(openAPIService.getContext()).thenReturn(context);
 
 		when(openAPIBuilderObjectFactory.getObject()).thenReturn(openAPIService);
+	}
 
-		resource = new AbstractOpenApiResource(
+	@Test
+	void calculatePathFromRouterOperation() {
+		resource = new EmptyPathsOpenApiResource(
 				GROUP_NAME,
 				openAPIBuilderObjectFactory,
 				requestBuilder,
@@ -108,15 +111,8 @@ class AbstractOpenApiResourceTest {
 				Optional.empty(),
 				new SpringDocConfigProperties(),
 				Optional.empty()
-		) {
+		);
 
-			@Override
-			protected void getPaths(final Map<String, Object> findRestControllers, Locale locale) { }
-		};
-	}
-
-	@Test
-	void calculatePathFromRouterOperation() {
 		final Parameter refParameter = new Parameter().$ref(PARAMETER_REFERENCE);
 
 		final Parameter numberParameterInPath = new Parameter()
@@ -159,5 +155,55 @@ class AbstractOpenApiResourceTest {
 		assertThat(parameterWithoutSchema.get$ref(), nullValue());
 		assertThat(parameterWithoutSchema.getSchema(), is(new StringSchema()));
 		assertThat(parameterWithoutSchema.getIn(), is(ParameterIn.QUERY.toString()));
+	}
+
+	@Test
+	void preLoadingModeShouldNotOverwriteServers() throws InterruptedException {
+		when(openAPIService.updateServers(any())).thenCallRealMethod();
+		when(openAPIService.getCachedOpenAPI()).thenCallRealMethod();
+		doAnswer(new CallsRealMethods()).when(openAPIService).setServersPresent(true);
+		doAnswer(new CallsRealMethods()).when(openAPIService).setServerBaseUrl(any());
+		doAnswer(new CallsRealMethods()).when(openAPIService).setCachedOpenAPI(any());
+
+		String customUrl = "https://custom.com";
+		String generatedUrl = "https://generated.com";
+		OpenApiCustomiser openApiCustomiser = openApi -> openApi.setServers(singletonList(new Server().url(customUrl)));
+		SpringDocConfigProperties properties = new SpringDocConfigProperties();
+		properties.setPreLoadingEnabled(true);
+
+		resource = new EmptyPathsOpenApiResource(
+				GROUP_NAME,
+				openAPIBuilderObjectFactory,
+				requestBuilder,
+				responseBuilder,
+				operationParser,
+				Optional.empty(),
+				Optional.of(singletonList(openApiCustomiser)),
+				properties,
+				Optional.empty()
+		);
+
+		// wait for executor to be done
+		Thread.sleep(1_000);
+
+		// emulate generating base url
+		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.updateServers(openAPI);
+
+		OpenAPI after = resource.getOpenApi(Locale.getDefault());
+
+		assertThat(after.getServers().get(0).getUrl(), is(customUrl));
+	}
+
+
+	private static class EmptyPathsOpenApiResource extends AbstractOpenApiResource {
+
+		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
+			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
+		}
+
+		@Override
+		public void getPaths(Map<String, Object> findRestControllers, Locale locale) {
+		}
 	}
 }
