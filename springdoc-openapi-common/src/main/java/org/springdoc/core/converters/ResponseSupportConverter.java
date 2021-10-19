@@ -33,6 +33,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeToIgnore;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper;
+import static org.springdoc.core.converters.ConverterUtils.isFluxTypeWrapper;
 
 /**
  * The type Response support converter.
@@ -45,7 +46,7 @@ public class ResponseSupportConverter implements ModelConverter {
 		JavaType javaType = Json.mapper().constructType(type.getType());
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
-			if (isResponseTypeWrapper(cls)) {
+			if (isResponseTypeWrapper(cls) && !isFluxTypeWrapper(cls)) {
 				JavaType innerType = javaType.getBindings().getBoundType(0);
 				if (innerType == null)
 					return new StringSchema();

@@ -43,7 +43,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -71,7 +71,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -91,7 +91,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -111,7 +111,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -141,7 +141,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -161,7 +161,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -181,7 +181,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -201,7 +201,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -221,7 +221,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -241,7 +241,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -261,7 +261,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -291,7 +291,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -311,7 +311,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -341,7 +341,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -361,7 +361,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -381,7 +381,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -411,7 +411,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -439,7 +439,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -459,7 +459,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -477,7 +477,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -497,7 +497,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublisherResponseEntityObject"
+                  "type": "object"
                 }
               }
             }
@@ -535,9 +535,6 @@
   },
   "components": {
     "schemas": {
-      "PublisherResponseEntityObject": {
-        "type": "object"
-      },
       "Link": {
         "type": "object",
         "properties": {
