@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.12] - 2021-10-20
+### Changed
+- Upgrade swagger-ui to 3.52.5
+- #1282 - #1288 - #1292 - #1293 Use Optional List to inject RequestMappingInfoHandlerMapping. 
+- #1290 - Use Publisher as response wrapper to ignore instead of Mono.
+- #1313 - Upgrading to io.github.classgraph:classgraph to v4.8.116
+- #1296 - Update Demo URLs
+### Fixed
+- #1316 - Hidden controller exposes Operation annotated method
+- #1289 - Fix server address customizing in case of enabled pre-loading mode
+- #1274 - Objects properties order is not preserved with springdoc.api-docs.resolve-schema-properties = true.
+- #1287 - Fix typo of PageableConverter Javadoc
+
 ## [1.5.11] - 2021-10-03
 ### Added
 - #1232 - Get CSRF token from local storage 
