@@ -31,9 +31,9 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 
+import static org.springdoc.core.converters.ConverterUtils.isFluxTypeWrapper;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeToIgnore;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper;
-import static org.springdoc.core.converters.ConverterUtils.isFluxTypeWrapper;
 
 /**
  * The type Response support converter.
