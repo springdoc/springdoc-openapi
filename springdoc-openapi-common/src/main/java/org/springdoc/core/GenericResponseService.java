@@ -106,6 +106,20 @@ public class GenericResponseService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericResponseService.class);
 
 	/**
+	 * The Response entity exception handler class.
+	 */
+	private static Class<?> responseEntityExceptionHandlerClass;
+
+	static {
+		try {
+			responseEntityExceptionHandlerClass = Class.forName("org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler");
+		}
+		catch (ClassNotFoundException classNotFoundException) {
+			LOGGER.trace(classNotFoundException.getMessage());
+		}
+	}
+
+	/**
 	 * Instantiates a new Generic response builder.
 	 *
 	 * @param operationService the operation builder
@@ -202,16 +216,8 @@ public class GenericResponseService {
 	 * @return the boolean
 	 */
 	private boolean isResponseEntityExceptionHandlerMethod(Method m) {
-		if (AnnotatedElementUtils.hasAnnotation(m.getDeclaringClass(), ControllerAdvice.class)) {
-			try {
-				Class aClass = Class.forName("org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler");
-				if (aClass.isAssignableFrom(m.getDeclaringClass()) && ReflectionUtils.findMethod(aClass, m.getName(), m.getParameterTypes()) != null)
-					return true;
-			}
-			catch (ClassNotFoundException e) {
-				LOGGER.trace(e.getMessage());
-			}
-		}
+		if (AnnotatedElementUtils.hasAnnotation(m.getDeclaringClass(), ControllerAdvice.class))
+			return responseEntityExceptionHandlerClass != null && ((responseEntityExceptionHandlerClass.isAssignableFrom(m.getDeclaringClass()) && ReflectionUtils.findMethod(responseEntityExceptionHandlerClass, m.getName(), m.getParameterTypes()) != null));
 		return false;
 	}
 
@@ -238,7 +244,7 @@ public class GenericResponseService {
 					apiResponsesOp.addApiResponse(apiResponseAnnotations.responseCode(), apiResponse);
 					continue;
 				}
-				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotations.description(),methodAttributes.getLocale()));
+				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotations.description(), methodAttributes.getLocale()));
 				buildContentFromDoc(components, apiResponsesOp, methodAttributes, apiResponseAnnotations, apiResponse);
 				Map<String, Object> extensions = AnnotationsUtils.getExtensions(apiResponseAnnotations.extensions());
 				if (!CollectionUtils.isEmpty(extensions))

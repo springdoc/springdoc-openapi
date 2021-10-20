@@ -146,6 +146,25 @@ public class OpenAPIService {
 	 */
 	private String serverBaseUrl;
 
+	private static Class<?> basicErrorController;
+
+	static {
+		try {
+			//spring-boot 2
+			basicErrorController = Class.forName("org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController");
+		}
+		catch (ClassNotFoundException e) {
+			//spring-boot 1
+			try {
+				basicErrorController = Class.forName("org.springframework.boot.autoconfigure.web.BasicErrorController");
+			}
+			catch (ClassNotFoundException classNotFoundException) {
+				//Basic error controller class not found
+				LOGGER.trace(classNotFoundException.getMessage());
+			}
+		}
+	}
+
 	/**
 	 * Instantiates a new Open api builder.
 	 *
@@ -228,21 +247,6 @@ public class OpenAPIService {
 	}
 
 	private void initializeHiddenRestController() {
-		Class basicErrorController = null;
-		try {
-			//spring-boot 2
-			basicErrorController = Class.forName("org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController");
-		}
-		catch (ClassNotFoundException e) {
-			//spring-boot 1
-			try {
-				basicErrorController = Class.forName("org.springframework.boot.autoconfigure.web.BasicErrorController");
-			}
-			catch (ClassNotFoundException classNotFoundException) {
-				//Basic error controller class not found
-				LOGGER.warn(classNotFoundException.getMessage());
-			}
-		}
 		if (basicErrorController != null)
 			getConfig().addHiddenRestControllers(basicErrorController);
 		List<Class<?>> hiddenRestControllers = this.mappingsMap.entrySet().parallelStream()

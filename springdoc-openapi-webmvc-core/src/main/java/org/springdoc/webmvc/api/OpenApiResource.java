@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.PathUtils;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.AbstractRequestService;
@@ -52,12 +51,10 @@ import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.webmvc.core.RouterFunctionProvider;
 
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
@@ -65,7 +62,6 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 
 import static org.springdoc.core.ActuatorProvider.getTag;
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
-import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Web mvc open api resource.
@@ -205,7 +201,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			calculatePath(operationList, locale);
 			restResourceProvider.customize(openAPIService.getCalculatedOpenAPI());
 			Map<RequestMappingInfo, HandlerMethod> mapDataRest = restResourceProvider.getHandlerMethods();
-			Map<String, Object> requestMappingMap =  restResourceProvider.getRepositoryRestControllerEndpoints();
+			Map<String, Object> requestMappingMap = restResourceProvider.getRepositoryRestControllerEndpoints();
 			Class[] additionalRestClasses = requestMappingMap.values().stream().map(Object::getClass).toArray(Class[]::new);
 			AbstractOpenApiResource.addRestControllers(additionalRestClasses);
 			calculatePath(requestMappingMap, mapDataRest, locale);
@@ -253,8 +249,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 					String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 					String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
 					String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
-					if (((isShowActuator() && optionalActuatorProvider.get().isRestController(operationPath, handlerMethod))
-							|| isRestController(restControllers, handlerMethod, operationPath))
+					if ((isRestController(restControllers, handlerMethod, operationPath) || isActuatorRestController(operationPath, handlerMethod))
 							&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
 						Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 						// default allowed requestmethods
@@ -293,27 +288,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	private Comparator<Map.Entry<RequestMappingInfo, HandlerMethod>> byReversedRequestMappingInfos() {
 		return Comparator.<Map.Entry<RequestMappingInfo, HandlerMethod>, String>
-				comparing(a -> a.getKey().toString())
+						comparing(a -> a.getKey().toString())
 				.reversed();
-	}
-
-	/**
-	 * Is rest controller boolean.
-	 *
-	 * @param restControllers the rest controllers
-	 * @param handlerMethod the handler method
-	 * @param operationPath the operation path
-	 * @return the boolean
-	 */
-	protected boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod,
-			String operationPath) {
-		boolean hasOperationAnnotation = AnnotatedElementUtils.hasAnnotation(handlerMethod.getMethod(), Operation.class);
-		if (hasOperationAnnotation)
-			return true;
-
-		return (containsResponseBody(handlerMethod) && restControllers.containsKey(handlerMethod.getBean().toString()) || isAdditionalRestController(handlerMethod.getBeanType()))
-				&& operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-				&& (springDocConfigProperties.isModelAndViewAllowed() || !ModelAndView.class.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}
 
 	/**
@@ -336,6 +312,5 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @return the server url
 	 */
 	protected abstract String getServerUrl(HttpServletRequest request, String apiDocsUrl);
-
 
 }

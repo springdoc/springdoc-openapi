@@ -110,6 +110,7 @@ import static org.springdoc.core.Constants.LINKS_SCHEMA_CUSTOMISER;
 import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
 import static org.springdoc.core.Constants.SPRING_MVC_SERVLET_PATH;
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.isDeprecated;
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Abstract open api resource.
@@ -187,6 +188,20 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * The Group name.
 	 */
 	protected final String groupName;
+
+	/**
+	 * The constant MODEL_AND_VIEW_CLASS.
+	 */
+	private static Class<?> modelAndViewClass;
+
+	static {
+		try {
+			modelAndViewClass = Class.forName("org.springframework.web.servlet.ModelAndView");
+		}
+		catch (ClassNotFoundException classNotFoundException) {
+			LOGGER.trace(classNotFoundException.getMessage());
+		}
+	}
 
 	/**
 	 * Instantiates a new Abstract open api resource.
@@ -586,7 +601,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			else
 				routerOperationList.addAll(Arrays.asList(routerOperations.value()));
 			if (routerOperationList.size() == 1)
-				calculatePath(routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()),locale);
+				calculatePath(routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()), locale);
 			else {
 				List<RouterOperation> operationList = routerOperationList.stream().map(RouterOperation::new).collect(Collectors.toList());
 				mergeRouters(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
@@ -722,6 +737,23 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return responseBodyAnnotation != null;
 	}
 
+
+	/**
+	 * Is rest controller boolean.
+	 *
+	 * @param restControllers the rest controllers
+	 * @param handlerMethod the handler method
+	 * @param operationPath the operation path
+	 * @return the boolean
+	 */
+	protected boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod,
+			String operationPath) {
+		boolean hasOperationAnnotation = AnnotatedElementUtils.hasAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
+
+		return ((containsResponseBody(handlerMethod) || hasOperationAnnotation) && restControllers.containsKey(handlerMethod.getBean().toString()) || isAdditionalRestController(handlerMethod.getBeanType()))
+				&& operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
+				&& (springDocConfigProperties.isModelAndViewAllowed() || modelAndViewClass == null || !modelAndViewClass.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
+	}
 
 	/**
 	 * Is hidden rest controllers boolean.
@@ -1135,6 +1167,17 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected boolean isShowActuator() {
 		return springDocConfigProperties.isShowActuator() && optionalActuatorProvider.isPresent();
+	}
+
+	/**
+	 * Is actuator rest controller boolean.
+	 *
+	 * @param operationPath the operation path
+	 * @param handlerMethod the handler method
+	 * @return the boolean
+	 */
+	protected boolean isActuatorRestController(String operationPath, HandlerMethod handlerMethod) {
+		return isShowActuator() && optionalActuatorProvider.get().isRestController(operationPath, handlerMethod);
 	}
 
 	/**
