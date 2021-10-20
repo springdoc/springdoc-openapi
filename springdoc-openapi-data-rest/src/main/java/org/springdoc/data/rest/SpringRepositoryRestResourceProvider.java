@@ -159,6 +159,25 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	private SpringDocDataRestUtils springDocDataRestUtils;
 
 	/**
+	 * The constant delegatingHandlerMappingClass.
+	 */
+	private static Class delegatingHandlerMappingClass;
+
+	static {
+		try {
+			delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_CLASS);
+		}
+		catch (ClassNotFoundException e) {
+			try {
+				delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_INTERFACE);
+			}
+			catch (ClassNotFoundException exception) {
+				LOGGER.trace(e.getMessage());
+			}
+		}
+	}
+
+	/**
 	 * Instantiates a new Spring repository rest resource provider.
 	 *
 	 * @param mappings the mappings
@@ -302,18 +321,6 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	private List<HandlerMapping> getHandlerMappingList() {
 		if (handlerMappingList == null) {
 			handlerMappingList = new ArrayList<>();
-			Class delegatingHandlerMappingClass = null;
-			try {
-				delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_CLASS);
-			}
-			catch (ClassNotFoundException e) {
-				try {
-					delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_INTERFACE);
-				}
-				catch (ClassNotFoundException exception) {
-					LOGGER.warn(e.getMessage());
-				}
-			}
 			if (delegatingHandlerMappingClass != null) {
 				Object object = applicationContext.getBean(delegatingHandlerMappingClass);
 				try {
@@ -395,7 +402,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
 			DataRestRepository dataRestRepository, OpenAPI openAPI, Locale locale) {
 		dataRestRouterOperationService.buildEntityRouterOperationList(routerOperationList, handlerMethodMap, resourceMetadata,
-				dataRestRepository, openAPI,locale );
+				dataRestRepository, openAPI, locale);
 		return routerOperationList;
 	}
 

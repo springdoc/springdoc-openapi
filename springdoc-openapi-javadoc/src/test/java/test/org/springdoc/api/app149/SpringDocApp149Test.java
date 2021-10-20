@@ -21,10 +21,12 @@ package test.org.springdoc.api.app149;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
 /**
  * The type Spring doc app 149 test.
  */
+@TestPropertySource(properties = "springdoc.model-and-view-allowed=true")
 public class SpringDocApp149Test extends AbstractSpringDocTest {
 
 	/**

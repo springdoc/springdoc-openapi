@@ -18,12 +18,19 @@
 
 package test.org.springdoc.api.app149;
 
+import org.springdoc.core.SpringDocUtils;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = "springdoc.model-and-view-allowed=true")
 public class SpringDocApp149Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
+
+	static {
+		SpringDocUtils.getConfig().addHiddenRestControllers(HiddenHelloController.class);
+	}
 }
