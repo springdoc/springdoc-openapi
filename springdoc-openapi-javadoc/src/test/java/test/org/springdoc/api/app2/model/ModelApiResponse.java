@@ -19,7 +19,6 @@
 package test.org.springdoc.api.app2.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The type Model api response.

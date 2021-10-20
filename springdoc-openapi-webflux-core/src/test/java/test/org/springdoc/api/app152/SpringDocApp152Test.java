@@ -20,9 +20,10 @@
 
 package test.org.springdoc.api.app152;
 
+import test.org.springdoc.api.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import test.org.springdoc.api.AbstractSpringDocTest;
 
 public class SpringDocApp152Test extends AbstractSpringDocTest {
 

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -36,7 +37,6 @@ import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.webmvc.api.OpenApiResource;
 
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -73,19 +73,20 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	/**
 	 * The Request mapping handler mapping.
 	 */
-	private final ObjectProvider<RequestMappingInfoHandlerMapping> requestMappingInfoHandlerMappingObjectProvider;
+	private final Optional<List<RequestMappingInfoHandlerMapping>> requestMappingInfoHandlerMappingOptionalList;
+
 
 	/**
-	 * Instantiates a new Swagger welcome.
+	 * Instantiates a new Swagger welcome web mvc.
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param requestMappingInfoHandlerMappingObjectProvider the request mapping info handler mapping object provider
+	 * @param requestMappingInfoHandlerMappingOptionalList the request mapping info handler mapping optional list
 	 */
-	public SwaggerWelcomeWebMvc(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectProvider<RequestMappingInfoHandlerMapping> requestMappingInfoHandlerMappingObjectProvider) {
+	public SwaggerWelcomeWebMvc(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, Optional<List<RequestMappingInfoHandlerMapping>> requestMappingInfoHandlerMappingOptionalList) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
-		this.requestMappingInfoHandlerMappingObjectProvider = requestMappingInfoHandlerMappingObjectProvider;
+		this.requestMappingInfoHandlerMappingOptionalList = requestMappingInfoHandlerMappingOptionalList;
 	}
 
 	/**
@@ -93,20 +94,23 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	 */
 	@PostConstruct
 	private void init() {
-		requestMappingInfoHandlerMappingObjectProvider.orderedStream().forEach(requestMappingHandlerMapping -> {
-			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-			List<Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
-			for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
-				RequestMappingInfo requestMappingInfo = entry.getKey();
-				Set<String> patterns = OpenApiResource.getActivePatterns(requestMappingInfo);
-				if (!CollectionUtils.isEmpty(patterns)) {
-					for (String operationPath : patterns) {
-						if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
-							pathPrefix =  operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
-					}
-				}
-			}
-		});
+		requestMappingInfoHandlerMappingOptionalList.ifPresent(requestMappingInfoHandlerMappingList ->
+				requestMappingInfoHandlerMappingList.forEach(requestMappingHandlerMapping ->
+						{
+							Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
+							List<Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
+							for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
+								RequestMappingInfo requestMappingInfo = entry.getKey();
+								Set<String> patterns = OpenApiResource.getActivePatterns(requestMappingInfo);
+								if (!CollectionUtils.isEmpty(patterns)) {
+									for (String operationPath : patterns) {
+										if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
+											pathPrefix = operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
+									}
+								}
+							}
+						}
+				));
 	}
 
 	/**
@@ -166,6 +170,6 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	 */
 	@Override
 	protected String buildSwaggerConfigUrl() {
-		return  apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+		return apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
 	}
 }

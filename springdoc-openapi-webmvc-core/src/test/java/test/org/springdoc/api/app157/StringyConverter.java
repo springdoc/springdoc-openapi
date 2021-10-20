@@ -1,13 +1,13 @@
 package test.org.springdoc.api.app157;
 
+import java.util.Iterator;
+
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
-
-import java.util.Iterator;
 
 public class StringyConverter implements ModelConverter {
 

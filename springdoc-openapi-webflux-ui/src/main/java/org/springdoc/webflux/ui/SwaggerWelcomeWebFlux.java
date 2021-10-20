@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -35,7 +36,6 @@ import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import reactor.core.publisher.Mono;
 
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
@@ -61,25 +61,26 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	/**
 	 * The Request mapping handler mapping.
 	 */
-	private final ObjectProvider<RequestMappingInfoHandlerMapping>  requestMappingInfoHandlerMappingObjectProvider;
+	private final Optional<List<RequestMappingInfoHandlerMapping>> requestMappingInfoHandlerMappingOptionalList;
 
 	/**
 	 * The Path prefix.
 	 */
 	private String pathPrefix;
 
+
 	/**
-	 * Instantiates a new Swagger welcome.
+	 * Instantiates a new Swagger welcome web flux.
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param requestMappingInfoHandlerMappingObjectProvider the request mapping handler mapping object provider
+	 * @param requestMappingInfoHandlerMappingOptionalList the request mapping info handler mapping optional list
 	 */
 	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,
-			SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectProvider<RequestMappingInfoHandlerMapping> requestMappingInfoHandlerMappingObjectProvider) {
+			SwaggerUiConfigParameters swaggerUiConfigParameters, Optional<List<RequestMappingInfoHandlerMapping>> requestMappingInfoHandlerMappingOptionalList) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
-		this.requestMappingInfoHandlerMappingObjectProvider = requestMappingInfoHandlerMappingObjectProvider;
+		this.requestMappingInfoHandlerMappingOptionalList = requestMappingInfoHandlerMappingOptionalList;
 	}
 
 	/**
@@ -87,20 +88,21 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 */
 	@PostConstruct
 	private void init() {
-		requestMappingInfoHandlerMappingObjectProvider.orderedStream().forEach(requestMappingHandlerMapping -> {
-			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-			List<Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
-			for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
-				RequestMappingInfo requestMappingInfo = entry.getKey();
-				PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
-				Set<PathPattern> patterns = patternsRequestCondition.getPatterns();
-				for (PathPattern pathPattern : patterns) {
-					String operationPath = pathPattern.getPatternString();
-					if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
-						pathPrefix =  operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
-				}
-			}
-		});
+		requestMappingInfoHandlerMappingOptionalList.ifPresent(requestMappingInfoHandlerMappingList ->
+				requestMappingInfoHandlerMappingList.forEach(requestMappingHandlerMapping -> {
+					Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
+					List<Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
+					for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
+						RequestMappingInfo requestMappingInfo = entry.getKey();
+						PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
+						Set<PathPattern> patterns = patternsRequestCondition.getPatterns();
+						for (PathPattern pathPattern : patterns) {
+							String operationPath = pathPattern.getPatternString();
+							if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
+								pathPrefix = operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
+						}
+					}
+				}));
 	}
 
 	/**
@@ -125,7 +127,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 
 	@Override
 	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
-		if ((oauthPrefix == null && !swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl())) || springDocConfigProperties.isCacheDisabled())  {
+		if ((oauthPrefix == null && !swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl())) || springDocConfigProperties.isCacheDisabled()) {
 			this.oauthPrefix = uriComponentsBuilder.path(contextPath).path(swaggerUiConfigParameters.getUiRootPath()).path(webJarsPrefixUrl);
 			swaggerUiConfigParameters.setOauth2RedirectUrl(this.oauthPrefix.path(getOauth2RedirectUrl()).build().toString());
 		}

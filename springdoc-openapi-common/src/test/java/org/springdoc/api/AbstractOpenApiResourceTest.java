@@ -20,7 +20,10 @@
 
 package org.springdoc.api;
 
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -37,7 +40,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springdoc.core.*;
+import org.springdoc.core.AbstractRequestService;
+import org.springdoc.core.ActuatorProvider;
+import org.springdoc.core.GenericResponseService;
+import org.springdoc.core.OpenAPIService;
+import org.springdoc.core.OperationService;
+import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.fn.RouterOperation;
