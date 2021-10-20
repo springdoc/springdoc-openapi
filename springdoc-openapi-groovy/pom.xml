@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>springdoc-openapi</artifactId>
 		<groupId>org.springdoc</groupId>
-		<version>1.5.12-SNAPSHOT</version>
+		<version>1.5.12</version>
 	</parent>
 	<artifactId>springdoc-openapi-groovy</artifactId>
 	<dependencies>
