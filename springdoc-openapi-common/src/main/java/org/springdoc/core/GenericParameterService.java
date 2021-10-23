@@ -51,9 +51,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 
+import org.springframework.beans.factory.config.BeanExpressionContext;
+import org.springframework.beans.factory.config.BeanExpressionResolver;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.Resource;
+import org.springframework.web.context.request.RequestScope;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -94,6 +98,16 @@ public class GenericParameterService {
 	private final PropertyResolverUtils propertyResolverUtils;
 
 	/**
+	 * The Expression context.
+	 */
+	private BeanExpressionContext expressionContext;
+
+	/**
+	 * The Configurable bean factory.
+	 */
+	private ConfigurableBeanFactory configurableBeanFactory;
+
+	/**
 	 * Instantiates a new Generic parameter builder.
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
@@ -103,6 +117,8 @@ public class GenericParameterService {
 		this.propertyResolverUtils = propertyResolverUtils;
 		this.optionalDelegatingMethodParameterCustomizer = optionalDelegatingMethodParameterCustomizer;
 		this.optionalWebConversionServiceProvider = optionalWebConversionServiceProvider;
+		this.configurableBeanFactory = propertyResolverUtils.getFactory();
+		this.expressionContext = (configurableBeanFactory != null ? new BeanExpressionContext(configurableBeanFactory, new RequestScope()) : null);
 	}
 
 	/**
@@ -206,9 +222,9 @@ public class GenericParameterService {
 			Components components, JsonView jsonView, Locale locale) {
 		Parameter parameter = new Parameter();
 		if (StringUtils.isNotBlank(parameterDoc.description()))
-			parameter.setDescription(propertyResolverUtils.resolve(parameterDoc.description(),locale));
+			parameter.setDescription(propertyResolverUtils.resolve(parameterDoc.description(), locale));
 		if (StringUtils.isNotBlank(parameterDoc.name()))
-			parameter.setName(propertyResolverUtils.resolve(parameterDoc.name(),locale));
+			parameter.setName(propertyResolverUtils.resolve(parameterDoc.name(), locale));
 		if (StringUtils.isNotBlank(parameterDoc.in().toString()))
 			parameter.setIn(parameterDoc.in().toString());
 		if (StringUtils.isNotBlank(parameterDoc.example())) {
@@ -272,7 +288,7 @@ public class GenericParameterService {
 				LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
 			}
 			if (schema == null) {
-				schema =AnnotationsUtils.getSchema(parameterDoc.schema(), parameterDoc.array(), true, parameterDoc.array().schema().implementation(), components, jsonView).orElse(null);
+				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), parameterDoc.array(), true, parameterDoc.array().schema().implementation(), components, jsonView).orElse(null);
 				// default value not set by swagger-core for array !
 				if (schema != null) {
 					Object defaultValue = SpringDocAnnotationsUtils.resolveDefaultValue(parameterDoc.array().arraySchema().defaultValue());
@@ -345,7 +361,7 @@ public class GenericParameterService {
 		else
 			requestBodyInfo.addProperties(paramName, schemaN);
 
-		if(requestBodyInfo.getMergedSchema() !=null && parameterInfo.isRequired())
+		if (requestBodyInfo.getMergedSchema() != null && parameterInfo.isRequired())
 			requestBodyInfo.getMergedSchema().addRequiredItem(parameterInfo.getpName());
 
 		return schemaN;
@@ -488,7 +504,28 @@ public class GenericParameterService {
 		return propertyResolverUtils;
 	}
 
+	/**
+	 * Gets optional web conversion service provider.
+	 *
+	 * @return the optional web conversion service provider
+	 */
 	public Optional<WebConversionServiceProvider> getOptionalWebConversionServiceProvider() {
 		return optionalWebConversionServiceProvider;
+	}
+
+	/**
+	 * Resolve the given annotation-specified value,
+	 * potentially containing placeholders and expressions.
+	 */
+	public Object resolveEmbeddedValuesAndExpressions(String value) {
+		if (this.configurableBeanFactory == null || this.expressionContext == null) {
+			return value;
+		}
+		String placeholdersResolved = this.configurableBeanFactory.resolveEmbeddedValue(value);
+		BeanExpressionResolver exprResolver = this.configurableBeanFactory.getBeanExpressionResolver();
+		if (exprResolver == null) {
+			return value;
+		}
+		return exprResolver.evaluate(placeholdersResolved, this.expressionContext);
 	}
 }

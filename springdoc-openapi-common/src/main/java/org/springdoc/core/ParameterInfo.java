@@ -77,23 +77,31 @@ public class ParameterInfo {
 	 */
 	private boolean requestPart;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterInfo.class);
+	/**
+	 * The Generic parameter service.
+	 */
+	private GenericParameterService genericParameterService;
 
+	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterInfo.class);
 
 	/**
 	 * Instantiates a new Parameter info.
 	 * @param pName the parameter name
 	 * @param methodParameter the method parameter
-	 * @param parameterBuilder the parameter builder
+	 * @param genericParameterService the parameter builder
 	 * @param locale the locale
 	 */
-	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService parameterBuilder, Locale locale) {
-		PropertyResolverUtils propertyResolverUtils = parameterBuilder.getPropertyResolverUtils();
+	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService genericParameterService, Locale locale) {
+		this.genericParameterService = genericParameterService;
+		PropertyResolverUtils propertyResolverUtils = genericParameterService.getPropertyResolverUtils();
 		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
 		RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
 		PathVariable pathVar = methodParameter.getParameterAnnotation(PathVariable.class);
 		CookieValue cookieValue = methodParameter.getParameterAnnotation(CookieValue.class);
-		boolean isFile = parameterBuilder.isFile(methodParameter);
+		boolean isFile = genericParameterService.isFile(methodParameter);
 
 		this.methodParameter = methodParameter;
 		this.pName = pName;
@@ -108,10 +116,10 @@ public class ParameterInfo {
 			calculateParams(cookieValue);
 
 		if (StringUtils.isNotBlank(this.pName))
-			this.pName = propertyResolverUtils.resolve(this.pName, locale);
+			this.pName = genericParameterService.resolveEmbeddedValuesAndExpressions(this.pName).toString();
 		if (this.defaultValue != null && !ValueConstants.DEFAULT_NONE.equals(this.defaultValue.toString())) {
-			this.defaultValue = propertyResolverUtils.resolve(this.defaultValue.toString(), locale);
-			parameterBuilder.getOptionalWebConversionServiceProvider()
+			this.defaultValue = genericParameterService.resolveEmbeddedValuesAndExpressions(this.defaultValue.toString());
+			genericParameterService.getOptionalWebConversionServiceProvider()
 					.ifPresent(conversionService -> {
 								try {
 									this.defaultValue = conversionService.convert(this.defaultValue, new TypeDescriptor(methodParameter));
