@@ -83,4 +83,13 @@ public class PropertyResolverUtils {
 		}
 		return parameterProperty;
 	}
+
+	/**
+	 * Gets factory.
+	 *
+	 * @return the factory
+	 */
+	public ConfigurableBeanFactory getFactory() {
+		return factory;
+	}
 }
