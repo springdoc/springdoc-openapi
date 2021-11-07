@@ -1,1 +1,0 @@
-{"doc":" The type Book repository.\n","fields":[],"enumConstants":[],"methods":[{"name":"findByAuthor","paramTypes":["java.lang.String"],"doc":" Find by author list.\n\n @param author the author \n @return the list\n"},{"name":"findAll","paramTypes":[],"doc":" Find all list.\n\n @return the list\n"}],"constructors":[]}

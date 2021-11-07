@@ -1,1 +1,0 @@
-{"doc":" The type Crud controller.\n\n @param <T>  the type parameter\n","fields":[],"enumConstants":[],"methods":[{"name":"get","paramTypes":["int"],"doc":" Get t.\n\n @param id the id\n @return the t\n"},{"name":"list","paramTypes":[],"doc":" List list.\n\n @return the list\n"}],"constructors":[]}

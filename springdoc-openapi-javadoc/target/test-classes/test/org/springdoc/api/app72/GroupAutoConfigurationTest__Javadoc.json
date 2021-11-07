@@ -1,1 +1,0 @@
-{"doc":" The type Group auto configuration test.\n","fields":[{"name":"contextRunner","doc":" The Context runner.\n"}],"enumConstants":[],"methods":[{"name":"group_configuration_loaded","paramTypes":[],"doc":" Group configuration loaded.\n"}],"constructors":[]}

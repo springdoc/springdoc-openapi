@@ -1,1 +1,0 @@
-{"doc":" The type Custom exception.\n","fields":[],"enumConstants":[],"methods":[],"constructors":[{"name":"<init>","paramTypes":["java.lang.String"],"doc":" Instantiates a new Custom exception.\n\n @param message the message\n"}]}

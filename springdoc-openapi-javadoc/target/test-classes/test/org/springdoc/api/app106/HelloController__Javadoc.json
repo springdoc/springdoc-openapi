@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"findArticles","paramTypes":["java.time.Instant"],"doc":" Find articles response entity.\n\n @param modifiedSince the modified since \n @return the response entity\n"}],"constructors":[]}

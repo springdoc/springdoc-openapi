@@ -1,1 +1,0 @@
-{"doc":" The type Spring doc test app.\n","fields":[],"enumConstants":[],"methods":[{"name":"responseRegistrationCustomizer","paramTypes":["java.util.List"],"doc":" Response registration customizer open api customiser.\n\n @param responsesToRegister the responses to register \n @return the open api customiser\n"}],"constructors":[]}

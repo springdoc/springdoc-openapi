@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"put","paramTypes":["java.lang.String","java.lang.String","test.org.springdoc.api.app82.PersonDTO"],"doc":" Put response entity.\n\n @param configuration the configuration \n @param second the second \n @param personDTO the person dto \n @return the response entity\n"}],"constructors":[]}

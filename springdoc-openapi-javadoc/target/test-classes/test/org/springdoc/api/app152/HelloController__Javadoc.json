@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"helloWorld","paramTypes":[],"doc":" Hello world string.\n\n @return the string\n"}],"constructors":[]}

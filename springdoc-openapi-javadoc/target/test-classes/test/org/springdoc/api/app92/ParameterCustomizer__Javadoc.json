@@ -1,1 +1,0 @@
-{"doc":" The type Parameter customizer.\n","fields":[],"enumConstants":[],"methods":[{"name":"customize","paramTypes":["io.swagger.v3.oas.models.parameters.Parameter","org.springframework.core.MethodParameter"],"doc":" Customize parameter.\n\n @param parameterModel the parameter model \n @param methodParameter the method parameter \n @return the parameter\n"}],"constructors":[]}

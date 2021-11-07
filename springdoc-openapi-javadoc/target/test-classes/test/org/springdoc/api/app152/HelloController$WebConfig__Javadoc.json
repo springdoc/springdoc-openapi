@@ -1,1 +1,0 @@
-{"doc":" The type Web config.\n","fields":[],"enumConstants":[],"methods":[{"name":"configurePathMatch","paramTypes":["org.springframework.web.servlet.config.annotation.PathMatchConfigurer"],"doc":" Configure path match.\n\n @param configurer the configurer\n"}],"constructors":[]}

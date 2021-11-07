@@ -1,1 +1,0 @@
-{"doc":" The type Base controller.\n\n @param <D>  the type parameter\n","fields":[],"enumConstants":[],"methods":[{"name":"create","paramTypes":["test.org.springdoc.api.app122.Wrapper"],"doc":" Create response entity.\n\n @param payload the payload \n @return the response entity\n"}],"constructors":[]}

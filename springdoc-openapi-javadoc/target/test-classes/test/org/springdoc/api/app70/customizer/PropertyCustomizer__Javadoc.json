@@ -1,1 +1,0 @@
-{"doc":" The type Property customizer.\n","fields":[],"enumConstants":[],"methods":[{"name":"customize","paramTypes":["io.swagger.v3.oas.models.media.Schema","io.swagger.v3.core.converter.AnnotatedType"],"doc":" Customize schema.\n\n @param property the property \n @param type the type \n @return the schema\n"}],"constructors":[]}

@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"putItem","paramTypes":["java.lang.String","java.util.UUID","test.org.springdoc.api.app87.HelloController.Item"],"doc":" Put item response entity.\n\n @param cookie the cookie\n @param itemId the item id\n @param item the item\n @return the response entity\n"}],"constructors":[]}

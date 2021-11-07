@@ -1,1 +1,0 @@
-{"doc":" The type Student v 3.\n","fields":[{"name":"name","doc":" The Name.\n"}],"enumConstants":[],"methods":[],"constructors":[{"name":"<init>","paramTypes":["java.lang.String"],"doc":" Instantiates a new Student v 3.\n\n @param name the name\n"}]}

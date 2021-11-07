@@ -1,1 +1,0 @@
-{"doc":" The type Base controller.\n\n @param <TClientModel>  the type parameter\n","fields":[],"enumConstants":[],"methods":[{"name":"get","paramTypes":["test.org.springdoc.api.app93.BaseClientModel"],"doc":" Get t client model.\n\n @param param the param \n @return the t client model\n"}],"constructors":[]}

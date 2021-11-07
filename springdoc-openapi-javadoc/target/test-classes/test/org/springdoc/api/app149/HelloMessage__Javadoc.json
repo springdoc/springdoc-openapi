@@ -1,1 +1,0 @@
-{"doc":" The type Hello message.\n","fields":[{"name":"text","doc":" The Text.\n"},{"name":"number","doc":" The Number.\n"}],"enumConstants":[],"methods":[],"constructors":[{"name":"<init>","paramTypes":["java.lang.String","int"],"doc":" Instantiates a new Hello message.\n\n @param text the text\n @param number the number\n"}]}

@@ -1,1 +1,0 @@
-{"doc":" The type Spring doc test app.\n","fields":[],"enumConstants":[],"methods":[{"name":"customOpenAPI","paramTypes":["java.lang.String","java.lang.String"],"doc":" Custom open api open api.\n\n @param appDesciption the app desciption \n @param appVersion the app version \n @return the open api\n"}],"constructors":[]}

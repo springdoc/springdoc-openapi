@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"postEntity","paramTypes":["test.org.springdoc.api.app29.TrackerData"],"doc":" Post entity list.\n\n @param postEntity the post entity \n @return the list\n"}],"constructors":[]}

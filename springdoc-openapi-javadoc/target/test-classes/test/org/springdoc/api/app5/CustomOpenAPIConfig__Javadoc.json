@@ -1,1 +1,0 @@
-{"doc":" The type Custom open api config.\n","fields":[],"enumConstants":[],"methods":[{"name":"customOpenAPI","paramTypes":[],"doc":" Custom open api open api.\n\n @return the open api\n"}],"constructors":[]}

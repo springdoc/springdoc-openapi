@@ -1,1 +1,0 @@
-{"doc":" The type My exception handler.\n","fields":[],"enumConstants":[],"methods":[{"name":"gateway","paramTypes":["java.lang.RuntimeException"],"doc":" Gateway object.\n\n @param e the e \n @return the object\n"}],"constructors":[]}
