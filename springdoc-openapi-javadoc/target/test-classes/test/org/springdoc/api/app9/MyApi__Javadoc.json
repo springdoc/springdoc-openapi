@@ -1,0 +1,1 @@
+{"doc":" The interface My api.\n","fields":[],"enumConstants":[],"methods":[{"name":"get","paramTypes":["java.lang.String"],"doc":" Get string.\n\n @param language the language \n @return the string\n"}],"constructors":[]}

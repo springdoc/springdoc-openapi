@@ -1,0 +1,1 @@
+{"doc":" The type Stringy converter.\n","fields":[],"enumConstants":[],"methods":[{"name":"resolve","paramTypes":["io.swagger.v3.core.converter.AnnotatedType","io.swagger.v3.core.converter.ModelConverterContext","java.util.Iterator"],"doc":" Resolve schema.\n\n @param type the type\n @param context the context\n @param chain the chain\n @return the schema\n"}],"constructors":[]}

@@ -1,0 +1,1 @@
+{"doc":" The type Inherited request params.\n","fields":[{"name":"childParam","doc":" The Child param.\n"}],"enumConstants":[],"methods":[{"name":"getChildParam","paramTypes":[],"doc":" Gets child param.\n\n @return the child param\n"},{"name":"setChildParam","paramTypes":["java.lang.String"],"doc":" Sets child param.\n\n @param childParam the child param\n"}],"constructors":[]}

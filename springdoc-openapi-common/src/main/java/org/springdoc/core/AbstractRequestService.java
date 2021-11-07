@@ -21,6 +21,7 @@
 package org.springdoc.core;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -58,6 +59,7 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -78,6 +80,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.springdoc.core.Constants.DOT;
 import static org.springdoc.core.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.Constants.OPENAPI_STRING_TYPE;
 import static org.springdoc.core.Constants.QUERY_PARAM;
@@ -267,7 +270,7 @@ public abstract class AbstractRequestService {
 				if (isValidParameter(parameter)) {
 					// Add param javadoc
 					if (StringUtils.isBlank(parameter.getDescription()) && javadocProvider != null) {
-						String paramJavadocDescription = javadocProvider.getParamJavadoc(handlerMethod.getMethod(), pName);
+						String paramJavadocDescription = getParamJavadoc(javadocProvider, methodParameter, pName);
 						if (!StringUtils.isBlank(paramJavadocDescription)) {
 							parameter.setDescription(paramJavadocDescription);
 						}
@@ -281,7 +284,7 @@ public abstract class AbstractRequestService {
 							parameterInfo, requestBodyInfo);
 					// Add requestBody javadoc
 					if (StringUtils.isBlank(requestBodyInfo.getRequestBody().getDescription()) && javadocProvider != null) {
-						String paramJavadocDescription = javadocProvider.getParamJavadoc(handlerMethod.getMethod(), pName);
+						String paramJavadocDescription = getParamJavadoc(javadocProvider, methodParameter, pName);
 						if (!StringUtils.isBlank(paramJavadocDescription)) {
 							requestBodyInfo.getRequestBody().setDescription(paramJavadocDescription);
 						}
@@ -669,6 +672,31 @@ public abstract class AbstractRequestService {
 						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
 						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class) != null)
 						|| (!ClassUtils.isPrimitiveOrWrapper(methodParameter.getParameter().getType()) && (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()) || length == 1)));
+	}
+
+	/**
+	 * Gets param javadoc.
+	 *
+	 * @param javadocProvider the javadoc provider
+	 * @param methodParameter the method parameter
+	 * @param pName the p name
+	 * @return the param javadoc
+	 */
+	private String getParamJavadoc(JavadocProvider javadocProvider, MethodParameter methodParameter, String pName) {
+		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
+		final String paramJavadocDescription;
+		if (delegatingMethodParameter.isParameterObject()) {
+			String fieldName;
+			if (pName.contains(DOT))
+				fieldName = StringUtils.substringAfter(pName, DOT);
+			else
+				fieldName = pName;
+			Field field = FieldUtils.getDeclaredField(((DelegatingMethodParameter) methodParameter).getExecutable().getDeclaringClass(), fieldName, true);
+			paramJavadocDescription = javadocProvider.getFieldJavadoc(field);
+		}
+		else
+			paramJavadocDescription = javadocProvider.getParamJavadoc(methodParameter.getMethod(), pName);
+		return paramJavadocDescription;
 	}
 
 }

@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"getEntityB","paramTypes":[],"doc":" Gets entity b.\n\n @return the entity b\n"}],"constructors":[]}

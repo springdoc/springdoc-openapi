@@ -1,0 +1,1 @@
+{"doc":" The type Operation customizer.\n","fields":[],"enumConstants":[],"methods":[{"name":"customize","paramTypes":["io.swagger.v3.oas.models.Operation","org.springframework.web.method.HandlerMethod"],"doc":" Customize operation.\n\n @param operation the operation \n @param handlerMethod the handler method \n @return the operation\n"}],"constructors":[]}

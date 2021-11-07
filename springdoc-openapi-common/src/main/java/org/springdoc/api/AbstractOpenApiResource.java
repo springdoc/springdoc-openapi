@@ -106,6 +106,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
 
 import static org.springdoc.core.Constants.ACTUATOR_DEFAULT_GROUP;
+import static org.springdoc.core.Constants.DOT;
 import static org.springdoc.core.Constants.LINKS_SCHEMA_CUSTOMISER;
 import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
 import static org.springdoc.core.Constants.SPRING_MVC_SERVLET_PATH;
@@ -667,10 +668,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 		boolean include = CollectionUtils.isEmpty(packagesToScan)
 				|| packagesToScan.stream().anyMatch(pack -> packageName.equals(pack)
-				|| packageName.startsWith(pack + "."));
+				|| packageName.startsWith(pack + DOT));
 		boolean exclude = !CollectionUtils.isEmpty(packagesToExclude)
 				&& (packagesToExclude.stream().anyMatch(pack -> packageName.equals(pack)
-				|| packageName.startsWith(pack + ".")));
+				|| packageName.startsWith(pack + DOT)));
 
 		return include && !exclude;
 	}

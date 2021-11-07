@@ -1,0 +1,72 @@
+/Users/bnasslah/.sdkman/candidates/java/8.0.275.hs-adpt/jre/../bin/javadoc
+@options
+@packages
+-classpath
+'/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-common/target/springdoc-openapi-common-1.5.12-SNAPSHOT.jar:/Users/bnasslah/Documents/tools/repo/org/springframework/boot/spring-boot-autoconfigure/2.5.5/spring-boot-autoconfigure-2.5.5.jar:/Users/bnasslah/Documents/tools/repo/org/springframework/boot/spring-boot/2.5.5/spring-boot-2.5.5.jar:/Users/bnasslah/Documents/tools/repo/org/springframework/spring-web/5.3.10/spring-web-5.3.10.jar:/Users/bnasslah/Documents/tools/repo/org/springframework/spring-beans/5.3.10/spring-beans-5.3.10.jar:/Users/bnasslah/Documents/tools/repo/io/swagger/core/v3/swagger-models/2.1.11/swagger-models-2.1.11.jar:/Users/bnasslah/Documents/tools/repo/com/fasterxml/jackson/core/jackson-annotations/2.12.5/jackson-annotations-2.12.5.jar:/Users/bnasslah/Documents/tools/repo/io/swagger/core/v3/swagger-annotations/2.1.11/swagger-annotations-2.1.11.jar:/Users/bnasslah/Documents/tools/repo/io/swagger/core/v3/swagger-integration/2.1.11/swagger-integration-2.1.11.jar:/Users/bnasslah/Documents/tools/repo/io/swagger/core/v3/swagger-core/2.1.11/swagger-core-2.1.11.jar:/Users/bnasslah/Documents/tools/repo/com/fasterxml/jackson/core/jackson-databind/2.12.5/jackson-databind-2.12.5.jar:/Users/bnasslah/Documents/tools/repo/com/fasterxml/jackson/core/jackson-core/2.12.5/jackson-core-2.12.5.jar:/Users/bnasslah/Documents/tools/repo/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.12.5/jackson-dataformat-yaml-2.12.5.jar:/Users/bnasslah/Documents/tools/repo/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.12.5/jackson-datatype-jsr310-2.12.5.jar:/Users/bnasslah/Documents/tools/repo/io/github/classgraph/classgraph/4.8.116/classgraph-4.8.116.jar:/Users/bnasslah/Documents/tools/repo/org/apache/commons/commons-lang3/3.12.0/commons-lang3-3.12.0.jar:/Users/bnasslah/Documents/tools/repo/com/github/therapi/therapi-runtime-javadoc/0.12.0/therapi-runtime-javadoc-0.12.0.jar:/Users/bnasslah/Documents/tools/repo/org/springframework/spring-aop/5.3.10/spring-aop-5.3.10.jar:/Users/bnasslah/Documents/tools/repo/org/springframework/spring-context/5.3.10/spring-context-5.3.10.jar:/Users/bnasslah/Documents/tools/repo/org/springframework/spring-expression/5.3.10/spring-expression-5.3.10.jar:/Users/bnasslah/Documents/tools/repo/jakarta/validation/jakarta.validation-api/2.0.2/jakarta.validation-api-2.0.2.jar:/Users/bnasslah/Documents/tools/repo/org/yaml/snakeyaml/1.28/snakeyaml-1.28.jar:/Users/bnasslah/Documents/tools/repo/org/slf4j/slf4j-api/1.7.32/slf4j-api-1.7.32.jar:/Users/bnasslah/Documents/tools/repo/jakarta/xml/bind/jakarta.xml.bind-api/2.3.3/jakarta.xml.bind-api-2.3.3.jar:/Users/bnasslah/Documents/tools/repo/jakarta/activation/jakarta.activation-api/1.2.2/jakarta.activation-api-1.2.2.jar:/Users/bnasslah/Documents/tools/repo/org/springframework/spring-core/5.3.10/spring-core-5.3.10.jar:/Users/bnasslah/Documents/tools/repo/org/springframework/spring-jcl/5.3.10/spring-jcl-5.3.10.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/src/main/java:/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2021. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'springdoc-openapi-javadoc 1.5.12-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' '/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/javadoc-bundle-options'
+-linkoffline
+'https://springdoc.org/springdoc-openapi-common/apidocs' '/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-common/target/apidocs'
+-linkoffline
+'https://springdoc.org/springdoc-openapi-webmvc-core/apidocs' '/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-webmvc-core/target/apidocs'
+-use
+-version
+-windowtitle
+'springdoc-openapi-javadoc 1.5.12-SNAPSHOT API'
+org.springdoc.openapi.javadoc
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-common/target/springdoc-openapi-common-1.5.12-SNAPSHOT.jar = 1634639010000
+/Users/bnasslah/Documents/tools/repo/org/springframework/boot/spring-boot-autoconfigure/2.5.5/spring-boot-autoconfigure-2.5.5.jar = 1632990049000
+/Users/bnasslah/Documents/tools/repo/org/springframework/boot/spring-boot/2.5.5/spring-boot-2.5.5.jar = 1632990049000
+/Users/bnasslah/Documents/tools/repo/org/springframework/spring-web/5.3.10/spring-web-5.3.10.jar = 1632990050000
+/Users/bnasslah/Documents/tools/repo/org/springframework/spring-beans/5.3.10/spring-beans-5.3.10.jar = 1632990050000
+/Users/bnasslah/Documents/tools/repo/io/swagger/core/v3/swagger-models/2.1.11/swagger-models-2.1.11.jar = 1632990050000
+/Users/bnasslah/Documents/tools/repo/com/fasterxml/jackson/core/jackson-annotations/2.12.5/jackson-annotations-2.12.5.jar = 1632990050000
+/Users/bnasslah/Documents/tools/repo/io/swagger/core/v3/swagger-annotations/2.1.11/swagger-annotations-2.1.11.jar = 1632990050000
+/Users/bnasslah/Documents/tools/repo/io/swagger/core/v3/swagger-integration/2.1.11/swagger-integration-2.1.11.jar = 1632990050000
+/Users/bnasslah/Documents/tools/repo/io/swagger/core/v3/swagger-core/2.1.11/swagger-core-2.1.11.jar = 1632990050000
+/Users/bnasslah/Documents/tools/repo/com/fasterxml/jackson/core/jackson-databind/2.12.5/jackson-databind-2.12.5.jar = 1632990050000
+/Users/bnasslah/Documents/tools/repo/com/fasterxml/jackson/core/jackson-core/2.12.5/jackson-core-2.12.5.jar = 1632990050000
+/Users/bnasslah/Documents/tools/repo/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.12.5/jackson-dataformat-yaml-2.12.5.jar = 1632990050000
+/Users/bnasslah/Documents/tools/repo/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.12.5/jackson-datatype-jsr310-2.12.5.jar = 1632990050000
+/Users/bnasslah/Documents/tools/repo/io/github/classgraph/classgraph/4.8.116/classgraph-4.8.116.jar = 1634635774000
+/Users/bnasslah/Documents/tools/repo/org/apache/commons/commons-lang3/3.12.0/commons-lang3-3.12.0.jar = 1621596184000
+/Users/bnasslah/Documents/tools/repo/com/github/therapi/therapi-runtime-javadoc/0.12.0/therapi-runtime-javadoc-0.12.0.jar = 1629818860000
+/Users/bnasslah/Documents/tools/repo/org/springframework/spring-aop/5.3.10/spring-aop-5.3.10.jar = 1632990049000
+/Users/bnasslah/Documents/tools/repo/org/springframework/spring-context/5.3.10/spring-context-5.3.10.jar = 1632990049000
+/Users/bnasslah/Documents/tools/repo/org/springframework/spring-expression/5.3.10/spring-expression-5.3.10.jar = 1632990049000
+/Users/bnasslah/Documents/tools/repo/jakarta/validation/jakarta.validation-api/2.0.2/jakarta.validation-api-2.0.2.jar = 1603281895000
+/Users/bnasslah/Documents/tools/repo/org/yaml/snakeyaml/1.28/snakeyaml-1.28.jar = 1620839628000
+/Users/bnasslah/Documents/tools/repo/org/slf4j/slf4j-api/1.7.32/slf4j-api-1.7.32.jar = 1627319081000
+/Users/bnasslah/Documents/tools/repo/jakarta/xml/bind/jakarta.xml.bind-api/2.3.3/jakarta.xml.bind-api-2.3.3.jar = 1603281895000
+/Users/bnasslah/Documents/tools/repo/jakarta/activation/jakarta.activation-api/1.2.2/jakarta.activation-api-1.2.2.jar = 1603281895000
+/Users/bnasslah/Documents/tools/repo/org/springframework/spring-core/5.3.10/spring-core-5.3.10.jar = 1632990050000
+/Users/bnasslah/Documents/tools/repo/org/springframework/spring-jcl/5.3.10/spring-jcl-5.3.10.jar = 1632990049000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/src/main/java = 1629838059000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/generated-sources/annotations = 1634573274000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/apidocs/constant-values.html = 1634639065000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/apidocs/overview-tree.html = 1634639065000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/apidocs/index.html = 1634639065000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/apidocs/allclasses-noframe.html = 1634639065000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/apidocs/index-all.html = 1634639065000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/apidocs/deprecated-list.html = 1634639065000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/apidocs/script.js = 1634639065000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/apidocs/stylesheet.css = 1634573289000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/apidocs/help-doc.html = 1634639065000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/apidocs/allclasses-frame.html = 1634639065000
+/Users/bnasslah/Documents/workspace/springdoc-openapi/springdoc-openapi-javadoc/target/apidocs/package-list = 1634639065000

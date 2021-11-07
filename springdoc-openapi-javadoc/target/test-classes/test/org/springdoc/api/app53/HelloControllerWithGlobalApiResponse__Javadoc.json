@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller with global api response.\n","fields":[],"enumConstants":[],"methods":[{"name":"listWithNoApiResponse","paramTypes":[],"doc":" List with no api response list.\n\n @return the list\n"},{"name":"listWithDefaultResponseStatus","paramTypes":[],"doc":" List with default response status list.\n\n @return the list\n"}],"constructors":[]}

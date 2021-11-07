@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"echo","paramTypes":["test.org.springdoc.api.app3.PlayingCard","java.lang.String"],"doc":" Echo playing card.\n\n @param card the card baby\n @param toto the toto baby\n @return the playing card baby\n"}],"constructors":[]}

@@ -1,0 +1,1 @@
+{"doc":" The type Spring doc test app.\n","fields":[],"enumConstants":[],"methods":[{"name":"main","paramTypes":["java.lang.String[]"],"doc":" The entry point of application.\n\n @param args the input arguments\n"},{"name":"customOpenAPI","paramTypes":[],"doc":" Custom open api open api.\n\n @return the open api\n"}],"constructors":[]}

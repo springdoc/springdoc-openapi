@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"filterPost","paramTypes":["test.org.springdoc.api.app32.HelloController.MyTestDto"],"doc":" Filter post string.\n\n @param filter the filter \n @return the string\n"}],"constructors":[]}

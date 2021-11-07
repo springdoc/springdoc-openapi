@@ -1,0 +1,65 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "specific-controller"
+        ],
+        "description": "Get t client model.",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "param",
+            "in": "query",
+            "description": "the param",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SpecificClientModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the t client model",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecificClientModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SpecificClientModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id.",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "The Name."
+          }
+        }
+      }
+    }
+  }
+}

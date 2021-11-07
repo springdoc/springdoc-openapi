@@ -66,9 +66,14 @@ public final class Constants {
 	public static final String YAML = "yaml";
 
 	/**
+	 * The constant DOT.
+	 */
+	public static final String DOT = ".";
+
+	/**
 	 * The constant DEFAULT_API_DOCS_URL_YAML.
 	 */
-	public static final String DEFAULT_API_DOCS_URL_YAML = API_DOCS_URL + "." + YAML;
+	public static final String DEFAULT_API_DOCS_URL_YAML = API_DOCS_URL + DOT + YAML;
 
 	/**
 	 * The constant SPRINGDOC_ENABLED.

@@ -1,0 +1,1 @@
+{"doc":" The type Common foo error handler.\n","fields":[],"enumConstants":[],"methods":[{"name":"onException","paramTypes":["java.lang.Exception"],"doc":" On exception error dto.\n\n @param e the e \n @return the error dto\n"}],"constructors":[]}

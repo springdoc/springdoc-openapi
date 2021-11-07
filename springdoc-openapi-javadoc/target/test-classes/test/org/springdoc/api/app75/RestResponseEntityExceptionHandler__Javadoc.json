@@ -1,0 +1,1 @@
+{"doc":" The type Rest response entity exception handler.\n","fields":[],"enumConstants":[],"methods":[{"name":"badRequest","paramTypes":["javax.servlet.http.HttpServletRequest","java.lang.Exception"],"doc":" Bad request response entity.\n\n @param req the req \n @param exception the exception \n @return the response entity\n"}],"constructors":[]}

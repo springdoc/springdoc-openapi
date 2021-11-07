@@ -1,0 +1,1 @@
+{"doc":" The type Default health check api.\n","fields":[],"enumConstants":[],"methods":[{"name":"testDateEcho","paramTypes":["java.time.LocalDate"],"doc":" Test date echo string.\n\n @param date the date \n @return the string\n"}],"constructors":[]}

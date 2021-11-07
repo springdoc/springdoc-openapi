@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"postMyRequestBody","paramTypes":["java.lang.String"],"doc":" Post my request body string.\n\n @param myRequestBody the my request body \n @return the string\n"}],"constructors":[]}

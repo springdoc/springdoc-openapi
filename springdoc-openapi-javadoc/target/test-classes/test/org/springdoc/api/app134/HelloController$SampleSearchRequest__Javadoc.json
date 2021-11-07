@@ -1,0 +1,1 @@
+{"doc":" The type Sample search request.\n","fields":[{"name":"id","doc":" The Id.\n"}],"enumConstants":[],"methods":[{"name":"getId","paramTypes":[],"doc":" Gets id.\n\n @return the id\n"}],"constructors":[{"name":"<init>","paramTypes":["long"],"doc":" Instantiates a new Sample search request.\n\n @param id the id\n"}]}

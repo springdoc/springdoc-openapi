@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"tweets","paramTypes":["test.org.springdoc.api.app42.TweetId"],"doc":" Tweets.\n\n @param id the id\n"}],"constructors":[]}

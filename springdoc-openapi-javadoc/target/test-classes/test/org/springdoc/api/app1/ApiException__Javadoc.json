@@ -1,0 +1,1 @@
+{"doc":" The type Api exception.\n","fields":[{"name":"serialVersionUID","doc":" The constant serialVersionUID.\n"},{"name":"code","doc":" The Code.\n"}],"enumConstants":[],"methods":[],"constructors":[{"name":"<init>","paramTypes":["int","java.lang.String"],"doc":" Instantiates a new Api exception.\n\n @param code the code\n @param msg the msg\n"}]}

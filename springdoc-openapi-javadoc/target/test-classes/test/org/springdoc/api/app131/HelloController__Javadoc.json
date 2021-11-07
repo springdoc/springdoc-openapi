@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n\n @param <DataRequest>  the type parameter\n","fields":[],"enumConstants":[],"methods":[{"name":"createOrganization","paramTypes":["test.org.springdoc.api.app131.Organization"],"doc":" Create organization.\n\n @param organization the organization\n"}],"constructors":[]}

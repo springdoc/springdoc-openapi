@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n\n @param <T>  the type parameter\n","fields":[{"name":"CURRENCIES","doc":" The constant CURRENCIES.\n"}],"enumConstants":[],"methods":[{"name":"getAllCurrencies","paramTypes":[],"doc":" Gets all currencies.\n\n @return the all currencies\n"}],"constructors":[]}
