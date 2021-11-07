@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"timeouts","paramTypes":[],"doc":" Timeouts duration.\n\n @return the duration\n"}],"constructors":[]}

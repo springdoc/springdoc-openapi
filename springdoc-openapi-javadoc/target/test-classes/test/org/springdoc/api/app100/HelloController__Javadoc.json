@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"getAllPets","paramTypes":["(@javax.validation.constraints.NotNull :: java.lang.String)"],"doc":" Gets all pets.\n\n @param toto the toto \n @return the all pets\n"}],"constructors":[]}

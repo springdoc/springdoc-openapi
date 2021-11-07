@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[{"name":"flag","doc":" The Flag.\n"}],"enumConstants":[],"methods":[{"name":"index","paramTypes":[],"doc":" Index string.\n\n @return the string\n"},{"name":"test","paramTypes":[],"doc":" Test string.\n\n @return the string\n"}],"constructors":[]}

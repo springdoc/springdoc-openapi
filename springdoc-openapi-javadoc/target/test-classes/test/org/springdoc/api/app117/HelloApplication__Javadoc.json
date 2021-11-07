@@ -1,1 +1,0 @@
-{"doc":" The type Hello application.\n","fields":[],"enumConstants":[],"methods":[{"name":"routes","paramTypes":["test.org.springdoc.api.app117.PersonHandler"],"doc":" Routes router function.\n\n @param ph the ph \n @return the router function\n"}],"constructors":[]}

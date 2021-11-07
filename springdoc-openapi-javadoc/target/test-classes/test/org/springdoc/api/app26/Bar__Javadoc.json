@@ -1,1 +1,0 @@
-{"doc":" The type Bar.\n","fields":[{"name":"bar","doc":" The Bar.\n"}],"enumConstants":[],"methods":[{"name":"getBar","paramTypes":[],"doc":" Gets bar.\n\n @return the bar\n"},{"name":"setBar","paramTypes":["java.lang.String"],"doc":" Sets bar.\n\n @param bar the bar\n"}],"constructors":[]}

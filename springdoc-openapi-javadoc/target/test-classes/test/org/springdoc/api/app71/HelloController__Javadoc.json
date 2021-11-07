@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"persons","paramTypes":["test.org.springdoc.api.app71.Dog"],"doc":" Persons string.\n\n @param dog the dog \n @return the string\n"}],"constructors":[]}

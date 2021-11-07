@@ -1,1 +1,0 @@
-{"doc":" The type Greeting.\n","fields":[{"name":"payload","doc":" The Payload.\n"}],"enumConstants":[],"methods":[],"constructors":[{"name":"<init>","paramTypes":["java.lang.String"],"doc":" Instantiates a new Greeting.\n\n @param payload the payload\n"}]}

@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"getDocumentsWithLocale","paramTypes":["java.util.Locale"],"doc":" Gets documents with locale.\n\n @param locale the locale \n @return the documents with locale\n"}],"constructors":[]}

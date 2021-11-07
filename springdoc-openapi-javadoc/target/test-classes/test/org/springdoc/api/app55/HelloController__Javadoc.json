@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"ping","paramTypes":[],"doc":" Ping endpoint used for health checks.\n @return the boolean\n"}],"constructors":[]}

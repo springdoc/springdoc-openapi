@@ -1,9 +1,0 @@
-test:
-  app95:
-    operation:
-      persons:
-        summary: Summary of operation persons
-        description: Description of operation persons
-    param:
-      name:
-        description: Description of parameter name

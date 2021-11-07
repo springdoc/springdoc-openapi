@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"secured","paramTypes":[],"doc":" Secured string.\n\n @return the string\n"},{"name":"open","paramTypes":[],"doc":" Open string.\n\n @return the string\n"}],"constructors":[]}

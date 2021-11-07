@@ -1,1 +1,0 @@
-{"doc":" The type Tracker data.\n","fields":[{"name":"trackerId","doc":" The Tracker id.\n"},{"name":"timestamp","doc":" The Timestamp.\n"},{"name":"value","doc":" The Value.\n"}],"enumConstants":[],"methods":[],"constructors":[]}

@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"persons","paramTypes":[],"doc":" Persons string.\n\n @return the string\n"},{"name":"persons","paramTypes":["java.lang.String"],"doc":" Persons string.\n\n @param toto the toto \n @return the string\n"}],"constructors":[]}

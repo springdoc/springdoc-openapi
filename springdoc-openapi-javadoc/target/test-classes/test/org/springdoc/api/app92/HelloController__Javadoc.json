@@ -1,1 +1,0 @@
-{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"index","paramTypes":["(@javax.validation.constraints.NotNull :: java.lang.String)"],"doc":" Index string.\n\n @param test the test \n @return the string\n"}],"constructors":[]}

@@ -1,1 +1,0 @@
-{"doc":" The type Test controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"getTest","paramTypes":["java.lang.String","test.org.springdoc.api.app102.InheritedRequestParams"],"doc":" Gets test.\n\n @param param the param \n @param requestParams the request params\n"}],"constructors":[]}

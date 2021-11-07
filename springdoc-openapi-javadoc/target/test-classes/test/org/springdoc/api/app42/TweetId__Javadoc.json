@@ -1,1 +1,0 @@
-{"doc":" The type Tweet id.\n","fields":[{"name":"value","doc":" The Value.\n"}],"enumConstants":[],"methods":[{"name":"getValue","paramTypes":[],"doc":" Gets value.\n\n @return the value\n"}],"constructors":[{"name":"<init>","paramTypes":["java.lang.String"],"doc":" Instantiates a new Tweet id.\n\n @param value the value\n"}]}

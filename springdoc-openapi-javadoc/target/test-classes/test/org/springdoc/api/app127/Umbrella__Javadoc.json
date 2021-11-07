@@ -1,1 +1,0 @@
-{"doc":" The type Umbrella.\n","fields":[{"name":"object","doc":" The Object.\n"}],"enumConstants":[],"methods":[{"name":"getObject","paramTypes":[],"doc":" Gets object.\n\n @return the object\n"}],"constructors":[{"name":"<init>","paramTypes":["test.org.springdoc.api.app127.AbstractObject"],"doc":" Instantiates a new Umbrella.\n\n @param object the object\n"}]}

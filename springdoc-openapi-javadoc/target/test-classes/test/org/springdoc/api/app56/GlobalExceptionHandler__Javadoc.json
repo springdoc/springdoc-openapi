@@ -1,1 +1,0 @@
-{"doc":" The type Global exception handler.\n","fields":[],"enumConstants":[],"methods":[{"name":"handleUnhandledError","paramTypes":[],"doc":" Handle unhandled error error dto.\n\n @return the error dto\n"}],"constructors":[]}
