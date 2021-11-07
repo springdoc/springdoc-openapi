@@ -217,7 +217,7 @@ public class GenericResponseService {
 	 */
 	private boolean isResponseEntityExceptionHandlerMethod(Method m) {
 		if (AnnotatedElementUtils.hasAnnotation(m.getDeclaringClass(), ControllerAdvice.class))
-			return responseEntityExceptionHandlerClass != null && ((responseEntityExceptionHandlerClass.isAssignableFrom(m.getDeclaringClass()) && ReflectionUtils.findMethod(responseEntityExceptionHandlerClass, m.getName(), m.getParameterTypes()) != null));
+			return responseEntityExceptionHandlerClass != null && (responseEntityExceptionHandlerClass.isAssignableFrom(m.getDeclaringClass()) && ReflectionUtils.findMethod(responseEntityExceptionHandlerClass, m.getName(), m.getParameterTypes()) != null);
 		return false;
 	}
 

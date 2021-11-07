@@ -687,7 +687,7 @@ public abstract class AbstractRequestService {
 		final String paramJavadocDescription;
 		if (delegatingMethodParameter.isParameterObject()) {
 			String fieldName;
-			if (pName.contains(DOT))
+			if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
 				fieldName = StringUtils.substringAfter(pName, DOT);
 			else
 				fieldName = pName;
