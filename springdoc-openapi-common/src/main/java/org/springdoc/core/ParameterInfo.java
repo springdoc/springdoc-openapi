@@ -78,11 +78,6 @@ public class ParameterInfo {
 	private boolean requestPart;
 
 	/**
-	 * The Generic parameter service.
-	 */
-	private GenericParameterService genericParameterService;
-
-	/**
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterInfo.class);
@@ -95,8 +90,6 @@ public class ParameterInfo {
 	 * @param locale the locale
 	 */
 	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService genericParameterService, Locale locale) {
-		this.genericParameterService = genericParameterService;
-		PropertyResolverUtils propertyResolverUtils = genericParameterService.getPropertyResolverUtils();
 		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
 		RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
 		PathVariable pathVar = methodParameter.getParameterAnnotation(PathVariable.class);
