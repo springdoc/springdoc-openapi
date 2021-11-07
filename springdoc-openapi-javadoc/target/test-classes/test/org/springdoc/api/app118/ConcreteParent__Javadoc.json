@@ -1,0 +1,1 @@
+{"doc":" The type Concrete parent.\n","fields":[{"name":"id","doc":" The Id.\n"}],"enumConstants":[],"methods":[{"name":"getId","paramTypes":[],"doc":" Gets id.\n\n @return the id\n"},{"name":"setId","paramTypes":["int"],"doc":" Sets id.\n\n @param id the id\n"}],"constructors":[]}

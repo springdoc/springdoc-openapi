@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"getResource","paramTypes":[],"doc":" Gets resource.\n\n @return the resource\n"},{"name":"getByteArray","paramTypes":[],"doc":" Get byte array byte [ ].\n\n @return the byte [ ]\n"}],"constructors":[]}

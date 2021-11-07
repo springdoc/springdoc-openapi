@@ -1,0 +1,7 @@
+test:
+  app99:
+    operation:
+      persons:
+        response:
+          202:
+            description: Description of api response 202

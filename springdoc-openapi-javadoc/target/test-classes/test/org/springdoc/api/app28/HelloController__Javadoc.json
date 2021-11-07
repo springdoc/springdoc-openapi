@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"upload2","paramTypes":["org.springframework.web.multipart.MultipartFile","org.springframework.web.multipart.MultipartFile"],"doc":" Upload 2 string.\n\n @param one the one \n @param two the two \n @return the string\n"}],"constructors":[]}

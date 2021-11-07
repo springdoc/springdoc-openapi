@@ -1,0 +1,1 @@
+{"doc":" The type My exception handler.\n","fields":[],"enumConstants":[],"methods":[{"name":"bad","paramTypes":["java.lang.IllegalArgumentException"],"doc":" Bad.\n\n @param e the e\n"},{"name":"gateway","paramTypes":["java.lang.RuntimeException"],"doc":" Gateway object.\n\n @param e the e \n @return the object\n"}],"constructors":[]}

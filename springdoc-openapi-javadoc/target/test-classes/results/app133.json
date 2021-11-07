@@ -1,0 +1,116 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/test3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Gets message from header 3.",
+        "operationId": "getMessageFromHeader3",
+        "parameters": [
+          {
+            "name": "myHeader",
+            "in": "header",
+            "description": "A header",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the message from header 3",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Gets message from header 2.",
+        "operationId": "getMessageFromHeader2",
+        "parameters": [
+          {
+            "name": "myHeader",
+            "in": "header",
+            "description": "A header",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the message from header 2",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Gets message from header 1.",
+        "operationId": "getMessageFromHeader1",
+        "parameters": [
+          {
+            "name": "myHeader",
+            "in": "header",
+            "description": "A header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "foo",
+                "bar"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the message from header 1",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

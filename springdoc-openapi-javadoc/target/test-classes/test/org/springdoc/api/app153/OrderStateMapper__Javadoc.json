@@ -1,0 +1,1 @@
+{"doc":" The type Order state mapper.\n","fields":[],"enumConstants":[],"methods":[{"name":"setAsText","paramTypes":["java.lang.String"],"doc":" Sets as text.\n\n @param text the text\n"}],"constructors":[]}

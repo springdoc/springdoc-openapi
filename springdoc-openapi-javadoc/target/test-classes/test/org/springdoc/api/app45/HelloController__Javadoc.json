@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"list","paramTypes":[],"doc":" List list.\n\n @return the list\n"},{"name":"listTwo","paramTypes":[],"doc":" List two list.\n\n @return the list\n"}],"constructors":[]}

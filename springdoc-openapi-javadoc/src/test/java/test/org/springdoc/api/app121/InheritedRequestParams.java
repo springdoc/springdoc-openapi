@@ -2,17 +2,14 @@ package test.org.springdoc.api.app121;
 
 import javax.validation.constraints.NotBlank;
 
-import io.swagger.v3.oas.annotations.Parameter;
-
 /**
  * The type Inherited request params.
  */
 public class InheritedRequestParams extends RequestParams {
 
 	/**
-	 * The Child param.
+	 * parameter from child of RequestParams
 	 */
-	@Parameter(description = "parameter from child of RequestParams")
 	@NotBlank
 	private String childParam;
 

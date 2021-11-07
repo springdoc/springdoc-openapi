@@ -1,0 +1,1 @@
+{"doc":" The type Abstract hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"getDocuments","paramTypes":[],"doc":" Gets documents.\n\n @return the documents\n"}],"constructors":[]}

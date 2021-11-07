@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"getCurrency","paramTypes":["test.org.springdoc.api.app114.HelloController.CarDTO"],"doc":" Gets currency.\n\n @param carDTO the car dto\n @return the currency\n"}],"constructors":[]}

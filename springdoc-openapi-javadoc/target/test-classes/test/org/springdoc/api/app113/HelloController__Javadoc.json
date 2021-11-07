@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"test","paramTypes":["test.org.springdoc.api.app113.HelloController.Body"],"doc":" Test.\n\n @param body the body\n"},{"name":"test2","paramTypes":["java.util.Optional"],"doc":" Test 2.\n\n @param body the body\n"}],"constructors":[]}

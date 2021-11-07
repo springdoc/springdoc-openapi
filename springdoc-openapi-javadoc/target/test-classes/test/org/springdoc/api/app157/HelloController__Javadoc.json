@@ -1,0 +1,1 @@
+{"doc":" Put Foo and Bar in the schema's components, make sure there is an ignored wrapper\n ({@code ResponseEntity}).\n","fields":[],"enumConstants":[],"methods":[{"name":"getFoo","paramTypes":[],"doc":" Gets foo.\n\n @return the foo\n"},{"name":"getBar","paramTypes":[],"doc":" Gets bar.\n\n @return the bar\n"}],"constructors":[]}

@@ -1,0 +1,1 @@
+{"doc":" The type Json request.\n","fields":[{"name":"name","doc":" The Name.\n"}],"enumConstants":[],"methods":[{"name":"getName","paramTypes":[],"doc":" Gets name.\n\n @return the name\n"},{"name":"setName","paramTypes":["java.lang.String"],"doc":" Sets name.\n\n @param name the name\n"}],"constructors":[]}

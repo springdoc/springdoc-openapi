@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"getFile","paramTypes":["(@javax.validation.constraints.NotNull,@javax.validation.Valid :: java.lang.String)"],"doc":" Gets file.\n\n @param path the path \n @return the file\n"}],"constructors":[]}

@@ -1,0 +1,1 @@
+{"doc":" The type Sample v 2.\n","fields":[{"name":"id","doc":" The Id.\n"}],"enumConstants":[],"methods":[{"name":"getId","paramTypes":[],"doc":" Gets id.\n\n @return the id\n"},{"name":"setId","paramTypes":["long"],"doc":" Sets id.\n\n @param id the id\n"}],"constructors":[{"name":"<init>","paramTypes":["long"],"doc":" Instantiates a new Sample v 2.\n\n @param id the id\n"}]}

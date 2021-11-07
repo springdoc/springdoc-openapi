@@ -49,6 +49,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 
 import org.springframework.core.MethodParameter;
 
+import static org.springdoc.core.Constants.DOT;
+
 /**
  * The type Method parameter pojo extractor.
  * @author bnasslahsen
@@ -129,7 +131,7 @@ class MethodParameterPojoExtractor {
 		else if (field.getGenericType() instanceof TypeVariable<?>)
 			return extractTypeParameter(paramClass, (TypeVariable<?>) field.getGenericType(), field, fieldNamePrefix);
 		else
-			return extractFrom(field.getType(), fieldNamePrefix + field.getName() + ".");
+			return extractFrom(field.getType(), fieldNamePrefix + field.getName() + DOT);
 	}
 
 	/**

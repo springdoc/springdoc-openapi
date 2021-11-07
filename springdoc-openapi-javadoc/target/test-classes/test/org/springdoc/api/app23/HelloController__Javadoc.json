@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"persons","paramTypes":["(@javax.validation.Valid,@javax.validation.constraints.NotBlank :: java.lang.String)"],"doc":" Persons.\n\n @param name the name\n"}],"constructors":[]}

@@ -1,0 +1,1 @@
+{"doc":" A class without a String in it\n","fields":[{"name":"child","doc":" The Child.\n"}],"enumConstants":[],"methods":[{"name":"getChild","paramTypes":[],"doc":" Gets child.\n\n @return the child\n"}],"constructors":[]}

@@ -1,0 +1,1 @@
+{"doc":" Home redirection to swagger api documentation\n","fields":[{"name":"swaggerUiPath","doc":" The Swagger ui path.\n"}],"enumConstants":[],"methods":[{"name":"index","paramTypes":[],"doc":" Index string.\n\n @return the string\n"}],"constructors":[]}

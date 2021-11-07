@@ -1,0 +1,1 @@
+{"doc":" The type Hello controller.\n","fields":[],"enumConstants":[],"methods":[{"name":"postMyRequestBody","paramTypes":["test.org.springdoc.api.app103.ExampleBody","org.springframework.web.multipart.MultipartFile"],"doc":" Post my request body string.\n\n @param body the body \n @param file the file \n @return the string\n"}],"constructors":[]}

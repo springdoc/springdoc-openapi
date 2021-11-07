@@ -1,0 +1,1 @@
+{"doc":" The type Rest controller error.\n","fields":[{"name":"id","doc":" The Id.\n"},{"name":"message","doc":" The Message.\n"}],"enumConstants":[],"methods":[],"constructors":[]}

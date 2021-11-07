@@ -1,0 +1,67 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/filter": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Filter post string.",
+        "operationId": "filterPost",
+        "requestBody": {
+          "description": "the filter",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MyTestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MyTestDto": {
+        "type": "object",
+        "properties": {
+          "object1": {
+            "type": "string",
+            "description": "The Object 1."
+          },
+          "object2": {
+            "type": "string",
+            "description": "The Object 2."
+          },
+          "object3": {
+            "type": "string",
+            "description": "The Object 3."
+          }
+        }
+      }
+    }
+  }
+}

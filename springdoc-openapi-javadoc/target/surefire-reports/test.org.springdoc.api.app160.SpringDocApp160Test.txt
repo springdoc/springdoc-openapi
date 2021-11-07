@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: test.org.springdoc.api.app160.SpringDocApp160Test
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.398 s - in test.org.springdoc.api.app160.SpringDocApp160Test

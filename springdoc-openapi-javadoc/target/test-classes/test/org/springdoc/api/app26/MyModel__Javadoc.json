@@ -1,0 +1,1 @@
+{"doc":" The type My model.\n","fields":[{"name":"thing","doc":" The Thing.\n"}],"enumConstants":[],"methods":[{"name":"getThing","paramTypes":[],"doc":" Gets thing.\n\n @return the thing\n"},{"name":"setThing","paramTypes":["java.lang.Object"],"doc":" Sets thing.\n\n @param thing the thing\n"}],"constructors":[]}

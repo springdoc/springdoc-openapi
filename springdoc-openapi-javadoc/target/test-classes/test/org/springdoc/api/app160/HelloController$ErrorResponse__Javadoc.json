@@ -1,0 +1,1 @@
+{"doc":" The type Error response.\n","fields":[{"name":"errorCode","doc":" The Error code.\n"},{"name":"errorMessage","doc":" The Error message.\n"}],"enumConstants":[],"methods":[],"constructors":[]}

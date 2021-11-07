@@ -1,0 +1,47 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/test/{id}": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Testme.",
+        "operationId": "testme",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/paramA"
+          },
+          {
+            "$ref": "#/components/parameters/paramB"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}
