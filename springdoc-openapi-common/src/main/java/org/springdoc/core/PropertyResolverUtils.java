@@ -46,6 +46,11 @@ public class PropertyResolverUtils {
 	private final MessageSource messageSource;
 
 	/**
+	 * The Spring doc config properties.
+	 */
+	private final SpringDocConfigProperties springDocConfigProperties;
+
+	/**
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(PropertyResolverUtils.class);
@@ -55,10 +60,12 @@ public class PropertyResolverUtils {
 	 *
 	 * @param factory the factory
 	 * @param messageSource the message source
+	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public PropertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource) {
+	public PropertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource, SpringDocConfigProperties springDocConfigProperties) {
 		this.factory = factory;
 		this.messageSource = messageSource;
+		this.springDocConfigProperties = springDocConfigProperties;
 	}
 
 	/**
@@ -69,12 +76,13 @@ public class PropertyResolverUtils {
 	 * @return the string
 	 */
 	public String resolve(String parameterProperty, Locale locale) {
-		try {
-			return messageSource.getMessage(parameterProperty, null, locale);
-		}
-		catch (NoSuchMessageException ex) {
-			LOGGER.trace(ex.getMessage());
-		}
+		if (!springDocConfigProperties.isDisableI18n())
+			try {
+				return messageSource.getMessage(parameterProperty, null, locale);
+			}
+			catch (NoSuchMessageException ex) {
+				LOGGER.trace(ex.getMessage());
+			}
 		try {
 			return factory.resolveEmbeddedValue(parameterProperty);
 		}
