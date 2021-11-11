@@ -24,7 +24,6 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.DelegatingMethodParameter;
-import org.springdoc.core.converters.models.Pageable;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
@@ -72,8 +71,11 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				Annotation[] parameterAnnotations = (Annotation[]) field.get(methodParameter);
 				if (ArrayUtils.isNotEmpty(parameterAnnotations))
 					for (int i = 0; i < parameterAnnotations.length; i++) {
-						if (Parameter.class.equals(parameterAnnotations[i].annotationType()))
-							parameterAnnotations[i] = getNewParameterAnnotationForField(methodParameter.getParameterName(), pageableDefault);
+						if (Parameter.class.equals(parameterAnnotations[i].annotationType())){
+							Optional<Annotation> annotationForField	 = getNewParameterAnnotationForField(methodParameter, pageableDefault);
+							if(annotationForField.isPresent())
+								parameterAnnotations[i] = annotationForField.get();
+						}
 					}
 			}
 			catch (IllegalAccessException e) {
@@ -85,15 +87,16 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	/**
 	 * Gets new parameter annotation for field.
 	 *
-	 * @param parameterName the parameter name
+	 * @param methodParameter the method parameter
 	 * @param pageableDefault the pageable default
 	 * @return the new parameter annotation for field
 	 */
-	private Annotation getNewParameterAnnotationForField(String parameterName, PageableDefault pageableDefault) {
+	private Optional<Annotation> getNewParameterAnnotationForField(MethodParameter methodParameter, PageableDefault pageableDefault) {
+		String parameterName = methodParameter.getParameterName();
 		Field field;
-		Parameter parameterNew = null;
+		Parameter parameterNew;
 		try {
-			field = Pageable.class.getDeclaredField(parameterName);
+			field = methodParameter.getContainingClass().getDeclaredField(parameterName);
 			Parameter parameter = field.getAnnotation(Parameter.class);
 			parameterNew = new Parameter() {
 				@Override
@@ -615,11 +618,12 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 					return parameter.ref();
 				}
 			};
+			return Optional.of(parameterNew);
 		}
 		catch (NoSuchFieldException e) {
 			LOGGER.warn(e.getMessage());
+			return Optional.empty();
 		}
-		return parameterNew;
 	}
 
 	/**
