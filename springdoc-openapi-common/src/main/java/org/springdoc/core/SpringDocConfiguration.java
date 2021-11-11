@@ -253,11 +253,12 @@ public class SpringDocConfiguration {
 	 *
 	 * @param factory the factory
 	 * @param messageSource the message source
+	 * @param springDocConfigProperties the spring doc config properties
 	 * @return the property resolver utils
 	 */
 	@Bean
-	PropertyResolverUtils propertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource) {
-		return new PropertyResolverUtils(factory, messageSource);
+	PropertyResolverUtils propertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource, SpringDocConfigProperties springDocConfigProperties) {
+		return new PropertyResolverUtils(factory, messageSource,springDocConfigProperties);
 	}
 
 	/**

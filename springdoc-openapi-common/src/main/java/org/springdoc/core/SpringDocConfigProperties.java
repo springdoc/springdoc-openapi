@@ -168,6 +168,11 @@ public class SpringDocConfigProperties {
 	protected Boolean enableNativeImageSupport;
 
 	/**
+	 * The Disable i18n.
+	 */
+	private boolean disableI18n;
+
+	/**
 	 * Gets enable native image support.
 	 *
 	 * @return the enable native image support
@@ -624,6 +629,24 @@ public class SpringDocConfigProperties {
 	 */
 	public void setPreLoadingEnabled(boolean preLoadingEnabled) {
 		this.preLoadingEnabled = preLoadingEnabled;
+	}
+
+	/**
+	 * Is disable i 18 n boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isDisableI18n() {
+		return disableI18n;
+	}
+
+	/**
+	 * Sets disable i 18 n.
+	 *
+	 * @param disableI18n the disable i 18 n
+	 */
+	public void setDisableI18n(boolean disableI18n) {
+		this.disableI18n = disableI18n;
 	}
 
 	/**
