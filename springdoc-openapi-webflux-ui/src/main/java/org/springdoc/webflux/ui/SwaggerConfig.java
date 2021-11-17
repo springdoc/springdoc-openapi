@@ -41,6 +41,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -90,16 +91,18 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	SwaggerConfigResource swaggerConfigResource(SwaggerWelcomeCommon swaggerWelcomeCommon){
 		return new SwaggerConfigResource(swaggerWelcomeCommon);
 	}
+
 	/**
 	 * Swagger ui home swagger ui home.
 	 *
+	 * @param optionalWebFluxProperties the optional web flux properties
 	 * @return the swagger ui home
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_ROOT_PATH, havingValue = "true")
-	SwaggerUiHome swaggerUiHome(){
-		return new SwaggerUiHome();
+	SwaggerUiHome swaggerUiHome(Optional<WebFluxProperties> optionalWebFluxProperties){
+		return new SwaggerUiHome(optionalWebFluxProperties);
 	}
 
 	/**
