@@ -80,6 +80,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import static org.springdoc.core.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_PAGEABLE_CONVERTER_ENABLED;
+import static org.springdoc.core.Constants.SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 import static org.springdoc.core.SpringDocUtils.getConfig;
@@ -193,6 +194,7 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED, matchIfMissing = true)
 	@Lazy(false)
 	PolymorphicModelConverter polymorphicModelConverter() {
 		return new PolymorphicModelConverter();

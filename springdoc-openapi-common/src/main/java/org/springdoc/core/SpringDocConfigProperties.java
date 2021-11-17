@@ -675,6 +675,12 @@ public class SpringDocConfigProperties {
 		private PageableConverter pageableConverter = new PageableConverter();
 
 		/**
+		 * The Polymorphic model converter.
+		 */
+		private PolymorphicConverter polymorphicConverter = new PolymorphicConverter();
+
+
+		/**
 		 * Gets deprecating converter.
 		 *
 		 * @return the deprecating converter
@@ -711,6 +717,24 @@ public class SpringDocConfigProperties {
 		}
 
 		/**
+		 * Gets polymorphic model converter.
+		 *
+		 * @return the polymorphic model converter
+		 */
+		public PolymorphicConverter getPolymorphicConverter() {
+			return polymorphicConverter;
+		}
+
+		/**
+		 * Sets polymorphic model converter.
+		 *
+		 * @param polymorphicConverter the polymorphic model converter
+		 */
+		public void setPolymorphicConverter(PolymorphicConverter polymorphicConverter) {
+			this.polymorphicConverter = polymorphicConverter;
+		}
+
+		/**
 		 * The type Deprecating converter.
 		 * @author bnasslashen
 		 */
@@ -739,6 +763,36 @@ public class SpringDocConfigProperties {
 				this.enabled = enabled;
 			}
 		}
+
+		/**
+		 * The type Polymorphic model converter.
+		 */
+		public static class PolymorphicConverter {
+
+			/**
+			 * The Enabled.
+			 */
+			private boolean enabled;
+
+			/**
+			 * Is enabled boolean.
+			 *
+			 * @return the boolean
+			 */
+			public boolean isEnabled() {
+				return enabled;
+			}
+
+			/**
+			 * Sets enabled.
+			 *
+			 * @param enabled the enabled
+			 */
+			public void setEnabled(boolean enabled) {
+				this.enabled = enabled;
+			}
+		}
+
 
 		/**
 		 * The type Pageable converter.
