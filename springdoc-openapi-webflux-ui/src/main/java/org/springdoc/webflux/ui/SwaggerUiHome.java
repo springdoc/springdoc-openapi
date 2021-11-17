@@ -62,7 +62,7 @@ public class SwaggerUiHome {
 	 * @param optionalWebFluxProperties the optional web flux properties
 	 */
 	public SwaggerUiHome(Optional<WebFluxProperties> optionalWebFluxProperties) {
-		optionalWebFluxProperties.ifPresent(webFluxProperties -> this.basePath = webFluxProperties.getBasePath());
+		optionalWebFluxProperties.ifPresent(webFluxProperties -> this.basePath = StringUtils.defaultIfEmpty(webFluxProperties.getBasePath(),StringUtils.EMPTY ));
 	}
 
 	/**
