@@ -75,7 +75,8 @@
         "type": "object",
         "properties": {
           "operationResult": {
-            "type": "string"
+            "type": "string",
+            "description": "The Operation result."
           }
         }
       }

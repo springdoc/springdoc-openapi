@@ -76,6 +76,7 @@
         "properties": {
           "code": {
             "type": "integer",
+            "description": "The Code.",
             "format": "int32"
           }
         }
@@ -85,10 +86,12 @@
         "properties": {
           "code": {
             "type": "integer",
+            "description": "The Code.",
             "format": "int32"
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "The Message."
           }
         }
       }

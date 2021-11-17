@@ -55,10 +55,12 @@
         "properties": {
           "trackerId": {
             "type": "string",
+            "description": "The Tracker id.",
             "example": "the-tracker-id"
           },
           "timestamp": {
             "type": "string",
+            "description": "The Timestamp.",
             "format": "date-time",
             "example": "2018-01-01T00:00:00Z"
           },

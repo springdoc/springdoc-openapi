@@ -115,7 +115,8 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The Name."
           }
         }
       },
@@ -123,10 +124,12 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The Name."
           },
           "members": {
             "type": "array",
+            "description": "The Members.",
             "items": {
               "type": "string"
             }

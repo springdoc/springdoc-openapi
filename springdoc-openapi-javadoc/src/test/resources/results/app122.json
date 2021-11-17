@@ -64,7 +64,8 @@
         "type": "object",
         "properties": {
           "wrapper": {
-            "type": "string"
+            "type": "string",
+            "description": "The Wrapper."
           }
         }
       }
