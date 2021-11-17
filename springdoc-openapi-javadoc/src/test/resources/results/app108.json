@@ -48,23 +48,29 @@
       "ActionResultVoid": {
         "type": "object",
         "properties": {
-          "value": {
-            "type": "object"
-          },
-          "success": {
-            "type": "boolean"
-          },
           "errorCode": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
+            "type": "string",
+            "description": "The Error code."
           },
           "errorValue": {
-            "type": "object"
+            "type": "object",
+            "description": "The Error value."
+          },
+          "message": {
+            "type": "string",
+            "description": "The Message."
+          },
+          "success": {
+            "type": "boolean",
+            "description": "The Success."
           },
           "targetUrl": {
-            "type": "string"
+            "type": "string",
+            "description": "The Target url."
+          },
+          "value": {
+            "type": "object",
+            "description": "The Value."
           }
         }
       }
