@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/v1/helloWorld/helloWorld": {
+    "/latest/helloWorld/helloWorld": {
       "get": {
         "tags": [
           "hello-controller"
@@ -55,7 +55,7 @@
         }
       }
     },
-    "/latest/helloWorld/helloWorld": {
+    "/v1/helloWorld/helloWorld": {
       "get": {
         "tags": [
           "hello-controller"

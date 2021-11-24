@@ -17,14 +17,14 @@
     }
   ],
   "paths": {
-    "/ping": {
+    "/": {
       "get": {
         "tags": [
           "Health"
         ],
         "summary": "Check server status",
         "description": "Check server status, will return 200 with simple string if alive. Do nothing else.",
-        "operationId": "ping",
+        "operationId": "ping_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -46,7 +46,7 @@
         ],
         "summary": "Check server status",
         "description": "Check server status, will return 200 with simple string if alive. Do nothing else.",
-        "operationId": "ping_1",
+        "operationId": "ping",
         "responses": {
           "200": {
             "description": "OK",
@@ -61,14 +61,14 @@
         }
       }
     },
-    "/": {
+    "/ping": {
       "get": {
         "tags": [
           "Health"
         ],
         "summary": "Check server status",
         "description": "Check server status, will return 200 with simple string if alive. Do nothing else.",
-        "operationId": "ping_2",
+        "operationId": "ping_1",
         "responses": {
           "200": {
             "description": "OK",

@@ -17,7 +17,7 @@
     }
   ],
   "paths": {
-    "/ping": {
+    "/health": {
       "get": {
         "tags": [
           "Health"
@@ -39,7 +39,7 @@
         }
       }
     },
-    "/health": {
+    "/ping": {
       "get": {
         "tags": [
           "Health"
