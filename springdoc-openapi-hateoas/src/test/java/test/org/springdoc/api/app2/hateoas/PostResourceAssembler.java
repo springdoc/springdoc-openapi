@@ -18,6 +18,6 @@ public class PostResourceAssembler implements RepresentationModelAssembler<Post,
 
 	@Override
 	public EntityModel<Post> toModel(Post entity) {
-		return new EntityModel<>(entity);
+		return  EntityModel.of(entity);
 	}
 }

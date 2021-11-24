@@ -68,7 +68,7 @@ public class ComponentsController {
 		Optional<DemoComponent> foundComponent = componentsService.findById(componentId);
 
 		if (foundComponent.isPresent()) {
-			return ResponseEntity.ok(new EntityModel<>(toDtoConverter.convert(foundComponent.get()), //
+			return ResponseEntity.ok( EntityModel.of(toDtoConverter.convert(foundComponent.get()), //
 					linkTo(methodOn(ComponentsController.class).findAll(null)).withRel("components")));
 		}
 

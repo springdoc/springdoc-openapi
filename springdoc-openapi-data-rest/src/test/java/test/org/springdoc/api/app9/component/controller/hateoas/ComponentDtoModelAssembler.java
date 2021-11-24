@@ -21,7 +21,7 @@ public class ComponentDtoModelAssembler implements RepresentationModelAssembler<
 
 	@Override
 	public RepresentationModel<EntityModel<DemoComponentDto>> toModel(DemoComponent entity) {
-		return new EntityModel<DemoComponentDto>(toDtoConverter.convert(entity));
+		return  EntityModel.of(toDtoConverter.convert(entity));
 	}
 
 }
