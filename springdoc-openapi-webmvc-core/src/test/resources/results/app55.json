@@ -10,6 +10,11 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "health"
+    }
+  ],
   "paths": {
     "/ping": {
       "get": {
@@ -33,6 +38,5 @@
       }
     }
   },
-  "components": {
-  }
+  "components": {}
 }

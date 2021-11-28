@@ -10,7 +10,36 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "design"
+    }
+  ],
   "paths": {
+    "/design": {
+      "get": {
+        "tags": [
+          "design"
+        ],
+        "description": "Receive a list of objects",
+        "operationId": "list",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Design"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/design/{id}": {
       "get": {
         "tags": [
@@ -37,30 +66,6 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/Design"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/design": {
-      "get": {
-        "tags": [
-          "design"
-        ],
-        "description": "Receive a list of objects",
-        "operationId": "list",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Design"
-                  }
                 }
               }
             }

@@ -10,6 +10,11 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "Test Controller"
+    }
+  ],
   "paths": {
     "/test": {
       "get": {

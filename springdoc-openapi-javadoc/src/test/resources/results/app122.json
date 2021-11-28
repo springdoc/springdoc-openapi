@@ -10,6 +10,11 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "example"
+    }
+  ],
   "paths": {
     "/": {
       "post": {

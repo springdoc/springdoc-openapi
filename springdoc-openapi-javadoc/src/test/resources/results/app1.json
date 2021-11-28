@@ -14,6 +14,20 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "inventory"
+    },
+    {
+      "name": "people"
+    },
+    {
+      "name": "tea"
+    },
+    {
+      "name": "items"
+    }
+  ],
   "paths": {
     "/{email}": {
       "get": {

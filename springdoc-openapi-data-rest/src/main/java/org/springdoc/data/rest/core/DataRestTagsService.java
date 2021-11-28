@@ -103,7 +103,7 @@ public class DataRestTagsService {
 			Set<Tag> tags = new HashSet<>();
 			Set<String> tagsStr = new HashSet<>();
 			Class<?> repositoryType = dataRestRepository.getRepositoryType();
-			openAPIService.buildTagsFromClass(repositoryType, tags, tagsStr);
+			openAPIService.buildTagsFromClass(repositoryType, tags, tagsStr, dataRestRepository.getLocale());
 			if (!CollectionUtils.isEmpty(tagsStr))
 				tagsStr.forEach(operation::addTagsItem);
 			else {
