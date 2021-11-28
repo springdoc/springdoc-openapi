@@ -117,15 +117,14 @@ public class DataRestRouterOperationService {
 	 * @param resourceMetadata the resource metadata
 	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
-	 * @param locale the locale
 	 */
 	public void buildEntityRouterOperationList(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
-			DataRestRepository dataRestRepository, OpenAPI openAPI, Locale locale) {
+			DataRestRepository dataRestRepository, OpenAPI openAPI) {
 		String path = resourceMetadata.getPath().toString();
 		ControllerType controllerType = dataRestRepository.getControllerType();
 		for (Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethodMap.entrySet()) {
-			buildRouterOperationList(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path, entry, null, controllerType, null, locale);
+			buildRouterOperationList(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path, entry, null, controllerType, null);
 		}
 	}
 
@@ -138,17 +137,16 @@ public class DataRestRouterOperationService {
 	 * @param dataRestRepository the repository data rest
 	 * @param openAPI the open api
 	 * @param methodResourceMapping the method resource mapping
-	 * @param locale the locale
 	 */
 	public void buildSearchRouterOperationList(List<RouterOperation> routerOperationList,
 			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
-			DataRestRepository dataRestRepository, OpenAPI openAPI, MethodResourceMapping methodResourceMapping, Locale locale) {
+			DataRestRepository dataRestRepository, OpenAPI openAPI, MethodResourceMapping methodResourceMapping) {
 		String path = resourceMetadata.getPath().toString();
 		Path subPath = methodResourceMapping.getPath();
-		Optional<Entry<RequestMappingInfo, HandlerMethod>> entryOptional = getSearchEntry(handlerMethodMap, locale);
+		Optional<Entry<RequestMappingInfo, HandlerMethod>> entryOptional = getSearchEntry(handlerMethodMap, dataRestRepository.getLocale());
 		if (entryOptional.isPresent()) {
 			Entry<RequestMappingInfo, HandlerMethod> entry = entryOptional.get();
-			buildRouterOperationList(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path, entry, subPath.toString(), ControllerType.SEARCH, methodResourceMapping, locale);
+			buildRouterOperationList(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path, entry, subPath.toString(), ControllerType.SEARCH, methodResourceMapping);
 		}
 	}
 
@@ -164,15 +162,14 @@ public class DataRestRouterOperationService {
 	 * @param subPath the sub path
 	 * @param controllerType the controllerType
 	 * @param methodResourceMapping the method resource mapping
-	 * @param locale the locale
 	 */
 	private void buildRouterOperationList(List<RouterOperation> routerOperationList, ResourceMetadata resourceMetadata,
 			DataRestRepository dataRestRepository, OpenAPI openAPI, String path, Entry<RequestMappingInfo, HandlerMethod> entry,
-			String subPath, ControllerType controllerType, MethodResourceMapping methodResourceMapping, Locale locale) {
+			String subPath, ControllerType controllerType, MethodResourceMapping methodResourceMapping) {
 		RequestMappingInfo requestMappingInfo = entry.getKey();
 		HandlerMethod handlerMethod = entry.getValue();
-		Set<RequestMethod> requestMethodsItem = null;
-		Set<RequestMethod> requestMethodsCollection = null;
+		Set<RequestMethod> requestMethodsItem;
+		Set<RequestMethod> requestMethodsCollection;
 
 		Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 		if (andCheck(resourceMetadata != null, !controllerType.equals(ControllerType.SEARCH))) {
@@ -181,7 +178,7 @@ public class DataRestRouterOperationService {
 					.collect(Collectors.toSet());
 
 			buildRouterOperation(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path,
-					subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethodsItem, ResourceType.ITEM, locale);
+					subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethodsItem, ResourceType.ITEM);
 
 			if (!ControllerType.PROPERTY.equals(controllerType)) {
 				HttpMethods httpMethodsCollection = resourceMetadata.getSupportedHttpMethods().getMethodsFor(ResourceType.COLLECTION);
@@ -189,13 +186,13 @@ public class DataRestRouterOperationService {
 						.collect(Collectors.toSet());
 
 				buildRouterOperation(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path,
-						subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethodsCollection, ResourceType.COLLECTION, locale);
+						subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethodsCollection, ResourceType.COLLECTION);
 			}
 
 		}
 		else {
 			buildRouterOperation(routerOperationList, resourceMetadata, dataRestRepository, openAPI, path,
-					subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethods, null, locale);
+					subPath, controllerType, methodResourceMapping, requestMappingInfo, handlerMethod, requestMethods, null);
 		}
 
 	}
@@ -215,11 +212,10 @@ public class DataRestRouterOperationService {
 	 * @param handlerMethod the handler method
 	 * @param requestMethodsCollection the request methods collection
 	 * @param collection the collection
-	 * @param locale the locale
 	 */
 	private void buildRouterOperation(List<RouterOperation> routerOperationList, ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository,
 			OpenAPI openAPI, String path, String subPath, ControllerType controllerType, MethodResourceMapping methodResourceMapping, RequestMappingInfo requestMappingInfo,
-			HandlerMethod handlerMethod, Set<RequestMethod> requestMethodsCollection, ResourceType collection, Locale locale) {
+			HandlerMethod handlerMethod, Set<RequestMethod> requestMethodsCollection, ResourceType collection) {
 		if (!CollectionUtils.isEmpty(requestMethodsCollection))
 			for (RequestMethod requestMethod : requestMethodsCollection) {
 				if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
@@ -230,7 +226,7 @@ public class DataRestRouterOperationService {
 						String operationPath = calculateOperationPath(path, subPath, patterns, regexMap, controllerType, relationName, collection);
 						if (operationPath != null)
 							buildRouterOperation(routerOperationList, dataRestRepository, openAPI, methodResourceMapping,
-									handlerMethod, requestMethod, resourceMetadata, operationPath, controllerType, locale);
+									handlerMethod, requestMethod, resourceMetadata, operationPath, controllerType);
 					}
 				}
 			}
@@ -278,16 +274,15 @@ public class DataRestRouterOperationService {
 	 * @param resourceMetadata the resource metadata
 	 * @param operationPath the operation path
 	 * @param controllerType the controller type
-	 * @param locale the locale
 	 */
 	private void buildRouterOperation
 	(List<RouterOperation> routerOperationList, DataRestRepository
 			dataRestRepository, OpenAPI openAPI,
 			MethodResourceMapping methodResourceMapping, HandlerMethod handlerMethod,
 			RequestMethod requestMethod, ResourceMetadata resourceMetadata, String
-			operationPath, ControllerType controllerType, Locale locale) {
+			operationPath, ControllerType controllerType) {
 		RouterOperation routerOperation = new RouterOperation(operationPath, new RequestMethod[] { requestMethod });
-		MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), locale);
+		MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), dataRestRepository.getLocale());
 		methodAttributes.calculateConsumesProduces(handlerMethod.getMethod());
 		routerOperation.setConsumes(methodAttributes.getMethodConsumes());
 		routerOperation.setProduces(methodAttributes.getMethodProduces());

@@ -10,7 +10,46 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "The sample resource"
+    }
+  ],
   "paths": {
+    "/search": {
+      "post": {
+        "tags": [
+          "The sample resource"
+        ],
+        "description": "Searches for sample objects using the given search request.",
+        "operationId": "searchSamples",
+        "requestBody": {
+          "content": {
+            "application/vnd.samples.v2+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SampleSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.samples.v2+json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SampleV2"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/{id}": {
       "get": {
         "tags": [
@@ -63,52 +102,10 @@
           }
         }
       }
-    },
-    "/search": {
-      "post": {
-        "tags": [
-          "The sample resource"
-        ],
-        "description": "Searches for sample objects using the given search request.",
-        "operationId": "searchSamples",
-        "requestBody": {
-          "content": {
-            "application/vnd.samples.v2+json": {
-              "schema": {
-                "$ref": "#/components/schemas/SampleSearchRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/vnd.samples.v2+json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SampleV2"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
-      "SampleV1": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          }
-        }
-      },
       "SampleSearchRequest": {
         "type": "object",
         "properties": {
@@ -124,6 +121,14 @@
           "id": {
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "SampleV1": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
           }
         }
       }

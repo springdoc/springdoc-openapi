@@ -319,19 +319,18 @@ public class SpringDocConfiguration {
 	/**
 	 * Properties resolver for schema open api customiser.
 	 *
-	 * @param propertyResolverUtils the property resolver utils
 	 * @param openAPIService the open api builder
 	 * @return the open api customiser
 	 */
 	@Bean
 	@ConditionalOnProperty(SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES)
 	@Lazy(false)
-	OpenApiCustomiser propertiesResolverForSchema(PropertyResolverUtils propertyResolverUtils, OpenAPIService openAPIService) {
+	OpenApiCustomiser propertiesResolverForSchema(OpenAPIService openAPIService) {
 		return openApi -> {
 			Components components = openApi.getComponents();
 			Map<String, Schema> schemas = components.getSchemas();
 			if (!CollectionUtils.isEmpty(schemas))
-				schemas.values().forEach(schema -> openAPIService.resolveProperties(schema, propertyResolverUtils, Locale.getDefault()));
+				schemas.values().forEach(schema -> openAPIService.resolveProperties(schema, Locale.getDefault()));
 		};
 	}
 

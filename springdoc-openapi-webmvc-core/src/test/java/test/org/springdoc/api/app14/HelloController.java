@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name = "greeting")
+@Tag(name = "greeting", description = "test")
 public class HelloController {
 
 	@GetMapping("/persons")

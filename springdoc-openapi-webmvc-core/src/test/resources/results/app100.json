@@ -10,6 +10,14 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-ap1"
+    },
+    {
+      "name": "hello-ap2"
+    }
+  ],
   "paths": {
     "/search": {
       "get": {

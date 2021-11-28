@@ -146,6 +146,11 @@ public class OpenAPIService {
 	 */
 	private String serverBaseUrl;
 
+	/**
+	 * The Property resolver utils.
+	 */
+	private PropertyResolverUtils propertyResolverUtils;
+
 	private static Class<?> basicErrorController;
 
 	static {
@@ -187,6 +192,7 @@ public class OpenAPIService {
 				this.isServersPresent = true;
 		}
 		this.context = context;
+		this.propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
 		this.securityParser = securityParser;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
@@ -297,10 +303,9 @@ public class OpenAPIService {
 		Set<io.swagger.v3.oas.models.tags.Tag> tags = new HashSet<>();
 		Set<String> tagsStr = new HashSet<>();
 
-		buildTagsFromClass(handlerMethod.getBeanType(), tags, tagsStr);
-		buildTagsFromMethod(handlerMethod.getMethod(), tags, tagsStr);
+		buildTagsFromClass(handlerMethod.getBeanType(), tags, tagsStr,locale);
+		buildTagsFromMethod(handlerMethod.getMethod(), tags, tagsStr,locale);
 
-		PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
 		if (!CollectionUtils.isEmpty(tagsStr))
 			tagsStr = tagsStr.stream()
 					.map(str -> propertyResolverUtils.resolve(str, locale))
@@ -347,8 +352,9 @@ public class OpenAPIService {
 	 * @param method the method
 	 * @param tags the tags
 	 * @param tagsStr the tags str
+	 * @param locale the locale
 	 */
-	private void buildTagsFromMethod(Method method, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr) {
+	private void buildTagsFromMethod(Method method, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr, Locale locale) {
 		// method tags
 		Set<Tags> tagsSet = AnnotatedElementUtils
 				.findAllMergedAnnotations(method, Tags.class);
@@ -356,11 +362,19 @@ public class OpenAPIService {
 				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet());
 		methodTags.addAll(AnnotatedElementUtils.findAllMergedAnnotations(method, Tag.class));
 		if (!CollectionUtils.isEmpty(methodTags)) {
-			tagsStr.addAll(methodTags.stream().map(Tag::name).collect(Collectors.toSet()));
+			tagsStr.addAll(methodTags.stream().map(tag -> propertyResolverUtils.resolve(tag.name(), locale)).collect(Collectors.toSet()));
 			List<Tag> allTags = new ArrayList<>(methodTags);
-			AnnotationsUtils
-					.getTags(allTags.toArray(new Tag[0]), true).ifPresent(tags::addAll);
+			addTags(allTags, tags, locale);
 		}
+	}
+
+	private void addTags(List<Tag> sourceTags, Set<io.swagger.v3.oas.models.tags.Tag> tags, Locale locale) {
+		Optional<Set<io.swagger.v3.oas.models.tags.Tag>> optionalTagSet = AnnotationsUtils
+				.getTags(sourceTags.toArray(new Tag[0]), false);
+		optionalTagSet.ifPresent(tagsSet -> {
+			tagsSet.forEach(tag -> tag.name(propertyResolverUtils.resolve(tag.getName(), locale)));
+			tags.addAll(tagsSet);
+		});
 	}
 
 	/**
@@ -369,8 +383,9 @@ public class OpenAPIService {
 	 * @param beanType the bean type
 	 * @param tags the tags
 	 * @param tagsStr the tags str
+	 * @param locale the locale
 	 */
-	public void buildTagsFromClass(Class<?> beanType, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr) {
+	public void buildTagsFromClass(Class<?> beanType, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr, Locale locale) {
 		List<Tag> allTags = new ArrayList<>();
 		// class tags
 		Set<Tags> tagsSet = AnnotatedElementUtils
@@ -379,10 +394,9 @@ public class OpenAPIService {
 				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toSet());
 		classTags.addAll(AnnotatedElementUtils.findAllMergedAnnotations(beanType, Tag.class));
 		if (!CollectionUtils.isEmpty(classTags)) {
-			tagsStr.addAll(classTags.stream().map(Tag::name).collect(Collectors.toSet()));
+			tagsStr.addAll(classTags.stream().map(tag -> propertyResolverUtils.resolve(tag.name(), locale)).collect(Collectors.toSet()));
 			allTags.addAll(classTags);
-			AnnotationsUtils
-					.getTags(allTags.toArray(new Tag[0]), true).ifPresent(tags::addAll);
+			addTags(allTags, tags, locale);
 		}
 	}
 
@@ -390,12 +404,11 @@ public class OpenAPIService {
 	 * Resolve properties schema.
 	 *
 	 * @param schema the schema
-	 * @param propertyResolverUtils the property resolver utils
 	 * @param locale the locale
 	 * @return the schema
 	 */
 	@SuppressWarnings("unchecked")
-	public Schema resolveProperties(Schema schema, PropertyResolverUtils propertyResolverUtils, Locale locale) {
+	public Schema resolveProperties(Schema schema, Locale locale) {
 		resolveProperty(schema::getName, schema::name, propertyResolverUtils, locale);
 		resolveProperty(schema::getTitle, schema::title, propertyResolverUtils, locale);
 		resolveProperty(schema::getDescription, schema::description, propertyResolverUtils, locale);
@@ -403,7 +416,7 @@ public class OpenAPIService {
 		Map<String, Schema> properties = schema.getProperties();
 		if (!CollectionUtils.isEmpty(properties)) {
 			LinkedHashMap<String, Schema> resolvedSchemas = properties.entrySet().stream().map(es -> {
-				es.setValue(resolveProperties(es.getValue(), propertyResolverUtils, locale));
+				es.setValue(resolveProperties(es.getValue(), locale));
 				return es;
 			}).collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e2,
 					LinkedHashMap::new));
@@ -491,7 +504,6 @@ public class OpenAPIService {
 	 * @return the servers
 	 */
 	private List<Server> resolveProperties(List<Server> servers, Locale locale) {
-		PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
 		servers.forEach(server -> {
 			resolveProperty(server::getUrl, server::url, propertyResolverUtils, locale);
 			resolveProperty(server::getDescription, server::description, propertyResolverUtils, locale);
@@ -509,7 +521,6 @@ public class OpenAPIService {
 	 * @return the info
 	 */
 	private Info resolveProperties(Info info, Locale locale) {
-		PropertyResolverUtils propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
 		resolveProperty(info::getTitle, info::title, propertyResolverUtils, locale);
 		resolveProperty(info::getDescription, info::description, propertyResolverUtils, locale);
 		resolveProperty(info::getVersion, info::version, propertyResolverUtils, locale);

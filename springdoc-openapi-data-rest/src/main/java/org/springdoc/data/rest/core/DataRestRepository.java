@@ -23,6 +23,8 @@
 
 package org.springdoc.data.rest.core;
 
+import java.util.Locale;
+
 import org.springframework.data.mapping.PersistentEntity;
 
 /**
@@ -72,14 +74,21 @@ public class DataRestRepository {
 	private PersistentEntity persistentEntity;
 
 	/**
+	 * The Locale.
+	 */
+	private Locale locale;
+
+	/**
 	 * Instantiates a new Data rest repository.
 	 *
 	 * @param domainType the domain type
 	 * @param repositoryType the repository type
+	 * @param locale the locale
 	 */
-	public DataRestRepository(Class<?> domainType, Class<?> repositoryType) {
+	public DataRestRepository(Class<?> domainType, Class<?> repositoryType,Locale locale) {
 		this.domainType = domainType;
 		this.repositoryType = repositoryType;
+		this.locale=locale;
 	}
 
 	/**
@@ -226,6 +235,24 @@ public class DataRestRepository {
 	 */
 	public void setPersistentEntity(PersistentEntity persistentEntity) {
 		this.persistentEntity = persistentEntity;
+	}
+
+	/**
+	 * Gets locale.
+	 *
+	 * @return the locale
+	 */
+	public Locale getLocale() {
+		return locale;
+	}
+
+	/**
+	 * Sets locale.
+	 *
+	 * @param locale the locale
+	 */
+	public void setLocale(Locale locale) {
+		this.locale = locale;
 	}
 
 	/**

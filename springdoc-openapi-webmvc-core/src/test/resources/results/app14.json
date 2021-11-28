@@ -10,6 +10,15 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "Change the language"
+    },
+    {
+      "name": "Hello! Welcome to our website!",
+      "description": "test"
+    }
+  ],
   "paths": {
     "/test": {
       "get": {
