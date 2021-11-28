@@ -11,6 +11,29 @@
     }
   ],
   "paths": {
+    "/testreq": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "testRequestAttribute",
+        "parameters": [
+          {
+            "name": "s",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/test": {
       "get": {
         "tags": [
@@ -34,15 +57,15 @@
         }
       }
     },
-    "/testreq": {
+    "/employee": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "testRequestAttribute",
+        "operationId": "getEmployee",
         "parameters": [
           {
-            "name": "s",
+            "name": "test",
             "in": "query",
             "required": true,
             "schema": {

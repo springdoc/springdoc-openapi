@@ -20,6 +20,7 @@
 
 package org.springdoc.core;
 
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -101,6 +102,7 @@ public class SpringDocConfiguration {
 
 	static {
 		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema())
+				.replaceWithClass(Charset.class, String.class)
 				.addResponseWrapperToIgnore(DeferredResult.class);
 	}
 
