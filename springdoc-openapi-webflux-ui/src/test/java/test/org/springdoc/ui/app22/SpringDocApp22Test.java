@@ -20,26 +20,26 @@ package test.org.springdoc.ui.app22;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.springdoc.core.Constants;
+import org.springdoc.core.SwaggerUiConfigProperties;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@TestPropertySource(properties = "springdoc.enable-native-image-support=true")
+@TestPropertySource(properties = "springdoc.swagger-ui.version=4.1.0")
 public class SpringDocApp22Test extends AbstractSpringDocTest {
 
-	@Value(Constants.SWAGGER_UI_VERSION)
-	private String swaggerUiVersion;
+	@Autowired
+	private SwaggerUiConfigProperties swaggerUiConfig;
 
 	@Test
 	public void testAddSwaggerUiVersionToPath() {
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/swagger-ui.html").exchange()
 				.expectStatus().isFound();
 		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/webjars/swagger-ui/"+swaggerUiVersion+"/index.html?configUrl=/v3/api-docs/swagger-config"));
+				.value("Location", Matchers.is("/webjars/swagger-ui/"+swaggerUiConfig.getVersion()+"/index.html?configUrl=/v3/api-docs/swagger-config"));
 	}
 
 	@SpringBootApplication

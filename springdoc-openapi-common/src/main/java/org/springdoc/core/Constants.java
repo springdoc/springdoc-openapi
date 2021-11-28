@@ -176,11 +176,6 @@ public final class Constants {
 	public static final String SPRINGDOC_CONFIG_FILE = ResourceUtils.CLASSPATH_URL_PREFIX   + "springdoc.swagger-ui.config";
 
 	/**
-	 * The constant SWAGGER_UI_VERSION.
-	 */
-	public static final String SWAGGER_UI_VERSION= "${springdoc.swagger-ui.version}";
-
-	/**
 	 * The constant SWAGGER_UI_PREFIX.
 	 */
 	public static final String SWAGGER_UI_PREFIX = "/swagger-ui";

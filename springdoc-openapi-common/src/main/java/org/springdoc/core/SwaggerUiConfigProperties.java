@@ -56,6 +56,28 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	private boolean displayQueryParamsWithoutOauth2;
 
 	/**
+	 * The Swagger ui version.
+	 */
+	private String version;
+
+	/**
+	 * Gets swagger ui version.
+	 *
+	 * @return the swagger ui version
+	 */
+	public String getVersion() {
+		return version;
+	}
+
+	/**
+	 * Sets swagger ui version.
+	 *
+	 * @param version the swagger ui version
+	 */
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	/**
 	 * The Csrf configuration.
 	 */
 	private Csrf csrf = new Csrf();
@@ -361,4 +383,5 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 			this.theme = theme;
 		}
 	}
+
 }

@@ -163,32 +163,9 @@ public class SpringDocConfigProperties {
 	private boolean useManagementPort;
 
 	/**
-	 * The Enable native support.
-	 */
-	protected Boolean enableNativeImageSupport;
-
-	/**
 	 * The Disable i18n.
 	 */
 	private boolean disableI18n;
-
-	/**
-	 * Gets enable native image support.
-	 *
-	 * @return the enable native image support
-	 */
-	public Boolean getEnableNativeImageSupport() {
-		return enableNativeImageSupport;
-	}
-
-	/**
-	 * Sets enable native image support.
-	 *
-	 * @param enableNativeImageSupport the enable native image support
-	 */
-	public void setEnableNativeImageSupport(Boolean enableNativeImageSupport) {
-		this.enableNativeImageSupport = enableNativeImageSupport;
-	}
 
 	/**
 	 * Is use management port boolean.

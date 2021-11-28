@@ -27,7 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
-import org.springdoc.core.SpringDocHints;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
@@ -133,13 +132,12 @@ public class SwaggerConfig {
 	 * Swagger ui config parameters swagger ui config parameters.
 	 *
 	 * @param swaggerUiConfig the swagger ui config
-	 * @param springDocHintsOptional the spring doc hints optional
 	 * @return the swagger ui config parameters
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	SwaggerUiConfigParameters swaggerUiConfigParameters(SwaggerUiConfigProperties swaggerUiConfig, Optional<SpringDocHints> springDocHintsOptional) {
-		return new SwaggerUiConfigParameters(swaggerUiConfig, springDocHintsOptional);
+	SwaggerUiConfigParameters swaggerUiConfigParameters(SwaggerUiConfigProperties swaggerUiConfig) {
+		return new SwaggerUiConfigParameters(swaggerUiConfig);
 	}
 
 	@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
