@@ -226,21 +226,9 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	 * @return the swagger ui url
 	 */
 	protected String getSwaggerUiUrl() {
-		if (enableNativeImageSupport())
-			return SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfigParameters.getSwaggerUiVersion() + INDEX_PAGE;
+		if (StringUtils.isNotEmpty(swaggerUiConfig.getVersion()))
+			return SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfig.getVersion() + INDEX_PAGE;
 		else
 			return SWAGGER_UI_URL;
-	}
-
-	/**
-	 * Enable native image support boolean.
-	 *
-	 * @return the boolean
-	 */
-	private boolean enableNativeImageSupport(){
-		if (springDocConfigProperties.getEnableNativeImageSupport() != null)
-			return springDocConfigProperties.getEnableNativeImageSupport();
-		else
-			return swaggerUiConfigParameters.getSpringDocHintsOptional().isPresent();
 	}
 }

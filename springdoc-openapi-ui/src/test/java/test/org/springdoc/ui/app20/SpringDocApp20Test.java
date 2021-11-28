@@ -19,10 +19,10 @@
 package test.org.springdoc.ui.app20;
 
 import org.junit.jupiter.api.Test;
-import org.springdoc.core.Constants;
+import org.springdoc.core.SwaggerUiConfigProperties;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
@@ -30,18 +30,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "springdoc.enable-native-image-support=true")
+@TestPropertySource(properties = "springdoc.swagger-ui.version=4.1.0")
 public class SpringDocApp20Test extends AbstractSpringDocTest {
 
-	@Value(Constants.SWAGGER_UI_VERSION)
-	private String swaggerUiVersion;
+	@Autowired
+	private SwaggerUiConfigProperties swaggerUiConfig;
 
 
 	@Test
 	public void testAddSwaggerUiVersionToPath() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/swagger-ui/"+swaggerUiVersion+"/index.html?configUrl=/v3/api-docs/swagger-config"));
+				.andExpect(header().string("Location", "/swagger-ui/"+swaggerUiConfig.getVersion()+"/index.html?configUrl=/v3/api-docs/swagger-config"));
 	}
 
 

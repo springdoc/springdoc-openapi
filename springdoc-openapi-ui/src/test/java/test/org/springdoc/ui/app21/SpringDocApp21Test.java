@@ -19,10 +19,8 @@
 package test.org.springdoc.ui.app21;
 
 import org.junit.jupiter.api.Test;
-import org.springdoc.core.Constants;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -32,10 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SpringDocApp21Test extends AbstractSpringDocTest {
-
-	@Value(Constants.SWAGGER_UI_VERSION)
-	private String swaggerUiVersion;
-
 
 	@Test
 	public void testAddSwaggerUiVersionToPath() throws Exception {

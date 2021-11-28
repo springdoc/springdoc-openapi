@@ -25,25 +25,20 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.CollectionUtils;
 
-import static org.springdoc.core.Constants.SPRINGDOC_CONFIG_FILE;
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
-import static org.springdoc.core.Constants.SWAGGER_UI_VERSION;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -54,7 +49,6 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
-@PropertySource(SPRINGDOC_CONFIG_FILE)
 public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties {
 
 	/**
@@ -92,26 +86,14 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 */
 	private final SwaggerUiConfigProperties swaggerUiConfig;
 
-	/**
-	 * The Swagger ui version.
-	 */
-	@Value(SWAGGER_UI_VERSION)
-	private String swaggerUiVersion;
-
-	/**
-	 * The Spring doc hints optional.
-	 */
-	private final Optional<SpringDocHints> springDocHintsOptional;
 
 	/**
 	 * Instantiates a new Swagger ui config parameters.
 	 *
 	 * @param swaggerUiConfig the swagger ui config
-	 * @param springDocHintsOptional the spring doc hints optional
 	 */
-	public SwaggerUiConfigParameters(SwaggerUiConfigProperties swaggerUiConfig, Optional<SpringDocHints> springDocHintsOptional) {
+	public SwaggerUiConfigParameters(SwaggerUiConfigProperties swaggerUiConfig) {
 		this.swaggerUiConfig = swaggerUiConfig;
-		this.springDocHintsOptional = springDocHintsOptional;
 		this.path = StringUtils.defaultIfBlank(swaggerUiConfig.getPath(), Constants.DEFAULT_SWAGGER_UI_PATH);
 		this.oauth2RedirectUrl = StringUtils.defaultIfBlank(swaggerUiConfig.getOauth2RedirectUrl(), SWAGGER_UI_OAUTH_REDIRECT_URL);
 		this.layout = swaggerUiConfig.getLayout();
@@ -138,33 +120,6 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		this.syntaxHighlight = swaggerUiConfig.getSyntaxHighlight();
 		this.tryItOutEnabled = swaggerUiConfig.getTryItOutEnabled();
 		this.persistAuthorization = swaggerUiConfig.getPersistAuthorization();
-	}
-
-	/**
-	 * Gets spring doc hints optional.
-	 *
-	 * @return the spring doc hints optional
-	 */
-	public Optional<SpringDocHints> getSpringDocHintsOptional() {
-		return springDocHintsOptional;
-	}
-
-	/**
-	 * Gets swagger ui version.
-	 *
-	 * @return the swagger ui version
-	 */
-	public String getSwaggerUiVersion() {
-		return swaggerUiVersion;
-	}
-
-	/**
-	 * Sets swagger ui version.
-	 *
-	 * @param swaggerUiVersion the swagger ui version
-	 */
-	public void setSwaggerUiVersion(String swaggerUiVersion) {
-		this.swaggerUiVersion = swaggerUiVersion;
 	}
 
 	/**

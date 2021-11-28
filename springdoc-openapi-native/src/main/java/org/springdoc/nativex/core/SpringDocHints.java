@@ -1,4 +1,4 @@
-package org.springdoc.core;
+package org.springdoc.nativex.core;
 
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -77,12 +77,38 @@ import io.swagger.v3.oas.models.parameters.PathParameter;
 import io.swagger.v3.oas.models.parameters.QueryParameter;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.servers.ServerVariables;
+import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.api.mixins.SortedOpenAPIMixin;
 import org.springdoc.api.mixins.SortedSchemaMixin;
+import org.springdoc.core.AbstractRequestService;
+import org.springdoc.core.Constants;
+import org.springdoc.core.GenericParameterService;
+import org.springdoc.core.GenericResponseService;
+import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.OpenAPIService;
+import org.springdoc.core.OperationService;
+import org.springdoc.core.PropertyResolverUtils;
+import org.springdoc.core.RequestBodyService;
+import org.springdoc.core.ReturnTypeParser;
+import org.springdoc.core.SecurityService;
+import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocConfiguration;
+import org.springdoc.core.SwaggerUiConfigParameters;
+import org.springdoc.core.SwaggerUiConfigProperties;
+import org.springdoc.core.SwaggerUiOAuthProperties;
+import org.springdoc.core.WebConversionServiceProvider;
+import org.springdoc.core.converters.AdditionalModelsConverter;
+import org.springdoc.core.converters.FileSupportConverter;
+import org.springdoc.core.converters.ModelConverterRegistrar;
+import org.springdoc.core.converters.PolymorphicModelConverter;
+import org.springdoc.core.converters.PropertyCustomizingConverter;
+import org.springdoc.core.converters.ResponseSupportConverter;
+import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
+import org.springdoc.ui.AbstractSwaggerWelcome;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.nativex.hint.AccessBits;
 import org.springframework.nativex.hint.JdkProxyHint;
@@ -90,7 +116,6 @@ import org.springframework.nativex.hint.ResourceHint;
 import org.springframework.nativex.hint.TypeHint;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 
 @JdkProxyHint(typeNames = "javax.servlet.http.HttpServletRequest")
 @JdkProxyHint(typeNames =  "org.springframework.web.context.request.NativeWebRequest" )
@@ -119,14 +144,15 @@ import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 @JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.ControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation"})
 
 @TypeHint(typeNames = { "org.springdoc.core.CacheOrGroupedOpenApiCondition$OnCacheDisabled", "io.swagger.v3.oas.models.parameters.Parameter$StyleEnum",
-		"io.swagger.v3.oas.models.security.SecurityScheme$In" , "io.swagger.v3.oas.models.security.SecurityScheme$Type", 
+		"io.swagger.v3.oas.models.security.SecurityScheme$In" , "io.swagger.v3.oas.models.security.SecurityScheme$Type",
 		"org.springdoc.core.CacheOrGroupedOpenApiCondition$OnMultipleOpenApiSupportCondition", "org.springdoc.core.SpringDocConfigProperties$GroupConfig" ,
 		"org.springdoc.core.SpringDocConfigProperties$Cache" ,  "org.springdoc.core.SpringDocConfigProperties$GroupConfig" ,
 		"org.springdoc.core.AbstractSwaggerUiConfigProperties$SwaggerUrl" ,"org.springdoc.core.AbstractSwaggerUiConfigProperties$Direction" ,
-		"org.springdoc.core.AbstractSwaggerUiConfigProperties$SyntaxHighlight" ,
+		"org.springdoc.core.AbstractSwaggerUiConfigProperties$SyntaxHighlight" , "org.springdoc.core.SpringDocConfiguration$1",
+		"org.springdoc.core.SpringDocConfiguration$OpenApiResourceAdvice", "org.springdoc.core.SpringDocConfiguration$WebConversionServiceConfiguration",
 		"org.springdoc.core.SpringDocConfigProperties$Webjars" ,  "org.springdoc.core.SpringDocConfigProperties$ApiDocs" }, access = AccessBits.ALL)
 
-@TypeHint(types = { Constants.class,  ModelConverter.class , ModelConverters.class})
+@TypeHint(types = { Constants.class,  ModelConverter.class , ModelConverters.class}, access = AccessBits.ALL)
 @TypeHint(types = { SecurityRequirements.class, SecurityRequirement.class, ApiResponses.class, Callbacks.class, PropertySource.class, ExternalDocumentation.class, Hidden.class,
 		Operation.class, Parameter.class, Callbacks.class, Extension.class, ExtensionProperty.class, Header.class, Link.class, LinkParameter.class,
 		ArraySchema.class, Content.class, DiscriminatorMapping.class, Encoding.class, ExampleObject.class, Schema.class, RequestBody.class, ApiResponse.class,
@@ -134,6 +160,31 @@ import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 		OAuthFlow.class, OAuthFlows.class, OAuthScope.class, License.class, Contact.class })
 
 @TypeHint(types = {
+		AbstractSwaggerWelcome.class,
+		SchemaPropertyDeprecatingConverter.class,
+		ResponseSupportConverter.class,
+		PropertyCustomizingConverter.class,
+		PolymorphicModelConverter.class,
+		ModelConverterRegistrar.class,
+		FileSupportConverter.class,
+		AdditionalModelsConverter.class,
+		WebConversionServiceProvider.class,
+		SwaggerUiOAuthProperties.class,
+		SwaggerUiConfigProperties.class,
+		SwaggerUiConfigParameters.class,
+		SpringDocConfigProperties.class,
+		AbstractOpenApiResource.class,
+		AbstractRequestService.class,
+		GenericParameterService.class,
+		GenericResponseService.class,
+		GroupedOpenApi.class,
+		OpenAPIService.class,
+		OperationService.class,
+		PropertyResolverUtils.class,
+		RequestBodyService.class,
+		ReturnTypeParser.class,
+		SecurityService.class,
+		SpringDocConfiguration.class,
 		SpecFilter.class,
 		MediaType.class,
 		ApiResponsesSerializer.class,
@@ -201,11 +252,12 @@ import static org.springdoc.core.Constants.SPRING_NATIVE_LISTENER;
 		io.swagger.v3.oas.models.parameters.Parameter.class,
 		io.swagger.v3.oas.models.Operation.class,
 		io.swagger.v3.oas.models.headers.Header.class
-})
+}, access = AccessBits.ALL )
 
-@ResourceHint(patterns = "springdoc.swagger-ui.config")
+@ResourceHint(patterns = "sun.util.resources.LocaleNames", isBundle = true)
+
+@Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-@ConditionalOnClass(name = SPRING_NATIVE_LISTENER)
 public class SpringDocHints {}
 
