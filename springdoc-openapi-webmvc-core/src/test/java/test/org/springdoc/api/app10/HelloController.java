@@ -18,6 +18,7 @@
 
 package test.org.springdoc.api.app10;
 
+import java.nio.charset.Charset;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +39,9 @@ public class HelloController {
 
 	@GetMapping("/testreq")
 	public void testRequestAttribute(@RequestAttribute String sample, String s) {
+	}
 
+	@GetMapping(value = {"/employee"})
+	public void getEmployee(Charset test) {
 	}
 }
