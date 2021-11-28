@@ -40,7 +40,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -58,7 +58,7 @@ public class SpringDocApp136Test extends AbstractCommonTest {
 	OpenApiWebMvcResource resource;
 
     @Autowired
-    RequestMappingInfoHandlerMapping mappingInfoHandlerMapping;
+	RequestMappingHandlerMapping requestMappingHandlerMapping;
 
     @SpringBootApplication
     static class SpringDocTestApp {}
@@ -76,12 +76,12 @@ public class SpringDocApp136Test extends AbstractCommonTest {
     }
 
     private void shuffleSpringHandlerMethods() {
-        Map<RequestMappingInfo, HandlerMethod> handlerMethods = mappingInfoHandlerMapping.getHandlerMethods();
+        Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
         List<Map.Entry<RequestMappingInfo, HandlerMethod>> collect = new ArrayList<>(handlerMethods.entrySet());
         collect.sort(Comparator.comparing(a -> ThreadLocalRandom.current().nextBoolean() ? -1 : 1));
 
-        collect.forEach(e -> mappingInfoHandlerMapping.unregisterMapping(e.getKey()));
-        collect.forEach(e -> mappingInfoHandlerMapping.registerMapping(e.getKey(), e.getValue().getBean(), e.getValue().getMethod()));
+        collect.forEach(e -> requestMappingHandlerMapping.unregisterMapping(e.getKey()));
+        collect.forEach(e -> requestMappingHandlerMapping.registerMapping(e.getKey(), e.getValue().getBean(), e.getValue().getMethod()));
     }
 
 }
