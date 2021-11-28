@@ -55,7 +55,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.result.condition.PatternsRequestCondition;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
-import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
+import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.util.pattern.PathPattern;
 
 import static org.springdoc.core.ActuatorProvider.getTag;
@@ -70,7 +70,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	/**
 	 * The Request mapping handler mapping.
 	 */
-	protected final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
+	protected final RequestMappingHandlerMapping requestMappingHandlerMapping;
 
 	/**
 	 * Instantiates a new Open api resource.
@@ -88,7 +88,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	public OpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			RequestMappingHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
@@ -112,7 +112,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	public OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			RequestMappingHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,

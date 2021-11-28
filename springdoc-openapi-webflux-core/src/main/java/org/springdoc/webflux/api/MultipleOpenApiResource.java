@@ -37,7 +37,7 @@ import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
+import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 
 import static org.springdoc.core.Constants.ACTUATOR_DEFAULT_GROUP;
 
@@ -75,7 +75,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * The Request mapping handler mapping.
 	 */
-	private final RequestMappingInfoHandlerMapping requestMappingHandlerMapping;
+	private final RequestMappingHandlerMapping requestMappingHandlerMapping;
 
 	/**
 	 * The Spring doc config properties.
@@ -107,7 +107,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			RequestMappingInfoHandlerMapping requestMappingHandlerMapping,
+			RequestMappingHandlerMapping requestMappingHandlerMapping,
 			SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
 
 		this.groupedOpenApis = groupedOpenApis;
@@ -121,7 +121,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	}
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 		this.groupedOpenApiResources = groupedOpenApis.stream()
 				.collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
 						{

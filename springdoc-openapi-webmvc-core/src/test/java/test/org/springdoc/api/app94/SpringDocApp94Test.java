@@ -88,7 +88,6 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 
 			result.setApplicationContext(this.applicationContext);
 			result.registerMapping(requestMappingInfo, "greetingController", GreetingController.class.getDeclaredMethod("sayHello2"));
-			//result.handlerme
 			return result;
 		}
 
