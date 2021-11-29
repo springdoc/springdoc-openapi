@@ -37,7 +37,6 @@ import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 
 import static org.springdoc.core.Constants.ACTUATOR_DEFAULT_GROUP;
 
@@ -73,11 +72,6 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	private final OperationService operationParser;
 
 	/**
-	 * The Request mapping handler mapping.
-	 */
-	private final RequestMappingHandlerMapping requestMappingHandlerMapping;
-
-	/**
 	 * The Spring doc config properties.
 	 */
 	private final SpringDocConfigProperties springDocConfigProperties;
@@ -100,14 +94,12 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			RequestMappingHandlerMapping requestMappingHandlerMapping,
 			SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
 
 		this.groupedOpenApis = groupedOpenApis;
@@ -115,7 +107,6 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 		this.requestBuilder = requestBuilder;
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
-		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.actuatorProvider = actuatorProvider;
 	}
@@ -145,7 +136,6 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 				requestBuilder,
 				responseBuilder,
 				operationParser,
-				requestMappingHandlerMapping,
 				Optional.of(item.getOperationCustomizers()),
 				Optional.of(item.getOpenApiCustomisers()),
 				springDocConfigProperties,
@@ -157,7 +147,6 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					requestBuilder,
 					responseBuilder,
 					operationParser,
-					requestMappingHandlerMapping,
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
 					springDocConfigProperties,

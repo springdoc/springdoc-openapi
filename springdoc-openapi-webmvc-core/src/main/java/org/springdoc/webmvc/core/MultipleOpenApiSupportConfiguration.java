@@ -48,7 +48,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
@@ -73,7 +72,6 @@ public class MultipleOpenApiSupportConfiguration {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param actuatorProvider the actuator provider
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
@@ -88,7 +86,6 @@ public class MultipleOpenApiSupportConfiguration {
 	MultipleOpenApiWebMvcResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			RequestMappingHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
@@ -97,7 +94,7 @@ public class MultipleOpenApiSupportConfiguration {
 		return new MultipleOpenApiWebMvcResource(groupedOpenApis,
 				defaultOpenAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
-				requestMappingHandlerMapping, actuatorProvider,
+				 actuatorProvider,
 				springDocConfigProperties,
 				springSecurityOAuth2Provider,
 				routerFunctionProvider, repositoryRestResourceProvider);
@@ -119,7 +116,6 @@ public class MultipleOpenApiSupportConfiguration {
 		 * @param requestBuilder the request builder
 		 * @param responseBuilder the response builder
 		 * @param operationParser the operation parser
-		 * @param requestMappingHandlerMapping the request mapping handler mapping
 		 * @param actuatorProvider the actuator provider
 		 * @param springDocConfigProperties the spring doc config properties
 		 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
@@ -134,12 +130,12 @@ public class MultipleOpenApiSupportConfiguration {
 		MultipleOpenApiActuatorResource multipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis,
 				ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 				GenericResponseService responseBuilder, OperationService operationParser,
-				RequestMappingHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> actuatorProvider,
+				 Optional<ActuatorProvider> actuatorProvider,
 				SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 				Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 
 			return new MultipleOpenApiActuatorResource(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder,
-					responseBuilder, operationParser, requestMappingHandlerMapping, actuatorProvider,
+					responseBuilder, operationParser, actuatorProvider,
 					springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
 		}
 	}

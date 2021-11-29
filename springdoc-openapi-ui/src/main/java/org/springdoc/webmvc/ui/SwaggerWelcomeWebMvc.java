@@ -20,35 +20,24 @@
 
 package org.springdoc.webmvc.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
-import org.springdoc.webmvc.api.OpenApiResource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.MVC_SERVLET_PATH;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
 import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
+import static org.springdoc.webmvc.api.OpenApiWebMvcResource.findPathPrefix;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -71,46 +60,20 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	private String pathPrefix;
 
 	/**
-	 * The Request mapping handler mapping.
+	 * The Open api service.
 	 */
-	private final Optional<List<RequestMappingInfoHandlerMapping>> requestMappingInfoHandlerMappingOptionalList;
-
+	private final OpenAPIService openAPIService;
 
 	/**
 	 * Instantiates a new Swagger welcome web mvc.
-	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param requestMappingInfoHandlerMappingOptionalList the request mapping info handler mapping optional list
+	 * @param openAPIService the open api service
 	 */
-	public SwaggerWelcomeWebMvc(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, Optional<List<RequestMappingInfoHandlerMapping>> requestMappingInfoHandlerMappingOptionalList) {
+	public SwaggerWelcomeWebMvc(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, OpenAPIService openAPIService) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
-		this.requestMappingInfoHandlerMappingOptionalList = requestMappingInfoHandlerMappingOptionalList;
-	}
-
-	/**
-	 * Init.
-	 */
-	@PostConstruct
-	private void init() {
-		requestMappingInfoHandlerMappingOptionalList.ifPresent(requestMappingInfoHandlerMappingList ->
-				requestMappingInfoHandlerMappingList.forEach(requestMappingHandlerMapping ->
-						{
-							Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-							List<Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
-							for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
-								RequestMappingInfo requestMappingInfo = entry.getKey();
-								Set<String> patterns = OpenApiResource.getActivePatterns(requestMappingInfo);
-								if (!CollectionUtils.isEmpty(patterns)) {
-									for (String operationPath : patterns) {
-										if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
-											pathPrefix = operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
-									}
-								}
-							}
-						}
-				));
+		this.openAPIService = openAPIService;
 	}
 
 	/**
@@ -160,6 +123,8 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	 */
 	@Override
 	protected String buildApiDocUrl() {
+		if (this.pathPrefix == null)
+			this.pathPrefix = findPathPrefix(this.openAPIService, this.springDocConfigProperties);
 		return buildUrl(contextPath + pathPrefix, springDocConfigProperties.getApiDocs().getPath());
 	}
 
@@ -172,4 +137,5 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	protected String buildSwaggerConfigUrl() {
 		return apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
 	}
+
 }

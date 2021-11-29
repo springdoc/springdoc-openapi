@@ -57,7 +57,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
-import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
@@ -79,7 +78,6 @@ public class SpringDocWebFluxConfiguration {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
 	 * @param springDocConfigProperties the spring doc config properties
@@ -92,14 +90,12 @@ public class SpringDocWebFluxConfiguration {
 	@Lazy(false)
 	OpenApiWebfluxResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			RequestMappingHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
 		return new OpenApiWebfluxResource(openAPIBuilderObjectFactory, requestBuilder,
-				responseBuilder, operationParser,
-				requestMappingHandlerMapping, operationCustomizers,
+				responseBuilder, operationParser, operationCustomizers,
 				openApiCustomisers, springDocConfigProperties, actuatorProvider);
 	}
 
@@ -192,7 +188,6 @@ public class SpringDocWebFluxConfiguration {
 		 * @param requestBuilder the request builder
 		 * @param responseBuilder the response builder
 		 * @param operationParser the operation parser
-		 * @param requestMappingHandlerMapping the request mapping handler mapping
 		 * @param operationCustomizers the operation customizers
 		 * @param openApiCustomisers the open api customisers
 		 * @param springDocConfigProperties the spring doc config properties
@@ -206,14 +201,12 @@ public class SpringDocWebFluxConfiguration {
 		@Lazy(false)
 		OpenApiActuatorResource actuatorOpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 				GenericResponseService responseBuilder, OperationService operationParser,
-				RequestMappingHandlerMapping requestMappingHandlerMapping,
 				Optional<List<OperationCustomizer>> operationCustomizers,
 				Optional<List<OpenApiCustomiser>> openApiCustomisers,
 				SpringDocConfigProperties springDocConfigProperties,
 				Optional<ActuatorProvider> actuatorProvider) {
 			return new OpenApiActuatorResource(openAPIBuilderObjectFactory, requestBuilder,
-					responseBuilder, operationParser,
-					requestMappingHandlerMapping, operationCustomizers,
+					responseBuilder, operationParser,operationCustomizers,
 					openApiCustomisers, springDocConfigProperties, actuatorProvider);
 		}
 	}

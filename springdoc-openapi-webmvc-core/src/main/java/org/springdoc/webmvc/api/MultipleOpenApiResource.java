@@ -40,7 +40,6 @@ import org.springdoc.webmvc.core.RouterFunctionProvider;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import static org.springdoc.core.Constants.ACTUATOR_DEFAULT_GROUP;
 
@@ -74,11 +73,6 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	 * The Operation parser.
 	 */
 	private final OperationService operationParser;
-
-	/**
-	 * The Request mapping handler mapping.
-	 */
-	private final RequestMappingHandlerMapping requestMappingHandlerMapping;
 
 	/**
 	 * The Actuator provider.
@@ -118,7 +112,6 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param actuatorProvider the actuator provider
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
@@ -128,7 +121,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			RequestMappingHandlerMapping requestMappingHandlerMapping, Optional<ActuatorProvider> actuatorProvider,
+			Optional<ActuatorProvider> actuatorProvider,
 			SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
@@ -138,7 +131,6 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 		this.requestBuilder = requestBuilder;
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
-		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 		this.actuatorProvider = actuatorProvider;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
@@ -171,7 +163,6 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					requestBuilder,
 					responseBuilder,
 					operationParser,
-					requestMappingHandlerMapping,
 					actuatorProvider,
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
@@ -186,7 +177,6 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					requestBuilder,
 					responseBuilder,
 					operationParser,
-					requestMappingHandlerMapping,
 					actuatorProvider,
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),

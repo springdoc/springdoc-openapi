@@ -6,17 +6,26 @@
   },
   "servers": [
     {
-      "url": "http://localhost:55594",
+      "url": "",
       "description": "Generated server url"
     }
   ],
   "paths": {
-    "/persons": {
-      "get": {
+    "/echo": {
+      "post": {
         "tags": [
-          "hello-controller"
+          "test-controller"
         ],
-        "operationId": "persons",
+        "operationId": "echo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK",

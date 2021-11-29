@@ -44,7 +44,6 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
@@ -67,7 +66,6 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param actuatorProvider the actuator provider
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
@@ -78,7 +76,7 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 */
 	public OpenApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
 			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
-			OperationService operationParser, RequestMappingHandlerMapping requestMappingHandlerMapping,
+			OperationService operationParser,
 			Optional<ActuatorProvider> actuatorProvider,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
@@ -86,7 +84,7 @@ public class OpenApiActuatorResource extends OpenApiResource {
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, actuatorProvider, operationCustomizers, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
+		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, actuatorProvider, operationCustomizers, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
 	}
 
 	/**
@@ -97,7 +95,6 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param actuatorProvider the actuator provider
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
@@ -108,13 +105,13 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 */
 	public OpenApiActuatorResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
 			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
-			OperationService operationParser, RequestMappingHandlerMapping requestMappingHandlerMapping,
+			OperationService operationParser,
 			Optional<ActuatorProvider> actuatorProvider, Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
-				requestMappingHandlerMapping, actuatorProvider, operationCustomizers, openApiCustomisers,
+				 actuatorProvider, operationCustomizers, openApiCustomisers,
 				springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
 	}
 
