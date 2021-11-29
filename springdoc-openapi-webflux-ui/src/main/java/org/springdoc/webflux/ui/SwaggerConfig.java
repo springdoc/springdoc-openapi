@@ -20,11 +20,11 @@
 
 package org.springdoc.webflux.ui;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springdoc.core.ActuatorProvider;
+import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SwaggerUiConfigParameters;
@@ -45,7 +45,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
-import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
@@ -68,14 +67,14 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param requestMappingInfoHandlerMappingOptionalList the request mapping info handler mapping optional list
+	 * @param openAPIService the open api service
 	 * @return the swagger welcome web flux
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
-	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters, Optional<List<RequestMappingInfoHandlerMapping>> requestMappingInfoHandlerMappingOptionalList) {
-		return new SwaggerWelcomeWebFlux(swaggerUiConfig,springDocConfigProperties,swaggerUiConfigParameters,requestMappingInfoHandlerMappingOptionalList);
+	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters, OpenAPIService openAPIService) {
+		return new SwaggerWelcomeWebFlux(swaggerUiConfig,springDocConfigProperties,swaggerUiConfigParameters,openAPIService);
 	}
 
 	/**

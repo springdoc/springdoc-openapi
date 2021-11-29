@@ -60,7 +60,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.web.servlet.function.RouterFunction;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
@@ -82,7 +81,6 @@ public class SpringDocWebMvcConfiguration {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param actuatorProvider the actuator provider
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param operationCustomizers the operation customizers
@@ -98,7 +96,6 @@ public class SpringDocWebMvcConfiguration {
 	@Lazy(false)
 	OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			RequestMappingHandlerMapping requestMappingHandlerMapping,
 			Optional<ActuatorProvider> actuatorProvider,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OperationCustomizer>> operationCustomizers,
@@ -107,8 +104,7 @@ public class SpringDocWebMvcConfiguration {
 			Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 		return new OpenApiWebMvcResource(openAPIBuilderObjectFactory, requestBuilder,
-				responseBuilder, operationParser,
-				requestMappingHandlerMapping, actuatorProvider, operationCustomizers,
+				responseBuilder, operationParser, actuatorProvider, operationCustomizers,
 				openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,
 				routerFunctionProvider, repositoryRestResourceProvider);
 	}
@@ -209,7 +205,6 @@ public class SpringDocWebMvcConfiguration {
 		 * @param requestBuilder the request builder
 		 * @param responseBuilder the response builder
 		 * @param operationParser the operation parser
-		 * @param requestMappingHandlerMapping the request mapping handler mapping
 		 * @param actuatorProvider the actuator provider
 		 * @param springDocConfigProperties the spring doc config properties
 		 * @param operationCustomizers the operation customizers
@@ -226,7 +221,6 @@ public class SpringDocWebMvcConfiguration {
 		@Lazy(false)
 		OpenApiActuatorResource openApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 				GenericResponseService responseBuilder, OperationService operationParser,
-				RequestMappingHandlerMapping requestMappingHandlerMapping,
 				Optional<ActuatorProvider> actuatorProvider,
 				SpringDocConfigProperties springDocConfigProperties,
 				Optional<List<OperationCustomizer>> operationCustomizers,
@@ -236,7 +230,7 @@ public class SpringDocWebMvcConfiguration {
 				Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
 			return new OpenApiActuatorResource(openAPIBuilderObjectFactory,
 					requestBuilder, responseBuilder,
-					operationParser, requestMappingHandlerMapping,
+					operationParser,
 					actuatorProvider, operationCustomizers, openApiCustomisers,
 					springDocConfigProperties, springSecurityOAuth2Provider,
 					routerFunctionProvider, repositoryRestResourceProvider);

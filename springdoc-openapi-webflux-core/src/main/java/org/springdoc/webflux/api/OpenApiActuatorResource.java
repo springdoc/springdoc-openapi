@@ -42,7 +42,6 @@ import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEn
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
@@ -66,14 +65,13 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
-	public OpenApiActuatorResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingHandlerMapping requestMappingHandlerMapping, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
+	public OpenApiActuatorResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 	}
 
 	/**
@@ -83,14 +81,13 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
-	public OpenApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingHandlerMapping requestMappingHandlerMapping, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
-		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
+	public OpenApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
+		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 	}
 
 	/**

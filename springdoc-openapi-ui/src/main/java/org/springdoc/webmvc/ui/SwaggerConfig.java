@@ -20,11 +20,11 @@
 
 package org.springdoc.webmvc.ui;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springdoc.core.ActuatorProvider;
+import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SwaggerUiConfigParameters;
@@ -42,7 +42,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
@@ -59,21 +58,20 @@ import static org.springdoc.core.Constants.SPRINGDOC_USE_ROOT_PATH;
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerConfig {
 
-
 	/**
 	 * Swagger welcome swagger welcome web mvc.
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param requestMappingInfoHandlerMappingOptionalList the request mapping info handler mapping optional list
+	 * @param openAPIService the open api service
 	 * @return the swagger welcome web mvc
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
-	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, Optional<List<RequestMappingInfoHandlerMapping>> requestMappingInfoHandlerMappingOptionalList) {
-		return new SwaggerWelcomeWebMvc(swaggerUiConfig, springDocConfigProperties,swaggerUiConfigParameters, requestMappingInfoHandlerMappingOptionalList);
+	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, OpenAPIService openAPIService) {
+		return new SwaggerWelcomeWebMvc(swaggerUiConfig, springDocConfigProperties,swaggerUiConfigParameters, openAPIService);
 	}
 
 	/**

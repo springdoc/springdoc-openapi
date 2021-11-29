@@ -47,6 +47,7 @@ import org.springdoc.webflux.core.visitor.RouterFunctionVisitor;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.MimeType;
@@ -68,11 +69,6 @@ import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 public abstract class OpenApiResource extends AbstractOpenApiResource {
 
 	/**
-	 * The Request mapping handler mapping.
-	 */
-	protected final RequestMappingHandlerMapping requestMappingHandlerMapping;
-
-	/**
 	 * Instantiates a new Open api resource.
 	 *
 	 * @param groupName the group name
@@ -80,7 +76,6 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
 	 * @param springDocConfigProperties the spring doc config properties
@@ -88,13 +83,11 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	public OpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			RequestMappingHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
 		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
-		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
 	/**
@@ -104,7 +97,6 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
 	 * @param springDocConfigProperties the spring doc config properties
@@ -112,13 +104,11 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	public OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			RequestMappingHandlerMapping requestMappingHandlerMapping,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
 		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
-		this.requestMappingHandlerMapping = requestMappingHandlerMapping;
 	}
 
 
@@ -154,15 +144,24 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		return Mono.just(writeYamlValue(openAPI));
 	}
 
+	/**
+	 * Gets paths.
+	 *
+	 * @param restControllers the rest controllers
+	 * @param locale the locale
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void getPaths(Map<String, Object> restControllers, Locale locale) {
-		Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-		calculatePath(restControllers, map, locale);
-		if (isShowActuator()) {
-			map = optionalActuatorProvider.get().getMethods();
-			this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
+		ObjectProvider<RequestMappingHandlerMapping> requestMappingHandlerMappingObjectProvider = openAPIService.getContext().getBeanProvider(RequestMappingHandlerMapping.class);
+		for (RequestMappingHandlerMapping requestMappingHandlerMapping : requestMappingHandlerMappingObjectProvider) {
+			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 			calculatePath(restControllers, map, locale);
+			if (isShowActuator()) {
+				map = optionalActuatorProvider.get().getMethods();
+				this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
+				calculatePath(restControllers, map, locale);
+			}
 		}
 		getWebFluxRouterFunctionPaths(locale);
 	}
@@ -217,7 +216,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param locale the locale
 	 */
 	protected void getWebFluxRouterFunctionPaths(Locale locale) {
-		ApplicationContext applicationContext = requestMappingHandlerMapping.getApplicationContext();
+		ApplicationContext applicationContext = openAPIService.getContext();
 		Map<String, RouterFunction> routerBeans = Objects.requireNonNull(applicationContext).getBeansOfType(RouterFunction.class);
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
 			RouterFunction routerFunction = entry.getValue();

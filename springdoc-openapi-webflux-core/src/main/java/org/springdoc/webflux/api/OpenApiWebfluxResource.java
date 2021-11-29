@@ -20,11 +20,13 @@
 
 package org.springdoc.webflux.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.function.Predicate;
+import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,13 +42,19 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.reactive.result.condition.PatternsRequestCondition;
+import org.springframework.web.reactive.result.method.RequestMappingInfo;
 import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.util.pattern.PathPattern;
 
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
@@ -68,14 +76,13 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
-	public OpenApiWebfluxResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingHandlerMapping requestMappingHandlerMapping, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
+	public OpenApiWebfluxResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 	}
 
 	/**
@@ -85,15 +92,14 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 */
 	@Autowired
-	public OpenApiWebfluxResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, RequestMappingHandlerMapping requestMappingHandlerMapping, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
-		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, requestMappingHandlerMapping, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
+	public OpenApiWebfluxResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
+		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
 	}
 
 	/**
@@ -130,16 +136,44 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 		return super.openapiYaml(serverHttpRequest, apiDocsUrl, locale);
 	}
 
+	/**
+	 * Gets server url.
+	 *
+	 * @param serverHttpRequest the server http request
+	 * @param apiDocsUrl the api docs url
+	 * @return the server url
+	 */
 	@Override
 	protected String getServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
 		String requestUrl = decode(serverHttpRequest.getURI().toString());
-		Map<String, Predicate<Class<?>>> paths = ((RequestMappingHandlerMapping) requestMappingHandlerMapping).getPathPrefixes();
-		final String[] prefix = { StringUtils.EMPTY };
-		paths.forEach((path, classPredicate) -> {
-			if (classPredicate.test(this.getClass()))
-				prefix[0] = path;
-		});
-		return requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length()- prefix[0].length());
+		final String prefix = findPathPrefix(this.openAPIService, this.springDocConfigProperties);
+		return requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length()- prefix.length());
 	}
 
+	/**
+	 * Finds path prefix.
+	 *
+	 * @param openAPIService the open api service
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return the path prefix
+	 */
+	public static String findPathPrefix(OpenAPIService openAPIService, SpringDocConfigProperties springDocConfigProperties) {
+		ApplicationContext applicationContext = openAPIService.getContext();
+		ObjectProvider<RequestMappingHandlerMapping> requestMappingHandlerMappingObjectProvider = applicationContext.getBeanProvider(RequestMappingHandlerMapping.class);
+		for (RequestMappingHandlerMapping requestMappingHandlerMapping : requestMappingHandlerMappingObjectProvider) {
+			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
+			List<Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
+			for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
+				RequestMappingInfo requestMappingInfo = entry.getKey();
+				PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
+				Set<PathPattern> patterns = patternsRequestCondition.getPatterns();
+				for (PathPattern pathPattern : patterns) {
+					String operationPath = pathPattern.getPatternString();
+					if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
+						return operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
+				}
+			}
+		}
+		return StringUtils.EMPTY;
+	}
 }

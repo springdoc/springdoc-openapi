@@ -46,7 +46,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
@@ -71,7 +70,6 @@ public class MultipleOpenApiSupportConfiguration {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param requestMappingHandlerMapping the request mapping handler mapping
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param actuatorProvider the actuator provider
 	 * @return the multiple open api resource
@@ -83,13 +81,11 @@ public class MultipleOpenApiSupportConfiguration {
 	MultipleOpenApiWebFluxResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			RequestMappingHandlerMapping requestMappingHandlerMapping,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ActuatorProvider> actuatorProvider) {
 		return new MultipleOpenApiWebFluxResource(groupedOpenApis,
 				defaultOpenAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
-				requestMappingHandlerMapping,
 				springDocConfigProperties,
 				actuatorProvider);
 	}
@@ -110,7 +106,6 @@ public class MultipleOpenApiSupportConfiguration {
 		 * @param requestBuilder the request builder
 		 * @param responseBuilder the response builder
 		 * @param operationParser the operation parser
-		 * @param requestMappingHandlerMapping the request mapping handler mapping
 		 * @param springDocConfigProperties the spring doc config properties
 		 * @param actuatorProvider the actuator provider
 		 * @return the multiple open api actuator resource
@@ -122,11 +117,10 @@ public class MultipleOpenApiSupportConfiguration {
 		MultipleOpenApiActuatorResource multipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis,
 				ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 				GenericResponseService responseBuilder, OperationService operationParser,
-				RequestMappingHandlerMapping requestMappingHandlerMapping,
 				SpringDocConfigProperties springDocConfigProperties,
 				Optional<ActuatorProvider> actuatorProvider) {
 			return new MultipleOpenApiActuatorResource(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder,
-					responseBuilder, operationParser, requestMappingHandlerMapping,
+					responseBuilder, operationParser,
 					springDocConfigProperties, actuatorProvider);
 		}
 	}
