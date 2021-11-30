@@ -47,7 +47,6 @@ import org.springdoc.webflux.core.visitor.RouterFunctionVisitor;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.MimeType;
@@ -153,8 +152,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void getPaths(Map<String, Object> restControllers, Locale locale) {
-		ObjectProvider<RequestMappingHandlerMapping> requestMappingHandlerMappingObjectProvider = openAPIService.getContext().getBeanProvider(RequestMappingHandlerMapping.class);
-		for (RequestMappingHandlerMapping requestMappingHandlerMapping : requestMappingHandlerMappingObjectProvider) {
+		Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping  = openAPIService.getContext().getBeansOfType(RequestMappingHandlerMapping.class);
+		for (RequestMappingHandlerMapping requestMappingHandlerMapping : beansOfTypeRequestMappingHandlerMapping.values()) {
 			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 			calculatePath(restControllers, map, locale);
 			if (isShowActuator()) {
