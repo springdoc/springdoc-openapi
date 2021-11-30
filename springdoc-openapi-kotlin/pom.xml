@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.springdoc</groupId>
 		<artifactId>springdoc-openapi</artifactId>
-		<version>1.5.13-SNAPSHOT</version>
+		<version>1.5.13</version>
 	</parent>
     <properties>
 		<spring.version>5.3.6</spring.version>
