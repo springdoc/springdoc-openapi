@@ -51,7 +51,6 @@ import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.webmvc.core.RouterFunctionProvider;
 
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -183,8 +182,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void getPaths(Map<String, Object> restControllers, Locale locale) {
-		ObjectProvider<RequestMappingHandlerMapping> requestMappingHandlerMappingObjectProvider = openAPIService.getContext().getBeanProvider(RequestMappingHandlerMapping.class);
-		for (RequestMappingHandlerMapping requestMappingHandlerMapping : requestMappingHandlerMappingObjectProvider) {
+		Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping  = openAPIService.getContext().getBeansOfType(RequestMappingHandlerMapping.class);
+		for (RequestMappingHandlerMapping requestMappingHandlerMapping : beansOfTypeRequestMappingHandlerMapping.values()) {
 			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 			if (repositoryRestResourceProvider.isPresent()) {
 				RepositoryRestResourceProvider restResourceProvider = this.repositoryRestResourceProvider.get();

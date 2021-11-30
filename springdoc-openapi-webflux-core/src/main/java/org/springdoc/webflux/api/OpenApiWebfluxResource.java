@@ -42,7 +42,6 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -159,8 +158,8 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 */
 	public static String findPathPrefix(OpenAPIService openAPIService, SpringDocConfigProperties springDocConfigProperties) {
 		ApplicationContext applicationContext = openAPIService.getContext();
-		ObjectProvider<RequestMappingHandlerMapping> requestMappingHandlerMappingObjectProvider = applicationContext.getBeanProvider(RequestMappingHandlerMapping.class);
-		for (RequestMappingHandlerMapping requestMappingHandlerMapping : requestMappingHandlerMappingObjectProvider) {
+		Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping = applicationContext.getBeansOfType(RequestMappingHandlerMapping.class);
+		for (RequestMappingHandlerMapping requestMappingHandlerMapping : beansOfTypeRequestMappingHandlerMapping.values()) {
 			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 			List<Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
 			for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
