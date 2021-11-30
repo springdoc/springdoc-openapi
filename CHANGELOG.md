@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.13] - 2021-11-30
+### Added
+- #1317 - Add SpEL support for default values
+- #1324 - springdoc-openapi-javadoc doesn't work with @ParameterObject
+- #1334 - Allow customizing / disabling PolymorphicModelConverter
+- #1328 - Add support for spring-native 0.11-RC1. (remove property springdoc.enable-native-image-support and introduce new springdoc module)
+- #1348 - Treat java.nio.charset.Charset as string type by default.
+### Changed
+- Upgrade swagger-ui to 4.1.2
+- Upgrade to spring-boot 2.6.0
+- #1325 - Add tests for @ParameterObject on spring boot webflux
+### Fixed
+- #1320 - Fixed exception handler order
+- #1331 - Endpoint parameters are translated even if they should not
+- #1333 - NPEs when using @ParameterObject with custom Pageable and adding descriptions to fields
+- #1339 - Comments are not picked up for fields in Typed data classes
+- #1351 - @Tag name parameter not consistently performing lookup on properties file
+- #1347 - Break circular references which disabled by default since spring boot 2.6
+
 ## [1.5.12] - 2021-10-20
 ### Changed
 - Upgrade swagger-ui to 3.52.5
