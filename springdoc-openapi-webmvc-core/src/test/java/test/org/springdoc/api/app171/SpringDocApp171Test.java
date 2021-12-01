@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.api.app170;
+package test.org.springdoc.api.app171;
 
 import static org.hamcrest.Matchers.is;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
@@ -39,7 +39,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 @TestPropertySource(properties = Constants.SPRINGDOC_CACHE_DISABLED + "=false")
-public class SpringDocApp170Test extends AbstractSpringDocTest {
+public class SpringDocApp171Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {

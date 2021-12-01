@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.api.app170;
+package test.org.springdoc.api.app171;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
