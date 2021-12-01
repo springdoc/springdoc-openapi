@@ -211,12 +211,12 @@ public class OpenAPIService {
 	 */
 	public static String splitCamelCase(String str) {
 		return str.replaceAll(
-				String.format(
-						"%s|%s|%s",
-						"(?<=[A-Z])(?=[A-Z][a-z])",
-						"(?<=[^A-Z])(?=[A-Z])",
-						"(?<=[A-Za-z])(?=[^A-Za-z])"),
-				"-")
+						String.format(
+								"%s|%s|%s",
+								"(?<=[A-Z])(?=[A-Z][a-z])",
+								"(?<=[^A-Z])(?=[A-Z])",
+								"(?<=[A-Za-z])(?=[^A-Za-z])"),
+						"-")
 				.toLowerCase(Locale.ROOT);
 	}
 
@@ -375,7 +375,10 @@ public class OpenAPIService {
 		Optional<Set<io.swagger.v3.oas.models.tags.Tag>> optionalTagSet = AnnotationsUtils
 				.getTags(sourceTags.toArray(new Tag[0]), false);
 		optionalTagSet.ifPresent(tagsSet -> {
-			tagsSet.forEach(tag -> tag.name(propertyResolverUtils.resolve(tag.getName(), locale)));
+			tagsSet.forEach(tag -> {
+				tag.name(propertyResolverUtils.resolve(tag.getName(), locale));
+				tag.description(propertyResolverUtils.resolve(tag.getDescription(), locale));
+			});
 			tags.addAll(tagsSet);
 		});
 	}
@@ -718,7 +721,7 @@ public class OpenAPIService {
 	public Map<String, Object> getControllerAdviceMap() {
 		Map<String, Object> controllerAdviceMap = context.getBeansWithAnnotation(ControllerAdvice.class);
 		return Stream.of(controllerAdviceMap).flatMap(mapEl -> mapEl.entrySet().stream()).filter(
-				controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(), Hidden.class) == null))
+						controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(), Hidden.class) == null))
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1, LinkedHashMap::new));
 	}
 

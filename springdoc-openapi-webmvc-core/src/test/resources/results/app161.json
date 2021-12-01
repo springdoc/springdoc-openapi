@@ -16,7 +16,7 @@
         "tags": [
           "hello-controller"
         ],
-        "summary": "test",
+        "summary": "This is a test message",
         "operationId": "test",
         "requestBody": {
           "content": {
