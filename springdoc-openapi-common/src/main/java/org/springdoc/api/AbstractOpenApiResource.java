@@ -45,6 +45,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -321,8 +322,17 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 			// run the optional customisers
 			List<Server> servers = openApi.getServers();
+			List<Server> serversCopy = null;
+			try {
+				serversCopy = Json.mapper()
+						.readValue(Json.mapper().writeValueAsString(servers), new TypeReference<List<Server>>() {});
+			}
+			catch (JsonProcessingException e) {
+				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+			}
+
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
-			if ((!CollectionUtils.isEmpty(openApi.getServers()) && !Objects.equals(servers, openApi.getServers())))
+			if (!CollectionUtils.isEmpty(openApi.getServers()) && !openApi.getServers().equals(serversCopy))
 				openAPIService.setServersPresent(true);
 
 			openAPIService.setCachedOpenAPI(openApi);
