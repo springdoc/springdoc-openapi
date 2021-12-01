@@ -12,11 +12,11 @@
   ],
   "tags": [
     {
-      "name": "Change the language"
+      "name": "Hello! Welcome to our website!",
+      "description": "This is a test message"
     },
     {
-      "name": "Hello! Welcome to our website!",
-      "description": "test"
+      "name": "Change the language"
     }
   ],
   "paths": {
