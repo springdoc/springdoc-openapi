@@ -36,7 +36,6 @@ public class HelloLocaleController {
 	}
 
 	@GetMapping("/test")
-	@Tag(name = "lang.change")
 	public HttpEntity<String> demo2() {
 		return null;
 	}
