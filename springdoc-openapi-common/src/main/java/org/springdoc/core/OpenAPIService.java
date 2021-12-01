@@ -129,7 +129,10 @@ public class OpenAPIService {
 	/**
 	 * The Cached open api.
 	 */
-	private OpenAPI cachedOpenAPI;
+	/**
+	 * The Mappings map.
+	 */
+	private final Map<String, OpenAPI> cachedOpenAPI = new HashMap<>();
 
 	/**
 	 * The Calculated open api.
@@ -722,19 +725,26 @@ public class OpenAPIService {
 	/**
 	 * Gets cached open api.
 	 *
+	 * @param locale associated the the cache entry
 	 * @return the cached open api
 	 */
-	public OpenAPI getCachedOpenAPI() {
-		return cachedOpenAPI;
+	public OpenAPI getCachedOpenAPI(Locale locale) {
+		if (cachedOpenAPI != null && cachedOpenAPI.containsKey(locale.getLanguage())) {
+			return cachedOpenAPI.get(locale.getLanguage());
+		}
+		return null;
 	}
 
 	/**
 	 * Sets cached open api.
 	 *
+	 * @param locale associated the the cache entry
 	 * @param cachedOpenAPI the cached open api
 	 */
-	public void setCachedOpenAPI(OpenAPI cachedOpenAPI) {
-		this.cachedOpenAPI = cachedOpenAPI;
+	public void setCachedOpenAPI(OpenAPI cachedOpenAPI, Locale locale) {
+		if (this.cachedOpenAPI != null) {
+			this.cachedOpenAPI.put(locale.getLanguage(), cachedOpenAPI);
+		}
 	}
 
 	/**
