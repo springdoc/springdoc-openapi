@@ -29,12 +29,9 @@ import java.util.Locale;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import test.org.springdoc.api.AbstractSpringDocTest;
 
@@ -45,12 +42,6 @@ public class SpringDocApp171Test extends AbstractSpringDocTest {
 	static class SpringDocTestApp {
 	}
 
-	@Bean
-	public LocaleResolver localeResolver() {
-		SessionLocaleResolver localeResolver = new SessionLocaleResolver();
-		return localeResolver;
-	}
-
 	@Test
 	@Override
 	public void testApp() throws Exception {
@@ -59,8 +50,6 @@ public class SpringDocApp171Test extends AbstractSpringDocTest {
 	}
 
 	private void testApp(Locale locale) throws Exception {
-		Locale.setDefault(locale);
-
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult =
