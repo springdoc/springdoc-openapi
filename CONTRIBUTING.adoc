@@ -19,7 +19,7 @@ tag.
 
 These are some basic guidelines before opening an issue. First of all you need to make sure, you don't create duplicate issues, and there no question already answered on https://stackoverflow.com/tags/springdoc.
 
-If you are starting using springdoc-openapi, we advise you to use the last available release.
+If you are starting using springdoc-openapi, we advise you to use **the last available release**.
 
 Then refer to the relevant documentation:
 
