@@ -38,48 +38,36 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import test.org.springdoc.api.AbstractSpringDocTest;
 
-//@TestPropertySource(properties = Constants.SPRINGDOC_CACHE_DISABLED + "=true")
+@TestPropertySource(properties = Constants.SPRINGDOC_CACHE_DISABLED + "=false")
 public class SpringDocApp170Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 	@Bean
 	public LocaleResolver localeResolver() {
 		SessionLocaleResolver localeResolver = new SessionLocaleResolver();
-		localeResolver.setDefaultLocale(Locale.US);
 		return localeResolver;
 	}
 
 	@Test
-    @Override
+	@Override
 	public void testApp() throws Exception {
-		Locale locale = new Locale("en","US");
+		testApp(Locale.US);
+		testApp(Locale.FRANCE);
+	}
+
+	private void testApp(Locale locale) throws Exception {
 		Locale.setDefault(locale);
 
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult =
 				mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL).locale(locale).header(HttpHeaders.ACCEPT_LANGUAGE, locale.toLanguageTag())).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
+						.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
-		String expected = getContent("results/app" + testNumber + "-1.json");
+		String expected = getContent("results/app" + testNumber + "-" + locale.getLanguage() + ".json");
 		assertEquals(expected, result, true);
 	}
-
-	@Test
-	public void testAppFr() throws Exception {
-		Locale locale = new Locale("fr","FR");
-		Locale.setDefault(locale);
-
-		className = getClass().getSimpleName();
-		String testNumber = className.replaceAll("[^0-9]", "");
-		MvcResult mockMvcResult =
-				mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL).locale(locale).header(HttpHeaders.ACCEPT_LANGUAGE, locale.toLanguageTag())).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
-		String result = mockMvcResult.getResponse().getContentAsString();
-		String expected = getContent("results/app" + testNumber + "-2.json");
-		assertEquals(expected, result, true);
-	}
-
-	}
+}
