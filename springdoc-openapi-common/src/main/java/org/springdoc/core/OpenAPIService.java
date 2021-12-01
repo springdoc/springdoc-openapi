@@ -732,8 +732,9 @@ public class OpenAPIService {
 	 * @return the cached open api
 	 */
 	public OpenAPI getCachedOpenAPI(Locale locale) {
-		if (cachedOpenAPI != null && cachedOpenAPI.containsKey(locale.getLanguage())) {
-			return cachedOpenAPI.get(locale.getLanguage());
+		Locale cachedLocale = (locale == null ? Locale.getDefault() : locale);
+		if (cachedOpenAPI != null && cachedOpenAPI.containsKey(cachedLocale.getLanguage())) {
+			return cachedOpenAPI.get(cachedLocale.getLanguage());
 		}
 		return null;
 	}
@@ -745,8 +746,9 @@ public class OpenAPIService {
 	 * @param cachedOpenAPI the cached open api
 	 */
 	public void setCachedOpenAPI(OpenAPI cachedOpenAPI, Locale locale) {
+		Locale cachedLocale = (locale == null ? Locale.getDefault() : locale);
 		if (this.cachedOpenAPI != null) {
-			this.cachedOpenAPI.put(locale.getLanguage(), cachedOpenAPI);
+			this.cachedOpenAPI.put(cachedLocale.getLanguage(), cachedOpenAPI);
 		}
 	}
 
