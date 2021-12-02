@@ -295,6 +295,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected synchronized OpenAPI getOpenApi(Locale locale) {
 		OpenAPI openApi;
+		locale = locale == null ? Locale.getDefault() : locale;
 		if (openAPIService.getCachedOpenAPI(locale) == null || springDocConfigProperties.isCacheDisabled()) {
 			Instant start = Instant.now();
 			openAPIService.build(locale);
@@ -1110,6 +1111,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Init open api builder.
 	 */
 	protected void initOpenAPIBuilder(Locale locale) {
+		locale = locale == null ? Locale.getDefault() : locale;
 		if (openAPIService.getCachedOpenAPI(locale) != null && springDocConfigProperties.isCacheDisabled()) {
 			openAPIService = openAPIBuilderObjectFactory.getObject();
 		}
