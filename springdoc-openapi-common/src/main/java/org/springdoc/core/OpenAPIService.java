@@ -127,10 +127,7 @@ public class OpenAPIService {
 	private OpenAPI openAPI;
 
 	/**
-	 * The Cached open api.
-	 */
-	/**
-	 * The Mappings map.
+	 * The Cached open api map.
 	 */
 	private final Map<String, OpenAPI> cachedOpenAPI = new HashMap<>();
 
@@ -306,8 +303,8 @@ public class OpenAPIService {
 		Set<io.swagger.v3.oas.models.tags.Tag> tags = new HashSet<>();
 		Set<String> tagsStr = new HashSet<>();
 
-		buildTagsFromClass(handlerMethod.getBeanType(), tags, tagsStr,locale);
-		buildTagsFromMethod(handlerMethod.getMethod(), tags, tagsStr,locale);
+		buildTagsFromClass(handlerMethod.getBeanType(), tags, tagsStr, locale);
+		buildTagsFromMethod(handlerMethod.getMethod(), tags, tagsStr, locale);
 
 		if (!CollectionUtils.isEmpty(tagsStr))
 			tagsStr = tagsStr.stream()
@@ -732,11 +729,7 @@ public class OpenAPIService {
 	 * @return the cached open api
 	 */
 	public OpenAPI getCachedOpenAPI(Locale locale) {
-		Locale cachedLocale = (locale == null ? Locale.getDefault() : locale);
-		if (cachedOpenAPI != null && cachedOpenAPI.containsKey(cachedLocale.getLanguage())) {
-			return cachedOpenAPI.get(cachedLocale.getLanguage());
-		}
-		return null;
+		return cachedOpenAPI.get(locale.getLanguage());
 	}
 
 	/**
@@ -746,10 +739,7 @@ public class OpenAPIService {
 	 * @param cachedOpenAPI the cached open api
 	 */
 	public void setCachedOpenAPI(OpenAPI cachedOpenAPI, Locale locale) {
-		Locale cachedLocale = (locale == null ? Locale.getDefault() : locale);
-		if (this.cachedOpenAPI != null) {
-			this.cachedOpenAPI.put(cachedLocale.getLanguage(), cachedOpenAPI);
-		}
+		this.cachedOpenAPI.put(locale.getLanguage(), cachedOpenAPI);
 	}
 
 	/**
