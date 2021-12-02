@@ -295,7 +295,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected synchronized OpenAPI getOpenApi(Locale locale) {
 		OpenAPI openApi;
-		if (openAPIService.getCachedOpenAPI() == null || springDocConfigProperties.isCacheDisabled()) {
+		locale = locale == null ? Locale.getDefault() : locale;
+		if (openAPIService.getCachedOpenAPI(locale) == null || springDocConfigProperties.isCacheDisabled()) {
 			Instant start = Instant.now();
 			openAPIService.build(locale);
 			Map<String, Object> mappingsMap = openAPIService.getMappingsMap().entrySet().stream()
@@ -335,7 +336,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			if (!CollectionUtils.isEmpty(openApi.getServers()) && !openApi.getServers().equals(serversCopy))
 				openAPIService.setServersPresent(true);
 
-			openAPIService.setCachedOpenAPI(openApi);
+			openAPIService.setCachedOpenAPI(openApi, locale);
 			openAPIService.resetCalculatedOpenAPI();
 
 			LOGGER.info("Init duration for springdoc-openapi is: {} ms",
@@ -343,7 +344,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 		else {
 			LOGGER.debug("Fetching openApi document from cache");
-			openApi = openAPIService.updateServers(openAPIService.getCachedOpenAPI());
+			openApi = openAPIService.updateServers(openAPIService.getCachedOpenAPI(locale));
 		}
 		return openApi;
 	}
@@ -1109,8 +1110,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * Init open api builder.
 	 */
-	protected void initOpenAPIBuilder() {
-		if (openAPIService.getCachedOpenAPI() != null && springDocConfigProperties.isCacheDisabled()) {
+	protected void initOpenAPIBuilder(Locale locale) {
+		locale = locale == null ? Locale.getDefault() : locale;
+		if (openAPIService.getCachedOpenAPI(locale) != null && springDocConfigProperties.isCacheDisabled()) {
 			openAPIService = openAPIBuilderObjectFactory.getObject();
 		}
 	}

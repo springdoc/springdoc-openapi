@@ -20,6 +20,7 @@
 
 package org.springdoc.api;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -52,6 +53,7 @@ import org.springdoc.core.fn.RouterOperation;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import static java.util.Arrays.asList;
@@ -100,6 +102,7 @@ class AbstractOpenApiResourceTest {
 	public void setUp() {
 		openAPI = new OpenAPI();
 		openAPI.setPaths(new Paths().addPathItem(PATH, new PathItem()));
+		ReflectionTestUtils.setField(openAPIService, "cachedOpenAPI", new HashMap<>());
 
 		when(openAPIService.getCalculatedOpenAPI()).thenReturn(openAPI);
 		when(openAPIService.getContext()).thenReturn(context);
@@ -168,10 +171,10 @@ class AbstractOpenApiResourceTest {
 	@Test
 	void preLoadingModeShouldNotOverwriteServers() throws InterruptedException {
 		when(openAPIService.updateServers(any())).thenCallRealMethod();
-		when(openAPIService.getCachedOpenAPI()).thenCallRealMethod();
+		when(openAPIService.getCachedOpenAPI(any())).thenCallRealMethod();
 		doAnswer(new CallsRealMethods()).when(openAPIService).setServersPresent(true);
 		doAnswer(new CallsRealMethods()).when(openAPIService).setServerBaseUrl(any());
-		doAnswer(new CallsRealMethods()).when(openAPIService).setCachedOpenAPI(any());
+		doAnswer(new CallsRealMethods()).when(openAPIService).setCachedOpenAPI(any(), any());
 
 		String customUrl = "https://custom.com";
 		String generatedUrl = "https://generated.com";
@@ -197,8 +200,8 @@ class AbstractOpenApiResourceTest {
 		// emulate generating base url
 		openAPIService.setServerBaseUrl(generatedUrl);
 		openAPIService.updateServers(openAPI);
-
-		OpenAPI after = resource.getOpenApi(Locale.getDefault());
+		Locale locale = Locale.US;
+		OpenAPI after = resource.getOpenApi(locale);
 
 		assertThat(after.getServers().get(0).getUrl(), is(customUrl));
 	}
