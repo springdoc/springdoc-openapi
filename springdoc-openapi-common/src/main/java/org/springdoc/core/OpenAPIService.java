@@ -729,7 +729,7 @@ public class OpenAPIService {
 	 * @return the cached open api
 	 */
 	public OpenAPI getCachedOpenAPI(Locale locale) {
-		return cachedOpenAPI.get(locale.getLanguage());
+		return cachedOpenAPI.get(locale.toLanguageTag());
 	}
 
 	/**
@@ -739,7 +739,7 @@ public class OpenAPIService {
 	 * @param cachedOpenAPI the cached open api
 	 */
 	public void setCachedOpenAPI(OpenAPI cachedOpenAPI, Locale locale) {
-		this.cachedOpenAPI.put(locale.getLanguage(), cachedOpenAPI);
+		this.cachedOpenAPI.put(locale.toLanguageTag(), cachedOpenAPI);
 	}
 
 	/**
