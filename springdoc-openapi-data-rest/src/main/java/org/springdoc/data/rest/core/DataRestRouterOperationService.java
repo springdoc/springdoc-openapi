@@ -40,7 +40,6 @@ import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.data.rest.DataRestHalProvider;
-import org.springdoc.webmvc.api.OpenApiResource;
 
 import org.springframework.data.rest.core.Path;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -53,9 +52,9 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
+import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-
-import static org.springdoc.webmvc.api.OpenApiResource.getActivePatterns;
 
 /**
  * The type Data rest router operation builder.
@@ -219,7 +218,7 @@ public class DataRestRouterOperationService {
 		if (!CollectionUtils.isEmpty(requestMethodsCollection))
 			for (RequestMethod requestMethod : requestMethodsCollection) {
 				if (!UNDOCUMENTED_REQUEST_METHODS.contains(requestMethod)) {
-					Set<String> patterns = OpenApiResource.getActivePatterns(requestMappingInfo);
+					Set<String> patterns = getActivePatterns(requestMappingInfo);
 					if (!CollectionUtils.isEmpty(patterns)) {
 						Map<String, String> regexMap = new LinkedHashMap<>();
 						String relationName = dataRestRepository.getRelationName();
@@ -344,6 +343,24 @@ public class DataRestRouterOperationService {
 		return false;
 	}
 
+	/**
+	 * Gets active patterns.
+	 *
+	 * @param requestMappingInfo the request mapping info
+	 * @return the active patterns
+	 */
+	private Set<String> getActivePatterns(RequestMappingInfo requestMappingInfo) {
+		Set<String> patterns = null;
+		PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
+		if (patternsRequestCondition != null)
+			patterns = patternsRequestCondition.getPatterns();
+		else {
+			PathPatternsRequestCondition pathPatternsRequestCondition = requestMappingInfo.getPathPatternsCondition();
+			if (pathPatternsRequestCondition != null)
+				patterns = pathPatternsRequestCondition.getPatternValues();
+		}
+		return patterns;
+	}
 	/**
 	 * Is condition one and condition two boolean.
 	 *
