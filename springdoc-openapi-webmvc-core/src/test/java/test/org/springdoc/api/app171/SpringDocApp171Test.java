@@ -48,6 +48,7 @@ public class SpringDocApp171Test extends AbstractSpringDocTest {
 		Locale.setDefault(Locale.US);
 		testApp(Locale.US);
 		testApp(Locale.FRANCE);
+		testApp(Locale.UK);
 	}
 
 	private void testApp(Locale locale) throws Exception {
@@ -57,7 +58,7 @@ public class SpringDocApp171Test extends AbstractSpringDocTest {
 				mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL).locale(locale).header(HttpHeaders.ACCEPT_LANGUAGE, locale.toLanguageTag())).andExpect(status().isOk())
 						.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
-		String expected = getContent("results/app" + testNumber + "-" + locale.getLanguage() + ".json");
+		String expected = getContent("results/app" + testNumber + "-" + locale.toLanguageTag() + ".json");
 		assertEquals(expected, result, true);
 	}
 }
