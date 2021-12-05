@@ -22,9 +22,13 @@ import java.util.Locale;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
+import org.springdoc.core.customizers.OpenApiLocaleCustomizer;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
@@ -40,6 +44,16 @@ public class SpringDocApp171Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {
+
+		@Autowired
+		ResourceBundleMessageSource resourceBundleMessageSource;
+
+		@Bean
+		public OpenApiLocaleCustomizer openApiLocaleCustomizer() {
+			return (openAPI, locale)
+					-> openAPI.getInfo().title(resourceBundleMessageSource.getMessage("test", null, locale));
+		}
+
 	}
 
 	@Test
