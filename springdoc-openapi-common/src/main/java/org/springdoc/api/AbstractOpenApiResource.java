@@ -87,6 +87,7 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiLocaleCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 import org.springdoc.core.fn.RouterFunctionData;
@@ -196,6 +197,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	private static Class<?> modelAndViewClass;
 
+	/**
+	 * The OpenApi with locale customizers.
+	 */
+	private final Map<String, OpenApiLocaleCustomizer> openApiLocaleCustomizers;
+
 	static {
 		try {
 			modelAndViewClass = Class.forName("org.springframework.web.servlet.ModelAndView");
@@ -243,6 +249,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.optionalActuatorProvider = actuatorProvider;
 		if (springDocConfigProperties.isPreLoadingEnabled())
 			Executors.newSingleThreadExecutor().execute(this::getOpenApi);
+		this.openApiLocaleCustomizers = openAPIService.getContext().getBeansOfType(OpenApiLocaleCustomizer.class);
 	}
 
 	/**
@@ -295,10 +302,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected synchronized OpenAPI getOpenApi(Locale locale) {
 		OpenAPI openApi;
-		locale = locale == null ? Locale.getDefault() : locale;
-		if (openAPIService.getCachedOpenAPI(locale) == null || springDocConfigProperties.isCacheDisabled()) {
+		final Locale finalLocale = locale == null ? Locale.getDefault() : locale;
+		if (openAPIService.getCachedOpenAPI(finalLocale) == null || springDocConfigProperties.isCacheDisabled()) {
 			Instant start = Instant.now();
-			openAPIService.build(locale);
+			openAPIService.build(finalLocale);
 			Map<String, Object> mappingsMap = openAPIService.getMappingsMap().entrySet().stream()
 					.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 							Hidden.class) == null))
@@ -311,9 +318,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			if (springDocConfigProperties.isOverrideWithGenericResponse() && !CollectionUtils.isEmpty(findControllerAdvice)) {
 				if (!CollectionUtils.isEmpty(mappingsMap))
 					findControllerAdvice.putAll(mappingsMap);
-				responseBuilder.buildGenericResponse(openApi.getComponents(), findControllerAdvice, locale);
+				responseBuilder.buildGenericResponse(openApi.getComponents(), findControllerAdvice, finalLocale);
 			}
-			getPaths(mappingsMap, locale);
+			getPaths(mappingsMap, finalLocale);
 			if (!CollectionUtils.isEmpty(openApi.getServers()))
 				openAPIService.setServersPresent(true);
 			openAPIService.updateServers(openApi);
@@ -332,11 +339,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
 			}
 
+			openApiLocaleCustomizers.values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openApi, finalLocale));
 			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
 			if (!CollectionUtils.isEmpty(openApi.getServers()) && !openApi.getServers().equals(serversCopy))
 				openAPIService.setServersPresent(true);
 
-			openAPIService.setCachedOpenAPI(openApi, locale);
+			openAPIService.setCachedOpenAPI(openApi, finalLocale);
 			openAPIService.resetCalculatedOpenAPI();
 
 			LOGGER.info("Init duration for springdoc-openapi is: {} ms",
@@ -344,7 +352,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 		else {
 			LOGGER.debug("Fetching openApi document from cache");
-			openApi = openAPIService.updateServers(openAPIService.getCachedOpenAPI(locale));
+			openApi = openAPIService.updateServers(openAPIService.getCachedOpenAPI(finalLocale));
 		}
 		return openApi;
 	}
