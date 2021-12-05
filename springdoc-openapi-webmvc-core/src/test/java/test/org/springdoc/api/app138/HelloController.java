@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-	@GetMapping("/testA")
-	public void testA(String hello) {
-	}
-
 	@GetMapping("/testB")
 	public void testB(String hello) {
+	}
+
+	@GetMapping("/testA")
+	public void testA(String hello) {
 	}
 }
