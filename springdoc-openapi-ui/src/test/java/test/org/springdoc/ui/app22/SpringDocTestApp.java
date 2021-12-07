@@ -16,27 +16,30 @@
  *
  */
 
-package test.org.springdoc.api.app171;
+package test.org.springdoc.ui.app22;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocConfiguration;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+@SpringBootApplication
+public class SpringDocTestApp {
 
-@RestController
-@Tag(name = "greeting", description = "test")
-public class HelloLocaleController {
-
-	@GetMapping("/persons")
-	public void persons(@Valid @NotBlank String name) {
+	public static void main(String[] args) {
+		SpringApplication.run(SpringDocTestApp.class, args);
 	}
 
-	@GetMapping("/test")
-	public HttpEntity<String> demo2() {
-		return null;
+	@Bean
+	SpringDocConfiguration springDocConfiguration(){
+		return new SpringDocConfiguration();
 	}
+
+	@Bean
+	public SpringDocConfigProperties springDocConfigProperties() {
+		return new SpringDocConfigProperties();
+	}
+
 }

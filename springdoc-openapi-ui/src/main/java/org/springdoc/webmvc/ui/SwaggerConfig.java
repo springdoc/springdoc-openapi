@@ -24,7 +24,6 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springdoc.core.ActuatorProvider;
-import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SwaggerUiConfigParameters;
@@ -39,6 +38,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -64,14 +64,14 @@ public class SwaggerConfig {
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param openAPIService the open api service
+	 * @param applicationContext the application context
 	 * @return the swagger welcome web mvc
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
-	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, OpenAPIService openAPIService) {
-		return new SwaggerWelcomeWebMvc(swaggerUiConfig, springDocConfigProperties,swaggerUiConfigParameters, openAPIService);
+	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ApplicationContext applicationContext) {
+		return new SwaggerWelcomeWebMvc(swaggerUiConfig, springDocConfigProperties,swaggerUiConfigParameters, applicationContext);
 	}
 
 	/**
