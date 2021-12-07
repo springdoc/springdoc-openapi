@@ -152,19 +152,18 @@ public class OpenApiWebMvcResource extends OpenApiResource {
 	@Override
 	protected String getServerUrl(HttpServletRequest request, String apiDocsUrl) {
 		String requestUrl = decode(request.getRequestURL().toString());
-		final String prefix = findPathPrefix(this.openAPIService, this.springDocConfigProperties);
+		final String prefix = findPathPrefix(this.openAPIService.getContext(), this.springDocConfigProperties);
 		return requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length() - prefix.length());
 	}
 
 	/**
 	 * Finds path prefix.
 	 *
-	 * @param openAPIService the open api service
+	 * @param applicationContext the application context
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @return the path prefix
 	 */
-	public static String findPathPrefix(OpenAPIService openAPIService, SpringDocConfigProperties springDocConfigProperties) {
-		ApplicationContext applicationContext = openAPIService.getContext();
+	public static String findPathPrefix(ApplicationContext applicationContext, SpringDocConfigProperties springDocConfigProperties) {
 		Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping = applicationContext.getBeansOfType(RequestMappingHandlerMapping.class);
 		for (RequestMappingHandlerMapping requestMappingHandlerMapping : beansOfTypeRequestMappingHandlerMapping.values()) {
 			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();

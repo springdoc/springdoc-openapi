@@ -24,12 +24,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,18 +62,18 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	/**
 	 * The Open api service.
 	 */
-	private final OpenAPIService openAPIService;
+	private final ApplicationContext applicationContext;
 
 	/**
 	 * Instantiates a new Swagger welcome web mvc.
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param openAPIService the open api service
+	 * @param applicationContext the application context
 	 */
-	public SwaggerWelcomeWebMvc(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, OpenAPIService openAPIService) {
+	public SwaggerWelcomeWebMvc(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ApplicationContext applicationContext) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
-		this.openAPIService = openAPIService;
+		this.applicationContext = applicationContext;
 	}
 
 	/**
@@ -124,7 +124,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	@Override
 	protected String buildApiDocUrl() {
 		if (this.pathPrefix == null)
-			this.pathPrefix = findPathPrefix(this.openAPIService, this.springDocConfigProperties);
+			this.pathPrefix = findPathPrefix(this.applicationContext, this.springDocConfigProperties);
 		return buildUrl(contextPath + pathPrefix, springDocConfigProperties.getApiDocs().getPath());
 	}
 
