@@ -366,9 +366,16 @@ public abstract class AbstractRequestService {
 	 * @param parameterInfo the parameter info
 	 * @return the parameter
 	 */
-	protected Parameter customiseParameter(Parameter parameter, ParameterInfo parameterInfo) {
-		parameterCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(parameter, parameterInfo.getMethodParameter())));
-		return parameter;
+	protected Parameter customiseParameter(final Parameter parameter, final ParameterInfo parameterInfo) {
+		return parameterCustomizers
+				.map(customizers -> {
+					Parameter customizedParameter = parameter;
+					for (final ParameterCustomizer customizer : customizers) {
+						customizedParameter = customizer.customize(customizedParameter, parameterInfo.getMethodParameter());
+					}
+					return customizedParameter;
+				})
+				.orElse(null);
 	}
 
 	/**
