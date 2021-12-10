@@ -140,6 +140,12 @@ public class GenericParameterService {
 		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(type));
 	}
 
+	/**
+	 * Replace existingParamDoc. The argument named asis will be replaced to the argument named tobe.
+	 * @param existingParamDoc the existing param doc
+	 * @param asis the parameter. If null, the do nothing. otherwise, replace to tobe.
+	 * @param tobe the parameter. If null, just remove asis.
+	 */
 	public static void replaceParameter(List<Parameter> existingParamDoc, Parameter asis, Parameter tobe) {
 		int index = -1;
 		if (asis != null) {
