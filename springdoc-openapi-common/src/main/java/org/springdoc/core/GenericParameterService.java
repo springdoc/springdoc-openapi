@@ -140,6 +140,26 @@ public class GenericParameterService {
 		return FILE_TYPES.stream().anyMatch(clazz -> clazz.isAssignableFrom(type));
 	}
 
+	public static void replaceParameter(List<Parameter> existingParamDoc, Parameter asis, Parameter tobe) {
+		int index = -1;
+		if (asis != null) {
+			index = existingParamDoc.stream()
+							.filter(param -> asis.getName().equals(param.getName()))
+							.findFirst()
+							.map(existingParamDoc::indexOf)
+							.orElse(-1);
+		}
+		if (index == -1) {
+			return;
+		}
+
+		if (tobe == null) {
+			existingParamDoc.remove(index);
+		} else {
+			existingParamDoc.set(index, tobe);
+		}
+	}
+
 	/**
 	 * Merge parameter parameter.
 	 *

@@ -292,7 +292,7 @@ public abstract class AbstractRequestService {
 					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 				}
 
-				customiseParameter(parameter, parameterInfo);
+				GenericParameterService.replaceParameter(operationParameters, parameter, customiseParameter(parameter, parameterInfo));
 			}
 		}
 
@@ -375,7 +375,7 @@ public abstract class AbstractRequestService {
 					}
 					return customizedParameter;
 				})
-				.orElse(null);
+				.orElse(parameter);
 	}
 
 	/**
