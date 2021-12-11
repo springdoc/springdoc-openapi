@@ -83,6 +83,11 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	private Csrf csrf = new Csrf();
 
 	/**
+	 * The Syntax Highlight configuration.
+	 */
+	private SyntaxHighlight syntaxHighlight = new SyntaxHighlight();
+
+	/**
 	 * Whether to generate and serve an OpenAPI document.
 	 */
 	private boolean enabled = true;
@@ -384,4 +389,21 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		}
 	}
 
+	/**
+	 * Gets syntaxHighlight.
+	 *
+	 * @return the syntaxHighlight
+	 */
+	public SyntaxHighlight getSyntaxHighlight() {
+		return syntaxHighlight;
+	}
+
+	/**
+	 * Sets syntaxHighlight.
+	 *
+	 * @param syntaxHighlight the syntaxHighlight
+	 */
+	public void setSyntaxHighlight(SyntaxHighlight syntaxHighlight) {
+		this.syntaxHighlight = syntaxHighlight;
+	}
 }
