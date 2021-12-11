@@ -78,7 +78,7 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 						Schema existingSchema = context.resolve(type);
 						setJavadocDescription(fields, existingSchema);
 					}
-					else if (resolvedSchema.get$ref() != null && resolvedSchema.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
+					else if (resolvedSchema != null && resolvedSchema.get$ref() != null && resolvedSchema.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
 						String schemaName = resolvedSchema.get$ref().substring(21);
 						Schema existingSchema = context.getDefinedModels().get(schemaName);
 						setJavadocDescription(fields, existingSchema);
