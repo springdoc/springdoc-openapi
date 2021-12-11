@@ -110,15 +110,15 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.nativex.hint.AccessBits;
 import org.springframework.nativex.hint.JdkProxyHint;
 import org.springframework.nativex.hint.ResourceHint;
+import org.springframework.nativex.hint.TypeAccess;
 import org.springframework.nativex.hint.TypeHint;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 @JdkProxyHint(typeNames = "javax.servlet.http.HttpServletRequest")
-@JdkProxyHint(typeNames =  "org.springframework.web.context.request.NativeWebRequest" )
+@JdkProxyHint(typeNames = "org.springframework.web.context.request.NativeWebRequest")
 
 @JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.RestController", "org.springframework.core.annotation.SynthesizedAnnotation" })
 @JdkProxyHint(typeNames = { "org.springframework.stereotype.Controller", "org.springframework.core.annotation.SynthesizedAnnotation" })
@@ -135,28 +135,31 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.PatchMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
 @JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.DeleteMapping", "org.springframework.core.annotation.SynthesizedAnnotation" })
 @JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.ControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation" })
-@JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.RequestParam", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.RequestHeader", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.RequestBody", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.PathVariable", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.ModelAttribute", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@JdkProxyHint(typeNames = {"org.springframework.stereotype.Controller", "org.springframework.core.annotation.SynthesizedAnnotation"})
-@JdkProxyHint(typeNames = {"org.springframework.web.bind.annotation.ControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation"})
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.RequestParam", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.RequestHeader", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.RequestBody", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.PathVariable", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.ModelAttribute", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.stereotype.Controller", "org.springframework.core.annotation.SynthesizedAnnotation" })
+@JdkProxyHint(typeNames = { "org.springframework.web.bind.annotation.ControllerAdvice", "org.springframework.core.annotation.SynthesizedAnnotation" })
 
 @TypeHint(typeNames = { "org.springdoc.core.CacheOrGroupedOpenApiCondition$OnCacheDisabled", "io.swagger.v3.oas.models.parameters.Parameter$StyleEnum",
-		"io.swagger.v3.oas.models.security.SecurityScheme$In" , "io.swagger.v3.oas.models.security.SecurityScheme$Type",
-		"org.springdoc.core.CacheOrGroupedOpenApiCondition$OnMultipleOpenApiSupportCondition", "org.springdoc.core.SpringDocConfigProperties$GroupConfig" ,
-		"org.springdoc.core.SpringDocConfigProperties$Cache" ,  "org.springdoc.core.SpringDocConfigProperties$GroupConfig" ,
-		"org.springdoc.core.AbstractSwaggerUiConfigProperties$SwaggerUrl" ,"org.springdoc.core.AbstractSwaggerUiConfigProperties$Direction" ,
-		"org.springdoc.core.AbstractSwaggerUiConfigProperties$SyntaxHighlight" , "org.springdoc.core.SpringDocConfiguration$1",
+		"io.swagger.v3.oas.models.security.SecurityScheme$In", "io.swagger.v3.oas.models.security.SecurityScheme$Type",
+		"org.springdoc.core.CacheOrGroupedOpenApiCondition$OnMultipleOpenApiSupportCondition", "org.springdoc.core.SpringDocConfigProperties$GroupConfig",
+		"org.springdoc.core.SpringDocConfigProperties$Cache", "org.springdoc.core.SpringDocConfigProperties$GroupConfig",
+		"org.springdoc.core.AbstractSwaggerUiConfigProperties$SwaggerUrl", "org.springdoc.core.AbstractSwaggerUiConfigProperties$Direction",
+		"org.springdoc.core.AbstractSwaggerUiConfigProperties$SyntaxHighlight", "org.springdoc.core.SpringDocConfiguration$1",
 		"org.springdoc.core.SpringDocConfiguration$OpenApiResourceAdvice", "org.springdoc.core.SpringDocConfiguration$WebConversionServiceConfiguration",
-		"org.springdoc.core.SpringDocConfigProperties$Webjars" ,  "org.springdoc.core.SpringDocConfigProperties$ApiDocs" }, access = AccessBits.ALL)
+		"org.springdoc.core.SpringDocConfigProperties$Webjars", "org.springdoc.core.SpringDocConfigProperties$ApiDocs" },
+		access = { TypeAccess.RESOURCE, TypeAccess.PUBLIC_CLASSES, TypeAccess.DECLARED_CLASSES, TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.PUBLIC_CONSTRUCTORS, TypeAccess.DECLARED_METHODS, TypeAccess.PUBLIC_METHODS
+				, TypeAccess.PUBLIC_FIELDS, TypeAccess.DECLARED_FIELDS })
 
-@TypeHint(types = { Constants.class,  ModelConverter.class , ModelConverters.class}, access = AccessBits.ALL)
+@TypeHint(types = { Constants.class, ModelConverter.class, ModelConverters.class }, access = { TypeAccess.RESOURCE, TypeAccess.PUBLIC_CLASSES, TypeAccess.DECLARED_CLASSES, TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.PUBLIC_CONSTRUCTORS, TypeAccess.DECLARED_METHODS, TypeAccess.PUBLIC_METHODS
+		, TypeAccess.PUBLIC_FIELDS, TypeAccess.DECLARED_FIELDS })
 @TypeHint(types = { SecurityRequirements.class, SecurityRequirement.class, ApiResponses.class, Callbacks.class, PropertySource.class, ExternalDocumentation.class, Hidden.class,
 		Operation.class, Parameter.class, Callbacks.class, Extension.class, ExtensionProperty.class, Header.class, Link.class, LinkParameter.class,
 		ArraySchema.class, Content.class, DiscriminatorMapping.class, Encoding.class, ExampleObject.class, Schema.class, RequestBody.class, ApiResponse.class,
-		Info.class, Server.class, ServerVariable.class, OpenAPIDefinition.class,  Tag.class, SecuritySchemes.class, SecurityScheme.class, SecuritySchemeType.class,
+		Info.class, Server.class, ServerVariable.class, OpenAPIDefinition.class, Tag.class, SecuritySchemes.class, SecurityScheme.class, SecuritySchemeType.class,
 		OAuthFlow.class, OAuthFlows.class, OAuthScope.class, License.class, Contact.class })
 
 @TypeHint(types = {
@@ -252,7 +255,8 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 		io.swagger.v3.oas.models.parameters.Parameter.class,
 		io.swagger.v3.oas.models.Operation.class,
 		io.swagger.v3.oas.models.headers.Header.class
-}, access = AccessBits.ALL )
+}, access = { TypeAccess.RESOURCE, TypeAccess.PUBLIC_CLASSES, TypeAccess.DECLARED_CLASSES, TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.PUBLIC_CONSTRUCTORS, TypeAccess.DECLARED_METHODS, TypeAccess.PUBLIC_METHODS
+		, TypeAccess.PUBLIC_FIELDS, TypeAccess.DECLARED_FIELDS })
 
 @ResourceHint(patterns = "sun.util.resources.LocaleNames", isBundle = true)
 
