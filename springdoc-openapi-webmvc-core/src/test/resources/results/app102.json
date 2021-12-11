@@ -36,15 +36,6 @@
             }
           },
           {
-            "name": "stringParam",
-            "in": "query",
-            "description": "string parameter",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "stringParam1",
             "in": "query",
             "required": false,
