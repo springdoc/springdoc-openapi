@@ -65,7 +65,7 @@
         ],
         "requestBody": {
           "content": {
-            "loginRequestBody": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
