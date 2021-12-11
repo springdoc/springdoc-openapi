@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
@@ -74,6 +75,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 
 	static {
 		ANNOTATIONS_TO_IGNORE.add(Hidden.class);
+		ANNOTATIONS_TO_IGNORE.add(JsonIgnore.class);
 		ANNOTATIONS_TO_IGNORE.add(RequestAttribute.class);
 	}
 

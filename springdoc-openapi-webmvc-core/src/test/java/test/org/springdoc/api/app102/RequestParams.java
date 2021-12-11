@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.Parameter;
 
 import org.springframework.lang.Nullable;
@@ -11,6 +12,7 @@ import org.springframework.lang.Nullable;
 public class RequestParams {
 
 	@Parameter(description = "string parameter")
+	@JsonIgnore
 	private String stringParam;
 
 	@Deprecated
