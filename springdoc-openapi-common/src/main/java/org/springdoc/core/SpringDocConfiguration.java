@@ -70,6 +70,7 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -177,19 +178,6 @@ public class SpringDocConfiguration {
 	}
 
 	/**
-	 * Pageable open api converter pageable open api converter.
-	 *
-	 * @return the pageable open api converter
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@ConditionalOnProperty(name = SPRINGDOC_PAGEABLE_CONVERTER_ENABLED)
-	@Lazy(false)
-	PageableOpenAPIConverter pageableOpenAPIConverter() {
-		return new PageableOpenAPIConverter();
-	}
-
-	/**
 	 * Polymorphic model converter polymorphic model converter.
 	 *
 	 * @return the polymorphic model converter
@@ -262,7 +250,7 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	PropertyResolverUtils propertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource, SpringDocConfigProperties springDocConfigProperties) {
-		return new PropertyResolverUtils(factory, messageSource,springDocConfigProperties);
+		return new PropertyResolverUtils(factory, messageSource, springDocConfigProperties);
 	}
 
 	/**
@@ -447,6 +435,28 @@ public class SpringDocConfiguration {
 		@Lazy(false)
 		WebConversionServiceProvider webConversionServiceProvider(Optional<WebConversionService> webConversionServiceOptional) {
 			return new WebConversionServiceProvider(webConversionServiceOptional);
+		}
+	}
+
+	/**
+	 * The type Spring doc pageable configuration.
+	 */
+	@ConditionalOnClass(Pageable.class)
+	static class SpringDocPageableConfiguration {
+
+		/**
+		 * Pageable open api converter pageable open api converter.
+		 *
+		 * @return the pageable open api converter
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@ConditionalOnProperty(name = SPRINGDOC_PAGEABLE_CONVERTER_ENABLED, matchIfMissing = true)
+		@Lazy(false)
+		PageableOpenAPIConverter pageableOpenAPIConverter() {
+			getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Pageable.class, org.springdoc.core.converters.models.Pageable.class)
+					.replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class, org.springdoc.core.converters.models.Pageable.class);
+			return new PageableOpenAPIConverter();
 		}
 	}
 

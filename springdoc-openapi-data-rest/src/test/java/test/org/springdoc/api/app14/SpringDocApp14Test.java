@@ -25,7 +25,6 @@ package test.org.springdoc.api.app14;
 
 import java.util.Optional;
 
-import org.springdoc.core.converters.models.Pageable;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.data.rest.SpringDocDataRestConfiguration;
 import org.springdoc.data.rest.customisers.DataRestDelegatingMethodParameterCustomizer;
@@ -41,8 +40,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
-import static org.springdoc.core.SpringDocUtils.getConfig;
-
 @TestPropertySource(properties = { "spring.data.web.pageable.default-page-size=25",
 		"spring.data.web.pageable.page-parameter=pages",
 		"spring.data.web.pageable.size-parameter=sizes",
@@ -51,12 +48,6 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 		RepositoryRestMvcAutoConfiguration.class, SpringDocDataRestConfiguration.class
 })
 public class SpringDocApp14Test extends AbstractSpringDocTest {
-
-	static {
-		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
-				.replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
-	}
-
 
 	@SpringBootApplication
 	static class SpringDocTestApp {

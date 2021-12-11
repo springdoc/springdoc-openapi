@@ -168,6 +168,30 @@ public class SpringDocConfigProperties {
 	private boolean disableI18n;
 
 	/**
+	 * The model Converters
+	 */
+	private ModelConverters modelConverters = new ModelConverters();
+
+	/**
+	 * Gets model converters.
+	 *
+	 * @return the model converters
+	 */
+	public ModelConverters getModelConverters() {
+		return modelConverters;
+	}
+
+	/**
+	 * Sets model converters.
+	 *
+	 * @param modelConverters the model converters
+	 */
+	public void setModelConverters(ModelConverters modelConverters) {
+		this.modelConverters = modelConverters;
+	}
+
+
+	/**
 	 * Is use management port boolean.
 	 *
 	 * @return the boolean
