@@ -34,9 +34,7 @@ import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.converters.PageableOpenAPIConverter;
 import org.springdoc.core.converters.models.DefaultPageable;
-import org.springdoc.core.converters.models.Pageable;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.data.rest.core.DataRestOperationService;
 import org.springdoc.data.rest.core.DataRestRequestService;
@@ -73,7 +71,6 @@ import org.springframework.data.rest.webmvc.support.ETag;
 import org.springframework.hateoas.server.LinkRelationProvider;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.Constants.SPRINGDOC_PAGEABLE_CONVERTER_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
 /**
@@ -84,24 +81,6 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocDataRestConfiguration {
-
-	static {
-		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Pageable.class, Pageable.class)
-				.replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class, Pageable.class);
-	}
-
-	/**
-	 * Pageable open api converter pageable open api converter.
-	 *
-	 * @return the pageable open api converter
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@ConditionalOnProperty(name = SPRINGDOC_PAGEABLE_CONVERTER_ENABLED, matchIfMissing = true)
-	@Lazy(false)
-	PageableOpenAPIConverter pageableOpenAPIConverter() {
-		return new PageableOpenAPIConverter();
-	}
 
 	/**
 	 * Delegating method parameter customizer delegating method parameter customizer.
