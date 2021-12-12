@@ -29,8 +29,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import static org.springdoc.core.Constants.MVC_SERVLET_PATH;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
-import static org.springdoc.core.Constants.SWAGGER_UI_URL;
-import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT_URL_PREFIX;
 
 /**
@@ -45,25 +43,13 @@ public class SwaggerUiHome {
 	@Value(MVC_SERVLET_PATH)
 	private String mvcServletPath;
 
-
-	@GetMapping(value = {DEFAULT_PATH_SEPARATOR, ""})
+	@GetMapping
 	@Operation(hidden = true)
 	public String index() {
 		StringBuilder uiRootPath = new StringBuilder();
-
 		if (StringUtils.isNotBlank(mvcServletPath))
 			uiRootPath.append(mvcServletPath);
 
-		if (swaggerUiPath.contains("/")) {
-			uiRootPath.append(swaggerUiPath.substring(0, swaggerUiPath.lastIndexOf('/')));
-		}
-
-		StringBuilder fullPath = new StringBuilder();
-
-		fullPath.append(REDIRECT_URL_PREFIX);
-		fullPath.append(uiRootPath);
-		fullPath.append(SWAGGER_UI_URL);
-
-		return fullPath.toString();
+		return REDIRECT_URL_PREFIX + uiRootPath + swaggerUiPath;
 	}
 }
