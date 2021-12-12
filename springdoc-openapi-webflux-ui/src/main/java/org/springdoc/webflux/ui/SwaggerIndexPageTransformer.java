@@ -21,6 +21,7 @@
 package org.springdoc.webflux.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 import org.springdoc.ui.AbstractSwaggerIndexTransformer;
@@ -44,10 +45,11 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param objectMapper the object mapper
 	 */
-	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
-		super(swaggerUiConfig, swaggerUiOAuthProperties, objectMapper);
+	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,  SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapper objectMapper) {
+		super(swaggerUiConfig, swaggerUiOAuthProperties,swaggerUiConfigParameters, objectMapper);
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 
 		try {
 			boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
-			if (isIndexFound && hasDefaultTransformations()) {
+			if (isIndexFound) {
 				String html = defaultTransformations(resource.getInputStream());
 				return Mono.just(new TransformedResource(resource, html.getBytes()));
 			}

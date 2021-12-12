@@ -23,14 +23,17 @@ import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = {
-		"spring.mvc.pathmatch.matching-strategy=ant-path-matcher",
+		"spring.mvc.pathmatch.matching-strategy=ant_path_matcher",
 		"springdoc.swagger-ui.path=/test/swagger.html",
 		"spring.mvc.servlet.path=/servlet-path"
 })
@@ -38,7 +41,14 @@ public class SpringDocOauthServletPathsTest extends AbstractSpringDocTest {
 
 	@Test
 	public void should_display_oauth2_redirect_page() throws Exception {
-		mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/oauth2-redirect.html").contextPath("/context-path").servletPath("/servlet-path")).andExpect(status().isOk()).andReturn();
+		mockMvc.perform(get("/context-path/servlet-path/test/swagger.html").servletPath("/servlet-path").contextPath("/context-path")).andExpect(status().is3xxRedirection()).andReturn();
+
+		mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/oauth2-redirect.html").servletPath("/servlet-path").contextPath("/context-path")).andExpect(status().isOk()).andReturn();
+
+		MvcResult mvcResult = mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/index.html").servletPath("/servlet-path").contextPath("/context-path")).andExpect(status().isOk()).andReturn();
+		String transformedIndex = mvcResult.getResponse().getContentAsString();
+		assertTrue(transformedIndex.contains("Swagger UI"));
+		assertEquals(this.getContent("results/app5-contextpath"), transformedIndex);
 	}
 
 	@Test

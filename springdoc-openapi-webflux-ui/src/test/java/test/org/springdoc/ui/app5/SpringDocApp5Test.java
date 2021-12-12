@@ -23,24 +23,13 @@ import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.reactive.server.EntityExchangeResult;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestPropertySource(properties = {"springdoc.swagger-ui.oauth.clientId=myClientId", "springdoc.swagger-ui.oauth.scopes=scope1,scope2"})
 public class SpringDocApp5Test extends AbstractSpringDocTest {
 
 	@Test
-	public void transformed_index_with_oauth() throws Exception {
-		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/webjars/swagger-ui/index.html")
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody().returnResult();
-		String result = new String(getResult.getResponseBody());
-		assertTrue(result.contains("Swagger UI"));
-		String expected = getContent("results/index5");
-		assertEquals(expected, result);
+	public void transformed_index_with_oauth() {
+		super.checkHTML("index5");
 	}
 
 	@SpringBootApplication

@@ -43,6 +43,8 @@ public class SpringDocAppRedirectWithPrefixTest extends AbstractSpringDocTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("validatorUrl", equalTo("")))
 				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/documentation/swagger-ui/oauth2-redirect.html")));
+
+		super.checkHTML("results/app1-prefix", "/documentation/swagger-ui/index.html");
 	}
 
 	@SpringBootApplication

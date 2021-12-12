@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.ui.app1;
+package test.org.springdoc.ui.app25;
 
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
@@ -24,18 +24,28 @@ import test.org.springdoc.ui.AbstractSpringDocTest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "springdoc.swagger-ui.display-query-params=true")
-public class SpringDocRedirectQueryParams2Test extends AbstractSpringDocTest {
+@TestPropertySource(properties = {
+		"springdoc.swagger-ui.validatorUrl=/foo/validate",
+		"springdoc.api-docs.path=/baf/batz"
+})
+public class SpringDocApp25Test extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithQueryParams() throws Exception {
-        mockMvc.perform(get("/swagger-ui.html"))
-                .andExpect(status().isFound())
-                .andExpect(header().string("Location", "/swagger-ui/index.html?oauth2RedirectUrl=http://localhost/swagger-ui/oauth2-redirect.html&url=/v3/api-docs"));
+	public void shouldRedirectWithConfiguredParams() throws Exception {
+		mockMvc.perform(get("/swagger-ui.html"))
+				.andExpect(status().isFound())
+				.andExpect(header().string("Location", "/swagger-ui/index.html"));
+
+		mockMvc.perform(get("/baf/batz/swagger-config"))
+				.andExpect(status().isOk()).andExpect(jsonPath("$.validatorUrl", is("/foo/validate")));
+
+		super.chekHTML();
 	}
 
 	@SpringBootApplication

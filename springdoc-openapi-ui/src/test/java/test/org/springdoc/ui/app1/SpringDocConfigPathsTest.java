@@ -23,14 +23,17 @@ import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = {
-		"spring.mvc.pathmatch.matching-strategy=ant-path-matcher",
+		"spring.mvc.pathmatch.matching-strategy=ant_path_matcher",
         "springdoc.swagger-ui.path=/test/swagger.html",
         "server.servlet.context-path=/context-path",
         "spring.mvc.servlet.path=/servlet-path"
@@ -44,6 +47,11 @@ public class SpringDocConfigPathsTest extends AbstractSpringDocTest {
         mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/index.html").contextPath("/context-path").servletPath("/servlet-path"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Swagger UI")));
+
+		MvcResult mvcResult = mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/index.html").contextPath("/context-path").servletPath("/servlet-path")).andExpect(status().isOk()).andReturn();
+		String transformedIndex = mvcResult.getResponse().getContentAsString();
+		assertTrue(transformedIndex.contains("Swagger UI"));
+		assertEquals(this.getContent("results/app1-contextpath"), transformedIndex);
     }
 
     @SpringBootApplication

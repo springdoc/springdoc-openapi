@@ -23,12 +23,6 @@ import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MvcResult;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = { "springdoc.swagger-ui.oauth.clientId=myClientId",
 		"springdoc.swagger-ui.oauth.additionalQueryStringParams.test1=test1",
@@ -38,10 +32,7 @@ public class SpringDocApp7Test extends AbstractSpringDocTest {
 
 	@Test
 	public void transformed_index_with_oauth() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(get("/swagger-ui/index.html")).andExpect(status().isOk()).andReturn();
-		String transformedIndex = mvcResult.getResponse().getContentAsString();
-		assertTrue(transformedIndex.contains("Swagger UI"));
-		assertEquals(this.getExpectedResult(), transformedIndex);
+		super.chekHTML();
 	}
 
 	@SpringBootApplication

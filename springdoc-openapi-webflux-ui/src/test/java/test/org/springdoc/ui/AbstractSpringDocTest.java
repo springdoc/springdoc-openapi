@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import nonapi.io.github.classgraph.utils.FileUtils;
+import org.springdoc.core.Constants;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SwaggerUiConfigParameters;
@@ -35,15 +36,21 @@ import org.springdoc.webflux.ui.SwaggerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @WebFluxTest
-@ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigParameters.class,  SwaggerUiConfigProperties.class, SwaggerConfig.class, SwaggerUiOAuthProperties.class })
+@ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigParameters.class, SwaggerUiConfigProperties.class, SwaggerConfig.class, SwaggerUiOAuthProperties.class })
 public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	@Autowired
 	protected WebTestClient webTestClient;
+
+	private static final String DEFAULT_SWAGGER_UI_URL= Constants.DEFAULT_WEB_JARS_PREFIX_URL  + Constants.SWAGGER_UI_URL;
 
 	protected String getContent(String fileName) {
 		try {
@@ -56,4 +63,18 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 		}
 	}
 
+	protected void checkHTML(String fileName, String uri) {
+		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(uri)
+				.exchange()
+				.expectStatus().isOk()
+				.expectBody().returnResult();
+		String result = new String(getResult.getResponseBody());
+		assertTrue(result.contains("Swagger UI"));
+		String expected = getContent("results/" + fileName);
+		assertEquals(expected, result);
+	}
+
+	protected void checkHTML(String fileName) {
+		checkHTML(fileName, DEFAULT_SWAGGER_UI_URL);
+	}
 }

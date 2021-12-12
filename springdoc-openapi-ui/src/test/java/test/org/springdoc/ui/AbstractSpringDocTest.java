@@ -18,16 +18,36 @@
 
 package test.org.springdoc.ui;
 
+import org.springdoc.core.Constants;
+
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MvcResult;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	public static String className;
 
-	protected String getExpectedResult() throws Exception {
+	private static final String DEFAULT_SWAGGER_UI_URL=  Constants.SWAGGER_UI_URL;
+
+	protected void checkHTML(String fileName, String uri)throws Exception {
+		MvcResult mvcResult = mockMvc.perform(get(uri)).andExpect(status().isOk()).andReturn();
+		String transformedIndex = mvcResult.getResponse().getContentAsString();
+		assertTrue(transformedIndex.contains("Swagger UI"));
+		assertEquals(this.getContent(fileName), transformedIndex);
+	}
+	protected void chekHTML(String fileName) throws Exception {
+		checkHTML( fileName, DEFAULT_SWAGGER_UI_URL);
+	}
+
+	protected void chekHTML() throws Exception {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
-		return getContent("results/app" + testNumber);
+		checkHTML( "results/app" + testNumber, DEFAULT_SWAGGER_UI_URL);
 	}
 }

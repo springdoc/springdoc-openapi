@@ -35,7 +35,9 @@ public class SpringDocApp21Test extends AbstractSpringDocTest {
 	public void testAddSwaggerUiVersionToPath() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/swagger-ui/index.html?configUrl=/rest/v3/api-docs/swagger-config"));
+				.andExpect(header().string("Location", "/swagger-ui/index.html"));
+
+		super.chekHTML();
 	}
 
 	@Test
@@ -46,8 +48,8 @@ public class SpringDocApp21Test extends AbstractSpringDocTest {
 				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/swagger-ui/oauth2-redirect.html")));
 	}
 
-    @SpringBootApplication
-    static class SpringDocTestApp {
-    }
+	@SpringBootApplication
+	static class SpringDocTestApp {
+	}
 
 }

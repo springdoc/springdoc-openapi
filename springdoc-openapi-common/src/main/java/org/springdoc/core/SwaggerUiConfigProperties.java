@@ -20,6 +20,8 @@
 
 package org.springdoc.core;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -38,22 +40,13 @@ import static org.springdoc.core.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 @ConfigurationProperties(prefix = "springdoc.swagger-ui")
 @ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(SpringDocConfiguration.class)
-public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties{
+public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties {
 
 	/**
 	 * The Disable swagger default url.
 	 */
 	private boolean disableSwaggerDefaultUrl;
 
-	/**
-	 * The Display query params.
-	 */
-	private boolean displayQueryParams;
-
-	/**
-	 * The Display query params without oauth 2.
-	 */
-	private boolean displayQueryParamsWithoutOauth2;
 
 	/**
 	 * The Swagger ui version.
@@ -274,42 +267,6 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	}
 
 	/**
-	 * Is display query params boolean.
-	 *
-	 * @return the boolean
-	 */
-	public boolean isDisplayQueryParams() {
-		return displayQueryParams;
-	}
-
-	/**
-	 * Sets display query params.
-	 *
-	 * @param displayQueryParams the display query params
-	 */
-	public void setDisplayQueryParams(boolean displayQueryParams) {
-		this.displayQueryParams = displayQueryParams;
-	}
-
-	/**
-	 * Is display query params without oauth 2 boolean.
-	 *
-	 * @return the boolean
-	 */
-	public boolean isDisplayQueryParamsWithoutOauth2() {
-		return displayQueryParamsWithoutOauth2;
-	}
-
-	/**
-	 * Sets display query params without oauth 2.
-	 *
-	 * @param displayQueryParamsWithoutOauth2 the display query params without oauth 2
-	 */
-	public void setDisplayQueryParamsWithoutOauth2(boolean displayQueryParamsWithoutOauth2) {
-		this.displayQueryParamsWithoutOauth2 = displayQueryParamsWithoutOauth2;
-	}
-
-	/**
 	 * Gets csrf.
 	 *
 	 * @return the csrf
@@ -332,7 +289,7 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	 *
 	 * @return the boolean
 	 */
-	public boolean isCsrfEnabled(){
+	public boolean isCsrfEnabled() {
 		return csrf.isEnabled();
 	}
 
@@ -340,7 +297,7 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	 * The type Syntax highlight.
 	 * @author bnasslashen
 	 */
-	public static class SyntaxHighlight{
+	public static class SyntaxHighlight {
 
 		/**
 		 * The Activated.
@@ -386,6 +343,15 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		 */
 		public void setTheme(String theme) {
 			this.theme = theme;
+		}
+
+		/**
+		 * Is present boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isPresent() {
+			return activated != null || StringUtils.isNotEmpty(theme);
 		}
 	}
 

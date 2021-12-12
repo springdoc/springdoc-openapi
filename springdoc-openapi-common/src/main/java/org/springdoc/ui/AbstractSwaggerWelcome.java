@@ -139,28 +139,15 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 	 */
 	protected UriComponentsBuilder getUriComponentsBuilder(String sbUrl) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl);
-		if (swaggerUiConfig.isDisplayQueryParams() && StringUtils.isNotEmpty(swaggerUiConfigParameters.getUrl())) {
-			swaggerUiConfigParameters.getConfigParameters().entrySet().stream()
-					.filter(entry -> !SwaggerUiConfigParameters.CONFIG_URL_PROPERTY.equals(entry.getKey()))
-					.filter(entry -> !entry.getKey().startsWith(SwaggerUiConfigParameters.URLS_PROPERTY))
-					.filter(entry -> StringUtils.isNotEmpty((String) entry.getValue()))
-					.forEach(entry -> uriBuilder.queryParam(entry.getKey(), entry.getValue()));
-		}
-		else if (swaggerUiConfig.isDisplayQueryParamsWithoutOauth2() && StringUtils.isNotEmpty(swaggerUiConfigParameters.getUrl())) {
+		if ((swaggerUiConfig.getQueryConfigEnabled() != null && swaggerUiConfig.getQueryConfigEnabled())) {
 			swaggerUiConfigParameters.getConfigParameters().entrySet().stream()
 					.filter(entry -> !SwaggerUiConfigParameters.CONFIG_URL_PROPERTY.equals(entry.getKey()))
 					.filter(entry -> !SwaggerUiConfigParameters.OAUTH2_REDIRECT_URL_PROPERTY.equals(entry.getKey()))
+					.filter(entry -> !SwaggerUiConfigParameters.URL_PROPERTY.equals(entry.getKey()))
 					.filter(entry -> !entry.getKey().startsWith(SwaggerUiConfigParameters.URLS_PROPERTY))
 					.filter(entry -> StringUtils.isNotEmpty((String) entry.getValue()))
 					.forEach(entry -> uriBuilder.queryParam(entry.getKey(), entry.getValue()));
-		}
-		else {
 			uriBuilder.queryParam(SwaggerUiConfigParameters.CONFIG_URL_PROPERTY, swaggerUiConfigParameters.getConfigUrl());
-			if (StringUtils.isNotEmpty(swaggerUiConfigParameters.getLayout()))
-				uriBuilder.queryParam(SwaggerUiConfigParameters.LAYOUT_PROPERTY, swaggerUiConfigParameters.getLayout());
-			if (swaggerUiConfigParameters.getFilter() != null) {
-				uriBuilder.queryParam(SwaggerUiConfigParameters.FILTER_PROPERTY, swaggerUiConfigParameters.getFilter());
-			}
 		}
 		return uriBuilder;
 	}

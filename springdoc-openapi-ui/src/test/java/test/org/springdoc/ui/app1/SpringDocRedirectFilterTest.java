@@ -35,7 +35,7 @@ public class SpringDocRedirectFilterTest extends AbstractSpringDocTest {
 	public void shouldRedirectWithConfigUrlIgnoringQueryParams() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config&filter=false"));
+				.andExpect(header().string("Location", "/swagger-ui/index.html"));
 	}
 
 	@SpringBootApplication

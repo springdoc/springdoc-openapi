@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.ui.app1;
+package test.org.springdoc.ui.app23;
 
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
@@ -24,18 +24,12 @@ import test.org.springdoc.ui.AbstractSpringDocTest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@TestPropertySource(properties = "springdoc.swagger-ui.layout=BaseLayout")
-public class SpringDocRedirectLayoutTest extends AbstractSpringDocTest {
+@TestPropertySource(properties = { "springdoc.swagger-ui.queryConfigEnabled=true" })
+class SpringDocApp23Test extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithConfigUrlIgnoringQueryParams() throws Exception {
-		mockMvc.perform(get("/swagger-ui.html"))
-				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config&layout=BaseLayout"));
+	void transformed_index_with_queryConfigEnabled() throws Exception {
+		super.chekHTML();
 	}
 
 	@SpringBootApplication

@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.ui.app1;
+package test.org.springdoc.ui.app28;
 
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
@@ -28,15 +28,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "springdoc.swagger-ui.display-query-params-without-oauth2=true")
-public class SpringDocRedirectQueryParams1Test extends AbstractSpringDocTest {
+@TestPropertySource(properties = "springdoc.swagger-ui.filter=false")
+public class SpringDocApp28Test extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithQueryParamsWithoutOauth2() throws Exception {
+	public void shouldRedirectWithFilter() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/swagger-ui/index.html?url=/v3/api-docs"));
+				.andExpect(header().string("Location", "/swagger-ui/index.html"));
+		super.chekHTML();
 	}
+
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}

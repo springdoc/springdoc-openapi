@@ -16,31 +16,30 @@
  *
  */
 
-package test.org.springdoc.ui.app1;
+package test.org.springdoc.ui.app5;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "springdoc.swagger-ui.display-query-params-without-oauth2=true")
-public class SpringDocApp1RedirectQueryParams1Test extends AbstractSpringDocTest {
+@TestPropertySource(properties = "server.servlet.context-path=/context-path")
+public class SpringDocApp5Test extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithQueryParamsWithoutOauth2() {
-
-		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/swagger-ui.html").exchange()
-				.expectStatus().isFound();
-		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/webjars/swagger-ui/index.html?url=/v3/api-docs"));
-
+	public void oauth2_redirect_url_calculated_with_context_path() throws Exception {
+		mockMvc.perform(get("/context-path/v3/api-docs/swagger-config").contextPath("/context-path"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/context-path/swagger-ui/oauth2-redirect.html")));
+		super.chekHTML();
 	}
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
-
 }
