@@ -122,7 +122,6 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		this.urls = swaggerUiConfig.getUrls() == null ? new HashSet<>() : swaggerUiConfig.getUrls();
 		this.urlsPrimaryName = swaggerUiConfig.getUrlsPrimaryName();
 		this.groupsOrder = swaggerUiConfig.getGroupsOrder();
-		this.syntaxHighlight = swaggerUiConfig.getSyntaxHighlight();
 		this.tryItOutEnabled = swaggerUiConfig.getTryItOutEnabled();
 		this.persistAuthorization = swaggerUiConfig.getPersistAuthorization();
 		this.queryConfigEnabled = swaggerUiConfig.getQueryConfigEnabled();

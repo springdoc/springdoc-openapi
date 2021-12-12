@@ -25,7 +25,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springdoc.core.SwaggerUiConfigProperties.SyntaxHighlight;
 
 import static org.springdoc.core.Constants.GROUP_NAME_NOT_NULL;
 
@@ -156,11 +155,6 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	protected String urlsPrimaryName;
 
 	/**
-	 * The Syntax highlight.
-	 */
-	protected SyntaxHighlight syntaxHighlight;
-
-	/**
 	 * Try it out enabled
 	 */
 	protected Boolean tryItOutEnabled;
@@ -225,24 +219,6 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	 */
 	public void setPersistAuthorization(Boolean persistAuthorization) {
 		this.persistAuthorization = persistAuthorization;
-	}
-
-	/**
-	 * Gets syntax highlight.
-	 *
-	 * @return the syntax highlight
-	 */
-	public SyntaxHighlight getSyntaxHighlight() {
-		return syntaxHighlight;
-	}
-
-	/**
-	 * Sets syntax highlight.
-	 *
-	 * @param syntaxHighlight the syntax highlight
-	 */
-	public void setSyntaxHighlight(SyntaxHighlight syntaxHighlight) {
-		this.syntaxHighlight = syntaxHighlight;
 	}
 
 	/**
