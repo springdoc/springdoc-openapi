@@ -39,8 +39,9 @@ public class SpringDocApp1RedirectConfigUrlTest extends AbstractSpringDocTest {
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/swagger-ui.html").exchange()
 				.expectStatus().isFound();
 		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/webjars/swagger-ui/index.html?configUrl=/foo/bar"));
+				.value("Location", Matchers.is("/webjars/swagger-ui/index.html"));
 
+		super.checkHTML("index1-configurl");
 	}
 
 	@SpringBootApplication

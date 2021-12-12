@@ -171,6 +171,29 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	protected Boolean persistAuthorization;
 
 	/**
+	 * The Query config enabled.
+	 */
+	protected Boolean queryConfigEnabled;
+
+	/**
+	 * Gets query config enabled.
+	 *
+	 * @return the query config enabled
+	 */
+	public Boolean getQueryConfigEnabled() {
+		return queryConfigEnabled;
+	}
+
+	/**
+	 * Sets query config enabled.
+	 *
+	 * @param queryConfigEnabled the query config enabled
+	 */
+	public void setQueryConfigEnabled(Boolean queryConfigEnabled) {
+		this.queryConfigEnabled = queryConfigEnabled;
+	}
+
+	/**
 	 * Gets try it out enabled
 	 * @return try it out enabled
 	 */

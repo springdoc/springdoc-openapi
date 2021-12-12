@@ -67,6 +67,11 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	public static final String FILTER_PROPERTY = "filter";
 
 	/**
+	 * The constant URL_PROPERTY.
+	 */
+	public static final String URL_PROPERTY = "url";
+
+	/**
 	 * The constant URLS_PROPERTY.
 	 */
 	public static final String URLS_PROPERTY = "urls";
@@ -120,6 +125,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		this.syntaxHighlight = swaggerUiConfig.getSyntaxHighlight();
 		this.tryItOutEnabled = swaggerUiConfig.getTryItOutEnabled();
 		this.persistAuthorization = swaggerUiConfig.getPersistAuthorization();
+		this.queryConfigEnabled = swaggerUiConfig.getQueryConfigEnabled();
 	}
 
 	/**
@@ -202,14 +208,16 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		SpringDocPropertiesUtils.put("showCommonExtensions", showCommonExtensions, params);
 		SpringDocPropertiesUtils.put("operationsSorter", operationsSorter, params);
 		SpringDocPropertiesUtils.put("tagsSorter", tagsSorter, params);
-		if (supportedSubmitMethods!=null)
+		SpringDocPropertiesUtils.put(SwaggerUiConfigParameters.LAYOUT_PROPERTY, layout , params);
+		if (supportedSubmitMethods != null)
 			SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
 		SpringDocPropertiesUtils.put(OAUTH2_REDIRECT_URL_PROPERTY, oauth2RedirectUrl, params);
-		SpringDocPropertiesUtils.put("url", url, params);
+		SpringDocPropertiesUtils.put(URL_PROPERTY, url, params);
 		put(URLS_PROPERTY, urls, params);
 		SpringDocPropertiesUtils.put("urls.primaryName", urlsPrimaryName, params);
 		SpringDocPropertiesUtils.put("tryItOutEnabled", tryItOutEnabled, params);
 		SpringDocPropertiesUtils.put("persistAuthorization", persistAuthorization, params);
+		SpringDocPropertiesUtils.put(FILTER_PROPERTY, filter, params);
 		return params;
 	}
 

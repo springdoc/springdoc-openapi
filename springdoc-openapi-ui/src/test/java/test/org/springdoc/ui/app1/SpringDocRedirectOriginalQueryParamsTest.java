@@ -34,7 +34,7 @@ public class SpringDocRedirectOriginalQueryParamsTest extends AbstractSpringDocT
         mockMvc.perform(get("/swagger-ui.html").queryParam("paramA", "123").queryParam("paramB", "e n c o d e d ! % &"))
                 .andExpect(status().isFound())
                 .andExpect(header().string("Location",
-                        "/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config&paramA=123&paramB=e%20n%20c%20o%20d%20e%20d%20!%20%25%20%26"));
+                        "/swagger-ui/index.html?paramA=123&paramB=e%20n%20c%20o%20d%20e%20d%20!%20%25%20%26"));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class SpringDocRedirectOriginalQueryParamsTest extends AbstractSpringDocT
         mockMvc.perform(get("/swagger-ui.html").queryParam("paramA", "1", "2", "3"))
                 .andExpect(status().isFound())
                 .andExpect(header().string("Location",
-                        "/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config&paramA=1&paramA=2&paramA=3"));
+                        "/swagger-ui/index.html?paramA=1&paramA=2&paramA=3"));
     }
 
     @SpringBootApplication

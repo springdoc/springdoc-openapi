@@ -41,7 +41,7 @@ public class SpringDocApp20Test extends AbstractSpringDocTest {
 	public void testAddSwaggerUiVersionToPath() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/swagger-ui/"+swaggerUiConfig.getVersion()+"/index.html?configUrl=/v3/api-docs/swagger-config"));
+				.andExpect(header().string("Location", "/swagger-ui/"+swaggerUiConfig.getVersion()+"/index.html"));
 	}
 
 

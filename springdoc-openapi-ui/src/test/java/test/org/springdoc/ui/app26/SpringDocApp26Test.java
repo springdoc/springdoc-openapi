@@ -16,31 +16,30 @@
  *
  */
 
-package test.org.springdoc.ui.app1;
+package test.org.springdoc.ui.app26;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = "springdoc.swagger-ui.display-query-params=true")
-public class SpringDocApp1RedirectQueryParams2Test extends AbstractSpringDocTest {
+@TestPropertySource(properties = "springdoc.swagger-ui.layout=BaseLayout")
+public class SpringDocApp26Test extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithQueryParams() {
+	public void shouldRedirectWithBaseLayout() throws Exception {
+		mockMvc.perform(get("/swagger-ui.html"))
+				.andExpect(status().isFound())
+				.andExpect(header().string("Location", "/swagger-ui/index.html"));
 
-		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/swagger-ui.html").exchange()
-				.expectStatus().isFound();
-		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/webjars/swagger-ui/index.html?oauth2RedirectUrl=/webjars/swagger-ui/oauth2-redirect.html&url=/v3/api-docs"));
-
+		super.chekHTML();
 	}
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
-
 }

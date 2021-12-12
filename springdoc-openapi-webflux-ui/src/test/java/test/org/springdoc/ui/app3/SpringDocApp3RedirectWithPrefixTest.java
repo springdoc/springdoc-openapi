@@ -38,7 +38,7 @@ public class SpringDocApp3RedirectWithPrefixTest extends AbstractSpringDocTest {
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/documentation/swagger-ui.html").exchange()
 				.expectStatus().isFound();
 		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/documentation/webjars-pref/swagger-ui/index.html?configUrl=/documentation/v3/api-docs/swagger-config"));
+				.value("Location", Matchers.is("/documentation/webjars-pref/swagger-ui/index.html"));
 		webTestClient.get().uri("/documentation/webjars-pref/swagger-ui/index.html").exchange()
 				.expectStatus().isOk();
 		webTestClient.get().uri("/documentation/v3/api-docs/swagger-config").exchange()

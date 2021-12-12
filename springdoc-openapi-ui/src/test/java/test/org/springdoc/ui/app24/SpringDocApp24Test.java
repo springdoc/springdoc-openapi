@@ -16,14 +16,17 @@
  *
  */
 
-package test.org.springdoc.ui.app1;
+package test.org.springdoc.ui.app24;
 
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MvcResult;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,13 +35,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		"springdoc.swagger-ui.configUrl=/foo/bar",
 		"springdoc.swagger-ui.url=/batz" // ignored since configUrl is configured
 })
-public class SpringDocRedirectConfigUrlTest extends AbstractSpringDocTest {
+public class SpringDocApp24Test extends AbstractSpringDocTest {
 
 	@Test
 	public void shouldRedirectWithConfigUrlIgnoringQueryParams() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/swagger-ui/index.html?configUrl=/foo/bar"));
+				.andExpect(header().string("Location", "/swagger-ui/index.html"));
+
+		super.chekHTML();
 	}
 
 	@SpringBootApplication

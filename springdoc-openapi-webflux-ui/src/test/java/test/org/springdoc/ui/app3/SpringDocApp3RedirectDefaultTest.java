@@ -38,12 +38,14 @@ public class SpringDocApp3RedirectDefaultTest extends AbstractSpringDocTest {
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/documentation/swagger-ui.html").exchange()
 				.expectStatus().isFound();
 		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/documentation/webjars/swagger-ui/index.html?configUrl=/documentation/v3/api-docs/swagger-config"));
+				.value("Location", Matchers.is("/documentation/webjars/swagger-ui/index.html"));
 
 		webTestClient.get().uri("/documentation/v3/api-docs/swagger-config").exchange()
 				.expectStatus().isOk().expectBody()
 				.jsonPath("$.validatorUrl").isEqualTo("")
 				.jsonPath("$.oauth2RedirectUrl").isEqualTo("/documentation/webjars/swagger-ui/oauth2-redirect.html");
+
+		super.checkHTML("index3", "/documentation/webjars/swagger-ui/index.html");
 	}
 
 	@SpringBootApplication

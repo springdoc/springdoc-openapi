@@ -36,8 +36,8 @@ public class SpringDocApp1RedirecFilterTest extends AbstractSpringDocTest {
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/swagger-ui.html").exchange()
 				.expectStatus().isFound();
 		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/webjars/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config&filter=false"));
-
+				.value("Location", Matchers.is("/webjars/swagger-ui/index.html"));
+		super.checkHTML("index1-filter");
 	}
 
 	@SpringBootApplication

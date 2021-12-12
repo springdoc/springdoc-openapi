@@ -104,13 +104,14 @@ public class SwaggerConfig {
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param objectMapper the object mapper
 	 * @return the swagger index transformer
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
-		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties, objectMapper);
+	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,  SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapper objectMapper) {
+		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties,swaggerUiConfigParameters, objectMapper);
 	}
 
 	/**

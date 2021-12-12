@@ -24,11 +24,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.Constants;
+import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 
@@ -51,6 +54,11 @@ public class AbstractSwaggerIndexTransformer {
 	protected SwaggerUiOAuthProperties swaggerUiOAuthProperties;
 
 	/**
+	 * The Swagger ui config parameters.
+	 */
+	protected SwaggerUiConfigParameters swaggerUiConfigParameters;
+
+	/**
 	 * The Object mapper.
 	 */
 	protected ObjectMapper objectMapper;
@@ -65,11 +73,13 @@ public class AbstractSwaggerIndexTransformer {
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param objectMapper the object mapper
 	 */
-	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapper objectMapper) {
+	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapper objectMapper) {
 		this.swaggerUiConfig = swaggerUiConfig;
 		this.swaggerUiOAuthProperties = swaggerUiOAuthProperties;
+		this.swaggerUiConfigParameters = swaggerUiConfigParameters;
 		this.objectMapper = objectMapper;
 	}
 
@@ -118,16 +128,6 @@ public class AbstractSwaggerIndexTransformer {
 	}
 
 	/**
-	 * Has default transformations boolean.
-	 *
-	 * @return the boolean
-	 */
-	protected boolean hasDefaultTransformations() {
-		boolean oauth2Configured = !CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters());
-		return oauth2Configured || swaggerUiConfig.isDisableSwaggerDefaultUrl() || swaggerUiConfig.isCsrfEnabled() || swaggerUiConfig.getSyntaxHighlight() != null;
-	}
-
-	/**
 	 * Default transformations string.
 	 *
 	 * @param inputStream the input stream
@@ -139,20 +139,57 @@ public class AbstractSwaggerIndexTransformer {
 		if (!CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters())) {
 			html = addInitOauth(html);
 		}
-		if (swaggerUiConfig.isDisableSwaggerDefaultUrl()) {
-			html = overwriteSwaggerDefaultUrl(html);
-		}
 		if (swaggerUiConfig.isCsrfEnabled()) {
 			if (swaggerUiConfig.getCsrf().isUseLocalStorage()) {
 				html = addCSRFLocalStorage(html);
-			} else {
+			}
+			else {
 				html = addCSRF(html);
 			}
 		}
-		if (swaggerUiConfig.getSyntaxHighlight() != null) {
+		if (swaggerUiConfig.getSyntaxHighlight().isPresent()) {
 			html = addSyntaxHighlight(html);
 		}
+		if (swaggerUiConfig.getQueryConfigEnabled() == null || !swaggerUiConfig.getQueryConfigEnabled())
+			html = addParameters(html);
+		else
+			html = enableQueryConfig(html);
+		if (swaggerUiConfig.isDisableSwaggerDefaultUrl() && swaggerUiConfigParameters.getConfigParameters().get(SwaggerUiConfigParameters.URL_PROPERTY) == null) {
+			html = overwriteSwaggerDefaultUrl(html);
+		}
+
 		return html;
+	}
+
+	protected String addParameters(String html) throws JsonProcessingException {
+		String layout = swaggerUiConfigParameters.getLayout() != null ? swaggerUiConfigParameters.getLayout() : "StandaloneLayout";
+		StringBuilder stringBuilder = new StringBuilder("layout: \"" + layout + "\" ,\n");
+
+		if (swaggerUiConfigParameters.getConfigParameters().get(SwaggerUiConfigParameters.URL_PROPERTY) != null && swaggerUiConfig.getConfigUrl() == null)
+			html = html.replace(Constants.SWAGGER_UI_DEFAULT_URL, swaggerUiConfigParameters.getConfigParameters().get(SwaggerUiConfigParameters.URL_PROPERTY).toString());
+
+		Map<String, Object> parametersObjectMap = swaggerUiConfigParameters.getConfigParameters().entrySet().stream()
+				.filter(entry -> (swaggerUiConfig.getConfigUrl() != null || !SwaggerUiConfigParameters.CONFIG_URL_PROPERTY.equals(entry.getKey())))
+				.filter(entry -> !SwaggerUiConfigParameters.OAUTH2_REDIRECT_URL_PROPERTY.equals(entry.getKey()) || !Constants.SWAGGER_UI_OAUTH_REDIRECT_URL.equals(entry.getValue()))
+				.filter(entry -> !SwaggerUiConfigParameters.URL_PROPERTY.equals(entry.getKey()))
+				.filter(entry -> !SwaggerUiConfigParameters.LAYOUT_PROPERTY.equals(entry.getKey()))
+				.filter(entry -> SwaggerUiConfigParameters.URLS_PROPERTY.equals(entry.getKey()) || StringUtils.isNotEmpty((String) entry.getValue()))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+		if (!CollectionUtils.isEmpty(parametersObjectMap)) {
+			String result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(parametersObjectMap);
+			result = result.substring(1, result.length() - 1);
+			stringBuilder.append(result);
+			html = html.replace("layout: \"StandaloneLayout\"", stringBuilder.toString());
+		}
+
+		return html;
+	}
+
+	protected String enableQueryConfig(String html) {
+		StringBuilder stringBuilder = new StringBuilder("const ui = SwaggerUIBundle({\n");
+		stringBuilder.append("queryConfigEnabled: " + swaggerUiConfig.getQueryConfigEnabled() + ",");
+		return html.replace("const ui = SwaggerUIBundle({", stringBuilder.toString());
 	}
 
 	/**

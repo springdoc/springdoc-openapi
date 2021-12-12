@@ -38,10 +38,12 @@ public class SpringDocApp1RedirectWithConfigTest extends AbstractSpringDocTest {
 				.expectStatus().isFound();
 
 		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/webjars/swagger-ui/index.html?configUrl=/baf/batz/swagger-config"));
+				.value("Location", Matchers.is("/webjars/swagger-ui/index.html"));
 
 		webTestClient.get().uri("/baf/batz/swagger-config").exchange()
 				.expectStatus().isOk().expectBody().jsonPath("$.validatorUrl").isEqualTo("/foo/validate");
+
+		super.checkHTML("index1");
 	}
 
 	@SpringBootApplication

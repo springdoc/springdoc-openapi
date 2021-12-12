@@ -170,10 +170,6 @@ public final class Constants {
 	 */
 	public static final String CLASSPATH_RESOURCE_LOCATION = ResourceUtils.CLASSPATH_URL_PREFIX + "/META-INF/resources";
 
-	/**
-	 * The constant SPRINGDOC_CONFIG_FILE.
-	 */
-	public static final String SPRINGDOC_CONFIG_FILE = ResourceUtils.CLASSPATH_URL_PREFIX   + "springdoc.swagger-ui.config";
 
 	/**
 	 * The constant SWAGGER_UI_PREFIX.
