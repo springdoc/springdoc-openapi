@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * Home redirection to swagger api documentation
@@ -70,7 +71,7 @@ public class SwaggerUiHome {
 	 * @param response the response
 	 * @return the mono
 	 */
-	@GetMapping
+	@GetMapping(DEFAULT_PATH_SEPARATOR)
 	@Operation(hidden = true)
 	public Mono<Void> index(ServerHttpResponse response) {
 		UriComponentsBuilder uriBuilder =  UriComponentsBuilder.fromUriString(this.basePath + swaggerUiPath);
