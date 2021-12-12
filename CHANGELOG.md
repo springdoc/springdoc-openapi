@@ -4,13 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2021-12-12
+### Added
+- #1356, #1360 - Add support for caching based on Locale 
+- #1355 - Add support for @Tag description using i18n 
+- #1376 - Add Support for Spring Native 0.11
+- #1365 - Make MediaType for "loginRequestBody" as "application/json"
+- #1375 - Support @JsonIgnore in @ParameterObject.  
+- #1379 - Enable support for queryConfigEnabled.  Disable reading config params from URL search params by default
+### Changed
+- Upgrade swagger-ui to 4.1.3
+- Upgrade to spring-boot 2.6.1
+- #1373 - Enhance Pageable config
+### Fixed
+- #1353 - Servers from cached OpenAPI are overwritten and customizer is skipped.
+- #1364 - Incorrect configUrl due to null path prefix
+- #1370 - NullPointerException on JavadocPropertyCustomizer.java:81 - Warning level
+
 ## [1.5.13] - 2021-11-30
 ### Added
 - #1317 - Add SpEL support for default values
 - #1324 - springdoc-openapi-javadoc doesn't work with @ParameterObject
 - #1334 - Allow customizing / disabling PolymorphicModelConverter
 - #1328 - Add support for spring-native 0.11-RC1. (remove property springdoc.enable-native-image-support and introduce new springdoc module)
-- #1348 - Treat java.nio.charset.Charset as string type by default.
+- #1348 - Treat java.nio.charset.Charset as string type by default
 ### Changed
 - Upgrade swagger-ui to 4.1.2
 - Upgrade to spring-boot 2.6.0
