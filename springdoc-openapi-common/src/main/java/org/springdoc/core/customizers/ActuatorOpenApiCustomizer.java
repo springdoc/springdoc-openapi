@@ -34,28 +34,29 @@ public class ActuatorOpenApiCustomizer extends SpecFilter implements OpenApiCust
 
 	@Override
 	public void customise(OpenAPI openApi) {
-		openApi.getPaths().entrySet().removeIf(path -> !path.getKey().startsWith(webEndpointProperties.getBasePath()));
-		openApi.getTags().removeIf(tag -> openApi.getPaths().entrySet().stream().anyMatch(pathItemEntry -> pathItemEntry.getValue().
-				readOperations().stream().noneMatch(operation -> operation.getTags().contains(tag.getName()))));
-
-		openApi.getPaths().entrySet().stream()
-				.forEach(stringPathItemEntry -> {
-					String path = stringPathItemEntry.getKey();
-					Matcher matcher = pathPathern.matcher(path);
-					while (matcher.find()) {
-						String pathParam = matcher.group(1);
-						PathItem pathItem = stringPathItemEntry.getValue();
-						pathItem.readOperations().forEach(operation -> {
-							List<Parameter> existingParameters = operation.getParameters();
-							Optional<Parameter> existingParam = Optional.empty();
-							if (!CollectionUtils.isEmpty(existingParameters))
-								existingParam = existingParameters.stream().filter(p -> pathParam.equals(p.getName())).findAny();
-							if (!existingParam.isPresent())
-								operation.addParametersItem(new PathParameter().name(pathParam).schema(new StringSchema()));
-						});
-					}
-				});
-
+		if (!CollectionUtils.isEmpty(openApi.getPaths())) {
+			openApi.getPaths().entrySet().removeIf(path -> !path.getKey().startsWith(webEndpointProperties.getBasePath()));
+			openApi.getPaths().entrySet().stream()
+					.forEach(stringPathItemEntry -> {
+						String path = stringPathItemEntry.getKey();
+						Matcher matcher = pathPathern.matcher(path);
+						while (matcher.find()) {
+							String pathParam = matcher.group(1);
+							PathItem pathItem = stringPathItemEntry.getValue();
+							pathItem.readOperations().forEach(operation -> {
+								List<Parameter> existingParameters = operation.getParameters();
+								Optional<Parameter> existingParam = Optional.empty();
+								if (!CollectionUtils.isEmpty(existingParameters))
+									existingParam = existingParameters.stream().filter(p -> pathParam.equals(p.getName())).findAny();
+								if (!existingParam.isPresent())
+									operation.addParametersItem(new PathParameter().name(pathParam).schema(new StringSchema()));
+							});
+						}
+					});
+		}
+		if (!CollectionUtils.isEmpty(openApi.getTags()))
+			openApi.getTags().removeIf(tag -> openApi.getPaths().entrySet().stream().anyMatch(pathItemEntry -> pathItemEntry.getValue().
+					readOperations().stream().noneMatch(operation -> operation.getTags().contains(tag.getName()))));
 		super.removeBrokenReferenceDefinitions(openApi);
 	}
 }
