@@ -10,6 +10,37 @@
       "description": "Generated server url"
     }
   ],
-  "paths": {},
+  "paths": {
+    "/customer/{id}": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "getTenantById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "components": {}
 }

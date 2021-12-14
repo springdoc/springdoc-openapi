@@ -83,7 +83,7 @@ public class SpringDocApp68Test extends AbstractSpringDocTest {
 	public void testActuatorDescription() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(jsonPath("$.tags", hasSize(1)))
+				.andExpect(jsonPath("$.tags", hasSize(4)))
 				.andExpect(jsonPath("$.tags[?(@.name == '" + Constants.SPRINGDOC_ACTUATOR_TAG + "')].name", contains(Constants.SPRINGDOC_ACTUATOR_TAG)))
 				.andExpect(jsonPath("$.tags[?(@.name == '" + Constants.SPRINGDOC_ACTUATOR_TAG + "')].description", contains(Constants.SPRINGDOC_ACTUATOR_DESCRIPTION)))
 				.andExpect(jsonPath("$.tags[?(@.name == '" + Constants.SPRINGDOC_ACTUATOR_TAG + "')].externalDocs.description", contains(Constants.SPRINGDOC_ACTUATOR_DOC_DESCRIPTION)))
