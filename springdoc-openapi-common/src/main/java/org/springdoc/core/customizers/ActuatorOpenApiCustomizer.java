@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.swagger.v3.core.filter.SpecFilter;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -15,11 +14,13 @@ import io.swagger.v3.oas.models.parameters.PathParameter;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.util.CollectionUtils;
 
+import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
+
 /**
  * The type Actuator open api customiser.
  * @author bnasslahsen
  */
-public class ActuatorOpenApiCustomizer extends SpecFilter implements OpenApiCustomiser {
+public class ActuatorOpenApiCustomizer implements OpenApiCustomiser {
 
 	/**
 	 * The Path pathern.
@@ -34,9 +35,9 @@ public class ActuatorOpenApiCustomizer extends SpecFilter implements OpenApiCust
 
 	@Override
 	public void customise(OpenAPI openApi) {
-		if (!CollectionUtils.isEmpty(openApi.getPaths())) {
-			openApi.getPaths().entrySet().removeIf(path -> !path.getKey().startsWith(webEndpointProperties.getBasePath()));
+		if (!CollectionUtils.isEmpty(openApi.getPaths()))
 			openApi.getPaths().entrySet().stream()
+					.filter(stringPathItemEntry -> stringPathItemEntry.getKey().startsWith(webEndpointProperties.getBasePath() + DEFAULT_PATH_SEPARATOR))
 					.forEach(stringPathItemEntry -> {
 						String path = stringPathItemEntry.getKey();
 						Matcher matcher = pathPathern.matcher(path);
@@ -53,10 +54,5 @@ public class ActuatorOpenApiCustomizer extends SpecFilter implements OpenApiCust
 							});
 						}
 					});
-		}
-		if (!CollectionUtils.isEmpty(openApi.getTags()))
-			openApi.getTags().removeIf(tag -> openApi.getPaths().entrySet().stream().anyMatch(pathItemEntry -> pathItemEntry.getValue().
-					readOperations().stream().noneMatch(operation -> operation.getTags().contains(tag.getName()))));
-		super.removeBrokenReferenceDefinitions(openApi);
 	}
 }
