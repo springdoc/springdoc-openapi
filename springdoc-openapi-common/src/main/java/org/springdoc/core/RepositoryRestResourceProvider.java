@@ -23,11 +23,11 @@ public interface RepositoryRestResourceProvider {
 	List<RouterOperation> getRouterOperations(OpenAPI openAPI, Locale locale);
 
 	/**
-	 * Gets repository rest controller endpoints.
+	 * Gets Base PathAwar eController endpoints.
 	 *
-	 * @return the repository rest controller endpoints
+	 * @return the Base PathAware Controller endpoints
 	 */
-	Map<String, Object> getRepositoryRestControllerEndpoints();
+	Map<String, Object> getBasePathAwareControllerEndpoints();
 
 	/**
 	 * Gets handler methods.

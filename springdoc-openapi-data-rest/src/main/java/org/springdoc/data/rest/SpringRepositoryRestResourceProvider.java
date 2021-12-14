@@ -55,9 +55,9 @@ import org.springframework.data.rest.core.mapping.MethodResourceMapping;
 import org.springframework.data.rest.core.mapping.ResourceMappings;
 import org.springframework.data.rest.core.mapping.ResourceMetadata;
 import org.springframework.data.rest.core.mapping.SearchResourceMappings;
+import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.data.rest.webmvc.BasePathAwareHandlerMapping;
 import org.springframework.data.rest.webmvc.ProfileController;
-import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.RepositoryRestHandlerMapping;
 import org.springframework.data.rest.webmvc.alps.AlpsController;
 import org.springframework.data.rest.webmvc.json.JacksonMetadata;
@@ -187,6 +187,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param dataRestRouterOperationService the data rest router operation builder
 	 * @param persistentEntities the persistent entities
 	 * @param mapper the mapper
+	 * @param springDocDataRestUtils the spring doc data rest utils
 	 */
 	public SpringRepositoryRestResourceProvider(ResourceMappings mappings, Repositories repositories,
 			Associations associations, ApplicationContext applicationContext, DataRestRouterOperationService dataRestRouterOperationService,
@@ -279,13 +280,13 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	}
 
 	/**
-	 * Gets repository rest controller endpoints.
+	 * Gets Base Path Aware controller endpoints.
 	 *
-	 * @return the repository rest controller endpoints
+	 * @return the Base Path Aware controller endpoints
 	 */
 	@Override
-	public Map<String, Object> getRepositoryRestControllerEndpoints() {
-		return applicationContext.getBeansWithAnnotation(RepositoryRestController.class);
+	public Map<String, Object> getBasePathAwareControllerEndpoints() {
+		return applicationContext.getBeansWithAnnotation(BasePathAwareController.class);
 	}
 
 	/**
@@ -299,7 +300,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 		return handlerMappingList.stream().filter(RequestMappingInfoHandlerMapping.class::isInstance)
 				.flatMap(
 						handler -> ((RequestMappingInfoHandlerMapping) handler).getHandlerMethods().entrySet().stream())
-				.filter(entry -> !entry.getValue().getBeanType().getName().startsWith(SPRING_DATA_REST_PACKAGE) && AnnotatedElementUtils.hasAnnotation(entry.getValue().getBeanType(), RepositoryRestController.class))
+				.filter(entry -> !entry.getValue().getBeanType().getName().startsWith(SPRING_DATA_REST_PACKAGE) && AnnotatedElementUtils.hasAnnotation(entry.getValue().getBeanType(), BasePathAwareController.class))
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 

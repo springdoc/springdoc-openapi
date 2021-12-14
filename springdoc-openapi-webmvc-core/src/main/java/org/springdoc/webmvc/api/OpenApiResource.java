@@ -191,7 +191,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 				calculatePath(operationList, locale);
 				restResourceProvider.customize(openAPIService.getCalculatedOpenAPI());
 				Map<RequestMappingInfo, HandlerMethod> mapDataRest = restResourceProvider.getHandlerMethods();
-				Map<String, Object> requestMappingMap = restResourceProvider.getRepositoryRestControllerEndpoints();
+				Map<String, Object> requestMappingMap = restResourceProvider.getBasePathAwareControllerEndpoints();
 				Class[] additionalRestClasses = requestMappingMap.values().stream().map(Object::getClass).toArray(Class[]::new);
 				AbstractOpenApiResource.addRestControllers(additionalRestClasses);
 				calculatePath(requestMappingMap, mapDataRest, locale);
