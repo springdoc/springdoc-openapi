@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.6.1] - 2021-12-12
 ### Added
-- #1356, #1360 - Add support for caching based on Locale
+- #1383 - Add support for BasePathAwareController 
 ### Fixed
 - #1380 - Jhipster tests failing after upgrading from 1.5.13 to 1.6.0
 
