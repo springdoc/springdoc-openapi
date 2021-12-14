@@ -400,7 +400,6 @@ public class SpringDocConfiguration {
 		 */
 		@Bean
 		@Lazy(false)
-		@ConditionalOnMissingBean
 		@ConditionalOnManagementPort(ManagementPortType.SAME)
 		OperationCustomizer actuatorCustomizer() {
 			return new ActuatorOperationCustomizer();
@@ -414,7 +413,6 @@ public class SpringDocConfiguration {
 		 */
 		@Bean
 		@Lazy(false)
-		@ConditionalOnMissingBean
 		@ConditionalOnManagementPort(ManagementPortType.SAME)
 		OpenApiCustomiser actuatorOpenApiCustomiser(WebEndpointProperties webEndpointProperties) {
 			return new ActuatorOpenApiCustomizer(webEndpointProperties);
