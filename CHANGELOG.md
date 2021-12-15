@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #1383 - Add support for BasePathAwareController 
 ### Fixed
 - #1380 - Jhipster tests failing after upgrading from 1.5.13 to 1.6.0
+- #1381 - Related to show-actuator=true with no groups
 
 ## [1.6.0] - 2021-12-12
 ### Added
