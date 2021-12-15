@@ -82,6 +82,11 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	public static final String OAUTH2_REDIRECT_URL_PROPERTY = "oauth2RedirectUrl";
 
 	/**
+	 * The constant VALIDATOR_URL_PROPERTY.
+	 */
+	public static final String VALIDATOR_URL_PROPERTY ="validatorUrl";
+
+	/**
 	 * The Ui root path.
 	 */
 	private String uiRootPath;
@@ -193,7 +198,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	public Map<String, Object> getConfigParameters() {
 		final Map<String, Object> params = new TreeMap<>();
 		// empty-string prevents swagger-ui default validation
-		params.put("validatorUrl", validatorUrl != null ? validatorUrl : "");
+		params.put(VALIDATOR_URL_PROPERTY, validatorUrl != null ? validatorUrl : "");
 		SpringDocPropertiesUtils.put(CONFIG_URL_PROPERTY, configUrl, params);
 		SpringDocPropertiesUtils.put("deepLinking", this.deepLinking, params);
 		SpringDocPropertiesUtils.put("displayOperationId", displayOperationId, params);

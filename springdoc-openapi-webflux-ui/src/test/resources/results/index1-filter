@@ -52,6 +52,7 @@
         layout: "StandaloneLayout" ,
 
   "filter" : "false",
+  "validatorUrl" : "",
   "oauth2RedirectUrl" : "/webjars/swagger-ui/oauth2-redirect.html"
 
       });
