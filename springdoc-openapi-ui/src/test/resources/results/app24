@@ -51,6 +51,7 @@
         ],
         layout: "StandaloneLayout" ,
 
+  "validatorUrl" : "",
   "configUrl" : "/foo/bar",
   "oauth2RedirectUrl" : "http://localhost/swagger-ui/oauth2-redirect.html"
 

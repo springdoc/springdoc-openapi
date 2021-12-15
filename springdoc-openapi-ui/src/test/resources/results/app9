@@ -49,7 +49,10 @@
         plugins: [
           SwaggerUIBundle.plugins.DownloadUrl
         ],
-        layout: "StandaloneLayout"
+        layout: "StandaloneLayout" ,
+
+  "validatorUrl" : ""
+
       });
       // End Swagger UI call region
 

@@ -173,7 +173,7 @@ public class AbstractSwaggerIndexTransformer {
 				.filter(entry -> !SwaggerUiConfigParameters.OAUTH2_REDIRECT_URL_PROPERTY.equals(entry.getKey()) || !Constants.SWAGGER_UI_OAUTH_REDIRECT_URL.equals(entry.getValue()))
 				.filter(entry -> !SwaggerUiConfigParameters.URL_PROPERTY.equals(entry.getKey()))
 				.filter(entry -> !SwaggerUiConfigParameters.LAYOUT_PROPERTY.equals(entry.getKey()))
-				.filter(entry -> SwaggerUiConfigParameters.URLS_PROPERTY.equals(entry.getKey()) || StringUtils.isNotEmpty((String) entry.getValue()))
+				.filter(entry -> SwaggerUiConfigParameters.URLS_PROPERTY.equals(entry.getKey()) || SwaggerUiConfigParameters.VALIDATOR_URL_PROPERTY.equals(entry.getKey()) || StringUtils.isNotEmpty((String) entry.getValue()))
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 		if (!CollectionUtils.isEmpty(parametersObjectMap)) {

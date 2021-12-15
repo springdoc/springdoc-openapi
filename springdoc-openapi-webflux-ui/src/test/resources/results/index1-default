@@ -51,6 +51,7 @@
         ],
         layout: "StandaloneLayout" ,
 
+  "validatorUrl" : "",
   "oauth2RedirectUrl" : "/webjars/swagger-ui/oauth2-redirect.html"
 
       });
