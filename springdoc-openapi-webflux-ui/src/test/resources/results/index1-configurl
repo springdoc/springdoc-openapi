@@ -51,7 +51,8 @@
         ],
         layout: "StandaloneLayout" ,
 
-  "configUrl" : "/foo/bar"
+  "configUrl" : "/foo/bar",
+  "validatorUrl" : ""
 
       });
       // End Swagger UI call region

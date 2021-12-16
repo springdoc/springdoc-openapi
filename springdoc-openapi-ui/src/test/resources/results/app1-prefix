@@ -51,7 +51,8 @@
         ],
         layout: "StandaloneLayout" ,
 
-  "configUrl" : "/documentation/v3/api-docs/swagger-config"
+  "configUrl" : "/documentation/v3/api-docs/swagger-config",
+  "validatorUrl" : ""
 
       });
       // End Swagger UI call region
