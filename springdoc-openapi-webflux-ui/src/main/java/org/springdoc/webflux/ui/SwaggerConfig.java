@@ -125,12 +125,13 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param objectMapper the object mapper
+	 * @param swaggerWelcomeCommon the swagger welcome common
 	 * @return the swagger index transformer
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig ,SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapper objectMapper) {
-		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties,swaggerUiConfigParameters,  objectMapper);
+	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig ,SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapper objectMapper, SwaggerWelcomeCommon swaggerWelcomeCommon) {
+		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties,swaggerUiConfigParameters,  objectMapper, swaggerWelcomeCommon);
 	}
 
 	/**

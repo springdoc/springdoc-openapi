@@ -39,7 +39,7 @@
     window.onload = function() {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
-        url: "/baf/batz",
+        url: "https://petstore.swagger.io/v2/swagger.json",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
@@ -51,8 +51,8 @@
         ],
         layout: "StandaloneLayout" ,
 
-  "validatorUrl" : "/foo/validate",
-  "oauth2RedirectUrl" : "http://localhost/swagger-ui/oauth2-redirect.html"
+  "configUrl" : "/baf/batz/swagger-config",
+  "validatorUrl" : "/foo/validate"
 
       });
       // End Swagger UI call region

@@ -42,20 +42,29 @@ import org.springframework.web.servlet.resource.TransformedResource;
 public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer implements SwaggerIndexTransformer {
 
 	/**
+	 * The Swagger welcome common.
+	 */
+	private final SwaggerWelcomeCommon swaggerWelcomeCommon;
+
+	/**
 	 * Instantiates a new Swagger index transformer.
-	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param objectMapper the object mapper
+	 * @param swaggerWelcomeCommon the swagger welcome common
 	 */
-	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters,  ObjectMapper objectMapper) {
+	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapper objectMapper, SwaggerWelcomeCommon swaggerWelcomeCommon) {
 		super(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, objectMapper);
+		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 
 	@Override
 	public Resource transform(HttpServletRequest request, Resource resource,
 			ResourceTransformerChain transformerChain) throws IOException {
+		if (swaggerUiConfigParameters.getConfigUrl() == null)
+			swaggerWelcomeCommon.buildFromCurrentContextPath(request);
+
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
 
