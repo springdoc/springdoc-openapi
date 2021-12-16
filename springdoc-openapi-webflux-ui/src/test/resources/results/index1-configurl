@@ -51,9 +51,7 @@
         ],
         layout: "StandaloneLayout" ,
 
-  "validatorUrl" : "",
-  "configUrl" : "/foo/bar",
-  "oauth2RedirectUrl" : "/webjars/swagger-ui/oauth2-redirect.html"
+  "configUrl" : "/foo/bar"
 
       });
       // End Swagger UI call region

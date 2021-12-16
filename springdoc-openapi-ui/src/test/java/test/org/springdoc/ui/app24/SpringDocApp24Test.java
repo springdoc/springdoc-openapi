@@ -23,10 +23,7 @@ import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MvcResult;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

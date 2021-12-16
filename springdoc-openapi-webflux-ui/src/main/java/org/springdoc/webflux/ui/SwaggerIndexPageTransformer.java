@@ -41,21 +41,29 @@ import org.springframework.web.server.ServerWebExchange;
 public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer implements SwaggerIndexTransformer {
 
 	/**
+	 * The Swagger welcome common.
+	 */
+	private final SwaggerWelcomeCommon swaggerWelcomeCommon;
+
+	/**
 	 * Instantiates a new Swagger index transformer.
-	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param objectMapper the object mapper
+	 * @param swaggerWelcomeCommon the swagger welcome common
 	 */
-	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,  SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapper objectMapper) {
-		super(swaggerUiConfig, swaggerUiOAuthProperties,swaggerUiConfigParameters, objectMapper);
+	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapper objectMapper, SwaggerWelcomeCommon swaggerWelcomeCommon) {
+		super(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, objectMapper);
+		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 
 	@Override
 	public Mono<Resource> transform(ServerWebExchange serverWebExchange, Resource resource, ResourceTransformerChain resourceTransformerChain) {
-		final AntPathMatcher antPathMatcher = new AntPathMatcher();
+		if (swaggerUiConfigParameters.getConfigUrl() == null)
+			swaggerWelcomeCommon.buildFromCurrentContextPath(serverWebExchange.getRequest());
 
+		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		try {
 			boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
 			if (isIndexFound) {

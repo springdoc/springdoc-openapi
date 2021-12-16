@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,8 @@ import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 
 import org.springframework.util.CollectionUtils;
+
+import static org.springdoc.core.SwaggerUiConfigParameters.QUERY_CONFIG_ENABLED_PROPERTY;
 
 /**
  * The type Abstract swagger index transformer.
@@ -136,27 +139,26 @@ public class AbstractSwaggerIndexTransformer {
 	 */
 	protected String defaultTransformations(InputStream inputStream) throws IOException {
 		String html = readFullyAsString(inputStream);
-		if (!CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters())) {
+		if (!CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters()))
 			html = addInitOauth(html);
-		}
+
 		if (swaggerUiConfig.isCsrfEnabled()) {
-			if (swaggerUiConfig.getCsrf().isUseLocalStorage()) {
+			if (swaggerUiConfig.getCsrf().isUseLocalStorage())
 				html = addCSRFLocalStorage(html);
-			}
-			else {
+			else
 				html = addCSRF(html);
-			}
 		}
-		if (swaggerUiConfig.getSyntaxHighlight().isPresent()) {
+
+		if (swaggerUiConfig.getSyntaxHighlight().isPresent())
 			html = addSyntaxHighlight(html);
-		}
+
 		if (swaggerUiConfig.getQueryConfigEnabled() == null || !swaggerUiConfig.getQueryConfigEnabled())
 			html = addParameters(html);
 		else
-			html = enableQueryConfig(html);
-		if (swaggerUiConfig.isDisableSwaggerDefaultUrl() && swaggerUiConfigParameters.getConfigParameters().get(SwaggerUiConfigParameters.URL_PROPERTY) == null) {
+			html = addParameter(html, QUERY_CONFIG_ENABLED_PROPERTY, swaggerUiConfig.getQueryConfigEnabled().toString());
+
+		if (swaggerUiConfig.isDisableSwaggerDefaultUrl())
 			html = overwriteSwaggerDefaultUrl(html);
-		}
 
 		return html;
 	}
@@ -165,16 +167,13 @@ public class AbstractSwaggerIndexTransformer {
 		String layout = swaggerUiConfigParameters.getLayout() != null ? swaggerUiConfigParameters.getLayout() : "StandaloneLayout";
 		StringBuilder stringBuilder = new StringBuilder("layout: \"" + layout + "\" ,\n");
 
-		if (swaggerUiConfigParameters.getConfigParameters().get(SwaggerUiConfigParameters.URL_PROPERTY) != null && swaggerUiConfig.getConfigUrl() == null)
-			html = html.replace(Constants.SWAGGER_UI_DEFAULT_URL, swaggerUiConfigParameters.getConfigParameters().get(SwaggerUiConfigParameters.URL_PROPERTY).toString());
-
 		Map<String, Object> parametersObjectMap = swaggerUiConfigParameters.getConfigParameters().entrySet().stream()
-				.filter(entry -> (swaggerUiConfig.getConfigUrl() != null || !SwaggerUiConfigParameters.CONFIG_URL_PROPERTY.equals(entry.getKey())))
-				.filter(entry -> !SwaggerUiConfigParameters.OAUTH2_REDIRECT_URL_PROPERTY.equals(entry.getKey()) || !Constants.SWAGGER_UI_OAUTH_REDIRECT_URL.equals(entry.getValue()))
+				.filter(entry -> !SwaggerUiConfigParameters.OAUTH2_REDIRECT_URL_PROPERTY.equals(entry.getKey()))
 				.filter(entry -> !SwaggerUiConfigParameters.URL_PROPERTY.equals(entry.getKey()))
-				.filter(entry -> !SwaggerUiConfigParameters.LAYOUT_PROPERTY.equals(entry.getKey()))
-				.filter(entry -> SwaggerUiConfigParameters.URLS_PROPERTY.equals(entry.getKey()) || SwaggerUiConfigParameters.VALIDATOR_URL_PROPERTY.equals(entry.getKey()) || StringUtils.isNotEmpty((String) entry.getValue()))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+				.filter(entry -> !SwaggerUiConfigParameters.URLS_PROPERTY.equals(entry.getKey()))
+				.filter(entry -> StringUtils.isNotEmpty((String) entry.getValue()))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(e1, e2) -> e2,
+						LinkedHashMap::new));
 
 		if (!CollectionUtils.isEmpty(parametersObjectMap)) {
 			String result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(parametersObjectMap);
@@ -186,9 +185,9 @@ public class AbstractSwaggerIndexTransformer {
 		return html;
 	}
 
-	protected String enableQueryConfig(String html) {
+	private String addParameter(String html, String key, String value) {
 		StringBuilder stringBuilder = new StringBuilder("const ui = SwaggerUIBundle({\n");
-		stringBuilder.append("queryConfigEnabled: " + swaggerUiConfig.getQueryConfigEnabled() + ",");
+		stringBuilder.append(key + ": \"" + value + "\",");
 		return html.replace("const ui = SwaggerUIBundle({", stringBuilder.toString());
 	}
 

@@ -87,6 +87,11 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	public static final String VALIDATOR_URL_PROPERTY ="validatorUrl";
 
 	/**
+	 * The constant QUERY_CONFIG_ENABLED_PROPERTY.
+	 */
+	public static final String QUERY_CONFIG_ENABLED_PROPERTY  = "queryConfigEnabled";
+
+	/**
 	 * The Ui root path.
 	 */
 	private String uiRootPath;
