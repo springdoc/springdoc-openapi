@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>springdoc-openapi</artifactId>
 		<groupId>org.springdoc</groupId>
-		<version>1.6.3-SNAPSHOT</version>
+		<version>1.6.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>springdoc-openapi-security</artifactId>
 	<properties>
