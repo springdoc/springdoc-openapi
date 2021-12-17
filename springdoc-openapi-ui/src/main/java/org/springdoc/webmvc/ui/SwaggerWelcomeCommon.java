@@ -74,6 +74,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @param request the request
 	 */
 	void buildFromCurrentContextPath(HttpServletRequest request) {
+		super.init();
 		contextPath = request.getContextPath();
 		buildConfigUrl(ServletUriComponentsBuilder.fromCurrentContextPath());
 	}
