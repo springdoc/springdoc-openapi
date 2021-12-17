@@ -96,6 +96,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @return the string
 	 */
 	void buildFromCurrentContextPath(ServerHttpRequest request) {
+		super.init();
 		contextPath = request.getPath().contextPath().value();
 		String url = UriComponentsBuilder.fromHttpRequest(request).toUriString();
 		if (!AntPathMatcher.DEFAULT_PATH_SEPARATOR.equals(request.getPath().toString()))

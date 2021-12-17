@@ -26,7 +26,6 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -41,7 +40,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  * The type Abstract swagger welcome.
  * @author bnasslashen
  */
-public abstract class AbstractSwaggerWelcome implements InitializingBean {
+public abstract class AbstractSwaggerWelcome {
 
 	/**
 	 * The Swagger ui configuration.
@@ -86,8 +85,7 @@ public abstract class AbstractSwaggerWelcome implements InitializingBean {
 		this.swaggerUiConfigParameters = swaggerUiConfigParameters;
 	}
 
-	@Override
-	public void afterPropertiesSet() {
+	protected void init() {
 		springDocConfigProperties.getGroupConfigs().forEach(groupConfig -> swaggerUiConfigParameters.addGroup(groupConfig.getGroup()));
 		calculateUiRootPath();
 	}
