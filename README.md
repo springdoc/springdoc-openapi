@@ -142,10 +142,10 @@ The `springdoc-openapi` libraries are hosted on maven central repository.
 The artifacts can be viewed accessed at the following locations:
 
 Releases:
-* [https://oss.sonatype.org/content/groups/public/org/springdoc/](https://oss.sonatype.org/content/groups/public/org/springdoc/).
+* [https://s01.oss.sonatype.org/content/groups/public/org/springdoc/](https://s01.oss.sonatype.org/content/groups/public/org/springdoc/).
 
 Snapshots:
-* [https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/](https://oss.sonatype.org/content/repositories/snapshots/org/springdoc/).
+* [https://s01.oss.sonatype.org/content/repositories/snapshots/org/springdoc/](https://s01.oss.sonatype.org/content/repositories/snapshots/org/springdoc/).
 
 # Acknowledgements
 
