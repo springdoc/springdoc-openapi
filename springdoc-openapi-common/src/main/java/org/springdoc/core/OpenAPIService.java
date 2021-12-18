@@ -38,8 +38,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.security.SecuritySchemes;
@@ -229,8 +231,15 @@ public class OpenAPIService {
 			this.calculatedOpenAPI.setComponents(new Components());
 			this.calculatedOpenAPI.setPaths(new Paths());
 		}
-		else
-			this.calculatedOpenAPI = openAPI;
+		else {
+			try {
+				this.calculatedOpenAPI = Json.mapper()
+						.readValue(Json.mapper().writeValueAsString(openAPI), OpenAPI.class);
+			}
+			catch (JsonProcessingException e) {
+				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+			}
+		}
 
 		if (apiDef.isPresent()) {
 			buildOpenAPIWithOpenAPIDefinition(calculatedOpenAPI, apiDef.get(), locale);
