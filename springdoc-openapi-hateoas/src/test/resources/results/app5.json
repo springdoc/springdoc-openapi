@@ -46,6 +46,7 @@
   "components": {
     "schemas": {
       "CompanyDtoNew": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "string",
