@@ -4,10 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.6.2] - 2021-12-16
+## [1.6.2] - 2021-12-19
 ### Added
 - #1386, #1385 - Disable validation by default
 - #1384 - Enhance swagger-ui access
+### Fixed
+- #1392 - Consistent OperationId generation problem with Locale 
+- #1394 - Getting 404 when trying to access swagger-ui of a native spring-boot app
 
 ## [1.6.1] - 2021-12-12
 ### Added
