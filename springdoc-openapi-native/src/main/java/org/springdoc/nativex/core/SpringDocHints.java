@@ -296,6 +296,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ResourceHint(patterns = SpringDocHints.SPRINGDOC_CONFIG_PROPERTIES)
 public class SpringDocHints implements InitializingBean {
 
 	/**
@@ -306,7 +307,7 @@ public class SpringDocHints implements InitializingBean {
 	/**
 	 * The constant SPRINGDOC_CONFIG_PROPERTIES.
 	 */
-	private static final String SPRINGDOC_CONFIG_PROPERTIES = "springdoc.config.properties";
+	public static final String SPRINGDOC_CONFIG_PROPERTIES = "springdoc.config.properties";
 
 	/**
 	 * The constant SPRINGDOC_SWAGGERUI_VERSION.
