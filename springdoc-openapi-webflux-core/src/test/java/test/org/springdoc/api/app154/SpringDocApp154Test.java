@@ -29,7 +29,9 @@ import test.org.springdoc.api.AbstractSpringDocFunctionTest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = "spring.cloud.function.web.path=/toto")
 public class SpringDocApp154Test extends AbstractSpringDocFunctionTest {
 
 	@SpringBootApplication

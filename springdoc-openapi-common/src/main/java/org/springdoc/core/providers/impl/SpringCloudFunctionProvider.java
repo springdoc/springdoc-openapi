@@ -17,6 +17,7 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.SpringDocAnnotationsUtils;
 import org.springdoc.core.SpringDocConfigProperties;
@@ -24,6 +25,7 @@ import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.providers.CloudFunctionProvider;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.function.context.FunctionCatalog;
 import org.springframework.cloud.function.context.catalog.SimpleFunctionRegistry.FunctionInvocationWrapper;
 import org.springframework.cloud.function.context.config.RoutingFunction;
@@ -83,6 +85,11 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider {
 	 */
 	private static final String[] defaultMediaTypes = new String[] { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE };
 
+	/**
+	 * The spring cloud function prefix.
+	 */
+	@Value("${spring.cloud.function.web.path:}")
+	private String prefix = "";
 
 	/**
 	 * Instantiates a new Spring cloud function provider.
@@ -95,7 +102,7 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider {
 		this.functionCatalogOptional = functionCatalogOptional;
 		this.genericResponseService = genericResponseService;
 		this.springDocConfigProperties = springDocConfigProperties;
-		this.applicationContext=applicationContext;
+		this.applicationContext = applicationContext;
 	}
 
 	@Override
@@ -113,10 +120,19 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider {
 									buildRequest(openAPI, name, function, requestMethod, routerOperation);
 									ApiResponses apiResponses = buildResponses(openAPI, function, defaultMediaTypes);
 									routerOperation.getOperationModel().responses(apiResponses);
-									if (GET.equals(requestMethod))
-										routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name + AntPathMatcher.DEFAULT_PATH_SEPARATOR + "{" + name + "}");
-									else
-										routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
+									if (StringUtils.isEmpty(prefix)) {
+										if (GET.equals(requestMethod))
+											routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name + AntPathMatcher.DEFAULT_PATH_SEPARATOR + "{" + name + "}");
+										else
+											routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
+									}
+									else {
+										if (GET.equals(requestMethod))
+											routerOperation.setPath(prefix + AntPathMatcher.DEFAULT_PATH_SEPARATOR + name + AntPathMatcher.DEFAULT_PATH_SEPARATOR + "{" + name + "}");
+										else
+											routerOperation.setPath(prefix + AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
+									}
+
 									RouterOperation userRouterOperation = this.getRouterFunctionPaths(name, requestMethod);
 									if (userRouterOperation != null)
 										mergeRouterOperation(routerOperation, userRouterOperation);
@@ -131,7 +147,10 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider {
 									apiResponse.setContent(new Content());
 									apiResponses.put(String.valueOf(HttpStatus.ACCEPTED.value()), apiResponse.description(HttpStatus.ACCEPTED.getReasonPhrase()));
 									routerOperation.getOperationModel().responses(apiResponses);
-									routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
+									if (StringUtils.isEmpty(prefix))
+										routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
+									else
+										routerOperation.setPath(prefix + AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
 									RouterOperation userRouterOperation = this.getRouterFunctionPaths(name, requestMethod);
 									if (userRouterOperation != null)
 										mergeRouterOperation(routerOperation, userRouterOperation);
@@ -142,7 +161,10 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider {
 									RouterOperation routerOperation = buildRouterOperation(name, " supplier", requestMethod, routerOperationList);
 									ApiResponses apiResponses = buildResponses(openAPI, function, new String[] { springDocConfigProperties.getDefaultProducesMediaType() });
 									routerOperation.getOperationModel().responses(apiResponses);
-									routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
+									if (StringUtils.isEmpty(prefix))
+										routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
+									else
+										routerOperation.setPath(prefix + AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
 									RouterOperation userRouterOperation = this.getRouterFunctionPaths(name, requestMethod);
 									if (userRouterOperation != null)
 										mergeRouterOperation(routerOperation, userRouterOperation);
