@@ -42,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Tests Spring meta-annotations as method parameters
  */
 @TestPropertySource(properties = { "springdoc.show-actuator=true",
+		"management.endpoints.enabled-by-default=true",
 		"management.endpoints.web.exposure.include = tenant" })
 public class SpringDocApp128Test extends AbstractSpringDocTest {
 

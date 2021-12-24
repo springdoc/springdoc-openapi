@@ -6,19 +6,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import nonapi.io.github.classgraph.utils.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@TestPropertySource(properties={
+		"spring.autoconfigure.exclude=org.springframework.cloud.function.web.mvc.ReactorAutoConfiguration, org.springframework.cloud.function.web.source.FunctionExporterAutoConfiguration, org.springframework.cloud.function.context.config.ContextFunctionCatalogAutoConfiguration",
+		"management.endpoints.enabled-by-default=false"
+})
 public abstract class AbstractCommonTest {
-
-	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommonTest.class);
 
 	@Autowired
 	protected MockMvc mockMvc;

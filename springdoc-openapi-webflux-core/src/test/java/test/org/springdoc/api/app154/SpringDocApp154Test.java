@@ -27,10 +27,15 @@ import reactor.core.publisher.Flux;
 import test.org.springdoc.api.AbstractSpringDocFunctionTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.function.context.config.ContextFunctionCatalogAutoConfiguration;
+import org.springframework.cloud.function.web.mvc.ReactorAutoConfiguration;
+import org.springframework.cloud.function.web.source.FunctionExporterAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
+@Import({ ReactorAutoConfiguration.class, FunctionExporterAutoConfiguration.class, ContextFunctionCatalogAutoConfiguration.class })
 @TestPropertySource(properties = "spring.cloud.function.web.path=/toto")
 public class SpringDocApp154Test extends AbstractSpringDocFunctionTest {
 

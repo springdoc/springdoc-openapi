@@ -33,9 +33,14 @@ import reactor.core.publisher.Flux;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.function.context.config.ContextFunctionCatalogAutoConfiguration;
+import org.springframework.cloud.function.web.mvc.ReactorAutoConfiguration;
+import org.springframework.cloud.function.web.source.FunctionExporterAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+@Import({ ReactorAutoConfiguration.class, FunctionExporterAutoConfiguration.class, ContextFunctionCatalogAutoConfiguration.class })
 public class SpringDocApp174Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
@@ -52,17 +57,17 @@ public class SpringDocApp174Test extends AbstractSpringDocTest {
 
 		@Bean
 		@RouterOperations({
-				@RouterOperation(method = RequestMethod.GET, operation = @Operation(description = "Say hello GET", operationId = "lowercaseGET",tags = "positions",
-						responses = @ApiResponse(responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema (implementation = String.class)))))),
-				@RouterOperation(method =RequestMethod.POST, operation = @Operation(description = "Say hello POST", operationId = "lowercasePOST",tags = "positions",
-						responses = @ApiResponse(responseCode = "200", description = "new desc", content =  @Content(array = @ArraySchema(schema = @Schema (implementation = String.class))))))
+				@RouterOperation(method = RequestMethod.GET, operation = @Operation(description = "Say hello GET", operationId = "lowercaseGET", tags = "positions",
+						responses = @ApiResponse(responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class)))))),
+				@RouterOperation(method = RequestMethod.POST, operation = @Operation(description = "Say hello POST", operationId = "lowercasePOST", tags = "positions",
+						responses = @ApiResponse(responseCode = "200", description = "new desc", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))))
 		})
 		public Function<Flux<String>, Flux<String>> lowercase() {
 			return flux -> flux.map(value -> value.toLowerCase());
 		}
 
 		@Bean(name = "titi")
-		@RouterOperation(operation = @Operation(description = "Say hello By Id", operationId = "hellome",tags = "persons",
+		@RouterOperation(operation = @Operation(description = "Say hello By Id", operationId = "hellome", tags = "persons",
 				responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PersonDTO.class)))))
 		public Supplier<PersonDTO> helloSupplier() {
 			return () -> new PersonDTO();
@@ -75,10 +80,9 @@ public class SpringDocApp174Test extends AbstractSpringDocTest {
 
 		@Bean
 		public Supplier<Flux<String>> words() {
-			return () -> Flux.fromArray(new String[] {"foo", "bar"});
+			return () -> Flux.fromArray(new String[] { "foo", "bar" });
 		}
 
 	}
-
 
 }
