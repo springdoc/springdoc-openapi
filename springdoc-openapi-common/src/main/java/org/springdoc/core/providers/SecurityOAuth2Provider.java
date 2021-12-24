@@ -18,42 +18,27 @@
  *
  */
 
-package org.springdoc.core;
+package org.springdoc.core.providers;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.util.Map;
 
 /**
- * The interface Javadoc provider.
- * @author bnasslashen
+ * The interface Security o auth 2 provider.
+ * @author bnasslahsen
  */
-public interface JavadocProvider {
+public interface SecurityOAuth2Provider {
 
 	/**
-	 * Gets method description.
+	 * Gets handler methods.
 	 *
-	 * @param method the method
-	 * @return the method description
+	 * @return the handler methods
 	 */
-	String getMethodJavadocDescription(Method method);
+	Map getHandlerMethods();
 
 	/**
-	 * Gets method javadoc return.
+	 * Gets framework endpoints.
 	 *
-	 * @param method the method
-	 * @return the method javadoc return
+	 * @return the framework endpoints
 	 */
-	String getMethodJavadocReturn(Method method);
-
-	/**
-	 * Gets param javadoc.
-	 *
-	 * @param method the method
-	 * @param name the name
-	 * @return the param javadoc
-	 */
-	String getParamJavadoc(Method method, String name);
-
-	String getFieldJavadoc(Field field);
+	Map<String, Object> getFrameworkEndpoints();
 }
-

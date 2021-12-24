@@ -50,6 +50,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
+import org.springdoc.core.providers.WebConversionServiceProvider;
 
 import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.BeanExpressionResolver;

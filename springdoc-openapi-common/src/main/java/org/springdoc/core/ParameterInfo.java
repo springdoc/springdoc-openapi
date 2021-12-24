@@ -21,7 +21,6 @@
 package org.springdoc.core;
 
 import java.lang.reflect.Parameter;
-import java.util.Locale;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.apache.commons.lang3.StringUtils;
@@ -87,9 +86,8 @@ public class ParameterInfo {
 	 * @param pName the parameter name
 	 * @param methodParameter the method parameter
 	 * @param genericParameterService the parameter builder
-	 * @param locale the locale
 	 */
-	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService genericParameterService, Locale locale) {
+	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService genericParameterService) {
 		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
 		RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
 		PathVariable pathVar = methodParameter.getParameterAnnotation(PathVariable.class);

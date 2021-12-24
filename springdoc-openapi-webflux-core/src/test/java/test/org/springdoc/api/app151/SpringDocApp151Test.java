@@ -23,13 +23,11 @@ package test.org.springdoc.api.app151;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.context.annotation.ComponentScan;
 
-@AutoConfigureWebTestClient(timeout = "3600000")
-public class SpringDocApp150Test extends AbstractSpringDocTest {
+public class SpringDocApp151Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app150" })
+	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app151" })
 	static class SpringDocTestApp {}
 }

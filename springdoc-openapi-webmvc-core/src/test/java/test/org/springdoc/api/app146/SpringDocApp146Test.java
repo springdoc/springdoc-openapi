@@ -24,6 +24,7 @@ import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.function.web.mvc.ReactorAutoConfiguration;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -36,12 +37,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		properties = { "management.endpoints.web.exposure.include:*",
 				"springdoc.show-actuator=true",
 				"management.server.port=9096",
+				"management.endpoints.web.exposure.exclude=functions",
 				"server.servlet.context-path=/sample",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp146Test extends AbstractSpringDocActuatorTest {
 
-	@SpringBootApplication
+	@SpringBootApplication(exclude = { ReactorAutoConfiguration.class })
 	static class SpringDocTestApp {}
 
 

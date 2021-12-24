@@ -22,9 +22,9 @@ package org.springdoc.webflux.ui;
 
 import java.util.Optional;
 
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigParameters;
+import org.springdoc.core.providers.ActuatorProvider;
 
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;

@@ -36,11 +36,11 @@ import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.webflux.core.visitor.RouterFunctionVisitor;
@@ -58,8 +58,8 @@ import org.springframework.web.reactive.result.method.RequestMappingInfo;
 import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.util.pattern.PathPattern;
 
-import static org.springdoc.core.ActuatorProvider.getTag;
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
+import static org.springdoc.core.providers.ActuatorProvider.getTag;
 
 /**
  * The type Open api resource.
@@ -78,15 +78,15 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param actuatorProvider the actuator provider
+	 * @param springDocProviders the spring doc providers
 	 */
 	public OpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<ActuatorProvider> actuatorProvider) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
+			SpringDocProviders springDocProviders) {
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, springDocProviders);
 	}
 
 	/**
@@ -99,15 +99,15 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param actuatorProvider the actuator provider
+	 * @param springDocProviders the spring doc providers
 	 */
 	public OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<ActuatorProvider> actuatorProvider) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
+			SpringDocProviders springDocProviders) {
+		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,springDocProviders);
 	}
 
 
@@ -157,7 +157,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 			calculatePath(restControllers, map, locale);
 			if (isShowActuator()) {
-				map = optionalActuatorProvider.get().getMethods();
+				map = springDocProviders.getActuatorProvider().get().getMethods();
 				this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
 				calculatePath(restControllers, map, locale);
 			}
@@ -231,6 +231,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 *
 	 * @param serverHttpRequest the server http request
 	 * @param apiDocsUrl the api docs url
+	 * @param locale the locale
 	 */
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale) {
 		initOpenAPIBuilder(locale);

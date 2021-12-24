@@ -21,18 +21,15 @@
 package org.springdoc.webmvc.core;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.MultipleOpenApiSupportCondition;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
-import org.springdoc.core.RepositoryRestResourceProvider;
-import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocProviders;
 import org.springdoc.webmvc.api.MultipleOpenApiActuatorResource;
 import org.springdoc.webmvc.api.MultipleOpenApiWebMvcResource;
 
@@ -72,11 +69,8 @@ public class MultipleOpenApiSupportConfiguration {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param actuatorProvider the actuator provider
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
-	 * @param routerFunctionProvider the router function provider
-	 * @param repositoryRestResourceProvider the repository rest resource provider
+	 * @param springDocProviders the spring doc providers
 	 * @return the multiple open api resource
 	 */
 	@Bean
@@ -86,18 +80,13 @@ public class MultipleOpenApiSupportConfiguration {
 	MultipleOpenApiWebMvcResource multipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			Optional<ActuatorProvider> actuatorProvider,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RouterFunctionProvider> routerFunctionProvider,
-			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
+			SpringDocProviders springDocProviders) {
 		return new MultipleOpenApiWebMvcResource(groupedOpenApis,
 				defaultOpenAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
-				 actuatorProvider,
 				springDocConfigProperties,
-				springSecurityOAuth2Provider,
-				routerFunctionProvider, repositoryRestResourceProvider);
+				springDocProviders);
 	}
 
 	/**
@@ -116,11 +105,8 @@ public class MultipleOpenApiSupportConfiguration {
 		 * @param requestBuilder the request builder
 		 * @param responseBuilder the response builder
 		 * @param operationParser the operation parser
-		 * @param actuatorProvider the actuator provider
 		 * @param springDocConfigProperties the spring doc config properties
-		 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
-		 * @param routerFunctionProvider the router function provider
-		 * @param repositoryRestResourceProvider the repository rest resource provider
+		 * @param springDocProviders the spring doc providers
 		 * @return the multiple open api actuator resource
 		 */
 		@Bean
@@ -130,13 +116,11 @@ public class MultipleOpenApiSupportConfiguration {
 		MultipleOpenApiActuatorResource multipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis,
 				ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 				GenericResponseService responseBuilder, OperationService operationParser,
-				 Optional<ActuatorProvider> actuatorProvider,
-				SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-				Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
+				SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
 
 			return new MultipleOpenApiActuatorResource(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder,
-					responseBuilder, operationParser, actuatorProvider,
-					springDocConfigProperties, springSecurityOAuth2Provider, routerFunctionProvider, repositoryRestResourceProvider);
+					responseBuilder, operationParser,
+					springDocConfigProperties, springDocProviders);
 		}
 	}
 }

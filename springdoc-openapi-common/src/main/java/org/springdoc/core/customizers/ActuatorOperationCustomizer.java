@@ -32,7 +32,7 @@ import io.swagger.v3.oas.models.Operation;
 import org.springframework.web.method.HandlerMethod;
 
 import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ONE;
-import static org.springdoc.core.ActuatorProvider.getTag;
+import static org.springdoc.core.providers.ActuatorProvider.getTag;
 
 /**
  * The type Actuator operation customizer.

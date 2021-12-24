@@ -27,16 +27,13 @@ import java.util.stream.Collectors;
 
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
-import org.springdoc.core.RepositoryRestResourceProvider;
-import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
-import org.springdoc.webmvc.core.RouterFunctionProvider;
+import org.springdoc.core.SpringDocProviders;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
@@ -75,9 +72,9 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	private final OperationService operationParser;
 
 	/**
-	 * The Actuator provider.
+	 * The Spring doc providers.
 	 */
-	private final Optional<ActuatorProvider> actuatorProvider;
+	private final SpringDocProviders springDocProviders;
 
 	/**
 	 * The Spring doc config properties.
@@ -85,24 +82,9 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
-	 * The Spring security o auth 2 provider.
-	 */
-	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
-
-	/**
 	 * The Grouped open api resources.
 	 */
 	private Map<String, OpenApiResource> groupedOpenApiResources;
-
-	/**
-	 * The Router function provider.
-	 */
-	private final Optional<RouterFunctionProvider> routerFunctionProvider;
-
-	/**
-	 * The Repository rest resource provider.
-	 */
-	private final Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider;
 
 	/**
 	 * Instantiates a new Multiple open api resource.
@@ -112,30 +94,20 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param actuatorProvider the actuator provider
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
-	 * @param routerFunctionProvider the router function provider
-	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 */
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			Optional<ActuatorProvider> actuatorProvider,
-			SpringDocConfigProperties springDocConfigProperties, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RouterFunctionProvider> routerFunctionProvider,
-			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
+			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
 
 		this.groupedOpenApis = groupedOpenApis;
 		this.defaultOpenAPIBuilder = defaultOpenAPIBuilder;
 		this.requestBuilder = requestBuilder;
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
-		this.actuatorProvider = actuatorProvider;
 		this.springDocConfigProperties = springDocConfigProperties;
-		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
-		this.routerFunctionProvider = routerFunctionProvider;
-		this.repositoryRestResourceProvider = repositoryRestResourceProvider;
+		this.springDocProviders = springDocProviders;
 	}
 
 	@Override
@@ -163,13 +135,10 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					requestBuilder,
 					responseBuilder,
 					operationParser,
-					actuatorProvider,
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
-					springDocConfigProperties,
-					springSecurityOAuth2Provider,
-					routerFunctionProvider,
-					repositoryRestResourceProvider
+					springDocConfigProperties,springDocProviders
+
 			);
 		else
 			return new OpenApiActuatorResource(item.getGroup(),
@@ -177,13 +146,9 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					requestBuilder,
 					responseBuilder,
 					operationParser,
-					actuatorProvider,
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
-					springDocConfigProperties,
-					springSecurityOAuth2Provider,
-					routerFunctionProvider,
-					repositoryRestResourceProvider
+					springDocConfigProperties,springDocProviders
 			);
 	}
 

@@ -18,7 +18,7 @@
  *
  */
 
-package org.springdoc.core;
+package org.springdoc.core.providers;
 
 import java.util.Map;
 import java.util.Optional;
@@ -26,6 +26,8 @@ import java.util.Optional;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.tags.Tag;
 import org.springdoc.api.AbstractOpenApiResource;
+import org.springdoc.core.Constants;
+import org.springdoc.core.SpringDocConfigProperties;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;

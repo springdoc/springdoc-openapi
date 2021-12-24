@@ -79,6 +79,7 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<spring-native.version>0.11.0</spring-native.version>
 		<therapi-runtime-javadoc.version>0.12.0</therapi-runtime-javadoc.version>
+		<spring-cloud.version>2021.0.0</spring-cloud.version>
 	</properties>
 
 	<dependencyManagement>
@@ -210,6 +211,13 @@
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-javadoc</artifactId>
 				<version>${version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

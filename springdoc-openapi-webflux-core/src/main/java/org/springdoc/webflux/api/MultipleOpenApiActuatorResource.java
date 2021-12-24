@@ -22,17 +22,16 @@ package org.springdoc.webflux.api;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocProviders;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.ObjectFactory;
@@ -64,10 +63,10 @@ public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param actuatorProvider the actuator provider
+	 * @param springDocProviders the spring doc providers
 	 */
-	public MultipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis, ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
-		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, actuatorProvider);
+	public MultipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis, ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
+		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders);
 	}
 
 	/**

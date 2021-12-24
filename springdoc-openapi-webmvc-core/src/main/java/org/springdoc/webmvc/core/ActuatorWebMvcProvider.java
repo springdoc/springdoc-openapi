@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.providers.ActuatorProvider;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
@@ -44,10 +44,26 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
  */
 public class ActuatorWebMvcProvider extends ActuatorProvider {
 
+	/**
+	 * The Web mvc endpoint handler mapping.
+	 */
 	private WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping;
 
+	/**
+	 * The Controller endpoint handler mapping.
+	 */
 	private ControllerEndpointHandlerMapping controllerEndpointHandlerMapping;
 
+	/**
+	 * Instantiates a new Actuator web mvc provider.
+	 *
+	 * @param serverProperties the server properties
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param managementServerProperties the management server properties
+	 * @param webEndpointProperties the web endpoint properties
+	 * @param webMvcEndpointHandlerMapping the web mvc endpoint handler mapping
+	 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
+	 */
 	public ActuatorWebMvcProvider(ServerProperties serverProperties,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ManagementServerProperties> managementServerProperties,

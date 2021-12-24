@@ -23,12 +23,12 @@ package org.springdoc.webmvc.ui;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
+import org.springdoc.core.providers.ActuatorProvider;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;

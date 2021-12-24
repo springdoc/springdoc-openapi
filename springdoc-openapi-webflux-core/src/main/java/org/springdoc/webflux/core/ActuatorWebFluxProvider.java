@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.providers.ActuatorProvider;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;

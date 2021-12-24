@@ -42,11 +42,11 @@ import org.mockito.Mock;
 import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.fn.RouterOperation;
@@ -71,9 +71,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 class AbstractOpenApiResourceTest {
 
 	private static final String GROUP_NAME = "groupName";
+
 	private static final String PATH = "/some/path";
+
 	public static final String PARAMETER_REFERENCE = "#/components/parameters/MyParameter";
+
 	public static final String PARAMETER_WITH_NUMBER_SCHEMA_NAME = "parameterWithNumberSchema";
+
 	public static final String PARAMETER_WITHOUT_SCHEMA_NAME = "parameterWithoutSchema";
 
 	@Mock
@@ -90,6 +94,9 @@ class AbstractOpenApiResourceTest {
 
 	@Mock
 	private OperationService operationParser;
+
+	@Mock
+	private SpringDocProviders springDocProviders;
 
 	@Mock
 	private ApplicationContext context;
@@ -121,7 +128,7 @@ class AbstractOpenApiResourceTest {
 				Optional.empty(),
 				Optional.empty(),
 				new SpringDocConfigProperties(),
-				Optional.empty()
+				springDocProviders
 		);
 
 		final Parameter refParameter = new Parameter().$ref(PARAMETER_REFERENCE);
@@ -142,7 +149,7 @@ class AbstractOpenApiResourceTest {
 		));
 
 		final RouterOperation routerOperation = new RouterOperation();
-		routerOperation.setMethods(new RequestMethod[]{ GET });
+		routerOperation.setMethods(new RequestMethod[] { GET });
 		routerOperation.setOperationModel(operation);
 		routerOperation.setPath(PATH);
 
@@ -190,8 +197,7 @@ class AbstractOpenApiResourceTest {
 				operationParser,
 				Optional.empty(),
 				Optional.of(singletonList(openApiCustomiser)),
-				properties,
-				Optional.empty()
+				properties, springDocProviders
 		);
 
 		// wait for executor to be done
@@ -209,8 +215,8 @@ class AbstractOpenApiResourceTest {
 
 	private static class EmptyPathsOpenApiResource extends AbstractOpenApiResource {
 
-		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
-			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
+		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
+			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, springDocProviders);
 		}
 
 		@Override

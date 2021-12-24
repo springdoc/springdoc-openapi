@@ -38,17 +38,16 @@ import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
-import org.springdoc.core.RepositoryRestResourceProvider;
-import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.fn.RouterOperation;
-import org.springdoc.webmvc.core.RouterFunctionProvider;
+import org.springdoc.core.providers.RepositoryRestResourceProvider;
+import org.springdoc.core.providers.SecurityOAuth2Provider;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.util.CollectionUtils;
@@ -60,29 +59,14 @@ import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import static org.springdoc.core.ActuatorProvider.getTag;
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
+import static org.springdoc.core.providers.ActuatorProvider.getTag;
 
 /**
  * The type Web mvc open api resource.
  * @author bnasslahsen, Azige
  */
 public abstract class OpenApiResource extends AbstractOpenApiResource {
-
-	/**
-	 * The Spring security o auth 2 provider.
-	 */
-	private final Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider;
-
-	/**
-	 * The Router function provider.
-	 */
-	private final Optional<RouterFunctionProvider> routerFunctionProvider;
-
-	/**
-	 * The Repository rest resource provider.
-	 */
-	private final Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider;
 
 	/**
 	 * Instantiates a new Open api resource.
@@ -92,27 +76,17 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param actuatorProvider the actuator provider
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
-	 * @param routerFunctionProvider the router function provider
-	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 */
 	public OpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			Optional<ActuatorProvider> actuatorProvider,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RouterFunctionProvider> routerFunctionProvider,
-			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
-		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
-		this.routerFunctionProvider = routerFunctionProvider;
-		this.repositoryRestResourceProvider = repositoryRestResourceProvider;
+			SpringDocProviders springDocProviders) {
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, springDocProviders);
 	}
 
 	/**
@@ -122,27 +96,16 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param actuatorProvider the actuator provider
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
-	 * @param springDocConfigProperties the spring doc config properties
-	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
-	 * @param routerFunctionProvider the router function provider
-	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 */
 	public OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			Optional<ActuatorProvider> actuatorProvider,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RouterFunctionProvider> routerFunctionProvider,
-			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, actuatorProvider);
-		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
-		this.routerFunctionProvider = routerFunctionProvider;
-		this.repositoryRestResourceProvider = repositoryRestResourceProvider;
+			SpringDocProviders springDocProviders) {
+		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, springDocProviders);
 	}
 
 	/**
@@ -182,11 +145,11 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void getPaths(Map<String, Object> restControllers, Locale locale) {
-		Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping  = openAPIService.getContext().getBeansOfType(RequestMappingHandlerMapping.class);
+		Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping = openAPIService.getContext().getBeansOfType(RequestMappingHandlerMapping.class);
 		for (RequestMappingHandlerMapping requestMappingHandlerMapping : beansOfTypeRequestMappingHandlerMapping.values()) {
 			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-			if (repositoryRestResourceProvider.isPresent()) {
-				RepositoryRestResourceProvider restResourceProvider = this.repositoryRestResourceProvider.get();
+			if (springDocProviders.getRepositoryRestResourceProvider().isPresent()) {
+				RepositoryRestResourceProvider restResourceProvider = springDocProviders.getRepositoryRestResourceProvider().get();
 				List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPIService.getCalculatedOpenAPI(), locale);
 				calculatePath(operationList, locale);
 				restResourceProvider.customize(openAPIService.getCalculatedOpenAPI());
@@ -200,14 +163,14 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			calculatePath(restControllers, map, locale);
 
 			if (isShowActuator()) {
-				map = optionalActuatorProvider.get().getMethods();
+				map = springDocProviders.getActuatorProvider().get().getMethods();
 				this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
 				calculatePath(restControllers, map, locale);
 			}
 		}
 
-		if (this.springSecurityOAuth2Provider.isPresent()) {
-			SecurityOAuth2Provider securityOAuth2Provider = this.springSecurityOAuth2Provider.get();
+		if (springDocProviders.getSpringSecurityOAuth2Provider().isPresent()) {
+			SecurityOAuth2Provider securityOAuth2Provider = springDocProviders.getSpringSecurityOAuth2Provider().get();
 			Map<RequestMappingInfo, HandlerMethod> mapOauth = securityOAuth2Provider.getHandlerMethods();
 			Map<String, Object> requestMappingMapSec = securityOAuth2Provider.getFrameworkEndpoints();
 			Class[] additionalRestClasses = requestMappingMapSec.values().stream().map(Object::getClass).toArray(Class[]::new);
@@ -215,7 +178,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			calculatePath(requestMappingMapSec, mapOauth, locale);
 		}
 
-		routerFunctionProvider.ifPresent(routerFunctions -> routerFunctions.getWebMvcRouterFunctionPaths()
+		springDocProviders.getRouterFunctionProvider().ifPresent(routerFunctions -> routerFunctions.getRouterFunctionPaths()
 				.ifPresent(routerBeans -> routerBeans.forEach((beanName, routerFunctionVisitor) -> getRouterFunctionPaths(beanName, routerFunctionVisitor, locale))));
 
 	}

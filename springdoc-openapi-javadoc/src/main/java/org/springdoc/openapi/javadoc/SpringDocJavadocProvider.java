@@ -32,7 +32,7 @@ import com.github.therapi.runtimejavadoc.FieldJavadoc;
 import com.github.therapi.runtimejavadoc.MethodJavadoc;
 import com.github.therapi.runtimejavadoc.ParamJavadoc;
 import com.github.therapi.runtimejavadoc.RuntimeJavadoc;
-import org.springdoc.core.JavadocProvider;
+import org.springdoc.core.providers.JavadocProvider;
 
 /**
  * The type Spring doc javadoc provider.

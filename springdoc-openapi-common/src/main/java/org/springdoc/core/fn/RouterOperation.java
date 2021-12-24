@@ -171,6 +171,17 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	}
 
 	/**
+	 * Instantiates a new Router operation.
+	 *
+	 * @param routerOperation the router operation
+	 * @param requestMethod the request method
+	 */
+	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperation, RequestMethod requestMethod) {
+		this(routerOperation);
+		this.methods = new RequestMethod[]{requestMethod};
+	}
+
+	/**
 	 * Gets path.
 	 *
 	 * @return the path

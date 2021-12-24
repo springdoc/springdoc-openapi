@@ -20,7 +20,7 @@
 
 package org.springdoc.openapi.javadoc;
 
-import org.springdoc.core.JavadocProvider;
+import org.springdoc.core.providers.JavadocProvider;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

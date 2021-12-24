@@ -48,6 +48,7 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.providers.JavadocProvider;
 
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;

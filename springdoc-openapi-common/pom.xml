@@ -52,6 +52,12 @@
 			<artifactId>spring-data-commons</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!-- For Spring Cloud Function Support -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-function-web</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
