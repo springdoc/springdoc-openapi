@@ -29,7 +29,10 @@ import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = "springdoc.show-actuator=true")
+@TestPropertySource(properties = {
+		"springdoc.show-actuator=true",
+		"management.endpoints.enabled-by-default=true"
+})
 public class SpringDocApp76Test extends AbstractSpringDocTest {
 
 	public SpringDocApp76Test() {

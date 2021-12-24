@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = {
-		"springdoc.show-actuator=true",
+		"springdoc.show-actuator=true", "management.endpoints.enabled-by-default=true",
 		"management.endpoints.web.exposure.include=*"})
 public class SpringDocApp36Test extends AbstractSpringDocTest {
 

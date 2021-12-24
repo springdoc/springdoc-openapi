@@ -24,7 +24,6 @@ import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.function.web.flux.ReactorAutoConfiguration;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
@@ -33,13 +32,13 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties = { "management.endpoints.web.exposure.include:*",
 				"springdoc.show-actuator=true",
-				"management.endpoints.web.exposure.exclude=functions",
+				"management.endpoints.web.exposure.exclude=functions, shutdown",
 				"management.server.port=9097",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 
-	@SpringBootApplication(exclude = { ReactorAutoConfiguration.class })
+	@SpringBootApplication
 	static class SpringDocTestApp {}
 
 
