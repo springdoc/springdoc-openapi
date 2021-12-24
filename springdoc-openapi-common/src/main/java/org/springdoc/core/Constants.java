@@ -141,6 +141,11 @@ public final class Constants {
 	public static final String SPRINGDOC_SHOW_ACTUATOR = "springdoc.show-actuator";
 
 	/**
+	 * The constant SPRINGDOC_SHOW_SPRING_CLOUD_FUNCTIONS.
+	 */
+	public static final String SPRINGDOC_SHOW_SPRING_CLOUD_FUNCTIONS = "springdoc.show-spring-cloud-functions";
+
+	/**
 	 * The constant SPRINGDOC_ACTUATOR_TAG.
 	 */
 	public static final String SPRINGDOC_ACTUATOR_TAG = "Actuator";
