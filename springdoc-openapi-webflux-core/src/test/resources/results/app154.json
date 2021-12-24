@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/lowercase": {
+    "/toto/lowercase": {
       "post": {
         "description": "lowercase function",
         "operationId": "lowercase_POST",
@@ -60,7 +60,7 @@
         }
       }
     },
-    "/lowercase/{lowercase}": {
+    "/toto/lowercase/{lowercase}": {
       "get": {
         "description": "lowercase function",
         "operationId": "lowercase_GET",
@@ -102,7 +102,7 @@
         }
       }
     },
-    "/reverseString": {
+    "/toto/reverseString": {
       "post": {
         "description": "reverseString function",
         "operationId": "reverseString_POST",
@@ -139,7 +139,7 @@
         }
       }
     },
-    "/reverseString/{reverseString}": {
+    "/toto/reverseString/{reverseString}": {
       "get": {
         "description": "reverseString function",
         "operationId": "reverseString_GET",
@@ -172,7 +172,7 @@
         }
       }
     },
-    "/titi": {
+    "/toto/titi": {
       "get": {
         "description": "titi supplier",
         "operationId": "titi_GET",
@@ -190,7 +190,7 @@
         }
       }
     },
-    "/uppercase": {
+    "/toto/uppercase": {
       "post": {
         "description": "uppercase function",
         "operationId": "uppercase_POST",
@@ -227,7 +227,7 @@
         }
       }
     },
-    "/uppercase/{uppercase}": {
+    "/toto/uppercase/{uppercase}": {
       "get": {
         "description": "uppercase function",
         "operationId": "uppercase_GET",
@@ -260,7 +260,7 @@
         }
       }
     },
-    "/words": {
+    "/toto/words": {
       "get": {
         "description": "words supplier",
         "operationId": "words_GET",
