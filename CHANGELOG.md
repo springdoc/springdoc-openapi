@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #1299 - Add support for Spring Cloud Function Web. 
 ### Changed
 - Upgrade to swagger-core 2.1.12
+- Upgrade to spring-boot 2.6.2
 - Upgrade spring-native to 0.11.1
 - bump classgraph version to 4.8.117
 ### Fixed
