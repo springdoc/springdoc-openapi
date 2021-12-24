@@ -46,6 +46,7 @@ import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.fn.RouterOperation;
+import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.RepositoryRestResourceProvider;
 import org.springdoc.core.providers.SecurityOAuth2Provider;
 
@@ -148,8 +149,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping = openAPIService.getContext().getBeansOfType(RequestMappingHandlerMapping.class);
 		for (RequestMappingHandlerMapping requestMappingHandlerMapping : beansOfTypeRequestMappingHandlerMapping.values()) {
 			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-			if (springDocProviders.getRepositoryRestResourceProvider().isPresent()) {
-				RepositoryRestResourceProvider restResourceProvider = springDocProviders.getRepositoryRestResourceProvider().get();
+			Optional<RepositoryRestResourceProvider> repositoryRestResourceProviderOptional = springDocProviders.getRepositoryRestResourceProvider();
+			repositoryRestResourceProviderOptional.ifPresent(restResourceProvider -> {
 				List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPIService.getCalculatedOpenAPI(), locale);
 				calculatePath(operationList, locale);
 				restResourceProvider.customize(openAPIService.getCalculatedOpenAPI());
@@ -158,19 +159,21 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 				Class[] additionalRestClasses = requestMappingMap.values().stream().map(Object::getClass).toArray(Class[]::new);
 				AbstractOpenApiResource.addRestControllers(additionalRestClasses);
 				calculatePath(requestMappingMap, mapDataRest, locale);
-			}
+			});
 
 			calculatePath(restControllers, map, locale);
 
-			if (isShowActuator()) {
-				map = springDocProviders.getActuatorProvider().get().getMethods();
+			Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
+			if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
+				map = actuatorProviderOptional.get().getMethods();
 				this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
 				calculatePath(restControllers, map, locale);
 			}
 		}
 
-		if (springDocProviders.getSpringSecurityOAuth2Provider().isPresent()) {
-			SecurityOAuth2Provider securityOAuth2Provider = springDocProviders.getSpringSecurityOAuth2Provider().get();
+		Optional<SecurityOAuth2Provider> securityOAuth2ProviderOptional =  springDocProviders.getSpringSecurityOAuth2Provider();
+		if (securityOAuth2ProviderOptional.isPresent()) {
+			SecurityOAuth2Provider securityOAuth2Provider = securityOAuth2ProviderOptional.get();
 			Map<RequestMappingInfo, HandlerMethod> mapOauth = securityOAuth2Provider.getHandlerMethods();
 			Map<String, Object> requestMappingMapSec = securityOAuth2Provider.getFrameworkEndpoints();
 			Class[] additionalRestClasses = requestMappingMapSec.values().stream().map(Object::getClass).toArray(Class[]::new);

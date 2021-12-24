@@ -92,6 +92,7 @@ import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 import org.springdoc.core.fn.RouterFunctionData;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.providers.ActuatorProvider;
+import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.JavadocProvider;
 
 import org.springframework.aop.support.AopUtils;
@@ -321,11 +322,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			}
 			getPaths(mappingsMap, finalLocale);
 
-			if (springDocProviders.getSpringCloudFunctionProvider().isPresent()) {
-				List<RouterOperation> routerOperationList = springDocProviders.getSpringCloudFunctionProvider().get().getRouterOperations(openApi);
-				if (!CollectionUtils.isEmpty(routerOperationList))
-					this.calculatePath(routerOperationList, locale);
-			}
+			Optional<CloudFunctionProvider> cloudFunctionProviderOptional = springDocProviders.getSpringCloudFunctionProvider();
+			cloudFunctionProviderOptional.ifPresent(cloudFunctionProvider -> {
+						List<RouterOperation> routerOperationList = cloudFunctionProvider.getRouterOperations(openApi);
+						if (!CollectionUtils.isEmpty(routerOperationList))
+							this.calculatePath(routerOperationList, locale);
+					}
+			);
 
 			if (!CollectionUtils.isEmpty(openApi.getServers()))
 				openAPIService.setServersPresent(true);
@@ -1161,11 +1164,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the actuator uri
 	 */
 	protected URI getActuatorURI(String scheme, String host) {
-		int port;
-		String path;
+		final Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
 		URI uri = null;
-		if (springDocProviders.getActuatorProvider().isPresent()) {
-			ActuatorProvider actuatorProvider = springDocProviders.getActuatorProvider().get();
+		if (actuatorProviderOptional.isPresent()) {
+			ActuatorProvider actuatorProvider = actuatorProviderOptional.get();
+			int port;
+			String path;
 			if (ACTUATOR_DEFAULT_GROUP.equals(this.groupName)) {
 				port = actuatorProvider.getActuatorPort();
 				path = actuatorProvider.getActuatorPath();
@@ -1184,17 +1188,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				LOGGER.error("Unable to parse the URL: scheme {}, host {}, port {}, path {}", scheme, host, port, path);
 			}
 		}
-
 		return uri;
-	}
-
-	/**
-	 * Is show actuator boolean.
-	 *
-	 * @return the boolean
-	 */
-	protected boolean isShowActuator() {
-		return springDocConfigProperties.isShowActuator() && springDocProviders.getActuatorProvider().isPresent();
 	}
 
 	/**
@@ -1205,7 +1199,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the boolean
 	 */
 	protected boolean isActuatorRestController(String operationPath, HandlerMethod handlerMethod) {
-		return isShowActuator() && springDocProviders.getActuatorProvider().get().isRestController(operationPath, handlerMethod);
+		Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
+		boolean isActuatorRestController = false;
+		if (actuatorProviderOptional.isPresent())
+			isActuatorRestController = actuatorProviderOptional.get().isRestController(operationPath, handlerMethod);
+		return springDocConfigProperties.isShowActuator() && isActuatorRestController;
 	}
 
 	/**

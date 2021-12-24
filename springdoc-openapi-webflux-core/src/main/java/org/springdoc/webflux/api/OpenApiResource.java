@@ -43,6 +43,7 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.webflux.core.visitor.RouterFunctionVisitor;
 import reactor.core.publisher.Mono;
 
@@ -107,7 +108,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
 			SpringDocProviders springDocProviders) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties,springDocProviders);
+		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, springDocProviders);
 	}
 
 
@@ -152,12 +153,13 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void getPaths(Map<String, Object> restControllers, Locale locale) {
-		Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping  = openAPIService.getContext().getBeansOfType(RequestMappingHandlerMapping.class);
+		Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping = openAPIService.getContext().getBeansOfType(RequestMappingHandlerMapping.class);
 		for (RequestMappingHandlerMapping requestMappingHandlerMapping : beansOfTypeRequestMappingHandlerMapping.values()) {
 			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
 			calculatePath(restControllers, map, locale);
-			if (isShowActuator()) {
-				map = springDocProviders.getActuatorProvider().get().getMethods();
+			Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
+			if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
+				map = actuatorProviderOptional.get().getMethods();
 				this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
 				calculatePath(restControllers, map, locale);
 			}
@@ -206,7 +208,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	private Comparator<Map.Entry<RequestMappingInfo, HandlerMethod>> byReversedRequestMappingInfos() {
 		return Comparator.<Map.Entry<RequestMappingInfo, HandlerMethod>, String>
-				comparing(a -> a.getKey().toString())
+						comparing(a -> a.getKey().toString())
 				.reversed();
 	}
 
@@ -235,7 +237,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale) {
 		initOpenAPIBuilder(locale);
-		String serverUrl = getServerUrl(serverHttpRequest,apiDocsUrl);
+		String serverUrl = getServerUrl(serverHttpRequest, apiDocsUrl);
 		openAPIService.setServerBaseUrl(serverUrl);
 	}
 

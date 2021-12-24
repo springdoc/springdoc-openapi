@@ -97,7 +97,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	 * @param operationParser the operation parser
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
+	protected MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
