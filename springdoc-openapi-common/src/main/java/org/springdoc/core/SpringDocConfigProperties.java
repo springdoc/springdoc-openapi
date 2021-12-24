@@ -168,9 +168,32 @@ public class SpringDocConfigProperties {
 	private boolean disableI18n;
 
 	/**
+	 * The Show spring cloud functions.
+	 */
+	private boolean showSpringCloudFunctions;
+
+	/**
 	 * The model Converters
 	 */
 	private ModelConverters modelConverters = new ModelConverters();
+
+	/**
+	 * Is show spring cloud functions boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isShowSpringCloudFunctions() {
+		return showSpringCloudFunctions;
+	}
+
+	/**
+	 * Sets show spring cloud functions.
+	 *
+	 * @param showSpringCloudFunctions the show spring cloud functions
+	 */
+	public void setShowSpringCloudFunctions(boolean showSpringCloudFunctions) {
+		this.showSpringCloudFunctions = showSpringCloudFunctions;
+	}
 
 	/**
 	 * Gets model converters.

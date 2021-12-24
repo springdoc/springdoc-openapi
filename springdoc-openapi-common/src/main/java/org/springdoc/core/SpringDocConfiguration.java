@@ -95,6 +95,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_PAGEABLE_CONVERTER_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
+import static org.springdoc.core.Constants.SPRINGDOC_SHOW_SPRING_CLOUD_FUNCTIONS;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
 /**
@@ -494,6 +495,7 @@ public class SpringDocConfiguration {
 	 * The type Spring doc function catalog configuration.
 	 */
 	@ConditionalOnClass(FunctionEndpointInitializer.class)
+	@ConditionalOnProperty(name=SPRINGDOC_SHOW_SPRING_CLOUD_FUNCTIONS, matchIfMissing = true)
 	static class SpringDocFunctionCatalogConfiguration {
 
 		/**
