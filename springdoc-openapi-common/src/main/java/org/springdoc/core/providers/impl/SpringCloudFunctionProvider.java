@@ -252,26 +252,26 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider {
 	 */
 	protected RouterOperation getRouterFunctionPaths(String beanName, RequestMethod requestMethod) {
 		RouterOperations routerOperations = applicationContext.findAnnotationOnBean(beanName, RouterOperations.class);
+		RouterOperation routerOperationResult = null;
 		if (routerOperations == null) {
 			org.springdoc.core.annotations.RouterOperation routerOperation = applicationContext.findAnnotationOnBean(beanName, org.springdoc.core.annotations.RouterOperation.class);
 			if (routerOperation != null)
-				return new RouterOperation(routerOperation);
+				routerOperationResult = new RouterOperation(routerOperation);
 		}
 		else {
 			org.springdoc.core.annotations.RouterOperation[] routerOperationArray = routerOperations.value();
 			if (ArrayUtils.isNotEmpty(routerOperationArray)) {
 				if (routerOperationArray.length == 1)
-					return new RouterOperation(routerOperationArray[0]);
+					routerOperationResult = new RouterOperation(routerOperationArray[0]);
 				else {
-					for (org.springdoc.core.annotations.RouterOperation routerOperation : routerOperationArray) {
-						if (Arrays.stream(routerOperation.method()).anyMatch(requestMethod1 -> requestMethod.equals(requestMethod1))) {
-							return new RouterOperation(routerOperation, requestMethod);
-						}
-					}
+					Optional<org.springdoc.core.annotations.RouterOperation> routerOperationOptional = Arrays.stream(routerOperationArray)
+							.filter(routerOperation -> Arrays.asList(routerOperation.method()).contains(requestMethod)).findAny();
+					if (routerOperationOptional.isPresent())
+						routerOperationResult = new RouterOperation(routerOperationOptional.get(), requestMethod);
 				}
 			}
 		}
-		return null;
+		return routerOperationResult;
 	}
 
 
