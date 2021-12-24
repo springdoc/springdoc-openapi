@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.3] - 2021-12-25
+### Added
+- #1299 - Add support for Spring Cloud Function Web. 
+### Changed
+- Upgrade to swagger-core 2.1.12
+- Upgrade spring-native to 0.11.1
+- bump classgraph version to 4.8.117
+### Fixed
+- ##405 - Enhance springdoc-openapi as BOM for Gradle  
+
 ## [1.6.2] - 2021-12-19
 ### Added
 - #1386, #1385 - Disable validation by default
