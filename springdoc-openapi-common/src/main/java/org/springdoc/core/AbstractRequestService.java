@@ -61,6 +61,7 @@ import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.core.providers.JavadocProvider;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
@@ -249,7 +250,7 @@ public abstract class AbstractRequestService {
 					io.swagger.v3.oas.annotations.Parameter.class);
 
 			final String pName = methodParameter.getParameterName();
-			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder, methodAttributes.getLocale());
+			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder);
 
 			if (parameterDoc == null)
 				parameterDoc = parametersDocMap.get(parameterInfo.getpName());

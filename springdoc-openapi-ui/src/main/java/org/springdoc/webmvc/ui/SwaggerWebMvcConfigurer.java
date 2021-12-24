@@ -22,8 +22,8 @@ package org.springdoc.webmvc.ui;
 
 import java.util.Optional;
 
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.SwaggerUiConfigParameters;
+import org.springdoc.core.providers.ActuatorProvider;
 
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;

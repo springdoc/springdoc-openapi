@@ -33,7 +33,7 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.springdoc.core.JavadocProvider;
+import org.springdoc.core.providers.JavadocProvider;
 
 import org.springframework.util.CollectionUtils;
 

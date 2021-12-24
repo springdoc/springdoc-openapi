@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
+import org.springdoc.core.providers.RouterFunctionProvider;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -43,7 +44,7 @@ import org.springframework.web.servlet.function.ServerRequest;
  * @author bnasslahsen
  */
 //To keep compatiblity with spring-boot 1
-public class RouterFunctionProvider {
+public class RouterFunctionWebMvcProvider implements RouterFunctionProvider {
 
 	/**
 	 * The Application context.
@@ -55,7 +56,7 @@ public class RouterFunctionProvider {
 	 *
 	 * @param applicationContext the application context
 	 */
-	public RouterFunctionProvider(ApplicationContext applicationContext) {
+	public RouterFunctionWebMvcProvider(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
@@ -64,7 +65,7 @@ public class RouterFunctionProvider {
 	 *
 	 * @return the web mvc router function paths
 	 */
-	public Optional<Map<String, AbstractRouterFunctionVisitor>> getWebMvcRouterFunctionPaths() {
+	public Optional<Map<String, AbstractRouterFunctionVisitor>> getRouterFunctionPaths() {
 		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
 		if (CollectionUtils.isEmpty(routerBeans))
 			return Optional.empty();

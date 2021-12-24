@@ -24,20 +24,19 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.PropertyResolverUtils;
-import org.springdoc.core.RepositoryRestResourceProvider;
 import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.ReturnTypeParser;
-import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.webmvc.api.OpenApiActuatorResource;
 import org.springdoc.webmvc.api.OpenApiWebMvcResource;
 
@@ -81,13 +80,10 @@ public class SpringDocWebMvcConfiguration {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param actuatorProvider the actuator provider
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
-	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
-	 * @param routerFunctionProvider the router function provider
-	 * @param repositoryRestResourceProvider the repository rest resource provider
+	 * @param springDocProviders the spring doc providers
 	 * @return the open api resource
 	 */
 	@Bean
@@ -96,17 +92,12 @@ public class SpringDocWebMvcConfiguration {
 	@Lazy(false)
 	OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			Optional<ActuatorProvider> actuatorProvider,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers,
-			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RouterFunctionProvider> routerFunctionProvider,
-			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
+			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocProviders springDocProviders) {
 		return new OpenApiWebMvcResource(openAPIBuilderObjectFactory, requestBuilder,
-				responseBuilder, operationParser, actuatorProvider, operationCustomizers,
-				openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,
-				routerFunctionProvider, repositoryRestResourceProvider);
+				responseBuilder, operationParser, operationCustomizers,
+				openApiCustomisers, springDocConfigProperties, springDocProviders);
 	}
 
 	/**
@@ -158,8 +149,8 @@ public class SpringDocWebMvcConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
-		RouterFunctionProvider routerFunctionProvider(ApplicationContext applicationContext) {
-			return new RouterFunctionProvider(applicationContext);
+		RouterFunctionWebMvcProvider routerFunctionProvider(ApplicationContext applicationContext) {
+			return new RouterFunctionWebMvcProvider(applicationContext);
 		}
 	}
 
@@ -205,13 +196,10 @@ public class SpringDocWebMvcConfiguration {
 		 * @param requestBuilder the request builder
 		 * @param responseBuilder the response builder
 		 * @param operationParser the operation parser
-		 * @param actuatorProvider the actuator provider
 		 * @param springDocConfigProperties the spring doc config properties
 		 * @param operationCustomizers the operation customizers
 		 * @param openApiCustomisers the open api customisers
-		 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
-		 * @param routerFunctionProvider the router function provider
-		 * @param repositoryRestResourceProvider the repository rest resource provider
+		 * @param springDocProviders the spring doc providers
 		 * @return the open api actuator resource
 		 */
 		@Bean
@@ -221,19 +209,14 @@ public class SpringDocWebMvcConfiguration {
 		@Lazy(false)
 		OpenApiActuatorResource openApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 				GenericResponseService responseBuilder, OperationService operationParser,
-				Optional<ActuatorProvider> actuatorProvider,
 				SpringDocConfigProperties springDocConfigProperties,
 				Optional<List<OperationCustomizer>> operationCustomizers,
-				Optional<List<OpenApiCustomiser>> openApiCustomisers,
-				Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-				Optional<RouterFunctionProvider> routerFunctionProvider,
-				Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
+				Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocProviders springDocProviders) {
 			return new OpenApiActuatorResource(openAPIBuilderObjectFactory,
 					requestBuilder, responseBuilder,
 					operationParser,
-					actuatorProvider, operationCustomizers, openApiCustomisers,
-					springDocConfigProperties, springSecurityOAuth2Provider,
-					routerFunctionProvider, repositoryRestResourceProvider);
+					operationCustomizers, openApiCustomisers,
+					springDocConfigProperties, springDocProviders);
 		}
 	}
 }

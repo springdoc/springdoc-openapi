@@ -23,7 +23,7 @@ package org.springdoc.security;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springdoc.core.SecurityOAuth2Provider;
+import org.springdoc.core.providers.SecurityOAuth2Provider;
 
 import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.FrameworkEndpointHandlerMapping;
@@ -48,15 +48,6 @@ public class SpringSecurityOAuth2Provider implements SecurityOAuth2Provider {
 	 */
 	public SpringSecurityOAuth2Provider(FrameworkEndpointHandlerMapping oauth2EndpointHandlerMapping) {
 		this.oauth2EndpointHandlerMapping = oauth2EndpointHandlerMapping;
-	}
-
-	/**
-	 * Gets oauth 2 endpoint handler mapping.
-	 *
-	 * @return the oauth 2 endpoint handler mapping
-	 */
-	public FrameworkEndpointHandlerMapping getOauth2EndpointHandlerMapping() {
-		return oauth2EndpointHandlerMapping;
 	}
 
 	@Override

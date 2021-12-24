@@ -120,7 +120,6 @@ import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
-import org.springdoc.core.WebConversionServiceProvider;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.FileSupportConverter;
 import org.springdoc.core.converters.ModelConverterRegistrar;
@@ -128,6 +127,7 @@ import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
+import org.springdoc.core.providers.WebConversionServiceProvider;
 import org.springdoc.ui.AbstractSwaggerWelcome;
 
 import org.springframework.beans.factory.InitializingBean;

@@ -28,18 +28,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
-import org.springdoc.core.RepositoryRestResourceProvider;
-import org.springdoc.core.SecurityOAuth2Provider;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.webmvc.api.OpenApiWebMvcResource;
-import org.springdoc.webmvc.core.RouterFunctionProvider;
 import test.org.springdoc.api.AbstractSpringDocTest;
 import test.org.springdoc.api.app91.Greeting;
 
@@ -125,23 +122,17 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 		 * @param responseBuilder the response builder 
 		 * @param operationParser the operation parser 
 		 * @param operationCustomizers the operation customizers 
-		 * @param requestMappingHandlerMapping the request mapping handler mapping 
-		 * @param actuatorProvider the actuator provider 
-		 * @param springDocConfigProperties the spring doc config properties 
+		 * @param springDocConfigProperties the spring doc config properties
 		 * @param openApiCustomisers the open api customisers 
-		 * @param springSecurityOAuth2Provider the spring security o auth 2 provider 
-		 * @param routerFunctionProvider the router function provider 
-		 * @param repositoryRestResourceProvider the repository rest resource provider 
 		 * @return the open api web mvc resource
 		 */
 		@Bean(name = "openApiResource")
 		public OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
 				OperationService operationParser,Optional<List<OperationCustomizer>> operationCustomizers,
-				Optional<ActuatorProvider> actuatorProvider, SpringDocConfigProperties springDocConfigProperties,
-				Optional<List<OpenApiCustomiser>> openApiCustomisers, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-				Optional<RouterFunctionProvider> routerFunctionProvider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider) {
+				SpringDocConfigProperties springDocConfigProperties,
+				Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocProviders springDocProviders) {
 			return new OpenApiWebMvcResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
-					actuatorProvider,operationCustomizers, openApiCustomisers, springDocConfigProperties, springSecurityOAuth2Provider,routerFunctionProvider, repositoryRestResourceProvider);
+					operationCustomizers, openApiCustomisers, springDocConfigProperties, springDocProviders);
 		}
 
 		/**

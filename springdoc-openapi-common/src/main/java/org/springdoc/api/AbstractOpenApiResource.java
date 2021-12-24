@@ -76,15 +76,14 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.api.mixins.SortedOpenAPIMixin;
 import org.springdoc.api.mixins.SortedSchemaMixin;
 import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.GenericResponseService;
-import org.springdoc.core.JavadocProvider;
 import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
+import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OpenApiLocaleCustomizer;
@@ -92,6 +91,8 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 import org.springdoc.core.fn.RouterFunctionData;
 import org.springdoc.core.fn.RouterOperation;
+import org.springdoc.core.providers.ActuatorProvider;
+import org.springdoc.core.providers.JavadocProvider;
 
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.ObjectFactory;
@@ -153,11 +154,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
-	 * The Actuator provider.
-	 */
-	protected final Optional<ActuatorProvider> optionalActuatorProvider;
-
-	/**
 	 * The Request builder.
 	 */
 	private final AbstractRequestService requestBuilder;
@@ -202,6 +198,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	private final Map<String, OpenApiLocaleCustomizer> openApiLocaleCustomizers;
 
+	/**
+	 * The Spring doc providers.
+	 */
+	protected final SpringDocProviders springDocProviders;
+
 	static {
 		try {
 			modelAndViewClass = Class.forName("org.springframework.web.servlet.ModelAndView");
@@ -213,7 +214,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	/**
 	 * Instantiates a new Abstract open api resource.
-	 *
 	 * @param groupName the group name
 	 * @param openAPIBuilderObjectFactory the open api builder object factory
 	 * @param requestBuilder the request builder
@@ -222,15 +222,14 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param actuatorProvider the actuator provider
+	 * @param springDocProviders the spring doc providers
 	 */
 	protected AbstractOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
 			AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
-			SpringDocConfigProperties springDocConfigProperties,
-			Optional<ActuatorProvider> actuatorProvider) {
+			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
 		super();
 		this.groupName = Objects.requireNonNull(groupName, "groupName");
 		this.openAPIBuilderObjectFactory = openAPIBuilderObjectFactory;
@@ -239,6 +238,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
 		this.openApiCustomisers = openApiCustomisers;
+		this.springDocProviders = springDocProviders;
 		//add the default customizers
 		Map<String, OpenApiCustomiser> existingOpenApiCustomisers = openAPIService.getContext().getBeansOfType(OpenApiCustomiser.class);
 		if (!CollectionUtils.isEmpty(existingOpenApiCustomisers) && existingOpenApiCustomisers.containsKey(LINKS_SCHEMA_CUSTOMISER))
@@ -246,7 +246,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.springDocConfigProperties = springDocConfigProperties;
 		operationCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
 		this.operationCustomizers = operationCustomizers;
-		this.optionalActuatorProvider = actuatorProvider;
 		if (springDocConfigProperties.isPreLoadingEnabled())
 			Executors.newSingleThreadExecutor().execute(this::getOpenApi);
 		this.openApiLocaleCustomizers = openAPIService.getContext().getBeansOfType(OpenApiLocaleCustomizer.class);
@@ -321,6 +320,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				responseBuilder.buildGenericResponse(openApi.getComponents(), findControllerAdvice, finalLocale);
 			}
 			getPaths(mappingsMap, finalLocale);
+
+			if (springDocProviders.getSpringCloudFunctionProvider().isPresent()) {
+				List<RouterOperation> routerOperationList = springDocProviders.getSpringCloudFunctionProvider().get().getRouterOperations(openApi);
+				if (!CollectionUtils.isEmpty(routerOperationList))
+					this.calculatePath(routerOperationList, locale);
+			}
+
 			if (!CollectionUtils.isEmpty(openApi.getServers()))
 				openAPIService.setServersPresent(true);
 			openAPIService.updateServers(openApi);
@@ -1117,6 +1123,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	/**
 	 * Init open api builder.
+	 * @param locale the locale
 	 */
 	protected void initOpenAPIBuilder(Locale locale) {
 		locale = locale == null ? Locale.getDefault() : locale;
@@ -1157,8 +1164,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		int port;
 		String path;
 		URI uri = null;
-		if (optionalActuatorProvider.isPresent()) {
-			ActuatorProvider actuatorProvider = optionalActuatorProvider.get();
+		if (springDocProviders.getActuatorProvider().isPresent()) {
+			ActuatorProvider actuatorProvider = springDocProviders.getActuatorProvider().get();
 			if (ACTUATOR_DEFAULT_GROUP.equals(this.groupName)) {
 				port = actuatorProvider.getActuatorPort();
 				path = actuatorProvider.getActuatorPath();
@@ -1187,7 +1194,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the boolean
 	 */
 	protected boolean isShowActuator() {
-		return springDocConfigProperties.isShowActuator() && optionalActuatorProvider.isPresent();
+		return springDocConfigProperties.isShowActuator() && springDocProviders.getActuatorProvider().isPresent();
 	}
 
 	/**
@@ -1198,7 +1205,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the boolean
 	 */
 	protected boolean isActuatorRestController(String operationPath, HandlerMethod handlerMethod) {
-		return isShowActuator() && optionalActuatorProvider.get().isRestController(operationPath, handlerMethod);
+		return isShowActuator() && springDocProviders.getActuatorProvider().get().isRestController(operationPath, handlerMethod);
 	}
 
 	/**
@@ -1281,6 +1288,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		HEADERS
 	}
 
+	/**
+	 * Sort output.
+	 *
+	 * @param objectMapper the object mapper
+	 */
 	private void sortOutput(ObjectMapper objectMapper) {
 		objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
 		objectMapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);

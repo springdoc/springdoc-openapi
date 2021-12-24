@@ -21,16 +21,19 @@ package test.org.springdoc.api.app143;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.function.web.mvc.ReactorAutoConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
 /**
  * Test issue 907 fix.
  * Hidden controller showing up in swagger UI when springdoc.show-actuator is enabled
  */
-@TestPropertySource(properties = "springdoc.show-actuator=true")
+@TestPropertySource(properties = {
+		"springdoc.show-actuator=true", "management.endpoints.web.exposure.exclude=functions"
+})
 public class SpringDocApp143Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
+	@SpringBootApplication(exclude = { ReactorAutoConfiguration.class })
 	static class SpringDocTestApp {}
 
 }

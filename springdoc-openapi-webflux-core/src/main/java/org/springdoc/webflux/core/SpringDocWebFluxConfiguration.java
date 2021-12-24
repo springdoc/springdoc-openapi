@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.OpenAPIService;
@@ -33,9 +32,11 @@ import org.springdoc.core.PropertyResolverUtils;
 import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.ReturnTypeParser;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.webflux.api.OpenApiActuatorResource;
 import org.springdoc.webflux.api.OpenApiWebfluxResource;
 import org.springdoc.webflux.core.converters.WebFluxSupportConverter;
@@ -81,7 +82,7 @@ public class SpringDocWebFluxConfiguration {
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param actuatorProvider the actuator provider
+	 * @param springDocProviders the spring doc providers
 	 * @return the open api resource
 	 */
 	@Bean
@@ -93,10 +94,10 @@ public class SpringDocWebFluxConfiguration {
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
 			SpringDocConfigProperties springDocConfigProperties,
-			Optional<ActuatorProvider> actuatorProvider) {
+			SpringDocProviders springDocProviders) {
 		return new OpenApiWebfluxResource(openAPIBuilderObjectFactory, requestBuilder,
 				responseBuilder, operationParser, operationCustomizers,
-				openApiCustomisers, springDocConfigProperties, actuatorProvider);
+				openApiCustomisers, springDocConfigProperties, springDocProviders);
 	}
 
 	/**
@@ -191,7 +192,7 @@ public class SpringDocWebFluxConfiguration {
 		 * @param operationCustomizers the operation customizers
 		 * @param openApiCustomisers the open api customisers
 		 * @param springDocConfigProperties the spring doc config properties
-		 * @param actuatorProvider the actuator provider
+		 * @param springDocProviders the spring doc providers
 		 * @return the open api actuator resource
 		 */
 		@Bean
@@ -204,10 +205,10 @@ public class SpringDocWebFluxConfiguration {
 				Optional<List<OperationCustomizer>> operationCustomizers,
 				Optional<List<OpenApiCustomiser>> openApiCustomisers,
 				SpringDocConfigProperties springDocConfigProperties,
-				Optional<ActuatorProvider> actuatorProvider) {
+				SpringDocProviders springDocProviders) {
 			return new OpenApiActuatorResource(openAPIBuilderObjectFactory, requestBuilder,
 					responseBuilder, operationParser,operationCustomizers,
-					openApiCustomisers, springDocConfigProperties, actuatorProvider);
+					openApiCustomisers, springDocConfigProperties, springDocProviders);
 		}
 	}
 }

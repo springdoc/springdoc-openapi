@@ -1,4 +1,4 @@
-package org.springdoc.core;
+package org.springdoc.core.providers;
 
 import java.util.List;
 import java.util.Locale;

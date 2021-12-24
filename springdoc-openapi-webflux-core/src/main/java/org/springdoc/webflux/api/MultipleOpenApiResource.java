@@ -27,13 +27,13 @@ import java.util.stream.Collectors;
 
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.ActuatorProvider;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
+import org.springdoc.core.SpringDocProviders;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
@@ -82,9 +82,10 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	private Map<String, OpenApiResource> groupedOpenApiResources;
 
 	/**
-	 * The Actuator provider.
+	 * The Spring doc providers.
 	 */
-	private Optional<ActuatorProvider> actuatorProvider;
+	private final SpringDocProviders springDocProviders;
+
 
 	/**
 	 * Instantiates a new Multiple open api resource.
@@ -95,12 +96,11 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param actuatorProvider the actuator provider
 	 */
 	public MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			SpringDocConfigProperties springDocConfigProperties, Optional<ActuatorProvider> actuatorProvider) {
+			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
 
 		this.groupedOpenApis = groupedOpenApis;
 		this.defaultOpenAPIBuilder = defaultOpenAPIBuilder;
@@ -108,7 +108,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
 		this.springDocConfigProperties = springDocConfigProperties;
-		this.actuatorProvider = actuatorProvider;
+		this.springDocProviders = springDocProviders;
 	}
 
 	@Override
@@ -139,7 +139,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 				Optional.of(item.getOperationCustomizers()),
 				Optional.of(item.getOpenApiCustomisers()),
 				springDocConfigProperties,
-				actuatorProvider
+				springDocProviders
 		);
 		else
 			return new OpenApiActuatorResource(item.getGroup(),
@@ -150,7 +150,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
 					springDocConfigProperties,
-					actuatorProvider);
+					springDocProviders);
 	}
 
 	/**

@@ -17,28 +17,24 @@
  *  *
  *
  */
+package org.springdoc.core.providers;
 
-package org.springdoc.core;
+import java.util.List;
 
-import java.util.Map;
+import io.swagger.v3.oas.models.OpenAPI;
+import org.springdoc.core.fn.RouterOperation;
 
 /**
- * The interface Security o auth 2 provider.
+ * The interface Spring cloud function provider.
  * @author bnasslahsen
  */
-public interface SecurityOAuth2Provider {
+public interface CloudFunctionProvider {
 
 	/**
-	 * Gets handler methods.
+	 * Gets router operations.
 	 *
-	 * @return the handler methods
+	 * @param openAPI the open api
+	 * @return the router operations
 	 */
-	Map getHandlerMethods();
-
-	/**
-	 * Gets framework endpoints.
-	 *
-	 * @return the framework endpoints
-	 */
-	Map<String, Object> getFrameworkEndpoints();
+	List<RouterOperation> getRouterOperations(OpenAPI openAPI);
 }
