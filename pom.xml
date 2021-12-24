@@ -160,57 +160,62 @@
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-common</artifactId>
-				<version>${version}</version>
+				<version>1.6.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-webmvc-core</artifactId>
-				<version>${version}</version>
+				<version>1.6.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-webflux-core</artifactId>
-				<version>${version}</version>
+				<version>1.6.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-kotlin</artifactId>
-				<version>${version}</version>
+				<version>1.6.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-hateoas</artifactId>
-				<version>${version}</version>
+				<version>1.6.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-data-rest</artifactId>
-				<version>${version}</version>
+				<version>1.6.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-security</artifactId>
-				<version>${version}</version>
+				<version>1.6.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-groovy</artifactId>
-				<version>${version}</version>
+				<version>1.6.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-ui</artifactId>
-				<version>${version}</version>
+				<version>1.6.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-webflux-ui</artifactId>
-				<version>${version}</version>
+				<version>1.6.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-javadoc</artifactId>
-				<version>${version}</version>
+				<version>1.6.3-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-native</artifactId>
+				<version>1.6.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
