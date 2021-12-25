@@ -18,9 +18,12 @@
 
 package test.org.springdoc.api.app174;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -29,8 +32,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.annotations.RouterOperations;
-import reactor.core.publisher.Flux;
 import test.org.springdoc.api.AbstractSpringDocTest;
+import test.org.springdoc.api.app175.PersonDTO;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.function.context.config.ContextFunctionCatalogAutoConfiguration;
@@ -52,7 +55,7 @@ public class SpringDocApp174Test extends AbstractSpringDocTest {
 
 		@Bean
 		public Function<String, String> uppercase() {
-			return value -> value.toUpperCase();
+			return String::toUpperCase;
 		}
 
 		@Bean
@@ -62,25 +65,25 @@ public class SpringDocApp174Test extends AbstractSpringDocTest {
 				@RouterOperation(method = RequestMethod.POST, operation = @Operation(description = "Say hello POST", operationId = "lowercasePOST", tags = "positions",
 						responses = @ApiResponse(responseCode = "200", description = "new desc", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))))
 		})
-		public Function<Flux<String>, Flux<String>> lowercase() {
-			return flux -> flux.map(value -> value.toLowerCase());
+		public Function<List<String>, List<String>> lowercase() {
+			return list -> list.stream().map(String::toLowerCase).collect(Collectors.toList());
 		}
 
 		@Bean(name = "titi")
 		@RouterOperation(operation = @Operation(description = "Say hello By Id", operationId = "hellome", tags = "persons",
-				responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = PersonDTO.class)))))
-		public Supplier<PersonDTO> helloSupplier() {
-			return () -> new PersonDTO();
+				responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = test.org.springdoc.api.app175.PersonDTO.class)))))
+		public Supplier<test.org.springdoc.api.app175.PersonDTO> helloSupplier() {
+			return test.org.springdoc.api.app175.PersonDTO::new;
 		}
 
 		@Bean
-		public Consumer<PersonDTO> helloConsumer() {
-			return personDTO -> personDTO.getFirstName();
+		public Consumer<test.org.springdoc.api.app175.PersonDTO> helloConsumer() {
+			return PersonDTO::getFirstName;
 		}
 
 		@Bean
-		public Supplier<Flux<String>> words() {
-			return () -> Flux.fromArray(new String[] { "foo", "bar" });
+		public Supplier<List<String>> words() {
+			return () -> Arrays.asList("foo", "bar");
 		}
 
 	}

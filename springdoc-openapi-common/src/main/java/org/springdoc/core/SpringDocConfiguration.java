@@ -105,6 +105,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ConditionalOnWebApplication
 public class SpringDocConfiguration {
 
 	/**
@@ -243,7 +244,6 @@ public class SpringDocConfiguration {
 	 * @return the operation service
 	 */
 	@Bean
-	@ConditionalOnWebApplication
 	@ConditionalOnMissingBean
 	OperationService operationBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			SecurityService securityParser, PropertyResolverUtils propertyResolverUtils, Optional<JavadocProvider> javadocProvider) {
@@ -271,7 +271,6 @@ public class SpringDocConfiguration {
 	 * @return the request body builder
 	 */
 	@Bean
-	@ConditionalOnWebApplication
 	@ConditionalOnMissingBean
 	RequestBodyService requestBodyBuilder(GenericParameterService parameterBuilder) {
 		return new RequestBodyService(parameterBuilder);
@@ -509,7 +508,6 @@ public class SpringDocConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
-		@ConditionalOnWebApplication
 		@Lazy(false)
 		CloudFunctionProvider springCloudFunctionProvider(Optional<FunctionCatalog> functionCatalog,  GenericResponseService genericResponseService, SpringDocConfigProperties springDocConfigProperties, ApplicationContext applicationContext) {
 			return new SpringCloudFunctionProvider(functionCatalog, genericResponseService, springDocConfigProperties, applicationContext);
