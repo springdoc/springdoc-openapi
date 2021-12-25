@@ -49,17 +49,17 @@ public class SpringDocApp154Test extends AbstractSpringDocFunctionTest {
 
 		@Bean
 		public Function<String, String> uppercase() {
-			return value -> value.toUpperCase();
+			return String::toUpperCase;
 		}
 
 		@Bean
 		public Function<Flux<String>, Flux<String>> lowercase() {
-			return flux -> flux.map(value -> value.toLowerCase());
+			return flux -> flux.map(String::toLowerCase);
 		}
 
 		@Bean(name = "titi")
 		public Supplier<PersonDTO> hello() {
-			return () -> new PersonDTO();
+			return PersonDTO::new;
 		}
 
 		@Bean

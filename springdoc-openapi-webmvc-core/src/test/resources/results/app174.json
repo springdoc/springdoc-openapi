@@ -48,12 +48,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/FluxString"
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             },
             "text/plain": {
               "schema": {
-                "$ref": "#/components/schemas/FluxString"
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -96,7 +102,10 @@
             "in": "path",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/FluxString"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -301,7 +310,10 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/FluxString"
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -312,15 +324,6 @@
   },
   "components": {
     "schemas": {
-      "FluxString": {
-        "type": "object",
-        "properties": {
-          "prefetch": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
       "PersonDTO": {
         "type": "object",
         "properties": {
