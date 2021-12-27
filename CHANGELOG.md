@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade spring-native to 0.11.1
 - bump classgraph version to 4.8.117
 ### Fixed
-- #405 - Enhance springdoc-openapi as BOM for Gradle  
+- #1405 - Enhance springdoc-openapi as BOM for Gradle
 
 ## [1.6.2] - 2021-12-19
 ### Added
