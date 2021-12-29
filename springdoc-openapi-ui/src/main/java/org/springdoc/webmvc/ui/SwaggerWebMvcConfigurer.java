@@ -78,7 +78,7 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer { // NOSONAR
 		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
 			uiRootPath.append(actuatorProvider.get().getBasePath());
 
-		registry.addResourceHandler(uiRootPath +SWAGGER_UI_PREFIX +"*/**")
+		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/**")
 				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
 				.resourceChain(false)
 				.addTransformer(swaggerIndexTransformer);
