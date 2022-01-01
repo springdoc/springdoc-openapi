@@ -35,20 +35,17 @@ import org.springdoc.core.OperationService;
 import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.converters.models.DefaultPageable;
-import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.data.rest.core.DataRestOperationService;
 import org.springdoc.data.rest.core.DataRestRequestService;
 import org.springdoc.data.rest.core.DataRestResponseService;
 import org.springdoc.data.rest.core.DataRestRouterOperationService;
 import org.springdoc.data.rest.core.DataRestTagsService;
-import org.springdoc.data.rest.customisers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.data.rest.customisers.QuerydslPredicateOperationCustomizer;
 import org.springdoc.data.rest.utils.SpringDocDataRestUtils;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -81,20 +78,6 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocDataRestConfiguration {
-
-	/**
-	 * Delegating method parameter customizer delegating method parameter customizer.
-	 *
-	 * @param optionalSpringDataWebProperties the optional spring data web properties
-	 * @param optionalRepositoryRestConfiguration the optional repository rest configuration
-	 * @return the delegating method parameter customizer
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Lazy(false)
-	DelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer(Optional<SpringDataWebProperties> optionalSpringDataWebProperties, Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
-		return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebProperties, optionalRepositoryRestConfiguration);
-	}
 
 	/**
 	 * Hal provider data rest hal provider.

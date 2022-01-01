@@ -1,4 +1,4 @@
-package org.springdoc.data.rest.customisers;
+package org.springdoc.core.customizers;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -24,11 +24,10 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.DelegatingMethodParameter;
-import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
+import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
+import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.core.MethodParameter;
-import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.web.PageableDefault;
 
 /**
@@ -41,39 +40,42 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataRestDelegatingMethodParameterCustomizer.class);
 
-	/**
-	 * The Optional spring data web properties.
-	 */
-	private final Optional<SpringDataWebProperties> optionalSpringDataWebProperties;
 
 	/**
-	 * The Optional repository rest configuration.
+	 * The Optional spring data web properties provider.
 	 */
-	private final Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration;
+	private final Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider;
+
+
+	/**
+	 * The Optional repository rest configuration provider.
+	 */
+	private final Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfigurationProvider;
+
 
 	/**
 	 * Instantiates a new Data rest delegating method parameter customizer.
 	 *
-	 * @param optionalSpringDataWebProperties the optional spring data web properties
-	 * @param optionalRepositoryRestConfiguration the optional repository rest configuration
+	 * @param optionalSpringDataWebPropertiesProvider the optional spring data web properties provider
+	 * @param optionalRepositoryRestConfigurationProvider the optional repository rest configuration provider
 	 */
-	public DataRestDelegatingMethodParameterCustomizer(Optional<SpringDataWebProperties> optionalSpringDataWebProperties, Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
-		this.optionalSpringDataWebProperties = optionalSpringDataWebProperties;
-		this.optionalRepositoryRestConfiguration = optionalRepositoryRestConfiguration;
+	public DataRestDelegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfigurationProvider) {
+		this.optionalSpringDataWebPropertiesProvider = optionalSpringDataWebPropertiesProvider;
+		this.optionalRepositoryRestConfigurationProvider = optionalRepositoryRestConfigurationProvider;
 	}
 
 	@Override
 	public void customize(MethodParameter originalParameter, MethodParameter methodParameter) {
 		PageableDefault pageableDefault = originalParameter.getParameterAnnotation(PageableDefault.class);
-		if (pageableDefault != null || (org.springframework.data.domain.Pageable.class.isAssignableFrom(originalParameter.getParameterType()) && (optionalSpringDataWebProperties.isPresent() || optionalRepositoryRestConfiguration.isPresent()))) {
+		if (pageableDefault != null || (org.springframework.data.domain.Pageable.class.isAssignableFrom(originalParameter.getParameterType()) && (isSpringDataWebPropertiesPresent() || isRepositoryRestConfigurationPresent()))) {
 			Field field = FieldUtils.getDeclaredField(DelegatingMethodParameter.class, "additionalParameterAnnotations", true);
 			try {
 				Annotation[] parameterAnnotations = (Annotation[]) field.get(methodParameter);
 				if (ArrayUtils.isNotEmpty(parameterAnnotations))
 					for (int i = 0; i < parameterAnnotations.length; i++) {
-						if (Parameter.class.equals(parameterAnnotations[i].annotationType())){
-							Optional<Annotation> annotationForField	 = getNewParameterAnnotationForField(methodParameter, pageableDefault);
-							if(annotationForField.isPresent())
+						if (Parameter.class.equals(parameterAnnotations[i].annotationType())) {
+							Optional<Annotation> annotationForField = getNewParameterAnnotationForField(methodParameter, pageableDefault);
+							if (annotationForField.isPresent())
 								parameterAnnotations[i] = annotationForField.get();
 						}
 					}
@@ -637,26 +639,26 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		String name = null;
 		switch (parameterName) {
 			case "size":
-				if (optionalRepositoryRestConfiguration.isPresent())
-					name = optionalRepositoryRestConfiguration.get().getLimitParamName();
-				else if (optionalSpringDataWebProperties.isPresent())
-					name = optionalSpringDataWebProperties.get().getPageable().getSizeParameter();
+				if (isRepositoryRestConfigurationPresent())
+					name = optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getLimitParamName();
+				else if (isSpringDataWebPropertiesPresent())
+					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getSizeParameter();
 				else
 					name = originalName;
 				break;
 			case "sort":
-				if (optionalRepositoryRestConfiguration.isPresent())
-					name = optionalRepositoryRestConfiguration.get().getSortParamName();
-				else if (optionalSpringDataWebProperties.isPresent())
-					name = optionalSpringDataWebProperties.get().getSort().getSortParameter();
+				if (isRepositoryRestConfigurationPresent())
+					name = optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getSortParamName();
+				else if (isSpringDataWebPropertiesPresent())
+					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getSort().getSortParameter();
 				else
 					name = originalName;
 				break;
 			case "page":
-				if (optionalRepositoryRestConfiguration.isPresent())
-					name = optionalRepositoryRestConfiguration.get().getPageParamName();
-				else if (optionalSpringDataWebProperties.isPresent())
-					name = optionalSpringDataWebProperties.get().getPageable().getPageParameter();
+				if (isRepositoryRestConfigurationPresent())
+					name = optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getPageParamName();
+				else if (isSpringDataWebPropertiesPresent())
+					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPageParameter();
 				else
 					name = originalName;
 				break;
@@ -684,10 +686,10 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 			case "size":
 				if (pageableDefault != null)
 					defaultValue = String.valueOf(pageableDefault.size());
-				else if (optionalRepositoryRestConfiguration.isPresent())
-					defaultValue = String.valueOf(optionalRepositoryRestConfiguration.get().getDefaultPageSize());
-				else if (optionalSpringDataWebProperties.isPresent())
-					defaultValue = String.valueOf(optionalSpringDataWebProperties.get().getPageable().getDefaultPageSize());
+				else if (isRepositoryRestConfigurationPresent())
+					defaultValue = String.valueOf(optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getDefaultPageSize());
+				else if (isSpringDataWebPropertiesPresent())
+					defaultValue = String.valueOf(optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getDefaultPageSize());
 				else
 					defaultValue = defaultSchemaVal;
 				break;
@@ -730,4 +732,21 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		return defaultValue;
 	}
 
+	/**
+	 * Spring data web properties is present boolean.
+	 *
+	 * @return the boolean
+	 */
+	private boolean isSpringDataWebPropertiesPresent() {
+		return optionalSpringDataWebPropertiesProvider.isPresent() && optionalSpringDataWebPropertiesProvider.get().isSpringDataWebPropertiesPresent();
+	}
+
+	/**
+	 * Repository rest configuration is present boolean.
+	 *
+	 * @return the boolean
+	 */
+	private boolean isRepositoryRestConfigurationPresent() {
+		return optionalRepositoryRestConfigurationProvider.isPresent() && optionalRepositoryRestConfigurationProvider.get().isRepositoryRestConfigurationPresent();
+	}
 }

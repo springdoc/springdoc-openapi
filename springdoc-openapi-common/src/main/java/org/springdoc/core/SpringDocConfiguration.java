@@ -1,7 +1,7 @@
 /*
  *
  *  *
- *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *
  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
  *  *
  *
  */
+
 
 package org.springdoc.core;
 
@@ -46,6 +47,7 @@ import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
+import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
@@ -54,9 +56,11 @@ import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.RepositoryRestResourceProvider;
 import org.springdoc.core.providers.RouterFunctionProvider;
 import org.springdoc.core.providers.SecurityOAuth2Provider;
+import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
 import org.springdoc.core.providers.WebConversionServiceProvider;
 import org.springdoc.core.providers.impl.SpringCloudFunctionProvider;
 
@@ -70,6 +74,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.boot.autoconfigure.web.format.WebConversionService;
 import org.springframework.cloud.function.context.FunctionCatalog;
 import org.springframework.cloud.function.web.function.FunctionEndpointInitializer;
@@ -81,6 +86,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -488,13 +494,65 @@ public class SpringDocConfiguration {
 					.replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class, org.springdoc.core.converters.models.Pageable.class);
 			return new PageableOpenAPIConverter();
 		}
+
+		/**
+		 * Delegating method parameter customizer delegating method parameter customizer.
+		 *
+		 * @param optionalSpringDataWebPropertiesProvider the optional spring data web properties
+		 * @param optionalRepositoryRestConfiguration the optional repository rest configuration
+		 * @return the delegating method parameter customizer
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		DelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
+			return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider, optionalRepositoryRestConfiguration);
+		}
+	}
+
+	/**
+	 * The type Spring doc spring data web properties provider.
+	 */
+	@ConditionalOnClass(SpringDataWebProperties.class)
+	static class SpringDocSpringDataWebPropertiesProvider {
+		/**
+		 * Spring data web properties provider spring data web properties provider.
+		 *
+		 * @param optionalSpringDataWebProperties the optional spring data web properties
+		 * @return the spring data web properties provider
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		SpringDataWebPropertiesProvider springDataWebPropertiesProvider(Optional<SpringDataWebProperties> optionalSpringDataWebProperties) {
+			return new SpringDataWebPropertiesProvider(optionalSpringDataWebProperties);
+		}
+	}
+
+	/**
+	 * The type Spring doc repository rest configuration.
+	 */
+	@ConditionalOnClass(RepositoryRestConfiguration.class)
+	static class SpringDocRepositoryRestConfiguration {
+		/**
+		 * Repository rest configuration provider repository rest configuration provider.
+		 *
+		 * @param optionalRepositoryRestConfiguration the optional repository rest configuration
+		 * @return the repository rest configuration provider
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		RepositoryRestConfigurationProvider repositoryRestConfigurationProvider(Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
+			return new RepositoryRestConfigurationProvider(optionalRepositoryRestConfiguration);
+		}
 	}
 
 	/**
 	 * The type Spring doc function catalog configuration.
 	 */
 	@ConditionalOnClass(FunctionEndpointInitializer.class)
-	@ConditionalOnProperty(name=SPRINGDOC_SHOW_SPRING_CLOUD_FUNCTIONS, matchIfMissing = true)
+	@ConditionalOnProperty(name = SPRINGDOC_SHOW_SPRING_CLOUD_FUNCTIONS, matchIfMissing = true)
 	static class SpringDocFunctionCatalogConfiguration {
 
 		/**
@@ -509,7 +567,7 @@ public class SpringDocConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		CloudFunctionProvider springCloudFunctionProvider(Optional<FunctionCatalog> functionCatalog,  GenericResponseService genericResponseService, SpringDocConfigProperties springDocConfigProperties, ApplicationContext applicationContext) {
+		CloudFunctionProvider springCloudFunctionProvider(Optional<FunctionCatalog> functionCatalog, GenericResponseService genericResponseService, SpringDocConfigProperties springDocConfigProperties, ApplicationContext applicationContext) {
 			return new SpringCloudFunctionProvider(functionCatalog, genericResponseService, springDocConfigProperties, applicationContext);
 		}
 	}
