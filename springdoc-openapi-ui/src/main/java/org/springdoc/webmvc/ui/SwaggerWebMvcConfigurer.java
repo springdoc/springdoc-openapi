@@ -26,7 +26,7 @@ import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.providers.ActuatorProvider;
 
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springdoc.core.Constants.CLASSPATH_RESOURCE_LOCATION;
 import static org.springdoc.core.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
@@ -38,7 +38,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  * @author bnasslahsen
  */
 @SuppressWarnings("deprecation")
-public class SwaggerWebMvcConfigurer extends WebMvcConfigurerAdapter { // NOSONAR
+public class SwaggerWebMvcConfigurer implements WebMvcConfigurer { // NOSONAR
 
 	/**
 	 * The Swagger path.
@@ -78,7 +78,7 @@ public class SwaggerWebMvcConfigurer extends WebMvcConfigurerAdapter { // NOSONA
 		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
 			uiRootPath.append(actuatorProvider.get().getBasePath());
 
-		registry.addResourceHandler(uiRootPath +SWAGGER_UI_PREFIX +"*/**")
+		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/**")
 				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
 				.resourceChain(false)
 				.addTransformer(swaggerIndexTransformer);
