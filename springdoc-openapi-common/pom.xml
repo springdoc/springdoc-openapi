@@ -49,7 +49,7 @@
 		<!-- For Enhanced Pageable Support -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-commons</artifactId>
+			<artifactId>spring-data-rest-core</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<!-- For Spring Cloud Function Support -->

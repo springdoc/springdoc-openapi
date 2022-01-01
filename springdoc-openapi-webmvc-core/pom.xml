@@ -46,7 +46,7 @@
 		<!-- For Enhanced Pageable Support -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-commons</artifactId>
+			<artifactId>spring-data-rest-core</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
