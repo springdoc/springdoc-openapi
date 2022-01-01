@@ -60,6 +60,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.io.Resource;
 import org.springframework.web.context.request.RequestScope;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 /**
  * The type Generic parameter builder.
@@ -91,6 +92,7 @@ public class GenericParameterService {
 	static {
 		FILE_TYPES.add(MultipartFile.class);
 		FILE_TYPES.add(Resource.class);
+		FILE_TYPES.add(MultipartRequest.class);
 	}
 
 	/**
