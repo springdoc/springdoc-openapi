@@ -22,11 +22,8 @@ package org.springdoc.openapi.javadoc;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import com.github.therapi.runtimejavadoc.ClassJavadoc;
 import com.github.therapi.runtimejavadoc.CommentFormatter;
 import com.github.therapi.runtimejavadoc.FieldJavadoc;
 import com.github.therapi.runtimejavadoc.MethodJavadoc;
@@ -53,7 +50,7 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 	 */
 	@Override
 	public String getMethodJavadocDescription(Method method) {
-		MethodJavadoc methodJavadoc = findMethodJavadoc(method);
+		MethodJavadoc methodJavadoc = RuntimeJavadoc.getJavadoc(method);
 		return formatter.format(methodJavadoc.getComment());
 	}
 
@@ -65,7 +62,7 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 	 */
 	@Override
 	public String getMethodJavadocReturn(Method method) {
-		MethodJavadoc methodJavadoc = findMethodJavadoc(method);
+		MethodJavadoc methodJavadoc = RuntimeJavadoc.getJavadoc(method);
 		return formatter.format(methodJavadoc.getReturns());
 	}
 
@@ -78,7 +75,7 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 	 */
 	@Override
 	public String getParamJavadoc(Method method, String name) {
-		MethodJavadoc methodJavadoc = findMethodJavadoc(method);
+		MethodJavadoc methodJavadoc = RuntimeJavadoc.getJavadoc(method);
 		List<ParamJavadoc> paramsDoc = methodJavadoc.getParams();
 		return paramsDoc.stream().filter(paramJavadoc1 -> name.equals(paramJavadoc1.getName())).findAny()
 				.map(paramJavadoc1 -> formatter.format(paramJavadoc1.getComment())).orElse(null);
@@ -94,63 +91,6 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 	public String getFieldJavadoc(Field field) {
 		FieldJavadoc fieldJavadoc = RuntimeJavadoc.getJavadoc(field);
 		return formatter.format(fieldJavadoc.getComment());
-	}
-
-	/**
-	 * Find method javadoc method javadoc.
-	 *
-	 * @param method the method
-	 * @return the method javadoc
-	 */
-	private MethodJavadoc findMethodJavadoc(Method method) {
-		ClassJavadoc classJavadoc = RuntimeJavadoc.getJavadoc(method.getDeclaringClass());
-		List<MethodJavadoc> methodDocs = classJavadoc.getMethods();
-		// filter by method name
-		List<MethodJavadoc> methodDocByMethodName = methodDocs.stream().filter(methodJavadoc -> methodJavadoc.getName().equals(method.getName())).collect(Collectors.toList());
-		if (methodDocByMethodName.size() == 1)
-			return methodDocByMethodName.get(0);
-		// filter by parameters
-		if (methodDocByMethodName.size() > 1) {
-			List<MethodJavadoc> methodDocByParamType = methodDocByMethodName.stream().filter(methodJavadoc -> paramsMatch(method.getParameterTypes(), methodJavadoc.getParamTypes())).collect(Collectors.toList());
-			if (methodDocByParamType.size() == 1)
-				return methodDocByParamType.get(0);
-		}
-		return MethodJavadoc.createEmpty(method);
-	}
-
-	/**
-	 * Params match boolean.
-	 *
-	 * @param paramTypesClass the param types class
-	 * @param paramTypes the param types
-	 * @return the boolean
-	 */
-	private boolean paramsMatch(Class<?>[] paramTypesClass, List<String> paramTypes) {
-		List<String> paramTypesJavadoc = new ArrayList<>();
-		for (int i = 0; i < paramTypes.size(); i++) {
-			if (paramTypes.get(i).contains("::")) {
-				String[] paramTypeArray = paramTypes.get(i).split("::");
-				String paramType = paramTypeArray[paramTypeArray.length - 1].trim().replace(")", "");
-				paramTypesJavadoc.add(paramType);
-			}
-			else
-				paramTypesJavadoc.add(paramTypes.get(i));
-		}
-		return getCanonicalNames(paramTypesClass).equals(paramTypesJavadoc);
-	}
-
-	/**
-	 * Gets canonical names.
-	 *
-	 * @param paramTypes the param types
-	 * @return the canonical names
-	 */
-	private List<String> getCanonicalNames(Class<?>[] paramTypes) {
-		List<String> methodParamsTypes = new ArrayList<>();
-		for (Class<?> aClass : paramTypes) {
-			methodParamsTypes.add(aClass.getCanonicalName());
-		}
-		return methodParamsTypes;
 	}
 
 }
