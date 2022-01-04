@@ -23,7 +23,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import nonapi.io.github.classgraph.utils.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +74,7 @@ public abstract class AbstractSpringDocTest {
 	 */
 	public static String getContent(String fileName) throws Exception {
 		try {
-			Path path = Paths.get(FileUtils.class.getClassLoader().getResource(fileName).toURI());
+			Path path = Paths.get(AbstractSpringDocTest.class.getClassLoader().getResource(fileName).toURI());
 			byte[] fileBytes = Files.readAllBytes(path);
 			return new String(fileBytes, StandardCharsets.UTF_8);
 		}

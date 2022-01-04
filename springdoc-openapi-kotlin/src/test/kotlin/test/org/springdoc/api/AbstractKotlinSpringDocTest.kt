@@ -18,7 +18,6 @@
 
 package test.org.springdoc.api
 
-import nonapi.io.github.classgraph.utils.FileUtils
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.JSONAssert
 import org.springdoc.core.Constants
@@ -57,7 +56,7 @@ abstract class AbstractKotlinSpringDocTest {
 		@Throws(Exception::class)
 		fun getContent(fileName: String): String {
 			try {
-				val path = Paths.get(FileUtils::class.java.classLoader.getResource(fileName)!!.toURI())
+				val path = Paths.get(AbstractKotlinSpringDocTest::class.java.classLoader.getResource(fileName)!!.toURI())
 				val fileBytes = Files.readAllBytes(path)
 				return String(fileBytes, StandardCharsets.UTF_8)
 			} catch (e: Exception) {
