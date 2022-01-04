@@ -71,7 +71,6 @@
 		<swagger-api.version>2.1.12</swagger-api.version>
 		<swagger-ui.version>4.1.3</swagger-ui.version>
 		<spring-security-oauth2.version>2.3.8.RELEASE</spring-security-oauth2.version>
-		<classgraph.version>4.8.138</classgraph.version>
 		<webjars-locator-core.version>0.45</webjars-locator-core.version>
 		<gmavenplus-plugin.version>1.8.1</gmavenplus-plugin.version>
 		<jaxb-impl.version>2.1</jaxb-impl.version>
@@ -100,22 +99,11 @@
 				<groupId>org.webjars</groupId>
 				<artifactId>webjars-locator-core</artifactId>
 				<version>${webjars-locator-core.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>io.github.classgraph</groupId>
-						<artifactId>classgraph</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security.oauth</groupId>
 				<artifactId>spring-security-oauth2</artifactId>
 				<version>${spring-security-oauth2.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.github.classgraph</groupId>
-				<artifactId>classgraph</artifactId>
-				<version>${classgraph.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.xml</groupId>
