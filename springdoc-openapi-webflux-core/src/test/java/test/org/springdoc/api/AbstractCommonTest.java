@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import nonapi.io.github.classgraph.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +29,7 @@ public abstract class AbstractCommonTest {
 
 	protected String getContent(String fileName) {
 		try {
-			Path path = Paths.get(FileUtils.class.getClassLoader().getResource(fileName).toURI());
+			Path path = Paths.get(AbstractCommonTest.class.getClassLoader().getResource(fileName).toURI());
 			byte[] fileBytes = Files.readAllBytes(path);
 			return new String(fileBytes, StandardCharsets.UTF_8);
 		}

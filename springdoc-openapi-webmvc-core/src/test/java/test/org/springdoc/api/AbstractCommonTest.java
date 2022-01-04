@@ -5,8 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import nonapi.io.github.classgraph.utils.FileUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.context.ActiveProfiles;
@@ -26,7 +24,7 @@ public abstract class AbstractCommonTest {
 
 	protected String getContent(String fileName) throws Exception {
 		try {
-			Path path = Paths.get(FileUtils.class.getClassLoader().getResource(fileName).toURI());
+			Path path = Paths.get(AbstractCommonTest.class.getClassLoader().getResource(fileName).toURI());
 			byte[] fileBytes = Files.readAllBytes(path);
 			return new String(fileBytes, StandardCharsets.UTF_8);
 		}
