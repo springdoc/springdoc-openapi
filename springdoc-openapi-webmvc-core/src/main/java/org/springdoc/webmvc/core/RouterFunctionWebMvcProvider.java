@@ -29,7 +29,9 @@ import java.util.function.Function;
 import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 import org.springdoc.core.providers.RouterFunctionProvider;
 
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.Resource;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.servlet.function.HandlerFunction;
@@ -44,21 +46,12 @@ import org.springframework.web.servlet.function.ServerRequest;
  * @author bnasslahsen
  */
 //To keep compatiblity with spring-boot 1
-public class RouterFunctionWebMvcProvider implements RouterFunctionProvider {
+public class RouterFunctionWebMvcProvider implements RouterFunctionProvider, ApplicationContextAware {
 
 	/**
 	 * The Application context.
 	 */
 	private ApplicationContext applicationContext;
-
-	/**
-	 * Instantiates a new Router function provider.
-	 *
-	 * @param applicationContext the application context
-	 */
-	public RouterFunctionWebMvcProvider(ApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
-	}
 
 	/**
 	 * Gets web mvc router function paths.
@@ -118,5 +111,10 @@ public class RouterFunctionWebMvcProvider implements RouterFunctionProvider {
 			commonEndNested();
 		}
 
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 }

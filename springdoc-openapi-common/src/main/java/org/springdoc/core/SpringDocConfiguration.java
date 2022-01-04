@@ -60,9 +60,10 @@ import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.RepositoryRestResourceProvider;
 import org.springdoc.core.providers.RouterFunctionProvider;
 import org.springdoc.core.providers.SecurityOAuth2Provider;
+import org.springdoc.core.providers.SpringCloudFunctionProvider;
 import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
+import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.core.providers.WebConversionServiceProvider;
-import org.springdoc.core.providers.impl.SpringCloudFunctionProvider;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -78,7 +79,6 @@ import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.boot.autoconfigure.web.format.WebConversionService;
 import org.springframework.cloud.function.context.FunctionCatalog;
 import org.springframework.cloud.function.web.function.FunctionEndpointInitializer;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -212,19 +212,19 @@ public class SpringDocConfiguration {
 	 * Open api builder open api builder.
 	 *
 	 * @param openAPI the open api
-	 * @param context the context
 	 * @param securityParser the security parser
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param propertyResolverUtils the property resolver utils
 	 * @param openApiBuilderCustomisers the open api builder customisers
 	 * @return the open api builder
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	OpenAPIService openAPIBuilder(Optional<OpenAPI> openAPI, ApplicationContext context,
+	OpenAPIService openAPIBuilder(Optional<OpenAPI> openAPI,
 			SecurityService securityParser,
-			SpringDocConfigProperties springDocConfigProperties,
+			SpringDocConfigProperties springDocConfigProperties,PropertyResolverUtils propertyResolverUtils,
 			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers) {
-		return new OpenAPIService(openAPI, context, securityParser, springDocConfigProperties, openApiBuilderCustomisers);
+		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomisers);
 	}
 
 	/**
@@ -376,13 +376,15 @@ public class SpringDocConfiguration {
 	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 * @param routerFunctionProvider the router function provider
+	 * @param springWebProvider the spring web provider
 	 * @return the spring doc providers
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SpringDocProviders springDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider) {
-		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider);
+	SpringDocProviders springDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
+			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider, SpringWebProvider springWebProvider) {
+		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider);
 	}
 
 	/**
@@ -561,14 +563,13 @@ public class SpringDocConfiguration {
 		 * @param functionCatalog the function catalog
 		 * @param genericResponseService the generic response service
 		 * @param springDocConfigProperties the spring doc config properties
-		 * @param applicationContext the application context
 		 * @return the spring cloud function provider
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		CloudFunctionProvider springCloudFunctionProvider(Optional<FunctionCatalog> functionCatalog, GenericResponseService genericResponseService, SpringDocConfigProperties springDocConfigProperties, ApplicationContext applicationContext) {
-			return new SpringCloudFunctionProvider(functionCatalog, genericResponseService, springDocConfigProperties, applicationContext);
+		CloudFunctionProvider springCloudFunctionProvider(Optional<FunctionCatalog> functionCatalog, GenericResponseService genericResponseService, SpringDocConfigProperties springDocConfigProperties) {
+			return new SpringCloudFunctionProvider(functionCatalog, genericResponseService, springDocConfigProperties);
 		}
 	}
 }

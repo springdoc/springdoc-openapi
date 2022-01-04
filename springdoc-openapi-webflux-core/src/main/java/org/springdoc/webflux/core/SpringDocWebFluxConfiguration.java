@@ -37,6 +37,7 @@ import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.providers.ActuatorProvider;
+import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.webflux.api.OpenApiActuatorResource;
 import org.springdoc.webflux.api.OpenApiWebfluxResource;
 import org.springdoc.webflux.core.converters.WebFluxSupportConverter;
@@ -145,6 +146,17 @@ public class SpringDocWebFluxConfiguration {
 	@Lazy(false)
 	WebFluxSupportConverter webFluxSupportConverter() {
 		return new WebFluxSupportConverter();
+	}
+
+	/**
+	 * Spring web provider spring web provider.
+	 *
+	 * @return the spring web provider
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	SpringWebProvider springWebProvider(){
+		return new SpringWebFluxProvider();
 	}
 
 	/**

@@ -27,9 +27,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
+import org.springdoc.core.providers.SpringWebProvider;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +37,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import static org.springdoc.core.Constants.MVC_SERVLET_PATH;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
 import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
-import static org.springdoc.webmvc.api.OpenApiWebMvcResource.findPathPrefix;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -60,20 +59,20 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	private String pathPrefix;
 
 	/**
-	 * The Open api service.
+	 * The Spring web provider.
 	 */
-	private final ApplicationContext applicationContext;
+	private final SpringWebProvider springWebProvider;
 
 	/**
 	 * Instantiates a new Swagger welcome web mvc.
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param applicationContext the application context
+	 * @param springWebProvider the spring web provider
 	 */
-	public SwaggerWelcomeWebMvc(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ApplicationContext applicationContext) {
+	public SwaggerWelcomeWebMvc(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, SpringWebProvider springWebProvider) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
-		this.applicationContext = applicationContext;
+		this.springWebProvider = springWebProvider;
 	}
 
 	/**
@@ -124,7 +123,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	@Override
 	protected String buildApiDocUrl() {
 		if (this.pathPrefix == null)
-			this.pathPrefix = findPathPrefix(this.applicationContext, this.springDocConfigProperties);
+			this.pathPrefix = springWebProvider.findPathPrefix(springDocConfigProperties);
 		return buildUrl(contextPath + pathPrefix, springDocConfigProperties.getApiDocs().getPath());
 	}
 

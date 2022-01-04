@@ -63,9 +63,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -86,7 +88,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
  * The type Open api builder.
  * @author bnasslahsen
  */
-public class OpenAPIService {
+public class OpenAPIService implements ApplicationContextAware {
 
 	/**
 	 * The constant LOGGER.
@@ -96,7 +98,7 @@ public class OpenAPIService {
 	/**
 	 * The Context.
 	 */
-	private final ApplicationContext context;
+	private ApplicationContext context;
 
 	/**
 	 * The Security parser.
@@ -153,6 +155,9 @@ public class OpenAPIService {
 	 */
 	private PropertyResolverUtils propertyResolverUtils;
 
+	/**
+	 * The Basic error controller.
+	 */
 	private static Class<?> basicErrorController;
 
 	static {
@@ -176,13 +181,13 @@ public class OpenAPIService {
 	 * Instantiates a new Open api builder.
 	 *
 	 * @param openAPI the open api
-	 * @param context the context
 	 * @param securityParser the security parser
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param propertyResolverUtils the property resolver utils
 	 * @param openApiBuilderCustomisers the open api builder customisers
 	 */
-	OpenAPIService(Optional<OpenAPI> openAPI, ApplicationContext context, SecurityService securityParser,
-			SpringDocConfigProperties springDocConfigProperties,
+	OpenAPIService(Optional<OpenAPI> openAPI, SecurityService securityParser,
+			SpringDocConfigProperties springDocConfigProperties,PropertyResolverUtils propertyResolverUtils,
 			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
@@ -193,8 +198,7 @@ public class OpenAPIService {
 			if (!CollectionUtils.isEmpty(this.openAPI.getServers()))
 				this.isServersPresent = true;
 		}
-		this.context = context;
-		this.propertyResolverUtils = context.getBean(PropertyResolverUtils.class);
+		this.propertyResolverUtils=propertyResolverUtils;
 		this.securityParser = securityParser;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
@@ -261,6 +265,9 @@ public class OpenAPIService {
 		openApiBuilderCustomisers.ifPresent(customisers -> customisers.forEach(customiser -> customiser.customise(this)));
 	}
 
+	/**
+	 * Initialize hidden rest controller.
+	 */
 	private void initializeHiddenRestController() {
 		if (basicErrorController != null)
 			getConfig().addHiddenRestControllers(basicErrorController);
@@ -377,6 +384,13 @@ public class OpenAPIService {
 		}
 	}
 
+	/**
+	 * Add tags.
+	 *
+	 * @param sourceTags the source tags
+	 * @param tags the tags
+	 * @param locale the locale
+	 */
 	private void addTags(List<Tag> sourceTags, Set<io.swagger.v3.oas.models.tags.Tag> tags, Locale locale) {
 		Optional<Set<io.swagger.v3.oas.models.tags.Tag>> optionalTagSet = AnnotationsUtils
 				.getTags(sourceTags.toArray(new Tag[0]), false);
@@ -573,6 +587,7 @@ public class OpenAPIService {
 	 * Calculate security schemes.
 	 *
 	 * @param components the components
+	 * @param locale the locale
 	 */
 	private void calculateSecuritySchemes(Components components, Locale locale) {
 		// Look for SecurityScheme in a spring managed bean
@@ -744,8 +759,8 @@ public class OpenAPIService {
 	/**
 	 * Sets cached open api.
 	 *
-	 * @param locale associated the the cache entry
 	 * @param cachedOpenAPI the cached open api
+	 * @param locale associated the the cache entry
 	 */
 	public void setCachedOpenAPI(OpenAPI cachedOpenAPI, Locale locale) {
 		this.cachedOpenAPI.put(locale.toLanguageTag(), cachedOpenAPI);
@@ -783,5 +798,10 @@ public class OpenAPIService {
 	 */
 	public SecurityService getSecurityParser() {
 		return securityParser;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.context = applicationContext;
 	}
 }

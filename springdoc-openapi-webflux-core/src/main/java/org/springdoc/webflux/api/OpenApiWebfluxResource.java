@@ -20,17 +20,12 @@
 
 package org.springdoc.webflux.api;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
-import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.OpenAPIService;
@@ -39,21 +34,16 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.providers.SpringWebProvider;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.reactive.result.condition.PatternsRequestCondition;
-import org.springframework.web.reactive.result.method.RequestMappingInfo;
-import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.web.util.pattern.PathPattern;
 
 import static org.springdoc.core.Constants.API_DOCS_URL;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
@@ -143,33 +133,9 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	@Override
 	protected String getServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
 		String requestUrl = decode(serverHttpRequest.getURI().toString());
-		final String prefix = findPathPrefix(this.openAPIService.getContext(), this.springDocConfigProperties);
+		SpringWebProvider springWebProvider  = springDocProviders.getSpringWebProvider();
+		String prefix = springWebProvider.findPathPrefix(springDocConfigProperties);
 		return requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length()- prefix.length());
 	}
 
-	/**
-	 * Finds path prefix.
-	 *
-	 * @param applicationContext the application context
-	 * @param springDocConfigProperties the spring doc config properties
-	 * @return the path prefix
-	 */
-	public static String findPathPrefix(ApplicationContext applicationContext, SpringDocConfigProperties springDocConfigProperties) {
-		Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping = applicationContext.getBeansOfType(RequestMappingHandlerMapping.class);
-		for (RequestMappingHandlerMapping requestMappingHandlerMapping : beansOfTypeRequestMappingHandlerMapping.values()) {
-			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-			List<Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
-			for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
-				RequestMappingInfo requestMappingInfo = entry.getKey();
-				PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
-				Set<PathPattern> patterns = patternsRequestCondition.getPatterns();
-				for (PathPattern pathPattern : patterns) {
-					String operationPath = pathPattern.getPatternString();
-					if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
-						return operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
-				}
-			}
-		}
-		return StringUtils.EMPTY;
-	}
 }
