@@ -37,6 +37,7 @@ import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.providers.ActuatorProvider;
+import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.webmvc.api.OpenApiActuatorResource;
 import org.springdoc.webmvc.api.OpenApiWebMvcResource;
 
@@ -53,7 +54,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -120,6 +120,17 @@ public class SpringDocWebMvcConfiguration {
 	}
 
 	/**
+	 * Spring web provider spring web provider.
+	 *
+	 * @return the spring web provider
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	SpringWebProvider springWebProvider(){
+		return new SpringWebMvcProvider();
+	}
+
+	/**
 	 * Response builder generic response builder.
 	 *
 	 * @param operationService the operation builder
@@ -139,18 +150,17 @@ public class SpringDocWebMvcConfiguration {
 	 * @author bnasslahsen
 	 */
 	@ConditionalOnClass(RouterFunction.class)
-	class SpringDocWebMvcRouterConfiguration {
+	static class SpringDocWebMvcRouterConfiguration {
 
 		/**
 		 * Router function provider router function provider.
 		 *
-		 * @param applicationContext the application context
 		 * @return the router function provider
 		 */
 		@Bean
 		@ConditionalOnMissingBean
-		RouterFunctionWebMvcProvider routerFunctionProvider(ApplicationContext applicationContext) {
-			return new RouterFunctionWebMvcProvider(applicationContext);
+		RouterFunctionWebMvcProvider routerFunctionProvider() {
+			return new RouterFunctionWebMvcProvider();
 		}
 	}
 

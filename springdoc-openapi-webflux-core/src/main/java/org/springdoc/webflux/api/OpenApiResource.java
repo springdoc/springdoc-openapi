@@ -44,20 +44,17 @@ import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.providers.ActuatorProvider;
+import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.webflux.core.visitor.RouterFunctionVisitor;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.result.condition.PatternsRequestCondition;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
-import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.web.util.pattern.PathPattern;
 
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springdoc.core.providers.ActuatorProvider.getTag;
@@ -153,16 +150,14 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void getPaths(Map<String, Object> restControllers, Locale locale) {
-		Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping = openAPIService.getContext().getBeansOfType(RequestMappingHandlerMapping.class);
-		for (RequestMappingHandlerMapping requestMappingHandlerMapping : beansOfTypeRequestMappingHandlerMapping.values()) {
-			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
+		SpringWebProvider springWebProvider = springDocProviders.getSpringWebProvider();
+		Map<RequestMappingInfo, HandlerMethod> map = springWebProvider.getHandlerMethods();
+		calculatePath(restControllers, map, locale);
+		Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
+		if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
+			map = actuatorProviderOptional.get().getMethods();
+			this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
 			calculatePath(restControllers, map, locale);
-			Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
-			if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
-				map = actuatorProviderOptional.get().getMethods();
-				this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
-				calculatePath(restControllers, map, locale);
-			}
 		}
 		getWebFluxRouterFunctionPaths(locale);
 	}
@@ -177,13 +172,12 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Locale locale) {
 		List<Map.Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
 		entries.sort(byReversedRequestMappingInfos());
+		SpringWebProvider springWebProvider = springDocProviders.getSpringWebProvider();
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
 			HandlerMethod handlerMethod = entry.getValue();
-			PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
-			Set<PathPattern> patterns = patternsRequestCondition.getPatterns();
-			for (PathPattern pathPattern : patterns) {
-				String operationPath = pathPattern.getPatternString();
+			Set<String> patterns = springWebProvider.getActivePatterns(requestMappingInfo);
+			for (String operationPath : patterns) {
 				Map<String, String> regexMap = new LinkedHashMap<>();
 				operationPath = PathUtils.parsePath(operationPath, regexMap);
 				String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
@@ -217,8 +211,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param locale the locale
 	 */
 	protected void getWebFluxRouterFunctionPaths(Locale locale) {
-		ApplicationContext applicationContext = openAPIService.getContext();
-		Map<String, RouterFunction> routerBeans = Objects.requireNonNull(applicationContext).getBeansOfType(RouterFunction.class);
+		Map<String, RouterFunction> routerBeans = Objects.requireNonNull(openAPIService.getContext()).getBeansOfType(RouterFunction.class);
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
 			RouterFunction routerFunction = entry.getValue();
 			RouterFunctionVisitor routerFunctionVisitor = new RouterFunctionVisitor();

@@ -29,6 +29,8 @@ import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 import org.springdoc.core.providers.ActuatorProvider;
+import org.springdoc.core.providers.SpringWebProvider;
+import org.springdoc.webmvc.core.SpringWebMvcProvider;
 
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
@@ -40,7 +42,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -67,14 +68,25 @@ public class SwaggerConfig {
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param applicationContext the application context
+	 * @param springWebProvider the spring web provider
 	 * @return the swagger welcome web mvc
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
-	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ApplicationContext applicationContext) {
-		return new SwaggerWelcomeWebMvc(swaggerUiConfig, springDocConfigProperties,swaggerUiConfigParameters, applicationContext);
+	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, SpringWebProvider springWebProvider) {
+		return new SwaggerWelcomeWebMvc(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters, springWebProvider);
+	}
+
+	/**
+	 * Spring web provider spring web provider.
+	 *
+	 * @return the spring web provider
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	SpringWebProvider springWebProvider() {
+		return new SpringWebMvcProvider();
 	}
 
 	/**
@@ -86,7 +98,7 @@ public class SwaggerConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
-	SwaggerConfigResource swaggerConfigResource(SwaggerWelcomeCommon swaggerWelcomeCommon){
+	SwaggerConfigResource swaggerConfigResource(SwaggerWelcomeCommon swaggerWelcomeCommon) {
 		return new SwaggerConfigResource(swaggerWelcomeCommon);
 	}
 
@@ -98,7 +110,7 @@ public class SwaggerConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_ROOT_PATH, havingValue = "true")
-	SwaggerUiHome swaggerUiHome(){
+	SwaggerUiHome swaggerUiHome() {
 		return new SwaggerUiHome();
 	}
 
@@ -114,8 +126,8 @@ public class SwaggerConfig {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,  SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapper objectMapper,SwaggerWelcomeCommon swaggerWelcomeCommon) {
-		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties,swaggerUiConfigParameters, objectMapper, swaggerWelcomeCommon);
+	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapper objectMapper, SwaggerWelcomeCommon swaggerWelcomeCommon) {
+		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, objectMapper, swaggerWelcomeCommon);
 	}
 
 	/**

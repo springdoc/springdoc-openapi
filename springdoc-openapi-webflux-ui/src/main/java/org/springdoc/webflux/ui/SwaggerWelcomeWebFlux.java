@@ -24,9 +24,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
+import org.springdoc.core.providers.SpringWebProvider;
 import reactor.core.publisher.Mono;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
@@ -35,8 +35,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
 import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
-import static org.springdoc.webflux.api.OpenApiWebfluxResource.findPathPrefix;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
+
 /**
  * The type Swagger welcome.
  * @author bnasslahsen
@@ -44,10 +44,6 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 @Controller
 public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 
-	/**
-	 * The Open api service.
-	 */
-	private final ApplicationContext applicationContext;
 
 	/**
 	 * The Path prefix.
@@ -55,17 +51,22 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	private String pathPrefix;
 
 	/**
+	 * The Spring web provider.
+	 */
+	private final SpringWebProvider springWebProvider;
+
+	/**
 	 * Instantiates a new Swagger welcome web flux.
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param applicationContext the application context
+	 * @param springWebProvider the spring web provider
 	 */
 	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,
-			SwaggerUiConfigParameters swaggerUiConfigParameters, ApplicationContext applicationContext) {
+			SwaggerUiConfigParameters swaggerUiConfigParameters, SpringWebProvider springWebProvider) {
 		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
-		this.applicationContext = applicationContext;
+		this.springWebProvider = springWebProvider;
 	}
 
 
@@ -115,7 +116,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	@Override
 	protected String buildApiDocUrl() {
 		if (this.pathPrefix == null)
-			this.pathPrefix = findPathPrefix(this.applicationContext, springDocConfigProperties);
+			this.pathPrefix = springWebProvider.findPathPrefix(springDocConfigProperties);
 		return buildUrl(this.contextPath + this.pathPrefix, springDocConfigProperties.getApiDocs().getPath());
 	}
 

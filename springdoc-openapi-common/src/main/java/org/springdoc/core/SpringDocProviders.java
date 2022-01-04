@@ -26,6 +26,7 @@ import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.RepositoryRestResourceProvider;
 import org.springdoc.core.providers.RouterFunctionProvider;
 import org.springdoc.core.providers.SecurityOAuth2Provider;
+import org.springdoc.core.providers.SpringWebProvider;
 
 /**
  * The type Spring doc providers.
@@ -59,20 +60,26 @@ public class SpringDocProviders {
 	private final Optional<RouterFunctionProvider> routerFunctionProvider;
 
 	/**
+	 * The Spring web provider.
+	 */
+	private final SpringWebProvider springWebProvider;
+
+	/**
 	 * Instantiates a new Spring doc providers.
-	 *
 	 * @param actuatorProvider the actuator provider
 	 * @param springCloudFunctionProvider the spring cloud function provider
 	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 * @param routerFunctionProvider the router function provider
+	 * @param springWebProvider the spring web provider
 	 */
-	public SpringDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider) {
+	public SpringDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider, SpringWebProvider springWebProvider) {
 		this.actuatorProvider = actuatorProvider;
 		this.springCloudFunctionProvider = springCloudFunctionProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.repositoryRestResourceProvider = repositoryRestResourceProvider;
 		this.routerFunctionProvider = routerFunctionProvider;
+		this.springWebProvider = springWebProvider;
 	}
 
 	/**
@@ -118,5 +125,14 @@ public class SpringDocProviders {
 	 */
 	public Optional<RouterFunctionProvider> getRouterFunctionProvider() {
 		return routerFunctionProvider;
+	}
+
+	/**
+	 * Gets spring web provider.
+	 *
+	 * @return the spring web provider
+	 */
+	public SpringWebProvider getSpringWebProvider() {
+		return springWebProvider;
 	}
 }

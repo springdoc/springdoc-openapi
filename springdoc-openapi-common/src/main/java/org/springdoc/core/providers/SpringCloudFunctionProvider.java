@@ -1,4 +1,4 @@
-package org.springdoc.core.providers.impl;
+package org.springdoc.core.providers;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -23,13 +23,14 @@ import org.springdoc.core.SpringDocAnnotationsUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.fn.RouterOperation;
-import org.springdoc.core.providers.CloudFunctionProvider;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.function.context.FunctionCatalog;
 import org.springframework.cloud.function.context.catalog.SimpleFunctionRegistry.FunctionInvocationWrapper;
 import org.springframework.cloud.function.context.config.RoutingFunction;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.AntPathMatcher;
@@ -43,7 +44,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * The type Spring cloud function provider.
  * @author bnasslahsen
  */
-public class SpringCloudFunctionProvider implements CloudFunctionProvider {
+public class SpringCloudFunctionProvider implements CloudFunctionProvider, ApplicationContextAware {
 
 	/**
 	 * The Function catalog.
@@ -96,13 +97,11 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider {
 	 * @param functionCatalogOptional the function catalog
 	 * @param genericResponseService the generic response service
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param applicationContext the application context
 	 */
-	public SpringCloudFunctionProvider(Optional<FunctionCatalog> functionCatalogOptional, GenericResponseService genericResponseService, SpringDocConfigProperties springDocConfigProperties, ApplicationContext applicationContext) {
+	public SpringCloudFunctionProvider(Optional<FunctionCatalog> functionCatalogOptional, GenericResponseService genericResponseService, SpringDocConfigProperties springDocConfigProperties) {
 		this.functionCatalogOptional = functionCatalogOptional;
 		this.genericResponseService = genericResponseService;
 		this.springDocConfigProperties = springDocConfigProperties;
-		this.applicationContext = applicationContext;
 	}
 
 	@Override
@@ -296,6 +295,11 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider {
 			routerOperation.setBeanClass(userRouterOperation.getBeanClass());
 		if (userRouterOperation.getOperation() != null)
 			routerOperation.setOperation(userRouterOperation.getOperation());
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 
 }

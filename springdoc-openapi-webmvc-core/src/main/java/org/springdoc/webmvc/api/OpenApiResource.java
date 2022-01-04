@@ -49,16 +49,14 @@ import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.RepositoryRestResourceProvider;
 import org.springdoc.core.providers.SecurityOAuth2Provider;
+import org.springdoc.core.providers.SpringWebProvider;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.condition.PathPatternsRequestCondition;
-import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springdoc.core.providers.ActuatorProvider.getTag;
@@ -146,32 +144,32 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void getPaths(Map<String, Object> restControllers, Locale locale) {
-		Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping = openAPIService.getContext().getBeansOfType(RequestMappingHandlerMapping.class);
-		for (RequestMappingHandlerMapping requestMappingHandlerMapping : beansOfTypeRequestMappingHandlerMapping.values()) {
-			Map<RequestMappingInfo, HandlerMethod> map = requestMappingHandlerMapping.getHandlerMethods();
-			Optional<RepositoryRestResourceProvider> repositoryRestResourceProviderOptional = springDocProviders.getRepositoryRestResourceProvider();
-			repositoryRestResourceProviderOptional.ifPresent(restResourceProvider -> {
-				List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPIService.getCalculatedOpenAPI(), locale);
-				calculatePath(operationList, locale);
-				restResourceProvider.customize(openAPIService.getCalculatedOpenAPI());
-				Map<RequestMappingInfo, HandlerMethod> mapDataRest = restResourceProvider.getHandlerMethods();
-				Map<String, Object> requestMappingMap = restResourceProvider.getBasePathAwareControllerEndpoints();
-				Class[] additionalRestClasses = requestMappingMap.values().stream().map(Object::getClass).toArray(Class[]::new);
-				AbstractOpenApiResource.addRestControllers(additionalRestClasses);
-				calculatePath(requestMappingMap, mapDataRest, locale);
-			});
+		SpringWebProvider springWebProvider = springDocProviders.getSpringWebProvider();
+		Map<RequestMappingInfo, HandlerMethod> map = springWebProvider.getHandlerMethods();
 
+		Optional<RepositoryRestResourceProvider> repositoryRestResourceProviderOptional = springDocProviders.getRepositoryRestResourceProvider();
+		repositoryRestResourceProviderOptional.ifPresent(restResourceProvider -> {
+			List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPIService.getCalculatedOpenAPI(), locale);
+			calculatePath(operationList, locale);
+			restResourceProvider.customize(openAPIService.getCalculatedOpenAPI());
+			Map<RequestMappingInfo, HandlerMethod> mapDataRest = restResourceProvider.getHandlerMethods();
+			Map<String, Object> requestMappingMap = restResourceProvider.getBasePathAwareControllerEndpoints();
+			Class[] additionalRestClasses = requestMappingMap.values().stream().map(Object::getClass).toArray(Class[]::new);
+			AbstractOpenApiResource.addRestControllers(additionalRestClasses);
+			calculatePath(requestMappingMap, mapDataRest, locale);
+		});
+
+		calculatePath(restControllers, map, locale);
+		Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
+		if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
+			map = actuatorProviderOptional.get().getMethods();
+			this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
 			calculatePath(restControllers, map, locale);
-
-			Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
-			if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
-				map = actuatorProviderOptional.get().getMethods();
-				this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
-				calculatePath(restControllers, map, locale);
-			}
 		}
 
-		Optional<SecurityOAuth2Provider> securityOAuth2ProviderOptional =  springDocProviders.getSpringSecurityOAuth2Provider();
+
+
+		Optional<SecurityOAuth2Provider> securityOAuth2ProviderOptional = springDocProviders.getSpringSecurityOAuth2Provider();
 		if (securityOAuth2ProviderOptional.isPresent()) {
 			SecurityOAuth2Provider securityOAuth2Provider = securityOAuth2ProviderOptional.get();
 			Map<RequestMappingInfo, HandlerMethod> mapOauth = securityOAuth2Provider.getHandlerMethods();
@@ -196,10 +194,11 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Locale locale) {
 		List<Map.Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
 		entries.sort(byReversedRequestMappingInfos());
+		SpringWebProvider springWebProvider = springDocProviders.getSpringWebProvider();
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
 			RequestMappingInfo requestMappingInfo = entry.getKey();
 			HandlerMethod handlerMethod = entry.getValue();
-			Set<String> patterns = getActivePatterns(requestMappingInfo);
+			Set<String> patterns = springWebProvider.getActivePatterns(requestMappingInfo);
 			if (!CollectionUtils.isEmpty(patterns)) {
 				Map<String, String> regexMap = new LinkedHashMap<>();
 				for (String pattern : patterns) {
@@ -220,24 +219,6 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		}
 	}
 
-	/**
-	 * Gets active patterns.
-	 *
-	 * @param requestMappingInfo the request mapping info
-	 * @return the active patterns
-	 */
-	public static Set<String> getActivePatterns(RequestMappingInfo requestMappingInfo) {
-		Set<String> patterns = null;
-		PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
-		if (patternsRequestCondition != null)
-			patterns = patternsRequestCondition.getPatterns();
-		else {
-			PathPatternsRequestCondition pathPatternsRequestCondition = requestMappingInfo.getPathPatternsCondition();
-			if (pathPatternsRequestCondition != null)
-				patterns = pathPatternsRequestCondition.getPatternValues();
-		}
-		return patterns;
-	}
 
 	/**
 	 * By reversed request mapping infos comparator.
