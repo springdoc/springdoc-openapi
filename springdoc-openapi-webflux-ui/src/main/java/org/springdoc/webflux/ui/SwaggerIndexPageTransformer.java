@@ -20,7 +20,6 @@
 
 package org.springdoc.webflux.ui;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
@@ -50,11 +49,10 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param objectMapper the object mapper
 	 * @param swaggerWelcomeCommon the swagger welcome common
 	 */
-	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapper objectMapper, SwaggerWelcomeCommon swaggerWelcomeCommon) {
-		super(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, objectMapper);
+	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerWelcomeCommon swaggerWelcomeCommon) {
+		super(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters);
 		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 
