@@ -22,6 +22,10 @@
 			<groupId>org.webjars</groupId>
 			<artifactId>webjars-locator-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.github.classgraph</groupId>
+			<artifactId>classgraph</artifactId>
+		</dependency>
 		<!-- Actuator dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
