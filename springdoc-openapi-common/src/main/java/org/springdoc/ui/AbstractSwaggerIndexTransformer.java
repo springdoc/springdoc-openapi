@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.core.util.Json;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.Constants;
 import org.springdoc.core.SwaggerUiConfigParameters;
@@ -77,13 +78,12 @@ public class AbstractSwaggerIndexTransformer {
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param objectMapper the object mapper
 	 */
-	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapper objectMapper) {
+	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters) {
 		this.swaggerUiConfig = swaggerUiConfig;
 		this.swaggerUiOAuthProperties = swaggerUiOAuthProperties;
 		this.swaggerUiConfigParameters = swaggerUiConfigParameters;
-		this.objectMapper = objectMapper;
+		this.objectMapper = Json.mapper();
 	}
 
 	/**
