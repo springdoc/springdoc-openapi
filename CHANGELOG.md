@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.4] - 2022-01-06
+### Added
+- Add support out of the box for MultipartRequest
+- #1418 - Support for therapi-runtime-javadoc 0.13.0.
+### Changed
+- #1415 - Moving PageableDefault support to springdoc-openapi-common
+- #1424 - Update classgraph dependency to 4.8.138
+### Fixed
+- #1407 - Fix issue number in 1.6.3 CHANGELOG
+- #1421 - Actuator endpoints have 2 appended to operationId
+- #1425 - Parameter 2 of method indexPageTransformer in org.springdoc.webmvc.ui.SwaggerConfig required a single bean, but 2 were found
+
 ## [1.6.3] - 2021-12-25
 ### Added
 - #1299 - Add support for Spring Cloud Function Web. 
