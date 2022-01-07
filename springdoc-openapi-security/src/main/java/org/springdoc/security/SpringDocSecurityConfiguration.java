@@ -20,6 +20,7 @@
 
 package org.springdoc.security;
 
+import java.lang.reflect.Field;
 import java.util.Optional;
 
 import io.swagger.v3.oas.models.Operation;
@@ -50,6 +51,7 @@ import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_LOGIN_ENDPOINT;
@@ -131,7 +133,16 @@ public class SpringDocSecurityConfiguration {
 						operation.responses(apiResponses);
 						operation.addTagsItem("login-endpoint");
 						PathItem pathItem = new PathItem().post(operation);
-						openAPI.getPaths().addPathItem("/login", pathItem);
+						String loginPath = "/login";
+						try {
+							Field requestMatcherField = usernamePasswordAuthenticationFilter.getClass().getSuperclass().getDeclaredField("requiresAuthenticationRequestMatcher");
+							requestMatcherField.setAccessible(true);
+							AntPathRequestMatcher requestMatcher = (AntPathRequestMatcher) requestMatcherField.get(usernamePasswordAuthenticationFilter);
+							loginPath = requestMatcher.getPattern();
+							requestMatcherField.setAccessible(false);
+						} catch (NoSuchFieldException | IllegalAccessException ignored) {
+						}
+						openAPI.getPaths().addPathItem(loginPath, pathItem);
 					}
 				}
 			};
