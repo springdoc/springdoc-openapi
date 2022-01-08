@@ -89,6 +89,11 @@ public class GroupedOpenApi {
 	private final List<String> consumesToMatch;
 
 	/**
+	 * The method filters to use.
+	 */
+	private final List<MethodFilter> methodFilters;
+
+	/**
 	 * Instantiates a new Grouped open api.
 	 *
 	 * @param builder the builder
@@ -104,6 +109,7 @@ public class GroupedOpenApi {
 		this.pathsToExclude = builder.pathsToExclude;
 		this.openApiCustomisers = Objects.requireNonNull(builder.openApiCustomisers);
 		this.operationCustomizers = Objects.requireNonNull(builder.operationCustomizers);
+		this.methodFilters = Objects.requireNonNull(builder.methodFilters);
 		if (CollectionUtils.isEmpty(this.pathsToMatch)
 				&& CollectionUtils.isEmpty(this.packagesToScan)
 				&& CollectionUtils.isEmpty(this.producesToMatch)
@@ -112,7 +118,8 @@ public class GroupedOpenApi {
 				&& CollectionUtils.isEmpty(this.pathsToExclude)
 				&& CollectionUtils.isEmpty(this.packagesToExclude)
 				&& CollectionUtils.isEmpty(openApiCustomisers)
-				&& CollectionUtils.isEmpty(operationCustomizers))
+				&& CollectionUtils.isEmpty(operationCustomizers)
+				&& CollectionUtils.isEmpty(methodFilters))
 			throw new IllegalStateException("Packages to scan or paths to filter or openApiCustomisers/operationCustomizers can not be all null for the group:" + this.group);
 	}
 
@@ -216,6 +223,15 @@ public class GroupedOpenApi {
 	}
 
 	/**
+	 * Gets method filters.
+	 *
+	 * @return the method filters
+	 */
+	public List<MethodFilter> getMethodFilters() {
+		return methodFilters;
+	}
+
+	/**
 	 * The type Builder.
 	 * @author bnasslahsen
 	 */
@@ -229,6 +245,11 @@ public class GroupedOpenApi {
 		 * The Operation customizers.
 		 */
 		private final List<OperationCustomizer> operationCustomizers = new ArrayList<>();
+
+		/**
+		 * The methods filters to apply.
+		 */
+		private final List<MethodFilter> methodFilters = new ArrayList<>();
 
 		/**
 		 * The Group.
@@ -384,6 +405,17 @@ public class GroupedOpenApi {
 		 */
 		public Builder addOperationCustomizer(OperationCustomizer operationCustomizer) {
 			this.operationCustomizers.add(operationCustomizer);
+			return this;
+		}
+
+		/**
+		 * Add method filter.
+		 *
+		 * @param methodFilter an additional filter to apply to the matched methods
+		 * @return the builder
+		 */
+		public Builder addMethodFilter(MethodFilter methodFilter) {
+			this.methodFilters.add(methodFilter);
 			return this;
 		}
 

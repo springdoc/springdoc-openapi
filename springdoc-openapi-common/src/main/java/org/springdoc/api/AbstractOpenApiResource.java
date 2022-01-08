@@ -650,9 +650,26 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the boolean
 	 */
 	protected boolean isFilterCondition(HandlerMethod handlerMethod, String operationPath, String[] produces, String[] consumes, String[] headers) {
-		return isPackageToScan(handlerMethod.getBeanType().getPackage())
+		return isSuitableTargetMethod(handlerMethod)
+				&& isPackageToScan(handlerMethod.getBeanType().getPackage())
 				&& isFilterCondition(operationPath, produces, consumes, headers);
 	}
+
+	/**
+	 * Is target method suitable for inclusion in current documentation/
+	 *
+	 * @param handlerMethod the method to check
+	 * @return whether the method should be included in the current OpenAPI definition
+	 */
+	protected boolean isSuitableTargetMethod(HandlerMethod handlerMethod) {
+		return springDocConfigProperties.getGroupConfigs().stream()
+			.filter(groupConfig -> this.groupName.equals(groupConfig.getGroup()))
+			.findAny()
+			.map(GroupConfig::getMethodFilters)
+			.map(Collection::stream)
+			.map(stream -> stream.allMatch(m -> m.includeMethodInOpenApi(handlerMethod.getMethod())))
+			.orElse(true);
+    }
 
 	/**
 	 * Is condition to match boolean.
