@@ -293,7 +293,7 @@ public abstract class AbstractRequestService {
 					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 				}
 
-				customiseParameter(parameter, parameterInfo);
+				customiseParameter(parameter, parameterInfo, operationParameters);
 			}
 		}
 
@@ -365,11 +365,17 @@ public abstract class AbstractRequestService {
 	 *
 	 * @param parameter the parameter
 	 * @param parameterInfo the parameter info
-	 * @return the parameter
+	 * @param operationParameters the operation parameters
 	 */
-	protected Parameter customiseParameter(Parameter parameter, ParameterInfo parameterInfo) {
-		parameterCustomizers.ifPresent(customizers -> customizers.forEach(customizer -> customizer.customize(parameter, parameterInfo.getMethodParameter())));
-		return parameter;
+	protected void customiseParameter(Parameter parameter, ParameterInfo parameterInfo, List<Parameter> operationParameters) {
+		if (parameterCustomizers.isPresent()) {
+			List<ParameterCustomizer> parameterCustomizerList = parameterCustomizers.get();
+			int index = operationParameters.indexOf(parameter);
+			for (ParameterCustomizer parameterCustomizer : parameterCustomizerList)
+				parameter = parameterCustomizer.customize(parameter, parameterInfo.getMethodParameter());
+			if (index != -1)
+				operationParameters.set(index, parameter);
+		}
 	}
 
 	/**
