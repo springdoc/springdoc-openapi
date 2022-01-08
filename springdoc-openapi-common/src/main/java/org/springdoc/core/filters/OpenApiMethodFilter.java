@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
  * @author michael.clarke
  */
 @FunctionalInterface
-public interface MethodFilter {
+public interface OpenApiMethodFilter {
 
 	/**
 	 * Whether the given method should be included in the generated OpenApi definitions. Only methods from classes
@@ -39,5 +39,6 @@ public interface MethodFilter {
 	 * @param method the method to perform checks against
 	 * @return whether this method should be used for further processing
 	 */
-	boolean includeMethodInOpenApi(Method method);
+	boolean isMethodToInclude(Method method);
+
 }
