@@ -33,6 +33,8 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -66,6 +68,8 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocSecurityConfiguration {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(SpringDocSecurityConfiguration.class);
 
 	static {
 		getConfig().addRequestWrapperToIgnore(Authentication.class)
@@ -142,6 +146,8 @@ public class SpringDocSecurityConfiguration {
 							requestMatcherField.setAccessible(false);
 							openAPI.getPaths().addPathItem(loginPath, pathItem);
 						} catch (NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
+							// Exception escaped
+							LOGGER.trace(ignored.getMessage());
 						}
 					}
 				}
