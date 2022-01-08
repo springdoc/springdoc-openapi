@@ -26,6 +26,7 @@ import java.util.Optional;
 import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.GenericResponseService;
+import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.PropertyResolverUtils;
@@ -83,6 +84,7 @@ public class SpringDocWebMvcConfiguration {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
+	 * @param methodFilters the method filters
 	 * @param springDocProviders the spring doc providers
 	 * @return the open api resource
 	 */
@@ -94,10 +96,12 @@ public class SpringDocWebMvcConfiguration {
 			GenericResponseService responseBuilder, OperationService operationParser,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocProviders springDocProviders) {
+			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			Optional<List<OpenApiMethodFilter>> methodFilters,
+			SpringDocProviders springDocProviders) {
 		return new OpenApiWebMvcResource(openAPIBuilderObjectFactory, requestBuilder,
 				responseBuilder, operationParser, operationCustomizers,
-				openApiCustomisers, springDocConfigProperties, springDocProviders);
+				openApiCustomisers, methodFilters, springDocConfigProperties, springDocProviders);
 	}
 
 	/**
@@ -209,6 +213,7 @@ public class SpringDocWebMvcConfiguration {
 		 * @param springDocConfigProperties the spring doc config properties
 		 * @param operationCustomizers the operation customizers
 		 * @param openApiCustomisers the open api customisers
+		 * @param methodFilters the method filters
 		 * @param springDocProviders the spring doc providers
 		 * @return the open api actuator resource
 		 */
@@ -221,11 +226,13 @@ public class SpringDocWebMvcConfiguration {
 				GenericResponseService responseBuilder, OperationService operationParser,
 				SpringDocConfigProperties springDocConfigProperties,
 				Optional<List<OperationCustomizer>> operationCustomizers,
-				Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocProviders springDocProviders) {
+				Optional<List<OpenApiCustomiser>> openApiCustomisers,
+				Optional<List<OpenApiMethodFilter>> methodFilters,
+				SpringDocProviders springDocProviders) {
 			return new OpenApiActuatorResource(openAPIBuilderObjectFactory,
 					requestBuilder, responseBuilder,
 					operationParser,
-					operationCustomizers, openApiCustomisers,
+					operationCustomizers, openApiCustomisers,methodFilters,
 					springDocConfigProperties, springDocProviders);
 		}
 	}

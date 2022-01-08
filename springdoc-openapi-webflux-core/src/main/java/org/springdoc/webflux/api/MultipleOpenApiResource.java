@@ -132,15 +132,16 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	private OpenApiResource buildWebFluxOpenApiResource(GroupedOpenApi item) {
 		if (!springDocConfigProperties.isUseManagementPort() && !ACTUATOR_DEFAULT_GROUP.equals(item.getGroup()))
 			return new OpenApiWebfluxResource(item.getGroup(),
-				defaultOpenAPIBuilder,
-				requestBuilder,
-				responseBuilder,
-				operationParser,
-				Optional.of(item.getOperationCustomizers()),
-				Optional.of(item.getOpenApiCustomisers()),
-				springDocConfigProperties,
-				springDocProviders
-		);
+					defaultOpenAPIBuilder,
+					requestBuilder,
+					responseBuilder,
+					operationParser,
+					Optional.of(item.getOperationCustomizers()),
+					Optional.of(item.getOpenApiCustomisers()),
+					Optional.of(item.getOpenApiMethodFilters()),
+					springDocConfigProperties,
+					springDocProviders
+			);
 		else
 			return new OpenApiActuatorResource(item.getGroup(),
 					defaultOpenAPIBuilder,
@@ -149,6 +150,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					operationParser,
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
+					Optional.of(item.getOpenApiMethodFilters()),
 					springDocConfigProperties,
 					springDocProviders);
 	}

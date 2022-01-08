@@ -137,6 +137,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					operationParser,
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
+					Optional.of(item.getOpenApiMethodFilters()),
 					springDocConfigProperties,springDocProviders
 
 			);
@@ -148,6 +149,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					operationParser,
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
+					Optional.of(item.getOpenApiMethodFilters()),
 					springDocConfigProperties,springDocProviders
 			);
 	}
