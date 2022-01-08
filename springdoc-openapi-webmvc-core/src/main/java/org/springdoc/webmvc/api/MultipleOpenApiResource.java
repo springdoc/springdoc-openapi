@@ -115,7 +115,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 		this.groupedOpenApiResources = groupedOpenApis.stream()
 				.collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
 						{
-							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude(), item.getProducesToMatch(), item.getConsumesToMatch(), item.getHeadersToMatch(), item.getMethodFilters());
+							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude(), item.getProducesToMatch(), item.getConsumesToMatch(), item.getHeadersToMatch());
 							springDocConfigProperties.addGroupConfig(groupConfig);
 							return buildWebMvcOpenApiResource(item);
 						}
@@ -137,6 +137,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					operationParser,
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
+					Optional.of(item.getOpenApiMethodFilters()),
 					springDocConfigProperties,springDocProviders
 
 			);
@@ -148,6 +149,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 					operationParser,
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
+					Optional.of(item.getOpenApiMethodFilters()),
 					springDocConfigProperties,springDocProviders
 			);
 	}

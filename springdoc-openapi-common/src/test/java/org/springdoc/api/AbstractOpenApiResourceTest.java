@@ -43,6 +43,7 @@ import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.GenericResponseService;
+import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
@@ -127,6 +128,7 @@ class AbstractOpenApiResourceTest {
 				operationParser,
 				Optional.empty(),
 				Optional.empty(),
+				Optional.empty(),
 				new SpringDocConfigProperties(),
 				springDocProviders
 		);
@@ -197,6 +199,7 @@ class AbstractOpenApiResourceTest {
 				operationParser,
 				Optional.empty(),
 				Optional.of(singletonList(openApiCustomiser)),
+				Optional.empty(),
 				properties, springDocProviders
 		);
 
@@ -215,8 +218,8 @@ class AbstractOpenApiResourceTest {
 
 	private static class EmptyPathsOpenApiResource extends AbstractOpenApiResource {
 
-		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
-			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, springDocProviders);
+		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomiser>> openApiCustomisers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
+			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, methodFilters, springDocConfigProperties, springDocProviders);
 		}
 
 		@Override

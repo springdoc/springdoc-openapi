@@ -39,6 +39,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.GenericResponseService;
+import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
@@ -77,15 +78,18 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param operationParser the operation parser
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
+	 * @param methodFilters the method filters
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springDocProviders the spring doc providers
 	 */
 	public OpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			Optional<List<OpenApiMethodFilter>> methodFilters,
 			SpringDocConfigProperties springDocConfigProperties,
 			SpringDocProviders springDocProviders) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, springDocProviders);
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers,methodFilters, springDocConfigProperties, springDocProviders);
 	}
 
 	/**
@@ -97,14 +101,18 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param operationParser the operation parser
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
+	 * @param methodFilters the method filters
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springDocProviders the spring doc providers
 	 */
 	public OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			Optional<List<OpenApiMethodFilter>> methodFilters,
 			SpringDocConfigProperties springDocConfigProperties,
 			SpringDocProviders springDocProviders) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, springDocConfigProperties, springDocProviders);
+		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, methodFilters, springDocConfigProperties, springDocProviders);
 	}
 
 	/**

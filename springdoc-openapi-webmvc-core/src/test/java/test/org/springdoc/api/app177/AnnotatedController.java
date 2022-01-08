@@ -4,6 +4,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.filters.OpenApiMethodFilter;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,14 +22,21 @@ public class AnnotatedController {
 	}
 
 	@Group1
+	@Group3
 	@PostMapping("/annotated")
 	public String annotatedPost() {
 		return "annotated";
 	}
 
 	@Group2
+	@Group3
 	@PutMapping("/annotated")
 	public String annotatedPut() {
+		return "annotated";
+	}
+
+	@PostMapping("/notAnnotated")
+	public String notAnnotatedPost() {
 		return "annotated";
 	}
 
@@ -35,7 +44,7 @@ public class AnnotatedController {
 	public GroupedOpenApi group1OpenApi() {
 		return GroupedOpenApi.builder()
 			.group("annotatedGroup1")
-			.addMethodFilter(method -> method.isAnnotationPresent(Group1.class))
+			.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group1.class))
 			.build();
 	}
 
@@ -43,7 +52,7 @@ public class AnnotatedController {
 	public GroupedOpenApi group2OpenApi() {
 		return GroupedOpenApi.builder()
 			.group("annotatedGroup2")
-			.addMethodFilter(method -> method.isAnnotationPresent(Group2.class))
+			.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group2.class))
 			.build();
 	}
 
@@ -51,17 +60,21 @@ public class AnnotatedController {
 	public GroupedOpenApi group3OpenApi() {
 		return GroupedOpenApi.builder()
 			.group("annotatedCombinedGroup")
-			.addMethodFilter(method -> method.isAnnotationPresent(Group1.class) || method.isAnnotationPresent(Group2.class))
+			.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group1.class) || method.isAnnotationPresent(Group2.class))
 			.build();
 	}
 
-	@Retention(RetentionPolicy.RUNTIME)
-	@interface Group1 {
-
+	@Bean
+	public OpenApiMethodFilter methodFilter(){
+		return method -> method.isAnnotationPresent(Group3.class);
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface Group2 {
+	@interface Group1 {}
 
-	}
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface Group2 {}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface Group3 {}
 }

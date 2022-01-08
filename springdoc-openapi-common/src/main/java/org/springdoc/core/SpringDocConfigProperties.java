@@ -1082,11 +1082,6 @@ public class SpringDocConfigProperties {
 		private List<String> consumesToMatch;
 
 		/**
-		 * The method filters to use.
-		 */
-		private List<MethodFilter> methodFilters;
-
-		/**
 		 * Instantiates a new Group config.
 		 */
 		public GroupConfig() {
@@ -1103,32 +1098,10 @@ public class SpringDocConfigProperties {
 		 * @param producesToMatch the produces to match
 		 * @param consumesToMatch the consumes to match
 		 * @param headersToMatch the headers to match
-		 * @deprecated Use {@link #GroupConfig(String, List, List, List, List, List, List, List, List)}
 		 */
-		@Deprecated
 		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan,
 				List<String> packagesToExclude, List<String> pathsToExclude,
-				List<String> producesToMatch, List<String> consumesToMatch, List<String> headersToMatch) {
-			this(group, pathsToMatch, packagesToScan, packagesToExclude, pathsToExclude, producesToMatch, consumesToMatch, headersToMatch, new ArrayList<>());
-		}
-
-		/**
-		 * Instantiates a new Group config.
-		 *
-		 * @param group             the group
-		 * @param pathsToMatch      the paths to match
-		 * @param packagesToScan    the packages to scan
-		 * @param packagesToExclude the packages to exclude
-		 * @param pathsToExclude    the paths to exclude
-		 * @param producesToMatch   the produces to match
-		 * @param consumesToMatch   the consumes to match
-		 * @param headersToMatch    the headers to match
-		 * @param methodFilters     the method filters to use
-		 */
-		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan,
-						   List<String> packagesToExclude, List<String> pathsToExclude,
-						   List<String> producesToMatch, List<String> consumesToMatch, List<String> headersToMatch,
-						   List<MethodFilter> methodFilters) {
+				List<String> producesToMatch,List<String> consumesToMatch,List<String> headersToMatch) {
 			this.pathsToMatch = pathsToMatch;
 			this.pathsToExclude = pathsToExclude;
 			this.packagesToExclude = packagesToExclude;
@@ -1137,7 +1110,6 @@ public class SpringDocConfigProperties {
 			this.producesToMatch = producesToMatch;
 			this.consumesToMatch = consumesToMatch;
 			this.headersToMatch = headersToMatch;
-			this.methodFilters = methodFilters;
 		}
 
 		/**
@@ -1282,24 +1254,6 @@ public class SpringDocConfigProperties {
 		 */
 		public void setProducesToMatch(List<String> producesToMatch) {
 			this.producesToMatch = producesToMatch;
-		}
-
-		/**
-		 * Gets the method filters to use.
-		 *
-		 * @return the method filters to use
-		 */
-		public List<MethodFilter> getMethodFilters() {
-			return methodFilters;
-		}
-
-		/**
-		 * Sets the method filters to use.
-		 *
-		 * @param methodFilters the method filters to use
-		 */
-		public void setMethodFilters(List<MethodFilter> methodFilters) {
-			this.methodFilters = methodFilters;
 		}
 	}
 }

@@ -18,7 +18,7 @@
  *
  */
 
-package org.springdoc.core;
+package org.springdoc.core.filters;
 
 import java.lang.reflect.Method;
 

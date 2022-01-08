@@ -12,24 +12,6 @@
   ],
   "paths": {
     "/annotated": {
-      "get": {
-        "tags": [
-          "annotated-controller"
-        ],
-        "operationId": "annotatedGet",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      },
       "put": {
         "tags": [
           "annotated-controller"
