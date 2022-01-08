@@ -23,17 +23,17 @@
 
 package test.org.springdoc.api.app177;
 
+import org.junit.jupiter.api.Test;
+import org.springdoc.core.Constants;
+import test.org.springdoc.api.AbstractSpringDocTest;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import org.junit.jupiter.api.Test;
-import org.springdoc.core.Constants;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import test.org.springdoc.api.AbstractSpringDocTest;
 
 class SpringDocApp177Test extends AbstractSpringDocTest {
 
@@ -61,7 +61,7 @@ class SpringDocApp177Test extends AbstractSpringDocTest {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/annotatedCombinedGroup"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.openapi", is("3.0.1")))
-			.andExpect(content().json(getContent("results/app177.json"), true));
+			.andExpect(content().json(getContent("results/app177-3.json"), true));
 	}
 
 }

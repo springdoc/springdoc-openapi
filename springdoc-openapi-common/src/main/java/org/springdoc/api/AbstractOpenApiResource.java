@@ -79,6 +79,7 @@ import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.MethodAttributes;
+import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
@@ -180,6 +181,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private final Optional<List<OperationCustomizer>> operationCustomizers;
 
 	/**
+	 * The method filters to use.
+	 */
+	private final Optional<List<OpenApiMethodFilter>> methodFilters;
+
+	/**
 	 * The Ant path matcher.
 	 */
 	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
@@ -222,6 +228,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param operationParser the operation parser
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
+	 * @param methodFilters the method filters
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
 	 */
@@ -230,6 +237,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			GenericResponseService responseBuilder, OperationService operationParser,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			Optional<List<OpenApiMethodFilter>> methodFilters,
 			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
 		super();
 		this.groupName = Objects.requireNonNull(groupName, "groupName");
@@ -239,6 +247,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
 		this.openApiCustomisers = openApiCustomisers;
+		this.methodFilters = methodFilters;
 		this.springDocProviders = springDocProviders;
 		//add the default customizers
 		Map<String, OpenApiCustomiser> existingOpenApiCustomisers = openAPIService.getContext().getBeansOfType(OpenApiCustomiser.class);
@@ -650,7 +659,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the boolean
 	 */
 	protected boolean isFilterCondition(HandlerMethod handlerMethod, String operationPath, String[] produces, String[] consumes, String[] headers) {
-		return isSuitableTargetMethod(handlerMethod)
+		return isMethodToFilter(handlerMethod)
 				&& isPackageToScan(handlerMethod.getBeanType().getPackage())
 				&& isFilterCondition(operationPath, produces, consumes, headers);
 	}
@@ -661,15 +670,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param handlerMethod the method to check
 	 * @return whether the method should be included in the current OpenAPI definition
 	 */
-	protected boolean isSuitableTargetMethod(HandlerMethod handlerMethod) {
-		return springDocConfigProperties.getGroupConfigs().stream()
-			.filter(groupConfig -> this.groupName.equals(groupConfig.getGroup()))
-			.findAny()
-			.map(GroupConfig::getMethodFilters)
-			.map(Collection::stream)
-			.map(stream -> stream.allMatch(m -> m.includeMethodInOpenApi(handlerMethod.getMethod())))
-			.orElse(true);
-    }
+	protected boolean isMethodToFilter(HandlerMethod handlerMethod) {
+		return this.methodFilters
+				.map(Collection::stream)
+				.map(stream -> stream.allMatch(m -> m.isMethodToInclude(handlerMethod.getMethod())))
+				.orElse(true);
+	}
 
 	/**
 	 * Is condition to match boolean.

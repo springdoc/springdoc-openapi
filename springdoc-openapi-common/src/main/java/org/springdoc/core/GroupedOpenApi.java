@@ -27,6 +27,7 @@ import java.util.Objects;
 
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.filters.OpenApiMethodFilter;
 
 import org.springframework.util.CollectionUtils;
 
@@ -91,7 +92,7 @@ public class GroupedOpenApi {
 	/**
 	 * The method filters to use.
 	 */
-	private final List<MethodFilter> methodFilters;
+	private final List<OpenApiMethodFilter> openApiMethodFilters;
 
 	/**
 	 * Instantiates a new Grouped open api.
@@ -109,7 +110,7 @@ public class GroupedOpenApi {
 		this.pathsToExclude = builder.pathsToExclude;
 		this.openApiCustomisers = Objects.requireNonNull(builder.openApiCustomisers);
 		this.operationCustomizers = Objects.requireNonNull(builder.operationCustomizers);
-		this.methodFilters = Objects.requireNonNull(builder.methodFilters);
+		this.openApiMethodFilters = Objects.requireNonNull(builder.methodFilters);
 		if (CollectionUtils.isEmpty(this.pathsToMatch)
 				&& CollectionUtils.isEmpty(this.packagesToScan)
 				&& CollectionUtils.isEmpty(this.producesToMatch)
@@ -119,7 +120,7 @@ public class GroupedOpenApi {
 				&& CollectionUtils.isEmpty(this.packagesToExclude)
 				&& CollectionUtils.isEmpty(openApiCustomisers)
 				&& CollectionUtils.isEmpty(operationCustomizers)
-				&& CollectionUtils.isEmpty(methodFilters))
+				&& CollectionUtils.isEmpty(openApiMethodFilters))
 			throw new IllegalStateException("Packages to scan or paths to filter or openApiCustomisers/operationCustomizers can not be all null for the group:" + this.group);
 	}
 
@@ -223,12 +224,12 @@ public class GroupedOpenApi {
 	}
 
 	/**
-	 * Gets method filters.
+	 * Gets open api method filters.
 	 *
-	 * @return the method filters
+	 * @return the open api method filters
 	 */
-	public List<MethodFilter> getMethodFilters() {
-		return methodFilters;
+	public List<OpenApiMethodFilter> getOpenApiMethodFilters() {
+		return openApiMethodFilters;
 	}
 
 	/**
@@ -249,7 +250,7 @@ public class GroupedOpenApi {
 		/**
 		 * The methods filters to apply.
 		 */
-		private final List<MethodFilter> methodFilters = new ArrayList<>();
+		private final List<OpenApiMethodFilter> methodFilters = new ArrayList<>();
 
 		/**
 		 * The Group.
@@ -414,7 +415,7 @@ public class GroupedOpenApi {
 		 * @param methodFilter an additional filter to apply to the matched methods
 		 * @return the builder
 		 */
-		public Builder addMethodFilter(MethodFilter methodFilter) {
+		public Builder addOpenApiMethodFilter(OpenApiMethodFilter methodFilter) {
 			this.methodFilters.add(methodFilter);
 			return this;
 		}
