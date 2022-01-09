@@ -120,21 +120,26 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
 			return null;
 		}
-		if (resolvedSchema.schema != null) {
-			schemaN = resolvedSchema.schema;
+		if (resolvedSchema != null) {
 			Map<String, Schema> schemaMap = resolvedSchema.referencedSchemas;
-			if (schemaMap != null) {
-				for (Map.Entry<String, Schema> entry : schemaMap.entrySet()) {
-					Map<String, Schema> componentSchemas = components.getSchemas();
-					if (componentSchemas == null) {
-						componentSchemas = new LinkedHashMap<>();
-						componentSchemas.put(entry.getKey(), entry.getValue());
-					}
-					else if (!componentSchemas.containsKey(entry.getKey())) {
-						componentSchemas.put(entry.getKey(), entry.getValue());
-					}
-					components.setSchemas(componentSchemas);
+			if (!CollectionUtils.isEmpty(schemaMap) && components != null) {
+				Map<String, Schema> componentSchemas = components.getSchemas();
+				if (componentSchemas == null) {
+					componentSchemas = new LinkedHashMap<>();
+					componentSchemas.putAll(schemaMap);
 				}
+				else
+					for (Map.Entry<String, Schema> entry : schemaMap.entrySet())
+						if (!componentSchemas.containsKey(entry.getKey()))
+							componentSchemas.put(entry.getKey(), entry.getValue());
+				components.setSchemas(componentSchemas);
+			}
+			if (resolvedSchema.schema != null) {
+				schemaN = new Schema();
+				if (StringUtils.isNotBlank(resolvedSchema.schema.getName()))
+					schemaN.set$ref(COMPONENTS_REF + resolvedSchema.schema.getName());
+				else
+					schemaN = resolvedSchema.schema;
 			}
 		}
 		return schemaN;
