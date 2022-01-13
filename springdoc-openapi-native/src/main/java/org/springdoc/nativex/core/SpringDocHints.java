@@ -21,6 +21,7 @@
 package org.springdoc.nativex.core;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Properties;
 
 import io.swagger.v3.core.converter.ModelConverter;
@@ -302,7 +303,7 @@ public class SpringDocHints implements InitializingBean {
 	/**
 	 * The Swagger ui config properties.
 	 */
-	private final SwaggerUiConfigProperties swaggerUiConfigProperties;
+	private final Optional<SwaggerUiConfigProperties> optionalSwaggerUiConfigProperties;
 
 	/**
 	 * The constant SPRINGDOC_CONFIG_PROPERTIES.
@@ -312,29 +313,31 @@ public class SpringDocHints implements InitializingBean {
 	/**
 	 * The constant SPRINGDOC_SWAGGERUI_VERSION.
 	 */
-	private static final String SPRINGDOC_SWAGGERUI_VERSION= "springdoc.swagger-ui.version";
+	private static final String SPRINGDOC_SWAGGERUI_VERSION = "springdoc.swagger-ui.version";
 
 	/**
 	 * Instantiates a new Spring doc hints.
 	 *
-	 * @param swaggerUiConfigProperties the swagger ui config properties
+	 * @param optionalSwaggerUiConfigProperties the swagger ui config properties
 	 */
-	public SpringDocHints(SwaggerUiConfigProperties swaggerUiConfigProperties) {
-		this.swaggerUiConfigProperties = swaggerUiConfigProperties;
+	public SpringDocHints(Optional<SwaggerUiConfigProperties> optionalSwaggerUiConfigProperties) {
+		this.optionalSwaggerUiConfigProperties = optionalSwaggerUiConfigProperties;
 	}
 
 	@Override
 	public void afterPropertiesSet() {
-		if (StringUtils.isEmpty(swaggerUiConfigProperties.getVersion())) {
-			try {
-				Resource resource = new ClassPathResource(AntPathMatcher.DEFAULT_PATH_SEPARATOR + SPRINGDOC_CONFIG_PROPERTIES);
-				Properties props = PropertiesLoaderUtils.loadProperties(resource);
-				swaggerUiConfigProperties.setVersion(props.getProperty(SPRINGDOC_SWAGGERUI_VERSION));
+		optionalSwaggerUiConfigProperties.ifPresent(swaggerUiConfigProperties -> {
+			if (StringUtils.isEmpty(swaggerUiConfigProperties.getVersion())) {
+				try {
+					Resource resource = new ClassPathResource(AntPathMatcher.DEFAULT_PATH_SEPARATOR + SPRINGDOC_CONFIG_PROPERTIES);
+					Properties props = PropertiesLoaderUtils.loadProperties(resource);
+					swaggerUiConfigProperties.setVersion(props.getProperty(SPRINGDOC_SWAGGERUI_VERSION));
+				}
+				catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 			}
-			catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
+		});
 	}
 }
 
