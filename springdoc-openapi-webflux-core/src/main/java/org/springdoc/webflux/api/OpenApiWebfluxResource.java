@@ -26,15 +26,16 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.GenericResponseService;
-import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.providers.SpringWebProvider;
 import reactor.core.publisher.Mono;
 
@@ -138,9 +139,11 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	@Override
 	protected String getServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
 		String requestUrl = decode(serverHttpRequest.getURI().toString());
-		SpringWebProvider springWebProvider  = springDocProviders.getSpringWebProvider();
-		String prefix = springWebProvider.findPathPrefix(springDocConfigProperties);
-		return requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length()- prefix.length());
+		Optional<SpringWebProvider> springWebProviderOptional  = springDocProviders.getSpringWebProvider();
+		String prefix = StringUtils.EMPTY;
+		if(springWebProviderOptional.isPresent())
+			prefix = springWebProviderOptional.get().findPathPrefix(springDocConfigProperties);
+		return 	requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length()- prefix.length());
 	}
 
 }
