@@ -62,7 +62,7 @@ public class SpringDocProviders {
 	/**
 	 * The Spring web provider.
 	 */
-	private final SpringWebProvider springWebProvider;
+	private final Optional<SpringWebProvider> springWebProvider;
 
 	/**
 	 * Instantiates a new Spring doc providers.
@@ -73,7 +73,9 @@ public class SpringDocProviders {
 	 * @param routerFunctionProvider the router function provider
 	 * @param springWebProvider the spring web provider
 	 */
-	public SpringDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider, SpringWebProvider springWebProvider) {
+	public SpringDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider,
+			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider,
+			Optional<RouterFunctionProvider> routerFunctionProvider, Optional<SpringWebProvider> springWebProvider) {
 		this.actuatorProvider = actuatorProvider;
 		this.springCloudFunctionProvider = springCloudFunctionProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
@@ -132,7 +134,7 @@ public class SpringDocProviders {
 	 *
 	 * @return the spring web provider
 	 */
-	public SpringWebProvider getSpringWebProvider() {
+	public Optional<SpringWebProvider> getSpringWebProvider() {
 		return springWebProvider;
 	}
 }

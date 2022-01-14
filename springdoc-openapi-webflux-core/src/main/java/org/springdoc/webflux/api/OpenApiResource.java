@@ -37,13 +37,13 @@ import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.GenericResponseService;
-import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.webflux.core.visitor.RouterFunctionVisitor;
@@ -155,16 +155,18 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	@Override
 	@SuppressWarnings("unchecked")
 	protected void getPaths(Map<String, Object> restControllers, Locale locale) {
-		SpringWebProvider springWebProvider = springDocProviders.getSpringWebProvider();
-		Map<RequestMappingInfo, HandlerMethod> map = springWebProvider.getHandlerMethods();
-		calculatePath(restControllers, map, locale);
-		Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
-		if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
-			map = actuatorProviderOptional.get().getMethods();
-			this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
+		Optional<SpringWebProvider> springWebProviderOptional = springDocProviders.getSpringWebProvider();
+		springWebProviderOptional.ifPresent(springWebProvider -> {
+			Map<RequestMappingInfo, HandlerMethod> map = springWebProvider.getHandlerMethods();
 			calculatePath(restControllers, map, locale);
-		}
-		getWebFluxRouterFunctionPaths(locale);
+			Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
+			if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
+				map = actuatorProviderOptional.get().getMethods();
+				this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
+				calculatePath(restControllers, map, locale);
+			}
+			getWebFluxRouterFunctionPaths(locale);
+		});
 	}
 
 	/**
@@ -177,27 +179,29 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Locale locale) {
 		List<Map.Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
 		entries.sort(byReversedRequestMappingInfos());
-		SpringWebProvider springWebProvider = springDocProviders.getSpringWebProvider();
-		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
-			RequestMappingInfo requestMappingInfo = entry.getKey();
-			HandlerMethod handlerMethod = entry.getValue();
-			Set<String> patterns = springWebProvider.getActivePatterns(requestMappingInfo);
-			for (String operationPath : patterns) {
-				Map<String, String> regexMap = new LinkedHashMap<>();
-				operationPath = PathUtils.parsePath(operationPath, regexMap);
-				String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-				String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-				String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
-				if ((isRestController(restControllers, handlerMethod, operationPath) || isActuatorRestController(operationPath, handlerMethod))
-						&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
-					Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
-					// default allowed requestmethods
-					if (requestMethods.isEmpty())
-						requestMethods = this.getDefaultAllowedHttpMethods();
-					calculatePath(handlerMethod, operationPath, requestMethods, locale);
+		Optional<SpringWebProvider> springWebProviderOptional = springDocProviders.getSpringWebProvider();
+		springWebProviderOptional.ifPresent(springWebProvider -> {
+			for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
+				RequestMappingInfo requestMappingInfo = entry.getKey();
+				HandlerMethod handlerMethod = entry.getValue();
+				Set<String> patterns = springWebProvider.getActivePatterns(requestMappingInfo);
+				for (String operationPath : patterns) {
+					Map<String, String> regexMap = new LinkedHashMap<>();
+					operationPath = PathUtils.parsePath(operationPath, regexMap);
+					String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
+					String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
+					String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
+					if ((isRestController(restControllers, handlerMethod, operationPath) || isActuatorRestController(operationPath, handlerMethod))
+							&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
+						Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
+						// default allowed requestmethods
+						if (requestMethods.isEmpty())
+							requestMethods = this.getDefaultAllowedHttpMethods();
+						calculatePath(handlerMethod, operationPath, requestMethods, locale);
+					}
 				}
 			}
-		}
+		});
 	}
 
 	/**
