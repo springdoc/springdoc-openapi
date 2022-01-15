@@ -46,6 +46,7 @@ public class SpringDocJavadocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	SpringDocJavadocProvider springDocJavadocProvider( ) {
 		return new SpringDocJavadocProvider();
 	}

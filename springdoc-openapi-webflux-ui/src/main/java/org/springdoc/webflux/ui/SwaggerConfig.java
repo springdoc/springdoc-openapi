@@ -76,6 +76,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
+	@Lazy(false)
 	SwaggerWelcomeWebFlux swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,SwaggerUiConfigParameters swaggerUiConfigParameters, SpringWebProvider springWebProvider) {
 		return new SwaggerWelcomeWebFlux(swaggerUiConfig,springDocConfigProperties,swaggerUiConfigParameters,springWebProvider);
 	}
@@ -89,6 +90,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
+	@Lazy(false)
 	SwaggerConfigResource swaggerConfigResource(SwaggerWelcomeCommon swaggerWelcomeCommon){
 		return new SwaggerConfigResource(swaggerWelcomeCommon);
 	}
@@ -102,6 +104,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_ROOT_PATH, havingValue = "true")
+	@Lazy(false)
 	SwaggerUiHome swaggerUiHome(Optional<WebFluxProperties> optionalWebFluxProperties){
 		return new SwaggerUiHome(optionalWebFluxProperties);
 	}
@@ -117,6 +120,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	SwaggerWebFluxConfigurer swaggerWebFluxConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider) {
 		return new SwaggerWebFluxConfigurer(swaggerUiConfigParameters, springDocConfigProperties, swaggerIndexTransformer,actuatorProvider);
 	}
@@ -132,6 +136,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig ,SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters,SwaggerWelcomeCommon swaggerWelcomeCommon) {
 		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties,swaggerUiConfigParameters, swaggerWelcomeCommon);
 	}
@@ -144,6 +149,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	SwaggerUiConfigParameters swaggerUiConfigParameters (SwaggerUiConfigProperties swaggerUiConfig){
 		return new SwaggerUiConfigParameters(swaggerUiConfig);
 	}
@@ -155,6 +161,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	SpringWebProvider springWebProvider(){
 		return new SpringWebFluxProvider();
 	}
@@ -179,6 +186,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
+		@Lazy(false)
 		SwaggerWelcomeActuator swaggerActuatorWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,
 				SwaggerUiConfigParameters swaggerUiConfigParameters, WebEndpointProperties webEndpointProperties, ManagementServerProperties managementServerProperties) {
 			return new SwaggerWelcomeActuator(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters, webEndpointProperties,managementServerProperties);

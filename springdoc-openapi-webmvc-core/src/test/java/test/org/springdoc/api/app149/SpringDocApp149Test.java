@@ -18,6 +18,7 @@
 
 package test.org.springdoc.api.app149;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.springdoc.core.SpringDocUtils;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
@@ -30,7 +31,8 @@ public class SpringDocApp149Test extends AbstractSpringDocTest {
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 
-	static {
+	@BeforeAll
+	public static void init() {
 		SpringDocUtils.getConfig().addHiddenRestControllers(HiddenHelloController.class);
 	}
 }

@@ -36,7 +36,6 @@ import io.swagger.v3.oas.models.OpenAPI;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.providers.RepositoryRestResourceProvider;
 import org.springdoc.data.rest.core.ControllerType;
@@ -230,7 +229,6 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 						Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
 								.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_ENTITY_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
 										.getValue().getBeanType().getName()))
-								.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 						dataRestRepository.setControllerType(ControllerType.ENTITY);
 						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
@@ -238,7 +236,6 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 						Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFilteredMethodMap = handlerMethodMap.entrySet().stream()
 								.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_PROPERTY_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
 										.getValue().getBeanType().getName()))
-								.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
 						entity.doWithAssociations((SimpleAssociationHandler) association -> {
@@ -259,7 +256,6 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 						Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
 								.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SCHEMA_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
 										.getValue().getBeanType().getName()))
-								.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 						dataRestRepository.setControllerType(ControllerType.SCHEMA);
 						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
@@ -354,7 +350,6 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 				Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
 						.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SERACH_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
 								.getValue().getBeanType().getName()))
-						.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getBeanType()))
 						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 				ResourceMetadata metadata = associations.getMetadataFor(dataRestRepository.getDomainType());
 				SearchResourceMappings searchResourceMappings = metadata.getSearchResourceMappings();

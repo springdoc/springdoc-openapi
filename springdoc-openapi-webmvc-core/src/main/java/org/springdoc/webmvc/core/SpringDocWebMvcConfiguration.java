@@ -26,7 +26,6 @@ import java.util.Optional;
 import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.GenericResponseService;
-import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.PropertyResolverUtils;
@@ -37,6 +36,7 @@ import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.webmvc.api.OpenApiActuatorResource;
@@ -116,6 +116,7 @@ public class SpringDocWebMvcConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	RequestService requestBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
 			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
@@ -130,6 +131,7 @@ public class SpringDocWebMvcConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	SpringWebProvider springWebProvider(){
 		return new SpringWebMvcProvider();
 	}
@@ -145,6 +147,7 @@ public class SpringDocWebMvcConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	GenericResponseService responseBuilder(OperationService operationService, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
 		return new GenericResponseService(operationService, returnTypeParsers, springDocConfigProperties, propertyResolverUtils);
 	}
@@ -163,6 +166,7 @@ public class SpringDocWebMvcConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
+		@Lazy(false)
 		RouterFunctionWebMvcProvider routerFunctionProvider() {
 			return new RouterFunctionWebMvcProvider();
 		}
@@ -189,6 +193,7 @@ public class SpringDocWebMvcConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@ConditionalOnExpression("${springdoc.show-actuator:false} or ${springdoc.use-management-port:false}")
+		@Lazy(false)
 		ActuatorProvider actuatorProvider(ServerProperties serverProperties,
 				SpringDocConfigProperties springDocConfigProperties,
 				Optional<ManagementServerProperties> managementServerProperties,

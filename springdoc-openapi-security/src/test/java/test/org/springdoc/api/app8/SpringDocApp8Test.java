@@ -3,10 +3,11 @@ package test.org.springdoc.api.app8;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import test.org.springdoc.api.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
-import test.org.springdoc.api.AbstractSpringDocTest;
 
 @TestPropertySource(properties = "springdoc.show-login-endpoint=true")
 public class SpringDocApp8Test extends AbstractSpringDocTest {

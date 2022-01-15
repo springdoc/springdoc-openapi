@@ -185,10 +185,10 @@ public class GenericResponseService {
 			// for each one build ApiResponse and add it to existing responses
 			for (Method method : methods) {
 				if (!operationService.isHidden(method)) {
-					RequestMapping reqMappringMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
+					RequestMapping reqMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
 					String[] methodProduces = { springDocConfigProperties.getDefaultProducesMediaType() };
-					if (reqMappringMethod != null)
-						methodProduces = reqMappringMethod.produces();
+					if (reqMappingMethod != null)
+						methodProduces = reqMappingMethod.produces();
 					Map<String, ApiResponse> controllerAdviceInfoApiResponseMap = controllerAdviceInfo.getApiResponseMap();
 					MethodParameter methodParameter = new MethodParameter(method, -1);
 					ApiResponses apiResponsesOp = new ApiResponses();
@@ -565,15 +565,13 @@ public class GenericResponseService {
 	 */
 	private boolean isVoid(Type returnType) {
 		boolean result = false;
-		if (Void.TYPE.equals(returnType))
+		if (Void.TYPE.equals(returnType) || Void.class.equals(returnType))
 			result = true;
 		else if (returnType instanceof ParameterizedType) {
 			Type[] types = ((ParameterizedType) returnType).getActualTypeArguments();
 			if (types != null && isResponseTypeWrapper(ResolvableType.forType(returnType).getRawClass()))
-				return isVoid(types[0]);
+				result = isVoid(types[0]);
 		}
-		if (Void.class.equals(returnType))
-			result = true;
 		return result;
 	}
 
@@ -585,7 +583,7 @@ public class GenericResponseService {
 	 */
 	private Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
 		return controllerAdviceInfos.stream()
-				.filter(controllerAdviceInfo -> new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
+				.filter(controllerAdviceInfo ->  new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
 				.map(ControllerAdviceInfo::getApiResponseMap)
 				.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
 	}
