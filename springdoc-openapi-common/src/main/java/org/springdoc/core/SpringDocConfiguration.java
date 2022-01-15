@@ -131,6 +131,7 @@ public class SpringDocConfiguration {
 	 * @return the local variable table parameter name discoverer
 	 */
 	@Bean
+	@Lazy(false)
 	LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer() {
 		return new LocalVariableTableParameterNameDiscoverer();
 	}
@@ -220,6 +221,7 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	OpenAPIService openAPIBuilder(Optional<OpenAPI> openAPI,
 			SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties,PropertyResolverUtils propertyResolverUtils,
@@ -251,6 +253,7 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	OperationService operationBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			SecurityService securityParser, PropertyResolverUtils propertyResolverUtils, Optional<JavadocProvider> javadocProvider) {
 		return new OperationService(parameterBuilder, requestBodyService,
@@ -266,6 +269,7 @@ public class SpringDocConfiguration {
 	 * @return the property resolver utils
 	 */
 	@Bean
+	@Lazy(false)
 	PropertyResolverUtils propertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource, SpringDocConfigProperties springDocConfigProperties) {
 		return new PropertyResolverUtils(factory, messageSource, springDocConfigProperties);
 	}
@@ -278,6 +282,7 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	RequestBodyService requestBodyBuilder(GenericParameterService parameterBuilder) {
 		return new RequestBodyService(parameterBuilder);
 	}
@@ -290,6 +295,7 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	SecurityService securityParser(PropertyResolverUtils propertyResolverUtils) {
 		return new SecurityService(propertyResolverUtils);
 	}
@@ -315,6 +321,7 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils,
 			Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
 			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider) {

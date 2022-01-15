@@ -149,6 +149,7 @@ public class SpringDocDataRestConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
+		@Lazy(false)
 		SpringRepositoryRestResourceProvider springRepositoryRestResourceProvider(ResourceMappings mappings,
 				Repositories repositories, Associations associations, ApplicationContext applicationContext,
 				DataRestRouterOperationService dataRestRouterOperationService, PersistentEntities persistentEntities,
@@ -168,6 +169,7 @@ public class SpringDocDataRestConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
+		@Lazy(false)
 		DataRestRouterOperationService dataRestRouterOperationBuilder(DataRestOperationService dataRestOperationService,
 				SpringDocConfigProperties springDocConfigProperties, RepositoryRestConfiguration repositoryRestConfiguration, DataRestHalProvider dataRestHalProvider) {
 			return new DataRestRouterOperationService(dataRestOperationService, springDocConfigProperties, repositoryRestConfiguration, dataRestHalProvider);
@@ -184,6 +186,7 @@ public class SpringDocDataRestConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
+		@Lazy(false)
 		DataRestOperationService dataRestOperationBuilder(DataRestRequestService dataRestRequestService, DataRestTagsService tagsBuilder,
 				DataRestResponseService dataRestResponseService, OperationService operationService) {
 			return new DataRestOperationService(dataRestRequestService, tagsBuilder, dataRestResponseService, operationService);
@@ -201,6 +204,7 @@ public class SpringDocDataRestConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
+		@Lazy(false)
 		DataRestRequestService dataRestRequestBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
 				RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
 			return new DataRestRequestService(localSpringDocParameterNameDiscoverer, parameterBuilder,
@@ -216,6 +220,7 @@ public class SpringDocDataRestConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
+		@Lazy(false)
 		DataRestResponseService dataRestResponseBuilder(GenericResponseService genericResponseService, SpringDocDataRestUtils springDocDataRestUtils) {
 			return new DataRestResponseService(genericResponseService, springDocDataRestUtils);
 		}
@@ -228,6 +233,7 @@ public class SpringDocDataRestConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
+		@Lazy(false)
 		DataRestTagsService dataRestTagsBuilder(OpenAPIService openAPIService) {
 			return new DataRestTagsService(openAPIService);
 		}
@@ -241,6 +247,7 @@ public class SpringDocDataRestConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean
+		@Lazy(false)
 		SpringDocDataRestUtils springDocDataRestUtils(LinkRelationProvider linkRelationProvider, RepositoryRestConfiguration repositoryRestConfiguration) {
 			return new SpringDocDataRestUtils(linkRelationProvider, repositoryRestConfiguration);
 		}

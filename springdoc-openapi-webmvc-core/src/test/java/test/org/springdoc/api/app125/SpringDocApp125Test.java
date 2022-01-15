@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
+import org.junit.jupiter.api.BeforeAll;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
@@ -42,7 +43,8 @@ public class SpringDocApp125Test extends AbstractSpringDocTest {
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 
-	static {
+	@BeforeAll
+	public static void init() {
 		Optional<ModelConverter> deprecatingConverterOptional =
 				ModelConverters.getInstance().getConverters()
 						.stream().filter(modelConverter -> modelConverter instanceof SchemaPropertyDeprecatingConverter).findAny();

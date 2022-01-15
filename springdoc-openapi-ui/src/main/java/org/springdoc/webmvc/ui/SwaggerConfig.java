@@ -73,6 +73,7 @@ public class SwaggerConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
+	@Lazy(false)
 	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, SpringWebProvider springWebProvider) {
 		return new SwaggerWelcomeWebMvc(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters, springWebProvider);
 	}
@@ -84,6 +85,7 @@ public class SwaggerConfig {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	SpringWebProvider springWebProvider() {
 		return new SpringWebMvcProvider();
 	}
@@ -97,6 +99,7 @@ public class SwaggerConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
+	@Lazy(false)
 	SwaggerConfigResource swaggerConfigResource(SwaggerWelcomeCommon swaggerWelcomeCommon) {
 		return new SwaggerConfigResource(swaggerWelcomeCommon);
 	}
@@ -109,6 +112,7 @@ public class SwaggerConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_ROOT_PATH, havingValue = "true")
+	@Lazy(false)
 	SwaggerUiHome swaggerUiHome() {
 		return new SwaggerUiHome();
 	}
@@ -124,6 +128,7 @@ public class SwaggerConfig {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerWelcomeCommon swaggerWelcomeCommon) {
 		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, swaggerWelcomeCommon);
 	}
@@ -137,6 +142,7 @@ public class SwaggerConfig {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider) {
 		return new SwaggerWebMvcConfigurer(swaggerUiConfigParameters, swaggerIndexTransformer, actuatorProvider);
 	}
@@ -149,6 +155,7 @@ public class SwaggerConfig {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy(false)
 	SwaggerUiConfigParameters swaggerUiConfigParameters(SwaggerUiConfigProperties swaggerUiConfig) {
 		return new SwaggerUiConfigParameters(swaggerUiConfig);
 	}
@@ -160,6 +167,7 @@ public class SwaggerConfig {
 
 		@Bean
 		@ConditionalOnMissingBean
+		@Lazy(false)
 		SwaggerWelcomeActuator swaggerActuatorWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, WebEndpointProperties webEndpointProperties) {
 			return new SwaggerWelcomeActuator(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters, webEndpointProperties);
 		}

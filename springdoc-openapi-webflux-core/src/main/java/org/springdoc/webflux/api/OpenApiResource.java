@@ -20,7 +20,6 @@
 
 package org.springdoc.webflux.api;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -30,6 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.PathUtils;
@@ -158,13 +158,13 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		Optional<SpringWebProvider> springWebProviderOptional = springDocProviders.getSpringWebProvider();
 		springWebProviderOptional.ifPresent(springWebProvider -> {
 			Map<RequestMappingInfo, HandlerMethod> map = springWebProvider.getHandlerMethods();
-			calculatePath(restControllers, map, locale);
 			Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
 			if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
-				map = actuatorProviderOptional.get().getMethods();
-				this.openAPIService.addTag(new HashSet<>(map.values()), getTag());
-				calculatePath(restControllers, map, locale);
+				Map<RequestMappingInfo, HandlerMethod> actuatorMap = actuatorProviderOptional.get().getMethods();
+				this.openAPIService.addTag(new HashSet<>(actuatorMap.values()), getTag());
+				map.putAll(actuatorMap);
 			}
+			calculatePath(restControllers, map, locale);
 			getWebFluxRouterFunctionPaths(locale);
 		});
 	}
@@ -177,11 +177,11 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param locale the locale
 	 */
 	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Locale locale) {
-		List<Map.Entry<RequestMappingInfo, HandlerMethod>> entries = new ArrayList<>(map.entrySet());
-		entries.sort(byReversedRequestMappingInfos());
+		TreeMap<RequestMappingInfo, HandlerMethod> methodTreeMap = new TreeMap<>(byReversedRequestMappingInfos());
+		methodTreeMap.putAll(map);
 		Optional<SpringWebProvider> springWebProviderOptional = springDocProviders.getSpringWebProvider();
 		springWebProviderOptional.ifPresent(springWebProvider -> {
-			for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : entries) {
+			for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : methodTreeMap.entrySet()) {
 				RequestMappingInfo requestMappingInfo = entry.getKey();
 				HandlerMethod handlerMethod = entry.getValue();
 				Set<String> patterns = springWebProvider.getActivePatterns(requestMappingInfo);
@@ -209,10 +209,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 *
 	 * @return the comparator
 	 */
-	private Comparator<Map.Entry<RequestMappingInfo, HandlerMethod>> byReversedRequestMappingInfos() {
-		return Comparator.<Map.Entry<RequestMappingInfo, HandlerMethod>, String>
-						comparing(a -> a.getKey().toString())
-				.reversed();
+	private Comparator<RequestMappingInfo> byReversedRequestMappingInfos() {
+		return (o2, o1) ->  o1.toString().compareTo(o2.toString());
 	}
 
 	/**
