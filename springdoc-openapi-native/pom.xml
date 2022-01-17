@@ -67,12 +67,6 @@
 							<goal>test-generate</goal>
 						</goals>
 					</execution>
-					<execution>
-						<id>generate</id>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
 				</executions>
 			</plugin>
 		</plugins>
