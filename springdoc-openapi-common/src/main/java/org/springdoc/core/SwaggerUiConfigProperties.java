@@ -20,6 +20,9 @@
 
 package org.springdoc.core;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -372,4 +375,14 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	public void setSyntaxHighlight(SyntaxHighlight syntaxHighlight) {
 		this.syntaxHighlight = syntaxHighlight;
 	}
+
+	/**
+	 * Clone urls set.
+	 *
+	 * @return the set
+	 */
+	public Set<SwaggerUrl> cloneUrls(){
+		return this.urls.stream().map(swaggerUrl -> new SwaggerUrl(swaggerUrl.getName(), swaggerUrl.getUrl())).collect(Collectors.toSet());
+	}
+
 }

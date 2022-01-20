@@ -115,9 +115,14 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 */
 	@Override
 	protected String buildApiDocUrl() {
+		return buildUrlWithContextPath(springDocConfigProperties.getApiDocs().getPath());
+	}
+
+	@Override
+	protected String buildUrlWithContextPath(String swaggerUiUrl) {
 		if (this.pathPrefix == null)
 			this.pathPrefix = springWebProvider.findPathPrefix(springDocConfigProperties);
-		return buildUrl(this.contextPath + this.pathPrefix, springDocConfigProperties.getApiDocs().getPath());
+		return buildUrl(this.contextPath + this.pathPrefix,swaggerUiUrl );
 	}
 
 	/**

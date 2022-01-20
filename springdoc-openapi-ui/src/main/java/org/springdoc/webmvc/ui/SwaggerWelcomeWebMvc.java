@@ -122,9 +122,14 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	 */
 	@Override
 	protected String buildApiDocUrl() {
+		return buildUrlWithContextPath(springDocConfigProperties.getApiDocs().getPath());
+	}
+
+	@Override
+	protected String buildUrlWithContextPath(String swaggerUiUrl) {
 		if (this.pathPrefix == null)
 			this.pathPrefix = springWebProvider.findPathPrefix(springDocConfigProperties);
-		return buildUrl(contextPath + pathPrefix, springDocConfigProperties.getApiDocs().getPath());
+		return buildUrl(contextPath + pathPrefix, swaggerUiUrl);
 	}
 
 	/**

@@ -86,6 +86,11 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	}
 
 	@Override
+	protected String buildUrlWithContextPath(String swaggerUiUrl) {
+		return buildUrl(contextPath + webEndpointProperties.getBasePath(), swaggerUiUrl);
+	}
+
+	@Override
 	protected String buildSwaggerConfigUrl() {
 		return   contextPath + webEndpointProperties.getBasePath()
 				+ DEFAULT_PATH_SEPARATOR + DEFAULT_SWAGGER_UI_ACTUATOR_PATH
