@@ -129,7 +129,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		this.showExtensions = swaggerUiConfig.getShowExtensions();
 		this.supportedSubmitMethods = swaggerUiConfig.getSupportedSubmitMethods();
 		this.url = swaggerUiConfig.getUrl();
-		this.urls = swaggerUiConfig.getUrls() == null ? new HashSet<>() : swaggerUiConfig.getUrls();
+		this.urls = swaggerUiConfig.getUrls() == null ? new HashSet<>() : swaggerUiConfig.cloneUrls();
 		this.urlsPrimaryName = swaggerUiConfig.getUrlsPrimaryName();
 		this.groupsOrder = swaggerUiConfig.getGroupsOrder();
 		this.tryItOutEnabled = swaggerUiConfig.getTryItOutEnabled();

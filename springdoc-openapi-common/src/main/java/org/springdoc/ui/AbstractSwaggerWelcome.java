@@ -120,14 +120,31 @@ public abstract class AbstractSwaggerWelcome {
 				String swaggerUiUrl = swaggerUiConfig.getUrl();
 				if (StringUtils.isEmpty(swaggerUiUrl))
 					swaggerUiConfigParameters.setUrl(apiDocsUrl);
-				else
+				else if (swaggerUiConfigParameters.isValidUrl(swaggerUiUrl))
 					swaggerUiConfigParameters.setUrl(swaggerUiUrl);
+				else
+					swaggerUiConfigParameters.setUrl(buildUrlWithContextPath(swaggerUiUrl));
 			}
 			else
 				swaggerUiConfigParameters.addUrl(apiDocsUrl);
+			if (!CollectionUtils.isEmpty(swaggerUiConfig.getUrls())) {
+				swaggerUiConfigParameters.setUrls(swaggerUiConfig.cloneUrls());
+				swaggerUiConfigParameters.getUrls().forEach(swaggerUrl -> {
+					if (!swaggerUiConfigParameters.isValidUrl(swaggerUrl.getUrl()))
+						swaggerUrl.setUrl(buildUrlWithContextPath(swaggerUrl.getUrl()));
+				});
+			}
 		}
 		calculateOauth2RedirectUrl(uriComponentsBuilder);
 	}
+
+	/**
+	 * Build swagger ui url string.
+	 *
+	 * @param swaggerUiUrl the swagger ui url
+	 * @return the string
+	 */
+	protected abstract String buildUrlWithContextPath(String swaggerUiUrl);
 
 	/**
 	 * Gets uri components builder.
