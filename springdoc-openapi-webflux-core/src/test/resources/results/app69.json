@@ -11,6 +11,37 @@
     }
   ],
   "paths": {
+    "/api/user/delete/{id}": {
+      "delete": {
+        "tags": [
+          "user-repository-impl"
+        ],
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/user/index": {
       "get": {
         "tags": [
@@ -35,53 +66,22 @@
         }
       }
     },
-    "/api/user/{id}": {
-      "get": {
-        "tags": [
-          "user-repository-impl"
-        ],
-        "operationId": "getUserById",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The user Id",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/user/post": {
       "post": {
         "tags": [
           "user-repository-impl"
         ],
         "operationId": "saveUser",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
+        "parameters": [
+          {
+            "name": "monoUser",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/User"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -129,16 +129,17 @@
         }
       }
     },
-    "/api/user/delete/{id}": {
-      "delete": {
+    "/api/user/{id}": {
+      "get": {
         "tags": [
           "user-repository-impl"
         ],
-        "operationId": "deleteUser",
+        "operationId": "getUserById",
         "parameters": [
           {
             "name": "id",
             "in": "path",
+            "description": "The user Id",
             "required": true,
             "schema": {
               "type": "integer",
@@ -152,7 +153,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }

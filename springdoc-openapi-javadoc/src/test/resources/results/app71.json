@@ -18,16 +18,17 @@
         ],
         "description": "Persons string.",
         "operationId": "persons",
-        "requestBody": {
-          "description": "the dog",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Dog"
-              }
+        "parameters": [
+          {
+            "name": "dog",
+            "in": "query",
+            "description": "the dog",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Dog"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "the string",

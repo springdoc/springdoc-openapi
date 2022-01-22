@@ -78,15 +78,16 @@
           "employee-repository"
         ],
         "operationId": "updateEmployee",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Employee"
-              }
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Employee"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -101,21 +102,45 @@
         }
       }
     },
+    "/employees-composed": {
+      "get": {
+        "tags": [
+          "employee-repository"
+        ],
+        "operationId": "findAllEmployees_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Employee"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/employees-composed/update": {
       "post": {
         "tags": [
           "employee-repository"
         ],
         "operationId": "updateEmployee_1",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Employee"
-              }
+        "parameters": [
+          {
+            "name": "employee",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Employee"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -153,29 +178,6 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/Employee"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/employees-composed": {
-      "get": {
-        "tags": [
-          "employee-repository"
-        ],
-        "operationId": "findAllEmployees_1",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Employee"
-                  }
                 }
               }
             }

@@ -72,15 +72,16 @@
           "user-repository-impl"
         ],
         "operationId": "saveUser",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
+        "parameters": [
+          {
+            "name": "monoUser",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/User"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK"

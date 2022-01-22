@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #1429 - Allow excluding individual methods from OpenApi output
 - #1372 - Customize operation and parameters by the return value 
 - #1453 - Reverse proxy context path aware support for manually provided files
+
 ### Changed
 - #1424 - Upgrade to swagger-ui 4.2.1
 ### Fixed
 - #1428 - Incorrect RequestBody type on schema/ui if class implements Map.
+- #1455 - Post without @RequestBody not getting all fields
 - #1442 - Springdoc-openapi-webmvc-core not enought for Springdoc-openapi-native
 - #1446 - Upgrade from Springdoc 1.6.3 to 1.6.4 causes issues if springdoc-openapi-common is on the classpath but springdoc-openapi-ui is not
 - #1458 - java.lang.NoSuchMethodError: org.springframework.core.MethodParameter.getParameter() at /v3/api-docs request

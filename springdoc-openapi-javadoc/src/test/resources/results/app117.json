@@ -73,16 +73,17 @@
         ],
         "description": "Save person.",
         "operationId": "save",
-        "requestBody": {
-          "description": "the p",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Person"
-              }
+        "parameters": [
+          {
+            "name": "p",
+            "in": "query",
+            "description": "the p",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Person"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "the person",

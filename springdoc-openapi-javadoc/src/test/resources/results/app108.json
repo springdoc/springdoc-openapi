@@ -18,16 +18,17 @@
         ],
         "description": "Update action result.",
         "operationId": "update",
-        "requestBody": {
-          "description": "the toto",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
+        "parameters": [
+          {
+            "name": "toto",
+            "in": "query",
+            "description": "the toto",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "the action result",

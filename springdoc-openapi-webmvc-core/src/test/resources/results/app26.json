@@ -17,15 +17,16 @@
           "hello-controller"
         ],
         "operationId": "persons",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MyModel"
-              }
+        "parameters": [
+          {
+            "name": "myModel",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/MyModel"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK",
