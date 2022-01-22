@@ -264,7 +264,7 @@ public abstract class AbstractRequestService {
 			}
 
 			if (!isParamToIgnore(methodParameter)) {
-				parameter = buildParams(parameterInfo, parameters.length, components, requestMethod, methodAttributes.getJsonViewAnnotation());
+				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
 				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
 				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
@@ -434,13 +434,12 @@ public abstract class AbstractRequestService {
 	 * Build params parameter.
 	 *
 	 * @param parameterInfo the parameter info
-	 * @param length the length
 	 * @param components the components
 	 * @param requestMethod the request method
 	 * @param jsonView the json view
 	 * @return the parameter
 	 */
-	public Parameter buildParams(ParameterInfo parameterInfo, int length, Components components,
+	public Parameter buildParams(ParameterInfo parameterInfo, Components components,
 			RequestMethod requestMethod, JsonView jsonView) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		if (parameterInfo.getParamType() != null) {
@@ -451,7 +450,7 @@ public abstract class AbstractRequestService {
 			return this.buildParam(parameterInfo, components, jsonView);
 		}
 		// By default
-		if (!isRequestBodyParam(requestMethod, parameterInfo, length)) {
+		if (!isRequestBodyParam(requestMethod, parameterInfo)) {
 			parameterInfo.setRequired(!((DelegatingMethodParameter) methodParameter).isNotRequired() && !methodParameter.isOptional());
 			parameterInfo.setParamType(QUERY_PARAM);
 			parameterInfo.setDefaultValue(null);
@@ -665,10 +664,9 @@ public abstract class AbstractRequestService {
 	 *
 	 * @param requestMethod the request method
 	 * @param parameterInfo the parameter info
-	 * @param length the length
 	 * @return the boolean
 	 */
-	private boolean isRequestBodyParam(RequestMethod requestMethod, ParameterInfo parameterInfo, int length) {
+	private boolean isRequestBodyParam(RequestMethod requestMethod, ParameterInfo parameterInfo) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
 
@@ -677,7 +675,7 @@ public abstract class AbstractRequestService {
 				((methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
 						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
 						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class) != null
-						|| methodParameter.getMethod().getAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) !=null)
+						|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null)
 						|| (!ClassUtils.isPrimitiveOrWrapper(methodParameter.getParameterType()) && (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()))));
 	}
 
