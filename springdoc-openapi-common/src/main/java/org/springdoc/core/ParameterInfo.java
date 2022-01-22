@@ -20,8 +20,6 @@
 
 package org.springdoc.core;
 
-import java.lang.reflect.Parameter;
-
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -150,15 +148,6 @@ public class ParameterInfo {
 	 */
 	public MethodParameter getMethodParameter() {
 		return methodParameter;
-	}
-
-	/**
-	 * Gets parameter.
-	 *
-	 * @return the parameter
-	 */
-	public Parameter getParameter() {
-		return methodParameter.getParameter();
 	}
 
 	/**
