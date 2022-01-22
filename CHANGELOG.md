@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.5] - 2022-01-23
+### Added
+- #1430 - Add Support custom login processing endpoints 
+- #1429 - Allow excluding individual methods from OpenApi output
+- #1372 - Customize operation and parameters by the return value 
+- #1453 - Reverse proxy context path aware support for manually provided files
+### Changed
+- #1424 - Upgrade to swagger-ui 4.2.1
+### Fixed
+- #1428 - Incorrect RequestBody type on schema/ui if class implements Map.
+- #1442 - Springdoc-openapi-webmvc-core not enought for Springdoc-openapi-native
+- #1446 - Upgrade from Springdoc 1.6.3 to 1.6.4 causes issues if springdoc-openapi-common is on the classpath but springdoc-openapi-ui is not
+- #1458 - java.lang.NoSuchMethodError: org.springframework.core.MethodParameter.getParameter() at /v3/api-docs request
+
 ## [1.6.4] - 2022-01-06
 ### Added
 - Add support out of the box for MultipartRequest
