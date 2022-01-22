@@ -17,15 +17,16 @@
           "hello-controller"
         ],
         "operationId": "list",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/test.org.springdoc.api.app4.TrackerData"
-              }
+        "parameters": [
+          {
+            "name": "toto",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/test.org.springdoc.api.app4.TrackerData"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK",

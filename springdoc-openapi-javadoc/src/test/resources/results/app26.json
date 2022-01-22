@@ -18,16 +18,17 @@
         ],
         "description": "Persons my model.",
         "operationId": "persons",
-        "requestBody": {
-          "description": "the my model",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MyModel"
-              }
+        "parameters": [
+          {
+            "name": "myModel",
+            "in": "query",
+            "description": "the my model",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/MyModel"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "the my model",

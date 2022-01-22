@@ -17,15 +17,16 @@
           "hello-controller"
         ],
         "operationId": "persons",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Dog"
-              }
+        "parameters": [
+          {
+            "name": "dog",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Dog"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK",

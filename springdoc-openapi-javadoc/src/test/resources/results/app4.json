@@ -18,16 +18,17 @@
         ],
         "description": "List tracker data.",
         "operationId": "list",
-        "requestBody": {
-          "description": "the toto",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/test.org.springdoc.api.app4.TrackerData"
-              }
+        "parameters": [
+          {
+            "name": "toto",
+            "in": "query",
+            "description": "the toto",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/test.org.springdoc.api.app4.TrackerData"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "the tracker data",

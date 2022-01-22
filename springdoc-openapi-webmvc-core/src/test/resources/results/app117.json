@@ -69,15 +69,16 @@
           "person-service"
         ],
         "operationId": "save",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Person"
-              }
+        "parameters": [
+          {
+            "name": "p",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Person"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK",

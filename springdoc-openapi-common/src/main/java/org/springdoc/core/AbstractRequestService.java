@@ -676,8 +676,9 @@ public abstract class AbstractRequestService {
 				&&
 				((methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
 						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
-						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class) != null)
-						|| (!ClassUtils.isPrimitiveOrWrapper(methodParameter.getParameterType()) && (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()) || length == 1)));
+						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class) != null
+						|| methodParameter.getMethod().getAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) !=null)
+						|| (!ClassUtils.isPrimitiveOrWrapper(methodParameter.getParameterType()) && (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()))));
 	}
 
 	/**
