@@ -1,0 +1,61 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/hello": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Get Something by key",
+        "operationId": "sayHello",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer",
+                      "format": "int32"
+                    }
+                  ]
+                },
+                "examples": {
+                  "The String example": {
+                    "description": "The String example",
+                    "value": "urgheiurgheirghieurg"
+                  },
+                  "The Integer example": {
+                    "description": "The Integer example",
+                    "value": 311414
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Thing not found"
+          },
+          "401": {
+            "description": "Authentication Failure"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springdoc</groupId>
 	<artifactId>springdoc-openapi</artifactId>
@@ -11,7 +13,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.2</version>
+		<version>3.0.0-M1</version>
 	</parent>
 
 	<licenses>
@@ -50,18 +52,11 @@
 	</distributionManagement>
 
 	<modules>
-		<module>springdoc-openapi-common</module>
-		<module>springdoc-openapi-webmvc-core</module>
-		<module>springdoc-openapi-webflux-core</module>
-		<module>springdoc-openapi-kotlin</module>
-		<module>springdoc-openapi-hateoas</module>
-		<module>springdoc-openapi-data-rest</module>
-		<module>springdoc-openapi-security</module>
-		<module>springdoc-openapi-groovy</module>
-		<module>springdoc-openapi-ui</module>
-		<module>springdoc-openapi-webflux-ui</module>
-		<module>springdoc-openapi-javadoc</module>
-		<module>springdoc-openapi-native</module>
+		<module>springdoc-openapi-starter-common</module>
+		<module>springdoc-openapi-starter-webmvc-api</module>
+		<module>springdoc-openapi-starter-webflux-api</module>
+		<module>springdoc-openapi-starter-webmvc-ui</module>
+		<module>springdoc-openapi-starter-webflux-ui</module>
 	</modules>
 
 	<properties>
@@ -70,16 +65,15 @@
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 		<swagger-api.version>2.1.12</swagger-api.version>
 		<swagger-ui.version>4.2.1</swagger-ui.version>
-		<spring-security-oauth2.version>2.3.8.RELEASE</spring-security-oauth2.version>
 		<classgraph.version>4.8.138</classgraph.version>
 		<webjars-locator-core.version>0.45</webjars-locator-core.version>
-		<gmavenplus-plugin.version>1.8.1</gmavenplus-plugin.version>
+		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<jaxb-impl.version>2.1</jaxb-impl.version>
 		<javax.jws-api.version>1.1</javax.jws-api.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<spring-native.version>0.11.1</spring-native.version>
 		<therapi-runtime-javadoc.version>0.13.0</therapi-runtime-javadoc.version>
-		<spring-cloud.version>2021.0.0</spring-cloud.version>
+		<spring-cloud-function.version>4.0.0-SNAPSHOT</spring-cloud-function.version>
 	</properties>
 
 	<dependencyManagement>
@@ -87,7 +81,7 @@
 			<!-- swagger dependencies -->
 			<dependency>
 				<groupId>io.swagger.core.v3</groupId>
-				<artifactId>swagger-core</artifactId>
+				<artifactId>swagger-core-jakarta</artifactId>
 				<version>${swagger-api.version}</version>
 			</dependency>
 			<!-- swagger ui -->
@@ -106,11 +100,6 @@
 						<artifactId>classgraph</artifactId>
 					</exclusion>
 				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.security.oauth</groupId>
-				<artifactId>spring-security-oauth2</artifactId>
-				<version>${spring-security-oauth2.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>io.github.classgraph</groupId>
@@ -139,72 +128,36 @@
 				<artifactId>spring-native</artifactId>
 				<version>${spring-native.version}</version>
 			</dependency>
-
 			<!-- SpringDoc -->
 			<dependency>
 				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-common</artifactId>
+				<artifactId>springdoc-openapi-starter-common</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-webmvc-core</artifactId>
+				<artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-webflux-core</artifactId>
+				<artifactId>springdoc-openapi-starter-webflux-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-kotlin</artifactId>
+				<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-hateoas</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-data-rest</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-security</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-groovy</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-ui</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-webflux-ui</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-javadoc</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-native</artifactId>
+				<artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
+				<artifactId>spring-cloud-function-parent</artifactId>
+				<version>${spring-cloud-function.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -237,6 +190,20 @@
 
 	<profiles>
 		<profile>
+			<id>ci</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>springdoc-openapi-starter-common</module>
+				<module>springdoc-openapi-starter-webmvc-api</module>
+				<module>springdoc-openapi-starter-webflux-api</module>
+				<module>springdoc-openapi-starter-webmvc-ui</module>
+				<module>springdoc-openapi-starter-webflux-ui</module>
+				<module>springdoc-openapi-tests</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>gpg</id>
 			<build>
 				<plugins>
@@ -264,7 +231,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<source>8</source>
+							<source>17</source>
 						</configuration>
 					</plugin>
 					<plugin>

@@ -56,12 +56,12 @@ This is a community-based project, not maintained by the Spring Framework Contri
     * `port`: The server port
     * `context-path`: The context path of the application
 *   Documentation can be available in yaml format as well, on the following path: /v3/api-docs.yaml
-*   Add the `springdoc-openapi-ui` library to the list of your project dependencies (No additional configuration is needed):
+*   Add the `springdoc-openapi-starter-webmvc-ui` library to the list of your project dependencies (No additional configuration is needed):
 
 ```xml
    <dependency>
       <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-ui</artifactId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
       <version>last-release-version</version>
    </dependency>
 ```
@@ -94,7 +94,7 @@ springdoc.swagger-ui.path=/swagger-ui.html
 ```xml
    <dependency>
       <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-webmvc-core</artifactId>
+      <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
       <version>last-release-version</version>
    </dependency>
 ```
@@ -127,7 +127,7 @@ To generate documentation automatically, make sure all the methods declare the H
 ```xml
    <dependency>
       <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-webflux-ui</artifactId>
+      <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
       <version>last-release-version</version>
    </dependency>
 ```
