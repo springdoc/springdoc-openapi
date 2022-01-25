@@ -231,6 +231,7 @@
 							</execution>
 						</executions>
 						<configuration>
+							<sourcepath>src/main/java</sourcepath>
 							<source>17</source>
 						</configuration>
 					</plugin>
