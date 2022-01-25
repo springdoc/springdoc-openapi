@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.springdoc.kotlin.SpringDocKotlinConfiguration,\
-org.springdoc.kotlin.SpringDocKotlinxConfiguration

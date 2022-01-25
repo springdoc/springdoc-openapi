@@ -222,7 +222,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Upgrade versions: swagger-ui to 3.42.0
 ### Fixed
-- #1051 - IllegalStateException in org.springdoc.core.SpringDocConfiguration$OpenApiResourceAdvice.handleNoHandlerFound
+- #1051 - IllegalStateException in org.springdoc.core.configuration.SpringDocConfiguration$OpenApiResourceAdvice.handleNoHandlerFound
 - #1047 - swaggerWelcome `WebFluxProperties' that could not be found
 
 ## [1.5.3] - 2021-01-26

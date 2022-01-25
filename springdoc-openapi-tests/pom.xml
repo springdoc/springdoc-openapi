@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>springdoc-openapi</artifactId>
+		<groupId>org.springdoc</groupId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
+	<packaging>pom</packaging>
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>springdoc-openapi-tests</artifactId>
+
+	<modules>
+		<module>springdoc-openapi-security-tests</module>
+		<module>springdoc-openapi-groovy-tests</module>
+		<module>springdoc-openapi-javadoc-tests</module>
+		<module>springdoc-openapi-function-webmvc-tests</module>
+		<module>springdoc-openapi-function-webflux-tests</module>
+		<module>springdoc-openapi-actuator-webflux-tests</module>
+		<module>springdoc-openapi-actuator-webmvc-tests</module>
+		<module>springdoc-openapi-kotlin-tests</module>
+		<module>springdoc-openapi-native-tests</module>
+		<module>springdoc-openapi-hateoas-tests</module>
+		<module>springdoc-openapi-data-rest-tests</module>
+	</modules>
+</project>

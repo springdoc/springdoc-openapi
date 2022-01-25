@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.springdoc.webflux.core.SpringDocWebFluxConfiguration,\
-org.springdoc.webflux.core.MultipleOpenApiSupportConfiguration
