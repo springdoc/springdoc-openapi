@@ -1,0 +1,128 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/coffees": {
+      "get": {
+        "tags": [
+          "coffee-service"
+        ],
+        "operationId": "getAllCoffees",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Coffee"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/coffees/{id}": {
+      "get": {
+        "tags": [
+          "coffee-service"
+        ],
+        "operationId": "getCoffeeById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Coffee"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/coffees/{id}/orders": {
+      "get": {
+        "tags": [
+          "coffee-service"
+        ],
+        "operationId": "getOrdersForCoffeeById",
+        "parameters": [
+          {
+            "name": "coffeeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CoffeeOrder"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Coffee": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "CoffeeOrder": {
+        "type": "object",
+        "properties": {
+          "coffeeId": {
+            "type": "string"
+          },
+          "whenOrdered": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
