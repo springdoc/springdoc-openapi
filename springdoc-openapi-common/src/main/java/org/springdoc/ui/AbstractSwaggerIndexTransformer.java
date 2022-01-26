@@ -204,7 +204,10 @@ public class AbstractSwaggerIndexTransformer {
 		stringBuilder.append("const parts = value.split(`; ");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getCookieName());
 		stringBuilder.append("=`);\n");
-		stringBuilder.append("if (parts.length === 2)\n");
+		stringBuilder.append("const currentURL = new URL(document.URL);\n");
+		stringBuilder.append("const requestURL = new URL(request.url, document.location.origin);\n");
+		stringBuilder.append("const isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
+		stringBuilder.append("if (isSameOrigin && parts.length === 2) ");
 		stringBuilder.append("request.headers['");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
 		stringBuilder.append("'] = parts.pop().split(';').shift();\n");
@@ -225,6 +228,10 @@ public class AbstractSwaggerIndexTransformer {
 		stringBuilder.append("requestInterceptor: (request) => {\n");
 		stringBuilder.append("const value = window.localStorage.getItem('");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getLocalStorageKey() + "');\n");
+		stringBuilder.append("const currentURL = new URL(document.URL);\n");
+		stringBuilder.append("const requestURL = new URL(request.url, document.location.origin);\n");
+		stringBuilder.append("const isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
+		stringBuilder.append("if (isSameOrigin) ");
 		stringBuilder.append("request.headers['");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
 		stringBuilder.append("'] = value;\n");
