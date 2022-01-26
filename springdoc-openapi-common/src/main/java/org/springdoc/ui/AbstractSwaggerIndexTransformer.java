@@ -199,21 +199,21 @@ public class AbstractSwaggerIndexTransformer {
 	 */
 	protected String addCSRF(String html) {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("requestInterceptor: (request) => {\n");
-		stringBuilder.append("const value = `; ${document.cookie}`;\n");
-		stringBuilder.append("const parts = value.split(`; ");
-		stringBuilder.append(swaggerUiConfig.getCsrf().getCookieName());
-		stringBuilder.append("=`);\n");
-		stringBuilder.append("const currentURL = new URL(document.URL);\n");
-		stringBuilder.append("const requestURL = new URL(request.url, document.location.origin);\n");
-		stringBuilder.append("const isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
-		stringBuilder.append("if (isSameOrigin && parts.length === 2) ");
-		stringBuilder.append("request.headers['");
-		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
-		stringBuilder.append("'] = parts.pop().split(';').shift();\n");
-		stringBuilder.append("return request;\n");
-		stringBuilder.append("},\n");
-		stringBuilder.append(PRESETS);
+        stringBuilder.append("requestInterceptor: (request) => {\n");
+        stringBuilder.append("\t\t\tconst value = `; ${document.cookie}`;\n");
+        stringBuilder.append("\t\t\tconst parts = value.split(`; ");
+        stringBuilder.append(swaggerUiConfig.getCsrf().getCookieName());
+        stringBuilder.append("=`);\n");
+        stringBuilder.append("\t\t\tconst currentURL = new URL(document.URL);\n");
+        stringBuilder.append("\t\t\tconst requestURL = new URL(request.url, document.location.origin);\n");
+        stringBuilder.append("\t\t\tconst isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
+        stringBuilder.append("\t\t\tif (isSameOrigin && parts.length === 2) ");
+        stringBuilder.append("request.headers['");
+        stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
+        stringBuilder.append("'] = parts.pop().split(';').shift();\n");
+        stringBuilder.append("\t\t\treturn request;\n");
+        stringBuilder.append("\t\t},\n");
+        stringBuilder.append("\t\t" + PRESETS);
 		return html.replace(PRESETS, stringBuilder.toString());
 	}
 
@@ -226,18 +226,18 @@ public class AbstractSwaggerIndexTransformer {
 	protected String addCSRFLocalStorage(String html) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("requestInterceptor: (request) => {\n");
-		stringBuilder.append("const value = window.localStorage.getItem('");
+		stringBuilder.append("t\t\tconst value = window.localStorage.getItem('");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getLocalStorageKey() + "');\n");
-		stringBuilder.append("const currentURL = new URL(document.URL);\n");
-		stringBuilder.append("const requestURL = new URL(request.url, document.location.origin);\n");
-		stringBuilder.append("const isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
-		stringBuilder.append("if (isSameOrigin) ");
+		stringBuilder.append("t\t\tconst currentURL = new URL(document.URL);\n");
+		stringBuilder.append("t\t\tconst requestURL = new URL(request.url, document.location.origin);\n");
+		stringBuilder.append("t\t\tconst isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
+		stringBuilder.append("t\t\tif (isSameOrigin) ");
 		stringBuilder.append("request.headers['");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
 		stringBuilder.append("'] = value;\n");
-		stringBuilder.append("return request;\n");
-		stringBuilder.append("},\n");
-		stringBuilder.append(PRESETS);
+		stringBuilder.append("t\t\treturn request;\n");
+		stringBuilder.append("\t\t},\n");
+        stringBuilder.append("\t\t" + PRESETS);
 		return html.replace(PRESETS, stringBuilder.toString());
 	}
 
