@@ -13,7 +13,7 @@ public class SpringDocApp170Test extends AbstractSpringDocTest {
 	@SpringBootApplication
 	static class SpringDocTestApp {
 		@Bean
-		public OpenApiCustomizer openApiCustomiser() {
+		public OpenApiCustomizer openApiCustomizer() {
 			return openApi -> openApi.getServers().forEach(s -> s.url("URL"));
 		}
 	}

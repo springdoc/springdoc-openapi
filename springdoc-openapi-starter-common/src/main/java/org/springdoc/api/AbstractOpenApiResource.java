@@ -175,7 +175,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * The Open api customisers.
 	 */
-	private final Optional<List<OpenApiCustomizer>> openApiCustomisers;
+	private final Optional<List<OpenApiCustomizer>> openApiCustomizers;
 
 	/**
 	 * The Operation customizers.
@@ -229,7 +229,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
 	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
+	 * @param openApiCustomizers the open api customisers
 	 * @param methodFilters the method filters
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
@@ -238,7 +238,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomizer>> openApiCustomisers,
+			Optional<List<OpenApiCustomizer>> openApiCustomizers,
 			Optional<List<OpenApiMethodFilter>> methodFilters,
 			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
 		super();
@@ -248,13 +248,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.requestBuilder = requestBuilder;
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
-		this.openApiCustomisers = openApiCustomisers;
+		this.openApiCustomizers = openApiCustomizers;
 		this.methodFilters = methodFilters;
 		this.springDocProviders = springDocProviders;
 		//add the default customizers
-		Map<String, OpenApiCustomizer> existingOpenApiCustomisers = openAPIService.getContext().getBeansOfType(OpenApiCustomizer.class);
-		if (!CollectionUtils.isEmpty(existingOpenApiCustomisers) && existingOpenApiCustomisers.containsKey(LINKS_SCHEMA_CUSTOMISER))
-			openApiCustomisers.ifPresent(openApiCustomisersList -> openApiCustomisersList.add(existingOpenApiCustomisers.get(LINKS_SCHEMA_CUSTOMISER)));
+		Map<String, OpenApiCustomizer> existingOpenApiCustomizers = openAPIService.getContext().getBeansOfType(OpenApiCustomizer.class);
+		if (!CollectionUtils.isEmpty(existingOpenApiCustomizers) && existingOpenApiCustomizers.containsKey(LINKS_SCHEMA_CUSTOMISER))
+			openApiCustomizers.ifPresent(openApiCustomizersList -> openApiCustomizersList.add(existingOpenApiCustomizers.get(LINKS_SCHEMA_CUSTOMISER)));
 		this.springDocConfigProperties = springDocConfigProperties;
 		operationCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
 		this.operationCustomizers = operationCustomizers;
@@ -360,7 +360,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			}
 
 			openApiLocaleCustomizers.values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openApi, finalLocale));
-			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openApi)));
+			openApiCustomizers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomizer -> openApiCustomizer.customise(openApi)));
 			if (!CollectionUtils.isEmpty(openApi.getServers()) && !openApi.getServers().equals(serversCopy))
 				openAPIService.setServersPresent(true);
 

@@ -465,7 +465,7 @@ public class SpringDocConfiguration {
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.SAME)
-		OpenApiCustomizer actuatorOpenApiCustomiser(WebEndpointProperties webEndpointProperties) {
+		OpenApiCustomizer actuatorOpenApiCustomizer(WebEndpointProperties webEndpointProperties) {
 			return new ActuatorOpenApiCustomizer(webEndpointProperties);
 		}
 

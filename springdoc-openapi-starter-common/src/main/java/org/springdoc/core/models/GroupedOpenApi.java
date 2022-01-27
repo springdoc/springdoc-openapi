@@ -49,7 +49,7 @@ public class GroupedOpenApi {
 	/**
 	 * The Open api customisers.
 	 */
-	private final List<OpenApiCustomizer> openApiCustomisers;
+	private final List<OpenApiCustomizer> openApiCustomizers;
 
 	/**
 	 * The Operation customizers.
@@ -110,7 +110,7 @@ public class GroupedOpenApi {
 		this.headersToMatch = builder.headersToMatch;
 		this.packagesToExclude = builder.packagesToExclude;
 		this.pathsToExclude = builder.pathsToExclude;
-		this.openApiCustomisers = Objects.requireNonNull(builder.openApiCustomisers);
+		this.openApiCustomizers = Objects.requireNonNull(builder.openApiCustomizers);
 		this.operationCustomizers = Objects.requireNonNull(builder.operationCustomizers);
 		this.openApiMethodFilters = Objects.requireNonNull(builder.methodFilters);
 		if (CollectionUtils.isEmpty(this.pathsToMatch)
@@ -120,10 +120,10 @@ public class GroupedOpenApi {
 				&& CollectionUtils.isEmpty(this.headersToMatch)
 				&& CollectionUtils.isEmpty(this.pathsToExclude)
 				&& CollectionUtils.isEmpty(this.packagesToExclude)
-				&& CollectionUtils.isEmpty(openApiCustomisers)
+				&& CollectionUtils.isEmpty(openApiCustomizers)
 				&& CollectionUtils.isEmpty(operationCustomizers)
 				&& CollectionUtils.isEmpty(openApiMethodFilters))
-			throw new IllegalStateException("Packages to scan or paths to filter or openApiCustomisers/operationCustomizers can not be all null for the group:" + this.group);
+			throw new IllegalStateException("Packages to scan or paths to filter or openApiCustomizers/operationCustomizers can not be all null for the group:" + this.group);
 	}
 
 	/**
@@ -212,8 +212,8 @@ public class GroupedOpenApi {
 	 *
 	 * @return the open api customisers
 	 */
-	public List<OpenApiCustomizer> getOpenApiCustomisers() {
-		return openApiCustomisers;
+	public List<OpenApiCustomizer> getOpenApiCustomizers() {
+		return openApiCustomizers;
 	}
 
 	/**
@@ -242,7 +242,7 @@ public class GroupedOpenApi {
 		/**
 		 * The Open api customisers.
 		 */
-		private final List<OpenApiCustomizer> openApiCustomisers = new ArrayList<>();
+		private final List<OpenApiCustomizer> openApiCustomizers = new ArrayList<>();
 
 		/**
 		 * The Operation customizers.
@@ -392,11 +392,11 @@ public class GroupedOpenApi {
 		/**
 		 * Add open api customiser builder.
 		 *
-		 * @param openApiCustomiser the open api customiser
+		 * @param openApiCustomizer the open api customiser
 		 * @return the builder
 		 */
-		public Builder addOpenApiCustomiser(OpenApiCustomizer openApiCustomiser) {
-			this.openApiCustomisers.add(openApiCustomiser);
+		public Builder addOpenApiCustomizer(OpenApiCustomizer openApiCustomizer) {
+			this.openApiCustomizers.add(openApiCustomizer);
 			return this;
 		}
 

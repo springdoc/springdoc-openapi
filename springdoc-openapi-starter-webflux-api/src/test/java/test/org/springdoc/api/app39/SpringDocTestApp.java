@@ -45,7 +45,7 @@ public class SpringDocTestApp {
 	}
 
 	@Bean
-	public OpenApiCustomizer customerGlobalHeaderOpenApiCustomiser() {
+	public OpenApiCustomizer customerGlobalHeaderOpenApiCustomizer() {
 		return openApi -> openApi.getPaths().values().stream().flatMap(pathItem -> pathItem.readOperations().stream())
 				.forEach(operation -> operation.addParametersItem(new HeaderParameter().$ref("#/components/parameters/myGlobalHeader")));
 	}

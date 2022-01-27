@@ -124,7 +124,7 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 		 * @param operationParser the operation parser
 		 * @param operationCustomizers the operation customizers
 		 * @param springDocConfigProperties the spring doc config properties
-		 * @param openApiCustomisers the open api customisers
+		 * @param openApiCustomizers the open api customisers
 		 * @param methodFilters the method filters
 		 * @param springDocProviders the spring doc providers
 		 * @return the open api web mvc resource
@@ -133,9 +133,9 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 		public OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
 				OperationService operationParser,Optional<List<OperationCustomizer>> operationCustomizers,
 				SpringDocConfigProperties springDocConfigProperties,
-				Optional<List<OpenApiCustomizer>> openApiCustomisers, Optional<List<OpenApiMethodFilter>> methodFilters,SpringDocProviders springDocProviders) {
+				Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters,SpringDocProviders springDocProviders) {
 			return new OpenApiWebMvcResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
-					operationCustomizers, openApiCustomisers,methodFilters, springDocConfigProperties, springDocProviders);
+					operationCustomizers, openApiCustomizers,methodFilters, springDocConfigProperties, springDocProviders);
 		}
 
 		/**

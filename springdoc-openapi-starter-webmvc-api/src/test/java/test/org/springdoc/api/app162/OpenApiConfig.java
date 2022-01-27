@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfig {
     @Bean
-	OpenApiCustomizer openApiCustomiser() {
+	OpenApiCustomizer openApiCustomizer() {
         return openApi -> {
             openApi.getInfo().version("v1");
             Server server = new Server().url("");

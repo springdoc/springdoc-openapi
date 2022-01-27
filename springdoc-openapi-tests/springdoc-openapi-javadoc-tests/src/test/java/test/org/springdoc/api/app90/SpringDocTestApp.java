@@ -69,7 +69,7 @@ class SpringDocTestApp {
 	 * @return the open api customiser
 	 */
 	@Bean
-	public OpenApiCustomizer openApiCustomiser(Collection<Entry<String, Example>> examples) {
+	public OpenApiCustomizer openApiCustomizer(Collection<Entry<String, Example>> examples) {
 		return openAPI -> {
 			examples.forEach(example -> {
 				openAPI.getComponents().addExamples(example.getKey(), example.getValue());

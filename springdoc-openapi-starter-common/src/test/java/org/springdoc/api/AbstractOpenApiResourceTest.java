@@ -187,7 +187,7 @@ class AbstractOpenApiResourceTest {
 
 		String customUrl = "https://custom.com";
 		String generatedUrl = "https://generated.com";
-		OpenApiCustomizer openApiCustomiser = openApi -> openApi.setServers(singletonList(new Server().url(customUrl)));
+		OpenApiCustomizer openApiCustomizer = openApi -> openApi.setServers(singletonList(new Server().url(customUrl)));
 		SpringDocConfigProperties properties = new SpringDocConfigProperties();
 		properties.setPreLoadingEnabled(true);
 
@@ -198,7 +198,7 @@ class AbstractOpenApiResourceTest {
 				responseBuilder,
 				operationParser,
 				Optional.empty(),
-				Optional.of(singletonList(openApiCustomiser)),
+				Optional.of(singletonList(openApiCustomizer)),
 				Optional.empty(),
 				properties, springDocProviders
 		);
@@ -218,8 +218,8 @@ class AbstractOpenApiResourceTest {
 
 	private static class EmptyPathsOpenApiResource extends AbstractOpenApiResource {
 
-		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomizer>> openApiCustomisers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
-			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, methodFilters, springDocConfigProperties, springDocProviders);
+		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
+			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
 		}
 
 		@Override
