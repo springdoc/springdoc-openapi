@@ -50,6 +50,7 @@
 	</distributionManagement>
 
 	<modules>
+		<module>springdoc-openapi-core</module>
 		<module>springdoc-openapi-common</module>
 		<module>springdoc-openapi-webmvc-core</module>
 		<module>springdoc-openapi-webflux-core</module>
@@ -141,6 +142,11 @@
 			</dependency>
 
 			<!-- SpringDoc -->
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-common</artifactId>
