@@ -70,8 +70,8 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 
 			List<GroupedOpenApi> newGroups = new ArrayList<>();
 
-			ActuatorOpenApiCustomizer actuatorOpenApiCustomiser = new ActuatorOpenApiCustomizer(webEndpointProperties);
-			beanFactory.registerSingleton("actuatorOpenApiCustomiser", actuatorOpenApiCustomiser);
+			ActuatorOpenApiCustomizer actuatorOpenApiCustomizer = new ActuatorOpenApiCustomizer(webEndpointProperties);
+			beanFactory.registerSingleton("actuatorOpenApiCustomizer", actuatorOpenApiCustomizer);
 			ActuatorOperationCustomizer actuatorCustomizer =	new ActuatorOperationCustomizer();
 			beanFactory.registerSingleton("actuatorCustomizer", actuatorCustomizer);
 
@@ -79,7 +79,7 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 					.pathsToMatch(webEndpointProperties.getBasePath() + ALL_PATTERN)
 					.pathsToExclude(webEndpointProperties.getBasePath() + HEALTH_PATTERN)
 					.addOperationCustomizer(actuatorCustomizer)
-					.addOpenApiCustomiser(actuatorOpenApiCustomiser)
+					.addOpenApiCustomizer(actuatorOpenApiCustomizer)
 					.build();
 			// Add the actuator group
 			newGroups.add(actuatorGroup);

@@ -42,11 +42,11 @@ public class SpringDocApp172Test extends AbstractSpringDocTest {
 	@SpringBootApplication
 	static class SpringDocTestApp {
 		@Bean
-		public GroupedOpenApi actuatorApi(OpenApiCustomizer actuatorOpenApiCustomiser, OperationCustomizer actuatorCustomizer) {
+		public GroupedOpenApi actuatorApi(OpenApiCustomizer actuatorOpenApiCustomizer, OperationCustomizer actuatorCustomizer) {
 			return GroupedOpenApi.builder()
 					.group("sample-group")
 					.packagesToScan("test.org.springdoc.api.app172")
-					.addOpenApiCustomiser(actuatorOpenApiCustomiser)
+					.addOpenApiCustomizer(actuatorOpenApiCustomizer)
 					.addOperationCustomizer(actuatorCustomizer)
 					.pathsToExclude("/health/*")
 					.build();

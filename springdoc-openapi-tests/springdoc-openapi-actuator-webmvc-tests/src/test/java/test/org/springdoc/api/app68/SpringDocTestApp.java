@@ -57,19 +57,19 @@ public class SpringDocTestApp {
 	public GroupedOpenApi userOpenApi() {
 		return GroupedOpenApi.builder()
 				.group("users")
-				.packagesToScan("test.org.springdoc.api.app68.api.user").addOpenApiCustomiser(serverOpenApiCustomiser1())
+				.packagesToScan("test.org.springdoc.api.app68.api.user").addOpenApiCustomizer(serverOpenApiCustomizer1())
 				.addOperationCustomizer(operationCustomizer())
 				.build();
 	}
 
-	public OpenApiCustomizer serverOpenApiCustomiser1() {
+	public OpenApiCustomizer serverOpenApiCustomizer1() {
 		Server server = new Server().url("http://toto.v1.com").description("myserver1");
 		List<Server> servers = new ArrayList<>();
 		servers.add(server);
 		return openApi -> openApi.setServers(servers);
 	}
 
-	public OpenApiCustomizer serverOpenApiCustomiser2() {
+	public OpenApiCustomizer serverOpenApiCustomizer2() {
 		Server server = new Server().url("http://toto.v2.com").description("myserver2");
 		List<Server> servers = new ArrayList<>();
 		servers.add(server);
@@ -90,7 +90,7 @@ public class SpringDocTestApp {
 	public GroupedOpenApi petOpenApi() {
 		return GroupedOpenApi.builder()
 				.group("pets")
-				.pathsToMatch("/pet/**").addOpenApiCustomiser(serverOpenApiCustomiser2())
+				.pathsToMatch("/pet/**").addOpenApiCustomizer(serverOpenApiCustomizer2())
 				.build();
 	}
 
