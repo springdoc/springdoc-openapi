@@ -57,8 +57,8 @@ public class SpringDocKotlinConfiguration {
 	@Lazy(false)
 	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnClass(KotlinModule.class)
-	class SpringSecurityLoginEndpointConfiguration {
-		public SpringSecurityLoginEndpointConfiguration() {
+	class KotlinModuleConfiguration {
+		public KotlinModuleConfiguration() {
 			Json.mapper().registerModule( new KotlinModule.Builder().build());
 		}
 	}
