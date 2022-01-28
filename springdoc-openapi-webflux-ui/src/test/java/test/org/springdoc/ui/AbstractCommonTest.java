@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +26,12 @@ public abstract class AbstractCommonTest {
 	protected String getContent(String fileName) {
 		try {
 			Path path = Paths.get(AbstractCommonTest.class.getClassLoader().getResource(fileName).toURI());
-			byte[] fileBytes = Files.readAllBytes(path);
-			return new String(fileBytes, StandardCharsets.UTF_8);
+			List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+			StringBuilder sb = new StringBuilder();
+			for (String line : lines) {
+				sb.append(line).append("\n");
+			}
+			return sb.toString();
 		}
 		catch (Exception e) {
 			throw new RuntimeException("Failed to read file: " + fileName, e);

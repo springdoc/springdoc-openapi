@@ -42,10 +42,7 @@ public class SpringDocApp6Test extends AbstractSpringDocTest {
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody().returnResult();
-		String result = new String(getResult.getResponseBody());
-		assertTrue(result.contains("Swagger UI"));
-		String expected = getContent("results/index6");
-		assertEquals(expected, result);
+		checkHTMLResult("index6", new String(getResult.getResponseBody()));
 	}
 
 	@SpringBootApplication

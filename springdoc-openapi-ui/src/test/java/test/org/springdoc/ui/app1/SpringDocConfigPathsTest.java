@@ -50,8 +50,7 @@ public class SpringDocConfigPathsTest extends AbstractSpringDocTest {
 
 		MvcResult mvcResult = mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/index.html").contextPath("/context-path").servletPath("/servlet-path")).andExpect(status().isOk()).andReturn();
 		String transformedIndex = mvcResult.getResponse().getContentAsString();
-		assertTrue(transformedIndex.contains("Swagger UI"));
-		assertEquals(this.getContent("results/app1-contextpath"), transformedIndex);
+        checkHTMLResult("results/app1-contextpath", transformedIndex);
     }
 
     @SpringBootApplication
