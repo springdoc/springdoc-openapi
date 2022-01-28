@@ -39,8 +39,9 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 		MvcResult mvcResult = mockMvc.perform(get(uri)).andExpect(status().isOk()).andReturn();
 		String transformedIndex = mvcResult.getResponse().getContentAsString();
 		assertTrue(transformedIndex.contains("Swagger UI"));
-		assertEquals(this.getContent(fileName), transformedIndex);
+		assertEquals(this.getContent(fileName), transformedIndex.replace("\r", ""));
 	}
+
 	protected void chekHTML(String fileName) throws Exception {
 		checkHTML( fileName, DEFAULT_SWAGGER_UI_URL);
 	}
@@ -49,5 +50,10 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		checkHTML( "results/app" + testNumber, DEFAULT_SWAGGER_UI_URL);
+	}
+
+	protected void checkHTMLResult(String fileName, String htmlResult)throws Exception {
+		assertTrue(htmlResult.contains("Swagger UI"));
+		assertEquals(this.getContent(fileName), htmlResult.replace("\r", ""));
 	}
 }
