@@ -335,8 +335,17 @@ public class OpenAPIService implements ApplicationContextAware {
 			}
 		}
 
-		if (!CollectionUtils.isEmpty(tagsStr))
-			operation.setTags(new ArrayList<>(tagsStr));
+		if (!CollectionUtils.isEmpty(tagsStr)) {
+			if(CollectionUtils.isEmpty(operation.getTags()))
+				operation.setTags(new ArrayList<>(tagsStr));
+			else
+			{
+				Set<String> operationTagsSet = new HashSet<>(operation.getTags());
+				operationTagsSet.addAll(tagsStr);
+				operation.getTags().clear();
+				operation.getTags().addAll(operationTagsSet);
+			}
+		}
 
 		if (isAutoTagClasses(operation))
 			operation.addTagsItem(splitCamelCase(handlerMethod.getBeanType().getSimpleName()));
