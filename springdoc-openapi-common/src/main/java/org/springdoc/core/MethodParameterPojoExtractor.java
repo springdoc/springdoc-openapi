@@ -174,7 +174,7 @@ class MethodParameterPojoExtractor {
 					.filter(d -> d.getName().equals(field.getName()))
 					.map(PropertyDescriptor::getReadMethod)
 					.filter(Objects::nonNull)
-					.map(method -> new MethodParameter(method, -1))
+					.map(method -> new MethodParameter(method, -1).withContainingClass(paramClass))
 					.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));
 		}
 		catch (IntrospectionException e) {
