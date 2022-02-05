@@ -327,6 +327,7 @@
     "/inventory": {
       "get": {
         "tags": [
+          "developers",
           "inventory"
         ],
         "summary": "By passing in the appropriate options, you can search for available inventory in the system ",
@@ -407,7 +408,8 @@
       },
       "post": {
         "tags": [
-          "inventory"
+          "inventory",
+          "admins"
         ],
         "summary": "Adds an item to the system",
         "description": "adds an inventory item",
