@@ -18,11 +18,6 @@
 
 package test.org.springdoc.ui;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
@@ -51,26 +46,18 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	private static final String DEFAULT_SWAGGER_UI_URL= Constants.DEFAULT_WEB_JARS_PREFIX_URL  + Constants.SWAGGER_UI_URL;
 
-	protected String getContent(String fileName) {
-		try {
-			Path path = Paths.get(AbstractSpringDocTest.class.getClassLoader().getResource(fileName).toURI());
-			byte[] fileBytes = Files.readAllBytes(path);
-			return new String(fileBytes, StandardCharsets.UTF_8);
-		}
-		catch (Exception e) {
-			throw new RuntimeException("Failed to read file: " + fileName, e);
-		}
-	}
-
 	protected void checkHTML(String fileName, String uri) {
 		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(uri)
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody().returnResult();
-		String result = new String(getResult.getResponseBody());
+		checkHTMLResult(fileName, new String(getResult.getResponseBody()));
+	}
+
+	protected void checkHTMLResult(String fileName, String result) {
 		assertTrue(result.contains("Swagger UI"));
 		String expected = getContent("results/" + fileName);
-		assertEquals(expected, result);
+		assertEquals(expected, result.replace("\r", ""));
 	}
 
 	protected void checkHTML(String fileName) {
