@@ -23,6 +23,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
+import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -33,6 +34,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
@@ -41,6 +45,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 /**
  * The type Delegating method parameter.
@@ -72,6 +77,11 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * The Is not required.
 	 */
 	private boolean isNotRequired;
+
+	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(DelegatingMethodParameter.class);
 
 	/**
 	 * Instantiates a new Delegating method parameter.
@@ -239,4 +249,27 @@ public class DelegatingMethodParameter extends MethodParameter {
 	public boolean isParameterObject() {
 		return isParameterObject;
 	}
+
+	/**
+	 * Return a variant of this {@code MethodParameter} which refers to the
+	 * given containing class.
+	 * @param containingClass a specific containing class (potentially a
+	 * subclass of the declaring class, e.g. substituting a type variable)
+	 * A copy of spring withContainingClass, to keep compatibility with older spring versions
+	 * @see #getParameterType()
+	 */
+	public static MethodParameter changeContainingClass(MethodParameter methodParameter, @Nullable Class<?> containingClass) {
+		MethodParameter result = methodParameter.clone();
+		try {
+			Field containingClassField = FieldUtils.getDeclaredField(result.getClass(), "containingClass", true);
+			containingClassField.set(result, containingClass);
+			Field parameterTypeField = FieldUtils.getDeclaredField(result.getClass(), "parameterType", true);
+			parameterTypeField.set(result, null);
+		}
+		catch (IllegalAccessException e) {
+			LOGGER.warn(e.getMessage());
+		}
+		return result;
+	}
+
 }
