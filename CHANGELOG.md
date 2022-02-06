@@ -4,13 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.6] - 2022-02-06
+### Changed
+- #1424 - Upgrade to swagger-ui 4.5.0
+- #1474 - Upgrade webjars-locator-core version to 0.48
+### Fixed
+- #1469 - #1036 - CSRF header should not be sent to cross domain sites
+- #1480 - Fix the problem that the inconsistent newline characters of different platforms
+- #1475 - Class level @Tag overwrites method level @Operation.tags.
+- #1491 - Set containingClass at MethodParameter
+
 ## [1.6.5] - 2022-01-23
 ### Added
 - #1430 - Add Support custom login processing endpoints 
 - #1429 - Allow excluding individual methods from OpenApi output
 - #1372 - Customize operation and parameters by the return value 
 - #1453 - Reverse proxy context path aware support for manually provided files
-
 ### Changed
 - #1424 - Upgrade to swagger-ui 4.2.1
 ### Fixed
