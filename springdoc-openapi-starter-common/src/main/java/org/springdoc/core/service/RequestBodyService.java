@@ -30,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
@@ -131,7 +132,7 @@ public class RequestBodyService {
 	 */
 	private void buildResquestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, String[] classConsumes, String[] methodConsumes, RequestBody requestBodyObject) {
 		Optional<Content> optionalContent = SpringDocAnnotationsUtils
-				.getContent(requestBody.content(),getConsumes(classConsumes),
+				.getContent(requestBody.content(), getConsumes(classConsumes),
 						getConsumes(methodConsumes), null, components, jsonViewAnnotation);
 		if (requestBodyOp == null) {
 			if (optionalContent.isPresent()) {
@@ -243,7 +244,7 @@ public class RequestBodyService {
 
 		RequestPart requestPart = methodParameter.getParameterAnnotation(RequestPart.class);
 		String paramName = null;
-		if (requestPart != null){
+		if (requestPart != null) {
 			paramName = StringUtils.defaultIfEmpty(requestPart.value(), requestPart.name());
 			parameterInfo.setRequired(requestPart.required());
 			parameterInfo.setRequestPart(true);
@@ -323,10 +324,14 @@ public class RequestBodyService {
 		for (String value : methodAttributes.getMethodConsumes()) {
 			io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
 			mediaTypeObject.setSchema(schema);
-			if (content.get(value) != null) {
-				mediaTypeObject.setExample(content.get(value).getExample());
-				mediaTypeObject.setExamples(content.get(value).getExamples());
-				mediaTypeObject.setEncoding(content.get(value).getEncoding());
+			MediaType mediaType = content.get(value);
+			if (mediaType != null) {
+				if (mediaType.getExample() != null)
+					mediaTypeObject.setExample(mediaType.getExample());
+				if (mediaType.getExamples() != null)
+					mediaTypeObject.setExamples(mediaType.getExamples());
+				if (mediaType.getEncoding() != null)
+					mediaTypeObject.setEncoding(mediaType.getEncoding());
 			}
 			content.addMediaType(value, mediaTypeObject);
 		}
