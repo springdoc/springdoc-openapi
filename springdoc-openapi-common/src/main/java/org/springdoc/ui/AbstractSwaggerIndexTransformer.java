@@ -260,7 +260,7 @@ public class AbstractSwaggerIndexTransformer {
 		stringBuilder.append("\t\t\tif (isSameOrigin) ");
 		stringBuilder.append("request.headers['");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
-		stringBuilder.append("'] = value;\n");
+		stringBuilder.append("'] = value.replace(/['\"]+/g,'');\n");
 		stringBuilder.append("\t\t\treturn request;\n");
 		stringBuilder.append("\t\t},\n");
 		stringBuilder.append("\t\t" + PRESETS);
