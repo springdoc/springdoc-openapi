@@ -145,6 +145,8 @@ public class AbstractSwaggerIndexTransformer {
 		if (swaggerUiConfig.isCsrfEnabled()) {
 			if (swaggerUiConfig.getCsrf().isUseLocalStorage())
 				html = addCSRFLocalStorage(html);
+			else if (swaggerUiConfig.getCsrf().isUseSessionStorage())
+				html = addCSRFSessionStorage(html);
 			else
 				html = addCSRF(html);
 		}
@@ -238,6 +240,30 @@ public class AbstractSwaggerIndexTransformer {
 		stringBuilder.append("t\t\treturn request;\n");
 		stringBuilder.append("\t\t},\n");
         stringBuilder.append("\t\t" + PRESETS);
+		return html.replace(PRESETS, stringBuilder.toString());
+	}
+
+	/**
+	 * Add csrf string from Session storage.
+	 *
+	 * @param html the html
+	 * @return the string
+	 */
+	protected String addCSRFSessionStorage(String html) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("requestInterceptor: (request) => {\n");
+		stringBuilder.append("\t\t\tconst value = window.sessionStorage.getItem('");
+		stringBuilder.append(swaggerUiConfig.getCsrf().getSessionStorageKey() + "');\n");
+		stringBuilder.append("\t\t\tconst currentURL = new URL(document.URL);\n");
+		stringBuilder.append("\t\t\tconst requestURL = new URL(request.url, document.location.origin);\n");
+		stringBuilder.append("\t\t\tconst isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
+		stringBuilder.append("\t\t\tif (isSameOrigin) ");
+		stringBuilder.append("request.headers['");
+		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
+		stringBuilder.append("'] = value;\n");
+		stringBuilder.append("\t\t\treturn request;\n");
+		stringBuilder.append("\t\t},\n");
+		stringBuilder.append("\t\t" + PRESETS);
 		return html.replace(PRESETS, stringBuilder.toString());
 	}
 
