@@ -26,7 +26,6 @@ import kotlinx.serialization.descriptors.SerialKind;
 import kotlinx.serialization.descriptors.StructureKind;
 import kotlinx.serialization.modules.SerializersModule;
 import kotlinx.serialization.modules.SerializersModuleCollector;
-import kotlinx.serialization.modules.SerializersModuleKt;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -192,7 +191,7 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
                     for (SerialDescriptor subDescriptor : allKnownSubDescriptors) {
                         final Schema<?> subSchema = resolveNullableSchema(context, subDescriptor, refSchema);
                         discriminator.mapping(getName(subDescriptor), subSchema.get$ref());
-                        composedSchema.addAnyOfItem(subSchema);
+                        composedSchema.addOneOfItem(subSchema);
                     }
                 } else {
                     composedSchema.addProperties(
@@ -228,7 +227,7 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
     private static Schema<?> defineRef(ModelConverterContext context, SerialDescriptor serialDescriptor, Schema<?> schema) {
         // Store off the ref and add the enum as a top-level model
         final String name = getName(serialDescriptor);
-        context.defineModel(name, schema);
+        context.defineModel(name, schema.name(name));
         return new Schema<>().$ref(constructRef(name));
     }
 
