@@ -25,15 +25,16 @@ import kotlinx.serialization.descriptors.PrimitiveKind;
 import kotlinx.serialization.descriptors.SerialDescriptor;
 import kotlinx.serialization.descriptors.SerialKind;
 import kotlinx.serialization.descriptors.StructureKind;
+import kotlinx.serialization.json.Json;
 import kotlinx.serialization.modules.SerializersModule;
 import kotlinx.serialization.modules.SerializersModuleCollector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -53,11 +54,23 @@ import static io.swagger.v3.core.util.RefUtils.constructRef;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 /**
- * ModelConverter implementation to integrate with kotlinx.serialization as JSON implementation.
+ * <p>ModelConverter implementation to integrate with kotlinx.serialization as JSON implementation.</p>
+ * <br/>
+ * <p>Define a bean of type {@link Json} containing the relevant {@link SerializersModule} and {@link kotlinx.serialization.json.JsonConfiguration} to
+ * enable this converter.</p>
+ * <p>There are some restrictions on the Json configuration to be compatible with the Open API spec. In particular the following properties if set to true are unsupported:</p>
+ * <ul>
+ *     <li>structuredMapKeys</li>
+ *     <li>allowSpecialFloatingPointValues</li>
+ *     <li>useArrayPolymorphism</li>
+ * </ul>
+ * <p>The name for a Json schemas is equal to the serialName of the corresponding descriptor with package name removed.</p>
+ * <p>In case of a naming conflict an index is appended for each successive encountered conflict, e.g.: Foo, Foo1, Foo2 for classes named com.bar1.Foo, com.bar2.Foo, com.bar3.Foo.</p>
+ * <p>To use fully qualified names instead, set the property {@link #setUseQualifiedNames(boolean)} to true.</p>
  */
 @Component
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-@ConditionalOnBean(value = SerializersModule.class)
+@ConditionalOnBean(value = Json.class)
 public class KotlinxSerializationTypeConverter implements ModelConverter {
 
     private static final Pattern polymorphicNamePattern = Pattern.compile("kotlinx\\.serialization\\.(Polymorphic|Sealed)<(.*)>");
@@ -65,17 +78,30 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
     private final Map<String, List<SerialDescriptor>> polymorphicMap;
     private final Map<String, String> qualifiedNameMap = new ConcurrentHashMap<>();
     private final Map<String, Schema<?>> resolvedSchemaCache = new ConcurrentHashMap<>();
+    private final String discriminatorProperty;
+    private boolean useQualifiedNames;
 
-    public KotlinxSerializationTypeConverter(@NotNull SerializersModule module) {
+    public KotlinxSerializationTypeConverter(@NotNull Json json) {
         // Inspect the module to collect all the subclasses for polymorphism
-        Map<String, List<SerialDescriptor>> polymorphicMap = new HashMap<>();
+        final Map<String, List<SerialDescriptor>> polymorphicMap = new HashMap<>();
+        if (json.getConfiguration().getAllowStructuredMapKeys()) {
+            throw new IllegalStateException("Structured map keys are not supported by the Open API Json specification");
+        }
+        if (json.getConfiguration().getAllowSpecialFloatingPointValues()) {
+            throw new IllegalStateException("Special floating point values such as NaN and Inf are not compatible with the Open API Json specification");
+        }
+        if (json.getConfiguration().getUseArrayPolymorphism()) {
+            throw new IllegalStateException("Array polymorphism is not compatible with the Open API Json specification");
+        }
+        discriminatorProperty = json.getConfiguration().getClassDiscriminator();
+        module = json.getSerializersModule();
         module.dumpTo(new SerializersModuleCollector() {
             @Override
-            public <Base> void polymorphicDefaultSerializer(@NotNull KClass<Base> kClass, @NotNull Function1<? super Base, ? extends SerializationStrategy<? super Base>> function1) {
+            public <Base> void polymorphicDefaultDeserializer(@NotNull KClass<Base> kClass, @NotNull Function1<? super String, ? extends DeserializationStrategy<? extends Base>> function1) {
             }
 
             @Override
-            public <Base> void polymorphicDefaultDeserializer(@NotNull KClass<Base> kClass, @NotNull Function1<? super String, ? extends DeserializationStrategy<? extends Base>> function1) {
+            public <Base> void polymorphicDefaultSerializer(@NotNull KClass<Base> kClass, @NotNull Function1<? super Base, ? extends SerializationStrategy<? super Base>> function1) {
             }
 
             @Override
@@ -97,8 +123,16 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
             public <Base> void polymorphicDefault(@NotNull KClass<Base> kClass, @NotNull Function1<? super String, ? extends DeserializationStrategy<? extends Base>> function1) {
             }
         });
-        this.module = module;
         this.polymorphicMap = Collections.unmodifiableMap(polymorphicMap);
+    }
+
+    /**
+     * Whether to use fully qualified names for the schema names or simple names.
+     *
+     * @param useQualifiedNames True if qualified names should be used, false otherwise (default)
+     */
+    public void setUseQualifiedNames(boolean useQualifiedNames) {
+        this.useQualifiedNames = useQualifiedNames;
     }
 
     @Override
@@ -194,11 +228,11 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
                 throw new IllegalStateException("Expected at least two fields for a polymorphic class descriptor");
             }
             final ComposedSchema composedSchema = (ComposedSchema) createSchema(baseSchema, ComposedSchema::new);
-            final Discriminator discriminator = new Discriminator().propertyName(serialDescriptor.getElementName(0));
+            final Discriminator discriminator = new Discriminator().propertyName(discriminatorProperty);
             composedSchema.discriminator(discriminator);
             final Schema<?> refSchema = defineRef(context, serialDescriptor, composedSchema);
             for (int i = 0; i < serialDescriptor.getElementsCount(); ++i) {
-                final String elementName = serialDescriptor.getElementName(i);
+                final String elementName = i == 0 ? discriminatorProperty : serialDescriptor.getElementName(i);
                 final SerialDescriptor elementDescriptor = serialDescriptor.getElementDescriptor(i);
                 if (elementDescriptor.getKind().equals(SerialKind.CONTEXTUAL.INSTANCE)) {
                     final Collection<SerialDescriptor> allKnownSubDescriptors;
@@ -281,13 +315,25 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
 
     @NotNull
     private String getName(@NotNull SerialDescriptor serialDescriptor) {
-        String serialName = serialDescriptor.getSerialName();
+        final String serialName = serialDescriptor.getSerialName();
         String name = Objects.requireNonNull(serialName).replace("?", "").trim();
         Matcher matcher = polymorphicNamePattern.matcher(name);
         if (matcher.matches()) {
+            // As fallback take the simple name defined between the brackets
             name = matcher.group(2);
+            try {
+                // Try to detect the kClass name from the ContextSerialDescriptor (which is a private class unfortunately)
+                final Field field = serialDescriptor.getClass().getField("kClass");
+                field.setAccessible(true);
+                final KClass<?> clazz = (KClass<?>)field.get(serialDescriptor);
+                if (clazz != null && clazz.getQualifiedName() != null) {
+                    name = clazz.getQualifiedName();
+                }
+            } catch (Exception ex) {
+                // ignore
+            }
         }
-        return simplifyName(name);
+        return useQualifiedNames ? name : simplifyName(name);
     }
 
     @NotNull
