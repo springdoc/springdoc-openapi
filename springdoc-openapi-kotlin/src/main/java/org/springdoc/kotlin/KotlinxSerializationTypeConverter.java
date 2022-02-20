@@ -79,7 +79,7 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
     private final Map<String, String> qualifiedNameMap = new ConcurrentHashMap<>();
     private final Map<String, Schema<?>> resolvedSchemaCache = new ConcurrentHashMap<>();
     private final String discriminatorProperty;
-    private boolean useQualifiedNames;
+    private boolean useQualifiedNames = false;
 
     public KotlinxSerializationTypeConverter(@NotNull Json json) {
         // Inspect the module to collect all the subclasses for polymorphism
