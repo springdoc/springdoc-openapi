@@ -3,6 +3,7 @@ package org.springdoc.kotlin;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.BooleanSchema;
 import io.swagger.v3.oas.models.media.ComposedSchema;
@@ -28,6 +29,10 @@ import kotlinx.serialization.modules.SerializersModule;
 import kotlinx.serialization.modules.SerializersModuleCollector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,42 +42,36 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static io.swagger.v3.core.util.RefUtils.constructRef;
+import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 /**
  * ModelConverter implementation to integrate with kotlinx.serialization as JSON implementation.
  */
+@Component
+@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(value = SerializersModule.class)
 public class KotlinxSerializationTypeConverter implements ModelConverter {
 
     private static final Pattern polymorphicNamePattern = Pattern.compile("kotlinx\\.serialization\\.(Polymorphic|Sealed)<(.*)>");
     private final SerializersModule module;
-    private final Map<String, List<SerialDescriptor>> classHierarchyMap;
+    private final Map<String, List<SerialDescriptor>> polymorphicMap;
+    private final Map<String, String> qualifiedNameMap = new ConcurrentHashMap<>();
+    private final Map<String, Schema<?>> resolvedSchemaCache = new ConcurrentHashMap<>();
 
     public KotlinxSerializationTypeConverter(@NotNull SerializersModule module) {
         // Inspect the module to collect all the subclasses for polymorphism
-        Map<String, List<SerialDescriptor>> map = new HashMap<>();
+        Map<String, List<SerialDescriptor>> polymorphicMap = new HashMap<>();
         module.dumpTo(new SerializersModuleCollector() {
             @Override
-            public <T> void contextual(@NotNull KClass<T> kClass, @NotNull KSerializer<T> kSerializer) {
-            }
-
-            @Override
-            public <T> void contextual(@NotNull KClass<T> kClass, @NotNull Function1<? super List<? extends KSerializer<?>>, ? extends KSerializer<?>> function1) {
-            }
-
-            @Override
-            public <Base, Sub extends Base> void polymorphic(@NotNull KClass<Base> baseClass, @NotNull KClass<Sub> subClass, @NotNull KSerializer<Sub> subSerializer) {
-                KSerializer<Base> baseSerializer = SerializersKt.serializer(baseClass);
-                map.computeIfAbsent(getName(baseSerializer.getDescriptor()), (k) -> new ArrayList<>()).add(subSerializer.getDescriptor());
-            }
-
-            @Override
-            public <Base> void polymorphicDefault(@NotNull KClass<Base> kClass, @NotNull Function1<? super String, ? extends DeserializationStrategy<? extends Base>> function1) {
+            public <Base> void polymorphicDefaultSerializer(@NotNull KClass<Base> kClass, @NotNull Function1<? super Base, ? extends SerializationStrategy<? super Base>> function1) {
             }
 
             @Override
@@ -80,17 +79,32 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
             }
 
             @Override
-            public <Base> void polymorphicDefaultSerializer(@NotNull KClass<Base> kClass, @NotNull Function1<? super Base, ? extends SerializationStrategy<? super Base>> function1) {
+            public <T> void contextual(@NotNull KClass<T> kClass, @NotNull KSerializer<T> kSerializer) {
+            }
+
+            @Override
+            public <T> void contextual(@NotNull KClass<T> kClass, @NotNull Function1<? super List<? extends KSerializer<?>>, ? extends KSerializer<?>> function1) {
+
+            }
+
+            @Override
+            public <Base, Sub extends Base> void polymorphic(@NotNull KClass<Base> baseClass, @NotNull KClass<Sub> subClass, @NotNull KSerializer<Sub> subSerializer) {
+                KSerializer<Base> baseSerializer = SerializersKt.serializer(baseClass);
+                polymorphicMap.computeIfAbsent(getName(baseSerializer.getDescriptor()), (k) -> new ArrayList<>()).add(subSerializer.getDescriptor());
+            }
+
+            @Override
+            public <Base> void polymorphicDefault(@NotNull KClass<Base> kClass, @NotNull Function1<? super String, ? extends DeserializationStrategy<? extends Base>> function1) {
             }
         });
         this.module = module;
-        this.classHierarchyMap = Collections.unmodifiableMap(map);
+        this.polymorphicMap = Collections.unmodifiableMap(polymorphicMap);
     }
 
     @Override
     public Schema<?> resolve(AnnotatedType annotatedType, ModelConverterContext context, Iterator<ModelConverter> iterator) {
         // Only process types that are annotated with @Serializable
-        if (annotatedType.getType() instanceof Class<?>) {
+        if (annotatedType.getType() instanceof Class) {
             final Class<?> cls = (Class<?>)annotatedType.getType();
             if (Arrays.stream(cls.getAnnotations()).anyMatch(it -> it instanceof Serializable)) {
                 KSerializer<?> serializer = SerializersKt.serializer(module, cls);
@@ -133,12 +147,14 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
             for (int i = 0; i < serialDescriptor.getElementsCount(); ++i) {
                 final SerialDescriptor elementDescriptor = serialDescriptor.getElementDescriptor(i);
                 final String elementName = serialDescriptor.getElementName(i);
-                schema.addProperties(
-                        elementName,
-                        resolveNullableSchema(context, elementDescriptor, null)
-                );
-                if (!serialDescriptor.isElementOptional(i)) {
-                    schema.addRequiredItem(elementName);
+                if (isNotDefined(context, baseSchema, elementName)) {
+                    schema.addProperties(
+                            elementName,
+                            resolveNullableSchema(context, elementDescriptor, null)
+                    );
+                    if (!serialDescriptor.isElementOptional(i)) {
+                        schema.addRequiredItem(elementName);
+                    }
                 }
             }
             return defineRef(context, serialDescriptor, schema);
@@ -165,20 +181,19 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
         } else if (SerialKind.CONTEXTUAL.INSTANCE.equals(kind)) {
             throw new IllegalStateException("Contextual mappings are only allowed in the context of polymorphism");
         } else if (SerialKind.ENUM.INSTANCE.equals(kind)) {
-            final @SuppressWarnings("unchecked") Schema<Object> schema =
-                    (Schema<Object>)createSchema(baseSchema, StringSchema::new);
+            if (baseSchema != null) {
+                throw new IllegalStateException("Enum classes do not support inheritance, use sealed classes instead");
+            }
+            StringSchema schema = new StringSchema();
             for (int i = 0; i < serialDescriptor.getElementsCount(); ++i) {
-                schema.addEnumItemObject(serialDescriptor.getElementName(i));
+                schema.addEnumItem(serialDescriptor.getElementName(i));
             }
             return defineRef(context, serialDescriptor, schema);
         } else if (PolymorphicKind.SEALED.INSTANCE.equals(kind) || PolymorphicKind.OPEN.INSTANCE.equals(kind)) {
             if (serialDescriptor.getElementsCount() < 2) {
                 throw new IllegalStateException("Expected at least two fields for a polymorphic class descriptor");
             }
-            final ComposedSchema composedSchema = new ComposedSchema();
-            if (baseSchema != null) {
-                composedSchema.addAllOfItem(baseSchema);
-            }
+            final ComposedSchema composedSchema = (ComposedSchema) createSchema(baseSchema, ComposedSchema::new);
             final Discriminator discriminator = new Discriminator().propertyName(serialDescriptor.getElementName(0));
             composedSchema.discriminator(discriminator);
             final Schema<?> refSchema = defineRef(context, serialDescriptor, composedSchema);
@@ -186,20 +201,30 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
                 final String elementName = serialDescriptor.getElementName(i);
                 final SerialDescriptor elementDescriptor = serialDescriptor.getElementDescriptor(i);
                 if (elementDescriptor.getKind().equals(SerialKind.CONTEXTUAL.INSTANCE)) {
-                    final Collection<SerialDescriptor> allKnownSubDescriptors = Optional.ofNullable(classHierarchyMap.get(getName(elementDescriptor)))
-                            .orElse(Collections.emptyList());
+                    final Collection<SerialDescriptor> allKnownSubDescriptors;
+                    if (PolymorphicKind.SEALED.INSTANCE.equals(kind)) {
+                        List<SerialDescriptor> list = new ArrayList<>();
+                        for (int j = 0; j < elementDescriptor.getElementsCount(); ++j) {
+                            list.add(elementDescriptor.getElementDescriptor(j));
+                        }
+                        allKnownSubDescriptors = list;
+                    } else {
+                        allKnownSubDescriptors = Optional.ofNullable(polymorphicMap.get(getName(serialDescriptor)))
+                                .orElse(Collections.emptyList());
+                    }
                     for (SerialDescriptor subDescriptor : allKnownSubDescriptors) {
                         final Schema<?> subSchema = resolveNullableSchema(context, subDescriptor, refSchema);
                         discriminator.mapping(getName(subDescriptor), subSchema.get$ref());
-                        composedSchema.addOneOfItem(subSchema);
                     }
                 } else {
-                    composedSchema.addProperties(
-                            elementName,
-                            resolveNullableSchema(context, elementDescriptor, null)
-                    );
-                    if (!serialDescriptor.isElementOptional(i)) {
-                        composedSchema.addRequiredItem(elementName);
+                    if (isNotDefined(context, baseSchema, elementName)) {
+                        composedSchema.addProperties(
+                                elementName,
+                                resolveNullableSchema(context, elementDescriptor, null)
+                        );
+                        if (!serialDescriptor.isElementOptional(i)) {
+                            composedSchema.addRequiredItem(elementName);
+                        }
                     }
                 }
             }
@@ -208,7 +233,8 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
         throw new IllegalStateException("Unsupported serialDescriptor: " + serialDescriptor);
     }
 
-    private static Schema<?> createSchema(@Nullable Schema<?> baseSchema, Supplier<Schema<?>> schemaFactory) {
+    @NotNull
+    private static Schema<?> createSchema(@Nullable Schema<?> baseSchema, @NotNull Supplier<Schema<?>> schemaFactory) {
         if (baseSchema != null) {
             return new ComposedSchema().addAllOfItem(baseSchema);
         } else {
@@ -216,28 +242,79 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
         }
     }
 
-    private static Schema<?> resolveRef(ModelConverterContext context, SerialDescriptor serialDescriptor) {
+    private boolean isNotDefined(@NotNull ModelConverterContext context, @Nullable Schema<?> baseSchema, String elementName) {
+        if (baseSchema == null) return true;
+        String ref = baseSchema.get$ref();
+        if (ref != null) {
+            if (ref.startsWith(Components.COMPONENTS_SCHEMAS_REF)) {
+                ref = ref.substring(Components.COMPONENTS_SCHEMAS_REF.length());
+            }
+            Schema<?> resolvedSchema = context.getDefinedModels().get(ref);
+            if (resolvedSchema == null) throw new IllegalStateException("Could not resolve schema: " + ref);
+            baseSchema = resolvedSchema;
+        }
+        return baseSchema.getProperties() == null || !baseSchema.getProperties().containsKey(elementName);
+    }
+
+    @Nullable
+    private Schema<?> resolveRef(@NotNull ModelConverterContext context, @NotNull SerialDescriptor serialDescriptor) {
         final String name = getName(serialDescriptor);
-        if (context.getDefinedModels().containsKey(name)) {
+        Schema<?> resolvedSchema = resolvedSchemaCache.get(name);
+        if (resolvedSchema != null) {
+            if (!context.getDefinedModels().containsKey(name)) {
+                context.defineModel(name, resolvedSchema);
+            }
             return new Schema<>().$ref(constructRef(name));
         }
         return null;
     }
 
-    private static Schema<?> defineRef(ModelConverterContext context, SerialDescriptor serialDescriptor, Schema<?> schema) {
+    @NotNull
+    private Schema<?> defineRef(@NotNull ModelConverterContext context, @NotNull SerialDescriptor serialDescriptor, @NotNull Schema<?> schema) {
         // Store off the ref and add the enum as a top-level model
         final String name = getName(serialDescriptor);
-        context.defineModel(name, schema.name(name));
+        Schema<?> namedSchema = schema.name(name);
+        context.defineModel(name, namedSchema);
+        resolvedSchemaCache.put(name, namedSchema);
         return new Schema<>().$ref(constructRef(name));
     }
 
-    private static String getName(SerialDescriptor serialDescriptor) {
-        String name = serialDescriptor.getSerialName().replace("?", "").trim();
+    @NotNull
+    private String getName(@NotNull SerialDescriptor serialDescriptor) {
+        String serialName = serialDescriptor.getSerialName();
+        String name = Objects.requireNonNull(serialName).replace("?", "").trim();
         Matcher matcher = polymorphicNamePattern.matcher(name);
         if (matcher.matches()) {
             name = matcher.group(2);
         }
+        return simplifyName(name);
+    }
+
+    @NotNull
+    private String simplifyName(String name) {
+        final String qualifiedName = name;
+        if (name.length() > 0 && !Character.isUpperCase(name.charAt(0))) {
+            int pos = -1;
+            while (true) {
+                pos = name.indexOf('.', pos + 1);
+                if (pos < 0 || pos == name.length() - 1) break;
+                if (Character.isUpperCase(name.charAt(pos + 1))) {
+                    name = name.substring(pos + 1);
+                    break;
+                }
+            }
+        }
+        final String simpleName = name;
+        int simpleNameIndex = 0;
+        // Ensure that the simple name is unique
+        while (true) {
+            final String existingQualifiedName = qualifiedNameMap.putIfAbsent(name, qualifiedName);
+            if (existingQualifiedName == null || existingQualifiedName.equals(qualifiedName)) {
+                break;
+            } else {
+                name = simpleName + (++simpleNameIndex);
+            }
+        }
         return name;
     }
 }
-
