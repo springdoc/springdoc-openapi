@@ -318,17 +318,6 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
         if (matcher.matches()) {
             // As fallback take the simple name defined between the brackets
             name = matcher.group(2);
-            try {
-                // Try to detect the kClass name from the ContextSerialDescriptor (which is a private class unfortunately)
-                final Field field = serialDescriptor.getClass().getField("kClass");
-                field.setAccessible(true);
-                final KClass<?> clazz = (KClass<?>)field.get(serialDescriptor);
-                if (clazz != null && clazz.getQualifiedName() != null) {
-                    name = clazz.getQualifiedName();
-                }
-            } catch (Exception ex) {
-                // ignore
-            }
         }
         return useQualifiedNames ? name : simplifyName(name);
     }
@@ -352,7 +341,7 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
         // Ensure that the simple name is unique
         while (true) {
             final String existingQualifiedName = qualifiedNameMap.putIfAbsent(name, qualifiedName);
-            if (existingQualifiedName == null || existingQualifiedName.equals(qualifiedName)) {
+            if (existingQualifiedName == null || existingQualifiedName.equals(qualifiedName) || name.equals(qualifiedName)) {
                 break;
             } else {
                 name = simpleName + (++simpleNameIndex);
