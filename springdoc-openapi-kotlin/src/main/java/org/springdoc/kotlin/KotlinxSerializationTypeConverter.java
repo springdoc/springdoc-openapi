@@ -30,6 +30,8 @@ import kotlinx.serialization.modules.SerializersModule;
 import kotlinx.serialization.modules.SerializersModuleCollector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -66,7 +68,9 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
  * </ul>
  * <p>The name for a Json schemas is equal to the serialName of the corresponding descriptor with package name removed.</p>
  * <p>In case of a naming conflict an index is appended for each successive encountered conflict, e.g.: Foo, Foo1, Foo2 for classes named com.bar1.Foo, com.bar2.Foo, com.bar3.Foo.</p>
- * <p>To use fully qualified names instead, set the property {@link #setUseQualifiedNames(boolean)} to true.</p>
+ * <p>To use fully qualified names instead, set the property <code>springdoc.use-fqn</code> to true</p>
+ *
+ * @author Werner Altewischer
  */
 @Component
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
@@ -79,11 +83,11 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
     private final Map<String, String> qualifiedNameMap = new ConcurrentHashMap<>();
     private final Map<String, Schema<?>> resolvedSchemaCache = new ConcurrentHashMap<>();
     private final String discriminatorProperty;
-    private boolean useQualifiedNames = false;
+    private final boolean useQualifiedNames;
 
-    public KotlinxSerializationTypeConverter(@NotNull Json json) {
+    @Autowired
+    public KotlinxSerializationTypeConverter(@NotNull Json json, @Value("${springdoc.use-fqn:false}") boolean useQualifiedNames) {
         // Inspect the module to collect all the subclasses for polymorphism
-        final Map<String, List<SerialDescriptor>> polymorphicMap = new HashMap<>();
         if (json.getConfiguration().getAllowStructuredMapKeys()) {
             throw new IllegalStateException("Structured map keys are not supported by the Open API Json specification");
         }
@@ -93,9 +97,11 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
         if (json.getConfiguration().getUseArrayPolymorphism()) {
             throw new IllegalStateException("Array polymorphism is not compatible with the Open API Json specification");
         }
-        discriminatorProperty = json.getConfiguration().getClassDiscriminator();
-        module = json.getSerializersModule();
-        module.dumpTo(new SerializersModuleCollector() {
+        final Map<String, List<SerialDescriptor>> polymorphicMap = new HashMap<>();
+        this.useQualifiedNames = useQualifiedNames;
+        this.discriminatorProperty = json.getConfiguration().getClassDiscriminator();
+        this.module = json.getSerializersModule();
+        this.module.dumpTo(new SerializersModuleCollector() {
             @Override
             public <Base> void polymorphicDefaultDeserializer(@NotNull KClass<Base> kClass, @NotNull Function1<? super String, ? extends DeserializationStrategy<? extends Base>> function1) {
             }
@@ -124,15 +130,6 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
             }
         });
         this.polymorphicMap = Collections.unmodifiableMap(polymorphicMap);
-    }
-
-    /**
-     * Whether to use fully qualified names for the schema names or simple names.
-     *
-     * @param useQualifiedNames True if qualified names should be used, false otherwise (default)
-     */
-    public void setUseQualifiedNames(boolean useQualifiedNames) {
-        this.useQualifiedNames = useQualifiedNames;
     }
 
     @Override
