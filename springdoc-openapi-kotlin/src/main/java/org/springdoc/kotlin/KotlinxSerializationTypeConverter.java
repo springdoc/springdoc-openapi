@@ -26,6 +26,7 @@ import kotlinx.serialization.descriptors.SerialDescriptor;
 import kotlinx.serialization.descriptors.SerialKind;
 import kotlinx.serialization.descriptors.StructureKind;
 import kotlinx.serialization.json.Json;
+import kotlinx.serialization.json.JsonClassDiscriminator;
 import kotlinx.serialization.modules.SerializersModule;
 import kotlinx.serialization.modules.SerializersModuleCollector;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +54,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static io.swagger.v3.core.util.RefUtils.constructRef;
+import static io.swagger.v3.core.util.RefUtils.extractSimpleName;
 import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 /**
@@ -62,9 +64,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
  * enable this converter.</p>
  * <p>There are some restrictions on the Json configuration to be compatible with the Open API spec. In particular the following properties if set to true are unsupported:</p>
  * <ul>
- *     <li>structuredMapKeys</li>
  *     <li>allowSpecialFloatingPointValues</li>
- *     <li>useArrayPolymorphism</li>
  * </ul>
  * <p>The name for a Json schemas is equal to the serialName of the corresponding descriptor with package name removed.</p>
  * <p>In case of a naming conflict an index is appended for each successive encountered conflict, e.g.: Foo, Foo1, Foo2 for classes named com.bar1.Foo, com.bar2.Foo, com.bar3.Foo.</p>
@@ -76,30 +76,25 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @ConditionalOnBean(value = Json.class)
 public class KotlinxSerializationTypeConverter implements ModelConverter {
-
     private static final Pattern polymorphicNamePattern = Pattern.compile("kotlinx\\.serialization\\.(Polymorphic|Sealed)<(.*)>");
     private final SerializersModule module;
     private final Map<String, List<SerialDescriptor>> polymorphicMap;
     private final Map<String, String> qualifiedNameMap = new ConcurrentHashMap<>();
-    private final Map<String, Schema<?>> resolvedSchemaCache = new ConcurrentHashMap<>();
-    private final String discriminatorProperty;
+    private final String defaultDiscriminatorProperty;
     private final boolean useQualifiedNames;
+    private final boolean useArrayPolymorphism;
+    private final boolean allowStructuredMapKeys;
 
-    @Autowired
     public KotlinxSerializationTypeConverter(@NotNull Json json, @Value("${springdoc.use-fqn:false}") boolean useQualifiedNames) {
         // Inspect the module to collect all the subclasses for polymorphism
-        if (json.getConfiguration().getAllowStructuredMapKeys()) {
-            throw new IllegalStateException("Structured map keys are not supported by the Open API Json specification");
-        }
+        final Map<String, List<SerialDescriptor>> polymorphicMap = new HashMap<>();
         if (json.getConfiguration().getAllowSpecialFloatingPointValues()) {
             throw new IllegalStateException("Special floating point values such as NaN and Inf are not compatible with the Open API Json specification");
         }
-        if (json.getConfiguration().getUseArrayPolymorphism()) {
-            throw new IllegalStateException("Array polymorphism is not compatible with the Open API Json specification");
-        }
-        final Map<String, List<SerialDescriptor>> polymorphicMap = new HashMap<>();
         this.useQualifiedNames = useQualifiedNames;
-        this.discriminatorProperty = json.getConfiguration().getClassDiscriminator();
+        this.allowStructuredMapKeys = json.getConfiguration().getAllowStructuredMapKeys();
+        this.useArrayPolymorphism = json.getConfiguration().getUseArrayPolymorphism();
+        this.defaultDiscriminatorProperty = json.getConfiguration().getClassDiscriminator();
         this.module = json.getSerializersModule();
         this.module.dumpTo(new SerializersModuleCollector() {
             @Override
@@ -151,7 +146,17 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
     }
 
     private Schema<?> resolveNullableSchema(@NotNull ModelConverterContext context, @NotNull SerialDescriptor serialDescriptor, @Nullable Schema<?> baseSchema) {
-        return resolveSchema(context, serialDescriptor, baseSchema).nullable(serialDescriptor.isNullable());
+        Schema<?> result = resolveSchema(context, serialDescriptor, baseSchema);
+        if (result.get$ref() != null) {
+            if (serialDescriptor.isNullable()) {
+                // Unfortunately this workaround is necessary for nullable refs.
+                return new ComposedSchema().addAllOfItem(result).nullable(true);
+            } else {
+                return result;
+            }
+        } else {
+            return result.nullable(serialDescriptor.isNullable());
+        }
     }
 
     @NotNull
@@ -161,20 +166,21 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
         if (resolved != null) {
             return resolved;
         } else if (PrimitiveKind.STRING.INSTANCE.equals(kind)) {
-            return new StringSchema();
+            return definePrimitiveIfNecessary(context, serialDescriptor, new StringSchema());
         } else if (PrimitiveKind.BOOLEAN.INSTANCE.equals(kind)) {
-            return new BooleanSchema();
+            return definePrimitiveIfNecessary(context, serialDescriptor, new BooleanSchema());
         } else if (PrimitiveKind.INT.INSTANCE.equals(kind) ||
                 PrimitiveKind.LONG.INSTANCE.equals(kind) ||
                 PrimitiveKind.SHORT.INSTANCE.equals(kind) ||
                 PrimitiveKind.BYTE.INSTANCE.equals(kind) ||
                 PrimitiveKind.CHAR.INSTANCE.equals(kind)) {
-            return new IntegerSchema();
+            return definePrimitiveIfNecessary(context, serialDescriptor, new IntegerSchema());
         } else if (PrimitiveKind.FLOAT.INSTANCE.equals(kind) ||
                 PrimitiveKind.DOUBLE.INSTANCE.equals(kind)) {
-            return new NumberSchema();
+            return definePrimitiveIfNecessary(context, serialDescriptor, new NumberSchema());
         } else if (StructureKind.CLASS.INSTANCE.equals(kind) || StructureKind.OBJECT.INSTANCE.equals(kind)) {
             final Schema<?> schema = createSchema(baseSchema, ObjectSchema::new);
+            schema.additionalProperties(false);
             for (int i = 0; i < serialDescriptor.getElementsCount(); ++i) {
                 final SerialDescriptor elementDescriptor = serialDescriptor.getElementDescriptor(i);
                 final String elementName = serialDescriptor.getElementName(i);
@@ -200,15 +206,24 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
             if (serialDescriptor.getElementsCount() != 2) {
                 throw new IllegalStateException("Expected exactly two elements for a Map serial descriptor");
             }
-            // Key should always be a string
-            if (!PrimitiveKind.STRING.INSTANCE.equals(serialDescriptor.getElementDescriptor(0).getKind())) {
-                throw new IllegalStateException("Key type should be string for a Map serial descriptor to be able to support JSON mappings");
+            SerialDescriptor keyDescriptor = serialDescriptor.getElementDescriptor(0);
+            SerialDescriptor valueDescriptor = serialDescriptor.getElementDescriptor(1);
+            if (keyDescriptor.getKind() instanceof PrimitiveKind || keyDescriptor.getKind().equals(SerialKind.ENUM.INSTANCE)) {
+                final Schema<?> objectSchema = new ObjectSchema();
+                final Schema<?> valueSchema = resolveNullableSchema(context, valueDescriptor, null);
+                objectSchema.additionalProperties(valueSchema);
+                return objectSchema;
+            } else if (allowStructuredMapKeys) {
+                // Array based encoding of map
+                final ArraySchema arraySchema = new ArraySchema();
+                final ComposedSchema composedSchema = new ComposedSchema();
+                arraySchema.setItems(composedSchema);
+                composedSchema.addOneOfItem(resolveNullableSchema(context, keyDescriptor, null));
+                composedSchema.addOneOfItem(resolveNullableSchema(context, valueDescriptor, null));
+                return arraySchema;
+            } else {
+                throw new IllegalStateException("Key type should be a primitive or enum for a Map serial descriptor when allowStructuredMapKeys is set to false in the JsonConfiguration");
             }
-            final Schema<?> schema = new ObjectSchema();
-            final SerialDescriptor elementDescriptor = serialDescriptor.getElementDescriptor(1);
-            final Schema<?> valueSchema = resolveNullableSchema(context, elementDescriptor, null);
-            schema.additionalProperties(valueSchema);
-            return schema;
         } else if (SerialKind.CONTEXTUAL.INSTANCE.equals(kind)) {
             throw new IllegalStateException("Contextual mappings are only allowed in the context of polymorphism");
         } else if (SerialKind.ENUM.INSTANCE.equals(kind)) {
@@ -221,47 +236,101 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
             }
             return defineRef(context, serialDescriptor, schema);
         } else if (PolymorphicKind.SEALED.INSTANCE.equals(kind) || PolymorphicKind.OPEN.INSTANCE.equals(kind)) {
-            if (serialDescriptor.getElementsCount() < 2) {
-                throw new IllegalStateException("Expected at least two fields for a polymorphic class descriptor");
-            }
-            final ComposedSchema composedSchema = (ComposedSchema) createSchema(baseSchema, ComposedSchema::new);
-            final Discriminator discriminator = new Discriminator().propertyName(discriminatorProperty);
-            composedSchema.discriminator(discriminator);
-            final Schema<?> refSchema = defineRef(context, serialDescriptor, composedSchema);
-            for (int i = 0; i < serialDescriptor.getElementsCount(); ++i) {
-                final String elementName = i == 0 ? discriminatorProperty : serialDescriptor.getElementName(i);
-                final SerialDescriptor elementDescriptor = serialDescriptor.getElementDescriptor(i);
-                if (elementDescriptor.getKind().equals(SerialKind.CONTEXTUAL.INSTANCE)) {
-                    final Collection<SerialDescriptor> allKnownSubDescriptors;
-                    if (PolymorphicKind.SEALED.INSTANCE.equals(kind)) {
-                        List<SerialDescriptor> list = new ArrayList<>();
-                        for (int j = 0; j < elementDescriptor.getElementsCount(); ++j) {
-                            list.add(elementDescriptor.getElementDescriptor(j));
-                        }
-                        allKnownSubDescriptors = list;
-                    } else {
-                        allKnownSubDescriptors = Optional.ofNullable(polymorphicMap.get(getName(serialDescriptor)))
-                                .orElse(Collections.emptyList());
-                    }
-                    for (SerialDescriptor subDescriptor : allKnownSubDescriptors) {
-                        final Schema<?> subSchema = resolveNullableSchema(context, subDescriptor, refSchema);
-                        discriminator.mapping(getName(subDescriptor), subSchema.get$ref());
-                    }
-                } else {
-                    if (isNotDefined(context, baseSchema, elementName)) {
-                        composedSchema.addProperties(
-                                elementName,
-                                resolveNullableSchema(context, elementDescriptor, null)
-                        );
-                        if (!serialDescriptor.isElementOptional(i)) {
-                            composedSchema.addRequiredItem(elementName);
-                        }
-                    }
-                }
-            }
-            return refSchema;
+            return getPolymorphicSchema(context, serialDescriptor, baseSchema, kind);
         }
         throw new IllegalStateException("Unsupported serialDescriptor: " + serialDescriptor);
+    }
+
+    @NotNull
+    private Schema<?> getPolymorphicSchema(@NotNull ModelConverterContext context, @NotNull SerialDescriptor serialDescriptor, @Nullable Schema<?> baseSchema, SerialKind kind) {
+        if (useArrayPolymorphism) {
+            return getArrayBasedPolymorphicSchema(context, serialDescriptor, kind);
+        } else {
+            return getDiscriminatorBasedPolymorphicSchema(context, serialDescriptor, baseSchema, kind);
+        }
+    }
+
+    @NotNull
+    private Schema<?> getDiscriminatorBasedPolymorphicSchema(@NotNull ModelConverterContext context, @NotNull SerialDescriptor serialDescriptor, @Nullable Schema<?> baseSchema, SerialKind kind) {
+        if (serialDescriptor.getElementsCount() != 2) {
+            throw new IllegalStateException("Expected two fields for a polymorphic class descriptor");
+        }
+        final String discriminatorProperty = serialDescriptor.getAnnotations().stream()
+                .filter(it -> it instanceof JsonClassDiscriminator)
+                .findFirst()
+                .map(it -> (JsonClassDiscriminator)it)
+                .map(JsonClassDiscriminator::discriminator)
+                .orElse(defaultDiscriminatorProperty);
+        final ComposedSchema composedSchema = (ComposedSchema) createSchema(baseSchema, ComposedSchema::new);
+        final Discriminator discriminator = new Discriminator().propertyName(discriminatorProperty);
+        composedSchema.discriminator(discriminator);
+        final Schema<?> refSchema = defineRef(context, serialDescriptor, composedSchema);
+        // Add discriminator
+        if (isNotDefined(context, baseSchema, discriminatorProperty)) {
+            composedSchema.addProperties(
+                    discriminatorProperty, resolveNullableSchema(context, serialDescriptor.getElementDescriptor(0), null)
+            );
+            // Do not add the discriminator as a required item, because it is only required in the context of polymorphism
+        }
+        final SerialDescriptor elementDescriptor = serialDescriptor.getElementDescriptor(1);
+        if (!elementDescriptor.getKind().equals(SerialKind.CONTEXTUAL.INSTANCE)) {
+            throw new IllegalStateException("Expected a contextual descriptor as second element of a polymorphic descriptor");
+        }
+        final Collection<SerialDescriptor> allKnownSubDescriptors = getAllKnownSubDescriptors(kind, elementDescriptor, serialDescriptor);
+        for (SerialDescriptor subDescriptor : allKnownSubDescriptors) {
+            final Schema<?> subSchema = resolveNullableSchema(context, subDescriptor, refSchema);
+            discriminator.mapping(getName(subDescriptor), subSchema.get$ref());
+        }
+        return refSchema;
+    }
+
+    @NotNull
+    private Schema<?> getArrayBasedPolymorphicSchema(@NotNull ModelConverterContext context, @NotNull SerialDescriptor serialDescriptor, SerialKind kind) {
+        if (serialDescriptor.getElementsCount() != 2) {
+            throw new IllegalStateException("Expected two fields for a polymorphic class descriptor");
+        }
+        final ComposedSchema composedSchema = new ComposedSchema();
+        final ArraySchema arraySchema = new ArraySchema();
+        final Schema<?> refSchema = defineRef(context, serialDescriptor, arraySchema);
+        // First is the type discriminator of the object
+        final String discriminatorSchemaName = "TypeDiscriminator";
+        Schema<?> discriminatorSchema = resolveRef(context, discriminatorSchemaName);
+        if (discriminatorSchema == null) {
+            discriminatorSchema = defineRef(context, new StringSchema().nullable(false), discriminatorSchemaName);
+        }
+        // When support for Open API 3.1 is released we can improve this with a tuple definition
+        arraySchema.setMinItems(2);
+        arraySchema.setMaxItems(2);
+        arraySchema.setItems(composedSchema);
+        composedSchema.addOneOfItem(discriminatorSchema);
+
+        // Second is the object itself
+        SerialDescriptor elementDescriptor = serialDescriptor.getElementDescriptor(1);
+        if (!elementDescriptor.getKind().equals(SerialKind.CONTEXTUAL.INSTANCE)) {
+            throw new IllegalStateException("Expected a contextual descriptor as second element of a polymorphic descriptor");
+        }
+        final Collection<SerialDescriptor> allKnownSubDescriptors = getAllKnownSubDescriptors(kind, elementDescriptor, serialDescriptor);
+        for (SerialDescriptor subDescriptor : allKnownSubDescriptors) {
+            final Schema<?> subSchema = resolveNullableSchema(context, subDescriptor, null);
+            composedSchema.addOneOfItem(subSchema);
+        }
+        return refSchema;
+    }
+
+    @NotNull
+    private Collection<SerialDescriptor> getAllKnownSubDescriptors(SerialKind kind, SerialDescriptor elementDescriptor, @NotNull SerialDescriptor serialDescriptor) {
+        final Collection<SerialDescriptor> allKnownSubDescriptors;
+        if (PolymorphicKind.SEALED.INSTANCE.equals(kind)) {
+            List<SerialDescriptor> list = new ArrayList<>();
+            for (int j = 0; j < elementDescriptor.getElementsCount(); ++j) {
+                list.add(elementDescriptor.getElementDescriptor(j));
+            }
+            allKnownSubDescriptors = list;
+        } else {
+            allKnownSubDescriptors = Optional.ofNullable(polymorphicMap.get(getName(serialDescriptor)))
+                    .orElse(Collections.emptyList());
+        }
+        return allKnownSubDescriptors;
     }
 
     @NotNull
@@ -273,13 +342,16 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
         }
     }
 
+    private Schema<?> definePrimitiveIfNecessary(ModelConverterContext context, SerialDescriptor serialDescriptor, Schema<?> schema) {
+        if (serialDescriptor.getSerialName().startsWith("kotlin.")) return schema;
+        return defineRef(context, serialDescriptor, schema);
+    }
+
     private boolean isNotDefined(@NotNull ModelConverterContext context, @Nullable Schema<?> baseSchema, String elementName) {
         if (baseSchema == null) return true;
         String ref = baseSchema.get$ref();
         if (ref != null) {
-            if (ref.startsWith(Components.COMPONENTS_SCHEMAS_REF)) {
-                ref = ref.substring(Components.COMPONENTS_SCHEMAS_REF.length());
-            }
+            ref = (String) extractSimpleName(ref).getLeft();
             Schema<?> resolvedSchema = context.getDefinedModels().get(ref);
             if (resolvedSchema == null) throw new IllegalStateException("Could not resolve schema: " + ref);
             baseSchema = resolvedSchema;
@@ -290,11 +362,14 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
     @Nullable
     private Schema<?> resolveRef(@NotNull ModelConverterContext context, @NotNull SerialDescriptor serialDescriptor) {
         final String name = getName(serialDescriptor);
-        Schema<?> resolvedSchema = resolvedSchemaCache.get(name);
+        return resolveRef(context, name);
+    }
+
+    @Nullable
+    private Schema<?> resolveRef(@NotNull ModelConverterContext context, String name) {
+        Schema<?> resolvedSchema = context.getDefinedModels().get(name);
         if (resolvedSchema != null) {
-            if (!context.getDefinedModels().containsKey(name)) {
-                context.defineModel(name, resolvedSchema);
-            }
+            context.defineModel(name, resolvedSchema);
             return new Schema<>().$ref(constructRef(name));
         }
         return null;
@@ -304,9 +379,12 @@ public class KotlinxSerializationTypeConverter implements ModelConverter {
     private Schema<?> defineRef(@NotNull ModelConverterContext context, @NotNull SerialDescriptor serialDescriptor, @NotNull Schema<?> schema) {
         // Store off the ref and add the enum as a top-level model
         final String name = getName(serialDescriptor);
-        Schema<?> namedSchema = schema.name(name);
+        return defineRef(context, schema, name);
+    }
+
+    private Schema<?> defineRef(@NotNull ModelConverterContext context, @NotNull Schema<?> schema, String name) {
+        Schema<?> namedSchema = schema.name(name).nullable(false);
         context.defineModel(name, namedSchema);
-        resolvedSchemaCache.put(name, namedSchema);
         return new Schema<>().$ref(constructRef(name));
     }
 
