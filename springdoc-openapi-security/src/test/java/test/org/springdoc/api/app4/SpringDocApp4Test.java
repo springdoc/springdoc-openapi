@@ -41,7 +41,7 @@ public class SpringDocApp4Test extends AbstractSpringDocTest {
 				);
 	}
 
-	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.configuration,test.org.springdoc.api.app4" })
+	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.configuration","test.org.springdoc.api.app4" })
 	@EnableAuthorizationServer
 	static class TestApp {
 	}

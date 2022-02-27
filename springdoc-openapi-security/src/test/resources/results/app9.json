@@ -1,0 +1,223 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/oauth/token": {
+      "get": {
+        "tags": [
+          "token-endpoint"
+        ],
+        "operationId": "getAccessToken_1",
+        "parameters": [
+          {
+            "name": "parameters",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2AccessToken"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "token-endpoint"
+        ],
+        "operationId": "postAccessToken_1",
+        "parameters": [
+          {
+            "name": "parameters",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2AccessToken"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth/check_token": {
+      "post": {
+        "tags": [
+          "check-token-endpoint"
+        ],
+        "operationId": "checkToken_1",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth/authorize": {
+      "post": {
+        "tags": [
+          "authorization-endpoint"
+        ],
+        "operationId": "approveOrDeny_1",
+        "parameters": [
+          {
+            "name": "approvalParameters",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/View"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OAuth2AccessToken": {
+        "type": "object",
+        "properties": {
+          "expired": {
+            "type": "boolean"
+          },
+          "refreshToken": {
+            "$ref": "#/components/schemas/OAuth2RefreshToken"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tokenType": {
+            "type": "string"
+          },
+          "additionalInformation": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "expiration": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "value": {
+            "type": "string"
+          },
+          "scope": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OAuth2RefreshToken": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "View": {
+        "type": "object",
+        "properties": {
+          "contentType": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

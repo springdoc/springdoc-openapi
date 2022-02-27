@@ -12,7 +12,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "springdoc.show-login-endpoint=true")
 public class SpringDocApp8Test extends AbstractSpringDocTest {
 
-    @SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.configuration,test.org.springdoc.api.app8" })
+    @SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.configuration","test.org.springdoc.api.app8" })
     static class SpringDocTestApp {
         @Bean
         public OpenAPI customOpenAPI() {
