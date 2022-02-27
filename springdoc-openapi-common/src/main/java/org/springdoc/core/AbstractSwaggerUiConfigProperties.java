@@ -170,6 +170,29 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	protected Boolean queryConfigEnabled;
 
 	/**
+	 * The With credentials.
+	 */
+	protected Boolean withCredentials;
+
+	/**
+	 * Gets with credentials.
+	 *
+	 * @return the with credentials
+	 */
+	public Boolean getWithCredentials() {
+		return withCredentials;
+	}
+
+	/**
+	 * Sets with credentials.
+	 *
+	 * @param withCredentials the with credentials
+	 */
+	public void setWithCredentials(Boolean withCredentials) {
+		this.withCredentials = withCredentials;
+	}
+
+	/**
 	 * Gets query config enabled.
 	 *
 	 * @return the query config enabled
