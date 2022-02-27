@@ -140,6 +140,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		this.tryItOutEnabled = swaggerUiConfig.getTryItOutEnabled();
 		this.persistAuthorization = swaggerUiConfig.getPersistAuthorization();
 		this.queryConfigEnabled = swaggerUiConfig.getQueryConfigEnabled();
+		this.withCredentials=swaggerUiConfig.getWithCredentials();
 	}
 
 	/**
@@ -232,6 +233,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		SpringDocPropertiesUtils.put("tryItOutEnabled", tryItOutEnabled, params);
 		SpringDocPropertiesUtils.put("persistAuthorization", persistAuthorization, params);
 		SpringDocPropertiesUtils.put(FILTER_PROPERTY, filter, params);
+		SpringDocPropertiesUtils.put("withCredentials", withCredentials, params);
 		return params;
 	}
 
