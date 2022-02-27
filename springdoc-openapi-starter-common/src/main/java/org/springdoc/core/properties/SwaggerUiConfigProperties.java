@@ -150,6 +150,11 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		private boolean useLocalStorage;
 
 		/**
+		 * Use Session storage.
+		 */
+		private boolean useSessionStorage;
+
+		/**
 		 * The Cookie name.
 		 */
 		private String cookieName = Constants.CSRF_DEFAULT_COOKIE_NAME;
@@ -158,6 +163,11 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		 * The Local storage key.
 		 */
 		private String localStorageKey = Constants.CSRF_DEFAULT_LOCAL_STORAGE_KEY;
+
+		/**
+		 * The Session storage key.
+		 */
+		private String sessionStorageKey = Constants.CSRF_DEFAULT_LOCAL_STORAGE_KEY;
 
 		/**
 		 * The Header name.
@@ -192,12 +202,30 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		}
 
 		/**
+		 * Use Session storage boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isUseSessionStorage() {
+			return useSessionStorage;
+		}
+
+		/**
 		 * Sets useLocalStorage.
 		 *
 		 * @param useLocalStorage the use local storage
 		 */
 		public void setUseLocalStorage(boolean useLocalStorage) {
 			this.useLocalStorage = useLocalStorage;
+		}
+
+		/**
+		 * Sets useSessionStorage.
+		 *
+		 * @param useSessionStorage the use local storage
+		 */
+		public void setUseSessionStorage(boolean useSessionStorage) {
+			this.useSessionStorage = useSessionStorage;
 		}
 
 		/**
@@ -228,12 +256,30 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		}
 
 		/**
+		 * Gets session storage key.
+		 *
+		 * @return the cookie name
+		 */
+		public String getSessionStorageKey() {
+			return sessionStorageKey;
+		}
+
+		/**
 		 * Sets local storage key.
 		 *
 		 * @param localStorageKey the local storage key
 		 */
 		public void setLocalStorageKey(String localStorageKey) {
 			this.localStorageKey = localStorageKey;
+		}
+
+		/**
+		 * Sets local storage key.
+		 *
+		 * @param sessionStorageKey the local storage key
+		 */
+		public void setSessionStorageKey(String sessionStorageKey) {
+			this.sessionStorageKey = sessionStorageKey;
 		}
 
 		/**
