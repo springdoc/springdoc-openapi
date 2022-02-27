@@ -53,6 +53,7 @@ import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
 
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.MimeType;
@@ -164,7 +165,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 				restResourceProvider.customize(openAPIService.getCalculatedOpenAPI());
 				Map<RequestMappingInfo, HandlerMethod> mapDataRest = restResourceProvider.getHandlerMethods();
 				Map<String, Object> requestMappingMap = restResourceProvider.getBasePathAwareControllerEndpoints();
-				Class[] additionalRestClasses = requestMappingMap.values().stream().map(Object::getClass).toArray(Class[]::new);
+				Class[] additionalRestClasses = requestMappingMap.values().stream().map(AopUtils::getTargetClass).toArray(Class[]::new);
 				AbstractOpenApiResource.addRestControllers(additionalRestClasses);
 				map.putAll(mapDataRest);
 			});
@@ -183,7 +184,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			SecurityOAuth2Provider securityOAuth2Provider = securityOAuth2ProviderOptional.get();
 			Map<RequestMappingInfo, HandlerMethod> mapOauth = securityOAuth2Provider.getHandlerMethods();
 			Map<String, Object> requestMappingMapSec = securityOAuth2Provider.getFrameworkEndpoints();
-			Class[] additionalRestClasses = requestMappingMapSec.values().stream().map(Object::getClass).toArray(Class[]::new);
+			Class[] additionalRestClasses = requestMappingMapSec.values().stream().map(AopUtils::getTargetClass).toArray(Class[]::new);
 			AbstractOpenApiResource.addRestControllers(additionalRestClasses);
 			calculatePath(requestMappingMapSec, mapOauth, locale);
 		}
