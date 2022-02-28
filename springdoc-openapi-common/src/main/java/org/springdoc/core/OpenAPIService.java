@@ -39,9 +39,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.security.SecuritySchemes;
@@ -187,7 +187,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @param openApiBuilderCustomisers the open api builder customisers
 	 */
 	OpenAPIService(Optional<OpenAPI> openAPI, SecurityService securityParser,
-			SpringDocConfigProperties springDocConfigProperties,PropertyResolverUtils propertyResolverUtils,
+			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
 			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
@@ -198,7 +198,7 @@ public class OpenAPIService implements ApplicationContextAware {
 			if (!CollectionUtils.isEmpty(this.openAPI.getServers()))
 				this.isServersPresent = true;
 		}
-		this.propertyResolverUtils=propertyResolverUtils;
+		this.propertyResolverUtils = propertyResolverUtils;
 		this.securityParser = securityParser;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
@@ -237,8 +237,8 @@ public class OpenAPIService implements ApplicationContextAware {
 		}
 		else {
 			try {
-				this.calculatedOpenAPI = Json.mapper()
-						.readValue(Json.mapper().writeValueAsString(openAPI), OpenAPI.class);
+				ObjectMapper objectMapper = new ObjectMapper();
+				this.calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class );
 			}
 			catch (JsonProcessingException e) {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
@@ -336,10 +336,9 @@ public class OpenAPIService implements ApplicationContextAware {
 		}
 
 		if (!CollectionUtils.isEmpty(tagsStr)) {
-			if(CollectionUtils.isEmpty(operation.getTags()))
+			if (CollectionUtils.isEmpty(operation.getTags()))
 				operation.setTags(new ArrayList<>(tagsStr));
-			else
-			{
+			else {
 				Set<String> operationTagsSet = new HashSet<>(operation.getTags());
 				operationTagsSet.addAll(tagsStr);
 				operation.getTags().clear();

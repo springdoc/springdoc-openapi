@@ -22,12 +22,18 @@
  */
 package test.org.springdoc.api.app138;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import io.swagger.v3.oas.models.OpenAPI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -44,8 +50,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp138Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+		@Bean
+		public OpenAPI api() {
+			return new OpenAPI()
+					.extensions(apiExtensions());
+		}
+	}
 
+	private static Map<String, Object> apiExtensions() {
+		Map extensions = new HashMap<String, Object>();
+
+		Map linkedMap = new LinkedHashMap<String, String>();
+		linkedMap.put("property1", "value1");
+		linkedMap.put("property2", null);
+
+		extensions.put("x-my-vendor-extensions", linkedMap);
+		return extensions;
+	}
 	@Test
 	public void testApp() throws Exception {
 		MvcResult mockMvcResult = mockMvc.perform(MockMvcRequestBuilders.get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
