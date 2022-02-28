@@ -26,6 +26,8 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.core.jackson.PathsSerializer;
@@ -38,6 +40,7 @@ import io.swagger.v3.oas.models.Paths;
 public interface SortedOpenAPIMixin {
 
 	@JsonAnyGetter
+	@JsonInclude(value = Include.ALWAYS)
 	@JsonPropertyOrder(alphabetic = true)
 	Map<String, Object> getExtensions();
 

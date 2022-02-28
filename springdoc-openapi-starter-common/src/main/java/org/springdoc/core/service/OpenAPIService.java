@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.Json;
@@ -241,8 +242,8 @@ public class OpenAPIService implements ApplicationContextAware {
 		}
 		else {
 			try {
-				this.calculatedOpenAPI = Json.mapper()
-						.readValue(Json.mapper().writeValueAsString(openAPI), OpenAPI.class);
+				ObjectMapper objectMapper = new ObjectMapper();
+				this.calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class );
 			}
 			catch (JsonProcessingException e) {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
