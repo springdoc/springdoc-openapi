@@ -20,7 +20,7 @@ package test.org.springdoc.api.app5;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
@@ -34,7 +34,7 @@ public class SpringDocApp5Test extends AbstractSpringDocTest {
 		@Bean
 		public OpenAPI customOpenAPI() {
 			return new OpenAPI().components(new Components()
-					.addSchemas("CompanyDtoNew",new Schema().addProperties("id", new StringSchema().format("uuid"
+					.addSchemas("CompanyDtoNew",new ObjectSchema().addProperties("id", new StringSchema().format("uuid"
 					)).addProperties("name", new StringSchema())));
 		}
 	}
