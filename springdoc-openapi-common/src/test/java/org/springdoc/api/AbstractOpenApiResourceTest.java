@@ -111,6 +111,7 @@ class AbstractOpenApiResourceTest {
 		openAPI = new OpenAPI();
 		openAPI.setPaths(new Paths().addPathItem(PATH, new PathItem()));
 		ReflectionTestUtils.setField(openAPIService, "cachedOpenAPI", new HashMap<>());
+		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomisers", Optional.empty());
 
 		when(openAPIService.getCalculatedOpenAPI()).thenReturn(openAPI);
 		when(openAPIService.getContext()).thenReturn(context);

@@ -62,7 +62,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
-
+import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
@@ -119,6 +119,11 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * The Open api builder customisers.
 	 */
 	private final Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers;
+
+	/**
+	 * The server base URL customisers.
+	 */
+	private final Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers;
 
 	/**
 	 * The Spring doc config properties.
@@ -188,7 +193,8 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	OpenAPIService(Optional<OpenAPI> openAPI, SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
-			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers) {
+			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers,
+			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
 			if (this.openAPI.getComponents() == null)
@@ -202,6 +208,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		this.securityParser = securityParser;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
+		this.serverBaseUrlCustomisers = serverBaseUrlCustomisers;
 		if (springDocConfigProperties.isUseFqn())
 			TypeNameResolver.std.setUseFqn(true);
 	}
@@ -466,7 +473,15 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @param serverBaseUrl the server base url
 	 */
 	public void setServerBaseUrl(String serverBaseUrl) {
-		this.serverBaseUrl = serverBaseUrl;
+		String customServerBaseUrl = serverBaseUrl;
+
+		if (serverBaseUrlCustomisers.isPresent()) {
+			for (ServerBaseUrlCustomizer customiser : serverBaseUrlCustomisers.get()) {
+				customServerBaseUrl = customiser.customise(customServerBaseUrl);
+			}
+		}
+
+		this.serverBaseUrl = customServerBaseUrl;
 	}
 
 	/**
@@ -806,6 +821,15 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	public SecurityService getSecurityParser() {
 		return securityParser;
+	}
+
+	/**
+	 * Gets server base URL
+	 * 
+	 * @return the server base URL
+	 */
+	public String getServerBaseUrl() {
+		return serverBaseUrl;
 	}
 
 	@Override
