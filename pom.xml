@@ -64,7 +64,7 @@
 		<swagger-api.version>2.1.13</swagger-api.version>
 		<swagger-ui.version>4.5.2</swagger-ui.version>
 		<classgraph.version>4.8.138</classgraph.version>
-		<webjars-locator-core.version>0.48</webjars-locator-core.version>
+		<webjars-locator-core.version>0.50</webjars-locator-core.version>
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<jaxb-impl.version>2.1</jaxb-impl.version>
 		<javax.jws-api.version>1.1</javax.jws-api.version>
