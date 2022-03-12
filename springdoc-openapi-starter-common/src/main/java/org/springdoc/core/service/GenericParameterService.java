@@ -52,6 +52,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
+import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.models.ParameterInfo;
 import org.springdoc.core.models.RequestBodyInfo;
 import org.springdoc.core.parsers.ReturnTypeParser;
@@ -326,6 +327,11 @@ public class GenericParameterService {
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
 			Type type = ReturnTypeParser.getType(methodParameter);
+			if(type instanceof Class && optionalWebConversionServiceProvider.isPresent()){
+				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
+				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type))
+					type = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
+			}
 			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations());
 		}
 		else

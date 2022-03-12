@@ -226,7 +226,7 @@ public class MethodParameterPojoExtractor {
 	 * @param clazz the clazz
 	 * @return the boolean
 	 */
-	private static boolean isSwaggerPrimitiveType(Class<?> clazz) {
+	public static boolean isSwaggerPrimitiveType(Class<?> clazz) {
 		PrimitiveType primitiveType = PrimitiveType.fromType(clazz);
 		return primitiveType != null;
 	}
