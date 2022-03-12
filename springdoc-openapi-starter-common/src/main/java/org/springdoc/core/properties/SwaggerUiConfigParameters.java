@@ -1,21 +1,19 @@
 /*
  *
  *  *
+ *  *  * Copyright 2019-2020 the original author or authors.
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
- *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
- *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
+ *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  * you may not use this file except in compliance with the License.
+ *  *  * You may obtain a copy of the License at
  *  *  *
+ *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *
+ *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  * See the License for the specific language governing permissions and
+ *  *  * limitations under the License.
  *  *
  *
  */
@@ -34,7 +32,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.utils.Constants;
-import org.springdoc.core.utils.SpringDocPropertiesUtils;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -95,6 +92,46 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 * The constant QUERY_CONFIG_ENABLED_PROPERTY.
 	 */
 	public static final String QUERY_CONFIG_ENABLED_PROPERTY  = "queryConfigEnabled";
+
+	/**
+	 * The constant DISPLAY_OPERATION_ID.
+	 */
+	public static final String DISPLAY_OPERATION_ID_PROPERTY = "displayOperationId";
+
+	/**
+	 * The constant DEEP_LINKING.
+	 */
+	public static final String DEEP_LINKING_PROPERTY ="deepLinking";
+
+	/**
+	 * The constant DISPLAY_REQUEST_DURATION.
+	 */
+	public static final String DISPLAY_REQUEST_DURATION_PROPERTY = "displayRequestDuration";
+
+	/**
+	 * The constant SHOW_EXTENSIONS_PROPERTY.
+	 */
+	public static final String SHOW_EXTENSIONS_PROPERTY ="showExtensions";
+
+	/**
+	 * The constant SHOW_COMMON_EXTENSIONS_PROPERTY.
+	 */
+	public static final String SHOW_COMMON_EXTENSIONS_PROPERTY ="showCommonExtensions";
+
+	/**
+	 * The constant TRY_IT_ENABLED_PROPERTY.
+	 */
+	public static final String TRY_IT_ENABLED_PROPERTY ="tryItOutEnabled";
+
+	/**
+	 * The constant PERSIST_AUTHORIZATION_PROPERTY.
+	 */
+	public static final String PERSIST_AUTHORIZATION_PROPERTY ="persistAuthorization";
+
+	/**
+	 * The constant WITH_CREDENTIALS_PROPERTY.
+	 */
+	public static final String WITH_CREDENTIALS_PROPERTY ="withCredentials";
 
 	/**
 	 * The Ui root path.
@@ -210,30 +247,30 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		final Map<String, Object> params = new TreeMap<>();
 		// empty-string prevents swagger-ui default validation
 		params.put(VALIDATOR_URL_PROPERTY, validatorUrl != null ? validatorUrl : "");
-		SpringDocPropertiesUtils.put(CONFIG_URL_PROPERTY, configUrl, params);
-		SpringDocPropertiesUtils.put("deepLinking", this.deepLinking, params);
-		SpringDocPropertiesUtils.put("displayOperationId", displayOperationId, params);
-		SpringDocPropertiesUtils.put("defaultModelsExpandDepth", defaultModelsExpandDepth, params);
-		SpringDocPropertiesUtils.put("defaultModelExpandDepth", defaultModelExpandDepth, params);
-		SpringDocPropertiesUtils.put("defaultModelRendering", defaultModelRendering, params);
-		SpringDocPropertiesUtils.put("displayRequestDuration", displayRequestDuration, params);
-		SpringDocPropertiesUtils.put("docExpansion", docExpansion, params);
-		SpringDocPropertiesUtils.put("maxDisplayedTags", maxDisplayedTags, params);
-		SpringDocPropertiesUtils.put("showExtensions", showExtensions, params);
-		SpringDocPropertiesUtils.put("showCommonExtensions", showCommonExtensions, params);
-		SpringDocPropertiesUtils.put("operationsSorter", operationsSorter, params);
-		SpringDocPropertiesUtils.put("tagsSorter", tagsSorter, params);
-		SpringDocPropertiesUtils.put(SwaggerUiConfigParameters.LAYOUT_PROPERTY, layout , params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(CONFIG_URL_PROPERTY, configUrl, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(DEEP_LINKING_PROPERTY, this.deepLinking, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(DISPLAY_OPERATION_ID_PROPERTY, displayOperationId, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put("defaultModelsExpandDepth", defaultModelsExpandDepth, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put("defaultModelExpandDepth", defaultModelExpandDepth, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put("defaultModelRendering", defaultModelRendering, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(DISPLAY_REQUEST_DURATION_PROPERTY, displayRequestDuration, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put("docExpansion", docExpansion, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put("maxDisplayedTags", maxDisplayedTags, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(SHOW_EXTENSIONS_PROPERTY, showExtensions, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(SHOW_COMMON_EXTENSIONS_PROPERTY, showCommonExtensions, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put("operationsSorter", operationsSorter, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put("tagsSorter", tagsSorter, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(SwaggerUiConfigParameters.LAYOUT_PROPERTY, layout , params);
 		if (supportedSubmitMethods != null)
-			SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
-		SpringDocPropertiesUtils.put(OAUTH2_REDIRECT_URL_PROPERTY, oauth2RedirectUrl, params);
-		SpringDocPropertiesUtils.put(URL_PROPERTY, url, params);
+			org.springdoc.core.SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(OAUTH2_REDIRECT_URL_PROPERTY, oauth2RedirectUrl, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(URL_PROPERTY, url, params);
 		put(URLS_PROPERTY, urls, params);
-		SpringDocPropertiesUtils.put("urls.primaryName", urlsPrimaryName, params);
-		SpringDocPropertiesUtils.put("tryItOutEnabled", tryItOutEnabled, params);
-		SpringDocPropertiesUtils.put("persistAuthorization", persistAuthorization, params);
-		SpringDocPropertiesUtils.put(FILTER_PROPERTY, filter, params);
-		SpringDocPropertiesUtils.put("withCredentials", withCredentials, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put("urls.primaryName", urlsPrimaryName, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(TRY_IT_ENABLED_PROPERTY, tryItOutEnabled, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(PERSIST_AUTHORIZATION_PROPERTY, persistAuthorization, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(FILTER_PROPERTY, filter, params);
+		org.springdoc.core.SpringDocPropertiesUtils.put(WITH_CREDENTIALS_PROPERTY, withCredentials, params);
 		return params;
 	}
 
