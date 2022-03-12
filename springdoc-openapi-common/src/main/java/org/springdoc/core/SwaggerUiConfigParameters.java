@@ -92,6 +92,46 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	public static final String QUERY_CONFIG_ENABLED_PROPERTY  = "queryConfigEnabled";
 
 	/**
+	 * The constant DISPLAY_OPERATION_ID.
+	 */
+	public static final String DISPLAY_OPERATION_ID_PROPERTY = "displayOperationId";
+
+	/**
+	 * The constant DEEP_LINKING.
+	 */
+	public static final String DEEP_LINKING_PROPERTY ="deepLinking";
+
+	/**
+	 * The constant DISPLAY_REQUEST_DURATION.
+	 */
+	public static final String DISPLAY_REQUEST_DURATION_PROPERTY = "displayRequestDuration";
+
+	/**
+	 * The constant SHOW_EXTENSIONS_PROPERTY.
+	 */
+	public static final String SHOW_EXTENSIONS_PROPERTY ="showExtensions";
+
+	/**
+	 * The constant SHOW_COMMON_EXTENSIONS_PROPERTY.
+	 */
+	public static final String SHOW_COMMON_EXTENSIONS_PROPERTY ="showCommonExtensions";
+
+	/**
+	 * The constant TRY_IT_ENABLED_PROPERTY.
+	 */
+	public static final String TRY_IT_ENABLED_PROPERTY ="tryItOutEnabled";
+
+	/**
+	 * The constant PERSIST_AUTHORIZATION_PROPERTY.
+	 */
+	public static final String PERSIST_AUTHORIZATION_PROPERTY ="persistAuthorization";
+
+	/**
+	 * The constant WITH_CREDENTIALS_PROPERTY.
+	 */
+	public static final String WITH_CREDENTIALS_PROPERTY ="withCredentials";
+
+	/**
 	 * The Ui root path.
 	 */
 	private String uiRootPath;
@@ -206,16 +246,16 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		// empty-string prevents swagger-ui default validation
 		params.put(VALIDATOR_URL_PROPERTY, validatorUrl != null ? validatorUrl : "");
 		SpringDocPropertiesUtils.put(CONFIG_URL_PROPERTY, configUrl, params);
-		SpringDocPropertiesUtils.put("deepLinking", this.deepLinking, params);
-		SpringDocPropertiesUtils.put("displayOperationId", displayOperationId, params);
+		SpringDocPropertiesUtils.put(DEEP_LINKING_PROPERTY, this.deepLinking, params);
+		SpringDocPropertiesUtils.put(DISPLAY_OPERATION_ID_PROPERTY, displayOperationId, params);
 		SpringDocPropertiesUtils.put("defaultModelsExpandDepth", defaultModelsExpandDepth, params);
 		SpringDocPropertiesUtils.put("defaultModelExpandDepth", defaultModelExpandDepth, params);
 		SpringDocPropertiesUtils.put("defaultModelRendering", defaultModelRendering, params);
-		SpringDocPropertiesUtils.put("displayRequestDuration", displayRequestDuration, params);
+		SpringDocPropertiesUtils.put(DISPLAY_REQUEST_DURATION_PROPERTY, displayRequestDuration, params);
 		SpringDocPropertiesUtils.put("docExpansion", docExpansion, params);
 		SpringDocPropertiesUtils.put("maxDisplayedTags", maxDisplayedTags, params);
-		SpringDocPropertiesUtils.put("showExtensions", showExtensions, params);
-		SpringDocPropertiesUtils.put("showCommonExtensions", showCommonExtensions, params);
+		SpringDocPropertiesUtils.put(SHOW_EXTENSIONS_PROPERTY, showExtensions, params);
+		SpringDocPropertiesUtils.put(SHOW_COMMON_EXTENSIONS_PROPERTY, showCommonExtensions, params);
 		SpringDocPropertiesUtils.put("operationsSorter", operationsSorter, params);
 		SpringDocPropertiesUtils.put("tagsSorter", tagsSorter, params);
 		SpringDocPropertiesUtils.put(SwaggerUiConfigParameters.LAYOUT_PROPERTY, layout , params);
@@ -225,10 +265,10 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		SpringDocPropertiesUtils.put(URL_PROPERTY, url, params);
 		put(URLS_PROPERTY, urls, params);
 		SpringDocPropertiesUtils.put("urls.primaryName", urlsPrimaryName, params);
-		SpringDocPropertiesUtils.put("tryItOutEnabled", tryItOutEnabled, params);
-		SpringDocPropertiesUtils.put("persistAuthorization", persistAuthorization, params);
+		SpringDocPropertiesUtils.put(TRY_IT_ENABLED_PROPERTY, tryItOutEnabled, params);
+		SpringDocPropertiesUtils.put(PERSIST_AUTHORIZATION_PROPERTY, persistAuthorization, params);
 		SpringDocPropertiesUtils.put(FILTER_PROPERTY, filter, params);
-		SpringDocPropertiesUtils.put("withCredentials", withCredentials, params);
+		SpringDocPropertiesUtils.put(WITH_CREDENTIALS_PROPERTY, withCredentials, params);
 		return params;
 	}
 

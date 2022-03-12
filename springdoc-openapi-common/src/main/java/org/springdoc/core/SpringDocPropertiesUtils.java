@@ -68,7 +68,7 @@ public interface SpringDocPropertiesUtils {
 	 */
 	static void put(final String name, final Boolean value, final Map<String, Object> params) {
 		if (value != null) {
-			params.put(name, value.toString());
+			params.put(name, value);
 		}
 	}
 
