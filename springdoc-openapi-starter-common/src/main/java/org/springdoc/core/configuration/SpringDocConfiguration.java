@@ -96,6 +96,7 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -481,13 +482,13 @@ public class SpringDocConfiguration {
 		/**
 		 * Web conversion service provider web conversion service provider.
 		 *
-		 * @param webConversionServiceOptional the web conversion service optional
+		 * @param mvcConversionService the web conversion service optional
 		 * @return the web conversion service provider
 		 */
 		@Bean
 		@Lazy(false)
-		WebConversionServiceProvider webConversionServiceProvider(Optional<WebConversionService> webConversionServiceOptional) {
-			return new WebConversionServiceProvider(webConversionServiceOptional);
+		WebConversionServiceProvider webConversionServiceProvider(Optional<GenericConversionService> mvcConversionService) {
+			return new WebConversionServiceProvider(mvcConversionService);
 		}
 	}
 
