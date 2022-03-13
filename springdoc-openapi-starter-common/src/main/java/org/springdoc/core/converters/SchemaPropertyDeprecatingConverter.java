@@ -24,6 +24,7 @@ package org.springdoc.core.converters;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -84,10 +85,13 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 	/**
 	 * Is deprecated boolean.
 	 *
-	 * @param annotatedElement the annotated element
+	 * @param method the annotated element
 	 * @return the boolean
 	 */
-	public static boolean isDeprecated(AnnotatedElement annotatedElement) {
-		return DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(annotatedElement, annoClass) != null);
+	public static boolean isDeprecated(Method method) {
+		Class<?> declaringClass = method.getDeclaringClass();
+		boolean deprecatedMethod = DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(method, annoClass) != null);
+		boolean deprecatedClass = DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(declaringClass, annoClass) != null);
+		return deprecatedClass || deprecatedMethod;
 	}
 }
