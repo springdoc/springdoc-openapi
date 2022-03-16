@@ -186,7 +186,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param openApiBuilderCustomisers the open api builder customisers
 	 */
-	OpenAPIService(Optional<OpenAPI> openAPI, SecurityService securityParser,
+	public OpenAPIService(Optional<OpenAPI> openAPI, SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
 			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers) {
 		if (openAPI.isPresent()) {
