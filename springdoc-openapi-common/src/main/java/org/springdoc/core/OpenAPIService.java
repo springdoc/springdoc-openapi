@@ -30,11 +30,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -51,10 +48,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.Paths;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
-import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.ArrayUtils;
@@ -435,32 +429,6 @@ public class OpenAPIService implements ApplicationContextAware {
 	}
 
 	/**
-	 * Resolve properties schema.
-	 *
-	 * @param schema the schema
-	 * @param locale the locale
-	 * @return the schema
-	 */
-	@SuppressWarnings("unchecked")
-	public Schema resolveProperties(Schema schema, Locale locale) {
-		resolveProperty(schema::getName, schema::name, propertyResolverUtils, locale);
-		resolveProperty(schema::getTitle, schema::title, propertyResolverUtils, locale);
-		resolveProperty(schema::getDescription, schema::description, propertyResolverUtils, locale);
-
-		Map<String, Schema> properties = schema.getProperties();
-		if (!CollectionUtils.isEmpty(properties)) {
-			LinkedHashMap<String, Schema> resolvedSchemas = properties.entrySet().stream().map(es -> {
-				es.setValue(resolveProperties(es.getValue(), locale));
-				return es;
-			}).collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e2,
-					LinkedHashMap::new));
-			schema.setProperties(resolvedSchemas);
-		}
-
-		return schema;
-	}
-
-	/**
 	 * Sets server base url.
 	 *
 	 * @param serverBaseUrl the server base url
@@ -510,7 +478,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef, Locale locale) {
 		// info
-		AnnotationsUtils.getInfo(apiDef.info()).map(info -> resolveProperties(info, locale)).ifPresent(openAPI::setInfo);
+		AnnotationsUtils.getInfo(apiDef.info()).map(info -> propertyResolverUtils.resolveProperties(info, locale)).ifPresent(openAPI::setInfo);
 		// OpenApiDefinition security requirements
 		securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
 		// OpenApiDefinition external docs
@@ -519,7 +487,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
 		// OpenApiDefinition servers
 		Optional<List<Server>> optionalServers = AnnotationsUtils.getServers(apiDef.servers());
-		optionalServers.map(servers -> resolveProperties(servers, locale)).ifPresent(servers -> {
+		optionalServers.map(servers -> propertyResolverUtils.resolveProperties(servers, locale)).ifPresent(servers -> {
 					this.isServersPresent = true;
 					openAPI.servers(servers);
 				}
@@ -527,67 +495,6 @@ public class OpenAPIService implements ApplicationContextAware {
 		// OpenApiDefinition extensions
 		if (apiDef.extensions().length > 0) {
 			openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
-		}
-	}
-
-	/**
-	 * Resolve properties info.
-	 *
-	 * @param servers the servers
-	 * @param locale the locale
-	 * @return the servers
-	 */
-	private List<Server> resolveProperties(List<Server> servers, Locale locale) {
-		servers.forEach(server -> {
-			resolveProperty(server::getUrl, server::url, propertyResolverUtils, locale);
-			resolveProperty(server::getDescription, server::description, propertyResolverUtils, locale);
-			if (CollectionUtils.isEmpty(server.getVariables()))
-				server.setVariables(null);
-		});
-		return servers;
-	}
-
-	/**
-	 * Resolve properties info.
-	 *
-	 * @param info the info
-	 * @param locale the locale
-	 * @return the info
-	 */
-	private Info resolveProperties(Info info, Locale locale) {
-		resolveProperty(info::getTitle, info::title, propertyResolverUtils, locale);
-		resolveProperty(info::getDescription, info::description, propertyResolverUtils, locale);
-		resolveProperty(info::getVersion, info::version, propertyResolverUtils, locale);
-		resolveProperty(info::getTermsOfService, info::termsOfService, propertyResolverUtils, locale);
-
-		License license = info.getLicense();
-		if (license != null) {
-			resolveProperty(license::getName, license::name, propertyResolverUtils, locale);
-			resolveProperty(license::getUrl, license::url, propertyResolverUtils, locale);
-		}
-
-		Contact contact = info.getContact();
-		if (contact != null) {
-			resolveProperty(contact::getName, contact::name, propertyResolverUtils, locale);
-			resolveProperty(contact::getEmail, contact::email, propertyResolverUtils, locale);
-			resolveProperty(contact::getUrl, contact::url, propertyResolverUtils, locale);
-		}
-		return info;
-	}
-
-	/**
-	 * Resolve property.
-	 *
-	 * @param getProperty the get property
-	 * @param setProperty the set property
-	 * @param propertyResolverUtils the property resolver utils
-	 * @param locale the locale
-	 */
-	private void resolveProperty(Supplier<String> getProperty, Consumer<String> setProperty,
-			PropertyResolverUtils propertyResolverUtils, Locale locale) {
-		String value = getProperty.get();
-		if (StringUtils.isNotBlank(value)) {
-			setProperty.accept(propertyResolverUtils.resolve(value, locale));
 		}
 	}
 

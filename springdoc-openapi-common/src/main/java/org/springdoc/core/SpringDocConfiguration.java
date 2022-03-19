@@ -333,18 +333,18 @@ public class SpringDocConfiguration {
 	/**
 	 * Properties resolver for schema open api customiser.
 	 *
-	 * @param openAPIService the open api builder
+	 * @param propertyResolverUtils the open api property Resolver
 	 * @return the open api customiser
 	 */
 	@Bean
 	@ConditionalOnProperty(SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES)
 	@Lazy(false)
-	OpenApiCustomiser propertiesResolverForSchema(OpenAPIService openAPIService) {
+	OpenApiCustomiser propertiesResolverForSchema(PropertyResolverUtils propertyResolverUtils) {
 		return openApi -> {
 			Components components = openApi.getComponents();
 			Map<String, Schema> schemas = components.getSchemas();
 			if (!CollectionUtils.isEmpty(schemas))
-				schemas.values().forEach(schema -> openAPIService.resolveProperties(schema, Locale.getDefault()));
+				schemas.values().forEach(schema -> propertyResolverUtils.resolveProperties(schema, Locale.getDefault()));
 		};
 	}
 
@@ -357,8 +357,8 @@ public class SpringDocConfiguration {
 	@Conditional(CacheOrGroupedOpenApiCondition.class)
 	@ConditionalOnClass(name = BINDRESULT_CLASS)
 	@Lazy(false)
-	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor() {
-		return new SpringdocBeanFactoryConfigurer();
+	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor(List<GroupedOpenApi> groupedOpenApis) {
+		return new SpringdocBeanFactoryConfigurer(groupedOpenApis);
 	}
 
 	/**

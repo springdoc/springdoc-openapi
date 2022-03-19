@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -52,18 +53,32 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 	@Nullable
 	protected Environment environment;
 
+	/**
+	 * The Grouped open apis.
+	 */
+	protected List<GroupedOpenApi> groupedOpenApis;
+
+	/**
+	 * Instantiates a new Springdoc bean factory configurer.
+	 *
+	 * @param groupedOpenApis the grouped open apis
+	 */
+	public SpringdocBeanFactoryConfigurer(List<GroupedOpenApi> groupedOpenApis) {
+		this.groupedOpenApis = groupedOpenApis;
+	}
+
 	@Override
 	public void setEnvironment(Environment environment) {
 		this.environment = environment;
 	}
 
 	@Override
-	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)  {
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		final BindResult<SpringDocConfigProperties> result = Binder.get(environment)
 				.bind(SPRINGDOC_PREFIX, SpringDocConfigProperties.class);
 		if (result.isBound()) {
 			SpringDocConfigProperties springDocGroupConfig = result.get();
-			List<GroupedOpenApi> groupedOpenApis = springDocGroupConfig.getGroupConfigs().stream()
+			List<GroupedOpenApi> groupedOpenApisList = springDocGroupConfig.getGroupConfigs().stream()
 					.map(elt -> {
 						GroupedOpenApi.Builder builder = GroupedOpenApi.builder();
 						if (!CollectionUtils.isEmpty(elt.getPackagesToScan()))
@@ -73,7 +88,13 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 						return builder.group(elt.getGroup()).build();
 					})
 					.collect(Collectors.toList());
-			groupedOpenApis.forEach(elt -> beanFactory.registerSingleton(elt.getGroup(), elt));
+			groupedOpenApisList.forEach(elt -> beanFactory.registerSingleton(elt.getGroup(), elt));
+			this.groupedOpenApis.addAll(groupedOpenApisList);
+
+			if (springDocGroupConfig.getApiDocs().isResolveSchemaProperties()) {
+				OpenApiCustomiser propertiesResolverForSchemaCustomizer = (OpenApiCustomiser) beanFactory.getBean("propertiesResolverForSchema");
+				this.groupedOpenApis.forEach(groupedOpenApi -> groupedOpenApi.addOpenApiCustomiser(propertiesResolverForSchemaCustomizer));
+			}
 		}
 		initBeanFactoryPostProcessor(beanFactory);
 	}
