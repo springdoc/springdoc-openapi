@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springdoc.api.OpenApiResourceNotFoundException;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SpringDocConfigProperties.GroupConfig;
@@ -37,8 +38,11 @@ import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import static org.springdoc.core.utils.Constants.ACTUATOR_DEFAULT_GROUP;
 
@@ -46,7 +50,7 @@ import static org.springdoc.core.utils.Constants.ACTUATOR_DEFAULT_GROUP;
  * The type Multiple open api resource.
  * @author bnasslahsen
  */
-public abstract class MultipleOpenApiResource implements InitializingBean {
+public abstract class MultipleOpenApiResource implements InitializingBean, ApplicationContextAware {
 
 	/**
 	 * The Grouped open apis.
@@ -88,7 +92,10 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	 */
 	private final SpringDocProviders springDocProviders;
 
-
+	/**
+	 * The Application context.
+	 */
+	protected ApplicationContext applicationContext;
 	/**
 	 * Instantiates a new Multiple open api resource.
 	 *
@@ -115,6 +122,10 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() {
+		if (springDocConfigProperties.getApiDocs().isResolveSchemaProperties()) {
+			OpenApiCustomizer propertiesResolverForSchemaCustomizer = (OpenApiCustomizer) applicationContext.getBean("propertiesResolverForSchema");
+			this.groupedOpenApis.forEach(groupedOpenApi -> groupedOpenApi.addOpenApiCustomizer(propertiesResolverForSchemaCustomizer));
+		}
 		this.groupedOpenApiResources = groupedOpenApis.stream()
 				.collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
 						{
@@ -169,5 +180,10 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 			throw new OpenApiResourceNotFoundException("No OpenAPI resource found for group: " + group);
 		}
 		return openApiResource;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 }
