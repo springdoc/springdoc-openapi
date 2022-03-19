@@ -324,6 +324,16 @@
                 "schema": {
                   "$ref": "#/components/schemas/Person"
                 }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              },
+              "application/prs.hal-forms+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
               }
             }
           }
