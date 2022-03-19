@@ -435,7 +435,7 @@ public class GroupedOpenApi {
 	 *
 	 * @param openApiCustomiser the open api customiser
 	 */
-	public void addOpenApiCustomiser(OpenApiCustomiser openApiCustomiser) {
+	public void addOpenApiCustomizer(OpenApiCustomiser openApiCustomiser) {
 		this.openApiCustomisers.add(openApiCustomiser);
 	}
 }

@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.models.OpenAPI;
-import org.springdoc.core.customizers.OpenApiCustomiser;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -53,20 +52,6 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 	@Nullable
 	protected Environment environment;
 
-	/**
-	 * The Grouped open apis.
-	 */
-	protected List<GroupedOpenApi> groupedOpenApis;
-
-	/**
-	 * Instantiates a new Springdoc bean factory configurer.
-	 *
-	 * @param groupedOpenApis the grouped open apis
-	 */
-	public SpringdocBeanFactoryConfigurer(List<GroupedOpenApi> groupedOpenApis) {
-		this.groupedOpenApis = groupedOpenApis;
-	}
-
 	@Override
 	public void setEnvironment(Environment environment) {
 		this.environment = environment;
@@ -78,7 +63,7 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 				.bind(SPRINGDOC_PREFIX, SpringDocConfigProperties.class);
 		if (result.isBound()) {
 			SpringDocConfigProperties springDocGroupConfig = result.get();
-			List<GroupedOpenApi> groupedOpenApisList = springDocGroupConfig.getGroupConfigs().stream()
+			List<GroupedOpenApi> groupedOpenApis = springDocGroupConfig.getGroupConfigs().stream()
 					.map(elt -> {
 						GroupedOpenApi.Builder builder = GroupedOpenApi.builder();
 						if (!CollectionUtils.isEmpty(elt.getPackagesToScan()))
@@ -88,13 +73,7 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 						return builder.group(elt.getGroup()).build();
 					})
 					.collect(Collectors.toList());
-			groupedOpenApisList.forEach(elt -> beanFactory.registerSingleton(elt.getGroup(), elt));
-			this.groupedOpenApis.addAll(groupedOpenApisList);
-
-			if (springDocGroupConfig.getApiDocs().isResolveSchemaProperties()) {
-				OpenApiCustomiser propertiesResolverForSchemaCustomizer = (OpenApiCustomiser) beanFactory.getBean("propertiesResolverForSchema");
-				this.groupedOpenApis.forEach(groupedOpenApi -> groupedOpenApi.addOpenApiCustomiser(propertiesResolverForSchemaCustomizer));
-			}
+			groupedOpenApis.forEach(elt -> beanFactory.registerSingleton(elt.getGroup(), elt));
 		}
 		initBeanFactoryPostProcessor(beanFactory);
 	}
@@ -110,4 +89,5 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 		for (String beanName : beanFactory.getBeanNamesForType(OpenAPI.class))
 			beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
 	}
+
 }

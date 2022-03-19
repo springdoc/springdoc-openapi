@@ -48,12 +48,17 @@ import static org.springdoc.core.Constants.MANAGEMENT_ENDPOINTS_WEB;
 public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactoryConfigurer{
 
 	/**
+	 * The Grouped open apis.
+	 */
+	private List<GroupedOpenApi> groupedOpenApis;
+
+	/**
 	 * Instantiates a new Springdoc actuator bean factory configurer.
 	 *
 	 * @param groupedOpenApis the grouped open apis
 	 */
 	public SpringdocActuatorBeanFactoryConfigurer(List<GroupedOpenApi> groupedOpenApis) {
-		super(groupedOpenApis);
+		this.groupedOpenApis = groupedOpenApis;
 	}
 
 	@Override

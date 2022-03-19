@@ -357,8 +357,8 @@ public class SpringDocConfiguration {
 	@Conditional(CacheOrGroupedOpenApiCondition.class)
 	@ConditionalOnClass(name = BINDRESULT_CLASS)
 	@Lazy(false)
-	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor(List<GroupedOpenApi> groupedOpenApis) {
-		return new SpringdocBeanFactoryConfigurer(groupedOpenApis);
+	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor() {
+		return new SpringdocBeanFactoryConfigurer();
 	}
 
 	/**
