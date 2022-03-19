@@ -143,9 +143,12 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	 * @param path the path
 	 * @param methods the methods
 	 */
-	public RouterOperation(String path, RequestMethod[] methods) {
+	public RouterOperation(String path, RequestMethod[] methods,String[] consumes, String[] produces, String[] headers) {
 		this.path = path;
 		this.methods = methods;
+		this.consumes=consumes;
+		this.produces=produces;
+		this.headers=headers;
 	}
 
 	/**

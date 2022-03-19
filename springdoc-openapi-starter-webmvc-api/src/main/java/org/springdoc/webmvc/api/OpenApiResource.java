@@ -223,7 +223,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 							// default allowed requestmethods
 							if (requestMethods.isEmpty())
 								requestMethods = this.getDefaultAllowedHttpMethods();
-							calculatePath(handlerMethod, operationPath, requestMethods, locale);
+							calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces, headers, locale);
 						}
 					}
 				}
