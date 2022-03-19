@@ -31,6 +31,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -269,21 +270,26 @@ public class MethodAttributes {
 	 * @param headers the headers
 	 */
 	private void fillMethods(String[] produces, String[] consumes, String[] headers) {
-		if (ArrayUtils.isNotEmpty(produces))
-			methodProduces = produces;
-		else if (ArrayUtils.isNotEmpty(classProduces))
-			methodProduces = classProduces;
-		else
-			methodProduces = new String[] { defaultProducesMediaType };
+		if (ArrayUtils.isEmpty(methodProduces)) {
+			if (ArrayUtils.isNotEmpty(produces))
+				methodProduces = produces;
+			else if (ArrayUtils.isNotEmpty(classProduces))
+				methodProduces = classProduces;
+			else
+				methodProduces = new String[] { defaultProducesMediaType };
+		}
 
-		if (ArrayUtils.isNotEmpty(consumes))
-			methodConsumes = consumes;
-		else if (ArrayUtils.isNotEmpty(classConsumes))
-			methodConsumes = classConsumes;
-		else
-			methodConsumes = new String[] { defaultConsumesMediaType };
+		if (ArrayUtils.isEmpty(methodConsumes)) {
+			if (ArrayUtils.isNotEmpty(consumes))
+				methodConsumes = consumes;
+			else if (ArrayUtils.isNotEmpty(classConsumes))
+				methodConsumes = classConsumes;
+			else
+				methodConsumes = new String[] { defaultConsumesMediaType };
+		}
 
-		setHeaders(headers);
+		if (CollectionUtils.isEmpty(this.headers))
+			setHeaders(headers);
 	}
 
 	/**
