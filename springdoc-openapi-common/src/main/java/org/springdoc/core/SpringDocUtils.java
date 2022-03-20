@@ -299,5 +299,27 @@ public class SpringDocUtils {
 		AdditionalModelsConverter.replaceParameterObjectWithClass(source, target);
 		return this;
 	}
+
+	/**
+	 * Sets response entity exception handler class.
+	 *
+	 * @param clazz the clazz
+	 * @return the response entity exception handler class
+	 */
+	public SpringDocUtils setResponseEntityExceptionHandlerClass(Class<?> clazz) {
+		GenericResponseService.setResponseEntityExceptionHandlerClass(clazz);
+		return this;
+	}
+
+	/**
+	 * Sets model and view class.
+	 *
+	 * @param clazz the clazz
+	 * @return the model and view class
+	 */
+	public SpringDocUtils setModelAndViewClass(Class<?> clazz) {
+		AbstractOpenApiResource.setModelAndViewClass(clazz);
+		return this;
+	}
 }
 

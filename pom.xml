@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.2</version>
+		<version>2.6.4</version>
 	</parent>
 
 	<licenses>
@@ -77,7 +77,7 @@
 		<jaxb-impl.version>2.1</jaxb-impl.version>
 		<javax.jws-api.version>1.1</javax.jws-api.version>
 		<jjwt.version>0.9.1</jjwt.version>
-		<spring-native.version>0.11.1</spring-native.version>
+		<spring-native.version>0.11.3</spring-native.version>
 		<therapi-runtime-javadoc.version>0.13.0</therapi-runtime-javadoc.version>
 		<spring-cloud.version>2021.0.0</spring-cloud.version>
 		<spring-cloud-netflix.version>2.2.10.RELEASE</spring-cloud-netflix.version>

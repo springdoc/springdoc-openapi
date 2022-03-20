@@ -210,15 +210,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected final SpringDocProviders springDocProviders;
 
-	static {
-		try {
-			modelAndViewClass = Class.forName("org.springframework.web.servlet.ModelAndView");
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			LOGGER.trace(classNotFoundException.getMessage());
-		}
-	}
-
 	/**
 	 * Instantiates a new Abstract open api resource.
 	 * @param groupName the group name
@@ -1323,5 +1314,14 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		objectMapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
 		objectMapper.addMixIn(OpenAPI.class, SortedOpenAPIMixin.class);
 		objectMapper.addMixIn(Schema.class, SortedSchemaMixin.class);
+	}
+
+	/**
+	 * Sets model and view class.
+	 *
+	 * @param modelAndViewClass the model and view class
+	 */
+	public static void setModelAndViewClass(Class<?> modelAndViewClass) {
+		AbstractOpenApiResource.modelAndViewClass = modelAndViewClass;
 	}
 }
