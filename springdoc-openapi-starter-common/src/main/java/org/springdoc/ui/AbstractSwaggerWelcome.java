@@ -218,10 +218,7 @@ public abstract class AbstractSwaggerWelcome {
 	 * @return the oauth2 redirect url
 	 */
 	protected String getOauth2RedirectUrl() {
-		if (springDocConfigProperties.isCacheDisabled())
-			return StringUtils.defaultIfBlank(swaggerUiConfig.getOauth2RedirectUrl(), SWAGGER_UI_OAUTH_REDIRECT_URL);
-		else
-			return swaggerUiConfigParameters.getOauth2RedirectUrl();
+		return StringUtils.defaultIfBlank(swaggerUiConfig.getOauth2RedirectUrl(), SWAGGER_UI_OAUTH_REDIRECT_URL);
 	}
 
 	/**
