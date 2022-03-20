@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
@@ -62,7 +63,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 
 	@Override
 	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
-		if (!swaggerUiConfigParameters.isValidUrl(swaggerUiConfigParameters.getOauth2RedirectUrl()) || springDocConfigProperties.isCacheDisabled())
+		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl()) )
 			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder
 					.path(swaggerUiConfigParameters.getUiRootPath())
 					.path(getOauth2RedirectUrl()).build().toString());
