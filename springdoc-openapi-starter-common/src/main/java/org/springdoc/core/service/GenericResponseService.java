@@ -110,23 +110,9 @@ public class GenericResponseService {
 	private List<ControllerAdviceInfo> controllerAdviceInfos = new ArrayList<>();
 
 	/**
-	 * The constant LOGGER.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(GenericResponseService.class);
-
-	/**
 	 * The Response entity exception handler class.
 	 */
 	private static Class<?> responseEntityExceptionHandlerClass;
-
-	static {
-		try {
-			responseEntityExceptionHandlerClass = Class.forName("org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler");
-		}
-		catch (ClassNotFoundException classNotFoundException) {
-			LOGGER.trace(classNotFoundException.getMessage());
-		}
-	}
 
 	/**
 	 * Instantiates a new Generic response builder.
@@ -636,4 +622,12 @@ public class GenericResponseService {
 		return !responseSet.isEmpty() && responseSet.stream().anyMatch(apiResponseAnnotations -> httpCode.equals(apiResponseAnnotations.responseCode()));
 	}
 
+	/**
+	 * Sets response entity exception handler class.
+	 *
+	 * @param responseEntityExceptionHandlerClass the response entity exception handler class
+	 */
+	public static void setResponseEntityExceptionHandlerClass(Class<?> responseEntityExceptionHandlerClass) {
+		GenericResponseService.responseEntityExceptionHandlerClass = responseEntityExceptionHandlerClass;
+	}
 }

@@ -33,6 +33,7 @@ import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericParameterService;
+import org.springdoc.core.service.GenericResponseService;
 
 /**
  * The type Spring doc utils.
@@ -302,6 +303,29 @@ public class SpringDocUtils {
 	 */
 	public SpringDocUtils replaceParameterObjectWithClass(Class source, Class target) {
 		AdditionalModelsConverter.replaceParameterObjectWithClass(source, target);
+		return this;
+	}
+
+
+	/**
+	 * Sets response entity exception handler class.
+	 *
+	 * @param clazz the clazz
+	 * @return the response entity exception handler class
+	 */
+	public SpringDocUtils setResponseEntityExceptionHandlerClass(Class<?> clazz) {
+		GenericResponseService.setResponseEntityExceptionHandlerClass(clazz);
+		return this;
+	}
+
+	/**
+	 * Sets model and view class.
+	 *
+	 * @param clazz the clazz
+	 * @return the model and view class
+	 */
+	public SpringDocUtils setModelAndViewClass(Class<?> clazz) {
+		AbstractOpenApiResource.setModelAndViewClass(clazz);
 		return this;
 	}
 }

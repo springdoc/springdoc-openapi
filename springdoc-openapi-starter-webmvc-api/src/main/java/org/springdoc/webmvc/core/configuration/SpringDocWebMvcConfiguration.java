@@ -65,10 +65,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
+import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 /**
  * The type Spring doc web mvc configuration.
@@ -80,6 +83,10 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocWebMvcConfiguration {
 
+	static {
+		getConfig().setResponseEntityExceptionHandlerClass(ResponseEntityExceptionHandler.class)
+				.setModelAndViewClass(ModelAndView.class);
+	}
 	/**
 	 * Open api resource open api resource.
 	 *
