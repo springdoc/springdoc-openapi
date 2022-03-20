@@ -21,7 +21,7 @@
  *
  */
 
-package test.org.springdoc.api.app30;
+package test.org.springdoc.api.app301;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
