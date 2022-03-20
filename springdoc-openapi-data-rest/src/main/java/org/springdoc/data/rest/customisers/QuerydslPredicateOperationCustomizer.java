@@ -56,6 +56,7 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.util.CastUtils;
 import org.springframework.data.util.ClassTypeInformation;
 import org.springframework.data.util.TypeInformation;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 
 /**
@@ -86,10 +87,6 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 
 	@Override
 	public Operation customize(Operation operation, HandlerMethod handlerMethod) {
-		if (operation.getParameters() == null) {
-			return operation;
-		}
-
 		MethodParameter[] methodParameters = handlerMethod.getMethodParameters();
 
 		int parametersLength = methodParameters.length;
@@ -118,7 +115,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 
 			// if only listed properties should be included, remove all other fields from fieldsToAdd
 			if (getFieldValueOfBoolean(bindings, "excludeUnlistedProperties")) {
-				fieldsToAdd.removeIf(s -> !whiteList.contains(s) && !aliases.contains(s) );
+				fieldsToAdd.removeIf(s -> !whiteList.contains(s) && !aliases.contains(s));
 			}
 
 			for (String fieldName : fieldsToAdd) {
@@ -129,7 +126,14 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 				}
 			}
 		}
-		operation.getParameters().addAll(parametersToAddToOperation);
+
+		if(!CollectionUtils.isEmpty(parametersToAddToOperation)){
+			if (operation.getParameters() == null)
+				operation.setParameters(parametersToAddToOperation);
+			else
+				operation.getParameters().addAll(parametersToAddToOperation);
+		}
+
 		return operation;
 	}
 
@@ -246,7 +250,8 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 			Field declaredField;
 			if (path.isPresent()) {
 				genericType = path.get().getType();
-			} else {
+			}
+			else {
 				declaredField = root.getDeclaredField(fieldName);
 				genericType = declaredField.getGenericType();
 			}
@@ -275,7 +280,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 		}
 
 		if (parameter.getSchema() == null) {
-			Schema<?> schema ;
+			Schema<?> schema;
 			PrimitiveType primitiveType = PrimitiveType.fromType(type);
 			if (primitiveType != null) {
 				schema = primitiveType.createProperty();
