@@ -23,55 +23,13 @@
 
 package test.org.springdoc.api.app30;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.SimpleMixInResolver;
-import com.fasterxml.jackson.databind.type.ClassKey;
-import io.swagger.v3.core.util.Json;
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = "springdoc.enable-data-rest=false")
 public class SpringDocApp30Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 
-	private Map<ClassKey, Class<?>> springMixins = new HashMap<>();
-
-	@BeforeEach
-	void init() throws IllegalAccessException {
-		Field convertersField2 = FieldUtils.getDeclaredField(ObjectMapper.class, "_mixIns", true);
-		SimpleMixInResolver _mixIns = (SimpleMixInResolver) convertersField2.get(Json.mapper());
-		Field convertersField3 = FieldUtils.getDeclaredField(SimpleMixInResolver.class, "_localMixIns", true);
-		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) convertersField3.get(_mixIns);
-		Iterator<Entry<ClassKey, Class<?>>> it = _localMixIns.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<ClassKey, Class<?>> entry = it.next();
-			if (entry.getKey().toString().startsWith("org.springframework")) {
-				springMixins.put(entry.getKey(), entry.getValue());
-				it.remove();
-			}
-		}
-
-	}
-
-	@AfterEach
-	private void clean() throws IllegalAccessException {
-		Field convertersField2 = FieldUtils.getDeclaredField(ObjectMapper.class, "_mixIns", true);
-		SimpleMixInResolver _mixIns = (SimpleMixInResolver) convertersField2.get(Json.mapper());
-		Field convertersField3 = FieldUtils.getDeclaredField(SimpleMixInResolver.class, "_localMixIns", true);
-		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) convertersField3.get(_mixIns);
-		_localMixIns.putAll(springMixins);
-	}
 }

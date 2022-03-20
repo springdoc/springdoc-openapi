@@ -54,6 +54,7 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.util.CastUtils;
 import org.springframework.data.util.ClassTypeInformation;
 import org.springframework.data.util.TypeInformation;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 
 /**
@@ -84,10 +85,6 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 
 	@Override
 	public Operation customize(Operation operation, HandlerMethod handlerMethod) {
-		if (operation.getParameters() == null) {
-			return operation;
-		}
-
 		MethodParameter[] methodParameters = handlerMethod.getMethodParameters();
 
 		int parametersLength = methodParameters.length;
@@ -127,7 +124,14 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 				}
 			}
 		}
-		operation.getParameters().addAll(parametersToAddToOperation);
+
+		if(!CollectionUtils.isEmpty(parametersToAddToOperation)){
+			if (operation.getParameters() == null)
+				operation.setParameters(parametersToAddToOperation);
+			else
+				operation.getParameters().addAll(parametersToAddToOperation);
+		}
+
 		return operation;
 	}
 
