@@ -55,6 +55,7 @@ public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 	@Test
 	public void testApp2() throws Exception {
 		String result = actuatorRestTemplate.getForObject("/test/application/openapi/x-actuator", String.class);
+		System.out.println(result);
 		String expected = getContent("results/app148-2.json");
 		assertEquals(expected, result, true);
 	}

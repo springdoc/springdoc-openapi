@@ -22,12 +22,27 @@
 
 package org.springdoc.core.customizers;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.MediaType;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.RequestBody;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import org.springframework.boot.actuate.endpoint.OperationType;
+import org.springframework.boot.actuate.endpoint.annotation.AbstractDiscoveredOperation;
+import org.springframework.boot.actuate.endpoint.annotation.Selector;
+import org.springframework.boot.actuate.endpoint.invoke.OperationParameter;
+import org.springframework.boot.actuate.endpoint.invoke.reflect.OperationMethod;
 import org.springframework.web.method.HandlerMethod;
 
 import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ONE;
@@ -44,6 +59,11 @@ public class ActuatorOperationCustomizer implements OperationCustomizer {
 	 */
 	private HashMap<String, Integer> methodCountMap = new HashMap<>();
 
+	private static final String OPERATION = "operation";
+
+	private static final String PARAMETER = "parameter";
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ActuatorOperationCustomizer.class);
 
 	/**
 	 * The regex pattern for operationId lookup.
@@ -53,6 +73,31 @@ public class ActuatorOperationCustomizer implements OperationCustomizer {
 	@Override
 	public Operation customize(Operation operation, HandlerMethod handlerMethod) {
 		if (operation.getTags() != null && operation.getTags().contains(getTag().getName())) {
+			Field operationFiled = FieldUtils.getDeclaredField(handlerMethod.getBean().getClass(), OPERATION, true);
+			Object actuatorOperation;
+			if (operationFiled != null) {
+				try {
+					actuatorOperation = operationFiled.get(handlerMethod.getBean());
+					operationFiled = FieldUtils.getDeclaredField(actuatorOperation.getClass(), OPERATION, true);
+					AbstractDiscoveredOperation discoveredOperation = (AbstractDiscoveredOperation) operationFiled.get(actuatorOperation);
+					OperationMethod operationMethod = discoveredOperation.getOperationMethod();
+					if (OperationType.WRITE.equals(operationMethod.getOperationType())) {
+						for (OperationParameter operationParameter : operationMethod.getParameters()) {
+							Field parameterField = FieldUtils.getDeclaredField(operationParameter.getClass(), PARAMETER, true);
+							Parameter parameter = (Parameter) parameterField.get(operationParameter);
+							Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null);
+							if (parameter.getAnnotation(Selector.class) == null) {
+								operation.setRequestBody(new RequestBody()
+										.content(new Content().addMediaType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE, new MediaType().schema(schema))));
+							}
+						}
+					}
+				}
+				catch (IllegalAccessException e) {
+					LOGGER.warn(e.getMessage());
+				}
+			}
+
 			String summary = handlerMethod.toString();
 			Matcher matcher = pattern.matcher(summary);
 			String operationId = operation.getOperationId();
@@ -60,7 +105,7 @@ public class ActuatorOperationCustomizer implements OperationCustomizer {
 				operationId = matcher.group(1);
 			}
 			if (methodCountMap.containsKey(operationId)) {
-				Integer methodCount = methodCountMap.get(operationId)+1;
+				Integer methodCount = methodCountMap.get(operationId) + 1;
 				methodCountMap.put(operationId, methodCount);
 				operationId = operationId + "_" + methodCount;
 			}
