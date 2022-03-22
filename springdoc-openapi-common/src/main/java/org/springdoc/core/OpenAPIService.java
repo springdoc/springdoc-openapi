@@ -183,12 +183,12 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @param securityParser the security parser
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param propertyResolverUtils the property resolver utils
-	 * @param openApiBuilderCustomisers the open api builder customisers
+	 * @param openApiBuilderCustomizers the open api builder customisers
 	 */
 	public OpenAPIService(Optional<OpenAPI> openAPI, SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
-			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers,
-			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers) {
+			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers,
+			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
 			if (this.openAPI.getComponents() == null)
@@ -201,8 +201,8 @@ public class OpenAPIService implements ApplicationContextAware {
 		this.propertyResolverUtils = propertyResolverUtils;
 		this.securityParser = securityParser;
 		this.springDocConfigProperties = springDocConfigProperties;
-		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
-		this.serverBaseUrlCustomizers = serverBaseUrlCustomisers;
+		this.openApiBuilderCustomisers = openApiBuilderCustomizers;
+		this.serverBaseUrlCustomizers = serverBaseUrlCustomizers;
 		if (springDocConfigProperties.isUseFqn())
 			TypeNameResolver.std.setUseFqn(true);
 	}
