@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.springdoc.core.SpringDocPropertiesUtils;
 import org.springdoc.core.configuration.SpringDocConfiguration;
+import org.springdoc.core.utils.SpringDocPropertiesUtils;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

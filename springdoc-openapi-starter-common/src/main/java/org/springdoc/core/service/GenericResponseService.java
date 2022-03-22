@@ -49,8 +49,6 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springdoc.core.models.ControllerAdviceInfo;
 import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.parsers.ReturnTypeParser;

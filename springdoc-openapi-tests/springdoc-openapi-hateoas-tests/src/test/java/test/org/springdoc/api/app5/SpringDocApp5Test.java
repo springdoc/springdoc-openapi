@@ -21,7 +21,6 @@ package test.org.springdoc.api.app5;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ObjectSchema;
-import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import test.org.springdoc.api.AbstractSpringDocTest;
 

@@ -23,7 +23,6 @@
 package org.springdoc.core.converters;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -44,7 +44,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.security.SecuritySchemes;
@@ -481,9 +480,9 @@ public class OpenAPIService implements ApplicationContextAware {
 	public void setServerBaseUrl(String serverBaseUrl) {
 		String customServerBaseUrl = serverBaseUrl;
 
-		if (serverBaseUrlCustomizers != null && serverBaseUrlCustomizers.isPresent()) {
-			for (ServerBaseUrlCustomizer customiser : serverBaseUrlCustomizers.get()) {
-				customServerBaseUrl = customiser.customize(customServerBaseUrl);
+		if (serverBaseUrlCustomizers.isPresent()) {
+			for (ServerBaseUrlCustomizer customizer : serverBaseUrlCustomizers.get()) {
+				customServerBaseUrl = customizer.customize(customServerBaseUrl);
 			}
 		}
 
