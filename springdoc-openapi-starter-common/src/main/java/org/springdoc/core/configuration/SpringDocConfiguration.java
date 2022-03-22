@@ -57,6 +57,7 @@ import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
+import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -225,7 +226,7 @@ public class SpringDocConfiguration {
 	 * @param securityParser the security parser
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param propertyResolverUtils the property resolver utils
-	 * @param openApiBuilderCustomisers the open api builder customisers
+	 * @param openApiBuilderCustomizers the open api builder customisers
 	 * @return the open api builder
 	 */
 	@Bean
@@ -234,8 +235,9 @@ public class SpringDocConfiguration {
 	OpenAPIService openAPIBuilder(Optional<OpenAPI> openAPI,
 			SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
-			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers) {
-		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomisers);
+			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers,
+			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers) {
+		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomizers, serverBaseUrlCustomisers);
 	}
 
 	/**
