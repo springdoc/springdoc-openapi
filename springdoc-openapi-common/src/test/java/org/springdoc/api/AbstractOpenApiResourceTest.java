@@ -20,6 +20,7 @@
 
 package org.springdoc.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -49,6 +50,7 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.fn.RouterOperation;
 
@@ -111,6 +113,7 @@ class AbstractOpenApiResourceTest {
 		openAPI = new OpenAPI();
 		openAPI.setPaths(new Paths().addPathItem(PATH, new PathItem()));
 		ReflectionTestUtils.setField(openAPIService, "cachedOpenAPI", new HashMap<>());
+		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomisers", Optional.empty());
 
 		when(openAPIService.getCalculatedOpenAPI()).thenReturn(openAPI);
 		when(openAPIService.getContext()).thenReturn(context);
@@ -215,6 +218,71 @@ class AbstractOpenApiResourceTest {
 		assertThat(after.getServers().get(0).getUrl(), is(customUrl));
 	}
 
+	@Test
+	void serverBaseUrlCustomisersTest() throws InterruptedException {
+		when(openAPIService.updateServers(any())).thenCallRealMethod();
+		when(openAPIService.getCachedOpenAPI(any())).thenCallRealMethod();
+		doAnswer(new CallsRealMethods()).when(openAPIService).setServerBaseUrl(any());
+		doAnswer(new CallsRealMethods()).when(openAPIService).setCachedOpenAPI(any(), any());
+
+		SpringDocConfigProperties properties = new SpringDocConfigProperties();
+		properties.setPreLoadingEnabled(true);
+
+		resource = new EmptyPathsOpenApiResource(
+				GROUP_NAME,
+				openAPIBuilderObjectFactory,
+				requestBuilder,
+				responseBuilder,
+				operationParser,
+				Optional.empty(),
+				Optional.empty(),
+				Optional.empty(),
+				properties,
+				springDocProviders
+		);
+
+		// wait for executor to be done
+		Thread.sleep(1_000);
+
+		Locale locale = Locale.US;
+
+		// Test that setting generated URL works fine with no customisers present
+		String generatedUrl = "https://generated-url.com/context-path";
+		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.updateServers(openAPI);
+		OpenAPI after = resource.getOpenApi(locale);
+		assertThat(after.getServers().get(0).getUrl(), is(generatedUrl));
+
+		// Test that adding a serverBaseUrlCustomiser has the desired effect
+		ServerBaseUrlCustomizer serverBaseUrlCustomiser = serverBaseUrl -> serverBaseUrl.replace("/context-path", "");
+		List<ServerBaseUrlCustomizer> serverBaseUrlCustomiserList = new ArrayList<>();
+		serverBaseUrlCustomiserList.add(serverBaseUrlCustomiser);
+
+		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomisers", Optional.of(serverBaseUrlCustomiserList));
+		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.updateServers(openAPI);
+		after = resource.getOpenApi(locale);
+		assertThat(after.getServers().get(0).getUrl(), is("https://generated-url.com"));
+
+		// Test that serverBaseUrlCustomisers are performed in order
+		generatedUrl = "https://generated-url.com/context-path/second-path";
+		ServerBaseUrlCustomizer serverBaseUrlCustomiser2 = serverBaseUrl -> serverBaseUrl.replace("/context-path/second-path", "");
+		serverBaseUrlCustomiserList.add(serverBaseUrlCustomiser2);
+
+		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.updateServers(openAPI);
+		after = resource.getOpenApi(locale);
+		assertThat(after.getServers().get(0).getUrl(), is("https://generated-url.com/second-path"));
+
+		// Test that all serverBaseUrlCustomisers in the List are performed
+		ServerBaseUrlCustomizer serverBaseUrlCustomiser3 = serverBaseUrl -> serverBaseUrl.replace("/second-path", "");
+		serverBaseUrlCustomiserList.add(serverBaseUrlCustomiser3);
+
+		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.updateServers(openAPI);
+		after = resource.getOpenApi(locale);
+		assertThat(after.getServers().get(0).getUrl(), is("https://generated-url.com"));
+	}
 
 	private static class EmptyPathsOpenApiResource extends AbstractOpenApiResource {
 
