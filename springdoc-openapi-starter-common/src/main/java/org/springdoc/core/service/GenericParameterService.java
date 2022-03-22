@@ -327,9 +327,9 @@ public class GenericParameterService {
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
 			Type type = ReturnTypeParser.getType(methodParameter);
-			if(type instanceof Class && optionalWebConversionServiceProvider.isPresent()){
+			if(type instanceof Class clazz && optionalWebConversionServiceProvider.isPresent()){
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
-				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type))
+				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType(clazz))
 					type = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
 			}
 			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations());

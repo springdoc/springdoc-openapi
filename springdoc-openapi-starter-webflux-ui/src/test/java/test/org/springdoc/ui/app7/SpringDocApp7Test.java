@@ -30,9 +30,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @TestPropertySource(properties = "springdoc.swagger-ui.disable-swagger-default-url=true")
 public class SpringDocApp7Test extends AbstractSpringDocTest {
 

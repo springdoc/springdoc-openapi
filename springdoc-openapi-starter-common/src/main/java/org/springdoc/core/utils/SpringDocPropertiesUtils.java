@@ -18,7 +18,7 @@
  *
  */
 
-package org.springdoc.core;
+package org.springdoc.core.utils;
 
 import java.util.List;
 import java.util.Map;
