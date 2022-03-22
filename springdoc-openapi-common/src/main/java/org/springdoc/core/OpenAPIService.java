@@ -443,9 +443,9 @@ public class OpenAPIService implements ApplicationContextAware {
 	public void setServerBaseUrl(String serverBaseUrl) {
 		String customServerBaseUrl = serverBaseUrl;
 
-		if (serverBaseUrlCustomizers != null && serverBaseUrlCustomizers.isPresent()) {
-			for (ServerBaseUrlCustomizer customiser : serverBaseUrlCustomizers.get()) {
-				customServerBaseUrl = customiser.customize(customServerBaseUrl);
+		if (serverBaseUrlCustomizers.isPresent()) {
+			for (ServerBaseUrlCustomizer customizer : serverBaseUrlCustomizers.get()) {
+				customServerBaseUrl = customizer.customize(customServerBaseUrl);
 			}
 		}
 
