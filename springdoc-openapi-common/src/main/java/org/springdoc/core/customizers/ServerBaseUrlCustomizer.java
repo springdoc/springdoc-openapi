@@ -13,5 +13,5 @@ public interface ServerBaseUrlCustomizer {
 	 * @param serverBaseUrl the serverBaseUrl.
 	 * @return the customised serverBaseUrl
 	 */
-	public String customise(String serverBaseUrl);
+	String customize(String serverBaseUrl);
 }

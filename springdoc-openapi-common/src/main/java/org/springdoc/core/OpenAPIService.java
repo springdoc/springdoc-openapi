@@ -117,7 +117,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	/**
 	 * The server base URL customisers.
 	 */
-	private final Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers;
+	private final Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers;
 
 	/**
 	 * The Spring doc config properties.
@@ -202,7 +202,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		this.securityParser = securityParser;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
-		this.serverBaseUrlCustomisers = serverBaseUrlCustomisers;
+		this.serverBaseUrlCustomizers = serverBaseUrlCustomisers;
 		if (springDocConfigProperties.isUseFqn())
 			TypeNameResolver.std.setUseFqn(true);
 	}
@@ -443,9 +443,9 @@ public class OpenAPIService implements ApplicationContextAware {
 	public void setServerBaseUrl(String serverBaseUrl) {
 		String customServerBaseUrl = serverBaseUrl;
 
-		if (serverBaseUrlCustomisers != null && serverBaseUrlCustomisers.isPresent()) {
-			for (ServerBaseUrlCustomizer customiser : serverBaseUrlCustomisers.get()) {
-				customServerBaseUrl = customiser.customise(customServerBaseUrl);
+		if (serverBaseUrlCustomizers != null && serverBaseUrlCustomizers.isPresent()) {
+			for (ServerBaseUrlCustomizer customiser : serverBaseUrlCustomizers.get()) {
+				customServerBaseUrl = customiser.customize(customServerBaseUrl);
 			}
 		}
 

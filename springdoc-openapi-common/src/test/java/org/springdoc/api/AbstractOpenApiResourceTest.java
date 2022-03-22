@@ -113,7 +113,7 @@ class AbstractOpenApiResourceTest {
 		openAPI = new OpenAPI();
 		openAPI.setPaths(new Paths().addPathItem(PATH, new PathItem()));
 		ReflectionTestUtils.setField(openAPIService, "cachedOpenAPI", new HashMap<>());
-		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomisers", Optional.empty());
+		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomizers", Optional.empty());
 
 		when(openAPIService.getCalculatedOpenAPI()).thenReturn(openAPI);
 		when(openAPIService.getContext()).thenReturn(context);
@@ -246,19 +246,19 @@ class AbstractOpenApiResourceTest {
 
 		Locale locale = Locale.US;
 
-		// Test that setting generated URL works fine with no customisers present
+		// Test that setting generated URL works fine with no customizers present
 		String generatedUrl = "https://generated-url.com/context-path";
 		openAPIService.setServerBaseUrl(generatedUrl);
 		openAPIService.updateServers(openAPI);
 		OpenAPI after = resource.getOpenApi(locale);
 		assertThat(after.getServers().get(0).getUrl(), is(generatedUrl));
 
-		// Test that adding a serverBaseUrlCustomiser has the desired effect
-		ServerBaseUrlCustomizer serverBaseUrlCustomiser = serverBaseUrl -> serverBaseUrl.replace("/context-path", "");
-		List<ServerBaseUrlCustomizer> serverBaseUrlCustomiserList = new ArrayList<>();
-		serverBaseUrlCustomiserList.add(serverBaseUrlCustomiser);
+		// Test that adding a serverBaseUrlCustomizer has the desired effect
+		ServerBaseUrlCustomizer serverBaseUrlCustomizer = serverBaseUrl -> serverBaseUrl.replace("/context-path", "");
+		List<ServerBaseUrlCustomizer> serverBaseUrlCustomizerList = new ArrayList<>();
+		serverBaseUrlCustomizerList.add(serverBaseUrlCustomizer);
 
-		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomisers", Optional.of(serverBaseUrlCustomiserList));
+		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomizers", Optional.of(serverBaseUrlCustomizerList));
 		openAPIService.setServerBaseUrl(generatedUrl);
 		openAPIService.updateServers(openAPI);
 		after = resource.getOpenApi(locale);
@@ -267,7 +267,7 @@ class AbstractOpenApiResourceTest {
 		// Test that serverBaseUrlCustomisers are performed in order
 		generatedUrl = "https://generated-url.com/context-path/second-path";
 		ServerBaseUrlCustomizer serverBaseUrlCustomiser2 = serverBaseUrl -> serverBaseUrl.replace("/context-path/second-path", "");
-		serverBaseUrlCustomiserList.add(serverBaseUrlCustomiser2);
+		serverBaseUrlCustomizerList.add(serverBaseUrlCustomiser2);
 
 		openAPIService.setServerBaseUrl(generatedUrl);
 		openAPIService.updateServers(openAPI);
@@ -276,7 +276,7 @@ class AbstractOpenApiResourceTest {
 
 		// Test that all serverBaseUrlCustomisers in the List are performed
 		ServerBaseUrlCustomizer serverBaseUrlCustomiser3 = serverBaseUrl -> serverBaseUrl.replace("/second-path", "");
-		serverBaseUrlCustomiserList.add(serverBaseUrlCustomiser3);
+		serverBaseUrlCustomizerList.add(serverBaseUrlCustomiser3);
 
 		openAPIService.setServerBaseUrl(generatedUrl);
 		openAPIService.updateServers(openAPI);
