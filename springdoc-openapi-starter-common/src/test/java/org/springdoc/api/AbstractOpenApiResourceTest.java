@@ -20,6 +20,7 @@
 
 package org.springdoc.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -43,6 +44,7 @@ import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -67,6 +69,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 
 @ExtendWith(MockitoExtension.class)
 class AbstractOpenApiResourceTest {
@@ -111,6 +114,7 @@ class AbstractOpenApiResourceTest {
 		openAPI = new OpenAPI();
 		openAPI.setPaths(new Paths().addPathItem(PATH, new PathItem()));
 		ReflectionTestUtils.setField(openAPIService, "cachedOpenAPI", new HashMap<>());
+		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomizers", Optional.empty());
 
 		when(openAPIService.getCalculatedOpenAPI()).thenReturn(openAPI);
 		when(openAPIService.getContext()).thenReturn(context);
@@ -187,7 +191,7 @@ class AbstractOpenApiResourceTest {
 
 		String customUrl = "https://custom.com";
 		String generatedUrl = "https://generated.com";
-		OpenApiCustomizer openApiCustomizer = openApi -> openApi.setServers(singletonList(new Server().url(customUrl)));
+		OpenApiCustomizer openApiCustomiser = openApi -> openApi.setServers(singletonList(new Server().url(customUrl)));
 		SpringDocConfigProperties properties = new SpringDocConfigProperties();
 		properties.setPreLoadingEnabled(true);
 
@@ -198,7 +202,7 @@ class AbstractOpenApiResourceTest {
 				responseBuilder,
 				operationParser,
 				Optional.empty(),
-				Optional.of(singletonList(openApiCustomizer)),
+				Optional.of(singletonList(openApiCustomiser)),
 				Optional.empty(),
 				properties, springDocProviders
 		);
@@ -215,6 +219,71 @@ class AbstractOpenApiResourceTest {
 		assertThat(after.getServers().get(0).getUrl(), is(customUrl));
 	}
 
+	@Test
+	void serverBaseUrlCustomisersTest() throws InterruptedException {
+		when(openAPIService.updateServers(any())).thenCallRealMethod();
+		when(openAPIService.getCachedOpenAPI(any())).thenCallRealMethod();
+		doAnswer(new CallsRealMethods()).when(openAPIService).setServerBaseUrl(any());
+		doAnswer(new CallsRealMethods()).when(openAPIService).setCachedOpenAPI(any(), any());
+
+		SpringDocConfigProperties properties = new SpringDocConfigProperties();
+		properties.setPreLoadingEnabled(true);
+
+		resource = new EmptyPathsOpenApiResource(
+				GROUP_NAME,
+				openAPIBuilderObjectFactory,
+				requestBuilder,
+				responseBuilder,
+				operationParser,
+				Optional.empty(),
+				Optional.empty(),
+				Optional.empty(),
+				properties,
+				springDocProviders
+		);
+
+		// wait for executor to be done
+		Thread.sleep(1_000);
+
+		Locale locale = Locale.US;
+
+		// Test that setting generated URL works fine with no customizers present
+		String generatedUrl = "https://generated-url.com/context-path";
+		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.updateServers(openAPI);
+		OpenAPI after = resource.getOpenApi(locale);
+		assertThat(after.getServers().get(0).getUrl(), is(generatedUrl));
+
+		// Test that adding a serverBaseUrlCustomizer has the desired effect
+		ServerBaseUrlCustomizer serverBaseUrlCustomizer = serverBaseUrl -> serverBaseUrl.replace("/context-path", "");
+		List<ServerBaseUrlCustomizer> serverBaseUrlCustomizerList = new ArrayList<>();
+		serverBaseUrlCustomizerList.add(serverBaseUrlCustomizer);
+
+		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomizers", Optional.of(serverBaseUrlCustomizerList));
+		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.updateServers(openAPI);
+		after = resource.getOpenApi(locale);
+		assertThat(after.getServers().get(0).getUrl(), is("https://generated-url.com"));
+
+		// Test that serverBaseUrlCustomisers are performed in order
+		generatedUrl = "https://generated-url.com/context-path/second-path";
+		ServerBaseUrlCustomizer serverBaseUrlCustomiser2 = serverBaseUrl -> serverBaseUrl.replace("/context-path/second-path", "");
+		serverBaseUrlCustomizerList.add(serverBaseUrlCustomiser2);
+
+		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.updateServers(openAPI);
+		after = resource.getOpenApi(locale);
+		assertThat(after.getServers().get(0).getUrl(), is("https://generated-url.com/second-path"));
+
+		// Test that all serverBaseUrlCustomisers in the List are performed
+		ServerBaseUrlCustomizer serverBaseUrlCustomiser3 = serverBaseUrl -> serverBaseUrl.replace("/second-path", "");
+		serverBaseUrlCustomizerList.add(serverBaseUrlCustomiser3);
+
+		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.updateServers(openAPI);
+		after = resource.getOpenApi(locale);
+		assertThat(after.getServers().get(0).getUrl(), is("https://generated-url.com"));
+	}
 
 	private static class EmptyPathsOpenApiResource extends AbstractOpenApiResource {
 

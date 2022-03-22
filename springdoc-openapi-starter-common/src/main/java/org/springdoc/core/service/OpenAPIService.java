@@ -65,6 +65,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
+import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.utils.PropertyResolverUtils;
 
@@ -124,6 +125,11 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * The Open api builder customisers.
 	 */
 	private final Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers;
+
+	/**
+	 * The server base URL customisers.
+	 */
+	private final Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers;
 
 	/**
 	 * The Spring doc config properties.
@@ -189,11 +195,11 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @param securityParser the security parser
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param propertyResolverUtils the property resolver utils
-	 * @param openApiBuilderCustomisers the open api builder customisers
+	 * @param openApiBuilderCustomizers the open api builder customisers
 	 */
 	public OpenAPIService(Optional<OpenAPI> openAPI, SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
-			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers) {
+			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers, Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
 			if (this.openAPI.getComponents() == null)
@@ -206,7 +212,8 @@ public class OpenAPIService implements ApplicationContextAware {
 		this.propertyResolverUtils=propertyResolverUtils;
 		this.securityParser = securityParser;
 		this.springDocConfigProperties = springDocConfigProperties;
-		this.openApiBuilderCustomisers = openApiBuilderCustomisers;
+		this.openApiBuilderCustomisers = openApiBuilderCustomizers;
+		this.serverBaseUrlCustomizers = serverBaseUrlCustomizers;
 		if (springDocConfigProperties.isUseFqn())
 			TypeNameResolver.std.setUseFqn(true);
 	}
@@ -472,7 +479,16 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @param serverBaseUrl the server base url
 	 */
 	public void setServerBaseUrl(String serverBaseUrl) {
-		this.serverBaseUrl = serverBaseUrl;
+		String customServerBaseUrl = serverBaseUrl;
+
+		if (serverBaseUrlCustomizers != null && serverBaseUrlCustomizers.isPresent()) {
+			for (ServerBaseUrlCustomizer customiser : serverBaseUrlCustomizers.get()) {
+				customServerBaseUrl = customiser.customize(customServerBaseUrl);
+			}
+		}
+
+		this.serverBaseUrl = customServerBaseUrl;
+
 	}
 
 	/**
