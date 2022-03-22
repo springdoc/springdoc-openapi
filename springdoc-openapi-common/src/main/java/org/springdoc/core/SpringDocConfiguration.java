@@ -53,6 +53,7 @@ import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
+import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.JavadocProvider;
@@ -226,8 +227,9 @@ public class SpringDocConfiguration {
 	OpenAPIService openAPIBuilder(Optional<OpenAPI> openAPI,
 			SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties,PropertyResolverUtils propertyResolverUtils,
-			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers) {
-		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomisers);
+			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers,
+			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers) {
+		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomisers, serverBaseUrlCustomisers);
 	}
 
 	/**
