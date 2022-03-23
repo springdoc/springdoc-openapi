@@ -79,8 +79,7 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<spring-native.version>0.11.3</spring-native.version>
 		<therapi-runtime-javadoc.version>0.13.0</therapi-runtime-javadoc.version>
-		<spring-cloud.version>2021.0.0</spring-cloud.version>
-		<spring-cloud-netflix.version>2.2.10.RELEASE</spring-cloud-netflix.version>
+		<spring-cloud.version>2021.0.1</spring-cloud.version>
 	</properties>
 
 	<dependencyManagement>
@@ -208,11 +207,6 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-				<version>${spring-cloud-netflix.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
