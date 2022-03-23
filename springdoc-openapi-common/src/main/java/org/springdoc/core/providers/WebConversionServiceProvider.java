@@ -64,19 +64,21 @@ public class WebConversionServiceProvider {
 	public Class<?> getSpringConvertedType(Class<?> clazz) {
 		Class<?> result = clazz;
 		Field convertersField = FieldUtils.getDeclaredField(GenericConversionService.class, CONVERTERS, true);
-		Object converters;
-		try {
-			converters = convertersField.get(formattingConversionService);
-			convertersField = FieldUtils.getDeclaredField(converters.getClass(), CONVERTERS, true);
-			Map<ConvertiblePair, Object> springConverters = (Map) convertersField.get(converters);
-			Optional<ConvertiblePair> convertiblePairOptional = springConverters.keySet().stream().filter(convertiblePair -> convertiblePair.getTargetType().equals(clazz)).findAny();
-			if (convertiblePairOptional.isPresent()) {
-				ConvertiblePair convertiblePair = convertiblePairOptional.get();
-				result = convertiblePair.getSourceType();
+		if(convertersField!=null) {
+			Object converters;
+			try {
+				converters = convertersField.get(formattingConversionService);
+				convertersField = FieldUtils.getDeclaredField(converters.getClass(), CONVERTERS, true);
+				Map<ConvertiblePair, Object> springConverters = (Map) convertersField.get(converters);
+				Optional<ConvertiblePair> convertiblePairOptional = springConverters.keySet().stream().filter(convertiblePair -> convertiblePair.getTargetType().equals(clazz)).findAny();
+				if (convertiblePairOptional.isPresent()) {
+					ConvertiblePair convertiblePair = convertiblePairOptional.get();
+					result = convertiblePair.getSourceType();
+				}
 			}
-		}
-		catch (IllegalAccessException e) {
-			LOGGER.warn(e.getMessage());
+			catch (IllegalAccessException e) {
+				LOGGER.warn(e.getMessage());
+			}
 		}
 		return result;
 	}
