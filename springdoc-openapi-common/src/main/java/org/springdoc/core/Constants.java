@@ -116,11 +116,6 @@ public final class Constants {
 	public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
 
 	/**
-	 * The constant SPRING_NATIVE_LISTENER.
-	 */
-	public static final String SPRING_NATIVE_LISTENER = "org.springframework.nativex.NativeListener";
-
-	/**
 	 * The constant NULL.
 	 */
 	public static final String NULL = ":#{null}";
@@ -190,6 +185,16 @@ public final class Constants {
 	 * The constant SWAGGER_UI_URL.
 	 */
 	public static final String SWAGGER_UI_URL = SWAGGER_UI_PREFIX + INDEX_PAGE;
+
+	/**
+	 * The constant SWAGGER_INITIALIZER_JS.
+	 */
+	public static final String SWAGGER_INITIALIZER_JS = "swagger-initializer.js";
+
+	/**
+	 * The constant SWAGGER_INITIALIZER_URL.
+	 */
+	public static final String SWAGGER_INITIALIZER_URL = SWAGGER_UI_PREFIX + "/" + SWAGGER_INITIALIZER_JS;
 
 	/**
 	 * The constant SWAGGER_UI_OAUTH_REDIRECT_URL.
@@ -349,12 +354,12 @@ public final class Constants {
 	/**
 	 * The constant SPRINGDOC_USE_ROOT_PATH.
 	 */
-	public static final String SPRINGDOC_USE_ROOT_PATH ="springdoc.swagger-ui.use-root-path";
+	public static final String SPRINGDOC_USE_ROOT_PATH = "springdoc.swagger-ui.use-root-path";
 
 	/**
 	 * The constant DEFAULT_SWAGGER_UI_ACTUATOR_PATH.
 	 */
-	public static final String DEFAULT_SWAGGER_UI_ACTUATOR_PATH= "swaggerui";
+	public static final String DEFAULT_SWAGGER_UI_ACTUATOR_PATH = "swaggerui";
 
 	/**
 	 * The constant DEFAULT_API_DOCS_ACTUATOR_URL.
@@ -374,7 +379,7 @@ public final class Constants {
 	/**
 	 * The constant LINKS_SCHEMA_CUSTOMISER.
 	 */
-	public static final String LINKS_SCHEMA_CUSTOMISER  = "linksSchemaCustomiser";
+	public static final String LINKS_SCHEMA_CUSTOMISER = "linksSchemaCustomiser";
 
 	/**
 	 * Instantiates a new Constants.

@@ -29,7 +29,7 @@ public class SpringDocApp5Test extends AbstractSpringDocTest {
 
 	@Test
 	public void transformed_index_with_oauth() {
-		super.checkHTML("index5");
+		super.checkJS("index5");
 	}
 
 	@SpringBootApplication

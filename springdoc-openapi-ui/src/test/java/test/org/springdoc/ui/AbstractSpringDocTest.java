@@ -33,27 +33,25 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	public static String className;
 
-	private static final String DEFAULT_SWAGGER_UI_URL=  Constants.SWAGGER_UI_URL;
-
-	protected void checkHTML(String fileName, String uri)throws Exception {
+	protected void checkJS(String fileName, String uri)throws Exception {
 		MvcResult mvcResult = mockMvc.perform(get(uri)).andExpect(status().isOk()).andReturn();
 		String transformedIndex = mvcResult.getResponse().getContentAsString();
-		assertTrue(transformedIndex.contains("Swagger UI"));
+		assertTrue(transformedIndex.contains("window.ui"));
 		assertEquals(this.getContent(fileName), transformedIndex.replace("\r", ""));
 	}
 
-	protected void chekHTML(String fileName) throws Exception {
-		checkHTML( fileName, DEFAULT_SWAGGER_UI_URL);
+	protected void chekJS(String fileName) throws Exception {
+		checkJS( fileName, Constants.SWAGGER_INITIALIZER_URL);
 	}
 
-	protected void chekHTML() throws Exception {
+	protected void chekJS() throws Exception {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
-		checkHTML( "results/app" + testNumber, DEFAULT_SWAGGER_UI_URL);
+		checkJS( "results/app" + testNumber, Constants.SWAGGER_INITIALIZER_URL);
 	}
 
-	protected void checkHTMLResult(String fileName, String htmlResult)throws Exception {
-		assertTrue(htmlResult.contains("Swagger UI"));
+	protected void checkJSResult(String fileName, String htmlResult)throws Exception {
+		assertTrue(htmlResult.contains("window.ui"));
 		assertEquals(this.getContent(fileName), htmlResult.replace("\r", ""));
 	}
 }

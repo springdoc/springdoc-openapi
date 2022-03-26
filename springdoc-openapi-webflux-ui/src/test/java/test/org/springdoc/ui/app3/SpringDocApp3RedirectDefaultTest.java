@@ -20,6 +20,7 @@ package test.org.springdoc.ui.app3;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.springdoc.core.Constants;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -45,7 +46,7 @@ public class SpringDocApp3RedirectDefaultTest extends AbstractSpringDocTest {
 				.jsonPath("$.validatorUrl").isEqualTo("")
 				.jsonPath("$.oauth2RedirectUrl").isEqualTo("/documentation/webjars/swagger-ui/oauth2-redirect.html");
 
-		super.checkHTML("index3", "/documentation/webjars/swagger-ui/index.html");
+		super.checkJS("index3", "/documentation/webjars"+ Constants.SWAGGER_INITIALIZER_URL);
 	}
 
 	@SpringBootApplication

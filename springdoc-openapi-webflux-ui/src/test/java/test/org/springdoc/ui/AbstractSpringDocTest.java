@@ -18,11 +18,6 @@
 
 package test.org.springdoc.ui;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.springdoc.core.Constants;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
@@ -49,23 +44,23 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 	@Autowired
 	protected WebTestClient webTestClient;
 
-	private static final String DEFAULT_SWAGGER_UI_URL= Constants.DEFAULT_WEB_JARS_PREFIX_URL  + Constants.SWAGGER_UI_URL;
+	private static final String DEFAULT_SWAGGER_INITIALIZER_URL= Constants.DEFAULT_WEB_JARS_PREFIX_URL  + Constants.SWAGGER_INITIALIZER_URL;
 
-	protected void checkHTML(String fileName, String uri) {
+	protected void checkJS(String fileName, String uri) {
 		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(uri)
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody().returnResult();
-		checkHTMLResult(fileName, new String(getResult.getResponseBody()));
+		checkJSResult(fileName, new String(getResult.getResponseBody()));
 	}
 
-	protected void checkHTMLResult(String fileName, String result) {
-		assertTrue(result.contains("Swagger UI"));
+	protected void checkJSResult(String fileName, String result) {
+		assertTrue(result.contains("window.ui"));
 		String expected = getContent("results/" + fileName);
 		assertEquals(expected, result.replace("\r", ""));
 	}
 
-	protected void checkHTML(String fileName) {
-		checkHTML(fileName, DEFAULT_SWAGGER_UI_URL);
+	protected void checkJS(String fileName) {
+		checkJS(fileName, DEFAULT_SWAGGER_INITIALIZER_URL);
 	}
 }

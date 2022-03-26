@@ -37,7 +37,7 @@ public class SpringDocApp9Test extends AbstractSpringDocTest {
 
 	@Test
 	public void transformed_index_with_oauth() throws Exception {
-		super.chekHTML();
+		super.chekJS();
 	}
 
 	@SpringBootApplication

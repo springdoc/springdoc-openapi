@@ -37,7 +37,7 @@ public class SpringDocApp5Test extends AbstractSpringDocTest {
 		mockMvc.perform(get("/context-path/v3/api-docs/swagger-config").contextPath("/context-path"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/context-path/swagger-ui/oauth2-redirect.html")));
-		super.chekHTML();
+		super.chekJS();
 	}
 
 	@SpringBootApplication

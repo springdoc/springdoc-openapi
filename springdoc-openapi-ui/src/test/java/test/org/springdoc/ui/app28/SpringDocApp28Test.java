@@ -36,7 +36,7 @@ public class SpringDocApp28Test extends AbstractSpringDocTest {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
 				.andExpect(header().string("Location", "/swagger-ui/index.html"));
-		super.chekHTML();
+		super.chekJS();
 	}
 
 
