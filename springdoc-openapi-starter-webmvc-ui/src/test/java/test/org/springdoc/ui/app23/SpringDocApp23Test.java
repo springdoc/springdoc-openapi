@@ -29,7 +29,7 @@ class SpringDocApp23Test extends AbstractSpringDocTest {
 
 	@Test
 	void transformed_index_with_queryConfigEnabled() throws Exception {
-		super.chekHTML();
+		super.chekJS();
 	}
 
 	@SpringBootApplication

@@ -18,6 +18,7 @@
 
 package test.org.springdoc.ui.app14;
 
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import org.springdoc.core.models.GroupedOpenApi;

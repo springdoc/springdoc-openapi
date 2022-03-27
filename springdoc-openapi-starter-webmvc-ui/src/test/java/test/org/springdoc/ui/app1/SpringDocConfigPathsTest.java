@@ -19,6 +19,7 @@
 package test.org.springdoc.ui.app1;
 
 import org.junit.jupiter.api.Test;
+import org.springdoc.core.utils.Constants;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,26 +33,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource(properties = {
 		"spring.mvc.pathmatch.matching-strategy=ant_path_matcher",
-		"springdoc.swagger-ui.path=/test/swagger.html",
-		"server.servlet.context-path=/context-path",
-		"spring.mvc.servlet.path=/servlet-path"
+        "springdoc.swagger-ui.path=/test/swagger.html",
+        "server.servlet.context-path=/context-path",
+        "spring.mvc.servlet.path=/servlet-path"
 })
 public class SpringDocConfigPathsTest extends AbstractSpringDocTest {
 
-	@Test
-	public void should_display_swaggerui_page() throws Exception {
-		mockMvc.perform(get("/context-path/servlet-path/test/swagger.html").contextPath("/context-path").servletPath("/servlet-path"))
-				.andExpect(status().isFound());
-		mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/index.html").contextPath("/context-path").servletPath("/servlet-path"))
-				.andExpect(status().isOk())
-				.andExpect(content().string(containsString("Swagger UI")));
+    @Test
+    public void should_display_swaggerui_page() throws Exception {
+        mockMvc.perform(get("/context-path/servlet-path/test/swagger.html").contextPath("/context-path").servletPath("/servlet-path"))
+                .andExpect(status().isFound());
+        mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/index.html").contextPath("/context-path").servletPath("/servlet-path"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Swagger UI")));
 
-		MvcResult mvcResult = mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/index.html").contextPath("/context-path").servletPath("/servlet-path")).andExpect(status().isOk()).andReturn();
+		MvcResult mvcResult = mockMvc.perform(get("/context-path/servlet-path/test"+ Constants.SWAGGER_INITIALIZER_URL).contextPath("/context-path").servletPath("/servlet-path")).andExpect(status().isOk()).andReturn();
 		String transformedIndex = mvcResult.getResponse().getContentAsString();
-		checkHTMLResult("results/app1-contextpath", transformedIndex);
-	}
+        checkJSResult("results/app1-contextpath", transformedIndex);
+    }
 
-	@SpringBootApplication
-	static class SpringDocTestApp {
-	}
+    @SpringBootApplication
+    static class SpringDocTestApp {
+    }
 }

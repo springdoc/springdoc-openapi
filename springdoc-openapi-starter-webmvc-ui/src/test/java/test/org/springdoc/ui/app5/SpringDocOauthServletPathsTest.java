@@ -19,6 +19,7 @@
 package test.org.springdoc.ui.app5;
 
 import org.junit.jupiter.api.Test;
+import org.springdoc.core.utils.Constants;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -43,9 +44,9 @@ public class SpringDocOauthServletPathsTest extends AbstractSpringDocTest {
 
 		mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/oauth2-redirect.html").servletPath("/servlet-path").contextPath("/context-path")).andExpect(status().isOk()).andReturn();
 
-		MvcResult mvcResult = mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/index.html").servletPath("/servlet-path").contextPath("/context-path")).andExpect(status().isOk()).andReturn();
+		MvcResult mvcResult = mockMvc.perform(get("/context-path/servlet-path/test"+ Constants.SWAGGER_INITIALIZER_URL).servletPath("/servlet-path").contextPath("/context-path")).andExpect(status().isOk()).andReturn();
 		String transformedIndex = mvcResult.getResponse().getContentAsString();
-		checkHTMLResult("results/app5-contextpath", transformedIndex);
+		checkJSResult("results/app5-contextpath", transformedIndex);
 	}
 
 	@Test

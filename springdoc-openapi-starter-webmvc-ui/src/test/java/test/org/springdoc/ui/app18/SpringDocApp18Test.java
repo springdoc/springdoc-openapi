@@ -43,8 +43,8 @@ public class SpringDocApp18Test extends AbstractSpringDocTest {
 				.andExpect(jsonPath("tryItOutEnabled", equalTo(true)));
 	}
 
-	@SpringBootApplication
-	static class SpringDocTestApp {
-	}
+    @SpringBootApplication
+    static class SpringDocTestApp {
+    }
 
 }

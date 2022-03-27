@@ -94,12 +94,12 @@ public class AbstractSwaggerIndexTransformer {
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	protected String addInitOauth(String html) throws JsonProcessingException {
-		StringBuilder stringBuilder = new StringBuilder("window.ui = ui\n");
+		StringBuilder stringBuilder = new StringBuilder("  });\n");
 		stringBuilder.append("ui.initOAuth(\n");
 		String json = objectMapper.writeValueAsString(swaggerUiOAuthProperties.getConfigParameters());
 		stringBuilder.append(json);
 		stringBuilder.append(")");
-		return html.replace("window.ui = ui", stringBuilder.toString());
+		return html.replace("  });", stringBuilder.toString());
 	}
 
 	/**
@@ -197,9 +197,9 @@ public class AbstractSwaggerIndexTransformer {
 	}
 
 	private String addParameter(String html, String key, String value) {
-		StringBuilder stringBuilder = new StringBuilder("const ui = SwaggerUIBundle({\n");
+		StringBuilder stringBuilder = new StringBuilder("window.ui = SwaggerUIBundle({\n");
 		stringBuilder.append(key + ": \"" + value + "\",");
-		return html.replace("const ui = SwaggerUIBundle({", stringBuilder.toString());
+		return html.replace("window.ui = SwaggerUIBundle({", stringBuilder.toString());
 	}
 
 	/**

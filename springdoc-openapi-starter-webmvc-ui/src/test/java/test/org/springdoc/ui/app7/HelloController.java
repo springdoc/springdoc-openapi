@@ -18,6 +18,7 @@
 
 package test.org.springdoc.ui.app7;
 
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 

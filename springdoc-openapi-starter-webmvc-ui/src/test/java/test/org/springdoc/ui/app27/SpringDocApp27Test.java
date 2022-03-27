@@ -39,7 +39,7 @@ public class SpringDocApp27Test extends AbstractSpringDocTest {
 				.andExpect(status().isFound())
 				.andExpect(header().string("Location", "/swagger-ui/index.html?operationsSorter=method&configUrl=/v3/api-docs/swagger-config"));
 
-		super.chekHTML();
+		super.chekJS();
 	}
 
 

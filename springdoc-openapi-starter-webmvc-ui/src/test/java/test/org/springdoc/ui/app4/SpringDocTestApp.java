@@ -18,6 +18,7 @@
 
 package test.org.springdoc.ui.app4;
 
+
 import org.springdoc.core.models.GroupedOpenApi;
 
 import org.springframework.boot.SpringApplication;

@@ -45,7 +45,7 @@ public class SpringDocApp25Test extends AbstractSpringDocTest {
 		mockMvc.perform(get("/baf/batz/swagger-config"))
 				.andExpect(status().isOk()).andExpect(jsonPath("$.validatorUrl", is("/foo/validate")));
 
-		super.chekHTML();
+		super.chekJS();
 	}
 
 	@SpringBootApplication

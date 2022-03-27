@@ -18,6 +18,7 @@
 
 package test.org.springdoc.ui.app22;
 
+
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 
