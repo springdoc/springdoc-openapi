@@ -42,7 +42,7 @@ public class SpringDocApp10Test extends AbstractSpringDocTest {
 
 	@Test
 	public void originalIndex() throws Exception {
-		super.chekHTML();
+		super.chekJS();
 	}
 
 	@SpringBootApplication

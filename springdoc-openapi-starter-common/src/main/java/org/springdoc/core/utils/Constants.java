@@ -118,11 +118,6 @@ public final class Constants {
 	public static final String SPRINGDOC_SWAGGER_UI_ENABLED = "springdoc.swagger-ui.enabled";
 
 	/**
-	 * The constant SPRING_NATIVE_LISTENER.
-	 */
-	public static final String SPRING_NATIVE_LISTENER = "org.springframework.nativex.NativeListener";
-
-	/**
 	 * The constant NULL.
 	 */
 	public static final String NULL = ":#{null}";
@@ -192,6 +187,16 @@ public final class Constants {
 	 * The constant SWAGGER_UI_URL.
 	 */
 	public static final String SWAGGER_UI_URL = SWAGGER_UI_PREFIX + INDEX_PAGE;
+
+	/**
+	 * The constant SWAGGER_INITIALIZER_JS.
+	 */
+	public static final String SWAGGER_INITIALIZER_JS = "swagger-initializer.js";
+
+	/**
+	 * The constant SWAGGER_INITIALIZER_URL.
+	 */
+	public static final String SWAGGER_INITIALIZER_URL = SWAGGER_UI_PREFIX + "/" + SWAGGER_INITIALIZER_JS;
 
 	/**
 	 * The constant SWAGGER_UI_OAUTH_REDIRECT_URL.

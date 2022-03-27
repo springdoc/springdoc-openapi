@@ -41,7 +41,7 @@ public class SpringDocApp1RedirectConfigUrlTest extends AbstractSpringDocTest {
 		responseSpec.expectHeader()
 				.value("Location", Matchers.is("/webjars/swagger-ui/index.html"));
 
-		super.checkHTML("index1-configurl");
+		super.checkJS("index1-configurl");
 	}
 
 	@SpringBootApplication

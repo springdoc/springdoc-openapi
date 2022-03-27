@@ -35,6 +35,8 @@ import org.springframework.web.reactive.resource.ResourceTransformerChain;
 import org.springframework.web.reactive.resource.TransformedResource;
 import org.springframework.web.server.ServerWebExchange;
 
+import static org.springdoc.core.utils.Constants.SWAGGER_INITIALIZER_JS;
+
 /**
  * The type Swagger index transformer.
  * @author bnasslahsen
@@ -65,7 +67,7 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		try {
-			boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/index.html", resource.getURL().toString());
+			boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/" + SWAGGER_INITIALIZER_JS, resource.getURL().toString());
 			if (isIndexFound) {
 				String html = defaultTransformations(resource.getInputStream());
 				return Mono.just(new TransformedResource(resource, html.getBytes()));

@@ -37,7 +37,7 @@ public class SpringDocApp26Test extends AbstractSpringDocTest {
 				.andExpect(status().isFound())
 				.andExpect(header().string("Location", "/swagger-ui/index.html"));
 
-		super.chekHTML();
+		super.chekJS();
 	}
 
 	@SpringBootApplication

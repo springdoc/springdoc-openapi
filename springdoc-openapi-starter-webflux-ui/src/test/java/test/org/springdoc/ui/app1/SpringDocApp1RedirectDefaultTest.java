@@ -38,7 +38,7 @@ public class SpringDocApp1RedirectDefaultTest extends AbstractSpringDocTest {
 		webTestClient.get().uri("/v3/api-docs/swagger-config").exchange()
 				.expectStatus().isOk().expectBody().jsonPath("$.validatorUrl").isEqualTo("");
 
-		super.checkHTML("index1-default");
+		super.checkJS("index1-default");
 	}
 
 	@SpringBootApplication

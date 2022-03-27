@@ -38,7 +38,7 @@ public class SpringDocApp1RedirectLayoutTest extends AbstractSpringDocTest {
 		responseSpec.expectHeader()
 				.value("Location", Matchers.is("/webjars/swagger-ui/index.html"));
 
-		super.checkHTML("index1-layout");
+		super.checkJS("index1-layout");
 	}
 
 	@SpringBootApplication
