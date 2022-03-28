@@ -57,6 +57,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
+import org.springdoc.core.providers.JavadocProvider;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -156,6 +157,11 @@ public class OpenAPIService implements ApplicationContextAware {
 	private PropertyResolverUtils propertyResolverUtils;
 
 	/**
+	 * The javadoc provider.
+	 */
+	private Optional<JavadocProvider> javadocProvider;
+
+	/**
 	 * The Basic error controller.
 	 */
 	private static Class<?> basicErrorController;
@@ -189,7 +195,8 @@ public class OpenAPIService implements ApplicationContextAware {
 	public OpenAPIService(Optional<OpenAPI> openAPI, SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
 			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers,
-			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers) {
+			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers,
+			Optional<JavadocProvider> javadocProvider) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
 			if (this.openAPI.getComponents() == null)
@@ -204,6 +211,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.openApiBuilderCustomisers = openApiBuilderCustomizers;
 		this.serverBaseUrlCustomizers = serverBaseUrlCustomizers;
+		this.javadocProvider = javadocProvider;
 		if (springDocConfigProperties.isUseFqn())
 			TypeNameResolver.std.setUseFqn(true);
 	}
@@ -348,8 +356,19 @@ public class OpenAPIService implements ApplicationContextAware {
 			}
 		}
 
-		if (isAutoTagClasses(operation))
-			operation.addTagsItem(splitCamelCase(handlerMethod.getBeanType().getSimpleName()));
+		if (isAutoTagClasses(operation)) {
+			String tagAutoName = splitCamelCase(handlerMethod.getBeanType().getSimpleName());
+			operation.addTagsItem(tagAutoName);
+			io.swagger.v3.oas.models.tags.Tag tag = new io.swagger.v3.oas.models.tags.Tag();
+			tag.setName(tagAutoName);
+			if (javadocProvider.isPresent()) {
+				tag.setDescription(javadocProvider.get().getClassJavadoc(handlerMethod.getBeanType()));
+			}
+			if (openAPI.getTags() == null || !openAPI.getTags().contains(tag)) {
+				openAPI.addTagsItem(tag);
+			}
+
+		}
 
 		if (!CollectionUtils.isEmpty(tags)) {
 			// Existing tags
@@ -733,7 +752,7 @@ public class OpenAPIService implements ApplicationContextAware {
 
 	/**
 	 * Gets server base URL
-	 * 
+	 *
 	 * @return the server base URL
 	 */
 	public String getServerBaseUrl() {

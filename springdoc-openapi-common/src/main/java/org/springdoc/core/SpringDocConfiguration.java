@@ -228,8 +228,8 @@ public class SpringDocConfiguration {
 			SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties,PropertyResolverUtils propertyResolverUtils,
 			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers,
-			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers) {
-		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomisers, serverBaseUrlCustomisers);
+			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers, Optional<JavadocProvider> javadocProvider) {
+		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomisers, serverBaseUrlCustomisers, javadocProvider);
 	}
 
 	/**

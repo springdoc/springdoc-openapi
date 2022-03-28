@@ -315,7 +315,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			Map<String, Object> findControllerAdvice = openAPIService.getControllerAdviceMap();
 			// calculate generic responses
 			openApi = openAPIService.getCalculatedOpenAPI();
-			if (springDocConfigProperties.isOverrideWithGenericResponse()) {
+			if (springDocConfigProperties.isOverrideWithGenericResponse() || springDocConfigProperties.isOverrideWithGenericResponseIfDeclared()) {
 				if (!CollectionUtils.isEmpty(mappingsMap))
 					findControllerAdvice.putAll(mappingsMap);
 				responseBuilder.buildGenericResponse(openApi.getComponents(), findControllerAdvice, finalLocale);
@@ -463,8 +463,15 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// get javadoc method description
 			if (javadocProvider != null) {
 				String description = javadocProvider.getMethodJavadocDescription(handlerMethod.getMethod());
-				if (!StringUtils.isEmpty(description) && StringUtils.isEmpty(operation.getDescription()))
+				if (!StringUtils.isEmpty(description)
+						&& StringUtils.isEmpty(operation.getDescription())) {
 					operation.setDescription(description);
+				}
+				String summary = javadocProvider.getFirstSentence(description);
+				if (!StringUtils.isEmpty(summary)
+						&& StringUtils.isEmpty(operation.getSummary())) {
+					operation.setSummary(javadocProvider.getFirstSentence(description));
+				}
 			}
 
 			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks = AnnotatedElementUtils.findMergedRepeatableAnnotations(method, io.swagger.v3.oas.annotations.callbacks.Callback.class);

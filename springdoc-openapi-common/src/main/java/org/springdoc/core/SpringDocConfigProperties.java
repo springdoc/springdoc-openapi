@@ -118,6 +118,11 @@ public class SpringDocConfigProperties {
 	private boolean overrideWithGenericResponse = true;
 
 	/**
+	 * The Override with generic response only if the exception is declared
+	 */
+	private boolean overrideWithGenericResponseIfDeclared = false;
+
+	/**
 	 * The Remove broken reference definitions.
 	 */
 	private boolean removeBrokenReferenceDefinitions = true;
@@ -590,6 +595,24 @@ public class SpringDocConfigProperties {
 	 */
 	public void setOverrideWithGenericResponse(boolean overrideWithGenericResponse) {
 		this.overrideWithGenericResponse = overrideWithGenericResponse;
+	}
+
+	/**
+	 * Is override with generic response if declared boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isOverrideWithGenericResponseIfDeclared() {
+		return overrideWithGenericResponseIfDeclared;
+	}
+
+	/**
+	 * Sets override with generic response if declared.
+	 *
+	 * @param overrideWithGenericResponseIfDeclared the override with generic response if declared
+	 */
+	public void setOverrideWithGenericResponseIfDeclared(boolean overrideWithGenericResponseIfDeclared) {
+		this.overrideWithGenericResponseIfDeclared = overrideWithGenericResponseIfDeclared;
 	}
 
 	/**

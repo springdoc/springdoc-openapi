@@ -76,12 +76,12 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 				if (!CollectionUtils.isEmpty(fields)) {
 					if (!type.isSchemaProperty()) {
 						Schema existingSchema = context.resolve(type);
-						setJavadocDescription(fields, existingSchema);
+						setJavadocDescription(cls, fields, existingSchema);
 					}
 					else if (resolvedSchema != null && resolvedSchema.get$ref() != null && resolvedSchema.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
 						String schemaName = resolvedSchema.get$ref().substring(21);
 						Schema existingSchema = context.getDefinedModels().get(schemaName);
-						setJavadocDescription(fields, existingSchema);
+						setJavadocDescription(cls, fields, existingSchema);
 					}
 				}
 				return resolvedSchema;
@@ -96,8 +96,11 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 	 * @param fields the fields
 	 * @param existingSchema the existing schema
 	 */
-	private void setJavadocDescription(List<Field> fields, Schema existingSchema) {
+	private void setJavadocDescription(Class<?> cls, List<Field> fields, Schema existingSchema) {
 		if (existingSchema != null) {
+			if (StringUtils.isBlank(existingSchema.getDescription())) {
+				existingSchema.setDescription(javadocProvider.getClassJavadoc(cls));
+			}
 			Map<String, Schema> properties = existingSchema.getProperties();
 			if (!CollectionUtils.isEmpty(properties))
 				properties.entrySet().stream()
