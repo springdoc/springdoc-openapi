@@ -53,7 +53,7 @@ public class Pageable {
 	/**
 	 * The Sort.
 	 */
-	@Parameter(description = "Sorting criteria in the format: property(,asc|desc). "
+	@Parameter(description = "Sorting criteria in the format: property,(asc|desc). "
 			+ "Default sort order is ascending. " + "Multiple sort criteria are supported."
 			, name = "sort"
 			, array = @ArraySchema(schema = @Schema(type = "string")))
