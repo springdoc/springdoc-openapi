@@ -47,7 +47,7 @@
           {
             "name": "sort",
             "in": "query",
-            "description": "Sorting criteria in the format: property(,asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
             "schema": {
               "type": "array",
               "items": {
