@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springdoc</groupId>
-		<artifactId>springdoc-openapi</artifactId>
+		<artifactId>springdoc-openapi-parent</artifactId>
 		<version>1.6.7-SNAPSHOT</version>
 	</parent>
 	<artifactId>springdoc-openapi-ui</artifactId>
