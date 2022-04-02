@@ -47,7 +47,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 		, name = "size"
 		, schema = @Schema(type = "integer", defaultValue = "20"))
 @Parameter(in = ParameterIn.QUERY
-		, description = "Sorting criteria in the format: property(,asc|desc). "
+		, description = "Sorting criteria in the format: property,(asc|desc). "
 		+ "Default sort order is ascending. " + "Multiple sort criteria are supported."
 		, name = "sort"
 		, array = @ArraySchema(schema = @Schema(type = "string")))
