@@ -8,7 +8,7 @@
 	<artifactId>springdoc-openapi-groovy-tests</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>org.codehaus.groovy</groupId>
+			<groupId>org.apache.groovy</groupId>
 			<artifactId>groovy</artifactId>
 			<scope>test</scope>
 		</dependency>

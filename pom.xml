@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.0-M1</version>
+		<version>3.0.0-M2</version>
 	</parent>
 
 	<licenses>
@@ -63,7 +63,7 @@
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 		<swagger-api.version>2.1.13</swagger-api.version>
 		<swagger-ui.version>4.9.1</swagger-ui.version>
-		<classgraph.version>4.8.138</classgraph.version>
+		<classgraph.version>4.8.143</classgraph.version>
 		<webjars-locator-core.version>0.50</webjars-locator-core.version>
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<jaxb-impl.version>2.1</jaxb-impl.version>
@@ -71,7 +71,7 @@
 		<jjwt.version>0.9.1</jjwt.version>
 		<spring-native.version>0.11.3</spring-native.version>
 		<therapi-runtime-javadoc.version>0.13.0</therapi-runtime-javadoc.version>
-		<spring-cloud-function.version>4.0.0-M1</spring-cloud-function.version>
+		<spring-cloud-function.version>4.0.0-M2</spring-cloud-function.version>
 	</properties>
 
 	<dependencyManagement>
