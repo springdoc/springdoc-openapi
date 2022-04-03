@@ -163,7 +163,7 @@ public class PropertyResolverUtils {
 	 * @return the schema
 	 */
 	@SuppressWarnings("unchecked")
-	public Schema resolveProperties(Schema schema, Locale locale) {
+	public Schema resolveProperties(Schema<?> schema, Locale locale) {
 		resolveProperty(schema::getName, schema::name, this, locale);
 		resolveProperty(schema::getTitle, schema::title, this, locale);
 		resolveProperty(schema::getDescription, schema::description, this, locale);
