@@ -76,188 +76,6 @@
             }
           }
         }
-      },
-      "post": {
-        "tags": [
-          "person-entity-controller"
-        ],
-        "description": "create-person",
-        "operationId": "postCollectionResource-person-post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PersonRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelPerson"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/people/{id}": {
-      "get": {
-        "tags": [
-          "person-entity-controller"
-        ],
-        "description": "get-person",
-        "operationId": "getItemResource-person-get",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelPerson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "person-entity-controller"
-        ],
-        "description": "update-person",
-        "operationId": "putItemResource-person-put",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PersonRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelPerson"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelPerson"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "person-entity-controller"
-        ],
-        "description": "delete-person",
-        "operationId": "deleteItemResource-person-delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "person-entity-controller"
-        ],
-        "description": "patch-person",
-        "operationId": "patchItemResource-person-patch",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PersonRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/hal+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntityModelPerson"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
       }
     },
     "/profile": {
@@ -265,7 +83,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "listAllFormsOfMetadata_1",
+        "operationId": "listAllFormsOfMetadata",
         "responses": {
           "200": {
             "description": "OK",
@@ -285,7 +103,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_1_1_1",
+        "operationId": "descriptor_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -413,17 +231,6 @@
           }
         }
       },
-      "Person": {
-        "type": "object",
-        "properties": {
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          }
-        }
-      },
       "EntityModelPerson": {
         "type": "object",
         "properties": {
@@ -481,7 +288,7 @@
           }
         }
       },
-      "PersonRequestBody": {
+      "Person": {
         "type": "object",
         "properties": {
           "firstName": {
