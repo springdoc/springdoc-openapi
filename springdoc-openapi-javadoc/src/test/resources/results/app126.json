@@ -10,6 +10,12 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/": {
       "get": {
@@ -21,7 +27,7 @@
         "operationId": "getAllCurrencies",
         "responses": {
           "401": {
-            "$ref": "#/components/responses/http401NoToken"
+            "$ref": "#/components/responses/http401BadToken"
           },
           "403": {
             "$ref": "#/components/responses/http403"
@@ -66,13 +72,14 @@
             "type": "integer",
             "format": "int32"
           },
-          "detail": {
-            "type": "string"
-          },
           "title": {
             "type": "string"
+          },
+          "detail": {
+            "type": "string"
           }
-        }
+        },
+        "description": "The interface Problem."
       }
     },
     "responses": {

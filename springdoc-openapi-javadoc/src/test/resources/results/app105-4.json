@@ -28,6 +28,7 @@
         "tags": [
           "store"
         ],
+        "summary": "Stores.",
         "description": "Stores.",
         "operationId": "stores",
         "parameters": [

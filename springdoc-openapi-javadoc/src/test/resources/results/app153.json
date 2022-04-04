@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "test-controller",
+      "description": "The type Test controller."
+    }
+  ],
   "paths": {
     "/orders": {
       "get": {
         "tags": [
           "test-controller"
         ],
+        "summary": "Method object.",
         "description": "Method object.",
         "operationId": "method",
         "parameters": [
@@ -26,11 +33,11 @@
             "required": false,
             "schema": {
               "type": "string",
+              "default": "finished",
               "enum": [
                 "finished",
                 "new"
-              ],
-              "default": "finished"
+              ]
             }
           }
         ],

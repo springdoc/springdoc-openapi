@@ -13,6 +13,10 @@
   "tags": [
     {
       "name": "Operations"
+    },
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
     }
   ],
   "paths": {
@@ -21,6 +25,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Create string.",
         "description": "Create string.",
         "operationId": "create",
         "requestBody": {
@@ -79,7 +84,8 @@
             "description": "The Code.",
             "format": "int32"
           }
-        }
+        },
+        "description": "The type Foo bean."
       },
       "FooBean_View2": {
         "type": "object",
@@ -93,7 +99,8 @@
             "type": "string",
             "description": "The Message."
           }
-        }
+        },
+        "description": "The type Foo bean."
       }
     }
   }

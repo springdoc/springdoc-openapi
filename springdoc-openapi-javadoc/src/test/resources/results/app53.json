@@ -10,6 +10,16 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    },
+    {
+      "name": "hello-controller-with-global-api-response",
+      "description": "The type Hello controller with global api response."
+    }
+  ],
   "paths": {
     "/hello7": {
       "get": {
@@ -228,7 +238,8 @@
             "type": "string",
             "description": "The Message."
           }
-        }
+        },
+        "description": "The type Hello dto 1."
       }
     }
   }

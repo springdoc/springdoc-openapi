@@ -463,13 +463,16 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// get javadoc method description
 			if (javadocProvider != null) {
 				String description = javadocProvider.getMethodJavadocDescription(handlerMethod.getMethod());
-				if (!StringUtils.isEmpty(description)
-						&& StringUtils.isEmpty(operation.getDescription())) {
+				String summary = javadocProvider.getFirstSentence(description);
+				boolean emptyOverrideDescription = StringUtils.isEmpty(operation.getDescription());
+				boolean emptyOverrideSummary = StringUtils.isEmpty(operation.getSummary());
+				if (!StringUtils.isEmpty(description) && emptyOverrideDescription) {
 					operation.setDescription(description);
 				}
-				String summary = javadocProvider.getFirstSentence(description);
-				if (!StringUtils.isEmpty(summary)
-						&& StringUtils.isEmpty(operation.getSummary())) {
+				// if there is a previously set description
+				// but no summary then it is intentional
+				// we keep it as is
+				if (!StringUtils.isEmpty(summary) && emptyOverrideSummary && emptyOverrideDescription) {
 					operation.setSummary(javadocProvider.getFirstSentence(description));
 				}
 			}

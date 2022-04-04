@@ -115,7 +115,8 @@
             "description": "The Id.",
             "format": "int64"
           }
-        }
+        },
+        "description": "The type Sample search request."
       },
       "SampleV2": {
         "type": "object",
@@ -125,7 +126,8 @@
             "description": "The Id.",
             "format": "int64"
           }
-        }
+        },
+        "description": "The type Sample v 2."
       },
       "SampleV1": {
         "type": "object",
@@ -134,7 +136,8 @@
             "type": "string",
             "description": "The Id."
           }
-        }
+        },
+        "description": "The type Sample v 1."
       }
     }
   }

@@ -10,6 +10,12 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/organizations": {
       "post": {
@@ -31,8 +37,8 @@
           "required": true
         },
         "responses": {
-          "409": {
-            "description": "An organization with the specified ID already exists",
+          "400": {
+            "description": "Invalid argument",
             "content": {
               "application/json": {
                 "schema": {
@@ -41,8 +47,8 @@
               }
             }
           },
-          "500": {
-            "description": "An error has occurred and the request could not be processed at this time",
+          "409": {
+            "description": "An organization with the specified ID already exists",
             "content": {
               "application/json": {
                 "schema": {
@@ -54,8 +60,8 @@
           "204": {
             "description": "The organization was created successfully"
           },
-          "400": {
-            "description": "Invalid argument",
+          "500": {
+            "description": "An error has occurred and the request could not be processed at this time",
             "content": {
               "application/json": {
                 "schema": {
@@ -100,7 +106,8 @@
             "type": "string",
             "description": "The Message."
           }
-        }
+        },
+        "description": "The type Rest controller error."
       }
     }
   }

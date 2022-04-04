@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/api/test": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Update deferred result.",
         "description": "Update deferred result.",
         "operationId": "update",
         "parameters": [
@@ -69,7 +76,8 @@
             "type": "string",
             "description": "The Result."
           }
-        }
+        },
+        "description": "The type Actual returned entity."
       },
       "OperationResponseActualReturnedEntity": {
         "type": "object",
@@ -78,7 +86,8 @@
             "type": "string",
             "description": "The Operation result."
           }
-        }
+        },
+        "description": "The type Operation response."
       }
     }
   }

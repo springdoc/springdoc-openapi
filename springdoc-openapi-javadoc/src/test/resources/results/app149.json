@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "To test the case a user does not use @RestController but puts @Operation on handler methods\n and wants these methods to be exposed."
+    }
+  ],
   "paths": {
     "/message": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Message hello message.",
         "description": "Message hello message.",
         "operationId": "message",
         "responses": {
@@ -37,6 +44,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Hello string.",
         "description": "Hello string.",
         "operationId": "hello",
         "responses": {
@@ -58,6 +66,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Hello model and view model and view.",
         "description": "Hello model and view model and view.",
         "operationId": "helloModelAndView",
         "responses": {
@@ -89,7 +98,8 @@
             "description": "The Number.",
             "format": "int32"
           }
-        }
+        },
+        "description": "The type Hello message."
       }
     }
   }

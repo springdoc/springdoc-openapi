@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/tasks": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Gets tasks.",
         "description": "Gets tasks.",
         "operationId": "getTasks",
         "parameters": [
@@ -61,7 +68,8 @@
             "type": "string",
             "description": "The Last name."
           }
-        }
+        },
+        "description": "The type Person dto."
       }
     }
   }

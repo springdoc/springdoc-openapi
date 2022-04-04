@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/parties": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Save meal party response entity.",
         "description": "Save meal party response entity.",
         "operationId": "saveMealParty",
         "requestBody": {
@@ -47,6 +54,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Save meal new party response entity.",
         "description": "Save meal new party response entity.",
         "operationId": "saveMealNewParty",
         "requestBody": {
@@ -118,7 +126,8 @@
             "type": "string",
             "description": "The Name."
           }
-        }
+        },
+        "description": "The type Meal party."
       },
       "MealParty_MealPartyAdmin": {
         "type": "object",
@@ -134,7 +143,8 @@
               "type": "string"
             }
           }
-        }
+        },
+        "description": "The type Meal party."
       }
     }
   }

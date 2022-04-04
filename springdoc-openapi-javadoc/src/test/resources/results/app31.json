@@ -10,6 +10,12 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/test": {
       "post": {
@@ -97,7 +103,8 @@
             "type": "string",
             "description": "The Subscription uuid."
           }
-        }
+        },
+        "description": "The type Subscription response."
       }
     }
   }

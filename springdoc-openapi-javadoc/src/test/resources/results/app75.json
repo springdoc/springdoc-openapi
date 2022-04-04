@@ -10,6 +10,12 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/test3": {
       "post": {
@@ -164,7 +170,8 @@
             "type": "string",
             "description": "The Last name."
           }
-        }
+        },
+        "description": "The type Person dto."
       }
     }
   }

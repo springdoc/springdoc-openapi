@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "test-controller",
+      "description": "The type Test controller."
+    }
+  ],
   "paths": {
     "/test": {
       "post": {
         "tags": [
           "test-controller"
         ],
+        "summary": "Gets test.",
         "description": "Gets test.",
         "operationId": "getTest",
         "parameters": [
@@ -152,7 +159,8 @@
             "type": "integer",
             "description": "The Param 2."
           }
-        }
+        },
+        "description": "The type Nested."
       },
       "InheritedRequestParams": {
         "required": [
@@ -200,7 +208,8 @@
             "type": "string",
             "description": "parameter from child of RequestParams"
           }
-        }
+        },
+        "description": "The type Inherited request params."
       }
     }
   }

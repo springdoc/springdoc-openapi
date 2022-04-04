@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/api/test/{id}": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Testme.",
         "description": "Testme.",
         "operationId": "testme",
         "parameters": [

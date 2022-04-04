@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/api/hello": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Hello response entity.",
         "description": "Hello response entity.",
         "operationId": "hello",
         "responses": {
@@ -37,6 +44,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Testpost 1 response entity.",
         "description": "Testpost 1 response entity.",
         "operationId": "testpost1",
         "requestBody": {
@@ -79,7 +87,8 @@
             "type": "string",
             "description": "The String value."
           }
-        }
+        },
+        "description": "The type Test object."
       }
     }
   }

@@ -18,12 +18,19 @@
       ]
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/secure": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Secured string.",
         "description": "Secured string.",
         "operationId": "secured",
         "responses": {
@@ -45,6 +52,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Open string.",
         "description": "Open string.",
         "operationId": "open",
         "responses": {

@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "controller",
+      "description": "The type Controller."
+    }
+  ],
   "paths": {
     "/class-hierarchy/abstract-parent": {
       "post": {
         "tags": [
           "controller"
         ],
+        "summary": "Abstract parent response.",
         "description": "Abstract parent response.",
         "operationId": "abstractParent",
         "requestBody": {
@@ -55,6 +62,7 @@
         "tags": [
           "controller"
         ],
+        "summary": "Concrete parent response.",
         "description": "Concrete parent response.",
         "operationId": "concreteParent",
         "requestBody": {
@@ -115,6 +123,7 @@
       },
       "ChildOfAbstract1": {
         "type": "object",
+        "description": "The type Child of abstract 1.",
         "allOf": [
           {
             "$ref": "#/components/schemas/AbstractParent"
@@ -137,6 +146,7 @@
       },
       "ChildOfAbstract2": {
         "type": "object",
+        "description": "The type Child of abstract 2.",
         "allOf": [
           {
             "$ref": "#/components/schemas/AbstractParent"
@@ -159,6 +169,7 @@
       },
       "ChildOfConcrete1": {
         "type": "object",
+        "description": "The type Child of concrete 1.",
         "allOf": [
           {
             "$ref": "#/components/schemas/ConcreteParent"
@@ -181,6 +192,7 @@
       },
       "ChildOfConcrete2": {
         "type": "object",
+        "description": "The type Child of concrete 2.",
         "allOf": [
           {
             "$ref": "#/components/schemas/ConcreteParent"
@@ -216,6 +228,7 @@
             "type": "string"
           }
         },
+        "description": "The type Concrete parent.",
         "discriminator": {
           "propertyName": "type"
         }
@@ -251,7 +264,8 @@
               ]
             }
           }
-        }
+        },
+        "description": "The type Response."
       }
     }
   }

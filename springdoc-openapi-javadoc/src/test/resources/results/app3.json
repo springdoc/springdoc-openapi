@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Echo playing card.",
         "description": "Echo playing card.",
         "operationId": "echo",
         "parameters": [
@@ -80,7 +87,8 @@
             "description": "The Toto.",
             "format": "date-time"
           }
-        }
+        },
+        "description": "The type Playing card."
       },
       "PersonDTO": {
         "type": "object",
@@ -97,7 +105,8 @@
             "type": "string",
             "description": "The lastName"
           }
-        }
+        },
+        "description": "The type Person dto."
       }
     }
   }
