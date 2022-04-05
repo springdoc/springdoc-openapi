@@ -349,6 +349,11 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 						public Extension[] extensions() {
 							return parameter.schema().extensions();
 						}
+
+						@Override
+						public AdditionalPropertiesValue additionalProperties() {
+							return parameter.schema().additionalProperties();
+						}
 					};
 				}
 
@@ -564,6 +569,11 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 								@Override
 								public Extension[] extensions() {
 									return schema.extensions();
+								}
+
+								@Override
+								public AdditionalPropertiesValue additionalProperties() {
+									return schema.additionalProperties();
 								}
 							};
 						}

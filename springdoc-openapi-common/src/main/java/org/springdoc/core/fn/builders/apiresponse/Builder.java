@@ -81,6 +81,10 @@ public class Builder {
 	 */
 	private String ref = "";
 
+	/**
+	 * The Use return type schema.
+	 */
+	boolean useReturnTypeSchema = false;
 
 	/**
 	 * Instantiates a new Api response builder.
@@ -241,6 +245,11 @@ public class Builder {
 			@Override
 			public String ref() {
 				return ref;
+			}
+
+			@Override
+			public boolean useReturnTypeSchema() {
+				return useReturnTypeSchema;
 			}
 		};
 	}
