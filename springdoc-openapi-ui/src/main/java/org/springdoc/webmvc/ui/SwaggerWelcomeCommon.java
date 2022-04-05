@@ -12,7 +12,9 @@ import org.springdoc.ui.AbstractSwaggerWelcome;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.server.RequestPath;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.ServletRequestPathUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -77,6 +79,10 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	void buildFromCurrentContextPath(HttpServletRequest request) {
 		super.init();
 		contextPath = request.getContextPath();
+		String servletPath = request.getServletPath();
+		if (StringUtils.isNotBlank(servletPath)) {
+			contextPath += servletPath;
+		}
 		buildConfigUrl(ServletUriComponentsBuilder.fromCurrentContextPath());
 	}
 }
