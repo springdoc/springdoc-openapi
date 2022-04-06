@@ -182,11 +182,23 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 * Add group.
 	 *
 	 * @param group the group
+	 * @param displayName the display name
 	 */
 	public void addGroup(String group, String displayName) {
 		SwaggerUrl swaggerUrl = new SwaggerUrl(group, null,  displayName);
 		urls.add(swaggerUrl);
 	}
+
+	/**
+	 * Add group.
+	 *
+	 * @param group the group
+	 */
+	public void addGroup(String group) {
+		SwaggerUrl swaggerUrl = new SwaggerUrl(group, null,  group);
+		urls.add(swaggerUrl);
+	}
+
 
 	/**
 	 * Add url.
