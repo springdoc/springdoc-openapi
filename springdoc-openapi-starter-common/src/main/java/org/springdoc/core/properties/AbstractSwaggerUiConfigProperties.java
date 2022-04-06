@@ -1,21 +1,19 @@
 /*
  *
  *  *
+ *  *  * Copyright 2019-2020 the original author or authors.
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
- *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
- *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
+ *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  * you may not use this file except in compliance with the License.
+ *  *  * You may obtain a copy of the License at
  *  *  *
+ *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *
+ *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  * See the License for the specific language governing permissions and
+ *  *  * limitations under the License.
  *  *
  *
  */
@@ -26,7 +24,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.StringUtils;
 
 import static org.springdoc.core.utils.Constants.GROUP_NAME_NOT_NULL;
 
@@ -674,8 +674,14 @@ public abstract class AbstractSwaggerUiConfigProperties {
 		/**
 		 * The Name.
 		 */
-		@JsonProperty("name")
+		@JsonIgnore
 		private String name;
+
+		/**
+		 * The Display name.
+		 */
+		@JsonProperty("name")
+		private String displayName;
 
 		/**
 		 * Instantiates a new Swagger url.
@@ -688,21 +694,31 @@ public abstract class AbstractSwaggerUiConfigProperties {
 		 *
 		 * @param group the group
 		 * @param url the url
+		 * @param displayName the display name
 		 */
-		public SwaggerUrl(String group, String url) {
+		public SwaggerUrl(String group, String url, String displayName) {
 			Objects.requireNonNull(group, GROUP_NAME_NOT_NULL);
 			this.url = url;
 			this.name = group;
+			this.displayName = StringUtils.defaultIfEmpty(displayName, this.name);
 		}
 
 		/**
-		 * Instantiates a new Swagger url.
+		 * Gets display name.
 		 *
-		 * @param group the group
+		 * @return the display name
 		 */
-		public SwaggerUrl(String group) {
-			Objects.requireNonNull(group, GROUP_NAME_NOT_NULL);
-			this.name = group;
+		public String getDisplayName() {
+			return displayName;
+		}
+
+		/**
+		 * Sets display name.
+		 *
+		 * @param displayName the display name
+		 */
+		public void setDisplayName(String displayName) {
+			this.displayName = displayName;
 		}
 
 		/**
