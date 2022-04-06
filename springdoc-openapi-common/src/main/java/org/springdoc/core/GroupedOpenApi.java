@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
@@ -95,6 +96,11 @@ public class GroupedOpenApi {
 	private final List<OpenApiMethodFilter> openApiMethodFilters;
 
 	/**
+	 * The Display name.
+	 */
+	private final String displayName;
+
+	/**
 	 * Instantiates a new Grouped open api.
 	 *
 	 * @param builder the builder
@@ -108,6 +114,7 @@ public class GroupedOpenApi {
 		this.headersToMatch = builder.headersToMatch;
 		this.packagesToExclude = builder.packagesToExclude;
 		this.pathsToExclude = builder.pathsToExclude;
+		this.displayName = StringUtils.defaultIfEmpty(builder.displayName, this.group);
 		this.openApiCustomisers = Objects.requireNonNull(builder.openApiCustomisers);
 		this.operationCustomizers = Objects.requireNonNull(builder.operationCustomizers);
 		this.openApiMethodFilters = Objects.requireNonNull(builder.methodFilters);
@@ -233,6 +240,15 @@ public class GroupedOpenApi {
 	}
 
 	/**
+	 * Gets display name.
+	 *
+	 * @return the display name
+	 */
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	/**
 	 * The type Builder.
 	 * @author bnasslahsen
 	 */
@@ -291,6 +307,11 @@ public class GroupedOpenApi {
 		 * The Consumes to match.
 		 */
 		private List<String> consumesToMatch;
+
+		/**
+		 * The Display name.
+		 */
+		private String displayName;
 
 		/**
 		 * Instantiates a new Builder.
@@ -417,6 +438,17 @@ public class GroupedOpenApi {
 		 */
 		public Builder addOpenApiMethodFilter(OpenApiMethodFilter methodFilter) {
 			this.methodFilters.add(methodFilter);
+			return this;
+		}
+
+		/**
+		 * Display name builder.
+		 *
+		 * @param displayName the display name
+		 * @return the builder
+		 */
+		public Builder displayName(String displayName) {
+			this.displayName = displayName;
 			return this;
 		}
 

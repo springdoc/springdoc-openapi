@@ -20,16 +20,12 @@ package test.org.springdoc.ui.app4;
 
 import org.springdoc.core.GroupedOpenApi;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class SpringDocTestApp {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringDocTestApp.class, args);
-	}
 
 	@Bean
 	public GroupedOpenApi storeOpenApi() {
@@ -45,6 +41,7 @@ public class SpringDocTestApp {
 		String paths[] = { "/pet/**" };
 		return GroupedOpenApi.builder()
 				.group("pets")
+				.displayName("The pets")
 				.pathsToMatch(paths)
 				.build();
 	}

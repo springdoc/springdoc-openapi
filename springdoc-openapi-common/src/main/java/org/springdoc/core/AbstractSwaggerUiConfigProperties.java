@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.StringUtils;
 
 import static org.springdoc.core.Constants.GROUP_NAME_NOT_NULL;
 
@@ -672,8 +674,14 @@ public abstract class AbstractSwaggerUiConfigProperties {
 		/**
 		 * The Name.
 		 */
-		@JsonProperty("name")
+		@JsonIgnore
 		private String name;
+
+		/**
+		 * The Display name.
+		 */
+		@JsonProperty("name")
+		private String displayName;
 
 		/**
 		 * Instantiates a new Swagger url.
@@ -686,21 +694,31 @@ public abstract class AbstractSwaggerUiConfigProperties {
 		 *
 		 * @param group the group
 		 * @param url the url
+		 * @param displayName the display name
 		 */
-		public SwaggerUrl(String group, String url) {
+		public SwaggerUrl(String group, String url, String displayName) {
 			Objects.requireNonNull(group, GROUP_NAME_NOT_NULL);
 			this.url = url;
 			this.name = group;
+			this.displayName = StringUtils.defaultIfEmpty(displayName, this.name);
 		}
 
 		/**
-		 * Instantiates a new Swagger url.
+		 * Gets display name.
 		 *
-		 * @param group the group
+		 * @return the display name
 		 */
-		public SwaggerUrl(String group) {
-			Objects.requireNonNull(group, GROUP_NAME_NOT_NULL);
-			this.name = group;
+		public String getDisplayName() {
+			return displayName;
+		}
+
+		/**
+		 * Sets display name.
+		 *
+		 * @param displayName the display name
+		 */
+		public void setDisplayName(String displayName) {
+			this.displayName = displayName;
 		}
 
 		/**

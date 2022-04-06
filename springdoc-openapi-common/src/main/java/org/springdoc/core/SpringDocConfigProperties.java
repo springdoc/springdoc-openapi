@@ -1082,6 +1082,11 @@ public class SpringDocConfigProperties {
 		private List<String> consumesToMatch;
 
 		/**
+		 * The Display name.
+		 */
+		private String displayName;
+
+		/**
 		 * Instantiates a new Group config.
 		 */
 		public GroupConfig() {
@@ -1098,10 +1103,12 @@ public class SpringDocConfigProperties {
 		 * @param producesToMatch the produces to match
 		 * @param consumesToMatch the consumes to match
 		 * @param headersToMatch the headers to match
+		 * @param displayName the display name
 		 */
 		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan,
 				List<String> packagesToExclude, List<String> pathsToExclude,
-				List<String> producesToMatch,List<String> consumesToMatch,List<String> headersToMatch) {
+				List<String> producesToMatch, List<String> consumesToMatch, List<String> headersToMatch,
+				String displayName) {
 			this.pathsToMatch = pathsToMatch;
 			this.pathsToExclude = pathsToExclude;
 			this.packagesToExclude = packagesToExclude;
@@ -1110,6 +1117,7 @@ public class SpringDocConfigProperties {
 			this.producesToMatch = producesToMatch;
 			this.consumesToMatch = consumesToMatch;
 			this.headersToMatch = headersToMatch;
+			this.displayName = displayName;
 		}
 
 		/**
@@ -1254,6 +1262,24 @@ public class SpringDocConfigProperties {
 		 */
 		public void setProducesToMatch(List<String> producesToMatch) {
 			this.producesToMatch = producesToMatch;
+		}
+
+		/**
+		 * Gets display name.
+		 *
+		 * @return the display name
+		 */
+		public String getDisplayName() {
+			return displayName;
+		}
+
+		/**
+		 * Sets display name.
+		 *
+		 * @param displayName the display name
+		 */
+		public void setDisplayName(String displayName) {
+			this.displayName = displayName;
 		}
 	}
 }

@@ -121,7 +121,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 	}
 
 	@Override
-	public void afterPropertiesSet()  {
+	public void afterPropertiesSet() {
 		if (springDocConfigProperties.getApiDocs().isResolveSchemaProperties()) {
 			OpenApiCustomiser propertiesResolverForSchemaCustomizer = (OpenApiCustomiser) applicationContext.getBean("propertiesResolverForSchema");
 			this.groupedOpenApis.forEach(groupedOpenApi -> groupedOpenApi.addOpenApiCustomizer(propertiesResolverForSchemaCustomizer));
@@ -129,7 +129,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 		this.groupedOpenApiResources = groupedOpenApis.stream()
 				.collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
 						{
-							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude(), item.getProducesToMatch(), item.getConsumesToMatch(), item.getHeadersToMatch());
+							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude(), item.getProducesToMatch(), item.getConsumesToMatch(), item.getHeadersToMatch(), item.getDisplayName());
 							springDocConfigProperties.addGroupConfig(groupConfig);
 							return buildWebMvcOpenApiResource(item);
 						}
@@ -152,7 +152,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
 					Optional.of(item.getOpenApiMethodFilters()),
-					springDocConfigProperties,springDocProviders
+					springDocConfigProperties, springDocProviders
 
 			);
 		else
@@ -164,7 +164,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
 					Optional.of(item.getOpenApiMethodFilters()),
-					springDocConfigProperties,springDocProviders
+					springDocConfigProperties, springDocProviders
 			);
 	}
 
