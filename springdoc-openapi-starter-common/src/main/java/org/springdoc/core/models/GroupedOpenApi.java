@@ -1,21 +1,19 @@
 /*
  *
  *  *
+ *  *  * Copyright 2019-2020 the original author or authors.
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
- *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
- *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
+ *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  * you may not use this file except in compliance with the License.
+ *  *  * You may obtain a copy of the License at
  *  *  *
+ *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *
+ *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  * See the License for the specific language governing permissions and
+ *  *  * limitations under the License.
  *  *
  *
  */
@@ -27,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
@@ -97,6 +96,11 @@ public class GroupedOpenApi {
 	private final List<OpenApiMethodFilter> openApiMethodFilters;
 
 	/**
+	 * The Display name.
+	 */
+	private final String displayName;
+
+	/**
 	 * Instantiates a new Grouped open api.
 	 *
 	 * @param builder the builder
@@ -110,6 +114,7 @@ public class GroupedOpenApi {
 		this.headersToMatch = builder.headersToMatch;
 		this.packagesToExclude = builder.packagesToExclude;
 		this.pathsToExclude = builder.pathsToExclude;
+		this.displayName = StringUtils.defaultIfEmpty(builder.displayName, this.group);
 		this.openApiCustomizers = Objects.requireNonNull(builder.openApiCustomizers);
 		this.operationCustomizers = Objects.requireNonNull(builder.operationCustomizers);
 		this.openApiMethodFilters = Objects.requireNonNull(builder.methodFilters);
@@ -235,6 +240,15 @@ public class GroupedOpenApi {
 	}
 
 	/**
+	 * Gets display name.
+	 *
+	 * @return the display name
+	 */
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	/**
 	 * The type Builder.
 	 * @author bnasslahsen
 	 */
@@ -293,6 +307,11 @@ public class GroupedOpenApi {
 		 * The Consumes to match.
 		 */
 		private List<String> consumesToMatch;
+
+		/**
+		 * The Display name.
+		 */
+		private String displayName;
 
 		/**
 		 * Instantiates a new Builder.
@@ -419,6 +438,17 @@ public class GroupedOpenApi {
 		 */
 		public Builder addOpenApiMethodFilter(OpenApiMethodFilter methodFilter) {
 			this.methodFilters.add(methodFilter);
+			return this;
+		}
+
+		/**
+		 * Display name builder.
+		 *
+		 * @param displayName the display name
+		 * @return the builder
+		 */
+		public Builder displayName(String displayName) {
+			this.displayName = displayName;
 			return this;
 		}
 

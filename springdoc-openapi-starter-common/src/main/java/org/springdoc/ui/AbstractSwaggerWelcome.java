@@ -88,7 +88,7 @@ public abstract class AbstractSwaggerWelcome {
 	}
 
 	protected void init() {
-		springDocConfigProperties.getGroupConfigs().forEach(groupConfig -> swaggerUiConfigParameters.addGroup(groupConfig.getGroup()));
+		springDocConfigProperties.getGroupConfigs().forEach(groupConfig -> swaggerUiConfigParameters.addGroup(groupConfig.getGroup(), groupConfig.getDisplayName()));
 		calculateUiRootPath();
 	}
 
