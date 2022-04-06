@@ -31,13 +31,17 @@ import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.filter.SpecFilter;
 import io.swagger.v3.core.jackson.ApiResponsesSerializer;
 import io.swagger.v3.core.jackson.PathsSerializer;
+import io.swagger.v3.core.jackson.mixin.Components31Mixin;
 import io.swagger.v3.core.jackson.mixin.ComponentsMixin;
 import io.swagger.v3.core.jackson.mixin.DateSchemaMixin;
+import io.swagger.v3.core.jackson.mixin.Discriminator31Mixin;
 import io.swagger.v3.core.jackson.mixin.ExampleMixin;
 import io.swagger.v3.core.jackson.mixin.ExtensionsMixin;
 import io.swagger.v3.core.jackson.mixin.MediaTypeMixin;
+import io.swagger.v3.core.jackson.mixin.OpenAPI31Mixin;
 import io.swagger.v3.core.jackson.mixin.OpenAPIMixin;
 import io.swagger.v3.core.jackson.mixin.OperationMixin;
+import io.swagger.v3.core.jackson.mixin.Schema31Mixin;
 import io.swagger.v3.core.jackson.mixin.SchemaMixin;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -232,6 +236,10 @@ import org.springframework.util.AntPathMatcher;
 		OpenAPIMixin.class,
 		OperationMixin.class,
 		SchemaMixin.class,
+		Schema31Mixin.class,
+		Components31Mixin.class,
+		OpenAPI31Mixin.class,
+		Discriminator31Mixin.class,
 		Paths.class,
 		XML.class,
 		UUIDSchema.class,

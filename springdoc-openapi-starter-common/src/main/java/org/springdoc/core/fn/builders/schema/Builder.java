@@ -29,6 +29,7 @@ import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+import io.swagger.v3.oas.annotations.media.Schema.AdditionalPropertiesValue;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -258,6 +259,16 @@ public class Builder {
 	 * @return an optional array of extensions
 	 */
 	private Extension[] extensions = {};
+
+	/**
+	 * Allows to specify the additionalProperties value
+	 *
+	 * AdditionalPropertiesValue.TRUE: set to TRUE
+	 * AdditionalPropertiesValue.FALSE: set to FALSE
+	 * AdditionalPropertiesValue.USE_ADDITIONAL_PROPERTIES_ANNOTATION: resolve from @Content.additionalPropertiesSchema
+	 *
+	 */
+	private AdditionalPropertiesValue additionalProperties = AdditionalPropertiesValue.USE_ADDITIONAL_PROPERTIES_ANNOTATION;
 
 
 	/**
@@ -871,6 +882,11 @@ public class Builder {
 			@Override
 			public Extension[] extensions() {
 				return extensions;
+			}
+
+			@Override
+			public AdditionalPropertiesValue additionalProperties() {
+				return additionalProperties;
 			}
 		};
 	}
