@@ -30,6 +30,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Encoding;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -75,6 +76,17 @@ public class Builder {
 	 */
 	private Extension[] extensions = {};
 
+	/**
+	 * The schema properties defined for schema provided in @Schema
+	 *
+	 */
+	private Schema additionalPropertiesSchema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+
+	/**
+	 * The schema properties defined for schema provided in @Schema
+	 *
+	 */
+	private SchemaProperty[] schemaProperties = {};
 
 	/**
 	 * Instantiates a new Content builder.
@@ -183,6 +195,16 @@ public class Builder {
 			@Override
 			public Schema schema() {
 				return schema;
+			}
+
+			@Override
+			public SchemaProperty[] schemaProperties() {
+				return schemaProperties;
+			}
+
+			@Override
+			public Schema additionalPropertiesSchema() {
+				return additionalPropertiesSchema;
 			}
 
 			@Override

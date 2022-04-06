@@ -22,18 +22,21 @@
 
 package org.springdoc.core.mixins;
 
+import java.math.BigDecimal;
 import java.util.Map;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.v3.oas.models.media.Schema;
 
 /**
  * @author bnasslashen
  */
-@JsonPropertyOrder(value = {"type", "format"}, alphabetic = true)
+@JsonPropertyOrder(value = { "type", "format" }, alphabetic = true)
 public interface SortedSchemaMixin {
 
 	@JsonAnyGetter
@@ -48,5 +51,35 @@ public interface SortedSchemaMixin {
 
 	@JsonInclude(JsonInclude.Include.CUSTOM)
 	Object getExample();
+
+	@JsonIgnore
+	Map<String, Object> getJsonSchema();
+
+	@JsonIgnore
+	BigDecimal getExclusiveMinimumValue();
+
+	@JsonIgnore
+	BigDecimal getExclusiveMaximumValue();
+
+	@JsonIgnore
+	Map<String, Schema> getPatternProperties();
+
+	@JsonIgnore
+	Schema getContains();
+
+	@JsonIgnore
+	String get$id();
+
+	@JsonIgnore
+	String get$anchor();
+
+	@JsonIgnore
+	String get$schema();
+
+	@JsonIgnore
+	Set<String> getTypes();
+
+	@JsonIgnore
+	Object getJsonSchemaImpl();
 
 }
