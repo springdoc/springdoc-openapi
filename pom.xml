@@ -79,7 +79,7 @@
 		<jaxb-impl.version>2.1</jaxb-impl.version>
 		<javax.jws-api.version>1.1</javax.jws-api.version>
 		<jjwt.version>0.9.1</jjwt.version>
-		<spring-native.version>0.11.3</spring-native.version>
+		<spring-native.version>0.11.4</spring-native.version>
 		<therapi-runtime-javadoc.version>0.13.0</therapi-runtime-javadoc.version>
 		<spring-cloud.version>2021.0.1</spring-cloud.version>
 	</properties>
