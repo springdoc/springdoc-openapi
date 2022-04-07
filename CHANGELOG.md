@@ -4,6 +4,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.7] - 2022-04-07
+### Added
+- #1596 - Add title property to GroupedOpenApi class for displaying a Human readable group name.
+- #1554 - Configurable caching of OpenAPI instances.
+- #1544 - @Deprecated on controller to mark all its operations as deprecated.
+- #1534 - Support custom Spring type converters.
+- #1543 - Add method to retrieve server base URL and ability to 'customize' the generated server base URL.
+- #1505 - Support swagger-ui.withCredentials property.
+- #1481 - Include /oauth/token endpoint using OpenApi Swagger 1.6.5.  
+- #1501 - Added CSRF Session Storage config properties and html transformer.
+- #1498 - Pick up exception handler in case there is no controller advice at all.
+### Changed
+- upgrade to swagger-api 2.2.0 and swagger-ui 4.10.3
+- spring-native upgrade to 0.11.4
+- upgrade spring-boot version to 2.6.6
+- classgraph upgrade to 4.8.143
+- Update webjars-locator-core to 0.50
+- add owasp dependency-check-maven plugin
+### Fixed
+- #1586 - Typo in Pageable sort description.
+- #1570 - Remove unused dependencies.
+- #1565- Missing Request Body for Write Operation Actuator Endpoints.
+- #1522 - parameter of type com.querydsl.core.types.Predicate ignored when unique. 
+- #1556 - oauth2RedirectUrl cached unexpectedly.
+- #1546 - Custom Requestmapping consumes responses.
+- #1552 - resolve-schema-properties is not replacing tokens from properties file.
+- #1530 - Setting displayOperationId to false does not work.
+- #1525 - Null vendor extensions are excluded from Json/Yaml.
+
 ## [1.6.6] - 2022-02-06
 ### Changed
 - #1424 - Upgrade to swagger-ui 4.5.0
