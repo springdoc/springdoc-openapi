@@ -359,15 +359,17 @@ public class OpenAPIService implements ApplicationContextAware {
 		if (isAutoTagClasses(operation)) {
 			String tagAutoName = splitCamelCase(handlerMethod.getBeanType().getSimpleName());
 			operation.addTagsItem(tagAutoName);
-			io.swagger.v3.oas.models.tags.Tag tag = new io.swagger.v3.oas.models.tags.Tag();
-			tag.setName(tagAutoName);
 			if (javadocProvider.isPresent()) {
-				tag.setDescription(javadocProvider.get().getClassJavadoc(handlerMethod.getBeanType()));
+				String description = javadocProvider.get().getClassJavadoc(handlerMethod.getBeanType());
+				if (StringUtils.isNotBlank(description)) {
+					io.swagger.v3.oas.models.tags.Tag tag = new io.swagger.v3.oas.models.tags.Tag();
+					tag.setName(tagAutoName);
+					tag.setDescription(description);
+					if (openAPI.getTags() == null || !openAPI.getTags().contains(tag)) {
+						openAPI.addTagsItem(tag);
+					}
+				}
 			}
-			if (openAPI.getTags() == null || !openAPI.getTags().contains(tag)) {
-				openAPI.addTagsItem(tag);
-			}
-
 		}
 
 		if (!CollectionUtils.isEmpty(tags)) {

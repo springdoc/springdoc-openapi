@@ -27,7 +27,7 @@
         "operationId": "getAllCurrencies",
         "responses": {
           "401": {
-            "$ref": "#/components/responses/http401BadToken"
+            "$ref": "#/components/responses/http401NoToken"
           },
           "403": {
             "$ref": "#/components/responses/http403"
