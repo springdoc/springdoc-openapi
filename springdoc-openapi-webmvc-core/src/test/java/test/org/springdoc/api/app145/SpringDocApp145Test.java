@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright 2019-2020 the original author or authors.
+ *  * Copyright 2019-2022 the original author or authors.
  *  *
  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -75,4 +76,18 @@ public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 		assertEquals(expected, result, true);
 	}
 
+	@Test
+	public void testApp3() throws Exception {
+		try {
+			actuatorRestTemplate.getForObject("/application/openapi"+  "/"+Constants.DEFAULT_GROUP_NAME, String.class);
+			fail();
+		}
+		catch (HttpStatusCodeException ex) {
+			// TODO: Currently obtain status 500 on MVC... Webflux obtain 404... 
+			if (ex.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR)
+				assertTrue(true);
+			else
+				fail();
+		}
+	}
 }
