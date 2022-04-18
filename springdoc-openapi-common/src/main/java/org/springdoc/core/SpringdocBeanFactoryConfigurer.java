@@ -28,6 +28,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
@@ -67,6 +68,7 @@ public class SpringdocBeanFactoryConfigurer implements ApplicationContextAware, 
 				registry.registerBeanDefinition(groupConfig.getGroup(), BeanDefinitionBuilder
 						.genericBeanDefinition(SpringdocBeanFactoryConfigurer.class)
 						.setFactoryMethod("groupedOpenApisFactoryMethod")
+						.addConstructorArgValue(new RuntimeBeanReference(GroupedOpenApi.Builder.class))
 						.addConstructorArgValue(groupConfig)
 						.getBeanDefinition())
 			);
@@ -81,12 +83,12 @@ public class SpringdocBeanFactoryConfigurer implements ApplicationContextAware, 
 	/**
 	 * {@link GroupedOpenApi} factory method from {@link GroupConfig}.
 	 *
+	 * @param builder the {@link GroupedOpenApi.Builder}
 	 * @param groupConfig the {@link GroupConfig}
 	 * 
 	 * @return the {@link GroupedOpenApi}
 	 */
-	public static GroupedOpenApi groupedOpenApisFactoryMethod(GroupConfig groupConfig) {
-		GroupedOpenApi.Builder builder = GroupedOpenApi.builder();
+	public static GroupedOpenApi groupedOpenApisFactoryMethod(GroupedOpenApi.Builder builder, GroupConfig groupConfig) {
 		if (!CollectionUtils.isEmpty(groupConfig.getPackagesToScan()))
 			builder.packagesToScan(groupConfig.getPackagesToScan().toArray(new String[0]));
 		if (!CollectionUtils.isEmpty(groupConfig.getPathsToMatch()))

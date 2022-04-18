@@ -49,10 +49,13 @@ import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
+import org.springdoc.core.customizers.GlobalOpenApiCustomiser;
+import org.springdoc.core.customizers.GlobalOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
+import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.JavadocProvider;
@@ -84,6 +87,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.data.domain.Pageable;
@@ -395,6 +399,18 @@ public class SpringDocConfiguration {
 	SpringDocProviders springDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider, Optional<SpringWebProvider> springWebProvider) {
 		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider);
+	}
+
+	@Bean
+	@Scope("prototype")
+	@ConditionalOnMissingBean
+	public GroupedOpenApi.Builder groupedOpenApiBuilder(List<GlobalOpenApiCustomiser> globalOpenApiCustomisers, List<GlobalOperationCustomizer> globalOperationCustomizers,
+			List<GlobalOpenApiMethodFilter> globalOpenApiMethodFilters) {
+		GroupedOpenApi.Builder builder = GroupedOpenApi.builder();
+		globalOpenApiCustomisers.forEach(builder::addOpenApiCustomiser);
+		globalOperationCustomizers.forEach(builder::addOperationCustomizer);
+		globalOpenApiMethodFilters.forEach(builder::addOpenApiMethodFilter);
+		return builder;
 	}
 
 	/**

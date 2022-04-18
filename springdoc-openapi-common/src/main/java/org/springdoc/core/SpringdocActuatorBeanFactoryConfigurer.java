@@ -84,6 +84,7 @@ public class SpringdocActuatorBeanFactoryConfigurer implements ApplicationContex
 			registry.registerBeanDefinition(ACTUATOR_DEFAULT_GROUP, BeanDefinitionBuilder
 					.genericBeanDefinition(SpringdocActuatorBeanFactoryConfigurer.class)
 					.setFactoryMethod("actuatorGroupFactoryMethod")
+					.addConstructorArgValue(new RuntimeBeanReference(GroupedOpenApi.Builder.class))
 					.addConstructorArgValue(webEndpointProperties.getBasePath())
 					.addConstructorArgValue(new RuntimeBeanReference(ActuatorOpenApiCustomizer.class))
 					.addConstructorArgValue(new RuntimeBeanReference(ActuatorOperationCustomizer.class))
@@ -94,6 +95,7 @@ public class SpringdocActuatorBeanFactoryConfigurer implements ApplicationContex
 				registry.registerBeanDefinition(DEFAULT_GROUP_NAME, BeanDefinitionBuilder
 						.genericBeanDefinition(SpringdocActuatorBeanFactoryConfigurer.class)
 						.setFactoryMethod("defaultGroupFactoryMethod")
+						.addConstructorArgValue(new RuntimeBeanReference(GroupedOpenApi.Builder.class))
 						.addConstructorArgValue(webEndpointProperties.getBasePath())
 						.getBeanDefinition());
 			}
@@ -108,15 +110,16 @@ public class SpringdocActuatorBeanFactoryConfigurer implements ApplicationContex
 	/**
 	 * Actuator {@link GroupedOpenApi} factory method.
 	 *
+	 * @param builder the {@link GroupedOpenApi.Builder}
 	 * @param actuatorBasePath the actuator base path
 	 * @param actuatorOpenApiCustomiser the {@link ActuatorOpenApiCustomizer}
 	 * @param actuatorOperationCustomizer the {@link ActuatorOperationCustomizer}
 	 * 
 	 * @return the actuator {@link GroupedOpenApi}
 	 */
-	public static GroupedOpenApi actuatorGroupFactoryMethod(String actuatorBasePath,
+	public static GroupedOpenApi actuatorGroupFactoryMethod(GroupedOpenApi.Builder builder, String actuatorBasePath,
 			ActuatorOpenApiCustomizer actuatorOpenApiCustomiser, ActuatorOperationCustomizer actuatorOperationCustomizer) {
-		return GroupedOpenApi.builder().group(ACTUATOR_DEFAULT_GROUP)
+		return builder.group(ACTUATOR_DEFAULT_GROUP)
 				.pathsToMatch(actuatorBasePath + ALL_PATTERN)
 				.pathsToExclude(actuatorBasePath + HEALTH_PATTERN)
 				.addOpenApiCustomiser(actuatorOpenApiCustomiser)
@@ -127,12 +130,13 @@ public class SpringdocActuatorBeanFactoryConfigurer implements ApplicationContex
 	/**
 	 * Default {@link GroupedOpenApi} factory method.
 	 *
+	 * @param builder the {@link GroupedOpenApi.Builder}
 	 * @param actuatorBasePath the actuator base path
 	 * 
 	 * @return the default {@link GroupedOpenApi}
 	 */
-	public static GroupedOpenApi defaultGroupFactoryMethod(String actuatorBasePath) {
-		return GroupedOpenApi.builder().group(DEFAULT_GROUP_NAME)
+	public static GroupedOpenApi defaultGroupFactoryMethod(GroupedOpenApi.Builder builder, String actuatorBasePath) {
+		return builder.group(DEFAULT_GROUP_NAME)
 				.pathsToMatch(ALL_PATTERN)
 				.pathsToExclude(actuatorBasePath + ALL_PATTERN)
 				.build();

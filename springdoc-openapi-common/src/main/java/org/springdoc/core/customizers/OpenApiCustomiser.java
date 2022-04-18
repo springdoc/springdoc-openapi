@@ -1,7 +1,7 @@
 /*
  *
  *  *
- *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *
  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  * you may not use this file except in compliance with the License.
@@ -23,8 +23,12 @@ package org.springdoc.core.customizers;
 import io.swagger.v3.oas.models.OpenAPI;
 
 /**
- * The interface Open api customiser.
+ * Implement and register a bean of type {@link OpenApiCustomiser} to customize
+ * Open api on default OpenAPI description but not on groups
+ * 
  * @author bnasslahsen
+ * @see GlobalOpenApiCustomiser to customize default OpenAPI description and
+ *      groups
  */
 @FunctionalInterface
 public interface OpenApiCustomiser {
