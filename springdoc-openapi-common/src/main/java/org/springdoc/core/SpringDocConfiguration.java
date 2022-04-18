@@ -51,7 +51,6 @@ import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomize
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
-import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.providers.ActuatorProvider;
@@ -109,6 +108,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 /**
  * The type Spring doc configuration.
  * @author bnasslahsen
+ * @author christophejan
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
@@ -359,7 +359,7 @@ public class SpringDocConfiguration {
 	@Conditional(CacheOrGroupedOpenApiCondition.class)
 	@ConditionalOnClass(name = BINDRESULT_CLASS)
 	@Lazy(false)
-	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor() {
+	static SpringdocBeanFactoryConfigurer springdocBeanFactoryPostProcessor() {
 		return new SpringdocBeanFactoryConfigurer();
 	}
 
@@ -435,7 +435,7 @@ public class SpringDocConfiguration {
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 		@Conditional(MultipleOpenApiSupportCondition.class)
-		static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor3(List<GroupedOpenApi> groupedOpenApis) {
+		static SpringdocActuatorBeanFactoryConfigurer springdocBeanFactoryPostProcessor3(List<GroupedOpenApi> groupedOpenApis) {
 			return new SpringdocActuatorBeanFactoryConfigurer(groupedOpenApis);
 		}
 
@@ -447,7 +447,7 @@ public class SpringDocConfiguration {
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.SAME)
-		OperationCustomizer actuatorCustomizer() {
+		ActuatorOperationCustomizer actuatorCustomizer() {
 			return new ActuatorOperationCustomizer();
 		}
 
@@ -460,7 +460,7 @@ public class SpringDocConfiguration {
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.SAME)
-		OpenApiCustomiser actuatorOpenApiCustomiser(WebEndpointProperties webEndpointProperties) {
+		ActuatorOpenApiCustomizer actuatorOpenApiCustomiser(WebEndpointProperties webEndpointProperties) {
 			return new ActuatorOpenApiCustomizer(webEndpointProperties);
 		}
 
