@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -23,18 +23,18 @@
 
 package org.springdoc.core;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import io.swagger.v3.oas.models.OpenAPI;
 
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.core.env.Environment;
-import org.springframework.lang.Nullable;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.CollectionUtils;
 
 import static org.springdoc.core.Constants.SPRINGDOC_PREFIX;
@@ -43,39 +43,55 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROT
 /**
  * The type Springdoc bean factory configurer.
  * @author bnasslahsen
+ * @author christophejan
  */
-public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFactoryPostProcessor {
+public class SpringdocBeanFactoryConfigurer implements ApplicationContextAware, BeanDefinitionRegistryPostProcessor {
 
 	/**
-	 * The Environment.
+	 * The ApplicationContext.
 	 */
-	@Nullable
-	protected Environment environment;
+	protected ApplicationContext applicationContext;
 
 	@Override
-	public void setEnvironment(Environment environment) {
-		this.environment = environment;
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
+
+	@Override
+	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
+		final BindResult<SpringDocConfigProperties> result = Binder.get(applicationContext.getEnvironment())
+				.bind(SPRINGDOC_PREFIX, SpringDocConfigProperties.class);
+		if (result.isBound()) {
+			result.get().getGroupConfigs().stream().forEach(groupConfig ->
+				// register bean definitions
+				registry.registerBeanDefinition(groupConfig.getGroup(), BeanDefinitionBuilder
+						.genericBeanDefinition(SpringdocBeanFactoryConfigurer.class)
+						.setFactoryMethod("groupedOpenApisFactoryMethod")
+						.addConstructorArgValue(groupConfig)
+						.getBeanDefinition())
+			);
+		}
 	}
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-		final BindResult<SpringDocConfigProperties> result = Binder.get(environment)
-				.bind(SPRINGDOC_PREFIX, SpringDocConfigProperties.class);
-		if (result.isBound()) {
-			SpringDocConfigProperties springDocGroupConfig = result.get();
-			List<GroupedOpenApi> groupedOpenApis = springDocGroupConfig.getGroupConfigs().stream()
-					.map(elt -> {
-						GroupedOpenApi.Builder builder = GroupedOpenApi.builder();
-						if (!CollectionUtils.isEmpty(elt.getPackagesToScan()))
-							builder.packagesToScan(elt.getPackagesToScan().toArray(new String[0]));
-						if (!CollectionUtils.isEmpty(elt.getPathsToMatch()))
-							builder.pathsToMatch(elt.getPathsToMatch().toArray(new String[0]));
-						return builder.group(elt.getGroup()).build();
-					})
-					.collect(Collectors.toList());
-			groupedOpenApis.forEach(elt -> beanFactory.registerSingleton(elt.getGroup(), elt));
-		}
 		initBeanFactoryPostProcessor(beanFactory);
+	}
+
+	/**
+	 * {@link GroupedOpenApi} factory method from {@link GroupConfig}.
+	 *
+	 * @param groupConfig the {@link GroupConfig}
+	 * 
+	 * @return the {@link GroupedOpenApi}
+	 */
+	public static GroupedOpenApi groupedOpenApisFactoryMethod(GroupConfig groupConfig) {
+		GroupedOpenApi.Builder builder = GroupedOpenApi.builder();
+		if (!CollectionUtils.isEmpty(groupConfig.getPackagesToScan()))
+			builder.packagesToScan(groupConfig.getPackagesToScan().toArray(new String[0]));
+		if (!CollectionUtils.isEmpty(groupConfig.getPathsToMatch()))
+			builder.pathsToMatch(groupConfig.getPathsToMatch().toArray(new String[0]));
+		return builder.group(groupConfig.getGroup()).build();
 	}
 
 	/**
