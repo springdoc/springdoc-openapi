@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		"springdoc.group-configs[0].group=group1",
 		"springdoc.group-configs[0].paths-to-exclude=/group1Filtered",
 })
-public class SpringDocAppapp184Test extends AbstractSpringDocTest {
+public class SpringDocApp184Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {

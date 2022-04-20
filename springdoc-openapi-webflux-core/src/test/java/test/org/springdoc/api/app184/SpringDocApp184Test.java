@@ -44,7 +44,7 @@ import org.springframework.test.context.TestPropertySource;
 		"springdoc.group-configs[0].group=group1",
 		"springdoc.group-configs[0].paths-to-exclude=/group1Filtered",
 })
-public class SpringDocAppapp184Test extends AbstractSpringDocTest {
+public class SpringDocApp184Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app184" })
