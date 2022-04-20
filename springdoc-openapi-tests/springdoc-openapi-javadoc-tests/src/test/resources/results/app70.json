@@ -10,6 +10,12 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/example/{test}": {
       "get": {
@@ -55,7 +61,8 @@
             "description": "The Some property.",
             "format": "duration"
           }
-        }
+        },
+        "description": "The type Api type."
       }
     }
   }

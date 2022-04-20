@@ -13,6 +13,10 @@
   "tags": [
     {
       "name": "Operations"
+    },
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
     }
   ],
   "paths": {
@@ -21,6 +25,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Hello simple dto.",
         "description": "Hello simple dto.",
         "operationId": "hello",
         "responses": {
@@ -57,7 +62,8 @@
             "type": "string",
             "description": "The Message."
           }
-        }
+        },
+        "description": "The type Error dto."
       },
       "SimpleDTO": {
         "type": "object",
@@ -66,7 +72,8 @@
             "type": "string",
             "description": "The Payload."
           }
-        }
+        },
+        "description": "The type Simple dto."
       }
     }
   }

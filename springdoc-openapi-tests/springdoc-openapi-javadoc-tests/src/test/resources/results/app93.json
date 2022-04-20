@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "specific-controller",
+      "description": "The type Specific controller."
+    }
+  ],
   "paths": {
     "/": {
       "get": {
         "tags": [
           "specific-controller"
         ],
+        "summary": "Get t client model.",
         "description": "Get t client model.",
         "operationId": "get",
         "parameters": [
@@ -58,7 +65,8 @@
             "type": "string",
             "description": "The Name."
           }
-        }
+        },
+        "description": "The type Specific client model."
       }
     }
   }

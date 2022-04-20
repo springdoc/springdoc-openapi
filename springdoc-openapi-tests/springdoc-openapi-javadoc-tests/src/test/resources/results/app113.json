@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/lol": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Test.",
         "description": "Test.",
         "operationId": "test",
         "requestBody": {
@@ -40,6 +47,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Test 2.",
         "description": "Test 2.",
         "operationId": "test2",
         "requestBody": {
@@ -69,7 +77,8 @@
             "type": "string",
             "description": "The Field."
           }
-        }
+        },
+        "description": "The type Body."
       }
     }
   }

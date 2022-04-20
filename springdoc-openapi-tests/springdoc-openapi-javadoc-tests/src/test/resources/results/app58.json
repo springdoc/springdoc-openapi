@@ -10,6 +10,12 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/examplePost": {
       "post": {
@@ -38,6 +44,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Foobar.",
         "description": "Foobar.",
         "operationId": "foobar",
         "parameters": [
@@ -63,6 +70,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Foobar 1.",
         "description": "Foobar 1.",
         "operationId": "foobar1",
         "parameters": [
@@ -92,6 +100,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Test.",
         "description": "Test.",
         "operationId": "test",
         "responses": {
@@ -119,7 +128,8 @@
             "type": "string",
             "description": "The Last name."
           }
-        }
+        },
+        "description": "The type Person dto."
       }
     }
   }

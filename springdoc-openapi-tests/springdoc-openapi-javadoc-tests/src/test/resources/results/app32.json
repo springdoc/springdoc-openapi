@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/filter": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Filter post string.",
         "description": "Filter post string.",
         "operationId": "filterPost",
         "requestBody": {
@@ -60,7 +67,8 @@
             "type": "string",
             "description": "The Object 3."
           }
-        }
+        },
+        "description": "The type My test dto."
       }
     }
   }

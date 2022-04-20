@@ -10,6 +10,12 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "my-api-controller",
+      "description": "The type My api controller."
+    }
+  ],
   "paths": {
     "/myapi": {
       "get": {

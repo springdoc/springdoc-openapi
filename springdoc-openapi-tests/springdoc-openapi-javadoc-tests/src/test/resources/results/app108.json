@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Update action result.",
         "description": "Update action result.",
         "operationId": "update",
         "parameters": [
@@ -73,7 +80,8 @@
             "type": "object",
             "description": "The Value."
           }
-        }
+        },
+        "description": "The type Action result."
       }
     }
   }

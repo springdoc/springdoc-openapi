@@ -25,12 +25,19 @@ package org.springdoc.core.providers;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
+import com.github.therapi.runtimejavadoc.ClassJavadoc;
 import com.github.therapi.runtimejavadoc.CommentFormatter;
 import com.github.therapi.runtimejavadoc.FieldJavadoc;
 import com.github.therapi.runtimejavadoc.MethodJavadoc;
 import com.github.therapi.runtimejavadoc.ParamJavadoc;
 import com.github.therapi.runtimejavadoc.RuntimeJavadoc;
+import com.github.therapi.runtimejavadoc.ThrowsJavadoc;
+import org.apache.commons.lang3.StringUtils;
+
+import static java.lang.Math.min;
+import static java.util.stream.Collectors.toMap;
 
 /**
  * The type Spring doc javadoc provider.
@@ -42,6 +49,19 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 	 * The comment formatter.
 	 */
 	private final CommentFormatter formatter = new CommentFormatter();
+
+
+	/**
+	 * Gets class description.
+	 *
+	 * @param cl the class
+	 * @return the class description
+	 */
+	@Override
+	public String getClassJavadoc(Class<?> cl) {
+		ClassJavadoc classJavadoc = RuntimeJavadoc.getJavadoc(cl);
+		return formatter.format(classJavadoc.getComment());
+	}
 
 	/**
 	 * Gets method javadoc description.
@@ -65,6 +85,19 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 	public String getMethodJavadocReturn(Method method) {
 		MethodJavadoc methodJavadoc = RuntimeJavadoc.getJavadoc(method);
 		return formatter.format(methodJavadoc.getReturns());
+	}
+
+	/**
+	 * Gets method throws declaration.
+	 *
+	 * @param method the method
+	 * @return the method throws (name-description map)
+	 */
+	public Map<String, String> getMethodJavadocThrows(Method method) {
+		return RuntimeJavadoc.getJavadoc(method)
+				.getThrows()
+				.stream()
+				.collect(toMap(ThrowsJavadoc::getName, javadoc -> formatter.format(javadoc.getComment())));
 	}
 
 	/**
@@ -94,4 +127,31 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 		return formatter.format(fieldJavadoc.getComment());
 	}
 
+	@Override
+	public String getFirstSentence(String text) {
+		if (StringUtils.isEmpty(text)) {
+			return text;
+		}
+		int pOpenIndex = text.indexOf("<p>");
+		int pCloseIndex = text.indexOf("</p>");
+		int dotIndex = text.indexOf(".");
+		if (pOpenIndex != -1) {
+			if (pOpenIndex == 0 && pCloseIndex != -1) {
+				if (dotIndex != -1) {
+					return text.substring(3, min(pCloseIndex, dotIndex));
+				}
+				return text.substring(3, pCloseIndex);
+			}
+			if (dotIndex != -1) {
+				return text.substring(0, min(pOpenIndex, dotIndex));
+			}
+			return text.substring(0, pOpenIndex);
+		}
+		if (dotIndex != -1
+				&& text.length() != dotIndex + 1
+				&& Character.isWhitespace(text.charAt(dotIndex + 1))) {
+			return text.substring(0, dotIndex + 1);
+		}
+		return text;
+	}
 }

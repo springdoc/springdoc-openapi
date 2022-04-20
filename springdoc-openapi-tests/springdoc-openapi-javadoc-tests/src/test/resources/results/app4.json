@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/values/data": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "List tracker data.",
         "description": "List tracker data.",
         "operationId": "list",
         "parameters": [
@@ -71,7 +78,8 @@
             "format": "double",
             "example": 19.0
           }
-        }
+        },
+        "description": "The type Tracker data."
       }
     }
   }

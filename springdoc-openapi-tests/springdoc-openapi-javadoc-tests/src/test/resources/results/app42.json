@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/tweets": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Tweets.",
         "description": "Tweets.",
         "operationId": "tweets",
         "parameters": [

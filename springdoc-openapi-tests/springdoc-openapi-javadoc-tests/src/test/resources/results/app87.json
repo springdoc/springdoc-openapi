@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/{itemId}": {
       "put": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Put item response entity.",
         "description": "Put item response entity.",
         "operationId": "putItem",
         "parameters": [

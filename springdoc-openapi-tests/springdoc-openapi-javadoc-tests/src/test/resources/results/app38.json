@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/npe_error": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Gets model resource.",
         "description": "Gets model resource.",
         "operationId": "getModelResource",
         "responses": {
