@@ -1,6 +1,7 @@
 package org.springdoc.core.providers;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.GenericConverter.ConvertiblePair;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.lang.Nullable;
 
 /**
@@ -29,17 +31,24 @@ public class WebConversionServiceProvider {
 	/**
 	 * The Formatting conversion service.
 	 */
-	private final GenericConversionService formattingConversionService;
+	private GenericConversionService formattingConversionService;
 
 	/**
 	 * Instantiates a new Web conversion service provider.
 	 *
 	 * @param webConversionServiceOptional the web conversion service optional
 	 */
-	public WebConversionServiceProvider(Optional<GenericConversionService> webConversionServiceOptional) {
-		if (webConversionServiceOptional.isPresent())
-			this.formattingConversionService = webConversionServiceOptional.get();
-		else
+	public WebConversionServiceProvider(Optional<List<GenericConversionService>> webConversionServiceOptional) {
+		if (webConversionServiceOptional.isPresent()) {
+			List<GenericConversionService> conversionServiceList = webConversionServiceOptional.get();
+			for (GenericConversionService genericConversionService : conversionServiceList) {
+				if (genericConversionService instanceof FormattingConversionService) {
+					this.formattingConversionService = genericConversionService;
+					break;
+				}
+			}
+		}
+		if (formattingConversionService == null)
 			formattingConversionService = new DefaultFormattingConversionService();
 	}
 
