@@ -10,6 +10,12 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/organizations": {
       "post": {
@@ -51,9 +57,6 @@
               }
             }
           },
-          "204": {
-            "description": "The organization was created successfully"
-          },
           "409": {
             "description": "An organization with the specified ID already exists",
             "content": {
@@ -63,6 +66,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "The organization was created successfully"
           }
         }
       }
@@ -100,7 +106,8 @@
             "type": "string",
             "description": "The Message."
           }
-        }
+        },
+        "description": "The type Rest controller error."
       }
     }
   }

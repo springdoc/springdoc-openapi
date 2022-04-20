@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "test-controller",
+      "description": "The type Test controller."
+    }
+  ],
   "paths": {
     "/test": {
       "get": {
         "tags": [
           "test-controller"
         ],
+        "summary": "Gets test.",
         "description": "Gets test.",
         "operationId": "getTest",
         "parameters": [
@@ -145,7 +152,8 @@
             "type": "integer",
             "description": "The Param 2."
           }
-        }
+        },
+        "description": "The type Nested."
       }
     }
   }

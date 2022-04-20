@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/{country_code}/persons/{id}": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Get string.",
         "description": "Get string.",
         "operationId": "get",
         "parameters": [
@@ -55,6 +62,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Delete.",
         "description": "Delete.",
         "operationId": "delete",
         "parameters": [
@@ -89,6 +97,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Get string.",
         "description": "Get string.",
         "operationId": "get_1",
         "parameters": [
@@ -128,6 +137,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Delete.",
         "description": "Delete.",
         "operationId": "delete_1",
         "parameters": [

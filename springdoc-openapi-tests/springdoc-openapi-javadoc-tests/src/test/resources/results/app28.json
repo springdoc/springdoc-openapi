@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/upload2": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Upload 2 string.",
         "description": "Upload 2 string.",
         "operationId": "upload2",
         "requestBody": {

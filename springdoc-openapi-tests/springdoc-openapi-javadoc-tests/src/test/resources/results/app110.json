@@ -16,12 +16,23 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "person-controller",
+      "description": "The type Person controller."
+    },
+    {
+      "name": "person-controller-2",
+      "description": "The type Person controller 2."
+    }
+  ],
   "paths": {
     "/person": {
       "post": {
         "tags": [
           "person-controller"
         ],
+        "summary": "Person person.",
         "description": "Person person.",
         "operationId": "person",
         "requestBody": {
@@ -36,12 +47,12 @@
           "required": true
         },
         "responses": {
-          "415": {
+          "500": {
             "description": "the response entity",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorMessage"
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -56,12 +67,12 @@
               }
             }
           },
-          "500": {
+          "415": {
             "description": "the response entity",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "$ref": "#/components/schemas/ErrorMessage"
                 }
               }
             }
@@ -84,6 +95,7 @@
         "tags": [
           "person-controller-2"
         ],
+        "summary": "Person person.",
         "description": "Person person.",
         "operationId": "person_1",
         "requestBody": {
@@ -116,6 +128,7 @@
         "tags": [
           "person-controller"
         ],
+        "summary": "Find by last name list.",
         "description": "Find by last name list.",
         "operationId": "findByLastName",
         "parameters": [
@@ -132,12 +145,12 @@
           }
         ],
         "responses": {
-          "415": {
+          "500": {
             "description": "the response entity",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorMessage"
+                  "$ref": "#/components/schemas/Problem"
                 }
               }
             }
@@ -152,12 +165,12 @@
               }
             }
           },
-          "500": {
+          "415": {
             "description": "the response entity",
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Problem"
+                  "$ref": "#/components/schemas/ErrorMessage"
                 }
               }
             }
@@ -183,6 +196,7 @@
         "tags": [
           "person-controller-2"
         ],
+        "summary": "Find by last name list.",
         "description": "Find by last name list.",
         "operationId": "findByLastName_1",
         "parameters": [
@@ -218,18 +232,6 @@
   },
   "components": {
     "schemas": {
-      "ErrorMessage": {
-        "type": "object",
-        "properties": {
-          "errors": {
-            "type": "array",
-            "description": "The Errors.",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "Problem": {
         "type": "object",
         "properties": {
@@ -241,7 +243,21 @@
             "type": "string",
             "description": "The Message."
           }
-        }
+        },
+        "description": "The type Problem."
+      },
+      "ErrorMessage": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "description": "The Errors.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "The type Error message."
       },
       "Person": {
         "required": [
@@ -286,7 +302,8 @@
             "type": "string",
             "description": "The Credit card number."
           }
-        }
+        },
+        "description": "The type Person."
       }
     }
   }

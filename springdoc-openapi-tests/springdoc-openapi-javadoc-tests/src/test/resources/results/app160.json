@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/test": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Do something interesting error response.",
         "description": "Do something interesting error response.",
         "operationId": "doSomethingInteresting",
         "responses": {
@@ -41,14 +48,14 @@
         ],
         "type": "object",
         "properties": {
-          "errorMessage": {
-            "type": "string",
-            "description": "tata"
-          },
           "errorCode": {
             "type": "integer",
             "description": "titi",
             "format": "int32"
+          },
+          "errorMessage": {
+            "type": "string",
+            "description": "tata"
           }
         },
         "description": "toto"

@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/search": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Gets all pets.",
         "description": "Gets all pets.",
         "operationId": "getAllPets",
         "parameters": [
@@ -63,7 +70,8 @@
             "description": "The Mydeprecated field.",
             "deprecated": true
           }
-        }
+        },
+        "description": "The type Deprecated entity."
       }
     }
   }

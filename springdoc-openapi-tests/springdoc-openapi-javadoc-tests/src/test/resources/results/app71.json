@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/persons": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Persons string.",
         "description": "Persons string.",
         "operationId": "persons",
         "parameters": [
@@ -54,7 +61,8 @@
             "description": "A name given to the Dog",
             "example": "Fido"
           }
-        }
+        },
+        "description": "The type Dog."
       }
     }
   }

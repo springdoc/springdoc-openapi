@@ -227,6 +227,8 @@ public class SpringDocConfiguration {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param openApiBuilderCustomizers the open api builder customisers
+	 * @param serverBaseUrlCustomizers the server base url customizers
+	 * @param javadocProvider the javadoc provider
 	 * @return the open api builder
 	 */
 	@Bean
@@ -236,8 +238,9 @@ public class SpringDocConfiguration {
 			SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
 			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers,
-			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers) {
-		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomizers, serverBaseUrlCustomisers);
+			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers,
+			Optional<JavadocProvider> javadocProvider) {
+		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomizers, serverBaseUrlCustomizers, javadocProvider);
 	}
 
 	/**

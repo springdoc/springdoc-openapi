@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/documents/{locale}": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Gets documents.",
         "description": "Gets documents.",
         "operationId": "getDocuments",
         "responses": {

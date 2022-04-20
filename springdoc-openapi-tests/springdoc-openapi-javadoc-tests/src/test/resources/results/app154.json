@@ -18,12 +18,19 @@
       "bearerToken": []
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/personsone": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Createone.",
         "description": "Createone.",
         "operationId": "createone",
         "parameters": [
@@ -61,6 +68,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Create.",
         "description": "Create.",
         "operationId": "create",
         "parameters": [
@@ -98,6 +106,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Createtwo.",
         "description": "Createtwo.",
         "operationId": "createtwo",
         "parameters": [
@@ -124,6 +133,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Createthree.",
         "description": "Createthree.",
         "operationId": "createthree",
         "parameters": [
@@ -150,6 +160,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Hello string.",
         "description": "Hello string.",
         "operationId": "hello",
         "responses": {

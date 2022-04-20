@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/test1/{username}": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Create test 1 string.",
         "description": "Create test 1 string.",
         "operationId": "createTest1",
         "parameters": [
@@ -71,6 +78,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Create test 2 string.",
         "description": "Create test 2 string.",
         "operationId": "createTest2",
         "parameters": [
@@ -126,6 +134,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Create test 3 string.",
         "description": "Create test 3 string.",
         "operationId": "createTest3",
         "requestBody": {
@@ -186,7 +195,8 @@
             "type": "string",
             "description": "The Object 3."
           }
-        }
+        },
+        "description": "The type My test dto."
       }
     }
   }

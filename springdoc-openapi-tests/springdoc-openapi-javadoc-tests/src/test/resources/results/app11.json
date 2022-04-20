@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/documents": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Upload documents response entity.",
         "description": "Upload documents response entity.",
         "operationId": "uploadDocuments",
         "requestBody": {
@@ -59,6 +66,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Post track string.",
         "description": "Post track string.",
         "operationId": "postTrack",
         "requestBody": {

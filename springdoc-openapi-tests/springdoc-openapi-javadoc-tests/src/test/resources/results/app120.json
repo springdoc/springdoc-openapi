@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "meta-annotation-controller",
+      "description": "The type Meta annotation controller."
+    }
+  ],
   "paths": {
     "/testTopLevelParamAnnotationOverrides/{accountId}": {
       "get": {
         "tags": [
           "meta-annotation-controller"
         ],
+        "summary": "When there is a top level <code>@Parameter</code> annotation it has precedence over the meta-annotation\n So the id parameter should have all the defaults, with a name of \"id\"",
         "description": "When there is a top level <code>@Parameter</code> annotation it has precedence over the meta-annotation\n So the id parameter should have all the defaults, with a name of \"id\"",
         "operationId": "testTopLevelParamAnnotationOverrides",
         "parameters": [
@@ -48,6 +55,7 @@
         "tags": [
           "meta-annotation-controller"
         ],
+        "summary": "Test query param string.",
         "description": "Test query param string.",
         "operationId": "testQueryParam",
         "parameters": [
@@ -81,6 +89,7 @@
         "tags": [
           "meta-annotation-controller"
         ],
+        "summary": "Test no alias fors string.",
         "description": "Test no alias fors string.",
         "operationId": "testNoAliasFors",
         "parameters": [
@@ -119,6 +128,7 @@
         "tags": [
           "meta-annotation-controller"
         ],
+        "summary": "Test meta meta annotation string.",
         "description": "Test meta meta annotation string.",
         "operationId": "testMetaMetaAnnotation",
         "parameters": [
@@ -162,6 +172,7 @@
         "tags": [
           "meta-annotation-controller"
         ],
+        "summary": "Test all attributes as alias string.",
         "description": "Test all attributes as alias string.",
         "operationId": "testAllAttributesAsAlias",
         "parameters": [
@@ -200,6 +211,7 @@
         "tags": [
           "meta-annotation-controller"
         ],
+        "summary": "<code>@AliasFor</code> in the <code>@AccountId</code> annotation allows us to override the default it provides.",
         "description": "<code>@AliasFor</code> in the <code>@AccountId</code> annotation allows us to override the default it provides.",
         "operationId": "testAliasFor",
         "parameters": [
@@ -233,6 +245,7 @@
         "tags": [
           "meta-annotation-controller"
         ],
+        "summary": "Simple test string.",
         "description": "Simple test string.",
         "operationId": "simpleTest",
         "parameters": [

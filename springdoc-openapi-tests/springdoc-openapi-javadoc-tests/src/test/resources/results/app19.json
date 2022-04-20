@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/persons": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Persons string.",
         "description": "Persons string.",
         "operationId": "persons",
         "requestBody": {
@@ -47,6 +54,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Persons 3 string.",
         "description": "Persons 3 string.",
         "operationId": "persons3",
         "requestBody": {
@@ -79,6 +87,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Persons 2 string.",
         "description": "Persons 2 string.",
         "operationId": "persons2",
         "requestBody": {

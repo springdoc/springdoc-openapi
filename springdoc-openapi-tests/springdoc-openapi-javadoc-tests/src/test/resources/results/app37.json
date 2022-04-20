@@ -10,68 +10,27 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
-    "/pets2": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "description": "Pets post response entity.",
-        "operationId": "petsPost2",
-        "requestBody": {
-          "description": "the pet",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Pet"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "the response entity"
-          }
-        }
-      }
-    },
-    "/pets1": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "description": "Pets post response entity.",
-        "operationId": "petsPost1",
-        "requestBody": {
-          "description": "the pet",
-          "content": {
-            "text/plain": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "the response entity"
-          }
-        }
-      }
-    },
     "/bar/baz": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Process car.",
         "description": "Process car.",
         "operationId": "process_1_1",
         "requestBody": {
           "description": "the c",
           "content": {
-            "application/x.c+json": {
+            "application/x.a+json": {
               "schema": {
-                "$ref": "#/components/schemas/Car"
+                "$ref": "#/components/schemas/Foo"
               }
             },
             "application/x.b+json": {
@@ -79,9 +38,9 @@
                 "$ref": "#/components/schemas/Bar"
               }
             },
-            "application/x.a+json": {
+            "application/x.c+json": {
               "schema": {
-                "$ref": "#/components/schemas/Foo"
+                "$ref": "#/components/schemas/Car"
               }
             }
           }
@@ -111,18 +70,69 @@
           }
         }
       }
+    },
+    "/pets1": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Pets post response entity.",
+        "description": "Pets post response entity.",
+        "operationId": "petsPost1",
+        "requestBody": {
+          "description": "the pet",
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the response entity"
+          }
+        }
+      }
+    },
+    "/pets2": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Pets post response entity.",
+        "description": "Pets post response entity.",
+        "operationId": "petsPost2",
+        "requestBody": {
+          "description": "the pet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pet"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the response entity"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "Pet": {
+      "Bar": {
         "type": "object",
         "properties": {
-          "pet": {
+          "bar": {
             "type": "string",
-            "description": "The Pet."
+            "description": "The Bar."
           }
-        }
+        },
+        "description": "The type Bar."
       },
       "Car": {
         "type": "object",
@@ -131,16 +141,8 @@
             "type": "string",
             "description": "The Car."
           }
-        }
-      },
-      "Bar": {
-        "type": "object",
-        "properties": {
-          "bar": {
-            "type": "string",
-            "description": "The Bar."
-          }
-        }
+        },
+        "description": "The type Car."
       },
       "Foo": {
         "type": "object",
@@ -149,7 +151,18 @@
             "type": "string",
             "description": "The Foo."
           }
-        }
+        },
+        "description": "The type Foo."
+      },
+      "Pet": {
+        "type": "object",
+        "properties": {
+          "pet": {
+            "type": "string",
+            "description": "The Pet."
+          }
+        },
+        "description": "The type Pet."
       }
     }
   }

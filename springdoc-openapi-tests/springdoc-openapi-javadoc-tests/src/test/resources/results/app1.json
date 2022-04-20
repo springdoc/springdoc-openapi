@@ -212,6 +212,7 @@
         "tags": [
           "items"
         ],
+        "summary": "Show items list.",
         "description": "Show items list.",
         "operationId": "showItems",
         "parameters": [
@@ -293,6 +294,7 @@
         "tags": [
           "items"
         ],
+        "summary": "Add item response entity.",
         "description": "Add item response entity.",
         "operationId": "addItem",
         "requestBody": {
@@ -494,6 +496,7 @@
         "tags": [
           "tea"
         ],
+        "summary": "Index string.",
         "description": "Index string.",
         "operationId": "index",
         "parameters": [
@@ -554,7 +557,8 @@
             "type": "string",
             "description": "The Message."
           }
-        }
+        },
+        "description": "The type Error message."
       },
       "PersonDTO": {
         "type": "object",
@@ -571,7 +575,8 @@
             "type": "string",
             "description": "The Last name."
           }
-        }
+        },
+        "description": "The type Person dto."
       },
       "ItemLightDTO": {
         "type": "object",
@@ -591,7 +596,8 @@
             "format": "int32",
             "deprecated": true
           }
-        }
+        },
+        "description": "The type Item light dto."
       },
       "InventoryItem": {
         "required": [
@@ -621,7 +627,8 @@
           "manufacturer": {
             "$ref": "#/components/schemas/Manufacturer"
           }
-        }
+        },
+        "description": "InventoryItem"
       },
       "Manufacturer": {
         "required": [
@@ -644,7 +651,8 @@
             "description": "The Phone.",
             "example": "408-867-5309"
           }
-        }
+        },
+        "description": "Manufacturer"
       },
       "ItemDTO": {
         "type": "object",
@@ -668,7 +676,8 @@
             "format": "int32",
             "deprecated": true
           }
-        }
+        },
+        "description": "The type Item dto."
       }
     },
     "securitySchemes": {
