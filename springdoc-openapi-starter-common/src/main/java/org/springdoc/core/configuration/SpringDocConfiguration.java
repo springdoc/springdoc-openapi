@@ -53,6 +53,7 @@ import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
+import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
@@ -352,7 +353,7 @@ public class SpringDocConfiguration {
 	@Bean
 	@ConditionalOnProperty(SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES)
 	@Lazy(false)
-	OpenApiCustomizer propertiesResolverForSchema(OpenAPIService openAPIService) {
+	GlobalOpenApiCustomizer propertiesResolverForSchema(OpenAPIService openAPIService) {
 		return openApi -> {
 			Components components = openApi.getComponents();
 			Map<String, Schema> schemas = components.getSchemas();

@@ -18,6 +18,7 @@
 
 package test.org.springdoc.api.app148;
 
+
 import org.springdoc.core.models.GroupedOpenApi;
 
 import org.springframework.context.annotation.Bean;

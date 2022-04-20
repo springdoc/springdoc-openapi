@@ -25,8 +25,13 @@ package org.springdoc.core.filters;
 import java.lang.reflect.Method;
 
 /**
- * A filter to allow conditionally including any detected methods in an OpenApi definition.
+ * Implement and register a bean of type {@link OpenApiMethodFilter} to
+ * conditionally include any detected methods in default OpenAPI descriptions
+ * but not groups
+ *
  * @author michael.clarke
+ * @see GlobalOpenApiMethodFilter to filter methods in default OpenAPI
+ *      description and groups
  */
 @FunctionalInterface
 public interface OpenApiMethodFilter {

@@ -68,4 +68,11 @@ public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 		assertEquals(expected, result, true);
 	}
 
+	@Test
+	public void testApp2() throws Exception {
+		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/"+Constants.DEFAULT_GROUP_NAME)
+				.exchange()
+				.expectStatus().isNotFound();
+	}
+
 }
