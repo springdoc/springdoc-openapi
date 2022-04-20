@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app31;
+package test.org.springdoc.api.app185;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
