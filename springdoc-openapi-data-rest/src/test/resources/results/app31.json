@@ -1,0 +1,100 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [{
+    "url": "http://localhost",
+    "description": "Generated server url"
+  }],
+  "paths": {
+    "/dog": {
+      "get": {
+        "tags": ["pet-controller"],
+        "operationId": "getDog",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dog"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/any": {
+      "get": {
+        "tags": ["pet-controller"],
+        "operationId": "getAnyPet",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "oneOf": [{
+                    "$ref": "#/components/schemas/Pet"
+                  }, {
+                    "$ref": "#/components/schemas/Cat"
+                  }, {
+                    "$ref": "#/components/schemas/Dog"
+                  }]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Dog": {
+        "type": "object",
+        "allOf": [{
+          "$ref": "#/components/schemas/Pet"
+        }, {
+          "type": "object",
+          "properties": {
+            "barks": {
+              "type": "boolean"
+            }
+          }
+        }]
+      },
+      "Cat": {
+        "type": "object",
+        "allOf": [{
+          "$ref": "#/components/schemas/Pet"
+        }, {
+          "type": "object",
+          "properties": {
+            "meows": {
+              "type": "boolean"
+            }
+          }
+        }]
+      },
+      "Pet": {
+        "required": ["type"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "discriminator": {
+          "propertyName": "type"
+        }
+      }
+    }
+  }
+}

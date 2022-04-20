@@ -129,9 +129,16 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 					componentSchemas.putAll(schemaMap);
 				}
 				else
-					for (Map.Entry<String, Schema> entry : schemaMap.entrySet())
-						if (!componentSchemas.containsKey(entry.getKey()))
+					for (Map.Entry<String, Schema> entry : schemaMap.entrySet()) {
+						if (!componentSchemas.containsKey(entry.getKey())) {
 							componentSchemas.put(entry.getKey(), entry.getValue());
+							// If we've seen this schema before but find later it should be polymorphic,
+							// replace the existing schema with this richer version.
+						} else if (entry.getValue() instanceof ComposedSchema &&
+							!(componentSchemas.get(entry.getKey()) instanceof ComposedSchema)) {
+							componentSchemas.put(entry.getKey(), entry.getValue());
+						}
+					}
 				components.setSchemas(componentSchemas);
 			}
 			if (resolvedSchema.schema != null) {
