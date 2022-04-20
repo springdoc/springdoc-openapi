@@ -49,11 +49,13 @@ import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
+import org.springdoc.core.customizers.GlobalOpenApiCustomiser;
+import org.springdoc.core.customizers.GlobalOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
-import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
+import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.JavadocProvider;
@@ -85,6 +87,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.data.domain.Pageable;
@@ -109,6 +112,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 /**
  * The type Spring doc configuration.
  * @author bnasslahsen
+ * @author christophejan
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
@@ -359,7 +363,7 @@ public class SpringDocConfiguration {
 	@Conditional(CacheOrGroupedOpenApiCondition.class)
 	@ConditionalOnClass(name = BINDRESULT_CLASS)
 	@Lazy(false)
-	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor() {
+	static SpringdocBeanFactoryConfigurer springdocBeanFactoryPostProcessor() {
 		return new SpringdocBeanFactoryConfigurer();
 	}
 
@@ -397,6 +401,18 @@ public class SpringDocConfiguration {
 		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider);
 	}
 
+	@Bean
+	@Scope("prototype")
+	@ConditionalOnMissingBean
+	public GroupedOpenApi.Builder groupedOpenApiBuilder(List<GlobalOpenApiCustomiser> globalOpenApiCustomisers, List<GlobalOperationCustomizer> globalOperationCustomizers,
+			List<GlobalOpenApiMethodFilter> globalOpenApiMethodFilters) {
+		GroupedOpenApi.Builder builder = GroupedOpenApi.builder();
+		globalOpenApiCustomisers.forEach(builder::addOpenApiCustomiser);
+		globalOperationCustomizers.forEach(builder::addOperationCustomizer);
+		globalOpenApiMethodFilters.forEach(builder::addOpenApiMethodFilter);
+		return builder;
+	}
+
 	/**
 	 * The type Open api resource advice.
 	 * @author bnasslashen
@@ -428,15 +444,14 @@ public class SpringDocConfiguration {
 		/**
 		 * Springdoc bean factory post processor 3 bean factory post processor.
 		 *
-		 * @param groupedOpenApis the grouped open apis
 		 * @return the bean factory post processor
 		 */
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 		@Conditional(MultipleOpenApiSupportCondition.class)
-		static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor3(List<GroupedOpenApi> groupedOpenApis) {
-			return new SpringdocActuatorBeanFactoryConfigurer(groupedOpenApis);
+		static SpringdocActuatorBeanFactoryConfigurer springdocBeanFactoryPostProcessor3() {
+			return new SpringdocActuatorBeanFactoryConfigurer();
 		}
 
 		/**
@@ -447,7 +462,7 @@ public class SpringDocConfiguration {
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.SAME)
-		OperationCustomizer actuatorCustomizer() {
+		ActuatorOperationCustomizer actuatorCustomizer() {
 			return new ActuatorOperationCustomizer();
 		}
 
@@ -460,7 +475,7 @@ public class SpringDocConfiguration {
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.SAME)
-		OpenApiCustomiser actuatorOpenApiCustomiser(WebEndpointProperties webEndpointProperties) {
+		ActuatorOpenApiCustomizer actuatorOpenApiCustomiser(WebEndpointProperties webEndpointProperties) {
 			return new ActuatorOpenApiCustomizer(webEndpointProperties);
 		}
 

@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -23,17 +23,20 @@
 
 package org.springdoc.core;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
-
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.RuntimeBeanReference;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.util.CollectionUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.util.ObjectUtils;
 
 import static org.springdoc.core.Constants.ACTUATOR_DEFAULT_GROUP;
 import static org.springdoc.core.Constants.ALL_PATTERN;
@@ -44,58 +47,99 @@ import static org.springdoc.core.Constants.MANAGEMENT_ENDPOINTS_WEB;
 /**
  * The type Springdoc bean factory configurer.
  * @author bnasslahsen
+ * @author christophejan
  */
-public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactoryConfigurer{
+public class SpringdocActuatorBeanFactoryConfigurer implements ApplicationContextAware, BeanDefinitionRegistryPostProcessor {
 
 	/**
-	 * The Grouped open apis.
+	 * The ApplicationContext.
 	 */
-	private List<GroupedOpenApi> groupedOpenApis;
+	protected ApplicationContext applicationContext;
 
-	/**
-	 * Instantiates a new Springdoc actuator bean factory configurer.
-	 *
-	 * @param groupedOpenApis the grouped open apis
-	 */
-	public SpringdocActuatorBeanFactoryConfigurer(List<GroupedOpenApi> groupedOpenApis) {
-		this.groupedOpenApis = groupedOpenApis;
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 
 	@Override
-	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)  {
-		final BindResult<WebEndpointProperties> result = Binder.get(environment)
+	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
+		final BindResult<WebEndpointProperties> result = Binder.get(applicationContext.getEnvironment())
 				.bind(MANAGEMENT_ENDPOINTS_WEB, WebEndpointProperties.class);
 		if (result.isBound()) {
 			WebEndpointProperties webEndpointProperties = result.get();
 
-			List<GroupedOpenApi> newGroups = new ArrayList<>();
+			boolean addDefaultGroup = ObjectUtils.isEmpty(applicationContext
+					.getBeanNamesForType(GroupedOpenApi.class, true, false));
 
-			ActuatorOpenApiCustomizer actuatorOpenApiCustomiser = new ActuatorOpenApiCustomizer(webEndpointProperties);
-			beanFactory.registerSingleton("actuatorOpenApiCustomiser", actuatorOpenApiCustomiser);
-			ActuatorOperationCustomizer actuatorCustomizer =	new ActuatorOperationCustomizer();
-			beanFactory.registerSingleton("actuatorCustomizer", actuatorCustomizer);
+			registry.registerBeanDefinition("actuatorOpenApiCustomiser", BeanDefinitionBuilder
+					.genericBeanDefinition(ActuatorOpenApiCustomizer.class)
+					.addConstructorArgValue(webEndpointProperties)
+					.getBeanDefinition());
 
-			GroupedOpenApi actuatorGroup = GroupedOpenApi.builder().group(ACTUATOR_DEFAULT_GROUP)
-					.pathsToMatch(webEndpointProperties.getBasePath() + ALL_PATTERN)
-					.pathsToExclude(webEndpointProperties.getBasePath() + HEALTH_PATTERN)
-					.addOperationCustomizer(actuatorCustomizer)
-					.addOpenApiCustomiser(actuatorOpenApiCustomiser)
-					.build();
-			// Add the actuator group
-			newGroups.add(actuatorGroup);
+			registry.registerBeanDefinition("actuatorCustomizer", BeanDefinitionBuilder
+					.genericBeanDefinition(ActuatorOperationCustomizer.class)
+					.getBeanDefinition());
 
-			if (CollectionUtils.isEmpty(groupedOpenApis)) {
-				GroupedOpenApi defaultGroup = GroupedOpenApi.builder().group(DEFAULT_GROUP_NAME)
-						.pathsToMatch(ALL_PATTERN)
-						.pathsToExclude(webEndpointProperties.getBasePath() + ALL_PATTERN)
-						.build();
-				// Register the default group
-				newGroups.add(defaultGroup);
+			// register the actuator group bean definition
+			registry.registerBeanDefinition(ACTUATOR_DEFAULT_GROUP, BeanDefinitionBuilder
+					.genericBeanDefinition(SpringdocActuatorBeanFactoryConfigurer.class)
+					.setFactoryMethod("actuatorGroupFactoryMethod")
+					.addConstructorArgValue(new RuntimeBeanReference(GroupedOpenApi.Builder.class))
+					.addConstructorArgValue(webEndpointProperties.getBasePath())
+					.addConstructorArgValue(new RuntimeBeanReference(ActuatorOpenApiCustomizer.class))
+					.addConstructorArgValue(new RuntimeBeanReference(ActuatorOperationCustomizer.class))
+					.getBeanDefinition());
+
+			if (addDefaultGroup) {
+				// register the default group bean definition
+				registry.registerBeanDefinition(DEFAULT_GROUP_NAME, BeanDefinitionBuilder
+						.genericBeanDefinition(SpringdocActuatorBeanFactoryConfigurer.class)
+						.setFactoryMethod("defaultGroupFactoryMethod")
+						.addConstructorArgValue(new RuntimeBeanReference(GroupedOpenApi.Builder.class))
+						.addConstructorArgValue(webEndpointProperties.getBasePath())
+						.getBeanDefinition());
 			}
-
-			newGroups.forEach(elt -> beanFactory.registerSingleton(elt.getGroup(), elt));
 		}
-		initBeanFactoryPostProcessor(beanFactory);
+	}
+
+	@Override
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
+		SpringdocBeanFactoryConfigurer.initBeanFactoryPostProcessor(beanFactory);
+	}
+
+	/**
+	 * Actuator {@link GroupedOpenApi} factory method.
+	 *
+	 * @param builder the {@link GroupedOpenApi.Builder}
+	 * @param actuatorBasePath the actuator base path
+	 * @param actuatorOpenApiCustomiser the {@link ActuatorOpenApiCustomizer}
+	 * @param actuatorOperationCustomizer the {@link ActuatorOperationCustomizer}
+	 * 
+	 * @return the actuator {@link GroupedOpenApi}
+	 */
+	public static GroupedOpenApi actuatorGroupFactoryMethod(GroupedOpenApi.Builder builder, String actuatorBasePath,
+			ActuatorOpenApiCustomizer actuatorOpenApiCustomiser, ActuatorOperationCustomizer actuatorOperationCustomizer) {
+		return builder.group(ACTUATOR_DEFAULT_GROUP)
+				.pathsToMatch(actuatorBasePath + ALL_PATTERN)
+				.pathsToExclude(actuatorBasePath + HEALTH_PATTERN)
+				.addOpenApiCustomiser(actuatorOpenApiCustomiser)
+				.addOperationCustomizer(actuatorOperationCustomizer)
+				.build();
+	}
+
+	/**
+	 * Default {@link GroupedOpenApi} factory method.
+	 *
+	 * @param builder the {@link GroupedOpenApi.Builder}
+	 * @param actuatorBasePath the actuator base path
+	 * 
+	 * @return the default {@link GroupedOpenApi}
+	 */
+	public static GroupedOpenApi defaultGroupFactoryMethod(GroupedOpenApi.Builder builder, String actuatorBasePath) {
+		return builder.group(DEFAULT_GROUP_NAME)
+				.pathsToMatch(ALL_PATTERN)
+				.pathsToExclude(actuatorBasePath + ALL_PATTERN)
+				.build();
 	}
 
 }

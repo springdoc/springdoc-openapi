@@ -19,12 +19,18 @@
 package test.org.springdoc.api.app148;
 
 import org.junit.jupiter.api.Test;
+import org.springdoc.core.Constants;
+
 import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
@@ -59,4 +65,18 @@ public class SpringDocApp148Test  extends AbstractSpringDocActuatorTest {
 		assertEquals(expected, result, true);
 	}
 
+	@Test
+	public void testApp3() throws Exception {
+		try {
+			webClient.get().uri("/test/application/openapi" + "/"+Constants.DEFAULT_GROUP_NAME).retrieve()
+					.bodyToMono(String.class).block();
+			fail();
+		}
+		catch (WebClientResponseException ex) {
+			if (ex.getStatusCode() == HttpStatus.NOT_FOUND)
+				assertTrue(true);
+			else
+				fail();
+		}
+	}
 }

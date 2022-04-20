@@ -18,31 +18,17 @@
  *
  */
 
-package org.springdoc.core.customizers;
-
-import io.swagger.v3.oas.models.Operation;
-
-import org.springframework.web.method.HandlerMethod;
+package org.springdoc.core.filters;
 
 /**
- * Implement and register a bean of type {@link OperationCustomizer} to customize an operation
- * based on the handler method input on default OpenAPI descriptions but not
- * groups
+ * Implement and register a bean of type {@link GlobalOpenApiMethodFilter} to
+ * conditionally including any detected methods in default OpenAPI description
+ * and groups.
  * 
- * @author bnasslahsen
- * @see GlobalOperationCustomizer to customize operations on default OpenAPI
- *      description and groups
+ * @author michael.clarke
+ * @see OpenApiMethodFilter to filter methods in default OpenAPI description but
+ *      not groups
  */
 @FunctionalInterface
-public interface OperationCustomizer {
-
-	/**
-	 * Customize operation.
-	 *
-	 * @param operation input operation
-	 * @param handlerMethod original handler method
-	 * @return customized operation
-	 */
-	Operation customize(Operation operation, HandlerMethod handlerMethod);
+public interface GlobalOpenApiMethodFilter extends OpenApiMethodFilter {
 }
-
