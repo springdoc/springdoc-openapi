@@ -22,6 +22,8 @@ package org.springdoc.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -463,11 +465,38 @@ public class GroupedOpenApi {
 	}
 
 	/**
-	 * Add open api customiser.
+	 * Add all open api customizer grouped open api.
 	 *
-	 * @param openApiCustomiser the open api customiser
+	 * @param openApiCustomizerCollection the open api customizer collection
+	 * @return the grouped open api
 	 */
-	public void addOpenApiCustomizer(OpenApiCustomiser openApiCustomiser) {
-		this.openApiCustomisers.add(openApiCustomiser);
+	public GroupedOpenApi addAllOpenApiCustomizer(Collection openApiCustomizerCollection) {
+		this.openApiCustomisers.addAll(openApiCustomizerCollection);
+		Collections.reverse(openApiCustomisers);
+		return this;
+	}
+
+	/**
+	 * Add all operation customizer grouped open api.
+	 *
+	 * @param operationCustomizerCollection the operation customizer collection
+	 * @return the grouped open api
+	 */
+	public GroupedOpenApi addAllOperationCustomizer(Collection operationCustomizerCollection) {
+		this.operationCustomizers.addAll(operationCustomizerCollection);
+		Collections.reverse(operationCustomizers);
+		return this;
+	}
+
+	/**
+	 * Add all open api method filter grouped open api.
+	 *
+	 * @param openApiMethodFilterCollection the open api method filter collection
+	 * @return the grouped open api
+	 */
+	public GroupedOpenApi addAllOpenApiMethodFilter(Collection openApiMethodFilterCollection) {
+		this.openApiMethodFilters.addAll(openApiMethodFilterCollection);
+		Collections.reverse(openApiMethodFilters);
+		return this;
 	}
 }

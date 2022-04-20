@@ -34,7 +34,9 @@ import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.SpringDocProviders;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
+import org.springdoc.core.customizers.GlobalOperationCustomizer;
+import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -122,10 +124,16 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 
 	@Override
 	public void afterPropertiesSet() {
-		if (springDocConfigProperties.getApiDocs().isResolveSchemaProperties()) {
-			OpenApiCustomiser propertiesResolverForSchemaCustomizer = (OpenApiCustomiser) applicationContext.getBean("propertiesResolverForSchema");
-			this.groupedOpenApis.forEach(groupedOpenApi -> groupedOpenApi.addOpenApiCustomizer(propertiesResolverForSchemaCustomizer));
-		}
+		Map<String, GlobalOpenApiCustomizer> globalOpenApiCustomizerMap = applicationContext.getBeansOfType(GlobalOpenApiCustomizer.class);
+		Map<String, GlobalOperationCustomizer> globalOperationCustomizerMap = applicationContext.getBeansOfType(GlobalOperationCustomizer.class);
+		Map<String, GlobalOpenApiMethodFilter> globalOpenApiMethodFilterMap = applicationContext.getBeansOfType(GlobalOpenApiMethodFilter.class);
+
+		this.groupedOpenApis.forEach(groupedOpenApi -> groupedOpenApi
+				.addAllOpenApiCustomizer(globalOpenApiCustomizerMap.values())
+				.addAllOperationCustomizer(globalOperationCustomizerMap.values())
+				.addAllOpenApiMethodFilter(globalOpenApiMethodFilterMap.values())
+		);
+		
 		this.groupedOpenApiResources = groupedOpenApis.stream()
 				.collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
 						{

@@ -22,23 +22,23 @@ package test.org.springdoc.api.app184;
 
 import java.util.Objects;
 
+import io.swagger.v3.oas.models.parameters.HeaderParameter;
+import io.swagger.v3.oas.models.servers.Server;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
 import org.springdoc.core.GroupedOpenApi;
-import org.springdoc.core.customizers.GlobalOpenApiCustomiser;
+import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.GlobalOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.filters.OpenApiMethodFilter;
+import test.org.springdoc.api.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
-
-import io.swagger.v3.oas.models.parameters.HeaderParameter;
-import io.swagger.v3.oas.models.servers.Server;
-import test.org.springdoc.api.AbstractSpringDocTest;
 
 @TestPropertySource(properties = {
 		"springdoc.group-configs[0].group=group1",
@@ -51,7 +51,7 @@ public class SpringDocAppapp184Test extends AbstractSpringDocTest {
 	static class SpringDocTestApp {
 
 		@Bean
-		public GlobalOpenApiCustomiser addUrlGlobalBean() {
+		public GlobalOpenApiCustomizer addUrlGlobalBean() {
 			return openApi -> openApi.getServers().add(new Server().url("urlGlobalBean"));
 		}
 
@@ -81,8 +81,8 @@ public class SpringDocAppapp184Test extends AbstractSpringDocTest {
 		}
 
 		@Bean
-		public GroupedOpenApi group2(GroupedOpenApi.Builder builder) {
-			return builder
+		public GroupedOpenApi group2() {
+			return GroupedOpenApi.builder()
 					.group("group2")
 					.addOpenApiCustomiser(openApi -> openApi.getServers().add(new Server().url("urlGroup2")))
 					.addOperationCustomizer((operation, handlerMethod) -> operation.addParametersItem(new HeaderParameter().name("headerGroup2")))
@@ -91,8 +91,8 @@ public class SpringDocAppapp184Test extends AbstractSpringDocTest {
 		}
 
 		@Bean
-		public GroupedOpenApi group3(GroupedOpenApi.Builder builder) {
-			return builder
+		public GroupedOpenApi group3() {
+			return GroupedOpenApi.builder()
 					.group("group3")
 					.addOpenApiCustomiser(openApi -> openApi.getServers().add(new Server().url("urlGroup3")))
 					.addOperationCustomizer((operation, handlerMethod) -> operation.addParametersItem(new HeaderParameter().name("headerGroup3")))

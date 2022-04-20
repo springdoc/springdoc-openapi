@@ -21,12 +21,12 @@
 package org.springdoc.core.customizers;
 
 /**
- * Implement and register a bean of type {@link GlobalOpenApiCustomiser} to
+ * Implement and register a bean of type {@link GlobalOpenApiCustomizer} to
  * customize Open api on default OpenAPI description and groups.
  * 
  * @author christophejan
  * @see OpenApiCustomiser to customize default OpenAPI description but not
  *      groups
  */
-public interface GlobalOpenApiCustomiser extends OpenApiCustomiser {
+public interface GlobalOpenApiCustomizer extends OpenApiCustomiser {
 }
