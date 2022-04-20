@@ -18,26 +18,17 @@
  *
  */
 
-package org.springdoc.core.customizers;
-
-import io.swagger.v3.oas.models.OpenAPI;
+package org.springdoc.core.filters;
 
 /**
- * Implement and register a bean of type {@link OpenApiCustomiser} to customize
- * Open api on default OpenAPI description but not on groups
+ * Implement and register a bean of type {@link GlobalOpenApiMethodFilter} to
+ * conditionally including any detected methods in default OpenAPI description
+ * and groups.
  * 
- * @author bnasslahsen
- * @see GlobalOpenApiCustomizer to customize default OpenAPI description and
- *      groups
+ * @author michael.clarke
+ * @see OpenApiMethodFilter to filter methods in default OpenAPI description but
+ *      not groups
  */
 @FunctionalInterface
-public interface OpenApiCustomiser {
-
-	/**
-	 * Customise.
-	 *
-	 * @param openApi the open api
-	 */
-	void customise(OpenAPI openApi);
-
+public interface GlobalOpenApiMethodFilter extends OpenApiMethodFilter {
 }

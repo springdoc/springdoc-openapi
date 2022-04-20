@@ -20,24 +20,13 @@
 
 package org.springdoc.core.customizers;
 
-import io.swagger.v3.oas.models.OpenAPI;
-
 /**
- * Implement and register a bean of type {@link OpenApiCustomiser} to customize
- * Open api on default OpenAPI description but not on groups
+ * Implement and register a bean of type {@link GlobalOpenApiCustomizer} to
+ * customize Open api on default OpenAPI description and groups.
  * 
- * @author bnasslahsen
- * @see GlobalOpenApiCustomizer to customize default OpenAPI description and
+ * @author christophejan
+ * @see OpenApiCustomiser to customize default OpenAPI description but not
  *      groups
  */
-@FunctionalInterface
-public interface OpenApiCustomiser {
-
-	/**
-	 * Customise.
-	 *
-	 * @param openApi the open api
-	 */
-	void customise(OpenAPI openApi);
-
+public interface GlobalOpenApiCustomizer extends OpenApiCustomiser {
 }

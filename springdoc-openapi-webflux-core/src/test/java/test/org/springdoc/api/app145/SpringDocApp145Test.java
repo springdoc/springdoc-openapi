@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright 2019-2020 the original author or authors.
+ *  * Copyright 2019-2022 the original author or authors.
  *  *
  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  * you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@
 
 package test.org.springdoc.api.app145;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
 import test.org.springdoc.api.AbstractSpringDocActuatorTest;
@@ -25,6 +28,8 @@ import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
@@ -45,6 +50,21 @@ public class SpringDocApp145Test  extends AbstractSpringDocActuatorTest {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/users")
 				.exchange()
 				.expectStatus().isNotFound();
+	}
+
+	@Test
+	public void testApp3() throws Exception {
+		try {
+			webClient.get().uri("/application/openapi"+  "/"+Constants.DEFAULT_GROUP_NAME).retrieve()
+					.bodyToMono(String.class).block();
+			fail();
+		}
+		catch (WebClientResponseException ex) {
+			if (ex.getStatusCode() == HttpStatus.NOT_FOUND)
+				assertTrue(true);
+			else
+				fail();
+		}
 	}
 
 }
