@@ -10,7 +10,7 @@ import test.org.springdoc.api.AbstractSpringDocTest;
 /**
  * The type Spring doc app 162 test.
  */
-@TestPropertySource(properties = "springdoc.override-with-generic-response-if-declared=true")
+@TestPropertySource(properties = "springdoc.override-with-generic-response=true")
 public class SpringDocApp162Test extends AbstractSpringDocTest {
 
     /**

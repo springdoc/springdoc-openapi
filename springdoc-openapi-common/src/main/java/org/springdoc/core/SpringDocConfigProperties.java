@@ -115,12 +115,7 @@ public class SpringDocConfigProperties {
 	/**
 	 * The Override with generic response.
 	 */
-	private boolean overrideWithGenericResponse = true;
-
-	/**
-	 * The Override with generic response only if the exception is declared
-	 */
-	private boolean overrideWithGenericResponseIfDeclared = false;
+	private Boolean overrideWithGenericResponse;
 
 	/**
 	 * The Remove broken reference definitions.
@@ -584,8 +579,20 @@ public class SpringDocConfigProperties {
 	 *
 	 * @return the boolean
 	 */
-	public boolean isOverrideWithGenericResponse() {
-		return overrideWithGenericResponse;
+	public Boolean isOverrideWithGenericResponse() {
+		return overrideWithGenericResponse != null && overrideWithGenericResponse;
+	}
+
+	/**
+	 * Gets default override with generic response.
+	 *
+	 * @return the default override with generic response
+	 */
+	public boolean isDefaultOverrideWithGenericResponse() {
+		if (overrideWithGenericResponse == null)
+			return true;
+		else
+			return overrideWithGenericResponse;
 	}
 
 	/**
@@ -593,26 +600,8 @@ public class SpringDocConfigProperties {
 	 *
 	 * @param overrideWithGenericResponse the override with generic response
 	 */
-	public void setOverrideWithGenericResponse(boolean overrideWithGenericResponse) {
+	public void setOverrideWithGenericResponse(Boolean overrideWithGenericResponse) {
 		this.overrideWithGenericResponse = overrideWithGenericResponse;
-	}
-
-	/**
-	 * Is override with generic response if declared boolean.
-	 *
-	 * @return the boolean
-	 */
-	public boolean isOverrideWithGenericResponseIfDeclared() {
-		return overrideWithGenericResponseIfDeclared;
-	}
-
-	/**
-	 * Sets override with generic response if declared.
-	 *
-	 * @param overrideWithGenericResponseIfDeclared the override with generic response if declared
-	 */
-	public void setOverrideWithGenericResponseIfDeclared(boolean overrideWithGenericResponseIfDeclared) {
-		this.overrideWithGenericResponseIfDeclared = overrideWithGenericResponseIfDeclared;
 	}
 
 	/**

@@ -142,7 +142,7 @@ public class GenericResponseService {
 	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
 			MethodAttributes methodAttributes) {
 		Map<String, ApiResponse> genericMapResponse = getGenericMapResponse(handlerMethod.getBeanType());
-		if (springDocConfigProperties.isOverrideWithGenericResponseIfDeclared()) {
+		if (springDocConfigProperties.isOverrideWithGenericResponse()) {
 			genericMapResponse = filterAndEnrichGenericMapResponseByDeclarations(handlerMethod, genericMapResponse);
 		}
 		ApiResponses apiResponses = methodAttributes.calculateGenericMapResponse(genericMapResponse);
@@ -549,7 +549,7 @@ public class GenericResponseService {
 			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getMethodProduces()))
 				Arrays.stream(methodAttributes.getMethodProduces()).forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));
 		}
-		if (springDocConfigProperties.isOverrideWithGenericResponseIfDeclared()
+		if (springDocConfigProperties.isOverrideWithGenericResponse()
 				&& methodParameter.getExecutable().isAnnotationPresent(ExceptionHandler.class)) {
 			// ExceptionHandler's exception class resolution is non-trivial
 			// more info on its javadoc

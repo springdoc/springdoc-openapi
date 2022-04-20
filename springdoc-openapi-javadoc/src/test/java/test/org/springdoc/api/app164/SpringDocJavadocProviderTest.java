@@ -1,12 +1,13 @@
-package org.springdoc.openapi.javadoc;
+package test.org.springdoc.api.app164;
+
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springdoc.core.providers.JavadocProvider;
-
-import java.util.stream.Stream;
+import org.springdoc.openapi.javadoc.SpringDocJavadocProvider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
