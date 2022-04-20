@@ -297,7 +297,8 @@ import org.springframework.util.AntPathMatcher;
 		io.swagger.v3.oas.models.links.Link.class,
 		io.swagger.v3.oas.models.parameters.Parameter.class,
 		io.swagger.v3.oas.models.Operation.class,
-		io.swagger.v3.oas.models.headers.Header.class
+		io.swagger.v3.oas.models.headers.Header.class,
+		org.springframework.core.MethodParameter.class
 }, access = { TypeAccess.RESOURCE, TypeAccess.PUBLIC_CLASSES, TypeAccess.DECLARED_CLASSES, TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.PUBLIC_CONSTRUCTORS, TypeAccess.DECLARED_METHODS, TypeAccess.PUBLIC_METHODS
 		, TypeAccess.PUBLIC_FIELDS, TypeAccess.DECLARED_FIELDS })
 
