@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/api/v1/resource": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Gets resource.",
         "description": "Gets resource.",
         "operationId": "getResource",
         "responses": {
@@ -38,6 +45,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Get byte array byte [ ].",
         "description": "Get byte array byte [ ].",
         "operationId": "getByteArray",
         "responses": {

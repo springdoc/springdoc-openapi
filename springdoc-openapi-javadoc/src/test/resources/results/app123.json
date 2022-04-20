@@ -10,6 +10,12 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/hello/{numTelco}": {
       "get": {
@@ -40,6 +46,9 @@
           }
         ],
         "responses": {
+          "404": {
+            "description": "Not here"
+          },
           "502": {
             "description": "the object",
             "content": {
@@ -49,9 +58,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not here"
           },
           "418": {
             "description": "the t",

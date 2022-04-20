@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/testreq": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Test request attribute.",
         "description": "Test request attribute.",
         "operationId": "testRequestAttribute",
         "parameters": [
@@ -41,6 +48,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Test.",
         "description": "Test.",
         "operationId": "test",
         "parameters": [

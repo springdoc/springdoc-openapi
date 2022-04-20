@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "book-repository",
+      "description": "The type Book repository."
+    }
+  ],
   "paths": {
     "/books": {
       "get": {
         "tags": [
           "book-repository"
         ],
+        "summary": "Find all list.",
         "description": "Find all list.",
         "operationId": "findAll",
         "responses": {
@@ -48,6 +55,7 @@
         "tags": [
           "book-repository"
         ],
+        "summary": "Find by author list.",
         "description": "Find by author list.",
         "operationId": "findByAuthor",
         "parameters": [
@@ -91,6 +99,7 @@
         "tags": [
           "book-repository"
         ],
+        "summary": "Find all list.",
         "description": "Find all list.",
         "operationId": "findAll_1_1",
         "responses": {
@@ -131,6 +140,7 @@
         "tags": [
           "book-repository"
         ],
+        "summary": "Find by author list.",
         "description": "Find by author list.",
         "operationId": "findByAuthor_1",
         "parameters": [
@@ -166,6 +176,7 @@
         "tags": [
           "book-repository"
         ],
+        "summary": "Find all list.",
         "description": "Find all list.",
         "operationId": "findAll_1_2",
         "responses": {
@@ -206,6 +217,7 @@
         "tags": [
           "book-repository"
         ],
+        "summary": "Find by author list.",
         "description": "Find by author list.",
         "operationId": "findByAuthor_2",
         "parameters": [
@@ -241,6 +253,7 @@
         "tags": [
           "book-repository"
         ],
+        "summary": "Find all list.",
         "description": "Find all list.",
         "operationId": "findAll_1_3",
         "responses": {
@@ -281,6 +294,7 @@
         "tags": [
           "book-repository"
         ],
+        "summary": "Find by author list.",
         "description": "Find by author list.",
         "operationId": "findByAuthor_3",
         "parameters": [
@@ -316,6 +330,7 @@
         "tags": [
           "book-repository"
         ],
+        "summary": "Find all list.",
         "description": "Find all list.",
         "operationId": "findAll_1_4",
         "responses": {
@@ -356,6 +371,7 @@
         "tags": [
           "book-repository"
         ],
+        "summary": "Find by author list.",
         "description": "Find by author list.",
         "operationId": "findByAuthor_4",
         "parameters": [
@@ -404,7 +420,8 @@
             "type": "string",
             "description": "The Author."
           }
-        }
+        },
+        "description": "The type Book."
       }
     }
   }

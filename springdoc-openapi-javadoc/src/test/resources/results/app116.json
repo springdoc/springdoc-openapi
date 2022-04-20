@@ -13,6 +13,10 @@
   "tags": [
     {
       "name": "Operations"
+    },
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
     }
   ],
   "paths": {
@@ -21,6 +25,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Create string.",
         "description": "Create string.",
         "operationId": "create",
         "requestBody": {

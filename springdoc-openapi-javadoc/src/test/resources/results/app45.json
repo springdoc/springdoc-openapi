@@ -151,7 +151,8 @@
             "type": "string",
             "description": "The Last name."
           }
-        }
+        },
+        "description": "The type Person dto."
       }
     },
     "securitySchemes": {

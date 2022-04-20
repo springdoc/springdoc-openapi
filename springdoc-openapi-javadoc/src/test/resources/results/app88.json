@@ -13,6 +13,7 @@
   "paths": {
     "/persons": {
       "get": {
+        "summary": "Persons string.",
         "description": "Persons string.",
         "operationId": "persons",
         "responses": {

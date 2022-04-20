@@ -10,12 +10,23 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "greetings-rest-controller",
+      "description": "The type Greetings rest controller."
+    },
+    {
+      "name": "person-service",
+      "description": "The type Person service."
+    }
+  ],
   "paths": {
     "/greet/{name}": {
       "get": {
         "tags": [
           "greetings-rest-controller"
         ],
+        "summary": "Greet string.",
         "description": "Greet string.",
         "operationId": "greet",
         "parameters": [
@@ -48,6 +59,7 @@
         "tags": [
           "person-service"
         ],
+        "summary": "All set.",
         "description": "All set.",
         "operationId": "all",
         "responses": {
@@ -71,6 +83,7 @@
         "tags": [
           "person-service"
         ],
+        "summary": "Save person.",
         "description": "Save person.",
         "operationId": "save",
         "parameters": [
@@ -103,6 +116,7 @@
         "tags": [
           "person-service"
         ],
+        "summary": "By id person.",
         "description": "By id person.",
         "operationId": "byId",
         "parameters": [
@@ -146,7 +160,8 @@
             "type": "string",
             "description": "The Name."
           }
-        }
+        },
+        "description": "The type Person."
       }
     }
   }

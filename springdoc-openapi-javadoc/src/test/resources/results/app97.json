@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/api/student/header3": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Header v 3 student v 3.",
         "description": "Header v 3 student v 3.",
         "operationId": "headerV3",
         "parameters": [
@@ -46,6 +53,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Header v 2 student v 2.",
         "description": "Header v 2 student v 2.",
         "operationId": "headerV2",
         "parameters": [
@@ -79,6 +87,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Header v 1 student v 1.",
         "description": "Header v 1 student v 1.",
         "operationId": "headerV1",
         "parameters": [
@@ -117,7 +126,8 @@
             "type": "string",
             "description": "The Name."
           }
-        }
+        },
+        "description": "The type Student v 3."
       },
       "StudentV2": {
         "type": "object",
@@ -126,7 +136,8 @@
             "type": "string",
             "description": "The Name."
           }
-        }
+        },
+        "description": "The type Student v 2."
       },
       "StudentV1": {
         "type": "object",
@@ -135,7 +146,8 @@
             "type": "string",
             "description": "The Name."
           }
-        }
+        },
+        "description": "The type Student v 1."
       }
     }
   }

@@ -22,10 +22,12 @@ package org.springdoc.core;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -62,6 +64,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.ControllerAdviceBean;
 import org.springframework.web.method.HandlerMethod;
 
+import static java.util.Arrays.asList;
 import static org.springdoc.core.Constants.DEFAULT_DESCRIPTION;
 import static org.springdoc.core.SpringDocAnnotationsUtils.extractSchema;
 import static org.springdoc.core.SpringDocAnnotationsUtils.getContent;
@@ -73,6 +76,11 @@ import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper
  * @author bnasslahsen
  */
 public class GenericResponseService {
+	/**
+	 * This extension name is used to temporary store
+	 * the exception classes.
+	 */
+	private static final String EXTENSION_EXCEPTION_CLASSES = "x-exception-class";
 
 	/**
 	 * The Operation builder.
@@ -133,7 +141,11 @@ public class GenericResponseService {
 	 */
 	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
 			MethodAttributes methodAttributes) {
-		ApiResponses apiResponses = methodAttributes.calculateGenericMapResponse(getGenericMapResponse(handlerMethod.getBeanType()));
+		Map<String, ApiResponse> genericMapResponse = getGenericMapResponse(handlerMethod.getBeanType());
+		if (springDocConfigProperties.isOverrideWithGenericResponse()) {
+			genericMapResponse = filterAndEnrichGenericMapResponseByDeclarations(handlerMethod, genericMapResponse);
+		}
+		ApiResponses apiResponses = methodAttributes.calculateGenericMapResponse(genericMapResponse);
 		//Then use the apiResponses from documentation
 		ApiResponses apiResponsesFromDoc = operation.getResponses();
 		if (!CollectionUtils.isEmpty(apiResponsesFromDoc))
@@ -143,6 +155,41 @@ public class GenericResponseService {
 		computeResponseFromDoc(components, handlerMethod.getReturnType(), apiResponses, methodAttributes);
 		buildApiResponses(components, handlerMethod.getReturnType(), apiResponses, methodAttributes);
 		return apiResponses;
+	}
+
+	/**
+	 * Filters the generic API responses by the declared exceptions.
+	 * If Javadoc comment found for the declaration than it overrides the default description.
+	 *
+	 * @param handlerMethod the method which can have exception declarations
+	 * @param genericMapResponse the default generic API responses
+	 * @return the filtered and enriched responses
+	 */
+	private Map<String, ApiResponse> filterAndEnrichGenericMapResponseByDeclarations(HandlerMethod handlerMethod, Map<String, ApiResponse> genericMapResponse) {
+		Map<String, ApiResponse> result = new HashMap<>();
+		for (Map.Entry<String, ApiResponse> genericResponse : genericMapResponse.entrySet()) {
+			Map<String, Object> extensions = genericResponse.getValue().getExtensions();
+			Set<Class<?>> genericExceptions = (Set<Class<?>>) extensions.get(EXTENSION_EXCEPTION_CLASSES);
+			for (Class<?> declaredException : handlerMethod.getMethod().getExceptionTypes()) {
+				if (genericExceptions.contains(declaredException)) {
+					ApiResponse clone = cloneApiResponse(genericResponse.getValue());
+					clone.getExtensions().remove(EXTENSION_EXCEPTION_CLASSES);
+					if (operationService.getJavadocProvider() != null) {
+						JavadocProvider javadocProvider = operationService.getJavadocProvider();
+						Map<String, String> javadocThrows = javadocProvider.getMethodJavadocThrows(handlerMethod.getMethod());
+						String description = javadocThrows.get(declaredException.getName());
+						if (description == null) {
+							description = javadocThrows.get(declaredException.getSimpleName());
+						}
+						if (description != null && !description.trim().isEmpty()) {
+							clone.setDescription(description);
+						}
+					}
+					result.put(genericResponse.getKey(), clone);
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -502,6 +549,23 @@ public class GenericResponseService {
 			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getMethodProduces()))
 				Arrays.stream(methodAttributes.getMethodProduces()).forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));
 		}
+		if (springDocConfigProperties.isOverrideWithGenericResponse()
+				&& methodParameter.getExecutable().isAnnotationPresent(ExceptionHandler.class)) {
+			// ExceptionHandler's exception class resolution is non-trivial
+			// more info on its javadoc
+			ExceptionHandler exceptionHandler = methodParameter.getExecutable().getAnnotation(ExceptionHandler.class);
+			Set<Class<?>> exceptions = new HashSet<>();
+			if (exceptionHandler.value().length == 0) {
+				for (Parameter parameter : methodParameter.getExecutable().getParameters()) {
+					if (Throwable.class.isAssignableFrom(parameter.getType())) {
+						exceptions.add(parameter.getType());
+					}
+				}
+			} else {
+				exceptions.addAll(asList(exceptionHandler.value()));
+			}
+			apiResponse.addExtension(EXTENSION_EXCEPTION_CLASSES, exceptions);
+		}
 		apiResponsesOp.addApiResponse(httpCode, apiResponse);
 	}
 
@@ -619,5 +683,16 @@ public class GenericResponseService {
 	 */
 	public static void setResponseEntityExceptionHandlerClass(Class<?> responseEntityExceptionHandlerClass) {
 		GenericResponseService.responseEntityExceptionHandlerClass = responseEntityExceptionHandlerClass;
+	}
+
+	private ApiResponse cloneApiResponse(ApiResponse original) {
+		ApiResponse clone = new ApiResponse();
+		clone.set$ref(original.get$ref());
+		clone.setDescription(original.getDescription());
+		clone.setContent(original.getContent());
+		clone.setHeaders(original.getHeaders() == null ? null : new HashMap<>(original.getHeaders()));
+		clone.setExtensions(original.getExtensions() == null ? null : new HashMap<>(original.getExtensions()));
+		clone.setLinks(original.getLinks() == null ? null : new HashMap<>(original.getLinks()));
+		return clone;
 	}
 }

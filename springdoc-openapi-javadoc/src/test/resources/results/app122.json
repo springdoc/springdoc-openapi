@@ -63,7 +63,8 @@
             "type": "string",
             "description": "The Customer name."
           }
-        }
+        },
+        "description": "The type Customer dto."
       },
       "WrapperCustomerDto": {
         "type": "object",
@@ -72,7 +73,8 @@
             "type": "string",
             "description": "The Wrapper."
           }
-        }
+        },
+        "description": "The type Wrapper."
       }
     }
   }

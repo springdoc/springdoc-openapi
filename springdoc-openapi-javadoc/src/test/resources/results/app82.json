@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/test": {
       "put": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Put response entity.",
         "description": "Put response entity.",
         "operationId": "put",
         "parameters": [
@@ -79,7 +86,8 @@
             "type": "string",
             "description": "The Last name."
           }
-        }
+        },
+        "description": "The type Person dto."
       }
     }
   }

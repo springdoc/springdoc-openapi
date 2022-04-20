@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/entity-b": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Gets entity b.",
         "description": "Gets entity b.",
         "operationId": "getEntityB",
         "responses": {
@@ -50,7 +57,8 @@
             "type": "string",
             "description": "The Field a."
           }
-        }
+        },
+        "description": "The type Entity a."
       },
       "EntityB": {
         "required": [
@@ -66,7 +74,8 @@
           "entityA": {
             "$ref": "#/components/schemas/EntityA"
           }
-        }
+        },
+        "description": "The type Entity b."
       }
     }
   }

@@ -69,7 +69,8 @@
             "type": "string",
             "description": "The Id."
           }
-        }
+        },
+        "description": "The type Sample v 1."
       }
     }
   }

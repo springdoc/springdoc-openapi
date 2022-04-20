@@ -115,7 +115,7 @@ public class SpringDocConfigProperties {
 	/**
 	 * The Override with generic response.
 	 */
-	private boolean overrideWithGenericResponse = true;
+	private Boolean overrideWithGenericResponse;
 
 	/**
 	 * The Remove broken reference definitions.
@@ -579,8 +579,20 @@ public class SpringDocConfigProperties {
 	 *
 	 * @return the boolean
 	 */
-	public boolean isOverrideWithGenericResponse() {
-		return overrideWithGenericResponse;
+	public Boolean isOverrideWithGenericResponse() {
+		return overrideWithGenericResponse != null && overrideWithGenericResponse;
+	}
+
+	/**
+	 * Gets default override with generic response.
+	 *
+	 * @return the default override with generic response
+	 */
+	public boolean isDefaultOverrideWithGenericResponse() {
+		if (overrideWithGenericResponse == null)
+			return true;
+		else
+			return overrideWithGenericResponse;
 	}
 
 	/**
@@ -588,7 +600,7 @@ public class SpringDocConfigProperties {
 	 *
 	 * @param overrideWithGenericResponse the override with generic response
 	 */
-	public void setOverrideWithGenericResponse(boolean overrideWithGenericResponse) {
+	public void setOverrideWithGenericResponse(Boolean overrideWithGenericResponse) {
 		this.overrideWithGenericResponse = overrideWithGenericResponse;
 	}
 

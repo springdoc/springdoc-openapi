@@ -10,6 +10,12 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/post-entity": {
       "post": {
@@ -73,7 +79,8 @@
             "format": "double",
             "example": 19.0
           }
-        }
+        },
+        "description": "The type Tracker data."
       }
     }
   }

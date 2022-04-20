@@ -10,14 +10,21 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
-    "/test3": {
+    "/test1": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "description": "Gets message from header 3.",
-        "operationId": "getMessageFromHeader3",
+        "summary": "Gets message from header 1.",
+        "description": "Gets message from header 1.",
+        "operationId": "getMessageFromHeader1",
         "parameters": [
           {
             "name": "myHeader",
@@ -25,13 +32,17 @@
             "description": "A header",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string",
+              "enum": [
+                "foo",
+                "bar"
+              ]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "the message from header 3",
+            "description": "the message from header 1",
             "content": {
               "*/*": {
                 "schema": {
@@ -48,6 +59,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Gets message from header 2.",
         "description": "Gets message from header 2.",
         "operationId": "getMessageFromHeader2",
         "parameters": [
@@ -75,13 +87,14 @@
         }
       }
     },
-    "/test1": {
+    "/test3": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "description": "Gets message from header 1.",
-        "operationId": "getMessageFromHeader1",
+        "summary": "Gets message from header 3.",
+        "description": "Gets message from header 3.",
+        "operationId": "getMessageFromHeader3",
         "parameters": [
           {
             "name": "myHeader",
@@ -89,17 +102,13 @@
             "description": "A header",
             "required": true,
             "schema": {
-              "type": "string",
-              "enum": [
-                "foo",
-                "bar"
-              ]
+              "type": "integer"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "the message from header 1",
+            "description": "the message from header 3",
             "content": {
               "*/*": {
                 "schema": {

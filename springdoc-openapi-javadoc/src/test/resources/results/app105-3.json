@@ -570,7 +570,8 @@
             "type": "string",
             "description": "The Type."
           }
-        }
+        },
+        "description": "The type Model api response."
       },
       "Pet": {
         "required": [
@@ -615,7 +616,8 @@
               "$ref": "#/components/schemas/Tag"
             }
           }
-        }
+        },
+        "description": "The type Pet."
       },
       "Tag": {
         "type": "object",

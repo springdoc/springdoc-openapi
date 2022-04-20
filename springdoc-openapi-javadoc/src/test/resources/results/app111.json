@@ -16,12 +16,23 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "person-controller",
+      "description": "The type Person controller."
+    },
+    {
+      "name": "person-controller-2",
+      "description": "The type Person controller 2."
+    }
+  ],
   "paths": {
     "/person": {
       "post": {
         "tags": [
           "person-controller"
         ],
+        "summary": "Person person.",
         "description": "Person person.",
         "operationId": "person",
         "requestBody": {
@@ -54,6 +65,7 @@
         "tags": [
           "person-controller-2"
         ],
+        "summary": "Person person.",
         "description": "Person person.",
         "operationId": "person_1",
         "requestBody": {
@@ -86,6 +98,7 @@
         "tags": [
           "person-controller"
         ],
+        "summary": "Find by last name list.",
         "description": "Find by last name list.",
         "operationId": "findByLastName",
         "parameters": [
@@ -123,6 +136,7 @@
         "tags": [
           "person-controller-2"
         ],
+        "summary": "Find by last name list.",
         "description": "Find by last name list.",
         "operationId": "findByLastName_1",
         "parameters": [
@@ -201,7 +215,8 @@
             "type": "string",
             "description": "The Credit card number."
           }
-        }
+        },
+        "description": "The type Person."
       }
     }
   }

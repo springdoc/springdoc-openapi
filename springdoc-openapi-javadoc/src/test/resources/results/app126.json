@@ -10,6 +10,12 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/": {
       "get": {
@@ -66,13 +72,14 @@
             "type": "integer",
             "format": "int32"
           },
-          "detail": {
-            "type": "string"
-          },
           "title": {
             "type": "string"
+          },
+          "detail": {
+            "type": "string"
           }
-        }
+        },
+        "description": "The interface Problem."
       }
     },
     "responses": {

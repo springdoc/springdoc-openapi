@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/persons": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Do get response entity.",
         "description": "Do get response entity.",
         "operationId": "doGet",
         "responses": {
@@ -56,7 +63,8 @@
             "type": "string",
             "description": "The Last name."
           }
-        }
+        },
+        "description": "The type Person dto."
       }
     }
   }

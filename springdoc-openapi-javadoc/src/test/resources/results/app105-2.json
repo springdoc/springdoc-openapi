@@ -425,7 +425,8 @@
             "type": "string",
             "description": "The Username."
           }
-        }
+        },
+        "description": "The type User."
       }
     },
     "securitySchemes": {

@@ -64,8 +64,8 @@
               }
             }
           },
-          "404": {
-            "description": "User not found",
+          "200": {
+            "description": "successful operation",
             "content": {
               "application/xml": {
                 "schema": {
@@ -79,8 +79,8 @@
               }
             }
           },
-          "200": {
-            "description": "successful operation",
+          "404": {
+            "description": "User not found",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1149,7 +1149,8 @@
             "description": "User Status",
             "format": "int32"
           }
-        }
+        },
+        "description": "The type User."
       },
       "Category": {
         "type": "object",
@@ -1206,7 +1207,8 @@
               "sold"
             ]
           }
-        }
+        },
+        "description": "The type Pet."
       },
       "Tag": {
         "type": "object",
@@ -1251,7 +1253,8 @@
             "type": "string",
             "description": "Order Status"
           }
-        }
+        },
+        "description": "The type Order."
       },
       "ModelApiResponse": {
         "type": "object",
@@ -1269,7 +1272,8 @@
             "type": "string",
             "description": "The Message."
           }
-        }
+        },
+        "description": "The type Model api response."
       }
     },
     "securitySchemes": {

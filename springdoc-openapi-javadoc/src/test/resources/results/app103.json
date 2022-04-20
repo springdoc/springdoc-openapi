@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/test/103": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Post my request body string.",
         "description": "Post my request body string.",
         "operationId": "postMyRequestBody",
         "requestBody": {
@@ -75,7 +82,8 @@
             "description": "The Int param.",
             "format": "int32"
           }
-        }
+        },
+        "description": "The type Example body."
       }
     }
   }

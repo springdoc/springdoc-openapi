@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/test2": {
       "post": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Test 2.",
         "description": "Test 2.",
         "operationId": "test2",
         "requestBody": {
@@ -53,6 +60,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Test 1.",
         "description": "Test 1.",
         "operationId": "test1",
         "parameters": [
@@ -138,7 +146,8 @@
             "format": "int32",
             "example": 1
           }
-        }
+        },
+        "description": "User"
       }
     },
     "examples": {

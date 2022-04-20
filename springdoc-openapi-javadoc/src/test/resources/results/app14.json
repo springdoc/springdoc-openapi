@@ -10,12 +10,19 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
   "paths": {
     "/test": {
       "get": {
         "tags": [
           "hello-controller"
         ],
+        "summary": "Demo 2 http entity.",
         "description": "Demo 2 http entity.",
         "operationId": "demo2",
         "responses": {
@@ -37,6 +44,7 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Persons.",
         "description": "Persons.",
         "operationId": "persons",
         "parameters": [
