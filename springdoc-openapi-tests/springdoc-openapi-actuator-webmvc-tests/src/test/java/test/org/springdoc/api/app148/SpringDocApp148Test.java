@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright 2019-2020 the original author or authors.
+ *  * Copyright 2019-2022 the original author or authors.
  *  *
  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  * you may not use this file except in compliance with the License.
@@ -19,12 +19,17 @@
 package test.org.springdoc.api.app148;
 
 import org.junit.jupiter.api.Test;
+import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpStatusCodeException;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
@@ -55,9 +60,23 @@ public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 	@Test
 	public void testApp2() throws Exception {
 		String result = actuatorRestTemplate.getForObject("/test/application/openapi/x-actuator", String.class);
-		System.out.println(result);
 		String expected = getContent("results/app148-2.json");
 		assertEquals(expected, result, true);
+	}
+
+	@Test
+	public void testApp3() throws Exception {
+		try {
+			actuatorRestTemplate.getForObject("/test/application/openapi"  + "/"+ Constants.DEFAULT_GROUP_NAME, String.class);
+			fail();
+		}
+		catch (HttpStatusCodeException ex) {
+			// TODO: Currently obtain status 500 on MVC... Webflux obtain 404... 
+			if (ex.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR)
+				assertTrue(true);
+			else
+				fail();
+		}
 	}
 
 }

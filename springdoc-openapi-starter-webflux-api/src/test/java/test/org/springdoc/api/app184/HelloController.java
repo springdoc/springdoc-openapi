@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright 2019-2020 the original author or authors.
+ *  * Copyright 2019-2022 the original author or authors.
  *  *
  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  * you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
  *
  */
 
-package test.org.springdoc.api.app146;
+package test.org.springdoc.api.app184;
+
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,9 +25,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-	@GetMapping("/persons")
-	public String persons() {
-		return "OK";
+	@GetMapping("/globalBeanFiltered")
+	public String globalBeanFiltered() {
+		return "globalBeanFiltered";
+	}
+
+	@GetMapping("/beanFiltered")
+	public String beanFiltered() {
+		return "beanFiltered";
+	}
+
+	@GetMapping("/group1Filtered")
+	public String group1Filtered() {
+		return "group1Filtered";
+	}
+
+	@GetMapping("/group2Filtered")
+	public String group2Filtered() {
+		return "group2Filtered";
+	}
+
+	@GetMapping("/group3Filtered")
+	public String group3Filtered() {
+		return "group3Filtered";
 	}
 
 }

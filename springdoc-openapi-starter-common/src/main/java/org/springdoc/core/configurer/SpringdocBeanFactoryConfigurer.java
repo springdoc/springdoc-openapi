@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.service.OpenAPIService;
@@ -72,6 +73,18 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 							builder.packagesToScan(elt.getPackagesToScan().toArray(new String[0]));
 						if (!CollectionUtils.isEmpty(elt.getPathsToMatch()))
 							builder.pathsToMatch(elt.getPathsToMatch().toArray(new String[0]));
+						if (!CollectionUtils.isEmpty(elt.getProducesToMatch()))
+							builder.producesToMatch(elt.getProducesToMatch().toArray(new String[0]));
+						if (!CollectionUtils.isEmpty(elt.getConsumesToMatch()))
+							builder.consumesToMatch(elt.getConsumesToMatch().toArray(new String[0]));
+						if (!CollectionUtils.isEmpty(elt.getHeadersToMatch()))
+							builder.headersToMatch(elt.getHeadersToMatch().toArray(new String[0]));
+						if (!CollectionUtils.isEmpty(elt.getPathsToExclude()))
+							builder.pathsToExclude(elt.getPathsToExclude().toArray(new String[0]));
+						if (!CollectionUtils.isEmpty(elt.getPackagesToExclude()))
+							builder.packagesToExclude(elt.getPackagesToExclude().toArray(new String[0]));
+						if (StringUtils.isNotEmpty(elt.getDisplayName()))
+							builder.displayName(elt.getDisplayName());
 						return builder.group(elt.getGroup()).build();
 					})
 					.collect(Collectors.toList());
