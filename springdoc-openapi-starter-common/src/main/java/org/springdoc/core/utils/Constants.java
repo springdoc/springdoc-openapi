@@ -361,7 +361,7 @@ public final class Constants {
 	/**
 	 * The constant DEFAULT_SWAGGER_UI_ACTUATOR_PATH.
 	 */
-	public static final String DEFAULT_SWAGGER_UI_ACTUATOR_PATH= "swaggerui";
+	public static final String DEFAULT_SWAGGER_UI_ACTUATOR_PATH= "swagger-ui";
 
 	/**
 	 * The constant DEFAULT_API_DOCS_ACTUATOR_URL.
