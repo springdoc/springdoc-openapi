@@ -174,15 +174,7 @@ public class AbstractSwaggerIndexTransformer {
 				.filter(entry -> !SwaggerUiConfigParameters.URL_PROPERTY.equals(entry.getKey()))
 				.filter(entry -> !SwaggerUiConfigParameters.URLS_PROPERTY.equals(entry.getKey()))
 				.filter(entry -> SwaggerUiConfigParameters.VALIDATOR_URL_PROPERTY.equals(entry.getKey())
-						|| SwaggerUiConfigParameters.DISPLAY_OPERATION_ID_PROPERTY.equals(entry.getKey())
-						|| SwaggerUiConfigParameters.DEEP_LINKING_PROPERTY.equals(entry.getKey())
-						|| SwaggerUiConfigParameters.DISPLAY_REQUEST_DURATION_PROPERTY.equals(entry.getKey())
-						|| SwaggerUiConfigParameters.SHOW_EXTENSIONS_PROPERTY.equals(entry.getKey())
-						|| SwaggerUiConfigParameters.SHOW_COMMON_EXTENSIONS_PROPERTY.equals(entry.getKey())
-						|| SwaggerUiConfigParameters.TRY_IT_ENABLED_PROPERTY.equals(entry.getKey())
-						|| SwaggerUiConfigParameters.PERSIST_AUTHORIZATION_PROPERTY.equals(entry.getKey())
-						|| SwaggerUiConfigParameters.WITH_CREDENTIALS_PROPERTY.equals(entry.getKey())
-						|| StringUtils.isNotEmpty((String) entry.getValue()))
+						|| ((entry.getValue() instanceof String) ? StringUtils.isNotEmpty((String) entry.getValue()) : entry.getValue() != null))
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(e1, e2) -> e2,
 						LinkedHashMap::new));
 

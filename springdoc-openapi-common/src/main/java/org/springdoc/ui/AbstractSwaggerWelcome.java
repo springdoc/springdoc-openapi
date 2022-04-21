@@ -160,7 +160,7 @@ public abstract class AbstractSwaggerWelcome {
 					.filter(entry -> !SwaggerUiConfigParameters.OAUTH2_REDIRECT_URL_PROPERTY.equals(entry.getKey()))
 					.filter(entry -> !SwaggerUiConfigParameters.URL_PROPERTY.equals(entry.getKey()))
 					.filter(entry -> !entry.getKey().startsWith(SwaggerUiConfigParameters.URLS_PROPERTY))
-					.filter(entry -> StringUtils.isNotEmpty((String) entry.getValue()))
+					.filter(entry -> (entry.getValue() instanceof String) ? StringUtils.isNotEmpty((String) entry.getValue()) : entry.getValue() != null)
 					.forEach(entry -> uriBuilder.queryParam(entry.getKey(), entry.getValue()));
 			uriBuilder.queryParam(SwaggerUiConfigParameters.CONFIG_URL_PROPERTY, swaggerUiConfigParameters.getConfigUrl());
 		}
