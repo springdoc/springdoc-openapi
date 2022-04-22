@@ -18,9 +18,6 @@
 
 package test.org.springdoc.api.app145;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
 import test.org.springdoc.api.AbstractSpringDocActuatorTest;
@@ -30,6 +27,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,

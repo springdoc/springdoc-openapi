@@ -2,10 +2,10 @@ package test.org.springdoc.api.app164;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import test.org.springdoc.api.AbstractSpringDocTest;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.TestPropertySource;
-import test.org.springdoc.api.AbstractSpringDocTest;
 
 /**
  * The type Spring doc app 164 test.

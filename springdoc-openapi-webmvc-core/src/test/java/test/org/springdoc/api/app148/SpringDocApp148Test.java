@@ -20,7 +20,6 @@ package test.org.springdoc.api.app148;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
-
 import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;

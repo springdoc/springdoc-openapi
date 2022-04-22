@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.8] - 2022-04-22
+### Added
+- #1616 - Add global customizer and filters 
+- #1620 - Allow ComposedSchemas to replace non-composed so we can respect polymorphic links discovered in later methods 
+- #1579 - Updated class and method javadoc handling 
+### Changed
+- upgrade to spring-boot 2.6.7
+- #1603 - Update swagger-ui path from /swaggerui to /swagger-ui when using management port (actuator) .
+- Prefer ComposedSchemas over non-composed so that method name order doesn't prevent polymorphic links generating into the spec
+### Fixed
+- #1621 - Redirection to UI broken with query-config-enabled when any other boolean parameter is defined. 
+- #1617 - spring cloud stream crashes at startup. 
+- #1605 - spring-native NullPointerException due to missing TypeHint
+
 ## [1.6.7] - 2022-04-07
 ### Added
 - #1596 - Add title property to GroupedOpenApi class for displaying a Human readable group name.

@@ -1,7 +1,5 @@
 package test.org.springdoc.api.app163.rest.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
 /**
  * This is the {@code AnnotationOverrideForJavadocRestDto2} class javadoc.
  */

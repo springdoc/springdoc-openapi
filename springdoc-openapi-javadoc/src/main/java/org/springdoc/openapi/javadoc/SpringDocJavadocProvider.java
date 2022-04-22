@@ -25,7 +25,13 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-import com.github.therapi.runtimejavadoc.*;
+import com.github.therapi.runtimejavadoc.ClassJavadoc;
+import com.github.therapi.runtimejavadoc.CommentFormatter;
+import com.github.therapi.runtimejavadoc.FieldJavadoc;
+import com.github.therapi.runtimejavadoc.MethodJavadoc;
+import com.github.therapi.runtimejavadoc.ParamJavadoc;
+import com.github.therapi.runtimejavadoc.RuntimeJavadoc;
+import com.github.therapi.runtimejavadoc.ThrowsJavadoc;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.providers.JavadocProvider;
 

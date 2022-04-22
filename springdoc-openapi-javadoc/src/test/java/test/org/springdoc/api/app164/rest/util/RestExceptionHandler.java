@@ -1,12 +1,13 @@
 package test.org.springdoc.api.app164.rest.util;
 
+import test.org.springdoc.api.app164.exception.NoResultException;
+import test.org.springdoc.api.app164.exception.NonUniqueResultException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import test.org.springdoc.api.app164.exception.NoResultException;
-import test.org.springdoc.api.app164.exception.NonUniqueResultException;
 
 /**
  * REST exception handlers.
