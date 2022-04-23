@@ -27,7 +27,7 @@ import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
-import io.swagger.v3.core.util.Json;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.hateoas.HateoasHalProvider;
 
 import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
@@ -46,14 +46,22 @@ public class DataRestHalProvider extends HateoasHalProvider {
 	private Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional;
 
 	/**
+	 * The Object mapper provider.
+	 */
+	private final ObjectMapperProvider objectMapperProvider;
+
+	/**
 	 * Instantiates a new Data rest hal provider.
 	 *
-	 * @param repositoryRestConfigurationOptional the repository rest configuration optional 
+	 * @param repositoryRestConfigurationOptional the repository rest configuration optional
 	 * @param hateoasPropertiesOptional the hateoas properties optional
+	 * @param objectMapperProvider the object mapper provider
 	 */
-	public DataRestHalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional,Optional<HateoasProperties> hateoasPropertiesOptional) {
-		super(hateoasPropertiesOptional);
+	public DataRestHalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional,Optional<HateoasProperties> hateoasPropertiesOptional,
+			ObjectMapperProvider objectMapperProvider) {
+		super(hateoasPropertiesOptional, objectMapperProvider);
 		this.repositoryRestConfigurationOptional = repositoryRestConfigurationOptional;
+		this.objectMapperProvider = objectMapperProvider;
 	}
 
 	@PostConstruct
@@ -61,8 +69,8 @@ public class DataRestHalProvider extends HateoasHalProvider {
 	protected void init() {
 		if (!isHalEnabled())
 			return;
-		if (!Jackson2HalModule.isAlreadyRegisteredIn(Json.mapper()))
-			Json.mapper().registerModule(new Jackson2HalModule());
+		if (!Jackson2HalModule.isAlreadyRegisteredIn(objectMapperProvider.jsonMapper()))
+			objectMapperProvider.jsonMapper().registerModule(new Jackson2HalModule());
 	}
 
 	@Override

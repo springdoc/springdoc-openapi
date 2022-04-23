@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.ui.AbstractSwaggerIndexTransformer;
 
 import org.springframework.core.io.Resource;
@@ -54,8 +55,9 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param swaggerWelcomeCommon the swagger welcome common
 	 */
-	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerWelcomeCommon swaggerWelcomeCommon) {
-		super(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters);
+	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,
+			SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerWelcomeCommon swaggerWelcomeCommon, ObjectMapperProvider objectMapperProvider) {
+		super(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, objectMapperProvider);
 		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 

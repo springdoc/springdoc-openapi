@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import io.swagger.v3.core.converter.ModelConverters;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import static org.hamcrest.Matchers.hasProperty;
@@ -31,10 +31,8 @@ public class SpringDocApp157Test extends AbstractSpringDocTest {
 	@SpringBootApplication
 	static class SpringBootApp {}
 
-	/**
-	 * The My converter.
-	 */
-	private StringyConverter myConverter = new StringyConverter();
+	@Autowired
+	StringyConverter converter;
 
 	/**
 	 * The Converters.
@@ -42,19 +40,11 @@ public class SpringDocApp157Test extends AbstractSpringDocTest {
 	private ModelConverters converters = ModelConverters.getInstance();
 
 	/**
-	 * Register converter.
-	 */
-	@BeforeEach
-	public void registerConverter() {
-		converters.addConverter(myConverter);
-	}
-
-	/**
 	 * Unregister converter.
 	 */
 	@AfterEach
 	public void unregisterConverter() {
-		converters.removeConverter(myConverter);
+		converters.removeConverter(converter);
 	}
 
 	/**

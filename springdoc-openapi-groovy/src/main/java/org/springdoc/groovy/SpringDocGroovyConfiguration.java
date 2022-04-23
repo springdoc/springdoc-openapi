@@ -21,6 +21,7 @@ package org.springdoc.groovy;
 import groovy.lang.MetaClass;
 import org.springdoc.core.SpringDocUtils;
 import org.springdoc.core.converters.RequestTypeToIgnoreConverter;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -57,7 +58,7 @@ public class SpringDocGroovyConfiguration {
 	 */
 	@Bean
 	@Lazy(false)
-	RequestTypeToIgnoreConverter requestTypeToIgnoreConverter() {
-		return new RequestTypeToIgnoreConverter();
+	RequestTypeToIgnoreConverter requestTypeToIgnoreConverter(ObjectMapperProvider springDocObjectMapper) {
+		return new RequestTypeToIgnoreConverter(springDocObjectMapper);
 	}
 }

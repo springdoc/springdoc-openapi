@@ -24,7 +24,7 @@ import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
-import io.swagger.v3.core.util.Json;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
@@ -40,13 +40,16 @@ public class HateoasHalProvider {
 	 */
 	private final Optional<HateoasProperties> hateoasPropertiesOptional;
 
+	private final ObjectMapperProvider objectMapperProvider;
+
 	/**
 	 * Instantiates a new Hateoas hal provider.
 	 *
 	 * @param hateoasPropertiesOptional the hateoas properties optional
 	 */
-	public HateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional) {
+	public HateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
 		this.hateoasPropertiesOptional = hateoasPropertiesOptional;
+		this.objectMapperProvider = objectMapperProvider;
 	}
 
 	/**
@@ -56,8 +59,8 @@ public class HateoasHalProvider {
 	protected void init() {
 		if (!isHalEnabled())
 			return;
-		if (!Jackson2HalModule.isAlreadyRegisteredIn(Json.mapper()))
-			Json.mapper().registerModule(new Jackson2HalModule());
+		if (!Jackson2HalModule.isAlreadyRegisteredIn(objectMapperProvider.jsonMapper()))
+			objectMapperProvider.jsonMapper().registerModule(new Jackson2HalModule());
 	}
 
 	/**

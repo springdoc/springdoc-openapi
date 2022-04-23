@@ -28,6 +28,7 @@ import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
 import org.springdoc.core.providers.ActuatorProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.webmvc.core.SpringWebMvcProvider;
 
@@ -124,13 +125,15 @@ public class SwaggerConfig {
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param swaggerWelcomeCommon the swagger welcome common
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the swagger index transformer
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerWelcomeCommon swaggerWelcomeCommon) {
-		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, swaggerWelcomeCommon);
+	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,
+			SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerWelcomeCommon swaggerWelcomeCommon, ObjectMapperProvider objectMapperProvider) {
+		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, swaggerWelcomeCommon, objectMapperProvider);
 	}
 
 	/**

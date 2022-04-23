@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import io.swagger.v3.core.util.Json;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.hateoas.converters.CollectionModelContentConverter;
 import org.springdoc.hateoas.converters.OpenApiHateoasLinksCustomiser;
 import org.springdoc.hateoas.converters.RepresentationModelLinksOASMixin;
@@ -59,13 +60,14 @@ public class SpringDocHateoasConfiguration {
 	 * Hateoas hal provider hateoas hal provider.
 	 *
 	 * @param hateoasPropertiesOptional the hateoas properties optional
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the hateoas hal provider
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	HateoasHalProvider hateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional) {
-		return new HateoasHalProvider(hateoasPropertiesOptional);
+	HateoasHalProvider hateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
+		return new HateoasHalProvider(hateoasPropertiesOptional, objectMapperProvider);
 	}
 
 	/**
@@ -88,18 +90,19 @@ public class SpringDocHateoasConfiguration {
 	 *
 	 * @param halProvider the hal provider
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the open api customiser
-	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
+	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
 	 */
 	@Bean(LINKS_SCHEMA_CUSTOMISER)
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	OpenApiCustomiser linksSchemaCustomiser(HateoasHalProvider halProvider, SpringDocConfigProperties springDocConfigProperties) {
+	OpenApiCustomiser linksSchemaCustomiser(HateoasHalProvider halProvider, SpringDocConfigProperties springDocConfigProperties, ObjectMapperProvider objectMapperProvider) {
 		if (!halProvider.isHalEnabled()) {
 			return openApi -> {
 			};
 		}
-		Json.mapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
+		objectMapperProvider.jsonMapper().addMixIn(RepresentationModel.class, RepresentationModelLinksOASMixin.class);
 		return new OpenApiHateoasLinksCustomiser(springDocConfigProperties);
 	}
 

@@ -27,10 +27,10 @@ import com.fasterxml.jackson.databind.type.ArrayType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.reactivestreams.Publisher;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import reactor.core.publisher.Flux;
 
 import static org.springdoc.core.SpringDocUtils.getConfig;
@@ -44,14 +44,25 @@ import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper
  */
 public class WebFluxSupportConverter implements ModelConverter {
 
-	static {
+	/**
+	 * The Object mapper provider.
+	 */
+	private final ObjectMapperProvider objectMapperProvider;
+
+	/**
+	 * Instantiates a new Web flux support converter.
+	 *
+	 * @param objectMapperProvider the object mapper provider
+	 */
+	public WebFluxSupportConverter(ObjectMapperProvider objectMapperProvider) {
+		this.objectMapperProvider = objectMapperProvider;
 		getConfig().addResponseWrapperToIgnore(Publisher.class)
 				.addFluxWrapperToIgnore(Flux.class);
 	}
 
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
-		JavaType javaType = Json.mapper().constructType(type.getType());
+		JavaType javaType = objectMapperProvider.jsonMapper().constructType(type.getType());
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
 			if (isFluxTypeWrapper(cls)) {

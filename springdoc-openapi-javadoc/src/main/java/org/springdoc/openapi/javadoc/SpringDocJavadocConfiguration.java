@@ -21,9 +21,11 @@
 package org.springdoc.openapi.javadoc;
 
 import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -37,6 +39,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ConditionalOnWebApplication
 public class SpringDocJavadocConfiguration {
 
 	/**
@@ -55,12 +58,13 @@ public class SpringDocJavadocConfiguration {
 	 * Javadoc property customizer javadoc property customizer.
 	 *
 	 * @param javadocProvider the javadoc provider
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the javadoc property customizer
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	JavadocPropertyCustomizer javadocPropertyCustomizer( JavadocProvider javadocProvider){
-		return new JavadocPropertyCustomizer(javadocProvider);
+	JavadocPropertyCustomizer javadocPropertyCustomizer( JavadocProvider javadocProvider, ObjectMapperProvider objectMapperProvider){
+		return new JavadocPropertyCustomizer(javadocProvider, objectMapperProvider);
 	}
 }

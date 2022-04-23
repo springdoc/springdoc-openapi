@@ -579,7 +579,7 @@ public class SpringDocConfigProperties {
 	 *
 	 * @return the boolean
 	 */
-	public Boolean isOverrideWithGenericResponse() {
+	public boolean isOverrideWithGenericResponse() {
 		return overrideWithGenericResponse != null && overrideWithGenericResponse;
 	}
 
@@ -916,6 +916,11 @@ public class SpringDocConfigProperties {
 		private Groups groups = new Groups();
 
 		/**
+		 * The OpenAPI version.
+		 */
+		private OpenApiVersion version;
+
+		/**
 		 * Gets path.
 		 *
 		 * @return the path
@@ -986,7 +991,63 @@ public class SpringDocConfigProperties {
 		public void setResolveSchemaProperties(boolean resolveSchemaProperties) {
 			this.resolveSchemaProperties = resolveSchemaProperties;
 		}
+
+		/**
+		 * Gets version.
+		 *
+		 * @return the version
+		 */
+		public OpenApiVersion getVersion() {
+			return version;
+		}
+
+		/**
+		 * Sets version.
+		 *
+		 * @param version the version
+		 */
+		public void setVersion(OpenApiVersion version) {
+			this.version = version;
+		}
+
+		/**
+		 * The enum OpenApiVersion.
+		 */
+		public enum OpenApiVersion {
+			/**
+			 *Openapi 3.0.1 version.
+			 */
+			OPENAPI_3_0("3.0.1"),
+			/**
+			 *Openapi 3.1.0 version.
+			 */
+			OPENAPI_3_1("3.1.0");
+
+			/**
+			 * The Open api version.
+			 */
+			private String version;
+
+			/**
+			 * Instantiates a new OpenApiVersion.
+			 *
+			 * @param openApiVersion the open api version
+			 */
+			OpenApiVersion(String openApiVersion) {
+				this.version = openApiVersion;
+			}
+
+			/**
+			 * Gets open api version.
+			 *
+			 * @return the open api version
+			 */
+			public String getVersion() {
+				return version;
+			}
+		}
 	}
+
 
 	/**
 	 * The type Groups.

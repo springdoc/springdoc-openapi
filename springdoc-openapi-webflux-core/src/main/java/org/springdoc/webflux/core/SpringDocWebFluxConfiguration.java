@@ -38,6 +38,7 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.providers.ActuatorProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.webflux.api.OpenApiActuatorResource;
 import org.springdoc.webflux.api.OpenApiWebfluxResource;
@@ -144,13 +145,14 @@ public class SpringDocWebFluxConfiguration {
 	/**
 	 * Web flux support converter web flux support converter.
 	 *
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the web flux support converter
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	WebFluxSupportConverter webFluxSupportConverter() {
-		return new WebFluxSupportConverter();
+	WebFluxSupportConverter webFluxSupportConverter(ObjectMapperProvider objectMapperProvider) {
+		return new WebFluxSupportConverter(objectMapperProvider);
 	}
 
 	/**

@@ -27,9 +27,9 @@ import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 import static org.springdoc.core.converters.ConverterUtils.isFluxTypeWrapper;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeToIgnore;
@@ -41,9 +41,23 @@ import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper
  */
 public class ResponseSupportConverter implements ModelConverter {
 
+	/**
+	 * The Spring doc object mapper.
+	 */
+	private final ObjectMapperProvider springDocObjectMapper;
+
+	/**
+	 * Instantiates a new Response support converter.
+	 *
+	 * @param springDocObjectMapper the spring doc object mapper
+	 */
+	public ResponseSupportConverter(ObjectMapperProvider springDocObjectMapper) {
+		this.springDocObjectMapper = springDocObjectMapper;
+	}
+
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
-		JavaType javaType = Json.mapper().constructType(type.getType());
+		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
 			if (isResponseTypeWrapper(cls) && !isFluxTypeWrapper(cls)) {

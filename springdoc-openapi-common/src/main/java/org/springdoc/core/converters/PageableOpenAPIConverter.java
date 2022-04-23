@@ -26,10 +26,10 @@ import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.converters.models.Pageable;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 /**
  * The Pageable Type models converter.
@@ -53,6 +53,20 @@ public class PageableOpenAPIConverter implements ModelConverter {
 	private static final AnnotatedType PAGEABLE = new AnnotatedType(Pageable.class).resolveAsRef(true);
 
 	/**
+	 * The Spring doc object mapper.
+	 */
+	private final ObjectMapperProvider springDocObjectMapper;
+
+	/**
+	 * Instantiates a new Pageable open api converter.
+	 *
+	 * @param springDocObjectMapper the spring doc object mapper
+	 */
+	public PageableOpenAPIConverter(ObjectMapperProvider springDocObjectMapper) {
+		this.springDocObjectMapper = springDocObjectMapper;
+	}
+
+	/**
 	 * Resolve schema.
 	 *
 	 * @param type the type
@@ -62,7 +76,7 @@ public class PageableOpenAPIConverter implements ModelConverter {
 	 */
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
-		JavaType javaType = Json.mapper().constructType(type.getType());
+		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
 			if (PAGEABLE_TO_REPLACE.equals(cls.getCanonicalName()) || PAGE_REQUEST_TO_REPLACE.equals(cls.getCanonicalName())) {

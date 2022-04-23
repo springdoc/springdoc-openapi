@@ -31,15 +31,30 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 /**
  * The type Polymorphic model converter.
  * @author bnasslahsen
  */
 public class PolymorphicModelConverter implements ModelConverter {
+
+	/**
+	 * The Spring doc object mapper.
+	 */
+	private final ObjectMapperProvider springDocObjectMapper;
+
+	/**
+	 * Instantiates a new Polymorphic model converter.
+	 *
+	 * @param springDocObjectMapper the spring doc object mapper
+	 */
+	public PolymorphicModelConverter(ObjectMapperProvider springDocObjectMapper) {
+		this.springDocObjectMapper = springDocObjectMapper;
+	}
+
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		if (chain.hasNext()) {
@@ -82,7 +97,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 	 * @return the boolean
 	 */
 	private boolean isConcreteClass(AnnotatedType type) {
-		JavaType javaType = Json.mapper().constructType(type.getType());
+		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		Class<?> clazz = javaType.getRawClass();
 		return !Modifier.isAbstract(clazz.getModifiers()) && !clazz.isInterface();
 	}

@@ -52,11 +52,6 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	private final Optional<FunctionCatalog> functionCatalogOptional;
 
 	/**
-	 * The Generic response service.
-	 */
-	private final GenericResponseService genericResponseService;
-
-	/**
 	 * The Spring doc config properties.
 	 */
 	private final SpringDocConfigProperties springDocConfigProperties;
@@ -95,17 +90,16 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	/**
 	 * Instantiates a new Spring cloud function provider.
 	 * @param functionCatalogOptional the function catalog
-	 * @param genericResponseService the generic response service
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public SpringCloudFunctionProvider(Optional<FunctionCatalog> functionCatalogOptional, GenericResponseService genericResponseService, SpringDocConfigProperties springDocConfigProperties) {
+	public SpringCloudFunctionProvider(Optional<FunctionCatalog> functionCatalogOptional, SpringDocConfigProperties springDocConfigProperties) {
 		this.functionCatalogOptional = functionCatalogOptional;
-		this.genericResponseService = genericResponseService;
 		this.springDocConfigProperties = springDocConfigProperties;
 	}
 
 	@Override
 	public List<RouterOperation> getRouterOperations(OpenAPI openAPI) {
+		GenericResponseService genericResponseService = applicationContext.getBean(GenericResponseService.class);
 		List<RouterOperation> routerOperationList = new ArrayList<>();
 		functionCatalogOptional.ifPresent(
 				functionCatalog -> {
@@ -117,7 +111,7 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 								for (RequestMethod requestMethod : functionRequestMethods) {
 									RouterOperation routerOperation = buildRouterOperation(name, " function", requestMethod, routerOperationList);
 									buildRequest(openAPI, name, function, requestMethod, routerOperation);
-									ApiResponses apiResponses = buildResponses(openAPI, function, defaultMediaTypes);
+									ApiResponses apiResponses = buildResponses(openAPI, function, defaultMediaTypes, genericResponseService);
 									routerOperation.getOperationModel().responses(apiResponses);
 									if (StringUtils.isEmpty(prefix)) {
 										if (GET.equals(requestMethod))
@@ -145,28 +139,14 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 									ApiResponse apiResponse = new ApiResponse();
 									apiResponse.setContent(new Content());
 									apiResponses.put(String.valueOf(HttpStatus.ACCEPTED.value()), apiResponse.description(HttpStatus.ACCEPTED.getReasonPhrase()));
-									routerOperation.getOperationModel().responses(apiResponses);
-									if (StringUtils.isEmpty(prefix))
-										routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
-									else
-										routerOperation.setPath(prefix + AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
-									RouterOperation userRouterOperation = this.getRouterFunctionPaths(name, requestMethod);
-									if (userRouterOperation != null)
-										mergeRouterOperation(routerOperation, userRouterOperation);
+									getRouterOperationsCommon(name, requestMethod, routerOperation, apiResponses);
 								}
 							}
 							else if (function.isSupplier()) {
 								for (RequestMethod requestMethod : supplierRequestMethods) {
 									RouterOperation routerOperation = buildRouterOperation(name, " supplier", requestMethod, routerOperationList);
-									ApiResponses apiResponses = buildResponses(openAPI, function, new String[] { springDocConfigProperties.getDefaultProducesMediaType() });
-									routerOperation.getOperationModel().responses(apiResponses);
-									if (StringUtils.isEmpty(prefix))
-										routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
-									else
-										routerOperation.setPath(prefix + AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
-									RouterOperation userRouterOperation = this.getRouterFunctionPaths(name, requestMethod);
-									if (userRouterOperation != null)
-										mergeRouterOperation(routerOperation, userRouterOperation);
+									ApiResponses apiResponses = buildResponses(openAPI, function, new String[] { springDocConfigProperties.getDefaultProducesMediaType() }, genericResponseService);
+									getRouterOperationsCommon(name, requestMethod, routerOperation, apiResponses);
 								}
 							}
 						}
@@ -174,6 +154,25 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 				}
 		);
 		return routerOperationList;
+	}
+
+	/**
+	 * Gets router operation common.
+	 *
+	 * @param name the name
+	 * @param requestMethod the request method
+	 * @param routerOperation the router operation
+	 * @param apiResponses the api responses
+	 */
+	private void getRouterOperationsCommon(String name, RequestMethod requestMethod, RouterOperation routerOperation, ApiResponses apiResponses) {
+		routerOperation.getOperationModel().responses(apiResponses);
+		if (StringUtils.isEmpty(prefix))
+			routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
+		else
+			routerOperation.setPath(prefix + AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
+		RouterOperation userRouterOperation = this.getRouterFunctionPaths(name, requestMethod);
+		if (userRouterOperation != null)
+			mergeRouterOperation(routerOperation, userRouterOperation);
 	}
 
 	/**
@@ -230,9 +229,10 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	 * @param openAPI the open api
 	 * @param function the function
 	 * @param mediaTypes the media types
+	 * @param genericResponseService the generic response service
 	 * @return the api responses
 	 */
-	private ApiResponses buildResponses(OpenAPI openAPI, FunctionInvocationWrapper function, String[] mediaTypes) {
+	private ApiResponses buildResponses(OpenAPI openAPI, FunctionInvocationWrapper function, String[] mediaTypes, GenericResponseService genericResponseService) {
 		Type returnType = function.getOutputType();
 		Content content = genericResponseService.buildContent(openAPI.getComponents(), null, mediaTypes, null, returnType);
 		ApiResponses apiResponses = new ApiResponses();
@@ -247,6 +247,7 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	 * Gets router function paths.
 	 *
 	 * @param beanName the bean name
+	 * @param requestMethod the request method
 	 * @return the router function paths
 	 */
 	protected RouterOperation getRouterFunctionPaths(String beanName, RequestMethod requestMethod) {

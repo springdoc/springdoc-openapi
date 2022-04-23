@@ -26,9 +26,9 @@ import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.AbstractRequestService;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 /**
  * The type Request type to ignore converter.
@@ -36,10 +36,24 @@ import org.springdoc.core.AbstractRequestService;
  */
 public class RequestTypeToIgnoreConverter implements ModelConverter {
 
+	/**
+	 * The Spring doc object mapper.
+	 */
+	private final ObjectMapperProvider springDocObjectMapper;
+
+	/**
+	 * Instantiates a new Request type to ignore converter.
+	 *
+	 * @param springDocObjectMapper the spring doc object mapper
+	 */
+	public RequestTypeToIgnoreConverter(ObjectMapperProvider springDocObjectMapper) {
+		this.springDocObjectMapper = springDocObjectMapper;
+	}
+
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		if (type.isSchemaProperty()) {
-			JavaType javaType = Json.mapper().constructType(type.getType());
+			JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 			Class<?> cls = javaType.getRawClass();
 			if (AbstractRequestService.isRequestTypeToIgnore(cls))
 				return null;

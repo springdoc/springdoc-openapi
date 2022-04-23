@@ -23,6 +23,7 @@ package org.springdoc.webflux.ui;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.ui.AbstractSwaggerIndexTransformer;
 import org.springdoc.ui.SpringDocUIException;
 import reactor.core.publisher.Mono;
@@ -52,9 +53,11 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param swaggerWelcomeCommon the swagger welcome common
+	 * @param objectMapperProvider the object mapper providern
 	 */
-	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerWelcomeCommon swaggerWelcomeCommon) {
-		super(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters);
+	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,
+			SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerWelcomeCommon swaggerWelcomeCommon, ObjectMapperProvider objectMapperProvider) {
+		super(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, objectMapperProvider);
 		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 

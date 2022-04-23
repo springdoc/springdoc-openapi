@@ -28,8 +28,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 /**
  * The type Additional models converter.
@@ -51,6 +51,20 @@ public class AdditionalModelsConverter implements ModelConverter {
 	 * The constant paramObjectReplacementMap.
 	 */
 	private static final Map<Class, Class> paramObjectReplacementMap = new HashMap<>();
+
+	/**
+	 * The Spring doc object mapper.
+	 */
+	private final ObjectMapperProvider springDocObjectMapper;
+
+	/**
+	 * Instantiates a new Additional models converter.
+	 *
+	 * @param springDocObjectMapper the spring doc object mapper
+	 */
+	public AdditionalModelsConverter(ObjectMapperProvider springDocObjectMapper) {
+		this.springDocObjectMapper = springDocObjectMapper;
+	}
 
 	/**
 	 * Replace with class.
@@ -112,7 +126,7 @@ public class AdditionalModelsConverter implements ModelConverter {
 	 */
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
-		JavaType javaType = Json.mapper().constructType(type.getType());
+		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
 			if (modelToSchemaMap.containsKey(cls))

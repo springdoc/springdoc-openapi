@@ -29,11 +29,11 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.util.CollectionUtils;
 
@@ -49,12 +49,19 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 	private final JavadocProvider javadocProvider;
 
 	/**
+	 * The Object mapper provider.
+	 */
+	private final ObjectMapperProvider objectMapperProvider;
+
+	/**
 	 * Instantiates a new Javadoc property customizer.
 	 *
 	 * @param javadocProvider the javadoc provider
+	 * @param objectMapperProvider the object mapper provider
 	 */
-	public JavadocPropertyCustomizer(JavadocProvider javadocProvider) {
+	public JavadocPropertyCustomizer(JavadocProvider javadocProvider, ObjectMapperProvider objectMapperProvider) {
 		this.javadocProvider = javadocProvider;
+		this.objectMapperProvider = objectMapperProvider;
 	}
 
 	/**
@@ -68,7 +75,7 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		if (chain.hasNext()) {
-			JavaType javaType = Json.mapper().constructType(type.getType());
+			JavaType javaType = objectMapperProvider.jsonMapper().constructType(type.getType());
 			if (javaType != null) {
 				Class<?> cls = javaType.getRawClass();
 				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
@@ -93,6 +100,7 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 	/**
 	 * Sets javadoc description.
 	 *
+	 * @param cls the cls
 	 * @param fields the fields
 	 * @param existingSchema the existing schema
 	 */

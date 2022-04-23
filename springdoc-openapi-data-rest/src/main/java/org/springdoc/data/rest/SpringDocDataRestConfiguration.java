@@ -35,6 +35,7 @@ import org.springdoc.core.OperationService;
 import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.converters.models.DefaultPageable;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.data.rest.core.DataRestOperationService;
 import org.springdoc.data.rest.core.DataRestRequestService;
 import org.springdoc.data.rest.core.DataRestResponseService;
@@ -90,8 +91,8 @@ public class SpringDocDataRestConfiguration {
 	@ConditionalOnMissingBean
 	@Primary
 	@Lazy(false)
-	DataRestHalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration, Optional<HateoasProperties> hateoasPropertiesOptional) {
-		return new DataRestHalProvider(repositoryRestConfiguration, hateoasPropertiesOptional);
+	DataRestHalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration, Optional<HateoasProperties> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
+		return new DataRestHalProvider(repositoryRestConfiguration, hateoasPropertiesOptional, objectMapperProvider);
 	}
 
 

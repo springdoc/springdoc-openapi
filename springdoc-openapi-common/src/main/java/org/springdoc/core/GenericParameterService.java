@@ -34,7 +34,6 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -50,6 +49,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.WebConversionServiceProvider;
 
 import org.springframework.beans.factory.config.BeanExpressionContext;
@@ -111,17 +111,25 @@ public class GenericParameterService {
 	private ConfigurableBeanFactory configurableBeanFactory;
 
 	/**
+	 * The Object mapper provider.
+	 */
+	private final ObjectMapperProvider objectMapperProvider;
+
+	/**
 	 * Instantiates a new Generic parameter builder.
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
-	 * @param optionalWebConversionServiceProvider
+	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
+	 * @param objectMapperProvider the object mapper provider
 	 */
-	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer, Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider) {
+	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
+			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider,  ObjectMapperProvider objectMapperProvider) {
 		this.propertyResolverUtils = propertyResolverUtils;
 		this.optionalDelegatingMethodParameterCustomizer = optionalDelegatingMethodParameterCustomizer;
 		this.optionalWebConversionServiceProvider = optionalWebConversionServiceProvider;
 		this.configurableBeanFactory = propertyResolverUtils.getFactory();
 		this.expressionContext = (configurableBeanFactory != null ? new BeanExpressionContext(configurableBeanFactory, new RequestScope()) : null);
+		this.objectMapperProvider = objectMapperProvider;
 	}
 
 	/**
@@ -232,7 +240,7 @@ public class GenericParameterService {
 			parameter.setIn(parameterDoc.in().toString());
 		if (StringUtils.isNotBlank(parameterDoc.example())) {
 			try {
-				parameter.setExample(Json.mapper().readTree(parameterDoc.example()));
+				parameter.setExample(objectMapperProvider.jsonMapper().readTree(parameterDoc.example()));
 			}
 			catch (IOException e) {
 				parameter.setExample(parameterDoc.example());
@@ -294,7 +302,7 @@ public class GenericParameterService {
 				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), parameterDoc.array(), true, parameterDoc.array().schema().implementation(), components, jsonView).orElse(null);
 				// default value not set by swagger-core for array !
 				if (schema != null) {
-					Object defaultValue = SpringDocAnnotationsUtils.resolveDefaultValue(parameterDoc.array().arraySchema().defaultValue());
+					Object defaultValue = SpringDocAnnotationsUtils.resolveDefaultValue(parameterDoc.array().arraySchema().defaultValue(), objectMapperProvider.jsonMapper());
 					schema.setDefault(defaultValue);
 				}
 			}
@@ -524,6 +532,8 @@ public class GenericParameterService {
 	/**
 	 * Resolve the given annotation-specified value,
 	 * potentially containing placeholders and expressions.
+	 * @param value the value
+	 * @return the object
 	 */
 	public Object resolveEmbeddedValuesAndExpressions(String value) {
 		if (this.configurableBeanFactory == null || this.expressionContext == null) {

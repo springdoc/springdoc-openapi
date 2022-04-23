@@ -27,9 +27,9 @@ import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 import static org.springdoc.core.GenericParameterService.isFile;
 
@@ -39,9 +39,23 @@ import static org.springdoc.core.GenericParameterService.isFile;
  */
 public class FileSupportConverter implements ModelConverter {
 
+	/**
+	 * The Spring doc object mapper.
+	 */
+	private final ObjectMapperProvider springDocObjectMapper;
+
+	/**
+	 * Instantiates a new File support converter.
+	 *
+	 * @param springDocObjectMapper the spring doc object mapper
+	 */
+	public FileSupportConverter(ObjectMapperProvider springDocObjectMapper) {
+		this.springDocObjectMapper = springDocObjectMapper;
+	}
+
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
-		JavaType javaType = Json.mapper().constructType(type.getType());
+		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
 			if (isFile(cls))

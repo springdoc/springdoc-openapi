@@ -65,7 +65,7 @@ public class BlockingAutoConfigurationTest {
 				.run(context -> assertThat(context)
 						.hasNotFailed()
 						.hasBean("openApiResource")
-						.doesNotHaveBean("actuatorPprrovider")
+						.doesNotHaveBean("actuatorProvider")
 						.hasBean("multipleOpenApiResource")
 				);
 	}

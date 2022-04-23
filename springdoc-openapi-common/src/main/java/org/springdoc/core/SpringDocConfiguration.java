@@ -58,6 +58,7 @@ import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.RepositoryRestResourceProvider;
 import org.springdoc.core.providers.RouterFunctionProvider;
@@ -142,12 +143,13 @@ public class SpringDocConfiguration {
 	/**
 	 * Additional models converter additional models converter.
 	 *
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the additional models converter
 	 */
 	@Bean
 	@Lazy(false)
-	AdditionalModelsConverter additionalModelsConverter() {
-		return new AdditionalModelsConverter();
+	AdditionalModelsConverter additionalModelsConverter(ObjectMapperProvider objectMapperProvider) {
+		return new AdditionalModelsConverter(objectMapperProvider);
 	}
 
 	/**
@@ -165,25 +167,27 @@ public class SpringDocConfiguration {
 	/**
 	 * File support converter file support converter.
 	 *
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the file support converter
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	FileSupportConverter fileSupportConverter() {
-		return new FileSupportConverter();
+	FileSupportConverter fileSupportConverter(ObjectMapperProvider objectMapperProvider) {
+		return new FileSupportConverter(objectMapperProvider);
 	}
 
 	/**
 	 * Response support converter response support converter.
 	 *
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the response support converter
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	ResponseSupportConverter responseSupportConverter() {
-		return new ResponseSupportConverter();
+	ResponseSupportConverter responseSupportConverter(ObjectMapperProvider objectMapperProvider) {
+		return new ResponseSupportConverter(objectMapperProvider);
 	}
 
 	/**
@@ -202,14 +206,15 @@ public class SpringDocConfiguration {
 	/**
 	 * Polymorphic model converter polymorphic model converter.
 	 *
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the polymorphic model converter
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED, matchIfMissing = true)
 	@Lazy(false)
-	PolymorphicModelConverter polymorphicModelConverter() {
-		return new PolymorphicModelConverter();
+	PolymorphicModelConverter polymorphicModelConverter(ObjectMapperProvider objectMapperProvider) {
+		return new PolymorphicModelConverter(objectMapperProvider);
 	}
 
 	/**
@@ -220,6 +225,8 @@ public class SpringDocConfiguration {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param openApiBuilderCustomisers the open api builder customisers
+	 * @param serverBaseUrlCustomisers the server base url customisers
+	 * @param javadocProvider the javadoc provider
 	 * @return the open api builder
 	 */
 	@Bean
@@ -321,6 +328,7 @@ public class SpringDocConfiguration {
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the generic parameter builder
 	 */
 	@Bean
@@ -328,9 +336,9 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils,
 			Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
-			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider) {
+			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider) {
 		return new GenericParameterService(propertyResolverUtils, optionalDelegatingMethodParameterCustomizer,
-				optionalWebConversionServiceProvider);
+				optionalWebConversionServiceProvider, objectMapperProvider);
 	}
 
 	/**
@@ -388,14 +396,17 @@ public class SpringDocConfiguration {
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 * @param routerFunctionProvider the router function provider
 	 * @param springWebProvider the spring web provider
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the spring doc providers
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	SpringDocProviders springDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider, Optional<SpringWebProvider> springWebProvider) {
-		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider);
+			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider,
+			Optional<SpringWebProvider> springWebProvider,  Optional<WebConversionServiceProvider> webConversionServiceProvider,
+			ObjectMapperProvider objectMapperProvider) {
+		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider, webConversionServiceProvider, objectMapperProvider);
 	}
 
 	/**
@@ -496,16 +507,17 @@ public class SpringDocConfiguration {
 		/**
 		 * Pageable open api converter pageable open api converter.
 		 *
+		 * @param objectMapperProvider the object mapper provider
 		 * @return the pageable open api converter
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@ConditionalOnProperty(name = SPRINGDOC_PAGEABLE_CONVERTER_ENABLED, matchIfMissing = true)
 		@Lazy(false)
-		PageableOpenAPIConverter pageableOpenAPIConverter() {
+		PageableOpenAPIConverter pageableOpenAPIConverter(ObjectMapperProvider objectMapperProvider) {
 			getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Pageable.class, org.springdoc.core.converters.models.Pageable.class)
 					.replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class, org.springdoc.core.converters.models.Pageable.class);
-			return new PageableOpenAPIConverter();
+			return new PageableOpenAPIConverter(objectMapperProvider);
 		}
 
 		/**
@@ -572,15 +584,27 @@ public class SpringDocConfiguration {
 		 * Spring cloud function provider spring cloud function provider.
 		 *
 		 * @param functionCatalog the function catalog
-		 * @param genericResponseService the generic response service
 		 * @param springDocConfigProperties the spring doc config properties
 		 * @return the spring cloud function provider
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		CloudFunctionProvider springCloudFunctionProvider(Optional<FunctionCatalog> functionCatalog, GenericResponseService genericResponseService, SpringDocConfigProperties springDocConfigProperties) {
-			return new SpringCloudFunctionProvider(functionCatalog, genericResponseService, springDocConfigProperties);
+		CloudFunctionProvider springCloudFunctionProvider(Optional<FunctionCatalog> functionCatalog, SpringDocConfigProperties springDocConfigProperties) {
+			return new SpringCloudFunctionProvider(functionCatalog, springDocConfigProperties);
 		}
+	}
+
+	/**
+	 * Object mapper provider object mapper provider.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return the object mapper provider
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties){
+		return new ObjectMapperProvider(springDocConfigProperties);
 	}
 }

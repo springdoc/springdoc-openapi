@@ -26,10 +26,11 @@ import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -37,6 +38,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PropertyCustomizer implements org.springdoc.core.customizers.PropertyCustomizer {
+
+	@Autowired
+	ObjectMapperProvider objectMapperProvider;
+
 	/**
 	 * Customize schema.
 	 *
@@ -56,7 +61,7 @@ public class PropertyCustomizer implements org.springdoc.core.customizers.Proper
 				.findFirst()
 				.map(CustomizedProperty.class::cast);
 
-		JavaType javaType = Json.mapper().constructType(type.getType());
+		JavaType javaType = objectMapperProvider.jsonMapper().constructType(type.getType());
 		if (javaType.getRawClass().equals(Duration.class)) {
 			property = new StringSchema().format("duration").properties(Collections.emptyMap());
 		}

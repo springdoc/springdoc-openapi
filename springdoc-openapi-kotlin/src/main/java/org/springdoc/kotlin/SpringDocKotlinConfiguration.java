@@ -21,9 +21,9 @@
 package org.springdoc.kotlin;
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
-import io.swagger.v3.core.util.Json;
 import kotlin.Deprecated;
 import kotlin.coroutines.Continuation;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -43,10 +43,21 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 public class SpringDocKotlinConfiguration {
 
-	static {
+	/**
+	 * The Object mapper provider.
+	 */
+	private final ObjectMapperProvider objectMapperProvider;
+
+	/**
+	 * Instantiates a new Spring doc kotlin configuration.
+	 *
+	 * @param objectMapperProvider the object mapper provider
+	 */
+	public SpringDocKotlinConfiguration(ObjectMapperProvider objectMapperProvider) {
+		this.objectMapperProvider = objectMapperProvider;
 		getConfig().addRequestWrapperToIgnore(Continuation.class)
 				.addDeprecatedType(Deprecated.class);
-		Json.mapper().registerModule(new KotlinModule());
+		objectMapperProvider.jsonMapper().registerModule(new KotlinModule());
 	}
 
 	/**
