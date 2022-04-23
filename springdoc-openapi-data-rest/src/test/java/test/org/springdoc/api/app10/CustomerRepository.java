@@ -70,4 +70,7 @@ public interface CustomerRepository extends CrudRepository<Customer, Long>, JpaS
 	@Override
 	@RestResource(exported = false)
 	<S extends Customer> S save(S entity);
+
+	@RestResource(exported = false)
+	boolean existsCustomerByLastname(String lastName);
 }
