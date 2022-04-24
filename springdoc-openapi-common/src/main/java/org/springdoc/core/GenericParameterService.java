@@ -369,11 +369,11 @@ public class GenericParameterService {
 		}
 
 		if (requestBodyInfo.getMergedSchema() != null) {
-			requestBodyInfo.getMergedSchema().addProperties(paramName, schemaN);
+			requestBodyInfo.getMergedSchema().addProperty(paramName, schemaN);
 			schemaN = requestBodyInfo.getMergedSchema();
 		}
 		else if (parameterInfo.isRequestPart() || schemaN instanceof FileSchema || schemaN instanceof ArraySchema && ((ArraySchema) schemaN).getItems() instanceof FileSchema) {
-			schemaN = new ObjectSchema().addProperties(paramName, schemaN);
+			schemaN = new ObjectSchema().addProperty(paramName, schemaN);
 			requestBodyInfo.setMergedSchema(schemaN);
 		}
 		else

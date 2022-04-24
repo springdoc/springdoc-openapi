@@ -106,8 +106,7 @@ public class SecurityService {
 	 * @return the boolean
 	 */
 	private static boolean isEmpty(OAuthScope[] scopes) {
-		boolean result = scopes == null || scopes.length == 0;
-		return result;
+		return scopes == null || scopes.length == 0;
 	}
 
 	/**

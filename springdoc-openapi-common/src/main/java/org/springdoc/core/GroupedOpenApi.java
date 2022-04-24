@@ -472,7 +472,7 @@ public class GroupedOpenApi {
 	 * @param openApiCustomizerCollection the open api customizer collection
 	 * @return the grouped open api
 	 */
-	public GroupedOpenApi addAllOpenApiCustomizer(Collection openApiCustomizerCollection) {
+	public GroupedOpenApi addAllOpenApiCustomizer(Collection<? extends OpenApiCustomiser> openApiCustomizerCollection) {
 		this.openApiCustomisers.addAll(openApiCustomizerCollection);
 		Collections.reverse(openApiCustomisers);
 		return this;
@@ -484,7 +484,7 @@ public class GroupedOpenApi {
 	 * @param operationCustomizerCollection the operation customizer collection
 	 * @return the grouped open api
 	 */
-	public GroupedOpenApi addAllOperationCustomizer(Collection operationCustomizerCollection) {
+	public GroupedOpenApi addAllOperationCustomizer(Collection<? extends OperationCustomizer> operationCustomizerCollection) {
 		this.operationCustomizers.addAll(operationCustomizerCollection);
 		Collections.reverse(operationCustomizers);
 		return this;
@@ -496,7 +496,7 @@ public class GroupedOpenApi {
 	 * @param openApiMethodFilterCollection the open api method filter collection
 	 * @return the grouped open api
 	 */
-	public GroupedOpenApi addAllOpenApiMethodFilter(Collection openApiMethodFilterCollection) {
+	public GroupedOpenApi addAllOpenApiMethodFilter(Collection<? extends OpenApiMethodFilter> openApiMethodFilterCollection) {
 		this.openApiMethodFilters.addAll(openApiMethodFilterCollection);
 		Collections.reverse(openApiMethodFilters);
 		return this;

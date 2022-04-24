@@ -134,8 +134,8 @@ public class SpringDocSecurityConfiguration {
 						UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter = optionalFilter.get();
 						Operation operation = new Operation();
 						Schema<?> schema = new ObjectSchema()
-								.addProperties(usernamePasswordAuthenticationFilter.getUsernameParameter(), new StringSchema())
-								.addProperties(usernamePasswordAuthenticationFilter.getPasswordParameter(), new StringSchema());
+								.addProperty(usernamePasswordAuthenticationFilter.getUsernameParameter(), new StringSchema())
+								.addProperty(usernamePasswordAuthenticationFilter.getPasswordParameter(), new StringSchema());
 						RequestBody requestBody = new RequestBody().content(new Content().addMediaType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE, new MediaType().schema(schema)));
 						operation.requestBody(requestBody);
 						ApiResponses apiResponses = new ApiResponses();

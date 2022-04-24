@@ -45,7 +45,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.GlobalOperationCustomizer;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
@@ -63,7 +63,7 @@ import org.springframework.web.method.HandlerMethod;
  * @author Gibah Joseph Email: gibahjoe@gmail.com Mar, 2020
  */
 @SuppressWarnings("unchecked")
-public class QuerydslPredicateOperationCustomizer implements OperationCustomizer {
+public class QuerydslPredicateOperationCustomizer implements GlobalOperationCustomizer {
 
 	/**
 	 * The constant LOGGER.

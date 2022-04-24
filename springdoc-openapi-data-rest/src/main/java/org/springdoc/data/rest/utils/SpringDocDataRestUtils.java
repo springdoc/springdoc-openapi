@@ -235,9 +235,9 @@ public class SpringDocDataRestUtils {
 				String propId = entry.getKey();
 				if (entityInoMap.containsKey(key) && entityInoMap.get(key).getAssociationsFields().contains(propId)) {
 					if (entry.getValue() instanceof ArraySchema)
-						referencedSchema.addProperties(propId, new ArraySchema().items(new StringSchema()));
+						referencedSchema.addProperty(propId, new ArraySchema().items(new StringSchema()));
 					else
-						referencedSchema.addProperties(propId, new StringSchema());
+						referencedSchema.addProperty(propId, new StringSchema());
 				}
 			}
 		}

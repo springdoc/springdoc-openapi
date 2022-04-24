@@ -32,7 +32,7 @@ import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 
 import org.springframework.hateoas.Link;
 
@@ -40,7 +40,7 @@ import org.springframework.hateoas.Link;
  * The type Open api hateoas links customiser.
  * @author bnasslahsen
  */
-public class OpenApiHateoasLinksCustomiser extends SpecFilter implements OpenApiCustomiser {
+public class OpenApiHateoasLinksCustomiser extends SpecFilter implements GlobalOpenApiCustomizer {
 
 	/**
 	 * The Spring doc config properties.

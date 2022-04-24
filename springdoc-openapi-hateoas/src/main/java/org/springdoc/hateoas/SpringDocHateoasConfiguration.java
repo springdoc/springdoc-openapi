@@ -27,7 +27,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.springdoc.core.SpringDocConfigProperties;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.hateoas.converters.CollectionModelContentConverter;
 import org.springdoc.hateoas.converters.OpenApiHateoasLinksCustomiser;
@@ -98,7 +98,7 @@ public class SpringDocHateoasConfiguration {
 	@Bean(LINKS_SCHEMA_CUSTOMISER)
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	OpenApiCustomiser linksSchemaCustomiser(HateoasHalProvider halProvider, SpringDocConfigProperties springDocConfigProperties, ObjectMapperProvider objectMapperProvider) {
+	GlobalOpenApiCustomizer linksSchemaCustomiser(HateoasHalProvider halProvider, SpringDocConfigProperties springDocConfigProperties, ObjectMapperProvider objectMapperProvider) {
 		if (!halProvider.isHalEnabled()) {
 			return openApi -> {
 			};

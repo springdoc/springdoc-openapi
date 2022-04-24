@@ -45,7 +45,7 @@ public class HateoasHalProvider {
 	/**
 	 * The Object mapper provider.
 	 */
-	private final ObjectMapperProvider objectMapperProvider;
+	protected final ObjectMapperProvider objectMapperProvider;
 
 	/**
 	 * Instantiates a new Hateoas hal provider.

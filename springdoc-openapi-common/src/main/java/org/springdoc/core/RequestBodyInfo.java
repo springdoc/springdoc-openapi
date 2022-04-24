@@ -88,7 +88,7 @@ public class RequestBodyInfo {
 	public void addProperties(String paramName, Schema schemaN) {
 		if (mergedSchema == null)
 			mergedSchema = new ObjectSchema();
-		mergedSchema.addProperties(paramName, schemaN);
+		mergedSchema.addProperty(paramName, schemaN);
 	}
 
 }

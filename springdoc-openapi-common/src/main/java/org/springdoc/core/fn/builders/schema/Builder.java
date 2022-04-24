@@ -268,7 +268,7 @@ public class Builder {
 	 * AdditionalPropertiesValue.USE_ADDITIONAL_PROPERTIES_ANNOTATION: resolve from @Content.additionalPropertiesSchema
 	 *
 	 */
-	private final AdditionalPropertiesValue additionalProperties = AdditionalPropertiesValue.USE_ADDITIONAL_PROPERTIES_ANNOTATION;
+	private AdditionalPropertiesValue additionalProperties = AdditionalPropertiesValue.USE_ADDITIONAL_PROPERTIES_ANNOTATION;
 
 	/**
 	 * Instantiates a new Schema builder.
@@ -678,6 +678,17 @@ public class Builder {
 	 */
 	public Builder extensions(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
 		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
+		return this;
+	}
+
+	/**
+	 * Additional properties builder.
+	 *
+	 * @param additionalProperties the additional properties
+	 * @return the builder
+	 */
+	public Builder additionalProperties(AdditionalPropertiesValue additionalProperties) {
+		this.additionalProperties = additionalProperties;
 		return this;
 	}
 

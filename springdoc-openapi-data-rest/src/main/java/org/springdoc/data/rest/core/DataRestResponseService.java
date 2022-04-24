@@ -262,8 +262,7 @@ public class DataRestResponseService {
 			return getTypeForParameterizedType(requestMethod, dataRestRepository, returnedEntityType, parameterizedType);
 		}
 		else if (parameterizedType.getActualTypeArguments()[0] instanceof WildcardType) {
-			Type type = getTypeForWildcardType(requestMethod, dataRestRepository, returnedEntityType, parameterizedType);
-			return type;
+			return getTypeForWildcardType(requestMethod, dataRestRepository, returnedEntityType, parameterizedType);
 		}
 		return null;
 	}

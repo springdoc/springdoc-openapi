@@ -46,20 +46,14 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 public class SpringDocKotlinConfiguration {
 
 	/**
-	 * The Object mapper provider.
-	 */
-	private final ObjectMapperProvider objectMapperProvider;
-
-	/**
 	 * Instantiates a new Spring doc kotlin configuration.
 	 *
 	 * @param objectMapperProvider the object mapper provider
 	 */
 	public SpringDocKotlinConfiguration(ObjectMapperProvider objectMapperProvider) {
-		this.objectMapperProvider = objectMapperProvider;
 		getConfig().addRequestWrapperToIgnore(Continuation.class)
 				.addDeprecatedType(Deprecated.class);
-		objectMapperProvider.jsonMapper().registerModule(new KotlinModule());
+		objectMapperProvider.jsonMapper().registerModule( new KotlinModule.Builder().build());
 	}
 
 	/**

@@ -45,11 +45,6 @@ public class DataRestHalProvider extends HateoasHalProvider {
 	private final Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional;
 
 	/**
-	 * The Object mapper provider.
-	 */
-	private final ObjectMapperProvider objectMapperProvider;
-
-	/**
 	 * Instantiates a new Data rest hal provider.
 	 *
 	 * @param repositoryRestConfigurationOptional the repository rest configuration optional
@@ -60,7 +55,6 @@ public class DataRestHalProvider extends HateoasHalProvider {
 			ObjectMapperProvider objectMapperProvider) {
 		super(hateoasPropertiesOptional, objectMapperProvider);
 		this.repositoryRestConfigurationOptional = repositoryRestConfigurationOptional;
-		this.objectMapperProvider = objectMapperProvider;
 	}
 
 	@PostConstruct
