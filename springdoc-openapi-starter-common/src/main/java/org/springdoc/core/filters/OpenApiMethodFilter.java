@@ -32,7 +32,7 @@ import java.lang.reflect.Method;
  * but not groups
  *
  * @author michael.clarke
- * @see  GlobalOpenApiMethodFilterto filter methods in default OpenAPI      description and groups
+ * @see  GlobalOpenApiMethodFilter filter methods in default OpenAPI      description and groups
  */
 @FunctionalInterface
 public interface OpenApiMethodFilter {
