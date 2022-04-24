@@ -1,19 +1,23 @@
 /*
  *
  *  *
- *  *  * Copyright 2019-2020 the original author or authors.
  *  *  *
- *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  * you may not use this file except in compliance with the License.
- *  *  * You may obtain a copy of the License at
+ *  *  *  *
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
+ *  *  *  *
  *  *  *
- *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *
- *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  * See the License for the specific language governing permissions and
- *  *  * limitations under the License.
  *  *
  *
  */
@@ -30,11 +34,11 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.core.util.Json;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.properties.SwaggerUiOAuthProperties;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.Constants;
 
 import org.springframework.util.CollectionUtils;
@@ -78,12 +82,13 @@ public class AbstractSwaggerIndexTransformer {
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
 	 * @param swaggerUiConfigParameters the swagger ui config parameters
+	 * @param objectMapperProvider the object mapper provider
 	 */
-	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters) {
+	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapperProvider objectMapperProvider) {
 		this.swaggerUiConfig = swaggerUiConfig;
 		this.swaggerUiOAuthProperties = swaggerUiOAuthProperties;
 		this.swaggerUiConfigParameters = swaggerUiConfigParameters;
-		this.objectMapper = Json.mapper();
+		this.objectMapper = objectMapperProvider.jsonMapper();
 	}
 
 	/**
@@ -165,6 +170,13 @@ public class AbstractSwaggerIndexTransformer {
 		return html;
 	}
 
+	/**
+	 * Add parameters string.
+	 *
+	 * @param html the html
+	 * @return the string
+	 * @throws JsonProcessingException the json processing exception
+	 */
 	protected String addParameters(String html) throws JsonProcessingException {
 		String layout = swaggerUiConfigParameters.getLayout() != null ? swaggerUiConfigParameters.getLayout() : "StandaloneLayout";
 		StringBuilder stringBuilder = new StringBuilder("layout: \"" + layout + "\" ,\n");

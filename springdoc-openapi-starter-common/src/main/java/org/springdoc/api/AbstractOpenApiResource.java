@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -54,9 +56,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 import io.swagger.v3.core.filter.SpecFilter;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.ReflectionUtils;
-import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.callbacks.Callback;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -84,9 +84,12 @@ import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 import org.springdoc.core.fn.RouterFunctionData;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.mixins.SortedOpenAPIMixin;
+import org.springdoc.core.mixins.SortedOpenAPIMixin31;
 import org.springdoc.core.mixins.SortedSchemaMixin;
+import org.springdoc.core.mixins.SortedSchemaMixin31;
 import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.properties.SpringDocConfigProperties;
+import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.properties.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.CloudFunctionProvider;
@@ -317,6 +320,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			Map<String, Object> findControllerAdvice = openAPIService.getControllerAdviceMap();
 			// calculate generic responses
 			openApi = openAPIService.getCalculatedOpenAPI();
+			if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion())
+				openApi.openapi(OpenApiVersion.OPENAPI_3_1.getVersion());
 			if (springDocConfigProperties.isDefaultOverrideWithGenericResponse()) {
 				if (!CollectionUtils.isEmpty(mappingsMap))
 					findControllerAdvice.putAll(mappingsMap);
@@ -343,8 +348,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			List<Server> servers = openApi.getServers();
 			List<Server> serversCopy = null;
 			try {
-				serversCopy = Json.mapper()
-						.readValue(Json.mapper().writeValueAsString(servers), new TypeReference<List<Server>>() {});
+				serversCopy = springDocProviders.jsonMapper()
+						.readValue(springDocProviders.jsonMapper().writeValueAsString(servers), new TypeReference<List<Server>>() {});
 			}
 			catch (JsonProcessingException e) {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
@@ -1174,7 +1179,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected String writeYamlValue(OpenAPI openAPI) throws JsonProcessingException {
 		String result;
-		ObjectMapper objectMapper = Yaml.mapper();
+		ObjectMapper objectMapper = springDocProviders.yamlMapper();
 		if (springDocConfigProperties.isWriterWithOrderByKeys())
 			sortOutput(objectMapper);
 		YAMLFactory factory = (YAMLFactory) objectMapper.getFactory();
@@ -1245,7 +1250,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected String writeJsonValue(OpenAPI openAPI) throws JsonProcessingException {
 		String result;
-		ObjectMapper objectMapper = Json.mapper();
+		ObjectMapper objectMapper = springDocProviders.jsonMapper();
 		if (springDocConfigProperties.isWriterWithOrderByKeys())
 			sortOutput(objectMapper);
 		if (!springDocConfigProperties.isWriterWithDefaultPrettyPrinter())
@@ -1324,8 +1329,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private void sortOutput(ObjectMapper objectMapper) {
 		objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
 		objectMapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
-		objectMapper.addMixIn(OpenAPI.class, SortedOpenAPIMixin.class);
-		objectMapper.addMixIn(Schema.class, SortedSchemaMixin.class);
+		if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion()){
+			objectMapper.addMixIn(OpenAPI.class, SortedOpenAPIMixin31.class);
+			objectMapper.addMixIn(Schema.class, SortedSchemaMixin31.class);
+		} else {
+			objectMapper.addMixIn(OpenAPI.class, SortedOpenAPIMixin.class);
+			objectMapper.addMixIn(Schema.class, SortedSchemaMixin.class);
+		}
 	}
 
 	/**

@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -33,11 +35,11 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.util.CollectionUtils;
 
@@ -45,7 +47,7 @@ import org.springframework.util.CollectionUtils;
  * The type Javadoc property customizer.
  * @author bnasslahsen
  */
-public record JavadocPropertyCustomizer(JavadocProvider javadocProvider)
+public record JavadocPropertyCustomizer(JavadocProvider javadocProvider, ObjectMapperProvider objectMapperProvider)
 		implements ModelConverter {
 
 	/**
@@ -67,7 +69,7 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider)
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		if (chain.hasNext()) {
-			JavaType javaType = Json.mapper().constructType(type.getType());
+			JavaType javaType = objectMapperProvider.jsonMapper().constructType(type.getType());
 			if (javaType != null) {
 				Class<?> cls = javaType.getRawClass();
 				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);

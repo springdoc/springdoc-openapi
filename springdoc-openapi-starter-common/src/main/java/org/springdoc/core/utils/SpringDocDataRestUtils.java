@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -83,17 +85,17 @@ public class SpringDocDataRestUtils {
 	/**
 	 * The Link relation provider.
 	 */
-	private LinkRelationProvider linkRelationProvider;
+	private final LinkRelationProvider linkRelationProvider;
 
 	/**
 	 * The Entity ino map.
 	 */
-	private HashMap<String, EntityInfo> entityInoMap = new HashMap();
+	private final HashMap<String, EntityInfo> entityInoMap = new HashMap();
 
 	/**
 	 * The Repository rest configuration.
 	 */
-	private RepositoryRestConfiguration repositoryRestConfiguration;
+	private final RepositoryRestConfiguration repositoryRestConfiguration;
 
 	/**
 	 * Instantiates a new Spring doc data rest utils.
@@ -179,7 +181,7 @@ public class SpringDocDataRestUtils {
 				Schema schema = mediaType.getSchema();
 				if (schema.get$ref() != null && !schema.get$ref().endsWith(REQUEST_BODY)) {
 					String key = schema.get$ref().substring(21);
-					if (entityInoMap.keySet().contains(key))
+					if (entityInoMap.containsKey(key))
 						updateRequestBodySchema(key, schema, openAPI.getComponents());
 				}
 				else if (schema instanceof ComposedSchema) {
@@ -228,9 +230,9 @@ public class SpringDocDataRestUtils {
 				String propId = entry.getKey();
 				if (entityInoMap.containsKey(key) && entityInoMap.get(key).getAssociationsFields().contains(propId)) {
 					if (entry.getValue() instanceof ArraySchema)
-						referencedSchema.addProperties(propId, new ArraySchema().items(new StringSchema()));
+						referencedSchema.addProperty(propId, new ArraySchema().items(new StringSchema()));
 					else
-						referencedSchema.addProperties(propId, new StringSchema());
+						referencedSchema.addProperty(propId, new StringSchema());
 				}
 			}
 		}
