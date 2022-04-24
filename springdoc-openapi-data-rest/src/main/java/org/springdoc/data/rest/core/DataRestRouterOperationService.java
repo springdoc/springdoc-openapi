@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
  *  *  *  * limitations under the License.
  *  *  *
  *  *
- *
  *
  */
 
@@ -85,12 +84,12 @@ public class DataRestRouterOperationService {
 	/**
 	 * The Data rest operation builder.
 	 */
-	private DataRestOperationService dataRestOperationService;
+	private final DataRestOperationService dataRestOperationService;
 
 	/**
 	 * The Spring doc config properties.
 	 */
-	private SpringDocConfigProperties springDocConfigProperties;
+	private final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
 	 * Instantiates a new Data rest router operation builder.
@@ -361,6 +360,7 @@ public class DataRestRouterOperationService {
 		}
 		return patterns;
 	}
+
 	/**
 	 * Is condition one and condition two boolean.
 	 *

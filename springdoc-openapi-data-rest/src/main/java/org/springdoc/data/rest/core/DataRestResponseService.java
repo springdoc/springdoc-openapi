@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
  *  *  *  * limitations under the License.
  *  *  *
  *  *
- *
  *
  */
 
@@ -68,12 +67,12 @@ public class DataRestResponseService {
 	/**
 	 * The Generic response builder.
 	 */
-	private GenericResponseService genericResponseService;
+	private final GenericResponseService genericResponseService;
 
 	/**
 	 * The Spring doc data rest utils.
 	 */
-	private SpringDocDataRestUtils springDocDataRestUtils;
+	private final SpringDocDataRestUtils springDocDataRestUtils;
 
 	/**
 	 * The constant requestMethodsEntityModel.
@@ -264,7 +263,7 @@ public class DataRestResponseService {
 		}
 		else if (parameterizedType.getActualTypeArguments()[0] instanceof WildcardType) {
 			Type type = getTypeForWildcardType(requestMethod, dataRestRepository, returnedEntityType, parameterizedType);
-			if (type != null) return type;
+			return type;
 		}
 		return null;
 	}
@@ -398,7 +397,7 @@ public class DataRestResponseService {
 		/**
 		 * The Content.
 		 */
-		private Map content;
+		private final Map content;
 
 		/**
 		 * Instantiates a new Map model.

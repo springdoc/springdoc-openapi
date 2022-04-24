@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
  *  *  *  * limitations under the License.
  *  *  *
  *  *
- *
  *
  */
 
@@ -74,7 +73,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	/**
 	 * The Querydsl bindings factory.
 	 */
-	private QuerydslBindingsFactory querydslBindingsFactory;
+	private final QuerydslBindingsFactory querydslBindingsFactory;
 
 	/**
 	 * Instantiates a new Querydsl predicate operation customizer.
@@ -140,8 +139,8 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	/**
 	 * Gets field value of boolean.
 	 *
-	 * @param instance the instance  
-	 * @param fieldName the field name  
+	 * @param instance the instance
+	 * @param fieldName the field name
 	 * @return the field value of boolean
 	 */
 	private boolean getFieldValueOfBoolean(QuerydslBindings instance, String fieldName) {
@@ -159,7 +158,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	/**
 	 * Extract qdsl bindings querydsl bindings.
 	 *
-	 * @param predicate the predicate  
+	 * @param predicate the predicate
 	 * @return the querydsl bindings
 	 */
 	private QuerydslBindings extractQdslBindings(QuerydslPredicate predicate) {
@@ -178,9 +177,9 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	/**
 	 * Gets field values.
 	 *
-	 * @param instance the instance  
-	 * @param fieldName the field name  
-	 * @param alternativeFieldName the alternative field name  
+	 * @param instance the instance
+	 * @param fieldName the field name
+	 * @param alternativeFieldName the alternative field name
 	 * @return the field values
 	 */
 	private Set<String> getFieldValues(QuerydslBindings instance, String fieldName, String alternativeFieldName) {
@@ -200,8 +199,8 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	/**
 	 * Gets path spec.
 	 *
-	 * @param instance the instance  
-	 * @param fieldName the field name  
+	 * @param instance the instance
+	 * @param fieldName the field name
 	 * @return the path spec
 	 */
 	private Map<String, Object> getPathSpec(QuerydslBindings instance, String fieldName) {
@@ -218,7 +217,7 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 	/**
 	 * Gets path from path spec.
 	 *
-	 * @param instance the instance  
+	 * @param instance the instance
 	 * @return the path from path spec
 	 */
 	private Optional<Path<?>> getPathFromPathSpec(Object instance) {
@@ -237,8 +236,8 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 
 	/***
 	 * Tries to figure out the Type of the field. It first checks the Qdsl pathSpecMap before checking the root class. Defaults to String.class
-	 * @param fieldName The name of the field used as reference to get the type  
-	 * @param pathSpecMap The Qdsl path specifications as defined in the resolved bindings  
+	 * @param fieldName The name of the field used as reference to get the type
+	 * @param pathSpecMap The Qdsl path specifications as defined in the resolved bindings
 	 * @param root The root type where the paths are gotten
 	 * @return The type of the field. Returns
 	 */
@@ -264,8 +263,8 @@ public class QuerydslPredicateOperationCustomizer implements OperationCustomizer
 
 	/***
 	 * Constructs the parameter
-	 * @param type The type of the parameter  
-	 * @param name The name of the parameter  
+	 * @param type The type of the parameter
+	 * @param name The name of the parameter
 	 * @return The swagger parameter
 	 */
 	private io.swagger.v3.oas.models.parameters.Parameter buildParam(Type type, String name) {

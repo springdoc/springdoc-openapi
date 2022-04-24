@@ -1,9 +1,8 @@
 /*
  *
- *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -82,13 +81,13 @@ public class Builder {
 	 * The schema properties defined for schema provided in @Schema
 	 *
 	 */
-	private Schema additionalPropertiesSchema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+	private final Schema additionalPropertiesSchema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * The schema properties defined for schema provided in @Schema
 	 *
 	 */
-	private SchemaProperty[] schemaProperties = {};
+	private final SchemaProperty[] schemaProperties = {};
 
 	/**
 	 * Instantiates a new Content builder.

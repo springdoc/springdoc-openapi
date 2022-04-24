@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
  *  *  *  * limitations under the License.
  *  *  *
  *  *
- *
  *
  */
 
@@ -64,6 +63,7 @@ public class DataRestTagsService {
 	 * @param operation the operation
 	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
+	 * @param method the method
 	 */
 	public void buildSearchTags(Operation operation, HandlerMethod handlerMethod,
 			DataRestRepository dataRestRepository, Method method) {
@@ -84,10 +84,10 @@ public class DataRestTagsService {
 
 	/**
 	 * Build tags.
-	 *  @param operation the operation
+	 * @param operation the operation
 	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
-	 * @param method
+	 * @param method the method
 	 */
 	private void buildTags(Operation operation, HandlerMethod handlerMethod,
 			DataRestRepository dataRestRepository, Method method) {

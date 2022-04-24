@@ -1,19 +1,21 @@
 /*
  *
  *  *
- *  *  * Copyright 2019-2020 the original author or authors.
  *  *  *
- *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  * you may not use this file except in compliance with the License.
- *  *  * You may obtain a copy of the License at
+ *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *
+ *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  * You may obtain a copy of the License at
+ *  *  *  *
+ *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *
+ *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  * limitations under the License.
  *  *  *
- *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *
- *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  * See the License for the specific language governing permissions and
- *  *  * limitations under the License.
  *  *
  *
  */
@@ -24,7 +26,6 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import io.swagger.v3.core.util.Json;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.providers.ObjectMapperProvider;
@@ -92,7 +93,7 @@ public class SpringDocHateoasConfiguration {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param objectMapperProvider the object mapper provider
 	 * @return the open api customiser
-	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
+	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
 	 */
 	@Bean(LINKS_SCHEMA_CUSTOMISER)
 	@ConditionalOnMissingBean

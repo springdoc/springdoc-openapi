@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
  *  *  *  * limitations under the License.
  *  *  *
  *  *
- *
  *
  */
 
@@ -85,6 +84,7 @@ public class SpringDocDataRestConfiguration {
 	 *
 	 * @param repositoryRestConfiguration the repository rest configuration
 	 * @param hateoasPropertiesOptional the hateoas properties optional
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the data rest hal provider
 	 */
 	@Bean
@@ -146,6 +146,7 @@ public class SpringDocDataRestConfiguration {
 		 * @param dataRestRouterOperationService the data rest router operation service
 		 * @param persistentEntities the persistent entities
 		 * @param mapper the mapper
+		 * @param springDocDataRestUtils the spring doc data rest utils
 		 * @return the spring repository rest resource provider
 		 */
 		@Bean

@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
  *  *  *  * limitations under the License.
  *  *  *
  *  *
- *
  *
  */
 
@@ -71,27 +70,27 @@ public class DataRestRequestService {
 	/**
 	 * The Local spring doc parameter name discoverer.
 	 */
-	private LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 
 	/**
 	 * The Parameter builder.
 	 */
-	private GenericParameterService parameterBuilder;
+	private final GenericParameterService parameterBuilder;
 
 	/**
 	 * The Request body builder.
 	 */
-	private RequestBodyService requestBodyService;
+	private final RequestBodyService requestBodyService;
 
 	/**
 	 * The Request builder.
 	 */
-	private AbstractRequestService requestBuilder;
+	private final AbstractRequestService requestBuilder;
 
 	/**
 	 * The Spring doc data rest utils.
 	 */
-	private SpringDocDataRestUtils springDocDataRestUtils;
+	private final SpringDocDataRestUtils springDocDataRestUtils;
 
 	/**
 	 * Instantiates a new Data rest request builder.

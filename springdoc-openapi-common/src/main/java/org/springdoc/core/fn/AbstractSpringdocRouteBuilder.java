@@ -1,9 +1,8 @@
 /*
  *
- *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -28,10 +27,17 @@ import java.util.function.Consumer;
 import org.springdoc.core.fn.builders.operation.Builder;
 
 /**
+ * The type Abstract springdoc route builder.
  * @author bnasslahsen
  */
 public abstract class AbstractSpringdocRouteBuilder {
 
+	/**
+	 * Gets operation builder.
+	 *
+	 * @param operationsConsumer the operations consumer
+	 * @return the operation builder
+	 */
 	protected Builder getOperationBuilder(Consumer<Builder> operationsConsumer) {
 		Builder builder = Builder.operationBuilder();
 		operationsConsumer.accept(builder);

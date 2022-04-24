@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2020 the original author or authors.
+ *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
  *  *  *  * limitations under the License.
  *  *  *
  *  *
- *
  *
  */
 
@@ -72,22 +71,22 @@ public class DataRestOperationService {
 	/**
 	 * The Data rest request builder.
 	 */
-	private DataRestRequestService dataRestRequestService;
+	private final DataRestRequestService dataRestRequestService;
 
 	/**
 	 * The Tags builder.
 	 */
-	private DataRestTagsService tagsBuilder;
+	private final DataRestTagsService tagsBuilder;
 
 	/**
 	 * The Data rest response builder.
 	 */
-	private DataRestResponseService dataRestResponseService;
+	private final DataRestResponseService dataRestResponseService;
 
 	/**
 	 * The Operation service.
 	 */
-	private OperationService operationService;
+	private final OperationService operationService;
 
 	/**
 	 * Instantiates a new Data rest operation builder.
