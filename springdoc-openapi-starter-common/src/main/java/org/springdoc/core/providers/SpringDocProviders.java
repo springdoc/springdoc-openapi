@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -22,6 +24,8 @@
 package org.springdoc.core.providers;
 
 import java.util.Optional;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * The type Spring doc providers.
@@ -60,6 +64,16 @@ public class SpringDocProviders {
 	private final Optional<SpringWebProvider> springWebProvider;
 
 	/**
+	 * The Web conversion service.
+	 */
+	private final Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider;
+
+	/**
+	 * The Object mapper provider.
+	 */
+	private final ObjectMapperProvider objectMapperProvider;
+
+	/**
 	 * Instantiates a new Spring doc providers.
 	 * @param actuatorProvider the actuator provider
 	 * @param springCloudFunctionProvider the spring cloud function provider
@@ -67,16 +81,22 @@ public class SpringDocProviders {
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 * @param routerFunctionProvider the router function provider
 	 * @param springWebProvider the spring web provider
+	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
+	 * @param objectMapperProvider the object mapper provider
 	 */
 	public SpringDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider,
-			Optional<RouterFunctionProvider> routerFunctionProvider, Optional<SpringWebProvider> springWebProvider) {
+			Optional<RouterFunctionProvider> routerFunctionProvider, Optional<SpringWebProvider> springWebProvider,
+			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider,
+			ObjectMapperProvider objectMapperProvider) {
 		this.actuatorProvider = actuatorProvider;
 		this.springCloudFunctionProvider = springCloudFunctionProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;
 		this.repositoryRestResourceProvider = repositoryRestResourceProvider;
 		this.routerFunctionProvider = routerFunctionProvider;
 		this.springWebProvider = springWebProvider;
+		this.optionalWebConversionServiceProvider = optionalWebConversionServiceProvider;
+		this.objectMapperProvider = objectMapperProvider;
 	}
 
 	/**
@@ -131,5 +151,23 @@ public class SpringDocProviders {
 	 */
 	public Optional<SpringWebProvider> getSpringWebProvider() {
 		return springWebProvider;
+	}
+
+	/**
+	 * Json mapper object mapper.
+	 *
+	 * @return the object mapper provider
+	 */
+	public ObjectMapper jsonMapper() {
+		return objectMapperProvider.jsonMapper();
+	}
+
+	/**
+	 * Yaml mapper object mapper.
+	 *
+	 * @return the object mapper
+	 */
+	public ObjectMapper yamlMapper() {
+		return objectMapperProvider.yamlMapper();
 	}
 }

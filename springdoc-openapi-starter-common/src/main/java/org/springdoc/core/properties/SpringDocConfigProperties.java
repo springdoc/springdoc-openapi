@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -745,7 +747,7 @@ public class SpringDocConfigProperties {
 	 *
 	 * @return the boolean
 	 */
-	public Boolean isOverrideWithGenericResponse() {
+	public boolean isOverrideWithGenericResponse() {
 		return overrideWithGenericResponse != null && overrideWithGenericResponse;
 	}
 
@@ -760,6 +762,7 @@ public class SpringDocConfigProperties {
 		else
 			return overrideWithGenericResponse;
 	}
+
 	/**
 	 * Sets override with generic response.
 	 *
@@ -1081,6 +1084,11 @@ public class SpringDocConfigProperties {
 		private Groups groups = new Groups();
 
 		/**
+		 * The OpenAPI version.
+		 */
+		private OpenApiVersion version;
+
+		/**
 		 * Gets path.
 		 *
 		 * @return the path
@@ -1150,6 +1158,61 @@ public class SpringDocConfigProperties {
 		 */
 		public void setResolveSchemaProperties(boolean resolveSchemaProperties) {
 			this.resolveSchemaProperties = resolveSchemaProperties;
+		}
+
+		/**
+		 * Gets version.
+		 *
+		 * @return the version
+		 */
+		public OpenApiVersion getVersion() {
+			return version;
+		}
+
+		/**
+		 * Sets version.
+		 *
+		 * @param version the version
+		 */
+		public void setVersion(OpenApiVersion version) {
+			this.version = version;
+		}
+
+		/**
+		 * The enum OpenApiVersion.
+		 */
+		public enum OpenApiVersion {
+			/**
+			 *Openapi 3.0.1 version.
+			 */
+			OPENAPI_3_0("3.0.1"),
+			/**
+			 *Openapi 3.1.0 version.
+			 */
+			OPENAPI_3_1("3.1.0");
+
+			/**
+			 * The Open api version.
+			 */
+			private final String version;
+
+			/**
+			 * Instantiates a new OpenApiVersion.
+			 *
+			 * @param openApiVersion the open api version
+			 */
+			OpenApiVersion(String openApiVersion) {
+				this.version = openApiVersion;
+			}
+
+			/**
+			 * Gets open api version.
+			 *
+			 * @return the open api version
+			 */
+			public String getVersion() {
+				return version;
+			}
 		}
 	}
 

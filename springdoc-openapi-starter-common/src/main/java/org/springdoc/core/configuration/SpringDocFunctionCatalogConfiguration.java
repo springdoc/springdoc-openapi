@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -27,7 +29,6 @@ import java.util.Optional;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.SpringCloudFunctionProvider;
-import org.springdoc.core.service.GenericResponseService;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -54,14 +55,13 @@ public class SpringDocFunctionCatalogConfiguration {
 	 * Spring cloud function provider spring cloud function provider.
 	 *
 	 * @param functionCatalog the function catalog
-	 * @param genericResponseService the generic response service
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @return the spring cloud function provider
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	CloudFunctionProvider springCloudFunctionProvider(Optional<FunctionCatalog> functionCatalog, GenericResponseService genericResponseService, SpringDocConfigProperties springDocConfigProperties) {
-		return new SpringCloudFunctionProvider(functionCatalog, genericResponseService, springDocConfigProperties);
+	CloudFunctionProvider springCloudFunctionProvider(Optional<FunctionCatalog> functionCatalog, SpringDocConfigProperties springDocConfigProperties) {
+		return new SpringCloudFunctionProvider(functionCatalog, springDocConfigProperties);
 	}
 }

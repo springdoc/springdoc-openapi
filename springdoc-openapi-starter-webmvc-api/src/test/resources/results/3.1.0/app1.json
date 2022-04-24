@@ -1,0 +1,582 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SpringShop API",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://springdoc.org"
+    },
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "inventory"
+    },
+    {
+      "name": "people"
+    },
+    {
+      "name": "tea"
+    },
+    {
+      "name": "items"
+    }
+  ],
+  "paths": {
+    "/{email}": {
+      "get": {
+        "tags": [
+          "people"
+        ],
+        "description": "Find person by e-mail",
+        "operationId": "findPerson",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "E-Mail address to lookup for",
+            "required": true,
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Person with such e-mail doesn't exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "people"
+        ],
+        "description": "Create new person",
+        "operationId": "addPerson",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "E-Mail",
+            "required": true,
+            "schema": {}
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "description": "First Name",
+            "required": true,
+            "schema": {}
+          },
+          {
+            "name": "lastName",
+            "in": "query",
+            "description": "Last Name",
+            "required": true,
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "headers": {
+              "Location": {
+                "style": "simple",
+                "schema": {}
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Person with such e-mail already exists",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "people"
+        ],
+        "description": "Delete existing person",
+        "operationId": "deletePerson",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "E-Mail address to lookup for",
+            "required": true,
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Person has been deleted",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "404": {
+            "description": "Person with such e-mail doesn't exists",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/items": {
+      "get": {
+        "tags": [
+          "items"
+        ],
+        "operationId": "showItems",
+        "parameters": [
+          {
+            "name": "cusID",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "maxLength": 6,
+              "minLength": 4
+            }
+          },
+          {
+            "name": "toto",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "format": "int32",
+              "maximum": 6,
+              "minimum": 4
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "format": "date-time",
+              "example": "1970-01-01T00:00:00.000Z"
+            }
+          },
+          {
+            "name": "filterIds",
+            "in": "query",
+            "required": false,
+            "explode": false,
+            "schema": {
+              "items": {}
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ItemDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "items"
+        ],
+        "operationId": "addItem",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemLightDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "format": "uri"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/inventory": {
+      "get": {
+        "tags": [
+          "developers",
+          "inventory"
+        ],
+        "summary": "By passing in the appropriate options, you can search for available inventory in the system ",
+        "description": "searches inventory",
+        "operationId": "searchInventory",
+        "parameters": [
+          {
+            "name": "searchString",
+            "in": "query",
+            "description": "pass an optional search string for looking up inventory",
+            "required": false,
+            "schema": {}
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "description": "number of records to skip for pagination",
+            "required": true,
+            "schema": {
+              "format": "int32",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "maximum number of records to return",
+            "required": true,
+            "schema": {
+              "format": "int32",
+              "maximum": 50,
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/InventoryItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/InventoryItem"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "inventory",
+          "admins"
+        ],
+        "summary": "Adds an item to the system",
+        "description": "adds an inventory item",
+        "operationId": "addInventory",
+        "requestBody": {
+          "description": "Inventory item to add",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryItem"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
+          },
+          "409": {
+            "description": "an existing item already exists"
+          }
+        }
+      }
+    },
+    "/people": {
+      "get": {
+        "tags": [
+          "people"
+        ],
+        "description": "List all people",
+        "operationId": "getPeople",
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PersonDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello/{numTelco}": {
+      "get": {
+        "tags": [
+          "tea"
+        ],
+        "operationId": "index",
+        "parameters": [
+          {
+            "name": "numTelco",
+            "in": "path",
+            "required": true,
+            "schema": {}
+          },
+          {
+            "name": "adresse",
+            "in": "query",
+            "required": true,
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorMessage"
+                }
+              }
+            }
+          },
+          "418": {
+            "description": "I'm a teapot",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorMessage": {
+        "properties": {
+          "id": {},
+          "message": {}
+        }
+      },
+      "PersonDTO": {
+        "properties": {
+          "email": {},
+          "firstName": {},
+          "lastName": {}
+        }
+      },
+      "ItemLightDTO": {
+        "properties": {
+          "description": {},
+          "price": {
+            "format": "int32"
+          },
+          "deprecatedPrice": {
+            "format": "int32",
+            "deprecated": true
+          }
+        }
+      },
+      "InventoryItem": {
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+          },
+          "name": {
+            "example": "Widget Adapter"
+          },
+          "releaseDate": {
+            "example": "2016-08-29T09:12:33.001Z"
+          },
+          "manufacturer": {
+            "$ref": "#/components/schemas/Manufacturer"
+          }
+        },
+        "required": [
+          "id",
+          "manufacturer",
+          "name",
+          "releaseDate"
+        ]
+      },
+      "Manufacturer": {
+        "properties": {
+          "name": {
+            "example": "ACME Corporation"
+          },
+          "homePage": {
+            "example": "https://www.acme-corp.com"
+          },
+          "phone": {
+            "example": "408-867-5309"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ItemDTO": {
+        "properties": {
+          "itemID": {},
+          "description": {},
+          "price": {
+            "format": "int32"
+          },
+          "deprecatedPrice": {
+            "format": "int32",
+            "deprecated": true
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicScheme": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

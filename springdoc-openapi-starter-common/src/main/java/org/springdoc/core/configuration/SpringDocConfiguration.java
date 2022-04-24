@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -65,6 +67,7 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.RepositoryRestResourceProvider;
 import org.springdoc.core.providers.RouterFunctionProvider;
@@ -150,12 +153,13 @@ public class SpringDocConfiguration {
 	/**
 	 * Additional models converter additional models converter.
 	 *
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the additional models converter
 	 */
 	@Bean
 	@Lazy(false)
-	AdditionalModelsConverter additionalModelsConverter() {
-		return new AdditionalModelsConverter();
+	AdditionalModelsConverter additionalModelsConverter(ObjectMapperProvider objectMapperProvider) {
+		return new AdditionalModelsConverter(objectMapperProvider);
 	}
 
 	/**
@@ -173,25 +177,27 @@ public class SpringDocConfiguration {
 	/**
 	 * File support converter file support converter.
 	 *
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the file support converter
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	FileSupportConverter fileSupportConverter() {
-		return new FileSupportConverter();
+	FileSupportConverter fileSupportConverter(ObjectMapperProvider objectMapperProvider) {
+		return new FileSupportConverter(objectMapperProvider);
 	}
 
 	/**
 	 * Response support converter response support converter.
 	 *
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the response support converter
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	ResponseSupportConverter responseSupportConverter() {
-		return new ResponseSupportConverter();
+	ResponseSupportConverter responseSupportConverter(ObjectMapperProvider objectMapperProvider) {
+		return new ResponseSupportConverter(objectMapperProvider);
 	}
 
 	/**
@@ -210,14 +216,15 @@ public class SpringDocConfiguration {
 	/**
 	 * Polymorphic model converter polymorphic model converter.
 	 *
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the polymorphic model converter
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED, matchIfMissing = true)
 	@Lazy(false)
-	PolymorphicModelConverter polymorphicModelConverter() {
-		return new PolymorphicModelConverter();
+	PolymorphicModelConverter polymorphicModelConverter(ObjectMapperProvider objectMapperProvider) {
+		return new PolymorphicModelConverter(objectMapperProvider);
 	}
 
 	/**
@@ -227,8 +234,8 @@ public class SpringDocConfiguration {
 	 * @param securityParser the security parser
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param propertyResolverUtils the property resolver utils
-	 * @param openApiBuilderCustomizers the open api builder customisers
-	 * @param serverBaseUrlCustomizers the server base url customizers
+	 * @param openApiBuilderCustomisers the open api builder customisers
+	 * @param serverBaseUrlCustomisers the server base url customisers
 	 * @param javadocProvider the javadoc provider
 	 * @return the open api builder
 	 */
@@ -237,11 +244,10 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	OpenAPIService openAPIBuilder(Optional<OpenAPI> openAPI,
 			SecurityService securityParser,
-			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
-			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers,
-			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers,
-			Optional<JavadocProvider> javadocProvider) {
-		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomizers, serverBaseUrlCustomizers, javadocProvider);
+			SpringDocConfigProperties springDocConfigProperties,PropertyResolverUtils propertyResolverUtils,
+			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers,
+			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers, Optional<JavadocProvider> javadocProvider) {
+		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomisers, serverBaseUrlCustomisers, javadocProvider);
 	}
 
 	/**
@@ -332,6 +338,7 @@ public class SpringDocConfiguration {
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the generic parameter builder
 	 */
 	@Bean
@@ -339,9 +346,9 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils,
 			Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
-			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider) {
+			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider) {
 		return new GenericParameterService(propertyResolverUtils, optionalDelegatingMethodParameterCustomizer,
-				optionalWebConversionServiceProvider);
+				optionalWebConversionServiceProvider, objectMapperProvider);
 	}
 
 	/**
@@ -399,14 +406,18 @@ public class SpringDocConfiguration {
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 * @param routerFunctionProvider the router function provider
 	 * @param springWebProvider the spring web provider
+	 * @param webConversionServiceProvider the web conversion service provider
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the spring doc providers
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	SpringDocProviders springDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider, Optional<SpringWebProvider> springWebProvider) {
-		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider);
+			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider,
+			Optional<SpringWebProvider> springWebProvider,  Optional<WebConversionServiceProvider> webConversionServiceProvider,
+			ObjectMapperProvider objectMapperProvider) {
+		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider, webConversionServiceProvider, objectMapperProvider);
 	}
 
 	/**
@@ -534,5 +545,18 @@ public class SpringDocConfiguration {
 		RepositoryRestConfigurationProvider repositoryRestConfigurationProvider(Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
 			return new RepositoryRestConfigurationProvider(optionalRepositoryRestConfiguration);
 		}
+	}
+
+	/**
+	 * Object mapper provider object mapper provider.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return the object mapper provider
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties){
+		return new ObjectMapperProvider(springDocConfigProperties);
 	}
 }
