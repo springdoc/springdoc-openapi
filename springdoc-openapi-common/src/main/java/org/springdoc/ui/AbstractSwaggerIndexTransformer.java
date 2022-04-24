@@ -54,7 +54,7 @@ public class AbstractSwaggerIndexTransformer {
 	 */
 	private static final String PRESETS = "presets: [";
 
-	/**<
+	/**
 	 * The Swagger ui o auth properties.
 	 */
 	protected SwaggerUiOAuthProperties swaggerUiOAuthProperties;
