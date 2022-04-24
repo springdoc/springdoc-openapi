@@ -36,19 +36,36 @@ import io.swagger.v3.core.jackson.PathsSerializer;
 import io.swagger.v3.oas.models.Paths;
 
 /**
+ * The interface Sorted open api mixin 31.
  * @author bnasslashen
  */
 @JsonPropertyOrder(value = {"openapi", "info", "externalDocs", "servers", "security", "tags", "paths", "components", "webhooks"}, alphabetic = true)
 public interface SortedOpenAPIMixin31 {
 
+	/**
+	 * Gets extensions.
+	 *
+	 * @return the extensions
+	 */
 	@JsonAnyGetter
 	@JsonInclude(value = Include.ALWAYS)
 	@JsonPropertyOrder(alphabetic = true)
 	Map<String, Object> getExtensions();
 
+	/**
+	 * Add extension.
+	 *
+	 * @param name the name
+	 * @param value the value
+	 */
 	@JsonAnySetter
 	void addExtension(String name, Object value);
 
+	/**
+	 * Gets paths.
+	 *
+	 * @return the paths
+	 */
 	@JsonSerialize(using = PathsSerializer.class)
 	Paths getPaths();
 

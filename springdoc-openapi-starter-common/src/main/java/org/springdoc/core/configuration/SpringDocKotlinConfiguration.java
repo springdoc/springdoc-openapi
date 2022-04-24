@@ -72,6 +72,7 @@ public class SpringDocKotlinConfiguration {
 	class KotlinModuleConfiguration {
 		/**
 		 * Instantiates a new Kotlin module configuration.
+		 * @param objectMapperProvider the object mapper provider
 		 */
 		public KotlinModuleConfiguration(ObjectMapperProvider objectMapperProvider) {
 			objectMapperProvider.jsonMapper().registerModule( new KotlinModule.Builder().build());

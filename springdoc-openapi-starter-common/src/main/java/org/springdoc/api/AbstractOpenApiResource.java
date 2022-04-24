@@ -614,6 +614,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param handlerMethod the handler method
 	 * @param operationPath the operation path
 	 * @param requestMethods the request methods
+	 * @param consumes the consumes
+	 * @param produces the produces
+	 * @param headers the headers
 	 * @param locale the locale
 	 */
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,

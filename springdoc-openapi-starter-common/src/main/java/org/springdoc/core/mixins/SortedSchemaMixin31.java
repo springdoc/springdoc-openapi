@@ -36,48 +36,115 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
+ * The interface Sorted schema mixin 31.
  * @author bnasslashen
  */
 @JsonPropertyOrder(value = {"type", "format"}, alphabetic = true)
 public interface SortedSchemaMixin31 {
 
+	/**
+	 * Gets extensions.
+	 *
+	 * @return the extensions
+	 */
 	@JsonAnyGetter
 	@JsonPropertyOrder(alphabetic = true)
 	Map<String, Object> getExtensions();
 
+	/**
+	 * Gets json schema.
+	 *
+	 * @return the json schema
+	 */
 	@JsonIgnore
 	Map<String, Object> getJsonSchema();
 
+	/**
+	 * Gets nullable.
+	 *
+	 * @return the nullable
+	 */
 	@JsonIgnore
 	Boolean getNullable();
 
+	/**
+	 * Gets exclusive minimum.
+	 *
+	 * @return the exclusive minimum
+	 */
 	@JsonIgnore
 	Boolean getExclusiveMinimum();
 
+	/**
+	 * Gets exclusive maximum.
+	 *
+	 * @return the exclusive maximum
+	 */
 	@JsonIgnore
 	Boolean getExclusiveMaximum();
 
+	/**
+	 * Gets exclusive minimum value.
+	 *
+	 * @return the exclusive minimum value
+	 */
 	@JsonProperty("exclusiveMinimum")
 	BigDecimal getExclusiveMinimumValue();
 
+	/**
+	 * Gets exclusive maximum value.
+	 *
+	 * @return the exclusive maximum value
+	 */
 	@JsonProperty("exclusiveMaximum")
 	BigDecimal getExclusiveMaximumValue();
 
+	/**
+	 * Gets type.
+	 *
+	 * @return the type
+	 */
 	@JsonIgnore
 	String getType();
 
+	/**
+	 * Gets types.
+	 *
+	 * @return the types
+	 */
 	@JsonProperty("type")
 	Set<String> getTypes();
 
+	/**
+	 * Add extension.
+	 *
+	 * @param name the name
+	 * @param value the value
+	 */
 	@JsonAnySetter
 	void addExtension(String name, Object value);
 
+	/**
+	 * Gets example set flag.
+	 *
+	 * @return the example set flag
+	 */
 	@JsonIgnore
 	boolean getExampleSetFlag();
 
+	/**
+	 * Gets example.
+	 *
+	 * @return the example
+	 */
 	@JsonInclude(JsonInclude.Include.CUSTOM)
 	Object getExample();
 
+	/**
+	 * Gets json schema.
+	 *
+	 * @return the json schema
+	 */
 	@JsonIgnore
 	Object getJsonSchemaImpl();
 

@@ -172,6 +172,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	SpringWebProvider springWebProvider(){
 		return new SpringWebFluxProvider();
 	}
+
 	/**
 	 * The type Swagger actuator welcome configuration.
 	 * @author bnasslashen

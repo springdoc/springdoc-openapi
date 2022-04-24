@@ -467,6 +467,7 @@ public class GroupedOpenApi {
 			return new GroupedOpenApi(this);
 		}
 	}
+
 	/**
 	 * Add all open api customizer grouped open api.
 	 *

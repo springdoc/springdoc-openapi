@@ -36,51 +36,123 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.models.media.Schema;
 
 /**
+ * The interface Sorted schema mixin.
  * @author bnasslashen
  */
 @JsonPropertyOrder(value = { "type", "format" }, alphabetic = true)
 public interface SortedSchemaMixin {
 
+	/**
+	 * Gets extensions.
+	 *
+	 * @return the extensions
+	 */
 	@JsonAnyGetter
 	@JsonPropertyOrder(alphabetic = true)
 	Map<String, Object> getExtensions();
 
+	/**
+	 * Add extension.
+	 *
+	 * @param name the name
+	 * @param value the value
+	 */
 	@JsonAnySetter
 	void addExtension(String name, Object value);
 
+	/**
+	 * Gets example set flag.
+	 *
+	 * @return the example set flag
+	 */
 	@JsonIgnore
 	boolean getExampleSetFlag();
 
+	/**
+	 * Gets example.
+	 *
+	 * @return the example
+	 */
 	@JsonInclude(JsonInclude.Include.CUSTOM)
 	Object getExample();
 
+	/**
+	 * Gets json schema.
+	 *
+	 * @return the json schema
+	 */
 	@JsonIgnore
 	Map<String, Object> getJsonSchema();
 
+	/**
+	 * Gets exclusive minimum value.
+	 *
+	 * @return the exclusive minimum value
+	 */
 	@JsonIgnore
 	BigDecimal getExclusiveMinimumValue();
 
+	/**
+	 * Gets exclusive maximum value.
+	 *
+	 * @return the exclusive maximum value
+	 */
 	@JsonIgnore
 	BigDecimal getExclusiveMaximumValue();
 
+	/**
+	 * Gets pattern properties.
+	 *
+	 * @return the pattern properties
+	 */
 	@JsonIgnore
 	Map<String, Schema> getPatternProperties();
 
+	/**
+	 * Gets contains.
+	 *
+	 * @return the contains
+	 */
 	@JsonIgnore
 	Schema getContains();
 
+	/**
+	 * Get id string.
+	 *
+	 * @return the string
+	 */
 	@JsonIgnore
 	String get$id();
 
+	/**
+	 * Get anchor string.
+	 *
+	 * @return the string
+	 */
 	@JsonIgnore
 	String get$anchor();
 
+	/**
+	 * Get schema string.
+	 *
+	 * @return the string
+	 */
 	@JsonIgnore
 	String get$schema();
 
+	/**
+	 * Gets types.
+	 *
+	 * @return the types
+	 */
 	@JsonIgnore
 	Set<String> getTypes();
 
+	/**
+	 * Gets json schema.
+	 *
+	 * @return the json schema
+	 */
 	@JsonIgnore
 	Object getJsonSchemaImpl();
 
