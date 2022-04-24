@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -113,37 +115,37 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	/**
 	 * The Mappings.
 	 */
-	private ResourceMappings mappings;
+	private final ResourceMappings mappings;
 
 	/**
 	 * The Repositories.
 	 */
-	private Repositories repositories;
+	private final Repositories repositories;
 
 	/**
 	 * The Associations.
 	 */
-	private Associations associations;
+	private final Associations associations;
 
 	/**
 	 * The Data rest router operation builder.
 	 */
-	private DataRestRouterOperationService dataRestRouterOperationService;
+	private final DataRestRouterOperationService dataRestRouterOperationService;
 
 	/**
 	 * The Persistent entities.
 	 */
-	private PersistentEntities persistentEntities;
+	private final PersistentEntities persistentEntities;
 
 	/**
 	 * The Mapper.
 	 */
-	private ObjectMapper mapper;
+	private final ObjectMapper mapper;
 
 	/**
 	 * The Application context.
 	 */
-	private ApplicationContext applicationContext;
+	private final ApplicationContext applicationContext;
 
 	/**
 	 * The Handler mapping list.
@@ -153,7 +155,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	/**
 	 * The Spring doc data rest utils.
 	 */
-	private SpringDocDataRestUtils springDocDataRestUtils;
+	private final SpringDocDataRestUtils springDocDataRestUtils;
 
 	/**
 	 * The constant delegatingHandlerMappingClass.

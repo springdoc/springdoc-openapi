@@ -100,6 +100,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 	 * The Application context.
 	 */
 	protected ApplicationContext applicationContext;
+
 	/**
 	 * Instantiates a new Multiple open api resource.
 	 *
@@ -109,6 +110,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param springDocProviders the spring doc providers
 	 */
 	protected MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,

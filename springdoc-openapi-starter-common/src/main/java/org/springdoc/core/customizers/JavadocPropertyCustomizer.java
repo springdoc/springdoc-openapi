@@ -54,6 +54,7 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider, ObjectM
 	 * Instantiates a new Javadoc property customizer.
 	 *
 	 * @param javadocProvider the javadoc provider
+	 * @param objectMapperProvider the object mapper provider
 	 */
 	public JavadocPropertyCustomizer {
 	}

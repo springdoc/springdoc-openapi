@@ -90,6 +90,7 @@ public class SpringDocDataRestConfiguration {
 	 *
 	 * @param repositoryRestConfiguration the repository rest configuration
 	 * @param hateoasPropertiesOptional the hateoas properties optional
+	 * @param objectMapperProvider the object mapper provider
 	 * @return the data rest hal provider
 	 */
 	@Bean
@@ -151,6 +152,7 @@ public class SpringDocDataRestConfiguration {
 		 * @param dataRestRouterOperationService the data rest router operation service
 		 * @param persistentEntities the persistent entities
 		 * @param mapper the mapper
+		 * @param springDocDataRestUtils the spring doc data rest utils
 		 * @return the spring repository rest resource provider
 		 */
 		@Bean

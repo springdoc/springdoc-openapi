@@ -145,6 +145,7 @@ public class SwaggerConfig {
 	 *
 	 * @param swaggerUiConfigParameters the swagger ui calculated config
 	 * @param swaggerIndexTransformer the swagger index transformer
+	 * @param actuatorProvider the actuator provider
 	 * @return the swagger web mvc configurer
 	 */
 	@Bean
@@ -167,11 +168,23 @@ public class SwaggerConfig {
 		return new SwaggerUiConfigParameters(swaggerUiConfig);
 	}
 
+	/**
+	 * The type Swagger actuator welcome configuration.
+	 */
 	@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
 	@ConditionalOnClass(WebMvcEndpointHandlerMapping.class)
 	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 	static class SwaggerActuatorWelcomeConfiguration {
 
+		/**
+		 * Swagger actuator welcome swagger welcome actuator.
+		 *
+		 * @param swaggerUiConfig the swagger ui config
+		 * @param springDocConfigProperties the spring doc config properties
+		 * @param swaggerUiConfigParameters the swagger ui config parameters
+		 * @param webEndpointProperties the web endpoint properties
+		 * @return the swagger welcome actuator
+		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)

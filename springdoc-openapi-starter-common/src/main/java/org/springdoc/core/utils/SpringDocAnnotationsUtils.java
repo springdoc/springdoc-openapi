@@ -380,6 +380,13 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		return isArray;
 	}
 
+	/**
+	 * Resolve default value object.
+	 *
+	 * @param defaultValueStr the default value str
+	 * @param objectMapper the object mapper
+	 * @return the object
+	 */
 	public static Object resolveDefaultValue(String defaultValueStr, ObjectMapper objectMapper) {
 		Object defaultValue = null;
 		if (StringUtils.isNotEmpty(defaultValueStr)) {
