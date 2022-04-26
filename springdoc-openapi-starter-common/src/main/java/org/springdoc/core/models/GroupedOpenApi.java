@@ -27,7 +27,6 @@ package org.springdoc.core.models;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,12 +53,12 @@ public class GroupedOpenApi {
 	/**
 	 * The Open api customisers.
 	 */
-	private final List<OpenApiCustomizer> openApiCustomizers;
+	private List<OpenApiCustomizer> openApiCustomizers;
 
 	/**
 	 * The Operation customizers.
 	 */
-	private final List<OperationCustomizer> operationCustomizers;
+	private List<OperationCustomizer> operationCustomizers;
 
 	/**
 	 * The Paths to match.
@@ -99,7 +98,7 @@ public class GroupedOpenApi {
 	/**
 	 * The method filters to use.
 	 */
-	private final List<OpenApiMethodFilter> openApiMethodFilters;
+	private List<OpenApiMethodFilter> openApiMethodFilters;
 
 	/**
 	 * The Display name.
@@ -475,8 +474,10 @@ public class GroupedOpenApi {
 	 * @return the grouped open api
 	 */
 	public GroupedOpenApi addAllOpenApiCustomizer(Collection<? extends OpenApiCustomizer> openApiCustomizerCollection) {
-		this.openApiCustomizers.addAll(openApiCustomizerCollection);
-		Collections.reverse(openApiCustomizers);
+		List<OpenApiCustomizer> result = new ArrayList<>();
+		result.addAll(openApiCustomizerCollection);
+		result.addAll(openApiCustomizerCollection);
+		openApiCustomizers = result;
 		return this;
 	}
 
@@ -487,8 +488,10 @@ public class GroupedOpenApi {
 	 * @return the grouped open api
 	 */
 	public GroupedOpenApi addAllOperationCustomizer(Collection<? extends OperationCustomizer> operationCustomizerCollection) {
-		this.operationCustomizers.addAll(operationCustomizerCollection);
-		Collections.reverse(operationCustomizers);
+		List<OperationCustomizer> result = new ArrayList<>();
+		result.addAll(operationCustomizerCollection);
+		result.addAll(operationCustomizers);
+		operationCustomizers = result;
 		return this;
 	}
 
@@ -499,8 +502,10 @@ public class GroupedOpenApi {
 	 * @return the grouped open api
 	 */
 	public GroupedOpenApi addAllOpenApiMethodFilter(Collection<? extends OpenApiMethodFilter> openApiMethodFilterCollection) {
-		this.openApiMethodFilters.addAll(openApiMethodFilterCollection);
-		Collections.reverse(openApiMethodFilters);
+		List<OpenApiMethodFilter> result = new ArrayList<>();
+		result.addAll(openApiMethodFilterCollection);
+		result.addAll(openApiMethodFilters);
+		openApiMethodFilters = result;
 		return this;
 	}
 
