@@ -46,7 +46,6 @@ public class RequestService extends AbstractRequestService {
 				.addRequestWrapperToIgnore(javax.servlet.ServletResponse.class)
 				.addRequestWrapperToIgnore(javax.servlet.http.HttpServletRequest.class)
 				.addRequestWrapperToIgnore(javax.servlet.http.HttpServletResponse.class)
-				.addRequestWrapperToIgnore(javax.servlet.http.HttpSession.class)
 				.addRequestWrapperToIgnore(javax.servlet.http.HttpSession.class);
 	}
 
