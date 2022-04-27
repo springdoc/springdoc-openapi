@@ -42,7 +42,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  * The type Actuator open api customiser.
  * @author bnasslahsen
  */
-public class ActuatorOpenApiCustomizer implements OpenApiCustomiser {
+public class ActuatorOpenApiCustomizer implements GlobalOpenApiCustomizer {
 
 	/**
 	 * The Path pathern.

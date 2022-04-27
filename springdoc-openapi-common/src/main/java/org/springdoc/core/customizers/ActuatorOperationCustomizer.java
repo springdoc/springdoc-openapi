@@ -52,7 +52,7 @@ import static org.springdoc.core.providers.ActuatorProvider.getTag;
  * The type Actuator operation customizer.
  * @author bnasslahsen
  */
-public class ActuatorOperationCustomizer implements OperationCustomizer {
+public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 
 	/**
 	 * The Method count.
