@@ -298,7 +298,10 @@ public class DataRestResponseService {
 			ParameterizedType wildcardTypeUpperBound = (ParameterizedType) wildcardType.getUpperBounds()[0];
 			if (RepresentationModel.class.equals(wildcardTypeUpperBound.getRawType())) {
 				Class<?> type = findType(requestMethod, dataRestRepository);
-				return resolveGenericType(ResponseEntity.class, type, returnedEntityType);
+				if (MapModel.class.equals(type))
+					return ResolvableType.forClassWithGenerics(ResponseEntity.class, type).getType();
+				else
+					return resolveGenericType(ResponseEntity.class, type, returnedEntityType);
 			}
 		}
 		return null;
@@ -318,7 +321,10 @@ public class DataRestResponseService {
 		Class<?> rawType = ResolvableType.forType(parameterizedType1.getRawType()).getRawClass();
 		if (rawType != null && rawType.isAssignableFrom(RepresentationModel.class)) {
 			Class<?> type = findType(requestMethod, dataRestRepository);
-			return resolveGenericType(ResponseEntity.class, type, returnedEntityType);
+			if (MapModel.class.equals(type))
+				return ResolvableType.forClassWithGenerics(ResponseEntity.class, type).getType();
+			else
+				return resolveGenericType(ResponseEntity.class, type, returnedEntityType);
 		}
 		else if (EntityModel.class.equals(parameterizedType1.getRawType())) {
 			return resolveGenericType(ResponseEntity.class, EntityModel.class, returnedEntityType);
