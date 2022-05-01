@@ -9,7 +9,7 @@ If you ❤️ this project consider becoming a [sponsor](https://github.com/spon
 
 This project is sponsored by
 
-<p style="text-align: center;">
+<p align="center">
 <a href="https://opensource.mercedes-benz.com/" target="_blank">
     <img src="https://springdoc.org/img/mercedes-benz.png" height="10%" width="10%" />
 </a>
