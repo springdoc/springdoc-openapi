@@ -24,6 +24,7 @@ package org.springdoc.core.converters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionStage;
@@ -40,17 +41,17 @@ public class ConverterUtils {
 	/**
 	 * The constant RESULT_WRAPPERS_TO_IGNORE.
 	 */
-	private static final List<Class<?>> RESULT_WRAPPERS_TO_IGNORE = new ArrayList<>();
+	private static final List<Class<?>> RESULT_WRAPPERS_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
 
 	/**
 	 * The constant RESPONSE_TYPES_TO_IGNORE.
 	 */
-	private static final List<Class<?>> RESPONSE_TYPES_TO_IGNORE = new ArrayList<>();
+	private static final List<Class<?>> RESPONSE_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
 
 	/**
 	 * The constant FLUX_WRAPPERS_TO_IGNORE.
 	 */
-	private static final List<Class<?>> FLUX_WRAPPERS_TO_IGNORE = new ArrayList<>();
+	private static final List<Class<?>> FLUX_WRAPPERS_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
 
 	static {
 		RESULT_WRAPPERS_TO_IGNORE.add(Callable.class);

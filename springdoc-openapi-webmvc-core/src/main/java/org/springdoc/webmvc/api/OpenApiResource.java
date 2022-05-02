@@ -154,7 +154,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	protected void getPaths(Map<String, Object> restControllers, Locale locale) {
+	protected void getPaths(Map<String, Object> restControllers, Locale locale, OpenAPI openAPI) {
 		Optional<SpringWebProvider> springWebProviderOptional = springDocProviders.getSpringWebProvider();
 		springWebProviderOptional.ifPresent(springWebProvider -> {
 			Map<RequestMappingInfo, HandlerMethod> map = springWebProvider.getHandlerMethods();
@@ -162,7 +162,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProviderOptional = springDocProviders.getRepositoryRestResourceProvider();
 			repositoryRestResourceProviderOptional.ifPresent(restResourceProvider -> {
 				List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPIService.getCalculatedOpenAPI(), locale);
-				calculatePath(operationList, locale);
+				calculatePath(operationList, locale, openAPI);
 				restResourceProvider.customize(openAPIService.getCalculatedOpenAPI());
 				Map<RequestMappingInfo, HandlerMethod> mapDataRest = restResourceProvider.getHandlerMethods();
 				Map<String, Object> requestMappingMap = restResourceProvider.getBasePathAwareControllerEndpoints();
@@ -177,7 +177,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 				this.openAPIService.addTag(new HashSet<>(actuatorMap.values()), getTag());
 				map.putAll(actuatorMap);
 			}
-			calculatePath(restControllers, map, locale);
+			calculatePath(restControllers, map, locale, openAPI);
 		});
 
 		Optional<SecurityOAuth2Provider> securityOAuth2ProviderOptional = springDocProviders.getSpringSecurityOAuth2Provider();
@@ -187,11 +187,11 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			Map<String, Object> requestMappingMapSec = securityOAuth2Provider.getFrameworkEndpoints();
 			Class[] additionalRestClasses = requestMappingMapSec.values().stream().map(AopUtils::getTargetClass).toArray(Class[]::new);
 			AbstractOpenApiResource.addRestControllers(additionalRestClasses);
-			calculatePath(requestMappingMapSec, mapOauth, locale);
+			calculatePath(requestMappingMapSec, mapOauth, locale, openAPI);
 		}
 
 		springDocProviders.getRouterFunctionProvider().ifPresent(routerFunctions -> routerFunctions.getRouterFunctionPaths()
-				.ifPresent(routerBeans -> routerBeans.forEach((beanName, routerFunctionVisitor) -> getRouterFunctionPaths(beanName, routerFunctionVisitor, locale))));
+				.ifPresent(routerBeans -> routerBeans.forEach((beanName, routerFunctionVisitor) -> getRouterFunctionPaths(beanName, routerFunctionVisitor, locale, openAPI))));
 
 	}
 
@@ -201,8 +201,9 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param restControllers the rest controllers
 	 * @param map the map
 	 * @param locale the locale
+	 * @param openAPI the open api
 	 */
-	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Locale locale) {
+	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Locale locale, OpenAPI openAPI) {
 		TreeMap<RequestMappingInfo, HandlerMethod> methodTreeMap = new TreeMap<>(byReversedRequestMappingInfos());
 		methodTreeMap.putAll(map);
 		Optional<SpringWebProvider> springWebProviderOptional = springDocProviders.getSpringWebProvider();
@@ -224,7 +225,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 							// default allowed requestmethods
 							if (requestMethods.isEmpty())
 								requestMethods = this.getDefaultAllowedHttpMethods();
-							calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces , headers, locale);
+							calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces , headers, locale, openAPI);
 						}
 					}
 				}

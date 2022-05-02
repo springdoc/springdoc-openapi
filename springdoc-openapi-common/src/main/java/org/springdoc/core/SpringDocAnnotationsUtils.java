@@ -27,6 +27,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +74,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * The constant ANNOTATIOSN_TO_IGNORE.
 	 */
-	private static final List<Class> ANNOTATIONS_TO_IGNORE = new ArrayList<>();
+	private static final List<Class> ANNOTATIONS_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
 
 	static {
 		ANNOTATIONS_TO_IGNORE.add(Hidden.class);
