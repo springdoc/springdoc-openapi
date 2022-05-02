@@ -118,7 +118,6 @@ class AbstractOpenApiResourceTest {
 		ReflectionTestUtils.setField(openAPIService, "cachedOpenAPI", new HashMap<>());
 		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomizers", Optional.empty());
 
-		when(openAPIService.getCalculatedOpenAPI()).thenReturn(openAPI);
 		when(openAPIService.getContext()).thenReturn(context);
 
 		when(openAPIBuilderObjectFactory.getObject()).thenReturn(openAPIService);
@@ -162,7 +161,7 @@ class AbstractOpenApiResourceTest {
 		routerOperation.setOperationModel(operation);
 		routerOperation.setPath(PATH);
 
-		resource.calculatePath(routerOperation, Locale.getDefault());
+		resource.calculatePath(routerOperation, Locale.getDefault(), this.openAPI);
 
 		final List<Parameter> parameters = resource.getOpenApi(Locale.getDefault()).getPaths().get(PATH).getGet().getParameters();
 		assertThat(parameters.size(), is(3));

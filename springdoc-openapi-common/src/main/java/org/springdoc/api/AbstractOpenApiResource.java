@@ -308,7 +308,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		final Locale finalLocale = locale == null ? Locale.getDefault() : locale;
 		if (openAPIService.getCachedOpenAPI(finalLocale) == null || springDocConfigProperties.isCacheDisabled()) {
 			Instant start = Instant.now();
-			openAPIService.build(finalLocale);
+			openAPI = openAPIService.build(finalLocale);
 			Map<String, Object> mappingsMap = openAPIService.getMappingsMap().entrySet().stream()
 					.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 							Hidden.class) == null))
@@ -316,8 +316,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
 			Map<String, Object> findControllerAdvice = openAPIService.getControllerAdviceMap();
-			// calculate generic responses
-			openAPI = openAPIService.getCalculatedOpenAPI();
 			if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion())
 				openAPI.openapi(OpenApiVersion.OPENAPI_3_1.getVersion());
 			if (springDocConfigProperties.isDefaultOverrideWithGenericResponse()) {
@@ -359,7 +357,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				openAPIService.setServersPresent(true);
 
 			openAPIService.setCachedOpenAPI(openAPI, finalLocale);
-			openAPIService.resetCalculatedOpenAPI();
 
 			LOGGER.info("Init duration for springdoc-openapi is: {} ms",
 					Duration.between(start, Instant.now()).toMillis());
@@ -552,10 +549,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					}
 				}
 				else if (routerOperation.getOperation() != null && StringUtils.isNotBlank(routerOperation.getOperation().operationId()) && isFilterCondition(routerOperation.getPath(), routerOperation.getProduces(), routerOperation.getConsumes(), routerOperation.getHeaders())) {
-					calculatePath(routerOperation, locale);
+					calculatePath(routerOperation, locale, openAPI);
 				}
 				else if (routerOperation.getOperationModel() != null && StringUtils.isNotBlank(routerOperation.getOperationModel().getOperationId()) && isFilterCondition(routerOperation.getPath(), routerOperation.getProduces(), routerOperation.getConsumes(), routerOperation.getHeaders())) {
-					calculatePath(routerOperation, locale);
+					calculatePath(routerOperation, locale, openAPI);
 				}
 			}
 		}
@@ -567,7 +564,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param routerOperation the router operation
 	 * @param locale the locale
 	 */
-	protected void calculatePath(RouterOperation routerOperation, Locale locale) {
+	protected void calculatePath(RouterOperation routerOperation, Locale locale, OpenAPI openAPI) {
 		String operationPath = routerOperation.getPath();
 		io.swagger.v3.oas.annotations.Operation apiOperation = routerOperation.getOperation();
 		String[] methodConsumes = routerOperation.getConsumes();
@@ -575,7 +572,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		String[] headers = routerOperation.getHeaders();
 		Map<String, String> queryParams = routerOperation.getQueryParams();
 
-		OpenAPI openAPI = openAPIService.getCalculatedOpenAPI();
 		Paths paths = openAPI.getPaths();
 		Map<HttpMethod, Operation> operationMap = null;
 		if (paths.containsKey(operationPath)) {

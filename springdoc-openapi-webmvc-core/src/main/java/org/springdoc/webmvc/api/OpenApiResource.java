@@ -161,9 +161,9 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProviderOptional = springDocProviders.getRepositoryRestResourceProvider();
 			repositoryRestResourceProviderOptional.ifPresent(restResourceProvider -> {
-				List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPIService.getCalculatedOpenAPI(), locale);
+				List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPI, locale);
 				calculatePath(operationList, locale, openAPI);
-				restResourceProvider.customize(openAPIService.getCalculatedOpenAPI());
+				restResourceProvider.customize(openAPI);
 				Map<RequestMappingInfo, HandlerMethod> mapDataRest = restResourceProvider.getHandlerMethods();
 				Map<String, Object> requestMappingMap = restResourceProvider.getBasePathAwareControllerEndpoints();
 				Class[] additionalRestClasses = requestMappingMap.values().stream().map(AopUtils::getTargetClass).toArray(Class[]::new);

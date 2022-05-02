@@ -139,11 +139,6 @@ public class OpenAPIService implements ApplicationContextAware {
 	private final Map<String, OpenAPI> cachedOpenAPI = new HashMap<>();
 
 	/**
-	 * The Calculated open api.
-	 */
-	private OpenAPI calculatedOpenAPI;
-
-	/**
 	 * The Is servers present.
 	 */
 	private boolean isServersPresent;
@@ -241,18 +236,18 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Build.
 	 * @param locale the locale
 	 */
-	public void build(Locale locale) {
+	public OpenAPI build(Locale locale) {
 		Optional<OpenAPIDefinition> apiDef = getOpenAPIDefinition();
-
+		OpenAPI calculatedOpenAPI = null;
 		if (openAPI == null) {
-			this.calculatedOpenAPI = new OpenAPI();
-			this.calculatedOpenAPI.setComponents(new Components());
-			this.calculatedOpenAPI.setPaths(new Paths());
+			calculatedOpenAPI = new OpenAPI();
+			calculatedOpenAPI.setComponents(new Components());
+			calculatedOpenAPI.setPaths(new Paths());
 		}
 		else {
 			try {
 				ObjectMapper objectMapper = new ObjectMapper();
-				this.calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class );
+				calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class );
 			}
 			catch (JsonProcessingException e) {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
@@ -277,6 +272,8 @@ public class OpenAPIService implements ApplicationContextAware {
 		// add security schemes
 		this.calculateSecuritySchemes(calculatedOpenAPI.getComponents(), locale);
 		openApiBuilderCustomisers.ifPresent(customisers -> customisers.forEach(customiser -> customiser.customise(this)));
+
+		return calculatedOpenAPI;
 	}
 
 	/**
@@ -720,22 +717,6 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	public void setCachedOpenAPI(OpenAPI cachedOpenAPI, Locale locale) {
 		this.cachedOpenAPI.put(locale.toLanguageTag(), cachedOpenAPI);
-	}
-
-	/**
-	 * Gets calculated open api.
-	 *
-	 * @return the calculated open api
-	 */
-	public OpenAPI getCalculatedOpenAPI() {
-		return calculatedOpenAPI;
-	}
-
-	/**
-	 * Reset calculated open api.
-	 */
-	public void resetCalculatedOpenAPI() {
-		this.calculatedOpenAPI = null;
 	}
 
 	/**
