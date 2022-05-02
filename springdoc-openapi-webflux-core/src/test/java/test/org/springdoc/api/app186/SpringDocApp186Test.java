@@ -22,14 +22,7 @@ package test.org.springdoc.api.app186;
 
 import static org.springdoc.core.Constants.ALL_PATTERN;
 
-import org.json.JSONException;
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.Customization;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.skyscreamer.jsonassert.ValueMatcher;
-import org.skyscreamer.jsonassert.comparator.CustomComparator;
-import org.skyscreamer.jsonassert.comparator.JSONComparator;
 import org.springdoc.core.Constants;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
@@ -51,16 +44,6 @@ import test.org.springdoc.api.AbstractCommonTest;
 		"management.endpoints.web.exposure.include=*",
 		"management.endpoints.web.exposure.exclude=functions, shutdown"})
 public class SpringDocApp186Test extends AbstractCommonTest {
-
-	private static final JSONComparator STRICT_IGNORING_OPERATION_ID = new CustomComparator(JSONCompareMode.STRICT,
-			Customization.customization(
-					"paths.*.*.operationId"
-					, new ValueMatcher<Object>() {
-				@Override
-				public boolean equal(Object o1, Object o2) {
-					return true;
-				}
-			}));
 
 	@SpringBootApplication
 	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app186" })
@@ -86,40 +69,32 @@ public class SpringDocApp186Test extends AbstractCommonTest {
 		}
 	}
 
-	private void assertBodyApp186(String content) {
-		try {
-			JSONAssert.assertEquals(getContent("results/app186.json"), content, STRICT_IGNORING_OPERATION_ID);
-		} catch (JSONException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	@Test
 	public void testApp() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
 				.expectStatus().isOk()
-				.expectBody(String.class).value(this::assertBodyApp186);
+				.expectBody().json(getContent("results/app186.json"), true);
 	}
 
 	@Test
 	public void testGroupActuatorAsCodeCheckBackwardsCompatibility() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-code-check-backwards-compatibility").exchange()
 				.expectStatus().isOk()
-				.expectBody(String.class).value(this::assertBodyApp186);
+				.expectBody().json(getContent("results/app186.json"), true);
 	}
 
 	@Test
 	public void testGroupActuatorAsCode() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-code").exchange()
 				.expectStatus().isOk()
-				.expectBody(String.class).value(this::assertBodyApp186);
+				.expectBody().json(getContent("results/app186.json"), true);
 	}
 
 	@Test
 	public void testGroupActuatorAsProperties() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-properties").exchange()
 				.expectStatus().isOk()
-				.expectBody(String.class).value(this::assertBodyApp186);
+				.expectBody().json(getContent("results/app186.json"), true);
 	}
 
 }

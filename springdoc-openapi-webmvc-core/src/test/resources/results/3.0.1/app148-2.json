@@ -27,7 +27,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'loggers-name'",
-        "operationId": "loggers-name_2",
+        "operationId": "loggers-name",
         "parameters": [
           {
             "name": "name",
@@ -66,7 +66,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'loggers-name'",
-        "operationId": "loggers-name",
+        "operationId": "loggers-name_2",
         "parameters": [
           {
             "name": "name",
@@ -164,7 +164,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'threaddump'",
-        "operationId": "threaddump_2",
+        "operationId": "threaddump",
         "responses": {
           "200": {
             "description": "OK",

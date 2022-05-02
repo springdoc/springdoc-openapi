@@ -24,7 +24,6 @@ package org.springdoc.core.customizers;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,7 +44,6 @@ import org.springframework.boot.actuate.endpoint.invoke.OperationParameter;
 import org.springframework.boot.actuate.endpoint.invoke.reflect.OperationMethod;
 import org.springframework.web.method.HandlerMethod;
 
-import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ONE;
 import static org.springdoc.core.providers.ActuatorProvider.getTag;
 
 /**
@@ -53,11 +51,6 @@ import static org.springdoc.core.providers.ActuatorProvider.getTag;
  * @author bnasslahsen
  */
 public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
-
-	/**
-	 * The Method count.
-	 */
-	private final HashMap<String, Integer> methodCountMap = new HashMap<>();
 
 	/**
 	 * The constant OPERATION.
@@ -113,14 +106,6 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 			while (matcher.find()) {
 				operationId = matcher.group(1);
 			}
-			if (methodCountMap.containsKey(operationId)) {
-				Integer methodCount = methodCountMap.get(operationId) + 1;
-				methodCountMap.put(operationId, methodCount);
-				operationId = operationId + "_" + methodCount;
-			}
-			else
-				methodCountMap.put(operationId, INTEGER_ONE);
-
 			if (!summary.contains("$"))
 				operation.setSummary(summary);
 			operation.setOperationId(operationId);

@@ -24,18 +24,11 @@ package test.org.springdoc.api.v30.app186;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.nio.charset.StandardCharsets;
-
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.Customization;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.skyscreamer.jsonassert.ValueMatcher;
-import org.skyscreamer.jsonassert.comparator.CustomComparator;
-import org.skyscreamer.jsonassert.comparator.JSONComparator;
 import org.springdoc.core.Constants;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
@@ -44,7 +37,6 @@ import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointPr
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MvcResult;
 
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
@@ -57,16 +49,6 @@ import static org.springdoc.core.Constants.ALL_PATTERN;
 		"management.endpoints.web.exposure.include=*",
 		"management.endpoints.web.exposure.exclude=functions, shutdown"})
 public class SpringDocApp186Test extends AbstractSpringDocV30Test {
-
-	private static final JSONComparator STRICT_IGNORING_OPERATION_ID = new CustomComparator(JSONCompareMode.STRICT,
-			Customization.customization(
-					"paths.*.*.operationId"
-					, new ValueMatcher<Object>() {
-				@Override
-				public boolean equal(Object o1, Object o2) {
-					return true;
-				}
-			}));
 
 	@SpringBootApplication
 	static class SpringDocTestApp {
@@ -91,17 +73,12 @@ public class SpringDocApp186Test extends AbstractSpringDocV30Test {
 		}
 	}
 
-	private void assertBodyApp186(MvcResult result) throws Exception {
-		String content = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-		JSONAssert.assertEquals(getContent("results/3.0.1/app186.json"), content, STRICT_IGNORING_OPERATION_ID);
-	}
-
 	@Test
 	public void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(status().isOk())
-				.andExpect(this::assertBodyApp186);
+				.andExpect(content().json(getContent("results/3.0.1/app186.json"), true));
 	}
 
 	@Test
@@ -109,7 +86,7 @@ public class SpringDocApp186Test extends AbstractSpringDocV30Test {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-code-check-backwards-compatibility"))
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(status().isOk())
-				.andExpect(this::assertBodyApp186);
+				.andExpect(content().json(getContent("results/3.0.1/app186.json"), true));
 	}
 
 	@Test
@@ -117,7 +94,7 @@ public class SpringDocApp186Test extends AbstractSpringDocV30Test {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-code"))
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(status().isOk())
-				.andExpect(this::assertBodyApp186);
+				.andExpect(content().json(getContent("results/3.0.1/app186.json"), true));
 	}
 
 	@Test
@@ -125,7 +102,7 @@ public class SpringDocApp186Test extends AbstractSpringDocV30Test {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-properties"))
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(status().isOk())
-				.andExpect(this::assertBodyApp186);
+				.andExpect(content().json(getContent("results/3.0.1/app186.json"), true));
 	}
 
 }
