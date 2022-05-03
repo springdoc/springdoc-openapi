@@ -119,6 +119,7 @@ class AbstractOpenApiResourceTest {
 		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomizers", Optional.empty());
 
 		when(openAPIService.getContext()).thenReturn(context);
+		when(openAPIService.build(any())).thenReturn(openAPI);
 
 		when(openAPIBuilderObjectFactory.getObject()).thenReturn(openAPIService);
 		when(springDocProviders.jsonMapper()).thenReturn(Json.mapper());
