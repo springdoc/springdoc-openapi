@@ -248,7 +248,9 @@ public class GenericResponseService {
 					apiResponses.forEach(controllerAdviceInfoApiResponseMap::put);
 				}
 			}
-			controllerAdviceInfos.add(controllerAdviceInfo);
+			synchronized (this) {
+				controllerAdviceInfos.add(controllerAdviceInfo);
+			}
 		}
 	}
 
@@ -572,7 +574,8 @@ public class GenericResponseService {
 						exceptions.add(parameter.getType());
 					}
 				}
-			} else {
+			}
+			else {
 				exceptions.addAll(asList(exceptionHandler.value()));
 			}
 			apiResponse.addExtension(EXTENSION_EXCEPTION_CLASSES, exceptions);
@@ -640,9 +643,9 @@ public class GenericResponseService {
 	 * @param beanType the bean type
 	 * @return the generic map response
 	 */
-	private Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
+	private synchronized Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
 		return controllerAdviceInfos.stream()
-				.filter(controllerAdviceInfo ->  new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
+				.filter(controllerAdviceInfo -> new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
 				.map(ControllerAdviceInfo::getApiResponseMap)
 				.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
 	}

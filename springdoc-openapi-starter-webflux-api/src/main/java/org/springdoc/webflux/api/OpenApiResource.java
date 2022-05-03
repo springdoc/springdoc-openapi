@@ -158,7 +158,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	protected void getPaths(Map<String, Object> restControllers, Locale locale) {
+	protected void getPaths(Map<String, Object> restControllers, Locale locale, OpenAPI openAPI) {
 		Optional<SpringWebProvider> springWebProviderOptional = springDocProviders.getSpringWebProvider();
 		springWebProviderOptional.ifPresent(springWebProvider -> {
 			Map<RequestMappingInfo, HandlerMethod> map = springWebProvider.getHandlerMethods();
@@ -168,8 +168,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 				this.openAPIService.addTag(new HashSet<>(actuatorMap.values()), getTag());
 				map.putAll(actuatorMap);
 			}
-			calculatePath(restControllers, map, locale);
-			getWebFluxRouterFunctionPaths(locale);
+			calculatePath(restControllers, map, locale, openAPI);
+			getWebFluxRouterFunctionPaths(locale, openAPI);
 		});
 	}
 
@@ -180,7 +180,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param map the map
 	 * @param locale the locale
 	 */
-	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Locale locale) {
+	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Locale locale, OpenAPI openAPI) {
 		TreeMap<RequestMappingInfo, HandlerMethod> methodTreeMap = new TreeMap<>(byReversedRequestMappingInfos());
 		methodTreeMap.putAll(map);
 		Optional<SpringWebProvider> springWebProviderOptional = springDocProviders.getSpringWebProvider();
@@ -201,7 +201,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 						// default allowed requestmethods
 						if (requestMethods.isEmpty())
 							requestMethods = this.getDefaultAllowedHttpMethods();
-						calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces , headers, locale);
+						calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces , headers, locale, openAPI);
 					}
 				}
 			}
@@ -221,13 +221,13 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * Gets web flux router function paths.
 	 * @param locale the locale
 	 */
-	protected void getWebFluxRouterFunctionPaths(Locale locale) {
+	protected void getWebFluxRouterFunctionPaths(Locale locale, OpenAPI openAPI) {
 		Map<String, RouterFunction> routerBeans = Objects.requireNonNull(openAPIService.getContext()).getBeansOfType(RouterFunction.class);
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
 			RouterFunction routerFunction = entry.getValue();
 			RouterFunctionVisitor routerFunctionVisitor = new RouterFunctionVisitor();
 			routerFunction.accept(routerFunctionVisitor);
-			getRouterFunctionPaths(entry.getKey(), routerFunctionVisitor, locale);
+			getRouterFunctionPaths(entry.getKey(), routerFunctionVisitor, locale, openAPI);
 		}
 	}
 
