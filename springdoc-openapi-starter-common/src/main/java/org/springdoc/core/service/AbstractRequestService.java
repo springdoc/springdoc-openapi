@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -104,7 +105,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * The constant PARAM_TYPES_TO_IGNORE.
 	 */
-	private static final List<Class<?>> PARAM_TYPES_TO_IGNORE = new ArrayList<>();
+	private static final List<Class<?>> PARAM_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
 
 	/**
 	 * The constant ANNOTATIONS_FOR_REQUIRED.

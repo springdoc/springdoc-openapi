@@ -476,7 +476,7 @@ public class GroupedOpenApi {
 	public GroupedOpenApi addAllOpenApiCustomizer(Collection<? extends OpenApiCustomizer> openApiCustomizerCollection) {
 		List<OpenApiCustomizer> result = new ArrayList<>();
 		result.addAll(openApiCustomizerCollection);
-		result.addAll(openApiCustomizerCollection);
+		result.addAll(openApiCustomizers);
 		openApiCustomizers = result;
 		return this;
 	}
