@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.ui.app31;
+package test.org.springdoc.ui.app32;
 
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;

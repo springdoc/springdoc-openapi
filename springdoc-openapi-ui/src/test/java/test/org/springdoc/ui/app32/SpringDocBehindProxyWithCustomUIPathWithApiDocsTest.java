@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.ui.app31;
+package test.org.springdoc.ui.app32;
 
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
@@ -32,9 +32,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = {
-		"server.forward-headers-strategy=framework"
+		"server.forward-headers-strategy=framework",
+		"springdoc.swagger-ui.path=/foo/documentation/swagger.html",
+		"springdoc.api-docs.path=/bar/openapi/v3"
 })
-public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
+public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends AbstractSpringDocTest {
 
 	private static final String X_FORWARD_PREFIX = "/path/prefix";
 
@@ -42,43 +44,32 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	static class SpringDocTestApp {}
 
 	@Test
-	public void shouldServeSwaggerUIAtDefaultPath() throws Exception {
-		mockMvc.perform(get("/swagger-ui/index.html"))
+	public void shouldServeOpenapiJsonUnderCustomPath() throws Exception {
+		mockMvc.perform(get("/bar/openapi/v3")
+						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void shouldReturnCorrectInitializerJS() throws Exception {
-		mockMvc.perform(get("/swagger-ui/swagger-initializer.js")
+		mockMvc.perform(get("/foo/documentation/swagger-ui/swagger-initializer.js")
 						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
 				.andExpect(status().isOk())
 				.andExpect(content().string(
-						containsString("\"configUrl\" : \"/path/prefix/v3/api-docs/swagger-config\",")
-				));
-	}
-
-	@Test
-	public void shouldCalculateOauthRedirectBehindProxy() throws Exception {
-		mockMvc.perform(get("/v3/api-docs/swagger-config")
-						.header("X-Forwarded-Proto", "https")
-						.header("X-Forwarded-Host", "proxy-host")
-						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("oauth2RedirectUrl",
-						equalTo("https://proxy-host/path/prefix/swagger-ui/oauth2-redirect.html")
+						containsString("\"configUrl\" : \"/path/prefix/bar/openapi/v3/swagger-config\",")
 				));
 	}
 
 	@Test
 	public void shouldCalculateUrlsBehindProxy() throws Exception {
-		mockMvc.perform(get("/v3/api-docs/swagger-config")
+		mockMvc.perform(get("/bar/openapi/v3/swagger-config")
 						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("url",
-						equalTo("/path/prefix/v3/api-docs")
+						equalTo("/path/prefix/bar/openapi/v3")
 				))
 				.andExpect(jsonPath("configUrl",
-						equalTo("/path/prefix/v3/api-docs/swagger-config")
+						equalTo("/path/prefix/bar/openapi/v3/swagger-config")
 				));
 	}
 }

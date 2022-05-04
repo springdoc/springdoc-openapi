@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.ui.app31;
+package test.org.springdoc.ui.app32;
 
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
@@ -27,10 +27,9 @@ import org.springframework.test.context.TestPropertySource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestPropertySource(properties = {
-		"server.forward-headers-strategy=framework",
-		"springdoc.swagger-ui.path=/foo/documentation/swagger.html"
+		"server.forward-headers-strategy=framework"
 })
-public class SpringDocBehindProxyWithCustomUIPathTest extends AbstractSpringDocTest {
+public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 
 	private static final String X_FORWARD_PREFIX = "/path/prefix";
 
@@ -38,27 +37,35 @@ public class SpringDocBehindProxyWithCustomUIPathTest extends AbstractSpringDocT
 	static class SpringDocTestApp {}
 
 	@Test
-	public void shouldRedirectSwaggerUIFromCustomPath() {
-		webTestClient
-				.get().uri("/foo/documentation/swagger.html")
-				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
-				.exchange()
-				.expectStatus().isFound()
-				.expectHeader().location("/path/prefix/foo/documentation/swagger-ui/index.html");
+	public void shouldServeSwaggerUIAtDefaultPath() {
+		webTestClient.get().uri("/webjars/swagger-ui/index.html").exchange()
+				.expectStatus().isOk();
 	}
 
 	@Test
-	public void shouldReturnCorrectInitializerJS() {
+	public void shouldReturnCorrectInitializerJS() throws Exception {
 		webTestClient
-				.get().uri("/foo/documentation/swagger-ui/swagger-initializer.js")
+				.get().uri("/webjars/swagger-ui/swagger-initializer.js")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody(String.class)
 				.consumeWith(response ->
 						assertThat(response.getResponseBody())
-								.contains("\"configUrl\" : \\\"/path/prefix/v3/api-docs/swagger-config\\\",")
+								.contains("\"configUrl\" : \"/path/prefix/v3/api-docs/swagger-config\",")
 				);
+	}
+
+	@Test
+	public void shouldCalculateOauthRedirectBehindProxy() throws Exception {
+		webTestClient
+				.get().uri("/v3/api-docs/swagger-config")
+				.header("X-Forwarded-Proto", "https")
+				.header("X-Forwarded-Host", "proxy-host")
+				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
+				.exchange()
+				.expectStatus().isOk().expectBody()
+				.jsonPath("$.oauth2RedirectUrl").isEqualTo("https://proxy-host/path/prefix/swagger-ui/oauth2-redirect.html");
 	}
 
 	@Test
@@ -67,8 +74,7 @@ public class SpringDocBehindProxyWithCustomUIPathTest extends AbstractSpringDocT
 				.get().uri("/v3/api-docs/swagger-config")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
+				.expectStatus().isOk().expectBody()
 				.jsonPath("$.url")
 				.isEqualTo("/path/prefix/v3/api-docs")
 				.jsonPath("$.configUrl")
