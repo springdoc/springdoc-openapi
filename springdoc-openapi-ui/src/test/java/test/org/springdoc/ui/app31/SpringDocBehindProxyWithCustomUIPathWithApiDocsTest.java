@@ -19,55 +19,57 @@
 package test.org.springdoc.ui.app31;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MvcResult;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
+
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = {
 		"server.forward-headers-strategy=framework",
-		"springdoc.api-docs.path=/docs/v3/openapi",
-		"springdoc.swagger-ui.path=/documentation/swagger.html"
+		"springdoc.swagger-ui.path=/foo/documentation/swagger.html",
+		"springdoc.api-docs.path=/bar/openapi/v3"
 })
-public class SpringDocBehindProxyWithCustomSpringAndUIPathsTest extends AbstractSpringDocTest {
+public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends AbstractSpringDocTest {
 
 	private static final String X_FORWARD_PREFIX = "/path/prefix";
-
-	private static final String EXTERNAL_SWAGGER_CONFIG_URL = "/path/prefix/docs/v3/openapi/swagger-config";
-	private static final String EXTERNAL_OPENAPI_JSON_URL = "/path/prefix/docs/v3/openapi";
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 
 	@Test
 	public void shouldServeOpenapiJsonUnderCustomPath() throws Exception {
-		mockMvc.perform(get("/docs/v3/openapi")
+		mockMvc.perform(get("/bar/openapi/v3")
 						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
 				.andExpect(status().isOk());
 	}
 
 	@Test
-	public void shouldCalculateUrlsBehindProxy() throws Exception {
-		mockMvc.perform(get("/docs/v3/openapi/swagger-config")
+	public void shouldReturnCorrectInitializerJS() throws Exception {
+		mockMvc.perform(get("/foo/documentation/swagger-ui/swagger-initializer.js")
 						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("configUrl", equalTo(EXTERNAL_SWAGGER_CONFIG_URL)))
-				.andExpect(jsonPath("url", equalTo(EXTERNAL_OPENAPI_JSON_URL)));
+				.andExpect(content().string(
+						containsString("\"configUrl\" : \"/path/prefix/bar/openapi/v3/swagger-config\",")
+				));
 	}
 
 	@Test
-	public void shouldReturnCorrectInitializerJS() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(get("/documentation/swagger-ui/swagger-initializer.js")
+	public void shouldCalculateUrlsBehindProxy() throws Exception {
+		mockMvc.perform(get("/bar/openapi/v3/swagger-config")
 						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
-				.andExpect(status().isOk()).andReturn();
-		String actualContent = mvcResult.getResponse().getContentAsString();
-
-		assertTrue(actualContent.contains("window.ui"));
-		assertTrue(actualContent.contains("\"configUrl\" : \"" + EXTERNAL_SWAGGER_CONFIG_URL +"\","));
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("url",
+						equalTo("/path/prefix/bar/openapi/v3")
+				))
+				.andExpect(jsonPath("configUrl",
+						equalTo("/path/prefix/bar/openapi/v3/swagger-config")
+				));
 	}
 }

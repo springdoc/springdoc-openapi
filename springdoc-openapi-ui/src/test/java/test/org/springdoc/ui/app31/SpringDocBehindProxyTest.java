@@ -19,19 +19,21 @@
 package test.org.springdoc.ui.app31;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MvcResult;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
+
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = {"server.forward-headers-strategy=framework"})
+@TestPropertySource(properties = {
+		"server.forward-headers-strategy=framework"
+})
 public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 
 	private static final String X_FORWARD_PREFIX = "/path/prefix";
@@ -47,13 +49,12 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 
 	@Test
 	public void shouldReturnCorrectInitializerJS() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(get("/swagger-ui/swagger-initializer.js")
+		mockMvc.perform(get("/swagger-ui/swagger-initializer.js")
 						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
-				.andExpect(status().isOk()).andReturn();
-		String actualContent = mvcResult.getResponse().getContentAsString();
-
-		assertTrue(actualContent.contains("window.ui"));
-		assertTrue(actualContent.contains("\"configUrl\" : \"/path/prefix/v3/api-docs/swagger-config\","));
+				.andExpect(status().isOk())
+				.andExpect(content().string(
+						containsString("\"configUrl\" : \"/path/prefix/v3/api-docs/swagger-config\",")
+				));
 	}
 
 	@Test
@@ -63,15 +64,21 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 						.header("X-Forwarded-Host", "proxy-host")
 						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("https://proxy-host/path/prefix/swagger-ui/oauth2-redirect.html")));
+				.andExpect(jsonPath("oauth2RedirectUrl",
+						equalTo("https://proxy-host/path/prefix/swagger-ui/oauth2-redirect.html")
+				));
 	}
 
 	@Test
 	public void shouldCalculateUrlsBehindProxy() throws Exception {
 		mockMvc.perform(get("/v3/api-docs/swagger-config")
-								.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
+						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("configUrl", equalTo("/path/prefix/v3/api-docs/swagger-config")))
-				.andExpect(jsonPath("url", equalTo("/path/prefix/v3/api-docs")));
+				.andExpect(jsonPath("url",
+						equalTo("/path/prefix/v3/api-docs")
+				))
+				.andExpect(jsonPath("configUrl",
+						equalTo("/path/prefix/v3/api-docs/swagger-config")
+				));
 	}
 }

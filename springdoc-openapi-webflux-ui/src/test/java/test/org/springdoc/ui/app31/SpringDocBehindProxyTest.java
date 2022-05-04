@@ -24,10 +24,11 @@ import test.org.springdoc.ui.AbstractSpringDocTest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@TestPropertySource(properties = { "server.forward-headers-strategy=framework" })
+@TestPropertySource(properties = {
+		"server.forward-headers-strategy=framework"
+})
 public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 
 	private static final String X_FORWARD_PREFIX = "/path/prefix";
@@ -49,14 +50,9 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody(String.class)
-				.consumeWith(response -> {
-							String actualContent = response.getResponseBody();
-							assertNotNull(actualContent);
-							assertTrue(actualContent.contains("window.ui"));
-							assertTrue(actualContent.contains("\"configUrl\" : \"/v3/api-docs/swagger-config\","));
-							// TODO: what should be returned
-							//assertTrue(actualContent.contains("\"configUrl\" : \"/path/prefix/v3/api-docs/swagger-config\","));
-						}
+				.consumeWith(response ->
+						assertThat(response.getResponseBody())
+								.contains("\"configUrl\" : \"/path/prefix/v3/api-docs/swagger-config\",")
 				);
 	}
 
@@ -79,7 +75,9 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchange()
 				.expectStatus().isOk().expectBody()
-				.jsonPath("$.configUrl").isEqualTo("/path/prefix/v3/api-docs/swagger-config")
-				.jsonPath("$.url").isEqualTo("/path/prefix/v3/api-docs");
+				.jsonPath("$.url")
+				.isEqualTo("/path/prefix/v3/api-docs")
+				.jsonPath("$.configUrl")
+				.isEqualTo("/path/prefix/v3/api-docs/swagger-config");
 	}
 }
