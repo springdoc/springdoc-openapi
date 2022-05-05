@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 		"springdoc.swagger-ui.path=/foo/documentation/swagger.html",
 		"springdoc.api-docs.path=/bar/openapi/v3"
 })
+@Import(SpringDocConfig.class)
 public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends AbstractSpringDocTest {
 
 	private static final String X_FORWARD_PREFIX = "/path/prefix";
@@ -45,20 +47,20 @@ public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends Abstrac
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchange()
 				.expectStatus().isFound()
-				.expectHeader().location("/path/prefix/foo/documentation/swagger-ui/index.html");
+				.expectHeader().location("/path/prefix/foo/documentation/webjars/swagger-ui/index.html");
 	}
 
 	@Test
 	public void shouldReturnCorrectInitializerJS() {
 		webTestClient
-				.get().uri("/foo/documentation/swagger-ui/swagger-initializer.js")
+				.get().uri("/foo/documentation/webjars/swagger-ui/swagger-initializer.js")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchange()
 				.expectStatus().isOk()
 				.expectBody(String.class)
 				.consumeWith(response ->
 						assertThat(response.getResponseBody())
-								.contains("\"configUrl\" : \\\"/path/prefix/v3/api-docs/swagger-config\\\",")
+								.contains("\"configUrl\" : \"/path/prefix/bar/openapi/v3/swagger-config\",")
 				);
 	}
 
