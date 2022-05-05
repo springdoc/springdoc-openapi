@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource(properties = {
 		"server.forward-headers-strategy=framework"
 })
+@Import(SpringDocConfig.class)
 public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 
 	private static final String X_FORWARD_PREFIX = "/path/prefix";
@@ -65,7 +67,7 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchange()
 				.expectStatus().isOk().expectBody()
-				.jsonPath("$.oauth2RedirectUrl").isEqualTo("https://proxy-host/path/prefix/swagger-ui/oauth2-redirect.html");
+				.jsonPath("$.oauth2RedirectUrl").isEqualTo("https://proxy-host/path/prefix/webjars/swagger-ui/oauth2-redirect.html");
 	}
 
 	@Test
