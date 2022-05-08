@@ -10,11 +10,6 @@
       "description": "Generated server url"
     }
   ],
-  "tags": [
-    {
-      "name": "design"
-    }
-  ],
   "paths": {
     "/design": {
       "get": {

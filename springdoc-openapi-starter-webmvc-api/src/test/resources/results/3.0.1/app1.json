@@ -14,20 +14,6 @@
       "description": "Generated server url"
     }
   ],
-  "tags": [
-    {
-      "name": "inventory"
-    },
-    {
-      "name": "people"
-    },
-    {
-      "name": "tea"
-    },
-    {
-      "name": "items"
-    }
-  ],
   "paths": {
     "/{email}": {
       "get": {
@@ -436,11 +422,11 @@
               }
             }
           },
-          "400": {
-            "description": "invalid input, object invalid"
-          },
           "201": {
             "description": "item created"
+          },
+          "400": {
+            "description": "invalid input, object invalid"
           },
           "409": {
             "description": "an existing item already exists"

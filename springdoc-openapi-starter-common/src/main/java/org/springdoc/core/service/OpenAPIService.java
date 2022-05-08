@@ -341,8 +341,8 @@ public class OpenAPIService implements ApplicationContextAware {
 		Set<io.swagger.v3.oas.models.tags.Tag> tags = new HashSet<>();
 		Set<String> tagsStr = new HashSet<>();
 
-		buildTagsFromClass(handlerMethod.getBeanType(), tags, tagsStr, locale);
 		buildTagsFromMethod(handlerMethod.getMethod(), tags, tagsStr, locale);
+		buildTagsFromClass(handlerMethod.getBeanType(), tags, tagsStr, locale);
 
 		if (!CollectionUtils.isEmpty(tagsStr))
 			tagsStr = tagsStr.stream()
@@ -436,13 +436,14 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	private void addTags(List<Tag> sourceTags, Set<io.swagger.v3.oas.models.tags.Tag> tags, Locale locale) {
 		Optional<Set<io.swagger.v3.oas.models.tags.Tag>> optionalTagSet = AnnotationsUtils
-				.getTags(sourceTags.toArray(new Tag[0]), false);
+				.getTags(sourceTags.toArray(new Tag[0]), true);
 		optionalTagSet.ifPresent(tagsSet -> {
 			tagsSet.forEach(tag -> {
 				tag.name(propertyResolverUtils.resolve(tag.getName(), locale));
 				tag.description(propertyResolverUtils.resolve(tag.getDescription(), locale));
+				if (tags.stream().noneMatch(t -> t.getName().equals(tag.getName())))
+					tags.add(tag);
 			});
-			tags.addAll(tagsSet);
 		});
 	}
 
