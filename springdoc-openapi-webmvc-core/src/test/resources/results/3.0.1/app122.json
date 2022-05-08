@@ -10,11 +10,6 @@
       "description": "Generated server url"
     }
   ],
-  "tags": [
-    {
-      "name": "example"
-    }
-  ],
   "paths": {
     "/": {
       "post": {
@@ -50,6 +45,14 @@
   },
   "components": {
     "schemas": {
+      "WrapperCustomerDto": {
+        "type": "object",
+        "properties": {
+          "wrapper": {
+            "type": "string"
+          }
+        }
+      },
       "CustomerDto": {
         "type": "object",
         "properties": {
@@ -57,14 +60,6 @@
             "type": "string"
           },
           "customerName": {
-            "type": "string"
-          }
-        }
-      },
-      "WrapperCustomerDto": {
-        "type": "object",
-        "properties": {
-          "wrapper": {
             "type": "string"
           }
         }

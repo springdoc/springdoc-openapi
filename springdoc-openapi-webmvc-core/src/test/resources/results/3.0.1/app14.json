@@ -14,9 +14,6 @@
     {
       "name": "Hello! Welcome to our website!",
       "description": "This is a test message"
-    },
-    {
-      "name": "Change the language"
     }
   ],
   "paths": {
