@@ -10,11 +10,6 @@
       "description": "Generated server url"
     }
   ],
-  "tags": [
-    {
-      "name": "The sample resource"
-    }
-  ],
   "paths": {
     "/{id}": {
       "get": {
