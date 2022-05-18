@@ -247,7 +247,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		else {
 			try {
 				ObjectMapper objectMapper = new ObjectMapper();
-				calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class );
+				calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class);
 			}
 			catch (JsonProcessingException e) {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
@@ -258,7 +258,7 @@ public class OpenAPIService implements ApplicationContextAware {
 			buildOpenAPIWithOpenAPIDefinition(calculatedOpenAPI, apiDef.get(), locale);
 		}
 		// Set default info
-		else if (calculatedOpenAPI.getInfo() == null) {
+		else if (calculatedOpenAPI != null && calculatedOpenAPI.getInfo() == null) {
 			Info infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
 			calculatedOpenAPI.setInfo(infos);
 		}
@@ -270,7 +270,8 @@ public class OpenAPIService implements ApplicationContextAware {
 		initializeHiddenRestController();
 
 		// add security schemes
-		this.calculateSecuritySchemes(calculatedOpenAPI.getComponents(), locale);
+		if (calculatedOpenAPI != null)
+			this.calculateSecuritySchemes(calculatedOpenAPI.getComponents(), locale);
 		openApiBuilderCustomisers.ifPresent(customisers -> customisers.forEach(customiser -> customiser.customise(this)));
 
 		return calculatedOpenAPI;
