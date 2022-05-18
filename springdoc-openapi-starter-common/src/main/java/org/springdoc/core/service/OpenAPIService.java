@@ -270,7 +270,7 @@ public class OpenAPIService implements ApplicationContextAware {
 			buildOpenAPIWithOpenAPIDefinition(calculatedOpenAPI, apiDef.get(), locale);
 		}
 		// Set default info
-		else if (calculatedOpenAPI.getInfo() == null) {
+		else if (calculatedOpenAPI != null && calculatedOpenAPI.getInfo() == null) {
 			Info infos = new Info().title(DEFAULT_TITLE).version(DEFAULT_VERSION);
 			calculatedOpenAPI.setInfo(infos);
 		}
@@ -282,7 +282,8 @@ public class OpenAPIService implements ApplicationContextAware {
 		initializeHiddenRestController();
 
 		// add security schemes
-		this.calculateSecuritySchemes(calculatedOpenAPI.getComponents(), locale);
+		if (calculatedOpenAPI != null)
+			this.calculateSecuritySchemes(calculatedOpenAPI.getComponents(), locale);
 		openApiBuilderCustomisers.ifPresent(customizers -> customizers.forEach(customiser -> customiser.customise(this)));
 		return calculatedOpenAPI;
 	}
