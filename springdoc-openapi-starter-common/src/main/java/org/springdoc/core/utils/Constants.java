@@ -201,9 +201,14 @@ public final class Constants {
 	public static final String SWAGGER_INITIALIZER_URL = SWAGGER_UI_PREFIX + "/" + SWAGGER_INITIALIZER_JS;
 
 	/**
+	 * the constant OAUTH_REDIRECT_PAGE.
+	 */
+	public static final String OAUTH_REDIRECT_PAGE = "/oauth2-redirect.html";
+
+	/**
 	 * The constant SWAGGER_UI_OAUTH_REDIRECT_URL.
 	 */
-	public static final String SWAGGER_UI_OAUTH_REDIRECT_URL = SWAGGER_UI_PREFIX + "/oauth2-redirect.html";
+	public static final String SWAGGER_UI_OAUTH_REDIRECT_URL = SWAGGER_UI_PREFIX + OAUTH_REDIRECT_PAGE;
 
 	/**
 	 * The constant APPLICATION_OPENAPI_YAML.
