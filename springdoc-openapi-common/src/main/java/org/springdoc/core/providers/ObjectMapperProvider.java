@@ -22,12 +22,20 @@
 
 package org.springdoc.core.providers;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Json31;
 import io.swagger.v3.core.util.ObjectMapperFactory;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.core.util.Yaml31;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.Schema;
+import org.springdoc.api.mixins.SortedOpenAPIMixin;
+import org.springdoc.api.mixins.SortedOpenAPIMixin31;
+import org.springdoc.api.mixins.SortedSchemaMixin;
+import org.springdoc.api.mixins.SortedSchemaMixin31;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 
@@ -89,10 +97,34 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 	 */
 	public static ObjectMapper createJson(SpringDocConfigProperties springDocConfigProperties) {
 		OpenApiVersion openApiVersion = springDocConfigProperties.getApiDocs().getVersion();
+		ObjectMapper objectMapper;
 		if (openApiVersion == OpenApiVersion.OPENAPI_3_1)
-			return ObjectMapperProvider.createJson31();
+			objectMapper = ObjectMapperProvider.createJson31();
 		else
-			return ObjectMapperProvider.createJson();
+			objectMapper = ObjectMapperProvider.createJson();
+
+		if (springDocConfigProperties.isWriterWithOrderByKeys())
+			sortOutput(objectMapper, springDocConfigProperties);
+
+		return objectMapper;
+	}
+
+	/**
+	 * Sort output.
+	 *
+	 * @param objectMapper the object mapper
+	 */
+	public static void sortOutput(ObjectMapper objectMapper, SpringDocConfigProperties springDocConfigProperties) {
+		objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
+		objectMapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
+		if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion()) {
+			objectMapper.addMixIn(OpenAPI.class, SortedOpenAPIMixin31.class);
+			objectMapper.addMixIn(Schema.class, SortedSchemaMixin31.class);
+		}
+		else {
+			objectMapper.addMixIn(OpenAPI.class, SortedOpenAPIMixin.class);
+			objectMapper.addMixIn(Schema.class, SortedSchemaMixin.class);
+		}
 	}
 
 }
