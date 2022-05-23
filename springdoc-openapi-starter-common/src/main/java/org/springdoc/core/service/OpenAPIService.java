@@ -69,6 +69,7 @@ import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.PropertyResolverUtils;
 
 import org.springframework.beans.BeansException;
@@ -258,7 +259,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		}
 		else {
 			try {
-				ObjectMapper objectMapper = new ObjectMapper();
+				ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
 				calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class);
 			}
 			catch (JsonProcessingException e) {
