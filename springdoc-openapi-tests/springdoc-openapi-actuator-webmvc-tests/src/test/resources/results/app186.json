@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:9098/test",
+      "url": "http://localhost",
       "description": "Generated server url"
     }
   ],
@@ -21,7 +21,7 @@
     }
   ],
   "paths": {
-    "/application/loggers/{name}": {
+    "/actuator/loggers/{name}": {
       "get": {
         "tags": [
           "Actuator"
@@ -109,7 +109,7 @@
         }
       }
     },
-    "/application": {
+    "/actuator": {
       "get": {
         "tags": [
           "Actuator"
@@ -158,7 +158,7 @@
         }
       }
     },
-    "/application/threaddump": {
+    "/actuator/threaddump": {
       "get": {
         "tags": [
           "Actuator"
@@ -194,7 +194,7 @@
         }
       }
     },
-    "/application/scheduledtasks": {
+    "/actuator/scheduledtasks": {
       "get": {
         "tags": [
           "Actuator"
@@ -225,7 +225,7 @@
         }
       }
     },
-    "/application/metrics": {
+    "/actuator/metrics": {
       "get": {
         "tags": [
           "Actuator"
@@ -256,7 +256,7 @@
         }
       }
     },
-    "/application/metrics/{requiredMetricName}": {
+    "/actuator/metrics/{requiredMetricName}": {
       "get": {
         "tags": [
           "Actuator"
@@ -297,7 +297,7 @@
         }
       }
     },
-    "/application/mappings": {
+    "/actuator/mappings": {
       "get": {
         "tags": [
           "Actuator"
@@ -328,7 +328,7 @@
         }
       }
     },
-    "/application/loggers": {
+    "/actuator/loggers": {
       "get": {
         "tags": [
           "Actuator"
@@ -359,7 +359,7 @@
         }
       }
     },
-    "/application/info": {
+    "/actuator/info": {
       "get": {
         "tags": [
           "Actuator"
@@ -390,7 +390,7 @@
         }
       }
     },
-    "/application/heapdump": {
+    "/actuator/heapdump": {
       "get": {
         "tags": [
           "Actuator"
@@ -411,7 +411,7 @@
         }
       }
     },
-    "/application/health": {
+    "/actuator/health": {
       "get": {
         "tags": [
           "Actuator"
@@ -442,7 +442,38 @@
         }
       }
     },
-    "/application/env": {
+    "/actuator/health/**": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint 'health-path'",
+        "operationId": "health-path",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/env": {
       "get": {
         "tags": [
           "Actuator"
@@ -473,7 +504,7 @@
         }
       }
     },
-    "/application/env/{toMatch}": {
+    "/actuator/env/{toMatch}": {
       "get": {
         "tags": [
           "Actuator"
@@ -514,7 +545,7 @@
         }
       }
     },
-    "/application/configprops": {
+    "/actuator/configprops": {
       "get": {
         "tags": [
           "Actuator"
@@ -545,7 +576,7 @@
         }
       }
     },
-    "/application/configprops/{prefix}": {
+    "/actuator/configprops/{prefix}": {
       "get": {
         "tags": [
           "Actuator"
@@ -586,7 +617,7 @@
         }
       }
     },
-    "/application/conditions": {
+    "/actuator/conditions": {
       "get": {
         "tags": [
           "Actuator"
@@ -617,7 +648,7 @@
         }
       }
     },
-    "/application/caches": {
+    "/actuator/caches": {
       "get": {
         "tags": [
           "Actuator"
@@ -667,7 +698,7 @@
         }
       }
     },
-    "/application/caches/{cache}": {
+    "/actuator/caches/{cache}": {
       "get": {
         "tags": [
           "Actuator"
@@ -747,7 +778,7 @@
         }
       }
     },
-    "/application/beans": {
+    "/actuator/beans": {
       "get": {
         "tags": [
           "Actuator"

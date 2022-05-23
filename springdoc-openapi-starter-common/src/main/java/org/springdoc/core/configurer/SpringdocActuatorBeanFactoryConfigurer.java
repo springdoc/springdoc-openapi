@@ -80,8 +80,6 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 			GroupedOpenApi actuatorGroup = GroupedOpenApi.builder().group(ACTUATOR_DEFAULT_GROUP)
 					.pathsToMatch(webEndpointProperties.getBasePath() + ALL_PATTERN)
 					.pathsToExclude(webEndpointProperties.getBasePath() + HEALTH_PATTERN)
-					.addOperationCustomizer(actuatorCustomizer)
-					.addOpenApiCustomizer(actuatorOpenApiCustomizer)
 					.build();
 			// Add the actuator group
 			newGroups.add(actuatorGroup);

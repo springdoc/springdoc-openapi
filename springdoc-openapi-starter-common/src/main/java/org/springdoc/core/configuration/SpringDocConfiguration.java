@@ -56,9 +56,8 @@ import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
+import org.springdoc.core.customizers.GlobalOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
-import org.springdoc.core.customizers.OpenApiCustomizer;
-import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
@@ -470,7 +469,7 @@ public class SpringDocConfiguration {
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.SAME)
-		OperationCustomizer actuatorCustomizer() {
+		GlobalOperationCustomizer actuatorCustomizer() {
 			return new ActuatorOperationCustomizer();
 		}
 
@@ -483,7 +482,7 @@ public class SpringDocConfiguration {
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.SAME)
-		OpenApiCustomizer actuatorOpenApiCustomizer(WebEndpointProperties webEndpointProperties) {
+		GlobalOpenApiCustomizer actuatorOpenApiCustomizer(WebEndpointProperties webEndpointProperties) {
 			return new ActuatorOpenApiCustomizer(webEndpointProperties);
 		}
 
