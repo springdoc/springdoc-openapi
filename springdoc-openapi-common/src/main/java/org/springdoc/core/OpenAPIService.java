@@ -60,6 +60,7 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -246,7 +247,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		}
 		else {
 			try {
-				ObjectMapper objectMapper = new ObjectMapper();
+				ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
 				calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class);
 			}
 			catch (JsonProcessingException e) {

@@ -25,6 +25,7 @@ package org.springdoc.core.providers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Json31;
+import io.swagger.v3.core.util.ObjectMapperFactory;
 import io.swagger.v3.core.util.Yaml;
 import io.swagger.v3.core.util.Yaml31;
 import org.springdoc.core.SpringDocConfigProperties;
@@ -33,7 +34,7 @@ import org.springdoc.core.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 /**
  * The type Spring doc object mapper provider.
  */
-public class ObjectMapperProvider {
+public class ObjectMapperProvider extends ObjectMapperFactory {
 
 	/**
 	 * The Json mapper.
@@ -79,4 +80,19 @@ public class ObjectMapperProvider {
 	public ObjectMapper yamlMapper() {
 		return yamlMapper;
 	}
+
+	/**
+	 * Create json object mapper.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return the object mapper
+	 */
+	public static ObjectMapper createJson(SpringDocConfigProperties springDocConfigProperties) {
+		OpenApiVersion openApiVersion = springDocConfigProperties.getApiDocs().getVersion();
+		if (openApiVersion == OpenApiVersion.OPENAPI_3_1)
+			return ObjectMapperProvider.createJson31();
+		else
+			return ObjectMapperProvider.createJson();
+	}
+
 }
