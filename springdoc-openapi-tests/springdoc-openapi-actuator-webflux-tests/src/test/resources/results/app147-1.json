@@ -26,7 +26,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_6",
+        "operationId": "handle_5",
         "parameters": [
           {
             "name": "name",
@@ -147,7 +147,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_2",
+        "operationId": "handle_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -177,7 +177,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_3",
+        "operationId": "handle_2",
         "parameters": [
           {
             "name": "requiredMetricName",
@@ -217,7 +217,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_4",
+        "operationId": "handle_3",
         "responses": {
           "200": {
             "description": "OK",
@@ -247,7 +247,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_5",
+        "operationId": "handle_4",
         "responses": {
           "200": {
             "description": "OK",
@@ -277,7 +277,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_7",
+        "operationId": "handle_6",
         "responses": {
           "200": {
             "description": "OK",
@@ -307,7 +307,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_8",
+        "operationId": "handle_7",
         "responses": {
           "200": {
             "description": "OK",
@@ -337,7 +337,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_9",
+        "operationId": "handle_8",
         "responses": {
           "200": {
             "description": "OK",
@@ -357,7 +357,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_10",
+        "operationId": "handle_9",
         "responses": {
           "200": {
             "description": "OK",
@@ -387,7 +387,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_11",
+        "operationId": "handle_10",
         "parameters": [
           {
             "name": "toMatch",
@@ -427,7 +427,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_12",
+        "operationId": "handle_11",
         "responses": {
           "200": {
             "description": "OK",
@@ -457,7 +457,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_13",
+        "operationId": "handle_12",
         "parameters": [
           {
             "name": "prefix",
@@ -497,7 +497,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_14",
+        "operationId": "handle_13",
         "responses": {
           "200": {
             "description": "OK",
@@ -527,7 +527,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_15",
+        "operationId": "handle_14",
         "responses": {
           "200": {
             "description": "OK",
@@ -557,7 +557,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_16",
+        "operationId": "handle_15",
         "parameters": [
           {
             "name": "cache",
@@ -595,7 +595,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_20",
+        "operationId": "handle_19",
         "parameters": [
           {
             "name": "cache",
@@ -635,7 +635,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_17",
+        "operationId": "handle_16",
         "responses": {
           "200": {
             "description": "OK",
@@ -663,7 +663,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_19",
+        "operationId": "handle_18",
         "responses": {
           "200": {
             "description": "OK",
@@ -683,7 +683,7 @@
         "tags": [
           "Actuator"
         ],
-        "operationId": "handle_1_18",
+        "operationId": "handle_17",
         "responses": {
           "200": {
             "description": "OK",
