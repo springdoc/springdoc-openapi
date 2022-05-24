@@ -38,6 +38,7 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 
@@ -46,6 +47,11 @@ public class HelloController {
 
 	@GetMapping("/test")
 	public void test(){}
+
+	@GetMapping(value = "/example/{fooBar}")
+	public String getFooBar(@PathVariable FooBar fooBar) {
+		return fooBar.name();
+	}
 
 	@Bean
 	public OpenAPI openAPI(){return new OpenAPI().components(new Components());}
