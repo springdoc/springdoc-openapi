@@ -174,23 +174,6 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	private static Class<?> basicErrorController;
 
-	static {
-		try {
-			//spring-boot 2
-			basicErrorController = Class.forName("org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController");
-		}
-		catch (ClassNotFoundException e) {
-			//spring-boot 1
-			try {
-				basicErrorController = Class.forName("org.springframework.boot.autoconfigure.web.BasicErrorController");
-			}
-			catch (ClassNotFoundException classNotFoundException) {
-				//Basic error controller class not found
-				LOGGER.trace(classNotFoundException.getMessage());
-			}
-		}
-	}
-
 	/**
 	 * Instantiates a new Open api builder.
 	 *
