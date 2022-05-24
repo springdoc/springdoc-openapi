@@ -32,6 +32,49 @@
           }
         }
       }
+    },
+    "/example/{fooBar}": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "getFooBar",
+        "parameters": [
+          {
+            "name": "fooBar",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "foo",
+                "bar"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "5xx": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
