@@ -23,7 +23,10 @@
 package test.org.springdoc.api.v30.app83;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -50,4 +53,15 @@ public class HelloController {
 		return null;
 	}
 
+	@RequestMapping(value = "/test",
+			method = RequestMethod.PUT,
+			consumes = { MediaType.MULTIPART_FORM_DATA_VALUE },
+			produces = { MediaType.APPLICATION_JSON_VALUE }
+	)
+	@RequestBody(content =@Content(schema  = @Schema( requiredProperties = "file",  type = "object")
+			, schemaProperties = @SchemaProperty(name = "file", schema = @Schema(type = "string", format = "binary"))
+	))
+	public ResponseEntity<?> put2() {
+		return null;
+	}
 }
