@@ -25,6 +25,7 @@ package org.springdoc.core.providers;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.core.util.Json31;
 import io.swagger.v3.core.util.ObjectMapperFactory;
@@ -99,9 +100,9 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 		OpenApiVersion openApiVersion = springDocConfigProperties.getApiDocs().getVersion();
 		ObjectMapper objectMapper;
 		if (openApiVersion == OpenApiVersion.OPENAPI_3_1)
-			objectMapper = ObjectMapperProvider.createJson31();
+			objectMapper = ObjectMapperFactory.createJson31();
 		else
-			objectMapper = ObjectMapperProvider.createJson();
+			objectMapper = ObjectMapperFactory.createJson();
 
 		if (springDocConfigProperties.isWriterWithOrderByKeys())
 			sortOutput(objectMapper, springDocConfigProperties);
@@ -116,7 +117,7 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 	 */
 	public static void sortOutput(ObjectMapper objectMapper, SpringDocConfigProperties springDocConfigProperties) {
 		objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
-		objectMapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
+		JsonMapper.builder().configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
 		if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion()) {
 			objectMapper.addMixIn(OpenAPI.class, SortedOpenAPIMixin31.class);
 			objectMapper.addMixIn(Schema.class, SortedSchemaMixin31.class);

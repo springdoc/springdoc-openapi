@@ -26,8 +26,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'loggers-name'",
-        "operationId": "loggers-name",
+        "operationId": "handle_5",
         "parameters": [
           {
             "name": "name",
@@ -65,8 +64,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'loggers-name'",
-        "operationId": "loggers-name_2",
+        "operationId": "handle",
         "parameters": [
           {
             "name": "name",
@@ -114,8 +112,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'threaddump'",
-        "operationId": "threaddump",
+        "operationId": "handle_1_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -150,8 +147,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'scheduledtasks'",
-        "operationId": "scheduledtasks",
+        "operationId": "handle_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -181,8 +177,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'metrics-requiredMetricName'",
-        "operationId": "metrics-requiredMetricName",
+        "operationId": "handle_2",
         "parameters": [
           {
             "name": "requiredMetricName",
@@ -222,8 +217,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'metrics'",
-        "operationId": "metrics",
+        "operationId": "handle_3",
         "responses": {
           "200": {
             "description": "OK",
@@ -253,8 +247,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'mappings'",
-        "operationId": "mappings",
+        "operationId": "handle_4",
         "responses": {
           "200": {
             "description": "OK",
@@ -284,8 +277,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'loggers'",
-        "operationId": "loggers",
+        "operationId": "handle_6",
         "responses": {
           "200": {
             "description": "OK",
@@ -315,8 +307,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'info'",
-        "operationId": "info",
+        "operationId": "handle_7",
         "responses": {
           "200": {
             "description": "OK",
@@ -346,8 +337,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'heapdump'",
-        "operationId": "heapdump",
+        "operationId": "handle_8",
         "responses": {
           "200": {
             "description": "OK",
@@ -367,8 +357,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'health-path'",
-        "operationId": "health-path",
+        "operationId": "handle_9",
         "parameters": [
           {
             "name": "*path",
@@ -408,8 +397,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'health'",
-        "operationId": "health",
+        "operationId": "handle_10",
         "responses": {
           "200": {
             "description": "OK",
@@ -439,8 +427,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'env-toMatch'",
-        "operationId": "env-toMatch",
+        "operationId": "handle_11",
         "parameters": [
           {
             "name": "toMatch",
@@ -480,8 +467,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'env'",
-        "operationId": "env",
+        "operationId": "handle_12",
         "responses": {
           "200": {
             "description": "OK",
@@ -511,8 +497,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'configprops-prefix'",
-        "operationId": "configprops-prefix",
+        "operationId": "handle_13",
         "parameters": [
           {
             "name": "prefix",
@@ -552,8 +537,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'configprops'",
-        "operationId": "configprops",
+        "operationId": "handle_14",
         "responses": {
           "200": {
             "description": "OK",
@@ -583,8 +567,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'conditions'",
-        "operationId": "conditions",
+        "operationId": "handle_15",
         "responses": {
           "200": {
             "description": "OK",
@@ -614,8 +597,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'caches-cache'",
-        "operationId": "caches-cache",
+        "operationId": "handle_16",
         "parameters": [
           {
             "name": "cache",
@@ -653,8 +635,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'caches-cache'",
-        "operationId": "caches-cache_2",
+        "operationId": "handle_20",
         "parameters": [
           {
             "name": "cache",
@@ -694,8 +675,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'caches'",
-        "operationId": "caches",
+        "operationId": "handle_17",
         "responses": {
           "200": {
             "description": "OK",
@@ -723,8 +703,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'caches'",
-        "operationId": "caches_2",
+        "operationId": "handle_19",
         "responses": {
           "200": {
             "description": "OK",
@@ -744,8 +723,7 @@
         "tags": [
           "Actuator"
         ],
-        "summary": "Actuator web endpoint 'beans'",
-        "operationId": "beans",
+        "operationId": "handle_18",
         "responses": {
           "200": {
             "description": "OK",

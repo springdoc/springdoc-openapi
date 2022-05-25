@@ -100,18 +100,17 @@ public class ActuatorOpenApiCustomizer implements GlobalOpenApiCustomizer {
 	private void handleActuatorOperationIdUniqueness(OpenAPI openApi) {
 		Set<String> usedOperationIds = new HashSet<>();
 		actuatorPathEntryStream(openApi, null)
-			.sorted(Comparator.comparing(Entry::getKey))
-			.forEachOrdered(stringPathItemEntry -> {
-			stringPathItemEntry.getValue().readOperations().forEach(operation -> {
-				String initialOperationId = operation.getOperationId();
-				String uniqueOperationId = operation.getOperationId();
-				int counter = 1;
-				while (!usedOperationIds.add(uniqueOperationId)) {
-					uniqueOperationId = initialOperationId + "_" + ++counter;
-				}
-				operation.setOperationId(uniqueOperationId);
-			});
-		});
+				.sorted(Comparator.comparing(Entry::getKey))
+				.forEachOrdered(stringPathItemEntry ->
+						stringPathItemEntry.getValue().readOperations().forEach(operation -> {
+							String initialOperationId = operation.getOperationId();
+							String uniqueOperationId = operation.getOperationId();
+							int counter = 1;
+							while (!usedOperationIds.add(uniqueOperationId)) {
+								uniqueOperationId = initialOperationId + "_" + ++counter;
+							}
+							operation.setOperationId(uniqueOperationId);
+						}));
 	}
 
 	@Override
