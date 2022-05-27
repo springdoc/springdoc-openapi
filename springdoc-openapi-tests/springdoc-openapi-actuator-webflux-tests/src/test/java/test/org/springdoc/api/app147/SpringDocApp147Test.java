@@ -33,7 +33,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 		properties = { "management.endpoints.web.exposure.include:*",
 				"springdoc.show-actuator=true",
 				"management.endpoints.web.exposure.exclude=functions, shutdown",
-				"management.server.port=9097",
+				"management.server.port=9297",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {

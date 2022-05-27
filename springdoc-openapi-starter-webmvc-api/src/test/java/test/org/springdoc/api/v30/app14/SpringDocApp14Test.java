@@ -42,7 +42,7 @@ public class SpringDocApp14Test extends AbstractSpringDocV30Test {
 	@BeforeAll
 	public static void init()  {
 		DEFAULT_LOCALE = Locale.getDefault();
-		Locale.setDefault(Locale.FRANCE);
+		Locale.setDefault(Locale.US);
 	}
 
 	@AfterAll

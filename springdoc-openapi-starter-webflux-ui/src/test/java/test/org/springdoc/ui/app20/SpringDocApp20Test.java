@@ -43,7 +43,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "server.port=9020" })
+		properties = { "server.port=9220" })
 class SpringDocApp20Test extends AbstractCommonTest {
 
 	@LocalServerPort

@@ -32,7 +32,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties = { "management.endpoints.web.exposure.include:*",
 				"springdoc.show-actuator=true",
-				"management.server.port=9096",
+				"management.server.port=9296",
 				"management.endpoints.web.exposure.exclude=functions, shutdown",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })

@@ -42,7 +42,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
 		properties = { "spring.webflux.base-path=/test",
 				"springdoc.swagger-ui.use-root-path=true",
-				"server.port=9029" })
+				"server.port=9229" })
 class SpringDocApp23Test extends AbstractCommonTest {
 
 	@LocalServerPort

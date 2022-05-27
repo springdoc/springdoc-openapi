@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:6666",
+      "url": "http://localhost:6266",
       "description": "Generated server url"
     }
   ],
