@@ -42,7 +42,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "server.port=9019",
+		properties = { "server.port=9219",
 				"springdoc.swagger-ui.path=/" })
 class SpringDocApp19Test extends AbstractCommonTest {
 

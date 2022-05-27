@@ -32,11 +32,11 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
 		properties = { "management.endpoints.web.exposure.include:*",
-				"server.port=55595",
+				"server.port=52595",
 				"springdoc.use-management-port=true",
 				"springdoc.group-configs[0].group=users",
 				"springdoc.group-configs[0].packages-to-scan=test.org.springdoc.api.app145",
-				"management.server.port=9095",
+				"management.server.port=9295",
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp1452Test extends AbstractSpringDocActuatorTest {
 

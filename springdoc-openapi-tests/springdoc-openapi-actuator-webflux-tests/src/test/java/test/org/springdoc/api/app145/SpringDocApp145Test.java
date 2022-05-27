@@ -34,11 +34,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
 		properties = { "management.endpoints.web.exposure.include:*",
-				"server.port=55593",
+				"server.port=52593",
 				"springdoc.use-management-port=true",
 				"springdoc.group-configs[0].group=users",
 				"springdoc.group-configs[0].packages-to-scan=test.org.springdoc.api.app145",
-				"management.server.port=9093",
+				"management.server.port=9293",
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp145Test  extends AbstractSpringDocActuatorTest {
 
