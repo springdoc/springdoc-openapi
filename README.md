@@ -1,8 +1,24 @@
-![Octocat](https://springdoc.org/images/springdoc-openapi.png)
+![Octocat](https://springdoc.org/img/banner-logo.svg)
 [![Build Status](http://129.159.254.115:8686/buildStatus/icon?job=springdoc-openapi-starter-IC)](http://129.159.254.115:8080/view/springdoc-openapi/job/springdoc-openapi-IC/)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=springdoc_springdoc-openapi&metric=alert_status)](https://sonarcloud.io/dashboard?id=springdoc_springdoc-openapi)
 [![Known Vulnerabilities](https://snyk.io/test/github/springdoc/springdoc-openapi.git/badge.svg)](https://snyk.io/test/github/springdoc/springdoc-openapi.git)
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/springdoc)](https://stackoverflow.com/questions/tagged/springdoc?tab=Votes)
+
+`springdoc-openapi` is on [Open Collective](https://opencollective.com/springdoc).
+If you ❤️ this project consider becoming a [sponsor](https://github.com/sponsors/springdoc).
+
+This project is sponsored by
+
+<p align="center">
+<a href="https://opensource.mercedes-benz.com/" target="_blank">
+    <img src="https://springdoc.org/img/mercedes-benz.png" height="10%" width="10%" />
+</a>
+&nbsp;&nbsp;
+<a href="https://www.dm-jobs.com/dmTECH/?locale=de_DE&wt_mc=.display.github.sponsoring.logo" target="_blank">
+     <img src="https://springdoc.org/img/dmTECH_Logo.jpg" height="10%" width="10%" />
+</a>
+</p>
+
 
 # Table of Contents
 - [Full documentation](#full-documentation)
