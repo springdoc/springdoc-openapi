@@ -4,6 +4,70 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.9] - 2022-05-22
+### Added
+- #1664 - Add Schema properties support in method-level @RequestBody
+- #1181 - Initial OpenAPI 3.1 support
+- #1651 - Ease group declaration through code or properties with actuators
+### Changed
+- upgrade to spring-boot 2.7.0
+- upgrade swagger-ui: 4.11.1
+- upgrade classgraph: 4.8.147
+- upgrade spring-native: 0.11.5
+- upgrade spring-cloud-function: 3.2.4
+### Fixed
+- #1663 - @Schema annotation with type String and allowableValues set doesn't generate enum drop-down in swagger-ui after upgrading from 1.6.6 (when Spring custom converter is used)
+- #1655 - OpenAPIService is using ObjectMapper without configured modules since SpringDoc 1.6.7.
+- #1648 - Tags with only name provided are being added to the openAPI.tags field.
+- #1641 - ConcurrentModificationException when querying /v3/api-docs/{group} concurrently for different groups
+- #1634 - Generating doc for entities with map attribute does not work
+- #1633 - GroupedOpenApi.builder addOpenApiCustomiser execution order is reversed
+- #1630 - Remove repeated HttpSession
+- #1659 - fix oauth redirection when used in spring-native
+
+## [1.6.8] - 2022-04-22
+### Added
+- #1616 - Add global customizer and filters
+- #1620 - Allow ComposedSchemas to replace non-composed so we can respect polymorphic links discovered in later methods
+- #1579 - Updated class and method javadoc handling
+### Changed
+- upgrade to spring-boot 2.6.7
+- #1603 - Update swagger-ui path from /swaggerui to /swagger-ui when using management port (actuator) .
+- Prefer ComposedSchemas over non-composed so that method name order doesn't prevent polymorphic links generating into the spec
+### Fixed
+- #1621 - Redirection to UI broken with query-config-enabled when any other boolean parameter is defined.
+- #1617 - spring cloud stream crashes at startup.
+- #1605 - spring-native NullPointerException due to missing TypeHint
+
+## [1.6.7] - 2022-04-07
+### Added
+- #1596 - Add title property to GroupedOpenApi class for displaying a Human readable group name.
+- #1554 - Configurable caching of OpenAPI instances.
+- #1544 - @Deprecated on controller to mark all its operations as deprecated.
+- #1534 - Support custom Spring type converters.
+- #1543 - Add method to retrieve server base URL and ability to 'customize' the generated server base URL.
+- #1505 - Support swagger-ui.withCredentials property.
+- #1481 - Include /oauth/token endpoint using OpenApi Swagger 1.6.5.
+- #1501 - Added CSRF Session Storage config properties and html transformer.
+- #1498 - Pick up exception handler in case there is no controller advice at all.
+### Changed
+- upgrade to swagger-api 2.2.0 and swagger-ui 4.10.3
+- spring-native upgrade to 0.11.4
+- upgrade spring-boot version to 2.6.6
+- classgraph upgrade to 4.8.143
+- Update webjars-locator-core to 0.50
+- add owasp dependency-check-maven plugin
+### Fixed
+- #1586 - Typo in Pageable sort description.
+- #1570 - Remove unused dependencies.
+- #1565- Missing Request Body for Write Operation Actuator Endpoints.
+- #1522 - parameter of type com.querydsl.core.types.Predicate ignored when unique.
+- #1556 - oauth2RedirectUrl cached unexpectedly.
+- #1546 - Custom Requestmapping consumes responses.
+- #1552 - resolve-schema-properties is not replacing tokens from properties file.
+- #1530 - Setting displayOperationId to false does not work.
+- #1525 - Null vendor extensions are excluded from Json/Yaml.
+
 ## [1.6.6] - 2022-02-06
 ### Changed
 - #1424 - Upgrade to swagger-ui 4.5.0
