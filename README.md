@@ -178,4 +178,4 @@ Thanks you all for your support!
 * [Spring Team](https://spring.io/team) - Thanks for their support by sharing all relevant resources around Spring projects.
 * [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi) - Thanks a lot for supporting springdoc-openapi project.
 
-![JenBrains logo](https://springdoc.org/images/jetbrains.svg)
+![JenBrains logo](https://springdoc.org/img/jetbrains.svg)
