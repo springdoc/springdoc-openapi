@@ -37,7 +37,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 		properties = { "management.endpoints.web.exposure.include:*",
 				"springdoc.show-actuator=true",
 				"management.endpoints.web.exposure.exclude=functions, shutdown",
-				"management.server.port=9298",
+				"management.server.port=9288",
 				"server.port=6266",
 				"springdoc.use-management-port=true",
 				"management.server.base-path=/test",
