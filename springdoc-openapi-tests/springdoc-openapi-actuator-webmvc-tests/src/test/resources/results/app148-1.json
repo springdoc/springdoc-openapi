@@ -6,7 +6,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:6266/toto/titi",
+      "url": "http://localhost:6276/toto/titi",
       "description": "Generated server url"
     }
   ],
