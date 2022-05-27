@@ -24,6 +24,10 @@
 
 package test.org.springdoc.api.v30.app14;
 
+import java.util.Locale;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,4 +36,17 @@ public class SpringDocApp14Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
+
+	private static Locale DEFAULT_LOCALE;
+
+	@BeforeAll
+	public static void init()  {
+		DEFAULT_LOCALE = Locale.getDefault();
+		Locale.setDefault(Locale.FRANCE);
+	}
+
+	@AfterAll
+	public static void clean() {
+		Locale.setDefault(DEFAULT_LOCALE);
+	}
 }
