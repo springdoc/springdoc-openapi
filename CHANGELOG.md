@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.9] - 2022-05-22
+### Added
+- #1664 - Add Schema properties support in method-level @RequestBody
+- #1181 - Initial OpenAPI 3.1 support
+- #1651 - Ease group declaration through code or properties with actuators
+### Changed
+- upgrade to spring-boot 2.7.0
+- upgrade swagger-ui: 4.11.1
+- upgrade classgraph: 4.8.147
+- upgrade spring-native: 0.11.5
+- upgrade spring-cloud-function: 3.2.4
+### Fixed
+- #1663 - @Schema annotation with type String and allowableValues set doesn't generate enum drop-down in swagger-ui after upgrading from 1.6.6 (when Spring custom converter is used)
+- #1655 - OpenAPIService is using ObjectMapper without configured modules since SpringDoc 1.6.7.
+- #1648 - Tags with only name provided are being added to the openAPI.tags field. 
+- #1641 - ConcurrentModificationException when querying /v3/api-docs/{group} concurrently for different groups
+- #1634 - Generating doc for entities with map attribute does not work
+- #1633 - GroupedOpenApi.builder addOpenApiCustomiser execution order is reversed
+- #1630 - Remove repeated HttpSession 
+- #1659 - fix oauth redirection when used in spring-native 
+
 ## [1.6.8] - 2022-04-22
 ### Added
 - #1616 - Add global customizer and filters 
