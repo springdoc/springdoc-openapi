@@ -102,6 +102,7 @@
 		<spring-native.version>0.11.5</spring-native.version>
 		<therapi-runtime-javadoc.version>0.13.0</therapi-runtime-javadoc.version>
 		<spring-cloud-function.version>3.2.4</spring-cloud-function.version>
+		<dependency-check.version>7.1.0</dependency-check.version>
 	</properties>
 
 	<dependencyManagement>
@@ -267,7 +268,7 @@
 			<plugin>
 				<groupId>org.owasp</groupId>
 				<artifactId>dependency-check-maven</artifactId>
-				<version>7.1.0</version>
+				<version>${dependency-check.version}</version>
 				<configuration>
 					<skipSystemScope>true</skipSystemScope>
 				</configuration>
