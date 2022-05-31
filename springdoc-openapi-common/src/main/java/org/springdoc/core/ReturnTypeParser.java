@@ -166,6 +166,9 @@ public interface ReturnTypeParser {
 			}
 		}
 		for (ResolvableType ifc : contextType.getInterfaces()) {
+			if(!ifc.getType().equals(typeVariable.getGenericDeclaration())){
+				continue;
+			}
 			resolvedType = resolveVariable(typeVariable, ifc);
 			if (resolvedType.resolve() != null) {
 				return resolvedType;
