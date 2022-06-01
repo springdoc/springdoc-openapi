@@ -117,7 +117,7 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 	 */
 	public static void sortOutput(ObjectMapper objectMapper, SpringDocConfigProperties springDocConfigProperties) {
 		objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
-		JsonMapper.builder().configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
+		objectMapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
 		if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion()) {
 			objectMapper.addMixIn(OpenAPI.class, SortedOpenAPIMixin31.class);
 			objectMapper.addMixIn(Schema.class, SortedSchemaMixin31.class);
