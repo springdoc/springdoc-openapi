@@ -151,7 +151,7 @@ public interface ReturnTypeParser {
 	 */
 	static ResolvableType resolveVariable(TypeVariable<?> typeVariable, ResolvableType contextType) {
 		ResolvableType resolvedType;
-		if (contextType.hasGenerics()) {
+		if (contextType.hasGenerics() && contextType.getRawClass().equals(typeVariable.getGenericDeclaration())){
 			resolvedType = ResolvableType.forType(typeVariable, contextType);
 			if (resolvedType.resolve() != null) {
 				return resolvedType;
@@ -166,9 +166,6 @@ public interface ReturnTypeParser {
 			}
 		}
 		for (ResolvableType ifc : contextType.getInterfaces()) {
-			if(!ifc.getType().equals(typeVariable.getGenericDeclaration())){
-				continue;
-			}
 			resolvedType = resolveVariable(typeVariable, ifc);
 			if (resolvedType.resolve() != null) {
 				return resolvedType;
