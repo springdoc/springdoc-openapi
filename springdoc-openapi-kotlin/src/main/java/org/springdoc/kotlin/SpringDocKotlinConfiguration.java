@@ -23,8 +23,10 @@
 package org.springdoc.kotlin;
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
+import io.swagger.v3.oas.models.media.ByteArraySchema;
 import kotlin.Deprecated;
 import kotlin.coroutines.Continuation;
+import kotlin.jvm.internal.Intrinsics;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -51,7 +53,9 @@ public class SpringDocKotlinConfiguration {
 	 * @param objectMapperProvider the object mapper provider
 	 */
 	public SpringDocKotlinConfiguration(ObjectMapperProvider objectMapperProvider) {
-		getConfig().addRequestWrapperToIgnore(Continuation.class)
+		getConfig()
+				.addRequestWrapperToIgnore(Continuation.class)
+				.replaceWithSchema(byte[].class, new ByteArraySchema())
 				.addDeprecatedType(Deprecated.class);
 		objectMapperProvider.jsonMapper().registerModule( new KotlinModule.Builder().build());
 	}
