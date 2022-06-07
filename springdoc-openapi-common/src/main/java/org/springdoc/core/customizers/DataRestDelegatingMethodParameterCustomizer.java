@@ -46,7 +46,10 @@ import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 
 /**
  * The type Data rest delegating method parameter customizer.
@@ -85,14 +88,19 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	@Override
 	public void customize(MethodParameter originalParameter, MethodParameter methodParameter) {
 		PageableDefault pageableDefault = originalParameter.getParameterAnnotation(PageableDefault.class);
-		if (pageableDefault != null || (org.springframework.data.domain.Pageable.class.isAssignableFrom(originalParameter.getParameterType()) && (isSpringDataWebPropertiesPresent() || isRepositoryRestConfigurationPresent()))) {
+		SortDefault sortDefault = originalParameter.getParameterAnnotation(SortDefault.class);
+		Class<?> parameterType = originalParameter.getParameterType();
+		if (pageableDefault != null || sortDefault != null || (
+				(Pageable.class.isAssignableFrom(parameterType) || Sort.class.isAssignableFrom(parameterType))
+						&& (isSpringDataWebPropertiesPresent() || isRepositoryRestConfigurationPresent())
+		)) {
 			Field field = FieldUtils.getDeclaredField(DelegatingMethodParameter.class, "additionalParameterAnnotations", true);
 			try {
 				Annotation[] parameterAnnotations = (Annotation[]) field.get(methodParameter);
 				if (ArrayUtils.isNotEmpty(parameterAnnotations))
 					for (int i = 0; i < parameterAnnotations.length; i++) {
 						if (Parameter.class.equals(parameterAnnotations[i].annotationType())) {
-							Optional<Annotation> annotationForField = getNewParameterAnnotationForField(methodParameter, pageableDefault);
+							Optional<Annotation> annotationForField = getNewParameterAnnotationForField(methodParameter, pageableDefault, sortDefault);
 							if (annotationForField.isPresent())
 								parameterAnnotations[i] = annotationForField.get();
 						}
@@ -111,7 +119,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 * @param pageableDefault the pageable default
 	 * @return the new parameter annotation for field
 	 */
-	private Optional<Annotation> getNewParameterAnnotationForField(MethodParameter methodParameter, PageableDefault pageableDefault) {
+	private Optional<Annotation> getNewParameterAnnotationForField(MethodParameter methodParameter, PageableDefault pageableDefault, SortDefault sortDefault) {
 		String parameterName = methodParameter.getParameterName();
 		Field field;
 		Parameter parameterNew;
@@ -166,7 +174,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 
 								@Override
 								public String defaultValue() {
-									return getArrayDefaultValue(parameterName, pageableDefault, schema.defaultValue());
+									return getArrayDefaultValue(parameterName, pageableDefault, sortDefault, schema.defaultValue());
 								}
 							};
 						}
@@ -216,6 +224,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 					name = originalName;
 				break;
 			case "direction":
+			case "caseSensitive":
 				name = originalName;
 				break;
 			default:
@@ -277,25 +286,67 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 *
 	 * @param parameterName the parameter name
 	 * @param pageableDefault the pageable default
+	 * @param sortDefault the sort default
 	 * @param defaultSchemaVal the default schema val
 	 * @return the default value
 	 */
-	private String getArrayDefaultValue(String parameterName, PageableDefault pageableDefault, String defaultSchemaVal) {
+	private String getArrayDefaultValue(String parameterName, PageableDefault pageableDefault, SortDefault sortDefault, String defaultSchemaVal) {
 		String defaultValue = defaultSchemaVal;
-		if ("sort".equals(parameterName) && pageableDefault != null && ArrayUtils.isNotEmpty(pageableDefault.sort())) {
-			List<String> sortValues = new ArrayList<>();
-			for (String sortValue : pageableDefault.sort()) {
-				String sortStr = String.join(",", sortValue, pageableDefault.direction().name());
-				sortValues.add(sortStr);
-			}
-			try {
-				defaultValue = ObjectMapperFactory.buildStrictGenericObjectMapper().writeValueAsString(sortValues);
-			}
-			catch (JsonProcessingException e) {
-				LOGGER.warn(e.getMessage());
+		if ("sort".equals(parameterName)) {
+			DefaultSort defaultSort = getDefaultSort(pageableDefault, sortDefault);
+			if (defaultSort != null && ArrayUtils.isNotEmpty(defaultSort.properties)) {
+				List<String> sortValues = new ArrayList<>();
+				for (String sortValue : defaultSort.properties) {
+					String sortStr = String.join(",", sortValue, defaultSort.direction.name());
+					sortValues.add(sortStr);
+				}
+				try {
+					defaultValue = ObjectMapperFactory.buildStrictGenericObjectMapper().writeValueAsString(sortValues);
+				} catch (JsonProcessingException e) {
+					LOGGER.warn(e.getMessage());
+				}
 			}
 		}
 		return defaultValue;
+	}
+
+	/**
+	 * Gets default sort.
+	 *
+	 * @param pageableDefault the pageable default
+	 * @param sortDefault the sort default
+	 * @return the default sort
+	 */
+	private DefaultSort getDefaultSort(PageableDefault pageableDefault, SortDefault sortDefault) {
+		if (sortDefault != null) {
+			// "sort" is aliased as "value"
+			String[] sortProperties = sortDefault.sort();
+			Object defaultSort;
+			try {
+				defaultSort = SortDefault.class.getMethod("sort").getDefaultValue();
+			} catch (NoSuchMethodException e) {
+				LOGGER.warn(e.getMessage());
+				defaultSort = null;
+			}
+			if (!Objects.deepEquals(sortProperties, defaultSort)) {
+				return new DefaultSort(sortDefault.direction(), sortProperties);
+			}
+			sortProperties = sortDefault.value();
+			try {
+				defaultSort = SortDefault.class.getMethod("value").getDefaultValue();
+			} catch (NoSuchMethodException e) {
+				LOGGER.warn(e.getMessage());
+				defaultSort = null;
+			}
+			if (!Objects.deepEquals(sortProperties, defaultSort)) {
+				return new DefaultSort(sortDefault.direction(), sortProperties);
+			}
+		}
+		// @SortDefault has higher priority than @PageableDefault
+		if (pageableDefault != null) {
+			return new DefaultSort(pageableDefault.direction(), pageableDefault.sort());
+		}
+		return null;
 	}
 
 	/**
@@ -314,5 +365,15 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 */
 	private boolean isRepositoryRestConfigurationPresent() {
 		return optionalRepositoryRestConfigurationProvider.isPresent() && optionalRepositoryRestConfigurationProvider.get().isRepositoryRestConfigurationPresent();
+	}
+
+	private static class DefaultSort {
+		private final Sort.Direction direction;
+		private final String[] properties;
+
+		DefaultSort(Sort.Direction direction, String... properties) {
+			this.direction = direction;
+			this.properties = properties;
+		}
 	}
 }

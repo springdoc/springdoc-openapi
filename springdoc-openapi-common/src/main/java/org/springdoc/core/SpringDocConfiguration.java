@@ -47,6 +47,7 @@ import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
+import org.springdoc.core.converters.SortOpenAPIConverter;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
@@ -91,6 +92,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -107,6 +109,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_POLYMORPHIC_CONVERTER_ENABL
 import static org.springdoc.core.Constants.SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_SPRING_CLOUD_FUNCTIONS;
+import static org.springdoc.core.Constants.SPRINGDOC_SORT_CONVERTER_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
 /**
@@ -520,6 +523,42 @@ public class SpringDocConfiguration {
 			getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Pageable.class, org.springdoc.core.converters.models.Pageable.class)
 					.replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class, org.springdoc.core.converters.models.Pageable.class);
 			return new PageableOpenAPIConverter(objectMapperProvider);
+		}
+
+		/**
+		 * Delegating method parameter customizer delegating method parameter customizer.
+		 *
+		 * @param optionalSpringDataWebPropertiesProvider the optional spring data web properties
+		 * @param optionalRepositoryRestConfiguration the optional repository rest configuration
+		 * @return the delegating method parameter customizer
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		DelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
+			return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider, optionalRepositoryRestConfiguration);
+		}
+	}
+
+	/**
+	 * The type Spring doc sort configuration.
+	 */
+	@ConditionalOnClass(Sort.class)
+	static class SpringDocSortConfiguration {
+
+		/**
+		 * Sort open api converter.
+		 *
+		 * @param objectMapperProvider the object mapper provider
+		 * @return the sort open api converter
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@ConditionalOnProperty(name = SPRINGDOC_SORT_CONVERTER_ENABLED, matchIfMissing = true)
+		@Lazy(false)
+		SortOpenAPIConverter sortOpenAPIConverter(ObjectMapperProvider objectMapperProvider) {
+			getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Sort.class, org.springdoc.core.converters.models.Sort.class);
+			return new SortOpenAPIConverter(objectMapperProvider);
 		}
 
 		/**

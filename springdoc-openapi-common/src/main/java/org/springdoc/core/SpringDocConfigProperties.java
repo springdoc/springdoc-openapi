@@ -717,6 +717,10 @@ public class SpringDocConfigProperties {
 		 */
 		private PolymorphicConverter polymorphicConverter = new PolymorphicConverter();
 
+		/**
+		 * The Sort converter.
+		 */
+		private SortConverter sortConverter = new SortConverter();
 
 		/**
 		 * Gets deprecating converter.
@@ -770,6 +774,24 @@ public class SpringDocConfigProperties {
 		 */
 		public void setPolymorphicConverter(PolymorphicConverter polymorphicConverter) {
 			this.polymorphicConverter = polymorphicConverter;
+		}
+
+		/**
+		 * Gets sort converter.
+		 *
+		 * @return the sort converter
+		 */
+		public SortConverter getSortConverter() {
+			return sortConverter;
+		}
+
+		/**
+		 * Sets sort converter.
+		 *
+		 * @param sortConverter the sort converter
+		 */
+		public void setSortConverter(SortConverter sortConverter) {
+			this.sortConverter = sortConverter;
 		}
 
 		/**
@@ -837,6 +859,36 @@ public class SpringDocConfigProperties {
 		 * @author bnasslashen
 		 */
 		public static class PageableConverter {
+
+			/**
+			 * The Enabled.
+			 */
+			private boolean enabled;
+
+			/**
+			 * Is enabled boolean.
+			 *
+			 * @return the boolean
+			 */
+			public boolean isEnabled() {
+				return enabled;
+			}
+
+			/**
+			 * Sets enabled.
+			 *
+			 * @param enabled the enabled
+			 */
+			public void setEnabled(boolean enabled) {
+				this.enabled = enabled;
+			}
+		}
+
+		/**
+		 * The type Sort converter.
+		 * @author daniel-shuy
+		 */
+		public static class SortConverter {
 
 			/**
 			 * The Enabled.
