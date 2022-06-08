@@ -26,6 +26,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -716,8 +717,21 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		String defaultValue = null;
 		switch (parameterName) {
 			case "size":
-				if (pageableDefault != null)
-					defaultValue = String.valueOf(pageableDefault.size());
+				if (pageableDefault != null) {
+					// "size" is aliased as "value"
+					int size = pageableDefault.size();
+					Object defaultSize;
+					try {
+						defaultSize = PageableDefault.class.getMethod("size").getDefaultValue();
+					} catch (NoSuchMethodException e) {
+						LOGGER.warn(e.getMessage());
+						defaultSize = null;
+					}
+					if (Objects.deepEquals(size, defaultSize)) {
+						size = pageableDefault.value();
+					}
+					defaultValue = String.valueOf(size);
+				}
 				else if (isRepositoryRestConfigurationPresent())
 					defaultValue = String.valueOf(optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getDefaultPageSize());
 				else if (isSpringDataWebPropertiesPresent())
