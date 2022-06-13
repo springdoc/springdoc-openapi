@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  * @author bnasslahsen
  */
-@Target({ ElementType.TYPE, ElementType.METHOD})
+@Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface RouterOperation {
@@ -94,6 +94,14 @@ public @interface RouterOperation {
 	 * @return the string [ ]
 	 */
 	String[] headers() default {};
+
+	/**
+	 * The parameters of the mapped request, narrowing the primary mapping.
+	 * Same format for any environment: a sequence of "myParam=myValue" style expressions,
+	 * with a request only mapped if each such parameter is found to have the given value.
+	 * @return the string [ ]
+	 */
+	String[] params() default {};
 
 	/**
 	 * The class of the Handler bean.
