@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
@@ -130,12 +131,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * The constant ADDITIONAL_REST_CONTROLLERS.
 	 */
-	private static final List<Class<?>> ADDITIONAL_REST_CONTROLLERS = Collections.synchronizedList(new ArrayList<>());
+	private static final Set<Class<?>> ADDITIONAL_REST_CONTROLLERS = new CopyOnWriteArraySet<>();
 
 	/**
 	 * The constant HIDDEN_REST_CONTROLLERS.
 	 */
-	private static final List<Class<?>> HIDDEN_REST_CONTROLLERS = Collections.synchronizedList(new ArrayList<>());
+	private static final Set<Class<?>> HIDDEN_REST_CONTROLLERS = new CopyOnWriteArraySet<>();
 
 	/**
 	 * The Open api builder.
