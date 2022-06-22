@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
@@ -125,6 +127,8 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 									stringSchemaEntry.getValue().setDescription(fieldJavadoc);
 							});
 						});
+            fields.stream().filter(f -> f.isAnnotationPresent(JsonUnwrapped.class))
+                    .forEach(f -> setJavadocDescription(f.getType(), FieldUtils.getAllFieldsList(f.getType()), existingSchema));
 
 		}
 	}
