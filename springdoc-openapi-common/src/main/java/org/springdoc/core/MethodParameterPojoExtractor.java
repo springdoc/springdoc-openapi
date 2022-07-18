@@ -57,7 +57,7 @@ import static org.springdoc.core.Constants.DOT;
  * The type Method parameter pojo extractor.
  * @author bnasslahsen
  */
-class MethodParameterPojoExtractor {
+public class MethodParameterPojoExtractor {
 
 	/**
 	 * Instantiates a new Method parameter pojo extractor.
@@ -177,7 +177,7 @@ class MethodParameterPojoExtractor {
 					.map(PropertyDescriptor::getReadMethod)
 					.filter(Objects::nonNull)
 					.map(method -> new MethodParameter(method, -1))
-					.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
+					.map(methodParameter -> DelegatingMethodParameterProvider.changeContainingClass(methodParameter, paramClass))
 					.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));
 		}
 		catch (IntrospectionException e) {
@@ -206,7 +206,7 @@ class MethodParameterPojoExtractor {
 	 * @param clazz the clazz
 	 * @return the boolean
 	 */
-	static boolean isSimpleType(Class<?> clazz) {
+	public static boolean isSimpleType(Class<?> clazz) {
 		return SIMPLE_TYPE_PREDICATES.stream().anyMatch(p -> p.test(clazz)) ||
 				SIMPLE_TYPES.stream().anyMatch(c -> c.isAssignableFrom(clazz));
 	}

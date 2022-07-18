@@ -412,6 +412,19 @@ public class SpringDocConfiguration {
 	}
 
 	/**
+	 * Spring doc delegating method parameter provider
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	DelegatingMethodParameterProvider delegatingMethodParameterProvider(SpringDocConfigProperties springDocConfigProperties) {
+		return new DelegatingMethodParameterProvider(springDocConfigProperties.isDefaultFlatQueryObject());
+	}
+
+	/**
 	 * The type Open api resource advice.
 	 * @author bnasslashen
 	 */

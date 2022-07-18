@@ -49,7 +49,12 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.PrimitiveType;
+import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.enums.ParameterStyle;
+import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -164,6 +169,18 @@ public abstract class AbstractRequestService {
 	 */
 	private final Optional<List<ParameterCustomizer>> parameterCustomizers;
 
+	private final DelegatingMethodParameterProvider delegatingMethodParameterProvider;
+
+	/**
+	 *
+	 */
+	private final boolean supportFormData;
+
+	/**
+	 *
+	 */
+	private final boolean schemaToParameter;
+
 	/**
 	 * Instantiates a new Abstract request builder.
 	 *
@@ -175,7 +192,9 @@ public abstract class AbstractRequestService {
 	 */
 	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
-			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
+			DelegatingMethodParameterProvider delegatingMethodParameterProvider,
+			SpringDocConfigProperties springDocConfigProperties) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
@@ -183,6 +202,9 @@ public abstract class AbstractRequestService {
 		parameterCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
 		this.parameterCustomizers = parameterCustomizers;
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
+		this.delegatingMethodParameterProvider = delegatingMethodParameterProvider;
+		this.supportFormData = springDocConfigProperties.isDefaultSupportFormData();
+		this.schemaToParameter = springDocConfigProperties.isDefaultSupportFormData();
 	}
 
 	/**
@@ -237,7 +259,7 @@ public abstract class AbstractRequestService {
 		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
 		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
-		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
+		parameters = delegatingMethodParameterProvider.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
@@ -257,6 +279,17 @@ public abstract class AbstractRequestService {
 
 			if (parameterDoc == null)
 				parameterDoc = parametersDocMap.get(parameterInfo.getpName());
+
+			if(this.schemaToParameter) {
+				if (parameterDoc == null) {
+					io.swagger.v3.oas.annotations.media.Schema schema = AnnotatedElementUtils.findMergedAnnotation(
+							AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()), io.swagger.v3.oas.annotations.media.Schema.class);
+					if (schema != null) {
+						parameterDoc = generateParameterBySchema(schema);
+					}
+				}
+			}
+
 			// use documentation as reference
 			if (parameterDoc != null) {
 				if (parameterDoc.hidden() || parameterDoc.schema().hidden())
@@ -300,6 +333,24 @@ public abstract class AbstractRequestService {
 		}
 
 		LinkedHashMap<String, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
+		if(this.supportFormData) {
+			RequestBody body = requestBodyInfo.getRequestBody();
+			if (body != null && body.getContent() != null && body.getContent().containsKey("multipart/form-data")) {
+				Set<String> keys = map.keySet();
+				io.swagger.v3.oas.models.media.Schema mergedSchema = requestBodyInfo.getMergedSchema();
+				for (String key : keys) {
+					Parameter parameter = map.get(key);
+					io.swagger.v3.oas.models.media.Schema itemSchema = new io.swagger.v3.oas.models.media.Schema();
+					itemSchema.setName(key);
+					itemSchema.setDescription(parameter.getDescription());
+					itemSchema.setDeprecated(parameter.getDeprecated());
+					itemSchema.setExample(parameter.getExample());
+					itemSchema.setNullable(parameter.getAllowEmptyValue());
+					mergedSchema.addProperty(key, itemSchema);
+				}
+				map.clear();
+			}
+		}
 		setParams(operation, new ArrayList<>(map.values()), requestBodyInfo);
 		return operation;
 	}
@@ -313,7 +364,7 @@ public abstract class AbstractRequestService {
 	 * @param parametersDocMap the parameters doc map
 	 * @return the parameter linked hash map
 	 */
-	private LinkedHashMap<String, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
+	protected LinkedHashMap<String, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
 		LinkedHashMap<String, Parameter> map = operationParameters.stream()
 				.collect(Collectors.toMap(
 						parameter -> parameter.getName() != null ? parameter.getName() : Integer.toString(parameter.hashCode()),
@@ -400,7 +451,7 @@ public abstract class AbstractRequestService {
 	 * @param parameter the parameter
 	 * @return the boolean
 	 */
-	private boolean isRequiredAnnotation(MethodParameter parameter) {
+	protected boolean isRequiredAnnotation(MethodParameter parameter) {
 		RequestParam requestParam = parameter.getParameterAnnotation(RequestParam.class);
 		PathVariable pathVariable = parameter.getParameterAnnotation(PathVariable.class);
 		org.springframework.web.bind.annotation.RequestBody requestBody = parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class);
@@ -416,7 +467,7 @@ public abstract class AbstractRequestService {
 	 * @param operationParameters the operation parameters
 	 * @param requestBodyInfo the request body info
 	 */
-	private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
+	protected void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
 		if (!CollectionUtils.isEmpty(operationParameters))
 			operation.setParameters(operationParameters);
 		if (requestBodyInfo.getRequestBody() != null)
@@ -560,7 +611,7 @@ public abstract class AbstractRequestService {
 	 * @param annos the annos
 	 * @param schema the schema
 	 */
-	private void calculateSize(Map<String, Annotation> annos, Schema<?> schema) {
+	protected void calculateSize(Map<String, Annotation> annos, Schema<?> schema) {
 		if (annos.containsKey(Size.class.getSimpleName())) {
 			Size size = (Size) annos.get(Size.class.getSimpleName());
 			if (OPENAPI_ARRAY_TYPE.equals(schema.getType())) {
@@ -589,7 +640,7 @@ public abstract class AbstractRequestService {
 	 * @param method the method
 	 * @return the api parameters
 	 */
-	private Map<String, io.swagger.v3.oas.annotations.Parameter> getApiParameters(Method method) {
+	protected Map<String, io.swagger.v3.oas.annotations.Parameter> getApiParameters(Method method) {
 		Class<?> declaringClass = method.getDeclaringClass();
 
 		Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDoc = AnnotatedElementUtils
@@ -628,7 +679,7 @@ public abstract class AbstractRequestService {
 	 * @param annos the annos
 	 * @param schema the schema
 	 */
-	private void applyValidationsToSchema(Map<String, Annotation> annos, Schema<?> schema) {
+	protected void applyValidationsToSchema(Map<String, Annotation> annos, Schema<?> schema) {
 		if (annos.containsKey(Min.class.getSimpleName())) {
 			Min min = (Min) annos.get(Min.class.getSimpleName());
 			schema.setMinimum(BigDecimal.valueOf(min.value()));
@@ -669,7 +720,7 @@ public abstract class AbstractRequestService {
 	 * @param parameterInfo the parameter info
 	 * @return the boolean
 	 */
-	private boolean isRequestBodyParam(RequestMethod requestMethod, ParameterInfo parameterInfo) {
+	protected boolean isRequestBodyParam(RequestMethod requestMethod, ParameterInfo parameterInfo) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
 
@@ -690,7 +741,7 @@ public abstract class AbstractRequestService {
 	 * @param pName the p name
 	 * @return the param javadoc
 	 */
-	private String getParamJavadoc(JavadocProvider javadocProvider, MethodParameter methodParameter, String pName) {
+	protected String getParamJavadoc(JavadocProvider javadocProvider, MethodParameter methodParameter, String pName) {
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
 		final String paramJavadocDescription;
 		if (delegatingMethodParameter.isParameterObject()) {
@@ -707,4 +758,98 @@ public abstract class AbstractRequestService {
 		return paramJavadocDescription;
 	}
 
+	protected io.swagger.v3.oas.annotations.Parameter generateParameterBySchema(io.swagger.v3.oas.annotations.media.Schema schema) {
+		return new io.swagger.v3.oas.annotations.Parameter() {
+
+			@Override
+			public Class<? extends Annotation> annotationType() {
+				return io.swagger.v3.oas.annotations.Parameter.class;
+			}
+
+			@Override
+			public String name() {
+				return schema.name();
+			}
+
+			@Override
+			public ParameterIn in() {
+				return ParameterIn.DEFAULT;
+			}
+
+			@Override
+			public String description() {
+				return schema.description();
+			}
+
+			@Override
+			public boolean required() {
+				return schema.required();
+			}
+
+			@Override
+			public boolean deprecated() {
+				return schema.deprecated();
+			}
+
+			@Override
+			public boolean allowEmptyValue() {
+				return schema.nullable();
+			}
+
+			@Override
+			public ParameterStyle style() {
+				return ParameterStyle.DEFAULT;
+			}
+
+			@Override
+			public Explode explode() {
+				return Explode.DEFAULT;
+			}
+
+			@Override
+			public boolean allowReserved() {
+				return false;
+			}
+
+			@Override
+			public io.swagger.v3.oas.annotations.media.Schema schema() {
+				return schema;
+			}
+
+			@Override
+			public ArraySchema array() {
+				return null;
+			}
+
+			@Override
+			public io.swagger.v3.oas.annotations.media.Content[] content() {
+				return new io.swagger.v3.oas.annotations.media.Content[0];
+			}
+
+			@Override
+			public boolean hidden() {
+				return schema.hidden();
+			}
+
+			@Override
+			public ExampleObject[] examples() {
+				return new ExampleObject[0];
+			}
+
+			@Override
+			public String example() {
+				return schema.example();
+			}
+
+			@Override
+			public Extension[] extensions() {
+				return schema.extensions();
+			}
+
+			@Override
+			public String ref() {
+				return schema.ref();
+			}
+		};
+	}
 }

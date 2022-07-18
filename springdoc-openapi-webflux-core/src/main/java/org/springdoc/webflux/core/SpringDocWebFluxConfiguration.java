@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springdoc.core.AbstractRequestService;
+import org.springdoc.core.DelegatingMethodParameterProvider;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.OpenAPIService;
@@ -123,9 +124,11 @@ public class SpringDocWebFluxConfiguration {
 	RequestService requestBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			OperationService operationService,
 			Optional<List<ParameterCustomizer>> parameterCustomizers,
-			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
+			DelegatingMethodParameterProvider delegatingMethodParameterProvider, SpringDocConfigProperties springDocConfigProperties) {
 		return new RequestService(parameterBuilder, requestBodyService,
-				operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
+				operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer,
+				delegatingMethodParameterProvider, springDocConfigProperties);
 	}
 
 	/**

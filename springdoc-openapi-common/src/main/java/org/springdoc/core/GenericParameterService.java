@@ -182,7 +182,7 @@ public class GenericParameterService {
 	 * @param paramCalcul the param calcul
 	 * @param paramDoc the param doc
 	 */
-	private static void mergeParameter(Parameter paramCalcul, Parameter paramDoc) {
+	protected static void mergeParameter(Parameter paramCalcul, Parameter paramDoc) {
 		if (StringUtils.isBlank(paramDoc.getDescription()))
 			paramDoc.setDescription(paramCalcul.getDescription());
 
@@ -281,7 +281,7 @@ public class GenericParameterService {
 	 * @param jsonView the json view
 	 * @param parameter the parameter
 	 */
-	private void setSchema(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonView, Parameter parameter) {
+	protected void setSchema(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonView, Parameter parameter) {
 		if (StringUtils.isNotBlank(parameterDoc.ref()))
 			parameter.$ref(parameterDoc.ref());
 		else {
@@ -322,7 +322,7 @@ public class GenericParameterService {
 	 * @param jsonView the json view
 	 * @return the schema
 	 */
-	Schema calculateSchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, JsonView jsonView) {
+	public Schema calculateSchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, JsonView jsonView) {
 		Schema schemaN;
 		String paramName = parameterInfo.getpName();
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
@@ -356,7 +356,7 @@ public class GenericParameterService {
 	 * @param paramName the param name
 	 * @return the schema
 	 */
-	private Schema calculateRequestBodySchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, Schema schemaN, String paramName) {
+	protected Schema calculateRequestBodySchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, Schema schemaN, String paramName) {
 		if (schemaN != null && StringUtils.isEmpty(schemaN.getDescription()) && parameterInfo.getParameterModel() != null) {
 			String description = parameterInfo.getParameterModel().getDescription();
 			if (schemaN.get$ref() != null && schemaN.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
@@ -392,7 +392,7 @@ public class GenericParameterService {
 	 * @param parameterDoc the parameter doc
 	 * @param parameter the parameter
 	 */
-	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
+	protected void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
 		Map<String, Example> exampleMap = new HashMap<>();
 		if (parameterDoc.examples().length == 1 && StringUtils.isBlank(parameterDoc.examples()[0].name())) {
 			Optional<Example> exampleOptional = AnnotationsUtils.getExample(parameterDoc.examples()[0]);
@@ -415,7 +415,7 @@ public class GenericParameterService {
 	 * @param parameterDoc the parameter doc
 	 * @param parameter the parameter
 	 */
-	private void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
+	protected void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
 		if (parameterDoc.extensions().length > 0) {
 			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
 			extensionMap.forEach(parameter::addExtension);
@@ -428,7 +428,7 @@ public class GenericParameterService {
 	 * @param parameter the parameter
 	 * @param p the p
 	 */
-	private void setParameterExplode(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
+	protected void setParameterExplode(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
 		if (isExplodable(p)) {
 			if (Explode.TRUE.equals(p.explode())) {
 				parameter.setExplode(Boolean.TRUE);
@@ -445,7 +445,7 @@ public class GenericParameterService {
 	 * @param parameter the parameter
 	 * @param p the p
 	 */
-	private void setParameterStyle(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
+	protected void setParameterStyle(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
 		if (StringUtils.isNotBlank(p.style().toString())) {
 			parameter.setStyle(Parameter.StyleEnum.valueOf(p.style().toString().toUpperCase()));
 		}
@@ -457,7 +457,7 @@ public class GenericParameterService {
 	 * @param p the p
 	 * @return the boolean
 	 */
-	private boolean isExplodable(io.swagger.v3.oas.annotations.Parameter p) {
+	protected boolean isExplodable(io.swagger.v3.oas.annotations.Parameter p) {
 		io.swagger.v3.oas.annotations.media.Schema schema = p.schema();
 		io.swagger.v3.oas.annotations.media.ArraySchema arraySchema = p.array();
 
@@ -501,7 +501,7 @@ public class GenericParameterService {
 	 * @param parameterizedType the parameterized type
 	 * @return the boolean
 	 */
-	private boolean isFile(ParameterizedType parameterizedType) {
+	protected boolean isFile(ParameterizedType parameterizedType) {
 		Type type = parameterizedType.getActualTypeArguments()[0];
 		Class fileClass = ResolvableType.forType(type).getRawClass();
 		if (fileClass != null && isFile(fileClass))

@@ -27,6 +27,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.Predicate;
 import org.springdoc.core.AbstractRequestService;
+import org.springdoc.core.DelegatingMethodParameterProvider;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.GenericResponseService;
 import org.springdoc.core.OpenAPIService;
@@ -208,9 +209,9 @@ public class SpringDocDataRestConfiguration {
 		@ConditionalOnMissingBean
 		@Lazy(false)
 		DataRestRequestService dataRestRequestBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
-				RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
+				RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils, DelegatingMethodParameterProvider delegatingMethodParameterProvider) {
 			return new DataRestRequestService(localSpringDocParameterNameDiscoverer, parameterBuilder,
-					requestBodyService, requestBuilder, springDocDataRestUtils);
+					requestBodyService, requestBuilder, springDocDataRestUtils, delegatingMethodParameterProvider);
 		}
 
 		/**

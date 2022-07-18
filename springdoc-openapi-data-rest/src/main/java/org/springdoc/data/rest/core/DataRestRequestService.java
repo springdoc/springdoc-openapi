@@ -40,7 +40,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springdoc.core.AbstractRequestService;
-import org.springdoc.core.DelegatingMethodParameter;
+import org.springdoc.core.DelegatingMethodParameterProvider;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.ParameterInfo;
@@ -93,6 +93,11 @@ public class DataRestRequestService {
 	private final SpringDocDataRestUtils springDocDataRestUtils;
 
 	/**
+	 * The Spring doc delegating method parameter provider
+	 */
+	private final DelegatingMethodParameterProvider delegatingMethodParameterProvider;
+
+	/**
 	 * Instantiates a new Data rest request builder.
 	 *
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
@@ -102,12 +107,14 @@ public class DataRestRequestService {
 	 * @param springDocDataRestUtils the spring doc data rest utils
 	 */
 	public DataRestRequestService(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
-			RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
+			RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils,
+			DelegatingMethodParameterProvider delegatingMethodParameterProvider) {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
 		this.requestBuilder = requestBuilder;
 		this.springDocDataRestUtils = springDocDataRestUtils;
+		this.delegatingMethodParameterProvider = delegatingMethodParameterProvider;
 	}
 
 	/**
@@ -149,7 +156,7 @@ public class DataRestRequestService {
 	 */
 	public void buildCommonParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters,
 			DataRestRepository dataRestRepository) {
-		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
+		parameters = delegatingMethodParameterProvider.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
 		Class<?> domainType = dataRestRepository.getDomainType();
 		for (MethodParameter methodParameter : parameters) {
 			final String pName = methodParameter.getParameterName();

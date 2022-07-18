@@ -180,6 +180,75 @@ public class SpringDocConfigProperties {
 	private ModelConverters modelConverters = new ModelConverters();
 
 	/**
+	 * flat query object without ParameterObject
+	 */
+	private boolean defaultFlatQueryObject;
+
+	/**
+	 * convert query param to form data when consumes is multipart/form-data
+	 */
+	private boolean defaultSupportFormData;
+
+	/**
+	 * schema as parameter in a query object
+	 */
+	private boolean defaultSchemaToParameter;
+
+	/**
+	 * Is defaultFlatQueryObject boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isDefaultFlatQueryObject() {
+		return defaultFlatQueryObject;
+	}
+
+	/**
+	 * Sets defaultFlatQueryObject.
+	 *
+	 * @param defaultFlatQueryObject the enabled
+	 */
+	public void setDefaultFlatQueryObject(boolean defaultFlatQueryObject) {
+		this.defaultFlatQueryObject = defaultFlatQueryObject;
+	}
+
+	/**
+	 * Is defaultSupportFormData boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isDefaultSupportFormData() {
+		return defaultSupportFormData;
+	}
+
+	/**
+	 * Sets defaultSupportFormData.
+	 *
+	 * @param defaultSupportFormData the enabled
+	 */
+	public void setDefaultSupportFormData(boolean defaultSupportFormData) {
+		this.defaultSupportFormData = defaultSupportFormData;
+	}
+
+	/**
+	 * Is defaultSchemaToParameter boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isDefaultSchemaToParameter() {
+		return defaultSchemaToParameter;
+	}
+
+	/**
+	 * Sets defaultSchemaToParameter.
+	 *
+	 * @param defaultSchemaToParameter the enabled
+	 */
+	public void setDefaultSchemaToParameter(boolean defaultSchemaToParameter) {
+		this.defaultSchemaToParameter = defaultSchemaToParameter;
+	}
+
+	/**
 	 * Is show spring cloud functions boolean.
 	 *
 	 * @return the boolean

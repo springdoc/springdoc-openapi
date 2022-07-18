@@ -26,9 +26,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springdoc.core.AbstractRequestService;
+import org.springdoc.core.DelegatingMethodParameterProvider;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.RequestBodyService;
+import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.ParameterCustomizer;
 
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -64,7 +66,9 @@ public class RequestService extends AbstractRequestService {
 	 */
 	public RequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
-			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
-		super(parameterBuilder, requestBodyService, operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
+			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
+		    DelegatingMethodParameterProvider delegatingMethodParameterProvider, SpringDocConfigProperties springDocConfigProperties) {
+		super(parameterBuilder, requestBodyService, operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer,
+				delegatingMethodParameterProvider, springDocConfigProperties);
 	}
 }

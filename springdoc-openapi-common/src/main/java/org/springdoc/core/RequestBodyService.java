@@ -126,7 +126,7 @@ public class RequestBodyService {
 	 * @param methodConsumes the method consumes
 	 * @param requestBodyObject the request body object
 	 */
-	private void buildResquestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, String[] classConsumes, String[] methodConsumes, RequestBody requestBodyObject) {
+	protected void buildResquestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, String[] classConsumes, String[] methodConsumes, RequestBody requestBodyObject) {
 		Optional<Content> optionalContent = SpringDocAnnotationsUtils
 				.getContent(requestBody.content(), getConsumes(classConsumes),
 						getConsumes(methodConsumes), null, components, jsonViewAnnotation);
@@ -161,7 +161,7 @@ public class RequestBodyService {
 	 * @param content the content
 	 * @return the boolean
 	 */
-	private boolean containsResponseBodySchema(Content content) {
+	protected boolean containsResponseBodySchema(Content content) {
 		return content.entrySet().stream().anyMatch(stringMediaTypeEntry -> stringMediaTypeEntry.getValue().getSchema() != null);
 	}
 
@@ -171,7 +171,7 @@ public class RequestBodyService {
 	 * @param classConsumes the class consumes
 	 * @return the string [ ]
 	 */
-	private String[] getConsumes(String[] classConsumes) {
+	protected String[] getConsumes(String[] classConsumes) {
 		return classConsumes == null ? new String[0] : classConsumes;
 	}
 
@@ -263,7 +263,7 @@ public class RequestBodyService {
 	 * @param requestBodyInfo the request body info
 	 * @return the request body
 	 */
-	private RequestBody buildRequestBody(RequestBody requestBody, Components components,
+	protected RequestBody buildRequestBody(RequestBody requestBody, Components components,
 			MethodAttributes methodAttributes,
 			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		if (requestBody == null) {
@@ -291,7 +291,7 @@ public class RequestBodyService {
 	 * @param methodAttributes the method attributes
 	 * @param schema the schema
 	 */
-	private void mergeContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
+	protected void mergeContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
 		Content content = requestBody.getContent();
 		buildContent(requestBody, methodAttributes, schema, content);
 	}
@@ -303,7 +303,7 @@ public class RequestBodyService {
 	 * @param methodAttributes the method attributes
 	 * @param schema the schema
 	 */
-	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
+	protected void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
 		Content content = new Content();
 		buildContent(requestBody, methodAttributes, schema, content);
 	}
@@ -316,7 +316,7 @@ public class RequestBodyService {
 	 * @param schema the schema
 	 * @param content the content
 	 */
-	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content) {
+	protected void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content) {
 		for (String value : methodAttributes.getMethodConsumes()) {
 			io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
 			mediaTypeObject.setSchema(schema);
