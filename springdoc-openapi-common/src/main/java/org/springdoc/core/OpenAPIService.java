@@ -296,9 +296,8 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Update servers open api.
 	 *
 	 * @param openAPI the open api
-	 * @return the open api
 	 */
-	public OpenAPI updateServers(OpenAPI openAPI) {
+	public void updateServers(OpenAPI openAPI) {
 		if (!isServersPresent && serverBaseUrl != null)        // default server value
 		{
 			Server server = new Server().url(serverBaseUrl).description(DEFAULT_SERVER_DESCRIPTION);
@@ -306,7 +305,6 @@ public class OpenAPIService implements ApplicationContextAware {
 			servers.add(server);
 			openAPI.setServers(servers);
 		}
-		return openAPI;
 	}
 
 	/**

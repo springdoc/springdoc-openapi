@@ -169,7 +169,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private final OperationService operationParser;
 
 	/**
-	 * The Open api customisers.
+	 * The Open api customizers.
 	 */
 	private final Optional<List<OpenApiCustomiser>> openApiCustomisers;
 
@@ -299,7 +299,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the open api
 	 */
 	protected synchronized OpenAPI getOpenApi(Locale locale) {
-		OpenAPI openAPI;
+		final OpenAPI openAPI;
 		final Locale finalLocale = locale == null ? Locale.getDefault() : locale;
 		if (openAPIService.getCachedOpenAPI(finalLocale) == null || springDocConfigProperties.isCacheDisabled()) {
 			Instant start = Instant.now();
@@ -327,29 +327,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 							this.calculatePath(routerOperationList, locale, openAPI);
 					}
 			);
-
 			if (!CollectionUtils.isEmpty(openAPI.getServers()))
 				openAPIService.setServersPresent(true);
-			openAPIService.updateServers(openAPI);
 
 			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
 				this.removeBrokenReferenceDefinitions(openAPI);
 
-			// run the optional customisers
-			List<Server> servers = openAPI.getServers();
-			List<Server> serversCopy = null;
-			try {
-				serversCopy = springDocProviders.jsonMapper()
-						.readValue(springDocProviders.jsonMapper().writeValueAsString(servers), new TypeReference<List<Server>>() {});
-			}
-			catch (JsonProcessingException e) {
-				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
-			}
-
-			openApiLocaleCustomizers.values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openAPI, finalLocale));
-			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openAPI)));
-			if (!CollectionUtils.isEmpty(openAPI.getServers()) && !openAPI.getServers().equals(serversCopy))
-				openAPIService.setServersPresent(true);
 
 			openAPIService.setCachedOpenAPI(openAPI, finalLocale);
 
@@ -358,8 +341,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 		else {
 			LOGGER.debug("Fetching openApi document from cache");
-			openAPI = openAPIService.updateServers(openAPIService.getCachedOpenAPI(finalLocale));
+			openAPI = openAPIService.getCachedOpenAPI(finalLocale);
 		}
+		openAPIService.updateServers(openAPI);
+		openApiLocaleCustomizers.values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openAPI, finalLocale));
+		openApiCustomisers.ifPresent(apiCustomizers -> apiCustomizers.forEach(openApiCustomizer -> openApiCustomizer.customise(openAPI)));
 		return openAPI;
 	}
 
