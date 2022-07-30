@@ -30,7 +30,7 @@
             }
           },
           {
-            "name": "sizes",
+            "name": "prefix_sizes",
             "in": "query",
             "description": "The size of the page to be returned",
             "required": false,
