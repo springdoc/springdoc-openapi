@@ -141,7 +141,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 
 				@Override
 				public String description() {
-					return parameter.description();
+					return getDescription(parameterName, parameter.description());
 				}
 
 				@Override
@@ -706,6 +706,20 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	}
 
 	/**
+	 * Gets description.
+	 *
+	 * @param parameterName the parameter name
+	 * @param originalDescription the original description
+	 * @return the description
+	 */
+	private String getDescription(String parameterName, String originalDescription) {
+		if ("page".equals(parameterName) && isSpringDataWebPropertiesPresent() &&
+				optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().isOneIndexedParameters())
+			return "One-based page index (1..N)";
+		return originalDescription;
+	}
+
+	/**
 	 * Gets default value.
 	 *
 	 * @param parameterName the parameter name
@@ -742,6 +756,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 			case "page":
 				if (pageableDefault != null)
 					defaultValue = String.valueOf(pageableDefault.page());
+				else if (isSpringDataWebPropertiesPresent() && optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().isOneIndexedParameters())
+					defaultValue = "1";
 				else
 					defaultValue = defaultSchemaVal;
 				break;
