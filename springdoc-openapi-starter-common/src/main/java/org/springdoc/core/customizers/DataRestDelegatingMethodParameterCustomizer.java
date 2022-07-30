@@ -674,7 +674,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		switch (parameterName) {
 			case "size":
 				if (isRepositoryRestConfigurationPresent())
-					name = optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getLimitParamName();
+					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPrefix() +
+							optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getSizeParameter();
 				else if (isSpringDataWebPropertiesPresent())
 					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getSizeParameter();
 				else
@@ -692,7 +693,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				if (isRepositoryRestConfigurationPresent())
 					name = optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getPageParamName();
 				else if (isSpringDataWebPropertiesPresent())
-					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPageParameter();
+					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPrefix() +
+							optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPageParameter();
 				else
 					name = originalName;
 				break;
