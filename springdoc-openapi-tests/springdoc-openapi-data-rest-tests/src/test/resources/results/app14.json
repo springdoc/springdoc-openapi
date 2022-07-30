@@ -21,12 +21,12 @@
           {
             "name": "pages",
             "in": "query",
-            "description": "Zero-based page index (0..N)",
+            "description": "One-based page index (1..N)",
             "required": false,
             "schema": {
               "minimum": 0,
               "type": "integer",
-              "default": 0
+              "default": 1
             }
           },
           {
