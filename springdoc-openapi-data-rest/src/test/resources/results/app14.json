@@ -19,7 +19,7 @@
         "operationId": "getAllPets",
         "parameters": [
           {
-            "name": "pages",
+            "name": "prefix_pages",
             "in": "query",
             "description": "One-based page index (1..N)",
             "required": false,
@@ -30,7 +30,7 @@
             }
           },
           {
-            "name": "sizes",
+            "name": "prefix_sizes",
             "in": "query",
             "description": "The size of the page to be returned",
             "required": false,

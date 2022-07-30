@@ -44,6 +44,7 @@ import org.springframework.test.context.TestPropertySource;
 		"spring.data.web.pageable.page-parameter=pages",
 		"spring.data.web.pageable.size-parameter=sizes",
 		"spring.data.web.pageable.one-indexed-parameters=true",
+		"spring.data.web.pageable.prefix=prefix_",
 		"spring.data.web.sort.sort-parameter=sorts" })
 @EnableAutoConfiguration(exclude = {
 		RepositoryRestMvcAutoConfiguration.class, SpringDocDataRestConfiguration.class
