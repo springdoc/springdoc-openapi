@@ -70,6 +70,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -122,7 +123,6 @@ class AbstractOpenApiResourceTest {
 		when(openAPIService.build(any())).thenReturn(openAPI);
 
 		when(openAPIBuilderObjectFactory.getObject()).thenReturn(openAPIService);
-		when(springDocProviders.jsonMapper()).thenReturn(Json.mapper());
 	}
 
 	@Test
@@ -186,7 +186,7 @@ class AbstractOpenApiResourceTest {
 
 	@Test
 	void preLoadingModeShouldNotOverwriteServers() throws InterruptedException {
-		when(openAPIService.updateServers(any())).thenCallRealMethod();
+		doCallRealMethod().when(openAPIService).updateServers(any());
 		when(openAPIService.getCachedOpenAPI(any())).thenCallRealMethod();
 		doAnswer(new CallsRealMethods()).when(openAPIService).setServersPresent(true);
 		doAnswer(new CallsRealMethods()).when(openAPIService).setServerBaseUrl(any());
@@ -224,7 +224,7 @@ class AbstractOpenApiResourceTest {
 
 	@Test
 	void serverBaseUrlCustomisersTest() throws InterruptedException {
-		when(openAPIService.updateServers(any())).thenCallRealMethod();
+		doCallRealMethod().when(openAPIService).updateServers(any());
 		when(openAPIService.getCachedOpenAPI(any())).thenCallRealMethod();
 		doAnswer(new CallsRealMethods()).when(openAPIService).setServerBaseUrl(any());
 		doAnswer(new CallsRealMethods()).when(openAPIService).setCachedOpenAPI(any(), any());
