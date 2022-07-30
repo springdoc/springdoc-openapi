@@ -674,10 +674,10 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		switch (parameterName) {
 			case "size":
 				if (isRepositoryRestConfigurationPresent())
+					name = optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getLimitParamName();
+				else if (isSpringDataWebPropertiesPresent())
 					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPrefix() +
 							optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getSizeParameter();
-				else if (isSpringDataWebPropertiesPresent())
-					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getSizeParameter();
 				else
 					name = originalName;
 				break;
