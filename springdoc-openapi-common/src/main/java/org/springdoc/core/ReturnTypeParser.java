@@ -151,7 +151,7 @@ public interface ReturnTypeParser {
 	 */
 	static ResolvableType resolveVariable(TypeVariable<?> typeVariable, ResolvableType contextType) {
 		ResolvableType resolvedType;
-		if (contextType.hasGenerics() && contextType.getRawClass().equals(typeVariable.getGenericDeclaration())){
+		if (contextType.hasGenerics() && Objects.equals(contextType.getRawClass(), typeVariable.getGenericDeclaration())){
 			resolvedType = ResolvableType.forType(typeVariable, contextType);
 			if (resolvedType.resolve() != null) {
 				return resolvedType;
