@@ -80,17 +80,19 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 			if (operationFiled != null) {
 				try {
 					actuatorOperation = operationFiled.get(handlerMethod.getBean());
-					operationFiled = FieldUtils.getDeclaredField(actuatorOperation.getClass(), OPERATION, true);
-					AbstractDiscoveredOperation discoveredOperation = (AbstractDiscoveredOperation) operationFiled.get(actuatorOperation);
-					OperationMethod operationMethod = discoveredOperation.getOperationMethod();
-					if (OperationType.WRITE.equals(operationMethod.getOperationType())) {
-						for (OperationParameter operationParameter : operationMethod.getParameters()) {
-							Field parameterField = FieldUtils.getDeclaredField(operationParameter.getClass(), PARAMETER, true);
-							Parameter parameter = (Parameter) parameterField.get(operationParameter);
-							Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null);
-							if (parameter.getAnnotation(Selector.class) == null) {
-								operation.setRequestBody(new RequestBody()
-										.content(new Content().addMediaType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE, new MediaType().schema(schema))));
+					Field actuatorOperationFiled = FieldUtils.getDeclaredField(actuatorOperation.getClass(), OPERATION, true);
+					if(actuatorOperationFiled!=null){
+						AbstractDiscoveredOperation discoveredOperation = (AbstractDiscoveredOperation) actuatorOperationFiled.get(actuatorOperation);
+						OperationMethod operationMethod = discoveredOperation.getOperationMethod();
+						if (OperationType.WRITE.equals(operationMethod.getOperationType())) {
+							for (OperationParameter operationParameter : operationMethod.getParameters()) {
+								Field parameterField = FieldUtils.getDeclaredField(operationParameter.getClass(), PARAMETER, true);
+								Parameter parameter = (Parameter) parameterField.get(operationParameter);
+								Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null);
+								if (parameter.getAnnotation(Selector.class) == null) {
+									operation.setRequestBody(new RequestBody()
+											.content(new Content().addMediaType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE, new MediaType().schema(schema))));
+								}
 							}
 						}
 					}
