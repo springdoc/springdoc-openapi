@@ -11,21 +11,45 @@
     }
   ],
   "paths": {
-    "/test": {
-      "get": {
+    "/create": {
+      "post": {
         "tags": [
-          "hello-controller"
+          "Article Api"
         ],
-        "operationId": "test",
+        "operationId": "create",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "title": {
+                    "description": "title",
+                    "example": null
+                  },
+                  "content": {
+                    "description": "content",
+                    "example": null
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "5xx": {
+            "description": "OK",
             "content": {
-              "application/json": {
+              "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/ArticleDto"
                 }
               }
             }
@@ -33,23 +57,21 @@
         }
       }
     },
-    "/example/{fooBar}": {
+    "/query": {
       "get": {
         "tags": [
-          "hello-controller"
+          "Article Api"
         ],
-        "operationId": "getFooBar",
+        "operationId": "query",
         "parameters": [
           {
-            "name": "fooBar",
-            "in": "path",
-            "required": true,
+            "name": "title",
+            "in": "query",
+            "description": "title",
+            "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "foo",
-                "bar"
-              ]
+              "description": "title"
             }
           }
         ],
@@ -59,16 +81,10 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "5xx": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ArticleDto"
+                  }
                 }
               }
             }
@@ -79,27 +95,16 @@
   },
   "components": {
     "schemas": {
-      "ErrorResponse": {
+      "ArticleDto": {
         "type": "object",
         "properties": {
-          "timestamp": {
+          "title": {
             "type": "string",
-            "format": "date-time",
-            "example": "2022-05-09T00:00:00Z"
+            "description": "title"
           },
-          "data": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object",
-              "example": {
-                "param1": "val1",
-                "param2": "val2"
-              }
-            },
-            "example": {
-              "param1": "val1",
-              "param2": "val2"
-            }
+          "content": {
+            "type": "string",
+            "description": "content"
           }
         }
       }

@@ -1,4 +1,10 @@
-package com.example.demo.config.custom;
+package org.springdoc.core.customizers;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.ObjectMapperFactory;
@@ -8,22 +14,21 @@ import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.enums.ParameterStyle;
 import io.swagger.v3.oas.annotations.extensions.Extension;
-import io.swagger.v3.oas.annotations.media.*;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
+import org.springdoc.core.DelegatingMethodParameter;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.data.web.PageableDefault;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class CustomDataRestDelegatingMethodParameterCustomizer implements DelegatingMethodParameterCustomizer {
 
@@ -63,7 +68,7 @@ public class CustomDataRestDelegatingMethodParameterCustomizer implements Delega
 		if (pageableDefault != null || (org.springframework.data.domain.Pageable.class
 				.isAssignableFrom(originalParameter.getParameterType())
 				&& (isSpringDataWebPropertiesPresent() || isRepositoryRestConfigurationPresent()))) {
-			Field field = FieldUtils.getDeclaredField(CustomDelegatingMethodParameter.class,
+			Field field = FieldUtils.getDeclaredField(DelegatingMethodParameter.class,
 					"additionalParameterAnnotations", true);
 			try {
 				Annotation[] parameterAnnotations = (Annotation[]) field.get(methodParameter);

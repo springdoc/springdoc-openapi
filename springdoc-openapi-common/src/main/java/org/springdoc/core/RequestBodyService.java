@@ -234,7 +234,8 @@ public class RequestBodyService {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		// Get it from parameter level, if not present
 		if (requestBody == null) {
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = methodParameter
+					.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 			requestBody = this.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes, components).orElse(null);
 		}
 
@@ -248,24 +249,12 @@ public class RequestBodyService {
 		paramName = StringUtils.defaultIfEmpty(paramName, parameterInfo.getpName());
 		parameterInfo.setpName(paramName);
 
-		requestBody = buildRequestBody(requestBody, components, methodAttributes, parameterInfo,
-				requestBodyInfo);
+		requestBody = buildRequestBody(requestBody, components, methodAttributes, parameterInfo, requestBodyInfo);
 		requestBodyInfo.setRequestBody(requestBody);
 	}
 
-	/**
-	 * Build request body request body.
-	 *
-	 * @param requestBody the request body
-	 * @param components the components
-	 * @param methodAttributes the method attributes
-	 * @param parameterInfo the parameter info
-	 * @param requestBodyInfo the request body info
-	 * @return the request body
-	 */
 	private RequestBody buildRequestBody(RequestBody requestBody, Components components,
-			MethodAttributes methodAttributes,
-			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
+			MethodAttributes methodAttributes, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		if (requestBody == null) {
 			requestBody = new RequestBody();
 			requestBodyInfo.setRequestBody(requestBody);
@@ -318,16 +307,19 @@ public class RequestBodyService {
 	 */
 	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content) {
 		for (String value : methodAttributes.getMethodConsumes()) {
-			io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
+			MediaType mediaTypeObject = new MediaType();
 			mediaTypeObject.setSchema(schema);
 			MediaType mediaType = content.get(value);
 			if (mediaType != null) {
-				if (mediaType.getExample() != null)
+				if (mediaType.getExample() != null) {
 					mediaTypeObject.setExample(mediaType.getExample());
-				if (mediaType.getExamples() != null)
+				}
+				if (mediaType.getExamples() != null) {
 					mediaTypeObject.setExamples(mediaType.getExamples());
-				if (mediaType.getEncoding() != null)
+				}
+				if (mediaType.getEncoding() != null) {
 					mediaTypeObject.setEncoding(mediaType.getEncoding());
+				}
 			}
 			content.addMediaType(value, mediaTypeObject);
 		}

@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
@@ -48,6 +49,8 @@ import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 
 /**
  * The type Delegating method parameter.
@@ -58,22 +61,22 @@ public class DelegatingMethodParameter extends MethodParameter {
 	/**
 	 * The Delegate.
 	 */
-	private final MethodParameter delegate;
+	private MethodParameter delegate;
 
 	/**
 	 * The Additional parameter annotations.
 	 */
-	private final Annotation[] additionalParameterAnnotations;
+	private Annotation[] additionalParameterAnnotations;
 
 	/**
 	 * The Parameter name.
 	 */
-	private final String parameterName;
+	private String parameterName;
 
 	/**
 	 * The Is parameter object.
 	 */
-	private final boolean isParameterObject;
+	private boolean isParameterObject;
 
 	/**
 	 * The Is not required.
@@ -87,14 +90,14 @@ public class DelegatingMethodParameter extends MethodParameter {
 
 	/**
 	 * Instantiates a new Delegating method parameter.
-	 *
 	 * @param delegate the delegate
 	 * @param parameterName the parameter name
 	 * @param additionalParameterAnnotations the additional parameter annotations
 	 * @param isParameterObject the is parameter object
 	 * @param isNotRequired the is required
 	 */
-	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, boolean isParameterObject, boolean isNotRequired) {
+	public DelegatingMethodParameter(MethodParameter delegate, String parameterName,
+			Annotation[] additionalParameterAnnotations, boolean isParameterObject, boolean isNotRequired) {
 		super(delegate);
 		this.delegate = delegate;
 		this.additionalParameterAnnotations = additionalParameterAnnotations;
@@ -105,24 +108,41 @@ public class DelegatingMethodParameter extends MethodParameter {
 
 	/**
 	 * Customize method parameter [ ].
-	 *
 	 * @param pNames the p names
 	 * @param parameters the parameters
-	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
+	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method
+	 * parameter customizer
 	 * @return the method parameter [ ]
 	 */
-	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
+	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters,
+			Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
+			RequestMethod requestMethod) {
 		List<MethodParameter> explodedParameters = new ArrayList<>();
 		for (int i = 0; i < parameters.length; ++i) {
 			MethodParameter p = parameters[i];
 			Class<?> paramClass = AdditionalModelsConverter.getParameterObjectReplacement(p.getParameterType());
 
-			if (!MethodParameterPojoExtractor.isSimpleType(paramClass) && (p.hasParameterAnnotation(ParameterObject.class) || AnnotatedElementUtils.isAnnotated(paramClass, ParameterObject.class))) {
+			if (!MethodParameterPojoExtractor.isSimpleType(paramClass)
+					&& (p.hasParameterAnnotation(ParameterObject.class)
+					|| AnnotatedElementUtils.isAnnotated(paramClass, ParameterObject.class))) {
 				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
-					optionalDelegatingMethodParameterCustomizer.ifPresent(customizer -> customizer.customize(p, methodParameter));
+					optionalDelegatingMethodParameterCustomizer
+							.ifPresent(customizer -> customizer.customize(p, methodParameter));
 					explodedParameters.add(methodParameter);
 				});
 			}
+			// TODO remove @ParameterObject
+			else if (!MethodParameterPojoExtractor.isSimpleType(paramClass)
+					&& !(p.hasParameterAnnotation(RequestBody.class)
+					|| p.hasParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class)
+					|| p.hasParameterAnnotation(RequestPart.class))) {
+				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
+					optionalDelegatingMethodParameterCustomizer
+							.ifPresent(customizer -> customizer.customize(p, methodParameter));
+					explodedParameters.add(methodParameter);
+				});
+			}
+			// TODO remove @ParameterObject END
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
 				explodedParameters.add(new DelegatingMethodParameter(p, name, null, false, false));
@@ -209,7 +229,6 @@ public class DelegatingMethodParameter extends MethodParameter {
 
 	/**
 	 * Is not required boolean.
-	 *
 	 * @return the boolean
 	 */
 	public boolean isNotRequired() {
@@ -218,7 +237,6 @@ public class DelegatingMethodParameter extends MethodParameter {
 
 	/**
 	 * Sets not required.
-	 *
 	 * @param notRequired the not required
 	 */
 	public void setNotRequired(boolean notRequired) {
@@ -227,13 +245,19 @@ public class DelegatingMethodParameter extends MethodParameter {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		if (!super.equals(o)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		if (!super.equals(o)) {
+			return false;
+		}
 		DelegatingMethodParameter that = (DelegatingMethodParameter) o;
-		return Objects.equals(delegate, that.delegate) &&
-				Arrays.equals(additionalParameterAnnotations, that.additionalParameterAnnotations) &&
-				Objects.equals(parameterName, that.parameterName);
+		return Objects.equals(delegate, that.delegate)
+				&& Arrays.equals(additionalParameterAnnotations, that.additionalParameterAnnotations)
+				&& Objects.equals(parameterName, that.parameterName);
 	}
 
 	@Override
@@ -245,7 +269,6 @@ public class DelegatingMethodParameter extends MethodParameter {
 
 	/**
 	 * Is parameter object boolean.
-	 *
 	 * @return the boolean
 	 */
 	public boolean isParameterObject() {
@@ -253,14 +276,15 @@ public class DelegatingMethodParameter extends MethodParameter {
 	}
 
 	/**
-	 * Return a variant of this {@code MethodParameter} which refers to the
-	 * given containing class.
-	 * @param methodParameter the method parameter
-	 * @param containingClass a specific containing class (potentially a subclass of the declaring class, e.g. substituting a type variable) A copy of spring withContainingClass, to keep compatibility with older spring versions
-	 * @return the method parameter
-	 * @see #getParameterType() #getParameterType()
+	 * Return a variant of this {@code MethodParameter} which refers to the given
+	 * containing class.
+	 * @param containingClass a specific containing class (potentially a subclass of the
+	 * declaring class, e.g. substituting a type variable) A copy of spring
+	 * withContainingClass, to keep compatibility with older spring versions
+	 * @see #getParameterType()
 	 */
-	public static MethodParameter changeContainingClass(MethodParameter methodParameter, @Nullable Class<?> containingClass) {
+	public static MethodParameter changeContainingClass(MethodParameter methodParameter,
+			@Nullable Class<?> containingClass) {
 		MethodParameter result = methodParameter.clone();
 		try {
 			Field containingClassField = FieldUtils.getDeclaredField(result.getClass(), "containingClass", true);

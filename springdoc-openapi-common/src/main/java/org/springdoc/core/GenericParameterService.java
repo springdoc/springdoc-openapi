@@ -322,22 +322,27 @@ public class GenericParameterService {
 	 * @param jsonView the json view
 	 * @return the schema
 	 */
-	Schema calculateSchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, JsonView jsonView) {
+	Schema calculateSchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo,
+			JsonView jsonView) {
 		Schema schemaN;
 		String paramName = parameterInfo.getpName();
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
 			Type type = ReturnTypeParser.getType(methodParameter);
-			if(type instanceof Class && optionalWebConversionServiceProvider.isPresent()){
+			if (type instanceof Class && optionalWebConversionServiceProvider.isPresent()) {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
-				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class)==null)
+				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter
+						.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null) {
 					type = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
+				}
 			}
-			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations());
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView,
+					methodParameter.getParameterAnnotations());
 		}
-		else
+		else {
 			schemaN = parameterInfo.getParameterModel().getSchema();
+		}
 
 		if (requestBodyInfo != null) {
 			schemaN = calculateRequestBodySchema(components, parameterInfo, requestBodyInfo, schemaN, paramName);
@@ -356,36 +361,42 @@ public class GenericParameterService {
 	 * @param paramName the param name
 	 * @return the schema
 	 */
-	private Schema calculateRequestBodySchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, Schema schemaN, String paramName) {
-		if (schemaN != null && StringUtils.isEmpty(schemaN.getDescription()) && parameterInfo.getParameterModel() != null) {
+	public Schema calculateRequestBodySchema(Components components, ParameterInfo parameterInfo,
+			RequestBodyInfo requestBodyInfo, Schema schemaN, String paramName) {
+		if (schemaN != null && StringUtils.isEmpty(schemaN.getDescription())
+				&& parameterInfo.getParameterModel() != null) {
 			String description = parameterInfo.getParameterModel().getDescription();
 			if (schemaN.get$ref() != null && schemaN.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
 				String key = schemaN.get$ref().substring(21);
 				Schema existingSchema = components.getSchemas().get(key);
-				if (!StringUtils.isEmpty(description))
+				if (!StringUtils.isEmpty(description)) {
 					existingSchema.setDescription(description);
+				}
 			}
-			else
+			else {
 				schemaN.setDescription(description);
+			}
 		}
 
 		if (requestBodyInfo.getMergedSchema() != null) {
 			requestBodyInfo.getMergedSchema().addProperty(paramName, schemaN);
 			schemaN = requestBodyInfo.getMergedSchema();
 		}
-		else if (parameterInfo.isRequestPart() || schemaN instanceof FileSchema || schemaN instanceof ArraySchema && ((ArraySchema) schemaN).getItems() instanceof FileSchema) {
+		else if (parameterInfo.isRequestPart() || schemaN instanceof FileSchema
+				|| schemaN instanceof ArraySchema && ((ArraySchema) schemaN).getItems() instanceof FileSchema) {
 			schemaN = new ObjectSchema().addProperty(paramName, schemaN);
 			requestBodyInfo.setMergedSchema(schemaN);
 		}
-		else
+		else {
 			requestBodyInfo.addProperties(paramName, schemaN);
+		}
 
-		if (requestBodyInfo.getMergedSchema() != null && parameterInfo.isRequired())
+		if (requestBodyInfo.getMergedSchema() != null && parameterInfo.isRequired()) {
 			requestBodyInfo.getMergedSchema().addRequiredItem(parameterInfo.getpName());
+		}
 
 		return schemaN;
 	}
-
 	/**
 	 * Sets examples.
 	 *
