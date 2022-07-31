@@ -31,12 +31,10 @@
                     "format": "binary"
                   },
                   "title": {
-                    "description": "title",
-                    "example": null
+                    "description": "title"
                   },
                   "content": {
-                    "description": "content",
-                    "example": null
+                    "description": "content"
                   }
                 }
               }

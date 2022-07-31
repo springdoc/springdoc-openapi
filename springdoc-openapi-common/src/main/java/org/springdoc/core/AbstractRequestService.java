@@ -31,9 +31,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -49,12 +51,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.PrimitiveType;
-import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.enums.ParameterStyle;
-import io.swagger.v3.oas.annotations.extensions.Extension;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -242,13 +239,10 @@ public abstract class AbstractRequestService {
 		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
 		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
-		parameters = DelegatingMethodParameter.customize(pNames, parameters,
-				parameterBuilder.getDelegatingMethodParameterCustomizer(),requestMethod);
+		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
-		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters()
-				: new ArrayList<>();
-		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(
-				handlerMethod.getMethod());
+		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
+		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
 		Components components = openAPI.getComponents();
 
 		JavadocProvider javadocProvider = operationService.getJavadocProvider();
@@ -263,32 +257,28 @@ public abstract class AbstractRequestService {
 			final String pName = methodParameter.getParameterName();
 			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder);
 
-			if (parameterDoc == null) {
+			if (parameterDoc == null)
 				parameterDoc = parametersDocMap.get(parameterInfo.getpName());
-			}
-			// TODO Use Schema
+
 			if (parameterDoc == null) {
 				io.swagger.v3.oas.annotations.media.Schema schema = AnnotatedElementUtils.findMergedAnnotation(
 						AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()), io.swagger.v3.oas.annotations.media.Schema.class);
 				if (schema != null) {
-					parameterDoc = generateParameterBySchema(schema);
+					parameterDoc = parameterBuilder.generateParameterBySchema(schema);
 				}
 			}
-			// TODO Use Schema End
+
 			// use documentation as reference
 			if (parameterDoc != null) {
-				if (parameterDoc.hidden() || parameterDoc.schema().hidden()) {
+				if (parameterDoc.hidden() || parameterDoc.schema().hidden())
 					continue;
-				}
 
-				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components,
-						methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
+				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components, methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
 				parameterInfo.setParameterModel(parameter);
 			}
 
 			if (!isParamToIgnore(methodParameter)) {
-				parameter = buildParams(parameterInfo, components, requestMethod,
-						methodAttributes.getJsonViewAnnotation());
+				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation());
 				// Merge with the operation parameters
 				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
 				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
@@ -303,45 +293,46 @@ public abstract class AbstractRequestService {
 					applyBeanValidatorAnnotations(parameter, parameterAnnotations);
 				}
 				else if (!RequestMethod.GET.equals(requestMethod)) {
-					if (operation.getRequestBody() != null) {
+					if (operation.getRequestBody() != null)
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
-					}
-					requestBodyService.calculateRequestBodyInfo(components, methodAttributes, parameterInfo,
-							requestBodyInfo);
+					requestBodyService.calculateRequestBodyInfo(components, methodAttributes,
+							parameterInfo, requestBodyInfo);
 					// Add requestBody javadoc
-					if (StringUtils.isBlank(requestBodyInfo.getRequestBody().getDescription())
-							&& javadocProvider != null) {
+					if (StringUtils.isBlank(requestBodyInfo.getRequestBody().getDescription()) && javadocProvider != null) {
 						String paramJavadocDescription = getParamJavadoc(javadocProvider, methodParameter, pName);
 						if (!StringUtils.isBlank(paramJavadocDescription)) {
 							requestBodyInfo.getRequestBody().setDescription(paramJavadocDescription);
 						}
 					}
-					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations,
-							methodParameter.isOptional());
+					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 				}
 				customiseParameter(parameter, parameterInfo, operationParameters);
 			}
 		}
 
-		LinkedHashMap<String, Parameter> map = getParameterLinkedHashMap(components, methodAttributes,
-				operationParameters, parametersDocMap);
-		RequestBody body = requestBodyInfo.getRequestBody();
-		// TODO support form-data
-		if (body != null && body.getContent() != null && body.getContent().containsKey("multipart/form-data")) {
-			Set<String> keys = map.keySet();
-			io.swagger.v3.oas.models.media.Schema mergedSchema = requestBodyInfo.getMergedSchema();
-			for (String key : keys) {
-				Parameter parameter = map.get(key);
-				io.swagger.v3.oas.models.media.Schema itemSchema = new io.swagger.v3.oas.models.media.Schema();
-				itemSchema.setName(key);
-				itemSchema.setDescription(parameter.getDescription());
-				itemSchema.setDeprecated(parameter.getDeprecated());
-				itemSchema.setExample(parameter.getExample());
-				mergedSchema.addProperty(key, itemSchema);
+		LinkedHashMap<String, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
+		RequestBody requestBody = requestBodyInfo.getRequestBody();
+		// support form-data
+		if (requestBody != null
+				&& requestBody.getContent() != null
+				&& requestBody.getContent().containsKey(org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)) {
+			io.swagger.v3.oas.models.media.Schema<?> mergedSchema = requestBodyInfo.getMergedSchema();
+			Iterator<Entry<String, Parameter>> it = map.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<String, Parameter> entry = it.next();
+				Parameter parameter = entry.getValue();
+				if (!ParameterIn.PATH.toString().equals(parameter.getIn())) {
+					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema() ;
+					itemSchema.setName(entry.getKey());
+					itemSchema.setDescription(parameter.getDescription());
+					itemSchema.setDeprecated(parameter.getDeprecated());
+					if (parameter.getExample() != null)
+						itemSchema.setExample(parameter.getExample());
+					mergedSchema.addProperty(entry.getKey(), itemSchema);
+					it.remove();
+				}
 			}
-			map.clear();
 		}
-		// TODO support form-data END
 		setParams(operation, new ArrayList<>(map.values()), requestBodyInfo);
 		return operation;
 	}
@@ -749,98 +740,4 @@ public abstract class AbstractRequestService {
 		return paramJavadocDescription;
 	}
 
-	private io.swagger.v3.oas.annotations.Parameter generateParameterBySchema(io.swagger.v3.oas.annotations.media.Schema schema) {
-		return new io.swagger.v3.oas.annotations.Parameter() {
-
-			@Override
-			public Class<? extends Annotation> annotationType() {
-				return io.swagger.v3.oas.annotations.Parameter.class;
-			}
-
-			@Override
-			public String name() {
-				return schema.name();
-			}
-
-			@Override
-			public ParameterIn in() {
-				return ParameterIn.DEFAULT;
-			}
-
-			@Override
-			public String description() {
-				return schema.description();
-			}
-
-			@Override
-			public boolean required() {
-				return schema.required();
-			}
-
-			@Override
-			public boolean deprecated() {
-				return schema.deprecated();
-			}
-
-			@Override
-			public boolean allowEmptyValue() {
-				return false;
-			}
-
-			@Override
-			public ParameterStyle style() {
-				return ParameterStyle.DEFAULT;
-			}
-
-			@Override
-			public Explode explode() {
-				return Explode.DEFAULT;
-			}
-
-			@Override
-			public boolean allowReserved() {
-				return false;
-			}
-
-			@Override
-			public io.swagger.v3.oas.annotations.media.Schema schema() {
-				return schema;
-			}
-
-			@Override
-			public ArraySchema array() {
-				return null;
-			}
-
-			@Override
-			public io.swagger.v3.oas.annotations.media.Content[] content() {
-				return new io.swagger.v3.oas.annotations.media.Content[0];
-			}
-
-			@Override
-			public boolean hidden() {
-				return schema.hidden();
-			}
-
-			@Override
-			public ExampleObject[] examples() {
-				return new ExampleObject[0];
-			}
-
-			@Override
-			public String example() {
-				return schema.example();
-			}
-
-			@Override
-			public Extension[] extensions() {
-				return schema.extensions();
-			}
-
-			@Override
-			public String ref() {
-				return schema.ref();
-			}
-		};
-	}
 }

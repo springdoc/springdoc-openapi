@@ -22,6 +22,7 @@
           {
             "name": "x-auth-token",
             "in": "header",
+            "description": "the authentication token provided after initially authenticating to the application",
             "required": true,
             "schema": {
               "type": "string",
@@ -31,6 +32,7 @@
           {
             "name": "url",
             "in": "query",
+            "description": "the URL to call with response data",
             "required": true,
             "schema": {
               "type": "string",

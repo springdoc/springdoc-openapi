@@ -49,7 +49,6 @@ import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
-import org.springdoc.core.customizers.CustomDataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
@@ -89,7 +88,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.data.domain.Pageable;
@@ -531,7 +529,7 @@ public class SpringDocConfiguration {
 		 * @param optionalRepositoryRestConfiguration the optional repository rest configuration
 		 * @return the delegating method parameter customizer
 		 */
-		//@Bean
+		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
 		DelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
@@ -610,15 +608,5 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	ObjectMapperProvider springDocObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties){
 		return new ObjectMapperProvider(springDocConfigProperties);
-	}
-
-	@Bean
-	@Lazy(false)
-	@Primary
-	public CustomDataRestDelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer(
-			Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider,
-			Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
-		return new CustomDataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider,
-				optionalRepositoryRestConfiguration);
 	}
 }
