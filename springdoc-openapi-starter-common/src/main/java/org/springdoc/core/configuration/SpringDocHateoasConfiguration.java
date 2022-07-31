@@ -37,6 +37,7 @@ import org.springdoc.core.providers.HateoasHalProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.Constants;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -58,6 +59,7 @@ import org.springframework.hateoas.server.LinkRelationProvider;
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-hateoas:true}")
 @ConditionalOnClass(LinkRelationProvider.class)
 @ConditionalOnWebApplication
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocHateoasConfiguration {
 
 	/**

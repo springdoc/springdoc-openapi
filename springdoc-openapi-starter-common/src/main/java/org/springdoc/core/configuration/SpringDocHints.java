@@ -139,6 +139,7 @@ import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.ui.AbstractSwaggerWelcome;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -312,6 +313,7 @@ import org.springframework.util.AntPathMatcher;
 @ConditionalOnWebApplication
 @Configuration(proxyBeanMethods = false)
 @ResourceHint(patterns = SpringDocHints.SPRINGDOC_CONFIG_PROPERTIES)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocHints implements InitializingBean {
 
 	/**

@@ -42,6 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -72,6 +73,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-spring-security:true}")
 @ConditionalOnClass(Authentication.class)
 @ConditionalOnWebApplication
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocSecurityConfiguration {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpringDocSecurityConfiguration.class);
