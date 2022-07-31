@@ -22,6 +22,9 @@
 
 package test.org.springdoc.api.v30.app14;
 
+import java.util.Locale;
+
+import org.junit.jupiter.api.Test;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,4 +33,10 @@ public class SpringDocApp14Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {}
+
+	@Test
+	public void testApp() throws Exception {
+		Locale.setDefault(Locale.US);
+		super.testApp();
+	}
 }

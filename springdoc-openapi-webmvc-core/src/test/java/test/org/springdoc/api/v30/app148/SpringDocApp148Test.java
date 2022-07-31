@@ -76,7 +76,7 @@ public class SpringDocApp148Test extends AbstractSpringDocActuatorV30Test {
 		}
 		catch (HttpStatusCodeException ex) {
 			// TODO: Currently obtain status 500 on MVC... Webflux obtain 404... 
-			if (ex.getStatusCode() == HttpStatus.INTERNAL_SERVER_ERROR)
+			if (ex.getStatusCode() == HttpStatus.NOT_FOUND)
 				assertTrue(true);
 			else
 				fail();
