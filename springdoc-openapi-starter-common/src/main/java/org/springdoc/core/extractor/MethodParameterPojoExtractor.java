@@ -173,15 +173,23 @@ public class MethodParameterPojoExtractor {
 		Annotation[] fieldAnnotations = field.getDeclaredAnnotations();
 		try {
 			Parameter parameter = field.getAnnotation(Parameter.class);
-			boolean isNotRequired  = parameter == null || !parameter.required();
+			boolean isNotRequired = parameter == null || !parameter.required();
 			Annotation[] finalFieldAnnotations = fieldAnnotations;
-			return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
-					.filter(d -> d.getName().equals(field.getName()))
-					.map(PropertyDescriptor::getReadMethod)
-					.filter(Objects::nonNull)
-					.map(method -> new MethodParameter(method, -1))
-					.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-					.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));
+			if (paramClass.isRecord()) {
+				return Stream.of( paramClass.getRecordComponents()).map(recordComponent -> recordComponent.getAccessor())
+						.map(method -> new MethodParameter(method, -1))
+						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));
+
+			}
+			else
+				return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
+						.filter(d -> d.getName().equals(field.getName()))
+						.map(PropertyDescriptor::getReadMethod)
+						.filter(Objects::nonNull)
+						.map(method -> new MethodParameter(method, -1))
+						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));
 		}
 		catch (IntrospectionException e) {
 			return Stream.of();
