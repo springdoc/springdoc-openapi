@@ -26,9 +26,10 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import io.swagger.v3.oas.models.media.ByteArraySchema;
 import kotlin.Deprecated;
 import kotlin.coroutines.Continuation;
-import kotlin.jvm.internal.Intrinsics;
+import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +46,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocKotlinConfiguration {
 
 	/**

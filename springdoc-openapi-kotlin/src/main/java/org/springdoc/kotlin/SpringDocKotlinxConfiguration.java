@@ -23,7 +23,9 @@
 package org.springdoc.kotlin;
 
 import kotlinx.coroutines.flow.Flow;
+import org.springdoc.core.SpringDocConfiguration;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +42,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @ConditionalOnClass(Flow.class)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocKotlinxConfiguration {
 
 	/**

@@ -138,6 +138,7 @@ import org.springdoc.core.providers.WebConversionServiceProvider;
 import org.springdoc.ui.AbstractSwaggerWelcome;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -309,6 +310,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @ResourceHint(patterns = SpringDocHints.SPRINGDOC_CONFIG_PROPERTIES)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocHints implements InitializingBean {
 
 	/**

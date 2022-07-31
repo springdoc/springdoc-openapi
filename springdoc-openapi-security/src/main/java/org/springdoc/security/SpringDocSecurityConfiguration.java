@@ -37,6 +37,7 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -69,6 +70,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocSecurityConfiguration {
 
 	/**

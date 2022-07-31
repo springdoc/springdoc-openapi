@@ -33,6 +33,7 @@ import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.converters.models.DefaultPageable;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.data.rest.core.DataRestOperationService;
@@ -43,6 +44,7 @@ import org.springdoc.data.rest.core.DataRestTagsService;
 import org.springdoc.data.rest.customisers.QuerydslPredicateOperationCustomizer;
 import org.springdoc.data.rest.utils.SpringDocDataRestUtils;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -77,6 +79,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocDataRestConfiguration {
 
 	/**

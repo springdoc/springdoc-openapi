@@ -34,6 +34,7 @@ import org.springdoc.core.PropertyResolverUtils;
 import org.springdoc.core.RequestBodyService;
 import org.springdoc.core.ReturnTypeParser;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
@@ -51,6 +52,7 @@ import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortT
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.boot.actuate.endpoint.web.servlet.ControllerEndpointHandlerMapping;
 import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -77,6 +79,7 @@ import static org.springdoc.core.SpringDocUtils.getConfig;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocWebMvcConfiguration {
 
 	static {

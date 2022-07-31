@@ -22,9 +22,11 @@
 
 package org.springdoc.openapi.javadoc;
 
+import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -41,6 +43,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(SpringDocConfiguration.class)
 @ConditionalOnWebApplication
 public class SpringDocJavadocConfiguration {
 

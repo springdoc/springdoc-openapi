@@ -31,6 +31,7 @@ import org.springdoc.core.MultipleOpenApiSupportCondition;
 import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SpringDocProviders;
 import org.springdoc.webmvc.api.MultipleOpenApiActuatorResource;
 import org.springdoc.webmvc.api.MultipleOpenApiWebMvcResource;
@@ -39,6 +40,7 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
 import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -61,6 +63,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @Conditional(MultipleOpenApiSupportCondition.class)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class MultipleOpenApiSupportConfiguration {
 
 	/**

@@ -27,12 +27,14 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.hateoas.converters.CollectionModelContentConverter;
 import org.springdoc.hateoas.converters.OpenApiHateoasLinksCustomiser;
 import org.springdoc.hateoas.converters.RepresentationModelLinksOASMixin;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -55,6 +57,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @ConditionalOnClass(LinkRelationProvider.class)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocHateoasConfiguration {
 
 	/**
