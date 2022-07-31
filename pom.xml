@@ -70,7 +70,7 @@
 		<javax.jws-api.version>1.1</javax.jws-api.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<spring-native.version>0.11.5</spring-native.version>
-		<therapi-runtime-javadoc.version>0.13.0</therapi-runtime-javadoc.version>
+		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
 		<spring-cloud-function.version>4.0.0-M3</spring-cloud-function.version>
 	</properties>
 
