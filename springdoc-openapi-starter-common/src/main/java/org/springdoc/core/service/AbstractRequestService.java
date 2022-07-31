@@ -33,9 +33,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -263,6 +265,15 @@ public abstract class AbstractRequestService {
 
 			if (parameterDoc == null)
 				parameterDoc = parametersDocMap.get(parameterInfo.getpName());
+
+			if (parameterDoc == null) {
+				io.swagger.v3.oas.annotations.media.Schema schema = AnnotatedElementUtils.findMergedAnnotation(
+						AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()), io.swagger.v3.oas.annotations.media.Schema.class);
+				if (schema != null) {
+					parameterDoc = parameterBuilder.generateParameterBySchema(schema);
+				}
+			}
+
 			// use documentation as reference
 			if (parameterDoc != null) {
 				if (parameterDoc.hidden() || parameterDoc.schema().hidden())
@@ -306,6 +317,28 @@ public abstract class AbstractRequestService {
 		}
 
 		LinkedHashMap<String, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
+		RequestBody requestBody = requestBodyInfo.getRequestBody();
+		// support form-data
+		if (requestBody != null
+				&& requestBody.getContent() != null
+				&& requestBody.getContent().containsKey(org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)) {
+			io.swagger.v3.oas.models.media.Schema<?> mergedSchema = requestBodyInfo.getMergedSchema();
+			Iterator<Entry<String, Parameter>> it = map.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<String, Parameter> entry = it.next();
+				Parameter parameter = entry.getValue();
+				if (!ParameterIn.PATH.toString().equals(parameter.getIn())) {
+					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema() ;
+					itemSchema.setName(entry.getKey());
+					itemSchema.setDescription(parameter.getDescription());
+					itemSchema.setDeprecated(parameter.getDeprecated());
+					if (parameter.getExample() != null)
+						itemSchema.setExample(parameter.getExample());
+					mergedSchema.addProperty(entry.getKey(), itemSchema);
+					it.remove();
+				}
+			}
+		}
 		setParams(operation, new ArrayList<>(map.values()), requestBodyInfo);
 		return operation;
 	}
