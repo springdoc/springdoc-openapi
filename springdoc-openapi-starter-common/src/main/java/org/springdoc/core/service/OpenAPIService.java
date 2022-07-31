@@ -290,7 +290,6 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Update servers open api.
 	 *
 	 * @param openAPI the open api
-	 * @return the open api
 	 */
 	public void updateServers(OpenAPI openAPI) {
 		if (!isServersPresent && serverBaseUrl != null)        // default server value
