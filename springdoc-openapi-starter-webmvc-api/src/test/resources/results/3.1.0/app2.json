@@ -445,8 +445,8 @@
               }
             }
           },
-          "404": {
-            "description": "Pet not found",
+          "200": {
+            "description": "successful operation",
             "content": {
               "application/xml": {
                 "schema": {
@@ -460,8 +460,8 @@
               }
             }
           },
-          "200": {
-            "description": "successful operation",
+          "404": {
+            "description": "Pet not found",
             "content": {
               "application/xml": {
                 "schema": {
@@ -601,13 +601,6 @@
             "schema": {
               "format": "int64"
             }
-          },
-          {
-            "name": "additionalMetadata",
-            "in": "query",
-            "description": "Additional data to pass to server",
-            "required": false,
-            "schema": {}
           }
         ],
         "requestBody": {
@@ -618,6 +611,9 @@
                   "file": {
                     "format": "binary",
                     "description": "file detail"
+                  },
+                  "additionalMetadata": {
+                    "description": "Additional data to pass to server"
                   }
                 },
                 "required": [

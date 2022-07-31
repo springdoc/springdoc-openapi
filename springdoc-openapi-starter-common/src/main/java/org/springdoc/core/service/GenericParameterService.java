@@ -25,6 +25,7 @@
 package org.springdoc.core.service;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
@@ -41,6 +42,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.enums.Explode;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.enums.ParameterStyle;
+import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.examples.Example;
@@ -557,5 +561,104 @@ public class GenericParameterService {
 			return value;
 		}
 		return exprResolver.evaluate(placeholdersResolved, this.expressionContext);
+	}
+
+	/**
+	 * Generate parameter by schema
+	 *
+	 * @param schema the schema
+	 * @return the io.swagger.v3.oas.annotations.Parameter
+	 */
+	public io.swagger.v3.oas.annotations.Parameter generateParameterBySchema(io.swagger.v3.oas.annotations.media.Schema schema) {
+		return new io.swagger.v3.oas.annotations.Parameter() {
+			@Override
+			public Class<? extends Annotation> annotationType() {
+				return io.swagger.v3.oas.annotations.Parameter.class;
+			}
+			@Override
+			public String name() {
+				return schema.name();
+			}
+
+			@Override
+			public ParameterIn in() {
+				return ParameterIn.DEFAULT;
+			}
+
+			@Override
+			public String description() {
+				return schema.description();
+			}
+
+			@Override
+			public boolean required() {
+				return schema.required();
+			}
+
+			@Override
+			public boolean deprecated() {
+				return schema.deprecated();
+			}
+
+			@Override
+			public boolean allowEmptyValue() {
+				return false;
+			}
+
+			@Override
+			public ParameterStyle style() {
+				return ParameterStyle.DEFAULT;
+			}
+
+			@Override
+			public Explode explode() {
+				return Explode.DEFAULT;
+			}
+
+			@Override
+			public boolean allowReserved() {
+				return false;
+			}
+
+			@Override
+			public io.swagger.v3.oas.annotations.media.Schema schema() {
+				return schema;
+			}
+
+			@Override
+			public io.swagger.v3.oas.annotations.media.ArraySchema array() {
+				return null;
+			}
+
+			@Override
+			public io.swagger.v3.oas.annotations.media.Content[] content() {
+				return new io.swagger.v3.oas.annotations.media.Content[0];
+			}
+
+			@Override
+			public boolean hidden() {
+				return schema.hidden();
+			}
+
+			@Override
+			public ExampleObject[] examples() {
+				return new ExampleObject[0];
+			}
+
+			@Override
+			public String example() {
+				return schema.example();
+			}
+
+			@Override
+			public Extension[] extensions() {
+				return schema.extensions();
+			}
+
+			@Override
+			public String ref() {
+				return schema.ref();
+			}
+		};
 	}
 }
