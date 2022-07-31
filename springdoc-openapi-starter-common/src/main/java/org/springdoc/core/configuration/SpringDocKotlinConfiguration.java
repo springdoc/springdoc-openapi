@@ -30,6 +30,7 @@ import kotlin.coroutines.Continuation;
 import org.springdoc.core.parsers.KotlinCoroutinesReturnTypeParser;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -49,6 +50,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-kotlin:true}")
 @ConditionalOnClass(Continuation.class)
 @ConditionalOnWebApplication
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocKotlinConfiguration {
 
 	/**

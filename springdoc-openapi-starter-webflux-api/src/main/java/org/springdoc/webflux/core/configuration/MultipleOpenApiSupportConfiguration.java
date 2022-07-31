@@ -27,6 +27,7 @@ package org.springdoc.webflux.core.configuration;
 import java.util.List;
 
 import org.springdoc.core.conditions.MultipleOpenApiSupportCondition;
+import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.SpringDocProviders;
@@ -41,6 +42,7 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
 import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -63,6 +65,7 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
 @Conditional(MultipleOpenApiSupportCondition.class)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class MultipleOpenApiSupportConfiguration {
 
 	/**

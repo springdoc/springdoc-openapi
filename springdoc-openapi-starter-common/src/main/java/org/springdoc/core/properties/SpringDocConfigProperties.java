@@ -27,8 +27,10 @@ package org.springdoc.core.properties;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.utils.Constants;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -46,6 +48,7 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 @Configuration(proxyBeanMethods = false)
 @ConfigurationProperties(prefix = Constants.SPRINGDOC_PREFIX)
 @ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocConfigProperties {
 
 	/**

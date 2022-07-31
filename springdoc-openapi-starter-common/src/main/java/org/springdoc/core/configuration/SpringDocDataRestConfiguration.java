@@ -47,6 +47,7 @@ import org.springdoc.core.service.OperationService;
 import org.springdoc.core.service.RequestBodyService;
 import org.springdoc.core.utils.SpringDocDataRestUtils;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -83,6 +84,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-data-rest:true}")
 @ConditionalOnClass(RepositoryRestConfiguration.class)
 @ConditionalOnWebApplication
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocDataRestConfiguration {
 
 	/**

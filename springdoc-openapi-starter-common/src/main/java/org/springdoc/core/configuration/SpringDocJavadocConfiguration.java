@@ -30,6 +30,7 @@ import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringDocJavadocProvider;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -47,6 +48,7 @@ import org.springframework.context.annotation.Lazy;
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-javadoc:true}")
 @ConditionalOnClass(CommentFormatter.class)
 @ConditionalOnWebApplication
+@ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocJavadocConfiguration {
 
 	/**
