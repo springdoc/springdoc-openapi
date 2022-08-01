@@ -20,12 +20,12 @@
  *
  */
 
-package test.org.springdoc.api.v30.app189;
+package test.org.springdoc.api.v30.app190;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
-public class SpringDocApp189Test extends AbstractSpringDocV30Test {
+public class SpringDocApp190Test extends AbstractSpringDocV30Test {
 
     @SpringBootApplication
     static class SpringDocTestApp {}
