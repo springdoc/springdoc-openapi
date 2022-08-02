@@ -135,7 +135,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 				.addAllOperationCustomizer(globalOperationCustomizerMap.values())
 				.addAllOpenApiMethodFilter(globalOpenApiMethodFilterMap.values())
 		);
-		
+
 		this.groupedOpenApiResources = groupedOpenApis.stream()
 				.collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
 						{
