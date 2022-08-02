@@ -131,34 +131,37 @@ public class MethodParameterPojoExtractor {
 	 * @return the stream
 	 */
 	private static Stream<MethodParameter> fromGetterOfField(Class<?> paramClass, Field field, String fieldNamePrefix) {
-		if (isSimpleType(field.getType()))
+		Class<?> type = extractType(paramClass, field);
+
+		if (Objects.isNull(type))
+			return Stream.empty();
+
+		if (isSimpleType(type))
 			return fromSimpleClass(paramClass, field, fieldNamePrefix);
-		else if (field.getGenericType() instanceof TypeVariable<?>)
-			return extractTypeParameter(paramClass, (TypeVariable<?>) field.getGenericType(), field, fieldNamePrefix);
-		else
-			return extractFrom(field.getType(), fieldNamePrefix + field.getName() + DOT);
+		else {
+			String prefix = fieldNamePrefix + field.getName() + DOT;
+			return extractFrom(type, prefix);
+		}
 	}
 
 	/**
-	 * Extract type parameter stream.
-	 *
-	 * @param owningClass the owning class
-	 * @param genericType the generic type
-	 * @param field the field
-	 * @param fieldNamePrefix the field name prefix
-	 * @return the stream
+	 * Extract the type
+	 * @param paramClass
+	 * @param field
+	 * @return The revoled type or null if it was not a reifiable type
 	 */
-	private static Stream<MethodParameter> extractTypeParameter(
-			Class<?> owningClass,
-			TypeVariable<?> genericType,
-			Field field,
-			String fieldNamePrefix) {
+	private static Class<?> extractType(Class<?> paramClass, Field field) {
+		Class<?> type = field.getType();
+		if (field.getGenericType() instanceof TypeVariable<?>) {
+			Type fieldType = ReturnTypeParser.resolveType(field.getGenericType(), paramClass);
 
-		Type resolvedType = ReturnTypeParser.resolveType(genericType, owningClass);
-		if (resolvedType instanceof Class<?> && isSimpleType((Class<?>) resolvedType)) {
-			return fromSimpleClass(owningClass, field, fieldNamePrefix);
+			if (fieldType instanceof Class<?>)
+				type = (Class<?>) fieldType;
+			else	// This is the case for not reifiable types
+				type = null;
 		}
-		return Stream.empty();
+
+		return type;
 	}
 
 	/**
