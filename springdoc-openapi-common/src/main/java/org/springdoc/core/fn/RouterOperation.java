@@ -437,6 +437,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 				Arrays.equals(consumes, that.consumes) &&
 				Arrays.equals(produces, that.produces) &&
 				Arrays.equals(headers, that.headers) &&
+				Arrays.equals(params, that.params) &&
 				Objects.equals(beanClass, that.beanClass) &&
 				Objects.equals(beanMethod, that.beanMethod) &&
 				Arrays.equals(parameterTypes, that.parameterTypes) &&
@@ -449,6 +450,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	public int hashCode() {
 		int result = Objects.hash(path, beanClass, beanMethod, queryParams, operation, operationModel);
 		result = 31 * result + Arrays.hashCode(methods);
+		result = 31 * result + Arrays.hashCode(params);
 		result = 31 * result + Arrays.hashCode(consumes);
 		result = 31 * result + Arrays.hashCode(produces);
 		result = 31 * result + Arrays.hashCode(headers);
