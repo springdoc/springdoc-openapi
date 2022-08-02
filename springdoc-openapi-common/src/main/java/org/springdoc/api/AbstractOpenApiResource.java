@@ -48,7 +48,6 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
@@ -66,7 +65,6 @@ import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -379,7 +377,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected void calculatePath(HandlerMethod handlerMethod,
 			RouterOperation routerOperation, Locale locale, OpenAPI openAPI) {
 
-		routerOperation = customiseRouterOperation(routerOperation, handlerMethod);
+		routerOperation = customizeRouterOperation(routerOperation, handlerMethod);
 
 		String operationPath = routerOperation.getPath();
 		Set<RequestMethod> requestMethods = new HashSet<>(Arrays.asList(routerOperation.getMethods()));
@@ -481,7 +479,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			buildCallbacks(openAPI, methodAttributes, operation, apiCallbacks);
 
 			// allow for customisation
-			operation = customiseOperation(operation, handlerMethod);
+			operation = customizeOperation(operation, handlerMethod);
 
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
@@ -842,7 +840,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param handlerMethod the handler method
 	 * @return the operation
 	 */
-	protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
+	protected Operation customizeOperation(Operation operation, HandlerMethod handlerMethod) {
 		if (operationCustomizers.isPresent()) {
 			List<OperationCustomizer> operationCustomizerList = operationCustomizers.get();
 			for (OperationCustomizer operationCustomizer : operationCustomizerList)
@@ -857,7 +855,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param handlerMethod
 	 * @return the router operation
 	 */
-	protected RouterOperation customiseRouterOperation(RouterOperation routerOperation, HandlerMethod handlerMethod) {
+	protected RouterOperation customizeRouterOperation(RouterOperation routerOperation, HandlerMethod handlerMethod) {
 		if (routerOperationCustomizers.isPresent()) {
 			List<RouterOperationCustomizer> routerOperationCustomizerList = routerOperationCustomizers.get();
 			for (RouterOperationCustomizer routerOperationCustomizer : routerOperationCustomizerList) {
