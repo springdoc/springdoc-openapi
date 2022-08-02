@@ -34,6 +34,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.SpringDocProviders;
@@ -72,11 +73,12 @@ public class OpenApiWebMvcResource extends OpenApiResource {
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomizers the open api customisers
 	 * @param methodFilters the method filters
+	 * @param routerOperationCustomizers the router operation customisers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
 	 */
-	public OpenApiWebMvcResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
+	public OpenApiWebMvcResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<RouterOperationCustomizer>> routerOperationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomizers, routerOperationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
 	}
 
 	/**
@@ -89,12 +91,13 @@ public class OpenApiWebMvcResource extends OpenApiResource {
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomizers the open api customisers
 	 * @param methodFilters the method filters
+	 * @param routerOperationCustomizers the router operation customisers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
 	 */
 	@Autowired
-	public OpenApiWebMvcResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
-		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
+	public OpenApiWebMvcResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<RouterOperationCustomizer>> routerOperationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
+		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomizers, routerOperationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
 	}
 
 	/**

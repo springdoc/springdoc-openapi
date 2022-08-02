@@ -74,6 +74,7 @@ import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OpenApiLocaleCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 import org.springdoc.core.fn.RouterFunctionData;
@@ -178,6 +179,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private final Optional<List<OperationCustomizer>> operationCustomizers;
 
 	/**
+	 * The RouterOperation customizers.
+	 */
+	private final Optional<List<RouterOperationCustomizer>> routerOperationCustomizers;
+	/**
 	 * The method filters to use.
 	 */
 	private final Optional<List<OpenApiMethodFilter>> methodFilters;
@@ -216,6 +221,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param operationParser the operation parser
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomizers the open api customisers
+	 * @param routerOperationCustomizers the router operation customisers
 	 * @param methodFilters the method filters
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
@@ -225,6 +231,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			GenericResponseService responseBuilder, OperationService operationParser,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomizer>> openApiCustomizers,
+			Optional<List<RouterOperationCustomizer>> routerOperationCustomizers,
 			Optional<List<OpenApiMethodFilter>> methodFilters,
 			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
 		super();
@@ -235,6 +242,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
 		this.openApiCustomizers = openApiCustomizers;
+		this.routerOperationCustomizers = routerOperationCustomizers;
 		this.methodFilters = methodFilters;
 		this.springDocProviders = springDocProviders;
 		//add the default customizers
@@ -366,6 +374,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param openAPI the open api
 	 */
 	protected void calculatePath(HandlerMethod handlerMethod, RouterOperation routerOperation, Locale locale, OpenAPI openAPI) {
+		routerOperation = customizeRouterOperation(routerOperation, handlerMethod);
+
 		String operationPath = routerOperation.getPath();
 		Set<RequestMethod> requestMethods = new HashSet<>(Arrays.asList(routerOperation.getMethods()));
 		io.swagger.v3.oas.annotations.Operation apiOperation = routerOperation.getOperation();
@@ -596,8 +606,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param locale the locale
 	 */
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
-			Set<RequestMethod> requestMethods,String[] consumes, String[] produces, String[] headers, Locale locale, OpenAPI openAPI) {
-		this.calculatePath(handlerMethod, new RouterOperation(operationPath, requestMethods.toArray(new RequestMethod[requestMethods.size()]), consumes, produces, headers), locale, openAPI);
+			Set<RequestMethod> requestMethods,String[] consumes, String[] produces, String[] headers, String[] params,Locale locale, OpenAPI openAPI) {
+		this.calculatePath(handlerMethod, new RouterOperation(operationPath, requestMethods.toArray(new RequestMethod[requestMethods.size()]), consumes, produces, headers, params), locale, openAPI);
 	}
 
 	/**
@@ -833,6 +843,21 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return operation;
 	}
 
+	/**
+	 * Customise router operation
+	 * @param routerOperation
+	 * @param handlerMethod
+	 * @return the router operation
+	 */
+	protected RouterOperation customizeRouterOperation(RouterOperation routerOperation, HandlerMethod handlerMethod) {
+		if (routerOperationCustomizers.isPresent()) {
+			List<RouterOperationCustomizer> routerOperationCustomizerList = routerOperationCustomizers.get();
+			for (RouterOperationCustomizer routerOperationCustomizer : routerOperationCustomizerList) {
+				routerOperation = routerOperationCustomizer.customize(routerOperation, handlerMethod);
+			}
+		}
+		return routerOperation;
+	}
 	/**
 	 * Merge routers.
 	 *

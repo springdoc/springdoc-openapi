@@ -48,6 +48,7 @@ import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.fn.RouterOperation;
@@ -121,8 +122,8 @@ class AbstractOpenApiResourceTest {
 		ReflectionTestUtils.setField(openAPIService, "cachedOpenAPI", new HashMap<>());
 		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomizers", Optional.empty());
 
-		when(openAPIService.build(any())).thenReturn(openAPI);
 		when(openAPIService.getContext()).thenReturn(context);
+		when(openAPIService.build(any())).thenReturn(openAPI);
 
 		when(openAPIBuilderObjectFactory.getObject()).thenReturn(openAPIService);
 	}
@@ -135,6 +136,7 @@ class AbstractOpenApiResourceTest {
 				requestBuilder,
 				responseBuilder,
 				operationParser,
+				Optional.empty(),
 				Optional.empty(),
 				Optional.empty(),
 				Optional.empty(),
@@ -164,7 +166,7 @@ class AbstractOpenApiResourceTest {
 		routerOperation.setOperationModel(operation);
 		routerOperation.setPath(PATH);
 
-		resource.calculatePath(routerOperation, Locale.getDefault(), openAPI);
+		resource.calculatePath(routerOperation, Locale.getDefault(), this.openAPI);
 
 		final List<Parameter> parameters = resource.getOpenApi(Locale.getDefault()).getPaths().get(PATH).getGet().getParameters();
 		assertThat(parameters.size(), is(3));
@@ -196,7 +198,7 @@ class AbstractOpenApiResourceTest {
 
 		String customUrl = "https://custom.com";
 		String generatedUrl = "https://generated.com";
-		OpenApiCustomizer openApiCustomiser = openApi -> openApi.setServers(singletonList(new Server().url(customUrl)));
+		OpenApiCustomizer openApiCustomizer = openApi -> openApi.setServers(singletonList(new Server().url(customUrl)));
 		SpringDocConfigProperties properties = new SpringDocConfigProperties();
 		properties.setPreLoadingEnabled(true);
 
@@ -207,7 +209,8 @@ class AbstractOpenApiResourceTest {
 				responseBuilder,
 				operationParser,
 				Optional.empty(),
-				Optional.of(singletonList(openApiCustomiser)),
+				Optional.of(singletonList(openApiCustomizer)),
+				Optional.empty(),
 				Optional.empty(),
 				properties, springDocProviders
 		);
@@ -240,6 +243,7 @@ class AbstractOpenApiResourceTest {
 				requestBuilder,
 				responseBuilder,
 				operationParser,
+				Optional.empty(),
 				Optional.empty(),
 				Optional.empty(),
 				Optional.empty(),
@@ -292,8 +296,8 @@ class AbstractOpenApiResourceTest {
 
 	private static class EmptyPathsOpenApiResource extends AbstractOpenApiResource {
 
-		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
-			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
+		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<RouterOperationCustomizer>> routerOpeationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
+			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomizers, routerOpeationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
 		}
 
 		@Override
