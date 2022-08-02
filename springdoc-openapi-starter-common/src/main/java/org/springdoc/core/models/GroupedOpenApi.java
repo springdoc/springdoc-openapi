@@ -33,6 +33,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 
 import org.springframework.util.CollectionUtils;
@@ -59,6 +60,11 @@ public class GroupedOpenApi {
 	 * The Operation customizers.
 	 */
 	private List<OperationCustomizer> operationCustomizers;
+
+	/**
+	 * The Router Operation customizers.
+	 */
+	private List<RouterOperationCustomizer> routerOperationCustomizers;
 
 	/**
 	 * The Paths to match.
@@ -122,6 +128,7 @@ public class GroupedOpenApi {
 		this.displayName = StringUtils.defaultIfEmpty(builder.displayName, this.group);
 		this.openApiCustomizers = Objects.requireNonNull(builder.openApiCustomizers);
 		this.operationCustomizers = Objects.requireNonNull(builder.operationCustomizers);
+		this.routerOperationCustomizers = Objects.requireNonNull(builder.routerOperationCustomizers);
 		this.openApiMethodFilters = Objects.requireNonNull(builder.methodFilters);
 		if (CollectionUtils.isEmpty(this.pathsToMatch)
 				&& CollectionUtils.isEmpty(this.packagesToScan)
@@ -245,6 +252,15 @@ public class GroupedOpenApi {
 	}
 
 	/**
+	 * Gets router operation customizers.
+	 *
+	 * @return the router operation customizers
+	 */
+	public List<RouterOperationCustomizer> getRouterOperationCustomizers() {
+		return routerOperationCustomizers;
+	}
+
+	/**
 	 * Gets display name.
 	 *
 	 * @return the display name
@@ -267,6 +283,11 @@ public class GroupedOpenApi {
 		 * The Operation customizers.
 		 */
 		private final List<OperationCustomizer> operationCustomizers = new ArrayList<>();
+
+		/**
+		 * The Router Operation customizers.
+		 */
+		private final List<RouterOperationCustomizer> routerOperationCustomizers = new ArrayList<>();
 
 		/**
 		 * The methods filters to apply.
@@ -432,6 +453,17 @@ public class GroupedOpenApi {
 		 */
 		public Builder addOperationCustomizer(OperationCustomizer operationCustomizer) {
 			this.operationCustomizers.add(operationCustomizer);
+			return this;
+		}
+
+		/**
+		 * Add router operation customizer builder
+		 *
+		 * @param routerOperationCustomizer the router operation customizer
+		 * @return the builder
+		 */
+		public Builder addRouterOperationCustomizer(RouterOperationCustomizer routerOperationCustomizer) {
+			this.routerOperationCustomizers.add(routerOperationCustomizer);
 			return this;
 		}
 
