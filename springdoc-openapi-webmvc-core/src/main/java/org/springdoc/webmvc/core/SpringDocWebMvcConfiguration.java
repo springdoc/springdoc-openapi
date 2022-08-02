@@ -39,6 +39,7 @@ import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.SpringWebProvider;
@@ -97,6 +98,7 @@ public class SpringDocWebMvcConfiguration {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param operationCustomizers the operation customizers
 	 * @param openApiCustomisers the open api customisers
+	 * @param routerOperationCustomizers the router operation customisers
 	 * @param methodFilters the method filters
 	 * @param springDocProviders the spring doc providers
 	 * @return the open api resource
@@ -110,11 +112,12 @@ public class SpringDocWebMvcConfiguration {
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<OpenApiCustomiser>> openApiCustomisers,
+			Optional<List<RouterOperationCustomizer>> routerOperationCustomizers,
 			Optional<List<OpenApiMethodFilter>> methodFilters,
 			SpringDocProviders springDocProviders) {
 		return new OpenApiWebMvcResource(openAPIBuilderObjectFactory, requestBuilder,
 				responseBuilder, operationParser, operationCustomizers,
-				openApiCustomisers, methodFilters, springDocConfigProperties, springDocProviders);
+				openApiCustomisers, routerOperationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
 	}
 
 	/**
@@ -231,6 +234,7 @@ public class SpringDocWebMvcConfiguration {
 		 * @param springDocConfigProperties the spring doc config properties
 		 * @param operationCustomizers the operation customizers
 		 * @param openApiCustomisers the open api customisers
+		 * @param routerOperationCustomizers the router operation customisers
 		 * @param methodFilters the method filters
 		 * @param springDocProviders the spring doc providers
 		 * @return the open api actuator resource
@@ -245,12 +249,13 @@ public class SpringDocWebMvcConfiguration {
 				SpringDocConfigProperties springDocConfigProperties,
 				Optional<List<OperationCustomizer>> operationCustomizers,
 				Optional<List<OpenApiCustomiser>> openApiCustomisers,
+				Optional<List<RouterOperationCustomizer>> routerOperationCustomizers,
 				Optional<List<OpenApiMethodFilter>> methodFilters,
 				SpringDocProviders springDocProviders) {
 			return new OpenApiActuatorResource(openAPIBuilderObjectFactory,
 					requestBuilder, responseBuilder,
 					operationParser,
-					operationCustomizers, openApiCustomisers, methodFilters,
+					operationCustomizers, openApiCustomisers, routerOperationCustomizers, methodFilters,
 					springDocConfigProperties, springDocProviders);
 		}
 	}

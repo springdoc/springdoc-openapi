@@ -63,6 +63,11 @@ public class RouterFunctionData {
 	private List<String> headers = new ArrayList<>();
 
 	/**
+	 * The Params.
+	 */
+	private List<String> params = new ArrayList<>();
+
+	/**
 	 * The Query params.
 	 */
 	private Map<String, String> queryParams = new LinkedHashMap<>();
@@ -93,6 +98,7 @@ public class RouterFunctionData {
 		this.consumes = Arrays.asList(functionData.getConsumes());
 		this.produces = Arrays.asList(functionData.getProduces());
 		this.headers = Arrays.asList(functionData.getHeaders());
+		this.params = Arrays.asList(functionData.getParams());
 		this.queryParams = functionData.getQueryParams();
 		this.methods = functionData.getMethods();
 		this.attributes = functionData.getAttributes();
@@ -180,6 +186,20 @@ public class RouterFunctionData {
 	public String[] getConsumes() {
 		return consumes.toArray(new String[consumes.size()]);
 	}
+
+	/**
+	 * Get params string [ ].
+	 *
+	 * @return the string [ ]
+	 */
+	public String[] getParams() { return params.toArray(new String[params.size()]); }
+
+	/**
+	 * Add params.
+	 *
+	 * @param params the params
+	 */
+	public void addParams(String params) { if(StringUtils.isNotBlank(params)) this.params.add(params); }
 
 	/**
 	 * Add consumes.

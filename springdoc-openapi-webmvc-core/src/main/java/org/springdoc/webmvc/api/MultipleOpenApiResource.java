@@ -135,7 +135,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 				.addAllOperationCustomizer(globalOperationCustomizerMap.values())
 				.addAllOpenApiMethodFilter(globalOpenApiMethodFilterMap.values())
 		);
-		
+
 		this.groupedOpenApiResources = groupedOpenApis.stream()
 				.collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
 						{
@@ -161,6 +161,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 					operationParser,
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
+					Optional.of(item.getRouterOperationCustomizers()),
 					Optional.of(item.getOpenApiMethodFilters()),
 					springDocConfigProperties, springDocProviders
 
@@ -173,6 +174,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 					operationParser,
 					Optional.of(item.getOperationCustomizers()),
 					Optional.of(item.getOpenApiCustomisers()),
+					Optional.of(item.getRouterOperationCustomizers()),
 					Optional.of(item.getOpenApiMethodFilters()),
 					springDocConfigProperties, springDocProviders
 			);
