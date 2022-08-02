@@ -40,6 +40,7 @@ import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.webmvc.api.OpenApiWebMvcResource;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
@@ -95,9 +96,9 @@ public class SpringDocApp94Test extends AbstractSpringDocV30Test {
 		@Bean(name = "openApiResource")
 		public OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
 				OperationService operationParser,Optional<List<OperationCustomizer>> operationCustomizers, SpringDocConfigProperties springDocConfigProperties,
-				Optional<List<OpenApiCustomiser>> openApiCustomisers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocProviders springDocProviders) {
+				Optional<List<OpenApiCustomiser>> openApiCustomisers, Optional<List<RouterOperationCustomizer>> routerOperationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocProviders springDocProviders) {
 			return new OpenApiWebMvcResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
-					operationCustomizers, openApiCustomisers, methodFilters, springDocConfigProperties, springDocProviders);
+					operationCustomizers, openApiCustomisers, routerOperationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
 		}
 
 		@Override

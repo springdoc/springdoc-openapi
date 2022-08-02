@@ -96,6 +96,14 @@ public @interface RouterOperation {
 	String[] headers() default {};
 
 	/**
+	 * The parameters of the mapped request, narrowing the primary mapping.
+	 * Same format for any environment: a sequence of "myParam=myValue" style expressions,
+	 * with a request only mapped if each such parameter is found to have the given value.
+	 * @return the string [ ]
+	 */
+	String[] params() default {};
+
+	/**
 	 * The class of the Handler bean.
 	 * @return the class of the Bean
 	 */

@@ -36,6 +36,7 @@ import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.webmvc.api.OpenApiWebMvcResource;
 import test.org.springdoc.api.AbstractSpringDocTest;
@@ -125,6 +126,7 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 		 * @param operationCustomizers the operation customizers
 		 * @param springDocConfigProperties the spring doc config properties
 		 * @param openApiCustomisers the open api customisers
+		 * @param routerOperationCustomizers the router operation customizers
 		 * @param methodFilters the method filters
 		 * @param springDocProviders the spring doc providers
 		 * @return the open api web mvc resource
@@ -133,9 +135,9 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 		public OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
 				OperationService operationParser,Optional<List<OperationCustomizer>> operationCustomizers,
 				SpringDocConfigProperties springDocConfigProperties,
-				Optional<List<OpenApiCustomiser>> openApiCustomisers, Optional<List<OpenApiMethodFilter>> methodFilters,SpringDocProviders springDocProviders) {
+				Optional<List<OpenApiCustomiser>> openApiCustomisers, Optional<List<RouterOperationCustomizer>> routerOperationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters,SpringDocProviders springDocProviders) {
 			return new OpenApiWebMvcResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
-					operationCustomizers, openApiCustomisers,methodFilters, springDocConfigProperties, springDocProviders);
+					operationCustomizers, openApiCustomisers, routerOperationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
 		}
 
 		/**
