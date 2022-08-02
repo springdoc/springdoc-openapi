@@ -38,6 +38,7 @@ import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
 /**
  * The type Router operation.
  * @author bnasslahsen
+ * @author hyeonisism
  */
 public class RouterOperation implements Comparable<RouterOperation> {
 
@@ -65,6 +66,11 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	 * The Headers.
 	 */
 	private String[] headers;
+
+	/**
+	 * The Params.
+	 */
+	private String[] params;
 
 	/**
 	 * The Bean class.
@@ -116,6 +122,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 		this.parameterTypes = routerOperationAnnotation.parameterTypes();
 		this.operation = routerOperationAnnotation.operation();
 		this.headers = routerOperationAnnotation.headers();
+		this.params = routerOperationAnnotation.params();
 	}
 
 	/**
@@ -134,6 +141,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 		this.parameterTypes = routerOperationAnnotation.parameterTypes();
 		this.operation = routerOperationAnnotation.operation();
 		this.headers = ArrayUtils.isEmpty(routerOperationAnnotation.headers()) ? routerFunctionData.getHeaders() : routerOperationAnnotation.headers();
+		this.params = routerOperationAnnotation.params();
 		this.queryParams = routerFunctionData.getQueryParams();
 	}
 
@@ -146,12 +154,13 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	 * @param produces the produces
 	 * @param headers the headers
 	 */
-	public RouterOperation(String path, RequestMethod[] methods,String[] consumes, String[] produces, String[] headers) {
+	public RouterOperation(String path, RequestMethod[] methods, String[] consumes, String[] produces, String[] headers, String[] params) {
 		this.path = path;
 		this.methods = methods;
-		this.consumes=consumes;
-		this.produces=produces;
-		this.headers=headers;
+		this.consumes = consumes;
+		this.produces = produces;
+		this.headers = headers;
+		this.params = params;
 	}
 
 	/**
@@ -165,6 +174,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 		this.consumes = routerFunctionData.getConsumes();
 		this.produces = routerFunctionData.getProduces();
 		this.headers = routerFunctionData.getHeaders();
+		this.params = routerFunctionData.getParams();
 		this.queryParams = routerFunctionData.getQueryParams();
 
 		Map<String, Object> attributes = routerFunctionData.getAttributes();
@@ -367,6 +377,24 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	 */
 	public void setQueryParams(Map<String, String> queryParams) {
 		this.queryParams = queryParams;
+	}
+
+	/**
+	 * Gets params.
+	 *
+	 * @return the params
+	 */
+	public String[] getParams() {
+		return this.params;
+	}
+
+	/**
+	 * Sets params.
+	 *
+	 * @param params
+	 */
+	public void setParams(String[] params) {
+		this.params = params;
 	}
 
 	/**
