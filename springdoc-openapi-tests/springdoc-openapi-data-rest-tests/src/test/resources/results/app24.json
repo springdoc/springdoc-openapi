@@ -112,7 +112,7 @@
             "$ref": "#/components/schemas/PageableObject"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "first": {
             "type": "boolean"
@@ -141,7 +141,7 @@
             "format": "int32"
           },
           "sort": {
-            "$ref": "#/components/schemas/Sort"
+            "$ref": "#/components/schemas/SortObject"
           },
           "unpaged": {
             "type": "boolean"
@@ -151,7 +151,7 @@
           }
         }
       },
-      "Sort": {
+      "SortObject": {
         "type": "object",
         "properties": {
           "sorted": {
