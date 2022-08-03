@@ -22,7 +22,9 @@
             "description": "OK",
             "content": {
               "*/*": {
-                "schema": {}
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -40,7 +42,9 @@
             "description": "OK",
             "content": {
               "*/*": {
-                "schema": {}
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           }

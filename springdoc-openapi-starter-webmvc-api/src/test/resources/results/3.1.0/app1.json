@@ -28,7 +28,9 @@
             "in": "path",
             "description": "E-Mail address to lookup for",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -76,21 +78,27 @@
             "in": "path",
             "description": "E-Mail",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "firstName",
             "in": "query",
             "description": "First Name",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "lastName",
             "in": "query",
             "description": "Last Name",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -109,7 +117,9 @@
             "headers": {
               "Location": {
                 "style": "simple",
-                "schema": {}
+                "schema": {
+                  "type": "string"
+                }
               }
             },
             "content": {
@@ -124,7 +134,9 @@
             "description": "Person with such e-mail already exists",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -142,7 +154,9 @@
             "in": "path",
             "description": "E-Mail address to lookup for",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -160,7 +174,9 @@
             "description": "Person has been deleted",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -168,7 +184,9 @@
             "description": "Person with such e-mail doesn't exists",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -187,6 +205,7 @@
             "in": "query",
             "required": true,
             "schema": {
+              "type": "string",
               "maxLength": 6,
               "minLength": 4
             }
@@ -196,6 +215,7 @@
             "in": "query",
             "required": true,
             "schema": {
+              "type": "integer",
               "format": "int32",
               "maximum": 6,
               "minimum": 4
@@ -216,6 +236,7 @@
             "required": false,
             "explode": false,
             "schema": {
+              "type": "array",
               "items": {}
             }
           }
@@ -236,6 +257,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/ItemDTO"
                   }
@@ -276,6 +298,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "string",
                   "format": "uri"
                 }
               }
@@ -299,7 +322,9 @@
             "in": "query",
             "description": "pass an optional search string for looking up inventory",
             "required": false,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "skip",
@@ -307,6 +332,7 @@
             "description": "number of records to skip for pagination",
             "required": true,
             "schema": {
+              "type": "integer",
               "format": "int32",
               "minimum": 0
             }
@@ -317,6 +343,7 @@
             "description": "maximum number of records to return",
             "required": true,
             "schema": {
+              "type": "integer",
               "format": "int32",
               "maximum": 50,
               "minimum": 0
@@ -339,6 +366,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/InventoryItem"
                   }
@@ -351,6 +379,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/InventoryItem"
                   }
@@ -425,6 +454,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/PersonDTO"
                   }
@@ -446,13 +476,17 @@
             "name": "numTelco",
             "in": "path",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "adresse",
             "in": "query",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -470,7 +504,9 @@
             "description": "I'm a teapot",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -482,24 +518,38 @@
     "schemas": {
       "ErrorMessage": {
         "properties": {
-          "id": {},
-          "message": {}
+          "id": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
         }
       },
       "PersonDTO": {
         "properties": {
-          "email": {},
-          "firstName": {},
-          "lastName": {}
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
         }
       },
       "ItemLightDTO": {
         "properties": {
-          "description": {},
+          "description": {
+            "type": "string"
+          },
           "price": {
+            "type": "integer",
             "format": "int32"
           },
           "deprecatedPrice": {
+            "type": "integer",
             "format": "int32",
             "deprecated": true
           }
@@ -508,13 +558,16 @@
       "InventoryItem": {
         "properties": {
           "id": {
+            "type": "string",
             "format": "uuid",
             "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
           },
           "name": {
+            "type": "string",
             "example": "Widget Adapter"
           },
           "releaseDate": {
+            "type": "string",
             "example": "2016-08-29T09:12:33.001Z"
           },
           "manufacturer": {
@@ -531,12 +584,15 @@
       "Manufacturer": {
         "properties": {
           "name": {
+            "type": "string",
             "example": "ACME Corporation"
           },
           "homePage": {
+            "type": "string",
             "example": "https://www.acme-corp.com"
           },
           "phone": {
+            "type": "string",
             "example": "408-867-5309"
           }
         },
@@ -546,12 +602,18 @@
       },
       "ItemDTO": {
         "properties": {
-          "itemID": {},
-          "description": {},
+          "itemID": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
           "price": {
+            "type": "integer",
             "format": "int32"
           },
           "deprecatedPrice": {
+            "type": "integer",
             "format": "int32",
             "deprecated": true
           }
