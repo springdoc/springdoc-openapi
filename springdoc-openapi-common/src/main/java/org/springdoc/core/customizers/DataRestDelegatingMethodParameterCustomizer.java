@@ -31,17 +31,22 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.ObjectMapperFactory;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.Explode;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.enums.ParameterStyle;
+import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.DelegatingMethodParameter;
-import org.springdoc.core.delegates.ArraySchemaDelegate;
-import org.springdoc.core.delegates.ParameterDelegate;
-import org.springdoc.core.delegates.SchemaDelegate;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
 
@@ -126,15 +131,180 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		try {
 			field = methodParameter.getContainingClass().getDeclaredField(parameterName);
 			Parameter parameter = field.getAnnotation(Parameter.class);
-			parameterNew = new ParameterDelegate(parameter) {
+			parameterNew = new Parameter() {
+				@Override
+				public Class<? extends Annotation> annotationType() {
+					return parameter.annotationType();
+				}
+
 				@Override
 				public String name() {
 					return getName(parameterName, parameter.name());
 				}
 
 				@Override
+				public ParameterIn in() {
+					return parameter.in();
+				}
+
+				@Override
+				public String description() {
+					return getDescription(parameterName, parameter.description());
+				}
+
+				@Override
+				public boolean required() {
+					return parameter.required();
+				}
+
+				@Override
+				public boolean deprecated() {
+					return parameter.deprecated();
+				}
+
+				@Override
+				public boolean allowEmptyValue() {
+					return parameter.allowEmptyValue();
+				}
+
+				@Override
+				public ParameterStyle style() {
+					return parameter.style();
+				}
+
+				@Override
+				public Explode explode() {
+					return parameter.explode();
+				}
+
+				@Override
+				public boolean allowReserved() {
+					return parameter.allowReserved();
+				}
+
+				@Override
 				public Schema schema() {
-					return new SchemaDelegate(parameter.schema()) {
+					return new Schema() {
+
+						@Override
+						public Class<? extends Annotation> annotationType() {
+							return parameter.schema().annotationType();
+						}
+
+						@Override
+						public Class<?> implementation() {
+							return parameter.schema().implementation();
+						}
+
+						@Override
+						public Class<?> not() {
+							return parameter.schema().not();
+						}
+
+						@Override
+						public Class<?>[] oneOf() {
+							return parameter.schema().oneOf();
+						}
+
+						@Override
+						public Class<?>[] anyOf() {
+							return parameter.schema().anyOf();
+						}
+
+						@Override
+						public Class<?>[] allOf() {
+							return parameter.schema().allOf();
+						}
+
+						@Override
+						public String name() {
+							return parameter.schema().name();
+						}
+
+						@Override
+						public String title() {
+							return parameter.schema().title();
+						}
+
+						@Override
+						public double multipleOf() {
+							return parameter.schema().multipleOf();
+						}
+
+						@Override
+						public String maximum() {
+							return parameter.schema().maximum();
+						}
+
+						@Override
+						public boolean exclusiveMaximum() {
+							return parameter.schema().exclusiveMaximum();
+						}
+
+						@Override
+						public String minimum() {
+							return parameter.schema().minimum();
+						}
+
+						@Override
+						public boolean exclusiveMinimum() {
+							return parameter.schema().exclusiveMaximum();
+						}
+
+						@Override
+						public int maxLength() {
+							return parameter.schema().maxLength();
+						}
+
+						@Override
+						public int minLength() {
+							return parameter.schema().minLength();
+						}
+
+						@Override
+						public String pattern() {
+							return parameter.schema().pattern();
+						}
+
+						@Override
+						public int maxProperties() {
+							return parameter.schema().maxProperties();
+						}
+
+						@Override
+						public int minProperties() {
+							return parameter.schema().minProperties();
+						}
+
+						@Override
+						public String[] requiredProperties() {
+							return parameter.schema().requiredProperties();
+						}
+
+						@Override
+						public boolean required() {
+							return parameter.schema().required();
+						}
+
+						@Override
+						public String description() {
+							return parameter.schema().description();
+						}
+
+						@Override
+						public String format() {
+							return parameter.schema().format();
+						}
+
+						@Override
+						public String ref() {
+							return parameter.schema().ref();
+						}
+
+						@Override
+						public boolean nullable() {
+							return parameter.schema().nullable();
+						}
 
 						@Override
 						public boolean readOnly() {
@@ -147,8 +317,73 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 						}
 
 						@Override
+						public AccessMode accessMode() {
+							return parameter.schema().accessMode();
+						}
+
+						@Override
+						public String example() {
+							return parameter.schema().example();
+						}
+
+						@Override
+						public ExternalDocumentation externalDocs() {
+							return parameter.schema().externalDocs();
+						}
+
+						@Override
+						public boolean deprecated() {
+							return parameter.schema().deprecated();
+						}
+
+						@Override
+						public String type() {
+							return parameter.schema().type();
+						}
+
+						@Override
+						public String[] allowableValues() {
+							return parameter.schema().allowableValues();
+						}
+
+						@Override
 						public String defaultValue() {
 							return getDefaultValue(parameterName, pageableDefault, parameter.schema().defaultValue());
+						}
+
+						@Override
+						public String discriminatorProperty() {
+							return parameter.schema().discriminatorProperty();
+						}
+
+						@Override
+						public DiscriminatorMapping[] discriminatorMapping() {
+							return parameter.schema().discriminatorMapping();
+						}
+
+						@Override
+						public boolean hidden() {
+							return parameter.schema().hidden();
+						}
+
+						@Override
+						public boolean enumAsRef() {
+							return parameter.schema().enumAsRef();
+						}
+
+						@Override
+						public Class<?>[] subTypes() {
+							return parameter.schema().subTypes();
+						}
+
+						@Override
+						public Extension[] extensions() {
+							return parameter.schema().extensions();
+						}
+
+						@Override
+						public AdditionalPropertiesValue additionalProperties() {
+							return parameter.schema().additionalProperties();
 						}
 					};
 				}
@@ -156,11 +391,141 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				@Override
 				public ArraySchema array() {
 					ArraySchema arraySchema = parameter.array();
-					return new ArraySchemaDelegate(arraySchema) {
+					return new ArraySchema() {
+						@Override
+						public Class<? extends Annotation> annotationType() {
+							return arraySchema.annotationType();
+						}
+
+						@Override
+						public Schema schema() {
+							return arraySchema.schema();
+						}
+
 						@Override
 						public Schema arraySchema() {
 							Schema schema = arraySchema.arraySchema();
-							return new SchemaDelegate(schema) {
+							return new Schema() {
+
+								@Override
+								public Class<? extends Annotation> annotationType() {
+									return schema.annotationType();
+								}
+
+								@Override
+								public Class<?> implementation() {
+									return schema.implementation();
+								}
+
+								@Override
+								public Class<?> not() {
+									return schema.not();
+								}
+
+								@Override
+								public Class<?>[] oneOf() {
+									return schema.oneOf();
+								}
+
+								@Override
+								public Class<?>[] anyOf() {
+									return schema.anyOf();
+								}
+
+								@Override
+								public Class<?>[] allOf() {
+									return schema.allOf();
+								}
+
+								@Override
+								public String name() {
+									return schema.name();
+								}
+
+								@Override
+								public String title() {
+									return schema.title();
+								}
+
+								@Override
+								public double multipleOf() {
+									return schema.multipleOf();
+								}
+
+								@Override
+								public String maximum() {
+									return schema.maximum();
+								}
+
+								@Override
+								public boolean exclusiveMaximum() {
+									return schema.exclusiveMaximum();
+								}
+
+								@Override
+								public String minimum() {
+									return schema.minimum();
+								}
+
+								@Override
+								public boolean exclusiveMinimum() {
+									return schema.exclusiveMinimum();
+								}
+
+								@Override
+								public int maxLength() {
+									return schema.maxLength();
+								}
+
+								@Override
+								public int minLength() {
+									return schema.minLength();
+								}
+
+								@Override
+								public String pattern() {
+									return schema.pattern();
+								}
+
+								@Override
+								public int maxProperties() {
+									return schema.maxProperties();
+								}
+
+								@Override
+								public int minProperties() {
+									return schema.minProperties();
+								}
+
+								@Override
+								public String[] requiredProperties() {
+									return schema.requiredProperties();
+								}
+
+								@Override
+								public boolean required() {
+									return schema.required();
+								}
+
+								@Override
+								public String description() {
+									return schema.description();
+								}
+
+								@Override
+								public String format() {
+									return schema.format();
+								}
+
+								@Override
+								public String ref() {
+									return schema.ref();
+								}
+
+								@Override
+								public boolean nullable() {
+									return schema.nullable();
+								}
 
 								@Override
 								public boolean readOnly() {
@@ -173,12 +538,128 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 								}
 
 								@Override
+								public AccessMode accessMode() {
+									return schema.accessMode();
+								}
+
+								@Override
+								public String example() {
+									return schema.example();
+								}
+
+								@Override
+								public ExternalDocumentation externalDocs() {
+									return schema.externalDocs();
+								}
+
+								@Override
+								public boolean deprecated() {
+									return schema.deprecated();
+								}
+
+								@Override
+								public String type() {
+									return schema.type();
+								}
+
+								@Override
+								public String[] allowableValues() {
+									return schema.allowableValues();
+								}
+
+								@Override
 								public String defaultValue() {
 									return getArrayDefaultValue(parameterName, pageableDefault, sortDefault, schema.defaultValue());
+
+							}
+
+								@Override
+								public String discriminatorProperty() {
+									return schema.discriminatorProperty();
+								}
+
+								@Override
+								public DiscriminatorMapping[] discriminatorMapping() {
+									return schema.discriminatorMapping();
+								}
+
+								@Override
+								public boolean hidden() {
+									return schema.hidden();
+								}
+
+								@Override
+								public boolean enumAsRef() {
+									return schema.enumAsRef();
+								}
+
+								@Override
+								public Class<?>[] subTypes() {
+									return schema.subTypes();
+								}
+
+								@Override
+								public Extension[] extensions() {
+									return schema.extensions();
+								}
+
+								@Override
+								public AdditionalPropertiesValue additionalProperties() {
+									return schema.additionalProperties();
 								}
 							};
 						}
+
+						@Override
+						public int maxItems() {
+							return arraySchema.maxItems();
+						}
+
+						@Override
+						public int minItems() {
+							return arraySchema.minItems();
+						}
+
+						@Override
+						public boolean uniqueItems() {
+							return arraySchema.uniqueItems();
+						}
+
+						@Override
+						public Extension[] extensions() {
+							return arraySchema.extensions();
+						}
 					};
+				}
+
+				@Override
+				public Content[] content() {
+					return parameter.content();
+				}
+
+				@Override
+				public boolean hidden() {
+					return parameter.hidden();
+				}
+
+				@Override
+				public ExampleObject[] examples() {
+					return parameter.examples();
+				}
+
+				@Override
+				public String example() {
+					return parameter.example();
+				}
+
+				@Override
+				public Extension[] extensions() {
+					return parameter.extensions();
+				}
+
+				@Override
+				public String ref() {
+					return parameter.ref();
 				}
 			};
 			return Optional.of(parameterNew);
@@ -203,7 +684,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				if (isRepositoryRestConfigurationPresent())
 					name = optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getLimitParamName();
 				else if (isSpringDataWebPropertiesPresent())
-					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getSizeParameter();
+					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPrefix() +
+							optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getSizeParameter();
 				else
 					name = originalName;
 				break;
@@ -219,7 +701,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				if (isRepositoryRestConfigurationPresent())
 					name = optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getPageParamName();
 				else if (isSpringDataWebPropertiesPresent())
-					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPageParameter();
+					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPrefix() +
+						optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPageParameter();
 				else
 					name = originalName;
 				break;
@@ -232,6 +715,20 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				break;
 		}
 		return name;
+	}
+
+	/**
+	 * Gets description.
+	 *
+	 * @param parameterName the parameter name
+	 * @param originalDescription the original description
+	 * @return the description
+	 */
+	private String getDescription(String parameterName, String originalDescription) {
+		if ("page".equals(parameterName) && isSpringDataWebPropertiesPresent() &&
+				optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().isOneIndexedParameters())
+			return "One-based page index (1..N)";
+		return originalDescription;
 	}
 
 	/**
@@ -271,6 +768,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 			case "page":
 				if (pageableDefault != null)
 					defaultValue = String.valueOf(pageableDefault.page());
+				else if (isSpringDataWebPropertiesPresent() && optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().isOneIndexedParameters())
+					defaultValue = "1";
 				else
 					defaultValue = defaultSchemaVal;
 				break;
@@ -309,7 +808,6 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		}
 		return defaultValue;
 	}
-
 	/**
 	 * Gets default sort.
 	 *
