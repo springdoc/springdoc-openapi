@@ -25,6 +25,8 @@ package org.springdoc.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springdoc.core.SpringDocConfigProperties.ModelConverters.SortConverter;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -178,6 +180,29 @@ public class SpringDocConfigProperties {
 	 * The model Converters
 	 */
 	private ModelConverters modelConverters = new ModelConverters();
+
+	/**
+	 * The Sort converter.
+	 */
+	private SortConverter sortConverter = new SortConverter();
+
+	/**
+	 * Gets sort converter.
+	 *
+	 * @return the sort converter
+	 */
+	public SortConverter getSortConverter() {
+		return sortConverter;
+	}
+
+	/**
+	 * Sets sort converter.
+	 *
+	 * @param sortConverter the sort converter
+	 */
+	public void setSortConverter(SortConverter sortConverter) {
+		this.sortConverter = sortConverter;
+	}
 
 	/**
 	 * Is show spring cloud functions boolean.
@@ -770,6 +795,36 @@ public class SpringDocConfigProperties {
 		 */
 		public void setPolymorphicConverter(PolymorphicConverter polymorphicConverter) {
 			this.polymorphicConverter = polymorphicConverter;
+		}
+
+		/**
+		 * The type Sort converter.
+		 * @author daniel-shuy
+		 */
+		public static class SortConverter {
+
+			/**
+			 * The Enabled.
+			 */
+			private boolean enabled;
+
+			/**
+			 * Is enabled boolean.
+			 *
+			 * @return the boolean
+			 */
+			public boolean isEnabled() {
+				return enabled;
+			}
+
+			/**
+			 * Sets enabled.
+			 *
+			 * @param enabled the enabled
+			 */
+			public void setEnabled(boolean enabled) {
+				this.enabled = enabled;
+			}
 		}
 
 		/**

@@ -1,4 +1,4 @@
-package org.springdoc.core.delelegates;
+package org.springdoc.core.delegates;
 
 
 import java.lang.annotation.Annotation;

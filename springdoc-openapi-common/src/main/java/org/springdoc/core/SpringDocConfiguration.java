@@ -30,6 +30,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.springdoc.core.Constants.SPRINGDOC_SORT_CONVERTER_ENABLED;
+import org.springframework.data.domain.Sort;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -47,6 +49,7 @@ import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
+import org.springdoc.core.converters.SortOpenAPIConverter;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
@@ -608,5 +611,41 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	ObjectMapperProvider springDocObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties){
 		return new ObjectMapperProvider(springDocConfigProperties);
+	}
+
+	/**
+	 * The type Spring doc sort configuration.
+	 */
+	@ConditionalOnClass(Sort.class)
+	static class SpringDocSortConfiguration {
+
+		/**
+		 * Sort open api converter.
+		 *
+		 * @param objectMapperProvider the object mapper provider
+		 * @return the sort open api converter
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@ConditionalOnProperty(name = SPRINGDOC_SORT_CONVERTER_ENABLED, matchIfMissing = true)
+		@Lazy(false)
+		SortOpenAPIConverter sortOpenAPIConverter(ObjectMapperProvider objectMapperProvider) {
+			getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Sort.class, org.springdoc.core.converters.models.Sort.class);
+			return new SortOpenAPIConverter(objectMapperProvider);
+		}
+
+		/**
+		 * Delegating method parameter customizer delegating method parameter customizer.
+		 *
+		 * @param optionalSpringDataWebPropertiesProvider the optional spring data web properties
+		 * @param optionalRepositoryRestConfiguration the optional repository rest configuration
+		 * @return the delegating method parameter customizer
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		DelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
+			return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider, optionalRepositoryRestConfiguration);
+		}
 	}
 }
