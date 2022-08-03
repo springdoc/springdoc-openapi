@@ -44,7 +44,9 @@
             "in": "path",
             "description": "The name that needs to be fetched. Use user1 for testing.",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -53,6 +55,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -102,7 +105,9 @@
             "in": "path",
             "description": "name that need to be deleted",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -122,6 +127,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -143,7 +149,9 @@
             "name": "username",
             "in": "path",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -152,6 +160,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -192,6 +201,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -241,6 +251,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -284,6 +295,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -307,6 +319,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/User"
                 }
@@ -321,6 +334,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -344,6 +358,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/User"
                 }
@@ -358,6 +373,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -392,6 +408,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -430,6 +447,7 @@
             "description": "ID of pet to return",
             "required": true,
             "schema": {
+              "type": "integer",
               "format": "int64"
             }
           }
@@ -440,13 +458,14 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
             }
           },
-          "200": {
-            "description": "successful operation",
+          "404": {
+            "description": "Pet not found",
             "content": {
               "application/xml": {
                 "schema": {
@@ -460,8 +479,8 @@
               }
             }
           },
-          "404": {
-            "description": "Pet not found",
+          "200": {
+            "description": "successful operation",
             "content": {
               "application/xml": {
                 "schema": {
@@ -495,6 +514,7 @@
             "description": "ID of pet that needs to be updated",
             "required": true,
             "schema": {
+              "type": "integer",
               "format": "int64"
             }
           },
@@ -503,14 +523,18 @@
             "in": "query",
             "description": "Updated name of the pet",
             "required": false,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "status",
             "in": "query",
             "description": "Updated status of the pet",
             "required": false,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -519,6 +543,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -550,6 +575,7 @@
             "description": "Pet id to delete",
             "required": true,
             "schema": {
+              "type": "integer",
               "format": "int64"
             }
           },
@@ -557,7 +583,9 @@
             "name": "api_key",
             "in": "header",
             "required": false,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -566,6 +594,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -599,6 +628,7 @@
             "description": "ID of pet to update",
             "required": true,
             "schema": {
+              "type": "integer",
               "format": "int64"
             }
           }
@@ -607,8 +637,10 @@
           "content": {
             "multipart/form-data": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "file": {
+                    "type": "string",
                     "format": "binary",
                     "description": "file detail"
                   },
@@ -629,6 +661,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -668,6 +701,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -692,14 +726,18 @@
             "in": "query",
             "description": "The user name for login",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           },
           {
             "name": "password",
             "in": "query",
             "description": "The password for login in clear text",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -708,6 +746,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -717,10 +756,14 @@
             "description": "successful operation",
             "content": {
               "application/xml": {
-                "schema": {}
+                "schema": {
+                  "type": "string"
+                }
               },
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -741,6 +784,7 @@
             "description": "ID of pet that needs to be fetched",
             "required": true,
             "schema": {
+              "type": "integer",
               "format": "int64",
               "maximum": 5,
               "minimum": 1
@@ -753,6 +797,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -802,7 +847,9 @@
             "in": "path",
             "description": "ID of the order that needs to be deleted",
             "required": true,
-            "schema": {}
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -811,6 +858,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -836,6 +884,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -846,6 +895,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {}
                 }
               }
@@ -874,7 +924,10 @@
             "description": "Tags to filter by",
             "required": true,
             "schema": {
-              "items": {}
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -884,6 +937,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -894,6 +948,7 @@
             "content": {
               "application/xml": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Pet"
                   }
@@ -901,6 +956,7 @@
               },
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Pet"
                   }
@@ -934,7 +990,10 @@
             "description": "Status values that need to be considered for filter",
             "required": true,
             "schema": {
-              "items": {}
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -944,6 +1003,7 @@
             "content": {
               "*/*": {
                 "schema": {
+                  "type": "object",
                   "additionalProperties": {}
                 }
               }
@@ -954,6 +1014,7 @@
             "content": {
               "application/xml": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Pet"
                   }
@@ -961,6 +1022,7 @@
               },
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Pet"
                   }
@@ -985,15 +1047,29 @@
       "User": {
         "properties": {
           "id": {
+            "type": "integer",
             "format": "int64"
           },
-          "username": {},
-          "firstName": {},
-          "lastName": {},
-          "email": {},
-          "password": {},
-          "phone": {},
+          "username": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
           "userStatus": {
+            "type": "integer",
             "format": "int32",
             "description": "User Status"
           }
@@ -1002,31 +1078,41 @@
       "Category": {
         "properties": {
           "id": {
+            "type": "integer",
             "format": "int64"
           },
-          "name": {}
+          "name": {
+            "type": "string"
+          }
         }
       },
       "Pet": {
         "properties": {
           "id": {
+            "type": "integer",
             "format": "int64"
           },
           "category": {
             "$ref": "#/components/schemas/Category"
           },
           "name": {
+            "type": "string",
             "example": "doggie"
           },
           "photoUrls": {
-            "items": {}
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "tags": {
+            "type": "array",
             "items": {
               "$ref": "#/components/schemas/Tag"
             }
           },
           "status": {
+            "type": "string",
             "description": "pet status in the store",
             "enum": [
               "available",
@@ -1043,27 +1129,37 @@
       "Tag": {
         "properties": {
           "id": {
+            "type": "integer",
             "format": "int64"
           },
-          "name": {}
+          "name": {
+            "type": "string"
+          }
         }
       },
       "Order": {
         "properties": {
-          "complete": {},
+          "complete": {
+            "type": "boolean"
+          },
           "id": {
+            "type": "integer",
             "format": "int64"
           },
           "petId": {
+            "type": "integer",
             "format": "int64"
           },
           "quantity": {
+            "type": "integer",
             "format": "int32"
           },
           "shipDate": {
+            "type": "string",
             "format": "date-time"
           },
           "status": {
+            "type": "string",
             "description": "Order Status"
           }
         }
@@ -1071,10 +1167,15 @@
       "ModelApiResponse": {
         "properties": {
           "code": {
+            "type": "integer",
             "format": "int32"
           },
-          "type": {},
-          "message": {}
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
         }
       }
     },

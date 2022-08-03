@@ -47,13 +47,16 @@
       "test.org.springdoc.api.v31.app4.TrackerData": {
         "properties": {
           "trackerId": {
+            "type": "string",
             "example": "the-tracker-id"
           },
           "timestamp": {
+            "type": "string",
             "format": "date-time",
             "example": "2018-01-01T00:00:00Z"
           },
           "value": {
+            "type": "number",
             "format": "double",
             "description": "The data value",
             "example": 19.0
