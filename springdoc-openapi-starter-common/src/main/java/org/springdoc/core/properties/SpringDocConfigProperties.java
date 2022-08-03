@@ -222,6 +222,29 @@ public class SpringDocConfigProperties {
 	private boolean enableDataRest = true;
 
 	/**
+	 * The Sort converter.
+	 */
+	private SortConverter sortConverter = new SortConverter();
+
+	/**
+	 * Gets sort converter.
+	 *
+	 * @return the sort converter
+	 */
+	public SortConverter getSortConverter() {
+		return sortConverter;
+	}
+
+	/**
+	 * Sets sort converter.
+	 *
+	 * @param sortConverter the sort converter
+	 */
+	public void setSortConverter(SortConverter sortConverter) {
+		this.sortConverter = sortConverter;
+	}
+
+	/**
 	 * Is enable data rest boolean.
 	 *
 	 * @return the boolean
@@ -1032,6 +1055,35 @@ public class SpringDocConfigProperties {
 		}
 	}
 
+	/**
+	 * The type Sort converter.
+	 * @author daniel-shuy
+	 */
+	public static class SortConverter {
+
+		/**
+		 * The Enabled.
+		 */
+		private boolean enabled;
+
+		/**
+		 * Is enabled boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isEnabled() {
+			return enabled;
+		}
+
+		/**
+		 * Sets enabled.
+		 *
+		 * @param enabled the enabled
+		 */
+		public void setEnabled(boolean enabled) {
+			this.enabled = enabled;
+		}
+	}
 	/**
 	 * The type Webjars.
 	 * @author bnasslahsen

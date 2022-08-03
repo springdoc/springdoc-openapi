@@ -391,6 +391,11 @@ public final class Constants {
 	public static final String LINKS_SCHEMA_CUSTOMISER  = "linksSchemaCustomizer";
 
 	/**
+	 * The constant SPRINGDOC_SORT_CONVERTER_ENABLED.
+	 */
+	public static final String SPRINGDOC_SORT_CONVERTER_ENABLED = "springdoc.model-converters.sort-converter.enabled";
+
+	/**
 	 * Instantiates a new Constants.
 	 */
 	private Constants() {
