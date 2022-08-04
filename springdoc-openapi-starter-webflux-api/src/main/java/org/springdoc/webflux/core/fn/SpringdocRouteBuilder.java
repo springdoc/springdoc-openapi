@@ -107,7 +107,7 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 */
 	public SpringdocRouteBuilder GET(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
 		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.GET(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
+		this.delegate.GET("",handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
 
@@ -152,7 +152,7 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 */
 	public SpringdocRouteBuilder HEAD(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
 		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.HEAD(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
+		this.delegate.HEAD("",handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
 
@@ -212,7 +212,7 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 */
 	public SpringdocRouteBuilder POST(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
 		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.POST(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
+		this.delegate.POST("",handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
 
@@ -272,7 +272,7 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 */
 	public SpringdocRouteBuilder PUT(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
 		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.PUT(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
+		this.delegate.PUT("",handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
 
@@ -332,7 +332,7 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 */
 	public SpringdocRouteBuilder PATCH(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
 		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.PATCH(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
+		this.delegate.PATCH("",handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
 
@@ -392,7 +392,7 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 */
 	public SpringdocRouteBuilder DELETE(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
 		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.DELETE(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
+		this.delegate.DELETE("",handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
 
@@ -452,7 +452,7 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 */
 	public SpringdocRouteBuilder OPTIONS(HandlerFunction<ServerResponse> handlerFunction, Consumer<Builder> operationsConsumer) {
 		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.OPTIONS(handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
+		this.delegate.OPTIONS("",handlerFunction).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
 	}
 
