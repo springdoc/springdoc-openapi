@@ -259,7 +259,7 @@ public class SpringDocDataRestUtils {
 			while (it.hasNext()) {
 				Entry<String, Schema> entry = it.next();
 				String propId = entry.getKey();
-				if (entityInfo.getIgnoredFields().contains(propId))
+				if (entityInfo.getIgnoredFields().contains(propId) || entityInfo.getAssociationsFields().contains(propId))
 					it.remove();
 				else if (EMBEDDED.equals(propId)) {
 					updateResponseSchemaEmbedded(components, entityInfo, entry);
