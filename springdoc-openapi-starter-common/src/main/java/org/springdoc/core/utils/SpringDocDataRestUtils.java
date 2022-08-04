@@ -283,6 +283,7 @@ public class SpringDocDataRestUtils {
 					String newKey = itemsSchema.get$ref() + RESPONSE;
 					createNewResponseSchema(key, components);
 					itemsSchema.set$ref(newKey);
+					updateResponseSchema(key,components.getSchemas().get(key+RESPONSE), components);
 				}
 			}
 			else if (itemsSchema instanceof ComposedSchema) {
