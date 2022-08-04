@@ -735,7 +735,7 @@ public abstract class AbstractRequestService {
 		if (delegatingMethodParameter.isParameterObject()) {
 			String fieldName;
 			if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
-				fieldName = StringUtils.substringAfter(pName, DOT);
+				fieldName = StringUtils.substringAfterLast(pName, DOT);
 			else
 				fieldName = pName;
 			Field field = FieldUtils.getDeclaredField(((DelegatingMethodParameter) methodParameter).getExecutable().getDeclaringClass(), fieldName, true);
