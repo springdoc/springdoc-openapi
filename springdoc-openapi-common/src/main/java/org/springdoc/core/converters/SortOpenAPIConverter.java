@@ -1,5 +1,3 @@
-package org.springdoc.core.converters;
-
 /*
  *
  *  *
@@ -21,6 +19,9 @@ package org.springdoc.core.converters;
  *  *
  *
  */
+
+package org.springdoc.core.converters;
+
 import java.util.Iterator;
 
 import com.fasterxml.jackson.databind.JavaType;

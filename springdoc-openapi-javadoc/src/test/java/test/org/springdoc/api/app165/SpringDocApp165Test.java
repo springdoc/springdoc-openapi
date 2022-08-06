@@ -18,9 +18,9 @@
 
 package test.org.springdoc.api.app165;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import test.org.springdoc.api.AbstractSpringDocTest;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * The type Spring doc app 165 test.
