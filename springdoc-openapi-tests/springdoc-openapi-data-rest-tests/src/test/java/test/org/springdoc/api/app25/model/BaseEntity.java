@@ -8,7 +8,9 @@ import jakarta.persistence.PrePersist;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
 
 @Getter
 @Setter
@@ -17,7 +19,7 @@ import org.hibernate.annotations.Type;
 public abstract class BaseEntity {
 
 	@Id
-	@Type(type = "uuid-char")
+	@JdbcTypeCode(SqlTypes.CHAR)
 	private UUID id;
 
 	@PrePersist
