@@ -24,7 +24,6 @@ package test.org.springdoc.api.app191;
 
 import java.util.List;
 
-
 import org.springdoc.core.annotations.ParameterObject;
 
 import org.springframework.data.domain.Pageable;
