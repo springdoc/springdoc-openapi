@@ -18,6 +18,10 @@
 
 package test.org.springdoc.api.app31;
 
+import java.util.List;
+
+import org.springdoc.core.annotations.ParameterObject;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -25,10 +29,6 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-
-import org.springdoc.core.annotations.ParameterObject;
 
 @RestController
 public class HelloController {

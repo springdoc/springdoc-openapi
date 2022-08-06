@@ -18,10 +18,10 @@
 
 package test.org.springdoc.api.app33;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import org.springdoc.core.utils.SpringDocUtils;
 import test.org.springdoc.api.AbstractSpringDocTest;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp33Test extends AbstractSpringDocTest {
 
