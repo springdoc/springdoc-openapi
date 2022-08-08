@@ -1,5 +1,3 @@
-package org.springdoc.core.converters.models;
-
 /*
  *
  *  *
@@ -21,6 +19,8 @@ package org.springdoc.core.converters.models;
  *  *
  *
  */
+
+package org.springdoc.core.converters.models;
 
 import java.util.List;
 import java.util.Objects;

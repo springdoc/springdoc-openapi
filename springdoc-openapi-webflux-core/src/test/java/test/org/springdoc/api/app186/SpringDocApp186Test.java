@@ -20,13 +20,13 @@
 
 package test.org.springdoc.api.app186;
 
-import static org.springdoc.core.Constants.ALL_PATTERN;
-
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
 import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springdoc.core.customizers.OperationCustomizer;
+import test.org.springdoc.api.AbstractCommonTest;
+
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 
-import test.org.springdoc.api.AbstractCommonTest;
+import static org.springdoc.core.Constants.ALL_PATTERN;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties={ "springdoc.show-actuator=true",

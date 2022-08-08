@@ -184,10 +184,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			if (StringUtils.isNotBlank(annotationContent.mediaType())) {
 				content.addMediaType(annotationContent.mediaType(), mediaType);
 			}
-			else {
-				if (mediaType.getSchema() != null || mediaType.getEncoding() != null || mediaType.getExample() != null || mediaType.getExamples() != null || mediaType.getExtensions() != null)
-					applyTypes(classTypes, methodTypes, content, mediaType);
-			}
+			else if (mediaType.getSchema() != null || mediaType.getEncoding() != null || mediaType.getExample() != null || mediaType.getExamples() != null || mediaType.getExtensions() != null)
+				applyTypes(classTypes, methodTypes, content, mediaType);
 		}
 
 		if (content.size() == 0 && annotationContents.length != 1) {
@@ -353,7 +351,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 							mediaType.schema(new Schema<Object>().type("object"));
 						}
 						Schema oSchema = mediaType.getSchema();
-						for (SchemaProperty sp: annotationContent.schemaProperties()) {
+						for (SchemaProperty sp : annotationContent.schemaProperties()) {
 							Class<?> schemaImplementation = sp.schema().implementation();
 							boolean isArray = false;
 							if (schemaImplementation == Void.class) {
@@ -366,7 +364,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 									.ifPresent(s -> {
 										if ("array".equals(oSchema.getType())) {
 											oSchema.getItems().addProperty(sp.name(), s);
-										} else {
+										}
+										else {
 											oSchema.addProperty(sp.name(), s);
 										}
 									});
@@ -382,7 +381,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 								.ifPresent(s -> {
 											if ("array".equals(mediaType.getSchema().getType())) {
 												mediaType.getSchema().getItems().additionalProperties(s);
-											} else {
+											}
+											else {
 												mediaType.getSchema().additionalProperties(s);
 											}
 										}

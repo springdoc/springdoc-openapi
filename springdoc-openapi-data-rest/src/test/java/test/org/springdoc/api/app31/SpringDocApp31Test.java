@@ -23,8 +23,9 @@
 
 package test.org.springdoc.api.app31;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.AbstractSpringDocTest;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp31Test extends AbstractSpringDocTest {
 

@@ -30,8 +30,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.springdoc.core.Constants.SPRINGDOC_SORT_CONVERTER_ENABLED;
-import org.springframework.data.domain.Sort;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -94,6 +92,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -110,6 +109,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_POLYMORPHIC_CONVERTER_ENABL
 import static org.springdoc.core.Constants.SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_ACTUATOR;
 import static org.springdoc.core.Constants.SPRINGDOC_SHOW_SPRING_CLOUD_FUNCTIONS;
+import static org.springdoc.core.Constants.SPRINGDOC_SORT_CONVERTER_ENABLED;
 import static org.springdoc.core.SpringDocUtils.getConfig;
 
 /**
