@@ -356,10 +356,11 @@ public class GenericResponseService {
 			// Use response parameters with no description filled - No documentation
 			// available
 			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), true);
-			ApiResponse apiResponse = methodAttributes.getGenericMapResponse().containsKey(httpCode) ? methodAttributes.getGenericMapResponse().get(httpCode)
-					: new ApiResponse();
-			if (httpCode != null)
+			if (Objects.nonNull(httpCode)) {
+				ApiResponse apiResponse = methodAttributes.getGenericMapResponse().containsKey(httpCode) ? methodAttributes.getGenericMapResponse().get(httpCode)
+						: new ApiResponse();
 				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, true);
+			}
 		}
 	}
 
@@ -384,14 +385,19 @@ public class GenericResponseService {
 					buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, false);
 				}
 			}
-		}
-		else {
-			// Use response parameters with no description filled - No documentation
-			// available
+
+			if (AnnotatedElementUtils.hasAnnotation(methodParameter.getMethod(), ResponseStatus.class)) {
+				// Handles the case with @ResponseStatus, if the specified response is not already handled explicitly
+				String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), false);
+				if (Objects.nonNull(httpCode) && !apiResponsesOp.containsKey(httpCode) && !apiResponsesOp.containsKey(ApiResponses.DEFAULT)) {
+					buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, new ApiResponse(), false);
+				}
+			}
+
+		} else {
 			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), false);
-			ApiResponse apiResponse = new ApiResponse();
-			if (httpCode != null)
-				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, false);
+			if (Objects.nonNull(httpCode))
+				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, new ApiResponse(), false);
 		}
 	}
 
