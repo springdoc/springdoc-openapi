@@ -129,7 +129,7 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 				functionCatalog -> {
 					Set<String> names = functionCatalog.getNames(null);
 					for (String name : names) {
-						if (!RoutingFunction.FUNCTION_NAME.equals(name)) {
+						if (!RoutingFunction.FUNCTION_NAME.equals(name) && applicationContext.containsBean(name)) {
 							FunctionInvocationWrapper function = functionCatalog.lookup(name);
 							if (function.isFunction()) {
 								for (RequestMethod requestMethod : functionRequestMethods) {
