@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.10] - 2022-08-15
+### Added
+- #1700 - Support PageableDefault#value()
+- #1706 - ßAdd RouterOperationCustomizer 
+- #1754 - Default value and description of the page parameter when enabled spring.data.web.pageable.one-indexed-parameters property
+- #1755 - Adjust name of the parameters page and size when set spring.data.web.pageable.prefix property
+- #1742 - Optimize the group order problem
+### Changed
+- upgrade to spring-boot 2.7.2
+- upgrade swagger-ui: 4.13.2
+- upgrade classgraph: 4.8.149
+- upgrade spring-native: 0.12.1
+- upgrqde swagger-core: 2.2.2
+- upgrage therapi-runtime-javadoc: 0.15.0
+### Fixed
+- #1684 - incorrect generic param for multi interfaces 
+- #1687, #1688 - kotlin ByteArray property incorrect 
+- #1692 - More specific bean name for objectMapperProvider 
+- #1684 - Incorrect generic param for multi interfaces 
+- #1707 -  Concurrent problems when initializing multiple GroupedOpenApi parallelly 
+- 1690 -  Expected file to be in alphabetical order. 
+- #1713 - ObjectMapperProvider to sort all properties. 
+- #1717, #1718 -  javadoc of JsonUnwrapped fields not set 
+- #1748, #1712, Generated server url computation not cleared
+- #1696 - incorrect generic param for multi interfaces 
+- #1749 - Update server out of cache 
+- #1734 - springdoc-openapi-kotlin and springdoc-openapi-common do not agree on conditions for auto configuration 
+- #1761- Exception documenting RestControllerEndpoint with PostMapping 
+
+
 ## [1.6.9] - 2022-05-22
 ### Added
 - #1664 - Add Schema properties support in method-level @RequestBody
