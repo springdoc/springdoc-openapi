@@ -168,30 +168,25 @@ public class GenericResponseService {
 	 * @return the filtered and enriched responses
 	 */
 	private Map<String, ApiResponse> filterAndEnrichGenericMapResponseByDeclarations(HandlerMethod handlerMethod, Map<String, ApiResponse> genericMapResponse) {
-		Map<String, ApiResponse> result = new HashMap<>();
-		for (Map.Entry<String, ApiResponse> genericResponse : genericMapResponse.entrySet()) {
-			Map<String, Object> extensions = genericResponse.getValue().getExtensions();
-			Set<Class<?>> genericExceptions = (Set<Class<?>>) extensions.get(EXTENSION_EXCEPTION_CLASSES);
-			for (Class<?> declaredException : handlerMethod.getMethod().getExceptionTypes()) {
-				if (genericExceptions.contains(declaredException)) {
-					ApiResponse clone = cloneApiResponse(genericResponse.getValue());
-					clone.getExtensions().remove(EXTENSION_EXCEPTION_CLASSES);
-					if (operationService.getJavadocProvider() != null) {
-						JavadocProvider javadocProvider = operationService.getJavadocProvider();
-						Map<String, String> javadocThrows = javadocProvider.getMethodJavadocThrows(handlerMethod.getMethod());
-						String description = javadocThrows.get(declaredException.getName());
-						if (description == null) {
-							description = javadocThrows.get(declaredException.getSimpleName());
-						}
-						if (description != null && !description.trim().isEmpty()) {
-							clone.setDescription(description);
-						}
+		if (operationService.getJavadocProvider() != null) {
+			JavadocProvider javadocProvider = operationService.getJavadocProvider();
+			for (Map.Entry<String, ApiResponse> genericResponse : genericMapResponse.entrySet()) {
+				Map<String, Object> extensions = genericResponse.getValue().getExtensions();
+				Set<Class<?>> genericExceptions = (Set<Class<?>>) extensions.get(EXTENSION_EXCEPTION_CLASSES);
+				for (Class<?> declaredException : handlerMethod.getMethod().getExceptionTypes()) {
+					if (genericExceptions.contains(declaredException)) {
+							Map<String, String> javadocThrows = javadocProvider.getMethodJavadocThrows(handlerMethod.getMethod());
+							String description = javadocThrows.get(declaredException.getName());
+							if (description == null)
+								description = javadocThrows.get(declaredException.getSimpleName());
+							if (description != null && !description.trim().isEmpty()) {
+								genericResponse.getValue().setDescription(description);
+							}
 					}
-					result.put(genericResponse.getKey(), clone);
 				}
 			}
 		}
-		return result;
+		return genericMapResponse;
 	}
 
 	/**
@@ -693,22 +688,5 @@ public class GenericResponseService {
 	 */
 	public static void setResponseEntityExceptionHandlerClass(Class<?> responseEntityExceptionHandlerClass) {
 		GenericResponseService.responseEntityExceptionHandlerClass = responseEntityExceptionHandlerClass;
-	}
-
-	/**
-	 * Clone api response api response.
-	 *
-	 * @param original the original
-	 * @return the api response
-	 */
-	private ApiResponse cloneApiResponse(ApiResponse original) {
-		ApiResponse clone = new ApiResponse();
-		clone.set$ref(original.get$ref());
-		clone.setDescription(original.getDescription());
-		clone.setContent(original.getContent());
-		clone.setHeaders(original.getHeaders() == null ? null : new HashMap<>(original.getHeaders()));
-		clone.setExtensions(original.getExtensions() == null ? null : new HashMap<>(original.getExtensions()));
-		clone.setLinks(original.getLinks() == null ? null : new HashMap<>(original.getLinks()));
-		return clone;
 	}
 }

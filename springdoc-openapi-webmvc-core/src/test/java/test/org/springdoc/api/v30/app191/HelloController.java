@@ -24,14 +24,19 @@ package test.org.springdoc.api.v30.app191;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.api.annotations.ParameterObject;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -69,5 +74,21 @@ public class HelloController {
 			direction = Direction.DESC)
 	@ParameterObject Pageable pageable) {
 		return "bla";
+	}
+
+	@GetMapping(value = "/hello", produces = MediaType.TEXT_PLAIN_VALUE)
+	@Operation(summary = "Says hello")
+	public ResponseEntity<String> getHello() {
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body("Hello!");
+	}
+
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(RuntimeException.class)
+	public ResponseEntity<String> handleException(RuntimeException runtimeException) {
+		return ResponseEntity
+				.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body(runtimeException.getMessage());
 	}
 }
