@@ -28,6 +28,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -83,6 +84,7 @@ class MethodParameterPojoExtractor {
 		SIMPLE_TYPES.add(OptionalDouble.class);
 		SIMPLE_TYPES.add(AtomicLong.class);
 		SIMPLE_TYPES.add(AtomicInteger.class);
+		SIMPLE_TYPES.add(Charset.class);
 
 		SIMPLE_TYPES.add(Map.class);
 		SIMPLE_TYPES.add(Iterable.class);
