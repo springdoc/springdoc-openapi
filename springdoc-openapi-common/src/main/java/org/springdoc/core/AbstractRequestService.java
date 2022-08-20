@@ -185,6 +185,7 @@ public abstract class AbstractRequestService {
 		parameterCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
 		this.parameterCustomizers = parameterCustomizers;
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
+		parameterBuilder.addIgnoreType(PARAM_TYPES_TO_IGNORE);
 	}
 
 	/**
@@ -239,7 +240,7 @@ public abstract class AbstractRequestService {
 		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
 		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
-		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
+		parameters = parameterBuilder.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
@@ -322,7 +323,7 @@ public abstract class AbstractRequestService {
 				Entry<String, Parameter> entry = it.next();
 				Parameter parameter = entry.getValue();
 				if (!ParameterIn.PATH.toString().equals(parameter.getIn())) {
-					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema() ;
+					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema();
 					itemSchema.setName(entry.getKey());
 					itemSchema.setDescription(parameter.getDescription());
 					itemSchema.setDeprecated(parameter.getDeprecated());
