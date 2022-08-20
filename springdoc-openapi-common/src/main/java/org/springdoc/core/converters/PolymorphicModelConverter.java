@@ -65,15 +65,23 @@ public class PolymorphicModelConverter implements ModelConverter {
 		if (javaType != null) {
 			if (chain.hasNext()) {
 				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
-				if (resolvedSchema instanceof  ObjectSchema && resolvedSchema.getProperties() != null
-						&& resolvedSchema.getProperties().containsKey(javaType.getRawClass().getSimpleName()))
-					resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getSimpleName());
+				resolvedSchema = getResolvedSchema(javaType, resolvedSchema);
 				if (resolvedSchema == null || resolvedSchema.get$ref() == null)
 					return resolvedSchema;
 				return composePolymorphicSchema(type, resolvedSchema, context.getDefinedModels().values());
 			}
 		}
 		return null;
+	}
+
+	private static Schema<?> getResolvedSchema(JavaType javaType, Schema<?> resolvedSchema) {
+		if (resolvedSchema instanceof ObjectSchema && resolvedSchema.getProperties() != null){
+			if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getName()))
+				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getName());
+			else if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getSimpleName()))
+				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getSimpleName());
+		}
+		return resolvedSchema;
 	}
 
 	/**

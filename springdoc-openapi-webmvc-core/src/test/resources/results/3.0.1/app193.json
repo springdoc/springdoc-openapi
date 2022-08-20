@@ -17,8 +17,34 @@
           "basic-controller"
         ],
         "summary": "get",
-        "description": "Provides an animal.",
+        "description": "Provides a list of books.",
         "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Books"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test1": {
+      "get": {
+        "tags": [
+          "basic-controller"
+        ],
+        "summary": "get1",
+        "description": "Provides an animal.",
+        "operationId": "get1",
         "responses": {
           "200": {
             "description": "OK",
@@ -43,6 +69,27 @@
   },
   "components": {
     "schemas": {
+      "Books": {
+        "type": "array",
+        "description": "Represents a list of Books.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Knowledge"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "empty": {
+                "type": "boolean"
+              }
+            }
+          }
+        ]
+      },
+      "Knowledge": {
+        "type": "object",
+        "description": "Represents the knowledge."
+      },
       "Animal": {
         "type": "object",
         "description": "Represents an Animal class."

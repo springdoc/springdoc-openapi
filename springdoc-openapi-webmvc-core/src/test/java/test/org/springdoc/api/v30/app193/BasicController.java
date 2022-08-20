@@ -12,9 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/")
 public class BasicController {
 
-    @GetMapping("/test")
-    @Operation(summary = "get", description = "Provides an animal.")
-    public Animal get() {
+	@GetMapping("/test")
+	@ResponseStatus(HttpStatus.OK)
+	@Operation(summary = "get", description = "Provides a list of books.")
+	public Knowledge get() {
+		return new Books(new Book("Introduction to algorithms"));
+	}
+
+    @GetMapping("/test1")
+    @Operation(summary = "get1", description = "Provides an animal.")
+    public Animal get1() {
 
         return new Dog("Foo", 12);
     }
