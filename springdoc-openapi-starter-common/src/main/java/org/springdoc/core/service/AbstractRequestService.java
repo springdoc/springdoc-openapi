@@ -334,7 +334,6 @@ public abstract class AbstractRequestService {
 		if (defaultSupportFormData && requestBody != null
 				&& requestBody.getContent() != null
 				&& requestBody.getContent().containsKey(org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)) {
-			io.swagger.v3.oas.models.media.Schema<?> mergedSchema = requestBodyInfo.getMergedSchema();
 			Iterator<Entry<String, Parameter>> it = map.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<String, Parameter> entry = it.next();
@@ -346,7 +345,7 @@ public abstract class AbstractRequestService {
 					itemSchema.setDeprecated(parameter.getDeprecated());
 					if (parameter.getExample() != null)
 						itemSchema.setExample(parameter.getExample());
-					mergedSchema.addProperty(entry.getKey(), itemSchema);
+					requestBodyInfo.addProperties(entry.getKey(), itemSchema);
 					it.remove();
 				}
 			}
