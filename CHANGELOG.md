@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #1692 - More specific bean name for objectMapperProvider 
 - #1684 - Incorrect generic param for multi interfaces 
 - #1707 -  Concurrent problems when initializing multiple GroupedOpenApi parallelly 
-- 1690 -  Expected file to be in alphabetical order. 
+- #1690 -  Expected file to be in alphabetical order. 
 - #1713 - ObjectMapperProvider to sort all properties. 
 - #1717, #1718 -  javadoc of JsonUnwrapped fields not set 
 - #1748, #1712, Generated server url computation not cleared

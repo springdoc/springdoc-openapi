@@ -34,6 +34,7 @@ import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.media.ComposedSchema;
+import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
@@ -48,6 +49,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 	 */
 	private final ObjectMapperProvider springDocObjectMapper;
 
+
 	/**
 	 * Instantiates a new Polymorphic model converter.
 	 *
@@ -59,10 +61,17 @@ public class PolymorphicModelConverter implements ModelConverter {
 
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
-		if (chain.hasNext()) {
-			Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
-			if (resolvedSchema == null || resolvedSchema.get$ref() == null) return resolvedSchema;
-			return composePolymorphicSchema(type, resolvedSchema, context.getDefinedModels().values());
+		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
+		if (javaType != null) {
+			if (chain.hasNext()) {
+				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
+				if (resolvedSchema instanceof  ObjectSchema && resolvedSchema.getProperties() != null
+						&& resolvedSchema.getProperties().containsKey(javaType.getRawClass().getSimpleName()))
+					resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getSimpleName());
+				if (resolvedSchema == null || resolvedSchema.get$ref() == null)
+					return resolvedSchema;
+				return composePolymorphicSchema(type, resolvedSchema, context.getDefinedModels().values());
+			}
 		}
 		return null;
 	}
