@@ -182,6 +182,11 @@ public class SpringDocConfigProperties {
 	private boolean defaultFlatParamObject;
 
 	/**
+	 * convert query param to form data when consumes is multipart/form-data
+	 */
+	private boolean defaultSupportFormData=true;
+
+	/**
 	 * The model Converters
 	 */
 	private ModelConverters modelConverters = new ModelConverters();
@@ -190,6 +195,24 @@ public class SpringDocConfigProperties {
 	 * The Sort converter.
 	 */
 	private SortConverter sortConverter = new SortConverter();
+
+	/**
+	 * Is default support form data boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isDefaultSupportFormData() {
+		return defaultSupportFormData;
+	}
+
+	/**
+	 * Sets default support form data.
+	 *
+	 * @param defaultSupportFormData the default support form data
+	 */
+	public void setDefaultSupportFormData(boolean defaultSupportFormData) {
+		this.defaultSupportFormData = defaultSupportFormData;
+	}
 
 	/**
 	 * Gets sort converter.
@@ -821,7 +844,7 @@ public class SpringDocConfigProperties {
 
 		/**
 		 * The type Sort converter.
-		 * @author daniel-shuy
+		 * @author daniel -shuy
 		 */
 		public static class SortConverter {
 
