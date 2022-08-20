@@ -178,6 +178,11 @@ public abstract class AbstractRequestService {
 	private final boolean defaultFlatParamObject;
 
 	/**
+	 * The Default support form data.
+	 */
+	private boolean defaultSupportFormData;
+
+	/**
 	 * Instantiates a new Abstract request builder.
 	 *
 	 * @param parameterBuilder the parameter builder
@@ -197,6 +202,7 @@ public abstract class AbstractRequestService {
 		this.parameterCustomizers = parameterCustomizers;
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 		this.defaultFlatParamObject = parameterBuilder.getPropertyResolverUtils().getSpringDocConfigProperties().isDefaultFlatParamObject();
+		this.defaultSupportFormData = parameterBuilder.getPropertyResolverUtils().getSpringDocConfigProperties().isDefaultSupportFormData();
 	}
 
 	/**
@@ -325,7 +331,7 @@ public abstract class AbstractRequestService {
 		LinkedHashMap<String, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
 		// support form-data
-		if (requestBody != null
+		if (defaultSupportFormData && requestBody != null
 				&& requestBody.getContent() != null
 				&& requestBody.getContent().containsKey(org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)) {
 			io.swagger.v3.oas.models.media.Schema<?> mergedSchema = requestBodyInfo.getMergedSchema();
