@@ -109,6 +109,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * @param pNames the p names
 	 * @param parameters the parameters
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
+	 * @param defaultFlatParamObject the default flat param object
 	 * @return the method parameter [ ]
 	 */
 	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters,
