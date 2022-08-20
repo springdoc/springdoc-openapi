@@ -182,6 +182,11 @@ public class SpringDocConfigProperties {
 	private boolean showSpringCloudFunctions = true;
 
 	/**
+	 * The param default flatten
+	 */
+	private boolean defaultFlatParamObject;
+
+	/**
 	 * The model Converters
 	 */
 	private ModelConverters modelConverters = new ModelConverters();
@@ -225,6 +230,24 @@ public class SpringDocConfigProperties {
 	 * The Sort converter.
 	 */
 	private SortConverter sortConverter = new SortConverter();
+
+	/**
+	 * Is default flat param object boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isDefaultFlatParamObject() {
+		return defaultFlatParamObject;
+	}
+
+	/**
+	 * Sets default flat param object.
+	 *
+	 * @param defaultFlatParamObject the default flat param object
+	 */
+	public void setDefaultFlatParamObject(boolean defaultFlatParamObject) {
+		this.defaultFlatParamObject = defaultFlatParamObject;
+	}
 
 	/**
 	 * Gets sort converter.
