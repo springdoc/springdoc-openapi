@@ -334,7 +334,7 @@ public abstract class AbstractRequestService {
 				Entry<String, Parameter> entry = it.next();
 				Parameter parameter = entry.getValue();
 				if (!ParameterIn.PATH.toString().equals(parameter.getIn())) {
-					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema<>() ;
+					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema<>();
 					itemSchema.setName(entry.getKey());
 					itemSchema.setDescription(parameter.getDescription());
 					itemSchema.setDeprecated(parameter.getDeprecated());
@@ -398,7 +398,10 @@ public abstract class AbstractRequestService {
 			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(schema);
 			if (map.containsKey(entry.getKey())) {
 				parameter = map.get(entry.getKey());
-				if (StringUtils.isNotEmpty(entry.getValue()))
+				List existingEnum = null;
+				if (parameter.getSchema() != null && !CollectionUtils.isEmpty(parameter.getSchema().getEnum()))
+					existingEnum = parameter.getSchema().getEnum();
+				if (StringUtils.isNotEmpty(entry.getValue()) && (existingEnum==null || !existingEnum.contains(entry.getValue())))
 					parameter.getSchema().addEnumItemObject(entry.getValue());
 				parameter.setSchema(parameter.getSchema());
 			}
