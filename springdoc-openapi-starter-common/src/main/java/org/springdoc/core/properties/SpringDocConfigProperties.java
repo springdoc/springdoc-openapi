@@ -227,9 +227,32 @@ public class SpringDocConfigProperties {
 	private boolean enableDataRest = true;
 
 	/**
+	 * convert query param to form data when consumes is multipart/form-data
+	 */
+	private boolean defaultSupportFormData=true;
+
+	/**
 	 * The Sort converter.
 	 */
 	private SortConverter sortConverter = new SortConverter();
+
+	/**
+	 * Is default support form data boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isDefaultSupportFormData() {
+		return defaultSupportFormData;
+	}
+
+	/**
+	 * Sets default support form data.
+	 *
+	 * @param defaultSupportFormData the default support form data
+	 */
+	public void setDefaultSupportFormData(boolean defaultSupportFormData) {
+		this.defaultSupportFormData = defaultSupportFormData;
+	}
 
 	/**
 	 * Is default flat param object boolean.
@@ -1080,7 +1103,7 @@ public class SpringDocConfigProperties {
 
 	/**
 	 * The type Sort converter.
-	 * @author daniel-shuy
+	 * @author daniel -shuy
 	 */
 	public static class SortConverter {
 
@@ -1107,6 +1130,7 @@ public class SpringDocConfigProperties {
 			this.enabled = enabled;
 		}
 	}
+
 	/**
 	 * The type Webjars.
 	 * @author bnasslahsen
@@ -1600,4 +1624,5 @@ public class SpringDocConfigProperties {
 			this.displayName = displayName;
 		}
 	}
+
 }
