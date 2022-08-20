@@ -48,15 +48,31 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "the <code>return</code> javadoc for the <code>#handleNotFoundException(NoResultException)</code> method",
+          "400": {
+            "description": "the <code>@throws NonUniqueResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
             "content": {
               "*/*": {
                 "schema": {
                   "type": "string"
                 }
               }
-            }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.app163.exception.NonUniqueResultException"
+            ]
+          },
+          "404": {
+            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.app163.exception.NoResultException"
+            ]
           },
           "200": {
             "description": "the <code>@return</code> javadoc for the <code>#update(String, AnnotationOverrideForJavadocRestDto)</code> method",
@@ -91,6 +107,32 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "the <code>@throws NonUniqueResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.app163.exception.NonUniqueResultException"
+            ]
+          },
+          "404": {
+            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.app163.exception.NoResultException"
+            ]
+          },
           "default": {
             "description": "API Response 201 for #create(AnnotationOverrideForJavadocRestDto)",
             "content": {
@@ -135,7 +177,10 @@
                   "type": "string"
                 }
               }
-            }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.app163.exception.NoResultException"
+            ]
           },
           "200": {
             "description": "API Response 200 for #findStartsBy(prefix)",

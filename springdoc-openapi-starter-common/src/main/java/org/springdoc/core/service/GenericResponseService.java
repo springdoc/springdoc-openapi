@@ -177,30 +177,25 @@ public class GenericResponseService {
 	 * @return the filtered and enriched responses
 	 */
 	private Map<String, ApiResponse> filterAndEnrichGenericMapResponseByDeclarations(HandlerMethod handlerMethod, Map<String, ApiResponse> genericMapResponse) {
-		Map<String, ApiResponse> result = new HashMap<>();
-		for (Map.Entry<String, ApiResponse> genericResponse : genericMapResponse.entrySet()) {
-			Map<String, Object> extensions = genericResponse.getValue().getExtensions();
-			Set<Class<?>> genericExceptions = (Set<Class<?>>) extensions.get(EXTENSION_EXCEPTION_CLASSES);
-			for (Class<?> declaredException : handlerMethod.getMethod().getExceptionTypes()) {
-				if (genericExceptions.contains(declaredException)) {
-					ApiResponse clone = cloneApiResponse(genericResponse.getValue());
-					clone.getExtensions().remove(EXTENSION_EXCEPTION_CLASSES);
-					if (operationService.getJavadocProvider() != null) {
-						JavadocProvider javadocProvider = operationService.getJavadocProvider();
+		if (operationService.getJavadocProvider() != null) {
+			JavadocProvider javadocProvider = operationService.getJavadocProvider();
+			for (Map.Entry<String, ApiResponse> genericResponse : genericMapResponse.entrySet()) {
+				Map<String, Object> extensions = genericResponse.getValue().getExtensions();
+				Set<Class<?>> genericExceptions = (Set<Class<?>>) extensions.get(EXTENSION_EXCEPTION_CLASSES);
+				for (Class<?> declaredException : handlerMethod.getMethod().getExceptionTypes()) {
+					if (genericExceptions.contains(declaredException)) {
 						Map<String, String> javadocThrows = javadocProvider.getMethodJavadocThrows(handlerMethod.getMethod());
 						String description = javadocThrows.get(declaredException.getName());
-						if (description == null) {
+						if (description == null)
 							description = javadocThrows.get(declaredException.getSimpleName());
-						}
 						if (description != null && !description.trim().isEmpty()) {
-							clone.setDescription(description);
+							genericResponse.getValue().setDescription(description);
 						}
 					}
-					result.put(genericResponse.getKey(), clone);
 				}
 			}
 		}
-		return result;
+		return genericMapResponse;
 	}
 
 	/**
