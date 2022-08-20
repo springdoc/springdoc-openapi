@@ -240,7 +240,7 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	OpenAPIService openAPIBuilder(Optional<OpenAPI> openAPI,
 			SecurityService securityParser,
-			SpringDocConfigProperties springDocConfigProperties,PropertyResolverUtils propertyResolverUtils,
+			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
 			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers,
 			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers, Optional<JavadocProvider> javadocProvider) {
 		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomisers, serverBaseUrlCustomisers, javadocProvider);
@@ -335,6 +335,7 @@ public class SpringDocConfiguration {
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
 	 * @param objectMapperProvider the object mapper provider
+	 * @param springDocConfigProperties the springdoc config properties
 	 * @return the generic parameter builder
 	 */
 	@Bean
@@ -342,9 +343,10 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils,
 			Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
-			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider) {
+			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider,
+			SpringDocConfigProperties springDocConfigProperties) {
 		return new GenericParameterService(propertyResolverUtils, optionalDelegatingMethodParameterCustomizer,
-				optionalWebConversionServiceProvider, objectMapperProvider);
+				optionalWebConversionServiceProvider, objectMapperProvider, springDocConfigProperties.isDefaultFlatParamObject());
 	}
 
 	/**
@@ -411,7 +413,7 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	SpringDocProviders springDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider,
-			Optional<SpringWebProvider> springWebProvider,  Optional<WebConversionServiceProvider> webConversionServiceProvider,
+			Optional<SpringWebProvider> springWebProvider, Optional<WebConversionServiceProvider> webConversionServiceProvider,
 			ObjectMapperProvider objectMapperProvider) {
 		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider, webConversionServiceProvider, objectMapperProvider);
 	}
@@ -611,7 +613,7 @@ public class SpringDocConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	ObjectMapperProvider springDocObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties){
+	ObjectMapperProvider springDocObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
 		return new ObjectMapperProvider(springDocConfigProperties);
 	}
 
