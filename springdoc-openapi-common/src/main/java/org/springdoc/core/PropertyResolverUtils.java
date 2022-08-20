@@ -207,4 +207,13 @@ public class PropertyResolverUtils {
 	public ConfigurableBeanFactory getFactory() {
 		return factory;
 	}
+
+	/**
+	 * Gets spring doc config properties.
+	 *
+	 * @return the spring doc config properties
+	 */
+	public SpringDocConfigProperties getSpringDocConfigProperties() {
+		return springDocConfigProperties;
+	}
 }

@@ -40,6 +40,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springdoc.core.AbstractRequestService;
+import org.springdoc.core.DelegatingMethodParameter;
 import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.ParameterInfo;
@@ -148,7 +149,7 @@ public class DataRestRequestService {
 	 */
 	public void buildCommonParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters,
 			DataRestRepository dataRestRepository) {
-		parameters = parameterBuilder.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
+		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer(), requestBuilder.isDefaultFlatParamObject());
 		Class<?> domainType = dataRestRepository.getDomainType();
 		for (MethodParameter methodParameter : parameters) {
 			final String pName = methodParameter.getParameterName();

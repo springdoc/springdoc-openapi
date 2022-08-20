@@ -235,6 +235,11 @@ public class SpringDocConfigProperties {
 		return defaultFlatParamObject;
 	}
 
+	/**
+	 * Sets default flat param object.
+	 *
+	 * @param defaultFlatParamObject the default flat param object
+	 */
 	public void setDefaultFlatParamObject(boolean defaultFlatParamObject) {
 		this.defaultFlatParamObject = defaultFlatParamObject;
 	}

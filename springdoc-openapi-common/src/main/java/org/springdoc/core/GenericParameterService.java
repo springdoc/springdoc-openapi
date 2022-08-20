@@ -55,8 +55,6 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.api.annotations.ParameterObject;
-import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.WebConversionServiceProvider;
@@ -66,7 +64,6 @@ import org.springframework.beans.factory.config.BeanExpressionResolver;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
-import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.web.context.request.RequestScope;
 import org.springframework.web.multipart.MultipartFile;
@@ -126,13 +123,6 @@ public class GenericParameterService {
 	private final ObjectMapperProvider objectMapperProvider;
 
 	/**
-	 * The constant PARAM_TYPES_TO_IGNORE.
-	 */
-	private final List<Class<?>> PARAM_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
-
-	private final boolean defaultFlatParamObject;
-
-	/**
 	 * Instantiates a new Generic parameter builder.
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
@@ -140,18 +130,13 @@ public class GenericParameterService {
 	 * @param objectMapperProvider the object mapper provider
 	 */
 	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
-			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, boolean defaultFlatParamObject) {
+			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider,  ObjectMapperProvider objectMapperProvider) {
 		this.propertyResolverUtils = propertyResolverUtils;
 		this.optionalDelegatingMethodParameterCustomizer = optionalDelegatingMethodParameterCustomizer;
 		this.optionalWebConversionServiceProvider = optionalWebConversionServiceProvider;
 		this.configurableBeanFactory = propertyResolverUtils.getFactory();
 		this.expressionContext = (configurableBeanFactory != null ? new BeanExpressionContext(configurableBeanFactory, new RequestScope()) : null);
 		this.objectMapperProvider = objectMapperProvider;
-		this.defaultFlatParamObject = defaultFlatParamObject;
-	}
-
-	protected void addIgnoreType(List<Class<?>> classes) {
-		PARAM_TYPES_TO_IGNORE.addAll(classes);
 	}
 
 	/**
@@ -348,9 +333,9 @@ public class GenericParameterService {
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
 			Type type = ReturnTypeParser.getType(methodParameter);
-			if (type instanceof Class && optionalWebConversionServiceProvider.isPresent()) {
+			if(type instanceof Class && optionalWebConversionServiceProvider.isPresent()){
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
-				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null)
+				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class)==null)
 					type = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
 			}
 			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations());
@@ -581,7 +566,6 @@ public class GenericParameterService {
 			public Class<? extends Annotation> annotationType() {
 				return io.swagger.v3.oas.annotations.Parameter.class;
 			}
-
 			@Override
 			public String name() {
 				return schema.name();
@@ -667,48 +651,5 @@ public class GenericParameterService {
 				return schema.ref();
 			}
 		};
-	}
-
-	/**
-	 * Customize method parameter [ ].
-	 *
-	 * @param pNames the p names
-	 * @param parameters the parameters
-	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
-	 * @return the method parameter [ ]
-	 */
-	public MethodParameter[] customize(String[] pNames, MethodParameter[] parameters, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer) {
-		List<MethodParameter> explodedParameters = new ArrayList<>();
-		for (int i = 0; i < parameters.length; ++i) {
-			MethodParameter p = parameters[i];
-			Class<?> paramClass = AdditionalModelsConverter.getParameterObjectReplacement(p.getParameterType());
-			if (!MethodParameterPojoExtractor.isSimpleType(paramClass) && (p.hasParameterAnnotation(ParameterObject.class) || AnnotatedElementUtils.isAnnotated(paramClass, ParameterObject.class))) {
-				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
-					optionalDelegatingMethodParameterCustomizer.ifPresent(customizer -> customizer.customize(p, methodParameter));
-					explodedParameters.add(methodParameter);
-				});
-			}
-			else if (defaultFlatParamObject) {
-				boolean isSimpleType = MethodParameterPojoExtractor.isSimpleType(paramClass);
-				boolean hasAnnotation = p.hasParameterAnnotations();
-				boolean shouldFlat = !isSimpleType && !hasAnnotation;
-				if (shouldFlat && PARAM_TYPES_TO_IGNORE.stream().noneMatch(ignore -> ignore.isAssignableFrom(paramClass))) {
-					MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
-						optionalDelegatingMethodParameterCustomizer
-								.ifPresent(customizer -> customizer.customize(p, methodParameter));
-						explodedParameters.add(methodParameter);
-					});
-				}
-				else {
-					String name = pNames != null ? pNames[i] : p.getParameterName();
-					explodedParameters.add(new DelegatingMethodParameter(p, name, null, false, false));
-				}
-			}
-			else {
-				String name = pNames != null ? pNames[i] : p.getParameterName();
-				explodedParameters.add(new DelegatingMethodParameter(p, name, null, false, false));
-			}
-		}
-		return explodedParameters.toArray(new MethodParameter[0]);
 	}
 }

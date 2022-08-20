@@ -167,6 +167,11 @@ public abstract class AbstractRequestService {
 	private final Optional<List<ParameterCustomizer>> parameterCustomizers;
 
 	/**
+	 * The Default flat param object.
+	 */
+	private final boolean defaultFlatParamObject;
+
+	/**
 	 * Instantiates a new Abstract request builder.
 	 *
 	 * @param parameterBuilder the parameter builder
@@ -185,7 +190,7 @@ public abstract class AbstractRequestService {
 		parameterCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
 		this.parameterCustomizers = parameterCustomizers;
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
-		parameterBuilder.addIgnoreType(PARAM_TYPES_TO_IGNORE);
+		this.defaultFlatParamObject = parameterBuilder.getPropertyResolverUtils().getSpringDocConfigProperties().isDefaultFlatParamObject();
 	}
 
 	/**
@@ -240,7 +245,7 @@ public abstract class AbstractRequestService {
 		String[] reflectionParametersNames = Arrays.stream(handlerMethod.getMethod().getParameters()).map(java.lang.reflect.Parameter::getName).toArray(String[]::new);
 		if (pNames == null || Arrays.stream(pNames).anyMatch(Objects::isNull))
 			pNames = reflectionParametersNames;
-		parameters = parameterBuilder.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer());
+		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer(), this.defaultFlatParamObject);
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
 		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
@@ -323,7 +328,7 @@ public abstract class AbstractRequestService {
 				Entry<String, Parameter> entry = it.next();
 				Parameter parameter = entry.getValue();
 				if (!ParameterIn.PATH.toString().equals(parameter.getIn())) {
-					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema();
+					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema() ;
 					itemSchema.setName(entry.getKey());
 					itemSchema.setDescription(parameter.getDescription());
 					itemSchema.setDeprecated(parameter.getDeprecated());
@@ -741,4 +746,12 @@ public abstract class AbstractRequestService {
 		return paramJavadocDescription;
 	}
 
+	/**
+	 * Is default flat param object boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isDefaultFlatParamObject() {
+		return defaultFlatParamObject;
+	}
 }
