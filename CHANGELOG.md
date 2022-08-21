@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.11] - 2022-08-21
+### Added
+- #1805 - Default flat param object
+### Changed
+- upgrade swagger-ui: 4.14.0
+### Fixed
+- #1801 - Duplicated header values when an endpoint can be called with different headers
+- #1801 - NPE for request bodies with content that has media type MULTIPART_FORM_DATA_VALUE
+- #1793 - Query parameter part of request body in controller with MultiPartFile
+- #1791 - Override-with-generic-response not working from 1.6.8 onwards
+- #1799 - Polymorphism - Support JsonTypeInfo.Id.CLASS
+
 ## [1.6.10] - 2022-08-15
 ### Added
 - #1700 - Support PageableDefault#value()
