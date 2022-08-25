@@ -11,6 +11,42 @@
     }
   ],
   "paths": {
+    "/toto": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "printHello",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/helloConsumer": {
       "post": {
         "description": "helloConsumer consumer",

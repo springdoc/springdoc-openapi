@@ -97,7 +97,6 @@ import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.c
 import static org.springdoc.core.utils.Constants.DOT;
 import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
-import static org.springdoc.core.utils.Constants.QUERY_PARAM;
 
 /**
  * The type Abstract request builder.

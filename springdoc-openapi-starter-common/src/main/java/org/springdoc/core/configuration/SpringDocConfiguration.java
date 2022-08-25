@@ -52,6 +52,7 @@ import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
+import org.springdoc.core.converters.WebFluxSupportConverter;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
@@ -81,6 +82,7 @@ import org.springdoc.core.service.OperationService;
 import org.springdoc.core.service.RequestBodyService;
 import org.springdoc.core.service.SecurityService;
 import org.springdoc.core.utils.PropertyResolverUtils;
+import reactor.core.publisher.Flux;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -559,5 +561,26 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties){
 		return new ObjectMapperProvider(springDocConfigProperties);
+	}
+
+	/**
+	 * The type Spring doc web flux support configuration.
+	 */
+	@ConditionalOnClass(Flux.class)
+	static class SpringDocWebFluxSupportConfiguration {
+
+		/**
+		 * Web flux support converter web flux support converter.
+		 *
+		 * @param objectMapperProvider the object mapper provider
+		 * @return the web flux support converter
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		WebFluxSupportConverter webFluxSupportConverter(ObjectMapperProvider objectMapperProvider) {
+			return new WebFluxSupportConverter(objectMapperProvider);
+		}
+
 	}
 }

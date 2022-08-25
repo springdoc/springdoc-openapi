@@ -36,7 +36,6 @@ import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
-import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringDocProviders;
 import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.core.service.AbstractRequestService;
@@ -48,7 +47,6 @@ import org.springdoc.core.service.RequestBodyService;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.webflux.api.OpenApiActuatorResource;
 import org.springdoc.webflux.api.OpenApiWebfluxResource;
-import org.springdoc.webflux.core.converters.WebFluxSupportConverter;
 import org.springdoc.webflux.core.providers.ActuatorWebFluxProvider;
 import org.springdoc.webflux.core.providers.SpringWebFluxProvider;
 import org.springdoc.webflux.core.service.RequestService;
@@ -153,19 +151,6 @@ public class SpringDocWebFluxConfiguration {
 	@Lazy(false)
 	GenericResponseService responseBuilder(OperationService operationService, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
 		return new GenericResponseService(operationService, returnTypeParsers, springDocConfigProperties, propertyResolverUtils);
-	}
-
-	/**
-	 * Web flux support converter web flux support converter.
-	 *
-	 * @param objectMapperProvider the object mapper provider
-	 * @return the web flux support converter
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Lazy(false)
-	WebFluxSupportConverter webFluxSupportConverter(ObjectMapperProvider objectMapperProvider) {
-		return new WebFluxSupportConverter(objectMapperProvider);
 	}
 
 	/**
