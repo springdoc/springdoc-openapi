@@ -22,6 +22,8 @@
 
 package test.org.springdoc.api.v30.app173;
 
+import reactor.core.publisher.Flux;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,4 +34,9 @@ public class HelloController {
     public void printHello() {
         System.out.println("Hello");
     }
+
+	@GetMapping("/toto")
+	public Flux<String> test() {
+		return null;
+	}
 }

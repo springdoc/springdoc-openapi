@@ -48,6 +48,7 @@ import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.converters.SortOpenAPIConverter;
+import org.springdoc.core.converters.WebFluxSupportConverter;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
@@ -69,6 +70,7 @@ import org.springdoc.core.providers.SpringCloudFunctionProvider;
 import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
 import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.core.providers.WebConversionServiceProvider;
+import reactor.core.publisher.Flux;
 
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -649,5 +651,26 @@ public class SpringDocConfiguration {
 		DelegatingMethodParameterCustomizer delegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
 			return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider, optionalRepositoryRestConfiguration);
 		}
+	}
+
+	/**
+	 * The type Spring doc web flux support configuration.
+	 */
+	@ConditionalOnClass(Flux.class)
+	static class SpringDocWebFluxSupportConfiguration {
+
+		/**
+		 * Web flux support converter web flux support converter.
+		 *
+		 * @param objectMapperProvider the object mapper provider
+		 * @return the web flux support converter
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		WebFluxSupportConverter webFluxSupportConverter(ObjectMapperProvider objectMapperProvider) {
+			return new WebFluxSupportConverter(objectMapperProvider);
+		}
+
 	}
 }
