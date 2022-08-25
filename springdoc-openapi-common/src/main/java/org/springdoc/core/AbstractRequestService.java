@@ -323,24 +323,24 @@ public abstract class AbstractRequestService {
 			}
 		}
 
-		LinkedHashMap<String, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
+		LinkedHashMap<ParameterId, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
 		// support form-data
 		if (defaultSupportFormData && requestBody != null
 				&& requestBody.getContent() != null
 				&& requestBody.getContent().containsKey(org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)) {
-			Iterator<Entry<String, Parameter>> it = map.entrySet().iterator();
+			Iterator<Entry<ParameterId, Parameter>> it = map.entrySet().iterator();
 			while (it.hasNext()) {
-				Entry<String, Parameter> entry = it.next();
+				Entry<ParameterId, Parameter> entry = it.next();
 				Parameter parameter = entry.getValue();
 				if (!ParameterIn.PATH.toString().equals(parameter.getIn())) {
 					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema<>();
-					itemSchema.setName(entry.getKey());
+					itemSchema.setName(entry.getKey().getpName());
 					itemSchema.setDescription(parameter.getDescription());
 					itemSchema.setDeprecated(parameter.getDeprecated());
 					if (parameter.getExample() != null)
 						itemSchema.setExample(parameter.getExample());
-					requestBodyInfo.addProperties(entry.getKey(), itemSchema);
+					requestBodyInfo.addProperties(entry.getKey().getpName(), itemSchema);
 					it.remove();
 				}
 			}
@@ -358,11 +358,11 @@ public abstract class AbstractRequestService {
 	 * @param parametersDocMap the parameters doc map
 	 * @return the parameter linked hash map
 	 */
-	private LinkedHashMap<String, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
-		LinkedHashMap<String, Parameter> map = operationParameters.stream()
+	private LinkedHashMap<ParameterId, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
+		LinkedHashMap<ParameterId, Parameter> map = operationParameters.stream()
 				.collect(Collectors.toMap(
-						parameter -> parameter.getName() != null ? parameter.getName() : Integer.toString(parameter.hashCode()),
-						parameter -> parameter,
+						ParameterId::new,
+						parameter ->  parameter,
 						(u, v) -> {
 							throw new IllegalStateException(String.format("Duplicate key %s", u));
 						},
@@ -370,15 +370,20 @@ public abstract class AbstractRequestService {
 				));
 
 		for (Map.Entry<String, io.swagger.v3.oas.annotations.Parameter> entry : parametersDocMap.entrySet()) {
-			if (entry.getKey() != null && !map.containsKey(entry.getKey()) && !entry.getValue().hidden()) {
+			ParameterId parameterId = new ParameterId(entry.getValue());
+			if (entry.getKey() != null && !map.containsKey(parameterId) && !entry.getValue().hidden()) {
 				//Convert
 				Parameter parameter = parameterBuilder.buildParameterFromDoc(entry.getValue(), components,
 						methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
-				map.put(entry.getKey(), parameter);
+				map.put(parameterId, parameter);
 			}
 		}
 
 		getHeaders(methodAttributes, map);
+		map.forEach((parameterId, parameter) -> {
+			if(StringUtils.isBlank(parameter.getIn()) && StringUtils.isBlank(parameter.get$ref()))
+				parameter.setIn(ParameterIn.QUERY.toString());
+		});
 		return map;
 	}
 
@@ -390,22 +395,23 @@ public abstract class AbstractRequestService {
 	 * @return the headers
 	 */
 	@SuppressWarnings("unchecked")
-	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<String, Parameter> map) {
+	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<ParameterId, Parameter> map) {
 		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
 			StringSchema schema = new StringSchema();
 			if (StringUtils.isNotEmpty(entry.getValue()))
 				schema.addEnumItem(entry.getValue());
 			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(schema);
-			if (map.containsKey(entry.getKey())) {
-				parameter = map.get(entry.getKey());
+			ParameterId parameterId = new ParameterId(parameter);
+			if (map.containsKey(parameterId)) {
+				parameter = map.get(parameterId);
 				List existingEnum = null;
 				if (parameter.getSchema() != null && !CollectionUtils.isEmpty(parameter.getSchema().getEnum()))
 					existingEnum = parameter.getSchema().getEnum();
-				if (StringUtils.isNotEmpty(entry.getValue()) && (existingEnum==null || !existingEnum.contains(entry.getValue())))
+				if (StringUtils.isNotEmpty(entry.getValue()) && (existingEnum == null || !existingEnum.contains(entry.getValue())))
 					parameter.getSchema().addEnumItemObject(entry.getValue());
 				parameter.setSchema(parameter.getSchema());
 			}
-			map.put(entry.getKey(), parameter);
+			map.put(parameterId, parameter);
 		}
 		return map.values();
 	}
@@ -503,7 +509,7 @@ public abstract class AbstractRequestService {
 		// By default
 		if (!isRequestBodyParam(requestMethod, parameterInfo)) {
 			parameterInfo.setRequired(!((DelegatingMethodParameter) methodParameter).isNotRequired() && !methodParameter.isOptional());
-			parameterInfo.setParamType(QUERY_PARAM);
+			//parameterInfo.setParamType(QUERY_PARAM);
 			parameterInfo.setDefaultValue(null);
 			return this.buildParam(parameterInfo, components, jsonView);
 		}
