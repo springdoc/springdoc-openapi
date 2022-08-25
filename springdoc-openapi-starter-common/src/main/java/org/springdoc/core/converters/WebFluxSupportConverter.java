@@ -22,7 +22,7 @@
  *
  */
 
-package org.springdoc.webflux.core.converters;
+package org.springdoc.core.converters;
 
 import java.util.Iterator;
 
