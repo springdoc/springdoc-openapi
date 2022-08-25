@@ -178,7 +178,12 @@ public class GenericParameterService {
 		Parameter result = paramCalcul;
 		if (paramCalcul != null && paramCalcul.getName() != null) {
 			final String name = paramCalcul.getName();
-			Parameter paramDoc = existingParamDoc.stream().filter(p -> name.equals(p.getName())).findAny().orElse(null);
+			final String in = paramCalcul.getIn();
+			Parameter paramDoc = existingParamDoc.stream().filter(p ->
+							name.equals(p.getName())
+									&& (StringUtils.isEmpty(in) || StringUtils.isEmpty(p.getIn()) || in.equals(p.getIn()))
+					).findAny()
+					.orElse(null);
 			if (paramDoc != null) {
 				mergeParameter(paramCalcul, paramDoc);
 				result = paramDoc;
