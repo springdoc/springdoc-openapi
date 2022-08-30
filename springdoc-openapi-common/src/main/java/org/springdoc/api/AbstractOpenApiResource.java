@@ -48,6 +48,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
@@ -65,6 +66,7 @@ import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -337,10 +339,26 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			);
 			if (!CollectionUtils.isEmpty(openAPI.getServers()))
 				openAPIService.setServersPresent(true);
+			openAPIService.updateServers(openAPI);
 
 			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
 				this.removeBrokenReferenceDefinitions(openAPI);
 
+			// run the optional customisers
+			List<Server> servers = openAPI.getServers();
+			List<Server> serversCopy = null;
+			try {
+				serversCopy = springDocProviders.jsonMapper()
+						.readValue(springDocProviders.jsonMapper().writeValueAsString(servers), new TypeReference<List<Server>>() {});
+			}
+			catch (JsonProcessingException e) {
+				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+			}
+
+			openApiLocaleCustomizers.values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openAPI, finalLocale));
+			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openAPI)));
+			if (!CollectionUtils.isEmpty(openAPI.getServers()) && !openAPI.getServers().equals(serversCopy))
+				openAPIService.setServersPresent(true);
 
 			openAPIService.setCachedOpenAPI(openAPI, finalLocale);
 
@@ -350,10 +368,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		else {
 			LOGGER.debug("Fetching openApi document from cache");
 			openAPI = openAPIService.getCachedOpenAPI(finalLocale);
+			openAPIService.updateServers(openAPI);
 		}
-		openAPIService.updateServers(openAPI);
-		openApiLocaleCustomizers.values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openAPI, finalLocale));
-		openApiCustomisers.ifPresent(apiCustomizers -> apiCustomizers.forEach(openApiCustomizer -> openApiCustomizer.customise(openAPI)));
+
 		return openAPI;
 	}
 
