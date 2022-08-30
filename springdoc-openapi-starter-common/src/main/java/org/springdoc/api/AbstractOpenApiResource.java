@@ -122,6 +122,8 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  * The type Abstract open api resource.
  * @author bnasslahsen
  * @author kevinraddatz
+ * @author hyeonisism
+ * @author doljae
  */
 public abstract class AbstractOpenApiResource extends SpecFilter {
 
@@ -316,7 +318,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			Map<String, Object> mappingsMap = openAPIService.getMappingsMap().entrySet().stream()
 					.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
 							Hidden.class) == null))
-					.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getClass()))
+					.filter(controller -> !isHiddenRestControllers(controller.getValue().getClass()))
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
 			Map<String, Object> findControllerAdvice = openAPIService.getControllerAdviceMap();
