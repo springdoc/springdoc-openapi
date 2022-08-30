@@ -31,6 +31,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -126,6 +127,7 @@ class AbstractOpenApiResourceTest {
 		when(openAPIService.build(any())).thenReturn(openAPI);
 
 		when(openAPIBuilderObjectFactory.getObject()).thenReturn(openAPIService);
+		when(springDocProviders.jsonMapper()).thenReturn(Json.mapper());
 	}
 
 	@Test
