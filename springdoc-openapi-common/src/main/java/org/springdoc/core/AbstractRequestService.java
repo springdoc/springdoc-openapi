@@ -64,6 +64,7 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.springdoc.core.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.providers.JavadocProvider;
 
@@ -291,7 +292,8 @@ public abstract class AbstractRequestService {
 			}
 
 			if (!isParamToIgnore(methodParameter)) {
-				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation());
+				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation(),
+																openAPI.getOpenapi());
 				// Merge with the operation parameters
 				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
 				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
@@ -305,7 +307,7 @@ public abstract class AbstractRequestService {
 					}
 					applyBeanValidatorAnnotations(parameter, parameterAnnotations);
 				}
-				else if (!RequestMethod.GET.equals(requestMethod)) {
+				else if (!RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openAPI.getOpenapi())) {
 					if (operation.getRequestBody() != null)
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyService.calculateRequestBodyInfo(components, methodAttributes,
@@ -494,10 +496,11 @@ public abstract class AbstractRequestService {
 	 * @param components the components
 	 * @param requestMethod the request method
 	 * @param jsonView the json view
+	 * @param openApiVersion the open api version
 	 * @return the parameter
 	 */
 	public Parameter buildParams(ParameterInfo parameterInfo, Components components,
-			RequestMethod requestMethod, JsonView jsonView) {
+			RequestMethod requestMethod, JsonView jsonView, String openApiVersion) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		if (parameterInfo.getParamType() != null) {
 			if (!ValueConstants.DEFAULT_NONE.equals(parameterInfo.getDefaultValue()))
@@ -507,7 +510,7 @@ public abstract class AbstractRequestService {
 			return this.buildParam(parameterInfo, components, jsonView);
 		}
 		// By default
-		if (!isRequestBodyParam(requestMethod, parameterInfo)) {
+		if (!isRequestBodyParam(requestMethod, parameterInfo, openApiVersion)) {
 			parameterInfo.setRequired(!((DelegatingMethodParameter) methodParameter).isNotRequired() && !methodParameter.isOptional());
 			//parameterInfo.setParamType(QUERY_PARAM);
 			parameterInfo.setDefaultValue(null);
@@ -721,13 +724,15 @@ public abstract class AbstractRequestService {
 	 *
 	 * @param requestMethod the request method
 	 * @param parameterInfo the parameter info
+	 * @param openApiVersion the open api version
 	 * @return the boolean
 	 */
-	private boolean isRequestBodyParam(RequestMethod requestMethod, ParameterInfo parameterInfo) {
+	private boolean isRequestBodyParam(RequestMethod requestMethod, ParameterInfo parameterInfo, String openApiVersion) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
+		Boolean isBodyAllowed = !RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openApiVersion);
 
-		return (!RequestMethod.GET.equals(requestMethod) && (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getIn() == null) && !delegatingMethodParameter.isParameterObject())
+		return (isBodyAllowed && (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getIn() == null) && !delegatingMethodParameter.isParameterObject())
 				&&
 				((methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
 						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
