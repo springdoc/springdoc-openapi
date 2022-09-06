@@ -7,7 +7,7 @@ something, or simply want to hack on the code this document should help you get 
 
 
 == Code of Conduct
-This project adheres to the Contributor Covenant link:CODE_OF_CONDUCT.adoc[code of
+This project adheres to the Contributor Covenant link:CODE_OF_CONDUCT.md[code of
 conduct]. By participating, you are expected to uphold this code. 
 
 
@@ -110,7 +110,7 @@ needs to be added.
 * Select "`IntelliJ IDEA`" -> "`Preferences`".
 * Select "`Editor`" -> "`Code Style`".
 * Select the wheel and "`Import Scheme`" -> "`IntelliJ IDEA code style XML`".
-* Select https://github.com/spring-projects/spring-boot/blob/master/idea/codeStyleConfig.xml[`idea/codeStyleConfig.xml`] from this repository.
+* Select https://github.com/spring-projects/spring-boot/blob/main/idea/codeStyleConfig.xml[`idea/codeStyleConfig.xml`] from this repository.
 
 ==== Importing into Eclipse
 
@@ -119,7 +119,7 @@ You can use Spring Boot project specific source formatting settings.
 
 ===== Install the Spring Formatter plugin
 * Select "`Help`" -> "`Install New Software`".
-* Add `https://repo.spring.io/javaformat-eclipse-update-site/` as a site.
+* Add `https://repo.spring.io/ui/native/javaformat-eclipse-update-site/` as a site.
 * Install "Spring Java Format".
 
 NOTE: The plugin is optional. Projects can be imported without the plugins, your code
