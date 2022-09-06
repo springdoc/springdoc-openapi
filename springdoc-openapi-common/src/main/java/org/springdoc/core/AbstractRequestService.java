@@ -575,13 +575,21 @@ public abstract class AbstractRequestService {
 	 */
 	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
 		Map<String, Annotation> annos = new HashMap<>();
-		if (annotations != null)
-			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
+		populateAnnotationsRecursively(annos, annotations);
 		boolean annotationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
 		if (annotationExists)
 			parameter.setRequired(true);
 		Schema<?> schema = parameter.getSchema();
 		applyValidationsToSchema(annos, schema);
+	}
+
+	private void populateAnnotationsRecursively(Map<String, Annotation> resultMap, List<Annotation> annotations) {
+		if (annotations != null)
+			annotations.forEach(annotation -> {
+				resultMap.putIfAbsent(annotation.annotationType().getSimpleName(), annotation);
+				Annotation[] nestedAnnotations = annotation.annotationType().getAnnotations();
+				populateAnnotationsRecursively(resultMap, Arrays.asList(nestedAnnotations));
+			});
 	}
 
 	/**
