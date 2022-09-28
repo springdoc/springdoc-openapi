@@ -1,0 +1,2 @@
+org.springdoc.webflux.core.configuration.SpringDocWebFluxConfiguration
+org.springdoc.webflux.core.configuration.MultipleOpenApiSupportConfiguration
