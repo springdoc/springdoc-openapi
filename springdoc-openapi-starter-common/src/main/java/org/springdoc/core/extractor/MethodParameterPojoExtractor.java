@@ -181,7 +181,9 @@ public class MethodParameterPojoExtractor {
 			boolean isNotRequired = parameter == null || !parameter.required();
 			Annotation[] finalFieldAnnotations = fieldAnnotations;
 			if (paramClass.isRecord()) {
-				return Stream.of( paramClass.getRecordComponents()).map(recordComponent -> recordComponent.getAccessor())
+				return Stream.of(paramClass.getRecordComponents())
+						.filter(d -> d.getName().equals(field.getName()))
+						.map(recordComponent -> recordComponent.getAccessor())
 						.map(method -> new MethodParameter(method, -1))
 						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
 						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));
