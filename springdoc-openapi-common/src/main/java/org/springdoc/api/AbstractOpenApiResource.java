@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -397,7 +398,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		routerOperation = customizeRouterOperation(routerOperation, handlerMethod);
 
 		String operationPath = routerOperation.getPath();
-		Set<RequestMethod> requestMethods = new HashSet<>(Arrays.asList(routerOperation.getMethods()));
+		Set<RequestMethod> requestMethods = new TreeSet<>(Arrays.asList(routerOperation.getMethods()));
 		io.swagger.v3.oas.annotations.Operation apiOperation = routerOperation.getOperation();
 		String[] methodConsumes = routerOperation.getConsumes();
 		String[] methodProduces = routerOperation.getProduces();
