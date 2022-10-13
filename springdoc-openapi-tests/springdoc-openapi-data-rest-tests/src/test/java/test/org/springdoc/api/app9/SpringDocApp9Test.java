@@ -72,7 +72,7 @@ public class SpringDocApp9Test extends AbstractSpringDocTest {
 	}
 
 	@AfterEach
-	private void clean() throws IllegalAccessException {
+	void clean() throws IllegalAccessException {
 		Field convertersField2 = FieldUtils.getDeclaredField(ObjectMapper.class, "_mixIns", true);
 		SimpleMixInResolver _mixIns = (SimpleMixInResolver) convertersField2.get(objectMapperProvider.jsonMapper());
 		Field convertersField3 = FieldUtils.getDeclaredField(SimpleMixInResolver.class, "_localMixIns", true);

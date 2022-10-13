@@ -8,33 +8,10 @@
 	<artifactId>springdoc-openapi-native-tests</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.experimental</groupId>
-			<artifactId>spring-native</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.experimental</groupId>
-				<artifactId>spring-aot-maven-plugin</artifactId>
-				<version>${spring-native.version}</version>
-				<!-- TODO, waiting for spring-native compatibility with spring-boot 3.0.0-M1-->
-				<!-- executions>
-					<execution>
-						<id>test-generate</id>
-						<goals>
-							<goal>test-generate</goal>
-						</goals>
-					</execution>
-				</executions -->
-			</plugin>
-		</plugins>
-	</build>
 </project>
