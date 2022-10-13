@@ -109,8 +109,8 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 				operationId = matcher.group(1);
 			}
 
-            if (operation.getSummary() == null && !summary.contains("$"))
-                operation.setSummary(summary);
+			if (operation.getSummary() == null && !summary.contains("$"))
+				operation.setSummary(summary);
 
 			operation.setOperationId(operationId);
 		}
