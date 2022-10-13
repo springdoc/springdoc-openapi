@@ -44,12 +44,36 @@
   },
   "components": {
     "schemas": {
+      "Bar": {
+        "type": "object",
+        "properties": {
+          "bar": {
+            "type": "string"
+          }
+        }
+      },
+      "Foo": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string"
+          }
+        }
+      },
       "MyModel": {
         "type": "object",
         "properties": {
           "thing": {
             "type": "object",
-            "description": "Hello"
+            "description": "Hello",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Foo"
+              },
+              {
+                "$ref": "#/components/schemas/Bar"
+              }
+            ]
           }
         }
       }

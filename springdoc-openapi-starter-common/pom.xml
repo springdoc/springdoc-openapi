@@ -72,12 +72,6 @@
 			<artifactId>kotlinx-coroutines-reactor</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<!-- Spring Native -->
-		<dependency>
-			<groupId>org.springframework.experimental</groupId>
-			<artifactId>spring-native</artifactId>
-			<optional>true</optional>
-		</dependency>
 		<!-- Spring Web /Data Rest/Hateoas && For Enhanced Pageable Support-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

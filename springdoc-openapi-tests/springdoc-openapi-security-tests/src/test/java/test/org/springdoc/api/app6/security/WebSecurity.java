@@ -24,6 +24,7 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,7 +39,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static org.springdoc.core.utils.Constants.ALL_PATTERN;
 
-
+@Configuration
 @EnableWebSecurity
 @Order(200)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
