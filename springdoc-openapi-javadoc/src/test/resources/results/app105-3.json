@@ -473,6 +473,15 @@
               "type": "integer",
               "format": "int64"
             }
+          },
+          {
+            "name": "additionalMetadata",
+            "in": "query",
+            "description": "Additional data to pass to server",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -485,9 +494,6 @@
                 ],
                 "type": "object",
                 "properties": {
-                  "additionalMetadata": {
-                    "description": "Additional data to pass to server"
-                  },
                   "file": {
                     "type": "string",
                     "description": "file detail",
