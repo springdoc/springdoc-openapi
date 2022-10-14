@@ -27,6 +27,7 @@ import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,7 +43,7 @@ public class HelloController {
 
 	@PostMapping(value = "/test2/{username}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public String createTest2(@PathVariable String username, @RequestPart("image") MultipartFile imageFile,
-			@RequestPart("test") MyTestDto test) {
+			@RequestPart("test") MyTestDto test, @RequestHeader("My-Header") String workspaceId) {
 		return null;
 	}
 
