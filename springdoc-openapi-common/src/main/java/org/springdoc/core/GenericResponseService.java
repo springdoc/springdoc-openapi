@@ -174,13 +174,13 @@ public class GenericResponseService {
 				Set<Class<?>> genericExceptions = (Set<Class<?>>) extensions.get(EXTENSION_EXCEPTION_CLASSES);
 				for (Class<?> declaredException : handlerMethod.getMethod().getExceptionTypes()) {
 					if (genericExceptions.contains(declaredException)) {
-							Map<String, String> javadocThrows = javadocProvider.getMethodJavadocThrows(handlerMethod.getMethod());
-							String description = javadocThrows.get(declaredException.getName());
-							if (description == null)
-								description = javadocThrows.get(declaredException.getSimpleName());
-							if (description != null && !description.trim().isEmpty()) {
-								genericResponse.getValue().setDescription(description);
-							}
+						Map<String, String> javadocThrows = javadocProvider.getMethodJavadocThrows(handlerMethod.getMethod());
+						String description = javadocThrows.get(declaredException.getName());
+						if (description == null)
+							description = javadocThrows.get(declaredException.getSimpleName());
+						if (description != null && !description.trim().isEmpty()) {
+							genericResponse.getValue().setDescription(description);
+						}
 					}
 				}
 			}
@@ -233,7 +233,7 @@ public class GenericResponseService {
 					apiResponses.forEach(controllerAdviceInfoApiResponseMap::put);
 				}
 			}
-			synchronized (this){
+			synchronized (this) {
 				controllerAdviceInfos.add(controllerAdviceInfo);
 			}
 		}
@@ -388,7 +388,8 @@ public class GenericResponseService {
 				}
 			}
 
-		} else {
+		}
+		else {
 			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), false);
 			if (Objects.nonNull(httpCode))
 				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, new ApiResponse(), false);
@@ -565,7 +566,8 @@ public class GenericResponseService {
 						exceptions.add(parameter.getType());
 					}
 				}
-			} else {
+			}
+			else {
 				exceptions.addAll(asList(exceptionHandler.value()));
 			}
 			apiResponse.addExtension(EXTENSION_EXCEPTION_CLASSES, exceptions);
@@ -634,10 +636,30 @@ public class GenericResponseService {
 	 * @return the generic map response
 	 */
 	private synchronized Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
-		return controllerAdviceInfos.stream()
-				.filter(controllerAdviceInfo ->  new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
-				.map(ControllerAdviceInfo::getApiResponseMap)
+		List<ControllerAdviceInfo> controllerAdviceInfosInThisBean = controllerAdviceInfos.stream()
+				.filter(controllerAdviceInfo ->
+						new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
+				.filter(controllerAdviceInfo -> beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
+				.collect(Collectors.toList());
+
+		Map<String, ApiResponse> genericApiResponseMap = controllerAdviceInfosInThisBean.stream()
+					.map(ControllerAdviceInfo::getApiResponseMap)
 				.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
+
+		List<ControllerAdviceInfo> controllerAdviceInfosNotInThisBean = controllerAdviceInfos.stream()
+				.filter(controllerAdviceInfo ->
+						new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
+				.filter(controllerAdviceInfo -> !beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
+				.collect(Collectors.toList());
+
+		for (ControllerAdviceInfo controllerAdviceInfo : controllerAdviceInfosNotInThisBean) {
+			controllerAdviceInfo.getApiResponseMap().forEach((key, apiResponse) -> {
+				if(!genericApiResponseMap.containsKey(key))
+					genericApiResponseMap.put(key, apiResponse);
+			});
+		}
+
+		return genericApiResponseMap;
 	}
 
 	/**
