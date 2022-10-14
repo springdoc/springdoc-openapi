@@ -339,8 +339,8 @@ public abstract class AbstractRequestService {
 			while (it.hasNext()) {
 				Entry<ParameterId, Parameter> entry = it.next();
 				Parameter parameter = entry.getValue();
-				if (!ParameterIn.PATH.toString().equals(parameter.getIn())) {
-					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema<>();
+				if (!ParameterIn.PATH.toString().equals(parameter.getIn()) && !ParameterIn.HEADER.toString().equals(parameter.getIn() )
+						&& !ParameterIn.COOKIE.toString().equals(parameter.getIn())) {					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema<>();
 					itemSchema.setName(entry.getKey().getpName());
 					itemSchema.setDescription(parameter.getDescription());
 					itemSchema.setDeprecated(parameter.getDeprecated());
