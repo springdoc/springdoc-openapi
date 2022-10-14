@@ -53,12 +53,40 @@
   },
   "components": {
     "schemas": {
+      "Bar": {
+        "type": "object",
+        "properties": {
+          "bar": {
+            "type": "string",
+            "description": "The Bar."
+          }
+        },
+        "description": "The type Bar."
+      },
+      "Foo": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string",
+            "description": "The Foo."
+          }
+        },
+        "description": "The type Foo."
+      },
       "MyModel": {
         "type": "object",
         "properties": {
           "thing": {
             "type": "object",
-            "description": "Hello"
+            "description": "Hello",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Foo"
+              },
+              {
+                "$ref": "#/components/schemas/Bar"
+              }
+            ]
           }
         },
         "description": "The type My model."
