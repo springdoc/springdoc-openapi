@@ -25,7 +25,9 @@ package test.org.springdoc.api.v30.app189;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = "springdoc.default-support-form-data=true")
 public class SpringDocApp189Test extends AbstractSpringDocV30Test {
 
     @SpringBootApplication
