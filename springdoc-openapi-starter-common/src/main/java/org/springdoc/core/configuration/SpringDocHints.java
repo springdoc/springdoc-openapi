@@ -51,7 +51,7 @@ import org.springframework.util.AntPathMatcher;
  * @author bnasslahsen
  */
 @Lazy(false)
-@ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-native-support:true}")
+@ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-native-support:false}")
 @ConditionalOnWebApplication
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(SpringDocConfiguration.class)

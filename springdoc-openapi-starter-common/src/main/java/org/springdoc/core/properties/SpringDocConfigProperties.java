@@ -214,7 +214,7 @@ public class SpringDocConfigProperties {
 	/**
 	 * The Enable native support.
 	 */
-	private boolean enableNativeSupport = true;
+	private boolean enableNativeSupport = false;
 
 	/**
 	 * The Enable hateoas.
@@ -229,7 +229,7 @@ public class SpringDocConfigProperties {
 	/**
 	 * convert query param to form data when consumes is multipart/form-data
 	 */
-	private boolean defaultSupportFormData=true;
+	private boolean defaultSupportFormData;
 
 	/**
 	 * The Sort converter.
