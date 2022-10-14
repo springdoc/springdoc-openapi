@@ -644,10 +644,30 @@ public class GenericResponseService {
 	 * @return the generic map response
 	 */
 	private synchronized Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
-		return controllerAdviceInfos.stream()
-				.filter(controllerAdviceInfo -> new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
+		List<ControllerAdviceInfo> controllerAdviceInfosInThisBean = controllerAdviceInfos.stream()
+				.filter(controllerAdviceInfo ->
+						new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
+				.filter(controllerAdviceInfo -> beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
+				.collect(Collectors.toList());
+
+		Map<String, ApiResponse> genericApiResponseMap = controllerAdviceInfosInThisBean.stream()
 				.map(ControllerAdviceInfo::getApiResponseMap)
 				.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
+
+		List<ControllerAdviceInfo> controllerAdviceInfosNotInThisBean = controllerAdviceInfos.stream()
+				.filter(controllerAdviceInfo ->
+						new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
+				.filter(controllerAdviceInfo -> !beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
+				.collect(Collectors.toList());
+
+		for (ControllerAdviceInfo controllerAdviceInfo : controllerAdviceInfosNotInThisBean) {
+			controllerAdviceInfo.getApiResponseMap().forEach((key, apiResponse) -> {
+				if(!genericApiResponseMap.containsKey(key))
+					genericApiResponseMap.put(key, apiResponse);
+			});
+		}
+
+		return genericApiResponseMap;
 	}
 
 	/**
