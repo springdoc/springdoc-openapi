@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.slf4j.Logger;
@@ -45,6 +46,7 @@ import org.springdoc.core.utils.SpringDocDataRestUtils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.mapping.PersistentEntity;
 import org.springframework.data.mapping.PersistentProperty;
 import org.springframework.data.mapping.SimpleAssociationHandler;
@@ -219,58 +221,60 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 			final PersistentEntity<?, ?> entity = persistentEntities.getRequiredPersistentEntity(domainType);
 			dataRestRepository.setPersistentEntity(entity);
 			final JacksonMetadata jackson = new JacksonMetadata(mapper, domainType);
+			boolean hiddenRepository = (AnnotationUtils.findAnnotation(repository, Hidden.class) != null);
+			if (!hiddenRepository) {
+				if (resourceMetadata.isExported()) {
+					for (HandlerMapping handlerMapping : handlerMappingList) {
+						if (handlerMapping instanceof RepositoryRestHandlerMapping) {
+							RepositoryRestHandlerMapping repositoryRestHandlerMapping = (RepositoryRestHandlerMapping) handlerMapping;
+							Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
+							// Entity controllers lookup first
+							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
+									.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_ENTITY_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
+											.getValue().getBeanType().getName()))
+									.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+							dataRestRepository.setControllerType(ControllerType.ENTITY);
+							findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
 
-			if (resourceMetadata.isExported()) {
-				for (HandlerMapping handlerMapping : handlerMappingList) {
-					if (handlerMapping instanceof RepositoryRestHandlerMapping) {
-						RepositoryRestHandlerMapping repositoryRestHandlerMapping = (RepositoryRestHandlerMapping) handlerMapping;
-						Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
-						// Entity controllers lookup first
-						Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
-								.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_ENTITY_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
-										.getValue().getBeanType().getName()))
-								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
-						dataRestRepository.setControllerType(ControllerType.ENTITY);
-						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
+							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFilteredMethodMap = handlerMethodMap.entrySet().stream()
+									.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_PROPERTY_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
+											.getValue().getBeanType().getName()))
+									.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
-						Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFilteredMethodMap = handlerMethodMap.entrySet().stream()
-								.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_PROPERTY_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
-										.getValue().getBeanType().getName()))
-								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
-
-						entity.doWithAssociations((SimpleAssociationHandler) association -> {
-							PersistentProperty<?> property = association.getInverse();
-							if (jackson.isExported(property) && associations.isLinkableAssociation(property)) {
-								dataRestRepository.setRelationName(resourceMetadata.getMappingFor(property).getRel().value());
-								dataRestRepository.setControllerType(ControllerType.PROPERTY);
-								dataRestRepository.setCollectionLike(property.isCollectionLike());
-								dataRestRepository.setMap(property.isMap());
-								dataRestRepository.setPropertyType(property.getActualType());
-								findControllers(routerOperationList, handlerMethodMapFilteredMethodMap, resourceMetadata, dataRestRepository, openAPI);
-							}
-						});
-					}
-					else if (handlerMapping instanceof BasePathAwareHandlerMapping) {
-						BasePathAwareHandlerMapping beanBasePathAwareHandlerMapping = (BasePathAwareHandlerMapping) handlerMapping;
-						Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = beanBasePathAwareHandlerMapping.getHandlerMethods();
-						Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
-								.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SCHEMA_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
-										.getValue().getBeanType().getName()))
-								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
-						dataRestRepository.setControllerType(ControllerType.SCHEMA);
-						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
-						handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
-								.filter(requestMappingInfoHandlerMethodEntry -> ProfileController.class.equals(requestMappingInfoHandlerMethodEntry
-										.getValue().getBeanType()) || AlpsController.class.equals(requestMappingInfoHandlerMethodEntry
-										.getValue().getBeanType()))
-								.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
-						dataRestRepository.setControllerType(ControllerType.GENERAL);
-						findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
+							entity.doWithAssociations((SimpleAssociationHandler) association -> {
+								PersistentProperty<?> property = association.getInverse();
+								if (jackson.isExported(property) && associations.isLinkableAssociation(property)) {
+									dataRestRepository.setRelationName(resourceMetadata.getMappingFor(property).getRel().value());
+									dataRestRepository.setControllerType(ControllerType.PROPERTY);
+									dataRestRepository.setCollectionLike(property.isCollectionLike());
+									dataRestRepository.setMap(property.isMap());
+									dataRestRepository.setPropertyType(property.getActualType());
+									findControllers(routerOperationList, handlerMethodMapFilteredMethodMap, resourceMetadata, dataRestRepository, openAPI);
+								}
+							});
+						}
+						else if (handlerMapping instanceof BasePathAwareHandlerMapping) {
+							BasePathAwareHandlerMapping beanBasePathAwareHandlerMapping = (BasePathAwareHandlerMapping) handlerMapping;
+							Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = beanBasePathAwareHandlerMapping.getHandlerMethods();
+							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
+									.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SCHEMA_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
+											.getValue().getBeanType().getName()))
+									.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+							dataRestRepository.setControllerType(ControllerType.SCHEMA);
+							findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
+							handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
+									.filter(requestMappingInfoHandlerMethodEntry -> ProfileController.class.equals(requestMappingInfoHandlerMethodEntry
+											.getValue().getBeanType()) || AlpsController.class.equals(requestMappingInfoHandlerMethodEntry
+											.getValue().getBeanType()))
+									.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+							dataRestRepository.setControllerType(ControllerType.GENERAL);
+							findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
+						}
 					}
 				}
+				// search
+				findSearchResourceMappings(openAPI, routerOperationList, handlerMappingList, dataRestRepository, resourceMetadata);
 			}
-			// search
-			findSearchResourceMappings(openAPI, routerOperationList, handlerMappingList, dataRestRepository, resourceMetadata);
 		}
 		return routerOperationList;
 	}
@@ -323,7 +327,8 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 				try {
 					handlerMappingList = (List<HandlerMapping>) MethodUtils.invokeMethod(object, "getDelegates");
 				}
-				catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+				catch (NoSuchMethodException | IllegalAccessException |
+					   InvocationTargetException e) {
 					LOGGER.warn(e.getMessage());
 				}
 			}
