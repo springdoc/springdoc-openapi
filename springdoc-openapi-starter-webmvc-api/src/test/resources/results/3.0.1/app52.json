@@ -11,38 +11,31 @@
     }
   ],
   "paths": {
-    "/test1/{username}": {
+    "/test3": {
       "post": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "createTest1",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "operationId": "createTest3",
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "required": [
-                  "image",
+                  "doc",
                   "test"
                 ],
                 "type": "object",
                 "properties": {
-                  "image": {
-                    "type": "string",
-                    "format": "binary"
-                  },
                   "test": {
                     "$ref": "#/components/schemas/MyTestDto"
+                  },
+                  "doc": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
                   }
                 }
               }
@@ -77,6 +70,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "My-Header",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -115,31 +116,38 @@
         }
       }
     },
-    "/test3": {
+    "/test1/{username}": {
       "post": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "createTest3",
+        "operationId": "createTest1",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "required": [
-                  "doc",
+                  "image",
                   "test"
                 ],
                 "type": "object",
                 "properties": {
-                  "doc": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
-                  },
                   "test": {
                     "$ref": "#/components/schemas/MyTestDto"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }
