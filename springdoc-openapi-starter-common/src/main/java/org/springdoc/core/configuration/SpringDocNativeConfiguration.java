@@ -29,17 +29,13 @@ import java.util.Optional;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.core.configuration.SpringDocHints.SpringDocRuntimeHints;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 
-import org.springframework.aot.hint.RuntimeHints;
-import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -47,7 +43,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.AntPathMatcher;
 
 /**
- * The type Spring doc hints.
+ * The type Spring doc Native Configuration.
  * @author bnasslahsen
  */
 @Lazy(false)
@@ -55,16 +51,7 @@ import org.springframework.util.AntPathMatcher;
 @ConditionalOnWebApplication
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(SpringDocConfiguration.class)
-@ImportRuntimeHints(SpringDocRuntimeHints.class)
-public class SpringDocHints implements InitializingBean {
-
-	static class SpringDocRuntimeHints implements RuntimeHintsRegistrar {
-		@Override
-		public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-			hints.resources().registerPattern(SpringDocHints.SPRINGDOC_CONFIG_PROPERTIES)
-					.registerResourceBundle("sun.util.resources.LocaleNames");
-		}
-	}
+public class SpringDocNativeConfiguration implements InitializingBean {
 
 	/**
 	 * The Swagger ui config properties.
@@ -86,7 +73,7 @@ public class SpringDocHints implements InitializingBean {
 	 *
 	 * @param optionalSwaggerUiConfigProperties the swagger ui config properties
 	 */
-	public SpringDocHints(Optional<SwaggerUiConfigProperties> optionalSwaggerUiConfigProperties) {
+	public SpringDocNativeConfiguration(Optional<SwaggerUiConfigProperties> optionalSwaggerUiConfigProperties) {
 		this.optionalSwaggerUiConfigProperties = optionalSwaggerUiConfigProperties;
 	}
 
