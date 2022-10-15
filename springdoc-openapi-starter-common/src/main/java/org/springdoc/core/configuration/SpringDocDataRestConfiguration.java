@@ -28,6 +28,7 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.Predicate;
+import org.springdoc.core.configuration.hints.SpringDocDataRestHints;
 import org.springdoc.core.converters.models.DefaultPageable;
 import org.springdoc.core.customizers.QuerydslPredicateOperationCustomizer;
 import org.springdoc.core.data.DataRestOperationService;
@@ -56,6 +57,7 @@ import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
@@ -85,6 +87,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 @ConditionalOnClass(RepositoryRestConfiguration.class)
 @ConditionalOnWebApplication
 @ConditionalOnBean(SpringDocConfiguration.class)
+@ImportRuntimeHints(SpringDocDataRestHints.class)
 public class SpringDocDataRestConfiguration {
 
 	/**
