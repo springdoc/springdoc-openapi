@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -61,7 +60,7 @@ public class SpringDocApp174Test extends AbstractSpringDocTest {
 						responses = @ApiResponse(responseCode = "200", description = "new desc", content = @Content(array = @ArraySchema(schema = @Schema(implementation = String.class))))))
 		})
 		public Function<List<String>, List<String>> lowercase() {
-			return list -> list.stream().map(String::toLowerCase).collect(Collectors.toList());
+			return list -> list.stream().map(String::toLowerCase).toList();
 		}
 
 		@Bean(name = "titi")

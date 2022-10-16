@@ -20,7 +20,6 @@ package test.org.springdoc.api.app4;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.springframework.hateoas.CollectionModel;
@@ -63,7 +62,7 @@ class EmployeeController {
 				.map(employee ->  EntityModel.of(employee, //
 						linkTo(methodOn(EmployeeController.class).findOne(employee.getId())).withSelfRel(), //
 						linkTo(methodOn(EmployeeController.class).findAll()).withRel("employees"))) //
-				.collect(Collectors.toList());
+				.toList();
 
 		return ResponseEntity.ok( //
 				 CollectionModel.of(employees, //

@@ -40,11 +40,9 @@ public class SpringDocUiHints implements RuntimeHintsRegistrar {
 	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
 		//Classgraph
 		ClassLoaderHandlerRegistry.CLASS_LOADER_HANDLERS.forEach(classLoaderHandlerRegistryEntry ->
-		{
 			hints.reflection()
 					.registerTypeIfPresent(classLoader, classLoaderHandlerRegistryEntry.classLoaderHandlerClass.getCanonicalName(),
-							hint -> hint.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));
-		});
+							hint -> hint.withMembers(MemberCategory.INVOKE_DECLARED_METHODS)));
 		hints.reflection()
 				.registerTypeIfPresent(classLoader, ClassLoaderHandlerRegistry.FALLBACK_HANDLER.classLoaderHandlerClass.getCanonicalName(),
 						hint -> hint.withMembers(MemberCategory.INVOKE_DECLARED_METHODS));

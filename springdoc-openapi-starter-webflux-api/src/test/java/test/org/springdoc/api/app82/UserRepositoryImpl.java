@@ -2,7 +2,6 @@ package test.org.springdoc.api.app82;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import jakarta.annotation.PostConstruct;
 import reactor.core.publisher.Flux;
@@ -32,7 +31,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 	@Override
 	public Flux<User> getAllUsers(String firstname) {
-		return Flux.fromIterable(this.users.values().stream().filter(user -> user.getFirstname().equals(firstname)).collect(Collectors.toList()));
+		return Flux.fromIterable(this.users.values().stream().filter(user -> user.getFirstname().equals(firstname)).toList());
 	}
 
 	@Override

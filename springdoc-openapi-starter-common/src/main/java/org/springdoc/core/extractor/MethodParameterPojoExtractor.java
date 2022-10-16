@@ -28,6 +28,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.RecordComponent;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.nio.charset.Charset;
@@ -183,7 +184,7 @@ public class MethodParameterPojoExtractor {
 			if (paramClass.isRecord()) {
 				return Stream.of(paramClass.getRecordComponents())
 						.filter(d -> d.getName().equals(field.getName()))
-						.map(recordComponent -> recordComponent.getAccessor())
+						.map(RecordComponent::getAccessor)
 						.map(method -> new MethodParameter(method, -1))
 						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
 						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));

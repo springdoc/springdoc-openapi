@@ -30,7 +30,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -119,7 +118,7 @@ public class AbstractRouterFunctionVisitor {
 	public void path(String pattern) {
 		if (currentRouterFunctionDatas != null) {
 			if (!nestedPaths.isEmpty()) {
-				List<String> nestedPathsList = this.nestedPaths.values().stream().flatMap(List::stream).collect(Collectors.toList());
+				List<String> nestedPathsList = this.nestedPaths.values().stream().flatMap(List::stream).toList();
 				if (!orPaths.isEmpty())
 					orPaths.forEach(nestedOrPath -> createRouterFunctionData(String.join(StringUtils.EMPTY, nestedPathsList) + nestedOrPath + pattern));
 				else
