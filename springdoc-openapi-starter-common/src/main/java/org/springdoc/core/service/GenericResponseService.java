@@ -31,7 +31,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -648,7 +647,7 @@ public class GenericResponseService {
 				.filter(controllerAdviceInfo ->
 						new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
 				.filter(controllerAdviceInfo -> beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
-				.collect(Collectors.toList());
+				.toList();
 
 		Map<String, ApiResponse> genericApiResponseMap = controllerAdviceInfosInThisBean.stream()
 				.map(ControllerAdviceInfo::getApiResponseMap)
@@ -658,7 +657,7 @@ public class GenericResponseService {
 				.filter(controllerAdviceInfo ->
 						new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
 				.filter(controllerAdviceInfo -> !beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
-				.collect(Collectors.toList());
+				.toList();
 
 		for (ControllerAdviceInfo controllerAdviceInfo : controllerAdviceInfosNotInThisBean) {
 			controllerAdviceInfo.getApiResponseMap().forEach((key, apiResponse) -> {
@@ -718,16 +717,5 @@ public class GenericResponseService {
 	public static void setResponseEntityExceptionHandlerClass(Class<?> responseEntityExceptionHandlerClass) {
 		GenericResponseService.responseEntityExceptionHandlerClass = responseEntityExceptionHandlerClass;
 	}
-
-
-	private ApiResponse cloneApiResponse(ApiResponse original) {
-		ApiResponse clone = new ApiResponse();
-		clone.set$ref(original.get$ref());
-		clone.setDescription(original.getDescription());
-		clone.setContent(original.getContent());
-		clone.setHeaders(original.getHeaders() == null ? null : new HashMap<>(original.getHeaders()));
-		clone.setExtensions(original.getExtensions() == null ? null : new HashMap<>(original.getExtensions()));
-		clone.setLinks(original.getLinks() == null ? null : new HashMap<>(original.getLinks()));
-		return clone;
-	}
+	
 }

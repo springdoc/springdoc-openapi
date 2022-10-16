@@ -28,7 +28,6 @@ import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -101,7 +100,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 				.filter(s -> s.getAllOf() != null)
 				.filter(s -> s.getAllOf().stream().anyMatch(s2 -> ref.equals(s2.get$ref())))
 				.map(s -> new Schema().$ref(AnnotationsUtils.COMPONENTS_REF + s.getName()))
-				.collect(Collectors.toList());
+				.toList();
 		if (composedSchemas.isEmpty()) return schema;
 
 		ComposedSchema result = new ComposedSchema();

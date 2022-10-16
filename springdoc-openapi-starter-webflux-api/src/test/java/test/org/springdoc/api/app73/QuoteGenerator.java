@@ -28,7 +28,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import reactor.core.publisher.Flux;
 
@@ -84,7 +83,7 @@ public class QuoteGenerator {
 					result.setInstant(instant);
 					return result;
 				})
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 }

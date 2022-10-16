@@ -25,7 +25,6 @@
 package org.springdoc.core.configurer;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import org.apache.commons.lang3.StringUtils;
@@ -89,7 +88,7 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 							builder.displayName(elt.getDisplayName());
 						return builder.group(elt.getGroup()).build();
 					})
-					.collect(Collectors.toList());
+					.toList();
 			groupedOpenApis.forEach(elt -> beanFactory.registerSingleton(elt.getGroup(), elt));
 		}
 		initBeanFactoryPostProcessor(beanFactory);

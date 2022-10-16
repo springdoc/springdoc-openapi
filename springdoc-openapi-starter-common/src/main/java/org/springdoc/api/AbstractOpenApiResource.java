@@ -644,7 +644,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		boolean withRouterOperation = routerFunctionVisitor.getRouterFunctionDatas().stream()
 				.anyMatch(routerFunctionData -> routerFunctionData.getAttributes().containsKey(OPERATION_ATTRIBUTE));
 		if (withRouterOperation) {
-			List<RouterOperation> operationList = routerFunctionVisitor.getRouterFunctionDatas().stream().map(RouterOperation::new).collect(Collectors.toList());
+			List<RouterOperation> operationList = routerFunctionVisitor.getRouterFunctionDatas().stream().map(RouterOperation::new).toList();
 			calculatePath(operationList, locale, openAPI);
 		}
 		else {
@@ -659,9 +659,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			else
 				routerOperationList.addAll(Arrays.asList(routerOperations.value()));
 			if (routerOperationList.size() == 1)
-				calculatePath(routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()), locale, openAPI);
+				calculatePath(routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).toList(), locale, openAPI);
 			else {
-				List<RouterOperation> operationList = routerOperationList.stream().map(RouterOperation::new).collect(Collectors.toList());
+				List<RouterOperation> operationList = routerOperationList.stream().map(RouterOperation::new).toList();
 				mergeRouters(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
 				calculatePath(operationList, locale, openAPI);
 			}
@@ -891,7 +891,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				// PATH
 				List<RouterFunctionData> routerFunctionDataList = routerFunctionDatas.stream()
 						.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath()))
-						.collect(Collectors.toList());
+						.toList();
 				if (routerFunctionDataList.size() == 1)
 					fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 				else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getMethods())) {
@@ -899,7 +899,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					routerFunctionDataList = routerFunctionDatas.stream()
 							.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
 									&& isEqualMethods(routerOperation.getMethods(), routerFunctionData1.getMethods()))
-							.collect(Collectors.toList());
+							.toList();
 					if (routerFunctionDataList.size() == 1)
 						fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 					else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getProduces())) {
@@ -908,7 +908,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 								.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
 										&& isEqualMethods(routerOperation.getMethods(), routerFunctionData1.getMethods())
 										&& isEqualArrays(routerFunctionData1.getProduces(), routerOperation.getProduces()))
-								.collect(Collectors.toList());
+								.toList();
 						if (routerFunctionDataList.size() == 1)
 							fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 						else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
@@ -918,7 +918,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 											&& isEqualMethods(routerOperation.getMethods(), routerFunctionData1.getMethods())
 											&& isEqualArrays(routerFunctionData1.getProduces(), routerOperation.getProduces())
 											&& isEqualArrays(routerFunctionData1.getConsumes(), routerOperation.getConsumes()))
-									.collect(Collectors.toList());
+									.toList();
 							if (routerFunctionDataList.size() == 1)
 								fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 						}
@@ -929,7 +929,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 								.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
 										&& isEqualMethods(routerOperation.getMethods(), routerFunctionData1.getMethods())
 										&& isEqualArrays(routerFunctionData1.getConsumes(), routerOperation.getConsumes()))
-								.collect(Collectors.toList());
+								.toList();
 						if (routerFunctionDataList.size() == 1)
 							fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 					}
@@ -939,7 +939,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					routerFunctionDataList = routerFunctionDatas.stream()
 							.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
 									&& isEqualArrays(routerFunctionData1.getProduces(), routerOperation.getProduces()))
-							.collect(Collectors.toList());
+							.toList();
 					if (routerFunctionDataList.size() == 1)
 						fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 					else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
@@ -949,7 +949,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 										&& isEqualMethods(routerOperation.getMethods(), routerFunctionData1.getMethods())
 										&& isEqualArrays(routerFunctionData1.getConsumes(), routerOperation.getConsumes())
 										&& isEqualArrays(routerFunctionData1.getProduces(), routerOperation.getProduces()))
-								.collect(Collectors.toList());
+								.toList();
 						if (routerFunctionDataList.size() == 1)
 							fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 					}
@@ -959,7 +959,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					routerFunctionDataList = routerFunctionDatas.stream()
 							.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
 									&& isEqualArrays(routerFunctionData1.getConsumes(), routerOperation.getConsumes()))
-							.collect(Collectors.toList());
+							.toList();
 					if (routerFunctionDataList.size() == 1)
 						fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 				}

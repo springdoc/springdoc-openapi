@@ -35,7 +35,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -299,7 +298,7 @@ public class OperationService {
 			List<String> tags = mlist.get().stream()
 					.filter(t -> operation.getTags() == null
 							|| (operation.getTags() != null && !operation.getTags().contains(t)))
-					.collect(Collectors.toList());
+					.toList();
 			tags.forEach(operation::addTagsItem);
 		}
 	}

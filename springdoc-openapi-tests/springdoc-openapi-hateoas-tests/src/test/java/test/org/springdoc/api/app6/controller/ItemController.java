@@ -1,7 +1,6 @@
 package test.org.springdoc.api.app6.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Tag(name = "Item", description = "The Item API")
 public class ItemController {
 
-  List<Item> items = Stream.of(new Item("foo"), new Item("bar")).collect(Collectors.toList());
+  List<Item> items = Stream.of(new Item("foo"), new Item("bar")).toList();
 
   @Operation(summary = "Get all items")
   @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
