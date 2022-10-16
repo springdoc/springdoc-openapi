@@ -4,14 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-M7] - 2022-10-17
+### Added
+- #1888 - custom Summary for actuator
+- #1881 - Support @Hidden annotation on REST repositories.
+- #1878 - Sort request methods
+### Changed
+- Upgrade swagger-core to 2.2.4
+- Upgrade swagger-ui to 4.14.3
+### Fixed
+- #1829 - Wrong schema generation on endpoint consuming multipart form data combined with JsonView
+- #1842 - A HTTP header in multipart/form-data is handled as form item instead of header
+- #1845 - Wrong "response" description with two controllers having its own ExceptionHandler.
+
 ## [2.0.0-M6] - 2022-10-03
 ## Added
 - #1860 - Replace auto-configuration registration by @eikemeier in https://github.com/springdoc/springdoc-openapi/pull/1860
 - #1814 - Allow requestBody creation for GET on openapi resource endpoint
 ### Fixed
-- 1855 -Fixed a bug that duplicate field were get for record classes by @uc4w6c in https://github.com/springdoc/springdoc-openapi/pull/1855
+- #1855 - Fixed a bug that duplicate field were get for record classes by @uc4w6c in https://github.com/springdoc/springdoc-openapi/pull/1855
 - #1820 - Refresh the browser each time, the global header is added in duplicate.
-- #523 - No documented way to handle Mono/Flux without Webflux
+- #523  - No documented way to handle Mono/Flux without Webflux
 - #1816 - Parameters with same name but different locations can't render in UI properly
 
 ## [2.0.0-M5] - 2022-08-21
