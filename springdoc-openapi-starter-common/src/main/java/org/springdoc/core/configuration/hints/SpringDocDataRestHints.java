@@ -68,12 +68,6 @@ public class SpringDocDataRestHints implements RuntimeHintsRegistrar {
 										MemberCategory.INVOKE_DECLARED_METHODS
 								))
 		);
-
-		hints.reflection()
-				.registerType(java.lang.Module.class,
-						(hint) -> hint.withMembers(MemberCategory.DECLARED_FIELDS,
-								MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-								MemberCategory.INVOKE_DECLARED_METHODS));
 	}
 
 }

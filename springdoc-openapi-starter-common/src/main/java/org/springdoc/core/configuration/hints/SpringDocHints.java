@@ -165,6 +165,11 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
 		hints.proxies()
 				.registerJdkProxy(org.springframework.web.context.request.NativeWebRequest.class);
+		hints.reflection()
+				.registerType(java.lang.Module.class,
+						(hint) -> hint.withMembers(MemberCategory.DECLARED_FIELDS,
+								MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
+								MemberCategory.INVOKE_DECLARED_METHODS));
 		//swagger-models
 		Arrays.stream(swaggerModels).forEach(aClass ->
 				hints.reflection().registerType(aClass,
