@@ -63,7 +63,7 @@ public class SpringDocDataRestHints implements RuntimeHintsRegistrar {
 		Arrays.stream(springDataRestTypeNames).forEach(springDataRestTypeName ->
 				hints.reflection()
 						.registerTypeIfPresent(classLoader, springDataRestTypeName,
-								(hint) -> hint.withMembers(MemberCategory.DECLARED_FIELDS,
+								hint -> hint.withMembers(MemberCategory.DECLARED_FIELDS,
 										MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
 										MemberCategory.INVOKE_DECLARED_METHODS
 								))
