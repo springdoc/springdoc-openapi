@@ -1,5 +1,5 @@
 ![Octocat](https://springdoc.org/img/banner-logo.svg)
-[![Build Status](http://129.159.254.115:8686/buildStatus/icon?job=springdoc-openapi-starter-IC)](http://129.159.254.115:8080/view/springdoc-openapi/job/springdoc-openapi-IC/)
+[![Build Status](http://129.159.254.115:8686/buildStatus/icon?job=springdoc-openapi-starter-IC)](http://129.159.254.115:8686/view/springdoc-openapi/job/springdoc-openapi-starter-IC/)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=springdoc_springdoc-openapi&metric=alert_status)](https://sonarcloud.io/dashboard?id=springdoc_springdoc-openapi)
 [![Known Vulnerabilities](https://snyk.io/test/github/springdoc/springdoc-openapi.git/badge.svg)](https://snyk.io/test/github/springdoc/springdoc-openapi.git)
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/springdoc)](https://stackoverflow.com/questions/tagged/springdoc?tab=Votes)
@@ -32,7 +32,7 @@ This project is sponsored by
         - [Demo Spring Boot 1 Web MVC with OpenAPI 3.](#demo-spring-boot-1-web-mvc-with-openapi-3)
         - [Demo Spring Boot 2 WebFlux with Functional endpoints OpenAPI 3.](#demo-spring-boot-2-webflux-with-functional-endpoints-openapi-3)
         - [Demo Spring Boot 2 and Spring Hateoas with OpenAPI 3.](#demo-spring-boot-2-and-spring-hateoas-with-openapi-3)
-    - [Integration of the library in a Spring Boot 2.x.x project without the swagger-ui:](#integration-of-the-library-in-a-spring-boot-2xx-project-without-the-swagger-ui)
+    - [Integration of the library in a Spring Boot 3.x project without the swagger-ui:](#integration-of-the-library-in-a-spring-boot-2xx-project-without-the-swagger-ui)
     - [Error Handling for REST using @ControllerAdvice](#error-handling-for-rest-using-controlleradvice)
     - [Adding API Information and Security documentation](#adding-api-information-and-security-documentation)
     - [spring-webflux support with Annotated Controllers](#spring-webflux-support-with-annotated-controllers)
@@ -40,7 +40,7 @@ This project is sponsored by
     - [Contributors](#contributors)
     - [Additional Support](#additional-support)
 
-# [Full documentation](https://springdoc.org)
+# [Full documentation](https://springdoc.org/v2)
 
 # **Introduction**
 
@@ -50,11 +50,12 @@ springdoc-openapi works by examining an application at runtime to infer API sema
 The library automatically generates documentation in JSON/YAML and HTML formatted pages. The generated documentation can be complemented using `swagger-api` annotations.
 
 This library supports:
-*  OpenAPI 3
-*  Spring-boot (v1 and v2)
-*  JSR-303, specifically for @NotNull, @Min, @Max, and @Size.
-*  Swagger-ui
-*  Oauth 2
+* OpenAPI 3
+* Spring-boot v3 (Java 17 & Jakarta EE 9)
+* JSR-303, specifically for @NotNull, @Min, @Max, and @Size.
+* Swagger-ui
+* OAuth 2
+* GraalVM native images
 
 The following video introduces the Library:
 
@@ -65,7 +66,7 @@ This is a community-based project, not maintained by the Spring Framework Contri
 # **Getting Started**
 
 ## Library for springdoc-openapi integration with spring-boot and swagger-ui
-*   Automatically deploys swagger-ui to a Spring Boot 2.x application
+*   Automatically deploys swagger-ui to a Spring Boot 3.x application
 *   Documentation will be available in HTML format, using the official [swagger-ui jars](https://github.com/swagger-api/swagger-ui.git).
 *   The Swagger UI page should then be available at http://server:port/context-path/swagger-ui.html and the OpenAPI description will be available at the following url for json format: http://server:port/context-path/v3/api-docs
     * `server`: The server name or IP
@@ -77,7 +78,7 @@ This is a community-based project, not maintained by the Spring Framework Contri
 ```xml
    <dependency>
       <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-ui</artifactId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
       <version>last-release-version</version>
    </dependency>
 ```
@@ -90,16 +91,15 @@ springdoc.swagger-ui.path=/swagger-ui.html
 
 ## Spring-boot with OpenAPI Demo applications.
 
-### [Source Code for Demo Applications](https://github.com/springdoc/springdoc-openapi-demos.git).
-### [Demo Spring Boot 2 Web MVC with OpenAPI 3](http://158.101.191.70:8081/).
-### [Demo Spring Boot 2 WebFlux with OpenAPI 3](http://158.101.191.70:8082/).
-### [Demo Spring Boot 1 Web MVC with OpenAPI 3](http://158.101.191.70:8083/).
-### [Demo Spring Boot 2 WebFlux with Functional endpoints OpenAPI 3](http://158.101.191.70:8084/).
-### [Demo Spring Boot 2 and Spring Hateoas with OpenAPI 3](http://158.101.191.70:8085/).
+### [Source Code for Demo Applications](https://github.com/springdoc/springdoc-openapi-demos/tree/2.x).
+### [Demo Spring Boot 2 Web MVC with OpenAPI 3](http://144.24.171.248:8081/).
+### [Demo Spring Boot 2 WebFlux with OpenAPI 3](http://144.24.171.248:8082/).
+### [Demo Spring Boot 2 WebFlux with Functional endpoints OpenAPI 3](http://144.24.171.248:8084/).
+### [Demo Spring Boot 2 and Spring Hateoas with OpenAPI 3](http://144.24.171.248:8085/).
 
-![Branching](https://springdoc.org/images/pets.png)
+![Branching](https://springdoc.org/img/pets.png)
 
-## Integration of the library in a Spring Boot 2.x.x project without the swagger-ui:
+## Integration of the library in a Spring Boot 3.x project without the swagger-ui:
 *   Documentation will be available at the following url for json format: http://server:port/context-path/v3/api-docs
     * `server`: The server name or IP
     * `port`: The server port
@@ -110,7 +110,7 @@ springdoc.swagger-ui.path=/swagger-ui.html
 ```xml
    <dependency>
       <groupId>org.springdoc</groupId>
-      <artifactId>springdoc-openapi-webmvc-core</artifactId>
+      <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
       <version>last-release-version</version>
    </dependency>
 ```
@@ -143,7 +143,7 @@ For better performance of documentation generation, declare `@OpenAPIDefinition`
 ```xml
    <dependency>
 	<groupId>org.springdoc</groupId>
-	<artifactId>springdoc-openapi-webflux-ui</artifactId>
+	<artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
 	<version>last-release-version</version>
 </dependency>
 ```

@@ -4,17 +4,74 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.6.9] - 2022-05-22
+## [2.0.0-M6] - 2022-10-03
+## Added
+- #1860 - Replace auto-configuration registration by @eikemeier in https://github.com/springdoc/springdoc-openapi/pull/1860
+- #1814 - Allow requestBody creation for GET on openapi resource endpoint
+### Fixed
+- 1855 -Fixed a bug that duplicate field were get for record classes by @uc4w6c in https://github.com/springdoc/springdoc-openapi/pull/1855
+- #1820 - Refresh the browser each time, the global header is added in duplicate.
+- #523 - No documented way to handle Mono/Flux without Webflux
+- #1816 - Parameters with same name but different locations can't render in UI properly
+
+## [2.0.0-M5] - 2022-08-21
+### Added
+- #1805 - Default flat param object
+### Changed
+- upgrade swagger-ui: 4.14.0
+### Fixed
+- #1801 - Duplicated header values when an endpoint can be called with different headers
+- #1801 - NPE for request bodies with content that has media type MULTIPART_FORM_DATA_VALUE
+- #1793 - Query parameter part of request body in controller with MultiPartFile
+- #1791 - Override-with-generic-response not working from 1.6.8 onwards
+- #1799 - Polymorphism - Support JsonTypeInfo.Id.CLASS
+
+## [2.0.0-M4] - 2022-08-15
+### Added
+- #1700 - Support PageableDefault#value()
+- #1706 - ßAdd RouterOperationCustomizer
+- #1754 - Default value and description of the page parameter when enabled spring.data.web.pageable.one-indexed-parameters property
+- #1755 - Adjust name of the parameters page and size when set spring.data.web.pageable.prefix property
+- #1742 - Optimize the group order problem
+### Changed
+- update to spring-boot 3.0.0-M4
+- upgrade swagger-ui: 4.13.2
+- upgrade classgraph: 4.8.149
+- upgrade spring-native: 0.12.1
+- upgrqde swagger-core: 2.2.2
+- upgrage therapi-runtime-javadoc: 0.15.0
+- #1753 - Upgrade Spring Cloud Function to 4.0.0-M3 by @JohnNiang in https://github.com/springdoc/springdoc-openapi/pull/1753
+### Fixed
+- #1684 - incorrect generic param for multi interfaces
+- #1687, #1688 - kotlin ByteArray property incorrect
+- #1692 - More specific bean name for objectMapperProvider
+- #1684 - Incorrect generic param for multi interfaces
+- #1707 -  Concurrent problems when initializing multiple GroupedOpenApi parallelly
+- #1690 -  Expected file to be in alphabetical order.
+- #1713 - ObjectMapperProvider to sort all properties.
+- #1717, #1718 -  javadoc of JsonUnwrapped fields not set
+- #1748, #1712, Generated server url computation not cleared
+- #1696 - incorrect generic param for multi interfaces
+- #1749 - Update server out of cache
+- #1734 - springdoc-openapi-kotlin and springdoc-openapi-common do not agree on conditions for auto configuration
+- #1761- Exception documenting RestControllerEndpoint with PostMapping
+
+## [2.0.0-M3] - 2022-05-27
 ### Added
 - #1664 - Add Schema properties support in method-level @RequestBody
 - #1181 - Initial OpenAPI 3.1 support
 - #1651 - Ease group declaration through code or properties with actuators
-### Changed
-- upgrade to spring-boot 2.7.0
-- upgrade swagger-ui: 4.11.1
+- #1616 - Add global customizer and filters
+- #1620 - Allow ComposedSchemas to replace non-composed so we can respect polymorphic links discovered in later methods
+- #1579 - Updated class and method javadoc handling
+- #1647 - Support for Webflux springdoc behind a proxy v2.x by @wiiitek in https://github.com/springdoc/springdoc-openapi/pull/1647
 - upgrade classgraph: 4.8.147
 - upgrade spring-native: 0.11.5
 - upgrade spring-cloud-function: 3.2.4
+- #1603 - Update swagger-ui path from /swaggerui to /swagger-ui when using management port (actuator) .
+- Prefer ComposedSchemas over non-composed so that method name order doesn't prevent polymorphic links generating into the spec
+### Changed
+- Update to spring-boot 3.0.0-M3
 ### Fixed
 - #1663 - @Schema annotation with type String and allowableValues set doesn't generate enum drop-down in swagger-ui after upgrading from 1.6.6 (when Spring custom converter is used)
 - #1655 - OpenAPIService is using ObjectMapper without configured modules since SpringDoc 1.6.7.
@@ -24,22 +81,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #1633 - GroupedOpenApi.builder addOpenApiCustomiser execution order is reversed
 - #1630 - Remove repeated HttpSession
 - #1659 - fix oauth redirection when used in spring-native
-
-## [1.6.8] - 2022-04-22
-### Added
-- #1616 - Add global customizer and filters
-- #1620 - Allow ComposedSchemas to replace non-composed so we can respect polymorphic links discovered in later methods
-- #1579 - Updated class and method javadoc handling
-### Changed
-- upgrade to spring-boot 2.6.7
-- #1603 - Update swagger-ui path from /swaggerui to /swagger-ui when using management port (actuator) .
-- Prefer ComposedSchemas over non-composed so that method name order doesn't prevent polymorphic links generating into the spec
-### Fixed
 - #1621 - Redirection to UI broken with query-config-enabled when any other boolean parameter is defined.
 - #1617 - spring cloud stream crashes at startup.
 - #1605 - spring-native NullPointerException due to missing TypeHint
 
-## [1.6.7] - 2022-04-07
+## [2.0.0-M2] - 2022-04-02
 ### Added
 - #1596 - Add title property to GroupedOpenApi class for displaying a Human readable group name.
 - #1554 - Configurable caching of OpenAPI instances.
@@ -51,9 +97,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #1501 - Added CSRF Session Storage config properties and html transformer.
 - #1498 - Pick up exception handler in case there is no controller advice at all.
 ### Changed
+- update to spring-boot 3.0.0-M2
 - upgrade to swagger-api 2.2.0 and swagger-ui 4.10.3
 - spring-native upgrade to 0.11.4
-- upgrade spring-boot version to 2.6.6
 - classgraph upgrade to 4.8.143
 - Update webjars-locator-core to 0.50
 - add owasp dependency-check-maven plugin
@@ -67,31 +113,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #1552 - resolve-schema-properties is not replacing tokens from properties file.
 - #1530 - Setting displayOperationId to false does not work.
 - #1525 - Null vendor extensions are excluded from Json/Yaml.
-
-## [1.6.6] - 2022-02-06
-### Changed
-- #1424 - Upgrade to swagger-ui 4.5.0
-- #1474 - Upgrade webjars-locator-core version to 0.48
-### Fixed
 - #1469 - #1036 - CSRF header should not be sent to cross domain sites
 - #1480 - Fix the problem that the inconsistent newline characters of different platforms
 - #1475 - Class level @Tag overwrites method level @Operation.tags.
 - #1491 - Set containingClass at MethodParameter
 
-## [1.6.5] - 2022-01-23
+## [2.0.0-M1] - 2022-02-06
 ### Added
-- #1430 - Add Support custom login processing endpoints
-- #1429 - Allow excluding individual methods from OpenApi output
+- #1284 - Initial support for Jakarta EE
+- #1430 - support custom login processing endpoints by @lipniak in https://github.com/springdoc/springdoc-openapi/pull/1430
+- #1429 - Allow excluding individual methods from OpenApi output by @mc1arke in https://github.com/springdoc/springdoc-openapi/pull/
 - #1372 - Customize operation and parameters by the return value
 - #1453 - Reverse proxy context path aware support for manually provided files
 ### Changed
-- #1424 - Upgrade to swagger-ui 4.2.1
+- update to spring-boot 3.0.0-M1
+- #1424 - Upgrade to swagger-ui 4.5.0
+- #1474 - Upgrade webjars-locator-core version to 0.48
 ### Fixed
 - #1428 - Incorrect RequestBody type on schema/ui if class implements Map.
 - #1455 - Post without @RequestBody not getting all fields
 - #1442 - Springdoc-openapi-webmvc-core not enought for Springdoc-openapi-native
 - #1446 - Upgrade from Springdoc 1.6.3 to 1.6.4 causes issues if springdoc-openapi-common is on the classpath but springdoc-openapi-ui is not
 - #1458 - java.lang.NoSuchMethodError: org.springframework.core.MethodParameter.getParameter() at /v3/api-docs request
+- #1469 - #1036 - CSRF header should not be sent to cross domain sites
+- #1480 - Fix the problem that the inconsistent newline characters of different platforms
+- #1475 - Class level @Tag overwrites method level @Operation.tags.
+- #1491 - Set containingClass at MethodParameter
 
 ## [1.6.4] - 2022-01-06
 ### Added
