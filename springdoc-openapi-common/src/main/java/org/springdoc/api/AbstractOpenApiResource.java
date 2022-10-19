@@ -1269,7 +1269,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		boolean isActuatorRestController = false;
 		if (actuatorProviderOptional.isPresent())
 			isActuatorRestController = actuatorProviderOptional.get().isRestController(operationPath, handlerMethod);
-		return springDocConfigProperties.isShowActuator() && isActuatorRestController;
+		return springDocConfigProperties.isShowActuator() && isActuatorRestController && (modelAndViewClass == null || !modelAndViewClass.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}
 
 	/**
