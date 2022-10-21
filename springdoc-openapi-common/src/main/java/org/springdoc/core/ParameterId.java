@@ -141,6 +141,6 @@ public class ParameterId {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(pName, paramType, $ref);
+		return Objects.hash(pName);
 	}
 }
