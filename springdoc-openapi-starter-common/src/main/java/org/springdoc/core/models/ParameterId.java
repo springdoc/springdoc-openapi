@@ -66,8 +66,19 @@ public class ParameterId {
 	 */
 	public ParameterId(io.swagger.v3.oas.annotations.Parameter parameter) {
 		this.pName = parameter.name();
-		this.paramType = parameter.in().toString();
-		this.$ref = parameter.ref();
+		this.paramType = StringUtils.isNotBlank(parameter.in().toString()) ? parameter.in().toString():null;
+		this.$ref = StringUtils.isNotBlank(parameter.ref()) ? parameter.ref():null;
+	}
+
+	/**
+	 * Instantiates a new Parameter id.
+	 *
+	 * @param pName the p name
+	 * @param paramType the param type
+	 */
+	public ParameterId(String pName, String paramType) {
+		this.pName = pName;
+		this.paramType =paramType;
 	}
 
 	/**

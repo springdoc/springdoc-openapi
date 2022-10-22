@@ -155,7 +155,10 @@ public class DataRestRequestService {
 		Class<?> domainType = dataRestRepository.getDomainType();
 		for (MethodParameter methodParameter : parameters) {
 			final String pName = methodParameter.getParameterName();
-			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder);
+			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
+					AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()),
+					io.swagger.v3.oas.annotations.Parameter.class);
+			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder,parameterDoc);
 			if (isParamToIgnore(methodParameter)) {
 				if (PersistentEntityResource.class.equals(methodParameter.getParameterType())) {
 					Schema<?> schema = SpringDocAnnotationsUtils.resolveSchemaFromType(domainType, openAPI.getComponents(), null, methodParameter.getParameterAnnotations());
@@ -165,9 +168,6 @@ public class DataRestRequestService {
 					parameterInfo.setParameterModel(new Parameter().name("id").in(ParameterIn.PATH.toString()).schema(new StringSchema()));
 				}
 				Parameter parameter = null;
-				io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
-						AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()),
-						io.swagger.v3.oas.annotations.Parameter.class);
 				if (parameterDoc != null) {
 					if (parameterDoc.hidden() || parameterDoc.schema().hidden())
 						continue;

@@ -24,6 +24,7 @@
 
 package org.springdoc.core.models;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -79,6 +80,12 @@ public class ParameterInfo {
 	 */
 	private boolean requestPart;
 
+
+	/**
+	 * The Parameter id.
+	 */
+	private ParameterId parameterId;
+
 	/**
 	 * The constant LOGGER.
 	 */
@@ -89,8 +96,9 @@ public class ParameterInfo {
 	 * @param pName the parameter name
 	 * @param methodParameter the method parameter
 	 * @param genericParameterService the parameter builder
+	 * @param parameterAnnotation the parameter annotation
 	 */
-	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService genericParameterService) {
+	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService genericParameterService, Parameter parameterAnnotation) {
 		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
 		RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
 		PathVariable pathVar = methodParameter.getParameterAnnotation(PathVariable.class);
@@ -126,6 +134,16 @@ public class ParameterInfo {
 		}
 
 		this.required = this.required && !methodParameter.isOptional();
+		if (parameterAnnotation != null) {
+			this.parameterId = new ParameterId(parameterAnnotation);
+			if (StringUtils.isBlank(parameterId.getpName()))
+				this.parameterId.setpName(this.pName);
+			if (StringUtils.isBlank(parameterId.getParamType()))
+				this.parameterId.setParamType(this.paramType);
+		}
+		else
+			this.parameterId = new ParameterId(this.pName, paramType);
+
 	}
 
 	/**
@@ -296,5 +314,24 @@ public class ParameterInfo {
 	 */
 	public void setRequestPart(boolean requestPart) {
 		this.requestPart = requestPart;
+	}
+
+
+	/**
+	 * Gets parameter id.
+	 *
+	 * @return the parameter id
+	 */
+	public ParameterId getParameterId() {
+		return parameterId;
+	}
+
+	/**
+	 * Sets parameter id.
+	 *
+	 * @param parameterId the parameter id
+	 */
+	public void setParameterId(ParameterId parameterId) {
+		this.parameterId = parameterId;
 	}
 }
