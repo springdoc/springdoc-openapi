@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -68,5 +69,29 @@ public class HelloController {
 
 	}
 	public static class Item {
+	}
+
+
+	@GetMapping("/duplicate_param")
+	@Operation(summary = "Duplicate param")
+	@Parameter(name = "sample", required = true, in = ParameterIn.HEADER, description = "sample Header")
+	@Parameter(name = "sample", required = true, in = ParameterIn.QUERY, description = "sample query")
+	public String duplicateParam(@RequestParam String sample, @RequestHeader("sample") String sampleHeader) {
+		return "duplicateParam";
+	}
+
+	@GetMapping("/duplicate_param2")
+	@Operation(summary = "Duplicate param")
+	@Parameter(name = "sample", required = true, description = "sample")
+	public String duplicateParam2(@RequestParam String sample) {
+		return "duplicateParam";
+	}
+
+
+	@GetMapping("/duplicate_param3")
+	@Operation(summary = "Duplicate param")
+	@Parameter(name = "sample", required = true, description = "sample")
+	public String duplicateParam3(@RequestHeader String sample) {
+		return "duplicateParam";
 	}
 }

@@ -91,6 +91,111 @@
           }
         }
       }
+    },
+    "/duplicate_param": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Duplicate param",
+        "operationId": "duplicateParam",
+        "parameters": [
+          {
+            "name": "sample",
+            "in": "query",
+            "description": "sample query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sample",
+            "in": "header",
+            "description": "sample Header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/duplicate_param3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Duplicate param",
+        "operationId": "duplicateParam3",
+        "parameters": [
+          {
+            "name": "sample",
+            "in": "header",
+            "description": "sample",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/duplicate_param2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Duplicate param",
+        "operationId": "duplicateParam2",
+        "parameters": [
+          {
+            "name": "sample",
+            "in": "query",
+            "description": "sample",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

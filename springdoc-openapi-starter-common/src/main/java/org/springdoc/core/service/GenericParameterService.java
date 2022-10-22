@@ -200,7 +200,7 @@ public class GenericParameterService {
 	 * @param paramCalcul the param calcul
 	 * @param paramDoc the param doc
 	 */
-	private static void mergeParameter(Parameter paramCalcul, Parameter paramDoc) {
+	public static void mergeParameter(Parameter paramCalcul, Parameter paramDoc) {
 		if (StringUtils.isBlank(paramDoc.getDescription()))
 			paramDoc.setDescription(paramCalcul.getDescription());
 

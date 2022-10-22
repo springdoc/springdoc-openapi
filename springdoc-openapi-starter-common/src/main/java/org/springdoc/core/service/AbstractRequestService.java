@@ -261,7 +261,7 @@ public abstract class AbstractRequestService {
 		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer(), this.defaultFlatParamObject);
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
-		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
+		Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
 		Components components = openAPI.getComponents();
 
 		JavadocProvider javadocProvider = operationService.getJavadocProvider();
@@ -274,10 +274,10 @@ public abstract class AbstractRequestService {
 					io.swagger.v3.oas.annotations.Parameter.class);
 
 			final String pName = methodParameter.getParameterName();
-			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder);
+			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder, parameterDoc);
 
 			if (parameterDoc == null)
-				parameterDoc = parametersDocMap.get(parameterInfo.getpName());
+				parameterDoc = parametersDocMap.get(parameterInfo.getParameterId());
 
 			if (parameterDoc == null) {
 				io.swagger.v3.oas.annotations.media.Schema schema = AnnotatedElementUtils.findMergedAnnotation(
@@ -364,34 +364,42 @@ public abstract class AbstractRequestService {
 	 * @param parametersDocMap the parameters doc map
 	 * @return the parameter linked hash map
 	 */
-	private LinkedHashMap<ParameterId, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
-		LinkedHashMap<ParameterId, Parameter> map = operationParameters.stream()
-				.collect(Collectors.toMap(
-						ParameterId::new,
-						parameter ->  parameter,
-						(u, v) -> {
-							throw new IllegalStateException(String.format("Duplicate key %s", u));
-						},
-						LinkedHashMap::new
-				));
+	private LinkedHashMap<ParameterId, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
+		LinkedHashMap<ParameterId, Parameter> map = operationParameters.stream().collect(Collectors.toMap(ParameterId::new, parameter -> parameter, (u, v) -> {
+			throw new IllegalStateException(String.format("Duplicate key %s", u));
+		}, LinkedHashMap::new));
 
-		for (Map.Entry<String, io.swagger.v3.oas.annotations.Parameter> entry : parametersDocMap.entrySet()) {
-			ParameterId parameterId = new ParameterId(entry.getValue());
-			if (entry.getKey() != null && !map.containsKey(parameterId) && !entry.getValue().hidden()) {
-				//Convert
-				Parameter parameter = parameterBuilder.buildParameterFromDoc(entry.getValue(), components,
-						methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
-				map.put(parameterId, parameter);
+		for (Map.Entry<ParameterId, io.swagger.v3.oas.annotations.Parameter> entry : parametersDocMap.entrySet()) {
+			ParameterId parameterId = entry.getKey();
+			if (parameterId != null && !map.containsKey(parameterId) && !entry.getValue().hidden()) {
+				Parameter parameter = parameterBuilder.buildParameterFromDoc(entry.getValue(), components, methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
+				//proceed with the merge if possible
+				if (map.containsKey(parameterId)) {
+					GenericParameterService.mergeParameter(map.get(parameterId), parameter);
+					map.put(parameterId, parameter);
+				}
+				else {
+					long mumParamsWithName = map.keySet().stream().filter(parameterId1 -> parameterId.getpName().equals(parameterId1.getpName())).count();
+					long mumParamsDocWithName = parametersDocMap.keySet().stream().filter(parameterId1 -> parameterId.getpName().equals(parameterId1.getpName())).count();
+					if (mumParamsWithName == 1 && mumParamsDocWithName == 1) {
+						Optional<ParameterId> parameterIdWithSameNameOptional = map.keySet().stream().filter(parameterId1 -> parameterId.getpName().equals(parameterId1.getpName())).findAny();
+						parameterIdWithSameNameOptional.ifPresent(parameterIdWithSameName -> {
+							GenericParameterService.mergeParameter(map.get(parameterIdWithSameName), parameter);
+							map.put(parameterIdWithSameName, parameter);
+						});
+					}
+					else
+						map.put(parameterId, parameter);
+				}
 			}
 		}
 
-		getHeaders(methodAttributes, map);
-		map.forEach((parameterId, parameter) -> {
-			if(StringUtils.isBlank(parameter.getIn()) && StringUtils.isBlank(parameter.get$ref()))
+		getHeaders(methodAttributes, map); map.forEach((parameterId, parameter) -> {
+			if (StringUtils.isBlank(parameter.getIn()) && StringUtils.isBlank(parameter.get$ref()))
 				parameter.setIn(ParameterIn.QUERY.toString());
-		});
-		return map;
+		}); return map;
 	}
+
 
 	/**
 	 * Gets headers.
@@ -650,34 +658,22 @@ public abstract class AbstractRequestService {
 	 * @param method the method
 	 * @return the api parameters
 	 */
-	private Map<String, io.swagger.v3.oas.annotations.Parameter> getApiParameters(Method method) {
+	private Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> getApiParameters(Method method) {
 		Class<?> declaringClass = method.getDeclaringClass();
 
-		Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDoc = AnnotatedElementUtils
-				.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameters.class);
-		LinkedHashMap<String, io.swagger.v3.oas.annotations.Parameter> apiParametersMap = apiParametersDoc.stream()
-				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x, (e1, e2) -> e2,
-						LinkedHashMap::new));
+		Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDoc = AnnotatedElementUtils.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameters.class);
+		LinkedHashMap<ParameterId, io.swagger.v3.oas.annotations.Parameter> apiParametersMap = apiParametersDoc.stream().flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(ParameterId::new, x -> x, (e1, e2) -> e2, LinkedHashMap::new));
 
-		Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDocDeclaringClass = AnnotatedElementUtils
-				.findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameters.class);
-		LinkedHashMap<String, io.swagger.v3.oas.annotations.Parameter> apiParametersDocDeclaringClassMap = apiParametersDocDeclaringClass.stream()
-				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x, (e1, e2) -> e2,
-						LinkedHashMap::new));
+		Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDocDeclaringClass = AnnotatedElementUtils.findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameters.class);
+		LinkedHashMap<ParameterId, io.swagger.v3.oas.annotations.Parameter> apiParametersDocDeclaringClassMap = apiParametersDocDeclaringClass.stream().flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(ParameterId::new, x -> x, (e1, e2) -> e2, LinkedHashMap::new));
 		apiParametersMap.putAll(apiParametersDocDeclaringClassMap);
 
-		Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDoc = AnnotatedElementUtils
-				.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameter.class);
-		LinkedHashMap<String, io.swagger.v3.oas.annotations.Parameter> apiParameterDocMap = apiParameterDoc.stream()
-				.collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x, (e1, e2) -> e2,
-						LinkedHashMap::new));
+		Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDoc = AnnotatedElementUtils.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameter.class);
+		LinkedHashMap<ParameterId, io.swagger.v3.oas.annotations.Parameter> apiParameterDocMap = apiParameterDoc.stream().collect(Collectors.toMap(ParameterId::new, x -> x, (e1, e2) -> e2, LinkedHashMap::new));
 		apiParametersMap.putAll(apiParameterDocMap);
 
-		Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClass = AnnotatedElementUtils
-				.findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameter.class);
-		LinkedHashMap<String, io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClassMap = apiParameterDocDeclaringClass.stream()
-				.collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x, (e1, e2) -> e2,
-						LinkedHashMap::new));
+		Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClass = AnnotatedElementUtils.findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameter.class);
+		LinkedHashMap<ParameterId, io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClassMap = apiParameterDocDeclaringClass.stream().collect(Collectors.toMap(ParameterId::new, x -> x, (e1, e2) -> e2, LinkedHashMap::new));
 		apiParametersMap.putAll(apiParameterDocDeclaringClassMap);
 
 		return apiParametersMap;
