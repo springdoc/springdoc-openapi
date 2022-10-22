@@ -187,11 +187,8 @@ public abstract class AbstractRequestService {
 	 * @param parameterCustomizers the parameter customizers
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
-	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
-			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
-		super();
-		this.parameterBuilder = parameterBuilder;
+	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService, OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers, LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+		super(); this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
 		this.operationService = operationService;
 		parameterCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
@@ -241,11 +238,9 @@ public abstract class AbstractRequestService {
 	 * @param openAPI the open api
 	 * @return the operation
 	 */
-	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
-			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
+	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod, Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
 		// Documentation
-		String operationId = operationService.getOperationId(handlerMethod.getMethod().getName(),
-				operation.getOperationId(), openAPI);
+		String operationId = operationService.getOperationId(handlerMethod.getMethod().getName(), operation.getOperationId(), openAPI);
 		operation.setOperationId(operationId);
 		// requests
 		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
@@ -256,7 +251,7 @@ public abstract class AbstractRequestService {
 		parameters = DelegatingMethodParameter.customize(pNames, parameters, parameterBuilder.getDelegatingMethodParameterCustomizer(), this.defaultFlatParamObject);
 		RequestBodyInfo requestBodyInfo = new RequestBodyInfo();
 		List<Parameter> operationParameters = (operation.getParameters() != null) ? operation.getParameters() : new ArrayList<>();
-		Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
+		Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
 		Components components = openAPI.getComponents();
 
 		JavadocProvider javadocProvider = operationService.getJavadocProvider();
@@ -264,19 +259,16 @@ public abstract class AbstractRequestService {
 		for (MethodParameter methodParameter : parameters) {
 			// check if query param
 			Parameter parameter;
-			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
-					AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()),
-					io.swagger.v3.oas.annotations.Parameter.class);
+			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()), io.swagger.v3.oas.annotations.Parameter.class);
 
 			final String pName = methodParameter.getParameterName();
-			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder);
+			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder, parameterDoc);
 
 			if (parameterDoc == null)
-				parameterDoc = parametersDocMap.get(parameterInfo.getpName());
+				parameterDoc = parametersDocMap.get(parameterInfo.getParameterId());
 
 			if (parameterDoc == null) {
-				io.swagger.v3.oas.annotations.media.Schema schema = AnnotatedElementUtils.findMergedAnnotation(
-						AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()), io.swagger.v3.oas.annotations.media.Schema.class);
+				io.swagger.v3.oas.annotations.media.Schema schema = AnnotatedElementUtils.findMergedAnnotation(AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()), io.swagger.v3.oas.annotations.media.Schema.class);
 				if (schema != null) {
 					parameterDoc = parameterBuilder.generateParameterBySchema(schema);
 				}
@@ -284,16 +276,14 @@ public abstract class AbstractRequestService {
 
 			// use documentation as reference
 			if (parameterDoc != null) {
-				if (parameterDoc.hidden() || parameterDoc.schema().hidden())
-					continue;
+				if (parameterDoc.hidden() || parameterDoc.schema().hidden()) continue;
 
 				parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components, methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
 				parameterInfo.setParameterModel(parameter);
 			}
 
 			if (!isParamToIgnore(methodParameter)) {
-				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation(),
-																openAPI.getOpenapi());
+				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation(), openAPI.getOpenapi());
 				// Merge with the operation parameters
 				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
 				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
@@ -304,14 +294,12 @@ public abstract class AbstractRequestService {
 						if (!StringUtils.isBlank(paramJavadocDescription)) {
 							parameter.setDescription(paramJavadocDescription);
 						}
-					}
-					applyBeanValidatorAnnotations(parameter, parameterAnnotations);
+					} applyBeanValidatorAnnotations(parameter, parameterAnnotations);
 				}
 				else if (!RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openAPI.getOpenapi())) {
 					if (operation.getRequestBody() != null)
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
-					requestBodyService.calculateRequestBodyInfo(components, methodAttributes,
-							parameterInfo, requestBodyInfo);
+					requestBodyService.calculateRequestBodyInfo(components, methodAttributes, parameterInfo, requestBodyInfo);
 					// Add requestBody javadoc
 					if (StringUtils.isBlank(requestBodyInfo.getRequestBody().getDescription()) && javadocProvider != null) {
 						String paramJavadocDescription = getParamJavadoc(javadocProvider, methodParameter, pName);
@@ -320,23 +308,19 @@ public abstract class AbstractRequestService {
 						}
 					}
 					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
-				}
-				customiseParameter(parameter, parameterInfo, operationParameters);
+				} customiseParameter(parameter, parameterInfo, operationParameters);
 			}
 		}
 
 		LinkedHashMap<ParameterId, Parameter> map = getParameterLinkedHashMap(components, methodAttributes, operationParameters, parametersDocMap);
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
 		// support form-data
-		if (defaultSupportFormData && requestBody != null
-				&& requestBody.getContent() != null
-				&& requestBody.getContent().containsKey(org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)) {
+		if (defaultSupportFormData && requestBody != null && requestBody.getContent() != null && requestBody.getContent().containsKey(org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)) {
 			Iterator<Entry<ParameterId, Parameter>> it = map.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<ParameterId, Parameter> entry = it.next();
 				Parameter parameter = entry.getValue();
-				if (!ParameterIn.PATH.toString().equals(parameter.getIn()) && !ParameterIn.HEADER.toString().equals(parameter.getIn() )
-						&& !ParameterIn.COOKIE.toString().equals(parameter.getIn())) {
+				if (!ParameterIn.PATH.toString().equals(parameter.getIn()) && !ParameterIn.HEADER.toString().equals(parameter.getIn()) && !ParameterIn.COOKIE.toString().equals(parameter.getIn())) {
 					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema<>();
 					itemSchema.setName(entry.getKey().getpName());
 					itemSchema.setDescription(parameter.getDescription());
@@ -347,8 +331,7 @@ public abstract class AbstractRequestService {
 					it.remove();
 				}
 			}
-		}
-		setParams(operation, new ArrayList<>(map.values()), requestBodyInfo);
+		} setParams(operation, new ArrayList<>(map.values()), requestBodyInfo);
 		return operation;
 	}
 
@@ -361,33 +344,40 @@ public abstract class AbstractRequestService {
 	 * @param parametersDocMap the parameters doc map
 	 * @return the parameter linked hash map
 	 */
-	private LinkedHashMap<ParameterId, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<String, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
-		LinkedHashMap<ParameterId, Parameter> map = operationParameters.stream()
-				.collect(Collectors.toMap(
-						ParameterId::new,
-						parameter ->  parameter,
-						(u, v) -> {
-							throw new IllegalStateException(String.format("Duplicate key %s", u));
-						},
-						LinkedHashMap::new
-				));
+	private LinkedHashMap<ParameterId, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
+		LinkedHashMap<ParameterId, Parameter> map = operationParameters.stream().collect(Collectors.toMap(ParameterId::new, parameter -> parameter, (u, v) -> {
+			throw new IllegalStateException(String.format("Duplicate key %s", u));
+		}, LinkedHashMap::new));
 
-		for (Map.Entry<String, io.swagger.v3.oas.annotations.Parameter> entry : parametersDocMap.entrySet()) {
-			ParameterId parameterId = new ParameterId(entry.getValue());
-			if (entry.getKey() != null && !map.containsKey(parameterId) && !entry.getValue().hidden()) {
-				//Convert
-				Parameter parameter = parameterBuilder.buildParameterFromDoc(entry.getValue(), components,
-						methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
-				map.put(parameterId, parameter);
+		for (Map.Entry<ParameterId, io.swagger.v3.oas.annotations.Parameter> entry : parametersDocMap.entrySet()) {
+			ParameterId parameterId = entry.getKey();
+			if (parameterId != null && !map.containsKey(parameterId) && !entry.getValue().hidden()) {
+				Parameter parameter = parameterBuilder.buildParameterFromDoc(entry.getValue(), components, methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
+				//proceed with the merge if possible
+				if (map.containsKey(parameterId)) {
+					GenericParameterService.mergeParameter(map.get(parameterId), parameter);
+					map.put(parameterId, parameter);
+				}
+				else {
+					long mumParamsWithName = map.keySet().stream().filter(parameterId1 -> parameterId.getpName().equals(parameterId1.getpName())).count();
+					long mumParamsDocWithName = parametersDocMap.keySet().stream().filter(parameterId1 -> parameterId.getpName().equals(parameterId1.getpName())).count();
+					if (mumParamsWithName == 1 && mumParamsDocWithName == 1) {
+						Optional<ParameterId> parameterIdWithSameNameOptional = map.keySet().stream().filter(parameterId1 -> parameterId.getpName().equals(parameterId1.getpName())).findAny();
+						parameterIdWithSameNameOptional.ifPresent(parameterIdWithSameName -> {
+							GenericParameterService.mergeParameter(map.get(parameterIdWithSameName), parameter);
+							map.put(parameterIdWithSameName, parameter);
+						});
+					}
+					else
+						map.put(parameterId, parameter);
+				}
 			}
 		}
 
-		getHeaders(methodAttributes, map);
-		map.forEach((parameterId, parameter) -> {
-			if(StringUtils.isBlank(parameter.getIn()) && StringUtils.isBlank(parameter.get$ref()))
+		getHeaders(methodAttributes, map); map.forEach((parameterId, parameter) -> {
+			if (StringUtils.isBlank(parameter.getIn()) && StringUtils.isBlank(parameter.get$ref()))
 				parameter.setIn(ParameterIn.QUERY.toString());
-		});
-		return map;
+		}); return map;
 	}
 
 	/**
@@ -406,17 +396,14 @@ public abstract class AbstractRequestService {
 			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(schema);
 			ParameterId parameterId = new ParameterId(parameter);
 			if (map.containsKey(parameterId)) {
-				parameter = map.get(parameterId);
-				List existingEnum = null;
+				parameter = map.get(parameterId); List existingEnum = null;
 				if (parameter.getSchema() != null && !CollectionUtils.isEmpty(parameter.getSchema().getEnum()))
 					existingEnum = parameter.getSchema().getEnum();
 				if (StringUtils.isNotEmpty(entry.getValue()) && (existingEnum == null || !existingEnum.contains(entry.getValue())))
 					parameter.getSchema().addEnumItemObject(entry.getValue());
 				parameter.setSchema(parameter.getSchema());
-			}
-			map.put(parameterId, parameter);
-		}
-		return map.values();
+			} map.put(parameterId, parameter);
+		} return map.values();
 	}
 
 	/**
@@ -432,8 +419,7 @@ public abstract class AbstractRequestService {
 			int index = operationParameters.indexOf(parameter);
 			for (ParameterCustomizer parameterCustomizer : parameterCustomizerList)
 				parameter = parameterCustomizer.customize(parameter, parameterInfo.getMethodParameter());
-			if (index != -1)
-				operationParameters.set(index, parameter);
+			if (index != -1) operationParameters.set(index, parameter);
 		}
 	}
 
@@ -444,10 +430,8 @@ public abstract class AbstractRequestService {
 	 * @return the boolean
 	 */
 	public boolean isParamToIgnore(MethodParameter parameter) {
-		if (SpringDocAnnotationsUtils.isAnnotationToIgnore(parameter))
-			return true;
-		if (isRequiredAnnotation(parameter))
-			return false;
+		if (SpringDocAnnotationsUtils.isAnnotationToIgnore(parameter)) return true;
+		if (isRequiredAnnotation(parameter)) return false;
 		return isRequestTypeToIgnore(parameter.getParameterType());
 	}
 
@@ -461,9 +445,7 @@ public abstract class AbstractRequestService {
 		RequestParam requestParam = parameter.getParameterAnnotation(RequestParam.class);
 		PathVariable pathVariable = parameter.getParameterAnnotation(PathVariable.class);
 		org.springframework.web.bind.annotation.RequestBody requestBody = parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class);
-		return (requestParam != null && requestParam.required())
-				|| (pathVariable != null && pathVariable.required())
-				|| (requestBody != null && requestBody.required());
+		return (requestParam != null && requestParam.required()) || (pathVariable != null && pathVariable.required()) || (requestBody != null && requestBody.required());
 	}
 
 	/**
@@ -500,14 +482,12 @@ public abstract class AbstractRequestService {
 	 * @param openApiVersion the open api version
 	 * @return the parameter
 	 */
-	public Parameter buildParams(ParameterInfo parameterInfo, Components components,
-			RequestMethod requestMethod, JsonView jsonView, String openApiVersion) {
+	public Parameter buildParams(ParameterInfo parameterInfo, Components components, RequestMethod requestMethod, JsonView jsonView, String openApiVersion) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		if (parameterInfo.getParamType() != null) {
 			if (!ValueConstants.DEFAULT_NONE.equals(parameterInfo.getDefaultValue()))
 				parameterInfo.setRequired(false);
-			else
-				parameterInfo.setDefaultValue(null);
+			else parameterInfo.setDefaultValue(null);
 			return this.buildParam(parameterInfo, components, jsonView);
 		}
 		// By default
@@ -516,8 +496,7 @@ public abstract class AbstractRequestService {
 			//parameterInfo.setParamType(QUERY_PARAM);
 			parameterInfo.setDefaultValue(null);
 			return this.buildParam(parameterInfo, components, jsonView);
-		}
-		return null;
+		} return null;
 	}
 
 	/**
@@ -533,12 +512,10 @@ public abstract class AbstractRequestService {
 		String name = parameterInfo.getpName();
 
 		if (parameter == null) {
-			parameter = new Parameter();
-			parameterInfo.setParameterModel(parameter);
+			parameter = new Parameter(); parameterInfo.setParameterModel(parameter);
 		}
 
-		if (StringUtils.isBlank(parameter.getName()))
-			parameter.setName(name);
+		if (StringUtils.isBlank(parameter.getName())) parameter.setName(name);
 
 		if (StringUtils.isBlank(parameter.getIn()))
 			parameter.setIn(parameterInfo.getParamType());
@@ -550,8 +527,7 @@ public abstract class AbstractRequestService {
 			parameter.setDeprecated(true);
 
 		if (parameter.getSchema() == null && parameter.getContent() == null) {
-			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, null,
-					jsonView);
+			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, null, jsonView);
 			if (parameterInfo.getDefaultValue() != null && schema != null) {
 				Object defaultValue = parameterInfo.getDefaultValue();
 				// Cast default value
@@ -560,12 +536,9 @@ public abstract class AbstractRequestService {
 					Schema<?> primitiveSchema = primitiveType.createProperty();
 					primitiveSchema.setDefault(parameterInfo.getDefaultValue());
 					defaultValue = primitiveSchema.getDefault();
-				}
-				schema.setDefault(defaultValue);
-			}
-			parameter.setSchema(schema);
-		}
-		return parameter;
+				} schema.setDefault(defaultValue);
+			} parameter.setSchema(schema);
+		} return parameter;
 	}
 
 	/**
@@ -575,14 +548,11 @@ public abstract class AbstractRequestService {
 	 * @param annotations the annotations
 	 */
 	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
-		Map<String, Annotation> annos = new HashMap<>();
-		if (annotations != null)
+		Map<String, Annotation> annos = new HashMap<>(); if (annotations != null)
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
 		boolean annotationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
-		if (annotationExists)
-			parameter.setRequired(true);
-		Schema<?> schema = parameter.getSchema();
-		applyValidationsToSchema(annos, schema);
+		if (annotationExists) parameter.setRequired(true);
+		Schema<?> schema = parameter.getSchema(); applyValidationsToSchema(annos, schema);
 	}
 
 	/**
@@ -594,18 +564,14 @@ public abstract class AbstractRequestService {
 	 */
 	public void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
 		Map<String, Annotation> annos = new HashMap<>();
-		boolean requestBodyRequired = false;
-		if (!CollectionUtils.isEmpty(annotations)) {
+		boolean requestBodyRequired = false; if (!CollectionUtils.isEmpty(annotations)) {
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
-			requestBodyRequired = annotations.stream()
-					.filter(annotation -> org.springframework.web.bind.annotation.RequestBody.class.equals(annotation.annotationType()))
-					.anyMatch(annotation -> ((org.springframework.web.bind.annotation.RequestBody) annotation).required());
+			requestBodyRequired = annotations.stream().filter(annotation -> org.springframework.web.bind.annotation.RequestBody.class.equals(annotation.annotationType())).anyMatch(annotation -> ((org.springframework.web.bind.annotation.RequestBody) annotation).required());
 		}
 		boolean validationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
 
 		if (validationExists || (!isOptional && requestBodyRequired))
-			requestBody.setRequired(true);
-		Content content = requestBody.getContent();
+			requestBody.setRequired(true); Content content = requestBody.getContent();
 		for (MediaType mediaType : content.values()) {
 			Schema<?> schema = mediaType.getSchema();
 			applyValidationsToSchema(annos, schema);
@@ -622,12 +588,10 @@ public abstract class AbstractRequestService {
 		if (annos.containsKey(Size.class.getSimpleName())) {
 			Size size = (Size) annos.get(Size.class.getSimpleName());
 			if (OPENAPI_ARRAY_TYPE.equals(schema.getType())) {
-				schema.setMinItems(size.min());
-				schema.setMaxItems(size.max());
+				schema.setMinItems(size.min()); schema.setMaxItems(size.max());
 			}
 			else if (OPENAPI_STRING_TYPE.equals(schema.getType())) {
-				schema.setMinLength(size.min());
-				schema.setMaxLength(size.max());
+				schema.setMinLength(size.min()); schema.setMaxLength(size.max());
 			}
 		}
 	}
@@ -647,34 +611,22 @@ public abstract class AbstractRequestService {
 	 * @param method the method
 	 * @return the api parameters
 	 */
-	private Map<String, io.swagger.v3.oas.annotations.Parameter> getApiParameters(Method method) {
+	private Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> getApiParameters(Method method) {
 		Class<?> declaringClass = method.getDeclaringClass();
 
-		Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDoc = AnnotatedElementUtils
-				.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameters.class);
-		LinkedHashMap<String, io.swagger.v3.oas.annotations.Parameter> apiParametersMap = apiParametersDoc.stream()
-				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x, (e1, e2) -> e2,
-						LinkedHashMap::new));
+		Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDoc = AnnotatedElementUtils.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameters.class);
+		LinkedHashMap<ParameterId, io.swagger.v3.oas.annotations.Parameter> apiParametersMap = apiParametersDoc.stream().flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(ParameterId::new, x -> x, (e1, e2) -> e2, LinkedHashMap::new));
 
-		Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDocDeclaringClass = AnnotatedElementUtils
-				.findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameters.class);
-		LinkedHashMap<String, io.swagger.v3.oas.annotations.Parameter> apiParametersDocDeclaringClassMap = apiParametersDocDeclaringClass.stream()
-				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x, (e1, e2) -> e2,
-						LinkedHashMap::new));
+		Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDocDeclaringClass = AnnotatedElementUtils.findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameters.class);
+		LinkedHashMap<ParameterId, io.swagger.v3.oas.annotations.Parameter> apiParametersDocDeclaringClassMap = apiParametersDocDeclaringClass.stream().flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(ParameterId::new, x -> x, (e1, e2) -> e2, LinkedHashMap::new));
 		apiParametersMap.putAll(apiParametersDocDeclaringClassMap);
 
-		Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDoc = AnnotatedElementUtils
-				.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameter.class);
-		LinkedHashMap<String, io.swagger.v3.oas.annotations.Parameter> apiParameterDocMap = apiParameterDoc.stream()
-				.collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x, (e1, e2) -> e2,
-						LinkedHashMap::new));
+		Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDoc = AnnotatedElementUtils.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameter.class);
+		LinkedHashMap<ParameterId, io.swagger.v3.oas.annotations.Parameter> apiParameterDocMap = apiParameterDoc.stream().collect(Collectors.toMap(ParameterId::new, x -> x, (e1, e2) -> e2, LinkedHashMap::new));
 		apiParametersMap.putAll(apiParameterDocMap);
 
-		Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClass = AnnotatedElementUtils
-				.findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameter.class);
-		LinkedHashMap<String, io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClassMap = apiParameterDocDeclaringClass.stream()
-				.collect(Collectors.toMap(io.swagger.v3.oas.annotations.Parameter::name, x -> x, (e1, e2) -> e2,
-						LinkedHashMap::new));
+		Set<io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClass = AnnotatedElementUtils.findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameter.class);
+		LinkedHashMap<ParameterId, io.swagger.v3.oas.annotations.Parameter> apiParameterDocDeclaringClassMap = apiParameterDocDeclaringClass.stream().collect(Collectors.toMap(ParameterId::new, x -> x, (e1, e2) -> e2, LinkedHashMap::new));
 		apiParametersMap.putAll(apiParameterDocDeclaringClassMap);
 
 		return apiParametersMap;
@@ -690,30 +642,22 @@ public abstract class AbstractRequestService {
 		if (annos.containsKey(Min.class.getSimpleName())) {
 			Min min = (Min) annos.get(Min.class.getSimpleName());
 			schema.setMinimum(BigDecimal.valueOf(min.value()));
-		}
-		if (annos.containsKey(Max.class.getSimpleName())) {
+		} if (annos.containsKey(Max.class.getSimpleName())) {
 			Max max = (Max) annos.get(Max.class.getSimpleName());
 			schema.setMaximum(BigDecimal.valueOf(max.value()));
-		}
-		calculateSize(annos, schema);
+		} calculateSize(annos, schema);
 		if (annos.containsKey(DecimalMin.class.getSimpleName())) {
 			DecimalMin min = (DecimalMin) annos.get(DecimalMin.class.getSimpleName());
 			if (min.inclusive())
 				schema.setMinimum(BigDecimal.valueOf(Double.parseDouble(min.value())));
-			else
-				schema.setExclusiveMinimum(true);
-		}
-		if (annos.containsKey(DecimalMax.class.getSimpleName())) {
+			else schema.setExclusiveMinimum(true);
+		} if (annos.containsKey(DecimalMax.class.getSimpleName())) {
 			DecimalMax max = (DecimalMax) annos.get(DecimalMax.class.getSimpleName());
 			if (max.inclusive())
 				schema.setMaximum(BigDecimal.valueOf(Double.parseDouble(max.value())));
-			else
-				schema.setExclusiveMaximum(true);
-		}
-		if (annos.containsKey(POSITIVE_OR_ZERO))
-			schema.setMinimum(BigDecimal.ZERO);
-		if (annos.containsKey(NEGATIVE_OR_ZERO))
-			schema.setMaximum(BigDecimal.ZERO);
+			else schema.setExclusiveMaximum(true);
+		} if (annos.containsKey(POSITIVE_OR_ZERO)) schema.setMinimum(BigDecimal.ZERO);
+		if (annos.containsKey(NEGATIVE_OR_ZERO)) schema.setMaximum(BigDecimal.ZERO);
 		if (annos.containsKey(Pattern.class.getSimpleName())) {
 			Pattern pattern = (Pattern) annos.get(Pattern.class.getSimpleName());
 			schema.setPattern(pattern.regexp());
@@ -733,13 +677,7 @@ public abstract class AbstractRequestService {
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
 		Boolean isBodyAllowed = !RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openApiVersion);
 
-		return (isBodyAllowed && (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getIn() == null) && !delegatingMethodParameter.isParameterObject())
-				&&
-				((methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
-						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
-						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class) != null
-						|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null)
-						|| (!ClassUtils.isPrimitiveOrWrapper(methodParameter.getParameterType()) && (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()))));
+		return (isBodyAllowed && (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getIn() == null) && !delegatingMethodParameter.isParameterObject()) && ((methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null || methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null || methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class) != null || AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null) || (!ClassUtils.isPrimitiveOrWrapper(methodParameter.getParameterType()) && (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()))));
 	}
 
 	/**
@@ -754,11 +692,9 @@ public abstract class AbstractRequestService {
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
 		final String paramJavadocDescription;
 		if (delegatingMethodParameter.isParameterObject()) {
-			String fieldName;
-			if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
+			String fieldName; if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
 				fieldName = StringUtils.substringAfterLast(pName, DOT);
-			else
-				fieldName = pName;
+			else fieldName = pName;
 			Field field = FieldUtils.getDeclaredField(((DelegatingMethodParameter) methodParameter).getExecutable().getDeclaringClass(), fieldName, true);
 			paramJavadocDescription = javadocProvider.getFieldJavadoc(field);
 		}
