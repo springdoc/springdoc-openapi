@@ -26,13 +26,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -42,7 +43,7 @@ import static org.springdoc.core.utils.Constants.ALL_PATTERN;
 @Configuration
 @EnableWebSecurity
 @Order(200)
-public class WebSecurity extends WebSecurityConfigurerAdapter {
+public class WebSecurity  {
 
 
 	public static final String TokenPrefix = "Bearer ";
@@ -71,33 +72,33 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	}
 
 
-	@Override
-	protected void configure(HttpSecurity http)
-			throws Exception {
+	@Bean
+	public SecurityFilterChain securityWebFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
 		String apiDocsPath = configProperties.getApiDocs().getPath();
 		http.cors()
 				.and()
 				.csrf()
 				.disable()
 				.authorizeRequests()
-				.antMatchers(apiDocsPath + ALL_PATTERN)
+				.requestMatchers(apiDocsPath + ALL_PATTERN)
 				.permitAll()
-				.antMatchers(apiDocsPath.substring(0, apiDocsPath.lastIndexOf("/") + 1) + "api-docs.yaml")
+				.requestMatchers(apiDocsPath.substring(0, apiDocsPath.lastIndexOf("/") + 1) + "api-docs.yaml")
 				.permitAll()
 				.anyRequest()
 				.authenticated()
 				.and()
 				.exceptionHandling()
 				.and()
-				.addFilter(new JWTAuthenticationFilter(authenticationManager(), lifetime, key))
-				.addFilter(new JWTAuthorizationFilter(authenticationManager(), key))
+				.addFilter(new JWTAuthenticationFilter(authenticationManager, lifetime, key))
+				.addFilter(new JWTAuthorizationFilter(authenticationManager, key))
 				// this disables session creation on Spring Security
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		return http.build();
 	}
 
 
-	@Override
+	@Autowired
 	public void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());

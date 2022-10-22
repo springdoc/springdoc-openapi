@@ -169,7 +169,10 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 				.registerType(java.lang.Module.class,
 						hint -> hint.withMembers(MemberCategory.DECLARED_FIELDS,
 								MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-								MemberCategory.INVOKE_DECLARED_METHODS));
+								MemberCategory.INVOKE_DECLARED_METHODS))
+				.registerType(java.lang.ModuleLayer.class, MemberCategory.INVOKE_DECLARED_METHODS)
+				.registerType(java.lang.module.Configuration.class, MemberCategory.INVOKE_DECLARED_METHODS)
+				.registerType(java.lang.module.ResolvedModule.class, MemberCategory.INVOKE_DECLARED_METHODS);
 		//swagger-models
 		Arrays.stream(swaggerModels).forEach(aClass ->
 				hints.reflection().registerType(aClass,

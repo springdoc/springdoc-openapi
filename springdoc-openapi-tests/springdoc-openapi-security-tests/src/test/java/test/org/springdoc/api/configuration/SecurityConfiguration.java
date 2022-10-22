@@ -21,20 +21,19 @@ package test.org.springdoc.api.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.authorizeRequests().antMatchers("/").permitAll();
-	}
-
+class SecurityConfiguration  {
 	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.authorizeRequests((requests) -> requests.requestMatchers("/").permitAll());
+		return http.build();
 	}
-
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+		return authConfig.getAuthenticationManager();
+	}
 }
