@@ -174,9 +174,8 @@ class MethodParameterPojoExtractor {
 		try {
 			Parameter parameter = field.getAnnotation(Parameter.class);
 			boolean isNotRequired = parameter == null || !parameter.required();
-			Annotation[] finalFieldAnnotations = fieldAnnotations;
 
-			if ("java.lang.Record".equals(paramClass.getSuperclass().getName())) {
+			if (paramClass.getSuperclass() != null && "java.lang.Record".equals(paramClass.getSuperclass().getName())) {
 				Method classGetRecordComponents = Class.class.getMethod("getRecordComponents");
 				Object[] components = (Object[]) classGetRecordComponents.invoke(paramClass);
 
@@ -191,7 +190,7 @@ class MethodParameterPojoExtractor {
 						.filter(method -> method.getName().equals(field.getName()))
 						.map(method -> new MethodParameter(method, -1))
 						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, true, isNotRequired));
 
 			}
 			else
@@ -201,7 +200,7 @@ class MethodParameterPojoExtractor {
 						.filter(Objects::nonNull)
 						.map(method -> new MethodParameter(method, -1))
 						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, true, isNotRequired));
 		}
 		catch (IntrospectionException | NoSuchMethodException |
 			   InvocationTargetException | IllegalAccessException |
