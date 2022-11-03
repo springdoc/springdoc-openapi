@@ -38,6 +38,7 @@ import org.springdoc.api.mixins.SortedSchemaMixin;
 import org.springdoc.api.mixins.SortedSchemaMixin31;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /**
  * The type Spring doc object mapper provider.
@@ -58,8 +59,9 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 	 * Instantiates a new Spring doc object mapper.
 	 *
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param objectMapperBuilder the object mapper builder
 	 */
-	public ObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
+	public ObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties, Jackson2ObjectMapperBuilder objectMapperBuilder) {
 		OpenApiVersion openApiVersion = springDocConfigProperties.getApiDocs().getVersion();
 		if (openApiVersion == OpenApiVersion.OPENAPI_3_1) {
 			jsonMapper = Json31.mapper();
@@ -69,6 +71,7 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 			jsonMapper = Json.mapper();
 			yamlMapper = Yaml.mapper();
 		}
+		objectMapperBuilder.configure(jsonMapper);
 	}
 
 	/**

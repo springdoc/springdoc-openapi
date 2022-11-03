@@ -99,6 +99,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -608,13 +609,14 @@ public class SpringDocConfiguration {
 	 * Object mapper provider object mapper provider.
 	 *
 	 * @param springDocConfigProperties the spring doc config properties
+	 * @param objectMapperBuilder the object mapper builder
 	 * @return the object mapper provider
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	ObjectMapperProvider springDocObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties){
-		return new ObjectMapperProvider(springDocConfigProperties);
+	ObjectMapperProvider springDocObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties, Jackson2ObjectMapperBuilder objectMapperBuilder) {
+		return new ObjectMapperProvider(springDocConfigProperties, objectMapperBuilder);
 	}
 
 	/**
