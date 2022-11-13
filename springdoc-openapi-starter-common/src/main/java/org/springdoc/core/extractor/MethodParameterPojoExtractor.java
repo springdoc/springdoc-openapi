@@ -180,14 +180,13 @@ public class MethodParameterPojoExtractor {
 		try {
 			Parameter parameter = field.getAnnotation(Parameter.class);
 			boolean isNotRequired = parameter == null || !parameter.required();
-			Annotation[] finalFieldAnnotations = fieldAnnotations;
-			if (paramClass.isRecord()) {
+			if (paramClass.getSuperclass() != null && paramClass.isRecord()) {
 				return Stream.of(paramClass.getRecordComponents())
 						.filter(d -> d.getName().equals(field.getName()))
 						.map(RecordComponent::getAccessor)
 						.map(method -> new MethodParameter(method, -1))
 						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, true, isNotRequired));
 
 			}
 			else
@@ -197,7 +196,7 @@ public class MethodParameterPojoExtractor {
 						.filter(Objects::nonNull)
 						.map(method -> new MethodParameter(method, -1))
 						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, true, isNotRequired));
 		}
 		catch (IntrospectionException e) {
 			return Stream.of();
