@@ -37,6 +37,7 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 		MvcResult mvcResult = mockMvc.perform(get(uri)).andExpect(status().isOk()).andReturn();
 		String transformedIndex = mvcResult.getResponse().getContentAsString();
 		assertTrue(transformedIndex.contains("window.ui"));
+		assertEquals("no-store", mvcResult.getResponse().getHeader("Cache-Control"));
 		assertEquals(this.getContent(fileName), transformedIndex.replace("\r", ""));
 	}
 
