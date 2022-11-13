@@ -70,7 +70,7 @@
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 		<swagger-api.version>2.2.4</swagger-api.version>
 		<swagger-ui.version>4.15.0</swagger-ui.version>
-		<spring-security-oauth2.version>2.3.8.RELEASE</spring-security-oauth2.version>
+		<spring-security-oauth2.version>2.5.2.RELEASE</spring-security-oauth2.version>
 		<classgraph.version>4.8.149</classgraph.version>
 		<webjars-locator-core.version>0.52</webjars-locator-core.version>
 		<gmavenplus-plugin.version>1.8.1</gmavenplus-plugin.version>
