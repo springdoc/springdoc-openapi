@@ -287,6 +287,11 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 						}
 
 						@Override
+						public RequiredMode requiredMode() {
+							return parameter.schema().requiredMode();
+						}
+
+						@Override
 						public String description() {
 							return parameter.schema().description();
 						}
@@ -505,6 +510,11 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 								@Override
 								public boolean required() {
 									return schema.required();
+								}
+
+								@Override
+								public RequiredMode requiredMode() {
+									return schema.requiredMode();
 								}
 
 								@Override
