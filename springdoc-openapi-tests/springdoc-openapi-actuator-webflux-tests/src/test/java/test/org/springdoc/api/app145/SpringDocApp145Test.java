@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 				"springdoc.use-management-port=true",
 				"springdoc.group-configs[0].group=users",
 				"springdoc.group-configs[0].packages-to-scan=test.org.springdoc.api.app145",
-				"management.server.port=9293",
+				"management.server.port=9300",
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp145Test  extends AbstractSpringDocActuatorTest {
 
