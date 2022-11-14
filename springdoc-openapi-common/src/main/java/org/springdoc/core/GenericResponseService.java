@@ -104,6 +104,11 @@ public class GenericResponseService {
 	private final PropertyResolverUtils propertyResolverUtils;
 
 	/**
+	 * The Controller infos.
+	 */
+	private final List<ControllerAdviceInfo> localExceptionHandlers = new ArrayList<>();
+
+	/**
 	 * The Controller advice infos.
 	 */
 	private final List<ControllerAdviceInfo> controllerAdviceInfos = new ArrayList<>();
@@ -234,7 +239,12 @@ public class GenericResponseService {
 				}
 			}
 			synchronized (this) {
-				controllerAdviceInfos.add(controllerAdviceInfo);
+				if (AnnotatedElementUtils.hasAnnotation(objClz, ControllerAdvice.class)) {
+					controllerAdviceInfos.add(controllerAdviceInfo);
+				}
+				else {
+					localExceptionHandlers.add(controllerAdviceInfo);
+				}
 			}
 		}
 	}
@@ -636,25 +646,22 @@ public class GenericResponseService {
 	 * @return the generic map response
 	 */
 	private synchronized Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
-		List<ControllerAdviceInfo> controllerAdviceInfosInThisBean = controllerAdviceInfos.stream()
-				.filter(controllerAdviceInfo ->
-						new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
-				.filter(controllerAdviceInfo -> beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
+		List<ControllerAdviceInfo> controllerAdviceInfosInThisBean = localExceptionHandlers.stream()
+				.filter(controllerInfo -> beanType.equals(controllerInfo.getControllerAdvice().getClass()))
 				.collect(Collectors.toList());
 
 		Map<String, ApiResponse> genericApiResponseMap = controllerAdviceInfosInThisBean.stream()
-					.map(ControllerAdviceInfo::getApiResponseMap)
+				.map(ControllerAdviceInfo::getApiResponseMap)
 				.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
 
 		List<ControllerAdviceInfo> controllerAdviceInfosNotInThisBean = controllerAdviceInfos.stream()
 				.filter(controllerAdviceInfo ->
 						new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
-				.filter(controllerAdviceInfo -> !beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
 				.collect(Collectors.toList());
 
 		for (ControllerAdviceInfo controllerAdviceInfo : controllerAdviceInfosNotInThisBean) {
 			controllerAdviceInfo.getApiResponseMap().forEach((key, apiResponse) -> {
-				if(!genericApiResponseMap.containsKey(key))
+				if (!genericApiResponseMap.containsKey(key))
 					genericApiResponseMap.put(key, apiResponse);
 			});
 		}
