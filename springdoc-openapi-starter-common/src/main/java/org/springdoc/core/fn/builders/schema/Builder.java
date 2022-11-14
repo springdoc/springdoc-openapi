@@ -32,6 +32,7 @@ import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import io.swagger.v3.oas.annotations.media.Schema.AdditionalPropertiesValue;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -272,6 +273,10 @@ public class Builder {
 	 */
 	private AdditionalPropertiesValue additionalProperties = AdditionalPropertiesValue.USE_ADDITIONAL_PROPERTIES_ANNOTATION;
 
+	/**
+	 * The Required mode.
+	 */
+	private RequiredMode requiredMode = Schema.RequiredMode.AUTO;
 
 	/**
 	 * Instantiates a new Schema builder.
@@ -685,6 +690,17 @@ public class Builder {
 	}
 
 	/**
+	 * Required mode builder.
+	 *
+	 * @param requiredMode the required mode
+	 * @return the builder
+	 */
+	public Builder requiredMode(RequiredMode requiredMode) {
+		this.requiredMode = requiredMode;
+		return this;
+	}
+
+	/**
 	 * Additional properties builder.
 	 *
 	 * @param additionalProperties the additional properties
@@ -800,6 +816,11 @@ public class Builder {
 			@Override
 			public boolean required() {
 				return required;
+			}
+
+			@Override
+			public RequiredMode requiredMode() {
+				return requiredMode;
 			}
 
 			@Override
