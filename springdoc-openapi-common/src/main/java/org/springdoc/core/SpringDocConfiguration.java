@@ -497,13 +497,12 @@ public class SpringDocConfiguration {
 		/**
 		 * Web conversion service provider web conversion service provider.
 		 *
-		 * @param genericConversionServiceList the web conversion service optional
 		 * @return the web conversion service provider
 		 */
 		@Bean
 		@Lazy(false)
-		WebConversionServiceProvider webConversionServiceProvider(Optional<List<GenericConversionService>> genericConversionServiceList) {
-			return new WebConversionServiceProvider(genericConversionServiceList);
+		WebConversionServiceProvider webConversionServiceProvider() {
+			return new WebConversionServiceProvider();
 		}
 	}
 
