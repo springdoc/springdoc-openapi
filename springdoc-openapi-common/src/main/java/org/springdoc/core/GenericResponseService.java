@@ -106,7 +106,7 @@ public class GenericResponseService {
 	/**
 	 * The Controller infos.
 	 */
-	private final List<ControllerAdviceInfo> controllerInfos = new ArrayList<>();
+	private final List<ControllerAdviceInfo> localExceptionHandlers = new ArrayList<>();
 
 	/**
 	 * The Controller advice infos.
@@ -243,7 +243,7 @@ public class GenericResponseService {
 					controllerAdviceInfos.add(controllerAdviceInfo);
 				}
 				else {
-					controllerInfos.add(controllerAdviceInfo);
+					localExceptionHandlers.add(controllerAdviceInfo);
 				}
 			}
 		}
@@ -646,7 +646,7 @@ public class GenericResponseService {
 	 * @return the generic map response
 	 */
 	private synchronized Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
-		List<ControllerAdviceInfo> controllerAdviceInfosInThisBean = controllerInfos.stream()
+		List<ControllerAdviceInfo> controllerAdviceInfosInThisBean = localExceptionHandlers.stream()
 				.filter(controllerInfo -> beanType.equals(controllerInfo.getControllerAdvice().getClass()))
 				.collect(Collectors.toList());
 
