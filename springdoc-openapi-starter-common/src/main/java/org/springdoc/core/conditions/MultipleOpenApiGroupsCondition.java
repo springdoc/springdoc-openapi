@@ -24,6 +24,8 @@
 package org.springdoc.core.conditions;
 
 
+import java.util.Collection;
+
 import org.springdoc.core.models.GroupedOpenApi;
 
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
@@ -59,4 +61,9 @@ public class MultipleOpenApiGroupsCondition extends AnyNestedCondition {
 	@ConditionalOnProperty(name = GROUP_CONFIG_FIRST_PROPERTY)
 	static class OnGroupConfigProperty {}
 
+	/**
+	 * The type On list grouped open api bean.
+	 */
+	@ConditionalOnBean(value = GroupedOpenApi.class, parameterizedContainer = Collection.class)
+	static class OnListGroupedOpenApiBean {}
 }
