@@ -87,7 +87,7 @@ public class SwaggerUiOAuthProperties {
 	/**
 	 * The Use basic authentication with access code grant.
 	 */
-	private String useBasicAuthenticationWithAccessCodeGrant;
+	private Boolean useBasicAuthenticationWithAccessCodeGrant;
 
 	/**
 	 * The Use pkce with authorization code grant.
@@ -233,7 +233,7 @@ public class SwaggerUiOAuthProperties {
 	 *
 	 * @return the use basic authentication with access code grant
 	 */
-	public String getUseBasicAuthenticationWithAccessCodeGrant() {
+	public Boolean getUseBasicAuthenticationWithAccessCodeGrant() {
 		return useBasicAuthenticationWithAccessCodeGrant;
 	}
 
@@ -242,7 +242,7 @@ public class SwaggerUiOAuthProperties {
 	 *
 	 * @param useBasicAuthenticationWithAccessCodeGrant the use basic authentication with access code grant
 	 */
-	public void setUseBasicAuthenticationWithAccessCodeGrant(String useBasicAuthenticationWithAccessCodeGrant) {
+	public void setUseBasicAuthenticationWithAccessCodeGrant(Boolean useBasicAuthenticationWithAccessCodeGrant) {
 		this.useBasicAuthenticationWithAccessCodeGrant = useBasicAuthenticationWithAccessCodeGrant;
 	}
 
