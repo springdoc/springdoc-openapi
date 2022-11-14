@@ -118,6 +118,11 @@ public class GenericResponseService {
 	private final List<ControllerAdviceInfo> controllerAdviceInfos = new ArrayList<>();
 
 	/**
+	 * The Controller infos.
+	 */
+	private final List<ControllerAdviceInfo> localExceptionHandlers = new ArrayList<>();
+
+	/**
 	 * The Response entity exception handler class.
 	 */
 	private static Class<?> responseEntityExceptionHandlerClass;
@@ -243,7 +248,12 @@ public class GenericResponseService {
 				}
 			}
 			synchronized (this) {
-				controllerAdviceInfos.add(controllerAdviceInfo);
+				if (AnnotatedElementUtils.hasAnnotation(objClz, ControllerAdvice.class)) {
+					controllerAdviceInfos.add(controllerAdviceInfo);
+				}
+				else {
+					localExceptionHandlers.add(controllerAdviceInfo);
+				}
 			}
 		}
 	}
@@ -643,11 +653,9 @@ public class GenericResponseService {
 	 * @return the generic map response
 	 */
 	private synchronized Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
-		List<ControllerAdviceInfo> controllerAdviceInfosInThisBean = controllerAdviceInfos.stream()
-				.filter(controllerAdviceInfo ->
-						new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
-				.filter(controllerAdviceInfo -> beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
-				.toList();
+		List<ControllerAdviceInfo> controllerAdviceInfosInThisBean = localExceptionHandlers.stream()
+				.filter(controllerInfo -> beanType.equals(controllerInfo.getControllerAdvice().getClass()))
+				.collect(Collectors.toList());
 
 		Map<String, ApiResponse> genericApiResponseMap = controllerAdviceInfosInThisBean.stream()
 				.map(ControllerAdviceInfo::getApiResponseMap)
