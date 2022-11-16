@@ -26,6 +26,7 @@ package org.springdoc.core.service;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
@@ -36,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -55,13 +57,16 @@ import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
+import org.springdoc.core.extractor.DelegatingMethodParameter;
 import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.models.ParameterInfo;
 import org.springdoc.core.models.RequestBodyInfo;
 import org.springdoc.core.parsers.ReturnTypeParser;
+import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.WebConversionServiceProvider;
 import org.springdoc.core.utils.Constants;
@@ -73,10 +78,13 @@ import org.springframework.beans.factory.config.BeanExpressionResolver;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.web.context.request.RequestScope;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
+
+import static org.springdoc.core.utils.Constants.DOT;
 
 /**
  * The type Generic parameter builder.
@@ -132,20 +140,27 @@ public class GenericParameterService {
 	private final ObjectMapperProvider objectMapperProvider;
 
 	/**
+	 * The javadoc provider.
+	 */
+	private final Optional<JavadocProvider> javadocProviderOptional;
+
+	/**
 	 * Instantiates a new Generic parameter builder.
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
 	 * @param objectMapperProvider the object mapper provider
+	 * @param javadocProviderOptional the javadoc provider
 	 */
 	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
-			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider,  ObjectMapperProvider objectMapperProvider) {
+			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider,  ObjectMapperProvider objectMapperProvider,  Optional<JavadocProvider> javadocProviderOptional) {
 		this.propertyResolverUtils = propertyResolverUtils;
 		this.optionalDelegatingMethodParameterCustomizer = optionalDelegatingMethodParameterCustomizer;
 		this.optionalWebConversionServiceProvider = optionalWebConversionServiceProvider;
 		this.configurableBeanFactory = propertyResolverUtils.getFactory();
 		this.expressionContext = (configurableBeanFactory != null ? new BeanExpressionContext(configurableBeanFactory, new RequestScope()) : null);
 		this.objectMapperProvider = objectMapperProvider;
+		this.javadocProviderOptional = javadocProviderOptional;
 	}
 
 	/**
@@ -359,6 +374,16 @@ public class GenericParameterService {
 
 		if (requestBodyInfo != null) {
 			schemaN = calculateRequestBodySchema(components, parameterInfo, requestBodyInfo, schemaN, paramName);
+			JavadocProvider javadocProvider = javadocProviderOptional.orElse(null);
+			if (schemaN != null && javadocProvider != null && !isRequestBodyPresent(parameterInfo)) {
+				String paramJavadocDescription = getParamJavadoc(javadocProvider, methodParameter);
+				if (schemaN.getProperties() != null && schemaN.getProperties().containsKey(parameterInfo.getpName())) {
+					Map<String, Schema> properties = schemaN.getProperties();
+					if (!StringUtils.isBlank(paramJavadocDescription) && StringUtils.isBlank(properties.get(parameterInfo.getpName()).getDescription())) {
+						properties.get(parameterInfo.getpName()).setDescription(paramJavadocDescription);
+					}
+				}
+			}
 		}
 
 		return schemaN;
@@ -665,5 +690,49 @@ public class GenericParameterService {
 				return schema.ref();
 			}
 		};
+	}
+
+	/**
+	 * Gets javadoc provider.
+	 *
+	 * @return the javadoc provider
+	 */
+	public JavadocProvider getJavadocProvider() {
+		return javadocProviderOptional.orElse(null);
+	}
+
+	/**
+	 * Is request body present boolean.
+	 *
+	 * @param parameterInfo the parameter info
+	 * @return the boolean
+	 */
+	public boolean isRequestBodyPresent(ParameterInfo parameterInfo) {
+		return parameterInfo.getMethodParameter().getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
+				|| parameterInfo.getMethodParameter().getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
+				|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(parameterInfo.getMethodParameter().getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null;
+	}
+
+	/**
+	 * Gets param javadoc.
+	 *
+	 * @param javadocProvider the javadoc provider
+	 * @param methodParameter the method parameter
+	 * @return the param javadoc
+	 */
+	String getParamJavadoc(JavadocProvider javadocProvider, MethodParameter methodParameter) {
+		String pName = methodParameter.getParameterName();
+		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
+		final String paramJavadocDescription;
+		if (delegatingMethodParameter.isParameterObject()) {
+			String fieldName; if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
+				fieldName = StringUtils.substringAfterLast(pName, DOT);
+			else fieldName = pName;
+			Field field = FieldUtils.getDeclaredField(((DelegatingMethodParameter) methodParameter).getExecutable().getDeclaringClass(), fieldName, true);
+			paramJavadocDescription = javadocProvider.getFieldJavadoc(field);
+		}
+		else
+			paramJavadocDescription = javadocProvider.getParamJavadoc(methodParameter.getMethod(), pName);
+		return paramJavadocDescription;
 	}
 }

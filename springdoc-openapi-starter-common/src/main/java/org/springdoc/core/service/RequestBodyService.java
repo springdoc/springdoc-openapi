@@ -287,6 +287,16 @@ public class RequestBodyService {
 					methodAttributes.getJsonViewAnnotationForRequestBody());
 			mergeContent(requestBody, methodAttributes, schema);
 		}
+
+
+		// Add requestBody javadoc
+		if (StringUtils.isBlank(requestBody.getDescription()) && parameterBuilder.getJavadocProvider() != null
+				&& parameterBuilder.isRequestBodyPresent(parameterInfo)) {
+			String paramJavadocDescription = parameterBuilder.getParamJavadoc(parameterBuilder.getJavadocProvider(), parameterInfo.getMethodParameter());
+			if (!StringUtils.isBlank(paramJavadocDescription)) {
+				requestBodyInfo.getRequestBody().setDescription(paramJavadocDescription);
+			}
+		}
 		return requestBody;
 	}
 
