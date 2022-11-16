@@ -93,7 +93,6 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
-import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -267,16 +266,15 @@ public class SpringDocConfiguration {
 	 * @param requestBodyService the request body service
 	 * @param securityParser the security parser
 	 * @param propertyResolverUtils the property resolver utils
-	 * @param javadocProvider the javadoc provider
 	 * @return the operation service
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	OperationService operationBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			SecurityService securityParser, PropertyResolverUtils propertyResolverUtils, Optional<JavadocProvider> javadocProvider) {
+			SecurityService securityParser, PropertyResolverUtils propertyResolverUtils) {
 		return new OperationService(parameterBuilder, requestBodyService,
-				securityParser, propertyResolverUtils, javadocProvider);
+				securityParser, propertyResolverUtils);
 	}
 
 	/**
@@ -337,6 +335,7 @@ public class SpringDocConfiguration {
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
 	 * @param objectMapperProvider the object mapper provider
+	 * @param javadocProvider the javadoc provider
 	 * @return the generic parameter builder
 	 */
 	@Bean
@@ -344,9 +343,9 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils,
 			Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
-			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider) {
+			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider,Optional<JavadocProvider> javadocProvider) {
 		return new GenericParameterService(propertyResolverUtils, optionalDelegatingMethodParameterCustomizer,
-				optionalWebConversionServiceProvider, objectMapperProvider);
+				optionalWebConversionServiceProvider, objectMapperProvider,javadocProvider);
 	}
 
 	/**

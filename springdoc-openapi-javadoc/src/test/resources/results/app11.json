@@ -26,7 +26,6 @@
         "description": "Upload documents response entity.",
         "operationId": "uploadDocuments",
         "requestBody": {
-          "description": "the multipart files",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -37,6 +36,7 @@
                 "properties": {
                   "doc": {
                     "type": "array",
+                    "description": "the multipart files",
                     "items": {
                       "type": "string",
                       "format": "binary"
@@ -70,7 +70,6 @@
         "description": "Post track string.",
         "operationId": "postTrack",
         "requestBody": {
-          "description": "the file",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -81,6 +80,7 @@
                 "properties": {
                   "file": {
                     "type": "string",
+                    "description": "the file",
                     "format": "binary"
                   }
                 }

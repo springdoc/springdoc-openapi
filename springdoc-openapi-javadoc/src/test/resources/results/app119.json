@@ -26,7 +26,6 @@
         "description": "Multi files in multi part string.",
         "operationId": "multiFilesInMultiPart",
         "requestBody": {
-          "description": "the json request",
           "content": {
             "multipart/form-data": {
               "schema": {

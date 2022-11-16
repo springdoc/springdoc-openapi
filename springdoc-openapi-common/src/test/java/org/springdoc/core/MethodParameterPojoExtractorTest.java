@@ -22,17 +22,6 @@
 
 package org.springdoc.core;
 
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledForJreRange;
-import org.junit.jupiter.api.condition.JRE;
-import org.junit.jupiter.api.io.TempDir;
-
-import org.springframework.core.MethodParameter;
-
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -41,6 +30,17 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.stream.Stream;
+
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
+import org.junit.jupiter.api.io.TempDir;
+
+import org.springframework.core.MethodParameter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

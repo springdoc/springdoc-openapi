@@ -485,7 +485,6 @@
           }
         ],
         "requestBody": {
-          "description": "the file",
           "content": {
             "multipart/form-data": {
               "schema": {
