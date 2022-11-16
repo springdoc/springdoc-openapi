@@ -37,7 +37,6 @@
           }
         ],
         "requestBody": {
-          "description": "the configuration",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -49,10 +48,12 @@
                 "properties": {
                   "configuration": {
                     "type": "string",
+                    "description": "the configuration",
                     "format": "binary"
                   },
                   "file": {
                     "type": "string",
+                    "description": "the a file",
                     "format": "binary"
                   }
                 }

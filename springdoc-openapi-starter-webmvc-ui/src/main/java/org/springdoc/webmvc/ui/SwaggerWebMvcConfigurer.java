@@ -51,9 +51,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springdoc.core.utils.Constants.CLASSPATH_RESOURCE_LOCATION;
 import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
+import static org.springdoc.core.utils.Constants.SWAGGER_INITIALIZER_JS;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_PREFIX;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
-import static org.springdoc.core.utils.Constants.SWAGGER_INITIALIZER_JS;
 /**
  * The type Swagger web mvc configurer.
  * @author bnasslahsen

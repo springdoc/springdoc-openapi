@@ -25,7 +25,6 @@
 package org.springdoc.core.service;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -64,7 +63,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
 import org.springdoc.core.models.MethodAttributes;
@@ -95,7 +93,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.containsDeprecatedAnnotation;
-import static org.springdoc.core.utils.Constants.DOT;
 import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
 
@@ -264,7 +261,7 @@ public abstract class AbstractRequestService {
 		Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> parametersDocMap = getApiParameters(handlerMethod.getMethod());
 		Components components = openAPI.getComponents();
 
-		JavadocProvider javadocProvider = operationService.getJavadocProvider();
+		JavadocProvider javadocProvider = parameterBuilder.getJavadocProvider();
 
 		for (MethodParameter methodParameter : parameters) {
 			// check if query param
@@ -304,7 +301,7 @@ public abstract class AbstractRequestService {
 				if (isValidParameter(parameter)) {
 					// Add param javadoc
 					if (StringUtils.isBlank(parameter.getDescription()) && javadocProvider != null) {
-						String paramJavadocDescription = getParamJavadoc(javadocProvider, methodParameter, pName);
+						String paramJavadocDescription = parameterBuilder.getParamJavadoc(javadocProvider, methodParameter);
 						if (!StringUtils.isBlank(paramJavadocDescription)) {
 							parameter.setDescription(paramJavadocDescription);
 						}
@@ -316,13 +313,6 @@ public abstract class AbstractRequestService {
 						requestBodyInfo.setRequestBody(operation.getRequestBody());
 					requestBodyService.calculateRequestBodyInfo(components, methodAttributes,
 							parameterInfo, requestBodyInfo);
-					// Add requestBody javadoc
-					if (StringUtils.isBlank(requestBodyInfo.getRequestBody().getDescription()) && javadocProvider != null) {
-						String paramJavadocDescription = getParamJavadoc(javadocProvider, methodParameter, pName);
-						if (!StringUtils.isBlank(paramJavadocDescription)) {
-							requestBodyInfo.getRequestBody().setDescription(paramJavadocDescription);
-						}
-					}
 					applyBeanValidatorAnnotations(requestBodyInfo.getRequestBody(), parameterAnnotations, methodParameter.isOptional());
 				}
 				customiseParameter(parameter, parameterInfo, operationParameters);
@@ -739,31 +729,6 @@ public abstract class AbstractRequestService {
 						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class) != null
 						|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null)
 						|| (!ClassUtils.isPrimitiveOrWrapper(methodParameter.getParameterType()) && (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()))));
-	}
-
-	/**
-	 * Gets param javadoc.
-	 *
-	 * @param javadocProvider the javadoc provider
-	 * @param methodParameter the method parameter
-	 * @param pName the p name
-	 * @return the param javadoc
-	 */
-	private String getParamJavadoc(JavadocProvider javadocProvider, MethodParameter methodParameter, String pName) {
-		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
-		final String paramJavadocDescription;
-		if (delegatingMethodParameter.isParameterObject()) {
-			String fieldName;
-			if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
-				fieldName = StringUtils.substringAfterLast(pName, DOT);
-			else
-				fieldName = pName;
-			Field field = FieldUtils.getDeclaredField(((DelegatingMethodParameter) methodParameter).getExecutable().getDeclaringClass(), fieldName, true);
-			paramJavadocDescription = javadocProvider.getFieldJavadoc(field);
-		}
-		else
-			paramJavadocDescription = javadocProvider.getParamJavadoc(methodParameter.getMethod(), pName);
-		return paramJavadocDescription;
 	}
 
 	/**

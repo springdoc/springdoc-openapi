@@ -94,7 +94,6 @@
         "description": "Test 3 string.",
         "operationId": "test3",
         "requestBody": {
-          "description": "the test",
           "content": {
             "application/json": {
               "schema": {
