@@ -49,6 +49,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springdoc.core.Constants.CLASSPATH_RESOURCE_LOCATION;
 import static org.springdoc.core.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
+import static org.springdoc.core.Constants.SWAGGER_INITIALIZER_JS;
 import static org.springdoc.core.Constants.SWAGGER_UI_PREFIX;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
@@ -95,6 +96,12 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
 		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
 			uiRootPath.append(actuatorProvider.get().getBasePath());
+
+		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/*" + SWAGGER_INITIALIZER_JS)
+				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
+				.setCachePeriod(0)
+				.resourceChain(false)
+				.addTransformer(swaggerIndexTransformer);
 
 		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/**")
 				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)

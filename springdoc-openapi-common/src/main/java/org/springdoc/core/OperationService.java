@@ -91,26 +91,19 @@ public class OperationService {
 	private final PropertyResolverUtils propertyResolverUtils;
 
 	/**
-	 * The javadoc provider.
-	 */
-	private final Optional<JavadocProvider> javadocProvider;
-
-	/**
 	 * Instantiates a new Operation builder.
 	 * @param parameterBuilder the parameter builder
 	 * @param requestBodyService the request body builder
 	 * @param securityParser the security parser
 	 * @param propertyResolverUtils the property resolver utils
-	 * @param javadocProvider the javadoc provider
 	 */
 	public OperationService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			SecurityService securityParser, PropertyResolverUtils propertyResolverUtils, Optional<JavadocProvider> javadocProvider) {
+			SecurityService securityParser, PropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
 		this.securityParser = securityParser;
 		this.propertyResolverUtils = propertyResolverUtils;
-		this.javadocProvider = javadocProvider;
 	}
 
 	/**
@@ -630,6 +623,6 @@ public class OperationService {
 	 * @return the javadoc provider
 	 */
 	public JavadocProvider getJavadocProvider() {
-		return javadocProvider.orElse(null);
+		return parameterBuilder.getJavadocProvider();
 	}
 }

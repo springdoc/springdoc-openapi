@@ -26,7 +26,6 @@
         "description": "Post my request body string.",
         "operationId": "postMyRequestBody",
         "requestBody": {
-          "description": "the body",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -41,6 +40,7 @@
                   },
                   "file": {
                     "type": "string",
+                    "description": "the file",
                     "format": "binary"
                   }
                 }

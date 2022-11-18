@@ -670,10 +670,18 @@
               "type": "integer",
               "format": "int64"
             }
+          },
+          {
+            "name": "additionalMetadata",
+            "in": "query",
+            "description": "Additional data to pass to server",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
-          "description": "the file",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -686,9 +694,6 @@
                     "type": "string",
                     "description": "file detail",
                     "format": "binary"
-                  },
-                  "additionalMetadata": {
-                    "description": "Additional data to pass to server"
                   }
                 }
               }

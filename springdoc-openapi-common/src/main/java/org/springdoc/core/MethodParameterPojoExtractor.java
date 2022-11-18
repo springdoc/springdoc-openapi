@@ -26,6 +26,8 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.nio.charset.Charset;
@@ -175,17 +177,38 @@ class MethodParameterPojoExtractor {
 		Annotation[] fieldAnnotations = field.getDeclaredAnnotations();
 		try {
 			Parameter parameter = field.getAnnotation(Parameter.class);
-			boolean isNotRequired  = parameter == null || !parameter.required();
-			Annotation[] finalFieldAnnotations = fieldAnnotations;
-			return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
-					.filter(d -> d.getName().equals(field.getName()))
-					.map(PropertyDescriptor::getReadMethod)
-					.filter(Objects::nonNull)
-					.map(method -> new MethodParameter(method, -1))
-					.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-					.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), finalFieldAnnotations, true, isNotRequired));
+			boolean isNotRequired = parameter == null || !parameter.required();
+
+			if (paramClass.getSuperclass() != null && "java.lang.Record".equals(paramClass.getSuperclass().getName())) {
+				Method classGetRecordComponents = Class.class.getMethod("getRecordComponents");
+				Object[] components = (Object[]) classGetRecordComponents.invoke(paramClass);
+
+				Class<?> c = Class.forName("java.lang.reflect.RecordComponent");
+				Method recordComponentGetAccessor = c.getMethod("getAccessor");
+
+				List<Method> methods = new ArrayList<>();
+				for (Object object : components) {
+					methods.add((Method) recordComponentGetAccessor.invoke(object));
+				}
+				return methods.stream()
+						.filter(method -> method.getName().equals(field.getName()))
+						.map(method -> new MethodParameter(method, -1))
+						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, true, isNotRequired));
+
+			}
+			else
+				return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
+						.filter(d -> d.getName().equals(field.getName()))
+						.map(PropertyDescriptor::getReadMethod)
+						.filter(Objects::nonNull)
+						.map(method -> new MethodParameter(method, -1))
+						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, true, isNotRequired));
 		}
-		catch (IntrospectionException e) {
+		catch (IntrospectionException | NoSuchMethodException |
+			   InvocationTargetException | IllegalAccessException |
+			   ClassNotFoundException e) {
 			return Stream.of();
 		}
 	}

@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -387,8 +388,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 		routerOperation = customizeRouterOperation(routerOperation, handlerMethod);
 
-		final String operationPath = routerOperation.getPath();
-		final Set<RequestMethod> requestMethods = new HashSet<>(Arrays.asList(routerOperation.getMethods()));
+		String operationPath = routerOperation.getPath();
+		Set<RequestMethod> requestMethods = new TreeSet<>(Arrays.asList(routerOperation.getMethods()));
+
 		io.swagger.v3.oas.annotations.Operation apiOperation = routerOperation.getOperation();
 		final String[] methodConsumes = routerOperation.getConsumes();
 		final String[] methodProduces = routerOperation.getProduces();
@@ -1296,8 +1298,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		boolean isActuatorRestController = false;
 		if (actuatorProviderOptional.isPresent()) {
 			isActuatorRestController = actuatorProviderOptional.get().isRestController(operationPath, handlerMethod);
-		}
-		return springDocConfigProperties.isShowActuator() && isActuatorRestController;
+
+		return springDocConfigProperties.isShowActuator() && isActuatorRestController && (modelAndViewClass == null || !modelAndViewClass.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}
 
 	/**

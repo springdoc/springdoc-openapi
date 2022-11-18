@@ -26,7 +26,6 @@
         "description": "Test.",
         "operationId": "test",
         "requestBody": {
-          "description": "the str value",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -37,10 +36,12 @@
                 "type": "object",
                 "properties": {
                   "strValue": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "the str value"
                   },
                   "intValue": {
                     "type": "integer",
+                    "description": "the int value",
                     "format": "int32"
                   }
                 }
@@ -64,7 +65,6 @@
         "description": "Add response entity.",
         "operationId": "add",
         "requestBody": {
-          "description": "the content",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -98,7 +98,6 @@
         "description": "Add 2 response entity.",
         "operationId": "add2",
         "requestBody": {
-          "description": "the content",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -113,7 +112,8 @@
                     "description": "content"
                   },
                   "type": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "the type"
                   }
                 }
               }
