@@ -35,6 +35,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.SpringDocConfiguration;
@@ -56,6 +57,7 @@ import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -132,13 +134,31 @@ public class SpringDocSecurityConfiguration {
 									.filter(UsernamePasswordAuthenticationFilter.class::isInstance)
 									.map(UsernamePasswordAuthenticationFilter.class::cast)
 									.findAny();
+					Optional<DefaultLoginPageGeneratingFilter> optionalDefaultLoginPageGeneratingFilter =
+							filterChain.getFilters().stream()
+									.filter(DefaultLoginPageGeneratingFilter.class::isInstance)
+									.map(DefaultLoginPageGeneratingFilter.class::cast)
+									.findAny();
 					if (optionalFilter.isPresent()) {
 						UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter = optionalFilter.get();
 						Operation operation = new Operation();
 						Schema<?> schema = new ObjectSchema()
 								.addProperty(usernamePasswordAuthenticationFilter.getUsernameParameter(), new StringSchema())
 								.addProperty(usernamePasswordAuthenticationFilter.getPasswordParameter(), new StringSchema());
-						RequestBody requestBody = new RequestBody().content(new Content().addMediaType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE, new MediaType().schema(schema)));
+						String mediaType = org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+						if(optionalDefaultLoginPageGeneratingFilter.isPresent()){
+							DefaultLoginPageGeneratingFilter defaultLoginPageGeneratingFilter = optionalDefaultLoginPageGeneratingFilter.get();
+							Field formLoginEnabledField = FieldUtils.getDeclaredField(DefaultLoginPageGeneratingFilter.class, "formLoginEnabled", true);
+							try {
+								boolean formLoginEnabled = (boolean) formLoginEnabledField.get(defaultLoginPageGeneratingFilter);
+								if(formLoginEnabled)
+									mediaType = org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+							}
+							catch (IllegalAccessException e) {
+								LOGGER.warn(e.getMessage());
+							}
+						}
+						RequestBody requestBody = new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(schema)));
 						operation.requestBody(requestBody);
 						ApiResponses apiResponses = new ApiResponses();
 						apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), new ApiResponse().description(HttpStatus.OK.getReasonPhrase()));
