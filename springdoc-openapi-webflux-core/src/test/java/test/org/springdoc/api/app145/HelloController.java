@@ -31,5 +31,4 @@ public class HelloController {
 		return "OK";
 	}
 
-
 }

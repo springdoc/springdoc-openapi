@@ -100,7 +100,7 @@ public class Builder {
 	 * @return the request body builder
 	 */
 	public Builder content(org.springdoc.core.fn.builders.content.Builder contentBuilder) {
-		this.content = ArrayUtils.add( this.content, contentBuilder.build());
+		this.content = ArrayUtils.add(this.content, contentBuilder.build());
 		return this;
 	}
 
@@ -133,7 +133,7 @@ public class Builder {
 	 * @return the request body builder
 	 */
 	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
-		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
+		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}
 
@@ -154,7 +154,7 @@ public class Builder {
 	 * @return the request body
 	 */
 	public RequestBody build() {
-		return new RequestBody(){
+		return new RequestBody() {
 
 			@Override
 			public Class<? extends Annotation> annotationType() {

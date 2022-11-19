@@ -146,12 +146,12 @@ public class SpringDocSecurityConfiguration {
 								.addProperty(usernamePasswordAuthenticationFilter.getUsernameParameter(), new StringSchema())
 								.addProperty(usernamePasswordAuthenticationFilter.getPasswordParameter(), new StringSchema());
 						String mediaType = org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-						if(optionalDefaultLoginPageGeneratingFilter.isPresent()){
+						if (optionalDefaultLoginPageGeneratingFilter.isPresent()) {
 							DefaultLoginPageGeneratingFilter defaultLoginPageGeneratingFilter = optionalDefaultLoginPageGeneratingFilter.get();
 							Field formLoginEnabledField = FieldUtils.getDeclaredField(DefaultLoginPageGeneratingFilter.class, "formLoginEnabled", true);
 							try {
 								boolean formLoginEnabled = (boolean) formLoginEnabledField.get(defaultLoginPageGeneratingFilter);
-								if(formLoginEnabled)
+								if (formLoginEnabled)
 									mediaType = org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 							}
 							catch (IllegalAccessException e) {
@@ -173,7 +173,9 @@ public class SpringDocSecurityConfiguration {
 							String loginPath = requestMatcher.getPattern();
 							requestMatcherField.setAccessible(false);
 							openAPI.getPaths().addPathItem(loginPath, pathItem);
-						} catch (NoSuchFieldException | IllegalAccessException | ClassCastException ignored) {
+						}
+						catch (NoSuchFieldException | IllegalAccessException |
+							   ClassCastException ignored) {
 							// Exception escaped
 							LOGGER.trace(ignored.getMessage());
 						}

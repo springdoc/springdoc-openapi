@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@TestPropertySource(properties={
+@TestPropertySource(properties = {
 		"spring.autoconfigure.exclude=org.springframework.cloud.function.web.mvc.ReactorAutoConfiguration, org.springframework.cloud.function.web.source.FunctionExporterAutoConfiguration, org.springframework.cloud.function.context.config.ContextFunctionCatalogAutoConfiguration",
 		"management.endpoints.enabled-by-default=false"
 })

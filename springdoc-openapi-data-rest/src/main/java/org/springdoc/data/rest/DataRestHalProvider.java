@@ -51,7 +51,7 @@ public class DataRestHalProvider extends HateoasHalProvider {
 	 * @param hateoasPropertiesOptional the hateoas properties optional
 	 * @param objectMapperProvider the object mapper provider
 	 */
-	public DataRestHalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional,Optional<HateoasProperties> hateoasPropertiesOptional,
+	public DataRestHalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional, Optional<HateoasProperties> hateoasPropertiesOptional,
 			ObjectMapperProvider objectMapperProvider) {
 		super(hateoasPropertiesOptional, objectMapperProvider);
 		this.repositoryRestConfigurationOptional = repositoryRestConfigurationOptional;

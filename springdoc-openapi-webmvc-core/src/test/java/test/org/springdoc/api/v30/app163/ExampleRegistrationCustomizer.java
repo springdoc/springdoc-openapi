@@ -34,14 +34,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExampleRegistrationCustomizer implements OpenApiCustomiser {
 
-  private final List<Map.Entry<String, Example>> examplesToRegister;
+	private final List<Map.Entry<String, Example>> examplesToRegister;
 
-  public ExampleRegistrationCustomizer(List<Map.Entry<String, Example>> examplesToRegister) {
-    this.examplesToRegister = examplesToRegister;
-  }
+	public ExampleRegistrationCustomizer(List<Map.Entry<String, Example>> examplesToRegister) {
+		this.examplesToRegister = examplesToRegister;
+	}
 
-  @Override
-  public void customise(OpenAPI openApi) {
-    examplesToRegister.forEach(entry -> openApi.getComponents().addExamples(entry.getKey(), entry.getValue()));
-  }
+	@Override
+	public void customise(OpenAPI openApi) {
+		examplesToRegister.forEach(entry -> openApi.getComponents().addExamples(entry.getKey(), entry.getValue()));
+	}
 }

@@ -77,7 +77,7 @@ public class HelloController<DataRequest> {
 	public void createOrganization(
 			@Parameter(name = "organization", description = "i want to override the description of this object", required = true)
 			@RequestBody
-					Organization organization) {
+			Organization organization) {
 
 
 	}

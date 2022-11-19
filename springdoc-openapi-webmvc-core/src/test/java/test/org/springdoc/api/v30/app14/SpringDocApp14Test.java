@@ -31,12 +31,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp14Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	public void testApp() throws Exception {
 		Locale.setDefault(Locale.US);
 		super.testApp();
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

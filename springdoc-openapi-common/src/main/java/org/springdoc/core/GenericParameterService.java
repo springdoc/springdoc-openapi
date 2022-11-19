@@ -89,16 +89,6 @@ public class GenericParameterService {
 	private static final List<Class<?>> FILE_TYPES = Collections.synchronizedList(new ArrayList<>());
 
 	/**
-	 * The Optional delegating method parameter customizer.
-	 */
-	private final Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer;
-
-	/**
-	 * The Web conversion service.
-	 */
-	private final Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider;
-
-	/**
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericParameterService.class);
@@ -108,6 +98,16 @@ public class GenericParameterService {
 		FILE_TYPES.add(Resource.class);
 		FILE_TYPES.add(MultipartRequest.class);
 	}
+
+	/**
+	 * The Optional delegating method parameter customizer.
+	 */
+	private final Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer;
+
+	/**
+	 * The Web conversion service.
+	 */
+	private final Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider;
 
 	/**
 	 * The Property resolver utils.
@@ -717,7 +717,8 @@ public class GenericParameterService {
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
 		final String paramJavadocDescription;
 		if (delegatingMethodParameter.isParameterObject()) {
-			String fieldName; if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
+			String fieldName;
+			if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
 				fieldName = StringUtils.substringAfterLast(pName, DOT);
 			else fieldName = pName;
 			Field field = FieldUtils.getDeclaredField(((DelegatingMethodParameter) methodParameter).getExecutable().getDeclaringClass(), fieldName, true);

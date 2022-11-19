@@ -48,7 +48,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Import({ ReactorAutoConfiguration.class, FunctionExporterAutoConfiguration.class, ContextFunctionCatalogAutoConfiguration.class })
-@TestPropertySource(properties="springdoc.show-spring-cloud-functions=false")
+@TestPropertySource(properties = "springdoc.show-spring-cloud-functions=false")
 public class SpringDocApp175Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication

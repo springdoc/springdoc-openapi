@@ -47,7 +47,7 @@ import org.springframework.context.annotation.Import;
 		InfoEndpointAutoConfiguration.class,
 		HealthEndpointAutoConfiguration.class,
 		WebFluxEndpointManagementContextConfiguration.class,
-		ReactiveManagementContextAutoConfiguration.class})
+		ReactiveManagementContextAutoConfiguration.class })
 @ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app76" })
 public class SpringDocTestApp {
 

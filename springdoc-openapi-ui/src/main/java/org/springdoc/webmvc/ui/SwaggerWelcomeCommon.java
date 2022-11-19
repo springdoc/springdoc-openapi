@@ -85,7 +85,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 
 	@Override
 	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
-		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl()) )
+		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl()))
 			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder
 					.path(swaggerUiConfigParameters.getUiRootPath())
 					.path(getOauth2RedirectUrl()).build().toString());

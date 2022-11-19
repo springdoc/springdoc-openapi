@@ -7,12 +7,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * The type Abstract object.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.EXISTING_PROPERTY,
-    property = "type",
-    visible = true
+		include = JsonTypeInfo.As.EXISTING_PROPERTY,
+		property = "type",
+		visible = true
 )
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = ConcreteObjectA.class, name = "Type A")
+		@JsonSubTypes.Type(value = ConcreteObjectA.class, name = "Type A")
 })
 public abstract class AbstractObject {
 
@@ -33,9 +33,9 @@ public abstract class AbstractObject {
 	 * @param name the name
 	 */
 	protected AbstractObject(ConcreteType type, String name) {
-    this.type = type;
-    this.name = name;
-  }
+		this.type = type;
+		this.name = name;
+	}
 
 	/**
 	 * Gets type.
@@ -43,8 +43,8 @@ public abstract class AbstractObject {
 	 * @return the type
 	 */
 	public ConcreteType getType() {
-    return type;
-  }
+		return type;
+	}
 
 	/**
 	 * Gets name.
@@ -52,6 +52,6 @@ public abstract class AbstractObject {
 	 * @return the name
 	 */
 	public String getName() {
-    return name;
-  }
+		return name;
+	}
 }

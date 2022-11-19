@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Entity
 
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 
 @Data
@@ -25,19 +25,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 
 @JsonTypeInfo(
-  use = JsonTypeInfo.Id.NAME, 
-  include = JsonTypeInfo.As.PROPERTY, 
-  property = "_type")
-@JsonSubTypes({ 
-  @Type(value = Dog.class, name = "dog"),
-  @Type(value = Cat.class, name = "cat")
+		use = JsonTypeInfo.Id.NAME,
+		include = JsonTypeInfo.As.PROPERTY,
+		property = "_type")
+@JsonSubTypes({
+		@Type(value = Dog.class, name = "dog"),
+		@Type(value = Cat.class, name = "cat")
 })
 public class Pet extends BaseEntity {
 
 	@NonNull
 	@NotNull
 	private String name;
-	
+
 	@NonNull
 	@ManyToOne
 	private Owner owner;

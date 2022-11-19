@@ -48,7 +48,7 @@ class BookRouter {
 	@Bean
 	RouterFunction<?> bookRoute(BookRepository br) {
 		return route().GET("/books", accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML), HANDLER_FUNCTION, ops -> ops.operationId("findAll").tag("book")
-				.beanClass(BookRepository.class).beanMethod("findAll")).build()
+						.beanClass(BookRepository.class).beanMethod("findAll")).build()
 
 				.and(route().GET("/books", accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN), HANDLER_FUNCTION,
 						ops -> ops.operationId("findAll").tag("book").beanClass(BookRepository.class).beanMethod("findAll")).build())

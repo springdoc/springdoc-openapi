@@ -52,6 +52,18 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 	@Nullable
 	protected Environment environment;
 
+	/**
+	 * Init bean factory post processor.
+	 *
+	 * @param beanFactory the bean factory
+	 */
+	public static void initBeanFactoryPostProcessor(ConfigurableListableBeanFactory beanFactory) {
+		for (String beanName : beanFactory.getBeanNamesForType(OpenAPIService.class))
+			beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
+		for (String beanName : beanFactory.getBeanNamesForType(OpenAPI.class))
+			beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
+	}
+
 	@Override
 	public void setEnvironment(Environment environment) {
 		this.environment = environment;
@@ -88,18 +100,6 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 			groupedOpenApis.forEach(elt -> beanFactory.registerSingleton(elt.getGroup(), elt));
 		}
 		initBeanFactoryPostProcessor(beanFactory);
-	}
-
-	/**
-	 * Init bean factory post processor.
-	 *
-	 * @param beanFactory the bean factory
-	 */
-	public static void initBeanFactoryPostProcessor(ConfigurableListableBeanFactory beanFactory) {
-		for (String beanName : beanFactory.getBeanNamesForType(OpenAPIService.class))
-			beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
-		for (String beanName : beanFactory.getBeanNamesForType(OpenAPI.class))
-			beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
 	}
 
 }

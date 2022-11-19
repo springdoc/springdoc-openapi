@@ -49,7 +49,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
  * The type Actuator provider.
  * @author bnasslahsen
  */
-public abstract class ActuatorProvider  implements ApplicationListener<WebServerInitializedEvent> {
+public abstract class ActuatorProvider implements ApplicationListener<WebServerInitializedEvent> {
 
 	/**
 	 * The Management server properties.
@@ -106,16 +106,6 @@ public abstract class ActuatorProvider  implements ApplicationListener<WebServer
 		this.springDocConfigProperties = springDocConfigProperties;
 	}
 
-	@Override
-	public void onApplicationEvent(WebServerInitializedEvent event) {
-		if (WebServerApplicationContext.hasServerNamespace(event.getApplicationContext(), "management")) {
-			managementApplicationContext = event.getApplicationContext();
-			actuatorWebServer = event.getWebServer();
-		} else {
-			applicationWebServer = event.getWebServer();
-		}
-	}
-
 	/**
 	 * Gets tag.
 	 *
@@ -133,6 +123,17 @@ public abstract class ActuatorProvider  implements ApplicationListener<WebServer
 		return actuatorTag;
 	}
 
+	@Override
+	public void onApplicationEvent(WebServerInitializedEvent event) {
+		if (WebServerApplicationContext.hasServerNamespace(event.getApplicationContext(), "management")) {
+			managementApplicationContext = event.getApplicationContext();
+			actuatorWebServer = event.getWebServer();
+		}
+		else {
+			applicationWebServer = event.getWebServer();
+		}
+	}
+
 	/**
 	 * Is rest controller boolean.
 	 *
@@ -142,7 +143,7 @@ public abstract class ActuatorProvider  implements ApplicationListener<WebServer
 	 */
 	public boolean isRestController(String operationPath, HandlerMethod handlerMethod) {
 		return operationPath.startsWith(AntPathMatcher.DEFAULT_PATH_SEPARATOR)
-				&&  !AbstractOpenApiResource.isHiddenRestControllers(handlerMethod.getBeanType())
+				&& !AbstractOpenApiResource.isHiddenRestControllers(handlerMethod.getBeanType())
 				&& AbstractOpenApiResource.containsResponseBody(handlerMethod);
 	}
 

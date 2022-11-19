@@ -38,14 +38,14 @@ import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 public class HateoasHalProvider {
 
 	/**
-	 * The Hateoas properties optional.
-	 */
-	private final Optional<HateoasProperties> hateoasPropertiesOptional;
-
-	/**
 	 * The Object mapper provider.
 	 */
 	protected final ObjectMapperProvider objectMapperProvider;
+
+	/**
+	 * The Hateoas properties optional.
+	 */
+	private final Optional<HateoasProperties> hateoasPropertiesOptional;
 
 	/**
 	 * Instantiates a new Hateoas hal provider.

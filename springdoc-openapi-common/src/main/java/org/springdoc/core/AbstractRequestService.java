@@ -184,7 +184,8 @@ public abstract class AbstractRequestService {
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
 	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService, OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers, LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
-		super(); this.parameterBuilder = parameterBuilder;
+		super();
+		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
 		this.operationService = operationService;
 		parameterCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
@@ -222,6 +223,35 @@ public abstract class AbstractRequestService {
 	 */
 	public static boolean isRequestTypeToIgnore(Class<?> rawClass) {
 		return PARAM_TYPES_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+	}
+
+	/**
+	 * Gets headers.
+	 *
+	 * @param methodAttributes the method attributes
+	 * @param map the map
+	 * @return the headers
+	 */
+	@SuppressWarnings("unchecked")
+	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<ParameterId, Parameter> map) {
+		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
+			StringSchema schema = new StringSchema();
+			if (StringUtils.isNotEmpty(entry.getValue()))
+				schema.addEnumItem(entry.getValue());
+			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(schema);
+			ParameterId parameterId = new ParameterId(parameter);
+			if (map.containsKey(parameterId)) {
+				parameter = map.get(parameterId);
+				List existingEnum = null;
+				if (parameter.getSchema() != null && !CollectionUtils.isEmpty(parameter.getSchema().getEnum()))
+					existingEnum = parameter.getSchema().getEnum();
+				if (StringUtils.isNotEmpty(entry.getValue()) && (existingEnum == null || !existingEnum.contains(entry.getValue())))
+					parameter.getSchema().addEnumItemObject(entry.getValue());
+				parameter.setSchema(parameter.getSchema());
+			}
+			map.put(parameterId, parameter);
+		}
+		return map.values();
 	}
 
 	/**
@@ -290,7 +320,8 @@ public abstract class AbstractRequestService {
 						if (!StringUtils.isBlank(paramJavadocDescription)) {
 							parameter.setDescription(paramJavadocDescription);
 						}
-					} applyBeanValidatorAnnotations(parameter, parameterAnnotations);
+					}
+					applyBeanValidatorAnnotations(parameter, parameterAnnotations);
 				}
 				else if (!RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openAPI.getOpenapi())) {
 					if (operation.getRequestBody() != null)
@@ -321,7 +352,8 @@ public abstract class AbstractRequestService {
 					it.remove();
 				}
 			}
-		} setParams(operation, new ArrayList<>(map.values()), requestBodyInfo);
+		}
+		setParams(operation, new ArrayList<>(map.values()), requestBodyInfo);
 		return operation;
 	}
 
@@ -364,36 +396,12 @@ public abstract class AbstractRequestService {
 			}
 		}
 
-		getHeaders(methodAttributes, map); map.forEach((parameterId, parameter) -> {
+		getHeaders(methodAttributes, map);
+		map.forEach((parameterId, parameter) -> {
 			if (StringUtils.isBlank(parameter.getIn()) && StringUtils.isBlank(parameter.get$ref()))
 				parameter.setIn(ParameterIn.QUERY.toString());
-		}); return map;
-	}
-
-	/**
-	 * Gets headers.
-	 *
-	 * @param methodAttributes the method attributes
-	 * @param map the map
-	 * @return the headers
-	 */
-	@SuppressWarnings("unchecked")
-	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<ParameterId, Parameter> map) {
-		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
-			StringSchema schema = new StringSchema();
-			if (StringUtils.isNotEmpty(entry.getValue()))
-				schema.addEnumItem(entry.getValue());
-			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(schema);
-			ParameterId parameterId = new ParameterId(parameter);
-			if (map.containsKey(parameterId)) {
-				parameter = map.get(parameterId); List existingEnum = null;
-				if (parameter.getSchema() != null && !CollectionUtils.isEmpty(parameter.getSchema().getEnum()))
-					existingEnum = parameter.getSchema().getEnum();
-				if (StringUtils.isNotEmpty(entry.getValue()) && (existingEnum == null || !existingEnum.contains(entry.getValue())))
-					parameter.getSchema().addEnumItemObject(entry.getValue());
-				parameter.setSchema(parameter.getSchema());
-			} map.put(parameterId, parameter);
-		} return map.values();
+		});
+		return map;
 	}
 
 	/**
@@ -504,7 +512,8 @@ public abstract class AbstractRequestService {
 		String name = parameterInfo.getpName();
 
 		if (parameter == null) {
-			parameter = new Parameter(); parameterInfo.setParameterModel(parameter);
+			parameter = new Parameter();
+			parameterInfo.setParameterModel(parameter);
 		}
 
 		if (StringUtils.isBlank(parameter.getName())) parameter.setName(name);
@@ -528,10 +537,12 @@ public abstract class AbstractRequestService {
 					Schema<?> primitiveSchema = primitiveType.createProperty();
 					primitiveSchema.setDefault(parameterInfo.getDefaultValue());
 					defaultValue = primitiveSchema.getDefault();
-				} schema.setDefault(defaultValue);
+				}
+				schema.setDefault(defaultValue);
 			}
 			parameter.setSchema(schema);
-		} return parameter;
+		}
+		return parameter;
 	}
 
 	/**
@@ -541,11 +552,13 @@ public abstract class AbstractRequestService {
 	 * @param annotations the annotations
 	 */
 	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
-		Map<String, Annotation> annos = new HashMap<>(); if (annotations != null)
+		Map<String, Annotation> annos = new HashMap<>();
+		if (annotations != null)
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
 		boolean annotationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
 		if (annotationExists) parameter.setRequired(true);
-		Schema<?> schema = parameter.getSchema(); applyValidationsToSchema(annos, schema);
+		Schema<?> schema = parameter.getSchema();
+		applyValidationsToSchema(annos, schema);
 	}
 
 	/**
@@ -557,14 +570,16 @@ public abstract class AbstractRequestService {
 	 */
 	public void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
 		Map<String, Annotation> annos = new HashMap<>();
-		boolean requestBodyRequired = false; if (!CollectionUtils.isEmpty(annotations)) {
+		boolean requestBodyRequired = false;
+		if (!CollectionUtils.isEmpty(annotations)) {
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
 			requestBodyRequired = annotations.stream().filter(annotation -> org.springframework.web.bind.annotation.RequestBody.class.equals(annotation.annotationType())).anyMatch(annotation -> ((org.springframework.web.bind.annotation.RequestBody) annotation).required());
 		}
 		boolean validationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
 
 		if (validationExists || (!isOptional && requestBodyRequired))
-			requestBody.setRequired(true); Content content = requestBody.getContent();
+			requestBody.setRequired(true);
+		Content content = requestBody.getContent();
 		for (MediaType mediaType : content.values()) {
 			Schema<?> schema = mediaType.getSchema();
 			applyValidationsToSchema(annos, schema);
@@ -581,10 +596,12 @@ public abstract class AbstractRequestService {
 		if (annos.containsKey(Size.class.getSimpleName())) {
 			Size size = (Size) annos.get(Size.class.getSimpleName());
 			if (OPENAPI_ARRAY_TYPE.equals(schema.getType())) {
-				schema.setMinItems(size.min()); schema.setMaxItems(size.max());
+				schema.setMinItems(size.min());
+				schema.setMaxItems(size.max());
 			}
 			else if (OPENAPI_STRING_TYPE.equals(schema.getType())) {
-				schema.setMinLength(size.min()); schema.setMaxLength(size.max());
+				schema.setMinLength(size.min());
+				schema.setMaxLength(size.max());
 			}
 		}
 	}
@@ -635,21 +652,25 @@ public abstract class AbstractRequestService {
 		if (annos.containsKey(Min.class.getSimpleName())) {
 			Min min = (Min) annos.get(Min.class.getSimpleName());
 			schema.setMinimum(BigDecimal.valueOf(min.value()));
-		} if (annos.containsKey(Max.class.getSimpleName())) {
+		}
+		if (annos.containsKey(Max.class.getSimpleName())) {
 			Max max = (Max) annos.get(Max.class.getSimpleName());
 			schema.setMaximum(BigDecimal.valueOf(max.value()));
-		} calculateSize(annos, schema);
+		}
+		calculateSize(annos, schema);
 		if (annos.containsKey(DecimalMin.class.getSimpleName())) {
 			DecimalMin min = (DecimalMin) annos.get(DecimalMin.class.getSimpleName());
 			if (min.inclusive())
 				schema.setMinimum(BigDecimal.valueOf(Double.parseDouble(min.value())));
 			else schema.setExclusiveMinimum(true);
-		} if (annos.containsKey(DecimalMax.class.getSimpleName())) {
+		}
+		if (annos.containsKey(DecimalMax.class.getSimpleName())) {
 			DecimalMax max = (DecimalMax) annos.get(DecimalMax.class.getSimpleName());
 			if (max.inclusive())
 				schema.setMaximum(BigDecimal.valueOf(Double.parseDouble(max.value())));
 			else schema.setExclusiveMaximum(true);
-		} if (annos.containsKey(POSITIVE_OR_ZERO)) schema.setMinimum(BigDecimal.ZERO);
+		}
+		if (annos.containsKey(POSITIVE_OR_ZERO)) schema.setMinimum(BigDecimal.ZERO);
 		if (annos.containsKey(NEGATIVE_OR_ZERO)) schema.setMaximum(BigDecimal.ZERO);
 		if (annos.containsKey(Pattern.class.getSimpleName())) {
 			Pattern pattern = (Pattern) annos.get(Pattern.class.getSimpleName());

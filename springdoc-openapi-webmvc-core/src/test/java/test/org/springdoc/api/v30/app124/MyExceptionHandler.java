@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class MyExceptionHandler  {
+public class MyExceptionHandler {
 
 	@ExceptionHandler(RuntimeException.class)
 	@ResponseStatus(HttpStatus.BAD_GATEWAY)

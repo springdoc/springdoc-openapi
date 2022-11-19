@@ -16,7 +16,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @AutoConfigureWebTestClient(timeout = "3600000")
 @ActiveProfiles("test")
-@TestPropertySource(properties={
+@TestPropertySource(properties = {
 		"spring.autoconfigure.exclude=org.springframework.cloud.function.web.flux.ReactorAutoConfiguration, org.springframework.cloud.function.web.source.FunctionExporterAutoConfiguration, org.springframework.cloud.function.context.config.ContextFunctionCatalogAutoConfiguration",
 		"management.endpoints.enabled-by-default=false"
 })

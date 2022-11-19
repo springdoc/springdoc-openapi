@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GetBodyController {
 
 	@GetMapping(value = "/get/body")
-  DummyData getBody(@RequestBody DummyData dummyData) {
+	DummyData getBody(@RequestBody DummyData dummyData) {
 		return dummyData;
 
 	}

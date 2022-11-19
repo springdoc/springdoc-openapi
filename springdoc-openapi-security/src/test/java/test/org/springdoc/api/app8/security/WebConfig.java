@@ -9,9 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Order(200)
 public class WebConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
-                .loginProcessingUrl("/api/login");
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.formLogin()
+				.loginProcessingUrl("/api/login");
+	}
 }

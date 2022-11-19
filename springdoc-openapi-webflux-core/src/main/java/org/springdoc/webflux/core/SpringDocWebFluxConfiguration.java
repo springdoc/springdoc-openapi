@@ -156,7 +156,7 @@ public class SpringDocWebFluxConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SpringWebProvider springWebProvider(){
+	SpringWebProvider springWebProvider() {
 		return new SpringWebFluxProvider();
 	}
 
@@ -225,8 +225,8 @@ public class SpringDocWebFluxConfiguration {
 				SpringDocConfigProperties springDocConfigProperties,
 				SpringDocProviders springDocProviders) {
 			return new OpenApiActuatorResource(openAPIBuilderObjectFactory, requestBuilder,
-					responseBuilder, operationParser,operationCustomizers,
-					openApiCustomisers, routerOperationCustomizers, methodFilters,  springDocConfigProperties, springDocProviders);
+					responseBuilder, operationParser, operationCustomizers,
+					openApiCustomisers, routerOperationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
 		}
 	}
 }

@@ -32,17 +32,17 @@ import org.springframework.context.annotation.Bean;
 
 public class SpringDocApp170Test extends AbstractSpringDocV30Test {
 
+	@Test
+	public void testApp1() throws Exception {
+		this.testApp();
+	}
+
 	@SpringBootApplication
 	static class SpringDocTestApp {
 		@Bean
 		public OpenApiCustomiser openApiCustomiser() {
 			return openApi -> openApi.getServers().forEach(s -> s.url("URL"));
 		}
-	}
-
-	@Test
-	public void testApp1() throws Exception {
-		this.testApp();
 	}
 
 }

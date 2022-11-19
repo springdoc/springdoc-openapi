@@ -30,8 +30,8 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "springdoc.api-docs.resolve-schema-properties=true")
 public class SpringDocApp164Test extends AbstractSpringDocV30Test {
 
-  @SpringBootApplication
-  static class SpringDocTestApp {
-  }
+	@SpringBootApplication
+	static class SpringDocTestApp {
+	}
 
 }

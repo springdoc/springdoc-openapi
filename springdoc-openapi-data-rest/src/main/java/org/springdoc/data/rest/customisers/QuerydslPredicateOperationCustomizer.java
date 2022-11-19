@@ -126,7 +126,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 			}
 		}
 
-		if(!CollectionUtils.isEmpty(parametersToAddToOperation)){
+		if (!CollectionUtils.isEmpty(parametersToAddToOperation)) {
 			if (operation.getParameters() == null)
 				operation.setParameters(parametersToAddToOperation);
 			else

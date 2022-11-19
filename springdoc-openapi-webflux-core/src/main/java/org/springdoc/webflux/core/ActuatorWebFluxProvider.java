@@ -89,5 +89,4 @@ public class ActuatorWebFluxProvider extends ActuatorProvider {
 		return mappingInfoHandlerMethodMap;
 	}
 
-
 }

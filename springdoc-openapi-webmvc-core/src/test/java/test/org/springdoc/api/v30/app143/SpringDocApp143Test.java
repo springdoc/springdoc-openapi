@@ -31,7 +31,7 @@ import org.springframework.test.context.TestPropertySource;
  * Test issue 907 fix.
  * Hidden controller showing up in swagger UI when springdoc.show-actuator is enabled
  */
-@TestPropertySource(properties = {"management.endpoints.enabled-by-default=true",
+@TestPropertySource(properties = { "management.endpoints.enabled-by-default=true",
 		"springdoc.show-actuator=true", "management.endpoints.web.exposure.exclude=functions"
 })
 public class SpringDocApp143Test extends AbstractSpringDocV30Test {

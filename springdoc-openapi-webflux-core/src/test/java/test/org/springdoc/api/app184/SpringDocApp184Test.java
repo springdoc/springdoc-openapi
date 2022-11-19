@@ -46,6 +46,27 @@ import org.springframework.test.context.TestPropertySource;
 })
 public class SpringDocApp184Test extends AbstractSpringDocTest {
 
+	@Test
+	public void testGroup1() throws Exception {
+		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group1").exchange()
+				.expectStatus().isOk()
+				.expectBody().json(getContent("results/app184-1.json"), true);
+	}
+
+	@Test
+	public void testGroup2() throws Exception {
+		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group2").exchange()
+				.expectStatus().isOk()
+				.expectBody().json(getContent("results/app184-2.json"), true);
+	}
+
+	@Test
+	public void testGroup3() throws Exception {
+		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group3").exchange()
+				.expectStatus().isOk()
+				.expectBody().json(getContent("results/app184-3.json"), true);
+	}
+
 	@SpringBootApplication
 	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app184" })
 	static class SpringDocTestApp {
@@ -100,27 +121,6 @@ public class SpringDocApp184Test extends AbstractSpringDocTest {
 					.build();
 		}
 
-	}
-
-	@Test
-	public void testGroup1() throws Exception {
-		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group1").exchange()
-				.expectStatus().isOk()
-				.expectBody().json(getContent("results/app184-1.json"), true);
-	}
-
-	@Test
-	public void testGroup2() throws Exception {
-		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group2").exchange()
-				.expectStatus().isOk()
-				.expectBody().json(getContent("results/app184-2.json"), true);
-	}
-
-	@Test
-	public void testGroup3() throws Exception {
-		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group3").exchange()
-				.expectStatus().isOk()
-				.expectBody().json(getContent("results/app184-3.json"), true);
 	}
 
 }

@@ -142,19 +142,29 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private static final Set<Class<?>> HIDDEN_REST_CONTROLLERS = new CopyOnWriteArraySet<>();
 
 	/**
-	 * The Open api builder.
+	 * The constant MODEL_AND_VIEW_CLASS.
 	 */
-	protected OpenAPIService openAPIService;
-
-	/**
-	 * The open api builder object factory.
-	 */
-	private final ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory;
+	private static Class<?> modelAndViewClass;
 
 	/**
 	 * The Spring doc config properties.
 	 */
 	protected final SpringDocConfigProperties springDocConfigProperties;
+
+	/**
+	 * The Group name.
+	 */
+	protected final String groupName;
+
+	/**
+	 * The Spring doc providers.
+	 */
+	protected final SpringDocProviders springDocProviders;
+
+	/**
+	 * The open api builder object factory.
+	 */
+	private final ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory;
 
 	/**
 	 * The Request builder.
@@ -197,24 +207,14 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
 	/**
-	 * The Group name.
-	 */
-	protected final String groupName;
-
-	/**
-	 * The constant MODEL_AND_VIEW_CLASS.
-	 */
-	private static Class<?> modelAndViewClass;
-
-	/**
 	 * The OpenApi with locale customizers.
 	 */
 	private final Map<String, OpenApiLocaleCustomizer> openApiLocaleCustomizers;
 
 	/**
-	 * The Spring doc providers.
+	 * The Open api builder.
 	 */
-	protected final SpringDocProviders springDocProviders;
+	protected OpenAPIService openAPIService;
 
 	/**
 	 * Instantiates a new Abstract open api resource.
@@ -262,13 +262,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	}
 
 	/**
-	 * Gets open api.
-	 */
-	private void getOpenApi() {
-		this.getOpenApi(Locale.getDefault());
-	}
-
-	/**
 	 * Add rest controllers.
 	 *
 	 * @param classes the classes
@@ -302,6 +295,45 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			}
 		}
 		HIDDEN_REST_CONTROLLERS.addAll(hiddenClasses);
+	}
+
+	/**
+	 * Contains response body boolean.
+	 *
+	 * @param handlerMethod the handler method
+	 * @return the boolean
+	 */
+	public static boolean containsResponseBody(HandlerMethod handlerMethod) {
+		ResponseBody responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
+		if (responseBodyAnnotation == null)
+			responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ResponseBody.class);
+		return responseBodyAnnotation != null;
+	}
+
+	/**
+	 * Is hidden rest controllers boolean.
+	 *
+	 * @param rawClass the raw class
+	 * @return the boolean
+	 */
+	public static boolean isHiddenRestControllers(Class<?> rawClass) {
+		return HIDDEN_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+	}
+
+	/**
+	 * Sets model and view class.
+	 *
+	 * @param modelAndViewClass the model and view class
+	 */
+	public static void setModelAndViewClass(Class<?> modelAndViewClass) {
+		AbstractOpenApiResource.modelAndViewClass = modelAndViewClass;
+	}
+
+	/**
+	 * Gets open api.
+	 */
+	private void getOpenApi() {
+		this.getOpenApi(Locale.getDefault());
 	}
 
 	/**
@@ -801,19 +833,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	}
 
 	/**
-	 * Contains response body boolean.
-	 *
-	 * @param handlerMethod the handler method
-	 * @return the boolean
-	 */
-	public static boolean containsResponseBody(HandlerMethod handlerMethod) {
-		ResponseBody responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
-		if (responseBodyAnnotation == null)
-			responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ResponseBody.class);
-		return responseBodyAnnotation != null;
-	}
-
-	/**
 	 * Is rest controller boolean.
 	 *
 	 * @param restControllers the rest controllers
@@ -831,16 +850,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	}
 
 	/**
-	 * Is hidden rest controllers boolean.
-	 *
-	 * @param rawClass the raw class
-	 * @return the boolean
-	 */
-	public static boolean isHiddenRestControllers(Class<?> rawClass) {
-		return HIDDEN_REST_CONTROLLERS.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
-	}
-
-	/**
 	 * Gets default allowed http methods.
 	 *
 	 * @return the default allowed http methods
@@ -849,7 +858,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		RequestMethod[] allowedRequestMethods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD };
 		return new HashSet<>(Arrays.asList(allowedRequestMethods));
 	}
-
 
 	/**
 	 * Customise operation operation.
@@ -1315,7 +1323,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				break;
 			default:
 				break;
-		} return conditionsToMatch;
+		}
+		return conditionsToMatch;
 	}
 
 	/**
@@ -1350,14 +1359,5 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		 *Headers condition type.
 		 */
 		HEADERS
-	}
-
-	/**
-	 * Sets model and view class.
-	 *
-	 * @param modelAndViewClass the model and view class
-	 */
-	public static void setModelAndViewClass(Class<?> modelAndViewClass) {
-		AbstractOpenApiResource.modelAndViewClass = modelAndViewClass;
 	}
 }

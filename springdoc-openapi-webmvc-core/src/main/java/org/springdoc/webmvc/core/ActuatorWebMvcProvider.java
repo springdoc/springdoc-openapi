@@ -94,7 +94,7 @@ public class ActuatorWebMvcProvider extends ActuatorProvider {
 
 	@Override
 	public String getContextPath() {
-		return StringUtils.defaultIfEmpty(serverProperties.getServlet().getContextPath(),EMPTY);
+		return StringUtils.defaultIfEmpty(serverProperties.getServlet().getContextPath(), EMPTY);
 	}
 
 }

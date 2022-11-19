@@ -39,22 +39,27 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 
 /**
  * Configuration class defining standard OpenAPI Specification for operations
-*/
+ */
 @Configuration
 public class SecurityProblemResponsesConfiguration {
 
 	private static final String HTTP_401_NO_TOKEN = "http401NoToken";
-	private static final String HTTP_401_BAD_TOKEN = "http401BadToken";
-	private static final String HTTP_403 = "http403";
+
 	public static final String UNAUTHORIZED_401_NO_TOKEN_RESPONSE_REF = "#/components/responses/" + HTTP_401_NO_TOKEN;
+
+	private static final String HTTP_401_BAD_TOKEN = "http401BadToken";
+
 	public static final String UNAUTHORIZED_401_BAD_TOKEN_RESPONSE_REF = "#/components/responses/" + HTTP_401_BAD_TOKEN;
+
+	private static final String HTTP_403 = "http403";
+
 	public static final String FORBIDDEN_403_RESPONSE_REF = "#/components/responses/" + HTTP_403;
 
 	@Bean
 	public Map.Entry<String, ApiResponse> http401NoTokenResponse() throws IOException {
 		return simpleResponse(HTTP_401_NO_TOKEN, "Invalid authentication.");
 	}
-	
+
 	@Bean
 	public Map.Entry<String, ApiResponse> http401BadTokenResponse() throws IOException {
 		return simpleResponse(HTTP_401_BAD_TOKEN, "Invalid authentication.");

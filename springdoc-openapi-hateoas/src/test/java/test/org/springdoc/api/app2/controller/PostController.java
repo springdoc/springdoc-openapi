@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final PostService postService;
+	private final PostService postService;
 
-    @GetMapping
-    public ResponseEntity<PagedModel<EntityModel<Post>>> getAll(Pageable pageable) {
-        return new ResponseEntity<>(postService.getAll(pageable), HttpStatus.OK);
-    }
+	@GetMapping
+	public ResponseEntity<PagedModel<EntityModel<Post>>> getAll(Pageable pageable) {
+		return new ResponseEntity<>(postService.getAll(pageable), HttpStatus.OK);
+	}
 }

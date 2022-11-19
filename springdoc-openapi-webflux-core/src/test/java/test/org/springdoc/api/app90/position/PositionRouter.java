@@ -45,8 +45,8 @@ class PositionRouter {
 	@Bean
 	public RouterFunction<ServerResponse> positionRoute() {
 		return route().GET("/getAllPositions", accept(MediaType.APPLICATION_JSON), HANDLER_FUNCTION, ops -> ops
-				.operationId("findAll").description("Get all positions").tags(new String[] { "positions" })
-				.response(responseBuilder().responseCode("200").implementationArray(Position.class))).build()
+						.operationId("findAll").description("Get all positions").tags(new String[] { "positions" })
+						.response(responseBuilder().responseCode("200").implementationArray(Position.class))).build()
 
 				.and(route().GET("/getPosition/{id}", accept(MediaType.APPLICATION_STREAM_JSON), HANDLER_FUNCTION, ops -> ops
 						.operationId("findById").description("Find all").tags(new String[] { "positions" })

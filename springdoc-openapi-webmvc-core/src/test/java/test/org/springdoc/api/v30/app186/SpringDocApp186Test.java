@@ -46,31 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		"springdoc.group-configs[0].paths-to-match=${management.endpoints.web.base-path:/actuator}/**",
 		"management.endpoints.enabled-by-default=true",
 		"management.endpoints.web.exposure.include=*",
-		"management.endpoints.web.exposure.exclude=functions, shutdown"})
+		"management.endpoints.web.exposure.exclude=functions, shutdown" })
 public class SpringDocApp186Test extends AbstractSpringDocV30Test {
-
-	@SpringBootApplication
-	static class SpringDocTestApp {
-
-		@Bean
-		public GroupedOpenApi asCodeCheckBackwardsCompatibility(OpenApiCustomiser actuatorOpenApiCustomiser,
-				OperationCustomizer actuatorCustomizer, WebEndpointProperties endpointProperties) {
-			return GroupedOpenApi.builder()
-					.group("group-actuator-as-code-check-backwards-compatibility")
-					.pathsToMatch(endpointProperties.getBasePath()+ ALL_PATTERN)
-					.addOpenApiCustomiser(actuatorOpenApiCustomiser)
-					.addOperationCustomizer(actuatorCustomizer)
-					.build();
-		}
-
-		@Bean
-		public GroupedOpenApi asCode(WebEndpointProperties endpointProperties) {
-			return GroupedOpenApi.builder()
-					.group("group-actuator-as-code")
-					.pathsToMatch(endpointProperties.getBasePath()+ ALL_PATTERN)
-					.build();
-		}
-	}
 
 	@Test
 	public void testApp() throws Exception {
@@ -102,6 +79,29 @@ public class SpringDocApp186Test extends AbstractSpringDocV30Test {
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(status().isOk())
 				.andExpect(content().json(getContent("results/3.0.1/app186.json"), true));
+	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {
+
+		@Bean
+		public GroupedOpenApi asCodeCheckBackwardsCompatibility(OpenApiCustomiser actuatorOpenApiCustomiser,
+				OperationCustomizer actuatorCustomizer, WebEndpointProperties endpointProperties) {
+			return GroupedOpenApi.builder()
+					.group("group-actuator-as-code-check-backwards-compatibility")
+					.pathsToMatch(endpointProperties.getBasePath() + ALL_PATTERN)
+					.addOpenApiCustomiser(actuatorOpenApiCustomiser)
+					.addOperationCustomizer(actuatorCustomizer)
+					.build();
+		}
+
+		@Bean
+		public GroupedOpenApi asCode(WebEndpointProperties endpointProperties) {
+			return GroupedOpenApi.builder()
+					.group("group-actuator-as-code")
+					.pathsToMatch(endpointProperties.getBasePath() + ALL_PATTERN)
+					.build();
+		}
 	}
 
 }

@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Bean;
 
 public class SpringDocApp1Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.configuration","test.org.springdoc.api.app1" })
+	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.configuration", "test.org.springdoc.api.app1" })
 	static class SpringDocTestApp {
 		@Bean
 		public OpenAPI customOpenAPI() {

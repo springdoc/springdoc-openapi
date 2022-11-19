@@ -2,20 +2,21 @@ package test.org.springdoc.api.v30.app190;
 
 public class SimpleInnerClass {
 
-    private SimpleInnerInnerClass innerInnerClass;
+	private SimpleInnerInnerClass innerInnerClass;
 
-    private Boolean name;
-    private Integer maxNumber;
+	private Boolean name;
 
-    public Integer getMaxNumber() {
-        return maxNumber;
-    }
+	private Integer maxNumber;
 
-    public Boolean getName() {
-        return name;
-    }
+	public Integer getMaxNumber() {
+		return maxNumber;
+	}
 
-    public SimpleInnerInnerClass getInnerInnerClass() {
-        return innerInnerClass;
-    }
+	public Boolean getName() {
+		return name;
+	}
+
+	public SimpleInnerInnerClass getInnerInnerClass() {
+		return innerInnerClass;
+	}
 }

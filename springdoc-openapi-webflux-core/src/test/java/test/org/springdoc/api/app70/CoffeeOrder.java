@@ -4,44 +4,45 @@ import java.time.Instant;
 import java.util.Objects;
 
 public class CoffeeOrder {
-    private String coffeeId;
-    private Instant whenOrdered;
+	private String coffeeId;
 
-    public CoffeeOrder() {
-    }
+	private Instant whenOrdered;
 
-    public CoffeeOrder(String coffeeId, Instant whenOrdered) {
-        this.coffeeId = coffeeId;
-        this.whenOrdered = whenOrdered;
-    }
+	public CoffeeOrder() {
+	}
 
-    public String getCoffeeId() {
-        return coffeeId;
-    }
+	public CoffeeOrder(String coffeeId, Instant whenOrdered) {
+		this.coffeeId = coffeeId;
+		this.whenOrdered = whenOrdered;
+	}
 
-    public Instant getWhenOrdered() {
-        return whenOrdered;
-    }
+	public String getCoffeeId() {
+		return coffeeId;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CoffeeOrder that = (CoffeeOrder) o;
-        return Objects.equals(coffeeId, that.coffeeId) &&
-                Objects.equals(whenOrdered, that.whenOrdered);
-    }
+	public Instant getWhenOrdered() {
+		return whenOrdered;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(coffeeId, whenOrdered);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CoffeeOrder that = (CoffeeOrder) o;
+		return Objects.equals(coffeeId, that.coffeeId) &&
+				Objects.equals(whenOrdered, that.whenOrdered);
+	}
 
-    @Override
-    public String toString() {
-        return "CoffeeOrder{" +
-                "coffeeId='" + coffeeId + '\'' +
-                ", whenOrdered=" + whenOrdered +
-                '}';
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(coffeeId, whenOrdered);
+	}
+
+	@Override
+	public String toString() {
+		return "CoffeeOrder{" +
+				"coffeeId='" + coffeeId + '\'' +
+				", whenOrdered=" + whenOrdered +
+				'}';
+	}
 }

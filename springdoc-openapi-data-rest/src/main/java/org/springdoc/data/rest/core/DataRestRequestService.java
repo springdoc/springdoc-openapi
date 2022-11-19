@@ -156,7 +156,7 @@ public class DataRestRequestService {
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
 					AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()),
 					io.swagger.v3.oas.annotations.Parameter.class);
-			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder,parameterDoc);
+			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder, parameterDoc);
 			if (isParamToIgnore(methodParameter)) {
 				if (PersistentEntityResource.class.equals(methodParameter.getParameterType())) {
 					Schema<?> schema = SpringDocAnnotationsUtils.resolveSchemaFromType(domainType, openAPI.getComponents(), null, methodParameter.getParameterAnnotations());
@@ -174,7 +174,7 @@ public class DataRestRequestService {
 				}
 				if (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()))
 					parameter = requestBuilder.buildParams(parameterInfo, openAPI.getComponents(), requestMethod, null,
-																								 openAPI.getOpenapi());
+							openAPI.getOpenapi());
 
 				addParameters(openAPI, requestMethod, methodAttributes, operation, methodParameter, parameterInfo, parameter);
 			}

@@ -22,8 +22,8 @@ package test.org.springdoc.api.app165;
  * The type Bar.
  */
 public class Bar {
-    /**
-     * The BarField.
-     */
-    public String barField = "bar";
+	/**
+	 * The BarField.
+	 */
+	public String barField = "bar";
 }

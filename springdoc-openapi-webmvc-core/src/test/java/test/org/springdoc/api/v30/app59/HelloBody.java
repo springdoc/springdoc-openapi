@@ -28,9 +28,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class HelloBody {
 
-    @NotNull
+	@NotNull
 	@JsonProperty
-    private String helloValue;
-
+	private String helloValue;
 
 }

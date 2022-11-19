@@ -12,23 +12,24 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class FooResourceAssembler
-    implements SimpleRepresentationModelAssembler<Foo> {
+		implements SimpleRepresentationModelAssembler<Foo> {
 
-  @Override
-  public void addLinks(EntityModel<Foo> resource) {
-   Foo foo   = resource.getContent();
-    if (foo != null) {
-      try {
-        resource.add(
-            linkTo(methodOn(FooController.class).getFoo(UUID.fromString(foo.getFoo()))).withSelfRel());
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-  }
+	@Override
+	public void addLinks(EntityModel<Foo> resource) {
+		Foo foo = resource.getContent();
+		if (foo != null) {
+			try {
+				resource.add(
+						linkTo(methodOn(FooController.class).getFoo(UUID.fromString(foo.getFoo()))).withSelfRel());
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-  @Override
-  public void addLinks(CollectionModel<EntityModel<Foo>> resources) {
+	@Override
+	public void addLinks(CollectionModel<EntityModel<Foo>> resources) {
 
-  }
+	}
 }

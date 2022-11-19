@@ -84,6 +84,11 @@ public class GenericResponseService {
 	private static final String EXTENSION_EXCEPTION_CLASSES = "x-exception-class";
 
 	/**
+	 * The Response entity exception handler class.
+	 */
+	private static Class<?> responseEntityExceptionHandlerClass;
+
+	/**
 	 * The Operation builder.
 	 */
 	private final OperationService operationService;
@@ -114,11 +119,6 @@ public class GenericResponseService {
 	private final List<ControllerAdviceInfo> controllerAdviceInfos = new ArrayList<>();
 
 	/**
-	 * The Response entity exception handler class.
-	 */
-	private static Class<?> responseEntityExceptionHandlerClass;
-
-	/**
 	 * Instantiates a new Generic response builder.
 	 *
 	 * @param operationService the operation builder
@@ -134,6 +134,72 @@ public class GenericResponseService {
 		this.returnTypeParsers = returnTypeParsers;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.propertyResolverUtils = propertyResolverUtils;
+	}
+
+	/**
+	 * Build content from doc.
+	 *
+	 * @param components the components
+	 * @param apiResponsesOp the api responses op
+	 * @param methodAttributes the method attributes
+	 * @param apiResponseAnnotations the api response annotations
+	 * @param apiResponse the api response
+	 */
+	public static void buildContentFromDoc(Components components, ApiResponses apiResponsesOp,
+			MethodAttributes methodAttributes,
+			io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations,
+			ApiResponse apiResponse) {
+
+		io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
+		Optional<Content> optionalContent = getContent(contentdoc, new String[0],
+				methodAttributes.getMethodProduces(), null, components, methodAttributes.getJsonViewAnnotation());
+		if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
+			// Merge with the existing content
+			Content existingContent = apiResponsesOp.get(apiResponseAnnotations.responseCode()).getContent();
+			if (optionalContent.isPresent()) {
+				Content newContent = optionalContent.get();
+				if (methodAttributes.isMethodOverloaded() && existingContent != null) {
+					Arrays.stream(methodAttributes.getMethodProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> {
+						if (newContent.get(mediaTypeStr).getSchema() != null)
+							mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr);
+					});
+					apiResponse.content(existingContent);
+				}
+				else
+					apiResponse.content(newContent);
+			}
+			else {
+				apiResponse.content(existingContent);
+			}
+		}
+		else {
+			optionalContent.ifPresent(apiResponse::content);
+		}
+	}
+
+	/**
+	 * Sets description.
+	 *
+	 * @param httpCode the http code
+	 * @param apiResponse the api response
+	 */
+	public static void setDescription(String httpCode, ApiResponse apiResponse) {
+		try {
+			HttpStatus httpStatus = HttpStatus.valueOf(Integer.parseInt(httpCode));
+			apiResponse.setDescription(httpStatus.getReasonPhrase());
+		}
+		catch (IllegalArgumentException e) {
+			apiResponse.setDescription(DEFAULT_DESCRIPTION);
+		}
+	}
+
+	/**
+	 * Sets response entity exception handler class.
+	 *
+	 * @param responseEntityExceptionHandlerClass the response entity exception handler class
+	 */
+	public static void setResponseEntityExceptionHandlerClass(Class<?> responseEntityExceptionHandlerClass) {
+		GenericResponseService.responseEntityExceptionHandlerClass = responseEntityExceptionHandlerClass;
 	}
 
 	/**
@@ -295,47 +361,6 @@ public class GenericResponseService {
 			}
 		}
 		return apiResponsesOp;
-	}
-
-	/**
-	 * Build content from doc.
-	 *
-	 * @param components the components
-	 * @param apiResponsesOp the api responses op
-	 * @param methodAttributes the method attributes
-	 * @param apiResponseAnnotations the api response annotations
-	 * @param apiResponse the api response
-	 */
-	public static void buildContentFromDoc(Components components, ApiResponses apiResponsesOp,
-			MethodAttributes methodAttributes,
-			io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations,
-			ApiResponse apiResponse) {
-
-		io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
-		Optional<Content> optionalContent = getContent(contentdoc, new String[0],
-				methodAttributes.getMethodProduces(), null, components, methodAttributes.getJsonViewAnnotation());
-		if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
-			// Merge with the existing content
-			Content existingContent = apiResponsesOp.get(apiResponseAnnotations.responseCode()).getContent();
-			if (optionalContent.isPresent()) {
-				Content newContent = optionalContent.get();
-				if (methodAttributes.isMethodOverloaded() && existingContent != null) {
-					Arrays.stream(methodAttributes.getMethodProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> {
-						if (newContent.get(mediaTypeStr).getSchema() != null)
-							mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr);
-					});
-					apiResponse.content(existingContent);
-				}
-				else
-					apiResponse.content(newContent);
-			}
-			else {
-				apiResponse.content(existingContent);
-			}
-		}
-		else {
-			optionalContent.ifPresent(apiResponse::content);
-		}
 	}
 
 	/**
@@ -586,22 +611,6 @@ public class GenericResponseService {
 	}
 
 	/**
-	 * Sets description.
-	 *
-	 * @param httpCode the http code
-	 * @param apiResponse the api response
-	 */
-	public static void setDescription(String httpCode, ApiResponse apiResponse) {
-		try {
-			HttpStatus httpStatus = HttpStatus.valueOf(Integer.parseInt(httpCode));
-			apiResponse.setDescription(httpStatus.getReasonPhrase());
-		}
-		catch (IllegalArgumentException e) {
-			apiResponse.setDescription(DEFAULT_DESCRIPTION);
-		}
-	}
-
-	/**
 	 * Evaluate response status string.
 	 *
 	 * @param method the method
@@ -707,14 +716,5 @@ public class GenericResponseService {
 	 */
 	private boolean isHttpCodePresent(String httpCode, Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responseSet) {
 		return !responseSet.isEmpty() && responseSet.stream().anyMatch(apiResponseAnnotations -> httpCode.equals(apiResponseAnnotations.responseCode()));
-	}
-
-	/**
-	 * Sets response entity exception handler class.
-	 *
-	 * @param responseEntityExceptionHandlerClass the response entity exception handler class
-	 */
-	public static void setResponseEntityExceptionHandlerClass(Class<?> responseEntityExceptionHandlerClass) {
-		GenericResponseService.responseEntityExceptionHandlerClass = responseEntityExceptionHandlerClass;
 	}
 }

@@ -45,12 +45,9 @@ class SpringDocApp20Test extends AbstractCommonTest {
 
 	private WebClient webClient;
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@PostConstruct
-	void init(){
-		webClient =	WebClient.builder().baseUrl("http://localhost:"+port)
+	void init() {
+		webClient = WebClient.builder().baseUrl("http://localhost:" + port)
 				.build();
 	}
 
@@ -64,12 +61,13 @@ class SpringDocApp20Test extends AbstractCommonTest {
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.OK);
 
-		String contentAsString  = webClient.get().uri("/test/v3/api-docs/swagger-config").retrieve()
+		String contentAsString = webClient.get().uri("/test/v3/api-docs/swagger-config").retrieve()
 				.bodyToMono(String.class).block();
 		String expected = getContent("results/app20-1.json");
 		assertEquals(expected, contentAsString, true);
 	}
 
-
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

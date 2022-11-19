@@ -74,6 +74,11 @@ public class RouterFunctionWebMvcProvider implements RouterFunctionProvider, App
 		return Optional.of(routerFunctionVisitorMap);
 	}
 
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
+
 	/**
 	 * The type Router function visitor.
 	 * @author bnasslahsen
@@ -113,10 +118,5 @@ public class RouterFunctionWebMvcProvider implements RouterFunctionProvider, App
 			commonEndNested();
 		}
 
-	}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
 	}
 }

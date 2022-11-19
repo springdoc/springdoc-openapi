@@ -40,6 +40,18 @@ import org.apache.commons.lang3.ArrayUtils;
 public class Builder {
 
 	/**
+	 * The schema properties defined for schema provided in @Schema
+	 *
+	 */
+	private final Schema additionalPropertiesSchema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+
+	/**
+	 * The schema properties defined for schema provided in @Schema
+	 *
+	 */
+	private final SchemaProperty[] schemaProperties = {};
+
+	/**
 	 * The media type that this object applies to.
 	 *
 	 */
@@ -76,19 +88,6 @@ public class Builder {
 	 */
 	private Extension[] extensions = {};
 
-
-	/**
-	 * The schema properties defined for schema provided in @Schema
-	 *
-	 */
-	private final Schema additionalPropertiesSchema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
-
-	/**
-	 * The schema properties defined for schema provided in @Schema
-	 *
-	 */
-	private final SchemaProperty[] schemaProperties = {};
-
 	/**
 	 * Instantiates a new Content builder.
 	 */
@@ -122,7 +121,7 @@ public class Builder {
 	 * @return the content builder
 	 */
 	public Builder example(org.springdoc.core.fn.builders.exampleobject.Builder exampleObjectBuilder) {
-		this.examples =  ArrayUtils.add( this.examples, exampleObjectBuilder.build());
+		this.examples = ArrayUtils.add(this.examples, exampleObjectBuilder.build());
 		return this;
 	}
 
@@ -155,7 +154,7 @@ public class Builder {
 	 * @return the content builder
 	 */
 	public Builder encoding(org.springdoc.core.fn.builders.encoding.Builder encodingBuilder) {
-		this.encodings = ArrayUtils.add( this.encodings, encodingBuilder.build());
+		this.encodings = ArrayUtils.add(this.encodings, encodingBuilder.build());
 		return this;
 	}
 
@@ -166,7 +165,7 @@ public class Builder {
 	 * @return the content builder
 	 */
 	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
-		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
+		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}
 
@@ -176,7 +175,7 @@ public class Builder {
 	 * @return the content
 	 */
 	public Content build() {
-		return new Content(){
+		return new Content() {
 
 			@Override
 			public Class<? extends Annotation> annotationType() {

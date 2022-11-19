@@ -24,6 +24,7 @@ import org.springframework.hateoas.server.core.Relation;
 public class CompanyDto extends RepresentationModel<CompanyDto> {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private UUID id;
+
 	@NotNull
 	private String name;
 }

@@ -36,31 +36,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class SpringDocApp178Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	void testFilterOnlyPicksUpMatchedMethods() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/annotatedGroup1"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.openapi", is("3.0.1")))
-			.andExpect(content().json(getContent("results/3.0.1/app178-1.json"), true));
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.openapi", is("3.0.1")))
+				.andExpect(content().json(getContent("results/3.0.1/app178-1.json"), true));
 	}
 
 	@Test
 	void testFilterOnlyPicksUpMatchedMethodsWithDifferentFilter() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/annotatedGroup2"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.openapi", is("3.0.1")))
-			.andExpect(content().json(getContent("results/3.0.1/app178-2.json"), true));
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.openapi", is("3.0.1")))
+				.andExpect(content().json(getContent("results/3.0.1/app178-2.json"), true));
 	}
 
 	@Test
 	void testFilterOnlyPicksUpCombinedMatchedMethods() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/annotatedCombinedGroup"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.openapi", is("3.0.1")))
-			.andExpect(content().json(getContent("results/3.0.1/app178-3.json"), true));
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.openapi", is("3.0.1")))
+				.andExpect(content().json(getContent("results/3.0.1/app178-3.json"), true));
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

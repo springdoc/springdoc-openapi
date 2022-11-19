@@ -127,9 +127,9 @@ class PersonService {
 	private final AtomicLong counter = new AtomicLong();
 
 	private final Set<Person> people = Stream.of(
-			new Person(counter.incrementAndGet(), "Jane"),
-			new Person(counter.incrementAndGet(), "Josh"),
-			new Person(counter.incrementAndGet(), "Gordon"))
+					new Person(counter.incrementAndGet(), "Jane"),
+					new Person(counter.incrementAndGet(), "Josh"),
+					new Person(counter.incrementAndGet(), "Gordon"))
 			.collect(Collectors.toCollection(HashSet::new));
 
 
@@ -154,14 +154,14 @@ class PersonService {
 
 class Person {
 
+	private Long id;
+
+	private String name;
+
 	public Person(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
-
-	private Long id;
-
-	private String name;
 
 	public Long getId() {
 		return id;

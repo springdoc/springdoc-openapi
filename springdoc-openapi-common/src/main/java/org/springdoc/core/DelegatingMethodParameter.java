@@ -56,6 +56,11 @@ import org.springframework.lang.Nullable;
 public class DelegatingMethodParameter extends MethodParameter {
 
 	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(DelegatingMethodParameter.class);
+
+	/**
 	 * The Delegate.
 	 */
 	private final MethodParameter delegate;
@@ -79,11 +84,6 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * The Is not required.
 	 */
 	private boolean isNotRequired;
-
-	/**
-	 * The constant LOGGER.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(DelegatingMethodParameter.class);
 
 	/**
 	 * Instantiates a new Delegating method parameter.
@@ -147,6 +147,28 @@ public class DelegatingMethodParameter extends MethodParameter {
 			}
 		}
 		return explodedParameters.toArray(new MethodParameter[0]);
+	}
+
+	/**
+	 * Return a variant of this {@code MethodParameter} which refers to the
+	 * given containing class.
+	 * @param methodParameter the method parameter
+	 * @param containingClass a specific containing class (potentially a subclass of the declaring class, e.g. substituting a type variable) A copy of spring withContainingClass, to keep compatibility with older spring versions
+	 * @return the method parameter
+	 * @see #getParameterType() #getParameterType()
+	 */
+	public static MethodParameter changeContainingClass(MethodParameter methodParameter, @Nullable Class<?> containingClass) {
+		MethodParameter result = methodParameter.clone();
+		try {
+			Field containingClassField = FieldUtils.getDeclaredField(result.getClass(), "containingClass", true);
+			containingClassField.set(result, containingClass);
+			Field parameterTypeField = FieldUtils.getDeclaredField(result.getClass(), "parameterType", true);
+			parameterTypeField.set(result, null);
+		}
+		catch (IllegalAccessException e) {
+			LOGGER.warn(e.getMessage());
+		}
+		return result;
 	}
 
 	@Override
@@ -268,28 +290,6 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 */
 	public boolean isParameterObject() {
 		return isParameterObject;
-	}
-
-	/**
-	 * Return a variant of this {@code MethodParameter} which refers to the
-	 * given containing class.
-	 * @param methodParameter the method parameter
-	 * @param containingClass a specific containing class (potentially a subclass of the declaring class, e.g. substituting a type variable) A copy of spring withContainingClass, to keep compatibility with older spring versions
-	 * @return the method parameter
-	 * @see #getParameterType() #getParameterType()
-	 */
-	public static MethodParameter changeContainingClass(MethodParameter methodParameter, @Nullable Class<?> containingClass) {
-		MethodParameter result = methodParameter.clone();
-		try {
-			Field containingClassField = FieldUtils.getDeclaredField(result.getClass(), "containingClass", true);
-			containingClassField.set(result, containingClass);
-			Field parameterTypeField = FieldUtils.getDeclaredField(result.getClass(), "parameterType", true);
-			parameterTypeField.set(result, null);
-		}
-		catch (IllegalAccessException e) {
-			LOGGER.warn(e.getMessage());
-		}
-		return result;
 	}
 
 }

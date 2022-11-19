@@ -31,10 +31,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-		properties = {"spring.jackson.property-naming-strategy=UPPER_CAMEL_CASE", "springdoc.show-actuator=true",
+		properties = { "spring.jackson.property-naming-strategy=UPPER_CAMEL_CASE", "springdoc.show-actuator=true",
 				"management.endpoints.web.base-path=/management",
 				"server.servlet.context-path=/demo/api", "management.server.port=9002", "management.server.base-path=/demo/api" })
-public class SpringDocSwaggerConfigTest  extends AbstractSpringDocActuatorTest {
+public class SpringDocSwaggerConfigTest extends AbstractSpringDocActuatorTest {
 
 	@Test
 	public void testIndexSwaggerConfig() throws Exception {

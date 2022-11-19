@@ -27,24 +27,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OperationIdController {
 
-    @GetMapping(path = "/test_0") // gets operationId opIdTest_3
-    public Mono<String> opIdTest() {
-        return null;
-    }
+	@GetMapping(path = "/test_0") // gets operationId opIdTest_3
+	public Mono<String> opIdTest() {
+		return null;
+	}
 
-    @GetMapping(path = "/test_1") // gets operationId opIdTest_2
-    public Mono<String> opIdTest(@RequestParam String param) {
-        return null;
-    }
+	@GetMapping(path = "/test_1") // gets operationId opIdTest_2
+	public Mono<String> opIdTest(@RequestParam String param) {
+		return null;
+	}
 
-    @GetMapping(path = "/test_2") // gets operationId opIdTest_1
-    public Mono<String> opIdTest(@RequestParam Integer param) {
-        return null;
-    }
+	@GetMapping(path = "/test_2") // gets operationId opIdTest_1
+	public Mono<String> opIdTest(@RequestParam Integer param) {
+		return null;
+	}
 
-    @GetMapping(path = "/test_3") // gets operationId opIdTest
-    public Mono<String> opIdTest(@RequestParam Boolean param) {
-        return null;
-    }
+	@GetMapping(path = "/test_3") // gets operationId opIdTest
+	public Mono<String> opIdTest(@RequestParam Boolean param) {
+		return null;
+	}
 
 }

@@ -37,13 +37,13 @@ public class HelloController {
 		return new ResponseEntity<>("{\"Say\": \"Hello\"}", HttpStatus.OK);
 	}
 
-	@GetMapping( "/nestedTypeErasureGeneric")
-	public ResponseEntity<String> nestedTypeErasureGeneric( @ParameterObject final SimpleGeneric<MyData> filter) {
+	@GetMapping("/nestedTypeErasureGeneric")
+	public ResponseEntity<String> nestedTypeErasureGeneric(@ParameterObject final SimpleGeneric<MyData> filter) {
 		return new ResponseEntity<>("{\"Say\": \"Hello\"}", HttpStatus.OK);
 	}
 
-	@GetMapping( "/nestedReifiableGeneric")
-	public ResponseEntity<String> nestedReifiableGeneric( @ParameterObject final ConcreteSubclassFromGeneric filter) {
+	@GetMapping("/nestedReifiableGeneric")
+	public ResponseEntity<String> nestedReifiableGeneric(@ParameterObject final ConcreteSubclassFromGeneric filter) {
 		return new ResponseEntity<>("{\"Say\": \"Hello\"}", HttpStatus.OK);
 	}
 }

@@ -70,7 +70,7 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		try {
-			boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/"+SWAGGER_INITIALIZER_JS, resource.getURL().toString());
+			boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/" + SWAGGER_INITIALIZER_JS, resource.getURL().toString());
 			if (isIndexFound) {
 				String html = defaultTransformations(resource.getInputStream());
 				return Mono.just(new TransformedResource(resource, html.getBytes()));

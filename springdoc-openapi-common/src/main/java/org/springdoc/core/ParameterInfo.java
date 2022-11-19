@@ -43,6 +43,11 @@ import org.springframework.web.bind.annotation.ValueConstants;
 public class ParameterInfo {
 
 	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterInfo.class);
+
+	/**
 	 * The Method parameter.
 	 */
 	private final MethodParameter methodParameter;
@@ -81,11 +86,6 @@ public class ParameterInfo {
 	 * The Parameter id.
 	 */
 	private ParameterId parameterId;
-
-	/**
-	 * The constant LOGGER.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterInfo.class);
 
 	/**
 	 * Instantiates a new Parameter info.
@@ -130,11 +130,11 @@ public class ParameterInfo {
 		}
 
 		this.required = this.required && !methodParameter.isOptional();
-		if (parameterAnnotation != null){
+		if (parameterAnnotation != null) {
 			this.parameterId = new ParameterId(parameterAnnotation);
-			if(StringUtils.isBlank(parameterId.getpName()))
+			if (StringUtils.isBlank(parameterId.getpName()))
 				this.parameterId.setpName(this.pName);
-			if(StringUtils.isBlank(parameterId.getParamType()))
+			if (StringUtils.isBlank(parameterId.getParamType()))
 				this.parameterId.setParamType(this.paramType);
 		}
 		else
@@ -196,12 +196,30 @@ public class ParameterInfo {
 	}
 
 	/**
+	 * Sets required.
+	 *
+	 * @param required the required
+	 */
+	public void setRequired(boolean required) {
+		this.required = required;
+	}
+
+	/**
 	 * Gets default value.
 	 *
 	 * @return the default value
 	 */
 	public Object getDefaultValue() {
 		return defaultValue;
+	}
+
+	/**
+	 * Sets default value.
+	 *
+	 * @param defaultValue the default value
+	 */
+	public void setDefaultValue(Object defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 
 	/**
@@ -220,24 +238,6 @@ public class ParameterInfo {
 	 */
 	public void setParamType(String paramType) {
 		this.paramType = paramType;
-	}
-
-	/**
-	 * Sets required.
-	 *
-	 * @param required the required
-	 */
-	public void setRequired(boolean required) {
-		this.required = required;
-	}
-
-	/**
-	 * Sets default value.
-	 *
-	 * @param defaultValue the default value
-	 */
-	public void setDefaultValue(Object defaultValue) {
-		this.defaultValue = defaultValue;
 	}
 
 	/**

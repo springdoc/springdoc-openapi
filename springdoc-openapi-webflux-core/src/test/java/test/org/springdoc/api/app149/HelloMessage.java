@@ -20,6 +20,7 @@ package test.org.springdoc.api.app149;
 
 public class HelloMessage {
 	public String text;
+
 	public int number;
 
 	public HelloMessage(String text, int number) {

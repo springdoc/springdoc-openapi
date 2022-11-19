@@ -36,9 +36,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 				"management.endpoints.web.base-path=/application" })
 class SpringDocApp17Test extends AbstractSpringDocActuatorTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	void testIndex() {
 		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/webjars/swagger-ui/index.html")
@@ -48,5 +45,8 @@ class SpringDocApp17Test extends AbstractSpringDocActuatorTest {
 		String contentAsString = new String(getResult.getResponseBody());
 		assertTrue(contentAsString.contains("Swagger UI"));
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

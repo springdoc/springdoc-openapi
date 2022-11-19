@@ -13,7 +13,7 @@ public class ErrorDTO {
 	 * Instantiates a new Error dto.
 	 */
 	public ErrorDTO() {
-    }
+	}
 
 	/**
 	 * Instantiates a new Error dto.
@@ -21,8 +21,8 @@ public class ErrorDTO {
 	 * @param message the message
 	 */
 	public ErrorDTO(String message) {
-        this.message = message;
-    }
+		this.message = message;
+	}
 
 	/**
 	 * Gets message.
@@ -30,8 +30,8 @@ public class ErrorDTO {
 	 * @return the message
 	 */
 	public String getMessage() {
-        return message;
-    }
+		return message;
+	}
 
 	/**
 	 * Sets message.
@@ -39,6 +39,6 @@ public class ErrorDTO {
 	 * @param message the message
 	 */
 	public void setMessage(String message) {
-        this.message = message;
-    }
+		this.message = message;
+	}
 }

@@ -11,7 +11,7 @@ public class Umbrella {
 	 * The Object.
 	 */
 	@Schema(description = "This reference to abstract class causes weird YAML tag to be added", anyOf = ConcreteObjectA.class)
-  private final AbstractObject object;
+	private final AbstractObject object;
 
 	/**
 	 * Instantiates a new Umbrella.
@@ -19,8 +19,8 @@ public class Umbrella {
 	 * @param object the object
 	 */
 	public Umbrella(AbstractObject object) {
-    this.object = object;
-  }
+		this.object = object;
+	}
 
 	/**
 	 * Gets object.
@@ -28,6 +28,6 @@ public class Umbrella {
 	 * @return the object
 	 */
 	public AbstractObject getObject() {
-    return object;
-  }
+		return object;
+	}
 }

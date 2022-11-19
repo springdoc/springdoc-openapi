@@ -126,8 +126,8 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 									stringSchemaEntry.getValue().setDescription(fieldJavadoc);
 							});
 						});
-            fields.stream().filter(f -> f.isAnnotationPresent(JsonUnwrapped.class))
-                    .forEach(f -> setJavadocDescription(f.getType(), FieldUtils.getAllFieldsList(f.getType()), existingSchema));
+			fields.stream().filter(f -> f.isAnnotationPresent(JsonUnwrapped.class))
+					.forEach(f -> setJavadocDescription(f.getType(), FieldUtils.getAllFieldsList(f.getType()), existingSchema));
 
 		}
 	}

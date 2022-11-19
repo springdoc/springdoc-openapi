@@ -314,11 +314,6 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 public class SpringDocHints implements InitializingBean {
 
 	/**
-	 * The Swagger ui config properties.
-	 */
-	private final Optional<SwaggerUiConfigProperties> optionalSwaggerUiConfigProperties;
-
-	/**
 	 * The constant SPRINGDOC_CONFIG_PROPERTIES.
 	 */
 	public static final String SPRINGDOC_CONFIG_PROPERTIES = "springdoc.config.properties";
@@ -327,6 +322,11 @@ public class SpringDocHints implements InitializingBean {
 	 * The constant SPRINGDOC_SWAGGERUI_VERSION.
 	 */
 	private static final String SPRINGDOC_SWAGGERUI_VERSION = "springdoc.swagger-ui.version";
+
+	/**
+	 * The Swagger ui config properties.
+	 */
+	private final Optional<SwaggerUiConfigProperties> optionalSwaggerUiConfigProperties;
 
 	/**
 	 * Instantiates a new Spring doc hints.

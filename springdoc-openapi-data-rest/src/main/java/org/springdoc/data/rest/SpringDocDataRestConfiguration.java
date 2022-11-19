@@ -98,32 +98,6 @@ public class SpringDocDataRestConfiguration {
 		return new DataRestHalProvider(repositoryRestConfiguration, hateoasPropertiesOptional, objectMapperProvider);
 	}
 
-
-	/**
-	 * The type Querydsl provider.
-	 * @author bnasslashen
-	 */
-	@ConditionalOnClass(value = { QuerydslBindingsFactory.class })
-	class QuerydslProvider {
-
-		/**
-		 * Query dsl querydsl predicate operation customizer querydsl predicate operation customizer.
-		 *
-		 * @param querydslBindingsFactory the querydsl bindings factory
-		 * @return the querydsl predicate operation customizer
-		 */
-		@Bean
-		@ConditionalOnMissingBean
-		@Lazy(false)
-		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
-			if (querydslBindingsFactory.isPresent()) {
-				getConfig().addRequestWrapperToIgnore(Predicate.class);
-				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get());
-			}
-			return null;
-		}
-	}
-
 	/**
 	 * The type Spring repository rest resource provider configuration.
 	 * @author bnasslashen
@@ -255,6 +229,31 @@ public class SpringDocDataRestConfiguration {
 		@Lazy(false)
 		SpringDocDataRestUtils springDocDataRestUtils(LinkRelationProvider linkRelationProvider, RepositoryRestConfiguration repositoryRestConfiguration) {
 			return new SpringDocDataRestUtils(linkRelationProvider, repositoryRestConfiguration);
+		}
+	}
+
+	/**
+	 * The type Querydsl provider.
+	 * @author bnasslashen
+	 */
+	@ConditionalOnClass(value = { QuerydslBindingsFactory.class })
+	class QuerydslProvider {
+
+		/**
+		 * Query dsl querydsl predicate operation customizer querydsl predicate operation customizer.
+		 *
+		 * @param querydslBindingsFactory the querydsl bindings factory
+		 * @return the querydsl predicate operation customizer
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
+			if (querydslBindingsFactory.isPresent()) {
+				getConfig().addRequestWrapperToIgnore(Predicate.class);
+				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get());
+			}
+			return null;
 		}
 	}
 

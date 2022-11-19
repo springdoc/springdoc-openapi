@@ -58,11 +58,31 @@ public class SpringDocApp138Test extends AbstractSpringDocV30Test {
 	@Autowired
 	ObjectMapperProvider objectMapperProvider;
 
+	private static Map<String, Object> apiExtensions() {
+		Map extensions = new HashMap<String, Object>();
+
+		Map linkedMap = new LinkedHashMap<String, String>();
+		linkedMap.put("property1", "value1");
+		linkedMap.put("property2", null);
+
+		extensions.put("x-my-vendor-extensions", linkedMap);
+		return extensions;
+	}
+
 	@BeforeEach
 	void init() throws IllegalAccessException {
 		Field conField = FieldUtils.getDeclaredField(ObjectMapperProvider.class, "jsonMapper", true);
 		ObjectMapper mapper = SpringDocObjectMapperFactory.createJson();
 		conField.set(objectMapperProvider, mapper);
+	}
+
+	@Test
+	public void testApp() throws Exception {
+		MvcResult mockMvcResult = mockMvc.perform(MockMvcRequestBuilders.get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
+		String result = mockMvcResult.getResponse().getContentAsString();
+		String expected = getContent("results/3.0.1/app138.json");
+		Assertions.assertEquals(expected, result);
 	}
 
 	private static class SpringDocObjectMapperFactory extends ObjectMapperFactory {
@@ -78,26 +98,6 @@ public class SpringDocApp138Test extends AbstractSpringDocV30Test {
 			return new OpenAPI()
 					.extensions(apiExtensions());
 		}
-	}
-
-	private static Map<String, Object> apiExtensions() {
-		Map extensions = new HashMap<String, Object>();
-
-		Map linkedMap = new LinkedHashMap<String, String>();
-		linkedMap.put("property1", "value1");
-		linkedMap.put("property2", null);
-
-		extensions.put("x-my-vendor-extensions", linkedMap);
-		return extensions;
-	}
-
-	@Test
-	public void testApp() throws Exception {
-		MvcResult mockMvcResult = mockMvc.perform(MockMvcRequestBuilders.get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
-		String result = mockMvcResult.getResponse().getContentAsString();
-		String expected = getContent("results/3.0.1/app138.json");
-		Assertions.assertEquals(expected, result);
 	}
 
 }

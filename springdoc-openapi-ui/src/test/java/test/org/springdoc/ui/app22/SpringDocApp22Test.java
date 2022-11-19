@@ -28,11 +28,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties ={
+@TestPropertySource(properties = {
 		"springdoc.api-docs.enabled=false",
 		"springdoc.api-docs.path=/api-docs",
 		"springdoc.swagger-ui.url=/api-docs/xxx/v1/openapi.yml",
-} )
+})
 public class SpringDocApp22Test extends AbstractSpringDocTest {
 
 	@Test

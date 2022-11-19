@@ -75,77 +75,11 @@ public class MetaAnnotationController {
 		return accountId;
 	}
 
-	/**
-	 * This should inherent all the attributes of {@code @AccountId}, but give it a different name
-	 */
-	@Target({PARAMETER, METHOD, ANNOTATION_TYPE})
-	@Retention(RetentionPolicy.RUNTIME)
-	@AccountId(name = "queryAccountId")
-	@interface QueryAccountId {
-	}
-
 	@GetMapping(value = "/testMetaMetaAnnotation/{accountId}")
 	String testMetaMetaAnnotation(
 			@RequestParam @QueryAccountId String queryAccountId,
 			@PathVariable @AccountId String accountId) {
 		return accountId;
-	}
-
-	@Target({PARAMETER, METHOD, ANNOTATION_TYPE})
-	@Retention(RetentionPolicy.RUNTIME)
-	@Parameter
-	@interface TestAllAttributesAsAlias {
-
-		@AliasFor(annotation = Parameter.class, attribute="name")
-		String name() default "name";
-
-		@AliasFor(annotation = Parameter.class, attribute="in")
-		ParameterIn in() default ParameterIn.QUERY;
-
-		@AliasFor(annotation = Parameter.class, attribute="description")
-		String description() default "desc";
-
-		@AliasFor(annotation = Parameter.class, attribute="required")
-		boolean required() default true;
-
-		@AliasFor(annotation = Parameter.class, attribute="deprecated")
-		boolean deprecated() default true;
-
-		@AliasFor(annotation = Parameter.class, attribute="allowEmptyValue")
-		boolean allowEmptyValue() default true;
-
-		@AliasFor(annotation = Parameter.class, attribute="style")
-		ParameterStyle style() default ParameterStyle.DEEPOBJECT;
-
-		@AliasFor(annotation = Parameter.class, attribute="explode")
- 		Explode explode() default Explode.TRUE;
-
-		@AliasFor(annotation = Parameter.class, attribute="allowReserved")
-		boolean allowReserved() default true;
-
-		@AliasFor(annotation = Parameter.class, attribute="schema")
-		Schema schema() default @Schema(name = "special schema", implementation = Boolean.class);
-
-		@AliasFor(annotation = Parameter.class, attribute="array")
-		ArraySchema array() default @ArraySchema();
-
-		@AliasFor(annotation = Parameter.class, attribute="content")
-		Content[] content() default {};
-
-		@AliasFor(annotation = Parameter.class, attribute="hidden")
-		boolean hidden() default false;
-
-		@AliasFor(annotation = Parameter.class, attribute="examples")
-		ExampleObject[] examples() default {};
-
-		@AliasFor(annotation = Parameter.class, attribute="example")
-		String example() default "1234";
-
-		@AliasFor(annotation = Parameter.class, attribute="extensions")
-		Extension[] extensions() default {};
-
-		@AliasFor(annotation = Parameter.class, attribute="ref")
-		String ref() default "";
 	}
 
 	@GetMapping(value = "/testAllAttributesAsAlias/")
@@ -154,15 +88,81 @@ public class MetaAnnotationController {
 		return name;
 	}
 
-	@Target({PARAMETER, METHOD, ANNOTATION_TYPE})
-	@Retention(RetentionPolicy.RUNTIME)
-	@Parameter(name = "name", description = "desc", schema = @Schema(implementation = Boolean.class))
-	@interface TestNoAliasFors {
-	}
-
 	@GetMapping(value = "/testNoAliasFors/")
 	String testNoAliasFors(
 			@RequestParam @TestAllAttributesAsAlias String name) {
 		return name;
+	}
+
+	/**
+	 * This should inherent all the attributes of {@code @AccountId}, but give it a different name
+	 */
+	@Target({ PARAMETER, METHOD, ANNOTATION_TYPE })
+	@Retention(RetentionPolicy.RUNTIME)
+	@AccountId(name = "queryAccountId")
+	@interface QueryAccountId {
+	}
+
+	@Target({ PARAMETER, METHOD, ANNOTATION_TYPE })
+	@Retention(RetentionPolicy.RUNTIME)
+	@Parameter
+	@interface TestAllAttributesAsAlias {
+
+		@AliasFor(annotation = Parameter.class, attribute = "name")
+		String name() default "name";
+
+		@AliasFor(annotation = Parameter.class, attribute = "in")
+		ParameterIn in() default ParameterIn.QUERY;
+
+		@AliasFor(annotation = Parameter.class, attribute = "description")
+		String description() default "desc";
+
+		@AliasFor(annotation = Parameter.class, attribute = "required")
+		boolean required() default true;
+
+		@AliasFor(annotation = Parameter.class, attribute = "deprecated")
+		boolean deprecated() default true;
+
+		@AliasFor(annotation = Parameter.class, attribute = "allowEmptyValue")
+		boolean allowEmptyValue() default true;
+
+		@AliasFor(annotation = Parameter.class, attribute = "style")
+		ParameterStyle style() default ParameterStyle.DEEPOBJECT;
+
+		@AliasFor(annotation = Parameter.class, attribute = "explode")
+		Explode explode() default Explode.TRUE;
+
+		@AliasFor(annotation = Parameter.class, attribute = "allowReserved")
+		boolean allowReserved() default true;
+
+		@AliasFor(annotation = Parameter.class, attribute = "schema")
+		Schema schema() default @Schema(name = "special schema", implementation = Boolean.class);
+
+		@AliasFor(annotation = Parameter.class, attribute = "array")
+		ArraySchema array() default @ArraySchema();
+
+		@AliasFor(annotation = Parameter.class, attribute = "content")
+		Content[] content() default {};
+
+		@AliasFor(annotation = Parameter.class, attribute = "hidden")
+		boolean hidden() default false;
+
+		@AliasFor(annotation = Parameter.class, attribute = "examples")
+		ExampleObject[] examples() default {};
+
+		@AliasFor(annotation = Parameter.class, attribute = "example")
+		String example() default "1234";
+
+		@AliasFor(annotation = Parameter.class, attribute = "extensions")
+		Extension[] extensions() default {};
+
+		@AliasFor(annotation = Parameter.class, attribute = "ref")
+		String ref() default "";
+	}
+
+	@Target({ PARAMETER, METHOD, ANNOTATION_TYPE })
+	@Retention(RetentionPolicy.RUNTIME)
+	@Parameter(name = "name", description = "desc", schema = @Schema(implementation = Boolean.class))
+	@interface TestNoAliasFors {
 	}
 }

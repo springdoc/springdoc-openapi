@@ -120,7 +120,7 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_PATH_SEPARATOR, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String openapiJson(HttpServletRequest request,  Locale locale)
+	public String openapiJson(HttpServletRequest request, Locale locale)
 			throws JsonProcessingException {
 		return super.openapiJson(request, EMPTY, locale);
 	}

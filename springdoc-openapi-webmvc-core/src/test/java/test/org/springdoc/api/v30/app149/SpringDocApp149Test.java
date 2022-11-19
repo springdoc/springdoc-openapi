@@ -32,11 +32,11 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "springdoc.model-and-view-allowed=true")
 public class SpringDocApp149Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@BeforeAll
 	public static void init() {
 		SpringDocUtils.getConfig().addHiddenRestControllers(HiddenHelloController.class);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

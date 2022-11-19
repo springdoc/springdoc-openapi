@@ -31,7 +31,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "springdoc.default-support-form-data=true")
 public class SpringDocApp189Test extends AbstractSpringDocV30Test {
 
-    @SpringBootApplication
-    static class SpringDocTestApp {}
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

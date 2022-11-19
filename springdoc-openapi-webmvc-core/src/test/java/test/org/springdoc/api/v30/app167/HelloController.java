@@ -37,9 +37,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
 	@GetMapping("/sample1")
-	public ResponseEntity sample1(@Parameter(name="mySample") String mySample) {
+	public ResponseEntity sample1(@Parameter(name = "mySample") String mySample) {
 		throw new UnsupportedOperationException("the body is not relevant now");
 	}
-
 
 }

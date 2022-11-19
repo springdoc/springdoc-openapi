@@ -24,7 +24,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = "springdoc.packagesToScan=hell,hello1, hello.me" )
+@TestPropertySource(properties = "springdoc.packagesToScan=hell,hello1, hello.me")
 public class SpringDocApp63Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication

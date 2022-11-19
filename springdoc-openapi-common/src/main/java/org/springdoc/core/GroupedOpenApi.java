@@ -50,21 +50,6 @@ public class GroupedOpenApi {
 	private final String group;
 
 	/**
-	 * The Open api customisers.
-	 */
-	private List<OpenApiCustomiser> openApiCustomisers;
-
-	/**
-	 * The Operation customizers.
-	 */
-	private List<OperationCustomizer> operationCustomizers;
-
-	/**
-	 * The Router Operation customizers.
-	 */
-	private List<RouterOperationCustomizer> routerOperationCustomizers;
-
-	/**
 	 * The Paths to match.
 	 */
 	private final List<String> pathsToMatch;
@@ -100,14 +85,29 @@ public class GroupedOpenApi {
 	private final List<String> consumesToMatch;
 
 	/**
-	 * The method filters to use.
-	 */
-	private List<OpenApiMethodFilter> openApiMethodFilters;
-
-	/**
 	 * The Display name.
 	 */
 	private final String displayName;
+
+	/**
+	 * The Open api customisers.
+	 */
+	private List<OpenApiCustomiser> openApiCustomisers;
+
+	/**
+	 * The Operation customizers.
+	 */
+	private List<OperationCustomizer> operationCustomizers;
+
+	/**
+	 * The Router Operation customizers.
+	 */
+	private List<RouterOperationCustomizer> routerOperationCustomizers;
+
+	/**
+	 * The method filters to use.
+	 */
+	private List<OpenApiMethodFilter> openApiMethodFilters;
 
 	/**
 	 * Instantiates a new Grouped open api.
@@ -265,6 +265,48 @@ public class GroupedOpenApi {
 	 */
 	public String getDisplayName() {
 		return displayName;
+	}
+
+	/**
+	 * Add all open api customizer grouped open api.
+	 *
+	 * @param openApiCustomizerCollection the open api customizer collection
+	 * @return the grouped open api
+	 */
+	public GroupedOpenApi addAllOpenApiCustomizer(Collection<? extends OpenApiCustomiser> openApiCustomizerCollection) {
+		List<OpenApiCustomiser> result = new ArrayList<>();
+		result.addAll(openApiCustomizerCollection);
+		result.addAll(openApiCustomisers);
+		openApiCustomisers = result;
+		return this;
+	}
+
+	/**
+	 * Add all operation customizer grouped open api.
+	 *
+	 * @param operationCustomizerCollection the operation customizer collection
+	 * @return the grouped open api
+	 */
+	public GroupedOpenApi addAllOperationCustomizer(Collection<? extends OperationCustomizer> operationCustomizerCollection) {
+		List<OperationCustomizer> result = new ArrayList<>();
+		result.addAll(operationCustomizerCollection);
+		result.addAll(operationCustomizers);
+		operationCustomizers = result;
+		return this;
+	}
+
+	/**
+	 * Add all open api method filter grouped open api.
+	 *
+	 * @param openApiMethodFilterCollection the open api method filter collection
+	 * @return the grouped open api
+	 */
+	public GroupedOpenApi addAllOpenApiMethodFilter(Collection<? extends OpenApiMethodFilter> openApiMethodFilterCollection) {
+		List<OpenApiMethodFilter> result = new ArrayList<>();
+		result.addAll(openApiMethodFilterCollection);
+		result.addAll(openApiMethodFilters);
+		openApiMethodFilters = result;
+		return this;
 	}
 
 	/**
@@ -495,47 +537,5 @@ public class GroupedOpenApi {
 		public GroupedOpenApi build() {
 			return new GroupedOpenApi(this);
 		}
-	}
-
-	/**
-	 * Add all open api customizer grouped open api.
-	 *
-	 * @param openApiCustomizerCollection the open api customizer collection
-	 * @return the grouped open api
-	 */
-	public GroupedOpenApi addAllOpenApiCustomizer(Collection<? extends OpenApiCustomiser> openApiCustomizerCollection) {
-		List<OpenApiCustomiser> result = new ArrayList<>();
-		result.addAll(openApiCustomizerCollection);
-		result.addAll(openApiCustomisers);
-		openApiCustomisers = result;
-		return this;
-	}
-
-	/**
-	 * Add all operation customizer grouped open api.
-	 *
-	 * @param operationCustomizerCollection the operation customizer collection
-	 * @return the grouped open api
-	 */
-	public GroupedOpenApi addAllOperationCustomizer(Collection<? extends OperationCustomizer> operationCustomizerCollection) {
-		List<OperationCustomizer> result = new ArrayList<>();
-		result.addAll(operationCustomizerCollection);
-		result.addAll(operationCustomizers);
-		operationCustomizers = result;
-		return this;
-	}
-
-	/**
-	 * Add all open api method filter grouped open api.
-	 *
-	 * @param openApiMethodFilterCollection the open api method filter collection
-	 * @return the grouped open api
-	 */
-	public GroupedOpenApi addAllOpenApiMethodFilter(Collection<? extends OpenApiMethodFilter> openApiMethodFilterCollection) {
-		List<OpenApiMethodFilter> result = new ArrayList<>();
-		result.addAll(openApiMethodFilterCollection);
-		result.addAll(openApiMethodFilters);
-		openApiMethodFilters = result;
-		return this;
 	}
 }

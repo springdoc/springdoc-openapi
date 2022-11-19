@@ -47,6 +47,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MethodAttributes {
 
 	/**
+	 * The Default consumes media type.
+	 */
+	private final String defaultConsumesMediaType;
+
+	/**
+	 * The Default produces media type.
+	 */
+	private final String defaultProducesMediaType;
+
+	/**
+	 * The Headers.
+	 */
+	private final LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+
+	/**
+	 * The Locale.
+	 */
+	private final Locale locale;
+
+	/**
 	 * The Method overloaded.
 	 */
 	private boolean methodOverloaded;
@@ -70,21 +90,6 @@ public class MethodAttributes {
 	 * The Json view annotation for request body.
 	 */
 	private JsonView jsonViewAnnotationForRequestBody;
-
-	/**
-	 * The Default consumes media type.
-	 */
-	private final String defaultConsumesMediaType;
-
-	/**
-	 * The Default produces media type.
-	 */
-	private final String defaultProducesMediaType;
-
-	/**
-	 * The Headers.
-	 */
-	private final LinkedHashMap<String, String> headers = new LinkedHashMap<>();
 
 	/**
 	 * The Class produces.
@@ -115,11 +120,6 @@ public class MethodAttributes {
 	 * The javadoc Return.
 	 */
 	private String javadocReturn;
-
-	/**
-	 * The Locale.
-	 */
-	private final Locale locale;
 
 	/**
 	 * Instantiates a new Method attributes.
@@ -295,20 +295,6 @@ public class MethodAttributes {
 	}
 
 	/**
-	 * Sets headers.
-	 *
-	 * @param headers the headers
-	 */
-	private void setHeaders(String[] headers) {
-		if (ArrayUtils.isNotEmpty(headers))
-			for (String header : headers) {
-				String[] keyValueHeader = header.split("=");
-				String headerValue = keyValueHeader.length > 1 ? keyValueHeader[1] : "";
-				this.headers.put(keyValueHeader[0], headerValue);
-			}
-	}
-
-	/**
 	 * Is method overloaded boolean.
 	 *
 	 * @return the boolean
@@ -389,6 +375,20 @@ public class MethodAttributes {
 	 */
 	public Map<String, String> getHeaders() {
 		return headers;
+	}
+
+	/**
+	 * Sets headers.
+	 *
+	 * @param headers the headers
+	 */
+	private void setHeaders(String[] headers) {
+		if (ArrayUtils.isNotEmpty(headers))
+			for (String header : headers) {
+				String[] keyValueHeader = header.split("=");
+				String headerValue = keyValueHeader.length > 1 ? keyValueHeader[1] : "";
+				this.headers.put(keyValueHeader[0], headerValue);
+			}
 	}
 
 	/**

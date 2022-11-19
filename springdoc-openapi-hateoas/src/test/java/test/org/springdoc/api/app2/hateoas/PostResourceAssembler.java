@@ -1,7 +1,6 @@
 package test.org.springdoc.api.app2.hateoas;
 
 
-
 import test.org.springdoc.api.app2.entities.Post;
 
 import org.springframework.hateoas.EntityModel;
@@ -18,6 +17,6 @@ public class PostResourceAssembler implements RepresentationModelAssembler<Post,
 
 	@Override
 	public EntityModel<Post> toModel(Post entity) {
-		return  EntityModel.of(entity);
+		return EntityModel.of(entity);
 	}
 }

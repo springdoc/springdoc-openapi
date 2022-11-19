@@ -38,13 +38,13 @@ public class Builder {
 	 * A short description of the target documentation.
 	 *
 	 */
-	private String description="";
+	private String description = "";
 
 	/**
 	 * The URL for the target documentation. Value must be in the format of a URL.
 	 *
 	 */
-	private String url="";
+	private String url = "";
 
 	/**
 	 * The list of optional extensions
@@ -97,7 +97,7 @@ public class Builder {
 	 * @return the external documentation builder
 	 */
 	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
-		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
+		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}
 
@@ -112,6 +112,7 @@ public class Builder {
 			public Class<? extends Annotation> annotationType() {
 				return null;
 			}
+
 			@Override
 			public String description() {
 				return description;

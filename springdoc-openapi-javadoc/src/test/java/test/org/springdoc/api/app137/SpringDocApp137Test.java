@@ -31,7 +31,7 @@ import org.springframework.test.context.TestPropertySource;
 /**
  * Tests Spring meta-annotations as method parameters
  */
-@TestPropertySource(properties = {"test.server=http://test.toto.com", "test.desc=toto desc"})
+@TestPropertySource(properties = { "test.server=http://test.toto.com", "test.desc=toto desc" })
 public class SpringDocApp137Test extends AbstractSpringDocTest {
 
 	/**

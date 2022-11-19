@@ -35,13 +35,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 public class SpringDocApp31Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	public void test_query_config() throws Exception {
 		mockMvc.perform(get("/api/"))
 				.andExpect(status().isFound())
 				.andExpect(header().string("Location", "/api/swagger-ui/index.html?showExtensions=true&configUrl=/v3/api-docs/swagger-config"));
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

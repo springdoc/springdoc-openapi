@@ -26,9 +26,9 @@ package test.org.springdoc.api.v30.app157;
  * A class with a String in it
  */
 public class Foo {
-  private String child;
+	private String child;
 
-  public String getChild() {
-    return this.child;
-  }
+	public String getChild() {
+		return this.child;
+	}
 }

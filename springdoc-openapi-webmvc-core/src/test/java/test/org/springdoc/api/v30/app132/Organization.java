@@ -31,9 +31,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description =
-				"This is the description being overwritten")
+		"This is the description being overwritten")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"id", "name"})
+@JsonPropertyOrder({ "id", "name" })
 public class Organization {
 
 	@Schema(
@@ -47,18 +47,19 @@ public class Organization {
 	@JsonProperty(required = true)
 	private String name;
 
-	public Organization() {}
+	public Organization() {
+	}
 
 	public UUID getId() {
 		return id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	public void setId(UUID id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public void setName(String name) {

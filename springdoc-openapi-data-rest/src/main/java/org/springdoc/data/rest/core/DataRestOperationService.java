@@ -314,10 +314,10 @@ public class DataRestOperationService {
 	 * @param dataRestRepository the data rest repository
 	 * @return the string
 	 */
-	private String createDescription( String action, String entity, DataRestRepository dataRestRepository) {
+	private String createDescription(String action, String entity, DataRestRepository dataRestRepository) {
 		String description;
 		if (ControllerType.PROPERTY.equals(dataRestRepository.getControllerType()))
-			description = action + dataRestRepository.getPropertyType().getSimpleName().toLowerCase()+ "-by-"+ entity +"-Id";
+			description = action + dataRestRepository.getPropertyType().getSimpleName().toLowerCase() + "-by-" + entity + "-Id";
 		else
 			description = action + entity;
 		return description;

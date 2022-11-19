@@ -49,9 +49,9 @@ import static test.org.springdoc.api.AbstractSpringDocTest.HANDLER_FUNCTION;
 class QuotesRouter {
 
 	@Bean
-	 RouterFunction<ServerResponse> myroute() {
+	RouterFunction<ServerResponse> myroute() {
 		return route().GET("/hello", accept(TEXT_PLAIN), HANDLER_FUNCTION, ops -> ops.tag("quotes")
-				.operationId("hello").response(responseBuilder().responseCode("200"))).build()
+						.operationId("hello").response(responseBuilder().responseCode("200"))).build()
 
 				.and(route().POST("/echo", accept(TEXT_PLAIN).and(contentType(TEXT_PLAIN)), HANDLER_FUNCTION, ops -> ops.tag("quotes")
 						.operationId("echo")

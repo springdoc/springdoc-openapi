@@ -1,14 +1,15 @@
 package test.org.springdoc.api.v30.app190;
 
 public class MyData {
-    private String firstName;
-    private Integer maxNumber;
+	private String firstName;
 
-    public Integer getMaxNumber() {
-        return maxNumber;
-    }
+	private Integer maxNumber;
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public Integer getMaxNumber() {
+		return maxNumber;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
 }

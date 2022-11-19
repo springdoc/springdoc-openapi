@@ -32,11 +32,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-	@GetMapping( "/test1")
-	public ResponseEntity<String> sayHello( @ParameterObject final ConcreteParameterObject test) {
+	@GetMapping("/test1")
+	public ResponseEntity<String> sayHello(@ParameterObject final ConcreteParameterObject test) {
 		System.out.println("Field B = " + test);
 		return new ResponseEntity<String>("{\"Say\": \"Hello\"}", HttpStatus.OK);
 	}
-
 
 }

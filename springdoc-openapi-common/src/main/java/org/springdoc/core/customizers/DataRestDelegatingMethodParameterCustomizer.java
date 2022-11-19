@@ -581,7 +581,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 								public String defaultValue() {
 									return getArrayDefaultValue(parameterName, pageableDefault, sortDefault, schema.defaultValue());
 
-							}
+								}
 
 								@Override
 								public String discriminatorProperty() {
@@ -712,7 +712,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 					name = optionalRepositoryRestConfigurationProvider.get().getRepositoryRestConfiguration().getPageParamName();
 				else if (isSpringDataWebPropertiesPresent())
 					name = optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPrefix() +
-						optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPageParameter();
+							optionalSpringDataWebPropertiesProvider.get().getSpringDataWebProperties().getPageable().getPageParameter();
 				else
 					name = originalName;
 				break;
@@ -759,7 +759,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 					Object defaultSize;
 					try {
 						defaultSize = PageableDefault.class.getMethod("size").getDefaultValue();
-					} catch (NoSuchMethodException e) {
+					}
+					catch (NoSuchMethodException e) {
 						LOGGER.warn(e.getMessage());
 						defaultSize = null;
 					}
@@ -811,13 +812,15 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				}
 				try {
 					defaultValue = ObjectMapperFactory.buildStrictGenericObjectMapper().writeValueAsString(sortValues);
-				} catch (JsonProcessingException e) {
+				}
+				catch (JsonProcessingException e) {
 					LOGGER.warn(e.getMessage());
 				}
 			}
 		}
 		return defaultValue;
 	}
+
 	/**
 	 * Gets default sort.
 	 *
@@ -832,7 +835,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 			Object defaultSort;
 			try {
 				defaultSort = SortDefault.class.getMethod("sort").getDefaultValue();
-			} catch (NoSuchMethodException e) {
+			}
+			catch (NoSuchMethodException e) {
 				LOGGER.warn(e.getMessage());
 				defaultSort = null;
 			}
@@ -842,7 +846,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 			sortProperties = sortDefault.value();
 			try {
 				defaultSort = SortDefault.class.getMethod("value").getDefaultValue();
-			} catch (NoSuchMethodException e) {
+			}
+			catch (NoSuchMethodException e) {
 				LOGGER.warn(e.getMessage());
 				defaultSort = null;
 			}
@@ -877,6 +882,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 
 	private static class DefaultSort {
 		private final Sort.Direction direction;
+
 		private final String[] properties;
 
 		DefaultSort(Sort.Direction direction, String... properties) {

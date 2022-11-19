@@ -32,9 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-	@GetMapping(path = "/test1" , headers = {"myHeader"})
+	@GetMapping(path = "/test1", headers = { "myHeader" })
 	public String getMessageFromHeader1(
-			@Parameter(name = "myHeader", description = "A header", schema = @Schema(allowableValues = {"foo", "bar"}))
+			@Parameter(name = "myHeader", description = "A header", schema = @Schema(allowableValues = { "foo", "bar" }))
 			@RequestHeader("myHeader") String header
 	) {
 		return "bar " + header;
@@ -48,7 +48,7 @@ public class HelloController {
 		return "bar " + header;
 	}
 
-	@GetMapping(path = "/test3", headers = {"myHeader"})
+	@GetMapping(path = "/test3", headers = { "myHeader" })
 	public String getMessageFromHeader3(
 			@Parameter(name = "myHeader", description = "A header", schema = @Schema(type = "integer"))
 			@RequestHeader("myHeader") Integer header

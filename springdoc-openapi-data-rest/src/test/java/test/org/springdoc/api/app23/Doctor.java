@@ -27,7 +27,8 @@ import lombok.NoArgsConstructor;
 public class Doctor {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO) private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
 	@ManyToMany
 	@Size(min = 1)

@@ -37,7 +37,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * The interface Sorted schema mixin 31.
  * @author bnasslashen
  */
-@JsonPropertyOrder(value = {"type", "format"}, alphabetic = true)
+@JsonPropertyOrder(value = { "type", "format" }, alphabetic = true)
 public interface SortedSchemaMixin31 {
 
 	/**

@@ -19,10 +19,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Builder
-public class Clinic  {
+public class Clinic {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO) private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
 	@NotNull
 	@NotBlank

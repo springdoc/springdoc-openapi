@@ -28,7 +28,7 @@ data class Foo(val data: ByteArray)
 @RequestMapping("/bytearray")
 class ByteArrayController {
 
-    @GetMapping("/")
-    fun getByteArray(): Foo = Foo(byteArrayOf(0))
+	@GetMapping("/")
+	fun getByteArray(): Foo = Foo(byteArrayOf(0))
 
 }

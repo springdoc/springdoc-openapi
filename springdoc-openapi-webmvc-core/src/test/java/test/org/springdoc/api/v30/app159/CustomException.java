@@ -22,8 +22,8 @@
 
 package test.org.springdoc.api.v30.app159;
 
-public class CustomException extends RuntimeException{
-    public CustomException(String message) {
-        super(message);
-    }
+public class CustomException extends RuntimeException {
+	public CustomException(String message) {
+		super(message);
+	}
 }

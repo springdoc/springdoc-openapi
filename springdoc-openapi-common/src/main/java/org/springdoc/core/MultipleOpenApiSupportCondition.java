@@ -56,6 +56,6 @@ public class MultipleOpenApiSupportCondition extends AnyNestedCondition {
 	 */
 	@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 	@ConditionalOnProperty(SPRINGDOC_SHOW_ACTUATOR)
-	static class OnActuatorDifferentPort{}
+	static class OnActuatorDifferentPort {}
 
 }

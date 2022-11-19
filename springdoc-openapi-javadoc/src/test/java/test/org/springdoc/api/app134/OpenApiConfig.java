@@ -17,11 +17,11 @@ public class OpenApiConfig {
 	 * @return the grouped open api
 	 */
 	@Bean
-    public GroupedOpenApi groupV1OpenApi() {
-        return GroupedOpenApi.builder()
-                .group("v1-group").producesToMatch(HelloController.VERSION_1)
-                .build();
-    }
+	public GroupedOpenApi groupV1OpenApi() {
+		return GroupedOpenApi.builder()
+				.group("v1-group").producesToMatch(HelloController.VERSION_1)
+				.build();
+	}
 
 	/**
 	 * Group v 2 open api grouped open api.
@@ -29,11 +29,11 @@ public class OpenApiConfig {
 	 * @return the grouped open api
 	 */
 	@Bean
-    public GroupedOpenApi groupV2OpenApi() {
-        return GroupedOpenApi.builder()
-                .group("v2-group").producesToMatch(HelloController.VERSION_2)
-                .build();
-    }
+	public GroupedOpenApi groupV2OpenApi() {
+		return GroupedOpenApi.builder()
+				.group("v2-group").producesToMatch(HelloController.VERSION_2)
+				.build();
+	}
 
 	/**
 	 * Group v 3 open api grouped open api.

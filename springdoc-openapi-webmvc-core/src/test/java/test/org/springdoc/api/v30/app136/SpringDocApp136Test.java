@@ -50,37 +50,37 @@ import static org.springdoc.core.Constants.SPRINGDOC_CACHE_DISABLED;
 /**
  * Tests deterministic creation of operationIds
  */
-@SpringBootTest(properties = {SPRINGDOC_CACHE_DISABLED + "=true"})
+@SpringBootTest(properties = { SPRINGDOC_CACHE_DISABLED + "=true" })
 public class SpringDocApp136Test extends AbstractCommonTest {
 
-    @Autowired
+	@Autowired
 	OpenApiWebMvcResource resource;
 
-    @Autowired
+	@Autowired
 	RequestMappingHandlerMapping requestMappingHandlerMapping;
 
-    @SpringBootApplication
-    static class SpringDocTestApp {}
+	@RepeatedTest(10)
+	public void shouldGenerateOperationIdsDeterministically() throws Exception {
+		shuffleSpringHandlerMethods();
 
-    @RepeatedTest(10)
-    public void shouldGenerateOperationIdsDeterministically() throws Exception {
-        shuffleSpringHandlerMethods();
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		when(request.getRequestURL()).thenReturn(new StringBuffer("http://localhost"));
 
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getRequestURL()).thenReturn(new StringBuffer("http://localhost"));
+		String expected = getContent("results/3.0.1/app136.json");
+		String openApi = resource.openapiJson(request, "", Locale.getDefault());
+		assertEquals(expected, openApi, true);
+	}
 
-        String expected = getContent("results/3.0.1/app136.json");
-        String openApi = resource.openapiJson(request, "", Locale.getDefault());
-        assertEquals(expected, openApi, true);
-    }
+	private void shuffleSpringHandlerMethods() {
+		Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
+		List<Map.Entry<RequestMappingInfo, HandlerMethod>> collect = new ArrayList<>(handlerMethods.entrySet());
+		collect.sort(Comparator.comparing(a -> ThreadLocalRandom.current().nextBoolean() ? -1 : 1));
 
-    private void shuffleSpringHandlerMethods() {
-        Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
-        List<Map.Entry<RequestMappingInfo, HandlerMethod>> collect = new ArrayList<>(handlerMethods.entrySet());
-        collect.sort(Comparator.comparing(a -> ThreadLocalRandom.current().nextBoolean() ? -1 : 1));
+		collect.forEach(e -> requestMappingHandlerMapping.unregisterMapping(e.getKey()));
+		collect.forEach(e -> requestMappingHandlerMapping.registerMapping(e.getKey(), e.getValue().getBean(), e.getValue().getMethod()));
+	}
 
-        collect.forEach(e -> requestMappingHandlerMapping.unregisterMapping(e.getKey()));
-        collect.forEach(e -> requestMappingHandlerMapping.registerMapping(e.getKey(), e.getValue().getBean(), e.getValue().getMethod()));
-    }
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

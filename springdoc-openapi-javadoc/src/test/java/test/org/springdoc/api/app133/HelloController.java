@@ -37,9 +37,9 @@ public class HelloController {
 	 * @param header the header 
 	 * @return the message from header 1
 	 */
-	@GetMapping(path = "/test1" , headers = {"myHeader"})
+	@GetMapping(path = "/test1", headers = { "myHeader" })
 	public String getMessageFromHeader1(
-			@Parameter(name = "myHeader", description = "A header", schema = @Schema(allowableValues = {"foo", "bar"}))
+			@Parameter(name = "myHeader", description = "A header", schema = @Schema(allowableValues = { "foo", "bar" }))
 			@RequestHeader("myHeader") String header
 	) {
 		return "bar " + header;
@@ -65,7 +65,7 @@ public class HelloController {
 	 * @param header the header 
 	 * @return the message from header 3
 	 */
-	@GetMapping(path = "/test3", headers = {"myHeader"})
+	@GetMapping(path = "/test3", headers = { "myHeader" })
 	public String getMessageFromHeader3(
 			@Parameter(name = "myHeader", description = "A header", schema = @Schema(type = "integer"))
 			@RequestHeader("myHeader") Integer header

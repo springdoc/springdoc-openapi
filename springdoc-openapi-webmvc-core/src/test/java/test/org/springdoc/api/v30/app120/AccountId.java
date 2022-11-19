@@ -35,20 +35,20 @@ import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 
-@Target({PARAMETER, METHOD, ANNOTATION_TYPE})
+@Target({ PARAMETER, METHOD, ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Parameter(description = "non alias description")
 public @interface AccountId {
 
-    @AliasFor(annotation = Parameter.class, value = "name")
-    String name() default "";
+	@AliasFor(annotation = Parameter.class, value = "name")
+	String name() default "";
 
-    @AliasFor(annotation = Parameter.class, value = "example")
-    String example() default "123456";
+	@AliasFor(annotation = Parameter.class, value = "example")
+	String example() default "123456";
 
-    @AliasFor(annotation = Parameter.class, value = "in")
-    ParameterIn in() default ParameterIn.DEFAULT;
+	@AliasFor(annotation = Parameter.class, value = "in")
+	ParameterIn in() default ParameterIn.DEFAULT;
 
-    @AliasFor(annotation = Parameter.class, value = "schema")
-    Schema schema() default @Schema();
+	@AliasFor(annotation = Parameter.class, value = "schema")
+	Schema schema() default @Schema();
 }

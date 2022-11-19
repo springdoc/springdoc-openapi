@@ -24,15 +24,15 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Tag(name = "Item", description = "The Item API")
 public class ItemController {
 
-  List<Item> items = Stream.of(new Item("foo"), new Item("bar")).collect(Collectors.toList());
+	List<Item> items = Stream.of(new Item("foo"), new Item("bar")).collect(Collectors.toList());
 
-  @Operation(summary = "Get all items")
-  @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-  public ResponseEntity<CollectionModel<Item>> getAllItems() {
+	@Operation(summary = "Get all items")
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<CollectionModel<Item>> getAllItems() {
 
-    CollectionModel<Item> collection = CollectionModel.of(items);
-    collection.add(linkTo(methodOn(ItemController.class).getAllItems()).withSelfRel().expand());
+		CollectionModel<Item> collection = CollectionModel.of(items);
+		collection.add(linkTo(methodOn(ItemController.class).getAllItems()).withSelfRel().expand());
 
-    return new ResponseEntity<>(collection, HttpStatus.OK);
-  }
+		return new ResponseEntity<>(collection, HttpStatus.OK);
+	}
 }

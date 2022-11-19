@@ -59,7 +59,7 @@ public class SpringDocKotlinConfiguration {
 				.addRequestWrapperToIgnore(Continuation.class)
 				.replaceWithSchema(byte[].class, new ByteArraySchema())
 				.addDeprecatedType(Deprecated.class);
-		objectMapperProvider.jsonMapper().registerModule( new KotlinModule.Builder().build());
+		objectMapperProvider.jsonMapper().registerModule(new KotlinModule.Builder().build());
 	}
 
 	/**

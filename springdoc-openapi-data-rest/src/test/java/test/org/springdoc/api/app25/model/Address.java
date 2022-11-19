@@ -15,15 +15,15 @@ import lombok.NoArgsConstructor;
 public class Address {
 
 	private String name;
-	
+
 	private String street;
-	
+
 	private String number;
-	
+
 	private String zipcode;
-	
+
 	private String city;
-	
+
 	private String country;
-	
+
 }

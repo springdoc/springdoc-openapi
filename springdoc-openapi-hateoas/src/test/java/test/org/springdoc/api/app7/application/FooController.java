@@ -13,20 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FooController {
 
-  private final FooService fooService;
-  private final FooResourceAssembler fooResourceAssembler;
+	private final FooService fooService;
 
-  @Autowired
-  public FooController(
-      FooService fooService,
-      FooResourceAssembler fooResourceAssembler) {
-    this.fooService = fooService;
-    this.fooResourceAssembler = fooResourceAssembler;
-  }
+	private final FooResourceAssembler fooResourceAssembler;
 
-  @GetMapping(value = "foo/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-  public ResponseEntity<EntityModel<Foo>> getFoo(@PathVariable("id") UUID id) throws Exception {
-    Foo foo = fooService.getFoo(id).orElseThrow(Exception::new);
-    return ResponseEntity.ok(fooResourceAssembler.toModel(foo));
-  }
+	@Autowired
+	public FooController(
+			FooService fooService,
+			FooResourceAssembler fooResourceAssembler) {
+		this.fooService = fooService;
+		this.fooResourceAssembler = fooResourceAssembler;
+	}
+
+	@GetMapping(value = "foo/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+	public ResponseEntity<EntityModel<Foo>> getFoo(@PathVariable("id") UUID id) throws Exception {
+		Foo foo = fooService.getFoo(id).orElseThrow(Exception::new);
+		return ResponseEntity.ok(fooResourceAssembler.toModel(foo));
+	}
 }

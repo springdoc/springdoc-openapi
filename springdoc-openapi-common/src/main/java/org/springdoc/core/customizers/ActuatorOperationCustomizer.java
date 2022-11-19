@@ -81,7 +81,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 				try {
 					actuatorOperation = operationFiled.get(handlerMethod.getBean());
 					Field actuatorOperationFiled = FieldUtils.getDeclaredField(actuatorOperation.getClass(), OPERATION, true);
-					if(actuatorOperationFiled!=null){
+					if (actuatorOperationFiled != null) {
 						AbstractDiscoveredOperation discoveredOperation = (AbstractDiscoveredOperation) actuatorOperationFiled.get(actuatorOperation);
 						OperationMethod operationMethod = discoveredOperation.getOperationMethod();
 						if (OperationType.WRITE.equals(operationMethod.getOperationType())) {

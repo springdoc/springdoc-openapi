@@ -48,108 +48,107 @@ import org.springframework.util.ClassUtils;
  */
 public class WebConversionServiceProvider implements InitializingBean, ApplicationContextAware {
 
-		/**
-		 * The constant CONVERTERS.
-		 */
-		private static final String CONVERTERS = "converters";
+	/**
+	 * The constant CONVERTERS.
+	 */
+	private static final String CONVERTERS = "converters";
 
-		/**
-		 * The constant LOGGER.
-		 */
-		private static final Logger LOGGER = LoggerFactory.getLogger(WebConversionServiceProvider.class);
+	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(WebConversionServiceProvider.class);
 
-		/**
-		 * The Formatting conversion service.
-		 */
-		private GenericConversionService formattingConversionService;
+	/**
+	 * The constant SERVLET_APPLICATION_CONTEXT_CLASS.
+	 */
+	private static final String SERVLET_APPLICATION_CONTEXT_CLASS = "org.springframework.web.context.WebApplicationContext";
 
+	/**
+	 * The constant REACTIVE_APPLICATION_CONTEXT_CLASS.
+	 */
+	private static final String REACTIVE_APPLICATION_CONTEXT_CLASS = "org.springframework.boot.web.reactive.context.ReactiveWebApplicationContext";
 
-		/**
-		 * The Application context.
-		 */
-		private ApplicationContext applicationContext;
+	/**
+	 * The Formatting conversion service.
+	 */
+	private GenericConversionService formattingConversionService;
 
-		/**
-		 * The constant SERVLET_APPLICATION_CONTEXT_CLASS.
-		 */
-		private static final String SERVLET_APPLICATION_CONTEXT_CLASS = "org.springframework.web.context.WebApplicationContext";
+	/**
+	 * The Application context.
+	 */
+	private ApplicationContext applicationContext;
 
-		/**
-		 * The constant REACTIVE_APPLICATION_CONTEXT_CLASS.
-		 */
-		private static final String REACTIVE_APPLICATION_CONTEXT_CLASS = "org.springframework.boot.web.reactive.context.ReactiveWebApplicationContext";
-
-		@Override
-		public void afterPropertiesSet() {
-			if (isAssignable(SERVLET_APPLICATION_CONTEXT_CLASS, this.applicationContext.getClass())) {
-				this.formattingConversionService = applicationContext.getBean("mvcConversionService", FormattingConversionService.class);
-			}
-			else if (isAssignable(REACTIVE_APPLICATION_CONTEXT_CLASS, this.applicationContext.getClass())) {
-				this.formattingConversionService = applicationContext.getBean("webFluxConversionService", FormattingConversionService.class);
-			}
-			else
-				formattingConversionService = new DefaultFormattingConversionService();
+	@Override
+	public void afterPropertiesSet() {
+		if (isAssignable(SERVLET_APPLICATION_CONTEXT_CLASS, this.applicationContext.getClass())) {
+			this.formattingConversionService = applicationContext.getBean("mvcConversionService", FormattingConversionService.class);
 		}
-
-		/**
-		 * Attempts to convert {@code source} into the target type as described by {@code targetTypeDescriptor}.
-		 *
-		 * @param source the source
-		 * @param targetTypeDescriptor the target type descriptor
-		 * @return the converted source
-		 */
-		@Nullable
-		public Object convert(@Nullable Object source, TypeDescriptor targetTypeDescriptor) {
-			return formattingConversionService.convert(source, targetTypeDescriptor);
+		else if (isAssignable(REACTIVE_APPLICATION_CONTEXT_CLASS, this.applicationContext.getClass())) {
+			this.formattingConversionService = applicationContext.getBean("webFluxConversionService", FormattingConversionService.class);
 		}
+		else
+			formattingConversionService = new DefaultFormattingConversionService();
+	}
 
-		/**
-		 * Gets spring converted type.
-		 *
-		 * @param clazz the clazz
-		 * @return the spring converted type
-		 */
-		public Class<?> getSpringConvertedType(Class<?> clazz) {
-			Class<?> result = clazz;
-			Field convertersField = FieldUtils.getDeclaredField(GenericConversionService.class, CONVERTERS, true);
-			if (convertersField != null) {
-				Object converters;
-				try {
-					converters = convertersField.get(formattingConversionService);
-					convertersField = FieldUtils.getDeclaredField(converters.getClass(), CONVERTERS, true);
-					Map<ConvertiblePair, Object> springConverters = (Map) convertersField.get(converters);
-					Optional<ConvertiblePair> convertiblePairOptional = springConverters.keySet().stream().filter(convertiblePair -> convertiblePair.getTargetType().equals(clazz)).findAny();
-					if (convertiblePairOptional.isPresent()) {
-						ConvertiblePair convertiblePair = convertiblePairOptional.get();
-						result = convertiblePair.getSourceType();
-					}
-				}
-				catch (IllegalAccessException e) {
-					LOGGER.warn(e.getMessage());
-				}
-			}
-			return result;
-		}
+	/**
+	 * Attempts to convert {@code source} into the target type as described by {@code targetTypeDescriptor}.
+	 *
+	 * @param source the source
+	 * @param targetTypeDescriptor the target type descriptor
+	 * @return the converted source
+	 */
+	@Nullable
+	public Object convert(@Nullable Object source, TypeDescriptor targetTypeDescriptor) {
+		return formattingConversionService.convert(source, targetTypeDescriptor);
+	}
 
-		/**
-		 * Is assignable boolean.
-		 *
-		 * @param target the target
-		 * @param type the type
-		 * @return the boolean
-		 */
-		private boolean isAssignable(String target, Class<?> type) {
+	/**
+	 * Gets spring converted type.
+	 *
+	 * @param clazz the clazz
+	 * @return the spring converted type
+	 */
+	public Class<?> getSpringConvertedType(Class<?> clazz) {
+		Class<?> result = clazz;
+		Field convertersField = FieldUtils.getDeclaredField(GenericConversionService.class, CONVERTERS, true);
+		if (convertersField != null) {
+			Object converters;
 			try {
-				return ClassUtils.resolveClassName(target, null).isAssignableFrom(type);
+				converters = convertersField.get(formattingConversionService);
+				convertersField = FieldUtils.getDeclaredField(converters.getClass(), CONVERTERS, true);
+				Map<ConvertiblePair, Object> springConverters = (Map) convertersField.get(converters);
+				Optional<ConvertiblePair> convertiblePairOptional = springConverters.keySet().stream().filter(convertiblePair -> convertiblePair.getTargetType().equals(clazz)).findAny();
+				if (convertiblePairOptional.isPresent()) {
+					ConvertiblePair convertiblePair = convertiblePairOptional.get();
+					result = convertiblePair.getSourceType();
+				}
 			}
-			catch (Throwable ex) {
-				return false;
+			catch (IllegalAccessException e) {
+				LOGGER.warn(e.getMessage());
 			}
 		}
+		return result;
+	}
 
-		@Override
-		public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-			this.applicationContext = applicationContext;
+	/**
+	 * Is assignable boolean.
+	 *
+	 * @param target the target
+	 * @param type the type
+	 * @return the boolean
+	 */
+	private boolean isAssignable(String target, Class<?> type) {
+		try {
+			return ClassUtils.resolveClassName(target, null).isAssignableFrom(type);
 		}
+		catch (Throwable ex) {
+			return false;
+		}
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 
 }

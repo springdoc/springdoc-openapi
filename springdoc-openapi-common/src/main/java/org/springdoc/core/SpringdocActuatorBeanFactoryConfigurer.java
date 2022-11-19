@@ -44,7 +44,7 @@ import static org.springdoc.core.Constants.MANAGEMENT_ENDPOINTS_WEB;
  * The type Springdoc bean factory configurer.
  * @author bnasslahsen
  */
-public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactoryConfigurer{
+public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactoryConfigurer {
 
 	/**
 	 * The Grouped open apis.
@@ -61,7 +61,7 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 	}
 
 	@Override
-	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)  {
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		final BindResult<WebEndpointProperties> result = Binder.get(environment)
 				.bind(MANAGEMENT_ENDPOINTS_WEB, WebEndpointProperties.class);
 		if (result.isBound()) {
@@ -71,7 +71,7 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 
 			ActuatorOpenApiCustomizer actuatorOpenApiCustomiser = new ActuatorOpenApiCustomizer(webEndpointProperties);
 			beanFactory.registerSingleton("actuatorOpenApiCustomiser", actuatorOpenApiCustomiser);
-			ActuatorOperationCustomizer actuatorCustomizer =	new ActuatorOperationCustomizer();
+			ActuatorOperationCustomizer actuatorCustomizer = new ActuatorOperationCustomizer();
 			beanFactory.registerSingleton("actuatorCustomizer", actuatorCustomizer);
 
 			GroupedOpenApi actuatorGroup = GroupedOpenApi.builder().group(ACTUATOR_DEFAULT_GROUP)

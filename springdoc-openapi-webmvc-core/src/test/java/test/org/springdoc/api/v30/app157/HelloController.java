@@ -34,15 +34,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-	@GetMapping( "/foo")
+	@GetMapping("/foo")
 	public ResponseEntity<Foo> getFoo() {
 		return new ResponseEntity<Foo>(HttpStatus.OK);
 	}
 
-	@GetMapping( "/bar")
+	@GetMapping("/bar")
 	public ResponseEntity<Bar> getBar() {
 		return new ResponseEntity<Bar>(HttpStatus.OK);
 	}
-
 
 }

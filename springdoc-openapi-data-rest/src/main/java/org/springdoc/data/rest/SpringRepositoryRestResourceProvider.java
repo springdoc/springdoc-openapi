@@ -114,6 +114,25 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpringRepositoryRestResourceProvider.class);
 
 	/**
+	 * The constant delegatingHandlerMappingClass.
+	 */
+	private static Class delegatingHandlerMappingClass;
+
+	static {
+		try {
+			delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_CLASS);
+		}
+		catch (ClassNotFoundException e) {
+			try {
+				delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_INTERFACE);
+			}
+			catch (ClassNotFoundException exception) {
+				LOGGER.trace(e.getMessage());
+			}
+		}
+	}
+
+	/**
 	 * The Mappings.
 	 */
 	private final ResourceMappings mappings;
@@ -149,33 +168,14 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	private final ApplicationContext applicationContext;
 
 	/**
-	 * The Handler mapping list.
-	 */
-	private List<HandlerMapping> handlerMappingList;
-
-	/**
 	 * The Spring doc data rest utils.
 	 */
 	private final SpringDocDataRestUtils springDocDataRestUtils;
 
 	/**
-	 * The constant delegatingHandlerMappingClass.
+	 * The Handler mapping list.
 	 */
-	private static Class delegatingHandlerMappingClass;
-
-	static {
-		try {
-			delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_CLASS);
-		}
-		catch (ClassNotFoundException e) {
-			try {
-				delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_INTERFACE);
-			}
-			catch (ClassNotFoundException exception) {
-				LOGGER.trace(e.getMessage());
-			}
-		}
-	}
+	private List<HandlerMapping> handlerMappingList;
 
 	/**
 	 * Instantiates a new Spring repository rest resource provider.
@@ -222,7 +222,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 			final JacksonMetadata jackson = new JacksonMetadata(mapper, domainType);
 
 			boolean hiddenRepository = (AnnotationUtils.findAnnotation(repository, Hidden.class) != null);
-			if(!hiddenRepository) {
+			if (!hiddenRepository) {
 				if (resourceMetadata.isExported()) {
 					for (HandlerMapping handlerMapping : handlerMappingList) {
 						if (handlerMapping instanceof RepositoryRestHandlerMapping) {
@@ -327,7 +327,8 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 				try {
 					handlerMappingList = (List<HandlerMapping>) MethodUtils.invokeMethod(object, "getDelegates");
 				}
-				catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+				catch (NoSuchMethodException | IllegalAccessException |
+					   InvocationTargetException e) {
 					LOGGER.warn(e.getMessage());
 				}
 			}

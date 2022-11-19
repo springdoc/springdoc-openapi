@@ -51,6 +51,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 public class SpringDocApp184Test extends AbstractSpringDocV30Test {
 
+	@Test
+	public void testGroup1() throws Exception {
+		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group1"))
+				.andExpect(status().isOk())
+				.andExpect(content().json(getContent("results/3.0.1/app184-1.json"), true));
+	}
+
+	@Test
+	public void testGroup2() throws Exception {
+		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group2"))
+				.andExpect(status().isOk())
+				.andExpect(content().json(getContent("results/3.0.1/app184-2.json"), true));
+	}
+
+	@Test
+	public void testGroup3() throws Exception {
+		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group3"))
+				.andExpect(status().isOk())
+				.andExpect(content().json(getContent("results/3.0.1/app184-3.json"), true));
+	}
+
 	@SpringBootApplication
 	static class SpringDocTestApp {
 
@@ -104,27 +125,6 @@ public class SpringDocApp184Test extends AbstractSpringDocV30Test {
 					.build();
 		}
 
-	}
-
-	@Test
-	public void testGroup1() throws Exception {
-		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group1"))
-				.andExpect(status().isOk())
-				.andExpect(content().json(getContent("results/3.0.1/app184-1.json"), true));
-	}
-
-	@Test
-	public void testGroup2() throws Exception {
-		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group2"))
-				.andExpect(status().isOk())
-				.andExpect(content().json(getContent("results/3.0.1/app184-2.json"), true));
-	}
-
-	@Test
-	public void testGroup3() throws Exception {
-		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group3"))
-				.andExpect(status().isOk())
-				.andExpect(content().json(getContent("results/3.0.1/app184-3.json"), true));
 	}
 
 }

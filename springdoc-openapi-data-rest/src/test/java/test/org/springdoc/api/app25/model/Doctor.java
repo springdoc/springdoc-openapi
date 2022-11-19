@@ -25,12 +25,12 @@ public class Doctor extends BaseEntity {
 
 	@NotNull
 	private String firstname;
-	
+
 	@NotNull
 	private String lastname;
-	
+
 	@Enumerated(EnumType.STRING)
-	private Specialty specialty; 
+	private Specialty specialty;
 
 	@Size(min = 1)
 	@ManyToMany

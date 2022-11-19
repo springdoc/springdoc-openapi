@@ -151,7 +151,7 @@ public interface ReturnTypeParser {
 	 */
 	static ResolvableType resolveVariable(TypeVariable<?> typeVariable, ResolvableType contextType) {
 		ResolvableType resolvedType;
-		if (contextType.hasGenerics() && Objects.equals(contextType.getRawClass(), typeVariable.getGenericDeclaration())){
+		if (contextType.hasGenerics() && Objects.equals(contextType.getRawClass(), typeVariable.getGenericDeclaration())) {
 			resolvedType = ResolvableType.forType(typeVariable, contextType);
 			if (resolvedType.resolve() != null) {
 				return resolvedType;
@@ -175,6 +175,19 @@ public interface ReturnTypeParser {
 	}
 
 	/**
+	 * Gets type.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the type
+	 */
+	static Type getType(MethodParameter methodParameter) {
+		Type genericParameterType = methodParameter.getGenericParameterType();
+		if (genericParameterType instanceof ParameterizedType || genericParameterType instanceof TypeVariable)
+			return ReturnTypeParser.resolveType(genericParameterType, methodParameter.getContainingClass());
+		return methodParameter.getParameterType();
+	}
+
+	/**
 	 * Gets return type.
 	 *
 	 * @param methodParameter the method parameter
@@ -183,19 +196,6 @@ public interface ReturnTypeParser {
 	default Type getReturnType(MethodParameter methodParameter) {
 		if (methodParameter.getGenericParameterType() instanceof ParameterizedType)
 			return ReturnTypeParser.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
-		return methodParameter.getParameterType();
-	}
-
-	/**
-	 * Gets type.
-	 *
-	 * @param methodParameter the method parameter
-	 * @return the type
-	 */
-	static Type getType(MethodParameter methodParameter) {
-		Type genericParameterType = methodParameter.getGenericParameterType();
-		if (genericParameterType instanceof ParameterizedType || genericParameterType instanceof TypeVariable )
-			return ReturnTypeParser.resolveType(genericParameterType, methodParameter.getContainingClass());
 		return methodParameter.getParameterType();
 	}
 

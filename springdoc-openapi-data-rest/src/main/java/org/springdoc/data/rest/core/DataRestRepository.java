@@ -84,10 +84,10 @@ public class DataRestRepository {
 	 * @param repositoryType the repository type
 	 * @param locale the locale
 	 */
-	public DataRestRepository(Class<?> domainType, Class<?> repositoryType,Locale locale) {
+	public DataRestRepository(Class<?> domainType, Class<?> repositoryType, Locale locale) {
 		this.domainType = domainType;
 		this.repositoryType = repositoryType;
-		this.locale=locale;
+		this.locale = locale;
 	}
 
 	/**

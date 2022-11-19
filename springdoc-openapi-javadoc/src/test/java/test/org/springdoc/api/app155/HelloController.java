@@ -37,8 +37,8 @@ public class HelloController {
 	 * @param test the test 
 	 * @return the response entity
 	 */
-	@GetMapping( "/test1")
-	public ResponseEntity<String> sayHello( @ParameterObject final ConcreteParameterObject test) {
+	@GetMapping("/test1")
+	public ResponseEntity<String> sayHello(@ParameterObject final ConcreteParameterObject test) {
 		System.out.println("Field B = " + test);
 		return new ResponseEntity<String>("{\"Say\": \"Hello\"}", HttpStatus.OK);
 	}
@@ -49,11 +49,10 @@ public class HelloController {
 	 * @param test the test 
 	 * @return the response entity
 	 */
-	@GetMapping( "/test2")
-	public ResponseEntity<String> sayHello( @ParameterObject final ConcreteIntParameterObject test) {
+	@GetMapping("/test2")
+	public ResponseEntity<String> sayHello(@ParameterObject final ConcreteIntParameterObject test) {
 		System.out.println("Field B = " + test);
 		return new ResponseEntity<String>("{\"Say\": \"Hello\"}", HttpStatus.OK);
 	}
-
 
 }

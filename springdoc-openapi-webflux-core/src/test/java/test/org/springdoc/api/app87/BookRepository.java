@@ -25,14 +25,14 @@ import reactor.core.publisher.Flux;
 import org.springframework.stereotype.Component;
 
 @Component
-public class  BookRepository {
+public class BookRepository {
 
 
-	Flux<Book> findByAuthor(String author){
-		return Flux.just(new Book("1", "title1","author1"));
+	Flux<Book> findByAuthor(String author) {
+		return Flux.just(new Book("1", "title1", "author1"));
 	}
 
 	Flux<Book> findAll() {
-		 return Flux.just(new Book("2", "title2","author2"));
+		return Flux.just(new Book("2", "title2", "author2"));
 	}
 }

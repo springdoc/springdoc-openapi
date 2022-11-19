@@ -6,7 +6,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 public class Item extends RepresentationModel<Item> {
 
-   private String description;
+	private String description;
 
 	public Item(String description) {
 		this.description = description;

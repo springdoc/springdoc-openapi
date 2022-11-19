@@ -10,21 +10,21 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 public class PositionHandler {
 
 
-    public Mono<ServerResponse> findById(ServerRequest request) {
-        String id = request.pathVariable("id");
-        return null;
-    }
-
-    public Mono<ServerResponse> findAll(ServerRequest request) {
+	public Mono<ServerResponse> findById(ServerRequest request) {
+		String id = request.pathVariable("id");
 		return null;
-    }
+	}
 
-    public Mono<ServerResponse> save(ServerRequest request) {
+	public Mono<ServerResponse> findAll(ServerRequest request) {
 		return null;
-    }
+	}
 
-    public Mono<ServerResponse> delete(ServerRequest request) {
+	public Mono<ServerResponse> save(ServerRequest request) {
 		return null;
-    }
+	}
+
+	public Mono<ServerResponse> delete(ServerRequest request) {
+		return null;
+	}
 
 }

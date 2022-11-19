@@ -43,6 +43,21 @@ import org.springframework.util.CollectionUtils;
 public class AbstractRouterFunctionVisitor {
 
 	/**
+	 * The Consumes.
+	 */
+	private final List<String> consumes = new ArrayList<>();
+
+	/**
+	 * The Produces.
+	 */
+	private final List<String> produces = new ArrayList<>();
+
+	/**
+	 * The Query params.
+	 */
+	private final Map<String, String> queryParams = new LinkedHashMap<>();
+
+	/**
 	 * The Router function datas.
 	 */
 	protected List<RouterFunctionData> routerFunctionDatas = new ArrayList<>();
@@ -81,21 +96,6 @@ public class AbstractRouterFunctionVisitor {
 	 * The Methods.
 	 */
 	private Set<HttpMethod> methods;
-
-	/**
-	 * The Consumes.
-	 */
-	private final List<String> consumes = new ArrayList<>();
-
-	/**
-	 * The Produces.
-	 */
-	private final List<String> produces = new ArrayList<>();
-
-	/**
-	 * The Query params.
-	 */
-	private final Map<String, String> queryParams = new LinkedHashMap<>();
 
 	/**
 	 * Method.
@@ -329,7 +329,7 @@ public class AbstractRouterFunctionVisitor {
 	 * @param header the header
 	 * @param routerFunctionData the router function data
 	 */
-	private void addHeader(String mediaType, String header,RouterFunctionData routerFunctionData) {
+	private void addHeader(String mediaType, String header, RouterFunctionData routerFunctionData) {
 		if (HttpHeaders.CONTENT_TYPE.equals(header))
 			routerFunctionData.addConsumes(mediaType);
 		else if (HttpHeaders.ACCEPT.equals(header))

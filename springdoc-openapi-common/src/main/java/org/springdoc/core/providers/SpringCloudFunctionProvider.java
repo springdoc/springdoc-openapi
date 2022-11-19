@@ -69,21 +69,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class SpringCloudFunctionProvider implements CloudFunctionProvider, ApplicationContextAware {
 
 	/**
-	 * The Function catalog.
-	 */
-	private final Optional<FunctionCatalog> functionCatalogOptional;
-
-	/**
-	 * The Spring doc config properties.
-	 */
-	private final SpringDocConfigProperties springDocConfigProperties;
-
-	/**
-	 * The Application context.
-	 */
-	private ApplicationContext applicationContext;
-
-	/**
 	 * The constant supplierRequestMethods.
 	 */
 	private static final RequestMethod[] supplierRequestMethods = new RequestMethod[] { GET };
@@ -102,6 +87,21 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	 * The constant defaultMediaTypes.
 	 */
 	private static final String[] defaultMediaTypes = new String[] { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE };
+
+	/**
+	 * The Function catalog.
+	 */
+	private final Optional<FunctionCatalog> functionCatalogOptional;
+
+	/**
+	 * The Spring doc config properties.
+	 */
+	private final SpringDocConfigProperties springDocConfigProperties;
+
+	/**
+	 * The Application context.
+	 */
+	private ApplicationContext applicationContext;
 
 	/**
 	 * The spring cloud function prefix.

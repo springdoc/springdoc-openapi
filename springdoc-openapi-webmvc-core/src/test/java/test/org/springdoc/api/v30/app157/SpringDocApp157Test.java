@@ -47,9 +47,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class SpringDocApp157Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringBootApp {}
-
 	@Autowired
 	private StringyConverter stringyConverter;
 
@@ -70,4 +67,7 @@ public class SpringDocApp157Test extends AbstractSpringDocV30Test {
 				}})))
 				.andExpect(jsonPath("$.components.schemas.Bar", not(hasProperty("required"))));
 	}
+
+	@SpringBootApplication
+	static class SpringBootApp {}
 }

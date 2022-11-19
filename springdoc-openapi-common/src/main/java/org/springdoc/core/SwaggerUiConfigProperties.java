@@ -60,24 +60,6 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	private String version;
 
 	/**
-	 * Gets swagger ui version.
-	 *
-	 * @return the swagger ui version
-	 */
-	public String getVersion() {
-		return version;
-	}
-
-	/**
-	 * Sets swagger ui version.
-	 *
-	 * @param version the swagger ui version
-	 */
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	/**
 	 * The Csrf configuration.
 	 */
 	private Csrf csrf = new Csrf();
@@ -96,6 +78,24 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	 * The Use root path.
 	 */
 	private boolean useRootPath;
+
+	/**
+	 * Gets swagger ui version.
+	 *
+	 * @return the swagger ui version
+	 */
+	public String getVersion() {
+		return version;
+	}
+
+	/**
+	 * Sets swagger ui version.
+	 *
+	 * @param version the swagger ui version
+	 */
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
 	/**
 	 * Is use root path boolean.
@@ -131,6 +131,78 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	 */
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	/**
+	 * Is disable swagger default url boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isDisableSwaggerDefaultUrl() {
+		return disableSwaggerDefaultUrl;
+	}
+
+	/**
+	 * Sets disable swagger default url.
+	 *
+	 * @param disableSwaggerDefaultUrl the disable swagger default url
+	 */
+	public void setDisableSwaggerDefaultUrl(boolean disableSwaggerDefaultUrl) {
+		this.disableSwaggerDefaultUrl = disableSwaggerDefaultUrl;
+	}
+
+	/**
+	 * Gets csrf.
+	 *
+	 * @return the csrf
+	 */
+	public Csrf getCsrf() {
+		return csrf;
+	}
+
+	/**
+	 * Sets csrf.
+	 *
+	 * @param csrf the csrf
+	 */
+	public void setCsrf(Csrf csrf) {
+		this.csrf = csrf;
+	}
+
+	/**
+	 * Is csrf enabled boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isCsrfEnabled() {
+		return csrf.isEnabled();
+	}
+
+	/**
+	 * Gets syntaxHighlight.
+	 *
+	 * @return the syntaxHighlight
+	 */
+	public SyntaxHighlight getSyntaxHighlight() {
+		return syntaxHighlight;
+	}
+
+	/**
+	 * Sets syntaxHighlight.
+	 *
+	 * @param syntaxHighlight the syntaxHighlight
+	 */
+	public void setSyntaxHighlight(SyntaxHighlight syntaxHighlight) {
+		this.syntaxHighlight = syntaxHighlight;
+	}
+
+	/**
+	 * Clone urls set.
+	 *
+	 * @return the set
+	 */
+	public Set<SwaggerUrl> cloneUrls() {
+		return this.urls.stream().map(swaggerUrl -> new SwaggerUrl(swaggerUrl.getName(), swaggerUrl.getUrl(), swaggerUrl.getDisplayName())).collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 	/**
@@ -202,21 +274,21 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		}
 
 		/**
-		 * Use Session storage boolean.
-		 *
-		 * @return the boolean
-		 */
-		public boolean isUseSessionStorage() {
-			return useSessionStorage;
-		}
-
-		/**
 		 * Sets useLocalStorage.
 		 *
 		 * @param useLocalStorage the use local storage
 		 */
 		public void setUseLocalStorage(boolean useLocalStorage) {
 			this.useLocalStorage = useLocalStorage;
+		}
+
+		/**
+		 * Use Session storage boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isUseSessionStorage() {
+			return useSessionStorage;
 		}
 
 		/**
@@ -256,21 +328,21 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		}
 
 		/**
-		 * Gets session storage key.
-		 *
-		 * @return the cookie name
-		 */
-		public String getSessionStorageKey() {
-			return sessionStorageKey;
-		}
-
-		/**
 		 * Sets local storage key.
 		 *
 		 * @param localStorageKey the local storage key
 		 */
 		public void setLocalStorageKey(String localStorageKey) {
 			this.localStorageKey = localStorageKey;
+		}
+
+		/**
+		 * Gets session storage key.
+		 *
+		 * @return the cookie name
+		 */
+		public String getSessionStorageKey() {
+			return sessionStorageKey;
 		}
 
 		/**
@@ -299,51 +371,6 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		public void setHeaderName(String headerName) {
 			this.headerName = headerName;
 		}
-	}
-
-	/**
-	 * Is disable swagger default url boolean.
-	 *
-	 * @return the boolean
-	 */
-	public boolean isDisableSwaggerDefaultUrl() {
-		return disableSwaggerDefaultUrl;
-	}
-
-	/**
-	 * Sets disable swagger default url.
-	 *
-	 * @param disableSwaggerDefaultUrl the disable swagger default url
-	 */
-	public void setDisableSwaggerDefaultUrl(boolean disableSwaggerDefaultUrl) {
-		this.disableSwaggerDefaultUrl = disableSwaggerDefaultUrl;
-	}
-
-	/**
-	 * Gets csrf.
-	 *
-	 * @return the csrf
-	 */
-	public Csrf getCsrf() {
-		return csrf;
-	}
-
-	/**
-	 * Sets csrf.
-	 *
-	 * @param csrf the csrf
-	 */
-	public void setCsrf(Csrf csrf) {
-		this.csrf = csrf;
-	}
-
-	/**
-	 * Is csrf enabled boolean.
-	 *
-	 * @return the boolean
-	 */
-	public boolean isCsrfEnabled() {
-		return csrf.isEnabled();
 	}
 
 	/**
@@ -406,33 +433,6 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 		public boolean isPresent() {
 			return activated != null || StringUtils.isNotEmpty(theme);
 		}
-	}
-
-	/**
-	 * Gets syntaxHighlight.
-	 *
-	 * @return the syntaxHighlight
-	 */
-	public SyntaxHighlight getSyntaxHighlight() {
-		return syntaxHighlight;
-	}
-
-	/**
-	 * Sets syntaxHighlight.
-	 *
-	 * @param syntaxHighlight the syntaxHighlight
-	 */
-	public void setSyntaxHighlight(SyntaxHighlight syntaxHighlight) {
-		this.syntaxHighlight = syntaxHighlight;
-	}
-
-	/**
-	 * Clone urls set.
-	 *
-	 * @return the set
-	 */
-	public Set<SwaggerUrl> cloneUrls(){
-		return this.urls.stream().map(swaggerUrl -> new SwaggerUrl(swaggerUrl.getName(), swaggerUrl.getUrl(), swaggerUrl.getDisplayName())).collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 }

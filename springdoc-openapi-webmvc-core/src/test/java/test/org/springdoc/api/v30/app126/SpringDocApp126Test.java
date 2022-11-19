@@ -52,6 +52,6 @@ public class SpringDocApp126Test extends AbstractSpringDocV30Test {
 				responsesToRegister.forEach(entry -> openApi.getComponents().addResponses(entry.getKey(), entry.getValue()));
 			};
 		}
-		
+
 	}
 }

@@ -77,7 +77,7 @@ public class HelloController<DataRequest> {
 	public void createOrganization(
 			@Parameter(name = "organization", required = true)
 			@RequestBody
-					Organization organization) {
+			Organization organization) {
 
 
 	}

@@ -29,14 +29,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController("/api")
 public class HelloController {
 
-    /**
-     * Process foo.
-     *
-     * @param a the a
-     * @return the foo
-     */
-    @PostMapping
-    public Foo process(@RequestBody Foo a) {
-        return a;
-    }
+	/**
+	 * Process foo.
+	 *
+	 * @param a the a
+	 * @return the foo
+	 */
+	@PostMapping
+	public Foo process(@RequestBody Foo a) {
+		return a;
+	}
 }

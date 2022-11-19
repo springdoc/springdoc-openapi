@@ -656,6 +656,15 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
+	 * Sets override with generic response.
+	 *
+	 * @param overrideWithGenericResponse the override with generic response
+	 */
+	public void setOverrideWithGenericResponse(Boolean overrideWithGenericResponse) {
+		this.overrideWithGenericResponse = overrideWithGenericResponse;
+	}
+
+	/**
 	 * Gets default override with generic response.
 	 *
 	 * @return the default override with generic response
@@ -665,15 +674,6 @@ public class SpringDocConfigProperties {
 			return true;
 		else
 			return overrideWithGenericResponse;
-	}
-
-	/**
-	 * Sets override with generic response.
-	 *
-	 * @param overrideWithGenericResponse the override with generic response
-	 */
-	public void setOverrideWithGenericResponse(Boolean overrideWithGenericResponse) {
-		this.overrideWithGenericResponse = overrideWithGenericResponse;
 	}
 
 	/**
@@ -731,15 +731,6 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
-	 * Sets pre loading enabled.
-	 *
-	 * @param preLoadingEnabled the pre loading enabled
-	 */
-	public void setPreLoadingEnabled(boolean preLoadingEnabled) {
-		this.preLoadingEnabled = preLoadingEnabled;
-	}
-
-	/**
 	 * Is disable i 18 n boolean.
 	 *
 	 * @return the boolean
@@ -764,6 +755,15 @@ public class SpringDocConfigProperties {
 	 */
 	public boolean isPreLoadingEnabled() {
 		return preLoadingEnabled;
+	}
+
+	/**
+	 * Sets pre loading enabled.
+	 *
+	 * @param preLoadingEnabled the pre loading enabled
+	 */
+	public void setPreLoadingEnabled(boolean preLoadingEnabled) {
+		this.preLoadingEnabled = preLoadingEnabled;
 	}
 
 	/**

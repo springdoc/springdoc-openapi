@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ExampleController {
 
-    @PostMapping("/post")
-    public ResponseEntity<String> postExample() {
-        return ResponseEntity.ok("Successful post");
-    }
+	@PostMapping("/post")
+	public ResponseEntity<String> postExample() {
+		return ResponseEntity.ok("Successful post");
+	}
 
-    @GetMapping("/get")
-    public ResponseEntity<String> getExample() {
-        return ResponseEntity.ok("Successful get");
-    }
+	@GetMapping("/get")
+	public ResponseEntity<String> getExample() {
+		return ResponseEntity.ok("Successful get");
+	}
 }

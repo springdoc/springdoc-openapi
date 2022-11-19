@@ -12,9 +12,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * The type Organization.
  */
 @Schema(description =
-				"This is the description being overwritten")
+		"This is the description being overwritten")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"id", "name"})
+@JsonPropertyOrder({ "id", "name" })
 public class Organization {
 
 	/**
@@ -37,7 +37,8 @@ public class Organization {
 	/**
 	 * Instantiates a new Organization.
 	 */
-	public Organization() {}
+	public Organization() {
+	}
 
 	/**
 	 * Gets id.
@@ -49,21 +50,21 @@ public class Organization {
 	}
 
 	/**
-	 * Gets name.
-	 *
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
 	 * Sets id.
 	 *
 	 * @param id the id
 	 */
 	public void setId(UUID id) {
 		this.id = id;
+	}
+
+	/**
+	 * Gets name.
+	 *
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
 	}
 
 	/**

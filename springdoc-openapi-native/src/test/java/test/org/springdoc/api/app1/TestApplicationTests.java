@@ -28,12 +28,13 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TestApplicationTests  {
+class TestApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
 
 	@SpringBootConfiguration
 	static class SpringDocTestApp {}
-
-	@Test
-	void contextLoads() {}
 
 }

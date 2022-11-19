@@ -38,12 +38,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController<T> {
 
 
-	@PostMapping(value = "/files", produces = { MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	@PostMapping(value = "/files", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	@Operation(summary = "files")
 	public Flux<Void> handleFileUpload(
 			@RequestPart("files") @Parameter(description = "files",
 					content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE))
-					Flux<FilePart> filePartFux) throws IOException {
+			Flux<FilePart> filePartFux) throws IOException {
 		File tmp = File.createTempFile("tmp", "");
 		return filePartFux.flatMap(filePart -> {
 			Path path = Paths.get(tmp.toString() + filePart.filename());

@@ -62,13 +62,13 @@ class EmployeeController {
 	ResponseEntity<CollectionModel<EntityModel<Employee>>> findAll() {
 
 		List<EntityModel<Employee>> employees = StreamSupport.stream(repository.findAll().spliterator(), false)
-				.map(employee ->  EntityModel.of(employee, //
+				.map(employee -> EntityModel.of(employee, //
 						linkTo(methodOn(EmployeeController.class).findOne(employee.getId())).withSelfRel(), //
 						linkTo(methodOn(EmployeeController.class).findAll()).withRel("employees"))) //
 				.collect(Collectors.toList());
 
 		return ResponseEntity.ok( //
-				 CollectionModel.of(employees, //
+				CollectionModel.of(employees, //
 						linkTo(methodOn(EmployeeController.class).findAll()).withSelfRel()));
 	}
 
@@ -79,7 +79,7 @@ class EmployeeController {
 		try {
 			Employee savedEmployee = repository.save(employee);
 
-			EntityModel<Employee> employeeResource =  EntityModel.of(savedEmployee, //
+			EntityModel<Employee> employeeResource = EntityModel.of(savedEmployee, //
 					linkTo(methodOn(EmployeeController.class).findOne(savedEmployee.getId())).withSelfRel());
 
 			return ResponseEntity //
@@ -101,7 +101,7 @@ class EmployeeController {
 	ResponseEntity<EntityModel<Employee>> findOne(@PathVariable long id) {
 
 		return repository.findById(id) //
-				.map(employee ->  EntityModel.of(employee, //
+				.map(employee -> EntityModel.of(employee, //
 						linkTo(methodOn(EmployeeController.class).findOne(employee.getId())).withSelfRel(), //
 						linkTo(methodOn(EmployeeController.class).findAll()).withRel("employees"))) //
 				.map(ResponseEntity::ok) //

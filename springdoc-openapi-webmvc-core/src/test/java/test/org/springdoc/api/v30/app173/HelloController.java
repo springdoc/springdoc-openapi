@@ -30,10 +30,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @GetMapping("/test")
-    public void printHello() {
-        System.out.println("Hello");
-    }
+	@GetMapping("/test")
+	public void printHello() {
+		System.out.println("Hello");
+	}
 
 	@GetMapping("/toto")
 	public Flux<String> test() {

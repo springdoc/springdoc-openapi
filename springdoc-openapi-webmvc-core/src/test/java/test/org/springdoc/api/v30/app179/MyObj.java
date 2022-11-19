@@ -24,6 +24,7 @@ package test.org.springdoc.api.v30.app179;
 
 public class MyObj {
 	private final String id;
+
 	private final String content;
 
 	public MyObj(String id, String content) {

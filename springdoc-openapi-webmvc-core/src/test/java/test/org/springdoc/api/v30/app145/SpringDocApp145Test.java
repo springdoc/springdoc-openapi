@@ -50,9 +50,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp145Test extends AbstractSpringDocActuatorV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	public void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/users"))
@@ -83,15 +80,18 @@ public class SpringDocApp145Test extends AbstractSpringDocActuatorV30Test {
 	@Test
 	public void testApp3() throws Exception {
 		try {
-			actuatorRestTemplate.getForObject("/application/openapi"+  "/"+Constants.DEFAULT_GROUP_NAME, String.class);
+			actuatorRestTemplate.getForObject("/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME, String.class);
 			fail();
 		}
 		catch (HttpStatusCodeException ex) {
-			// TODO: Currently obtain status 500 on MVC... Webflux obtain 404... 
+			// TODO: Currently obtain status 500 on MVC... Webflux obtain 404...
 			if (ex.getStatusCode() == HttpStatus.NOT_FOUND)
 				assertTrue(true);
 			else
 				fail();
 		}
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

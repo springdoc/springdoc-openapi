@@ -2,14 +2,15 @@ package test.org.springdoc.api.v30.app190;
 
 public class SimpleGeneric<T> {
 
-    private String name;
-    private T child;
+	private String name;
 
-    public T getChild() {
-        return child;
-    }
+	private T child;
 
-    public String getName() {
-        return name;
-    }
+	public T getChild() {
+		return child;
+	}
+
+	public String getName() {
+		return name;
+	}
 }

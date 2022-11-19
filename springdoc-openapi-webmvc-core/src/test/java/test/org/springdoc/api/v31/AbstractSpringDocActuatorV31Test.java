@@ -32,16 +32,16 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestTemplate;
 
-@TestPropertySource(properties={ "management.endpoints.enabled-by-default=true", "springdoc.api-docs.version=openapi_3_1" })
+@TestPropertySource(properties = { "management.endpoints.enabled-by-default=true", "springdoc.api-docs.version=openapi_3_1" })
 public abstract class AbstractSpringDocActuatorV31Test extends AbstractCommonTest {
+
+	protected RestTemplate actuatorRestTemplate;
 
 	@LocalManagementPort
 	private int managementPort;
 
 	@Autowired
 	private RestTemplateBuilder restTemplateBuilder;
-
-	protected RestTemplate actuatorRestTemplate;
 
 	@PostConstruct
 	void init() {

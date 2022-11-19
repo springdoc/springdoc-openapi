@@ -1,7 +1,6 @@
 package test.org.springdoc.api.app9.component.dto.converter;
 
 
-
 import test.org.springdoc.api.app9.component.dto.DemoComponentDto;
 import test.org.springdoc.api.app9.component.model.DemoComponent;
 import test.org.springdoc.api.app9.utils.Converter;

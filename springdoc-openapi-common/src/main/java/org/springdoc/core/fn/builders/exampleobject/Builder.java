@@ -37,37 +37,37 @@ public class Builder {
 	/**
 	 * A unique name to identify this particular example
 	 */
-	private String name ="";
+	private String name = "";
 
 	/**
 	 * A brief summary of the purpose or context of the example
 	 */
-	private String summary="";
+	private String summary = "";
 
 	/**
 	 * A string representation of the example.  This is mutually exclusive with the externalValue property, and ignored if the externalValue property is specified.  If the media type associated with the example allows parsing into an object, it may be converted from a string
 	 */
-	private String value="";
+	private String value = "";
 
 	/**
 	 * A URL to point to an external document to be used as an example.  This is mutually exclusive with the value property.
 	 */
-	private String externalValue="";
+	private String externalValue = "";
 
 	/**
 	 * The list of optional extensions
 	 */
-	private Extension[] extensions= {};
+	private Extension[] extensions = {};
 
 	/**
 	 * A reference to a example defined in components examples.
 	 */
-	private String ref="";
+	private String ref = "";
 
 	/**
 	 * A description of the purpose or context of the example
 	 */
-	private String description="";
+	private String description = "";
 
 	/**
 	 * Instantiates a new Example object builder.
@@ -135,7 +135,7 @@ public class Builder {
 	 * @return the example object builder
 	 */
 	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
-		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
+		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}
 

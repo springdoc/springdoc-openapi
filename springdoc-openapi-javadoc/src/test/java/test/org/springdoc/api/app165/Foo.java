@@ -24,9 +24,9 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
  * The type Foo.
  */
 public class Foo {
-    /**
-     * The Bar.
-     */
-    @JsonUnwrapped
-    public Bar bar;
+	/**
+	 * The Bar.
+	 */
+	@JsonUnwrapped
+	public Bar bar;
 }

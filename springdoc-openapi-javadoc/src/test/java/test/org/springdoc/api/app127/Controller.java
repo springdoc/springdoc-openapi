@@ -22,15 +22,15 @@ public class Controller {
 	 * @return the umbrella
 	 */
 	@Operation(summary = "Test Bug", responses = {
-      @ApiResponse(responseCode = "200", description = "OK",
-          content = @Content(
-              schema = @Schema(implementation = Umbrella.class),
-              examples = @ExampleObject(ref = "#/components/examples/umbrellaExample", name = "Example with weird YAML tag")
-          )
-      )
-  })
-  @GetMapping(value = "/bug", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Umbrella bug() {
-    return new Umbrella(new ConcreteObjectA("a", "b"));
-  }
+			@ApiResponse(responseCode = "200", description = "OK",
+					content = @Content(
+							schema = @Schema(implementation = Umbrella.class),
+							examples = @ExampleObject(ref = "#/components/examples/umbrellaExample", name = "Example with weird YAML tag")
+					)
+			)
+	})
+	@GetMapping(value = "/bug", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Umbrella bug() {
+		return new Umbrella(new ConcreteObjectA("a", "b"));
+	}
 }

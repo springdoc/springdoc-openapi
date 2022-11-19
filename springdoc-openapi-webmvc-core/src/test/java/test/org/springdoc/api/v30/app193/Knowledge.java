@@ -9,6 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 @Schema(description = "Represents the knowledge.")
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.WRAPPER_OBJECT)
-@JsonSubTypes({@JsonSubTypes.Type(value = Books.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(value = Books.class) })
 public interface Knowledge {
 }

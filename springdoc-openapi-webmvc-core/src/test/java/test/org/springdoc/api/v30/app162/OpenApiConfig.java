@@ -33,14 +33,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenApiConfig {
-    @Bean
-    OpenApiCustomiser openApiCustomiser() {
-        return openApi -> {
-            openApi.getInfo().version("v1");
-            Server server = new Server().url("");
-            List<Server> servers=new ArrayList<>();
-            servers.add(server);
-            openApi.servers(servers);
-        };
-    }
+	@Bean
+	OpenApiCustomiser openApiCustomiser() {
+		return openApi -> {
+			openApi.getInfo().version("v1");
+			Server server = new Server().url("");
+			List<Server> servers = new ArrayList<>();
+			servers.add(server);
+			openApi.servers(servers);
+		};
+	}
 }

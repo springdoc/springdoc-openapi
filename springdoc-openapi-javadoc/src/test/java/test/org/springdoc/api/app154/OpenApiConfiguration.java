@@ -10,8 +10,8 @@ import io.swagger.v3.oas.annotations.security.SecuritySchemes;
 /**
  * The type Open api configuration.
  */
-@OpenAPIDefinition(info = @Info(title = "toto",version = "1.0"),
-		security = {@SecurityRequirement(name = "basicAuth"), @SecurityRequirement(name = "bearerToken")}
+@OpenAPIDefinition(info = @Info(title = "toto", version = "1.0"),
+		security = { @SecurityRequirement(name = "basicAuth"), @SecurityRequirement(name = "bearerToken") }
 )
 @SecuritySchemes({
 		@SecurityScheme(

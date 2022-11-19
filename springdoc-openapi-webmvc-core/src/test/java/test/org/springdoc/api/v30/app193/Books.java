@@ -9,15 +9,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Represents a list of Books.")
 public class Books extends ArrayList<Book> implements Knowledge {
 
-    public Books() {
-        super();
-    }
+	public Books() {
+		super();
+	}
 
-    public Books(Book... books) {
-        this();
+	public Books(Book... books) {
+		this();
 
-        if (books != null) {
-            Arrays.stream(books).forEach(this::add);
-        }
-    }
+		if (books != null) {
+			Arrays.stream(books).forEach(this::add);
+		}
+	}
 }

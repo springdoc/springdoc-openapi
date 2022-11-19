@@ -37,12 +37,14 @@ import javax.persistence.TemporalType;
 public class Account {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO) private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
 	@ManyToOne
 	private Customer customer;
 
-	@Temporal(TemporalType.DATE) private Date expiryDate;
+	@Temporal(TemporalType.DATE)
+	private Date expiryDate;
 
 	public Long getId() {
 		return id;

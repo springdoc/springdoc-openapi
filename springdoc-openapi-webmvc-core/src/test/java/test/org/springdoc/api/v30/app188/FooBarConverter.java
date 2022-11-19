@@ -28,13 +28,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class FooBarConverter implements Converter<String, FooBar> {
 
-  @Override
-  public FooBar convert(String source) {
-    return FooBar.valueOf(fooBarToUpperCase(source));
-  }
+	@Override
+	public FooBar convert(String source) {
+		return FooBar.valueOf(fooBarToUpperCase(source));
+	}
 
-  private String fooBarToUpperCase(String source) {
-	  String upper = source.toUpperCase();
-    return upper.replace("-", "_");
-  }
+	private String fooBarToUpperCase(String source) {
+		String upper = source.toUpperCase();
+		return upper.replace("-", "_");
+	}
 }

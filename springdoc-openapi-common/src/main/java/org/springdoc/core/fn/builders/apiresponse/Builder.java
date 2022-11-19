@@ -38,6 +38,11 @@ import org.apache.commons.lang3.ArrayUtils;
 public class Builder {
 
 	/**
+	 * The Use return type schema.
+	 */
+	boolean useReturnTypeSchema = false;
+
+	/**
 	 * A short description of the response.
 	 *
 	 */
@@ -79,11 +84,6 @@ public class Builder {
 	 * @since swagger -core 2.0.3
 	 */
 	private String ref = "";
-
-	/**
-	 * The Use return type schema.
-	 */
-	boolean useReturnTypeSchema = false;
 
 	/**
 	 * Instantiates a new Api response builder.

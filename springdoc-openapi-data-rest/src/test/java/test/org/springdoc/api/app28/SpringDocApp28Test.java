@@ -25,10 +25,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp28Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	static {
 		SpringDocUtils.getConfig().replaceParameterObjectWithClass(ExamplePageable.class, ExamplePageableReplacement.class);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

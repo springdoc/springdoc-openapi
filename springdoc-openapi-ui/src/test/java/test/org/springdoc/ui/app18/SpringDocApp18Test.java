@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(properties = {
 		"springdoc.swagger-ui.try-it-out-enabled=true",
 		"springdoc.swagger-ui.display-operation-id=true"
-} )
+})
 public class SpringDocApp18Test extends AbstractSpringDocTest {
 
 	@Test
@@ -43,8 +43,8 @@ public class SpringDocApp18Test extends AbstractSpringDocTest {
 				.andExpect(jsonPath("tryItOutEnabled", equalTo(true)));
 	}
 
-    @SpringBootApplication
-    static class SpringDocTestApp {
-    }
+	@SpringBootApplication
+	static class SpringDocTestApp {
+	}
 
 }

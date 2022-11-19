@@ -159,7 +159,7 @@ public class Builder {
 	 * @return the encoding builder
 	 */
 	public Builder headers(org.springdoc.core.fn.builders.header.Builder headerBuilder) {
-		this.headers = ArrayUtils.add( this.headers, headerBuilder.build());
+		this.headers = ArrayUtils.add(this.headers, headerBuilder.build());
 		return this;
 	}
 
@@ -170,7 +170,7 @@ public class Builder {
 	 * @return the encoding builder
 	 */
 	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
-		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
+		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}
 
@@ -180,7 +180,7 @@ public class Builder {
 	 * @return the encoding
 	 */
 	public Encoding build() {
-		return new Encoding(){
+		return new Encoding() {
 
 			@Override
 			public Class<? extends Annotation> annotationType() {

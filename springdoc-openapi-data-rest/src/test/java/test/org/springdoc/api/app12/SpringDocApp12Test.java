@@ -45,5 +45,4 @@ public class SpringDocApp12Test extends AbstractSpringDocTest {
 		}
 	}
 
-
 }

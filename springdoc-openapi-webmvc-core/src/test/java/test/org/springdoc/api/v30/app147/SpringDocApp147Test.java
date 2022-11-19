@@ -46,12 +46,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp147Test extends AbstractSpringDocActuatorV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	public void testApp() throws Exception {
-		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/"+Constants.ACTUATOR_DEFAULT_GROUP))
+		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.ACTUATOR_DEFAULT_GROUP))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(content().json(getContent("results/3.0.1/app147-1.json"), true));
@@ -67,8 +64,11 @@ public class SpringDocApp147Test extends AbstractSpringDocActuatorV30Test {
 
 	@Test
 	public void testApp2() throws Exception {
-		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/"+Constants.DEFAULT_GROUP_NAME))
+		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.DEFAULT_GROUP_NAME))
 				.andExpect(status().isNotFound());
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

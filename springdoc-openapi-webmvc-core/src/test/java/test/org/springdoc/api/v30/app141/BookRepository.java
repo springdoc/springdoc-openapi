@@ -28,14 +28,15 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
-public class  BookRepository {
+public class BookRepository {
 
-	List<Book> findByAuthor(String author){
-		Book[] books = {new Book("1", "title1","author1")};
+	List<Book> findByAuthor(String author) {
+		Book[] books = { new Book("1", "title1", "author1") };
 		return Arrays.asList(books);
 	}
 
 	List<Book> findAll() {
-		Book[] books = {new Book("2", "title2","author2")};
-		return Arrays.asList(books);	}
+		Book[] books = { new Book("2", "title2", "author2") };
+		return Arrays.asList(books);
+	}
 }

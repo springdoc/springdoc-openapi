@@ -29,16 +29,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties ={
+@TestPropertySource(properties = {
 		"springdoc.swagger-ui..urls[0].url=/api-docs/xxx/v1/openapi.yml",
 		"springdoc.swagger-ui.urls[0].name=toto",
 		"server.servlet.context-path=/context-path"
-} )
+})
 public class SpringDocApp30Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-	
 	@Test
 	public void test_urls_with_context() throws Exception {
 		mockMvc.perform(get("/context-path/v3/api-docs/swagger-config").contextPath("/context-path"))
@@ -49,4 +46,7 @@ public class SpringDocApp30Test extends AbstractSpringDocTest {
 				.andExpect(jsonPath("validatorUrl", equalTo("")))
 				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/context-path/swagger-ui/oauth2-redirect.html")));
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

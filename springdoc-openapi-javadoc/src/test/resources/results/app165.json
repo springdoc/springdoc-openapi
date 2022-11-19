@@ -1,67 +1,67 @@
 {
-    "openapi": "3.0.1",
-    "info": {
-        "title": "OpenAPI definition",
-        "version": "v0"
-    },
-    "servers": [
-        {
-            "url": "http://localhost",
-            "description": "Generated server url"
-        }
-    ],
-    "tags": [
-        {
-            "name": "hello-controller",
-            "description": "The type Hello controller."
-        }
-    ],
-    "paths": {
-        "/": {
-            "post": {
-                "tags": [
-                    "hello-controller"
-                ],
-                "summary": "Process foo.",
-                "description": "Process foo.",
-                "operationId": "process",
-                "requestBody": {
-                    "description": "the a",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Foo"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "the foo",
-                        "content": {
-                            "*/*": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Foo"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "components": {
-        "schemas": {
-            "Foo": {
-                "type": "object",
-                "properties": {
-                    "barField": {
-                        "type": "string",
-                        "description": "The BarField."
-                    }
-                },
-                "description": "The type Foo."
-            }
-        }
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
     }
+  ],
+  "tags": [
+    {
+      "name": "hello-controller",
+      "description": "The type Hello controller."
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Process foo.",
+        "description": "Process foo.",
+        "operationId": "process",
+        "requestBody": {
+          "description": "the a",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Foo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "the foo",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Foo"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Foo": {
+        "type": "object",
+        "properties": {
+          "barField": {
+            "type": "string",
+            "description": "The BarField."
+          }
+        },
+        "description": "The type Foo."
+      }
+    }
+  }
 }

@@ -45,8 +45,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		"management.endpoints.web.exposure.include = tenant" })
 public class SpringDocApp128Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static {
+		SpringDocUtils.getConfig().addHiddenRestControllers(BasicErrorController.class);
+	}
 
 	@Test
 	public void testApp() throws Exception {
@@ -57,8 +58,7 @@ public class SpringDocApp128Test extends AbstractSpringDocV30Test {
 				.andExpect(jsonPath("$.paths./actuator/tenant/customer/{id}.get.parameters[0].name", is("id")));
 	}
 
-	static {
-		SpringDocUtils.getConfig().addHiddenRestControllers(BasicErrorController.class);
-	}
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

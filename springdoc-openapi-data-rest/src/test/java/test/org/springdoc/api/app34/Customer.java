@@ -15,10 +15,16 @@ import javax.persistence.OneToMany;
 @Entity
 public class Customer {
 
-	@Id @GeneratedValue(strategy = GenerationType.AUTO) private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
 	private String firstname;
+
 	private String lastname;
+
+	@OneToMany(mappedBy = "customer")
+	private Collection<Account> accounts;
 
 	public Long getId() {
 		return id;
@@ -31,9 +37,6 @@ public class Customer {
 	public String getLastname() {
 		return lastname;
 	}
-
-	@OneToMany(mappedBy = "customer")
-	private Collection<Account> accounts;
 
 	public Collection<Account> getAccounts() {
 		return accounts;

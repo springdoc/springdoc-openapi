@@ -17,13 +17,13 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController("/article")
 public class ArticleApi {
 
-    @GetMapping("query")
-    public List<ArticleDto> query(@ParameterObject ArticleQueryCondition condition) {
-        return new LinkedList<>();
-    }
+	@GetMapping("query")
+	public List<ArticleDto> query(@ParameterObject ArticleQueryCondition condition) {
+		return new LinkedList<>();
+	}
 
-    @PostMapping(value = "create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ArticleDto create(@ParameterObject ArticleDto dto, @RequestPart MultipartFile file) {
-        return new ArticleDto();
-    }
+	@PostMapping(value = "create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ArticleDto create(@ParameterObject ArticleDto dto, @RequestPart MultipartFile file) {
+		return new ArticleDto();
+	}
 }

@@ -54,6 +54,11 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 
 	/**
+	 * The constant SWAGGER_CONFIG_ACTUATOR_URL.
+	 */
+	private static final String SWAGGER_CONFIG_ACTUATOR_URL = DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+
+	/**
 	 * The Web endpoint properties.
 	 */
 	private final WebEndpointProperties webEndpointProperties;
@@ -62,11 +67,6 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	 * The Management server properties.
 	 */
 	private final ManagementServerProperties managementServerProperties;
-
-	/**
-	 * The constant SWAGGER_CONFIG_ACTUATOR_URL.
-	 */
-	private static final String SWAGGER_CONFIG_ACTUATOR_URL = DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
 
 	/**
 	 * Instantiates a new Swagger welcome.

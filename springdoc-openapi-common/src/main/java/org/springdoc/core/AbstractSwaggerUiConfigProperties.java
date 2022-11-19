@@ -664,6 +664,29 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	}
 
 	/**
+	 * The enum Direction.
+	 */
+	enum Direction {
+		/**
+		 *Asc direction.
+		 */
+		ASC,
+		/**
+		 *Desc direction.
+		 */
+		DESC;
+
+		/**
+		 * Is ascending boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isAscending() {
+			return this.equals(ASC);
+		}
+	}
+
+	/**
 	 * The type Swagger url.
 	 */
 	public static class SwaggerUrl {
@@ -779,29 +802,6 @@ public abstract class AbstractSwaggerUiConfigProperties {
 			sb.append(", name='").append(name).append('\'');
 			sb.append('}');
 			return sb.toString();
-		}
-	}
-
-	/**
-	 * The enum Direction.
-	 */
-	enum Direction {
-		/**
-		 *Asc direction.
-		 */
-		ASC,
-		/**
-		 *Desc direction.
-		 */
-		DESC;
-
-		/**
-		 * Is ascending boolean.
-		 *
-		 * @return the boolean
-		 */
-		public boolean isAscending() {
-			return this.equals(ASC);
 		}
 	}
 

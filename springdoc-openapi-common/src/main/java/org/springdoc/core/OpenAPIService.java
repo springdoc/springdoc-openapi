@@ -95,9 +95,26 @@ public class OpenAPIService implements ApplicationContextAware {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIService.class);
 
 	/**
-	 * The Context.
+	 * The Basic error controller.
 	 */
-	private ApplicationContext context;
+	private static Class<?> basicErrorController;
+
+	static {
+		try {
+			//spring-boot 2
+			basicErrorController = Class.forName("org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController");
+		}
+		catch (ClassNotFoundException e) {
+			//spring-boot 1
+			try {
+				basicErrorController = Class.forName("org.springframework.boot.autoconfigure.web.BasicErrorController");
+			}
+			catch (ClassNotFoundException classNotFoundException) {
+				//Basic error controller class not found
+				LOGGER.trace(classNotFoundException.getMessage());
+			}
+		}
+	}
 
 	/**
 	 * The Security parser.
@@ -130,24 +147,9 @@ public class OpenAPIService implements ApplicationContextAware {
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
-	 * The Open api.
-	 */
-	private OpenAPI openAPI;
-
-	/**
 	 * The Cached open api map.
 	 */
 	private final Map<String, OpenAPI> cachedOpenAPI = new HashMap<>();
-
-	/**
-	 * The Is servers present.
-	 */
-	private boolean isServersPresent;
-
-	/**
-	 * The Server base url.
-	 */
-	private String serverBaseUrl;
 
 	/**
 	 * The Property resolver utils.
@@ -160,26 +162,24 @@ public class OpenAPIService implements ApplicationContextAware {
 	private final Optional<JavadocProvider> javadocProvider;
 
 	/**
-	 * The Basic error controller.
+	 * The Context.
 	 */
-	private static Class<?> basicErrorController;
+	private ApplicationContext context;
 
-	static {
-		try {
-			//spring-boot 2
-			basicErrorController = Class.forName("org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController");
-		}
-		catch (ClassNotFoundException e) {
-			//spring-boot 1
-			try {
-				basicErrorController = Class.forName("org.springframework.boot.autoconfigure.web.BasicErrorController");
-			}
-			catch (ClassNotFoundException classNotFoundException) {
-				//Basic error controller class not found
-				LOGGER.trace(classNotFoundException.getMessage());
-			}
-		}
-	}
+	/**
+	 * The Open api.
+	 */
+	private OpenAPI openAPI;
+
+	/**
+	 * The Is servers present.
+	 */
+	private boolean isServersPresent;
+
+	/**
+	 * The Server base url.
+	 */
+	private String serverBaseUrl;
 
 	/**
 	 * Instantiates a new Open api builder.
@@ -460,23 +460,6 @@ public class OpenAPIService implements ApplicationContextAware {
 	}
 
 	/**
-	 * Sets server base url.
-	 *
-	 * @param serverBaseUrl the server base url
-	 */
-	public void setServerBaseUrl(String serverBaseUrl) {
-		String customServerBaseUrl = serverBaseUrl;
-
-		if (serverBaseUrlCustomizers.isPresent()) {
-			for (ServerBaseUrlCustomizer customizer : serverBaseUrlCustomizers.get()) {
-				customServerBaseUrl = customizer.customize(customServerBaseUrl);
-			}
-		}
-
-		this.serverBaseUrl = customServerBaseUrl;
-	}
-
-	/**
 	 * Gets open api definition.
 	 *
 	 * @return the open api definition
@@ -745,6 +728,23 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	public String getServerBaseUrl() {
 		return serverBaseUrl;
+	}
+
+	/**
+	 * Sets server base url.
+	 *
+	 * @param serverBaseUrl the server base url
+	 */
+	public void setServerBaseUrl(String serverBaseUrl) {
+		String customServerBaseUrl = serverBaseUrl;
+
+		if (serverBaseUrlCustomizers.isPresent()) {
+			for (ServerBaseUrlCustomizer customizer : serverBaseUrlCustomizers.get()) {
+				customServerBaseUrl = customizer.customize(customServerBaseUrl);
+			}
+		}
+
+		this.serverBaseUrl = customServerBaseUrl;
 	}
 
 	@Override

@@ -82,7 +82,7 @@ class BookRouter {
 			@RouterOperation(path = "/greeter2/books", produces = { MediaType.TEXT_PLAIN_VALUE, MediaType.APPLICATION_XML_VALUE }, beanClass = BookRepository.class, beanMethod = "findAll"),
 			@RouterOperation(path = "/greeter2/books/{author}", beanClass = BookRepository.class, beanMethod = "findByAuthor",
 					operation = @Operation(operationId = "findByAuthor"
-							, parameters = { @Parameter(in = ParameterIn.PATH, name = "author") }))})
+							, parameters = { @Parameter(in = ParameterIn.PATH, name = "author") })) })
 	RouterFunction<?> routes3(BookRepository br) {
 		return
 				nest(RequestPredicates.path("/greeter").or(RequestPredicates.path("/greeter2")),

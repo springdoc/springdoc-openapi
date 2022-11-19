@@ -12,13 +12,13 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "springdoc.show-login-endpoint=true")
 public class SpringDocApp8Test extends AbstractSpringDocTest {
 
-    @SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.configuration","test.org.springdoc.api.app8" })
-    static class SpringDocTestApp {
-        @Bean
-        public OpenAPI customOpenAPI() {
-            return new OpenAPI()
-                    .info(new Info().title("Security API").version("v1")
-                            .license(new License().name("Apache 2.0").url("http://springdoc.org")));
-        }
-    }
+	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.configuration", "test.org.springdoc.api.app8" })
+	static class SpringDocTestApp {
+		@Bean
+		public OpenAPI customOpenAPI() {
+			return new OpenAPI()
+					.info(new Info().title("Security API").version("v1")
+							.license(new License().name("Apache 2.0").url("http://springdoc.org")));
+		}
+	}
 }

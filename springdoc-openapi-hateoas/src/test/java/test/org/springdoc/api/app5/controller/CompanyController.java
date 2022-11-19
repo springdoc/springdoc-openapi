@@ -29,5 +29,4 @@ public class CompanyController {
 		return null;
 	}
 
-
 }

@@ -78,15 +78,15 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @ExtendWith(MockitoExtension.class)
 class AbstractOpenApiResourceTest {
 
-	private static final String GROUP_NAME = "groupName";
-
-	private static final String PATH = "/some/path";
-
 	public static final String PARAMETER_REFERENCE = "#/components/parameters/MyParameter";
 
 	public static final String PARAMETER_WITH_NUMBER_SCHEMA_NAME = "parameterWithNumberSchema";
 
 	public static final String PARAMETER_WITHOUT_SCHEMA_NAME = "parameterWithoutSchema";
+
+	private static final String GROUP_NAME = "groupName";
+
+	private static final String PATH = "/some/path";
 
 	@Mock
 	private ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory;

@@ -64,7 +64,7 @@ public class SwaggerUiHome {
 	 * @param optionalWebFluxProperties the optional web flux properties
 	 */
 	public SwaggerUiHome(Optional<WebFluxProperties> optionalWebFluxProperties) {
-		optionalWebFluxProperties.ifPresent(webFluxProperties -> this.basePath = StringUtils.defaultIfEmpty(webFluxProperties.getBasePath(),StringUtils.EMPTY ));
+		optionalWebFluxProperties.ifPresent(webFluxProperties -> this.basePath = StringUtils.defaultIfEmpty(webFluxProperties.getBasePath(), StringUtils.EMPTY));
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class SwaggerUiHome {
 	@GetMapping(DEFAULT_PATH_SEPARATOR)
 	@Operation(hidden = true)
 	public Mono<Void> index(ServerHttpResponse response) {
-		UriComponentsBuilder uriBuilder =  UriComponentsBuilder.fromUriString(this.basePath + swaggerUiPath);
+		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(this.basePath + swaggerUiPath);
 		response.setStatusCode(HttpStatus.FOUND);
 		response.getHeaders().setLocation(URI.create(uriBuilder.build().encode().toString()));
 		return response.setComplete();

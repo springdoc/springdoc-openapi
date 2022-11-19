@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class MyExceptionHandler  {
+public class MyExceptionHandler {
 
 	@ExceptionHandler(IllegalArgumentException.class)
 	@ApiResponse(responseCode = "404", description = "Not here", content = @Content)

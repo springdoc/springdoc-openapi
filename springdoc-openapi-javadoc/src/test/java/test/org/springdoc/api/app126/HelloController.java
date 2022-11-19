@@ -38,9 +38,9 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @RestController
 @ApiResponses(value = {
-    @ApiResponse(responseCode = "401", ref = SecurityProblemResponsesConfiguration.UNAUTHORIZED_401_NO_TOKEN_RESPONSE_REF),
-    @ApiResponse(responseCode = "401", ref = SecurityProblemResponsesConfiguration.UNAUTHORIZED_401_BAD_TOKEN_RESPONSE_REF),
-    @ApiResponse(responseCode = "403", ref = SecurityProblemResponsesConfiguration.FORBIDDEN_403_RESPONSE_REF) })
+		@ApiResponse(responseCode = "401", ref = SecurityProblemResponsesConfiguration.UNAUTHORIZED_401_NO_TOKEN_RESPONSE_REF),
+		@ApiResponse(responseCode = "401", ref = SecurityProblemResponsesConfiguration.UNAUTHORIZED_401_BAD_TOKEN_RESPONSE_REF),
+		@ApiResponse(responseCode = "403", ref = SecurityProblemResponsesConfiguration.FORBIDDEN_403_RESPONSE_REF) })
 //@ApiResponses(value = {
 //    @ApiResponse(responseCode = "401", description = "Invalid authentication.", content = {@Content(schema = @Schema(implementation = Problem.class), mediaType = APPLICATION_PROBLEM_JSON_VALUE)}),
 //    @ApiResponse(responseCode = "401", description = "Invalid authentication.",content = {@Content(schema = @Schema(implementation = Problem.class), mediaType = APPLICATION_PROBLEM_JSON_VALUE)}),
@@ -51,10 +51,11 @@ public class HelloController<T> {
 	 * The constant CURRENCIES.
 	 */
 	private static final Collection<String> CURRENCIES = new ArrayList<>();
-  static {
-    CURRENCIES.add("EUR");
-    CURRENCIES.add("USD");
-  }
+
+	static {
+		CURRENCIES.add("EUR");
+		CURRENCIES.add("USD");
+	}
 
 	/**
 	 * Gets all currencies.
@@ -62,10 +63,10 @@ public class HelloController<T> {
 	 * @return the all currencies
 	 */
 	@GetMapping
-  @Operation(description = "Get all currencies", summary = "getAllCurrencies")
-  @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "All currencies returned") })
-  public ResponseEntity<Collection<String>> getAllCurrencies() {
-    return ok(CURRENCIES);
-  }
+	@Operation(description = "Get all currencies", summary = "getAllCurrencies")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "All currencies returned") })
+	public ResponseEntity<Collection<String>> getAllCurrencies() {
+		return ok(CURRENCIES);
+	}
 
 }

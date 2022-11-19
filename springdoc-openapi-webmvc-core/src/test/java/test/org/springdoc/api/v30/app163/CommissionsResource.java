@@ -43,13 +43,13 @@ import static org.springframework.http.ResponseEntity.accepted;
 @RestController
 public class CommissionsResource {
 
-  @PutMapping(value = "{id}", consumes = APPLICATION_JSON_VALUE)
-  @Operation(description = "updateCommission", summary = "Update a commission")
-  @ApiResponse(responseCode = "202", description = "Commission updated", content = @Content(schema = @Schema(implementation = CommissionDto.class), examples = @ExampleObject(name = "202", ref = Examples.PUT_COMMISSION_RESPONSE_BODY_EXAMPLE_KEY)))
-  public ResponseEntity<CommissionDto> updateCommission(
-      @Parameter(description = "Commission's id", required = true) @PathVariable("id") String commissionId,
-      @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A commission to update", required = true, content = @Content(schema = @Schema(implementation = CommissionDto.class), examples = @ExampleObject(name="requestExample", ref = Examples.PUT_COMMISSION_REQUEST_BODY_EXAMPLE_KEY))) @RequestBody(required = true) @Valid CommissionDto commission) {
-    return accepted().body(commission);
-  }
+	@PutMapping(value = "{id}", consumes = APPLICATION_JSON_VALUE)
+	@Operation(description = "updateCommission", summary = "Update a commission")
+	@ApiResponse(responseCode = "202", description = "Commission updated", content = @Content(schema = @Schema(implementation = CommissionDto.class), examples = @ExampleObject(name = "202", ref = Examples.PUT_COMMISSION_RESPONSE_BODY_EXAMPLE_KEY)))
+	public ResponseEntity<CommissionDto> updateCommission(
+			@Parameter(description = "Commission's id", required = true) @PathVariable("id") String commissionId,
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A commission to update", required = true, content = @Content(schema = @Schema(implementation = CommissionDto.class), examples = @ExampleObject(name = "requestExample", ref = Examples.PUT_COMMISSION_REQUEST_BODY_EXAMPLE_KEY))) @RequestBody(required = true) @Valid CommissionDto commission) {
+		return accepted().body(commission);
+	}
 
 }

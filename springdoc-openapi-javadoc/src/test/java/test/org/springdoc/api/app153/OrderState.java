@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * The enum Order state.
  */
-@Schema(type="string", allowableValues={"finished", "new"})
+@Schema(type = "string", allowableValues = { "finished", "new" })
 public enum OrderState {
 	/**
 	 *Finished order state.
@@ -16,6 +16,11 @@ public enum OrderState {
 	 *New order state.
 	 */
 	NEW("new");
+
+	/**
+	 * The Value.
+	 */
+	private final String value;
 
 	/**
 	 * Instantiates a new Order state.
@@ -34,9 +39,4 @@ public enum OrderState {
 	public String getValue() {
 		return value;
 	}
-
-	/**
-	 * The Value.
-	 */
-	private final String value;
 }

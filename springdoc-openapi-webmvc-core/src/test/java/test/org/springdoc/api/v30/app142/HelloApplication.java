@@ -67,7 +67,7 @@ public class HelloApplication {
 		return SpringdocRouteBuilder.route()
 				.GET(root + "/people", ph::handleGetAllPeople, ops -> ops.beanClass(PersonService.class).beanMethod("all"))
 				.GET(root + "/people/{id}", ph::handleGetPersonById, ops -> ops.beanClass(PersonService.class).beanMethod("byId"))
-				.POST(root + "/people", ph::handlePostPerson,ops -> ops.beanClass(PersonService.class).beanMethod("save")).build();
+				.POST(root + "/people", ph::handlePostPerson, ops -> ops.beanClass(PersonService.class).beanMethod("save")).build();
 	}
 
 }
@@ -121,9 +121,9 @@ class PersonService {
 	private final AtomicLong counter = new AtomicLong();
 
 	private final Set<Person> people = Stream.of(
-			new Person(counter.incrementAndGet(), "Jane"),
-			new Person(counter.incrementAndGet(), "Josh"),
-			new Person(counter.incrementAndGet(), "Gordon"))
+					new Person(counter.incrementAndGet(), "Jane"),
+					new Person(counter.incrementAndGet(), "Josh"),
+					new Person(counter.incrementAndGet(), "Gordon"))
 			.collect(Collectors.toCollection(HashSet::new));
 
 
@@ -148,14 +148,14 @@ class PersonService {
 
 class Person {
 
+	private Long id;
+
+	private String name;
+
 	public Person(Long id, String name) {
 		this.id = id;
 		this.name = name;
 	}
-
-	private Long id;
-
-	private String name;
 
 	public Long getId() {
 		return id;

@@ -1,7 +1,6 @@
 package test.org.springdoc.api.app9.component.controller.hateoas;
 
 
-
 import test.org.springdoc.api.app9.component.dto.DemoComponentDto;
 import test.org.springdoc.api.app9.component.dto.converter.DemoComponentConverter;
 import test.org.springdoc.api.app9.component.model.DemoComponent;
@@ -13,7 +12,7 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 @Component
-@SuppressWarnings({"deprecation","unchecked"})
+@SuppressWarnings({ "deprecation", "unchecked" })
 public class ComponentDtoModelAssembler implements RepresentationModelAssembler<DemoComponent, RepresentationModel<EntityModel<DemoComponentDto>>> {
 
 	@Autowired
@@ -21,7 +20,7 @@ public class ComponentDtoModelAssembler implements RepresentationModelAssembler<
 
 	@Override
 	public RepresentationModel<EntityModel<DemoComponentDto>> toModel(DemoComponent entity) {
-		return  EntityModel.of(toDtoConverter.convert(entity));
+		return EntityModel.of(toDtoConverter.convert(entity));
 	}
 
 }

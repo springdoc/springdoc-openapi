@@ -91,7 +91,7 @@ public class HelloController {
 	 * @param id the id 
 	 * @return the sample v 2
 	 */
-	@GetMapping(value = "/{id}", produces = VERSION_2, headers ={HEADER_2,HEADER_1} )
+	@GetMapping(value = "/{id}", produces = VERSION_2, headers = { HEADER_2, HEADER_1 })
 	@ResponseStatus(HttpStatus.OK)
 	@Operation(operationId = "getSampleV2", description = "Get the sample by its id. This represents V2.")
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SampleV1.class)))
@@ -121,13 +121,9 @@ public class HelloController {
 	private class SampleV1 {
 
 		/**
-		 * Gets id.
-		 *
-		 * @return the id
+		 * The Id.
 		 */
-		public String getId() {
-			return id;
-		}
+		private String id;
 
 		/**
 		 * Instantiates a new Sample v 1.
@@ -139,6 +135,15 @@ public class HelloController {
 		}
 
 		/**
+		 * Gets id.
+		 *
+		 * @return the id
+		 */
+		public String getId() {
+			return id;
+		}
+
+		/**
 		 * Sets id.
 		 *
 		 * @param id the id
@@ -146,11 +151,6 @@ public class HelloController {
 		public void setId(String id) {
 			this.id = id;
 		}
-
-		/**
-		 * The Id.
-		 */
-		private String id;
 	}
 
 	/**

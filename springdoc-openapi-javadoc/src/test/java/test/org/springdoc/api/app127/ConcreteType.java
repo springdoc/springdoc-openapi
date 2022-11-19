@@ -24,8 +24,8 @@ public enum ConcreteType {
 	 * @param name the name
 	 */
 	ConcreteType(String name) {
-    this.name = name;
-  }
+		this.name = name;
+	}
 
 	/**
 	 * Gets name.
@@ -33,6 +33,6 @@ public enum ConcreteType {
 	 * @return the name
 	 */
 	public String getName() {
-    return name;
-  }
+		return name;
+	}
 }

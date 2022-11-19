@@ -185,7 +185,7 @@ public class AbstractSwaggerIndexTransformer {
 				.filter(entry -> !SwaggerUiConfigParameters.URLS_PROPERTY.equals(entry.getKey()))
 				.filter(entry -> SwaggerUiConfigParameters.VALIDATOR_URL_PROPERTY.equals(entry.getKey())
 						|| ((entry.getValue() instanceof String) ? StringUtils.isNotEmpty((String) entry.getValue()) : entry.getValue() != null))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(e1, e2) -> e2,
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
 						LinkedHashMap::new));
 
 		if (!CollectionUtils.isEmpty(parametersObjectMap)) {
@@ -220,21 +220,21 @@ public class AbstractSwaggerIndexTransformer {
 	 */
 	protected String addCSRF(String html) {
 		StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("requestInterceptor: (request) => {\n");
-        stringBuilder.append("\t\t\tconst value = `; ${document.cookie}`;\n");
-        stringBuilder.append("\t\t\tconst parts = value.split(`; ");
-        stringBuilder.append(swaggerUiConfig.getCsrf().getCookieName());
-        stringBuilder.append("=`);\n");
-        stringBuilder.append("\t\t\tconst currentURL = new URL(document.URL);\n");
-        stringBuilder.append("\t\t\tconst requestURL = new URL(request.url, document.location.origin);\n");
-        stringBuilder.append("\t\t\tconst isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
-        stringBuilder.append("\t\t\tif (isSameOrigin && parts.length === 2) ");
-        stringBuilder.append("request.headers['");
-        stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
-        stringBuilder.append("'] = parts.pop().split(';').shift();\n");
-        stringBuilder.append("\t\t\treturn request;\n");
-        stringBuilder.append("\t\t},\n");
-        stringBuilder.append("\t\t" + PRESETS);
+		stringBuilder.append("requestInterceptor: (request) => {\n");
+		stringBuilder.append("\t\t\tconst value = `; ${document.cookie}`;\n");
+		stringBuilder.append("\t\t\tconst parts = value.split(`; ");
+		stringBuilder.append(swaggerUiConfig.getCsrf().getCookieName());
+		stringBuilder.append("=`);\n");
+		stringBuilder.append("\t\t\tconst currentURL = new URL(document.URL);\n");
+		stringBuilder.append("\t\t\tconst requestURL = new URL(request.url, document.location.origin);\n");
+		stringBuilder.append("\t\t\tconst isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
+		stringBuilder.append("\t\t\tif (isSameOrigin && parts.length === 2) ");
+		stringBuilder.append("request.headers['");
+		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
+		stringBuilder.append("'] = parts.pop().split(';').shift();\n");
+		stringBuilder.append("\t\t\treturn request;\n");
+		stringBuilder.append("\t\t},\n");
+		stringBuilder.append("\t\t" + PRESETS);
 		return html.replace(PRESETS, stringBuilder.toString());
 	}
 
@@ -258,7 +258,7 @@ public class AbstractSwaggerIndexTransformer {
 		stringBuilder.append("'] = value;\n");
 		stringBuilder.append("\t\t\treturn request;\n");
 		stringBuilder.append("\t\t},\n");
-        stringBuilder.append("\t\t" + PRESETS);
+		stringBuilder.append("\t\t" + PRESETS);
 		return html.replace(PRESETS, stringBuilder.toString());
 	}
 

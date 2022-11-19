@@ -16,71 +16,71 @@ import org.hibernate.annotations.NaturalId;
 @Table(name = "bank")
 public class Bank implements EntityDefinition {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bnk_seq")
-    @SequenceGenerator(name = "bnk_seq", sequenceName = "bnk_seq", allocationSize = 1)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bnk_seq")
+	@SequenceGenerator(name = "bnk_seq", sequenceName = "bnk_seq", allocationSize = 1)
+	private Long id;
 
-    @Column(unique = true)
-    @NaturalId
-    private String code;
+	@Column(unique = true)
+	@NaturalId
+	private String code;
 
-    @Column(unique = true, nullable = false)
-    private String name;
+	@Column(unique = true, nullable = false)
+	private String name;
 
-    public Long getId() {
-        return this.id;
-    }
+	public Long getId() {
+		return this.id;
+	}
 
-    public String getCode() {
-        return this.code;
-    }
+	public String getCode() {
+		return this.code;
+	}
 
-    private void setCode(String code) {
-        this.code = code;
-    }
+	private void setCode(String code) {
+		this.code = code;
+	}
 
-    public String getName() {
-        return this.name;
-    }
+	public String getName() {
+		return this.name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getCode());
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(getCode());
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Bank)) {
-            return false;
-        }
-        Bank bank = (Bank) o;
-        return Objects.equals(getCode(), bank.getCode());
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Bank)) {
+			return false;
+		}
+		Bank bank = (Bank) o;
+		return Objects.equals(getCode(), bank.getCode());
+	}
 
-    @Override
-    public String toString() {
-        return "Bank{" +
-            "id=" + id +
-            ", code='" + code + '\'' +
-            ", name='" + name + '\'' +
-            '}';
-    }
+	@Override
+	public String toString() {
+		return "Bank{" +
+				"id=" + id +
+				", code='" + code + '\'' +
+				", name='" + name + '\'' +
+				'}';
+	}
 
-    @Override
-    public String getKey() {
-        return code;
-    }
+	@Override
+	public String getKey() {
+		return code;
+	}
 
-    @Override
-    public String getDescription() {
-        return name;
-    }
+	@Override
+	public String getDescription() {
+		return name;
+	}
 }

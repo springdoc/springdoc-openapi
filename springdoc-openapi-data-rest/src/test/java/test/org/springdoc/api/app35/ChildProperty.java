@@ -11,11 +11,11 @@ import lombok.Data;
 public @Data
 class ChildProperty {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 
-    private String name;
+	private String name;
 
 	public long getId() {
 		return id;

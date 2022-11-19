@@ -11,6 +11,13 @@ import org.springframework.context.annotation.ComponentScan;
 
 class SpringDocApp187Test extends AbstractSpringDocTest {
 
+	@Test
+	public void testAddRouterOperationCustomizerBean() {
+		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
+				.expectStatus().isOk()
+				.expectBody().json(getContent("results/app187.json"), true);
+	}
+
 	@SpringBootApplication
 	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app187" })
 	static class SpringDocTestApp {
@@ -24,13 +31,6 @@ class SpringDocApp187Test extends AbstractSpringDocTest {
 				return routerOperation;
 			};
 		}
-	}
-
-	@Test
-	public void testAddRouterOperationCustomizerBean() {
-		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
-				.expectStatus().isOk()
-				.expectBody().json(getContent("results/app187.json"), true);
 	}
 
 }

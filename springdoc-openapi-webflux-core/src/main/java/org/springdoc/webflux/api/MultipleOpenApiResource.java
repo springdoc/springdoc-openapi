@@ -85,11 +85,6 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
-	 * The Grouped open api resources.
-	 */
-	private Map<String, OpenApiResource> groupedOpenApiResources;
-
-	/**
 	 * The Spring doc providers.
 	 */
 	private final SpringDocProviders springDocProviders;
@@ -98,6 +93,11 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 	 * The Application context.
 	 */
 	protected ApplicationContext applicationContext;
+
+	/**
+	 * The Grouped open api resources.
+	 */
+	private Map<String, OpenApiResource> groupedOpenApiResources;
 
 
 	/**

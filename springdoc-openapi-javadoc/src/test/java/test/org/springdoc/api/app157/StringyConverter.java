@@ -34,14 +34,14 @@ public class StringyConverter implements ModelConverter {
 	 * @return the schema
 	 */
 	@Override
-  public Schema resolve(AnnotatedType type, ModelConverterContext context,
-    Iterator<ModelConverter> chain) {
+	public Schema resolve(AnnotatedType type, ModelConverterContext context,
+			Iterator<ModelConverter> chain) {
 
-    JavaType javaType = objectMapperProvider.jsonMapper().constructType(type.getType());
+		JavaType javaType = objectMapperProvider.jsonMapper().constructType(type.getType());
 
-    if (javaType.getRawClass().equals(String.class)) {
-      type.getParent().addRequiredItem("stringy");
-    }
-    return chain.next().resolve(type, context, chain);
-  }
+		if (javaType.getRawClass().equals(String.class)) {
+			type.getParent().addRequiredItem("stringy");
+		}
+		return chain.next().resolve(type, context, chain);
+	}
 }

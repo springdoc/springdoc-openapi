@@ -39,9 +39,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class SpringDocApp134Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	public void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v1-group"))
@@ -65,6 +62,7 @@ public class SpringDocApp134Test extends AbstractSpringDocV30Test {
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(content().json(getContent("results/3.0.1/app134-3.json"), true));
 	}
+
 	@Test
 	public void testApp4() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v1-v2-headers-group"))
@@ -80,4 +78,7 @@ public class SpringDocApp134Test extends AbstractSpringDocV30Test {
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(content().json(getContent("results/3.0.1/app134-5.json"), true));
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

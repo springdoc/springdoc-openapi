@@ -36,7 +36,7 @@ import static java.lang.annotation.ElementType.METHOD;
  * @author bnasslahsen
  * @see  RouterOperation
  */
-@Target({METHOD, ANNOTATION_TYPE})
+@Target({ METHOD, ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface RouterOperations {

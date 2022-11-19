@@ -110,7 +110,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
 
 		configuration.addExposedHeader(HeaderString);
-		source.registerCorsConfiguration( ALL_PATTERN, configuration);
+		source.registerCorsConfiguration(ALL_PATTERN, configuration);
 
 		return source;
 	}

@@ -28,9 +28,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class CommonFooErrorHandler {
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorDTO onException(Exception e) {
-        return new ErrorDTO("Something wrong has happened");
-    }
+	@ExceptionHandler
+	@ResponseStatus(HttpStatus.CONFLICT)
+	public ErrorDTO onException(Exception e) {
+		return new ErrorDTO("Something wrong has happened");
+	}
 }
