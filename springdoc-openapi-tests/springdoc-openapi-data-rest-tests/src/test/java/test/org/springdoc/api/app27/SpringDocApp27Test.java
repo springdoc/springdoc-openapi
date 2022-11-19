@@ -31,13 +31,13 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "springdoc.model-converters.pageable-converter.enabled=false")
 public class SpringDocApp27Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	static {
 		Optional<ModelConverter> pageabeConverter =
 				ModelConverters.getInstance().getConverters()
 						.stream().filter(modelConverter -> modelConverter instanceof PageableOpenAPIConverter).findAny();
 		pageabeConverter.ifPresent(ModelConverters.getInstance()::removeConverter);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

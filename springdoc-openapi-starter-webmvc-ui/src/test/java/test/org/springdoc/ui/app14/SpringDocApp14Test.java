@@ -36,9 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 				"management.server.port=9293", "management.endpoints.web.base-path=/application" })
 class SpringDocApp14Test extends AbstractSpringDocActuatorTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	void testIndex() throws Exception {
 		MvcResult mvcResult = mockMvc.perform(get("/application/swagger-ui/index.html")).andExpect(status().isOk()).andReturn();
@@ -58,5 +55,8 @@ class SpringDocApp14Test extends AbstractSpringDocActuatorTest {
 		String expected = getContent("results/app14-1.json");
 		assertEquals(expected, contentAsString, true);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

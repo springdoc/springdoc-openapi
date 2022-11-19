@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 class GlobalExceptionHandler {
 
-    @ResponseStatus(code = HttpStatus.FORBIDDEN)
-    @ExceptionHandler(MyException.class)
-    public ResponseEntity<String> handleException(MyException myException) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(myException.getMessage());
-    }
+	@ResponseStatus(code = HttpStatus.FORBIDDEN)
+	@ExceptionHandler(MyException.class)
+	public ResponseEntity<String> handleException(MyException myException) {
+		return ResponseEntity.status(HttpStatus.FORBIDDEN)
+				.body(myException.getMessage());
+	}
 }

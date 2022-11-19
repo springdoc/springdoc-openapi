@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@TestPropertySource(properties = "springdoc.swagger-ui.disable-swagger-default-url=true" )
+@TestPropertySource(properties = "springdoc.swagger-ui.disable-swagger-default-url=true")
 public class SpringDocApp10Test extends AbstractSpringDocTest {
 
 	@Test

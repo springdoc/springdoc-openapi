@@ -51,7 +51,7 @@ public class HelloController {
 	 * @param o the o
 	 */
 	@PostMapping(value = "/persons")
-	public void create(@ParameterObject Long id, @RequestBody Object o){
+	public void create(@ParameterObject Long id, @RequestBody Object o) {
 
 	}
 
@@ -62,7 +62,7 @@ public class HelloController {
 	 * @param o the o
 	 */
 	@PostMapping(value = "/personsone")
-	public void createone(Long id, @RequestBody Object o){
+	public void createone(Long id, @RequestBody Object o) {
 
 	}
 
@@ -72,7 +72,7 @@ public class HelloController {
 	 * @param id the id
 	 */
 	@PostMapping(value = "/createtwo")
-	public void createtwo(int id){
+	public void createtwo(int id) {
 
 	}
 
@@ -82,7 +82,7 @@ public class HelloController {
 	 * @param id the id
 	 */
 	@PostMapping(value = "/createthree")
-	public void createthree(Integer id){
+	public void createthree(Integer id) {
 
 	}
 

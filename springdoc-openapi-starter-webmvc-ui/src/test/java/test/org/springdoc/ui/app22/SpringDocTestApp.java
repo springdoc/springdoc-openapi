@@ -41,7 +41,7 @@ public class SpringDocTestApp {
 	}
 
 	@Bean
-	SpringDocConfiguration springDocConfiguration(){
+	SpringDocConfiguration springDocConfiguration() {
 		return new SpringDocConfiguration();
 	}
 
@@ -51,7 +51,7 @@ public class SpringDocTestApp {
 	}
 
 	@Bean
-	ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties){
+	ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
 		return new ObjectMapperProvider(springDocConfigProperties);
 	}
 

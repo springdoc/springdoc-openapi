@@ -124,10 +124,10 @@ public class OperationService {
 		Components components = openAPI.getComponents();
 		Locale locale = methodAttributes.getLocale();
 		if (StringUtils.isNotBlank(apiOperation.summary()))
-			operation.setSummary(propertyResolverUtils.resolve(apiOperation.summary(),locale));
+			operation.setSummary(propertyResolverUtils.resolve(apiOperation.summary(), locale));
 
 		if (StringUtils.isNotBlank(apiOperation.description()))
-			operation.setDescription(propertyResolverUtils.resolve(apiOperation.description(),locale));
+			operation.setDescription(propertyResolverUtils.resolve(apiOperation.description(), locale));
 
 		if (StringUtils.isNotBlank(apiOperation.operationId()))
 			operation.setOperationId(getOperationId(apiOperation.operationId(), openAPI));
@@ -148,7 +148,7 @@ public class OperationService {
 		// build parameters
 		for (io.swagger.v3.oas.annotations.Parameter parameterDoc : apiOperation.parameters()) {
 			Parameter parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components,
-					methodAttributes.getJsonViewAnnotation(),locale);
+					methodAttributes.getJsonViewAnnotation(), locale);
 			operation.addParametersItem(parameter);
 		}
 
@@ -433,8 +433,8 @@ public class OperationService {
 	private void buildResponseContent(MethodAttributes methodAttributes, Components components, String[] classProduces, String[] methodProduces, ApiResponses apiResponsesOp, io.swagger.v3.oas.annotations.responses.ApiResponse response, ApiResponse apiResponseObject) {
 		if (apiResponsesOp == null)
 			SpringDocAnnotationsUtils.getContent(response.content(),
-					classProduces == null ? new String[0] : classProduces,
-					methodProduces == null ? new String[0] : methodProduces, null, components, null)
+							classProduces == null ? new String[0] : classProduces,
+							methodProduces == null ? new String[0] : methodProduces, null, components, null)
 					.ifPresent(apiResponseObject::content);
 		else
 			GenericResponseService.buildContentFromDoc(components, apiResponsesOp, methodAttributes, response, apiResponseObject);
@@ -621,7 +621,7 @@ public class OperationService {
 		return operation;
 	}
 
-    /**
+	/**
 	 * Gets javadoc provider.
 	 *
 	 * @return the javadoc provider

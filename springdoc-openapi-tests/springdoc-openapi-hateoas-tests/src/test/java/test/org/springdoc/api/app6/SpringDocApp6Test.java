@@ -46,14 +46,10 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "spring.hateoas.use-hal-as-default-json-media-type= false")
 public class SpringDocApp6Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {
-	}
+	private final Map<ClassKey, Class<?>> springMixins = new HashMap<>();
 
 	@Autowired
 	ObjectMapperProvider objectMapperProvider;
-
-	private final Map<ClassKey, Class<?>> springMixins = new HashMap<>();
 
 	@BeforeEach
 	void init() throws IllegalAccessException {
@@ -81,5 +77,8 @@ public class SpringDocApp6Test extends AbstractSpringDocTest {
 		_localMixIns.putAll(springMixins);
 	}
 
+	@SpringBootApplication
+	static class SpringDocTestApp {
+	}
 
 }

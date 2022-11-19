@@ -16,7 +16,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 @AutoConfigureWebTestClient(timeout = "3600000")
 @ActiveProfiles("test")
-@TestPropertySource(properties={ "management.endpoints.enabled-by-default=false" })
+@TestPropertySource(properties = { "management.endpoints.enabled-by-default=false" })
 public abstract class AbstractCommonTest {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommonTest.class);

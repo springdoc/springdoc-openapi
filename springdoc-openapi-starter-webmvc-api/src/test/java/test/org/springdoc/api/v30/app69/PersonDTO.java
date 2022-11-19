@@ -24,5 +24,5 @@
 
 package test.org.springdoc.api.v30.app69;
 
-public record PersonDTO (String email,String firstName,String lastName){
+public record PersonDTO(String email, String firstName, String lastName) {
 }

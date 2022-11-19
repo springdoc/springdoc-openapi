@@ -34,10 +34,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp114Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	static {
 		SpringDocUtils.getConfig().replaceWithClass(MonetaryAmount.class, org.springdoc.core.converters.models.MonetaryAmount.class);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

@@ -23,6 +23,7 @@ import org.springframework.hateoas.server.core.Relation;
 public class Company extends RepresentationModel<Company> {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private UUID id;
+
 	@NotNull
 	private String name;
 }

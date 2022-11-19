@@ -49,13 +49,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class SpringDocApp157Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringBootApp {}
+	private final ModelConverters converters = ModelConverters.getInstance();
 
 	@Autowired
 	private StringyConverter stringyConverter;
-
-	private final ModelConverters converters = ModelConverters.getInstance();
 
 	@AfterEach
 	public void unregisterConverter() {
@@ -72,4 +69,7 @@ public class SpringDocApp157Test extends AbstractSpringDocV30Test {
 				}})))
 				.andExpect(jsonPath("$.components.schemas.Bar", not(hasProperty("required"))));
 	}
+
+	@SpringBootApplication
+	static class SpringBootApp {}
 }

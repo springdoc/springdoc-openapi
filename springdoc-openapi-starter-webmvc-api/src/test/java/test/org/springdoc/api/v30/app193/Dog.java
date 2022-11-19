@@ -6,27 +6,28 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Represents a Dog class.")
 public class Dog implements Animal {
 
-    private String name;
-    private Integer age;
+	private String name;
 
-    public Dog(String name, Integer age) {
-        this.name = name;
-        this.age = age;
-    }
+	private Integer age;
 
-    public String getName() {
-        return name;
-    }
+	public Dog(String name, Integer age) {
+		this.name = name;
+		this.age = age;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Integer getAge() {
-        return age;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
+	public Integer getAge() {
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
 }

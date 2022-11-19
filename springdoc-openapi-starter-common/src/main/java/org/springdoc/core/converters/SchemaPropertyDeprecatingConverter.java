@@ -54,17 +54,6 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 		DEPRECATED_ANNOTATIONS.add(Deprecated.class);
 	}
 
-	@Override
-	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
-		if (chain.hasNext()) {
-			Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
-			if (type.isSchemaProperty() && containsDeprecatedAnnotation(type.getCtxAnnotations()))
-				resolvedSchema.setDeprecated(true);
-			return resolvedSchema;
-		}
-		return null;
-	}
-
 	/**
 	 * Contains deprecated annotation boolean.
 	 *
@@ -95,5 +84,16 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 		boolean deprecatedMethod = DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(method, annoClass) != null);
 		boolean deprecatedClass = DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(declaringClass, annoClass) != null);
 		return deprecatedClass || deprecatedMethod;
+	}
+
+	@Override
+	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
+		if (chain.hasNext()) {
+			Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
+			if (type.isSchemaProperty() && containsDeprecatedAnnotation(type.getCtxAnnotations()))
+				resolvedSchema.setDeprecated(true);
+			return resolvedSchema;
+		}
+		return null;
 	}
 }

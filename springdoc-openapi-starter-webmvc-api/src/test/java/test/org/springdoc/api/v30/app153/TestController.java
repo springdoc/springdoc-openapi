@@ -38,7 +38,7 @@ class TestController {
 		dataBinder.registerCustomEditor(OrderState.class, new OrderStateMapper());
 	}
 
-	@GetMapping(value = {"/orders"})
+	@GetMapping(value = { "/orders" })
 	public Object method(
 			@RequestParam(value = "state", defaultValue = "finished") OrderState orderState) {
 		return null;

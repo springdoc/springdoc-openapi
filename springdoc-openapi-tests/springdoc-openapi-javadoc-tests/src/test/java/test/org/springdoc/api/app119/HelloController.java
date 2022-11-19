@@ -51,12 +51,9 @@ public class HelloController {
 			@RequestPart("params")
 			@Parameter(
 					description = "This is the configuration",
-					content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE))
-			final JsonRequest jsonRequest,
-			@RequestPart(value = "file1", required = false) @Parameter(description = "This is file1")
-			final MultipartFile file1,
-			@RequestPart(value = "file2", required = false) @Parameter(description = "This is file2")
-			final MultipartFile file2) {
+					content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)) final JsonRequest jsonRequest,
+			@RequestPart(value = "file1", required = false) @Parameter(description = "This is file1") final MultipartFile file1,
+			@RequestPart(value = "file2", required = false) @Parameter(description = "This is file2") final MultipartFile file2) {
 		return "Hello World " + jsonRequest.getName();
 	}
 }

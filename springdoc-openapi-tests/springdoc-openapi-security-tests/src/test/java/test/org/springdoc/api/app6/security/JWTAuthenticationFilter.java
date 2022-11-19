@@ -22,7 +22,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
-
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 

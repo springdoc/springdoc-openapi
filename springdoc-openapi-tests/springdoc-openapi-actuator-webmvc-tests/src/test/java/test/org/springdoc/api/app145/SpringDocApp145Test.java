@@ -46,9 +46,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	public void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/users"))
@@ -79,7 +76,7 @@ public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 	@Test
 	public void testApp3() throws Exception {
 		try {
-			actuatorRestTemplate.getForObject("/application/openapi"+  "/"+Constants.DEFAULT_GROUP_NAME, String.class);
+			actuatorRestTemplate.getForObject("/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME, String.class);
 			fail();
 		}
 		catch (HttpStatusCodeException ex) {
@@ -87,4 +84,7 @@ public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 				assertTrue(true);
 		}
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

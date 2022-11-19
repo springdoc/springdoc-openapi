@@ -92,14 +92,14 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
-	 * The Grouped open api resources.
-	 */
-	private Map<String, OpenApiResource> groupedOpenApiResources;
-
-	/**
 	 * The Application context.
 	 */
 	protected ApplicationContext applicationContext;
+
+	/**
+	 * The Grouped open api resources.
+	 */
+	private Map<String, OpenApiResource> groupedOpenApiResources;
 
 	/**
 	 * Instantiates a new Multiple open api resource.
@@ -127,7 +127,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 	}
 
 	@Override
-	public void afterPropertiesSet()  {
+	public void afterPropertiesSet() {
 		Map<String, GlobalOpenApiCustomizer> globalOpenApiCustomizerMap = applicationContext.getBeansOfType(GlobalOpenApiCustomizer.class);
 		Map<String, GlobalOperationCustomizer> globalOperationCustomizerMap = applicationContext.getBeansOfType(GlobalOperationCustomizer.class);
 		Map<String, GlobalOpenApiMethodFilter> globalOpenApiMethodFilterMap = applicationContext.getBeansOfType(GlobalOpenApiMethodFilter.class);
@@ -141,7 +141,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 		this.groupedOpenApiResources = groupedOpenApis.stream()
 				.collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
 						{
-							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude(), item.getProducesToMatch(), item.getConsumesToMatch(), item.getHeadersToMatch(),item.getDisplayName());
+							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude(), item.getProducesToMatch(), item.getConsumesToMatch(), item.getHeadersToMatch(), item.getDisplayName());
 							springDocConfigProperties.addGroupConfig(groupConfig);
 							return buildWebMvcOpenApiResource(item);
 						}
@@ -165,7 +165,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 					Optional.of(item.getOpenApiCustomizers()),
 					Optional.of(item.getRouterOperationCustomizers()),
 					Optional.of(item.getOpenApiMethodFilters()),
-					springDocConfigProperties,springDocProviders
+					springDocConfigProperties, springDocProviders
 
 			);
 		else
@@ -178,7 +178,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 					Optional.of(item.getOpenApiCustomizers()),
 					Optional.of(item.getRouterOperationCustomizers()),
 					Optional.of(item.getOpenApiMethodFilters()),
-					springDocConfigProperties,springDocProviders
+					springDocConfigProperties, springDocProviders
 			);
 	}
 

@@ -55,7 +55,7 @@ public class QuoteRouter {
 			@RouterOperation(path = "/hello", operation = @Operation(operationId = "hello", responses = @ApiResponse(responseCode = "200"))),
 			@RouterOperation(path = "/echo", produces = TEXT_PLAIN_VALUE, operation = @Operation(operationId = "echo", requestBody = @RequestBody(content = @Content(schema = @Schema(type = "string"))),
 					responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(type = "string"))))),
-			@RouterOperation(path = "/echo",produces = APPLICATION_JSON_VALUE,  operation = @Operation(operationId = "echo", requestBody = @RequestBody(content = @Content(schema = @Schema(type = "string"))),
+			@RouterOperation(path = "/echo", produces = APPLICATION_JSON_VALUE, operation = @Operation(operationId = "echo", requestBody = @RequestBody(content = @Content(schema = @Schema(type = "string"))),
 					responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(type = "string"))))),
 			@RouterOperation(path = "/quotes", produces = APPLICATION_JSON_VALUE, operation = @Operation(operationId = "fetchQuotes", parameters = @Parameter(name = "size", in = ParameterIn.QUERY, schema = @Schema(type = "string")),
 					responses = @ApiResponse(responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Quote.class)))))),

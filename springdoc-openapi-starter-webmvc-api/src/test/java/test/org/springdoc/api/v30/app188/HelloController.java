@@ -48,7 +48,8 @@ import org.springframework.web.method.HandlerMethod;
 public class HelloController {
 
 	@GetMapping("/test")
-	public void test(){}
+	public void test() {
+	}
 
 	@GetMapping(value = "/example/{fooBar}")
 	public String getFooBar(@PathVariable FooBar fooBar) {
@@ -56,24 +57,26 @@ public class HelloController {
 	}
 
 	@Bean
-	public OpenAPI openAPI(){return new OpenAPI().components(new Components());}
+	public OpenAPI openAPI() {
+		return new OpenAPI().components(new Components());
+	}
 
 	@Bean
-	public OperationCustomizer operationCustomizer(OpenAPI api){
-		io.swagger.v3.oas.models.media.Schema errorResponseSchema= SpringDocAnnotationsUtils.extractSchema(
+	public OperationCustomizer operationCustomizer(OpenAPI api) {
+		io.swagger.v3.oas.models.media.Schema errorResponseSchema = SpringDocAnnotationsUtils.extractSchema(
 				api.getComponents(),
 				ErrorResponse.class,
 				null,
 				null
 		);
 
-		ApiResponse errorApiResponse=new ApiResponse().content(new Content().addMediaType(
+		ApiResponse errorApiResponse = new ApiResponse().content(new Content().addMediaType(
 				MediaType.APPLICATION_JSON_VALUE,
 				new io.swagger.v3.oas.models.media.MediaType().schema(errorResponseSchema)
 		));
 
-		return(Operation operation, HandlerMethod handlerMethod)->{
-			operation.getResponses().addApiResponse("5xx",errorApiResponse);
+		return (Operation operation, HandlerMethod handlerMethod) -> {
+			operation.getResponses().addApiResponse("5xx", errorApiResponse);
 			return operation;
 		};
 	}
@@ -81,6 +84,7 @@ public class HelloController {
 	public class ErrorResponse {
 		@Schema(example = "2022-05-09T00:00:00.000Z")
 		Instant timestamp;
+
 		@Schema(example = "{\"param1\":\"val1\",\"param2\":\"val2\"}")
 		Map<String, Object> data;
 

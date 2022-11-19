@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FooService {
-  public Optional<Foo> getFoo(UUID uuid) {
-    return Optional.of(new Foo(uuid.toString()));
-  }
+	public Optional<Foo> getFoo(UUID uuid) {
+		return Optional.of(new Foo(uuid.toString()));
+	}
 }

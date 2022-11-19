@@ -6,8 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * The type Deprecated entity.
  * @author bnasslahsen
  */
-public class DeprecatedEntity
-{
+public class DeprecatedEntity {
 	/**
 	 * The My non deprecated field.
 	 */
@@ -25,8 +24,7 @@ public class DeprecatedEntity
 	 *
 	 * @return the my non deprecated field
 	 */
-	public String getMyNonDeprecatedField()
-	{
+	public String getMyNonDeprecatedField() {
 		return myNonDeprecatedField;
 	}
 
@@ -37,8 +35,7 @@ public class DeprecatedEntity
 	 * @return the my non deprecated field
 	 */
 	@Deprecated
-	public DeprecatedEntity setMyNonDeprecatedField(String myNonDeprecatedField)
-	{
+	public DeprecatedEntity setMyNonDeprecatedField(String myNonDeprecatedField) {
 		this.myNonDeprecatedField = myNonDeprecatedField;
 		return this;
 	}

@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping(value= "/users", consumes = "application/json")
+@RequestMapping(value = "/users", consumes = "application/json")
 @Controller
 public class UserClient {
 
 	@GetMapping("/{id}")
-	public User findById(@PathVariable Integer id)
-	{
+	public User findById(@PathVariable Integer id) {
 		return null;
 	}
 }

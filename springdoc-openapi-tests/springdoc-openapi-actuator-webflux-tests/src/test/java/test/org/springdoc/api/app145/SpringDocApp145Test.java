@@ -40,13 +40,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 				"springdoc.group-configs[0].packages-to-scan=test.org.springdoc.api.app145",
 				"management.server.port=9300",
 				"management.endpoints.web.base-path=/application" })
-public class SpringDocApp145Test  extends AbstractSpringDocActuatorTest {
-
-	@SpringBootApplication
-	static class SpringDocTestApp {}
+public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 
 	@Test
-	public void testApp()  {
+	public void testApp() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/users")
 				.exchange()
 				.expectStatus().isNotFound();
@@ -55,7 +52,7 @@ public class SpringDocApp145Test  extends AbstractSpringDocActuatorTest {
 	@Test
 	public void testApp3() throws Exception {
 		try {
-			webClient.get().uri("/application/openapi"+  "/"+Constants.DEFAULT_GROUP_NAME).retrieve()
+			webClient.get().uri("/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME).retrieve()
 					.bodyToMono(String.class).block();
 			fail();
 		}
@@ -66,5 +63,8 @@ public class SpringDocApp145Test  extends AbstractSpringDocActuatorTest {
 				fail();
 		}
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

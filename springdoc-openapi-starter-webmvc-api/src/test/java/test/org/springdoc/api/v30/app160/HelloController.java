@@ -43,22 +43,6 @@ public class HelloController {
 		return null;
 	}
 
-	@PropertySource("classpath:swagger-message-160.properties" )
-	@Configuration
-	public class SwaggerMessage{}
-
-	@Schema(description = "${ErrorResponse}")
-	public class ErrorResponse {
-
-		@Schema(description = "${ErrorCode}", required = true)
-		@JsonProperty
-		private Integer errorCode;
-
-		@Schema(description = "${ErrorMessage}")
-		@JsonProperty
-		private String errorMessage;
-	}
-
 	@Bean
 	public GroupedOpenApi bundleApi() {
 		return GroupedOpenApi.builder()
@@ -74,6 +58,22 @@ public class HelloController {
 		source.setUseCodeAsDefaultMessage(true);
 		source.setDefaultEncoding("utf-8");
 		return source;
+	}
+
+	@PropertySource("classpath:swagger-message-160.properties")
+	@Configuration
+	public class SwaggerMessage {}
+
+	@Schema(description = "${ErrorResponse}")
+	public class ErrorResponse {
+
+		@Schema(description = "${ErrorCode}", required = true)
+		@JsonProperty
+		private Integer errorCode;
+
+		@Schema(description = "${ErrorMessage}")
+		@JsonProperty
+		private String errorMessage;
 	}
 
 }

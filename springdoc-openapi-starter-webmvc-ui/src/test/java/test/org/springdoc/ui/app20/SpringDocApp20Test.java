@@ -41,12 +41,12 @@ public class SpringDocApp20Test extends AbstractSpringDocTest {
 	public void testAddSwaggerUiVersionToPath() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/swagger-ui/"+swaggerUiConfig.getVersion()+"/index.html"));
+				.andExpect(header().string("Location", "/swagger-ui/" + swaggerUiConfig.getVersion() + "/index.html"));
 	}
 
 
-    @SpringBootApplication
-    static class SpringDocTestApp {
-    }
+	@SpringBootApplication
+	static class SpringDocTestApp {
+	}
 
 }

@@ -13,13 +13,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 public class SpringDocApp114Test extends AbstractSpringDocTest {
 
+	static {
+		SpringDocUtils.getConfig().replaceWithClass(MonetaryAmount.class, org.springdoc.core.converters.models.MonetaryAmount.class);
+	}
+
 	/**
 	 * The type Spring doc test app.
 	 */
 	@SpringBootApplication
 	static class SpringDocTestApp {}
-
-	static {
-		SpringDocUtils.getConfig().replaceWithClass(MonetaryAmount.class, org.springdoc.core.converters.models.MonetaryAmount.class);
-	}
 }

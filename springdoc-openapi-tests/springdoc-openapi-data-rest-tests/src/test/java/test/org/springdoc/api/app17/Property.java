@@ -12,15 +12,15 @@ import lombok.Data;
 public @Data
 class Property {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 
-    private String name;
+	private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "child_property_id")
-    private ChildProperty myChildPropertyName;
+	@ManyToOne
+	@JoinColumn(name = "child_property_id")
+	private ChildProperty myChildPropertyName;
 
 	public long getId() {
 		return id;

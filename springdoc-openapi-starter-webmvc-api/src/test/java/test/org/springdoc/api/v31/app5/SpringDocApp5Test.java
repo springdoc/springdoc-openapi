@@ -18,6 +18,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class SpringDocApp5Test extends AbstractSpringDocV31Test {
 
+	@Test
+	public void testAddRouterOperationCustomizerBean() throws Exception {
+		className = getClass().getSimpleName();
+		String testNumber = className.replaceAll("[^0-9]", "");
+		MvcResult mockMvcResult =
+				mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
+						.andExpect(jsonPath("$.openapi", is("3.1.0"))).andReturn();
+		String result = mockMvcResult.getResponse().getContentAsString();
+		String expected = getContent("results/3.1.0/app" + testNumber + ".json");
+		assertEquals(expected, result, true);
+	}
+
 	@SpringBootApplication
 	@ComponentScan
 	static class SpringDocTestApp {
@@ -31,18 +43,6 @@ class SpringDocApp5Test extends AbstractSpringDocV31Test {
 				return routerOperation;
 			};
 		}
-	}
-
-	@Test
-	public void testAddRouterOperationCustomizerBean() throws Exception {
-		className = getClass().getSimpleName();
-		String testNumber = className.replaceAll("[^0-9]", "");
-		MvcResult mockMvcResult =
-				mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-						.andExpect(jsonPath("$.openapi", is("3.1.0"))).andReturn();
-		String result = mockMvcResult.getResponse().getContentAsString();
-		String expected = getContent("results/3.1.0/app" + testNumber + ".json");
-		assertEquals(expected, result, true);
 	}
 
 }

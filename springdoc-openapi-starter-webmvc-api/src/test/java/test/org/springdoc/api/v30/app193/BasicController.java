@@ -19,10 +19,10 @@ public class BasicController {
 		return new Books(new Book("Introduction to algorithms"));
 	}
 
-    @GetMapping("/test1")
-    @Operation(summary = "get1", description = "Provides an animal.")
-    public Animal get1() {
+	@GetMapping("/test1")
+	@Operation(summary = "get1", description = "Provides an animal.")
+	public Animal get1() {
 
-        return new Dog("Foo", 12);
-    }
+		return new Dog("Foo", 12);
+	}
 }

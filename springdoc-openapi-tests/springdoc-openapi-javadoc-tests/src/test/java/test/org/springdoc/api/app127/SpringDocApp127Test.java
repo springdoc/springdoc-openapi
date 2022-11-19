@@ -40,12 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp127Test extends AbstractSpringDocTest {
 
 	/**
-	 * The type Spring doc test app.
-	 */
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
-	/**
 	 * Test app.
 	 *
 	 * @throws Exception the exception
@@ -54,8 +48,14 @@ public class SpringDocApp127Test extends AbstractSpringDocTest {
 	public void testApp() throws Exception {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
-		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL+".yaml")).andExpect(status().isOk()).andReturn();
+		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + ".yaml")).andExpect(status().isOk()).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
 		Assertions.assertTrue(!result.contains("!<Type A>"));
 	}
+
+	/**
+	 * The type Spring doc test app.
+	 */
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

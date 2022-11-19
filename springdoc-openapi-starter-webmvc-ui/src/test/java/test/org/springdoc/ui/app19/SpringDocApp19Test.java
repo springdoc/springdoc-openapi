@@ -38,8 +38,8 @@ public class SpringDocApp19Test extends AbstractSpringDocTest {
 				.andExpect(status().isFound());
 	}
 
-    @SpringBootApplication
-    static class SpringDocTestApp {
-    }
+	@SpringBootApplication
+	static class SpringDocTestApp {
+	}
 
 }

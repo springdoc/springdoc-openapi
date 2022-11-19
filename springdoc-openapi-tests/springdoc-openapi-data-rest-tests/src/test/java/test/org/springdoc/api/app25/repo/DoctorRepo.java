@@ -12,5 +12,5 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public interface DoctorRepo extends CrudRepository<Doctor, UUID> {
 
 	Iterable<Doctor> findByClinicsContains(Clinic clinic);
-	
+
 }

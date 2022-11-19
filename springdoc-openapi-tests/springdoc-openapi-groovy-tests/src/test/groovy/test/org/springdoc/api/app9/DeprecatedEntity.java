@@ -5,22 +5,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * @author bnasslahsen
  */
-public class DeprecatedEntity
-{
+public class DeprecatedEntity {
 	@Schema(deprecated = false)
 	private String myNonDeprecatedField;
 
 	@Schema(deprecated = true)
 	private String mydeprecatedField;
 
-	public String getMyNonDeprecatedField()
-	{
+	public String getMyNonDeprecatedField() {
 		return myNonDeprecatedField;
 	}
 
 	@Deprecated
-	public DeprecatedEntity setMyNonDeprecatedField(String myNonDeprecatedField)
-	{
+	public DeprecatedEntity setMyNonDeprecatedField(String myNonDeprecatedField) {
 		this.myNonDeprecatedField = myNonDeprecatedField;
 		return this;
 	}

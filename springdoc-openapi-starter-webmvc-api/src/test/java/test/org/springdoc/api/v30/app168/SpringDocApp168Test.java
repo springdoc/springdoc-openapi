@@ -39,14 +39,14 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = Constants.SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED + "=false")
 public class SpringDocApp168Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	static {
 		Optional<ModelConverter> modelConverterOptional =
 				ModelConverters.getInstance().getConverters()
 						.stream().filter(modelConverter -> modelConverter instanceof PolymorphicModelConverter).findAny();
 		modelConverterOptional.ifPresent(ModelConverters.getInstance()::removeConverter);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

@@ -65,22 +65,21 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	}
 
 	/**
-	 * Build router function.
-	 *
-	 * @return the router function
-	 */
-	public RouterFunction<ServerResponse> build() {
-		return this.delegate.build();
-	}
-
-
-	/**
 	 * Route springdoc route builder.
 	 *
 	 * @return the springdoc route builder
 	 */
 	public static SpringdocRouteBuilder route() {
 		return new SpringdocRouteBuilder();
+	}
+
+	/**
+	 * Build router function.
+	 *
+	 * @return the router function
+	 */
+	public RouterFunction<ServerResponse> build() {
+		return this.delegate.build();
 	}
 
 	/**
@@ -655,7 +654,7 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder onError(Predicate<Throwable> predicate, BiFunction<Throwable, ServerRequest, ServerResponse>  responseProvider, Consumer<Builder> operationsConsumer) {
+	public SpringdocRouteBuilder onError(Predicate<Throwable> predicate, BiFunction<Throwable, ServerRequest, ServerResponse> responseProvider, Consumer<Builder> operationsConsumer) {
 		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.onError(predicate, responseProvider).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;
@@ -671,7 +670,7 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public <T extends Throwable> SpringdocRouteBuilder onError(Class<T> exceptionType, BiFunction<Throwable, ServerRequest, ServerResponse>  responseProvider, Consumer<Builder> operationsConsumer) {
+	public <T extends Throwable> SpringdocRouteBuilder onError(Class<T> exceptionType, BiFunction<Throwable, ServerRequest, ServerResponse> responseProvider, Consumer<Builder> operationsConsumer) {
 		Builder builder = getOperationBuilder(operationsConsumer);
 		this.delegate.onError(exceptionType, responseProvider).withAttribute(OPERATION_ATTRIBUTE, builder);
 		return this;

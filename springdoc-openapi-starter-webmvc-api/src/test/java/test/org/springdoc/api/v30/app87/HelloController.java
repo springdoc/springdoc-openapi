@@ -63,14 +63,11 @@ public class HelloController {
 	@GetMapping(value = "/values/data")
 	void list(@RequestHeader(value = "access_token", required = false)
 	@Parameter(name = "access_token", in = ParameterIn.HEADER, description = "token in header", schema = @Schema(implementation = String.class))
-	String tokenInHeader,@CookieValue(value = "access_token", required = false)
+	String tokenInHeader, @CookieValue(value = "access_token", required = false)
 	@Parameter(name = "access_token", in = ParameterIn.COOKIE, description = "token in cookie", schema = @Schema(implementation = String.class))
 	String tokenInCookie) {
 
 	}
-	public static class Item {
-	}
-
 
 	@GetMapping("/duplicate_param")
 	@Operation(summary = "Duplicate param")
@@ -87,11 +84,13 @@ public class HelloController {
 		return "duplicateParam";
 	}
 
-
 	@GetMapping("/duplicate_param3")
 	@Operation(summary = "Duplicate param")
 	@Parameter(name = "sample", required = true, description = "sample")
 	public String duplicateParam3(@RequestHeader String sample) {
 		return "duplicateParam";
+	}
+
+	public static class Item {
 	}
 }

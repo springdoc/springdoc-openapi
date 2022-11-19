@@ -25,10 +25,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp33Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	static {
 		SpringDocUtils.getConfig().replaceParameterObjectWithClass(ExampleSort.class, ExampleSortReplacement.class);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

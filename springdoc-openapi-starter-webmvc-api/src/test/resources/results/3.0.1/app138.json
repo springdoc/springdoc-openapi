@@ -1,1 +1,66 @@
-{"openapi":"3.0.1","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost","description":"Generated server url"}],"paths":{"/testA":{"get":{"operationId":"testA","parameters":[{"in":"query","name":"hello","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"OK"}},"tags":["hello-controller"]}},"/testB":{"get":{"operationId":"testB","parameters":[{"in":"query","name":"hello","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"OK"}},"tags":["hello-controller"]}}},"components":{},"x-my-vendor-extensions":{"property1":"value1","property2":null}}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/testA": {
+      "get": {
+        "operationId": "testA",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "hello",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "hello-controller"
+        ]
+      }
+    },
+    "/testB": {
+      "get": {
+        "operationId": "testB",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "hello",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "tags": [
+          "hello-controller"
+        ]
+      }
+    }
+  },
+  "components": {},
+  "x-my-vendor-extensions": {
+    "property1": "value1",
+    "property2": null
+  }
+}

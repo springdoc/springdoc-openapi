@@ -90,12 +90,12 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	/**
 	 * The constant VALIDATOR_URL_PROPERTY.
 	 */
-	public static final String VALIDATOR_URL_PROPERTY ="validatorUrl";
+	public static final String VALIDATOR_URL_PROPERTY = "validatorUrl";
 
 	/**
 	 * The constant QUERY_CONFIG_ENABLED_PROPERTY.
 	 */
-	public static final String QUERY_CONFIG_ENABLED_PROPERTY  = "queryConfigEnabled";
+	public static final String QUERY_CONFIG_ENABLED_PROPERTY = "queryConfigEnabled";
 
 	/**
 	 * The constant DISPLAY_OPERATION_ID.
@@ -105,7 +105,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	/**
 	 * The constant DEEP_LINKING.
 	 */
-	public static final String DEEP_LINKING_PROPERTY ="deepLinking";
+	public static final String DEEP_LINKING_PROPERTY = "deepLinking";
 
 	/**
 	 * The constant DISPLAY_REQUEST_DURATION.
@@ -115,37 +115,37 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	/**
 	 * The constant SHOW_EXTENSIONS_PROPERTY.
 	 */
-	public static final String SHOW_EXTENSIONS_PROPERTY ="showExtensions";
+	public static final String SHOW_EXTENSIONS_PROPERTY = "showExtensions";
 
 	/**
 	 * The constant SHOW_COMMON_EXTENSIONS_PROPERTY.
 	 */
-	public static final String SHOW_COMMON_EXTENSIONS_PROPERTY ="showCommonExtensions";
+	public static final String SHOW_COMMON_EXTENSIONS_PROPERTY = "showCommonExtensions";
 
 	/**
 	 * The constant TRY_IT_ENABLED_PROPERTY.
 	 */
-	public static final String TRY_IT_ENABLED_PROPERTY ="tryItOutEnabled";
+	public static final String TRY_IT_ENABLED_PROPERTY = "tryItOutEnabled";
 
 	/**
 	 * The constant PERSIST_AUTHORIZATION_PROPERTY.
 	 */
-	public static final String PERSIST_AUTHORIZATION_PROPERTY ="persistAuthorization";
+	public static final String PERSIST_AUTHORIZATION_PROPERTY = "persistAuthorization";
 
 	/**
 	 * The constant WITH_CREDENTIALS_PROPERTY.
 	 */
-	public static final String WITH_CREDENTIALS_PROPERTY ="withCredentials";
-
-	/**
-	 * The Ui root path.
-	 */
-	private String uiRootPath;
+	public static final String WITH_CREDENTIALS_PROPERTY = "withCredentials";
 
 	/**
 	 * The Swagger ui config.
 	 */
 	private final SwaggerUiConfigProperties swaggerUiConfig;
+
+	/**
+	 * The Ui root path.
+	 */
+	private String uiRootPath;
 
 
 	/**
@@ -181,7 +181,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		this.tryItOutEnabled = swaggerUiConfig.getTryItOutEnabled();
 		this.persistAuthorization = swaggerUiConfig.getPersistAuthorization();
 		this.queryConfigEnabled = swaggerUiConfig.getQueryConfigEnabled();
-		this.withCredentials=swaggerUiConfig.getWithCredentials();
+		this.withCredentials = swaggerUiConfig.getWithCredentials();
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 * @param displayName the display name
 	 */
 	public void addGroup(String group, String displayName) {
-		SwaggerUrl swaggerUrl = new SwaggerUrl(group, null,  displayName);
+		SwaggerUrl swaggerUrl = new SwaggerUrl(group, null, displayName);
 		urls.add(swaggerUrl);
 	}
 
@@ -201,7 +201,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 * @param group the group
 	 */
 	public void addGroup(String group) {
-		SwaggerUrl swaggerUrl = new SwaggerUrl(group, null,  group);
+		SwaggerUrl swaggerUrl = new SwaggerUrl(group, null, group);
 		urls.add(swaggerUrl);
 	}
 
@@ -276,7 +276,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(SHOW_COMMON_EXTENSIONS_PROPERTY, showCommonExtensions, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put("operationsSorter", operationsSorter, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put("tagsSorter", tagsSorter, params);
-		org.springdoc.core.utils.SpringDocPropertiesUtils.put(SwaggerUiConfigParameters.LAYOUT_PROPERTY, layout , params);
+		org.springdoc.core.utils.SpringDocPropertiesUtils.put(SwaggerUiConfigParameters.LAYOUT_PROPERTY, layout, params);
 		if (supportedSubmitMethods != null)
 			org.springdoc.core.utils.SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(OAUTH2_REDIRECT_URL_PROPERTY, oauth2RedirectUrl, params);

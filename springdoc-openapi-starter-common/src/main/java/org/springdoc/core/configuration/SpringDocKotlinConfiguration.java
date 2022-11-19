@@ -64,6 +64,17 @@ public class SpringDocKotlinConfiguration {
 		objectMapperProvider.jsonMapper().registerModule(new KotlinModule());
 	}
 
+	/**
+	 * Kotlin coroutines return type parser kotlin coroutines return type parser.
+	 *
+	 * @return the kotlin coroutines return type parser
+	 */
+	@Bean
+	@Lazy(false)
+	@ConditionalOnMissingBean
+	KotlinCoroutinesReturnTypeParser kotlinCoroutinesReturnTypeParser() {
+		return new KotlinCoroutinesReturnTypeParser();
+	}
 
 	/**
 	 * The type Kotlin module configuration.
@@ -77,20 +88,8 @@ public class SpringDocKotlinConfiguration {
 		 * @param objectMapperProvider the object mapper provider
 		 */
 		public KotlinModuleConfiguration(ObjectMapperProvider objectMapperProvider) {
-			objectMapperProvider.jsonMapper().registerModule( new KotlinModule.Builder().build());
+			objectMapperProvider.jsonMapper().registerModule(new KotlinModule.Builder().build());
 		}
-	}
-
-	/**
-	 * Kotlin coroutines return type parser kotlin coroutines return type parser.
-	 *
-	 * @return the kotlin coroutines return type parser
-	 */
-	@Bean
-	@Lazy(false)
-	@ConditionalOnMissingBean
-	KotlinCoroutinesReturnTypeParser kotlinCoroutinesReturnTypeParser() {
-		return new KotlinCoroutinesReturnTypeParser();
 	}
 
 }

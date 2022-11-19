@@ -56,7 +56,7 @@ paths:
         "404":
           description: Pet not found
       security:
-        - api_key: []
+        - api_key: [ ]
         - petstore_auth:
             - write:pets
             - read:pets
@@ -411,7 +411,7 @@ paths:
               schema:
                 type: object
       security:
-        - api_key: []
+        - api_key: [ ]
   /store/order/{orderId}:
     get:
       tags:

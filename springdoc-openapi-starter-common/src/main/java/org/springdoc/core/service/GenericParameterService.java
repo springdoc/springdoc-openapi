@@ -99,16 +99,6 @@ public class GenericParameterService {
 	private static final List<Class<?>> FILE_TYPES = Collections.synchronizedList(new ArrayList<>());
 
 	/**
-	 * The Optional delegating method parameter customizer.
-	 */
-	private final Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer;
-
-	/**
-	 * The Web conversion service.
-	 */
-	private final Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider;
-
-	/**
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericParameterService.class);
@@ -118,6 +108,16 @@ public class GenericParameterService {
 		FILE_TYPES.add(Resource.class);
 		FILE_TYPES.add(MultipartRequest.class);
 	}
+
+	/**
+	 * The Optional delegating method parameter customizer.
+	 */
+	private final Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer;
+
+	/**
+	 * The Web conversion service.
+	 */
+	private final Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider;
 
 	/**
 	 * The Property resolver utils.
@@ -153,7 +153,7 @@ public class GenericParameterService {
 	 * @param javadocProviderOptional the javadoc provider
 	 */
 	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
-			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider,  ObjectMapperProvider objectMapperProvider,  Optional<JavadocProvider> javadocProviderOptional) {
+			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, Optional<JavadocProvider> javadocProviderOptional) {
 		this.propertyResolverUtils = propertyResolverUtils;
 		this.optionalDelegatingMethodParameterCustomizer = optionalDelegatingMethodParameterCustomizer;
 		this.optionalWebConversionServiceProvider = optionalWebConversionServiceProvider;
@@ -362,9 +362,9 @@ public class GenericParameterService {
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
 			Type type = ReturnTypeParser.getType(methodParameter);
-			if(type instanceof Class clazz && optionalWebConversionServiceProvider.isPresent()){
+			if (type instanceof Class clazz && optionalWebConversionServiceProvider.isPresent()) {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
-				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class)==null)
+				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null)
 					type = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
 			}
 			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations());
@@ -605,6 +605,7 @@ public class GenericParameterService {
 			public Class<? extends Annotation> annotationType() {
 				return io.swagger.v3.oas.annotations.Parameter.class;
 			}
+
 			@Override
 			public String name() {
 				return schema.name();
@@ -725,7 +726,8 @@ public class GenericParameterService {
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
 		final String paramJavadocDescription;
 		if (delegatingMethodParameter.isParameterObject()) {
-			String fieldName; if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
+			String fieldName;
+			if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
 				fieldName = StringUtils.substringAfterLast(pName, DOT);
 			else fieldName = pName;
 			Field field = FieldUtils.getDeclaredField(((DelegatingMethodParameter) methodParameter).getExecutable().getDeclaringClass(), fieldName, true);

@@ -59,6 +59,16 @@ public class PolymorphicModelConverter implements ModelConverter {
 		this.springDocObjectMapper = springDocObjectMapper;
 	}
 
+	private static Schema<?> getResolvedSchema(JavaType javaType, Schema<?> resolvedSchema) {
+		if (resolvedSchema instanceof ObjectSchema && resolvedSchema.getProperties() != null) {
+			if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getName()))
+				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getName());
+			else if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getSimpleName()))
+				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getSimpleName());
+		}
+		return resolvedSchema;
+	}
+
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
@@ -72,16 +82,6 @@ public class PolymorphicModelConverter implements ModelConverter {
 			}
 		}
 		return null;
-	}
-
-	private static Schema<?> getResolvedSchema(JavaType javaType, Schema<?> resolvedSchema) {
-		if (resolvedSchema instanceof ObjectSchema && resolvedSchema.getProperties() != null){
-			if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getName()))
-				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getName());
-			else if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getSimpleName()))
-				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getSimpleName());
-		}
-		return resolvedSchema;
 	}
 
 	/**

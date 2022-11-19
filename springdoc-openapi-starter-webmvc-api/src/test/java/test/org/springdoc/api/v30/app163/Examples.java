@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * This class contributes OpenAPI <a href=
  * "https://swagger.io/docs/specification/adding-examples/">examples</a>.
- * 
+ *
  * Each example is contributed through a bean typed as a map entry
  * (Map.Entry<String, Example>) and referenced through a constant by a resource
  * operation's @ApiResponse.
@@ -43,44 +43,46 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Examples {
 
-  public static final String PREFIX = "#/components/examples/";
+	public static final String PREFIX = "#/components/examples/";
 
-  public static final String PUT_COMMISSION_REQUEST_BODY_EXAMPLE_KEY = "httpPutCommissionRequestBodyExample";
-  public static final String PUT_COMMISSION_REQUEST_BODY_EXAMPLE = PREFIX + PUT_COMMISSION_REQUEST_BODY_EXAMPLE_KEY;
+	public static final String PUT_COMMISSION_REQUEST_BODY_EXAMPLE_KEY = "httpPutCommissionRequestBodyExample";
 
-  public static final String PUT_COMMISSION_RESPONSE_BODY_EXAMPLE_KEY = "httpPutCommissionResponseBodyExample";
-  public static final String PUT_COMMISSION_RESPONSE_BODY_EXAMPLE = PREFIX + PUT_COMMISSION_RESPONSE_BODY_EXAMPLE_KEY;
+	public static final String PUT_COMMISSION_REQUEST_BODY_EXAMPLE = PREFIX + PUT_COMMISSION_REQUEST_BODY_EXAMPLE_KEY;
 
-  @Bean
-  public Map.Entry<String, Example> httpPutCommissionRequestBodyExample() {
-    Example httpPutCommissionRequestBodyExample = new Example();
-    Map.Entry<String, Example> entry = new AbstractMap.SimpleEntry<>(PUT_COMMISSION_REQUEST_BODY_EXAMPLE_KEY,
-        httpPutCommissionRequestBodyExample);
-    httpPutCommissionRequestBodyExample
-        .setSummary("HTTP 202 JSON Body request example for updateCommission operation");
+	public static final String PUT_COMMISSION_RESPONSE_BODY_EXAMPLE_KEY = "httpPutCommissionResponseBodyExample";
 
-    CommissionDto commission = new CommissionDto("esteban@dugueperoux.com", "Esteban",
-        "DUGUEPEROUX");
+	public static final String PUT_COMMISSION_RESPONSE_BODY_EXAMPLE = PREFIX + PUT_COMMISSION_RESPONSE_BODY_EXAMPLE_KEY;
 
-    httpPutCommissionRequestBodyExample.setValue(commission);
+	@Bean
+	public Map.Entry<String, Example> httpPutCommissionRequestBodyExample() {
+		Example httpPutCommissionRequestBodyExample = new Example();
+		Map.Entry<String, Example> entry = new AbstractMap.SimpleEntry<>(PUT_COMMISSION_REQUEST_BODY_EXAMPLE_KEY,
+				httpPutCommissionRequestBodyExample);
+		httpPutCommissionRequestBodyExample
+				.setSummary("HTTP 202 JSON Body request example for updateCommission operation");
 
-    return entry;
-  }
-  
-  @Bean
-  public Map.Entry<String, Example> httpPutCommissionResponseBodyExample() {
-    Example httpPutCommissionResponseBodyExample = new Example();
-    Map.Entry<String, Example> entry = new AbstractMap.SimpleEntry<>(PUT_COMMISSION_RESPONSE_BODY_EXAMPLE_KEY,
-        httpPutCommissionResponseBodyExample);
-    httpPutCommissionResponseBodyExample
-        .setSummary("HTTP 202 JSON Body response example for updateCommission operation");
+		CommissionDto commission = new CommissionDto("esteban@dugueperoux.com", "Esteban",
+				"DUGUEPEROUX");
 
-    CommissionDto commission = new CommissionDto("esteban@dugueperoux.com", "Esteban",
-        "DUGUEPEROUX");
+		httpPutCommissionRequestBodyExample.setValue(commission);
 
-    httpPutCommissionResponseBodyExample.setValue(commission);
+		return entry;
+	}
 
-    return entry;
-  }
-  
+	@Bean
+	public Map.Entry<String, Example> httpPutCommissionResponseBodyExample() {
+		Example httpPutCommissionResponseBodyExample = new Example();
+		Map.Entry<String, Example> entry = new AbstractMap.SimpleEntry<>(PUT_COMMISSION_RESPONSE_BODY_EXAMPLE_KEY,
+				httpPutCommissionResponseBodyExample);
+		httpPutCommissionResponseBodyExample
+				.setSummary("HTTP 202 JSON Body response example for updateCommission operation");
+
+		CommissionDto commission = new CommissionDto("esteban@dugueperoux.com", "Esteban",
+				"DUGUEPEROUX");
+
+		httpPutCommissionResponseBodyExample.setValue(commission);
+
+		return entry;
+	}
+
 }

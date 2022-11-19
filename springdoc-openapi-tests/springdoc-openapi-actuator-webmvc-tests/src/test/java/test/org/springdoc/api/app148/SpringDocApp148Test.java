@@ -46,10 +46,6 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
-
 	@Test
 	public void testApp() throws Exception {
 		String result = actuatorRestTemplate.getForObject("/test/application/openapi/users", String.class);
@@ -67,7 +63,7 @@ public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 	@Test
 	public void testApp3() throws Exception {
 		try {
-			actuatorRestTemplate.getForObject("/test/application/openapi"  + "/"+ Constants.DEFAULT_GROUP_NAME, String.class);
+			actuatorRestTemplate.getForObject("/test/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME, String.class);
 			fail();
 		}
 		catch (HttpStatusCodeException ex) {
@@ -75,5 +71,8 @@ public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 				assertTrue(true);
 		}
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

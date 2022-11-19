@@ -40,7 +40,7 @@ public class Builder {
 	 * An option name for these extensions.
 	 *
 	 */
-	private String name =  "";
+	private String name = "";
 
 	/**
 	 * The extension properties.
@@ -81,7 +81,7 @@ public class Builder {
 	 * @return the extension builder
 	 */
 	public Builder propertie(org.springdoc.core.fn.builders.extensionproperty.Builder extensionPropertyBuilder) {
-		this.properties = ArrayUtils.add( this.properties, extensionPropertyBuilder.build());
+		this.properties = ArrayUtils.add(this.properties, extensionPropertyBuilder.build());
 		return this;
 	}
 
@@ -91,7 +91,7 @@ public class Builder {
 	 * @return the extension
 	 */
 	public Extension build() {
-		return new Extension(){
+		return new Extension() {
 			@Override
 			public Class<? extends Annotation> annotationType() {
 				return null;

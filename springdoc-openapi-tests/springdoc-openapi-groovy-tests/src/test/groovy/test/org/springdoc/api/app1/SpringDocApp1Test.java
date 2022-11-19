@@ -11,9 +11,6 @@ import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = "springdoc.enable-groovy=false")
 public class SpringDocApp1Test extends AbstractSpringDocTest {
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@BeforeAll
 	public static void init() {
 		SpringDocUtils.getConfig().removeRequestWrapperToIgnore(MetaClass.class);
@@ -23,4 +20,7 @@ public class SpringDocApp1Test extends AbstractSpringDocTest {
 	public static void clean() {
 		SpringDocUtils.getConfig().addRequestWrapperToIgnore(MetaClass.class);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

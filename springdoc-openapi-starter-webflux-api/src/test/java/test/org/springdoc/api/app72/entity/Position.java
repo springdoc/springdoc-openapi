@@ -9,16 +9,16 @@ import jakarta.validation.constraints.Size;
 
 public class Position {
 
-    private String id;
+	private String id;
 
-    @NotBlank
-    @Size(max = 140)
-    private String positionName;
+	@NotBlank
+	@Size(max = 140)
+	private String positionName;
 
-    private String description;
+	private String description;
 
-    @NotNull
-    private Date createdAt = new Date();
+	@NotNull
+	private Date createdAt = new Date();
 
 	public String getId() {
 		return id;

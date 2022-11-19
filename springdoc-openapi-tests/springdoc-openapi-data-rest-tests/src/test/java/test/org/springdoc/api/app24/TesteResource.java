@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class TesteResource {
 
-    @GetMapping("/")
-    public Page<User> testeQueryDslAndSpringDoc(@QuerydslPredicate(root = User.class, bindings = UserPredicate.class) Predicate predicate, Pageable pageable) {
-        return null;
-    }
+	@GetMapping("/")
+	public Page<User> testeQueryDslAndSpringDoc(@QuerydslPredicate(root = User.class, bindings = UserPredicate.class) Predicate predicate, Pageable pageable) {
+		return null;
+	}
 }

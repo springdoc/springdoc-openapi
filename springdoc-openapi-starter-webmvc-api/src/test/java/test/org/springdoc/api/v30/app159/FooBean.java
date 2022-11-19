@@ -27,29 +27,30 @@ package test.org.springdoc.api.v30.app159;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class FooBean {
-    @JsonView(Views.View2.class)
-    private String message;
-    @JsonView(Views.View1.class)
-    private int code;
+	@JsonView(Views.View2.class)
+	private String message;
 
-    public String getMessage() {
-        return message;
-    }
+	@JsonView(Views.View1.class)
+	private int code;
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public FooBean(String message, int code) {
+		this.message = message;
+		this.code = code;
+	}
 
-    public int getCode() {
-        return code;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setCode(int code) {
-        this.code = code;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    public FooBean(String message, int code) {
-        this.message = message;
-        this.code = code;
-    }
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}
 }

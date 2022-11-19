@@ -34,8 +34,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(name = "Body", description = "Body", example = "{\"key\":\"value\"}")
 public class Body implements Map<String, Object>, MapExclusion {
 
-    @Schema(hidden = true)
-    private Map<String, Object> data;
+	@Schema(hidden = true)
+	private Map<String, Object> data;
 
 	public Map<String, Object> getData() {
 		return data;

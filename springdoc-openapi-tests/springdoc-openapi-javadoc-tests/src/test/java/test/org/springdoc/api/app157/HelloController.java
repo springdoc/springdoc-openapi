@@ -35,7 +35,7 @@ public class HelloController {
 	 *
 	 * @return the foo
 	 */
-	@GetMapping( "/foo")
+	@GetMapping("/foo")
 	public ResponseEntity<Foo> getFoo() {
 		return new ResponseEntity<Foo>(HttpStatus.OK);
 	}
@@ -45,10 +45,9 @@ public class HelloController {
 	 *
 	 * @return the bar
 	 */
-	@GetMapping( "/bar")
+	@GetMapping("/bar")
 	public ResponseEntity<Bar> getBar() {
 		return new ResponseEntity<Bar>(HttpStatus.OK);
 	}
-
 
 }

@@ -60,7 +60,7 @@ public class HelloController {
 	@GetMapping("/test1")
 	@ApiResponse(responseCode = "204", description = "No content")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void test1(@RequestParam @Parameter(schema = @Schema(defaultValue ="false", type = "boolean")) boolean toto) {
+	public void test1(@RequestParam @Parameter(schema = @Schema(defaultValue = "false", type = "boolean")) boolean toto) {
 
 	}
 

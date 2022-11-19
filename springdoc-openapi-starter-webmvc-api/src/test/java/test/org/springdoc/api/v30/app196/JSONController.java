@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class JSONController {
 
-  @GetMapping()
-  public ResponseEntity<String> listTemplates() {
-    return ResponseEntity.status(HttpStatus.OK).body("Hello World");
-  }
+	@GetMapping()
+	public ResponseEntity<String> listTemplates() {
+		return ResponseEntity.status(HttpStatus.OK).body("Hello World");
+	}
 
 }

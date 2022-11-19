@@ -21,13 +21,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostService {
 
-    private final PostRepository postRepository;
-    private final PagedResourcesAssembler<Post> pagedResourcesAssembler;
-    private final PostResourceAssembler postResourceAssembler;
+	private final PostRepository postRepository;
 
-    public PagedModel<EntityModel<Post>> getAll(Pageable pageable) {
-        Page<Post> postPage = postRepository.findAll(pageable);
-        return pagedResourcesAssembler.toModel(postPage, postResourceAssembler);
-    }
+	private final PagedResourcesAssembler<Post> pagedResourcesAssembler;
+
+	private final PostResourceAssembler postResourceAssembler;
+
+	public PagedModel<EntityModel<Post>> getAll(Pageable pageable) {
+		Page<Post> postPage = postRepository.findAll(pageable);
+		return pagedResourcesAssembler.toModel(postPage, postResourceAssembler);
+	}
 
 }

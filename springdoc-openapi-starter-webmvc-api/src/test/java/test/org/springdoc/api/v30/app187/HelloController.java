@@ -44,10 +44,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
 	@GetMapping("/hello")
-	@Operation(tags = {"Example Tag", "Second Tag"})
+	@Operation(tags = { "Example Tag", "Second Tag" })
 	@Tag(name = "Third Tag")
 	@Tag(name = "Second Tag")
 	@Tag(name = "Fourth Tag Full", description = "desc", externalDocs = @ExternalDocumentation(description = "docs desc"))
-	public void hello() {}
-	
+	public void hello() {
+	}
+
 }

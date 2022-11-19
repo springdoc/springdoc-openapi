@@ -19,9 +19,12 @@ public class Post {
 
 	@Id
 	@GeneratedValue
-    private Long id;
-    private String author;
-    private String content;
-    private Long createdAt;
+	private Long id;
+
+	private String author;
+
+	private String content;
+
+	private Long createdAt;
 
 }

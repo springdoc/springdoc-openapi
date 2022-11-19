@@ -17,9 +17,9 @@ public class ConcreteObjectA extends AbstractObject {
 	 * @param description the description
 	 */
 	public ConcreteObjectA(String name, String description) {
-    super(ConcreteType.TYPE_A, name);
-    this.description = description;
-  }
+		super(ConcreteType.TYPE_A, name);
+		this.description = description;
+	}
 
 	/**
 	 * Gets description.
@@ -27,6 +27,6 @@ public class ConcreteObjectA extends AbstractObject {
 	 * @return the description
 	 */
 	public String getDescription() {
-    return description;
-  }
+		return description;
+	}
 }

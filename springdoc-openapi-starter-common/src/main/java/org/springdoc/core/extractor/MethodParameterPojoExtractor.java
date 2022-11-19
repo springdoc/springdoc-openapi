@@ -65,12 +65,6 @@ import static org.springdoc.core.utils.Constants.DOT;
 public class MethodParameterPojoExtractor {
 
 	/**
-	 * Instantiates a new Method parameter pojo extractor.
-	 */
-	private MethodParameterPojoExtractor() {
-	}
-
-	/**
 	 * The constant SIMPLE_TYPE_PREDICATES.
 	 */
 	private static final List<Predicate<Class<?>>> SIMPLE_TYPE_PREDICATES = new ArrayList<>();
@@ -99,6 +93,12 @@ public class MethodParameterPojoExtractor {
 		SIMPLE_TYPE_PREDICATES.add(Class::isEnum);
 		SIMPLE_TYPE_PREDICATES.add(Class::isArray);
 		SIMPLE_TYPE_PREDICATES.add(MethodParameterPojoExtractor::isSwaggerPrimitiveType);
+	}
+
+	/**
+	 * Instantiates a new Method parameter pojo extractor.
+	 */
+	private MethodParameterPojoExtractor() {
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class MethodParameterPojoExtractor {
 
 			if (fieldType instanceof Class<?>)
 				type = (Class<?>) fieldType;
-			else	// This is the case for not reifiable types
+			else    // This is the case for not reifiable types
 				type = null;
 		}
 

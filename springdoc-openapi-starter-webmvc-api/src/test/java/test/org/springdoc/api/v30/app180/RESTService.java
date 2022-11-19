@@ -39,18 +39,18 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "REST Service")
 public class RESTService {
 
-    @PostMapping("/testWithoutSchema")
-    @Operation(summary = "Test Request Body type Schema usage [Error]")
-    public String withoutSchema(@io.swagger.v3.oas.annotations.parameters.RequestBody(required = true)
-                                @RequestBody Body body) {
-        return "without proper schema";
-    }
+	@PostMapping("/testWithoutSchema")
+	@Operation(summary = "Test Request Body type Schema usage [Error]")
+	public String withoutSchema(@io.swagger.v3.oas.annotations.parameters.RequestBody(required = true)
+	@RequestBody Body body) {
+		return "without proper schema";
+	}
 
-    @PostMapping("/testWithSchema")
-    @Operation(summary = "Test Request Body type Schema usage [Correct]")
-    public String withSchema(@io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(schema = @Schema(implementation = Body.class)))
-                             @RequestBody Body body) {
-        return "with proper schema";
-    }
+	@PostMapping("/testWithSchema")
+	@Operation(summary = "Test Request Body type Schema usage [Correct]")
+	public String withSchema(@io.swagger.v3.oas.annotations.parameters.RequestBody(required = true, content = @Content(schema = @Schema(implementation = Body.class)))
+	@RequestBody Body body) {
+		return "with proper schema";
+	}
 
 }

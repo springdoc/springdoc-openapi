@@ -98,8 +98,8 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 * @param springDocProviders the spring doc providers
 	 */
 	@Autowired
-	public OpenApiWebfluxResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomizer>> openApiCustomizers,Optional<List<RouterOperationCustomizer>> routerOperationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
-		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomizers,routerOperationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
+	public OpenApiWebfluxResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<RouterOperationCustomizer>> routerOperationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
+		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomizers, routerOperationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
 	}
 
 	/**
@@ -146,11 +146,11 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	@Override
 	protected String getServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl) {
 		String requestUrl = decode(serverHttpRequest.getURI().toString());
-		Optional<SpringWebProvider> springWebProviderOptional  = springDocProviders.getSpringWebProvider();
+		Optional<SpringWebProvider> springWebProviderOptional = springDocProviders.getSpringWebProvider();
 		String prefix = StringUtils.EMPTY;
-		if(springWebProviderOptional.isPresent())
+		if (springWebProviderOptional.isPresent())
 			prefix = springWebProviderOptional.get().findPathPrefix(springDocConfigProperties);
-		return 	requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length()- prefix.length());
+		return requestUrl.substring(0, requestUrl.length() - apiDocsUrl.length() - prefix.length());
 	}
 
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Validated
 @RestController
-@RequestMapping(value = {HelloController.VERSION + "/helloWorld", "latest/helloWorld"}, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = { HelloController.VERSION + "/helloWorld", "latest/helloWorld" }, produces = MediaType.APPLICATION_JSON_VALUE)
 public class HelloController {
 
 	public static final String VERSION = "v1";

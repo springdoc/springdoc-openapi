@@ -39,7 +39,7 @@ public class SpringDocApp22Test extends AbstractSpringDocTest {
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/swagger-ui.html").exchange()
 				.expectStatus().isFound();
 		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/webjars/swagger-ui/"+swaggerUiConfig.getVersion()+"/index.html"));
+				.value("Location", Matchers.is("/webjars/swagger-ui/" + swaggerUiConfig.getVersion() + "/index.html"));
 	}
 
 	@SpringBootApplication

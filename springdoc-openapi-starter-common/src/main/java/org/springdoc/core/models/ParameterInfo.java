@@ -46,6 +46,11 @@ import org.springframework.web.bind.annotation.ValueConstants;
 public class ParameterInfo {
 
 	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterInfo.class);
+
+	/**
 	 * The Method parameter.
 	 */
 	private final MethodParameter methodParameter;
@@ -80,16 +85,10 @@ public class ParameterInfo {
 	 */
 	private boolean requestPart;
 
-
 	/**
 	 * The Parameter id.
 	 */
 	private ParameterId parameterId;
-
-	/**
-	 * The constant LOGGER.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(ParameterInfo.class);
 
 	/**
 	 * Instantiates a new Parameter info.
@@ -201,12 +200,30 @@ public class ParameterInfo {
 	}
 
 	/**
+	 * Sets required.
+	 *
+	 * @param required the required
+	 */
+	public void setRequired(boolean required) {
+		this.required = required;
+	}
+
+	/**
 	 * Gets default value.
 	 *
 	 * @return the default value
 	 */
 	public Object getDefaultValue() {
 		return defaultValue;
+	}
+
+	/**
+	 * Sets default value.
+	 *
+	 * @param defaultValue the default value
+	 */
+	public void setDefaultValue(Object defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 
 	/**
@@ -225,24 +242,6 @@ public class ParameterInfo {
 	 */
 	public void setParamType(String paramType) {
 		this.paramType = paramType;
-	}
-
-	/**
-	 * Sets required.
-	 *
-	 * @param required the required
-	 */
-	public void setRequired(boolean required) {
-		this.required = required;
-	}
-
-	/**
-	 * Sets default value.
-	 *
-	 * @param defaultValue the default value
-	 */
-	public void setDefaultValue(Object defaultValue) {
-		this.defaultValue = defaultValue;
 	}
 
 	/**

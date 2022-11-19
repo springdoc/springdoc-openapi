@@ -43,22 +43,22 @@ public class HelloController {
 	}
 
 	@PostMapping(value = "/persons")
-	public void create(@ParameterObject Long id, @RequestBody Object o){
+	public void create(@ParameterObject Long id, @RequestBody Object o) {
 
 	}
 
 	@PostMapping(value = "/personsone")
-	public void createone(Long id, @RequestBody Object o){
+	public void createone(Long id, @RequestBody Object o) {
 
 	}
 
 	@PostMapping(value = "/createtwo")
-	public void createtwo(int id){
+	public void createtwo(int id) {
 
 	}
 
 	@PostMapping(value = "/createthree")
-	public void createthree(Integer id){
+	public void createthree(Integer id) {
 
 	}
 

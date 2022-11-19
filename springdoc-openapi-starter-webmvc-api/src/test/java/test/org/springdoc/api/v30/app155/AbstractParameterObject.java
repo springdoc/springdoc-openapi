@@ -31,7 +31,7 @@ public class AbstractParameterObject<T extends Enum<T>> {
 
 	int primitiveBaseField;
 
-	@Parameter(schema=@Schema(type = "string", allowableValues = {"ONE", "TWO"}) )
+	@Parameter(schema = @Schema(type = "string", allowableValues = { "ONE", "TWO" }))
 	T genericField;
 
 	public int getPrimitiveBaseField() {

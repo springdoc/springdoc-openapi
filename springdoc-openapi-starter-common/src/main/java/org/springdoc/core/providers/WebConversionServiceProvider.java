@@ -62,16 +62,6 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 	private static final Logger LOGGER = LoggerFactory.getLogger(WebConversionServiceProvider.class);
 
 	/**
-	 * The Formatting conversion service.
-	 */
-	private GenericConversionService formattingConversionService;
-
-	/**
-	 * The Application context.
-	 */
-	private ApplicationContext applicationContext;
-
-	/**
 	 * The constant SERVLET_APPLICATION_CONTEXT_CLASS.
 	 */
 	private static final String SERVLET_APPLICATION_CONTEXT_CLASS = "org.springframework.web.context.WebApplicationContext";
@@ -80,6 +70,16 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 	 * The constant REACTIVE_APPLICATION_CONTEXT_CLASS.
 	 */
 	private static final String REACTIVE_APPLICATION_CONTEXT_CLASS = "org.springframework.boot.web.reactive.context.ReactiveWebApplicationContext";
+
+	/**
+	 * The Formatting conversion service.
+	 */
+	private GenericConversionService formattingConversionService;
+
+	/**
+	 * The Application context.
+	 */
+	private ApplicationContext applicationContext;
 
 	@Override
 	public void afterPropertiesSet() {
@@ -114,7 +114,7 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 	public Class<?> getSpringConvertedType(Class<?> clazz) {
 		Class<?> result = clazz;
 		Field convertersField = FieldUtils.getDeclaredField(GenericConversionService.class, CONVERTERS, true);
-		if(convertersField !=null) {
+		if (convertersField != null) {
 			Object converters;
 			try {
 				converters = convertersField.get(formattingConversionService);
@@ -148,6 +148,7 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 			return false;
 		}
 	}
+
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;

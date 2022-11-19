@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
  * The type Book repository.
  */
 @Component
-public class  BookRepository {
+public class BookRepository {
 
 	/**
 	 * Find by author list.
@@ -40,8 +40,8 @@ public class  BookRepository {
 	 * @param author the author
 	 * @return the list
 	 */
-	List<Book> findByAuthor(String author){
-		Book[] books = {new Book("1", "title1","author1")};
+	List<Book> findByAuthor(String author) {
+		Book[] books = { new Book("1", "title1", "author1") };
 		return Arrays.asList(books);
 	}
 
@@ -51,6 +51,7 @@ public class  BookRepository {
 	 * @return the list
 	 */
 	List<Book> findAll() {
-		Book[] books = {new Book("2", "title2","author2")};
-		return Arrays.asList(books);	}
+		Book[] books = { new Book("2", "title2", "author2") };
+		return Arrays.asList(books);
+	}
 }

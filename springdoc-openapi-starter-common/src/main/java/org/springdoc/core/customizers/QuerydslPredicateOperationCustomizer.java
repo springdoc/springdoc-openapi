@@ -115,7 +115,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 
 			// if only listed properties should be included, remove all other fields from fieldsToAdd
 			if (getFieldValueOfBoolean(bindings, "excludeUnlistedProperties")) {
-				fieldsToAdd.removeIf(s -> !whiteList.contains(s) && !aliases.contains(s) );
+				fieldsToAdd.removeIf(s -> !whiteList.contains(s) && !aliases.contains(s));
 			}
 
 			for (String fieldName : fieldsToAdd) {
@@ -127,7 +127,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 			}
 		}
 
-		if(!CollectionUtils.isEmpty(parametersToAddToOperation)){
+		if (!CollectionUtils.isEmpty(parametersToAddToOperation)) {
 			if (operation.getParameters() == null)
 				operation.setParameters(parametersToAddToOperation);
 			else
@@ -250,7 +250,8 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 			Field declaredField;
 			if (path.isPresent()) {
 				genericType = path.get().getType();
-			} else {
+			}
+			else {
 				declaredField = root.getDeclaredField(fieldName);
 				genericType = declaredField.getGenericType();
 			}
@@ -279,7 +280,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 		}
 
 		if (parameter.getSchema() == null) {
-			Schema<?> schema ;
+			Schema<?> schema;
 			PrimitiveType primitiveType = PrimitiveType.fromType(type);
 			if (primitiveType != null) {
 				schema = primitiveType.createProperty();

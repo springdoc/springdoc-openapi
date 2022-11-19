@@ -37,5 +37,5 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @SecurityScheme(name = "security_auth", type = SecuritySchemeType.OAUTH2,
 		flows = @OAuthFlows(authorizationCode = @OAuthFlow(
 				authorizationUrl = "http://authorization.url"
-				, tokenUrl = "http://token.url", scopes = { })))
+				, tokenUrl = "http://token.url", scopes = {})))
 public class OpenApiConfig {}

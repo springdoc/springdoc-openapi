@@ -105,9 +105,9 @@ public class OpenAPIService implements ApplicationContextAware {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenAPIService.class);
 
 	/**
-	 * The Context.
+	 * The Basic error controller.
 	 */
-	private ApplicationContext context;
+	private static Class<?> basicErrorController;
 
 	/**
 	 * The Security parser.
@@ -140,24 +140,9 @@ public class OpenAPIService implements ApplicationContextAware {
 	private final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
-	 * The Open api.
-	 */
-	private OpenAPI openAPI;
-
-	/**
 	 * The Cached open api map.
 	 */
 	private final Map<String, OpenAPI> cachedOpenAPI = new HashMap<>();
-
-	/**
-	 * The Is servers present.
-	 */
-	private boolean isServersPresent;
-
-	/**
-	 * The Server base url.
-	 */
-	private String serverBaseUrl;
 
 	/**
 	 * The Property resolver utils.
@@ -170,9 +155,24 @@ public class OpenAPIService implements ApplicationContextAware {
 	private final Optional<JavadocProvider> javadocProvider;
 
 	/**
-	 * The Basic error controller.
+	 * The Context.
 	 */
-	private static Class<?> basicErrorController;
+	private ApplicationContext context;
+
+	/**
+	 * The Open api.
+	 */
+	private OpenAPI openAPI;
+
+	/**
+	 * The Is servers present.
+	 */
+	private boolean isServersPresent;
+
+	/**
+	 * The Server base url.
+	 */
+	private String serverBaseUrl;
 
 	/**
 	 * Instantiates a new Open api builder.

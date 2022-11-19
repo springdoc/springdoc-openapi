@@ -83,12 +83,13 @@ public class RouterFunctionData {
 	/**
 	 * The Attributes.
 	 */
-	private Map<String,Object> attributes = new LinkedHashMap<>();
+	private Map<String, Object> attributes = new LinkedHashMap<>();
 
 	/**
 	 * Instantiates a new Router function data.
 	 */
-	public RouterFunctionData() { }
+	public RouterFunctionData() {
+	}
 
 	/**
 	 * Instantiates a new Router function data.
@@ -195,14 +196,18 @@ public class RouterFunctionData {
 	 *
 	 * @return the string [ ]
 	 */
-	public String[] getParams() { return params.toArray(new String[params.size()]); }
+	public String[] getParams() {
+		return params.toArray(new String[params.size()]);
+	}
 
 	/**
 	 * Add params.
 	 *
 	 * @param params the params
 	 */
-	public void addParams(String params) { if(StringUtils.isNotBlank(params)) this.params.add(params); }
+	public void addParams(String params) {
+		if (StringUtils.isNotBlank(params)) this.params.add(params);
+	}
 
 	/**
 	 * Add consumes.
@@ -280,7 +285,8 @@ public class RouterFunctionData {
 			case "PATCH" -> requestMethod = RequestMethod.PATCH;
 			case "HEAD" -> requestMethod = RequestMethod.HEAD;
 			case "OPTIONS" -> requestMethod = RequestMethod.OPTIONS;
-			default -> throw new IllegalStateException("Unexpected value: " + httpMethod.name());
+			default ->
+					throw new IllegalStateException("Unexpected value: " + httpMethod.name());
 		}
 		return requestMethod;
 	}

@@ -39,5 +39,4 @@ public class Wrapper<D> {
 	@JsonProperty("wrapper")
 	private String wrapper;
 
-
 }

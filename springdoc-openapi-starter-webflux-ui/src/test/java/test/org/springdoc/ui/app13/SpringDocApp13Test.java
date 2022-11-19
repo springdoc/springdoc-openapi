@@ -45,9 +45,6 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"management.endpoints.web.base-path=/application" })
 class SpringDocApp13Test extends AbstractSpringDocActuatorTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	void testIndex() {
 		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/application/webjars/swagger-ui/index.html")
@@ -62,7 +59,7 @@ class SpringDocApp13Test extends AbstractSpringDocActuatorTest {
 	@Test
 	public void testIndexActuator() {
 		HttpStatusCode httpStatusMono = webClient.get().uri("/application/swagger-ui")
-				.exchangeToMono( clientResponse -> Mono.just(clientResponse.statusCode())).block();
+				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 	}
 
@@ -73,5 +70,8 @@ class SpringDocApp13Test extends AbstractSpringDocActuatorTest {
 		String expected = getContent("results/app13-1.json");
 		assertEquals(expected, contentAsString, true);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

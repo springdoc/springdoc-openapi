@@ -38,9 +38,6 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 
 	private static final String X_FORWARD_PREFIX = "/path/prefix";
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	public void shouldServeSwaggerUIAtDefaultPath() throws Exception {
 		mockMvc.perform(get("/swagger-ui/index.html"))
@@ -81,4 +78,7 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 						equalTo("/path/prefix/v3/api-docs/swagger-config")
 				));
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

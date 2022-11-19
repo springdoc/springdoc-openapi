@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RestController
 
 
 data class Person(
-		val name: String,
-		val nickname: String?
+	val name: String,
+	val nickname: String?
 )
 
 @RestController

@@ -68,7 +68,7 @@ public class MultipleOpenApiWebMvcResource extends MultipleOpenApiResource {
 	 * @param springDocProviders the spring doc providers
 	 */
 	public MultipleOpenApiWebMvcResource(List<GroupedOpenApi> groupedOpenApis, ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
-		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser,springDocConfigProperties, springDocProviders);
+		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class MultipleOpenApiWebMvcResource extends MultipleOpenApiResource {
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL + "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl,
-			@PathVariable String group,  Locale locale)
+			@PathVariable String group, Locale locale)
 			throws JsonProcessingException {
 		return getOpenApiResourceOrThrow(group).openapiJson(request, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group, locale);
 	}
@@ -102,7 +102,7 @@ public class MultipleOpenApiWebMvcResource extends MultipleOpenApiResource {
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML + "/{group}", produces = APPLICATION_OPENAPI_YAML)
 	public String openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl,
-			@PathVariable String group,  Locale locale)
+			@PathVariable String group, Locale locale)
 			throws JsonProcessingException {
 		return getOpenApiResourceOrThrow(group).openapiYaml(request, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group, locale);
 	}

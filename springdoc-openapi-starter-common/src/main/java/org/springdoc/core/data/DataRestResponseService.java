@@ -67,6 +67,11 @@ import org.springframework.web.method.HandlerMethod;
 public class DataRestResponseService {
 
 	/**
+	 * The constant requestMethodsEntityModel.
+	 */
+	private static final RequestMethod[] requestMethodsEntityModel = { RequestMethod.PATCH, RequestMethod.POST, RequestMethod.PUT };
+
+	/**
 	 * The Generic response builder.
 	 */
 	private final GenericResponseService genericResponseService;
@@ -75,11 +80,6 @@ public class DataRestResponseService {
 	 * The Spring doc data rest utils.
 	 */
 	private final SpringDocDataRestUtils springDocDataRestUtils;
-
-	/**
-	 * The constant requestMethodsEntityModel.
-	 */
-	private static final RequestMethod[] requestMethodsEntityModel = { RequestMethod.PATCH, RequestMethod.POST, RequestMethod.PUT };
 
 	/**
 	 * Instantiates a new Data rest response builder.

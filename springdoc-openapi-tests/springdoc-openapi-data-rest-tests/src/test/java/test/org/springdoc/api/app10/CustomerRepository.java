@@ -49,7 +49,7 @@ public interface CustomerRepository extends CrudRepository<Customer, Long>, JpaS
 	 * @param pageable
 	 * @return
 	 */
-	Page<Customer> findByLastname(@Param("lastname")  String lastname, Pageable pageable);
+	Page<Customer> findByLastname(@Param("lastname") String lastname, Pageable pageable);
 
 	@Override
 	@RestResource(exported = false)

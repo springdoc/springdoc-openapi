@@ -24,7 +24,7 @@
 
 package test.org.springdoc.api.v30.app155;
 
-public class ConcreteIntParameterObject extends AbstractIntParameterObject<Integer>{
+public class ConcreteIntParameterObject extends AbstractIntParameterObject<Integer> {
 
 	int primitiveConcreteField;
 

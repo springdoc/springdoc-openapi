@@ -16,8 +16,8 @@ public class CommonFooErrorHandler {
 	 * @return the error dto
 	 */
 	@ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorDTO onException(Exception e) {
-        return new ErrorDTO("Something wrong has happened");
-    }
+	@ResponseStatus(HttpStatus.CONFLICT)
+	public ErrorDTO onException(Exception e) {
+		return new ErrorDTO("Something wrong has happened");
+	}
 }

@@ -45,6 +45,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		"management.endpoints.web.exposure.include = tenant" })
 public class SpringDocApp172Test extends AbstractSpringDocV30Test {
 
+	@Test
+	public void testApp() throws Exception {
+		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/sample-group"))
+				.andExpect(jsonPath("$.openapi", is("3.0.1")))
+				.andExpect(status().isOk())
+				.andExpect(content().json(getContent("results/3.0.1/app172.json"), true));
+	}
+
 	@SpringBootApplication
 	static class SpringDocTestApp {
 		@Bean
@@ -57,14 +65,6 @@ public class SpringDocApp172Test extends AbstractSpringDocV30Test {
 					.pathsToExclude("/health/*")
 					.build();
 		}
-	}
-
-	@Test
-	public void testApp() throws Exception {
-		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/sample-group"))
-				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(status().isOk())
-				.andExpect(content().json(getContent("results/3.0.1/app172.json"), true));
 	}
 
 }

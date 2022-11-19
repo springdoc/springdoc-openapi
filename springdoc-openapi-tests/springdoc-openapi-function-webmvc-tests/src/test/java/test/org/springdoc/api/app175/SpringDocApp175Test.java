@@ -38,7 +38,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@TestPropertySource(properties="springdoc.show-spring-cloud-functions=false")
+@TestPropertySource(properties = "springdoc.show-spring-cloud-functions=false")
 public class SpringDocApp175Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication

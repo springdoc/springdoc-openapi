@@ -42,7 +42,8 @@ public class HelloController {
 	@Operation(description = "Adds 200 as api response, because there are nothing defined to get another response")
 	@RequestBody(description = "test value", required = true, content = @Content(schema = @Schema(implementation = String.class)))
 	@PostMapping(value = "/postWithoutAnyResponse", produces = MediaType.APPLICATION_JSON_VALUE)
-	public void postWithoutAnyResponse(String test) {}
+	public void postWithoutAnyResponse(String test) {
+	}
 
 	@Operation(description = "Adds 201 as api response, because it defined by @ResponseStatus")
 	@PostMapping(value = "/postWithResponseStatusOnly", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,9 +53,9 @@ public class HelloController {
 	}
 
 	@Operation(description = "Adds 200 as additional api response, because it defined by @ResponseStatus",
-		responses = {
-			@ApiResponse(responseCode = "422", description = "Test")
-	})
+			responses = {
+					@ApiResponse(responseCode = "422", description = "Test")
+			})
 	@ApiResponses({
 			@ApiResponse(responseCode = "409", description = "Test 2")
 	})
@@ -73,11 +74,11 @@ public class HelloController {
 
 	@Operation(description = "Doesn't creates the default 200 Response, because there are explicit declared api responses." +
 			"This test ensures that the current default handling is not changed, because otherwise very many tests will fail.",
-		responses = {
-			@ApiResponse(responseCode = "422", description = "Test")
-	})
+			responses = {
+					@ApiResponse(responseCode = "422", description = "Test")
+			})
 	@ApiResponses({
-			@ApiResponse(responseCode = "409", description = "Test 2")	})
+			@ApiResponse(responseCode = "409", description = "Test 2") })
 	@GetMapping(value = "/withoutResponseStatus", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> withoutResponseStatus() {
 		return ResponseEntity.ok("hello");
@@ -91,10 +92,10 @@ public class HelloController {
 	}
 
 	@Operation(description = "Overwrites the 200 @ResponseStatus-Information by the explicit declared @ApiResponse",
-		responses = {
-			@ApiResponse(responseCode = "200", description = "Test2", content = @Content),
-			@ApiResponse(responseCode = "422", description = "Test")
-	})
+			responses = {
+					@ApiResponse(responseCode = "200", description = "Test2", content = @Content),
+					@ApiResponse(responseCode = "422", description = "Test")
+			})
 	@ApiResponses({
 			@ApiResponse(responseCode = "409", description = "Test 2")
 	})
@@ -105,9 +106,9 @@ public class HelloController {
 	}
 
 	@Operation(description = "Overwrites the 200 @ResponseStatus-Information by the explicit declared @ApiResponse",
-		responses = {
-			@ApiResponse(responseCode = "422", description = "Test")
-	})
+			responses = {
+					@ApiResponse(responseCode = "422", description = "Test")
+			})
 	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "Test2", content = @Content),
 			@ApiResponse(responseCode = "409", description = "Test 2")

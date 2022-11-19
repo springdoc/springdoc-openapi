@@ -53,7 +53,7 @@ public abstract class SpringWebProvider implements ApplicationContextAware {
 	 *
 	 * @return the handler methods
 	 */
-	public abstract Map  getHandlerMethods();
+	public abstract Map getHandlerMethods();
 
 	/**
 	 * Find path prefix string.

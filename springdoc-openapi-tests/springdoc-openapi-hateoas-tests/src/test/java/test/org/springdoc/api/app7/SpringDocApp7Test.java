@@ -28,5 +28,4 @@ public class SpringDocApp7Test extends AbstractSpringDocTest {
 	static class SpringDocTestApp {
 	}
 
-
 }

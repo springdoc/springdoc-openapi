@@ -42,7 +42,7 @@ public class SpringDocApp27Test extends AbstractSpringDocV30Test {
 	public void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andExpect(jsonPath("$.paths./test.get.responses.500.content.['*/*'].schema.oneOf").isArray()).andExpect(jsonPath("$.paths./test.get.responses.500.content.['*/*'].schema.oneOf[*].$ref", containsInAnyOrder("#/components/schemas/Bar",
-				"#/components/schemas/Foo")));
+						"#/components/schemas/Foo")));
 	}
 
 	@SpringBootApplication

@@ -1,56 +1,59 @@
 package test.org.springdoc.api.app82;
 
 public class User {
-    private long id;
-    private String firstname;
-    private String lastname;
-    private int age;
+	private long id;
 
-    public User() {
-    }
+	private String firstname;
 
-    public User(long id, String firstname, String lastname, int age) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.age = age;
-    }
+	private String lastname;
 
-    public long getId() {
-        return id;
-    }
+	private int age;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public User() {
+	}
 
-    public String getFirstname() {
-        return firstname;
-    }
+	public User(long id, String firstname, String lastname, int age) {
+		this.id = id;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.age = age;
+	}
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public String getLastname() {
-        return lastname;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
+	public String getFirstname() {
+		return firstname;
+	}
 
-    public int getAge() {
-        return age;
-    }
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+	public String getLastname() {
+		return lastname;
+	}
 
-    @Override
-    public String toString() {
-        String info = String.format("id = %d, firstname = %s, lastname = %s, age = %d", id, firstname, lastname, age);
-        return info;
-    }
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	@Override
+	public String toString() {
+		String info = String.format("id = %d, firstname = %s, lastname = %s, age = %d", id, firstname, lastname, age);
+		return info;
+	}
 }

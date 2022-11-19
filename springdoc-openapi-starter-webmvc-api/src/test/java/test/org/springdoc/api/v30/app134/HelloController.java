@@ -53,8 +53,11 @@ public class HelloController {
 	// -----------------------------------------------------------------------------------------------------------------
 
 	public static final String VERSION_1 = "application/vnd.samples.v1+json";
+
 	public static final String VERSION_2 = "application/vnd.samples.v2+json";
+
 	public static final String HEADER_1 = "X-API-VERSION=1";
+
 	public static final String HEADER_2 = "Accept-version=v2";
 
 	@GetMapping(value = "/{id}", produces = VERSION_1, headers = HEADER_1)
@@ -67,7 +70,7 @@ public class HelloController {
 		return new SampleV1(id);
 	}
 
-	@GetMapping(value = "/{id}", produces = VERSION_2, headers ={HEADER_2,HEADER_1} )
+	@GetMapping(value = "/{id}", produces = VERSION_2, headers = { HEADER_2, HEADER_1 })
 	@ResponseStatus(HttpStatus.OK)
 	@Operation(operationId = "getSampleV2", description = "Get the sample by its id. This represents V2.")
 	@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = SampleV1.class)))
@@ -87,19 +90,19 @@ public class HelloController {
 
 	private class SampleV1 {
 
-		public String getId() {
-			return id;
-		}
+		private String id;
 
 		public SampleV1(String id) {
 			this.id = id;
 		}
 
+		public String getId() {
+			return id;
+		}
+
 		public void setId(String id) {
 			this.id = id;
 		}
-
-		private String id;
 	}
 
 	private class SampleV2 {

@@ -28,7 +28,7 @@ enum class SystemStatus(val status: String) {
 }
 
 data class SystemStatusResponse(
-		val status: SystemStatus
+	val status: SystemStatus
 )
 
 @RestController

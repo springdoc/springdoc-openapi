@@ -67,29 +67,29 @@ public class AnnotatedController {
 	@Bean
 	public GroupedOpenApi group1OpenApi() {
 		return GroupedOpenApi.builder()
-			.group("annotatedGroup1")
-			.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group1.class))
-			.build();
+				.group("annotatedGroup1")
+				.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group1.class))
+				.build();
 	}
 
 	@Bean
 	public GroupedOpenApi group2OpenApi() {
 		return GroupedOpenApi.builder()
-			.group("annotatedGroup2")
-			.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group2.class))
-			.build();
+				.group("annotatedGroup2")
+				.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group2.class))
+				.build();
 	}
 
 	@Bean
 	public GroupedOpenApi group3OpenApi() {
 		return GroupedOpenApi.builder()
-			.group("annotatedCombinedGroup")
-			.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group1.class) || method.isAnnotationPresent(Group2.class))
-			.build();
+				.group("annotatedCombinedGroup")
+				.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group1.class) || method.isAnnotationPresent(Group2.class))
+				.build();
 	}
 
 	@Bean
-	public OpenApiMethodFilter methodFilter(){
+	public OpenApiMethodFilter methodFilter() {
 		return method -> method.isAnnotationPresent(Group3.class);
 	}
 

@@ -59,7 +59,7 @@ public class SpringDocJavadocConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SpringDocJavadocProvider springDocJavadocProvider( ) {
+	SpringDocJavadocProvider springDocJavadocProvider() {
 		return new SpringDocJavadocProvider();
 	}
 
@@ -73,7 +73,7 @@ public class SpringDocJavadocConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	JavadocPropertyCustomizer javadocPropertyCustomizer( JavadocProvider javadocProvider, ObjectMapperProvider objectMapperProvider){
+	JavadocPropertyCustomizer javadocPropertyCustomizer(JavadocProvider javadocProvider, ObjectMapperProvider objectMapperProvider) {
 		return new JavadocPropertyCustomizer(javadocProvider, objectMapperProvider);
 	}
 }
