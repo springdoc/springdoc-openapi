@@ -57,9 +57,4 @@ public class MultipleOpenApiGroupsCondition extends AnyNestedCondition {
 	@ConditionalOnProperty(name = GROUP_CONFIG_FIRST_PROPERTY)
 	static class OnGroupConfigProperty {}
 
-	/**
-	 * The type On list grouped open api bean.
-	 */
-	@ConditionalOnBean(value = GroupedOpenApi.class, parameterizedContainer = Collection.class)
-	static class OnListGroupedOpenApiBean {}
 }
