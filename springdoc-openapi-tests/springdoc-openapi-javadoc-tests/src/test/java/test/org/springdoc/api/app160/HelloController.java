@@ -46,34 +46,6 @@ public class HelloController {
 	}
 
 	/**
-	 * The type Swagger message.
-	 */
-	@PropertySource("classpath:swagger-message-160.properties")
-	@Configuration
-	public class SwaggerMessage{}
-
-	/**
-	 * The type Error response.
-	 */
-	@Schema(description = "${ErrorResponse}")
-	public class ErrorResponse {
-
-		/**
-		 * The Error code.
-		 */
-		@Schema(description = "${ErrorCode}", required = true)
-		@JsonProperty
-		private Integer errorCode;
-
-		/**
-		 * The Error message.
-		 */
-		@Schema(description = "${ErrorMessage}")
-		@JsonProperty
-		private String errorMessage;
-	}
-
-	/**
 	 * Bundle api grouped open api.
 	 *
 	 * @return the grouped open api
@@ -98,6 +70,34 @@ public class HelloController {
 		source.setUseCodeAsDefaultMessage(true);
 		source.setDefaultEncoding("utf-8");
 		return source;
+	}
+
+	/**
+	 * The type Swagger message.
+	 */
+	@PropertySource("classpath:swagger-message-160.properties")
+	@Configuration
+	public class SwaggerMessage {}
+
+	/**
+	 * The type Error response.
+	 */
+	@Schema(description = "${ErrorResponse}")
+	public class ErrorResponse {
+
+		/**
+		 * The Error code.
+		 */
+		@Schema(description = "${ErrorCode}", required = true)
+		@JsonProperty
+		private Integer errorCode;
+
+		/**
+		 * The Error message.
+		 */
+		@Schema(description = "${ErrorMessage}")
+		@JsonProperty
+		private String errorMessage;
 	}
 
 }

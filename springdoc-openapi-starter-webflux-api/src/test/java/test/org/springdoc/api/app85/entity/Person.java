@@ -5,10 +5,15 @@ public class Person {
 	private String id;
 
 	private Sex sex;
+
 	private String firstName;
+
 	private String lastName;
+
 	private String age;
+
 	private String interests;
+
 	private String email;
 
 	public String getId() {

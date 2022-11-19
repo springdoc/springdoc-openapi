@@ -39,17 +39,17 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "springdoc.model-converters.deprecating-converter.enabled=false")
 public class SpringDocApp125Test extends AbstractSpringDocTest {
 
-	/**
-	 * The type Spring doc test app.
-	 */
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	static {
 		Optional<ModelConverter> deprecatingConverterOptional =
 				ModelConverters.getInstance().getConverters()
 						.stream().filter(modelConverter -> modelConverter instanceof SchemaPropertyDeprecatingConverter).findAny();
 		deprecatingConverterOptional.ifPresent(ModelConverters.getInstance()::removeConverter);
 	}
+
+	/**
+	 * The type Spring doc test app.
+	 */
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

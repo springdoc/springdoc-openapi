@@ -41,12 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp134Test extends AbstractSpringDocTest {
 
 	/**
-	 * The type Spring doc test app.
-	 */
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
-	/**
 	 * Test app.
 	 *
 	 * @throws Exception the exception
@@ -110,4 +104,10 @@ public class SpringDocApp134Test extends AbstractSpringDocTest {
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(content().json(getContent("results/app134-5.json"), true));
 	}
+
+	/**
+	 * The type Spring doc test app.
+	 */
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

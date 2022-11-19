@@ -31,7 +31,7 @@ import org.springframework.test.context.TestPropertySource;
 /**
  * Tests Spring meta-annotations as method parameters
  */
-@TestPropertySource(properties = {"test.name=text","test.value=text","test.default-value=default-text"})
+@TestPropertySource(properties = { "test.name=text", "test.value=text", "test.default-value=default-text" })
 public class SpringDocApp139Test extends AbstractSpringDocTest {
 
 	/**

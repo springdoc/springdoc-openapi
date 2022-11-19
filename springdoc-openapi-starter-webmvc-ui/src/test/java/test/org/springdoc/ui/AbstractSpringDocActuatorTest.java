@@ -32,15 +32,15 @@ import org.springframework.boot.test.web.server.LocalManagementPort;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
 
-public abstract class AbstractSpringDocActuatorTest extends  AbstractCommonTest{
+public abstract class AbstractSpringDocActuatorTest extends AbstractCommonTest {
+
+	protected RestTemplate actuatorRestTemplate;
 
 	@LocalManagementPort
 	private int managementPort;
 
 	@Autowired
 	private RestTemplateBuilder restTemplateBuilder;
-
-	protected RestTemplate actuatorRestTemplate;
 
 	@PostConstruct
 	void init() {

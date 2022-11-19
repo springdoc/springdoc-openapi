@@ -40,17 +40,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(properties = "springdoc.api-docs.resolve-schema-properties=true")
 public class SpringDocApp160Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {
-	}
-
-
 	@Test
 	public void testApp2() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/test"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(content().json(getContent("results/3.0.1/app160-1.json"), true));
+	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {
 	}
 
 }

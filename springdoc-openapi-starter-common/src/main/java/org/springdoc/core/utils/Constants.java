@@ -363,12 +363,12 @@ public final class Constants {
 	/**
 	 * The constant SPRINGDOC_USE_ROOT_PATH.
 	 */
-	public static final String SPRINGDOC_USE_ROOT_PATH ="springdoc.swagger-ui.use-root-path";
+	public static final String SPRINGDOC_USE_ROOT_PATH = "springdoc.swagger-ui.use-root-path";
 
 	/**
 	 * The constant DEFAULT_SWAGGER_UI_ACTUATOR_PATH.
 	 */
-	public static final String DEFAULT_SWAGGER_UI_ACTUATOR_PATH= "swagger-ui";
+	public static final String DEFAULT_SWAGGER_UI_ACTUATOR_PATH = "swagger-ui";
 
 	/**
 	 * The constant DEFAULT_API_DOCS_ACTUATOR_URL.
@@ -388,7 +388,7 @@ public final class Constants {
 	/**
 	 * The constant LINKS_SCHEMA_CUSTOMISER.
 	 */
-	public static final String LINKS_SCHEMA_CUSTOMISER  = "linksSchemaCustomizer";
+	public static final String LINKS_SCHEMA_CUSTOMISER = "linksSchemaCustomizer";
 
 	/**
 	 * The constant SPRINGDOC_SORT_CONVERTER_ENABLED.

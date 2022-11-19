@@ -12,26 +12,25 @@ import org.springframework.context.annotation.Bean;
  */
 public class SpringDocApp164Test extends AbstractSpringDocTest {
 
-    /**
-     * The type Spring doc test app.
-     */
-    @SpringBootApplication
-    static class SpringDocTestApp {
-        /**
-         * Custom open api open api.
-         *
-         * @return the open api
-         */
-        @Bean
-        public OpenAPI customOpenAPI() {
-            return new OpenAPI()
-                    .info(new Info()
-                            .title("SpringShop API")
-                            .version("v1")
-                            .description("The description of the api"));
-        }
+	/**
+	 * The type Spring doc test app.
+	 */
+	@SpringBootApplication
+	static class SpringDocTestApp {
+		/**
+		 * Custom open api open api.
+		 *
+		 * @return the open api
+		 */
+		@Bean
+		public OpenAPI customOpenAPI() {
+			return new OpenAPI()
+					.info(new Info()
+							.title("SpringShop API")
+							.version("v1")
+							.description("The description of the api"));
+		}
 
-    }
-
+	}
 
 }

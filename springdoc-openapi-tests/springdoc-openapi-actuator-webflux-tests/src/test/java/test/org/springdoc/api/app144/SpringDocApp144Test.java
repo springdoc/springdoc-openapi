@@ -37,11 +37,8 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp144Test extends AbstractSpringDocActuatorTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
-	public void testApp()  {
+	public void testApp() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
 				.expectStatus().isNotFound();
 	}
@@ -53,5 +50,8 @@ public class SpringDocApp144Test extends AbstractSpringDocActuatorTest {
 		String expected = getContent("results/app144.json");
 		assertEquals(expected, result, true);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

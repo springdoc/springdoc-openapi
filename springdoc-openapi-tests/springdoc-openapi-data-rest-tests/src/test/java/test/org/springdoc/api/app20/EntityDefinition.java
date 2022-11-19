@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public interface EntityDefinition {
 
-    @JsonIgnore
-    String getKey();
+	@JsonIgnore
+	String getKey();
 
-    @JsonIgnore
-    String getDescription();
+	@JsonIgnore
+	String getDescription();
 }

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
-@Target({ElementType.PARAMETER, ElementType.TYPE, ElementType.FIELD})
+@Target({ ElementType.PARAMETER, ElementType.TYPE, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @AuthenticationPrincipal

@@ -25,6 +25,6 @@
 package test.org.springdoc.api.v30.app156;
 
 public enum SomeEnum {
-    FIRST,
-    SECOND
+	FIRST,
+	SECOND
 }

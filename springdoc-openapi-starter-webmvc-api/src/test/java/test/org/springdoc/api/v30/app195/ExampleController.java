@@ -25,7 +25,7 @@ public class ExampleController {
 
 	@GetMapping("/500")
 	@Operation(
-			tags = {"example"},
+			tags = { "example" },
 			summary = "Example method",
 			description = "This method is an example"
 	)

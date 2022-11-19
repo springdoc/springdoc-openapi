@@ -15,6 +15,6 @@ public class Foo {
 	 * @return the child
 	 */
 	public String getChild() {
-    return this.child;
-  }
+		return this.child;
+	}
 }

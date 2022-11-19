@@ -51,6 +51,6 @@ public interface PersonRepository extends PagingAndSortingRepository<Person, Lon
 			@ApiResponse(responseCode = "200", description = "another successful operation"),
 			@ApiResponse(responseCode = "404", description = "another Contact not found") }
 	)
-	List<Person> findByFirstName(@Param("firstName")  @Parameter(description = "this is for first Name") String name);
+	List<Person> findByFirstName(@Param("firstName") @Parameter(description = "this is for first Name") String name);
 
 }

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RepositoryRestResource(path = "banks")
 public interface BankRepository extends JpaRepository<Bank, Long>, CodeLookupRepository<Bank, String> {
-    // moved to CodeLookupRepository
-    //Bank findOneByCode(String code);
+	// moved to CodeLookupRepository
+	//Bank findOneByCode(String code);
 }

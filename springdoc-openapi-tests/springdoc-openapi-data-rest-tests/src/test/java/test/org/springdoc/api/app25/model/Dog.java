@@ -16,10 +16,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Dog extends Pet {
 
-	public static enum CoatType {
-		SMOOTH, SHORT, COMBINATION, DOUBLE, HEAVY, SILKY, LONG, CURLY, WIRE, HAIRLESS
-	}
-
 	@Enumerated(EnumType.STRING)
 	private CoatType coat;
 
@@ -27,6 +23,10 @@ public class Dog extends Pet {
 	public Dog(String name, Owner owner, CoatType coat) {
 		super(name, owner);
 		this.coat = coat;
+	}
+
+	public static enum CoatType {
+		SMOOTH, SHORT, COMBINATION, DOUBLE, HEAVY, SILKY, LONG, CURLY, WIRE, HAIRLESS
 	}
 
 }

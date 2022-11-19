@@ -111,14 +111,17 @@ public class Builder {
 			public Class<? extends Annotation> annotationType() {
 				return null;
 			}
+
 			@Override
 			public String name() {
 				return name;
 			}
+
 			@Override
 			public String value() {
 				return value;
 			}
+
 			@Override
 			public boolean parseValue() {
 				return parseValue;

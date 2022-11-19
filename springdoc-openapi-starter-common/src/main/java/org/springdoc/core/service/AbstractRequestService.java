@@ -234,6 +234,35 @@ public abstract class AbstractRequestService {
 	}
 
 	/**
+	 * Gets headers.
+	 *
+	 * @param methodAttributes the method attributes
+	 * @param map the map
+	 * @return the headers
+	 */
+	@SuppressWarnings("unchecked")
+	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<ParameterId, Parameter> map) {
+		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
+			StringSchema schema = new StringSchema();
+			if (StringUtils.isNotEmpty(entry.getValue()))
+				schema.addEnumItem(entry.getValue());
+			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(schema);
+			ParameterId parameterId = new ParameterId(parameter);
+			if (map.containsKey(parameterId)) {
+				parameter = map.get(parameterId);
+				List existingEnum = null;
+				if (parameter.getSchema() != null && !CollectionUtils.isEmpty(parameter.getSchema().getEnum()))
+					existingEnum = parameter.getSchema().getEnum();
+				if (StringUtils.isNotEmpty(entry.getValue()) && (existingEnum == null || !existingEnum.contains(entry.getValue())))
+					parameter.getSchema().addEnumItemObject(entry.getValue());
+				parameter.setSchema(parameter.getSchema());
+			}
+			map.put(parameterId, parameter);
+		}
+		return map.values();
+	}
+
+	/**
 	 * Build operation.
 	 *
 	 * @param handlerMethod the handler method
@@ -294,7 +323,7 @@ public abstract class AbstractRequestService {
 			}
 
 			if (!isParamToIgnore(methodParameter)) {
-				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation(),openAPI.getOpenapi());
+				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation(), openAPI.getOpenapi());
 				// Merge with the operation parameters
 				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
 				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
@@ -329,8 +358,9 @@ public abstract class AbstractRequestService {
 			while (it.hasNext()) {
 				Entry<ParameterId, Parameter> entry = it.next();
 				Parameter parameter = entry.getValue();
-				if (!ParameterIn.PATH.toString().equals(parameter.getIn()) && !ParameterIn.HEADER.toString().equals(parameter.getIn() )
-						&& !ParameterIn.COOKIE.toString().equals(parameter.getIn())) {					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema<>();
+				if (!ParameterIn.PATH.toString().equals(parameter.getIn()) && !ParameterIn.HEADER.toString().equals(parameter.getIn())
+						&& !ParameterIn.COOKIE.toString().equals(parameter.getIn())) {
+					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema<>();
 					itemSchema.setName(entry.getKey().getpName());
 					itemSchema.setDescription(parameter.getDescription());
 					itemSchema.setDeprecated(parameter.getDeprecated());
@@ -384,40 +414,12 @@ public abstract class AbstractRequestService {
 			}
 		}
 
-		getHeaders(methodAttributes, map); map.forEach((parameterId, parameter) -> {
+		getHeaders(methodAttributes, map);
+		map.forEach((parameterId, parameter) -> {
 			if (StringUtils.isBlank(parameter.getIn()) && StringUtils.isBlank(parameter.get$ref()))
 				parameter.setIn(ParameterIn.QUERY.toString());
-		}); return map;
-	}
-
-
-	/**
-	 * Gets headers.
-	 *
-	 * @param methodAttributes the method attributes
-	 * @param map the map
-	 * @return the headers
-	 */
-	@SuppressWarnings("unchecked")
-	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<ParameterId, Parameter> map) {
-		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
-			StringSchema schema = new StringSchema();
-			if (StringUtils.isNotEmpty(entry.getValue()))
-				schema.addEnumItem(entry.getValue());
-			Parameter parameter = new Parameter().in(ParameterIn.HEADER.toString()).name(entry.getKey()).schema(schema);
-			ParameterId parameterId = new ParameterId(parameter);
-			if (map.containsKey(parameterId)) {
-				parameter = map.get(parameterId);
-				List existingEnum = null;
-				if (parameter.getSchema() != null && !CollectionUtils.isEmpty(parameter.getSchema().getEnum()))
-					existingEnum = parameter.getSchema().getEnum();
-				if (StringUtils.isNotEmpty(entry.getValue()) && (existingEnum == null || !existingEnum.contains(entry.getValue())))
-					parameter.getSchema().addEnumItemObject(entry.getValue());
-				parameter.setSchema(parameter.getSchema());
-			}
-			map.put(parameterId, parameter);
-		}
-		return map.values();
+		});
+		return map;
 	}
 
 	/**
@@ -512,7 +514,7 @@ public abstract class AbstractRequestService {
 			return this.buildParam(parameterInfo, components, jsonView);
 		}
 		// By default
-		if (!isRequestBodyParam(requestMethod, parameterInfo,openApiVersion)) {
+		if (!isRequestBodyParam(requestMethod, parameterInfo, openApiVersion)) {
 			parameterInfo.setRequired(!((DelegatingMethodParameter) methodParameter).isNotRequired() && !methodParameter.isOptional());
 			//parameterInfo.setParamType(QUERY_PARAM);
 			parameterInfo.setDefaultValue(null);

@@ -5,7 +5,8 @@
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/springdoc)](https://stackoverflow.com/questions/tagged/springdoc?tab=Votes)
 
 `springdoc-openapi` is on [Open Collective](https://opencollective.com/springdoc).
-If you ❤️ this project consider becoming a [sponsor](https://github.com/sponsors/springdoc).
+If you ❤️ this project consider becoming
+a [sponsor](https://github.com/sponsors/springdoc).
 
 This project is sponsored by
 
@@ -23,8 +24,8 @@ This project is sponsored by
 </a>
 </p>
 
-
 # Table of Contents
+
 - [Full documentation](#full-documentation)
 - [**Introduction**](#introduction)
 - [**Getting Started**](#getting-started)
@@ -48,12 +49,16 @@ This project is sponsored by
 
 # **Introduction**
 
-The springdoc-openapi Java library helps automating the generation of API documentation using Spring Boot projects.
-springdoc-openapi works by examining an application at runtime to infer API semantics based on Spring configurations, class structure and various annotations.
+The springdoc-openapi Java library helps automating the generation of API documentation
+using Spring Boot projects.
+springdoc-openapi works by examining an application at runtime to infer API semantics
+based on Spring configurations, class structure and various annotations.
 
-The library automatically generates documentation in JSON/YAML and HTML formatted pages. The generated documentation can be complemented using `swagger-api` annotations.
+The library automatically generates documentation in JSON/YAML and HTML formatted pages.
+The generated documentation can be complemented using `swagger-api` annotations.
 
 This library supports:
+
 * OpenAPI 3
 * Spring-boot v3 (Java 17 & Jakarta EE 9)
 * JSR-303, specifically for @NotNull, @Min, @Max, and @Size.
@@ -65,19 +70,26 @@ The following video introduces the Library:
 
 * [https://youtu.be/utRxyPfFlDw](https://youtu.be/utRxyPfFlDw)
 
-This is a community-based project, not maintained by the Spring Framework Contributors (Pivotal)
+This is a community-based project, not maintained by the Spring Framework Contributors (
+Pivotal)
 
 # **Getting Started**
 
 ## Library for springdoc-openapi integration with spring-boot and swagger-ui
-*   Automatically deploys swagger-ui to a Spring Boot 3.x application
-*   Documentation will be available in HTML format, using the official [swagger-ui jars](https://github.com/swagger-api/swagger-ui.git).
-*   The Swagger UI page should then be available at http://server:port/context-path/swagger-ui.html and the OpenAPI description will be available at the following url for json format: http://server:port/context-path/v3/api-docs
+
+* Automatically deploys swagger-ui to a Spring Boot 3.x application
+* Documentation will be available in HTML format, using the
+  official [swagger-ui jars](https://github.com/swagger-api/swagger-ui.git).
+* The Swagger UI page should then be available at http://server:
+  port/context-path/swagger-ui.html and the OpenAPI description will be available at the
+  following url for json format: http://server:port/context-path/v3/api-docs
     * `server`: The server name or IP
     * `port`: The server port
     * `context-path`: The context path of the application
-*   Documentation can be available in yaml format as well, on the following path: /v3/api-docs.yaml
-*   Add the `springdoc-openapi-ui` library to the list of your project dependencies (No additional configuration is needed):
+* Documentation can be available in yaml format as well, on the following path:
+  /v3/api-docs.yaml
+* Add the `springdoc-openapi-ui` library to the list of your project dependencies (No
+  additional configuration is needed):
 
 ```xml
    <dependency>
@@ -86,7 +98,9 @@ This is a community-based project, not maintained by the Spring Framework Contri
       <version>last-release-version</version>
    </dependency>
 ```
-*   This step is optional: For custom path of the swagger documentation in HTML format, add a custom springdoc property, in your spring-boot configuration file:
+
+* This step is optional: For custom path of the swagger documentation in HTML format, add
+  a custom springdoc property, in your spring-boot configuration file:
 
 ```properties
 # swagger-ui custom path
@@ -96,20 +110,28 @@ springdoc.swagger-ui.path=/swagger-ui.html
 ## Spring-boot with OpenAPI Demo applications.
 
 ### [Source Code for Demo Applications](https://github.com/springdoc/springdoc-openapi-demos/tree/2.x).
+
 ### [Demo Spring Boot 2 Web MVC with OpenAPI 3](http://144.24.171.248:8081/).
+
 ### [Demo Spring Boot 2 WebFlux with OpenAPI 3](http://144.24.171.248:8082/).
+
 ### [Demo Spring Boot 2 WebFlux with Functional endpoints OpenAPI 3](http://144.24.171.248:8084/).
+
 ### [Demo Spring Boot 2 and Spring Hateoas with OpenAPI 3](http://144.24.171.248:8085/).
 
 ![Branching](https://springdoc.org/img/pets.png)
 
 ## Integration of the library in a Spring Boot 3.x project without the swagger-ui:
-*   Documentation will be available at the following url for json format: http://server:port/context-path/v3/api-docs
+
+* Documentation will be available at the following url for json format: http://server:
+  port/context-path/v3/api-docs
     * `server`: The server name or IP
     * `port`: The server port
     * `context-path`: The context path of the application
-*   Documentation will be available in yaml format as well, on the following path : `/v3/api-docs.yaml`
-*   Add the library to the list of your project dependencies. (No additional configuration is needed)
+* Documentation will be available in yaml format as well, on the following
+  path : `/v3/api-docs.yaml`
+* Add the library to the list of your project dependencies. (No additional configuration
+  is needed)
 
 ```xml
    <dependency>
@@ -118,14 +140,17 @@ springdoc.swagger-ui.path=/swagger-ui.html
       <version>last-release-version</version>
    </dependency>
 ```
-* This step is optional: For custom path of the OpenAPI documentation in Json format, add a custom springdoc property, in your spring-boot configuration file:
+
+* This step is optional: For custom path of the OpenAPI documentation in Json format, add
+  a custom springdoc property, in your spring-boot configuration file:
 
 ```properties
 # /api-docs endpoint custom path
 springdoc.api-docs.path=/api-docs
 ```
 
-* This step is optional: If you want to disable `springdoc-openapi` endpoints, add a custom springdoc property, in your `spring-boot` configuration file:
+* This step is optional: If you want to disable `springdoc-openapi` endpoints, add a
+  custom springdoc property, in your `spring-boot` configuration file:
 
 ```properties
 # disable api-docs
@@ -133,16 +158,25 @@ springdoc.api-docs.enabled=false
 ```
 
 ## Error Handling for REST using @ControllerAdvice
-To generate documentation automatically, make sure all the methods declare the HTTP Code responses using the annotation: @ResponseStatus.
+
+To generate documentation automatically, make sure all the methods declare the HTTP Code
+responses using the annotation: @ResponseStatus.
 
 ## Adding API Information and Security documentation
-The library uses spring-boot application auto-configured packages to scan for the following annotations in spring beans: OpenAPIDefinition and Info.
-These annotations declare, API Information: Title, version, licence, security, servers, tags, security and externalDocs.
-For better performance of documentation generation, declare `@OpenAPIDefinition` and `@SecurityScheme` annotations within a Spring managed bean.
+
+The library uses spring-boot application auto-configured packages to scan for the
+following annotations in spring beans: OpenAPIDefinition and Info.
+These annotations declare, API Information: Title, version, licence, security, servers,
+tags, security and externalDocs.
+For better performance of documentation generation, declare `@OpenAPIDefinition`
+and `@SecurityScheme` annotations within a Spring managed bean.
 
 ## spring-webflux support with Annotated Controllers
-*   Documentation can be available in yaml format as well, on the following path : /v3/api-docs.yaml
-*   Add the library to the list of your project dependencies ( No additional configuration is needed)
+
+* Documentation can be available in yaml format as well, on the following path :
+  /v3/api-docs.yaml
+* Add the library to the list of your project dependencies ( No additional configuration
+  is needed)
 
 ```xml
    <dependency>
@@ -151,7 +185,9 @@ For better performance of documentation generation, declare `@OpenAPIDefinition`
 	<version>last-release-version</version>
 </dependency>
 ```
-*   This step is optional: For custom path of the swagger documentation in HTML format, add a custom springdoc property, in your spring-boot configuration file:
+
+* This step is optional: For custom path of the swagger documentation in HTML format, add
+  a custom springdoc property, in your spring-boot configuration file:
 
 ```properties
 # swagger-ui custom path
@@ -162,15 +198,21 @@ The `springdoc-openapi` libraries are hosted on maven central repository.
 The artifacts can be viewed accessed at the following locations:
 
 Releases:
-* [https://s01.oss.sonatype.org/content/groups/public/org/springdoc/](https://s01.oss.sonatype.org/content/groups/public/org/springdoc/).
+
+* [https://s01.oss.sonatype.org/content/groups/public/org/springdoc/](https://s01.oss.sonatype.org/content/groups/public/org/springdoc/)
+  .
 
 Snapshots:
-* [https://s01.oss.sonatype.org/content/repositories/snapshots/org/springdoc/](https://s01.oss.sonatype.org/content/repositories/snapshots/org/springdoc/).
+
+* [https://s01.oss.sonatype.org/content/repositories/snapshots/org/springdoc/](https://s01.oss.sonatype.org/content/repositories/snapshots/org/springdoc/)
+  .
 
 # Acknowledgements
 
 ## Contributors
-springdoc-openapi is relevant and updated regularly due to the valuable contributions from its [contributors](https://github.com/springdoc/springdoc-openapi/graphs/contributors).
+
+springdoc-openapi is relevant and updated regularly due to the valuable contributions from
+its [contributors](https://github.com/springdoc/springdoc-openapi/graphs/contributors).
 
 <a href="https://github.com/springdoc/springdoc-openapi/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=springdoc/springdoc-openapi" width="50%"/>
@@ -179,7 +221,10 @@ springdoc-openapi is relevant and updated regularly due to the valuable contribu
 Thanks you all for your support!
 
 ## Additional Support
-* [Spring Team](https://spring.io/team) - Thanks for their support by sharing all relevant resources around Spring projects.
-* [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi) - Thanks a lot for supporting springdoc-openapi project.
+
+* [Spring Team](https://spring.io/team) - Thanks for their support by sharing all relevant
+  resources around Spring projects.
+* [JetBrains](https://www.jetbrains.com/?from=springdoc-openapi) - Thanks a lot for
+  supporting springdoc-openapi project.
 
 ![JenBrains logo](https://springdoc.org/img/jetbrains.svg)

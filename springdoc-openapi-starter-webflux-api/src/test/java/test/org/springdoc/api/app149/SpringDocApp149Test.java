@@ -26,11 +26,11 @@ import org.springframework.context.annotation.ComponentScan;
 
 public class SpringDocApp149Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app149" })
-	static class SpringDocTestApp {}
-
 	static {
 		SpringDocUtils.getConfig().addHiddenRestControllers(HiddenHelloController.class);
 	}
+
+	@SpringBootApplication
+	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app149" })
+	static class SpringDocTestApp {}
 }

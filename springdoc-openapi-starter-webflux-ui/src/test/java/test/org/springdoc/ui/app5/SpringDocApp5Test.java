@@ -24,7 +24,7 @@ import test.org.springdoc.ui.AbstractSpringDocTest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {"springdoc.swagger-ui.oauth.clientId=myClientId", "springdoc.swagger-ui.oauth.scopes=scope1,scope2"})
+@TestPropertySource(properties = { "springdoc.swagger-ui.oauth.clientId=myClientId", "springdoc.swagger-ui.oauth.scopes=scope1,scope2" })
 public class SpringDocApp5Test extends AbstractSpringDocTest {
 
 	@Test

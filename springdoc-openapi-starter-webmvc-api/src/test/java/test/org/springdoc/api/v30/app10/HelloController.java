@@ -47,7 +47,7 @@ public class HelloController {
 	public void testRequestAttribute(@RequestAttribute String sample, String s) {
 	}
 
-	@GetMapping(value = {"/employee"})
+	@GetMapping(value = { "/employee" })
 	public void getEmployee(Charset test) {
 	}
 }

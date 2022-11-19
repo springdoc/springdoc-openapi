@@ -31,24 +31,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OperationIdController {
 
-    @GetMapping(path = "/test_0") // gets operationId opIdTest_3
-    public String opIdTest() {
-        return "";
-    }
+	@GetMapping(path = "/test_0") // gets operationId opIdTest_3
+	public String opIdTest() {
+		return "";
+	}
 
-    @GetMapping(path = "/test_1") // gets operationId opIdTest_2
-    public String opIdTest(@RequestParam String param) {
-        return "";
-    }
+	@GetMapping(path = "/test_1") // gets operationId opIdTest_2
+	public String opIdTest(@RequestParam String param) {
+		return "";
+	}
 
-    @GetMapping(path = "/test_2") // gets operationId opIdTest_1
-    public String opIdTest(@RequestParam Integer param) {
-        return "";
-    }
+	@GetMapping(path = "/test_2") // gets operationId opIdTest_1
+	public String opIdTest(@RequestParam Integer param) {
+		return "";
+	}
 
-    @GetMapping(path = "/test_3") // gets operationId opIdTest
-    public String opIdTest(@RequestParam Boolean param) {
-        return "";
-    }
+	@GetMapping(path = "/test_3") // gets operationId opIdTest
+	public String opIdTest(@RequestParam Boolean param) {
+		return "";
+	}
 
 }

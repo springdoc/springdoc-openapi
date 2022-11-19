@@ -39,7 +39,7 @@ import io.swagger.v3.oas.models.Paths;
  * The interface Sorted open api mixin.
  * @author bnasslashen
  */
-@JsonPropertyOrder(value = {"openapi", "info", "externalDocs", "servers", "security", "tags", "paths", "components"}, alphabetic = true)
+@JsonPropertyOrder(value = { "openapi", "info", "externalDocs", "servers", "security", "tags", "paths", "components" }, alphabetic = true)
 public interface SortedOpenAPIMixin {
 
 	/**

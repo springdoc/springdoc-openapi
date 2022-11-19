@@ -9,17 +9,17 @@ import reactor.core.publisher.Mono;
 
 public interface UserRepository {
 
-    public Mono<User> getUserById(@Parameter(in = ParameterIn.PATH, description = "The user Id") Long id);
+	public Mono<User> getUserById(@Parameter(in = ParameterIn.PATH, description = "The user Id") Long id);
 
-    @Operation(description = "get all the users")
-    public Flux<User> getAllUsers();
+	@Operation(description = "get all the users")
+	public Flux<User> getAllUsers();
 
 	@Operation(description = "get all the users by firstname")
 	public Flux<User> getAllUsers(String firstname);
 
-    public Mono<Void> saveUser(Mono<User> user);
+	public Mono<Void> saveUser(Mono<User> user);
 
-    public Mono<User> putUser(@Parameter(in = ParameterIn.PATH) Long id, @RequestBody Mono<User> user);
+	public Mono<User> putUser(@Parameter(in = ParameterIn.PATH) Long id, @RequestBody Mono<User> user);
 
-    public Mono<String> deleteUser(@Parameter(in = ParameterIn.PATH) Long id);
+	public Mono<String> deleteUser(@Parameter(in = ParameterIn.PATH) Long id);
 }

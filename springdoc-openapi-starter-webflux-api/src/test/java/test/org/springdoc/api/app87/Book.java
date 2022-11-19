@@ -23,7 +23,9 @@ package test.org.springdoc.api.app87;
 public class Book {
 
 	private String id;
+
 	private String title;
+
 	private String author;
 
 	public Book(String id, String title, String author) {

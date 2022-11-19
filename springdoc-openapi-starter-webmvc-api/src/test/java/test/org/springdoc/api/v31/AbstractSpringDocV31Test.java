@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@TestPropertySource(properties = {"springdoc.api-docs.version=openapi_3_1"})
+@TestPropertySource(properties = { "springdoc.api-docs.version=openapi_3_1" })
 public abstract class AbstractSpringDocV31Test extends AbstractCommonTest {
 
 	public static String className;

@@ -46,13 +46,10 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "springdoc.enable-hateoas=false")
 public class SpringDocApp8Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
+	private final Map<ClassKey, Class<?>> springMixins = new HashMap<>();
 
 	@Autowired
 	ObjectMapperProvider objectMapperProvider;
-
-	private final Map<ClassKey, Class<?>> springMixins = new HashMap<>();
 
 	@BeforeEach
 	void init() throws IllegalAccessException {
@@ -79,4 +76,7 @@ public class SpringDocApp8Test extends AbstractSpringDocTest {
 		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) convertersField3.get(_mixIns);
 		_localMixIns.putAll(springMixins);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

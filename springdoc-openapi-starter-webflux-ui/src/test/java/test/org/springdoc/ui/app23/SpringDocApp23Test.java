@@ -50,9 +50,6 @@ class SpringDocApp23Test extends AbstractCommonTest {
 
 	private WebClient webClient;
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@PostConstruct
 	void init() {
 		webClient = WebClient.builder().baseUrl("http://localhost:" + port)
@@ -70,4 +67,7 @@ class SpringDocApp23Test extends AbstractCommonTest {
 		Assertions.assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

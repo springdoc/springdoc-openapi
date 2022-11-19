@@ -35,7 +35,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
 
-@TestPropertySource(properties = {"springdoc.default-produces-media-type=application/json", "prop.toto=tea"})
+@TestPropertySource(properties = { "springdoc.default-produces-media-type=application/json", "prop.toto=tea" })
 public class SpringDocApp1Test extends AbstractSpringDocV31Test {
 
 	@SpringBootApplication

@@ -17,5 +17,4 @@ public class SpringDocApp160Test extends AbstractSpringDocTest {
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 
-
 }

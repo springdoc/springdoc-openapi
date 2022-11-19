@@ -41,10 +41,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class, SpringDocWebFluxConfiguration.class, SwaggerUiConfigParameters.class, SwaggerUiConfigProperties.class, SwaggerConfig.class, SwaggerUiOAuthProperties.class })
 public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
+	private static final String DEFAULT_SWAGGER_INITIALIZER_URL = Constants.DEFAULT_WEB_JARS_PREFIX_URL + Constants.SWAGGER_INITIALIZER_URL;
+
 	@Autowired
 	protected WebTestClient webTestClient;
-
-	private static final String DEFAULT_SWAGGER_INITIALIZER_URL= Constants.DEFAULT_WEB_JARS_PREFIX_URL  + Constants.SWAGGER_INITIALIZER_URL;
 
 	protected void checkJS(String fileName, String uri) {
 		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(uri)

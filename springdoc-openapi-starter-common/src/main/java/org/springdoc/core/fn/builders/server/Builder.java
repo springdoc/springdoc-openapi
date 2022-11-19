@@ -107,7 +107,7 @@ public class Builder {
 	 * @return the server builder
 	 */
 	public Builder variables(org.springdoc.core.fn.builders.servervariable.Builder serverVariableBuilder) {
-		this.variables = ArrayUtils.add( this.variables, serverVariableBuilder.build());
+		this.variables = ArrayUtils.add(this.variables, serverVariableBuilder.build());
 		return this;
 	}
 
@@ -118,7 +118,7 @@ public class Builder {
 	 * @return the server builder
 	 */
 	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
-		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
+		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}
 

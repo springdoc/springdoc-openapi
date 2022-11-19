@@ -34,7 +34,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 /**
  * The interface Account id.
  */
-@Target({PARAMETER, METHOD, ANNOTATION_TYPE})
+@Target({ PARAMETER, METHOD, ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Parameter(description = "non alias description")
 public @interface AccountId {
@@ -45,7 +45,7 @@ public @interface AccountId {
 	 * @return the string
 	 */
 	@AliasFor(annotation = Parameter.class, value = "name")
-    String name() default "";
+	String name() default "";
 
 	/**
 	 * Example string.
@@ -53,7 +53,7 @@ public @interface AccountId {
 	 * @return the string
 	 */
 	@AliasFor(annotation = Parameter.class, value = "example")
-    String example() default "123456";
+	String example() default "123456";
 
 	/**
 	 * In parameter in.
@@ -61,7 +61,7 @@ public @interface AccountId {
 	 * @return the parameter in
 	 */
 	@AliasFor(annotation = Parameter.class, value = "in")
-    ParameterIn in() default ParameterIn.DEFAULT;
+	ParameterIn in() default ParameterIn.DEFAULT;
 
 	/**
 	 * Schema schema.
@@ -69,5 +69,5 @@ public @interface AccountId {
 	 * @return the schema
 	 */
 	@AliasFor(annotation = Parameter.class, value = "schema")
-    Schema schema() default @Schema();
+	Schema schema() default @Schema();
 }

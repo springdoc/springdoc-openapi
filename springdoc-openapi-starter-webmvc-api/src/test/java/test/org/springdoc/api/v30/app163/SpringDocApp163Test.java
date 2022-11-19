@@ -31,10 +31,10 @@ import org.springframework.context.annotation.Import;
 
 public class SpringDocApp163Test extends AbstractSpringDocV30Test {
 
-  @SpringBootApplication
-  @Import({ Examples.class, ExampleRegistrationCustomizer.class })
-  static class SpringDocTestApp {
+	@SpringBootApplication
+	@Import({ Examples.class, ExampleRegistrationCustomizer.class })
+	static class SpringDocTestApp {
 
-  }
+	}
 
 }

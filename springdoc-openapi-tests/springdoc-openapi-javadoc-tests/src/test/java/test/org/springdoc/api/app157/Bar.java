@@ -15,6 +15,6 @@ public class Bar {
 	 * @return the child
 	 */
 	public Object getChild() {
-    return this.child;
-  }
+		return this.child;
+	}
 }

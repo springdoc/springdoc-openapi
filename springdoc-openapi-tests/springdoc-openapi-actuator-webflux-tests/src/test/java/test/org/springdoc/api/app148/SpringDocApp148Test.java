@@ -42,15 +42,11 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"springdoc.use-management-port=true",
 				"management.server.base-path=/test",
 				"management.endpoints.web.base-path=/application" })
-public class SpringDocApp148Test  extends AbstractSpringDocActuatorTest {
-
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
+public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	public void testApp() throws Exception {
-		String result =webClient.get().uri("/test/application/openapi/users").retrieve()
+		String result = webClient.get().uri("/test/application/openapi/users").retrieve()
 				.bodyToMono(String.class).block();
 		String expected = getContent("results/app148-1.json");
 		assertEquals(expected, result, true);
@@ -67,7 +63,7 @@ public class SpringDocApp148Test  extends AbstractSpringDocActuatorTest {
 	@Test
 	public void testApp3() throws Exception {
 		try {
-			webClient.get().uri("/test/application/openapi" + "/"+ Constants.DEFAULT_GROUP_NAME).retrieve()
+			webClient.get().uri("/test/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME).retrieve()
 					.bodyToMono(String.class).block();
 			fail();
 		}
@@ -78,4 +74,7 @@ public class SpringDocApp148Test  extends AbstractSpringDocActuatorTest {
 				fail();
 		}
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

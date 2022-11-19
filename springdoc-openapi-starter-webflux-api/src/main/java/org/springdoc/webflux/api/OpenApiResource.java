@@ -207,7 +207,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 						// default allowed requestmethods
 						if (requestMethods.isEmpty())
 							requestMethods = this.getDefaultAllowedHttpMethods();
-						calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces , headers,params, locale, openAPI);
+						calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces, headers, params, locale, openAPI);
 					}
 				}
 			}
@@ -220,7 +220,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @return the comparator
 	 */
 	private Comparator<RequestMappingInfo> byReversedRequestMappingInfos() {
-		return (o2, o1) ->  o1.toString().compareTo(o2.toString());
+		return (o2, o1) -> o1.toString().compareTo(o2.toString());
 	}
 
 	/**

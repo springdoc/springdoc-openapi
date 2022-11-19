@@ -41,5 +41,4 @@ public class HelloController {
 		return null;
 	}
 
-
 }

@@ -29,9 +29,8 @@ import jakarta.validation.constraints.NotNull;
 
 public class HelloBody {
 
-    @NotNull
+	@NotNull
 	@JsonProperty
-    private String helloValue;
-
+	private String helloValue;
 
 }

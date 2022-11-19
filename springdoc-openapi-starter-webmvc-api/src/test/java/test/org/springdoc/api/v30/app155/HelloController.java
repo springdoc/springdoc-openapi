@@ -34,17 +34,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-	@GetMapping( "/test1")
-	public ResponseEntity<String> sayHello( @ParameterObject final ConcreteParameterObject test) {
+	@GetMapping("/test1")
+	public ResponseEntity<String> sayHello(@ParameterObject final ConcreteParameterObject test) {
 		System.out.println("Field B = " + test);
 		return new ResponseEntity<String>("{\"Say\": \"Hello\"}", HttpStatus.OK);
 	}
 
-	@GetMapping( "/test2")
-	public ResponseEntity<String> sayHello( @ParameterObject final ConcreteIntParameterObject test) {
+	@GetMapping("/test2")
+	public ResponseEntity<String> sayHello(@ParameterObject final ConcreteIntParameterObject test) {
 		System.out.println("Field B = " + test);
 		return new ResponseEntity<String>("{\"Say\": \"Hello\"}", HttpStatus.OK);
 	}
-
 
 }

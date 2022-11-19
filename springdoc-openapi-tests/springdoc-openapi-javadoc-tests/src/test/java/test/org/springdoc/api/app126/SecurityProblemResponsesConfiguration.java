@@ -27,24 +27,24 @@ public class SecurityProblemResponsesConfiguration {
 	private static final String HTTP_401_NO_TOKEN = "http401NoToken";
 
 	/**
-	 * The constant HTTP_401_BAD_TOKEN.
-	 */
-	private static final String HTTP_401_BAD_TOKEN = "http401BadToken";
-
-	/**
-	 * The constant HTTP_403.
-	 */
-	private static final String HTTP_403 = "http403";
-
-	/**
 	 * The constant UNAUTHORIZED_401_NO_TOKEN_RESPONSE_REF.
 	 */
 	public static final String UNAUTHORIZED_401_NO_TOKEN_RESPONSE_REF = "#/components/responses/" + HTTP_401_NO_TOKEN;
 
 	/**
+	 * The constant HTTP_401_BAD_TOKEN.
+	 */
+	private static final String HTTP_401_BAD_TOKEN = "http401BadToken";
+
+	/**
 	 * The constant UNAUTHORIZED_401_BAD_TOKEN_RESPONSE_REF.
 	 */
 	public static final String UNAUTHORIZED_401_BAD_TOKEN_RESPONSE_REF = "#/components/responses/" + HTTP_401_BAD_TOKEN;
+
+	/**
+	 * The constant HTTP_403.
+	 */
+	private static final String HTTP_403 = "http403";
 
 	/**
 	 * The constant FORBIDDEN_403_RESPONSE_REF.

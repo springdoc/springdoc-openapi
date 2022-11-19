@@ -34,11 +34,11 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "springdoc.use-fqn=true")
 public class SpringDocApp4Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@AfterAll
-	static void restore(){
+	static void restore() {
 		TypeNameResolver.std.setUseFqn(false);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

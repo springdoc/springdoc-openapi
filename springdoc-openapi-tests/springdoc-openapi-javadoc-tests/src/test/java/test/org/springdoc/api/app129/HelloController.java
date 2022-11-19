@@ -31,7 +31,7 @@ import org.springframework.web.context.request.async.DeferredResult;
  * The type Hello controller.
  */
 @RestController
-@RequestMapping(path = "/api", headers = {"userId", "registrationId"})
+@RequestMapping(path = "/api", headers = { "userId", "registrationId" })
 public class HelloController {
 
 	/**
@@ -42,7 +42,7 @@ public class HelloController {
 	 * @throws Exception the exception
 	 */
 	@PostMapping("/test")
-	@ApiResponses({@ApiResponse(responseCode = "200")})
+	@ApiResponses({ @ApiResponse(responseCode = "200") })
 	public DeferredResult<OperationResponse<ActualReturnedEntity>> update(
 			@RequestBody ActualReturnedEntity entity) throws Exception {
 		return null;

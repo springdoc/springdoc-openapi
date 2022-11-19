@@ -34,13 +34,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp14Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	private static Locale DEFAULT_LOCALE;
 
 	@BeforeAll
-	public static void init()  {
+	public static void init() {
 		DEFAULT_LOCALE = Locale.getDefault();
 		Locale.setDefault(Locale.US);
 	}
@@ -49,4 +46,7 @@ public class SpringDocApp14Test extends AbstractSpringDocV30Test {
 	public static void clean() {
 		Locale.setDefault(DEFAULT_LOCALE);
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

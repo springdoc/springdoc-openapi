@@ -38,10 +38,6 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
-
 	@Test
 	public void testApp() throws Exception {
 		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.ACTUATOR_DEFAULT_GROUP)
@@ -70,9 +66,12 @@ public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	public void testApp2() throws Exception {
-		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/"+Constants.DEFAULT_GROUP_NAME)
+		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.DEFAULT_GROUP_NAME)
 				.exchange()
 				.expectStatus().isNotFound();
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

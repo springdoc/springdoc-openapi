@@ -17,16 +17,16 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class DatabaseConfig {
 
-    private final PostRepository postRepository;
+	private final PostRepository postRepository;
 
-    @PostConstruct
-    private void postConstruct() {
-        for (int i = 0; i < 33; i++) {
-            Post post = new Post();
-            post.setAuthor("name"+i);
-            post.setContent("content"+i);
-            post.setCreatedAt(LocalDate.now().toEpochDay());
+	@PostConstruct
+	private void postConstruct() {
+		for (int i = 0; i < 33; i++) {
+			Post post = new Post();
+			post.setAuthor("name" + i);
+			post.setContent("content" + i);
+			post.setCreatedAt(LocalDate.now().toEpochDay());
 			postRepository.save(post);
-        }
-    }
+		}
+	}
 }

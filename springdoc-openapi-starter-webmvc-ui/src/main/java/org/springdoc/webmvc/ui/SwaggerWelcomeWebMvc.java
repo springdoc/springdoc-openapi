@@ -50,6 +50,11 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 
 	/**
+	 * The Spring web provider.
+	 */
+	private final SpringWebProvider springWebProvider;
+
+	/**
 	 * The Mvc servlet path.
 	 */
 // To keep compatiblity with spring-boot 1 - WebMvcProperties changed package from srping 4 to spring 5
@@ -60,11 +65,6 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	 * The Path prefix.
 	 */
 	private String pathPrefix;
-
-	/**
-	 * The Spring web provider.
-	 */
-	private final SpringWebProvider springWebProvider;
 
 	/**
 	 * Instantiates a new Swagger welcome web mvc.

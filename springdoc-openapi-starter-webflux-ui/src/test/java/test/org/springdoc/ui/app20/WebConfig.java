@@ -8,7 +8,7 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 public class WebConfig implements WebFluxConfigurer {
 	@Override
 	public void configurePathMatching(PathMatchConfigurer configurer) {
-		configurer.addPathPrefix("/test", t-> true) ;
+		configurer.addPathPrefix("/test", t -> true);
 	}
 
 }

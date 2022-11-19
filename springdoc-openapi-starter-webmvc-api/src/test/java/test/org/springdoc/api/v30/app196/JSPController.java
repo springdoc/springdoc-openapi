@@ -12,12 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class JSPController {
 
 
-  @GetMapping(produces = MediaType.TEXT_HTML_VALUE)
-  @ResponseBody
-  public ModelAndView HelloJSP() {
-    ModelAndView jsp = new ModelAndView();
-    jsp.setViewName("index");
+	@GetMapping(produces = MediaType.TEXT_HTML_VALUE)
+	@ResponseBody
+	public ModelAndView HelloJSP() {
+		ModelAndView jsp = new ModelAndView();
+		jsp.setViewName("index");
 
-    return jsp;
-  }
+		return jsp;
+	}
 }

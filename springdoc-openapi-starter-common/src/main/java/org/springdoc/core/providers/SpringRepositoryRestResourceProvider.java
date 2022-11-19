@@ -115,6 +115,25 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpringRepositoryRestResourceProvider.class);
 
 	/**
+	 * The constant delegatingHandlerMappingClass.
+	 */
+	private static Class delegatingHandlerMappingClass;
+
+	static {
+		try {
+			delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_CLASS);
+		}
+		catch (ClassNotFoundException e) {
+			try {
+				delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_INTERFACE);
+			}
+			catch (ClassNotFoundException exception) {
+				LOGGER.trace(e.getMessage());
+			}
+		}
+	}
+
+	/**
 	 * The Mappings.
 	 */
 	private final ResourceMappings mappings;
@@ -150,33 +169,14 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	private final ApplicationContext applicationContext;
 
 	/**
-	 * The Handler mapping list.
-	 */
-	private List<HandlerMapping> handlerMappingList;
-
-	/**
 	 * The Spring doc data rest utils.
 	 */
 	private final SpringDocDataRestUtils springDocDataRestUtils;
 
 	/**
-	 * The constant delegatingHandlerMappingClass.
+	 * The Handler mapping list.
 	 */
-	private static Class delegatingHandlerMappingClass;
-
-	static {
-		try {
-			delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_CLASS);
-		}
-		catch (ClassNotFoundException e) {
-			try {
-				delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_INTERFACE);
-			}
-			catch (ClassNotFoundException exception) {
-				LOGGER.trace(e.getMessage());
-			}
-		}
-	}
+	private List<HandlerMapping> handlerMappingList;
 
 	/**
 	 * Instantiates a new Spring repository rest resource provider.

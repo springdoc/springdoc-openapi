@@ -46,7 +46,7 @@ public class SpringDocApp3RedirectDefaultTest extends AbstractSpringDocTest {
 				.jsonPath("$.validatorUrl").isEqualTo("")
 				.jsonPath("$.oauth2RedirectUrl").isEqualTo("/documentation/webjars/swagger-ui/oauth2-redirect.html");
 
-		super.checkJS("index3", "/documentation/webjars"+ Constants.SWAGGER_INITIALIZER_URL);
+		super.checkJS("index3", "/documentation/webjars" + Constants.SWAGGER_INITIALIZER_URL);
 	}
 
 	@SpringBootApplication

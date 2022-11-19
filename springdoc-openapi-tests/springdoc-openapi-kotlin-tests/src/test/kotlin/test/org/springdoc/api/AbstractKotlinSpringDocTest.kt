@@ -40,7 +40,8 @@ abstract class AbstractKotlinSpringDocTest {
 	@Test
 	@Throws(Exception::class)
 	fun testApp() {
-		val getResult = webTestClient!!.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
+		val getResult =
+			webTestClient!!.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
 				.expectStatus().isOk.expectBody().returnResult()
 
 		val result = String(getResult.responseBody!!)
@@ -56,7 +57,11 @@ abstract class AbstractKotlinSpringDocTest {
 		@Throws(Exception::class)
 		fun getContent(fileName: String): String {
 			try {
-				val path = Paths.get(AbstractKotlinSpringDocTest::class.java.classLoader.getResource(fileName)!!.toURI())
+				val path = Paths.get(
+					AbstractKotlinSpringDocTest::class.java.classLoader.getResource(
+						fileName
+					)!!.toURI()
+				)
 				val fileBytes = Files.readAllBytes(path)
 				return String(fileBytes, StandardCharsets.UTF_8)
 			} catch (e: Exception) {

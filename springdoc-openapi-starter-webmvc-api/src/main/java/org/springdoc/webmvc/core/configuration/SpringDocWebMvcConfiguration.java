@@ -154,7 +154,7 @@ public class SpringDocWebMvcConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SpringWebProvider springWebProvider(){
+	SpringWebProvider springWebProvider() {
 		return new SpringWebMvcProvider();
 	}
 
@@ -261,7 +261,7 @@ public class SpringDocWebMvcConfiguration {
 			return new OpenApiActuatorResource(openAPIBuilderObjectFactory,
 					requestBuilder, responseBuilder,
 					operationParser,
-					operationCustomizers, openApiCustomizers,routerOperationCustomizers, methodFilters,
+					operationCustomizers, openApiCustomizers, routerOperationCustomizers, methodFilters,
 					springDocConfigProperties, springDocProviders);
 		}
 	}

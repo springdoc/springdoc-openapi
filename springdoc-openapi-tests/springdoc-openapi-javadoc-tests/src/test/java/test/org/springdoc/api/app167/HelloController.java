@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController("/api")
 public class HelloController {
 
-    @RequestMapping("/process")
-    public void process() {
+	@RequestMapping("/process")
+	public void process() {
 
-    }
+	}
 }

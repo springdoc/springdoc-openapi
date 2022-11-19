@@ -139,7 +139,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 						// If we've seen this schema before but find later it should be polymorphic,
 						// replace the existing schema with this richer version.
 						if (!componentSchemas.containsKey(entry.getKey()) ||
-								(!entry.getValue().getClass().equals(componentSchemas.get(entry.getKey()).getClass()) && entry.getValue().getAllOf() != null)) {							componentSchemas.put(entry.getKey(), entry.getValue());
+								(!entry.getValue().getClass().equals(componentSchemas.get(entry.getKey()).getClass()) && entry.getValue().getAllOf() != null)) {
+							componentSchemas.put(entry.getKey(), entry.getValue());
 						}
 					}
 				components.setSchemas(componentSchemas);
@@ -354,14 +355,15 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 							mediaType.schema(new Schema<Object>().type("object"));
 						}
 						Schema oSchema = mediaType.getSchema();
-						for (SchemaProperty sp: annotationContent.schemaProperties()) {
+						for (SchemaProperty sp : annotationContent.schemaProperties()) {
 							Class<?> schemaImplementation = sp.schema().implementation();
 							boolean isArray = isArray(annotationContent);
 							getSchema(sp.schema(), sp.array(), isArray, schemaImplementation, components, jsonViewAnnotation)
 									.ifPresent(s -> {
 										if ("array".equals(oSchema.getType())) {
 											oSchema.getItems().addProperty(sp.name(), s);
-										} else {
+										}
+										else {
 											oSchema.addProperty(sp.name(), s);
 										}
 									});
@@ -377,7 +379,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 								.ifPresent(s -> {
 											if ("array".equals(mediaType.getSchema().getType())) {
 												mediaType.getSchema().getItems().additionalProperties(s);
-											} else {
+											}
+											else {
 												mediaType.getSchema().additionalProperties(s);
 											}
 										}

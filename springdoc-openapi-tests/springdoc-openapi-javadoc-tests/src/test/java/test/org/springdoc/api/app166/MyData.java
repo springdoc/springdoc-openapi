@@ -2,21 +2,21 @@ package test.org.springdoc.api.app166;
 
 public class MyData {
 
-    /**
-     * Returns the first name
-     */
-    private String firstName;
+	/**
+	 * Returns the first name
+	 */
+	private String firstName;
 
-    /**
-     * Returns the max number
-     */
-    private Integer maxNumber;
+	/**
+	 * Returns the max number
+	 */
+	private Integer maxNumber;
 
-    public Integer getMaxNumber() {
-        return maxNumber;
-    }
+	public Integer getMaxNumber() {
+		return maxNumber;
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 }

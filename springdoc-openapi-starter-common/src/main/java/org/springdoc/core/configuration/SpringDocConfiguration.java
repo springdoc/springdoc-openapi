@@ -141,6 +141,33 @@ public class SpringDocConfiguration {
 	}
 
 	/**
+	 * Springdoc bean factory post processor bean factory post processor.
+	 *
+	 * @return the bean factory post processor
+	 */
+	@Bean
+	@Conditional(CacheOrGroupedOpenApiCondition.class)
+	@ConditionalOnClass(name = BINDRESULT_CLASS)
+	@Lazy(false)
+	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor() {
+		return new SpringdocBeanFactoryConfigurer();
+	}
+
+	/**
+	 * Springdoc bean factory post processor 2 bean factory post processor.
+	 *
+	 * @return the bean factory post processor
+	 */
+// For spring-boot-1 compatibility
+	@Bean
+	@Conditional(CacheOrGroupedOpenApiCondition.class)
+	@ConditionalOnMissingClass(value = BINDRESULT_CLASS)
+	@Lazy(false)
+	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor2() {
+		return SpringdocBeanFactoryConfigurer::initBeanFactoryPostProcessor;
+	}
+
+	/**
 	 * Local spring doc parameter name discoverer local variable table parameter name discoverer.
 	 *
 	 * @return the local variable table parameter name discoverer
@@ -246,7 +273,7 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	OpenAPIService openAPIBuilder(Optional<OpenAPI> openAPI,
 			SecurityService securityParser,
-			SpringDocConfigProperties springDocConfigProperties,PropertyResolverUtils propertyResolverUtils,
+			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
 			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers,
 			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers, Optional<JavadocProvider> javadocProvider) {
 		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomisers, serverBaseUrlCustomisers, javadocProvider);
@@ -348,9 +375,9 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils,
 			Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
-			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider,Optional<JavadocProvider> javadocProvider) {
+			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, Optional<JavadocProvider> javadocProvider) {
 		return new GenericParameterService(propertyResolverUtils, optionalDelegatingMethodParameterCustomizer,
-				optionalWebConversionServiceProvider, objectMapperProvider,javadocProvider);
+				optionalWebConversionServiceProvider, objectMapperProvider, javadocProvider);
 	}
 
 	/**
@@ -372,34 +399,6 @@ public class SpringDocConfiguration {
 	}
 
 	/**
-	 * Springdoc bean factory post processor bean factory post processor.
-	 *
-	 * @return the bean factory post processor
-	 */
-	@Bean
-	@Conditional(CacheOrGroupedOpenApiCondition.class)
-	@ConditionalOnClass(name = BINDRESULT_CLASS)
-	@Lazy(false)
-	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor() {
-		return new SpringdocBeanFactoryConfigurer();
-	}
-
-	/**
-	 * Springdoc bean factory post processor 2 bean factory post processor.
-	 *
-	 * @return the bean factory post processor
-	 */
-// For spring-boot-1 compatibility
-	@Bean
-	@Conditional(CacheOrGroupedOpenApiCondition.class)
-	@ConditionalOnMissingClass(value = BINDRESULT_CLASS)
-	@Lazy(false)
-	static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor2() {
-		return SpringdocBeanFactoryConfigurer::initBeanFactoryPostProcessor;
-	}
-
-
-	/**
 	 * Spring doc providers spring doc providers.
 	 *
 	 * @param actuatorProvider the actuator provider
@@ -417,29 +416,22 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	SpringDocProviders springDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider,
-			Optional<SpringWebProvider> springWebProvider,  Optional<WebConversionServiceProvider> webConversionServiceProvider,
+			Optional<SpringWebProvider> springWebProvider, Optional<WebConversionServiceProvider> webConversionServiceProvider,
 			ObjectMapperProvider objectMapperProvider) {
 		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider, webConversionServiceProvider, objectMapperProvider);
 	}
 
 	/**
-	 * The type Open api resource advice.
-	 * @author bnasslashen
+	 * Object mapper provider object mapper provider.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 * @return the object mapper provider
 	 */
-	@RestControllerAdvice
-	@Hidden
-	class OpenApiResourceAdvice {
-		/**
-		 * Handle no handler found response entity.
-		 *
-		 * @param e the e
-		 * @return the response entity
-		 */
-		@ExceptionHandler(OpenApiResourceNotFoundException.class)
-		@ResponseStatus(HttpStatus.NOT_FOUND)
-		public ResponseEntity<ErrorMessage> handleNoHandlerFound(OpenApiResourceNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(e.getMessage()));
-		}
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
+		return new ObjectMapperProvider(springDocConfigProperties);
 	}
 
 	/**
@@ -549,19 +541,6 @@ public class SpringDocConfiguration {
 	}
 
 	/**
-	 * Object mapper provider object mapper provider.
-	 *
-	 * @param springDocConfigProperties the spring doc config properties
-	 * @return the object mapper provider
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Lazy(false)
-	ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties){
-		return new ObjectMapperProvider(springDocConfigProperties);
-	}
-
-	/**
 	 * The type Spring doc web flux support configuration.
 	 */
 	@ConditionalOnClass(Flux.class)
@@ -580,5 +559,25 @@ public class SpringDocConfiguration {
 			return new WebFluxSupportConverter(objectMapperProvider);
 		}
 
+	}
+
+	/**
+	 * The type Open api resource advice.
+	 * @author bnasslashen
+	 */
+	@RestControllerAdvice
+	@Hidden
+	class OpenApiResourceAdvice {
+		/**
+		 * Handle no handler found response entity.
+		 *
+		 * @param e the e
+		 * @return the response entity
+		 */
+		@ExceptionHandler(OpenApiResourceNotFoundException.class)
+		@ResponseStatus(HttpStatus.NOT_FOUND)
+		public ResponseEntity<ErrorMessage> handleNoHandlerFound(OpenApiResourceNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(e.getMessage()));
+		}
 	}
 }

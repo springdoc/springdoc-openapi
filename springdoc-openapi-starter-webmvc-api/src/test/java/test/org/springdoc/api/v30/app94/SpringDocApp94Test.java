@@ -97,8 +97,8 @@ public class SpringDocApp94Test extends AbstractSpringDocV30Test {
 
 		@Bean(name = "openApiResource")
 		public OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
-				OperationService operationParser,Optional<List<OperationCustomizer>> operationCustomizers, SpringDocConfigProperties springDocConfigProperties,
-				Optional<List<OpenApiCustomizer>> openApiCustomizers,  Optional<List<RouterOperationCustomizer>> routerOperationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocProviders springDocProviders) {
+				OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, SpringDocConfigProperties springDocConfigProperties,
+				Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<RouterOperationCustomizer>> routerOperationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocProviders springDocProviders) {
 			return new OpenApiWebMvcResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
 					operationCustomizers, openApiCustomizers, routerOperationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
 		}

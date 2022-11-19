@@ -8,12 +8,13 @@ import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @TestPropertySource(properties = "springdoc.enable-native-support=true")
-class TestApplicationTests  {
+class TestApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
 
 	@SpringBootConfiguration
 	static class SpringDocTestApp {}
-
-	@Test
-	void contextLoads() {}
 
 }

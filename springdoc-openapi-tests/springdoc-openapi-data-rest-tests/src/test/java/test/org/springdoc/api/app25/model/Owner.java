@@ -22,14 +22,14 @@ import lombok.NoArgsConstructor;
 public class Owner extends BaseEntity {
 
 	private String firstname;
-	
+
 	@NotNull
 	private String lastname;
-	
+
 	@NotNull
 	@Embedded
 	private Address addresses;
-	
+
 	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy = "owner", cascade = { CascadeType.ALL })
 	private Set<Pet> pets;

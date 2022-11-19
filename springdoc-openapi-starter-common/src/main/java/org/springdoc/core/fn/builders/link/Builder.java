@@ -148,7 +148,7 @@ public class Builder {
 	 * @return the link builder
 	 */
 	public Builder parameter(org.springdoc.core.fn.builders.linkparameter.Builder linkParameterBuilder) {
-		this.parameters = ArrayUtils.add( this.parameters, linkParameterBuilder.build());
+		this.parameters = ArrayUtils.add(this.parameters, linkParameterBuilder.build());
 		return this;
 	}
 
@@ -192,7 +192,7 @@ public class Builder {
 	 * @return the link builder
 	 */
 	public Builder extension(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
-		this.extensions = ArrayUtils.add( this.extensions, extensionBuilder.build());
+		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}
 

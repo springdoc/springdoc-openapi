@@ -48,11 +48,12 @@ public class HelloRouter {
 
 						.POST("/titi", HANDLER_FUNCTION, builder -> builder.operationId("create-user-group-special")).build();
 
-		Consumer<Builder> operationsConsumer = builder ->  { };
+		Consumer<Builder> operationsConsumer = builder -> {
+		};
 
-			return 	RouterFunctions.nest(RequestPredicates.path("/users"), nest(path("/test"), nest(path("/greeter"),
-					SpringdocRouteBuilder.route()
-						.GET( HANDLER_FUNCTION, builder -> builder.operationId("get-users"))
+		return RouterFunctions.nest(RequestPredicates.path("/users"), nest(path("/test"), nest(path("/greeter"),
+				SpringdocRouteBuilder.route()
+						.GET(HANDLER_FUNCTION, builder -> builder.operationId("get-users"))
 						.POST("/special", HANDLER_FUNCTION, builder -> builder.operationId("create-user-special"))
 						.nest(path("/groups"), routerFunctionSupplier, operationsConsumer)
 						.nest(path("/groups2"), routerFunctionSupplier, operationsConsumer)

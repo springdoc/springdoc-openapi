@@ -8,15 +8,15 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class CoffeeRepository {
-	Flux<Object> deleteAll(){
+	Flux<Object> deleteAll() {
 		return null;
 	}
 
-	Mono<Coffee> findById(String id){
+	Mono<Coffee> findById(String id) {
 		return null;
 	}
 
-	<R> Publisher<? extends R> save(Coffee coffee){
+	<R> Publisher<? extends R> save(Coffee coffee) {
 		return null;
 	}
 

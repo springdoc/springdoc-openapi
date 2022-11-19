@@ -32,19 +32,19 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfig {
 
-    @Bean
-    public GroupedOpenApi groupV1OpenApi() {
-        return GroupedOpenApi.builder()
-                .group("v1-group").producesToMatch(HelloController.VERSION_1)
-                .build();
-    }
+	@Bean
+	public GroupedOpenApi groupV1OpenApi() {
+		return GroupedOpenApi.builder()
+				.group("v1-group").producesToMatch(HelloController.VERSION_1)
+				.build();
+	}
 
-    @Bean
-    public GroupedOpenApi groupV2OpenApi() {
-        return GroupedOpenApi.builder()
-                .group("v2-group").producesToMatch(HelloController.VERSION_2)
-                .build();
-    }
+	@Bean
+	public GroupedOpenApi groupV2OpenApi() {
+		return GroupedOpenApi.builder()
+				.group("v2-group").producesToMatch(HelloController.VERSION_2)
+				.build();
+	}
 
 	@Bean
 	public GroupedOpenApi groupV3OpenApi() {

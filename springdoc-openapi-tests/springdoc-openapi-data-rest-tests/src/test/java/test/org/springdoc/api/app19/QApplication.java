@@ -17,39 +17,39 @@ import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 @Generated("com.querydsl.codegen.EntitySerializer")
 public class QApplication extends EntityPathBase<Application> {
 
-    private static final long serialVersionUID = 2120388982L;
+	public static final QApplication application = new QApplication("application");
 
-    public static final QApplication application = new QApplication("application");
+	private static final long serialVersionUID = 2120388982L;
 
-    public final EnumPath<Application.AuditStatus> auditStatus = createEnum("auditStatus", Application.AuditStatus.class);
+	public final EnumPath<Application.AuditStatus> auditStatus = createEnum("auditStatus", Application.AuditStatus.class);
 
-    public final DateTimePath<java.time.LocalDateTime> auditTime = createDateTime("auditTime", java.time.LocalDateTime.class);
+	public final DateTimePath<java.time.LocalDateTime> auditTime = createDateTime("auditTime", java.time.LocalDateTime.class);
 
-    public final DateTimePath<java.time.LocalDateTime> createTime = createDateTime("createTime", java.time.LocalDateTime.class);
+	public final DateTimePath<java.time.LocalDateTime> createTime = createDateTime("createTime", java.time.LocalDateTime.class);
 
-    public final StringPath description = createString("description");
+	public final StringPath description = createString("description");
 
-    public final StringPath icon = createString("icon");
+	public final StringPath icon = createString("icon");
 
-    public final StringPath id = createString("id");
+	public final StringPath id = createString("id");
 
-    public final StringPath name = createString("name");
+	public final StringPath name = createString("name");
 
-    public final StringPath publicKey = createString("publicKey");
+	public final StringPath publicKey = createString("publicKey");
 
-    public final EnumPath<Application.AppType> type = createEnum("type", Application.AppType.class);
+	public final EnumPath<Application.AppType> type = createEnum("type", Application.AppType.class);
 
-    public QApplication(String variable) {
-        super(Application.class, forVariable(variable));
-    }
+	public QApplication(String variable) {
+		super(Application.class, forVariable(variable));
+	}
 
-    public QApplication(Path<? extends Application> path) {
-        super(path.getType(), path.getMetadata());
-    }
+	public QApplication(Path<? extends Application> path) {
+		super(path.getType(), path.getMetadata());
+	}
 
-    public QApplication(PathMetadata metadata) {
-        super(Application.class, metadata);
-    }
+	public QApplication(PathMetadata metadata) {
+		super(Application.class, metadata);
+	}
 
 }
 

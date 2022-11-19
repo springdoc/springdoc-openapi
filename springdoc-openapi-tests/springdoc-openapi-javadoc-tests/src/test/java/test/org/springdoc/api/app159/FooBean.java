@@ -10,49 +10,13 @@ public class FooBean {
 	 * The Message.
 	 */
 	@JsonView(Views.View2.class)
-    private String message;
+	private String message;
 
 	/**
 	 * The Code.
 	 */
 	@JsonView(Views.View1.class)
-    private int code;
-
-	/**
-	 * Gets message.
-	 *
-	 * @return the message
-	 */
-	public String getMessage() {
-        return message;
-    }
-
-	/**
-	 * Sets message.
-	 *
-	 * @param message the message
-	 */
-	public void setMessage(String message) {
-        this.message = message;
-    }
-
-	/**
-	 * Gets code.
-	 *
-	 * @return the code
-	 */
-	public int getCode() {
-        return code;
-    }
-
-	/**
-	 * Sets code.
-	 *
-	 * @param code the code
-	 */
-	public void setCode(int code) {
-        this.code = code;
-    }
+	private int code;
 
 	/**
 	 * Instantiates a new Foo bean.
@@ -61,7 +25,43 @@ public class FooBean {
 	 * @param code the code
 	 */
 	public FooBean(String message, int code) {
-        this.message = message;
-        this.code = code;
-    }
+		this.message = message;
+		this.code = code;
+	}
+
+	/**
+	 * Gets message.
+	 *
+	 * @return the message
+	 */
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * Sets message.
+	 *
+	 * @param message the message
+	 */
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	/**
+	 * Gets code.
+	 *
+	 * @return the code
+	 */
+	public int getCode() {
+		return code;
+	}
+
+	/**
+	 * Sets code.
+	 *
+	 * @param code the code
+	 */
+	public void setCode(int code) {
+		this.code = code;
+	}
 }

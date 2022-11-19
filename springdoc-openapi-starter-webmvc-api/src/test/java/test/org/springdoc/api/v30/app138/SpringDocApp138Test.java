@@ -60,15 +60,6 @@ public class SpringDocApp138Test extends AbstractSpringDocV30Test {
 	@Autowired
 	ObjectMapperProvider objectMapperProvider;
 
-	@SpringBootApplication
-	static class SpringDocTestApp {
-		@Bean
-		public OpenAPI api() {
-			return new OpenAPI()
-					.extensions(apiExtensions());
-		}
-	}
-
 	private static Map<String, Object> apiExtensions() {
 		Map extensions = new HashMap<String, Object>();
 
@@ -79,6 +70,7 @@ public class SpringDocApp138Test extends AbstractSpringDocV30Test {
 		extensions.put("x-my-vendor-extensions", linkedMap);
 		return extensions;
 	}
+
 	@Test
 	public void testApp() throws Exception {
 		MvcResult mockMvcResult = mockMvc.perform(MockMvcRequestBuilders.get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
@@ -88,12 +80,20 @@ public class SpringDocApp138Test extends AbstractSpringDocV30Test {
 		Assertions.assertEquals(expected, result);
 	}
 
-
 	@BeforeEach
 	void init() throws IllegalAccessException {
 		Field conField = FieldUtils.getDeclaredField(ObjectMapperProvider.class, "jsonMapper", true);
 		ObjectMapper mapper = SpringDocObjectMapperFactory.createJson();
 		conField.set(objectMapperProvider, mapper);
+	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {
+		@Bean
+		public OpenAPI api() {
+			return new OpenAPI()
+					.extensions(apiExtensions());
+		}
 	}
 
 	private static class SpringDocObjectMapperFactory extends ObjectMapperFactory {

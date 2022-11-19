@@ -48,20 +48,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(properties = Constants.SPRINGDOC_CACHE_DISABLED + "=false")
 public class SpringDocApp171Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {
-
-		@Autowired
-		ResourceBundleMessageSource resourceBundleMessageSource;
-
-		@Bean
-		public OpenApiLocaleCustomizer openApiLocaleCustomizer() {
-			return (openAPI, locale)
-					-> openAPI.getInfo().title(resourceBundleMessageSource.getMessage("test", null, locale));
-		}
-
-	}
-
 	@Test
 	@Override
 	public void testApp() throws Exception {
@@ -80,5 +66,19 @@ public class SpringDocApp171Test extends AbstractSpringDocV30Test {
 		String result = mockMvcResult.getResponse().getContentAsString();
 		String expected = getContent("results/3.0.1/app" + testNumber + "-" + locale.toLanguageTag() + ".json");
 		assertEquals(expected, result, true);
+	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {
+
+		@Autowired
+		ResourceBundleMessageSource resourceBundleMessageSource;
+
+		@Bean
+		public OpenApiLocaleCustomizer openApiLocaleCustomizer() {
+			return (openAPI, locale)
+					-> openAPI.getInfo().title(resourceBundleMessageSource.getMessage("test", null, locale));
+		}
+
 	}
 }

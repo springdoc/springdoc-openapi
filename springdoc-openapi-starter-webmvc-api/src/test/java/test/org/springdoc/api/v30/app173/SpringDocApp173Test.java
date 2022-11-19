@@ -44,14 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class SpringDocApp173Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {
-		@Bean
-		public OpenAPI openAPI() {
-			return new OpenAPI();
-		}
-	}
-
 	@Test
 	@Override
 	public void testApp() throws Exception {
@@ -67,9 +59,16 @@ public class SpringDocApp173Test extends AbstractSpringDocV30Test {
 				mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL).locale(locale).header(HttpHeaders.ACCEPT_LANGUAGE, locale.toLanguageTag())).andExpect(status().isOk())
 						.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
-		String expected = getContent("results/3.0.1/app" + testNumber +".json");
+		String expected = getContent("results/3.0.1/app" + testNumber + ".json");
 		assertEquals(expected, result, true);
 	}
 
+	@SpringBootApplication
+	static class SpringDocTestApp {
+		@Bean
+		public OpenAPI openAPI() {
+			return new OpenAPI();
+		}
+	}
 
 }

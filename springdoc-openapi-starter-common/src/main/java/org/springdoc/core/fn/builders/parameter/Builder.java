@@ -300,7 +300,7 @@ public class Builder {
 	 * @return the parameter builder
 	 */
 	public Builder implementation(Class clazz) {
-		this.schema =  org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().implementation(clazz).build();
+		this.schema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().implementation(clazz).build();
 		return this;
 	}
 
@@ -311,7 +311,7 @@ public class Builder {
 	 * @return the parameter builder
 	 */
 	public Builder content(org.springdoc.core.fn.builders.content.Builder contentBuilder) {
-		this.content = ArrayUtils.add( this.content, contentBuilder.build());
+		this.content = ArrayUtils.add(this.content, contentBuilder.build());
 		return this;
 	}
 
@@ -333,7 +333,7 @@ public class Builder {
 	 * @return the parameter builder
 	 */
 	public Builder examples(org.springdoc.core.fn.builders.exampleobject.Builder exampleObjectBuilder) {
-		this.examples = ArrayUtils.add( this.examples, exampleObjectBuilder.build());
+		this.examples = ArrayUtils.add(this.examples, exampleObjectBuilder.build());
 		return this;
 	}
 
@@ -355,7 +355,7 @@ public class Builder {
 	 * @return the parameter builder
 	 */
 	public Builder extensions(org.springdoc.core.fn.builders.extension.Builder extensionBuilder) {
-		this.extensions =  ArrayUtils.add( this.extensions, extensionBuilder.build() );
+		this.extensions = ArrayUtils.add(this.extensions, extensionBuilder.build());
 		return this;
 	}
 
@@ -376,7 +376,7 @@ public class Builder {
 	 * @return the parameter
 	 */
 	public Parameter build() {
-		return new Parameter(){
+		return new Parameter() {
 
 			@Override
 			public Class<? extends Annotation> annotationType() {

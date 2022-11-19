@@ -29,20 +29,20 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema
 public class Dog extends Pet {
 
-    private final boolean barks;
+	private final boolean barks;
 
-    public Dog() {
-        super();
-        this.barks = false;
-    }
+	public Dog() {
+		super();
+		this.barks = false;
+	}
 
-    public Dog(boolean barks, String name) {
-        super(name);
-        this.barks = barks;
-    }
+	public Dog(boolean barks, String name) {
+		super(name);
+		this.barks = barks;
+	}
 
-    public boolean getBarks() {
-        return barks;
-    }
+	public boolean getBarks() {
+		return barks;
+	}
 
 }

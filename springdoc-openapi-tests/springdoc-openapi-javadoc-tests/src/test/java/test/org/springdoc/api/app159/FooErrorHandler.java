@@ -24,7 +24,7 @@ public class FooErrorHandler {
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@JsonView(Views.View1.class)
 	public ResponseEntity<FooBean> storeAssignmentPublishingError(Exception e) {
-		return new ResponseEntity<>(new FooBean("INTERNAL_SERVER_ERROR",500), HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(new FooBean("INTERNAL_SERVER_ERROR", 500), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	/**
@@ -37,6 +37,6 @@ public class FooErrorHandler {
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	@JsonView(Views.View2.class)
 	public ResponseEntity<FooBean> storeAssignmentPublishingError(CustomException e) {
-		return new ResponseEntity<>(new FooBean("BAD Request",400), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(new FooBean("BAD Request", 400), HttpStatus.BAD_REQUEST);
 	}
 }

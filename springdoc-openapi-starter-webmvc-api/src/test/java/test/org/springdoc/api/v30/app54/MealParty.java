@@ -30,9 +30,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class MealParty {
-	@JsonView(Views.Public.class)
-	private String name;
-
 	@JsonView(Views.MealPartyAdmin.class)
 	private final List<String> members = new ArrayList<>();
+
+	@JsonView(Views.Public.class)
+	private String name;
 }

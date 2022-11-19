@@ -18,7 +18,7 @@ public class AbstractParameterObject<T extends Enum<T>> {
 	/**
 	 * The Generic field.
 	 */
-	@Parameter(schema=@Schema(type = "string", allowableValues = {"ONE", "TWO"}) )
+	@Parameter(schema = @Schema(type = "string", allowableValues = { "ONE", "TWO" }))
 	T genericField;
 
 	/**

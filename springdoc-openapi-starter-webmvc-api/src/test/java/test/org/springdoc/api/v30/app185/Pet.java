@@ -29,19 +29,19 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(Dog.class),
-        @JsonSubTypes.Type(Cat.class)
+		@JsonSubTypes.Type(Dog.class),
+		@JsonSubTypes.Type(Cat.class)
 })
 public class Pet {
 
-    public final String name;
+	public final String name;
 
-    public Pet() {
-        this.name = null;
-    }
+	public Pet() {
+		this.name = null;
+	}
 
-    public Pet(String name) {
-        this.name = name;
-    }
+	public Pet(String name) {
+		this.name = name;
+	}
 
 }

@@ -38,12 +38,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
 
-
-
 	@GetMapping("/{userId}")
 	public User doSomething(@PathVariable("userId") User user) {
 		return new User(user.getId(), "tototot");
 	}
-
 
 }

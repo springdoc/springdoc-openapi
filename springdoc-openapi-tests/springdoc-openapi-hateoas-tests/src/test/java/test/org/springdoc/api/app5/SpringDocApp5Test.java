@@ -34,10 +34,9 @@ public class SpringDocApp5Test extends AbstractSpringDocTest {
 		@Bean
 		public OpenAPI customOpenAPI() {
 			return new OpenAPI().components(new Components()
-					.addSchemas("CompanyDtoNew",new ObjectSchema().addProperties("id", new StringSchema().format("uuid"
+					.addSchemas("CompanyDtoNew", new ObjectSchema().addProperties("id", new StringSchema().format("uuid"
 					)).addProperties("name", new StringSchema())));
 		}
 	}
-
 
 }

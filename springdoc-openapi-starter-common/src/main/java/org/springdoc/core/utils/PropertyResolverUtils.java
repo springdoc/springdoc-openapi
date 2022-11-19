@@ -55,6 +55,11 @@ import org.springframework.util.CollectionUtils;
 public class PropertyResolverUtils {
 
 	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(PropertyResolverUtils.class);
+
+	/**
 	 * The Factory.
 	 */
 	private final ConfigurableBeanFactory factory;
@@ -68,11 +73,6 @@ public class PropertyResolverUtils {
 	 * The Spring doc config properties.
 	 */
 	private final SpringDocConfigProperties springDocConfigProperties;
-
-	/**
-	 * The constant LOGGER.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(PropertyResolverUtils.class);
 
 	/**
 	 * Instantiates a new Property resolver utils.

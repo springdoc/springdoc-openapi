@@ -60,7 +60,7 @@ public class HelloController {
 			consumes = { MediaType.MULTIPART_FORM_DATA_VALUE },
 			produces = { MediaType.APPLICATION_JSON_VALUE }
 	)
-	@RequestBody(content =@Content(schema  = @Schema( requiredProperties = "file",  type = "object")
+	@RequestBody(content = @Content(schema = @Schema(requiredProperties = "file", type = "object")
 			, schemaProperties = @SchemaProperty(name = "file", schema = @Schema(type = "string", format = "binary"))
 	))
 	public ResponseEntity<?> put2() {

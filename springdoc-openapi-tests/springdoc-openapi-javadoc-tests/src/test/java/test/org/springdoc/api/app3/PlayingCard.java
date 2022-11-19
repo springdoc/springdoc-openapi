@@ -46,28 +46,36 @@ public class PlayingCard {
 	 *
 	 * @return the suit
 	 */
-	public Suit getSuit() { return suit; }
+	public Suit getSuit() {
+		return suit;
+	}
 
 	/**
 	 * Sets suit.
 	 *
 	 * @param suit the suit
 	 */
-	public void setSuit(Suit suit) { this.suit = suit; }
+	public void setSuit(Suit suit) {
+		this.suit = suit;
+	}
 
 	/**
 	 * Gets value.
 	 *
 	 * @return the value
 	 */
-	public Integer getValue() { return value; }
+	public Integer getValue() {
+		return value;
+	}
 
 	/**
 	 * Sets value.
 	 *
 	 * @param value the value
 	 */
-	public void setValue(Integer value) { this.value = value; }
+	public void setValue(Integer value) {
+		this.value = value;
+	}
 
 	/**
 	 * The enum Suit.
@@ -100,7 +108,9 @@ public class PlayingCard {
 		 *
 		 * @param jsonValue the json value
 		 */
-		Suit(String jsonValue) { this.jsonValue = jsonValue; }
+		Suit(String jsonValue) {
+			this.jsonValue = jsonValue;
+		}
 
 		/**
 		 * Gets json value.

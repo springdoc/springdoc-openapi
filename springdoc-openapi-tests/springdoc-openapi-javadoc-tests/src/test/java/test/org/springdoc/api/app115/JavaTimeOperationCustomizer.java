@@ -27,7 +27,7 @@ public class JavaTimeOperationCustomizer implements OperationCustomizer {
 	@Override
 	public Operation customize(Operation operation, HandlerMethod handlerMethod) {
 		if (handlerMethod.getReturnType().getParameterType().isAssignableFrom(Duration.class)) {
-			for (Map.Entry<String, io.swagger.v3.oas.models.responses.ApiResponse> entry:  operation.getResponses().entrySet()) {
+			for (Map.Entry<String, io.swagger.v3.oas.models.responses.ApiResponse> entry : operation.getResponses().entrySet()) {
 				io.swagger.v3.oas.models.responses.ApiResponse response = entry.getValue();
 				Content content = response.getContent();
 				if (content.containsKey(MediaType.APPLICATION_JSON_VALUE)) {

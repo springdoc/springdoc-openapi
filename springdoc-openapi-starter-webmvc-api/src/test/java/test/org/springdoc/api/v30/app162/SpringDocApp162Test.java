@@ -31,12 +31,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 public class SpringDocApp162Test extends AbstractSpringDocV30Test {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	public void testApp2() throws Exception {
 		super.testApp();
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

@@ -14,7 +14,7 @@ public class AlbumModelAssembler implements RepresentationModelAssembler<Album, 
 	@Override
 	public EntityModel<Album> toModel(Album entity) {
 		List<Link> links = new ArrayList<>();
-		return  EntityModel.of(entity, links);
+		return EntityModel.of(entity, links);
 	}
 
 }

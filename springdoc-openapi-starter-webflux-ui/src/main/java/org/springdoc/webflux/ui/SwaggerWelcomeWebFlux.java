@@ -51,14 +51,14 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 
 
 	/**
-	 * The Path prefix.
-	 */
-	private String pathPrefix;
-
-	/**
 	 * The Spring web provider.
 	 */
 	private final SpringWebProvider springWebProvider;
+
+	/**
+	 * The Path prefix.
+	 */
+	private String pathPrefix;
 
 	/**
 	 * Instantiates a new Swagger welcome web flux.
@@ -127,7 +127,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	protected String buildUrlWithContextPath(String swaggerUiUrl) {
 		if (this.pathPrefix == null)
 			this.pathPrefix = springWebProvider.findPathPrefix(springDocConfigProperties);
-		return buildUrl(this.contextPath + this.pathPrefix,swaggerUiUrl );
+		return buildUrl(this.contextPath + this.pathPrefix, swaggerUiUrl);
 	}
 
 	/**

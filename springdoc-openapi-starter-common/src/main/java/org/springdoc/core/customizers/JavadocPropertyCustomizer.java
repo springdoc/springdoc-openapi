@@ -47,7 +47,8 @@ import org.springframework.util.CollectionUtils;
  * The type Javadoc property customizer.
  * @author bnasslahsen
  */
-public record JavadocPropertyCustomizer(JavadocProvider javadocProvider, ObjectMapperProvider objectMapperProvider)
+public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
+										ObjectMapperProvider objectMapperProvider)
 		implements ModelConverter {
 
 	/**

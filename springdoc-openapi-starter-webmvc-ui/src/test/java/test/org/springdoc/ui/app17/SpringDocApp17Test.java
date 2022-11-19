@@ -39,15 +39,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 				"management.endpoints.web.base-path=/application" })
 class SpringDocApp17Test extends AbstractSpringDocActuatorTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
-
 	@Test
 	void testIndex() throws Exception {
 		MvcResult mvcResult = mockMvc.perform(get("/sample/swagger-ui/index.html").contextPath("/sample")).andExpect(status().isOk()).andReturn();
 		String contentAsString = mvcResult.getResponse().getContentAsString();
 		assertTrue(contentAsString.contains("Swagger UI"));
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Foo {
-  String foo;
+	String foo;
 }

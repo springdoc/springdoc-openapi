@@ -74,24 +74,6 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 	}
 
 	/**
-	 * Mapper object mapper.
-	 *
-	 * @return the object mapper
-	 */
-	public ObjectMapper jsonMapper() {
-		return jsonMapper;
-	}
-
-	/**
-	 * Yaml mapper object mapper.
-	 *
-	 * @return the object mapper
-	 */
-	public ObjectMapper yamlMapper() {
-		return yamlMapper;
-	}
-
-	/**
 	 * Create json object mapper.
 	 *
 	 * @param springDocConfigProperties the spring doc config properties
@@ -111,7 +93,6 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 		return objectMapper;
 	}
 
-
 	/**
 	 * Sort output.
 	 *
@@ -128,6 +109,24 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 			objectMapper.addMixIn(OpenAPI.class, SortedOpenAPIMixin.class);
 			objectMapper.addMixIn(Schema.class, SortedSchemaMixin.class);
 		}
+	}
+
+	/**
+	 * Mapper object mapper.
+	 *
+	 * @return the object mapper
+	 */
+	public ObjectMapper jsonMapper() {
+		return jsonMapper;
+	}
+
+	/**
+	 * Yaml mapper object mapper.
+	 *
+	 * @return the object mapper
+	 */
+	public ObjectMapper yamlMapper() {
+		return yamlMapper;
 	}
 
 }

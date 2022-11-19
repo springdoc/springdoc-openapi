@@ -43,7 +43,7 @@ import static org.springdoc.core.utils.Constants.ALL_PATTERN;
 @Configuration
 @EnableWebSecurity
 @Order(200)
-public class WebSecurity  {
+public class WebSecurity {
 
 
 	public static final String TokenPrefix = "Bearer ";
@@ -112,7 +112,7 @@ public class WebSecurity  {
 		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
 
 		configuration.addExposedHeader(HeaderString);
-		source.registerCorsConfiguration( ALL_PATTERN, configuration);
+		source.registerCorsConfiguration(ALL_PATTERN, configuration);
 
 		return source;
 	}

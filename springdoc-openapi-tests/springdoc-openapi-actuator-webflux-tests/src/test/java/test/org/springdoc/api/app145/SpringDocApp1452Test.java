@@ -40,9 +40,6 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp1452Test extends AbstractSpringDocActuatorTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	public void testApp() throws Exception {
 		try {
@@ -55,5 +52,8 @@ public class SpringDocApp1452Test extends AbstractSpringDocActuatorTest {
 			fail();
 		}
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

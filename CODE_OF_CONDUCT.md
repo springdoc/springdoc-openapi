@@ -33,7 +33,7 @@ from the project team.
 This Code of Conduct applies both within project spaces and in public spaces when an
 individual is representing the project or its community.
 
-
 This Code of Conduct is adapted from the
 https://contributor-covenant.org[Contributor Covenant], version 1.3.0, available at
-https://contributor-covenant.org/version/1/3/0/[contributor-covenant.org/version/1/3/0/] and https://github.com/spring-projects/spring-boot/blob/master/CODE_OF_CONDUCT.adoc[spring-boot Contributor Code of Conduct]
+https://contributor-covenant.org/version/1/3/0/[contributor-covenant.org/version/1/3/0/] and https://github.com/spring-projects/spring-boot/blob/master/CODE_OF_CONDUCT.adoc[spring-boot
+Contributor Code of Conduct]

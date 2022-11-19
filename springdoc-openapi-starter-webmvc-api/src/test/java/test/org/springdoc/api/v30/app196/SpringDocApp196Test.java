@@ -31,7 +31,7 @@ import org.springframework.test.context.TestPropertySource;
 		"springdoc.model-and-view-allowed=false" })
 public class SpringDocApp196Test extends AbstractSpringDocV30Test {
 
-    @SpringBootApplication
-    static class SpringDocTestApp {}
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 }

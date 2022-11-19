@@ -33,9 +33,6 @@ import org.springframework.test.context.TestPropertySource;
 @Import(SpringDocConfig.class)
 public class SpringDocApp24Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication
-	static class SpringDocTestApp {}
-
 	@Test
 	public void test_apidocs_disabled() {
 		webTestClient.get().uri("/api-docs/swagger-config").exchange()
@@ -45,4 +42,7 @@ public class SpringDocApp24Test extends AbstractSpringDocTest {
 				.jsonPath("$.validatorUrl").isEqualTo("")
 				.jsonPath("$.oauth2RedirectUrl").isEqualTo("/webjars/swagger-ui/oauth2-redirect.html");
 	}
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }

@@ -28,7 +28,7 @@ class TestController {
 	 * @param orderState the order state
 	 * @return the object
 	 */
-	@GetMapping(value = {"/orders"})
+	@GetMapping(value = { "/orders" })
 	public Object method(
 			@RequestParam(value = "state", defaultValue = "finished") OrderState orderState) {
 		return null;

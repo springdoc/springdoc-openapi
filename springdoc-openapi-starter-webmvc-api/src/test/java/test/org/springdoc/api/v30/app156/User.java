@@ -27,9 +27,11 @@ package test.org.springdoc.api.v30.app156;
 import java.util.Set;
 
 public class User {
-    private String someText;
-    private Set<String> textSet;
-    private Set<SomeEnum> someEnums;
+	private String someText;
+
+	private Set<String> textSet;
+
+	private Set<SomeEnum> someEnums;
 
 	public String getSomeText() {
 		return someText;

@@ -15,7 +15,7 @@ public class DemoComponent {
 
 	@Id
 	private String id;
-	
+
 	private String payload;
 
 }

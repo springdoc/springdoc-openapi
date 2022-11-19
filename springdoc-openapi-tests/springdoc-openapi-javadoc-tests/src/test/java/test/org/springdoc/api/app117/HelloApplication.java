@@ -172,9 +172,9 @@ class PersonService {
 	 * The People.
 	 */
 	private final Set<Person> people = Stream.of(
-			new Person(counter.incrementAndGet(), "Jane"),
-			new Person(counter.incrementAndGet(), "Josh"),
-			new Person(counter.incrementAndGet(), "Gordon"))
+					new Person(counter.incrementAndGet(), "Jane"),
+					new Person(counter.incrementAndGet(), "Josh"),
+					new Person(counter.incrementAndGet(), "Gordon"))
 			.collect(Collectors.toCollection(HashSet::new));
 
 
@@ -220,17 +220,6 @@ class PersonService {
 class Person {
 
 	/**
-	 * Instantiates a new Person.
-	 *
-	 * @param id the id 
-	 * @param name the name
-	 */
-	public Person(Long id, String name) {
-		this.id = id;
-		this.name = name;
-	}
-
-	/**
 	 * The Id.
 	 */
 	private Long id;
@@ -239,6 +228,17 @@ class Person {
 	 * The Name.
 	 */
 	private String name;
+
+	/**
+	 * Instantiates a new Person.
+	 *
+	 * @param id the id
+	 * @param name the name
+	 */
+	public Person(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 
 	/**
 	 * Gets id.

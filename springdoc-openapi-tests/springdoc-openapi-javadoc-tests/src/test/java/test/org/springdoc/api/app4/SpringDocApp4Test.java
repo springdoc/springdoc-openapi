@@ -32,16 +32,16 @@ import org.springframework.test.context.TestPropertySource;
 public class SpringDocApp4Test extends AbstractSpringDocTest {
 
 	/**
+	 * Restore.
+	 */
+	@AfterAll
+	static void restore() {
+		TypeNameResolver.std.setUseFqn(false);
+	}
+
+	/**
 	 * The type Spring doc test app.
 	 */
 	@SpringBootApplication
 	static class SpringDocTestApp {}
-
-	/**
-	 * Restore.
-	 */
-	@AfterAll
-	static void restore(){
-		TypeNameResolver.std.setUseFqn(false);
-	}
 }

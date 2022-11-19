@@ -84,7 +84,7 @@ public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
-	@GetMapping(value =   "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Mono<String> openapiJson(ServerHttpRequest
 			serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl,
 			@PathVariable String group, Locale locale)
@@ -103,7 +103,7 @@ public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	@Operation(hidden = true)
-	@GetMapping(value =  "/{group}/yaml", produces = APPLICATION_OPENAPI_YAML)
+	@GetMapping(value = "/{group}/yaml", produces = APPLICATION_OPENAPI_YAML)
 	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest,
 			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, @PathVariable String
 			group, Locale locale) throws JsonProcessingException {
