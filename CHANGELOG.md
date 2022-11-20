@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-RC2] - 2022-11-20
+
+### Added
+
+- #1929 - Enables no cache on not cache swagger-initializer.js
+- #1922 - Check existence of superclass before accessing its name
+- #1923 - Javadoc description of the @RequestPart param of multipart/form-data to the parameter description
+### Changed
+
+- Upgrade spring-boot to 3.0.0-RC2
+- Upgrade swagger-core to 2.2.7
+- Upgrade swagger-ui to 4.15.5
+- #1912 - Upgrade spring-security-oauth2 to 2.5.2.RELEASE
+
+### Fixed
+
+- #1892 - springdoc.model-and-view-allowed enhanced
+- #1901 - When @Get, using @Parameter over the method results in duplicate of the same parameter
+- #1909 - ExceptionHandler in controller is not used by another controller
+- #1904 - springdoc-openapi-webflux-ui 2.0.0-M7 + spring actuator + spring cloud crashes at startup
+- #1911 - Wrong type for springdoc.swagger-ui.oauth.useBasicAuthenticationWithAccessCodeGrant configuration property
+- #1931 - Spring Security form login only offers application/json req body type.
+
 ## [2.0.0-RC1] - 2022-10-23
 
 ### Added
