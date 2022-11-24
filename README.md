@@ -64,6 +64,8 @@ This library supports:
 * Swagger-ui
 * Oauth 2
 
+For *spring-boot v3* support, make sure you use [springdoc-openapi v2](https://springdoc.org/v2)
+
 The following video introduces the Library:
 
 * [https://youtu.be/utRxyPfFlDw](https://youtu.be/utRxyPfFlDw)
