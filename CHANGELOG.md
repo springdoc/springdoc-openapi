@@ -8,10 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0] - 2022-11-24
 
-### Changed
+### Added
 
-- Upgrade spring-boot to 3.0.0
+- #1284 - Add support for Jakarta EE
 
+### What's Changed
+- Upgrade spring-boot to v3.0.0
 
 ## [2.0.0-RC2] - 2022-11-20
 
