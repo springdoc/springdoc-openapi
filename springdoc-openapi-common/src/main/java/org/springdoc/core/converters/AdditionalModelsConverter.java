@@ -26,11 +26,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
 /**
@@ -53,6 +57,11 @@ public class AdditionalModelsConverter implements ModelConverter {
 	 * The constant paramObjectReplacementMap.
 	 */
 	private static final Map<Class, Class> paramObjectReplacementMap = new HashMap<>();
+
+	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdditionalModelsConverter.class);
 
 	/**
 	 * The Spring doc object mapper.
@@ -130,8 +139,15 @@ public class AdditionalModelsConverter implements ModelConverter {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
-			if (modelToSchemaMap.containsKey(cls))
-				return modelToSchemaMap.get(cls);
+			if (modelToSchemaMap.containsKey(cls)) {
+				try {
+					return springDocObjectMapper.jsonMapper()
+							.readValue(springDocObjectMapper.jsonMapper().writeValueAsString(modelToSchemaMap.get(cls)), new TypeReference<Schema>() {});
+				}
+				catch (JsonProcessingException e) {
+					LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+				}
+			}
 			if (modelToClassMap.containsKey(cls))
 				type = new AnnotatedType(modelToClassMap.get(cls)).resolveAsRef(true);
 		}
