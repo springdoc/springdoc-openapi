@@ -73,7 +73,7 @@ import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVe
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpMethod;
@@ -163,7 +163,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * The Local spring doc parameter name discoverer.
 	 */
-	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+	private final DefaultParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 
 	/**
 	 * The Parameter customizers.
@@ -191,7 +191,7 @@ public abstract class AbstractRequestService {
 	 */
 	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
-			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+			DefaultParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
