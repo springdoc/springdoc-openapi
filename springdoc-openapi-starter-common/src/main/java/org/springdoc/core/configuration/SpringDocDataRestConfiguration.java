@@ -60,7 +60,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.context.PersistentEntities;
 import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
@@ -192,7 +192,7 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		DataRestRequestService dataRestRequestBuilder(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
+		DataRestRequestService dataRestRequestBuilder(DefaultParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
 				RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
 			return new DataRestRequestService(localSpringDocParameterNameDiscoverer, parameterBuilder,
 					requestBodyService, requestBuilder, springDocDataRestUtils);

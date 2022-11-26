@@ -51,7 +51,7 @@ import org.springdoc.core.service.RequestBodyService;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 import org.springdoc.core.utils.SpringDocDataRestUtils;
 
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.data.rest.core.mapping.ResourceMetadata;
@@ -72,7 +72,7 @@ public class DataRestRequestService {
 	/**
 	 * The Local spring doc parameter name discoverer.
 	 */
-	private final LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+	private final DefaultParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 
 	/**
 	 * The Parameter builder.
@@ -103,7 +103,7 @@ public class DataRestRequestService {
 	 * @param requestBuilder the request builder
 	 * @param springDocDataRestUtils the spring doc data rest utils
 	 */
-	public DataRestRequestService(LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
+	public DataRestRequestService(DefaultParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
 			RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 		this.parameterBuilder = parameterBuilder;

@@ -33,7 +33,7 @@ import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.OperationService;
 import org.springdoc.core.service.RequestBodyService;
 
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.DefaultParameterNameDiscoverer;
 
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
@@ -63,7 +63,7 @@ public class RequestService extends AbstractRequestService {
 	 */
 	public RequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
-			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+			DefaultParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super(parameterBuilder, requestBodyService, operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 }
