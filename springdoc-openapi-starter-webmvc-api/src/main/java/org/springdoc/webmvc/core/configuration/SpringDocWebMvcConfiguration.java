@@ -69,7 +69,7 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -141,7 +141,7 @@ public class SpringDocWebMvcConfiguration {
 	@Lazy(false)
 	RequestService requestBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
-			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+			DefaultParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		return new RequestService(parameterBuilder, requestBodyService,
 				operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
