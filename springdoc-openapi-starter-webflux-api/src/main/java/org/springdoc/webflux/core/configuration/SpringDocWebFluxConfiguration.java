@@ -68,7 +68,7 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.DefaultParameterNameDiscoverer;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
@@ -132,7 +132,7 @@ public class SpringDocWebFluxConfiguration {
 	RequestService requestBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			OperationService operationService,
 			Optional<List<ParameterCustomizer>> parameterCustomizers,
-			LocalVariableTableParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+			DefaultParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		return new RequestService(parameterBuilder, requestBodyService,
 				operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
