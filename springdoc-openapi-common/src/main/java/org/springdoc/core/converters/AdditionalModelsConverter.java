@@ -39,6 +39,7 @@ import org.springdoc.core.providers.ObjectMapperProvider;
 
 /**
  * The type Additional models converter.
+ *
  * @author bnasslahsen
  */
 public class AdditionalModelsConverter implements ModelConverter {
@@ -46,12 +47,12 @@ public class AdditionalModelsConverter implements ModelConverter {
 	/**
 	 * The constant modelToClassMap.
 	 */
-	private static final Map<Class, Class> modelToClassMap = new HashMap<>();
+	private static Map<Class, Class> modelToClassMap = new HashMap<>();
 
 	/**
 	 * The constant modelToSchemaMap.
 	 */
-	private static final Map<Class, Schema> modelToSchemaMap = new HashMap<>();
+	private static Map<Class, Schema> modelToSchemaMap = new HashMap<>();
 
 	/**
 	 * The constant paramObjectReplacementMap.
@@ -154,4 +155,21 @@ public class AdditionalModelsConverter implements ModelConverter {
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
 	}
 
+	/**
+	 * Remove from schema map.
+	 *
+	 * @param clazz the clazz
+	 */
+	public static void removeFromSchemaMap(Class clazz) {
+		modelToSchemaMap.remove(clazz);
+	}
+
+	/**
+	 * Remove from class map.
+	 *
+	 * @param clazz the clazz
+	 */
+	public static void removeFromClassMap(Class clazz) {
+		modelToClassMap.remove(clazz);
+	}
 }

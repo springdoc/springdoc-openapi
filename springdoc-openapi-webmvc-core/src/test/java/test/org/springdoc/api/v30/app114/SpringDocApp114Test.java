@@ -22,9 +22,12 @@
 
 package test.org.springdoc.api.v30.app114;
 
+import java.math.BigDecimal;
+
 import javax.money.MonetaryAmount;
 
 import org.springdoc.core.SpringDocUtils;
+import org.springdoc.core.converters.AdditionalModelsConverter;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,7 +36,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringDocApp114Test extends AbstractSpringDocV30Test {
 
 	static {
-		SpringDocUtils.getConfig().replaceWithClass(MonetaryAmount.class, org.springdoc.core.converters.models.MonetaryAmount.class);
+		SpringDocUtils.getConfig()
+				.removeFromSchemaMap(BigDecimal.class)
+				.replaceWithClass(MonetaryAmount.class, org.springdoc.core.converters.models.MonetaryAmount.class);
 	}
 
 	@SpringBootApplication

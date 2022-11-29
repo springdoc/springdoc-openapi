@@ -23,6 +23,7 @@
 package org.springdoc.core;
 
 import java.lang.annotation.Annotation;
+import java.math.BigDecimal;
 import java.util.function.Predicate;
 
 import io.swagger.v3.oas.models.media.Schema;
@@ -33,6 +34,7 @@ import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 
 /**
  * The type Spring doc utils.
+ *
  * @author bnasslahsen
  */
 public class SpringDocUtils {
@@ -321,6 +323,28 @@ public class SpringDocUtils {
 	 */
 	public SpringDocUtils setModelAndViewClass(Class<?> clazz) {
 		AbstractOpenApiResource.setModelAndViewClass(clazz);
+		return this;
+	}
+
+	/**
+	 * Remove from schema map spring doc utils.
+	 *
+	 * @param clazzs the clazzs
+	 * @return the spring doc utils
+	 */
+	public SpringDocUtils removeFromSchemaMap(Class<?> clazzs) {
+		AdditionalModelsConverter.removeFromSchemaMap(clazzs);
+		return this;
+	}
+
+	/**
+	 * Remove from schema class spring doc utils.
+	 *
+	 * @param clazzs the clazzs
+	 * @return the spring doc utils
+	 */
+	public SpringDocUtils removeFromSchemaClass(Class<?> clazzs) {
+		AdditionalModelsConverter.removeFromClassMap(clazzs);
 		return this;
 	}
 }
