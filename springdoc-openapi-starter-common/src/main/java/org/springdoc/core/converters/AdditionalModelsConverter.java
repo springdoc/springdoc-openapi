@@ -155,4 +155,21 @@ public class AdditionalModelsConverter implements ModelConverter {
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
 	}
 
+	/**
+	 * Remove from schema map.
+	 *
+	 * @param clazz the clazz
+	 */
+	public static void removeFromSchemaMap(Class clazz) {
+		modelToSchemaMap.remove(clazz);
+	}
+
+	/**
+	 * Remove from class map.
+	 *
+	 * @param clazz the clazz
+	 */
+	public static void removeFromClassMap(Class clazz) {
+		modelToClassMap.remove(clazz);
+	}
 }

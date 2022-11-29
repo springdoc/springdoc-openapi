@@ -330,5 +330,27 @@ public class SpringDocUtils {
 		AbstractOpenApiResource.setModelAndViewClass(clazz);
 		return this;
 	}
+
+	/**
+	 * Remove from schema map spring doc utils.
+	 *
+	 * @param clazzs the clazzs
+	 * @return the spring doc utils
+	 */
+	public SpringDocUtils removeFromSchemaMap(Class<?> clazzs) {
+		AdditionalModelsConverter.removeFromSchemaMap(clazzs);
+		return this;
+	}
+
+	/**
+	 * Remove from schema class spring doc utils.
+	 *
+	 * @param clazzs the clazzs
+	 * @return the spring doc utils
+	 */
+	public SpringDocUtils removeFromSchemaClass(Class<?> clazzs) {
+		AdditionalModelsConverter.removeFromClassMap(clazzs);
+		return this;
+	}
 }
 
