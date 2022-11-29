@@ -62,9 +62,9 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 	 * @param beanFactory the bean factory
 	 */
 	public static void initBeanFactoryPostProcessor(ConfigurableListableBeanFactory beanFactory) {
-		for (String beanName : beanFactory.getBeanNamesForType(OpenAPIService.class))
+		for (String beanName : beanFactory.getBeanNamesForType(OpenAPIService.class, true, false))
 			beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
-		for (String beanName : beanFactory.getBeanNamesForType(OpenAPI.class))
+		for (String beanName : beanFactory.getBeanNamesForType(OpenAPI.class, true, false))
 			beanFactory.getBeanDefinition(beanName).setScope(SCOPE_PROTOTYPE);
 	}
 
