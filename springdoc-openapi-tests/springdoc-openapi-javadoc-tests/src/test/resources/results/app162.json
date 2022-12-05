@@ -41,7 +41,7 @@
             }
           },
           "400": {
-            "description": "the <code>@throws NonUniqueResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "description": "the <code>return</code> javadoc for the <code>#handleNonUniqueResultException(NonUniqueResultException)</code> method",
             "content": {
               "*/*": {
                 "schema": {
@@ -54,7 +54,7 @@
             ]
           },
           "404": {
-            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "description": "the <code>return</code> javadoc for the <code>#handleNotFoundException(NoResultException)</code> method",
             "content": {
               "*/*": {
                 "schema": {
@@ -98,7 +98,7 @@
             }
           },
           "400": {
-            "description": "the <code>@throws NonUniqueResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "description": "the <code>return</code> javadoc for the <code>#handleNonUniqueResultException(NonUniqueResultException)</code> method",
             "content": {
               "*/*": {
                 "schema": {
@@ -111,7 +111,7 @@
             ]
           },
           "404": {
-            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "description": "the <code>return</code> javadoc for the <code>#handleNotFoundException(NoResultException)</code> method",
             "content": {
               "*/*": {
                 "schema": {
@@ -216,7 +216,7 @@
             }
           },
           "400": {
-            "description": "the <code>@throws NonUniqueResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "description": "the <code>return</code> javadoc for the <code>#handleNonUniqueResultException(NonUniqueResultException)</code> method",
             "content": {
               "*/*": {
                 "schema": {
@@ -229,7 +229,7 @@
             ]
           },
           "404": {
-            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#find(String)</code> method",
             "content": {
               "*/*": {
                 "schema": {
@@ -283,7 +283,7 @@
             }
           },
           "400": {
-            "description": "the <code>@throws NonUniqueResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "description": "the <code>return</code> javadoc for the <code>#handleNonUniqueResultException(NonUniqueResultException)</code> method",
             "content": {
               "*/*": {
                 "schema": {
@@ -296,7 +296,7 @@
             ]
           },
           "404": {
-            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "description": "the <code>return</code> javadoc for the <code>#handleNotFoundException(NoResultException)</code> method",
             "content": {
               "*/*": {
                 "schema": {
