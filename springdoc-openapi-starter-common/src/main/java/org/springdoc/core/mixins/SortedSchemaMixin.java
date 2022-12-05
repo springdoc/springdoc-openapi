@@ -73,7 +73,7 @@ public interface SortedSchemaMixin {
 	 *
 	 * @return the example
 	 */
-	@JsonInclude(JsonInclude.Include.CUSTOM)
+	@JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
 	Object getExample();
 
 	/**
