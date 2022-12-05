@@ -29,6 +29,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -41,6 +42,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.Operation;
@@ -50,7 +53,11 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
@@ -74,6 +81,7 @@ import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper
 
 /**
  * The type Generic response builder.
+ *
  * @author bnasslahsen
  */
 public class GenericResponseService {
@@ -117,6 +125,11 @@ public class GenericResponseService {
 	 * The Controller advice infos.
 	 */
 	private final List<ControllerAdviceInfo> controllerAdviceInfos = new ArrayList<>();
+
+	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericResponseService.class);
 
 	/**
 	 * Instantiates a new Generic response builder.
@@ -242,9 +255,9 @@ public class GenericResponseService {
 			JavadocProvider javadocProvider = operationService.getJavadocProvider();
 			for (Map.Entry<String, ApiResponse> genericResponse : genericMapResponse.entrySet()) {
 				Map<String, Object> extensions = genericResponse.getValue().getExtensions();
-				Set<Class<?>> genericExceptions = (Set<Class<?>>) extensions.get(EXTENSION_EXCEPTION_CLASSES);
+				Collection<String> genericExceptions = (Collection<String>) extensions.get(EXTENSION_EXCEPTION_CLASSES);
 				for (Class<?> declaredException : handlerMethod.getMethod().getExceptionTypes()) {
-					if (genericExceptions.contains(declaredException)) {
+					if (genericExceptions.contains(declaredException.getName())) {
 						Map<String, String> javadocThrows = javadocProvider.getMethodJavadocThrows(handlerMethod.getMethod());
 						String description = javadocThrows.get(declaredException.getName());
 						if (description == null)
@@ -675,7 +688,16 @@ public class GenericResponseService {
 			});
 		}
 
-		return genericApiResponseMap;
+		LinkedHashMap<String, ApiResponse> genericApiResponsesClone;
+		try {
+			ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
+			genericApiResponsesClone = objectMapper.readValue(objectMapper.writeValueAsString(genericApiResponseMap), ApiResponses.class);
+			return genericApiResponsesClone;
+		}
+		catch (JsonProcessingException e) {
+			LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+			return genericApiResponseMap;
+		}
 	}
 
 	/**
