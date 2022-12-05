@@ -38,21 +38,8 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "the <code>@throws NonUniqueResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "x-exception-class": [
-              "test.org.springdoc.api.app162.exception.NonUniqueResultException"
-            ]
-          },
           "404": {
-            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#find(String)</code> method",
             "content": {
               "*/*": {
                 "schema": {
@@ -62,6 +49,19 @@
             },
             "x-exception-class": [
               "test.org.springdoc.api.app162.exception.NoResultException"
+            ]
+          },
+          "400": {
+            "description": "the <code>return</code> javadoc for the <code>#handleNonUniqueResultException(NonUniqueResultException)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.app162.exception.NonUniqueResultException"
             ]
           },
           "200": {
@@ -105,21 +105,8 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "the <code>@throws NonUniqueResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "x-exception-class": [
-              "test.org.springdoc.api.app162.exception.NonUniqueResultException"
-            ]
-          },
           "404": {
-            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "description": "the <code>return</code> javadoc for the <code>#handleNotFoundException(NoResultException)</code> method",
             "content": {
               "*/*": {
                 "schema": {
@@ -129,6 +116,19 @@
             },
             "x-exception-class": [
               "test.org.springdoc.api.app162.exception.NoResultException"
+            ]
+          },
+          "400": {
+            "description": "the <code>return</code> javadoc for the <code>#handleNonUniqueResultException(NonUniqueResultException)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.app162.exception.NonUniqueResultException"
             ]
           },
           "200": {
@@ -153,21 +153,8 @@
         "description": "This is the list method's javadoc.\n The method's signature: <code>#list()</code>",
         "operationId": "list",
         "responses": {
-          "400": {
-            "description": "the <code>@throws NonUniqueResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "x-exception-class": [
-              "test.org.springdoc.api.app162.exception.NonUniqueResultException"
-            ]
-          },
           "404": {
-            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "description": "the <code>return</code> javadoc for the <code>#handleNotFoundException(NoResultException)</code> method",
             "content": {
               "*/*": {
                 "schema": {
@@ -177,6 +164,19 @@
             },
             "x-exception-class": [
               "test.org.springdoc.api.app162.exception.NoResultException"
+            ]
+          },
+          "400": {
+            "description": "the <code>return</code> javadoc for the <code>#handleNonUniqueResultException(NonUniqueResultException)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.app162.exception.NonUniqueResultException"
             ]
           },
           "200": {
@@ -213,21 +213,8 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "the <code>@throws NonUniqueResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "x-exception-class": [
-              "test.org.springdoc.api.app162.exception.NonUniqueResultException"
-            ]
-          },
           "404": {
-            "description": "the <code>@throws NoResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "description": "the <code>return</code> javadoc for the <code>#handleNotFoundException(NoResultException)</code> method",
             "content": {
               "*/*": {
                 "schema": {
@@ -237,6 +224,19 @@
             },
             "x-exception-class": [
               "test.org.springdoc.api.app162.exception.NoResultException"
+            ]
+          },
+          "400": {
+            "description": "the <code>return</code> javadoc for the <code>#handleNonUniqueResultException(NonUniqueResultException)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.app162.exception.NonUniqueResultException"
             ]
           },
           "201": {
@@ -272,19 +272,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "the <code>@throws NonUniqueResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "x-exception-class": [
-              "test.org.springdoc.api.app162.exception.NonUniqueResultException"
-            ]
-          },
           "404": {
             "description": "the <code>@throws NoResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
             "content": {
@@ -296,6 +283,19 @@
             },
             "x-exception-class": [
               "test.org.springdoc.api.app162.exception.NoResultException"
+            ]
+          },
+          "400": {
+            "description": "the <code>@throws NonUniqueResultException</code> javadoc for the <code>#findStartsBy(String)</code> method",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "x-exception-class": [
+              "test.org.springdoc.api.app162.exception.NonUniqueResultException"
             ]
           },
           "200": {
