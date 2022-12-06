@@ -33,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.CollectionUtils;
@@ -387,9 +388,16 @@ public class MethodAttributes {
 	private void setHeaders(String[] headers) {
 		if (ArrayUtils.isNotEmpty(headers))
 			for (String header : headers) {
-				String[] keyValueHeader = header.split("=");
-				String headerValue = keyValueHeader.length > 1 ? keyValueHeader[1] : "";
-				this.headers.put(keyValueHeader[0], headerValue);
+				if (!header.contains("!=")) {
+					String[] keyValueHeader = header.split("=");
+					String headerValue = keyValueHeader.length > 1 ? keyValueHeader[1] : "";
+					this.headers.put(keyValueHeader[0], headerValue);
+				}
+				else {
+					String[] keyValueHeader = header.split("!=");
+					if (!this.headers.containsKey(keyValueHeader[0]))
+						this.headers.put(keyValueHeader[0], StringUtils.EMPTY);
+				}
 			}
 	}
 

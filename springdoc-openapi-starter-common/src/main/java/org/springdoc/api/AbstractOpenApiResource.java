@@ -1047,7 +1047,14 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		if (parametersList == null)
 			parametersList = new ArrayList<>();
 		Collection<Parameter> headersMap = AbstractRequestService.getHeaders(methodAttributes, new LinkedHashMap<>());
-		parametersList.addAll(headersMap);
+		headersMap.forEach(parameter -> {
+			Optional<Parameter> existingParam;
+			if (!CollectionUtils.isEmpty(operation.getParameters())){
+				existingParam = operation.getParameters().stream().filter(p -> parameter.getName().equals(p.getName())).findAny();
+				if (existingParam.isEmpty())
+					operation.addParametersItem(parameter);
+			}
+		});
 		if (!CollectionUtils.isEmpty(queryParams)) {
 			for (Map.Entry<String, String> entry : queryParams.entrySet()) {
 				io.swagger.v3.oas.models.parameters.Parameter parameter = new io.swagger.v3.oas.models.parameters.Parameter();
