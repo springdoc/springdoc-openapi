@@ -66,6 +66,7 @@ import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.parameters.PathParameter;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.ArrayUtils;
@@ -1050,7 +1051,15 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		if (parametersList == null)
 			parametersList = new ArrayList<>();
 		Collection<Parameter> headersMap = AbstractRequestService.getHeaders(methodAttributes, new LinkedHashMap<>());
-		parametersList.addAll(headersMap);
+		headersMap.forEach(parameter -> {
+			Optional<Parameter> existingParam;
+			if (!CollectionUtils.isEmpty(operation.getParameters())){
+				existingParam = operation.getParameters().stream().filter(p -> parameter.getName().equals(p.getName())).findAny();
+				if (!existingParam.isPresent())
+					operation.addParametersItem(parameter);
+			}
+		});
+
 		if (!CollectionUtils.isEmpty(queryParams)) {
 			for (Map.Entry<String, String> entry : queryParams.entrySet()) {
 				io.swagger.v3.oas.models.parameters.Parameter parameter = new io.swagger.v3.oas.models.parameters.Parameter();
