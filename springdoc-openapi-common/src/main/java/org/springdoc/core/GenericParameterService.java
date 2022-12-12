@@ -78,6 +78,7 @@ import static org.springdoc.core.Constants.DOT;
 
 /**
  * The type Generic parameter builder.
+ *
  * @author bnasslahsen, coutin
  */
 @SuppressWarnings("rawtypes")
@@ -355,8 +356,11 @@ public class GenericParameterService {
 			Type type = ReturnTypeParser.getType(methodParameter);
 			if (type instanceof Class && optionalWebConversionServiceProvider.isPresent()) {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
-				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null)
-					type = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
+				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null) {
+					Class<?> springConvertedType = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
+					if (!(String.class.equals(springConvertedType) && ((Class<?>) type).isEnum()))
+						type = springConvertedType;
+				}
 			}
 			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations());
 		}
@@ -569,6 +573,7 @@ public class GenericParameterService {
 	/**
 	 * Resolve the given annotation-specified value,
 	 * potentially containing placeholders and expressions.
+	 *
 	 * @param value the value
 	 * @return the object
 	 */
