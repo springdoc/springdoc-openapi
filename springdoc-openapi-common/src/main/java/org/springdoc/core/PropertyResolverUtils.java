@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.servers.Server;
 import org.apache.commons.lang3.StringUtils;
@@ -174,6 +175,10 @@ public class PropertyResolverUtils {
 		if (!CollectionUtils.isEmpty(properties)) {
 			LinkedHashMap<String, Schema> resolvedSchemas = properties.entrySet().stream().map(es -> {
 				es.setValue(resolveProperties(es.getValue(), locale));
+				if(es.getValue() instanceof ArraySchema){
+					ArraySchema arraySchema = (ArraySchema) es.getValue();
+					resolveProperties(arraySchema.getItems(), locale);
+				}
 				return es;
 			}).collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e2,
 					LinkedHashMap::new));
