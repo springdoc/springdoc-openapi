@@ -24,6 +24,11 @@
 
 package test.org.springdoc.api.v30.app164;
 
+import java.util.List;
+
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class SampleResponseClass {
 
 	private String idAsFirstParameter;
@@ -33,6 +38,18 @@ public class SampleResponseClass {
 	private String lastNameAsThirdParameter;
 
 	private boolean booleanValueAsFourthParameter;
+
+	@ArraySchema( arraySchema = @Schema( description = "${blahDescription.value}" ),
+			schema = @Schema( description = "${blahDescription.value}" ) )
+	private List<String> listBlah;
+
+	public List<String> getListBlah() {
+		return listBlah;
+	}
+
+	public void setListBlah(List<String> listBlah) {
+		this.listBlah = listBlah;
+	}
 
 	public String getIdAsFirstParameter() {
 		return idAsFirstParameter;
