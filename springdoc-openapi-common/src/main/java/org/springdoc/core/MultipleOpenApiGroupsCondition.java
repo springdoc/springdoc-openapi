@@ -22,8 +22,6 @@
 package org.springdoc.core;
 
 
-import java.util.Collection;
-
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
