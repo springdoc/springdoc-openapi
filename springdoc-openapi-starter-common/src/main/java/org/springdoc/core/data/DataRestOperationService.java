@@ -26,6 +26,7 @@ package org.springdoc.core.data;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -41,6 +42,7 @@ import org.springdoc.core.service.OperationService;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.mapping.MethodResourceMapping;
@@ -204,17 +206,8 @@ public class DataRestOperationService {
 			String pName = parameterMetadatum.getName();
 			ResourceDescription description = parameterMetadatum.getDescription();
 			if (description instanceof TypedResourceDescription) {
-				TypedResourceDescription typedResourceDescription = (TypedResourceDescription) description;
-				Field fieldType = FieldUtils.getField(TypedResourceDescription.class, "type", true);
-				Class<?> type;
-				try {
-					type = (Class<?>) fieldType.get(typedResourceDescription);
-				}
-				catch (IllegalAccessException e) {
-					LOGGER.warn(e.getMessage());
-					type = String.class;
-				}
-				Schema<?> schema = SpringDocAnnotationsUtils.resolveSchemaFromType(type, openAPI.getComponents(), null, null);
+				Type type = getParameterType(pName,method,description);
+				Schema<?> schema = SpringDocAnnotationsUtils.extractSchema(openAPI.getComponents(), type, null, null);
 				Parameter parameter = getParameterFromAnnotations(openAPI, methodAttributes, method, pName);
 				if (parameter == null)
 					parameter = new Parameter().name(pName).in(ParameterIn.QUERY.toString()).schema(schema);
@@ -231,6 +224,39 @@ public class DataRestOperationService {
 		dataRestResponseService.buildSearchResponse(operation, handlerMethod, openAPI, methodResourceMapping, domainType, methodAttributes, resourceMetadata, dataRestRepository);
 		tagsBuilder.buildSearchTags(operation, handlerMethod, dataRestRepository, method);
 		return operation;
+	}
+
+	/**
+	 * Gets parameter type.
+	 *
+	 * @param pName the p name
+	 * @param method the method
+	 * @param description the description
+	 * @return the parameter type
+	 */
+	private Type getParameterType(String pName, Method method, ResourceDescription description) {
+		Type type = null;
+		java.lang.reflect.Parameter[] parameters = method.getParameters();
+		for (int i = 0; i < parameters.length; i++) {
+			java.lang.reflect.Parameter parameter = parameters[i];
+			if (pName.equals(parameter.getName()) || pName.equals(parameter.getAnnotation(Param.class).value())) {
+				ResolvableType resolvableType = ResolvableType.forMethodParameter(method, i);
+				type = resolvableType.getType();
+				break;
+			}
+		}
+		if (type == null) {
+			TypedResourceDescription typedResourceDescription = (TypedResourceDescription) description;
+			Field fieldType = FieldUtils.getField(TypedResourceDescription.class, "type", true);
+			try {
+				type = (Type) fieldType.get(typedResourceDescription);
+			}
+			catch (IllegalAccessException e) {
+				LOGGER.warn(e.getMessage());
+				type = String.class;
+			}
+		}
+		return type;
 	}
 
 	/**
