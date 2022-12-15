@@ -23,7 +23,6 @@
 package org.springdoc.core;
 
 import java.lang.annotation.Annotation;
-import java.math.BigDecimal;
 import java.util.function.Predicate;
 
 import io.swagger.v3.oas.models.media.Schema;

@@ -27,7 +27,6 @@ import java.math.BigDecimal;
 import javax.money.MonetaryAmount;
 
 import org.springdoc.core.SpringDocUtils;
-import org.springdoc.core.converters.AdditionalModelsConverter;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
