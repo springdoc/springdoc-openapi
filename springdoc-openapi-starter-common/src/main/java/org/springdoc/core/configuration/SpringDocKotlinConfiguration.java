@@ -56,12 +56,10 @@ public class SpringDocKotlinConfiguration {
 	/**
 	 * Instantiates a new Spring doc kotlin configuration.
 	 *
-	 * @param objectMapperProvider the object mapper provider
 	 */
-	public SpringDocKotlinConfiguration(ObjectMapperProvider objectMapperProvider) {
+	public SpringDocKotlinConfiguration() {
 		getConfig().addRequestWrapperToIgnore(Continuation.class)
 				.addDeprecatedType(Deprecated.class);
-		objectMapperProvider.jsonMapper().registerModule(new KotlinModule());
 	}
 
 	/**
