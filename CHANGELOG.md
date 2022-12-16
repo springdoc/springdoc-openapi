@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2022-12-16
+
+### Added
+
+- #1965 - Prevents premature initialisation of factory-beans
+- #2003 - Resolve property descriptions for arrays
+
+### Fixed
+
+- #1957 - AdditionalModelsConverter Schema params rewriting
+- #1962 - override-with-generic-response shouldn't shallow copy
+- #1985 - IllegalStateException: Duplicate key when two endpoints at the same URL with same header exist
+- #1992 - Java enumeration and Spring Converter no longer generates enum drop-down
+- #2001 - Enum Collection parameter missing type info in Spring Data Rest search method
+- #1961 - ContinuationObject leaks into schema
 
 ## [2.0.0] - 2022-11-24
 
