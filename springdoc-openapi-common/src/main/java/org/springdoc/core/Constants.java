@@ -28,6 +28,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Constants.
+ *
  * @author bnasslahsen
  */
 public final class Constants {
@@ -392,6 +393,11 @@ public final class Constants {
 	 * The constant SPRINGDOC_SORT_CONVERTER_ENABLED.
 	 */
 	public static final String SPRINGDOC_SORT_CONVERTER_ENABLED = "springdoc.model-converters.sort-converter.enabled";
+
+	/**
+	 * The constant SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED.
+	 */
+	public static final String SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED = "springdoc.nullable-request-parameter-enabled";
 
 	/**
 	 * Instantiates a new Constants.

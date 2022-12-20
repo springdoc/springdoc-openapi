@@ -38,6 +38,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_ENABLED;
 
 /**
  * The type Spring doc config properties.
+ *
  * @author bnasslahsen
  */
 @Lazy(false)
@@ -197,6 +198,38 @@ public class SpringDocConfigProperties {
 	private SortConverter sortConverter = new SortConverter();
 
 	/**
+	 * The Nullable request parameter enabled.
+	 */
+	private boolean nullableRequestParameterEnabled;
+
+	/**
+	 * Gets override with generic response.
+	 *
+	 * @return the override with generic response
+	 */
+	public Boolean getOverrideWithGenericResponse() {
+		return overrideWithGenericResponse;
+	}
+
+	/**
+	 * Is nullable request parameter enabled boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isNullableRequestParameterEnabled() {
+		return nullableRequestParameterEnabled;
+	}
+
+	/**
+	 * Sets nullable request parameter enabled.
+	 *
+	 * @param nullableRequestParameterEnabled the nullable request parameter enabled
+	 */
+	public void setNullableRequestParameterEnabled(boolean nullableRequestParameterEnabled) {
+		this.nullableRequestParameterEnabled = nullableRequestParameterEnabled;
+	}
+
+	/**
 	 * Is default support form data boolean.
 	 *
 	 * @return the boolean
@@ -252,6 +285,7 @@ public class SpringDocConfigProperties {
 
 	/**
 	 * Is default flat param object
+	 *
 	 * @return the boolean
 	 */
 	public boolean isDefaultFlatParamObject() {
@@ -768,6 +802,7 @@ public class SpringDocConfigProperties {
 
 	/**
 	 * The type Model converters.
+	 *
 	 * @author bnasslashen
 	 */
 	public static class ModelConverters {
@@ -844,6 +879,7 @@ public class SpringDocConfigProperties {
 
 		/**
 		 * The type Sort converter.
+		 *
 		 * @author daniel -shuy
 		 */
 		public static class SortConverter {
@@ -874,6 +910,7 @@ public class SpringDocConfigProperties {
 
 		/**
 		 * The type Deprecating converter.
+		 *
 		 * @author bnasslashen
 		 */
 		public static class DeprecatingConverter {
@@ -934,6 +971,7 @@ public class SpringDocConfigProperties {
 
 		/**
 		 * The type Pageable converter.
+		 *
 		 * @author bnasslashen
 		 */
 		public static class PageableConverter {
@@ -965,6 +1003,7 @@ public class SpringDocConfigProperties {
 
 	/**
 	 * The type Webjars.
+	 *
 	 * @author bnasslahsen
 	 */
 	public static class Webjars {
@@ -994,6 +1033,7 @@ public class SpringDocConfigProperties {
 
 	/**
 	 * The type Api docs.
+	 *
 	 * @author bnasslahsen
 	 */
 	public static class ApiDocs {
@@ -1117,11 +1157,11 @@ public class SpringDocConfigProperties {
 		 */
 		public enum OpenApiVersion {
 			/**
-			 *Openapi 3.0.1 version.
+			 * Openapi 3.0.1 version.
 			 */
 			OPENAPI_3_0("3.0.1"),
 			/**
-			 *Openapi 3.1.0 version.
+			 * Openapi 3.1.0 version.
 			 */
 			OPENAPI_3_1("3.1.0");
 
@@ -1153,6 +1193,7 @@ public class SpringDocConfigProperties {
 
 	/**
 	 * The type Groups.
+	 *
 	 * @author bnasslahsen
 	 */
 	public static class Groups {
@@ -1183,6 +1224,7 @@ public class SpringDocConfigProperties {
 
 	/**
 	 * The type Cache.
+	 *
 	 * @author bnasslahsen
 	 */
 	public static class Cache {
@@ -1212,6 +1254,7 @@ public class SpringDocConfigProperties {
 
 	/**
 	 * The type Group config.
+	 *
 	 * @author bnasslahsen
 	 */
 	public static class GroupConfig {

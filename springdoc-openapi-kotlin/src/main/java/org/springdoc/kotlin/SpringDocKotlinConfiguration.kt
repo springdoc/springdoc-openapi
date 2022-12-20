@@ -1,6 +1,7 @@
 package org.springdoc.kotlin
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.models.media.ByteArraySchema
 import org.springdoc.core.Constants
 import org.springdoc.core.SpringDocConfiguration
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Lazy
 import org.springframework.core.MethodParameter
+import org.springframework.core.annotation.AnnotatedElementUtils
 import kotlin.coroutines.Continuation
 import kotlin.reflect.KParameter
 import kotlin.reflect.jvm.kotlinFunction
@@ -60,13 +62,25 @@ class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvider) {
 	 */
 	@Bean
 	@Lazy(false)
+	@ConditionalOnProperty(
+		name = [Constants.SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED],
+		matchIfMissing = true
+	)
 	@ConditionalOnMissingBean
 	fun nullableKotlinRequestParameterCustomizer(): ParameterCustomizer {
 		return ParameterCustomizer { parameterModel, methodParameter ->
 			if (parameterModel == null) return@ParameterCustomizer null
 			val kParameter = methodParameter.toKParameter()
 			if (kParameter != null) {
-				parameterModel.required = kParameter.type.isMarkedNullable == false
+				val parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
+					AnnotatedElementUtils.forAnnotations(*methodParameter.parameterAnnotations),
+					Parameter::class.java
+				)
+				// Swagger @Parameter annotation takes precedence
+				if (parameterDoc != null && parameterDoc.required)
+					parameterModel.required = parameterDoc.required
+				else
+					parameterModel.required = kParameter.type.isMarkedNullable == false
 			}
 			return@ParameterCustomizer parameterModel
 		}
