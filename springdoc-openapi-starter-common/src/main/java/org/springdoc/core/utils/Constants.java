@@ -396,6 +396,10 @@ public final class Constants {
 	public static final String SPRINGDOC_SORT_CONVERTER_ENABLED = "springdoc.model-converters.sort-converter.enabled";
 
 	/**
+	 * The constant SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED.
+	 */
+	public static final String SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED = "springdoc.nullable-request-parameter-enabled";
+	/**
 	 * Instantiates a new Constants.
 	 */
 	private Constants() {
