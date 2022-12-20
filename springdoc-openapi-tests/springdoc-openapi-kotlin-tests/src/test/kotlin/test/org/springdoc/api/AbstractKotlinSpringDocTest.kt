@@ -20,6 +20,7 @@ package test.org.springdoc.api
 
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.JSONAssert
+import org.slf4j.LoggerFactory
 import org.springdoc.core.utils.Constants
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
@@ -36,24 +37,30 @@ abstract class AbstractKotlinSpringDocTest {
 	@Autowired
 	private val webTestClient: WebTestClient? = null
 
+	private val logger = LoggerFactory.getLogger(AbstractKotlinSpringDocTest::class.java)
 
 	@Test
 	@Throws(Exception::class)
 	fun testApp() {
-		val getResult =
-			webTestClient!!.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
-				.expectStatus().isOk.expectBody().returnResult()
+		var result: String? = null
+		try {
+			val getResult =
+				webTestClient!!.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
+					.expectStatus().isOk.expectBody().returnResult()
 
-		val result = String(getResult.responseBody!!)
-		val className = javaClass.simpleName
-		val testNumber = className.replace("[^0-9]".toRegex(), "")
+			result = String(getResult.responseBody!!)
+			val className = javaClass.simpleName
+			val testNumber = className.replace("[^0-9]".toRegex(), "")
 
-		val expected = getContent("results/app$testNumber.json")
-		JSONAssert.assertEquals(expected, result, true)
+			val expected = getContent("results/app$testNumber.json")
+			JSONAssert.assertEquals(expected, result, true)
+		} catch (e: AssertionError) {
+			logger.error(result)
+			throw e
+		}
 	}
 
 	companion object {
-
 		@Throws(Exception::class)
 		fun getContent(fileName: String): String {
 			try {
