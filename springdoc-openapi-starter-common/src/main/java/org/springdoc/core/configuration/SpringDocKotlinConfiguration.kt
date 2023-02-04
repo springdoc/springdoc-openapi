@@ -9,8 +9,11 @@ import org.springdoc.core.providers.ObjectMapperProvider
 import org.springdoc.core.utils.Constants
 import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Lazy
@@ -27,9 +30,10 @@ import kotlin.reflect.jvm.kotlinFunction
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = [Constants.SPRINGDOC_ENABLED], matchIfMissing = true)
-@ConditionalOnBean(
-	SpringDocConfiguration::class
-)
+@ConditionalOnExpression("\${springdoc.api-docs.enabled:true} and \${springdoc.enable-kotlin:true}")
+@ConditionalOnClass(Continuation::class)
+@ConditionalOnWebApplication
+@ConditionalOnBean(SpringDocConfiguration::class)
 open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvider) {
 	/**
 	 * Instantiates a new Spring doc kotlin configuration.
