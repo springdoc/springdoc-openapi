@@ -45,9 +45,6 @@
   "components": {
     "schemas": {
       "DemoRequest": {
-        "required": [
-          "nonNullableWithDefault"
-        ],
         "type": "object",
         "properties": {
           "nonNullableWithDefault": {
