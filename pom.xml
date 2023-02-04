@@ -233,17 +233,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<resources>
-			<resource>
-				<directory>../</directory>
-				<targetPath>META-INF</targetPath>
-				<includes>
-					<include>LICENSE</include>
-					<include>COPYRIGHT</include>
-				</includes>
-			</resource>
-		</resources>
-
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -254,6 +243,31 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/classes/META-INF</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/..</directory>
+									<includes>
+										<include>LICENSE</include>
+										<include>COPYRIGHT</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.owasp</groupId>
 				<artifactId>dependency-check-maven</artifactId>
