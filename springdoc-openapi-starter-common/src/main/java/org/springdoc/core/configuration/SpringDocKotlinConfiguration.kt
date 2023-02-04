@@ -44,8 +44,8 @@ open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvid
 			.addRequestWrapperToIgnore(Continuation::class.java)
 			.replaceWithSchema(ByteArray::class.java, ByteArraySchema())
 			.addDeprecatedType(Deprecated::class.java)
-		objectMapperProvider.jsonMapper().registerModule(SpringDocRequiredModule())
 		objectMapperProvider.jsonMapper().registerModule(KotlinModule.Builder().build())
+		objectMapperProvider.jsonMapper().registerModule(SpringDocRequiredModule())
 	}
 
 	/**
