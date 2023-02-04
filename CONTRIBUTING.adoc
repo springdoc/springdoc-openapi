@@ -74,7 +74,7 @@ If you don't have an IDE preference we would recommend that you use IntellIJ.
 
 === Importing into IntelliJ IDEA
 
-If you have performed a checkout of this repository already, use "`File`" -> "`Open`" and then select the root `build.gradle` file to import the code.
+If you have performed a checkout of this repository already, use "`File`" -> "`Open`" and then select the root `pom.xml` file to import the code.
 
 Alternatively, you can let IntellIJ IDEA checkout the code for you.
 Use "`File`" ->
