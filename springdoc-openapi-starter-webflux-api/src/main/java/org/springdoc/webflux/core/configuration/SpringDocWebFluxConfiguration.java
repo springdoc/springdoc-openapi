@@ -32,6 +32,7 @@ import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.customizers.RouterOperationCustomizer;
+import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -68,7 +69,6 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
@@ -132,7 +132,7 @@ public class SpringDocWebFluxConfiguration {
 	RequestService requestBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			OperationService operationService,
 			Optional<List<ParameterCustomizer>> parameterCustomizers,
-			StandardReflectionParameterNameDiscoverer  localSpringDocParameterNameDiscoverer) {
+			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		return new RequestService(parameterBuilder, requestBodyService,
 				operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}

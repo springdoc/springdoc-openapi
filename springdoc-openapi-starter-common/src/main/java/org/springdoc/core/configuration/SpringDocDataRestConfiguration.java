@@ -36,6 +36,7 @@ import org.springdoc.core.data.DataRestRequestService;
 import org.springdoc.core.data.DataRestResponseService;
 import org.springdoc.core.data.DataRestRouterOperationService;
 import org.springdoc.core.data.DataRestTagsService;
+import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.DataRestHalProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
@@ -60,7 +61,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.context.PersistentEntities;
 import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
@@ -192,7 +192,7 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		DataRestRequestService dataRestRequestBuilder(StandardReflectionParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
+		DataRestRequestService dataRestRequestBuilder(SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
 				RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
 			return new DataRestRequestService(localSpringDocParameterNameDiscoverer, parameterBuilder,
 					requestBodyService, requestBuilder, springDocDataRestUtils);
