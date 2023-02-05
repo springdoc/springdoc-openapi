@@ -54,7 +54,7 @@ public class HelloController {
 	 * @param startDate the start date 
 	 * @param endDate the end date
 	 */
-	@GetMapping(value = "/list")
+	@GetMapping(value = "/list/{trackerId}")
 	void list(
 
 			@Parameter(name = "trackerId", in = ParameterIn.PATH, required = true, schema = @Schema(type = "string", example = "the-tracker-id")) @PathVariable String trackerId,
@@ -65,11 +65,11 @@ public class HelloController {
 	/**
 	 * Secondlist.
 	 *
-	 * @param trackerId the tracker id 
-	 * @param startDate the start date 
+	 * @param trackerId the tracker id
+	 * @param startDate the start date
 	 * @param endDate the end date
 	 */
-	@GetMapping(value = "/secondlist")
+	@GetMapping(value = "/secondlist/{trackerId}")
 	void secondlist(
 			@Parameter(name = "trackerId", in = ParameterIn.PATH, required = true, schema = @Schema(type = "string", example = "the-tracker-id")) @PathVariable String trackerId,
 			@Parameter(name = "start", in = ParameterIn.QUERY, required = false, schema = @Schema(type = "string", format = "date-time", required = false, example = "1970-01-01T00:00:00.000Z")) @RequestParam(value = "start", required = false) Instant startDate,

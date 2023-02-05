@@ -40,7 +40,7 @@ public class HelloController {
 	 *
 	 * @return the string
 	 */
-	@PostMapping("/test1")
+	@PostMapping("/test1/{uuid}")
 	@Operation(summary = "Example api that realize an ECHO operation",
 			description = "The result of the echo is the input value of the api",
 			parameters = { @Parameter(in = ParameterIn.PATH,
@@ -69,7 +69,7 @@ public class HelloController {
 	 *
 	 * @return the string
 	 */
-	@PostMapping("/test2")
+	@PostMapping("/test2/{uuid}")
 	@Operation(summary = "Example api that realize an ECHO operation",
 			description = "The result of the echo is the input value of the api",
 			responses = {
@@ -98,7 +98,7 @@ public class HelloController {
 	 *
 	 * @return the string
 	 */
-	@PostMapping("/test3")
+	@PostMapping("/test3/{uuid}")
 	@Operation(summary = "Example api that realize an ECHO operation",
 			description = "The result of the echo is the input value of the api",
 			parameters = { @Parameter(in = ParameterIn.PATH,

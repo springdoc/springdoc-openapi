@@ -26,9 +26,9 @@ public class CoffeeService {
 		return repo.findById(id);
 	}
 
-	Flux<CoffeeOrder> getOrdersForCoffeeById(@Parameter(in = ParameterIn.PATH) String coffeeId) {
+	Flux<CoffeeOrder> getOrdersForCoffeeById(@Parameter(in = ParameterIn.PATH) String id) {
 		return Flux.interval(Duration.ofSeconds(1))
 				.onBackpressureDrop()
-				.map(i -> new CoffeeOrder(coffeeId, Instant.now()));
+				.map(i -> new CoffeeOrder(id, Instant.now()));
 	}
 }

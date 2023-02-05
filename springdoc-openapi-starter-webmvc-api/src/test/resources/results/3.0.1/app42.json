@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/tweets": {
+    "/tweets/{id}": {
       "get": {
         "tags": [
           "hello-controller"

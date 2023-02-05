@@ -11,63 +11,6 @@
     }
   ],
   "paths": {
-    "/check": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "check",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/list": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "list",
-        "parameters": [
-          {
-            "name": "trackerId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "the-tracker-id"
-            }
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "example": "1970-01-01T00:00:00.000Z"
-            }
-          },
-          {
-            "name": "end",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "example": "1970-01-01T00:10:00.000Z"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/values/{trackerId}/data": {
       "get": {
         "tags": [
@@ -122,7 +65,7 @@
         }
       }
     },
-    "/secondlist": {
+    "/secondlist/{trackerId}": {
       "get": {
         "tags": [
           "hello-controller"
@@ -159,6 +102,54 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/list": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "list",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:00:00.000Z"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "1970-01-01T00:10:00.000Z"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/check": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "check",
         "responses": {
           "200": {
             "description": "OK"

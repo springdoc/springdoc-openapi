@@ -64,7 +64,7 @@ public class MetaAnnotationController {
 	 * @param accountId the account id
 	 * @return the string
 	 */
-	@GetMapping(value = "/testTopLevelParamAnnotationOverrides/{accountId}")
+	@GetMapping(value = "/testTopLevelParamAnnotationOverrides/{id}")
 	String testTopLevelParamAnnotationOverrides(@PathVariable @AccountId @Parameter(name = "id") String accountId) {
 		return accountId;
 	}

@@ -75,7 +75,7 @@
         }
       }
     },
-    "/secondlist": {
+    "/secondlist/{trackerId}": {
       "get": {
         "tags": [
           "hello-controller"
@@ -124,7 +124,7 @@
         }
       }
     },
-    "/list": {
+    "/list/{trackerId}": {
       "get": {
         "tags": [
           "hello-controller"

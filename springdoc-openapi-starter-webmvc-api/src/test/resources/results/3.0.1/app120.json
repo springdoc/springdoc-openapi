@@ -11,39 +11,7 @@
     }
   ],
   "paths": {
-    "/simpleTest/{accountId}": {
-      "get": {
-        "tags": [
-          "meta-annotation-controller"
-        ],
-        "operationId": "simpleTest",
-        "parameters": [
-          {
-            "name": "accountId",
-            "in": "path",
-            "description": "non alias description",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "example": 123456
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/testTopLevelParamAnnotationOverrides/{accountId}": {
+    "/testTopLevelParamAnnotationOverrides/{id}": {
       "get": {
         "tags": [
           "meta-annotation-controller"
@@ -105,22 +73,27 @@
         }
       }
     },
-    "/testAliasFor": {
+    "/testNoAliasFors/": {
       "get": {
         "tags": [
           "meta-annotation-controller"
         ],
-        "operationId": "testAliasFor",
+        "operationId": "testNoAliasFors",
         "parameters": [
           {
-            "name": "accountId",
+            "name": "name",
             "in": "query",
-            "description": "non alias description",
+            "description": "desc",
             "required": true,
+            "deprecated": true,
+            "allowEmptyValue": true,
+            "style": "deepObject",
+            "explode": true,
+            "allowReserved": true,
             "schema": {
-              "type": "string"
+              "type": "boolean"
             },
-            "example": "OVERRIDDEN EXAMPLE"
+            "example": 1234
           }
         ],
         "responses": {
@@ -216,27 +189,54 @@
         }
       }
     },
-    "/testNoAliasFors/": {
+    "/testAliasFor": {
       "get": {
         "tags": [
           "meta-annotation-controller"
         ],
-        "operationId": "testNoAliasFors",
+        "operationId": "testAliasFor",
         "parameters": [
           {
-            "name": "name",
+            "name": "accountId",
             "in": "query",
-            "description": "desc",
+            "description": "non alias description",
             "required": true,
-            "deprecated": true,
-            "allowEmptyValue": true,
-            "style": "deepObject",
-            "explode": true,
-            "allowReserved": true,
             "schema": {
-              "type": "boolean"
+              "type": "string"
             },
-            "example": 1234
+            "example": "OVERRIDDEN EXAMPLE"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/simpleTest/{accountId}": {
+      "get": {
+        "tags": [
+          "meta-annotation-controller"
+        ],
+        "operationId": "simpleTest",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "non alias description",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": 123456
           }
         ],
         "responses": {
