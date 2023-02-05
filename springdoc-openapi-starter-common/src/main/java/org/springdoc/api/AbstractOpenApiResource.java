@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -1099,6 +1100,17 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
 			Paths paths) {
 		PathItem pathItemObject;
+		if(operation!=null && !CollectionUtils.isEmpty(operation.getParameters())){
+			Iterator<Parameter> paramIt = operation.getParameters().iterator();
+			while (paramIt.hasNext()){
+				Parameter parameter = paramIt.next();
+				if(ParameterIn.PATH.toString().equals(parameter.getIn())){
+					// check it's present in the path
+					if(!operationPath.contains("{" + parameter.getName() + "}"))
+						paramIt.remove();
+				}
+			}
+		}
 		if (paths.containsKey(operationPath))
 			pathItemObject = paths.get(operationPath);
 		else

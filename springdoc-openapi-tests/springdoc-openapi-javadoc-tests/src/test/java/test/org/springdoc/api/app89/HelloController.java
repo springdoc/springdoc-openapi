@@ -39,7 +39,7 @@ public class HelloController {
 	 * @return the address
 	 */
 	@Operation(summary = "Get Status")
-	@GetMapping(value = "/status", produces = MediaType.TEXT_HTML_VALUE)
+	@GetMapping(value = "/status/{id}", produces = MediaType.TEXT_HTML_VALUE)
 	public ModelAndView getAddress(@PathVariable String id) {
 		return null;
 	}

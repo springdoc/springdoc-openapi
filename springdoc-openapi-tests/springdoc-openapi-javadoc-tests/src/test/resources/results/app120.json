@@ -17,7 +17,7 @@
     }
   ],
   "paths": {
-    "/testTopLevelParamAnnotationOverrides/{accountId}": {
+    "/testTopLevelParamAnnotationOverrides/{id}": {
       "get": {
         "tags": [
           "meta-annotation-controller"

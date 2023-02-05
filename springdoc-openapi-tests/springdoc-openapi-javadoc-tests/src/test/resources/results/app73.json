@@ -28,7 +28,7 @@
         "parameters": [
           {
             "name": "country_code",
-            "in": "path",
+            "in": "query",
             "description": "the country code",
             "required": true,
             "schema": {
@@ -68,7 +68,7 @@
         "parameters": [
           {
             "name": "country_code",
-            "in": "path",
+            "in": "query",
             "description": "the country code",
             "required": true,
             "schema": {
@@ -103,7 +103,7 @@
         "parameters": [
           {
             "name": "country_code",
-            "in": "path",
+            "in": "query",
             "description": "the country code",
             "required": true,
             "schema": {
@@ -143,7 +143,7 @@
         "parameters": [
           {
             "name": "country_code",
-            "in": "path",
+            "in": "query",
             "description": "the country code",
             "required": true,
             "schema": {

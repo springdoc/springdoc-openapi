@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/test": {
+    "/test/{path}": {
       "get": {
         "tags": [
           "hello-controller"
