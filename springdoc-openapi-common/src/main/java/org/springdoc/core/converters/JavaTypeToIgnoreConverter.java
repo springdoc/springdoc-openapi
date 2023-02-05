@@ -36,7 +36,7 @@ import org.springdoc.core.providers.ObjectMapperProvider;
  * The type Request type to ignore converter.
  * @author bnasslahsen
  */
-public class RequestTypeToIgnoreConverter implements ModelConverter {
+public class JavaTypeToIgnoreConverter implements ModelConverter {
 
 	/**
 	 * The Spring doc object mapper.
@@ -48,7 +48,7 @@ public class RequestTypeToIgnoreConverter implements ModelConverter {
 	 *
 	 * @param springDocObjectMapper the spring doc object mapper
 	 */
-	public RequestTypeToIgnoreConverter(ObjectMapperProvider springDocObjectMapper) {
+	public JavaTypeToIgnoreConverter(ObjectMapperProvider springDocObjectMapper) {
 		this.springDocObjectMapper = springDocObjectMapper;
 	}
 
@@ -57,7 +57,7 @@ public class RequestTypeToIgnoreConverter implements ModelConverter {
 		if (type.isSchemaProperty()) {
 			JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 			Class<?> cls = javaType.getRawClass();
-			if (AbstractRequestService.isRequestTypeToIgnore(cls))
+			if (ConverterUtils.isJavaTypeToIgnore(cls))
 				return null;
 		}
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;

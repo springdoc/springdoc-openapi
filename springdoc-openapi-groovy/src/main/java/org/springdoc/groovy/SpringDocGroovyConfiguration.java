@@ -25,7 +25,7 @@ package org.springdoc.groovy;
 import groovy.lang.MetaClass;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.SpringDocUtils;
-import org.springdoc.core.converters.RequestTypeToIgnoreConverter;
+import org.springdoc.core.converters.JavaTypeToIgnoreConverter;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -56,7 +56,7 @@ public class SpringDocGroovyConfiguration {
 	@Bean
 	@Lazy(false)
 	Object ignoreGroovyMetaClass() {
-		SpringDocUtils.getConfig().addRequestWrapperToIgnore(MetaClass.class);
+		SpringDocUtils.getConfig().addJavaTypeToIgnore(MetaClass.class);
 		return null;
 	}
 
@@ -68,7 +68,7 @@ public class SpringDocGroovyConfiguration {
 	 */
 	@Bean
 	@Lazy(false)
-	RequestTypeToIgnoreConverter requestTypeToIgnoreConverter(ObjectMapperProvider springDocObjectMapper) {
-		return new RequestTypeToIgnoreConverter(springDocObjectMapper);
+	JavaTypeToIgnoreConverter requestTypeToIgnoreConverter(ObjectMapperProvider springDocObjectMapper) {
+		return new JavaTypeToIgnoreConverter(springDocObjectMapper);
 	}
 }

@@ -346,5 +346,27 @@ public class SpringDocUtils {
 		AdditionalModelsConverter.removeFromClassMap(clazzs);
 		return this;
 	}
+
+	/**
+	 * Add java type to ignore spring doc utils.
+	 *
+	 * @param clazz the clazz
+	 * @return the spring doc utils
+	 */
+	public SpringDocUtils addJavaTypeToIgnore(Class<?> clazz) {
+		ConverterUtils.addJavaTypeToIgnore(clazz);
+		return this;
+	}
+
+	/**
+	 * Remove java type to ignore spring doc utils.
+	 *
+	 * @param clazz the clazz
+	 * @return the spring doc utils
+	 */
+	public SpringDocUtils removeJavaTypeToIgnore(Class<?> clazz) {
+		ConverterUtils.removeJavaTypeToIgnore(clazz);
+		return this;
+	}
 }
 
