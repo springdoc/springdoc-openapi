@@ -1236,7 +1236,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	protected String writeYamlValue(OpenAPI openAPI) throws JsonProcessingException {
+	protected byte[] writeYamlValue(OpenAPI openAPI) throws JsonProcessingException {
 		String result;
 		ObjectMapper objectMapper = springDocProviders.yamlMapper();
 		if (springDocConfigProperties.isWriterWithOrderByKeys())
@@ -1247,7 +1247,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			result = objectMapper.writerFor(OpenAPI.class).writeValueAsString(openAPI);
 		else
 			result = objectMapper.writerWithDefaultPrettyPrinter().forType(OpenAPI.class).writeValueAsString(openAPI);
-		return result;
+		return result.getBytes(StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -1307,7 +1307,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	protected String writeJsonValue(OpenAPI openAPI) throws JsonProcessingException {
+	protected byte[] writeJsonValue(OpenAPI openAPI) throws JsonProcessingException {
 		String result;
 		ObjectMapper objectMapper = springDocProviders.jsonMapper();
 		if (springDocConfigProperties.isWriterWithOrderByKeys())
@@ -1316,7 +1316,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			result = objectMapper.writerFor(OpenAPI.class).writeValueAsString(openAPI);
 		else
 			result = objectMapper.writerWithDefaultPrettyPrinter().forType(OpenAPI.class).writeValueAsString(openAPI);
-		return result;
+		return result.getBytes(StandardCharsets.UTF_8);
 	}
 
 	/**

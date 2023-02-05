@@ -23,6 +23,7 @@
 package test.org.springdoc.api.app81;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -69,7 +70,9 @@ public class SpringDocApp81Test extends AbstractCommonTest {
 		when(request.getURI()).thenReturn(URI.create("http://localhost"));
 
 		String expected = getContent("results/app81.json");
-		String openApi = resource.openapiJson(request, "", Locale.US).block();
+		byte[] openApiBytes =resource.openapiJson(request, "", Locale.US).block();
+		String openApi = new String(openApiBytes, StandardCharsets.UTF_8); // for UTF-8 encoding
+
 		assertEquals(expected, openApi, true);
 	}
 

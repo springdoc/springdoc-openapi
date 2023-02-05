@@ -29,7 +29,6 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
-import org.springdoc.core.AbstractRequestService;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
 /**

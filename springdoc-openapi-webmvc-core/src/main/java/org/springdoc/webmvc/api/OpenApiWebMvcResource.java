@@ -111,7 +111,7 @@ public class OpenApiWebMvcResource extends OpenApiResource {
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Override
-	public String openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl, Locale locale)
+	public byte[] openapiJson(HttpServletRequest request, @Value(API_DOCS_URL) String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		return super.openapiJson(request, apiDocsUrl, locale);
 	}
@@ -128,7 +128,7 @@ public class OpenApiWebMvcResource extends OpenApiResource {
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
 	@Override
-	public String openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, Locale locale)
+	public byte[] openapiYaml(HttpServletRequest request, @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		return super.openapiYaml(request, apiDocsUrl, locale);
 	}
