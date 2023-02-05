@@ -36,6 +36,7 @@ import org.springframework.http.ResponseEntity;
 
 /**
  * The type Converter utils.
+ *
  * @author bnasslahsen
  */
 public class ConverterUtils {
@@ -54,6 +55,11 @@ public class ConverterUtils {
 	 * The constant FLUX_WRAPPERS_TO_IGNORE.
 	 */
 	private static final List<Class<?>> FLUX_WRAPPERS_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
+
+	/**
+	 * The constant JAVA_TYPE_TO_IGNORE.
+	 */
+	private static final List<Class<?>> JAVA_TYPE_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
 
 	static {
 		RESULT_WRAPPERS_TO_IGNORE.add(Callable.class);
@@ -157,4 +163,35 @@ public class ConverterUtils {
 	public static void addFluxWrapperToIgnore(Class<?> cls) {
 		FLUX_WRAPPERS_TO_IGNORE.add(cls);
 	}
+
+	/**
+	 * Add java type to ignore.
+	 *
+	 * @param cls the cls
+	 */
+	public static void addJavaTypeToIgnore(Class<?> cls) {
+		JAVA_TYPE_TO_IGNORE.add(cls);
+	}
+
+	/**
+	 * Remove java type to ignore.
+	 *
+	 * @param classes the classes
+	 */
+	public static void removeJavaTypeToIgnore(Class<?> classes) {
+		List classesToIgnore = Arrays.asList(classes);
+		if (JAVA_TYPE_TO_IGNORE.containsAll(classesToIgnore))
+			JAVA_TYPE_TO_IGNORE.removeAll(Arrays.asList(classes));
+	}
+
+	/**
+	 * Is java type to ignore boolean.
+	 *
+	 * @param rawClass the raw class
+	 * @return the boolean
+	 */
+	public static boolean isJavaTypeToIgnore(Class<?> rawClass) {
+		return JAVA_TYPE_TO_IGNORE.stream().anyMatch(clazz -> clazz.isAssignableFrom(rawClass));
+	}
+
 }

@@ -39,6 +39,7 @@ import org.springdoc.core.service.GenericResponseService;
 
 /**
  * The type Spring doc utils.
+ *
  * @author bnasslahsen
  */
 public class SpringDocUtils {
@@ -334,22 +335,44 @@ public class SpringDocUtils {
 	/**
 	 * Remove from schema map spring doc utils.
 	 *
-	 * @param clazzs the clazzs
+	 * @param clazz the clazz
 	 * @return the spring doc utils
 	 */
-	public SpringDocUtils removeFromSchemaMap(Class<?> clazzs) {
-		AdditionalModelsConverter.removeFromSchemaMap(clazzs);
+	public SpringDocUtils removeFromSchemaMap(Class<?> clazz) {
+		AdditionalModelsConverter.removeFromSchemaMap(clazz);
 		return this;
 	}
 
 	/**
 	 * Remove from schema class spring doc utils.
 	 *
-	 * @param clazzs the clazzs
+	 * @param clazz the clazz
 	 * @return the spring doc utils
 	 */
-	public SpringDocUtils removeFromSchemaClass(Class<?> clazzs) {
-		AdditionalModelsConverter.removeFromClassMap(clazzs);
+	public SpringDocUtils removeFromSchemaClass(Class<?> clazz) {
+		AdditionalModelsConverter.removeFromClassMap(clazz);
+		return this;
+	}
+
+	/**
+	 * Add java type to ignore spring doc utils.
+	 *
+	 * @param clazz the clazz
+	 * @return the spring doc utils
+	 */
+	public SpringDocUtils addJavaTypeToIgnore(Class<?> clazz) {
+		ConverterUtils.addJavaTypeToIgnore(clazz);
+		return this;
+	}
+
+	/**
+	 * Remove java type to ignore spring doc utils.
+	 *
+	 * @param clazz the clazz
+	 * @return the spring doc utils
+	 */
+	public SpringDocUtils removeJavaTypeToIgnore(Class<?> clazz) {
+		ConverterUtils.removeJavaTypeToIgnore(clazz);
 		return this;
 	}
 }
