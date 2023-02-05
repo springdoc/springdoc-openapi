@@ -9,6 +9,7 @@ import java.util.List;
 
 import ch.qos.logback.core.rolling.helper.DateTokenConverter;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
@@ -22,6 +23,15 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @RepositoryRestResource(path = "product")
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
+
+
+	List<ProductEntity> findByPrice( @Parameter(
+			name = "price",
+			description = "test desc",
+			in = ParameterIn.QUERY,
+			required = true
+	)
+	@Param("price")String price);
 
 	/**
 	 * 根据商品名称查询商品信息

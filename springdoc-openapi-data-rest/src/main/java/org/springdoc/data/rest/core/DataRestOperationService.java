@@ -35,6 +35,7 @@ import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.GenericParameterService;
 import org.springdoc.core.MethodAttributes;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocAnnotationsUtils;
@@ -205,12 +206,17 @@ public class DataRestOperationService {
 			String pName = parameterMetadatum.getName();
 			ResourceDescription description = parameterMetadatum.getDescription();
 			if (description instanceof TypedResourceDescription) {
-				Type type = getParameterType(pName,method,description);
+				Type type = getParameterType(pName, method, description);
 				Schema<?> schema = SpringDocAnnotationsUtils.extractSchema(openAPI.getComponents(), type, null, null);
 				Parameter parameter = getParameterFromAnnotations(openAPI, methodAttributes, method, pName);
-				if (parameter == null)
+				if (parameter == null) {
 					parameter = new Parameter().name(pName).in(ParameterIn.QUERY.toString()).schema(schema);
-				operation.addParametersItem(parameter);
+					operation.addParametersItem(parameter);
+				}
+				else if (CollectionUtils.isEmpty(operation.getParameters()))
+					operation.addParametersItem(parameter);
+				else
+					GenericParameterService.mergeParameter(operation.getParameters(), parameter);
 			}
 		}
 
@@ -238,7 +244,7 @@ public class DataRestOperationService {
 		java.lang.reflect.Parameter[] parameters = method.getParameters();
 		for (int i = 0; i < parameters.length; i++) {
 			java.lang.reflect.Parameter parameter = parameters[i];
-			if (pName.equals(parameter.getName()) || (parameter.getAnnotation(Param.class)!=null && pName.equals(parameter.getAnnotation(Param.class).value()))) {
+			if (pName.equals(parameter.getName()) || (parameter.getAnnotation(Param.class) != null && pName.equals(parameter.getAnnotation(Param.class).value()))) {
 				ResolvableType resolvableType = ResolvableType.forMethodParameter(method, i);
 				type = resolvableType.getType();
 				break;

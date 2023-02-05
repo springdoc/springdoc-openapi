@@ -326,12 +326,46 @@
         }
       }
     },
-    "/product/search/findTopByNameOrderByDateDesc": {
+    "/product/search/findByPrice": {
       "get": {
         "tags": [
           "product-entity-search-controller"
         ],
         "operationId": "executeSearch-productentity-get_5",
+        "parameters": [
+          {
+            "name": "price",
+            "in": "query",
+            "description": "test desc",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CollectionModelEntityModelProductEntity"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/product/search/findTopByNameOrderByDateDesc": {
+      "get": {
+        "tags": [
+          "product-entity-search-controller"
+        ],
+        "operationId": "executeSearch-productentity-get_6",
         "parameters": [
           {
             "name": "name2",
