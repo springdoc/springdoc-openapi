@@ -57,7 +57,7 @@ public class MetaAnnotationController {
 	 * When there is a top level {@code @Parameter} annotation it has precedence over the meta-annotation
 	 * So the id parameter should have all the defaults, with a name of "id"
 	 */
-	@GetMapping(value = "/testTopLevelParamAnnotationOverrides/{accountId}")
+	@GetMapping(value = "/testTopLevelParamAnnotationOverrides/{id}")
 	String testTopLevelParamAnnotationOverrides(@PathVariable @AccountId @Parameter(name = "id") String accountId) {
 		return accountId;
 	}

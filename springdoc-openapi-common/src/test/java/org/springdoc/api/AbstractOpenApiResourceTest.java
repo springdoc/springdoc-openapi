@@ -163,11 +163,11 @@ class AbstractOpenApiResourceTest {
 		final RouterOperation routerOperation = new RouterOperation();
 		routerOperation.setMethods(new RequestMethod[] { GET });
 		routerOperation.setOperationModel(operation);
-		routerOperation.setPath(PATH);
+		routerOperation.setPath(PATH+"/{"+PARAMETER_WITH_NUMBER_SCHEMA_NAME+"}");
 
 		resource.calculatePath(routerOperation, Locale.getDefault(), this.openAPI);
 
-		final List<Parameter> parameters = resource.getOpenApi(Locale.getDefault()).getPaths().get(PATH).getGet().getParameters();
+		final List<Parameter> parameters = resource.getOpenApi(Locale.getDefault()).getPaths().get(PATH+"/{"+PARAMETER_WITH_NUMBER_SCHEMA_NAME+"}").getGet().getParameters();
 		assertThat(parameters.size(), is(3));
 		assertThat(parameters, containsInAnyOrder(refParameter, numberParameterInPath, parameterWithoutSchema));
 

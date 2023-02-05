@@ -26,7 +26,6 @@ import io.swagger.v3.oas.annotations.Operation;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,7 +34,7 @@ public class HelloController {
 
 	@Operation(summary = "Get Status")
 	@GetMapping(value = "/status", produces = MediaType.TEXT_HTML_VALUE)
-	public ModelAndView getAddress(@PathVariable String id) {
+	public ModelAndView getAddress(String id) {
 		return null;
 	}
 }

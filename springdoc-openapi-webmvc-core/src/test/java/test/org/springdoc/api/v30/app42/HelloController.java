@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController("/api")
 public class HelloController {
 
-	@GetMapping(value = "/tweets")
+	@GetMapping(value = "/tweets/{id}")
 	public void tweets(@PathVariable TweetId id) {
 
 	}

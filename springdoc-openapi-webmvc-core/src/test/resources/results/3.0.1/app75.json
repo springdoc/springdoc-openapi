@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/test1": {
+    "/test1/{uuid}": {
       "post": {
         "tags": [
           "hello-controller"
@@ -55,7 +55,7 @@
         }
       }
     },
-    "/test2": {
+    "/test2/{uuid}": {
       "post": {
         "tags": [
           "hello-controller"
@@ -99,7 +99,7 @@
         }
       }
     },
-    "/test3": {
+    "/test3/{uuid}": {
       "post": {
         "tags": [
           "hello-controller"

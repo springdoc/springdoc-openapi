@@ -53,7 +53,7 @@ public class HelloController {
 			@Parameter(name = "end", in = ParameterIn.QUERY, required = false, schema = @Schema(type = "string", format = "date-time", required = false, example = "1970-01-01T00:10:00.000Z")) @RequestParam(value = "end", required = false) Instant endDate) {
 	}
 
-	@GetMapping(value = "/secondlist")
+	@GetMapping(value = "/secondlist/{trackerId}")
 	void secondlist(
 			@Parameter(name = "trackerId", in = ParameterIn.PATH, required = true, schema = @Schema(type = "string", example = "the-tracker-id")) @PathVariable String trackerId,
 			@Parameter(name = "start", in = ParameterIn.QUERY, required = false, schema = @Schema(type = "string", format = "date-time", required = false, example = "1970-01-01T00:00:00.000Z")) @RequestParam(value = "start", required = false) Instant startDate,

@@ -17,7 +17,7 @@
     }
   ],
   "paths": {
-    "/status": {
+    "/status/{id}": {
       "get": {
         "tags": [
           "hello-controller"

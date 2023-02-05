@@ -21,7 +21,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string"

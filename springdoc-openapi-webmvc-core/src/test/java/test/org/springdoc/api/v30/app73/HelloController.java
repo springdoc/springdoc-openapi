@@ -40,12 +40,12 @@ public class HelloController {
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@Parameter(name = "country_code", in = ParameterIn.PATH) String countryCode, @PathVariable("id") String id) {
+	public void delete(@Parameter(name = "country_code", in = ParameterIn.QUERY) String countryCode, @PathVariable("id") String id) {
 
 	}
 
 	@GetMapping("/{id}")
-	public String get(@Parameter(name = "country_code", in = ParameterIn.PATH) String countryCode, @PathVariable("id") String id) {
+	public String get(@Parameter(name = "country_code", in = ParameterIn.QUERY) String countryCode, @PathVariable("id") String id) {
 		return null;
 	}
 }

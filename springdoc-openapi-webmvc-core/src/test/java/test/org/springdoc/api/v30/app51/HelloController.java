@@ -64,7 +64,7 @@ public class HelloController {
 		return "test";
 	}
 
-	@GetMapping("/test")
+	@GetMapping("/test/{path}")
 	public String get(
 			@PathVariable String path,
 			@RequestParam(required = false) Map<String, String> params) {
