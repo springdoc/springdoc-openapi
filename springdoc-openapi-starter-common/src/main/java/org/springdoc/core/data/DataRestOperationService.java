@@ -38,6 +38,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.models.MethodAttributes;
+import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.OperationService;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
@@ -209,9 +210,14 @@ public class DataRestOperationService {
 				Type type = getParameterType(pName,method,description);
 				Schema<?> schema = SpringDocAnnotationsUtils.extractSchema(openAPI.getComponents(), type, null, null);
 				Parameter parameter = getParameterFromAnnotations(openAPI, methodAttributes, method, pName);
-				if (parameter == null)
+				if (parameter == null) {
 					parameter = new Parameter().name(pName).in(ParameterIn.QUERY.toString()).schema(schema);
-				operation.addParametersItem(parameter);
+					operation.addParametersItem(parameter);
+				}
+				else if (CollectionUtils.isEmpty(operation.getParameters()))
+					operation.addParametersItem(parameter);
+				else
+					GenericParameterService.mergeParameter(operation.getParameters(), parameter);
 			}
 		}
 
