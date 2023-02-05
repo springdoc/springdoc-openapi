@@ -64,6 +64,7 @@ import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
 import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.models.ParameterId;
@@ -74,7 +75,6 @@ import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
 import org.springframework.core.MethodParameter;
-import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.ClassUtils;
@@ -163,7 +163,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * The Local spring doc parameter name discoverer.
 	 */
-	private final StandardReflectionParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+	private final SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 
 	/**
 	 * The Parameter customizers.
@@ -191,7 +191,7 @@ public abstract class AbstractRequestService {
 	 */
 	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
-			StandardReflectionParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;

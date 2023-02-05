@@ -41,6 +41,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
 import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.models.ParameterInfo;
@@ -52,7 +53,6 @@ import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 import org.springdoc.core.utils.SpringDocDataRestUtils;
 
 import org.springframework.core.MethodParameter;
-import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.data.rest.core.mapping.ResourceMetadata;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
@@ -72,7 +72,7 @@ public class DataRestRequestService {
 	/**
 	 * The Local spring doc parameter name discoverer.
 	 */
-	private final StandardReflectionParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
+	private final SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
 
 	/**
 	 * The Parameter builder.
@@ -103,7 +103,7 @@ public class DataRestRequestService {
 	 * @param requestBuilder the request builder
 	 * @param springDocDataRestUtils the spring doc data rest utils
 	 */
-	public DataRestRequestService(StandardReflectionParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
+	public DataRestRequestService(SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
 			RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
 		this.parameterBuilder = parameterBuilder;

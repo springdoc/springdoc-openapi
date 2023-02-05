@@ -28,12 +28,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springdoc.core.customizers.ParameterCustomizer;
+import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.OperationService;
 import org.springdoc.core.service.RequestBodyService;
-
-import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
@@ -63,7 +62,7 @@ public class RequestService extends AbstractRequestService {
 	 */
 	public RequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
 			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
-			StandardReflectionParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super(parameterBuilder, requestBodyService, operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 }

@@ -61,6 +61,7 @@ import org.springdoc.core.customizers.GlobalOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
+import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -102,7 +103,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -174,8 +174,8 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@Lazy(false)
-	StandardReflectionParameterNameDiscoverer localSpringDocParameterNameDiscoverer() {
-		return new StandardReflectionParameterNameDiscoverer();
+	SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer() {
+		return new SpringDocParameterNameDiscoverer();
 	}
 
 	/**
