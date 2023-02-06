@@ -13,12 +13,12 @@ import org.springframework.test.context.TestPropertySource;
 public class SpringDocApp1Test extends AbstractSpringDocTest {
 	@BeforeAll
 	public static void init() {
-		SpringDocUtils.getConfig().removeRequestWrapperToIgnore(MetaClass.class);
+		SpringDocUtils.getConfig().removeJavaTypeToIgnore(MetaClass.class);
 	}
 
 	@AfterAll
 	public static void clean() {
-		SpringDocUtils.getConfig().addRequestWrapperToIgnore(MetaClass.class);
+		SpringDocUtils.getConfig().addJavaTypeToIgnore(MetaClass.class);
 	}
 
 	@SpringBootApplication

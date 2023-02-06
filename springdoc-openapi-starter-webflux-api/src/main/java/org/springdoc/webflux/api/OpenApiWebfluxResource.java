@@ -114,7 +114,7 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Override
-	public Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl, Locale locale)
+	public Mono<byte[]> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		return super.openapiJson(serverHttpRequest, apiDocsUrl, locale);
 	}
@@ -131,7 +131,7 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
 	@Override
-	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest,
+	public Mono<byte[]> openapiYaml(ServerHttpRequest serverHttpRequest,
 			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, Locale locale) throws JsonProcessingException {
 		return super.openapiYaml(serverHttpRequest, apiDocsUrl, locale);
 	}
