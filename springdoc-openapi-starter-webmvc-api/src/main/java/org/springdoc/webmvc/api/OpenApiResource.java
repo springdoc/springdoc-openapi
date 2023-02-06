@@ -133,7 +133,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	public String openapiJson(HttpServletRequest request,
+	public byte[] openapiJson(HttpServletRequest request,
 			String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		calculateServerUrl(request, apiDocsUrl, locale);
@@ -150,7 +150,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	public String openapiYaml(HttpServletRequest request,
+	public byte[] openapiYaml(HttpServletRequest request,
 			String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		calculateServerUrl(request, apiDocsUrl, locale);

@@ -132,7 +132,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	protected Mono<String> openapiJson(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale)
+	protected Mono<byte[]> openapiJson(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		calculateServerUrl(serverHttpRequest, apiDocsUrl, locale);
 		OpenAPI openAPI = this.getOpenApi(locale);
@@ -148,7 +148,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @return the mono
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	protected Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale)
+	protected Mono<byte[]> openapiYaml(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		calculateServerUrl(serverHttpRequest, apiDocsUrl, locale);
 		OpenAPI openAPI = this.getOpenApi(locale);

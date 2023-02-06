@@ -122,7 +122,7 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_PATH_SEPARATOR, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String openapiJson(HttpServletRequest request, Locale locale)
+	public byte[] openapiJson(HttpServletRequest request, Locale locale)
 			throws JsonProcessingException {
 		return super.openapiJson(request, EMPTY, locale);
 	}
@@ -138,7 +138,7 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_YAML_API_DOCS_ACTUATOR_PATH, produces = APPLICATION_OPENAPI_YAML)
-	public String openapiYaml(HttpServletRequest request, Locale locale)
+	public byte[] openapiYaml(HttpServletRequest request, Locale locale)
 			throws JsonProcessingException {
 		return super.openapiYaml(request, YAML, locale);
 	}

@@ -84,7 +84,7 @@ public class MultipleOpenApiWebFluxResource extends MultipleOpenApiResource {
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL + "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Mono<String> openapiJson(ServerHttpRequest
+	public Mono<byte[]> openapiJson(ServerHttpRequest
 			serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl, @PathVariable String
 			group, Locale locale) throws JsonProcessingException {
 		return getOpenApiResourceOrThrow(group).openapiJson(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group, locale);
@@ -102,7 +102,7 @@ public class MultipleOpenApiWebFluxResource extends MultipleOpenApiResource {
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML + "/{group}", produces = APPLICATION_OPENAPI_YAML)
-	public Mono<String> openapiYaml(ServerHttpRequest serverHttpRequest,
+	public Mono<byte[]> openapiYaml(ServerHttpRequest serverHttpRequest,
 			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, @PathVariable String
 			group, Locale locale) throws JsonProcessingException {
 		return getOpenApiResourceOrThrow(group).openapiYaml(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group, locale);
