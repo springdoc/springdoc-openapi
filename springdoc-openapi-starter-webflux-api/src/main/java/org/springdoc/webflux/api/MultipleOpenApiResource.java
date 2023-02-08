@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.GlobalOperationCustomizer;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -110,7 +111,6 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param springDocProviders the spring doc providers
 	 */
 	protected MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
@@ -161,12 +161,9 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 					requestBuilder,
 					responseBuilder,
 					operationParser,
-					Optional.of(item.getOperationCustomizers()),
-					Optional.of(item.getOpenApiCustomizers()),
-					Optional.of(item.getRouterOperationCustomizers()),
-					Optional.of(item.getOpenApiMethodFilters()),
 					springDocConfigProperties,
-					springDocProviders
+					springDocProviders, new SpringDocCustomizers(Optional.of(item.getOpenApiCustomizers()), Optional.of(item.getOperationCustomizers()),
+					Optional.of(item.getRouterOperationCustomizers()), Optional.of(item.getOpenApiMethodFilters()))
 			);
 		else
 			return new OpenApiActuatorResource(item.getGroup(),
@@ -174,12 +171,9 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 					requestBuilder,
 					responseBuilder,
 					operationParser,
-					Optional.of(item.getOperationCustomizers()),
-					Optional.of(item.getOpenApiCustomizers()),
-					Optional.of(item.getRouterOperationCustomizers()),
-					Optional.of(item.getOpenApiMethodFilters()),
 					springDocConfigProperties,
-					springDocProviders);
+					springDocProviders, new SpringDocCustomizers(Optional.of(item.getOpenApiCustomizers()), Optional.of(item.getOperationCustomizers()),
+					Optional.of(item.getRouterOperationCustomizers()), Optional.of(item.getOpenApiMethodFilters())));
 	}
 
 	/**

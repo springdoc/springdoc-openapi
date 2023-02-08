@@ -48,10 +48,8 @@ import org.mockito.Mock;
 import org.mockito.internal.stubbing.answers.CallsRealMethods;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springdoc.core.customizers.OpenApiCustomizer;
-import org.springdoc.core.customizers.OperationCustomizer;
-import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
-import org.springdoc.core.filters.OpenApiMethodFilter;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.SpringDocProviders;
@@ -61,7 +59,6 @@ import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
 
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -109,9 +106,6 @@ class AbstractOpenApiResourceTest {
 	@Mock
 	private SpringDocProviders springDocProviders;
 
-	@Mock
-	private ApplicationContext context;
-
 	private OpenAPI openAPI;
 
 	private AbstractOpenApiResource resource;
@@ -123,9 +117,7 @@ class AbstractOpenApiResourceTest {
 		ReflectionTestUtils.setField(openAPIService, "cachedOpenAPI", new HashMap<>());
 		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomizers", Optional.empty());
 
-		when(openAPIService.getContext()).thenReturn(context);
 		when(openAPIService.build(any())).thenReturn(openAPI);
-
 		when(openAPIBuilderObjectFactory.getObject()).thenReturn(openAPIService);
 		when(springDocProviders.jsonMapper()).thenReturn(Json.mapper());
 	}
@@ -138,12 +130,8 @@ class AbstractOpenApiResourceTest {
 				requestBuilder,
 				responseBuilder,
 				operationParser,
-				Optional.empty(),
-				Optional.empty(),
-				Optional.empty(),
-				Optional.empty(),
 				new SpringDocConfigProperties(),
-				springDocProviders
+				springDocProviders,new SpringDocCustomizers(Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty())
 		);
 
 		final Parameter refParameter = new Parameter().$ref(PARAMETER_REFERENCE);
@@ -210,11 +198,7 @@ class AbstractOpenApiResourceTest {
 				requestBuilder,
 				responseBuilder,
 				operationParser,
-				Optional.empty(),
-				Optional.of(singletonList(openApiCustomizer)),
-				Optional.empty(),
-				Optional.empty(),
-				properties, springDocProviders
+				properties, springDocProviders, new SpringDocCustomizers(Optional.of(singletonList(openApiCustomizer)),Optional.empty(),Optional.empty(),Optional.empty())
 		);
 
 		// wait for executor to be done
@@ -245,12 +229,8 @@ class AbstractOpenApiResourceTest {
 				requestBuilder,
 				responseBuilder,
 				operationParser,
-				Optional.empty(),
-				Optional.empty(),
-				Optional.empty(),
-				Optional.empty(),
 				properties,
-				springDocProviders
+				springDocProviders, new SpringDocCustomizers(Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty())
 		);
 
 		// wait for executor to be done
@@ -298,8 +278,8 @@ class AbstractOpenApiResourceTest {
 
 	private static class EmptyPathsOpenApiResource extends AbstractOpenApiResource {
 
-		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<RouterOperationCustomizer>> routerOpeationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
-			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomizers, routerOpeationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
+		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
 		}
 
 		@Override

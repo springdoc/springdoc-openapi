@@ -21,6 +21,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "getCollectionResource-account-get",
         "description": "get-account",
         "operationId": "getCollectionResource-account-get_1",
         "responses": {
@@ -55,6 +56,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "postCollectionResource-account-post",
         "description": "create-account",
         "operationId": "postCollectionResource-account-post",
         "requestBody": {
@@ -91,6 +93,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "executeSearch-account-get",
         "operationId": "executeSearch-account-get",
         "parameters": [
           {
@@ -128,6 +131,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "getItemResource-account-get",
         "description": "get-account",
         "operationId": "getItemResource-account-get",
         "parameters": [
@@ -165,6 +169,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "putItemResource-account-put",
         "description": "update-account",
         "operationId": "putItemResource-account-put",
         "parameters": [
@@ -222,6 +227,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "deleteItemResource-account-delete",
         "description": "delete-account",
         "operationId": "deleteItemResource-account-delete",
         "parameters": [
@@ -252,6 +258,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "patchItemResource-account-patch",
         "description": "patch-account",
         "operationId": "patchItemResource-account-patch",
         "parameters": [
@@ -301,6 +308,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "followPropertyReference-account-get",
         "description": "get-customer-by-account-Id",
         "operationId": "followPropertyReference-account-get_1",
         "parameters": [
@@ -343,6 +351,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "createPropertyReference-account-put",
         "description": "update-customer-by-account-Id",
         "operationId": "createPropertyReference-account-put",
         "parameters": [
@@ -410,6 +419,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "deletePropertyReference-account-delete",
         "description": "delete-customer-by-account-Id",
         "operationId": "deletePropertyReference-account-delete",
         "parameters": [
@@ -440,6 +450,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "createPropertyReference-account-patch",
         "description": "patch-customer-by-account-Id",
         "operationId": "createPropertyReference-account-patch",
         "parameters": [
@@ -499,6 +510,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "followPropertyReference-account-get",
         "description": "get-customer-by-account-Id",
         "operationId": "followPropertyReference-account-get",
         "parameters": [
@@ -544,6 +556,7 @@
         "tags": [
           "The account Repository"
         ],
+        "summary": "deletePropertyReferenceId-account-delete",
         "description": "delete-customer-by-account-Id",
         "operationId": "deletePropertyReferenceId-account-delete",
         "parameters": [
@@ -584,6 +597,7 @@
         "tags": [
           "The customer Repository"
         ],
+        "summary": "getCollectionResource-customer-get",
         "description": "get-customer",
         "operationId": "getCollectionResource-customer-get_1",
         "responses": {
@@ -613,6 +627,7 @@
         "tags": [
           "The customer Repository"
         ],
+        "summary": "postCollectionResource-customer-post",
         "description": "create-customer",
         "operationId": "postCollectionResource-customer-post",
         "requestBody": {
@@ -644,6 +659,7 @@
         "tags": [
           "The customer Repository"
         ],
+        "summary": "executeSearch-customer-get",
         "operationId": "executeSearch-customer-get",
         "parameters": [
           {
@@ -715,6 +731,7 @@
         "tags": [
           "The customer Repository"
         ],
+        "summary": "getItemResource-customer-get",
         "description": "get-customer",
         "operationId": "getItemResource-customer-get",
         "parameters": [
@@ -747,6 +764,7 @@
         "tags": [
           "The customer Repository"
         ],
+        "summary": "putItemResource-customer-put",
         "description": "update-customer",
         "operationId": "putItemResource-customer-put",
         "parameters": [
@@ -799,6 +817,7 @@
         "tags": [
           "The customer Repository"
         ],
+        "summary": "patchItemResource-customer-patch",
         "description": "patch-customer",
         "operationId": "patchItemResource-customer-patch",
         "parameters": [
@@ -843,6 +862,7 @@
         "tags": [
           "profile-controller"
         ],
+        "summary": "listAllFormsOfMetadata",
         "operationId": "listAllFormsOfMetadata_1",
         "responses": {
           "200": {
@@ -863,6 +883,7 @@
         "tags": [
           "profile-controller"
         ],
+        "summary": "descriptor",
         "operationId": "descriptor_1_1_1",
         "responses": {
           "200": {
@@ -893,6 +914,7 @@
         "tags": [
           "profile-controller"
         ],
+        "summary": "descriptor",
         "operationId": "descriptor_1_1_2",
         "responses": {
           "200": {
@@ -1016,37 +1038,6 @@
           }
         }
       },
-      "EntityModelAccount": {
-        "type": "object",
-        "properties": {
-          "expiryDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelAccount": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "accounts": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelAccount"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
       "EntityModelCustomer": {
         "type": "object",
         "properties": {
@@ -1055,25 +1046,6 @@
           },
           "lastname": {
             "type": "string"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelObject": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "objects": {
-                "type": "array",
-                "items": {
-                  "type": "object"
-                }
-              }
-            }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -1139,6 +1111,56 @@
           },
           "page": {
             "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "EntityModelAccount": {
+        "type": "object",
+        "properties": {
+          "expiryDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelAccount": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "accounts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelAccount"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelObject": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "objects": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
           }
         }
       },

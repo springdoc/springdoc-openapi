@@ -19,8 +19,6 @@ package test.org.springdoc.api.app94;
  */
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,10 +26,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
-import org.springdoc.core.customizers.OpenApiCustomizer;
-import org.springdoc.core.customizers.OperationCustomizer;
-import org.springdoc.core.customizers.RouterOperationCustomizer;
-import org.springdoc.core.filters.OpenApiMethodFilter;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.SpringDocProviders;
 import org.springdoc.core.service.AbstractRequestService;
@@ -123,20 +118,18 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 		 * @param requestBuilder the request builder
 		 * @param responseBuilder the response builder
 		 * @param operationParser the operation parser
-		 * @param operationCustomizers the operation customizers
 		 * @param springDocConfigProperties the spring doc config properties
-		 * @param openApiCustomizers the open api customisers
-		 * @param methodFilters the method filters
 		 * @param springDocProviders the spring doc providers
+		 * @param springDocCustomizers the spring doc customizers
 		 * @return the open api web mvc resource
 		 */
 		@Bean(name = "openApiResource")
 		public OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
-				OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers,
+				OperationService operationParser,
 				SpringDocConfigProperties springDocConfigProperties,
-				Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<RouterOperationCustomizer>> routerOperationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocProviders springDocProviders) {
+				SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 			return new OpenApiWebMvcResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
-					operationCustomizers, openApiCustomizers, routerOperationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
+					springDocConfigProperties, springDocProviders, springDocCustomizers);
 		}
 
 		/**
