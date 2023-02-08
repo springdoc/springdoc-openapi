@@ -55,13 +55,19 @@ import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.converters.WebFluxSupportConverter;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
+import org.springdoc.core.customizers.DataRestRouterOperationCustomizer;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.GlobalOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
+import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
+import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
+import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -579,5 +585,30 @@ public class SpringDocConfiguration {
 		public ResponseEntity<ErrorMessage> handleNoHandlerFound(OpenApiResourceNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorMessage(e.getMessage()));
 		}
+	}
+
+	/**
+	 * Spring doc customizers spring doc customizers.
+	 *
+	 * @param openApiCustomizers the open api customizers
+	 * @param operationCustomizers the operation customizers
+	 * @param routerOperationCustomizers the router operation customizers
+	 * @param dataRestRouterOperationCustomizers the data rest router operation customizers
+	 * @param methodFilters the method filters
+	 * @return the spring doc customizers
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	public SpringDocCustomizers springDocCustomizers(Optional<List<OpenApiCustomizer>> openApiCustomizers,
+			Optional<List<OperationCustomizer>> operationCustomizers,
+			Optional<List<RouterOperationCustomizer>> routerOperationCustomizers,
+			Optional<List<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
+			Optional<List<OpenApiMethodFilter>> methodFilters){
+		return new SpringDocCustomizers(openApiCustomizers,
+				operationCustomizers,
+				 routerOperationCustomizers,
+				 dataRestRouterOperationCustomizers,
+				 methodFilters);
 	}
 }

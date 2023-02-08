@@ -23,12 +23,24 @@
 
 package test.org.springdoc.api.app16;
 
+import io.swagger.v3.oas.models.Operation;
+import org.springdoc.core.customizers.DataRestRouterOperationCustomizer;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 public class SpringDocApp16Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+		@Bean
+		public DataRestRouterOperationCustomizer addRouterOperationCustomizer() {
+			return (routerOperation) -> {
+				Operation operation = routerOperation.getOperationModel();
+				operation.setSummary(operation.getOperationId());
+				return routerOperation;
+			};
+		}
+	}
 }

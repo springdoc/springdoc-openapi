@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.GlobalOperationCustomizer;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -52,6 +53,7 @@ import static org.springdoc.core.utils.Constants.ACTUATOR_DEFAULT_GROUP;
 
 /**
  * The type Web mvc multiple open api resource.
+ *
  * @author bnasslahsen
  */
 public abstract class MultipleOpenApiResource implements InitializingBean, ApplicationContextAware {
@@ -161,11 +163,9 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 					requestBuilder,
 					responseBuilder,
 					operationParser,
-					Optional.of(item.getOperationCustomizers()),
-					Optional.of(item.getOpenApiCustomizers()),
-					Optional.of(item.getRouterOperationCustomizers()),
-					Optional.of(item.getOpenApiMethodFilters()),
-					springDocConfigProperties, springDocProviders
+					springDocConfigProperties, springDocProviders,
+					new SpringDocCustomizers(Optional.of(item.getOpenApiCustomizers()), Optional.of(item.getOperationCustomizers()),
+							Optional.of(item.getRouterOperationCustomizers()), Optional.of(item.getOpenApiMethodFilters()))
 
 			);
 		else
@@ -174,11 +174,9 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 					requestBuilder,
 					responseBuilder,
 					operationParser,
-					Optional.of(item.getOperationCustomizers()),
-					Optional.of(item.getOpenApiCustomizers()),
-					Optional.of(item.getRouterOperationCustomizers()),
-					Optional.of(item.getOpenApiMethodFilters()),
-					springDocConfigProperties, springDocProviders
+					springDocConfigProperties, springDocProviders,
+					new SpringDocCustomizers(Optional.of(item.getOpenApiCustomizers()), Optional.of(item.getOperationCustomizers()),
+							Optional.of(item.getRouterOperationCustomizers()), Optional.of(item.getOpenApiMethodFilters()))
 			);
 	}
 

@@ -25,8 +25,6 @@
 package test.org.springdoc.api.v30.app94;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,10 +32,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
-import org.springdoc.core.customizers.OpenApiCustomizer;
-import org.springdoc.core.customizers.OperationCustomizer;
-import org.springdoc.core.customizers.RouterOperationCustomizer;
-import org.springdoc.core.filters.OpenApiMethodFilter;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.SpringDocProviders;
 import org.springdoc.core.service.AbstractRequestService;
@@ -97,10 +92,9 @@ public class SpringDocApp94Test extends AbstractSpringDocV30Test {
 
 		@Bean(name = "openApiResource")
 		public OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
-				OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers, SpringDocConfigProperties springDocConfigProperties,
-				Optional<List<OpenApiCustomizer>> openApiCustomizers, Optional<List<RouterOperationCustomizer>> routerOperationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocProviders springDocProviders) {
+				OperationService operationParser,SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 			return new OpenApiWebMvcResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
-					operationCustomizers, openApiCustomizers, routerOperationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
+					springDocConfigProperties, springDocProviders,springDocCustomizers);
 		}
 
 		@Override
