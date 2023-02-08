@@ -23,7 +23,6 @@
  */
 package org.springdoc.core.customizers;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -40,6 +39,8 @@ import org.springframework.util.CollectionUtils;
 import static org.springdoc.core.utils.Constants.LINKS_SCHEMA_CUSTOMISER;
 
 /**
+ * The type Spring doc customizers.
+ *
  * @author bnasslahsen
  */
 public class SpringDocCustomizers implements ApplicationContextAware, InitializingBean {
@@ -65,7 +66,9 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	 */
 	private final Optional<List<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers;
 
-
+	/**
+	 * The Context.
+	 */
 	private ApplicationContext context;
 
 	/**
@@ -113,28 +116,47 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 		this.dataRestRouterOperationCustomizers = Optional.empty();
 	}
 
+	/**
+	 * Gets open api customizers.
+	 *
+	 * @return the open api customizers
+	 */
 	public Optional<List<OpenApiCustomizer>> getOpenApiCustomizers() {
 		return openApiCustomizers;
 	}
 
-	public Map<String, OpenApiLocaleCustomizer> getOpenApiLocaleCustomizers() {
-		if (context != null)
-			return context.getBeansOfType(OpenApiLocaleCustomizer.class);
-		return new HashMap<>();
-	}
-
+	/**
+	 * Gets operation customizers.
+	 *
+	 * @return the operation customizers
+	 */
 	public Optional<List<OperationCustomizer>> getOperationCustomizers() {
 		return operationCustomizers;
 	}
 
+	/**
+	 * Gets router operation customizers.
+	 *
+	 * @return the router operation customizers
+	 */
 	public Optional<List<RouterOperationCustomizer>> getRouterOperationCustomizers() {
 		return routerOperationCustomizers;
 	}
 
+	/**
+	 * Gets data rest router operation customizers.
+	 *
+	 * @return the data rest router operation customizers
+	 */
 	public Optional<List<DataRestRouterOperationCustomizer>> getDataRestRouterOperationCustomizers() {
 		return dataRestRouterOperationCustomizers;
 	}
 
+	/**
+	 * Gets method filters.
+	 *
+	 * @return the method filters
+	 */
 	public Optional<List<OpenApiMethodFilter>> getMethodFilters() {
 		return methodFilters;
 	}

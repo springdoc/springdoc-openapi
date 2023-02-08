@@ -76,6 +76,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.DataRestRouterOperationCustomizer;
+import org.springdoc.core.customizers.OpenApiLocaleCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
@@ -193,7 +194,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected OpenAPIService openAPIService;
 
+	/**
+	 * The Spring doc customizers.
+	 */
 	protected final SpringDocCustomizers springDocCustomizers;
+
 
 	/**
 	 * Instantiates a new Abstract open api resource.
@@ -353,7 +358,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
 			}
 
-			springDocCustomizers.getOpenApiLocaleCustomizers().values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openAPI, finalLocale));
+			openAPIService.getContext().getBeansOfType(OpenApiLocaleCustomizer.class).values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openAPI, finalLocale));
 			springDocCustomizers.getOpenApiCustomizers().ifPresent(apiCustomizers -> apiCustomizers.forEach(openApiCustomizer -> openApiCustomizer.customise(openAPI)));
 			if (!CollectionUtils.isEmpty(openAPI.getServers()) && !openAPI.getServers().equals(serversCopy))
 				openAPIService.setServersPresent(true);

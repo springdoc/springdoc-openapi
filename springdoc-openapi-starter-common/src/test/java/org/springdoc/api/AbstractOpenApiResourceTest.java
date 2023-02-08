@@ -59,6 +59,7 @@ import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -106,6 +107,9 @@ class AbstractOpenApiResourceTest {
 	@Mock
 	private SpringDocProviders springDocProviders;
 
+	@Mock
+	private ApplicationContext context;
+
 	private OpenAPI openAPI;
 
 	private AbstractOpenApiResource resource;
@@ -118,6 +122,8 @@ class AbstractOpenApiResourceTest {
 		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomizers", Optional.empty());
 
 		when(openAPIService.build(any())).thenReturn(openAPI);
+		when(openAPIService.getContext()).thenReturn(context);
+
 		when(openAPIBuilderObjectFactory.getObject()).thenReturn(openAPIService);
 		when(springDocProviders.jsonMapper()).thenReturn(Json.mapper());
 	}
