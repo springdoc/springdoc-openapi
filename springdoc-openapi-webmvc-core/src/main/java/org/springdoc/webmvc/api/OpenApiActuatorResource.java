@@ -22,9 +22,7 @@
 
 package org.springdoc.webmvc.api;
 
-import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,10 +34,7 @@ import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocProviders;
-import org.springdoc.core.customizers.OpenApiCustomiser;
-import org.springdoc.core.customizers.OperationCustomizer;
-import org.springdoc.core.customizers.RouterOperationCustomizer;
-import org.springdoc.core.filters.OpenApiMethodFilter;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
@@ -73,17 +68,15 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * @param methodFilters the method filters
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
+	 * @param springDocCustomizers the spring doc customizers
 	 */
 	public OpenApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
 			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
 			OperationService operationParser,
-			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers,
-			Optional<List<RouterOperationCustomizer>> routerOperationCustomizers,
-			Optional<List<OpenApiMethodFilter>> methodFilters,
 			SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders) {
-		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, routerOperationCustomizers, methodFilters, springDocConfigProperties, springDocProviders);
+			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
+				 springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -94,20 +87,16 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
-	 * @param routerOperationCustomizers the router operation customizers
-	 * @param methodFilters the method filters
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
+	 * @param springDocCustomizers the spring doc customizers
 	 */
 	public OpenApiActuatorResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
 			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
-			OperationService operationParser, Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers, Optional<List<RouterOperationCustomizer>> routerOperationCustomizers, Optional<List<OpenApiMethodFilter>> methodFilters, SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, operationCustomizers, openApiCustomisers, routerOperationCustomizers, methodFilters,
-				springDocConfigProperties, springDocProviders);
+			OperationService operationParser,  SpringDocConfigProperties springDocConfigProperties,
+			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
+				springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**

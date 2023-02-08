@@ -84,11 +84,11 @@ import org.springdoc.core.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.annotations.RouterOperations;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.DataRestRouterOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiLocaleCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.RouterOperationCustomizer;
-import org.springdoc.core.filters.OpenApiMethodFilter;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 import org.springdoc.core.fn.RouterFunctionData;
 import org.springdoc.core.fn.RouterOperation;
@@ -113,7 +113,6 @@ import org.springframework.web.method.HandlerMethod;
 
 import static org.springdoc.core.Constants.ACTUATOR_DEFAULT_GROUP;
 import static org.springdoc.core.Constants.DOT;
-import static org.springdoc.core.Constants.LINKS_SCHEMA_CUSTOMISER;
 import static org.springdoc.core.Constants.OPERATION_ATTRIBUTE;
 import static org.springdoc.core.Constants.SPRING_MVC_SERVLET_PATH;
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.isDeprecated;
@@ -183,34 +182,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	private final OperationService operationParser;
 
 	/**
-	 * The Open api customizers.
-	 */
-	private final Optional<List<OpenApiCustomiser>> openApiCustomisers;
-
-	/**
-	 * The Operation customizers.
-	 */
-	private final Optional<List<OperationCustomizer>> operationCustomizers;
-
-	/**
-	 * The RouterOperation customizers.
-	 */
-	private final Optional<List<RouterOperationCustomizer>> routerOperationCustomizers;
-
-	/**
-	 * The method filters to use.
-	 */
-	private final Optional<List<OpenApiMethodFilter>> methodFilters;
-
-	/**
 	 * The Ant path matcher.
 	 */
 	private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
-	/**
-	 * The OpenApi with locale customizers.
-	 */
-	private final Map<String, OpenApiLocaleCustomizer> openApiLocaleCustomizers;
 
 	/**
 	 * The Open api builder.
@@ -218,27 +193,27 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected OpenAPIService openAPIService;
 
 	/**
+	 * The Spring doc customizers.
+	 */
+	protected final SpringDocCustomizers springDocCustomizers;
+
+	/**
 	 * Instantiates a new Abstract open api resource.
+	 *
 	 * @param groupName the group name
 	 * @param openAPIBuilderObjectFactory the open api builder object factory
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
-	 * @param routerOperationCustomizers the router operation customisers
-	 * @param methodFilters the method filters
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
+	 * @param springDocCustomizers the spring doc customizers
 	 */
 	protected AbstractOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
 			AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
-			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<OpenApiCustomiser>> openApiCustomisers,
-			Optional<List<RouterOperationCustomizer>> routerOperationCustomizers,
-			Optional<List<OpenApiMethodFilter>> methodFilters,
-			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
+			SpringDocConfigProperties springDocConfigProperties,
+			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 		super();
 		this.groupName = Objects.requireNonNull(groupName, "groupName");
 		this.openAPIBuilderObjectFactory = openAPIBuilderObjectFactory;
@@ -246,20 +221,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.requestBuilder = requestBuilder;
 		this.responseBuilder = responseBuilder;
 		this.operationParser = operationParser;
-		this.openApiCustomisers = openApiCustomisers;
-		this.routerOperationCustomizers = routerOperationCustomizers;
-		this.methodFilters = methodFilters;
 		this.springDocProviders = springDocProviders;
-		//add the default customizers
-		Map<String, OpenApiCustomiser> existingOpenApiCustomisers = openAPIService.getContext().getBeansOfType(OpenApiCustomiser.class);
-		if (!CollectionUtils.isEmpty(existingOpenApiCustomisers) && existingOpenApiCustomisers.containsKey(LINKS_SCHEMA_CUSTOMISER))
-			openApiCustomisers.ifPresent(openApiCustomisersList -> openApiCustomisersList.add(existingOpenApiCustomisers.get(LINKS_SCHEMA_CUSTOMISER)));
 		this.springDocConfigProperties = springDocConfigProperties;
-		operationCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
-		this.operationCustomizers = operationCustomizers;
+		this.springDocCustomizers=springDocCustomizers;
 		if (springDocConfigProperties.isPreLoadingEnabled())
 			Executors.newSingleThreadExecutor().execute(this::getOpenApi);
-		this.openApiLocaleCustomizers = openAPIService.getContext().getBeansOfType(OpenApiLocaleCustomizer.class);
 	}
 
 	/**
@@ -389,8 +355,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
 			}
 
-			openApiLocaleCustomizers.values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openAPI, finalLocale));
-			openApiCustomisers.ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openAPI)));
+			openAPIService.getContext().getBeansOfType(OpenApiLocaleCustomizer.class).values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openAPI, finalLocale));
+			springDocCustomizers.getOpenApiCustomizers().ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openAPI)));
 			if (!CollectionUtils.isEmpty(openAPI.getServers()) && !openAPI.getServers().equals(serversCopy))
 				openAPIService.setServersPresent(true);
 
@@ -608,6 +574,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param locale the locale
 	 */
 	protected void calculatePath(RouterOperation routerOperation, Locale locale, OpenAPI openAPI) {
+		routerOperation = customizeDataRestRouterOperation(routerOperation);
+
 		String operationPath = routerOperation.getPath();
 		io.swagger.v3.oas.annotations.Operation apiOperation = routerOperation.getOperation();
 		String[] methodConsumes = routerOperation.getConsumes();
@@ -728,7 +696,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return whether the method should be included in the current OpenAPI definition
 	 */
 	protected boolean isMethodToFilter(HandlerMethod handlerMethod) {
-		return this.methodFilters
+		return this.springDocCustomizers.getMethodFilters()
 				.map(Collection::stream)
 				.map(stream -> stream.allMatch(m -> m.isMethodToInclude(handlerMethod.getMethod())))
 				.orElse(true);
@@ -868,8 +836,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the operation
 	 */
 	protected Operation customizeOperation(Operation operation, HandlerMethod handlerMethod) {
-		if (operationCustomizers.isPresent()) {
-			List<OperationCustomizer> operationCustomizerList = operationCustomizers.get();
+		if (springDocCustomizers.getOperationCustomizers().isPresent()) {
+			List<OperationCustomizer> operationCustomizerList = springDocCustomizers.getOperationCustomizers().get();
 			for (OperationCustomizer operationCustomizer : operationCustomizerList)
 				operation = operationCustomizer.customize(operation, handlerMethod);
 		}
@@ -883,8 +851,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the router operation
 	 */
 	protected RouterOperation customizeRouterOperation(RouterOperation routerOperation, HandlerMethod handlerMethod) {
-		if (routerOperationCustomizers.isPresent()) {
-			List<RouterOperationCustomizer> routerOperationCustomizerList = routerOperationCustomizers.get();
+		if (springDocCustomizers.getRouterOperationCustomizers().isPresent()) {
+			List<RouterOperationCustomizer> routerOperationCustomizerList = springDocCustomizers.getRouterOperationCustomizers().get();
 			for (RouterOperationCustomizer routerOperationCustomizer : routerOperationCustomizerList) {
 				routerOperation = routerOperationCustomizer.customize(routerOperation, handlerMethod);
 			}
@@ -1379,5 +1347,21 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		 *Headers condition type.
 		 */
 		HEADERS
+	}
+
+	/**
+	 * Customize data rest router operation router operation.
+	 *
+	 * @param routerOperation the router operation
+	 * @return the router operation
+	 */
+	private RouterOperation customizeDataRestRouterOperation(RouterOperation routerOperation) {
+		if (springDocCustomizers.getDataRestRouterOperationCustomizers().isPresent()) {
+			List<DataRestRouterOperationCustomizer> dataRestRouterOperationCustomizerList = springDocCustomizers.getDataRestRouterOperationCustomizers().get();
+			for (DataRestRouterOperationCustomizer dataRestRouterOperationCustomizer : dataRestRouterOperationCustomizerList) {
+				routerOperation = dataRestRouterOperationCustomizer.customize(routerOperation);
+			}
+		}
+		return routerOperation;
 	}
 }

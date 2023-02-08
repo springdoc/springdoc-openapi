@@ -38,6 +38,7 @@ import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.SpringDocProviders;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.GlobalOperationCustomizer;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 
 import org.springframework.beans.BeansException;
@@ -159,25 +160,18 @@ public abstract class MultipleOpenApiResource implements InitializingBean, Appli
 					requestBuilder,
 					responseBuilder,
 					operationParser,
-					Optional.of(item.getOperationCustomizers()),
-					Optional.of(item.getOpenApiCustomisers()),
-					Optional.of(item.getRouterOperationCustomizers()),
-					Optional.of(item.getOpenApiMethodFilters()),
-					springDocConfigProperties, springDocProviders
-
-			);
+					springDocConfigProperties, springDocProviders,
+					new SpringDocCustomizers(Optional.of(item.getOpenApiCustomisers()), Optional.of(item.getOperationCustomizers()),
+							Optional.of(item.getRouterOperationCustomizers()), Optional.of(item.getOpenApiMethodFilters())));
 		else
 			return new OpenApiActuatorResource(item.getGroup(),
 					defaultOpenAPIBuilder,
 					requestBuilder,
 					responseBuilder,
 					operationParser,
-					Optional.of(item.getOperationCustomizers()),
-					Optional.of(item.getOpenApiCustomisers()),
-					Optional.of(item.getRouterOperationCustomizers()),
-					Optional.of(item.getOpenApiMethodFilters()),
-					springDocConfigProperties, springDocProviders
-			);
+					springDocConfigProperties, springDocProviders,
+					new SpringDocCustomizers(Optional.of(item.getOpenApiCustomisers()), Optional.of(item.getOperationCustomizers()),
+							Optional.of(item.getRouterOperationCustomizers()), Optional.of(item.getOpenApiMethodFilters())));
 	}
 
 
