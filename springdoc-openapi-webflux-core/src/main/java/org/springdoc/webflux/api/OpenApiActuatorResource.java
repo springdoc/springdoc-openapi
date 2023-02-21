@@ -51,6 +51,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Open api actuator resource.
+ *
  * @author bnasslashen
  */
 @RestControllerEndpoint(id = DEFAULT_API_DOCS_ACTUATOR_URL)

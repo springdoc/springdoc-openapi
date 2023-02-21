@@ -50,6 +50,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Open api actuator resource.
+ *
  * @author bnasslashen
  */
 @RestControllerEndpoint(id = DEFAULT_API_DOCS_ACTUATOR_URL)
@@ -62,10 +63,6 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * @param requestBuilder the request builder
 	 * @param responseBuilder the response builder
 	 * @param operationParser the operation parser
-	 * @param operationCustomizers the operation customizers
-	 * @param openApiCustomisers the open api customisers
-	 * @param routerOperationCustomizers the router operation customizers
-	 * @param methodFilters the method filters
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
 	 * @param springDocCustomizers the spring doc customizers
