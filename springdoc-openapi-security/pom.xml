@@ -27,6 +27,11 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-authorization-server</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>jakarta.servlet</groupId>
 			<artifactId>jakarta.servlet-api</artifactId>
 			<scope>provided</scope>

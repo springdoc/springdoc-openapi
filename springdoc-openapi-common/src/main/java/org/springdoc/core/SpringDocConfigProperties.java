@@ -203,6 +203,11 @@ public class SpringDocConfigProperties {
 	private boolean nullableRequestParameterEnabled;
 
 	/**
+	 * The Show oauth 2 endpoint.
+	 */
+	private boolean showOauth2Endpoint;
+
+	/**
 	 * Gets override with generic response.
 	 *
 	 * @return the override with generic response
@@ -1499,5 +1504,13 @@ public class SpringDocConfigProperties {
 		public void setDisplayName(String displayName) {
 			this.displayName = displayName;
 		}
+	}
+
+	public boolean isShowOauth2Endpoint() {
+		return showOauth2Endpoint;
+	}
+
+	public void setShowOauth2Endpoint(boolean showOauth2Endpoint) {
+		this.showOauth2Endpoint = showOauth2Endpoint;
 	}
 }

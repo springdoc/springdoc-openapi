@@ -1,0 +1,834 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/hello": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth2/jwks": {
+      "get": {
+        "tags": [
+          "authorization-server-endpoints"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JWKSet"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/.well-known/oauth-authorization-server": {
+      "get": {
+        "tags": [
+          "authorization-server-endpoints"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2AuthorizationServerMetadata"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/oauth2/token": {
+      "post": {
+        "tags": [
+          "authorization-server-endpoints"
+        ],
+        "parameters": [
+          {
+            "name": "parameters",
+            "in": "query",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2AccessTokenResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth2/authorize": {
+      "post": {
+        "tags": [
+          "authorization-server-endpoints"
+        ],
+        "parameters": [
+          {
+            "name": "parameters",
+            "in": "query",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2Error"
+                }
+              }
+            }
+          },
+          "302": {
+            "description": "Moved Temporarily",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth2/introspect": {
+      "post": {
+        "tags": [
+          "authorization-server-endpoints"
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  },
+                  "token_type_hint": {
+                    "type": "string"
+                  },
+                  "additionalParameters": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2TokenIntrospection"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oauth2/revoke": {
+      "post": {
+        "tags": [
+          "authorization-server-endpoints"
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  },
+                  "token_type_hint": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Algorithm": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "requirement": {
+            "type": "string",
+            "enum": [
+              "REQUIRED",
+              "RECOMMENDED",
+              "OPTIONAL"
+            ]
+          }
+        }
+      },
+      "Base64": {
+        "type": "object"
+      },
+      "Base64URL": {
+        "type": "object"
+      },
+      "JWK": {
+        "type": "object",
+        "properties": {
+          "keyStore": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "private": {
+            "type": "boolean"
+          },
+          "keyType": {
+            "$ref": "#/components/schemas/KeyType"
+          },
+          "keyUse": {
+            "$ref": "#/components/schemas/KeyUse"
+          },
+          "keyID": {
+            "type": "string"
+          },
+          "parsedX509CertChain": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "subjectX500Principal": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "encoded": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "byte"
+                      }
+                    }
+                  }
+                },
+                "issuerX500Principal": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "encoded": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "byte"
+                      }
+                    }
+                  }
+                },
+                "sigAlgName": {
+                  "type": "string"
+                },
+                "subjectDN": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "issuerDN": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "notBefore": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "notAfter": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "extendedKeyUsage": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "subjectAlternativeNames": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "issuerAlternativeNames": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "sigAlgParams": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "byte"
+                  }
+                },
+                "tbscertificate": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "byte"
+                  }
+                },
+                "sigAlgOID": {
+                  "type": "string"
+                },
+                "issuerUniqueID": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                },
+                "subjectUniqueID": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                },
+                "signature": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "byte"
+                  }
+                },
+                "basicConstraints": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "version": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "serialNumber": {
+                  "type": "integer"
+                },
+                "keyUsage": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                },
+                "criticalExtensionOIDs": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "nonCriticalExtensionOIDs": {
+                  "uniqueItems": true,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "encoded": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "byte"
+                  }
+                },
+                "publicKey": {
+                  "type": "object",
+                  "properties": {
+                    "encoded": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "byte"
+                      }
+                    },
+                    "format": {
+                      "type": "string"
+                    },
+                    "algorithm": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "requiredParams": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "x509CertThumbprint": {
+            "$ref": "#/components/schemas/Base64URL"
+          },
+          "keyOperations": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "sign",
+                "verify",
+                "encrypt",
+                "decrypt",
+                "wrapKey",
+                "unwrapKey",
+                "deriveKey",
+                "deriveBits"
+              ]
+            }
+          },
+          "x509CertURL": {
+            "type": "string",
+            "format": "uri"
+          },
+          "x509CertChain": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Base64"
+            }
+          },
+          "algorithm": {
+            "$ref": "#/components/schemas/Algorithm"
+          },
+          "x509CertSHA256Thumbprint": {
+            "$ref": "#/components/schemas/Base64URL"
+          }
+        }
+      },
+      "JWKSet": {
+        "type": "object",
+        "properties": {
+          "keys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JWK"
+            }
+          },
+          "additionalMembers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KeyType": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "requirement": {
+            "type": "string",
+            "enum": [
+              "REQUIRED",
+              "RECOMMENDED",
+              "OPTIONAL"
+            ]
+          }
+        }
+      },
+      "KeyUse": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "OAuth2AuthorizationServerMetadata": {
+        "type": "object",
+        "properties": {
+          "claims": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "tokenRevocationEndpointAuthenticationMethods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tokenIntrospectionEndpointAuthenticationMethods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "issuer": {
+            "type": "string",
+            "format": "url"
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "authorizationEndpoint": {
+            "type": "string",
+            "format": "url"
+          },
+          "tokenEndpoint": {
+            "type": "string",
+            "format": "url"
+          },
+          "tokenRevocationEndpoint": {
+            "type": "string",
+            "format": "url"
+          },
+          "jwkSetUrl": {
+            "type": "string",
+            "format": "url"
+          },
+          "responseTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "grantTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "codeChallengeMethods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tokenIntrospectionEndpoint": {
+            "type": "string",
+            "format": "url"
+          },
+          "tokenEndpointAuthenticationMethods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "clientRegistrationEndpoint": {
+            "type": "string",
+            "format": "url"
+          }
+        }
+      },
+      "OAuth2AccessToken": {
+        "type": "object",
+        "properties": {
+          "tokenValue": {
+            "type": "string"
+          },
+          "issuedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tokenType": {
+            "$ref": "#/components/schemas/TokenType"
+          },
+          "scopes": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OAuth2AccessTokenResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "$ref": "#/components/schemas/OAuth2AccessToken"
+          },
+          "refreshToken": {
+            "$ref": "#/components/schemas/OAuth2RefreshToken"
+          },
+          "additionalParameters": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "OAuth2RefreshToken": {
+        "type": "object",
+        "properties": {
+          "tokenValue": {
+            "type": "string"
+          },
+          "issuedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TokenType": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "OAuth2Error": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "uri": {
+            "type": "string"
+          }
+        }
+      },
+      "OAuth2TokenIntrospection": {
+        "type": "object",
+        "properties": {
+          "claims": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "notBefore": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "issuer": {
+            "type": "string",
+            "format": "url"
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "username": {
+            "type": "string"
+          },
+          "clientId": {
+            "type": "string"
+          },
+          "audience": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "issuedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tokenType": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
