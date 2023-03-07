@@ -41,6 +41,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -55,6 +56,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -64,6 +66,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SHOW_LOGIN_ENDPOINT;
+import static org.springdoc.core.utils.Constants.SPRINGDOC_SHOW_OAUTH2_ENDPOINTS;
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 /**
@@ -160,6 +163,24 @@ public class SpringDocSecurityConfiguration {
 					}
 				}
 			};
+		}
+	}
+
+	@Lazy(false)
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnClass(OAuth2AuthorizationService.class)
+	class SpringDocSecurityOAuth2Configuration {
+
+		/**
+		 * Spring security OAuth2 endpoint OpenAPI customizer.
+		 *
+		 * @return the open api customizer
+		 */
+		@Bean
+		@ConditionalOnProperty(SPRINGDOC_SHOW_OAUTH2_ENDPOINTS)
+		@Lazy(false)
+		GlobalOpenApiCustomizer springDocSecurityOAuth2Customizer() {
+			return new SpringDocSecurityOAuth2Customizer();
 		}
 	}
 }

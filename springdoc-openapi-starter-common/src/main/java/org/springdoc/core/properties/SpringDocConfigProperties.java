@@ -233,6 +233,11 @@ public class SpringDocConfigProperties {
 	private boolean defaultSupportFormData;
 
 	/**
+	 * The Show oauth 2 endpoint.
+	 */
+	private boolean showOauth2Endpoint;
+
+	/**
 	 * The Sort converter.
 	 */
 	private SortConverter sortConverter = new SortConverter();
@@ -1676,4 +1681,12 @@ public class SpringDocConfigProperties {
 		}
 	}
 
+
+	public boolean isShowOauth2Endpoint() {
+		return showOauth2Endpoint;
+	}
+
+	public void setShowOauth2Endpoint(boolean showOauth2Endpoint) {
+		this.showOauth2Endpoint = showOauth2Endpoint;
+	}
 }

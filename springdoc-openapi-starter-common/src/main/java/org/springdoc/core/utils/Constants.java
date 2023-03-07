@@ -110,6 +110,11 @@ public final class Constants {
 	public static final String SPRINGDOC_SHOW_LOGIN_ENDPOINT = "springdoc.show-login-endpoint";
 
 	/**
+	 * The constant SPRINGDOC_SHOW_OAUTH2_ENDPOINTS.
+	 */
+	public static final String SPRINGDOC_SHOW_OAUTH2_ENDPOINTS = "springdoc.show-oauth2-endpoints";
+
+	/**
 	 * The constant SPRINGDOC_CACHE_DISABLED.
 	 */
 	public static final String SPRINGDOC_CACHE_DISABLED = "springdoc.cache.disabled";

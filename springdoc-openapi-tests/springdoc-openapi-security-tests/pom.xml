@@ -46,5 +46,10 @@
 			<artifactId>jjwt</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-authorization-server</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>
