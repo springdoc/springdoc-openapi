@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.springdoc.core.conditions.MultipleOpenApiSupportCondition;
 import org.springdoc.core.configuration.SpringDocConfiguration;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.SpringDocProviders;
@@ -78,6 +79,7 @@ public class MultipleOpenApiSupportConfiguration {
 	 * @param operationParser the operation parser
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
+	 * @param springDocCustomizers the spring doc customizers
 	 * @return the multiple open api resource
 	 */
 	@Bean
@@ -88,12 +90,12 @@ public class MultipleOpenApiSupportConfiguration {
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders) {
+			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 		return new MultipleOpenApiWebFluxResource(groupedOpenApis,
 				defaultOpenAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
 				springDocConfigProperties,
-				springDocProviders);
+				springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -114,6 +116,7 @@ public class MultipleOpenApiSupportConfiguration {
 		 * @param operationParser the operation parser
 		 * @param springDocConfigProperties the spring doc config properties
 		 * @param springDocProviders the spring doc providers
+		 * @param springDocCustomizers the spring doc customizers
 		 * @return the multiple open api actuator resource
 		 */
 		@Bean
@@ -124,10 +127,10 @@ public class MultipleOpenApiSupportConfiguration {
 				ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 				GenericResponseService responseBuilder, OperationService operationParser,
 				SpringDocConfigProperties springDocConfigProperties,
-				SpringDocProviders springDocProviders) {
+				SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 			return new MultipleOpenApiActuatorResource(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder,
 					responseBuilder, operationParser,
-					springDocConfigProperties, springDocProviders);
+					springDocConfigProperties, springDocProviders, springDocCustomizers);
 		}
 	}
 }

@@ -19,7 +19,7 @@ public abstract class AbstractCommonTest {
 	@Autowired
 	protected MockMvc mockMvc;
 
-	protected String getContent(String fileName) throws Exception {
+	protected String getContent(String fileName) {
 		try {
 			Path path = Paths.get(AbstractCommonTest.class.getClassLoader().getResource(fileName).toURI());
 			byte[] fileBytes = Files.readAllBytes(path);
