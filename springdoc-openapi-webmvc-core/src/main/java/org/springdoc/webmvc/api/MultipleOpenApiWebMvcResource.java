@@ -36,6 +36,7 @@ import org.springdoc.core.OpenAPIService;
 import org.springdoc.core.OperationService;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocProviders;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,6 +59,7 @@ public class MultipleOpenApiWebMvcResource extends MultipleOpenApiResource {
 
 	/**
 	 * Instantiates a new Multiple open api resource.
+	 *
 	 * @param groupedOpenApis the grouped open apis
 	 * @param defaultOpenAPIBuilder the default open api builder
 	 * @param requestBuilder the request builder
@@ -65,9 +67,12 @@ public class MultipleOpenApiWebMvcResource extends MultipleOpenApiResource {
 	 * @param operationParser the operation parser
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
+	 * @param springDocCustomizers the spring doc customizers
 	 */
-	public MultipleOpenApiWebMvcResource(List<GroupedOpenApi> groupedOpenApis, ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
-		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders);
+	public MultipleOpenApiWebMvcResource(List<GroupedOpenApi> groupedOpenApis, ObjectFactory<OpenAPIService> defaultOpenAPIBuilder,
+			AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser,
+			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**

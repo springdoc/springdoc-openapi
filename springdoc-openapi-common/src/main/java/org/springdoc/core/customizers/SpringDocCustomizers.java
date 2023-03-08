@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 
 import org.springframework.beans.BeansException;
@@ -39,6 +40,8 @@ import org.springframework.util.CollectionUtils;
 import static org.springdoc.core.Constants.LINKS_SCHEMA_CUSTOMISER;
 
 /**
+ * The type Spring doc customizers.
+ *
  * @author bnasslahsen
  */
 public class SpringDocCustomizers implements ApplicationContextAware, InitializingBean {
@@ -65,6 +68,9 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	private final Optional<List<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers;
 
 
+	/**
+	 * The Context.
+	 */
 	private ApplicationContext context;
 
 	/**
@@ -74,6 +80,21 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 
 
 	/**
+	 * The Global open api customizers.
+	 */
+	private Optional<List<GlobalOpenApiCustomizer>> globalOpenApiCustomizers;
+
+	/**
+	 * The Global operation customizers.
+	 */
+	private Optional<List<GlobalOperationCustomizer>> globalOperationCustomizers;
+
+	/**
+	 * The Global open api method filters.
+	 */
+	private Optional<List<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters;
+
+	/**
 	 * Instantiates a new Spring doc customizers.
 	 *
 	 * @param openApiCustomizers the open api customizers
@@ -81,14 +102,22 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	 * @param routerOperationCustomizers the router operation customizers
 	 * @param dataRestRouterOperationCustomizers the data rest router operation customizers
 	 * @param methodFilters the method filters
+	 * @param globalOpenApiCustomizers the global open api customizers
+	 * @param globalOperationCustomizers the global operation customizers
+	 * @param globalOpenApiMethodFilters the global open api method filters
 	 */
 	public SpringDocCustomizers(Optional<List<OpenApiCustomiser>> openApiCustomizers,
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<RouterOperationCustomizer>> routerOperationCustomizers,
 			Optional<List<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
-			Optional<List<OpenApiMethodFilter>> methodFilters) {
+			Optional<List<OpenApiMethodFilter>> methodFilters, 	Optional<List<GlobalOpenApiCustomizer>> globalOpenApiCustomizers,
+			Optional<List<GlobalOperationCustomizer>> globalOperationCustomizers,
+			Optional<List<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters) {
 		this.openApiCustomizers = openApiCustomizers;
 		this.operationCustomizers = operationCustomizers;
+		this.globalOpenApiCustomizers = globalOpenApiCustomizers;
+		this.globalOperationCustomizers = globalOperationCustomizers;
+		this.globalOpenApiMethodFilters = globalOpenApiMethodFilters;
 		operationCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
 		this.routerOperationCustomizers = routerOperationCustomizers;
 		this.dataRestRouterOperationCustomizers = dataRestRouterOperationCustomizers;
@@ -112,22 +141,47 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 		this.dataRestRouterOperationCustomizers = Optional.empty();
 	}
 
+	/**
+	 * Gets open api customizers.
+	 *
+	 * @return the open api customizers
+	 */
 	public Optional<List<OpenApiCustomiser>> getOpenApiCustomizers() {
 		return openApiCustomizers;
 	}
 
+	/**
+	 * Gets operation customizers.
+	 *
+	 * @return the operation customizers
+	 */
 	public Optional<List<OperationCustomizer>> getOperationCustomizers() {
 		return operationCustomizers;
 	}
 
+	/**
+	 * Gets router operation customizers.
+	 *
+	 * @return the router operation customizers
+	 */
 	public Optional<List<RouterOperationCustomizer>> getRouterOperationCustomizers() {
 		return routerOperationCustomizers;
 	}
 
+	/**
+	 * Gets data rest router operation customizers.
+	 *
+	 * @return the data rest router operation customizers
+	 */
 	public Optional<List<DataRestRouterOperationCustomizer>> getDataRestRouterOperationCustomizers() {
 		return dataRestRouterOperationCustomizers;
 	}
 
+	/**
+	 * Gets method filters.
+	 *
+	 * @return the method filters
+	 */
 	public Optional<List<OpenApiMethodFilter>> getMethodFilters() {
 		return methodFilters;
 	}
@@ -143,5 +197,32 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 		Map<String, OpenApiCustomiser> existingOpenApiCustomizers = context.getBeansOfType(OpenApiCustomiser.class);
 		if (!CollectionUtils.isEmpty(existingOpenApiCustomizers) && existingOpenApiCustomizers.containsKey(LINKS_SCHEMA_CUSTOMISER))
 			this.openApiCustomizers.ifPresent(openApiCustomizersList -> openApiCustomizersList.add(existingOpenApiCustomizers.get(LINKS_SCHEMA_CUSTOMISER)));
+	}
+
+	/**
+	 * Gets global open api customizers.
+	 *
+	 * @return the global open api customizers
+	 */
+	public Optional<List<GlobalOpenApiCustomizer>> getGlobalOpenApiCustomizers() {
+		return globalOpenApiCustomizers;
+	}
+
+	/**
+	 * Gets global operation customizers.
+	 *
+	 * @return the global operation customizers
+	 */
+	public Optional<List<GlobalOperationCustomizer>> getGlobalOperationCustomizers() {
+		return globalOperationCustomizers;
+	}
+
+	/**
+	 * Gets global open api method filters.
+	 *
+	 * @return the global open api method filters
+	 */
+	public Optional<List<GlobalOpenApiMethodFilter>> getGlobalOpenApiMethodFilters() {
+		return globalOpenApiMethodFilters;
 	}
 }

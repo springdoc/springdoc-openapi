@@ -63,6 +63,7 @@ import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
+import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.CloudFunctionProvider;
@@ -685,6 +686,9 @@ public class SpringDocConfiguration {
 	 * @param routerOperationCustomizers the router operation customizers
 	 * @param dataRestRouterOperationCustomizers the data rest router operation customizers
 	 * @param methodFilters the method filters
+	 * @param globalOpenApiCustomizers the global open api customizers
+	 * @param globalOperationCustomizers the global operation customizers
+	 * @param globalOpenApiMethodFilters the global open api method filters
 	 * @return the spring doc customizers
 	 */
 	@Bean
@@ -694,11 +698,15 @@ public class SpringDocConfiguration {
 			Optional<List<OperationCustomizer>> operationCustomizers,
 			Optional<List<RouterOperationCustomizer>> routerOperationCustomizers,
 			Optional<List<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
-			Optional<List<OpenApiMethodFilter>> methodFilters){
+			Optional<List<OpenApiMethodFilter>> methodFilters, 	Optional<List<GlobalOpenApiCustomizer>> globalOpenApiCustomizers,
+			Optional<List<GlobalOperationCustomizer>> globalOperationCustomizers,
+			Optional<List<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters){
 		return new SpringDocCustomizers(openApiCustomizers,
 				operationCustomizers,
 				routerOperationCustomizers,
 				dataRestRouterOperationCustomizers,
-				methodFilters);
+				methodFilters, 	globalOpenApiCustomizers,
+				globalOperationCustomizers,
+				globalOpenApiMethodFilters);
 	}
 }
