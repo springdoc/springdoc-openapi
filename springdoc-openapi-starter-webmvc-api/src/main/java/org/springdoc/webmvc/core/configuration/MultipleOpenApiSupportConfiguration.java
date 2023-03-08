@@ -76,6 +76,7 @@ public class MultipleOpenApiSupportConfiguration {
 	 * @param operationParser the operation parser
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
+	 * @param springDocCustomizers the spring doc customizers
 	 * @return the multiple open api resource
 	 */
 	@Bean
@@ -86,12 +87,12 @@ public class MultipleOpenApiSupportConfiguration {
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders) {
+			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 		return new MultipleOpenApiWebMvcResource(groupedOpenApis,
 				defaultOpenAPIBuilder, requestBuilder,
 				responseBuilder, operationParser,
 				springDocConfigProperties,
-				springDocProviders);
+				springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -127,7 +128,7 @@ public class MultipleOpenApiSupportConfiguration {
 
 			return new MultipleOpenApiActuatorResource(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder,
 					responseBuilder, operationParser,
-					springDocConfigProperties, springDocProviders);
+					springDocConfigProperties, springDocProviders, springDocCustomizers);
 		}
 	}
 }

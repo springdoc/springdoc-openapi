@@ -30,6 +30,7 @@ import java.util.Locale;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.SpringDocProviders;
@@ -52,6 +53,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Multiple open api resource.
+ *
  * @author bnasslahsen
  */
 @RestController
@@ -59,6 +61,7 @@ public class MultipleOpenApiWebMvcResource extends MultipleOpenApiResource {
 
 	/**
 	 * Instantiates a new Multiple open api resource.
+	 *
 	 * @param groupedOpenApis the grouped open apis
 	 * @param defaultOpenAPIBuilder the default open api builder
 	 * @param requestBuilder the request builder
@@ -66,9 +69,12 @@ public class MultipleOpenApiWebMvcResource extends MultipleOpenApiResource {
 	 * @param operationParser the operation parser
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
+	 * @param springDocCustomizers the spring doc customizers
 	 */
-	public MultipleOpenApiWebMvcResource(List<GroupedOpenApi> groupedOpenApis, ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders) {
-		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders);
+	public MultipleOpenApiWebMvcResource(List<GroupedOpenApi> groupedOpenApis, ObjectFactory<OpenAPIService> defaultOpenAPIBuilder,
+			AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser,
+			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**
