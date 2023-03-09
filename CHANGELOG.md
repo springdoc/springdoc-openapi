@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.3] - 2023-03-07
+
+### Added
+
+- #2006 - Support for nullable request parameters in Kotlin.
+- #2054 - Add copyright and license information to Jar.
+- #2021 - Required field in Schema annotation ignored in Kotlin.
+- #2094 - Initial support for Spring Authorization Server.
+### Changed
+
+- Upgrade spring-boot to 2.7.9
+- Upgrade swagger-core to 2.2.8
+- Upgrade swagger-ui to 4.17.1
+
+### Fixed
+
+- #2010 - findByNameContainingIgnoreCaseAndDateBefore throw NullPointerException.
+- #2031 - Path variables parameters are not assigned correctly to endpoints.
+- #2038 - When extends JpaRepository, using @Parameter over the method results in duplicate of the same parameter.
+- #2046 - Map Fields Disappear with Groovy on Classpath.
+- #2051 - Malformed api-docs JSON when StringHttpMessageConverter is not active
+- #2062 - OperationCustomizer is not working with Spring Data REST.
+- #2098 - When getting ExceptionHandler in the controller, use target class in case of AOP Proxy.
+- #2107 - Ordering of GlobalOpenApiCustomizers different than for OpenApiCustomisers.
+- #2089 - Fixed a bug that a NullPointerException is thrown when the description field of RequestBody is null and there is a javadoc description.
+- #2104 - OpenAPI Extensions no longer work.
+
 ## [2.0.2] - 2022-12-16
 
 ### Fixed
