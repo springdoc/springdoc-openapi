@@ -288,13 +288,12 @@ public class RequestBodyService {
 			mergeContent(requestBody, methodAttributes, schema);
 		}
 
-
 		// Add requestBody javadoc
 		if (StringUtils.isBlank(requestBody.getDescription()) && parameterBuilder.getJavadocProvider() != null
 				&& parameterBuilder.isRequestBodyPresent(parameterInfo)) {
 			String paramJavadocDescription = parameterBuilder.getParamJavadoc(parameterBuilder.getJavadocProvider(), parameterInfo.getMethodParameter());
 			if (!StringUtils.isBlank(paramJavadocDescription)) {
-				requestBodyInfo.getRequestBody().setDescription(paramJavadocDescription);
+				requestBody.setDescription(paramJavadocDescription);
 			}
 		}
 		return requestBody;
