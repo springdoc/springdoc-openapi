@@ -498,7 +498,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			buildCallbacks(openAPI, methodAttributes, operation, apiCallbacks);
 
 			// allow for customisation
-			operation = customiseOperation(operation, handlerMethod);
+			operation = customizeOperation(operation, handlerMethod);
 
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
@@ -626,8 +626,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the router operation
 	 */
 	private RouterOperation customizeDataRestRouterOperation(RouterOperation routerOperation) {
-		if (springDocCustomizers.getDataRestRouterOperationCustomizers().isPresent()) {
-			List<DataRestRouterOperationCustomizer> dataRestRouterOperationCustomizerList = springDocCustomizers.getDataRestRouterOperationCustomizers().get();
+		Optional<List<DataRestRouterOperationCustomizer>> optionalDataRestRouterOperationCustomizers = springDocCustomizers.getDataRestRouterOperationCustomizers();
+		if (optionalDataRestRouterOperationCustomizers.isPresent()) {
+			List<DataRestRouterOperationCustomizer> dataRestRouterOperationCustomizerList = optionalDataRestRouterOperationCustomizers.get();
 			for (DataRestRouterOperationCustomizer dataRestRouterOperationCustomizer : dataRestRouterOperationCustomizerList) {
 				routerOperation = dataRestRouterOperationCustomizer.customize(routerOperation);
 			}
@@ -850,9 +851,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param handlerMethod the handler method
 	 * @return the operation
 	 */
-	protected Operation customiseOperation(Operation operation, HandlerMethod handlerMethod) {
-		if (springDocCustomizers.getOperationCustomizers().isPresent()) {
-			List<OperationCustomizer> operationCustomizerList = springDocCustomizers.getOperationCustomizers().get();
+	protected Operation customizeOperation(Operation operation, HandlerMethod handlerMethod) {
+		Optional<List<OperationCustomizer>> optionalOperationCustomizers = springDocCustomizers.getOperationCustomizers();
+		if (optionalOperationCustomizers.isPresent()) {
+			List<OperationCustomizer> operationCustomizerList = optionalOperationCustomizers.get();
 			for (OperationCustomizer operationCustomizer : operationCustomizerList)
 				operation = operationCustomizer.customize(operation, handlerMethod);
 		}
@@ -862,13 +864,14 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * Customise router operation
 	 *
-	 * @param routerOperation
-	 * @param handlerMethod
+	 * @param routerOperation the router operation
+	 * @param handlerMethod the handler method
 	 * @return the router operation
 	 */
 	protected RouterOperation customizeRouterOperation(RouterOperation routerOperation, HandlerMethod handlerMethod) {
-		if (springDocCustomizers.getRouterOperationCustomizers().isPresent()) {
-			List<RouterOperationCustomizer> routerOperationCustomizerList = springDocCustomizers.getRouterOperationCustomizers().get();
+		Optional<List<RouterOperationCustomizer>> optionalRouterOperationCustomizers = springDocCustomizers.getRouterOperationCustomizers();
+		if (optionalRouterOperationCustomizers.isPresent()) {
+			List<RouterOperationCustomizer> routerOperationCustomizerList = optionalRouterOperationCustomizers.get();
 			for (RouterOperationCustomizer routerOperationCustomizer : routerOperationCustomizerList) {
 				routerOperation = routerOperationCustomizer.customize(routerOperation, handlerMethod);
 			}
