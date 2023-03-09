@@ -287,7 +287,7 @@ public class RequestBodyService {
 				&& parameterBuilder.isRequestBodyPresent(parameterInfo)) {
 			String paramJavadocDescription = parameterBuilder.getParamJavadoc(parameterBuilder.getJavadocProvider(), parameterInfo.getMethodParameter());
 			if (!StringUtils.isBlank(paramJavadocDescription)) {
-				requestBodyInfo.getRequestBody().setDescription(paramJavadocDescription);
+				requestBody.setDescription(paramJavadocDescription);
 			}
 		}
 		return requestBody;
