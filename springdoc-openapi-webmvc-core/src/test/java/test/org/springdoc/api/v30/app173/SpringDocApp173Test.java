@@ -22,6 +22,7 @@
 
 package test.org.springdoc.api.v30.app173;
 
+import java.util.Collections;
 import java.util.Locale;
 
 import io.swagger.v3.oas.models.OpenAPI;
@@ -65,7 +66,7 @@ public class SpringDocApp173Test extends AbstractSpringDocV30Test {
 	static class SpringDocTestApp {
 		@Bean
 		public OpenAPI openAPI() {
-			return new OpenAPI();
+			return new OpenAPI().extensions(Collections.singletonMap("TEST", "HELLO"));
 		}
 	}
 

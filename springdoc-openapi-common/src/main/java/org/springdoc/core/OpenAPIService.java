@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.jackson.TypeNameResolver;
@@ -249,6 +250,9 @@ public class OpenAPIService implements ApplicationContextAware {
 			try {
 				ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
 				calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class);
+				objectMapper.setSerializationInclusion(Include.ALWAYS);
+				Map extensionsClone = objectMapper.readValue(objectMapper.writeValueAsString(openAPI.getExtensions()), Map.class);
+				calculatedOpenAPI.extensions(extensionsClone);
 			}
 			catch (JsonProcessingException e) {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
