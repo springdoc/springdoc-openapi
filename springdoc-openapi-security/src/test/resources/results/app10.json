@@ -332,14 +332,38 @@
           "private": {
             "type": "boolean"
           },
-          "keyType": {
-            "$ref": "#/components/schemas/KeyType"
+          "algorithm": {
+            "$ref": "#/components/schemas/Algorithm"
           },
-          "keyUse": {
-            "$ref": "#/components/schemas/KeyUse"
+          "x509CertURL": {
+            "type": "string",
+            "format": "uri"
           },
-          "keyID": {
-            "type": "string"
+          "keyOperations": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "sign",
+                "verify",
+                "encrypt",
+                "decrypt",
+                "wrapKey",
+                "unwrapKey",
+                "deriveKey",
+                "deriveBits"
+              ]
+            }
+          },
+          "x509CertThumbprint": {
+            "$ref": "#/components/schemas/Base64URL"
+          },
+          "requiredParams": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
           },
           "parsedX509CertChain": {
             "type": "array",
@@ -378,33 +402,6 @@
                       }
                     }
                   }
-                },
-                "sigAlgName": {
-                  "type": "string"
-                },
-                "subjectDN": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "issuerDN": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "notBefore": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "notAfter": {
-                  "type": "string",
-                  "format": "date-time"
                 },
                 "extendedKeyUsage": {
                   "type": "array",
@@ -458,6 +455,33 @@
                   "items": {
                     "type": "boolean"
                   }
+                },
+                "sigAlgName": {
+                  "type": "string"
+                },
+                "subjectDN": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "issuerDN": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "notBefore": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "notAfter": {
+                  "type": "string",
+                  "format": "date-time"
                 },
                 "signature": {
                   "type": "array",
@@ -525,44 +549,20 @@
               }
             }
           },
-          "requiredParams": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          },
-          "x509CertThumbprint": {
-            "$ref": "#/components/schemas/Base64URL"
-          },
-          "keyOperations": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "sign",
-                "verify",
-                "encrypt",
-                "decrypt",
-                "wrapKey",
-                "unwrapKey",
-                "deriveKey",
-                "deriveBits"
-              ]
-            }
-          },
-          "x509CertURL": {
-            "type": "string",
-            "format": "uri"
-          },
           "x509CertChain": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Base64"
             }
           },
-          "algorithm": {
-            "$ref": "#/components/schemas/Algorithm"
+          "keyType": {
+            "$ref": "#/components/schemas/KeyType"
+          },
+          "keyUse": {
+            "$ref": "#/components/schemas/KeyUse"
+          },
+          "keyID": {
+            "type": "string"
           },
           "x509CertSHA256Thumbprint": {
             "$ref": "#/components/schemas/Base64URL"
@@ -619,13 +619,53 @@
               "type": "object"
             }
           },
-          "tokenRevocationEndpointAuthenticationMethods": {
+          "revocation_endpoint_auth_methods_supported": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "tokenIntrospectionEndpointAuthenticationMethods": {
+          "introspection_endpoint_auth_methods_supported": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "authorization_endpoint": {
+            "type": "string",
+            "format": "url"
+          },
+          "token_endpoint": {
+            "type": "string",
+            "format": "url"
+          },
+          "revocation_endpoint": {
+            "type": "string",
+            "format": "url"
+          },
+          "response_types_supported": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "grant_types_supported": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "code_challenge_methods_supported": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "jwks_uri": {
+            "type": "string",
+            "format": "url"
+          },
+          "scopes_supported": {
             "type": "array",
             "items": {
               "type": "string"
@@ -635,57 +675,17 @@
             "type": "string",
             "format": "url"
           },
-          "scopes": {
+          "introspection_endpoint": {
+            "type": "string",
+            "format": "url"
+          },
+          "token_endpoint_auth_methods_supported": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "authorizationEndpoint": {
-            "type": "string",
-            "format": "url"
-          },
-          "tokenEndpoint": {
-            "type": "string",
-            "format": "url"
-          },
-          "tokenRevocationEndpoint": {
-            "type": "string",
-            "format": "url"
-          },
-          "jwkSetUrl": {
-            "type": "string",
-            "format": "url"
-          },
-          "responseTypes": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "grantTypes": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "codeChallengeMethods": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "tokenIntrospectionEndpoint": {
-            "type": "string",
-            "format": "url"
-          },
-          "tokenEndpointAuthenticationMethods": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "clientRegistrationEndpoint": {
+          "registration_endpoint": {
             "type": "string",
             "format": "url"
           }
@@ -781,50 +781,50 @@
               "type": "object"
             }
           },
-          "notBefore": {
+          "nbf": {
             "type": "string",
             "format": "date-time"
           },
-          "id": {
+          "jti": {
             "type": "string"
           },
           "active": {
             "type": "boolean"
           },
-          "issuer": {
-            "type": "string",
-            "format": "url"
-          },
-          "scopes": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "client_id": {
+            "type": "string"
           },
           "username": {
             "type": "string"
           },
-          "clientId": {
+          "iat": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "exp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "token_type": {
             "type": "string"
           },
-          "audience": {
+          "aud": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "issuedAt": {
+          "scope": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "iss": {
             "type": "string",
-            "format": "date-time"
+            "format": "url"
           },
-          "expiresAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "tokenType": {
-            "type": "string"
-          },
-          "subject": {
+          "sub": {
             "type": "string"
           }
         }
