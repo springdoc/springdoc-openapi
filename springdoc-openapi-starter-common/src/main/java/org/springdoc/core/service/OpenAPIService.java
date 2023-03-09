@@ -246,7 +246,7 @@ public class OpenAPIService implements ApplicationContextAware {
 			try {
 				ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
 				calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class);
-				objectMapper.setSerializationInclusion(Include.NON_EMPTY);
+				objectMapper.setSerializationInclusion(Include.ALWAYS);
 				Map extensionsClone = objectMapper.readValue(objectMapper.writeValueAsString(openAPI.getExtensions()), Map.class);
 				calculatedOpenAPI.extensions(extensionsClone);
 			}
