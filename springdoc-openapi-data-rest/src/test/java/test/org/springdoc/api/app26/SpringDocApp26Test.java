@@ -23,13 +23,12 @@
 
 package test.org.springdoc.api.app26;
 
-import test.org.springdoc.api.AbstractSpringDocTest;
+public class SpringDocApp26Test
+		//extends AbstractSpringDocTest
+	    //https://github.com/spring-projects/spring-data-jpa/issues/2812
+{
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-public class SpringDocApp26Test extends AbstractSpringDocTest {
-
-	@SpringBootApplication
+	//@SpringBootApplication
 	static class SpringDocTestApp {
 	}
 
