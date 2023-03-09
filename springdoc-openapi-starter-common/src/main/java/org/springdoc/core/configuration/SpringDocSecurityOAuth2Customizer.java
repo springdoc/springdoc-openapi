@@ -143,7 +143,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(OAuth2AuthorizationServerMetadataEndpointFilter.class).findEndpoint(securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
-			ApiResponses apiResponses = buildApiResponses(SpringDocAnnotationsUtils.resolveSchemaFromType(OAuth2AuthorizationServerMetadata.class, openAPI.getComponents(), null), openAPI);
+			ApiResponses apiResponses = buildApiResponses(SpringDocAnnotationsUtils.resolveSchemaFromType(OAuth2AuthorizationServerMetadata.class, openAPI.getComponents(), null));
 			Operation operation = buildOperation(apiResponses);
 			buildPath(oAuth2EndpointFilter, "requestMatcher", openAPI, operation, HttpMethod.GET);
 		}
@@ -159,7 +159,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(NimbusJwkSetEndpointFilter.class).findEndpoint(securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
-			ApiResponses apiResponses = buildApiResponses(SpringDocAnnotationsUtils.resolveSchemaFromType(JWKSet.class, openAPI.getComponents(), null), openAPI);
+			ApiResponses apiResponses = buildApiResponses(SpringDocAnnotationsUtils.resolveSchemaFromType(JWKSet.class, openAPI.getComponents(), null));
 			Operation operation = buildOperation(apiResponses);
 			operation.responses(apiResponses);
 			buildPath(oAuth2EndpointFilter, "requestMatcher", openAPI, operation, HttpMethod.GET);
@@ -224,10 +224,9 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * Build api responses api responses.
 	 *
 	 * @param schema the schema
-	 * @param openAPI the open api
 	 * @return the api responses
 	 */
-	private ApiResponses buildApiResponses(Schema schema, OpenAPI openAPI) {
+	private ApiResponses buildApiResponses(Schema schema) {
 		ApiResponses apiResponses = new ApiResponses();
 		ApiResponse response = new ApiResponse().description(HttpStatus.OK.getReasonPhrase()).content(new Content().addMediaType(
 				APPLICATION_JSON_VALUE,
@@ -245,7 +244,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @return the api responses
 	 */
 	private ApiResponses buildApiResponsesWithBadRequest(Schema schema, OpenAPI openAPI) {
-		ApiResponses apiResponses = buildApiResponses(schema, openAPI);
+		ApiResponses apiResponses = buildApiResponses(schema);
 		buildOAuth2Error(openAPI, apiResponses, HttpStatus.BAD_REQUEST);
 		return apiResponses;
 	}
