@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #2094 - Initial support for Spring Authorization Server.
 ### Changed
 
-- Upgrade spring-boot to 2.7.9
+- Upgrade spring-boot to 3.0.4
 - Upgrade swagger-core to 2.2.8
 - Upgrade swagger-ui to 4.17.1
 
