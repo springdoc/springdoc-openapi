@@ -20,6 +20,8 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.configuration.oauth2.SpringDocOAuth2AuthorizationServerMetadata;
+import org.springdoc.core.configuration.oauth2.SpringDocOAuth2TokenIntrospection;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
@@ -31,8 +33,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationServerMetadata;
-import org.springframework.security.oauth2.server.authorization.OAuth2TokenIntrospection;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationConsentAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2TokenRevocationAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.web.NimbusJwkSetEndpointFilter;
@@ -119,7 +119,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(OAuth2TokenIntrospectionEndpointFilter.class).findEndpoint(securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
-			ApiResponses apiResponses = buildApiResponsesWithBadRequest(SpringDocAnnotationsUtils.resolveSchemaFromType(OAuth2TokenIntrospection.class, openAPI.getComponents(), null), openAPI);
+			ApiResponses apiResponses = buildApiResponsesWithBadRequest(SpringDocAnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2TokenIntrospection.class, openAPI.getComponents(), null), openAPI);
 			Operation operation = buildOperation(apiResponses);
 			Schema<?> schema = new ObjectSchema()
 					.addProperty("token", new StringSchema())
@@ -143,7 +143,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(OAuth2AuthorizationServerMetadataEndpointFilter.class).findEndpoint(securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
-			ApiResponses apiResponses = buildApiResponses(SpringDocAnnotationsUtils.resolveSchemaFromType(OAuth2AuthorizationServerMetadata.class, openAPI.getComponents(), null));
+			ApiResponses apiResponses = buildApiResponses(SpringDocAnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2AuthorizationServerMetadata.class, openAPI.getComponents(), null));
 			Operation operation = buildOperation(apiResponses);
 			buildPath(oAuth2EndpointFilter, "requestMatcher", openAPI, operation, HttpMethod.GET);
 		}
