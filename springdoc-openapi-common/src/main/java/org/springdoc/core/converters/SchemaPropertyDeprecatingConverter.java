@@ -37,9 +37,12 @@ import io.swagger.v3.oas.models.media.Schema;
 
 import org.springframework.core.annotation.AnnotatedElementUtils;
 
+import static java.util.Collections.singletonList;
+
 /**
  * The type Schema property deprecating converter.
  * @author bnasslahsen
+ * @author Daniel Frąk
  */
 public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 
@@ -88,10 +91,23 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		if (chain.hasNext()) {
 			Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
-			if (type.isSchemaProperty() && containsDeprecatedAnnotation(type.getCtxAnnotations()))
+			if (type.isSchemaProperty() && containsDeprecatedAnnotation(type.getCtxAnnotations())) {
+				if (resolvedSchema.get$ref() != null) {
+					// Sibling values alongside $ref are ignored in OpenAPI versions lower than 3.1. See:
+					// https://swagger.io/docs/specification/using-ref/#sibling
+					// To add properties to a $ref, it must be wrapped in allOf.
+					resolvedSchema = wrapInAllOf(resolvedSchema);
+				}
 				resolvedSchema.setDeprecated(true);
+			}
 			return resolvedSchema;
 		}
 		return null;
+	}
+
+	private Schema<?> wrapInAllOf(Schema<?> resolvedSchema) {
+		Schema<?> wrapperSchema = new Schema<>();
+		wrapperSchema.allOf(singletonList(resolvedSchema));
+		return wrapperSchema;
 	}
 }
