@@ -73,7 +73,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpringDocAnnotationsUtils.class);
 
 	/**
-	 * The constant ANNOTATIOSN_TO_IGNORE.
+	 * The constant ANNOTATIONS_TO_IGNORE.
 	 */
 	private static final List<Class> ANNOTATIONS_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
 
