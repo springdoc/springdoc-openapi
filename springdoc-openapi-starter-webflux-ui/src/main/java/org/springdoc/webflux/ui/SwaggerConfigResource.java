@@ -31,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import static org.springdoc.core.utils.Constants.SWAGGER_CONFIG_URL;
 
@@ -63,8 +64,8 @@ public class SwaggerConfigResource {
 	 */
 	@Operation(hidden = true)
 	@GetMapping(value = SWAGGER_CONFIG_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
-		return swaggerWelcomeCommon.getSwaggerUiConfig(request);
+	public Mono<Map<String, Object>> getSwaggerUiConfig(ServerHttpRequest request) {
+		return Mono.defer(() -> Mono.just(swaggerWelcomeCommon.getSwaggerUiConfig(request)));
 	}
 
 }
