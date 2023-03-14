@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2023 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.github.therapi.runtimejavadoc.ClassJavadoc;
 import com.github.therapi.runtimejavadoc.CommentFormatter;
@@ -63,6 +64,19 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 	public String getClassJavadoc(Class<?> cl) {
 		ClassJavadoc classJavadoc = RuntimeJavadoc.getJavadoc(cl);
 		return formatter.format(classJavadoc.getComment());
+	}
+
+	/**
+	 * Gets param descripton of record class.
+	 *
+	 * @param cl the class
+	 * @return map of field and param descriptions
+	 */
+	@Override
+	public Map<String, String> getRecordClassParamJavadoc(Class<?> cl) {
+		ClassJavadoc classJavadoc = RuntimeJavadoc.getJavadoc(cl);
+		return classJavadoc.getRecordComponents().stream()
+				.collect(Collectors.toMap(ParamJavadoc::getName, record -> formatter.format(record.getComment())));
 	}
 
 	/**
