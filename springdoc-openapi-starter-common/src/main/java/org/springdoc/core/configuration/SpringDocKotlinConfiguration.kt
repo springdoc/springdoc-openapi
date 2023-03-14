@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Lazy
+import org.springframework.core.KotlinDetector
 import org.springframework.core.MethodParameter
 import org.springframework.core.annotation.AnnotatedElementUtils
 import kotlin.coroutines.Continuation
@@ -35,6 +36,23 @@ import kotlin.reflect.jvm.kotlinFunction
 @ConditionalOnWebApplication
 @ConditionalOnBean(SpringDocConfiguration::class)
 open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvider) {
+
+	/**
+	 * SpringDoc Kotlin Module Configuration
+	 *
+	 * @param objectMapperProvider Object Mapper Provider
+	 * @return the nullable Kotlin Request Parameter Customizer
+	 */
+	@Lazy(false)
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnClass(KotlinModule::class)
+	class SpringDocKotlinModuleConfiguration(objectMapperProvider: ObjectMapperProvider) {
+		init {
+			objectMapperProvider.jsonMapper()
+				.registerModule(KotlinModule.Builder().build())
+		}
+	}
+
 	/**
 	 * Instantiates a new Spring doc kotlin configuration.
 	 *
@@ -74,17 +92,20 @@ open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvid
 	open fun nullableKotlinRequestParameterCustomizer(): ParameterCustomizer {
 		return ParameterCustomizer { parameterModel, methodParameter ->
 			if (parameterModel == null) return@ParameterCustomizer null
-			val kParameter = methodParameter.toKParameter()
-			if (kParameter != null) {
-				val parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
-					AnnotatedElementUtils.forAnnotations(*methodParameter.parameterAnnotations),
-					Parameter::class.java
-				)
-				// Swagger @Parameter annotation takes precedence
-				if (parameterDoc != null && parameterDoc.required)
-					parameterModel.required = parameterDoc.required
-				else
-					parameterModel.required = kParameter.type.isMarkedNullable == false
+			if (KotlinDetector.isKotlinReflectPresent()) {
+				val kParameter = methodParameter.toKParameter()
+				if (kParameter != null) {
+					val parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
+						AnnotatedElementUtils.forAnnotations(*methodParameter.parameterAnnotations),
+						Parameter::class.java
+					)
+					// Swagger @Parameter annotation takes precedence
+					if (parameterDoc != null && parameterDoc.required)
+						parameterModel.required = parameterDoc.required
+					else
+						parameterModel.required =
+							kParameter.type.isMarkedNullable == false
+				}
 			}
 			return@ParameterCustomizer parameterModel
 		}
@@ -99,19 +120,4 @@ open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvid
 		return kotlinFunction.parameters[parameterIndex + 1]
 	}
 
-	/**
-	 * SpringDoc Kotlin Module Configuration
-	 *
-	 * @param objectMapperProvider Object Mapper Provider
-	 * @return the nullable Kotlin Request Parameter Customizer
-	 */
-	@Lazy(false)
-	@Configuration(proxyBeanMethods = false)
-	@ConditionalOnClass(KotlinModule::class)
-	class SpringDocKotlinModuleConfiguration(objectMapperProvider: ObjectMapperProvider) {
-		init {
-			objectMapperProvider.jsonMapper()
-				.registerModule(KotlinModule.Builder().build())
-		}
-	}
 }
