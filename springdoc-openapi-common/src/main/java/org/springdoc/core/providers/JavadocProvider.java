@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  * Copyright 2019-2023 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -41,11 +41,19 @@ public interface JavadocProvider {
 	String getClassJavadoc(Class<?> cl);
 
 	/**
-	 * Gets method description.
+	 * Gets param descripton of record class.
 	 *
-	 * @param method the method
-	 * @return the method description
+	 * @param cl the class
+	 * @return map of field and param descriptions
 	 */
+	Map<String, String> getRecordClassParamJavadoc(Class<?> cl);
+
+		/**
+		 * Gets method description.
+		 *
+		 * @param method the method
+		 * @return the method description
+		 */
 	String getMethodJavadocDescription(Method method);
 
 	/**
@@ -88,4 +96,3 @@ public interface JavadocProvider {
 	 */
 	String getFirstSentence(String text);
 }
-
