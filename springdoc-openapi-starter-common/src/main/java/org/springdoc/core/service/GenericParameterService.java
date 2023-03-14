@@ -364,7 +364,7 @@ public class GenericParameterService {
 			Type type = ReturnTypeParser.getType(methodParameter);
 			if (type instanceof Class && !((Class<?>) type).isEnum() && optionalWebConversionServiceProvider.isPresent()) {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
-				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null){
+				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null) {
 					Class<?> springConvertedType = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
 					if (!(String.class.equals(springConvertedType) && ((Class<?>) type).isEnum()))
 						type = springConvertedType;
@@ -727,17 +727,28 @@ public class GenericParameterService {
 	String getParamJavadoc(JavadocProvider javadocProvider, MethodParameter methodParameter) {
 		String pName = methodParameter.getParameterName();
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
-		final String paramJavadocDescription;
-		if (delegatingMethodParameter.isParameterObject()) {
-			String fieldName;
-			if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
-				fieldName = StringUtils.substringAfterLast(pName, DOT);
-			else fieldName = pName;
-			Field field = FieldUtils.getDeclaredField(((DelegatingMethodParameter) methodParameter).getExecutable().getDeclaringClass(), fieldName, true);
-			paramJavadocDescription = javadocProvider.getFieldJavadoc(field);
+		if (!delegatingMethodParameter.isParameterObject()) {
+			return javadocProvider.getParamJavadoc(methodParameter.getMethod(), pName);
 		}
-		else
-			paramJavadocDescription = javadocProvider.getParamJavadoc(methodParameter.getMethod(), pName);
+		String fieldName;
+		if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
+			fieldName = StringUtils.substringAfterLast(pName, DOT);
+		else fieldName = pName;
+
+		String paramJavadocDescription = null;
+		Class cls = ((DelegatingMethodParameter) methodParameter).getExecutable().getDeclaringClass();
+		if (cls.getSuperclass() != null && cls.isRecord()) {
+			Map<String, String> recordParamMap = javadocProvider.getRecordClassParamJavadoc(cls);
+			if (recordParamMap.containsKey(fieldName)) {
+				paramJavadocDescription = recordParamMap.get(fieldName);
+			}
+		}
+
+		Field field = FieldUtils.getDeclaredField(cls, fieldName, true);
+		String fieldJavadoc = javadocProvider.getFieldJavadoc(field);
+		if (StringUtils.isNotBlank(fieldJavadoc)) {
+			paramJavadocDescription = fieldJavadoc;
+		}
 		return paramJavadocDescription;
 	}
 }
