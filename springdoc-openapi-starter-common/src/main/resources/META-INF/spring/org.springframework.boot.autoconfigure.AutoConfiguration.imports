@@ -11,3 +11,4 @@ org.springdoc.core.configuration.SpringDocSortConfiguration
 org.springdoc.core.configuration.SpringDocDataRestConfiguration
 org.springdoc.core.configuration.SpringDocKotlinConfiguration
 org.springdoc.core.configuration.SpringDocKotlinxConfiguration
+org.springdoc.core.configuration.SpringDocJacksonKotlinModuleConfiguration
