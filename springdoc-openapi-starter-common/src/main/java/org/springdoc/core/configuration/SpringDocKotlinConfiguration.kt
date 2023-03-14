@@ -44,7 +44,6 @@ open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvid
 			.addRequestWrapperToIgnore(Continuation::class.java)
 			.replaceWithSchema(ByteArray::class.java, ByteArraySchema())
 			.addDeprecatedType(Deprecated::class.java)
-		objectMapperProvider.jsonMapper().registerModule(KotlinModule.Builder().build())
 		objectMapperProvider.jsonMapper().registerModule(SpringDocRequiredModule())
 	}
 
@@ -98,5 +97,21 @@ open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvid
 		// The first parameter of the kotlin function is the "this" reference and not needed here.
 		// See also kotlin.reflect.KCallable.getParameters
 		return kotlinFunction.parameters[parameterIndex + 1]
+	}
+
+	/**
+	 * SpringDoc Kotlin Module Configuration
+	 *
+	 * @param objectMapperProvider Object Mapper Provider
+	 * @return the nullable Kotlin Request Parameter Customizer
+	 */
+	@Lazy(false)
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnClass(KotlinModule::class)
+	class SpringDocKotlinModuleConfiguration(objectMapperProvider: ObjectMapperProvider) {
+		init {
+			objectMapperProvider.jsonMapper()
+				.registerModule(KotlinModule.Builder().build())
+		}
 	}
 }
