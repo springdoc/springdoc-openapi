@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 /**
  * The type Spring doc o auth 2 authorization server metadata.
  *
- * @ses <a href="https://github.com/spring-projects/spring-authorization-server/blob/main/oauth2-authorization-server/src/main/java/org/springframework/security/oauth2/server/authorization/OAuth2AuthorizationServerMetadata.java">OAuth2AuthorizationServerMetadata</a>
+ * @see <a href="https://github.com/spring-projects/spring-authorization-server/blob/main/oauth2-authorization-server/src/main/java/org/springframework/security/oauth2/server/authorization/OAuth2AuthorizationServerMetadata.java">OAuth2AuthorizationServerMetadata</a>
  * @author bnasslahsen
  * @author yuta.saito
  */
