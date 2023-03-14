@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2023 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -105,7 +105,16 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 				existingSchema.setDescription(javadocProvider.getClassJavadoc(cls));
 			}
 			Map<String, Schema> properties = existingSchema.getProperties();
-			if (!CollectionUtils.isEmpty(properties))
+			if (!CollectionUtils.isEmpty(properties)) {
+				if (cls.getSuperclass() != null && cls.isRecord()) {
+					Map<String, String> recordParamMap = javadocProvider.getRecordClassParamJavadoc(cls);
+					properties.entrySet().stream()
+							.filter(stringSchemaEntry -> StringUtils.isBlank(stringSchemaEntry.getValue().getDescription()))
+							.forEach(stringSchemaEntry -> {
+								if (recordParamMap.containsKey(stringSchemaEntry.getKey()))
+									stringSchemaEntry.getValue().setDescription(recordParamMap.get(stringSchemaEntry.getKey()));
+							});
+				}
 				properties.entrySet().stream()
 						.filter(stringSchemaEntry -> StringUtils.isBlank(stringSchemaEntry.getValue().getDescription()))
 						.forEach(stringSchemaEntry -> {
@@ -116,7 +125,7 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 									stringSchemaEntry.getValue().setDescription(fieldJavadoc);
 							});
 						});
-
+			}
 		}
 	}
 }
