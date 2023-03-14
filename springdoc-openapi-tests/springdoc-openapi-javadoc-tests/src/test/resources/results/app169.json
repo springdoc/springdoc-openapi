@@ -1,0 +1,97 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/record": {
+      "get": {
+        "tags": [
+          "record-controller"
+        ],
+        "operationId": "index",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "the name of the outer class",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "simpleInnerClass.name",
+            "in": "query",
+            "description": "the boolean name",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "simpleInnerClass.maxNumber",
+            "in": "query",
+            "description": "the max number",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleOuterClass"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SimpleInnerClass": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "boolean",
+            "description": "the boolean name"
+          },
+          "maxNumber": {
+            "type": "integer",
+            "description": "the max number",
+            "format": "int32"
+          }
+        },
+        "description": "simple inner class"
+      },
+      "SimpleOuterClass": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "the name of the outer class"
+          },
+          "simpleInnerClass": {
+            "$ref": "#/components/schemas/SimpleInnerClass"
+          }
+        },
+        "description": "simple outer class"
+      }
+    }
+  }
+}
