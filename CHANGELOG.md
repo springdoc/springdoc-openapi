@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [2.0.4] - 2023-03-15
+
+### Changed
+
+- Upgrade swagger-ui to 4.18.1
+
+### Fixed
+
+- #2123 - Fix spring authorization server response
+- #2131 - Fixed a bug that javadoc of record class parameters was not recognized.
+- #2114 - Exception during WebFlux tests: NoClassDefFoundError: KotlinModule$Builder
+
 ## [2.0.3] - 2023-03-07
 
 ### Added
