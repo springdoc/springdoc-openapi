@@ -1,6 +1,5 @@
 package org.springdoc.core.configuration
 
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.models.media.ByteArraySchema
 import org.springdoc.core.customizers.ParameterCustomizer
@@ -43,15 +42,6 @@ open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvid
 	 * @param objectMapperProvider Object Mapper Provider
 	 * @return the nullable Kotlin Request Parameter Customizer
 	 */
-	@Lazy(false)
-	@Configuration(proxyBeanMethods = false)
-	@ConditionalOnClass(KotlinModule::class)
-	class SpringDocKotlinModuleConfiguration(objectMapperProvider: ObjectMapperProvider) {
-		init {
-			objectMapperProvider.jsonMapper()
-				.registerModule(KotlinModule.Builder().build())
-		}
-	}
 
 	/**
 	 * Instantiates a new Spring doc kotlin configuration.
