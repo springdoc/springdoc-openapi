@@ -76,7 +76,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-spring-security:true}")
-@ConditionalOnClass(Authentication.class)
+@ConditionalOnClass(SecurityFilterChain.class)
 @ConditionalOnWebApplication
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocSecurityConfiguration {
