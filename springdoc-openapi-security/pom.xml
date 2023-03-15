@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>springdoc-openapi</artifactId>
 		<groupId>org.springdoc</groupId>
-		<version>1.6.16-SNAPSHOT</version>
+		<version>1.6.15-SNAPSHOT</version>
 	</parent>
 	<artifactId>springdoc-openapi-security</artifactId>
 	<properties>
@@ -39,6 +39,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-webmvc-core</artifactId>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
