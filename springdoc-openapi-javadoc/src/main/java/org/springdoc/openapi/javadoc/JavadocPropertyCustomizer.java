@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  * Copyright 2019-2023 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -109,13 +109,23 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 	 * @param fields the fields
 	 * @param existingSchema the existing schema
 	 */
-	private void setJavadocDescription(Class<?> cls, List<Field> fields, Schema existingSchema) {
+	void setJavadocDescription(Class<?> cls, List<Field> fields, Schema existingSchema) {
 		if (existingSchema != null) {
 			if (StringUtils.isBlank(existingSchema.getDescription())) {
 				existingSchema.setDescription(javadocProvider.getClassJavadoc(cls));
 			}
 			Map<String, Schema> properties = existingSchema.getProperties();
-			if (!CollectionUtils.isEmpty(properties))
+			if (!CollectionUtils.isEmpty(properties)) {
+				if (cls.getSuperclass() != null && "java.lang.Record".equals(cls.getSuperclass().getName())) {
+					Map<String, String> recordParamMap = javadocProvider.getRecordClassParamJavadoc(cls);
+					properties.entrySet().stream()
+							.filter(stringSchemaEntry -> StringUtils.isBlank(stringSchemaEntry.getValue().getDescription()))
+							.forEach(stringSchemaEntry -> {
+								if (recordParamMap.containsKey(stringSchemaEntry.getKey()))
+									stringSchemaEntry.getValue().setDescription(recordParamMap.get(stringSchemaEntry.getKey()));
+							});
+				}
+
 				properties.entrySet().stream()
 						.filter(stringSchemaEntry -> StringUtils.isBlank(stringSchemaEntry.getValue().getDescription()))
 						.forEach(stringSchemaEntry -> {
@@ -126,6 +136,7 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 									stringSchemaEntry.getValue().setDescription(fieldJavadoc);
 							});
 						});
+			}
 			fields.stream().filter(f -> f.isAnnotationPresent(JsonUnwrapped.class))
 					.forEach(f -> setJavadocDescription(f.getType(), FieldUtils.getAllFieldsList(f.getType()), existingSchema));
 

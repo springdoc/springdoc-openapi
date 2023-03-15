@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  * Copyright 2019-2023 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -720,17 +720,29 @@ public class GenericParameterService {
 	String getParamJavadoc(JavadocProvider javadocProvider, MethodParameter methodParameter) {
 		String pName = methodParameter.getParameterName();
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
-		final String paramJavadocDescription;
-		if (delegatingMethodParameter.isParameterObject()) {
-			String fieldName;
-			if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
-				fieldName = StringUtils.substringAfterLast(pName, DOT);
-			else fieldName = pName;
-			Field field = FieldUtils.getDeclaredField(((DelegatingMethodParameter) methodParameter).getExecutable().getDeclaringClass(), fieldName, true);
-			paramJavadocDescription = javadocProvider.getFieldJavadoc(field);
+		if (!delegatingMethodParameter.isParameterObject()) {
+			return javadocProvider.getParamJavadoc(methodParameter.getMethod(), pName);
 		}
-		else
-			paramJavadocDescription = javadocProvider.getParamJavadoc(methodParameter.getMethod(), pName);
+		String fieldName;
+		if (StringUtils.isNotEmpty(pName) && pName.contains(DOT))
+			fieldName = StringUtils.substringAfterLast(pName, DOT);
+		else fieldName = pName;
+
+		String paramJavadocDescription = null;
+		Class cls = ((DelegatingMethodParameter) methodParameter).getExecutable().getDeclaringClass();
+		if (cls.getSuperclass() != null && "java.lang.Record".equals(cls.getSuperclass().getName())) {
+			Map<String, String> recordParamMap = javadocProvider.getRecordClassParamJavadoc(cls);
+			if (recordParamMap.containsKey(fieldName)) {
+				paramJavadocDescription = recordParamMap.get(fieldName);
+			}
+		}
+
+		Field field = FieldUtils.getDeclaredField(cls, fieldName, true);
+		String fieldJavadoc = javadocProvider.getFieldJavadoc(field);
+		if (StringUtils.isNotBlank(fieldJavadoc)) {
+			paramJavadocDescription = fieldJavadoc;
+		}
+
 		return paramJavadocDescription;
 	}
 }
