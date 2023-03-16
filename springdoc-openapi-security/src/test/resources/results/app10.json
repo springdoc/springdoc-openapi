@@ -42,7 +42,26 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/JWKSet"
+                  "type": "object",
+                  "properties": {
+                    "keys": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2Error"
                 }
               }
             }
@@ -98,13 +117,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OAuth2AccessTokenResponse"
+                  "$ref": "#/components/schemas/OAuth2Token"
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal Server Error"
           },
           "400": {
             "description": "Bad Request",
@@ -125,6 +141,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -150,24 +169,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OAuth2Error"
-                }
-              }
+              "text/html": {}
             }
           },
           "302": {
@@ -179,6 +181,19 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -222,9 +237,6 @@
               }
             }
           },
-          "500": {
-            "description": "Internal Server Error"
-          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -234,6 +246,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -262,17 +277,7 @@
         },
         "responses": {
           "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -283,6 +288,9 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -290,474 +298,6 @@
   },
   "components": {
     "schemas": {
-      "Algorithm": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "requirement": {
-            "type": "string",
-            "enum": [
-              "REQUIRED",
-              "RECOMMENDED",
-              "OPTIONAL"
-            ]
-          }
-        }
-      },
-      "Base64": {
-        "type": "object"
-      },
-      "Base64URL": {
-        "type": "object"
-      },
-      "JWK": {
-        "type": "object",
-        "properties": {
-          "keyStore": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string"
-              },
-              "provider": {
-                "type": "object",
-                "additionalProperties": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "private": {
-            "type": "boolean"
-          },
-          "algorithm": {
-            "$ref": "#/components/schemas/Algorithm"
-          },
-          "x509CertURL": {
-            "type": "string",
-            "format": "uri"
-          },
-          "keyOperations": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "sign",
-                "verify",
-                "encrypt",
-                "decrypt",
-                "wrapKey",
-                "unwrapKey",
-                "deriveKey",
-                "deriveBits"
-              ]
-            }
-          },
-          "x509CertThumbprint": {
-            "$ref": "#/components/schemas/Base64URL"
-          },
-          "requiredParams": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          },
-          "parsedX509CertChain": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string"
-                },
-                "subjectX500Principal": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "encoded": {
-                      "type": "array",
-                      "items": {
-                        "type": "string",
-                        "format": "byte"
-                      }
-                    }
-                  }
-                },
-                "issuerX500Principal": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "encoded": {
-                      "type": "array",
-                      "items": {
-                        "type": "string",
-                        "format": "byte"
-                      }
-                    }
-                  }
-                },
-                "extendedKeyUsage": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "subjectAlternativeNames": {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
-                  }
-                },
-                "issuerAlternativeNames": {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
-                  }
-                },
-                "sigAlgParams": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "byte"
-                  }
-                },
-                "tbscertificate": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "byte"
-                  }
-                },
-                "sigAlgOID": {
-                  "type": "string"
-                },
-                "issuerUniqueID": {
-                  "type": "array",
-                  "items": {
-                    "type": "boolean"
-                  }
-                },
-                "subjectUniqueID": {
-                  "type": "array",
-                  "items": {
-                    "type": "boolean"
-                  }
-                },
-                "sigAlgName": {
-                  "type": "string"
-                },
-                "subjectDN": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "issuerDN": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "notBefore": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "notAfter": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "signature": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "byte"
-                  }
-                },
-                "basicConstraints": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "version": {
-                  "type": "integer",
-                  "format": "int32"
-                },
-                "serialNumber": {
-                  "type": "integer"
-                },
-                "keyUsage": {
-                  "type": "array",
-                  "items": {
-                    "type": "boolean"
-                  }
-                },
-                "criticalExtensionOIDs": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "nonCriticalExtensionOIDs": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "encoded": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "byte"
-                  }
-                },
-                "publicKey": {
-                  "type": "object",
-                  "properties": {
-                    "encoded": {
-                      "type": "array",
-                      "items": {
-                        "type": "string",
-                        "format": "byte"
-                      }
-                    },
-                    "format": {
-                      "type": "string"
-                    },
-                    "algorithm": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "x509CertChain": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Base64"
-            }
-          },
-          "keyType": {
-            "$ref": "#/components/schemas/KeyType"
-          },
-          "keyUse": {
-            "$ref": "#/components/schemas/KeyUse"
-          },
-          "keyID": {
-            "type": "string"
-          },
-          "x509CertSHA256Thumbprint": {
-            "$ref": "#/components/schemas/Base64URL"
-          }
-        }
-      },
-      "JWKSet": {
-        "type": "object",
-        "properties": {
-          "keys": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/JWK"
-            }
-          },
-          "additionalMembers": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          }
-        }
-      },
-      "KeyType": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string"
-          },
-          "requirement": {
-            "type": "string",
-            "enum": [
-              "REQUIRED",
-              "RECOMMENDED",
-              "OPTIONAL"
-            ]
-          }
-        }
-      },
-      "KeyUse": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string"
-          }
-        }
-      },
-      "OAuth2AuthorizationServerMetadata": {
-        "type": "object",
-        "properties": {
-          "claims": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          },
-          "revocation_endpoint_auth_methods_supported": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "introspection_endpoint_auth_methods_supported": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "authorization_endpoint": {
-            "type": "string",
-            "format": "url"
-          },
-          "token_endpoint": {
-            "type": "string",
-            "format": "url"
-          },
-          "revocation_endpoint": {
-            "type": "string",
-            "format": "url"
-          },
-          "response_types_supported": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "grant_types_supported": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "code_challenge_methods_supported": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "jwks_uri": {
-            "type": "string",
-            "format": "url"
-          },
-          "scopes_supported": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "issuer": {
-            "type": "string",
-            "format": "url"
-          },
-          "introspection_endpoint": {
-            "type": "string",
-            "format": "url"
-          },
-          "token_endpoint_auth_methods_supported": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "registration_endpoint": {
-            "type": "string",
-            "format": "url"
-          }
-        }
-      },
-      "OAuth2AccessToken": {
-        "type": "object",
-        "properties": {
-          "tokenValue": {
-            "type": "string"
-          },
-          "issuedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "expiresAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "tokenType": {
-            "$ref": "#/components/schemas/TokenType"
-          },
-          "scopes": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "OAuth2AccessTokenResponse": {
-        "type": "object",
-        "properties": {
-          "accessToken": {
-            "$ref": "#/components/schemas/OAuth2AccessToken"
-          },
-          "refreshToken": {
-            "$ref": "#/components/schemas/OAuth2RefreshToken"
-          },
-          "additionalParameters": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          }
-        }
-      },
-      "OAuth2RefreshToken": {
-        "type": "object",
-        "properties": {
-          "tokenValue": {
-            "type": "string"
-          },
-          "issuedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "expiresAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "TokenType": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string"
-          }
-        }
-      },
       "OAuth2Error": {
         "type": "object",
         "properties": {
@@ -772,24 +312,98 @@
           }
         }
       },
+      "OAuth2AuthorizationServerMetadata": {
+        "type": "object",
+        "properties": {
+          "issuer": {
+            "type": "string"
+          },
+          "token_endpoint_auth_methods_supported": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "revocation_endpoint_auth_methods_supported": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "introspection_endpoint_auth_methods_supported": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "code_challenge_methods_supported": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "authorization_endpoint": {
+            "type": "string"
+          },
+          "token_endpoint": {
+            "type": "string"
+          },
+          "response_types_supported": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "grant_types_supported": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "revocation_endpoint": {
+            "type": "string"
+          },
+          "introspection_endpoint": {
+            "type": "string"
+          },
+          "jwks_uri": {
+            "type": "string"
+          }
+        }
+      },
+      "OAuth2Token": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "type": "string"
+          },
+          "expires_in": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "access_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          },
+          "token_type": {
+            "type": "string"
+          }
+        }
+      },
       "OAuth2TokenIntrospection": {
         "type": "object",
         "properties": {
-          "claims": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          },
           "nbf": {
-            "type": "string",
-            "format": "date-time"
+            "type": "integer",
+            "format": "int64"
+          },
+          "scope": {
+            "type": "string"
           },
           "jti": {
             "type": "string"
-          },
-          "active": {
-            "type": "boolean"
           },
           "client_id": {
             "type": "string"
@@ -797,15 +411,10 @@
           "username": {
             "type": "string"
           },
-          "iat": {
-            "type": "string",
-            "format": "date-time"
+          "active": {
+            "type": "boolean"
           },
-          "exp": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "token_type": {
+          "iss": {
             "type": "string"
           },
           "aud": {
@@ -814,18 +423,19 @@
               "type": "string"
             }
           },
-          "scope": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "token_type": {
+            "type": "string"
           },
-          "iss": {
-            "type": "string",
-            "format": "url"
+          "exp": {
+            "type": "integer",
+            "format": "int64"
           },
           "sub": {
             "type": "string"
+          },
+          "iat": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       }

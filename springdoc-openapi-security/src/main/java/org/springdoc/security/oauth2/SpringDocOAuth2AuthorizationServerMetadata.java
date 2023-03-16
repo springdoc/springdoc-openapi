@@ -1,154 +1,54 @@
 package org.springdoc.security.oauth2;
 
-import java.net.URL;
-import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationServerMetadataClaimAccessor;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationServerMetadataClaimNames;
 
 /**
+ * The type Spring doc o auth 2 authorization server metadata.
+ *
+ * @see <a href="https://github.com/spring-projects/spring-authorization-server/blob/main/oauth2-authorization-server/src/main/java/org/springframework/security/oauth2/server/authorization/OAuth2AuthorizationServerMetadata.java">OAuth2AuthorizationServerMetadata</a>
  * @author bnasslahsen
+ * @author yuta.saito
  */
 @Schema(name = "OAuth2AuthorizationServerMetadata")
-public class SpringDocOAuth2AuthorizationServerMetadata implements OAuth2AuthorizationServerMetadataClaimAccessor {
-
-
-	@Override
-	public Map<String, Object> getClaims() {
-		return null;
-	}
-
-	@Override
-	public <T> T getClaim(String claim) {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getClaim(claim);
-	}
-
-	@Override
-	public boolean hasClaim(String claim) {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.hasClaim(claim);
-	}
-
-	@Override
-	public Boolean containsClaim(String claim) {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.containsClaim(claim);
-	}
-
-	@Override
-	public String getClaimAsString(String claim) {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getClaimAsString(claim);
-	}
-
-	@Override
-	public Boolean getClaimAsBoolean(String claim) {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getClaimAsBoolean(claim);
-	}
-
-	@Override
-	public Instant getClaimAsInstant(String claim) {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getClaimAsInstant(claim);
-	}
-
-	@Override
-	public URL getClaimAsURL(String claim) {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getClaimAsURL(claim);
-	}
-
-	@Override
-	public Map<String, Object> getClaimAsMap(String claim) {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getClaimAsMap(claim);
-	}
-
-	@Override
-	public List<String> getClaimAsStringList(String claim) {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getClaimAsStringList(claim);
-	}
-
-	@Override
+public interface SpringDocOAuth2AuthorizationServerMetadata {
 	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.ISSUER)
-	public URL getIssuer() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getIssuer();
-	}
+	String issuer();
 
-	@Override
 	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.AUTHORIZATION_ENDPOINT)
-	public URL getAuthorizationEndpoint() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getAuthorizationEndpoint();
-	}
+	String authorizationEndpoint();
 
-	@Override
 	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.TOKEN_ENDPOINT)
-	public URL getTokenEndpoint() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getTokenEndpoint();
-	}
+	String tokenEndpoint();
 
-	@Override
 	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.TOKEN_ENDPOINT_AUTH_METHODS_SUPPORTED)
-	public List<String> getTokenEndpointAuthenticationMethods() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getTokenEndpointAuthenticationMethods();
-	}
+	List<String> tokenEndpointAuthMethodsSupported();
 
-	@Override
 	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.JWKS_URI)
-	public URL getJwkSetUrl() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getJwkSetUrl();
-	}
+	String jwksUri();
 
-	@Override
-	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.SCOPES_SUPPORTED)
-	public List<String> getScopes() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getScopes();
-	}
-
-	@Override
 	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.RESPONSE_TYPES_SUPPORTED)
-	public List<String> getResponseTypes() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getResponseTypes();
-	}
+	List<String> responseTypesSupported();
 
-	@Override
 	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.GRANT_TYPES_SUPPORTED)
-	public List<String> getGrantTypes() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getGrantTypes();
-	}
+	List<String> grantTypesSupported();
 
-	@Override
 	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.REVOCATION_ENDPOINT)
-	public URL getTokenRevocationEndpoint() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getTokenRevocationEndpoint();
-	}
+	String revocationEndpoint();
 
-	@Override
 	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.REVOCATION_ENDPOINT_AUTH_METHODS_SUPPORTED)
-	public List<String> getTokenRevocationEndpointAuthenticationMethods() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getTokenRevocationEndpointAuthenticationMethods();
-	}
+	List<String> revocationEndpointAuthMethodsSupported();
 
-	@Override
 	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.INTROSPECTION_ENDPOINT)
-	public URL getTokenIntrospectionEndpoint() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getTokenIntrospectionEndpoint();
-	}
+	String introspectionEndpoint();
 
-	@Override
 	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.INTROSPECTION_ENDPOINT_AUTH_METHODS_SUPPORTED)
-	public List<String> getTokenIntrospectionEndpointAuthenticationMethods() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getTokenIntrospectionEndpointAuthenticationMethods();
-	}
+	List<String> introspectionEndpointAuthMethodsSupported();
 
-	@Override
-	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.REGISTRATION_ENDPOINT)
-	public URL getClientRegistrationEndpoint() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getClientRegistrationEndpoint();
-	}
-
-	@Override
 	@JsonProperty(OAuth2AuthorizationServerMetadataClaimNames.CODE_CHALLENGE_METHODS_SUPPORTED)
-	public List<String> getCodeChallengeMethods() {
-		return OAuth2AuthorizationServerMetadataClaimAccessor.super.getCodeChallengeMethods();
-	}
+	List<String> codeChallengeMethodsSupported();
 }
