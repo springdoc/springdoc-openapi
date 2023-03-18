@@ -6,7 +6,7 @@
 
 `springdoc-openapi` is on [Open Collective](https://opencollective.com/springdoc).
 If you ❤️ this project consider becoming a [sponsor](https://github.com/sponsors/springdoc).
-If you already use the `springdoc-openapi, do not forget adding a ***github star*** to this repository.
+If you already use the `springdoc-openapi`, please do not forget adding a ***github star*** to this repository.
 
 
 This project is sponsored by
