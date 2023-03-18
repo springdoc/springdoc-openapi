@@ -5,6 +5,7 @@
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/springdoc)](https://stackoverflow.com/questions/tagged/springdoc?tab=Votes)
 
 `springdoc-openapi` is on [Open Collective](https://opencollective.com/springdoc).
+
 If you ❤️ this project consider becoming a [sponsor](https://github.com/sponsors/springdoc).
 If you already use the `springdoc-openapi`, please do not forget adding a ***github star*** to this repository.
 
