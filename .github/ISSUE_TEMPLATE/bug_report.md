@@ -7,6 +7,9 @@ assignees: ''
 
 ---
 
+If you ❤️ this project consider becoming a [sponsor](https://github.com/sponsors/springdoc).
+If you already use the `springdoc-openapi`, please do not forget adding a ***github star*** to this repository.
+
 **Describe the bug**
 
 - If you are reporting a bug, please help to speed up problem diagnosis by providing as
