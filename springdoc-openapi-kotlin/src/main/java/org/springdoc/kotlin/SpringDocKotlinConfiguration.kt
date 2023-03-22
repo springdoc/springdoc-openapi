@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Lazy
 import org.springframework.core.MethodParameter
 import org.springframework.core.annotation.AnnotatedElementUtils
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ValueConstants
 import kotlin.coroutines.Continuation
 import kotlin.reflect.KParameter
 import kotlin.reflect.jvm.kotlinFunction
@@ -23,6 +25,7 @@ import kotlin.reflect.jvm.kotlinFunction
 /**
  * The type Spring doc kotlin configuration.
  * @author bnasslahsen
+ * @author tobiberger
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
@@ -77,9 +80,16 @@ class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvider) {
 					AnnotatedElementUtils.forAnnotations(*methodParameter.parameterAnnotations),
 					Parameter::class.java
 				)
+				val requestParam = AnnotatedElementUtils.findMergedAnnotation(
+						AnnotatedElementUtils.forAnnotations(*methodParameter.parameterAnnotations),
+						RequestParam::class.java
+				)
 				// Swagger @Parameter annotation takes precedence
 				if (parameterDoc != null && parameterDoc.required)
 					parameterModel.required = parameterDoc.required
+				// parameter is not required if a default value is provided in @RequestParam
+				else if (requestParam != null && requestParam.defaultValue != ValueConstants.DEFAULT_NONE)
+					parameterModel.required = false
 				else
 					parameterModel.required = kParameter.type.isMarkedNullable == false
 			}
