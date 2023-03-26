@@ -57,4 +57,20 @@ public class HelloController {
 	@ParameterObject Pageable pageable) {
 		return "bla";
 	}
+
+	@GetMapping("/test4")
+	public String getPatientList4(@PageableDefault(100)
+	@ParameterObject Pageable pageable) {
+		return "bla";
+	}
+
+	@GetMapping("/test5")
+	public void read(
+			@PageableDefault(sort = {
+					"some,desc",
+					"other,asc",
+					"another.that,desc"
+			})
+			@ParameterObject final Pageable pageable) {
+	}
 }
