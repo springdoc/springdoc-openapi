@@ -339,6 +339,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			);
 			if (!CollectionUtils.isEmpty(openAPI.getServers()))
 				openAPIService.setServersPresent(true);
+			else
+				openAPIService.setServersPresent(false);
 			openAPIService.updateServers(openAPI);
 
 			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())

@@ -24,7 +24,6 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.customizers.OpenApiCustomiser;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -32,10 +31,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app189" })
 public class SpringDocTestApp {
-	public static void main(String[] args) {
-		SpringApplication.run(SpringDocTestApp.class, args);
-	}
-
 	@Bean
 	public OpenAPI customOpenAPI() {
 		return new OpenAPI()
@@ -51,7 +46,6 @@ public class SpringDocTestApp {
 				openApi.getServers().forEach(server -> {
 					server.setDescription("customized description");
 					server.setUrl("https://customized.url");
-					System.out.println(server);
 				});
 	}
 }
