@@ -34,8 +34,8 @@ public class SpringDocApp189Test extends AbstractCommonTest {
 
     @Test
     public void testWithDifferentLocales() throws Exception {
-        runTestWithLocale("en-GB");
-        runTestWithLocale("de-DE");
+          runTestWithLocale("en-GB");
+          runTestWithLocale("de-DE");
     }
 
     private void runTestWithLocale(String locale) throws JSONException {
