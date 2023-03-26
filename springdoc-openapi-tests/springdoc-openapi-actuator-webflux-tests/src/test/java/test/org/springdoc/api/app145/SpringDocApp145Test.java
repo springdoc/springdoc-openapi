@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "management.endpoints.web.exposure.include:*",
+		properties = { "management.endpoints.web.exposure.include=*",
 				"server.port=52593",
 				"springdoc.use-management-port=true",
 				"springdoc.group-configs[0].group=users",
