@@ -120,6 +120,7 @@ class AbstractOpenApiResourceTest {
 
 		when(openAPIService.getContext()).thenReturn(context);
 		when(openAPIService.build(any())).thenReturn(openAPI);
+		doAnswer(new CallsRealMethods()).when(openAPIService).setServersPresent(false);
 
 		when(openAPIBuilderObjectFactory.getObject()).thenReturn(openAPIService);
 		when(springDocProviders.jsonMapper()).thenReturn(Json.mapper());
