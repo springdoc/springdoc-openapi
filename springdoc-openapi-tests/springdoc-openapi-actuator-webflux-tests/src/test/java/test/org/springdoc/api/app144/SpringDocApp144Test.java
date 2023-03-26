@@ -30,7 +30,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "management.endpoints.web.exposure.include:*",
+		properties = { "management.endpoints.web.exposure.include=*",
 				"server.port=52555",
 				"springdoc.use-management-port=true",
 				"management.server.port=9289",
@@ -46,7 +46,8 @@ public class SpringDocApp144Test extends AbstractSpringDocActuatorTest {
 	@Test
 	public void testApp1() throws Exception {
 		String result = webClient.get().uri("/application/openapi").retrieve()
-				.bodyToMono(String.class).block();
+				.bodyToMono(String.class)
+				.block();
 		String expected = getContent("results/app144.json");
 		assertEquals(expected, result, true);
 	}
