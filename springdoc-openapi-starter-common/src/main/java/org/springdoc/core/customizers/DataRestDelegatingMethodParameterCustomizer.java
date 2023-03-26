@@ -24,10 +24,12 @@ package org.springdoc.core.customizers;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.ObjectMapperFactory;
@@ -805,11 +807,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		if ("sort".equals(parameterName)) {
 			DefaultSort defaultSort = getDefaultSort(pageableDefault, sortDefault);
 			if (defaultSort != null && ArrayUtils.isNotEmpty(defaultSort.properties)) {
-				List<String> sortValues = new ArrayList<>();
-				for (String sortValue : defaultSort.properties) {
-					String sortStr = String.join(",", sortValue, defaultSort.direction.name());
-					sortValues.add(sortStr);
-				}
+				final List<String> sortValues = defaultSort.getEffectiveProperties();
 				try {
 					defaultValue = ObjectMapperFactory.buildStrictGenericObjectMapper().writeValueAsString(sortValues);
 				}
@@ -881,6 +879,13 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	}
 
 	private static class DefaultSort {
+
+		private static final String DIRECTION_GROUP = Arrays.stream(Sort.Direction.values()).map(Enum::name).collect(Collectors.joining("|"));
+
+		private static final String DIRECTED_REGEXP = "\\w+(\\.\\w+)*,\\s*(" + DIRECTION_GROUP + ')';
+
+		private static final Pattern DIRECTED_PATTERN = Pattern.compile(DIRECTED_REGEXP, Pattern.CASE_INSENSITIVE);
+
 		private final Sort.Direction direction;
 
 		private final String[] properties;
@@ -888,6 +893,17 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		DefaultSort(Sort.Direction direction, String... properties) {
 			this.direction = direction;
 			this.properties = properties;
+		}
+
+		List<String> getEffectiveProperties() {
+			return Arrays.stream(properties)
+					.map(p -> {
+						if (DIRECTED_PATTERN.matcher(p).matches()) {
+							return p;
+						}
+						return p + ',' + direction.name();
+					})
+					.collect(Collectors.toList());
 		}
 	}
 }
