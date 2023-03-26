@@ -101,16 +101,59 @@
         ],
         "parameters": [
           {
-            "name": "parameters",
-            "in": "query",
-            "schema": {
-              "type": "object",
-              "additionalProperties": {
-                "type": "string"
+            "in": "header",
+            "name": "Authorization"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "grant_type": {
+                    "type": "string",
+                    "enum": [
+                      "authorization_code",
+                      "refresh_token",
+                      "client_credentials"
+                    ]
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "redirect_uri": {
+                    "type": "string"
+                  },
+                  "refresh_token": {
+                    "type": "string"
+                  },
+                  "scope": {
+                    "type": "string"
+                  },
+                  "client_id": {
+                    "type": "string"
+                  },
+                  "client_secret": {
+                    "type": "string"
+                  },
+                  "client_assertion_type": {
+                    "type": "string"
+                  },
+                  "client_assertion": {
+                    "type": "string"
+                  },
+                  "additionalParameters": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                }
               }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK",
