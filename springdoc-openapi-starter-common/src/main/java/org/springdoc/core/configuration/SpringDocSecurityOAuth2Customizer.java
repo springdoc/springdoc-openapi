@@ -14,6 +14,7 @@ import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.HeaderParameter;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
@@ -32,6 +33,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.server.authorization.web.NimbusJwkSetEndpointFilter;
@@ -202,8 +204,28 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			buildApiResponsesOnBadRequest(apiResponses, openAPI);
 			buildOAuth2Error(openAPI, apiResponses, HttpStatus.UNAUTHORIZED);
 			Operation operation = buildOperation(apiResponses);
-			Schema<?> schema = new ObjectSchema().additionalProperties(new StringSchema());
-			operation.addParametersItem(new Parameter().name("parameters").in(ParameterIn.QUERY.toString()).schema(schema));
+
+			Schema<?> requestSchema = new ObjectSchema()
+					.addProperty(OAuth2ParameterNames.GRANT_TYPE,
+							new StringSchema()
+									.addEnumItem(AuthorizationGrantType.AUTHORIZATION_CODE.getValue())
+									.addEnumItem(AuthorizationGrantType.REFRESH_TOKEN.getValue())
+									.addEnumItem(AuthorizationGrantType.CLIENT_CREDENTIALS.getValue()))
+					.addProperty(OAuth2ParameterNames.CODE, new StringSchema())
+					.addProperty(OAuth2ParameterNames.REDIRECT_URI, new StringSchema())
+					.addProperty(OAuth2ParameterNames.REFRESH_TOKEN, new StringSchema())
+					.addProperty(OAuth2ParameterNames.SCOPE, new StringSchema())
+					.addProperty(OAuth2ParameterNames.CLIENT_ID, new StringSchema())
+					.addProperty(OAuth2ParameterNames.CLIENT_SECRET, new StringSchema())
+					.addProperty(OAuth2ParameterNames.CLIENT_ASSERTION_TYPE, new StringSchema())
+					.addProperty(OAuth2ParameterNames.CLIENT_ASSERTION, new StringSchema())
+					.addProperty("additionalParameters", new ObjectSchema().additionalProperties(new StringSchema()));
+
+			String mediaType = org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+			RequestBody requestBody = new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(requestSchema)));
+			operation.setRequestBody(requestBody);
+			operation.addParametersItem(new HeaderParameter().name("Authorization"));
+
 			buildPath(oAuth2EndpointFilter, "tokenEndpointMatcher", openAPI, operation, HttpMethod.POST);
 		}
 	}
