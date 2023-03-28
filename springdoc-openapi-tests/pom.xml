@@ -18,7 +18,6 @@
 		<module>springdoc-openapi-actuator-webflux-tests</module>
 		<module>springdoc-openapi-actuator-webmvc-tests</module>
 		<module>springdoc-openapi-kotlin-tests</module>
-		<module>springdoc-openapi-native-tests</module>
 		<module>springdoc-openapi-hateoas-tests</module>
 		<module>springdoc-openapi-data-rest-tests</module>
 	</modules>

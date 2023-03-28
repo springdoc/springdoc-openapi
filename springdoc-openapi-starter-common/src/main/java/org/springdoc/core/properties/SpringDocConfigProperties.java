@@ -213,11 +213,6 @@ public class SpringDocConfigProperties {
 	private boolean enableKotlin = true;
 
 	/**
-	 * The Enable native support.
-	 */
-	private boolean enableNativeSupport = false;
-
-	/**
 	 * The Enable hateoas.
 	 */
 	private boolean enableHateoas = true;
@@ -372,25 +367,6 @@ public class SpringDocConfigProperties {
 	public void setEnableHateoas(boolean enableHateoas) {
 		this.enableHateoas = enableHateoas;
 	}
-
-	/**
-	 * Is enable native support boolean.
-	 *
-	 * @return the boolean
-	 */
-	public boolean isEnableNativeSupport() {
-		return enableNativeSupport;
-	}
-
-	/**
-	 * Sets enable native support.
-	 *
-	 * @param enableNativeSupport the enable native support
-	 */
-	public void setEnableNativeSupport(boolean enableNativeSupport) {
-		this.enableNativeSupport = enableNativeSupport;
-	}
-
 
 	/**
 	 * Is enable kotlin boolean.

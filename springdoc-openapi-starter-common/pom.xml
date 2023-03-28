@@ -78,12 +78,6 @@
 			<artifactId>querydsl-core</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<!-- classgraph -->
-		<dependency>
-			<groupId>io.github.classgraph</groupId>
-			<artifactId>classgraph</artifactId>
-			<optional>true</optional>
-		</dependency>
 	</dependencies>
 	<build>
 		<resources>
