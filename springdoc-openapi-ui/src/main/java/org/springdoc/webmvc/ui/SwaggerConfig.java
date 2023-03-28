@@ -55,6 +55,7 @@ import static org.springdoc.core.Constants.SPRINGDOC_USE_ROOT_PATH;
 
 /**
  * The type Swagger config.
+ *
  * @author bnasslahsen
  */
 @Lazy(false)
@@ -149,8 +150,9 @@ public class SwaggerConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider) {
-		return new SwaggerWebMvcConfigurer(swaggerUiConfigParameters, swaggerIndexTransformer, actuatorProvider);
+	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerIndexTransformer swaggerIndexTransformer,
+			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
+		return new SwaggerWebMvcConfigurer(swaggerUiConfigParameters, swaggerIndexTransformer, actuatorProvider, swaggerResourceResolver);
 	}
 
 	/**
@@ -166,6 +168,12 @@ public class SwaggerConfig {
 		return new SwaggerUiConfigParameters(swaggerUiConfig);
 	}
 
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	SwaggerResourceResolver swaggerResourceResolver(SwaggerUiConfigProperties swaggerUiConfigProperties) {
+		return new SwaggerResourceResolver(swaggerUiConfigProperties);
+	}
 	/**
 	 * The type Swagger actuator welcome configuration.
 	 */
@@ -190,4 +198,5 @@ public class SwaggerConfig {
 			return new SwaggerWelcomeActuator(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters, webEndpointProperties);
 		}
 	}
+
 }

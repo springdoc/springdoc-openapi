@@ -36,7 +36,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 				"springdoc.use-management-port=true",
 				"springdoc.group-configs[0].group=users",
 				"springdoc.group-configs[0].packages-to-scan=test.org.springdoc.api.app145",
-				"management.server.port=9096",
+				"management.server.port=9066",
 				"management.endpoints.web.base-path=/application" })
 public class SpringDocApp1452Test extends AbstractSpringDocActuatorTest {
 

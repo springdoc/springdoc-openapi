@@ -63,21 +63,28 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	private final Optional<ActuatorProvider> actuatorProvider;
 
 	/**
+	 * The Swagger resource resolver.
+	 */
+	private final SwaggerResourceResolver swaggerResourceResolver;
+
+	/**
 	 * Instantiates a new Swagger web flux configurer.
 	 *
 	 * @param swaggerUiConfigParameters the swagger ui calculated config
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 * @param actuatorProvider the actuator provider
+	 * @param swaggerResourceResolver the swagger resource resolver
 	 */
 	public SwaggerWebFluxConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters,
 			SpringDocConfigProperties springDocConfigProperties,
 			SwaggerIndexTransformer swaggerIndexTransformer,
-			Optional<ActuatorProvider> actuatorProvider) {
+			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
 		this.swaggerPath = swaggerUiConfigParameters.getPath();
 		this.webJarsPrefixUrl = springDocConfigProperties.getWebjars().getPrefix();
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
 		this.actuatorProvider = actuatorProvider;
+		this.swaggerResourceResolver = swaggerResourceResolver;
 	}
 
 	@Override
@@ -90,6 +97,7 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 		registry.addResourceHandler(uiRootPath + webJarsPrefixUrl + ALL_PATTERN)
 				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
 				.resourceChain(false)
+				.addResolver(swaggerResourceResolver)
 				.addTransformer(swaggerIndexTransformer);
 	}
 

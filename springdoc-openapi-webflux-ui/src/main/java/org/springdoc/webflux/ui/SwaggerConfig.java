@@ -119,13 +119,16 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 * @param actuatorProvider the actuator provider
+	 * @param swaggerResourceResolver the swagger resource resolver
 	 * @return the swagger web flux configurer
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SwaggerWebFluxConfigurer swaggerWebFluxConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider) {
-		return new SwaggerWebFluxConfigurer(swaggerUiConfigParameters, springDocConfigProperties, swaggerIndexTransformer, actuatorProvider);
+	SwaggerWebFluxConfigurer swaggerWebFluxConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters,
+			SpringDocConfigProperties springDocConfigProperties, SwaggerIndexTransformer swaggerIndexTransformer,
+			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
+		return new SwaggerWebFluxConfigurer(swaggerUiConfigParameters, springDocConfigProperties, swaggerIndexTransformer, actuatorProvider, swaggerResourceResolver);
 	}
 
 	/**
@@ -169,6 +172,19 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	@Lazy(false)
 	SpringWebProvider springWebProvider() {
 		return new SpringWebFluxProvider();
+	}
+
+	/**
+	 * Swagger resource resolver swagger resource resolver.
+	 *
+	 * @param swaggerUiConfigProperties the swagger ui config properties
+	 * @return the swagger resource resolver
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	SwaggerResourceResolver swaggerResourceResolver(SwaggerUiConfigProperties swaggerUiConfigProperties) {
+		return new SwaggerResourceResolver(swaggerUiConfigProperties);
 	}
 
 	/**
