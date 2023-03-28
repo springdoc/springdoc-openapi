@@ -47,11 +47,11 @@ import org.springframework.util.AntPathMatcher;
  * @author bnasslahsen
  */
 @Lazy(false)
-@ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-native-support:false}")
+@ConditionalOnExpression("${springdoc.api-docs.enabled:true}")
 @ConditionalOnWebApplication
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(SpringDocConfiguration.class)
-public class SpringDocNativeConfiguration implements InitializingBean {
+public class SpringDocUIConfiguration implements InitializingBean {
 
 	/**
 	 * The constant SPRINGDOC_CONFIG_PROPERTIES.
@@ -73,7 +73,7 @@ public class SpringDocNativeConfiguration implements InitializingBean {
 	 *
 	 * @param optionalSwaggerUiConfigProperties the swagger ui config properties
 	 */
-	public SpringDocNativeConfiguration(Optional<SwaggerUiConfigProperties> optionalSwaggerUiConfigProperties) {
+	public SpringDocUIConfiguration(Optional<SwaggerUiConfigProperties> optionalSwaggerUiConfigProperties) {
 		this.optionalSwaggerUiConfigProperties = optionalSwaggerUiConfigProperties;
 	}
 

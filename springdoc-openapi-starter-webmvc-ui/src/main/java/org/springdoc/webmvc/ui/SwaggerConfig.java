@@ -146,13 +146,15 @@ public class SwaggerConfig {
 	 * @param swaggerUiConfigParameters the swagger ui calculated config
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 * @param actuatorProvider the actuator provider
+	 * @param swaggerResourceResolver the swagger resource resolver
 	 * @return the swagger web mvc configurer
 	 */
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider) {
-		return new SwaggerWebMvcConfigurer(swaggerUiConfigParameters, swaggerIndexTransformer, actuatorProvider);
+	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters,
+			SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
+		return new SwaggerWebMvcConfigurer(swaggerUiConfigParameters, swaggerIndexTransformer, actuatorProvider, swaggerResourceResolver);
 	}
 
 	/**
@@ -166,6 +168,19 @@ public class SwaggerConfig {
 	@Lazy(false)
 	SwaggerUiConfigParameters swaggerUiConfigParameters(SwaggerUiConfigProperties swaggerUiConfig) {
 		return new SwaggerUiConfigParameters(swaggerUiConfig);
+	}
+
+	/**
+	 * Swagger resource resolver swagger resource resolver.
+	 *
+	 * @param swaggerUiConfigProperties the swagger ui config properties
+	 * @return the swagger resource resolver
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	SwaggerResourceResolver swaggerResourceResolver(SwaggerUiConfigProperties swaggerUiConfigProperties) {
+		return new SwaggerResourceResolver(swaggerUiConfigProperties);
 	}
 
 	/**

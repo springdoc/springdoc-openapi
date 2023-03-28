@@ -18,8 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 @ActiveProfiles("test")
 public abstract class AbstractCommonTest {
 
-	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommonTest.class);
-
 	@Autowired
 	protected MockMvc mockMvc;
 

@@ -33,16 +33,14 @@ import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static org.springdoc.core.utils.Constants.INDEX_PAGE;
-import static org.springdoc.core.utils.Constants.OAUTH_REDIRECT_PAGE;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
-import static org.springdoc.core.utils.Constants.SWAGGER_UI_PREFIX;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 
 /**
  * The type Abstract swagger welcome.
+ *
  * @author bnasslashen
  */
 public abstract class AbstractSwaggerWelcome {
@@ -224,12 +222,7 @@ public abstract class AbstractSwaggerWelcome {
 	 * @return the oauth2 redirect url
 	 */
 	protected String getOauth2RedirectUrl() {
-		if (StringUtils.isNotEmpty(swaggerUiConfig.getVersion())) {
-			return StringUtils.defaultIfBlank(swaggerUiConfig.getOauth2RedirectUrl(), SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfig.getVersion() + OAUTH_REDIRECT_PAGE);
-		}
-		else {
-			return StringUtils.defaultIfBlank(swaggerUiConfig.getOauth2RedirectUrl(), SWAGGER_UI_OAUTH_REDIRECT_URL);
-		}
+		return StringUtils.defaultIfBlank(swaggerUiConfig.getOauth2RedirectUrl(), SWAGGER_UI_OAUTH_REDIRECT_URL);
 	}
 
 	/**
@@ -238,9 +231,6 @@ public abstract class AbstractSwaggerWelcome {
 	 * @return the swagger ui url
 	 */
 	protected String getSwaggerUiUrl() {
-		if (StringUtils.isNotEmpty(swaggerUiConfig.getVersion()))
-			return SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfig.getVersion() + INDEX_PAGE;
-		else
-			return SWAGGER_UI_URL;
+		return SWAGGER_UI_URL;
 	}
 }
