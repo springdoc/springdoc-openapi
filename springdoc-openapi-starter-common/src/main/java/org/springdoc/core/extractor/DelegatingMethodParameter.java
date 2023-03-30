@@ -128,21 +128,12 @@ public class DelegatingMethodParameter extends MethodParameter {
 					explodedParameters.add(methodParameter);
 				});
 			}
-			else if (defaultFlatParamObject) {
-				boolean isSimpleType = MethodParameterPojoExtractor.isSimpleType(paramClass);
-				boolean hasAnnotation = p.hasParameterAnnotations();
-				boolean shouldFlat = !isSimpleType && !hasAnnotation;
-				if (shouldFlat && !AbstractRequestService.isRequestTypeToIgnore(paramClass)) {
-					MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
-						optionalDelegatingMethodParameterCustomizer
-								.ifPresent(customizer -> customizer.customize(p, methodParameter));
-						explodedParameters.add(methodParameter);
-					});
-				}
-				else {
-					String name = pNames != null ? pNames[i] : p.getParameterName();
-					explodedParameters.add(new DelegatingMethodParameter(p, name, null, false, false));
-				}
+			else if (defaultFlatParamObject && !MethodParameterPojoExtractor.isSimpleType(paramClass) && !AbstractRequestService.isRequestTypeToIgnore(paramClass)) {
+				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
+					optionalDelegatingMethodParameterCustomizer
+							.ifPresent(customizer -> customizer.customize(p, methodParameter));
+					explodedParameters.add(methodParameter);
+				});
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
