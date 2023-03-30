@@ -88,7 +88,7 @@ class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvider) {
 				if (parameterDoc != null && parameterDoc.required)
 					parameterModel.required = parameterDoc.required
 				// parameter is not required if a default value is provided in @RequestParam
-				else if (requestParam != null && requestParam.defaultValue != ValueConstants.DEFAULT_NONE)
+				else if (requestParam != null && ((requestParam.defaultValue != ValueConstants.DEFAULT_NONE) || !requestParam.required))
 					parameterModel.required = false
 				else
 					parameterModel.required = kParameter.type.isMarkedNullable == false
