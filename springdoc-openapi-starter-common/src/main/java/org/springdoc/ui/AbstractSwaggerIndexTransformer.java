@@ -136,6 +136,16 @@ public class AbstractSwaggerIndexTransformer {
 	}
 
 	/**
+	 * Setting the url configured with swagger ui properties
+	 *
+	 * @param html
+	 * @return modifed html
+	 */
+	protected String setConfiguredApiDocsUrl(String html){
+		return html.replace(Constants.SWAGGER_UI_DEFAULT_URL, swaggerUiConfig.getUrl());
+	}
+
+	/**
 	 * Default transformations string.
 	 *
 	 * @param inputStream the input stream
@@ -166,6 +176,10 @@ public class AbstractSwaggerIndexTransformer {
 
 		if (swaggerUiConfig.isDisableSwaggerDefaultUrl())
 			html = overwriteSwaggerDefaultUrl(html);
+
+		if(StringUtils.isNotEmpty(swaggerUiConfig.getUrl())){
+			html = setConfiguredApiDocsUrl(html);
+		}
 
 		return html;
 	}
