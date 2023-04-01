@@ -27,7 +27,6 @@ import org.springdoc.core.properties.SwaggerUiOAuthProperties;
 import org.springdoc.core.utils.Constants;
 import org.springdoc.webflux.core.configuration.SpringDocWebFluxConfiguration;
 import org.springdoc.webflux.ui.SwaggerConfig;
-import org.springdoc.webflux.ui.SwaggerResourceResolver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;

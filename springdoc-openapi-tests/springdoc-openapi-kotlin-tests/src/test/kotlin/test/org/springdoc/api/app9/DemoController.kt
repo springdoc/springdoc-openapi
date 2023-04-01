@@ -1,7 +1,6 @@
 package test.org.springdoc.api.app9
 
 import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.validation.constraints.NotNull
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

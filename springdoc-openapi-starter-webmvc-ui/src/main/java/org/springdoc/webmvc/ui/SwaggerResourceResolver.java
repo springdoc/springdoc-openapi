@@ -2,7 +2,6 @@ package org.springdoc.webmvc.ui;
 
 import java.util.List;
 
-
 import jakarta.servlet.http.HttpServletRequest;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.ui.AbstractSwaggerResourceResolver;

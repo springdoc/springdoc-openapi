@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.models.media.ByteArraySchema
 import org.springdoc.core.customizers.ParameterCustomizer
 import org.springdoc.core.parsers.KotlinCoroutinesReturnTypeParser
-import org.springdoc.core.providers.ObjectMapperProvider
 import org.springdoc.core.utils.Constants
 import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
