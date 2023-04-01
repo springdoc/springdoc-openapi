@@ -45,11 +45,74 @@
   "components": {
     "schemas": {
       "DemoRequest": {
+        "required": [
+          "noRequiredNoNullableNoDefault",
+          "requiredNoNullableDefault",
+          "requiredNoNullableDefault1",
+          "requiredNoNullableNoDefault",
+          "requiredNoNullableNoDefault1",
+          "requiredNullableDefault",
+          "requiredNullableDefault1",
+          "requiredNullableNoDefault",
+          "requiredNullableNoDefault1"
+        ],
         "type": "object",
         "properties": {
-          "nonNullableWithDefault": {
+          "requiredNullableDefault": {
             "type": "string",
-            "description": "Should not be required"
+            "default": "a default value"
+          },
+          "requiredNullableNoDefault": {
+            "type": "string"
+          },
+          "requiredNoNullableDefault": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "requiredNoNullableNoDefault": {
+            "type": "string"
+          },
+          "requiredNullableDefault1": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "requiredNullableNoDefault1": {
+            "type": "string"
+          },
+          "requiredNoNullableDefault1": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "requiredNoNullableNoDefault1": {
+            "type": "string"
+          },
+          "noRequiredNullableDefault2": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "noRequiredNullableNoDefault2": {
+            "type": "string"
+          },
+          "noRequiredNoNullableDefault2": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "noRequiredNoNullableNoDefault2": {
+            "type": "string"
+          },
+          "noRequiredNullableDefault": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "noRequiredNullableNoDefault": {
+            "type": "string"
+          },
+          "noRequiredNoNullableDefault": {
+            "type": "string",
+            "default": "a default value"
+          },
+          "noRequiredNoNullableNoDefault": {
+            "type": "string"
           }
         }
       },

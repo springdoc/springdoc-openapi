@@ -23,9 +23,10 @@
 package org.springdoc.core.configuration;
 
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
-import com.fasterxml.jackson.databind.introspect.NopAnnotationIntrospector;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import io.swagger.v3.core.jackson.SwaggerAnnotationIntrospector;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The type Spring doc required module.
@@ -42,11 +43,21 @@ public class SpringDocRequiredModule extends SimpleModule {
 	/**
 	 * The type Respect schema required annotation introspector.
 	 */
-	private static class RespectSchemaRequiredAnnotationIntrospector extends NopAnnotationIntrospector {
+	private static class RespectSchemaRequiredAnnotationIntrospector extends SwaggerAnnotationIntrospector {
+
 		@Override
-		public Boolean hasRequiredMarker(AnnotatedMember m) {
-			Schema schemaAnnotation = m.getAnnotation(Schema.class);
-			return schemaAnnotation != null ? schemaAnnotation.required() : null;
+		public Boolean hasRequiredMarker(AnnotatedMember annotatedMember) {
+			Schema schemaAnnotation = annotatedMember.getAnnotation(Schema.class);
+			if (schemaAnnotation != null) {
+				Schema.RequiredMode requiredMode = schemaAnnotation.requiredMode();
+				if (schemaAnnotation.required() || requiredMode == Schema.RequiredMode.REQUIRED) {
+					return true;
+				}
+				else if (requiredMode == Schema.RequiredMode.NOT_REQUIRED || StringUtils.isNotEmpty(schemaAnnotation.defaultValue())) {
+					return false;
+				}
+			}
+			return super.hasRequiredMarker(annotatedMember);
 		}
 	}
 }
