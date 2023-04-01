@@ -75,7 +75,7 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 	public Map<String, String> getRecordClassParamJavadoc(Class<?> cl) {
 		ClassJavadoc classJavadoc = RuntimeJavadoc.getJavadoc(cl);
 		return classJavadoc.getRecordComponents().stream()
-				.collect(Collectors.toMap(ParamJavadoc::getName, record -> formatter.format(record.getComment())));
+				.collect(Collectors.toMap(ParamJavadoc::getName, recordClass -> formatter.format(recordClass.getComment())));
 	}
 
 	/**

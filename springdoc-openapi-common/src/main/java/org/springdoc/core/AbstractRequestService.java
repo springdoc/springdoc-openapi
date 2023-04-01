@@ -492,7 +492,6 @@ public abstract class AbstractRequestService {
 		// By default
 		if (!isRequestBodyParam(requestMethod, parameterInfo, openApiVersion)) {
 			parameterInfo.setRequired(!((DelegatingMethodParameter) methodParameter).isNotRequired() && !methodParameter.isOptional());
-			//parameterInfo.setParamType(QUERY_PARAM);
 			parameterInfo.setDefaultValue(null);
 			return this.buildParam(parameterInfo, components, jsonView);
 		}

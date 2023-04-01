@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2023-04-01
+
+### Added
+
+- #2152 - Detect directions in default sort values
+- #2167 #2166 - Add request parameter for token endpoint 
+- #2188 - Support of {*param} path patterns
+
+### Changed
+
+- Upgrade spring-boot to 2.7.10
+- Upgrade swagger-core to 2.2.9
+- Upgrade swagger-ui to 4.18.2
+- Spring Native is now superseded by Spring Boot 3 official
+- #2173 - Remove webjars-locator-core 
+
+### Fixed
+
+- #2122 - Super tiny fix typo
+- #2131 - Fixed a bug that javadoc of record class parameters was not recognized.
+- #2140 - Javadoc record class parameters not recognized
+- #2123 #2141 - fix spring authorization server response.
+- #2148 - Fix properties show-oauth2-endpoints and SpringDocConfigProperties#showOauth2Endpoint properties name mismatch
+- #2149 - Request parameters with default values are marked as required. 
+- #2155 - openApi.getServers() is null in OpenApiCustomiser when using different locales. 
+- #2152 - Redundant(wrong) direction appended to @PageableDefault.
+- #2181 #2183 - Fixed DefaultFlatParamObject to work with annotated parameters.
+- #2170 #2187 - All request parameters marked as required for Java controllers in mixed projects in 2.0.3
+- #2165 - Custom Converters are not excluded if not registered for Http Message Converter.
+- #2185 - Fix behaviour of required flag for schema class fields.
+
 ## [1.6.15] - 2023-03-07
 
 ### Added
