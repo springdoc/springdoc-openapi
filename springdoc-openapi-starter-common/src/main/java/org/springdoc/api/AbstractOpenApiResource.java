@@ -1098,7 +1098,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				Parameter parameter = paramIt.next();
 				if (ParameterIn.PATH.toString().equals(parameter.getIn())) {
 					// check it's present in the path
-					if (!operationPath.contains("{" + parameter.getName() + "}"))
+					String name = parameter.getName();
+					if(!StringUtils.containsAny(operationPath, "{" + name + "}", "{*" + name + "}"))
 						paramIt.remove();
 				}
 			}
