@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Lazy
+import org.springframework.core.KotlinDetector
 import org.springframework.core.MethodParameter
 import org.springframework.core.annotation.AnnotatedElementUtils
 import org.springframework.web.bind.annotation.RequestParam
@@ -71,27 +72,30 @@ class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvider) {
 		matchIfMissing = true
 	)
 	@ConditionalOnMissingBean
-	fun nullableKotlinRequestParameterCustomizer(): ParameterCustomizer {
+	open fun nullableKotlinRequestParameterCustomizer(): ParameterCustomizer {
 		return ParameterCustomizer { parameterModel, methodParameter ->
 			if (parameterModel == null) return@ParameterCustomizer null
-			val kParameter = methodParameter.toKParameter()
-			if (kParameter != null) {
-				val parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
-					AnnotatedElementUtils.forAnnotations(*methodParameter.parameterAnnotations),
-					Parameter::class.java
-				)
-				val requestParam = AnnotatedElementUtils.findMergedAnnotation(
+			if (KotlinDetector.isKotlinType(methodParameter.parameterType)) {
+				val kParameter = methodParameter.toKParameter()
+				if (kParameter != null) {
+					val parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
+						AnnotatedElementUtils.forAnnotations(*methodParameter.parameterAnnotations),
+						Parameter::class.java
+					)
+					val requestParam = AnnotatedElementUtils.findMergedAnnotation(
 						AnnotatedElementUtils.forAnnotations(*methodParameter.parameterAnnotations),
 						RequestParam::class.java
-				)
-				// Swagger @Parameter annotation takes precedence
-				if (parameterDoc != null && parameterDoc.required)
-					parameterModel.required = parameterDoc.required
-				// parameter is not required if a default value is provided in @RequestParam
-				else if (requestParam != null && ((requestParam.defaultValue != ValueConstants.DEFAULT_NONE) || !requestParam.required))
-					parameterModel.required = false
-				else
-					parameterModel.required = kParameter.type.isMarkedNullable == false
+					)
+					// Swagger @Parameter annotation takes precedence
+					if (parameterDoc != null && parameterDoc.required)
+						parameterModel.required = parameterDoc.required
+					// parameter is not required if a default value is provided in @RequestParam
+					else if (requestParam != null && requestParam.defaultValue != ValueConstants.DEFAULT_NONE)
+						parameterModel.required = false
+					else
+						parameterModel.required =
+							kParameter.type.isMarkedNullable == false
+				}
 			}
 			return@ParameterCustomizer parameterModel
 		}
