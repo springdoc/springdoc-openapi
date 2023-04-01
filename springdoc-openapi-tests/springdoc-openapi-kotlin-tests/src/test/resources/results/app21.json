@@ -11,6 +11,29 @@
     }
   ],
   "paths": {
+    "/api/v2/test/test2": {
+      "get": {
+        "tags": [
+          "Test"
+        ],
+        "operationId": "greet1",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v2/test/": {
       "get": {
         "tags": [

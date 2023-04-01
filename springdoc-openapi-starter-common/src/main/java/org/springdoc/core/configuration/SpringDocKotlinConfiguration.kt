@@ -84,7 +84,7 @@ open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvid
 	open fun nullableKotlinRequestParameterCustomizer(): ParameterCustomizer {
 		return ParameterCustomizer { parameterModel, methodParameter ->
 			if (parameterModel == null) return@ParameterCustomizer null
-			if (KotlinDetector.isKotlinReflectPresent()) {
+			if (KotlinDetector.isKotlinReflectPresent() && KotlinDetector.isKotlinType(methodParameter.parameterType)) {
 				val kParameter = methodParameter.toKParameter()
 				if (kParameter != null) {
 					val parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
@@ -99,7 +99,7 @@ open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvid
 					if (parameterDoc != null && parameterDoc.required)
 						parameterModel.required = parameterDoc.required
 					// parameter is not required if a default value is provided in @RequestParam
-					else if (requestParam != null && ((requestParam.defaultValue != ValueConstants.DEFAULT_NONE) || !requestParam.required))
+					else if (requestParam != null && requestParam.defaultValue != ValueConstants.DEFAULT_NONE)
 						parameterModel.required = false
 					else
 						parameterModel.required =
