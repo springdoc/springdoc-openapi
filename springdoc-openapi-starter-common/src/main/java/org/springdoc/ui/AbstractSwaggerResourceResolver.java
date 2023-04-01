@@ -2,7 +2,6 @@ package org.springdoc.ui;
 
 import java.io.File;
 
-
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 
 import org.springframework.lang.Nullable;
