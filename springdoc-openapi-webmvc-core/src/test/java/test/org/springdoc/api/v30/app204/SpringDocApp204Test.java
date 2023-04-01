@@ -22,19 +22,10 @@
 
 package test.org.springdoc.api.v30.app204;
 
-import org.junit.jupiter.api.Test;
-import org.springdoc.core.Constants;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
-
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @TestPropertySource(properties = { "springdoc.default-flat-param-object=true" })
 public class SpringDocApp204Test extends AbstractSpringDocV30Test {

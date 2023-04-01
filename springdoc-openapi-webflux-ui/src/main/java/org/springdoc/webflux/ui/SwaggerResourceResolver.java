@@ -1,6 +1,5 @@
 package org.springdoc.webflux.ui;
 
-import java.io.File;
 import java.util.List;
 
 import org.springdoc.core.SwaggerUiConfigProperties;
@@ -8,7 +7,6 @@ import org.springdoc.ui.AbstractSwaggerResourceResolver;
 import reactor.core.publisher.Mono;
 
 import org.springframework.core.io.Resource;
-import org.springframework.lang.Nullable;
 import org.springframework.web.reactive.resource.ResourceResolver;
 import org.springframework.web.reactive.resource.ResourceResolverChain;
 import org.springframework.web.server.ServerWebExchange;

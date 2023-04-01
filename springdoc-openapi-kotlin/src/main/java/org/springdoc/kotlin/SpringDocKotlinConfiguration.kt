@@ -45,7 +45,6 @@ class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvider) {
 			.replaceWithSchema(ByteArray::class.java, ByteArraySchema())
 			.addDeprecatedType(Deprecated::class.java)
 		objectMapperProvider.jsonMapper().registerModule(KotlinModule.Builder().build())
-		objectMapperProvider.jsonMapper().registerModule(SpringDocRequiredModule())
 	}
 
 	/**

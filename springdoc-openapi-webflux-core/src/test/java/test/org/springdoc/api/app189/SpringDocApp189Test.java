@@ -18,14 +18,15 @@
 
 package test.org.springdoc.api.app189;
 
+import java.time.Duration;
+
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.Constants;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import test.org.springdoc.api.AbstractCommonTest;
 
-import java.time.Duration;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
