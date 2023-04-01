@@ -25,9 +25,67 @@ package test.org.springdoc.api.v30.app183;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 public class SpringDocApp183Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+		 class ObjectA {
+			private final String aa;
+			private final String aaa;
+
+			public ObjectA(String aa, String aaa) {
+				this.aa = aa;
+				this.aaa = aaa;
+			}
+
+			public String getAa() {
+				return aa;
+			}
+
+			public String getAaa() {
+				return aaa;
+			}
+		}
+
+		class ObjectB {
+			private final Integer bb;
+			private final Integer bbb;
+
+			public ObjectB(Integer bb, Integer bbb) {
+				this.bb = bb;
+				this.bbb = bbb;
+			}
+
+			public Integer getBb() {
+				return bb;
+			}
+
+			public Integer getBbb() {
+				return bbb;
+			}
+		}
+
+
+		@Component
+		class BToAConvertor implements Converter<ObjectB, ObjectA> {
+			@Override
+			public ObjectA convert(ObjectB source) {
+				return new ObjectA(source.bb+"", source.bbb+"");
+			}
+		}
+
+		@RestController
+		class Controller {
+			@PostMapping("/test")
+			public String test(@RequestBody ObjectA request) {
+				return "OK!";
+			}
+		}
+	}
 }
