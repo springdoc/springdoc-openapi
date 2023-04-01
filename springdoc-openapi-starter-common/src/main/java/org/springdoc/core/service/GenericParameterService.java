@@ -366,7 +366,7 @@ public class GenericParameterService {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
 				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null) {
 					Class<?> springConvertedType = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
-					if (!(String.class.equals(springConvertedType) && ((Class<?>) type).isEnum()))
+					if (!(String.class.equals(springConvertedType) && ((Class<?>) type).isEnum()) && requestBodyInfo==null)
 						type = springConvertedType;
 				}
 			}

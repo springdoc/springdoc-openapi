@@ -27,9 +27,36 @@ package test.org.springdoc.api.v30.app183;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 public class SpringDocApp183Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+
+		record ObjectA(String aa, String aaa) {}
+
+		record ObjectB(Integer bb, Integer bbb) {}
+
+		@Component
+		class BToAConvertor implements Converter<ObjectB, ObjectA> {
+			@Override
+			public ObjectA convert(ObjectB source) {
+				return new ObjectA(source.bb+"", source.bbb+"");
+			}
+		}
+
+		@RestController
+		class Controller {
+			@PostMapping("/test")
+			public String test(@RequestBody ObjectA request) {
+				return "OK!";
+			}
+		}
+	}
+
 }
