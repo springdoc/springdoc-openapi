@@ -36,14 +36,7 @@ import kotlin.reflect.jvm.kotlinFunction
 @ConditionalOnClass(Continuation::class)
 @ConditionalOnWebApplication
 @ConditionalOnBean(SpringDocConfiguration::class)
-open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvider) {
-
-	/**
-	 * SpringDoc Kotlin Module Configuration
-	 *
-	 * @param objectMapperProvider Object Mapper Provider
-	 * @return the nullable Kotlin Request Parameter Customizer
-	 */
+class SpringDocKotlinConfiguration() {
 
 	/**
 	 * Instantiates a new Spring doc kotlin configuration.
@@ -54,7 +47,6 @@ open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvid
 			.addRequestWrapperToIgnore(Continuation::class.java)
 			.replaceWithSchema(ByteArray::class.java, ByteArraySchema())
 			.addDeprecatedType(Deprecated::class.java)
-		objectMapperProvider.jsonMapper().registerModule(SpringDocRequiredModule())
 	}
 
 	/**
@@ -65,7 +57,7 @@ open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvid
 	@Bean
 	@Lazy(false)
 	@ConditionalOnMissingBean
-	open fun kotlinCoroutinesReturnTypeParser(): KotlinCoroutinesReturnTypeParser {
+	fun kotlinCoroutinesReturnTypeParser(): KotlinCoroutinesReturnTypeParser {
 		return KotlinCoroutinesReturnTypeParser()
 	}
 
@@ -81,7 +73,7 @@ open class SpringDocKotlinConfiguration(objectMapperProvider: ObjectMapperProvid
 		matchIfMissing = true
 	)
 	@ConditionalOnMissingBean
-	open fun nullableKotlinRequestParameterCustomizer(): ParameterCustomizer {
+	fun nullableKotlinRequestParameterCustomizer(): ParameterCustomizer {
 		return ParameterCustomizer { parameterModel, methodParameter ->
 			if (parameterModel == null) return@ParameterCustomizer null
 			if (KotlinDetector.isKotlinReflectPresent() && KotlinDetector.isKotlinType(methodParameter.parameterType)) {
