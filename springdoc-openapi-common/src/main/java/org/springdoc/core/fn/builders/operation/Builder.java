@@ -461,8 +461,15 @@ public class Builder {
 			}
 		};
 
-		if (StringUtils.isEmpty(operation.operationId()) && (beanClass == null && beanMethod == null && parameterTypes == null))
+		boolean isOperationIdEmpty = StringUtils.isEmpty(operation.operationId());
+		boolean isAllFieldsNull = beanClass == null && beanMethod == null && parameterTypes == null;
+
+		if (isOperationIdEmpty && isAllFieldsNull) {
 			throw new IllegalStateException("You should either fill, the Operation or at least the bean class and the bean method");
+		}
+//
+//		if (StringUtils.isEmpty(operation.operationId()) && (beanClass == null && beanMethod == null && parameterTypes == null))
+//			throw new IllegalStateException("You should either fill, the Operation or at least the bean class and the bean method");
 
 		if (beanClass != null && beanMethod == null)
 			throw new IllegalStateException("The bean method, should not null");
