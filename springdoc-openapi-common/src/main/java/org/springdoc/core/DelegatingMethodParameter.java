@@ -261,10 +261,17 @@ public class DelegatingMethodParameter extends MethodParameter {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		if (!super.equals(o)) return false;
+
 		DelegatingMethodParameter that = (DelegatingMethodParameter) o;
-		return Objects.equals(delegate, that.delegate) &&
-				Arrays.equals(additionalParameterAnnotations, that.additionalParameterAnnotations) &&
-				Objects.equals(parameterName, that.parameterName);
+		Object delegateObj = delegate;
+		Object[] additionalParamAnnos = additionalParameterAnnotations;
+		Object paramNameObj = parameterName;
+
+		boolean delegatesEqual = Objects.equals(delegateObj, that.delegate);
+		boolean annosEqual = Arrays.equals(additionalParamAnnos, that.additionalParameterAnnotations);
+		boolean paramNamesEqual = Objects.equals(paramNameObj, that.parameterName);
+
+		return delegatesEqual && annosEqual && paramNamesEqual;
 	}
 
 	@Override
