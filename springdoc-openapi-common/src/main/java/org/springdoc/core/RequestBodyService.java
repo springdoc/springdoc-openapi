@@ -184,7 +184,7 @@ public class RequestBodyService {
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
-			MethodAttributes methodAttributes, Components components) {
+														 MethodAttributes methodAttributes, Components components) {
 		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes,
 				components, null);
 	}
@@ -199,7 +199,7 @@ public class RequestBodyService {
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
-			MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation) {
+														 MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation) {
 		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes,
 				components, jsonViewAnnotation);
 	}
@@ -229,7 +229,7 @@ public class RequestBodyService {
 	 * @param requestBodyInfo the request body info
 	 */
 	public void calculateRequestBodyInfo(Components components, MethodAttributes methodAttributes,
-			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
+										 ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		// Get it from parameter level, if not present
@@ -264,8 +264,8 @@ public class RequestBodyService {
 	 * @return the request body
 	 */
 	private RequestBody buildRequestBody(RequestBody requestBody, Components components,
-			MethodAttributes methodAttributes,
-			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
+										 MethodAttributes methodAttributes,
+										 ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		if (requestBody == null) {
 			requestBody = new RequestBody();
 			requestBodyInfo.setRequestBody(requestBody);

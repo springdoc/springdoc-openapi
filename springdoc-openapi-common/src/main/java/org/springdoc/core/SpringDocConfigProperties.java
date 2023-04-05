@@ -25,6 +25,8 @@ package org.springdoc.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.SpringDocConfigProperties.ModelConverters.SortConverter;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -1512,5 +1514,26 @@ public class SpringDocConfigProperties {
 
 	public void setShowOauth2Endpoints(boolean showOauth2Endpoint) {
 		this.showOauth2Endpoints = showOauth2Endpoint;
+	}
+
+	public List<String> getConditionsToMatch(AbstractOpenApiResource.ConditionType conditionType, GroupConfig... groupConfigs) {
+		List<String> conditionsToMatch = null;
+		GroupConfig groupConfig = null;
+		if (ArrayUtils.isNotEmpty(groupConfigs))
+			groupConfig = groupConfigs[0];
+		switch (conditionType) {
+			case HEADERS:
+				conditionsToMatch = (groupConfig != null) ? groupConfig.getHeadersToMatch() : getHeadersToMatch();
+				break;
+			case PRODUCES:
+				conditionsToMatch = (groupConfig != null) ? groupConfig.getProducesToMatch() : getProducesToMatch();
+				break;
+			case CONSUMES:
+				conditionsToMatch = (groupConfig != null) ? groupConfig.getConsumesToMatch() : getConsumesToMatch();
+				break;
+			default:
+				break;
+		}
+		return conditionsToMatch;
 	}
 }

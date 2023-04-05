@@ -54,6 +54,7 @@ import io.swagger.v3.oas.models.media.FileSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
@@ -134,6 +135,7 @@ public class GenericParameterService {
 	 * The javadoc provider.
 	 */
 	private final Optional<JavadocProvider> javadocProviderOptional;
+
 
 	/**
 	 * Instantiates a new Generic parameter service.
@@ -745,4 +747,6 @@ public class GenericParameterService {
 
 		return paramJavadocDescription;
 	}
+
+
 }

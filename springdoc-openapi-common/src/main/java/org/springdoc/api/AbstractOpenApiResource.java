@@ -712,11 +712,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the boolean
 	 */
 	protected boolean isConditionToMatch(String[] existingConditions, ConditionType conditionType) {
-		List<String> conditionsToMatch = getConditionsToMatch(conditionType);
+		List<String> conditionsToMatch = springDocConfigProperties.getConditionsToMatch(conditionType);
 		if (CollectionUtils.isEmpty(conditionsToMatch)) {
 			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
 			if (optionalGroupConfig.isPresent())
-				conditionsToMatch = getConditionsToMatch(conditionType, optionalGroupConfig.get());
+				conditionsToMatch = springDocConfigProperties.getConditionsToMatch(conditionType, optionalGroupConfig.get());
 		}
 		return CollectionUtils.isEmpty(conditionsToMatch)
 				|| (!ArrayUtils.isEmpty(existingConditions) && conditionsToMatch.size() == existingConditions.length && conditionsToMatch.containsAll(Arrays.asList(existingConditions)));
@@ -1300,26 +1300,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param groupConfigs the group configs
 	 * @return the conditions to match
 	 */
-	private List<String> getConditionsToMatch(ConditionType conditionType, GroupConfig... groupConfigs) {
-		List<String> conditionsToMatch = null;
-		GroupConfig groupConfig = null;
-		if (ArrayUtils.isNotEmpty(groupConfigs))
-			groupConfig = groupConfigs[0];
-		switch (conditionType) {
-			case HEADERS:
-				conditionsToMatch = (groupConfig != null) ? groupConfig.getHeadersToMatch() : springDocConfigProperties.getHeadersToMatch();
-				break;
-			case PRODUCES:
-				conditionsToMatch = (groupConfig != null) ? groupConfig.getProducesToMatch() : springDocConfigProperties.getProducesToMatch();
-				break;
-			case CONSUMES:
-				conditionsToMatch = (groupConfig != null) ? groupConfig.getConsumesToMatch() : springDocConfigProperties.getConsumesToMatch();
-				break;
-			default:
-				break;
-		}
-		return conditionsToMatch;
-	}
+
 
 	/**
 	 * Is filter condition boolean.
@@ -1340,7 +1321,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * The enum Condition type.
 	 */
-	enum ConditionType {
+	public enum ConditionType {
 		/**
 		 *Produces condition type.
 		 */
