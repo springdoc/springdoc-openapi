@@ -106,13 +106,13 @@ public class DelegatingMethodParameter extends MethodParameter {
 	/**
 	 * Customize method parameter [ ].
 	 *
-	 * @param pNames the p names
+	 * @param parameterNames the parameter names
 	 * @param parameters the parameters
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 * @param defaultFlatParamObject the default flat param object
 	 * @return the method parameter [ ]
 	 */
-	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters,
+	public static MethodParameter[] customize(String[] parameterNames, MethodParameter[] parameters,
 			Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer, boolean defaultFlatParamObject) {
 		List<MethodParameter> explodedParameters = new ArrayList<>();
 		for (int i = 0; i < parameters.length; ++i) {
@@ -133,7 +133,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 				});
 			}
 			else {
-				String name = pNames != null ? pNames[i] : p.getParameterName();
+				String name = parameterNames != null ? parameterNames[i] : p.getParameterName();
 				explodedParameters.add(new DelegatingMethodParameter(p, name, null, false, false));
 			}
 		}
