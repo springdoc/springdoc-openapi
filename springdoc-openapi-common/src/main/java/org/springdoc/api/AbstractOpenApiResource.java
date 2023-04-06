@@ -30,20 +30,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -1075,7 +1062,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the path item
 	 */
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
-			Paths paths) {
+								   Paths paths) {
 		PathItem pathItemObject;
 		if(operation!=null && !CollectionUtils.isEmpty(operation.getParameters())){
 			Iterator<Parameter> paramIt = operation.getParameters().iterator();
@@ -1094,37 +1081,94 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		else
 			pathItemObject = new PathItem();
 
+		// Replace switch statement with polymorphism
+		RequestMethodHandler handler;
 		switch (requestMethod) {
 			case POST:
-				pathItemObject.post(operation);
+				handler = new PostRequestMethod();
 				break;
 			case GET:
-				pathItemObject.get(operation);
+				handler = new GetRequestMethod();
 				break;
 			case DELETE:
-				pathItemObject.delete(operation);
+				handler = new DeleteRequestMethod();
 				break;
 			case PUT:
-				pathItemObject.put(operation);
+				handler = new PutRequestMethod();
 				break;
 			case PATCH:
-				pathItemObject.patch(operation);
+				handler = new PatchRequestMethod();
 				break;
 			case TRACE:
-				pathItemObject.trace(operation);
+				handler = new TraceRequestMethod();
 				break;
 			case HEAD:
-				pathItemObject.head(operation);
+				handler = new HeadRequestMethod();
 				break;
 			case OPTIONS:
-				pathItemObject.options(operation);
+				handler = new OptionsRequestMethod();
 				break;
 			default:
-				// Do nothing here
+				handler = null;
 				break;
 		}
+
+		handler.execute(operation, pathItemObject);
+
 		return pathItemObject;
 	}
+
+//	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
+//			Paths paths) {
+//		PathItem pathItemObject;
+//		if(operation!=null && !CollectionUtils.isEmpty(operation.getParameters())){
+//			Iterator<Parameter> paramIt = operation.getParameters().iterator();
+//			while (paramIt.hasNext()){
+//				Parameter parameter = paramIt.next();
+//				if(ParameterIn.PATH.toString().equals(parameter.getIn())){
+//					// check it's present in the path
+//					String name = parameter.getName();
+//					if(!StringUtils.containsAny(operationPath, "{" + name + "}", "{*" + name + "}"))
+//						paramIt.remove();
+//				}
+//			}
+//		}
+//		if (paths.containsKey(operationPath))
+//			pathItemObject = paths.get(operationPath);
+//		else
+//			pathItemObject = new PathItem();
+//
+//		switch (requestMethod) {
+//			case POST:
+//				pathItemObject.post(operation);
+//				break;
+//			case GET:
+//				pathItemObject.get(operation);
+//				break;
+//			case DELETE:
+//				pathItemObject.delete(operation);
+//				break;
+//			case PUT:
+//				pathItemObject.put(operation);
+//				break;
+//			case PATCH:
+//				pathItemObject.patch(operation);
+//				break;
+//			case TRACE:
+//				pathItemObject.trace(operation);
+//				break;
+//			case HEAD:
+//				pathItemObject.head(operation);
+//				break;
+//			case OPTIONS:
+//				pathItemObject.options(operation);
+//				break;
+//			default:
+//				// Do nothing here
+//				break;
+//		}
+//		return pathItemObject;
+//	}
 
 	/**
 	 * Gets existing operation.
