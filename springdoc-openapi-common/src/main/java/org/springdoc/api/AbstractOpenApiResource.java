@@ -1118,58 +1118,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		return pathItemObject;
 	}
 
-//	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
-//			Paths paths) {
-//		PathItem pathItemObject;
-//		if(operation!=null && !CollectionUtils.isEmpty(operation.getParameters())){
-//			Iterator<Parameter> paramIt = operation.getParameters().iterator();
-//			while (paramIt.hasNext()){
-//				Parameter parameter = paramIt.next();
-//				if(ParameterIn.PATH.toString().equals(parameter.getIn())){
-//					// check it's present in the path
-//					String name = parameter.getName();
-//					if(!StringUtils.containsAny(operationPath, "{" + name + "}", "{*" + name + "}"))
-//						paramIt.remove();
-//				}
-//			}
-//		}
-//		if (paths.containsKey(operationPath))
-//			pathItemObject = paths.get(operationPath);
-//		else
-//			pathItemObject = new PathItem();
-//
-//		switch (requestMethod) {
-//			case POST:
-//				pathItemObject.post(operation);
-//				break;
-//			case GET:
-//				pathItemObject.get(operation);
-//				break;
-//			case DELETE:
-//				pathItemObject.delete(operation);
-//				break;
-//			case PUT:
-//				pathItemObject.put(operation);
-//				break;
-//			case PATCH:
-//				pathItemObject.patch(operation);
-//				break;
-//			case TRACE:
-//				pathItemObject.trace(operation);
-//				break;
-//			case HEAD:
-//				pathItemObject.head(operation);
-//				break;
-//			case OPTIONS:
-//				pathItemObject.options(operation);
-//				break;
-//			default:
-//				// Do nothing here
-//				break;
-//		}
-//		return pathItemObject;
-//	}
-
 	/**
 	 * Gets existing operation.
 	 *
