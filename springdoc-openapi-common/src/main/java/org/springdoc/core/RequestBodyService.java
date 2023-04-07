@@ -51,6 +51,7 @@ public class RequestBodyService {
 	 * The Parameter builder.
 	 */
 	private final GenericParameterService parameterBuilder;
+	ContentHandler contentHandler = new ContentHandler();
 
 	/**
 	 * Instantiates a new Request body builder.
@@ -274,12 +275,12 @@ public class RequestBodyService {
 		if (requestBody.getContent() == null) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
 					methodAttributes.getJsonViewAnnotationForRequestBody());
-			buildContent(requestBody, methodAttributes, schema);
+			contentHandler.buildContent(requestBody, methodAttributes, schema);
 		}
 		else if (!methodAttributes.isWithResponseBodySchemaDoc()) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
 					methodAttributes.getJsonViewAnnotationForRequestBody());
-			mergeContent(requestBody, methodAttributes, schema);
+			contentHandler.mergeContent(requestBody, methodAttributes, schema);
 		}
 
 		// Add requestBody javadoc
@@ -291,55 +292,5 @@ public class RequestBodyService {
 			}
 		}
 		return requestBody;
-	}
-
-	/**
-	 * Merge content.
-	 *
-	 * @param requestBody the request body
-	 * @param methodAttributes the method attributes
-	 * @param schema the schema
-	 */
-	private void mergeContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
-		Content content = requestBody.getContent();
-		buildContent(requestBody, methodAttributes, schema, content);
-	}
-
-	/**
-	 * Build content.
-	 *
-	 * @param requestBody the request body
-	 * @param methodAttributes the method attributes
-	 * @param schema the schema
-	 */
-	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
-		Content content = new Content();
-		buildContent(requestBody, methodAttributes, schema, content);
-	}
-
-	/**
-	 * Build content.
-	 *
-	 * @param requestBody the request body
-	 * @param methodAttributes the method attributes
-	 * @param schema the schema
-	 * @param content the content
-	 */
-	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content) {
-		for (String value : methodAttributes.getMethodConsumes()) {
-			io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
-			mediaTypeObject.setSchema(schema);
-			MediaType mediaType = content.get(value);
-			if (mediaType != null) {
-				if (mediaType.getExample() != null)
-					mediaTypeObject.setExample(mediaType.getExample());
-				if (mediaType.getExamples() != null)
-					mediaTypeObject.setExamples(mediaType.getExamples());
-				if (mediaType.getEncoding() != null)
-					mediaTypeObject.setEncoding(mediaType.getEncoding());
-			}
-			content.addMediaType(value, mediaTypeObject);
-		}
-		requestBody.setContent(content);
 	}
 }

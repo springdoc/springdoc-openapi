@@ -272,7 +272,7 @@ public class MethodAttributes {
 	 * @param consumes the consumes
 	 * @param headers the headers
 	 */
-	private void fillMethods(String[] produces, String[] consumes, String[] headers) {
+	public void fillMethods(String[] produces, String[] consumes, String[] headers) {
 		if (ArrayUtils.isEmpty(methodProduces)) {
 			if (ArrayUtils.isNotEmpty(produces))
 				methodProduces = produces;
