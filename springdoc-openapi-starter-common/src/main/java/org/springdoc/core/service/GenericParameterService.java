@@ -48,6 +48,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.enums.ParameterStyle;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.ArraySchema;
@@ -626,7 +627,9 @@ public class GenericParameterService {
 
 			@Override
 			public boolean required() {
-				return schema.required();
+				return schema.requiredMode().equals(RequiredMode.AUTO) ?
+						schema.required() :
+						schema.requiredMode().equals(RequiredMode.REQUIRED);
 			}
 
 			@Override
