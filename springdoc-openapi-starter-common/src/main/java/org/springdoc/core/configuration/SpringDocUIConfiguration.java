@@ -33,7 +33,6 @@ import org.springdoc.core.properties.SwaggerUiConfigProperties;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -47,7 +46,6 @@ import org.springframework.util.AntPathMatcher;
  * @author bnasslahsen
  */
 @Lazy(false)
-@ConditionalOnExpression("${springdoc.api-docs.enabled:true}")
 @ConditionalOnWebApplication
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(SpringDocConfiguration.class)
