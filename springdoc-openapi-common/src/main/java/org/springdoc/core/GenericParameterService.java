@@ -46,6 +46,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.enums.ParameterStyle;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.ArraySchema;
@@ -326,7 +327,7 @@ public class GenericParameterService {
 			catch (Exception e) {
 				LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
 			}
-			if (schema == null) {
+			if (schema == null && parameterDoc.array() != null) {
 				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), parameterDoc.array(), true, parameterDoc.array().schema().implementation(), components, jsonView).orElse(null);
 				// default value not set by swagger-core for array !
 				if (schema != null) {
@@ -358,7 +359,7 @@ public class GenericParameterService {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
 				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null) {
 					Class<?> springConvertedType = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
-					if (!(String.class.equals(springConvertedType) && ((Class<?>) type).isEnum()) && requestBodyInfo==null)
+					if (!(String.class.equals(springConvertedType) && ((Class<?>) type).isEnum()) && requestBodyInfo == null)
 						type = springConvertedType;
 				}
 			}
@@ -619,7 +620,9 @@ public class GenericParameterService {
 
 			@Override
 			public boolean required() {
-				return schema.required();
+				return schema.requiredMode().equals(RequiredMode.AUTO) ?
+						schema.required() :
+						schema.requiredMode().equals(RequiredMode.REQUIRED);
 			}
 
 			@Override
