@@ -1,5 +1,10 @@
 package org.springdoc.ui;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,10 +14,6 @@ import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.properties.SwaggerUiOAuthProperties;
 import org.springdoc.core.providers.ObjectMapperProvider;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -48,7 +49,7 @@ public class AbstractSwaggerIndexTransformerTest {
             "\n" +
             "  //</editor-fold>\n" +
             "};";
-    private final InputStream is = new ByteArrayInputStream(swaggerInitJs.getBytes());
+    private final InputStream is = new ByteArrayInputStream(swaggerInitJs.getBytes(StandardCharsets.UTF_8));
 
     private final String apiDocUrl = "http://test.springdoc.com/apidoc";
 

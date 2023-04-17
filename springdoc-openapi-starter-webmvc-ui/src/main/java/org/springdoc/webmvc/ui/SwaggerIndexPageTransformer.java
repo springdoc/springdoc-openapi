@@ -25,6 +25,7 @@
 package org.springdoc.webmvc.ui;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
@@ -76,7 +77,7 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 
 		if (isIndexFound) {
 			String html = defaultTransformations(resource.getInputStream());
-			return new TransformedResource(resource, html.getBytes());
+			return new TransformedResource(resource, html.getBytes(StandardCharsets.UTF_8));
 		}
 		else
 			return resource;
