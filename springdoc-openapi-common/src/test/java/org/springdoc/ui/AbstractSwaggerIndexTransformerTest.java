@@ -3,6 +3,7 @@ package org.springdoc.ui;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ public class AbstractSwaggerIndexTransformerTest {
             "\n" +
             "  //</editor-fold>\n" +
             "};";
-    private final InputStream is = new ByteArrayInputStream(swaggerInitJs.getBytes());
+    private final InputStream is = new ByteArrayInputStream(swaggerInitJs.getBytes(StandardCharsets.UTF_8));
 
     private final String apiDocUrl = "http://test.springdoc.com/apidoc";
 
