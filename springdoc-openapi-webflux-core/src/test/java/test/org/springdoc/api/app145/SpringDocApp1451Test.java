@@ -19,6 +19,7 @@
 package test.org.springdoc.api.app145;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.test.annotation.DirtiesContext;
 import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
+@DirtiesContext
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
 		properties = { "management.endpoints.web.exposure.include=*",
 				"server.port=55594",
