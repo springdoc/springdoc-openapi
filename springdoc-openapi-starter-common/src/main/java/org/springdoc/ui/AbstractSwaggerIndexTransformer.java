@@ -177,7 +177,7 @@ public class AbstractSwaggerIndexTransformer {
 		if (swaggerUiConfig.isDisableSwaggerDefaultUrl())
 			html = overwriteSwaggerDefaultUrl(html);
 
-		if(StringUtils.isNotEmpty(swaggerUiConfig.getUrl())){
+		if(StringUtils.isNotEmpty(swaggerUiConfig.getUrl()) && StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())){
 			html = setConfiguredApiDocsUrl(html);
 		}
 
