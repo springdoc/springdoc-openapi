@@ -67,7 +67,7 @@ public class AbstractSwaggerResourceResolver {
 	 * @return the string
 	 */
 	private String path(String webjar, String path) {
-		if (path.startsWith(webjar)) {
+		if (path.startsWith(webjar) && path.length() > webjar.length()) {
 			path = path.substring(webjar.length() + 1);
 		}
 		return path;
