@@ -36,7 +36,7 @@ public class AbstractSwaggerResourceResolver {
 	@Nullable
 	protected String findWebJarResourcePath(String path) {
 		String webjar = webjar(path);
-		if (webjar.length() > 0) {
+		if (webjar.length() > 0 && !path.equals(webjar)) {
 			String version = swaggerUiConfigProperties.getVersion();
 			if (version != null) {
 				String partialPath = path(webjar, path);
@@ -67,7 +67,7 @@ public class AbstractSwaggerResourceResolver {
 	 * @return the string
 	 */
 	private String path(String webjar, String path) {
-		if (path.startsWith(webjar)) {
+		if (path.startsWith(webjar) && path.length() > webjar.length()) {
 			path = path.substring(webjar.length() + 1);
 		}
 		return path;
