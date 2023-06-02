@@ -134,10 +134,11 @@ public abstract class AbstractSwaggerWelcome {
 			else
 				swaggerUiConfigParameters.addUrl(apiDocsUrl);
 			if (!CollectionUtils.isEmpty(swaggerUiConfig.getUrls())) {
-				swaggerUiConfigParameters.setUrls(swaggerUiConfig.cloneUrls());
-				swaggerUiConfigParameters.getUrls().forEach(swaggerUrl -> {
+				swaggerUiConfig.cloneUrls().forEach(swaggerUrl -> {
+					swaggerUiConfigParameters.getUrls().remove(swaggerUrl);
 					if (!swaggerUiConfigParameters.isValidUrl(swaggerUrl.getUrl()))
 						swaggerUrl.setUrl(buildUrlWithContextPath(swaggerUrl.getUrl()));
+					swaggerUiConfigParameters.getUrls().add(swaggerUrl);
 				});
 			}
 		}
