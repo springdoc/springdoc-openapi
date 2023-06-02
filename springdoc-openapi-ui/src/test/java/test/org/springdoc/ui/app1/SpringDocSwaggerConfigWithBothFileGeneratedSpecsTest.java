@@ -19,24 +19,30 @@
 package test.org.springdoc.ui.app1;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.test.annotation.DirtiesContext;
-import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/*
+	Test showing how specs generated at runtime and specs configured in can work at the same time.
 
+	The expectation is that the openapi.yml file will be shown together with the generated ones.
+ */
 @DirtiesContext
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties = { "spring.jackson.property-naming-strategy=UPPER_CAMEL_CASE", "springdoc.show-actuator=true",
 				"management.endpoints.web.base-path=/management",
-				"server.servlet.context-path=/demo/api", "management.server.port=9002", "management.server.base-path=/demo/api" })
-public class SpringDocSwaggerConfigTest extends AbstractSpringDocActuatorTest {
+				"server.servlet.context-path=/demo/api", "management.server.port=9002", "management.server.base-path=/demo/api",
+				"springdoc.swagger-ui.urls[0].url=/api-docs/xxx/v1/openapi.yml",
+				"springdoc.swagger-ui.urls[0].name=toto",
+})
+public class SpringDocSwaggerConfigWithBothFileGeneratedSpecsTest extends AbstractSpringDocActuatorTest {
 
 	@Test
 	public void testIndexSwaggerConfig() throws Exception {
@@ -47,8 +53,10 @@ public class SpringDocSwaggerConfigTest extends AbstractSpringDocActuatorTest {
 				.andExpect(jsonPath("url").doesNotExist())
 				.andExpect(jsonPath("urls[0].url", equalTo("/demo/api/v3/api-docs/springdocDefault")))
 				.andExpect(jsonPath("urls[0].name", equalTo("springdocDefault")))
-				.andExpect(jsonPath("urls[1].url", equalTo("/demo/api/v3/api-docs/x-actuator")))
-				.andExpect(jsonPath("urls[1].name", equalTo("x-actuator")));
+				.andExpect(jsonPath("urls[1].url", equalTo("/demo/api/api-docs/xxx/v1/openapi.yml")))
+				.andExpect(jsonPath("urls[1].name", equalTo("toto")))
+				.andExpect(jsonPath("urls[2].url", equalTo("/demo/api/v3/api-docs/x-actuator")))
+				.andExpect(jsonPath("urls[2].name", equalTo("x-actuator")));
 	}
 
 
