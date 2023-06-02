@@ -97,7 +97,7 @@ public class SpringDocApp138Test extends AbstractSpringDocV30Test {
 	}
 
 	private static class SpringDocObjectMapperFactory extends ObjectMapperFactory {
-		protected static ObjectMapper createJson() {
+		public static ObjectMapper createJson() {
 			return ObjectMapperFactory.createJson();
 		}
 	}
