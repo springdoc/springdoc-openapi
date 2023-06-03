@@ -1,5 +1,5 @@
 ![Octocat](https://springdoc.org/img/banner-logo.svg)
-[![Build Status](http://129.159.254.115:8686/buildStatus/icon?job=springdoc-openapi-starter-IC)](http://129.159.254.115:8686/view/springdoc-openapi/job/springdoc-openapi-starter-IC/)
+[![Build Status](https://ci-cd.springdoc.org:8443/buildStatus/icon?job=springdoc-openapi-starter-IC)](https://ci-cd.springdoc.org:8443/view/springdoc-openapi/job/springdoc-openapi-starter-IC/)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=springdoc_springdoc-openapi&metric=alert_status)](https://sonarcloud.io/dashboard?id=springdoc_springdoc-openapi)
 [![Known Vulnerabilities](https://snyk.io/test/github/springdoc/springdoc-openapi.git/badge.svg)](https://snyk.io/test/github/springdoc/springdoc-openapi.git)
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/springdoc)](https://stackoverflow.com/questions/tagged/springdoc?tab=Votes)
