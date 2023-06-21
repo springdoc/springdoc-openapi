@@ -68,7 +68,7 @@
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 		<swagger-api.version>2.2.11</swagger-api.version>
-		<swagger-ui.version>4.19.0</swagger-ui.version>
+		<swagger-ui.version>4.19.1</swagger-ui.version>
 		<spring-security-oauth2.version>2.5.2.RELEASE</spring-security-oauth2.version>
 		<gmavenplus-plugin.version>1.8.1</gmavenplus-plugin.version>
 		<jaxb-impl.version>2.1</jaxb-impl.version>
