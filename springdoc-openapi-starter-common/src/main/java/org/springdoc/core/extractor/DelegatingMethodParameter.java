@@ -23,20 +23,6 @@
  */
 package org.springdoc.core.extractor;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Executable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
@@ -45,12 +31,17 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.service.AbstractRequestService;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.*;
+import java.util.*;
 
 /**
  * The type Delegating method parameter.
@@ -128,12 +119,24 @@ public class DelegatingMethodParameter extends MethodParameter {
 					explodedParameters.add(methodParameter);
 				});
 			}
-			else if (defaultFlatParamObject && !MethodParameterPojoExtractor.isSimpleType(paramClass) && !AbstractRequestService.isRequestTypeToIgnore(paramClass)) {
-				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
-					optionalDelegatingMethodParameterCustomizer
-							.ifPresent(customizer -> customizer.customize(p, methodParameter));
-					explodedParameters.add(methodParameter);
-				});
+			else if (defaultFlatParamObject) {
+				boolean isSimpleType = MethodParameterPojoExtractor.isSimpleType(paramClass);
+				List<Annotation> annotations = Arrays.stream(p.getParameterAnnotations())
+						.filter(annotation -> Arrays.asList(RequestBody.class, RequestPart.class).contains(annotation.getClass()))
+                        .toList();
+				boolean hasAnnotation = !annotations.isEmpty();
+				boolean shouldFlat = !isSimpleType && !hasAnnotation;
+				if (shouldFlat && !AbstractRequestService.isRequestTypeToIgnore(paramClass)) {
+					MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
+						optionalDelegatingMethodParameterCustomizer
+								.ifPresent(customizer -> customizer.customize(p, methodParameter));
+						explodedParameters.add(methodParameter);
+					});
+				}
+				else {
+					String name = pNames != null ? pNames[i] : p.getParameterName();
+					explodedParameters.add(new DelegatingMethodParameter(p, name, null, false, false));
+				}
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
