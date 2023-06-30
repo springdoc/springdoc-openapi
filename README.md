@@ -15,9 +15,6 @@ This project is sponsored by
     <img src="https://springdoc.org/img/mercedes-benz.png" height="10%" width="10%" />
 </a>
 &nbsp;&nbsp;
-<a href="https://www.dm-jobs.com/dmTECH/?locale=de_DE&wt_mc=.display.github.sponsoring.logo" target="_blank">
-     <img src="https://springdoc.org/img/dmTECH_Logo.jpg" height="10%" width="10%" />
-</a>
 
 <a href="https://www.contrastsecurity.com/" target="_blank">
    <img src="https://springdoc.org/img/contrastsecurity.svg" height="10%" width="30%" />
