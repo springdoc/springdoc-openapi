@@ -32,6 +32,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -116,18 +117,20 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 		Field convertersField = FieldUtils.getDeclaredField(GenericConversionService.class, CONVERTERS, true);
 		if (convertersField != null) {
 			Object converters;
-			try {
-				converters = convertersField.get(formattingConversionService);
-				convertersField = FieldUtils.getDeclaredField(converters.getClass(), CONVERTERS, true);
-				Map<ConvertiblePair, Object> springConverters = (Map) convertersField.get(converters);
-				Optional<ConvertiblePair> convertiblePairOptional = springConverters.keySet().stream().filter(convertiblePair -> convertiblePair.getTargetType().equals(clazz)).findAny();
-				if (convertiblePairOptional.isPresent()) {
-					ConvertiblePair convertiblePair = convertiblePairOptional.get();
-					result = convertiblePair.getSourceType();
+			if (!AopUtils.isAopProxy(formattingConversionService)){
+				try {
+					converters = convertersField.get(formattingConversionService);
+					convertersField = FieldUtils.getDeclaredField(converters.getClass(), CONVERTERS, true);
+					Map<ConvertiblePair, Object> springConverters = (Map) convertersField.get(converters);
+					Optional<ConvertiblePair> convertiblePairOptional = springConverters.keySet().stream().filter(convertiblePair -> convertiblePair.getTargetType().equals(clazz)).findAny();
+					if (convertiblePairOptional.isPresent()) {
+						ConvertiblePair convertiblePair = convertiblePairOptional.get();
+						result = convertiblePair.getSourceType();
+					}
 				}
-			}
-			catch (IllegalAccessException e) {
-				LOGGER.warn(e.getMessage());
+				catch (IllegalAccessException e) {
+					LOGGER.warn(e.getMessage());
+				}
 			}
 		}
 		return result;
