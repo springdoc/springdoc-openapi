@@ -133,7 +133,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 			else if (defaultFlatParamObject) {
 				boolean isSimpleType = MethodParameterPojoExtractor.isSimpleType(paramClass);
 				List<Annotation> annotations = Arrays.stream(p.getParameterAnnotations())
-						.filter(annotation -> Arrays.asList(RequestBody.class, RequestPart.class).contains(annotation.getClass()))
+						.filter(annotation -> Arrays.asList(RequestBody.class, RequestPart.class).contains(annotation.annotationType()))
 						.toList();
 				boolean hasAnnotation = !annotations.isEmpty();
 				boolean shouldFlat = !isSimpleType && !hasAnnotation;
