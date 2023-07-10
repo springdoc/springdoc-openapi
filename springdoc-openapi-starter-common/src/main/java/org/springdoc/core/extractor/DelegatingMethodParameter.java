@@ -51,6 +51,8 @@ import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 
 /**
  * The type Delegating method parameter.
@@ -128,12 +130,24 @@ public class DelegatingMethodParameter extends MethodParameter {
 					explodedParameters.add(methodParameter);
 				});
 			}
-			else if (defaultFlatParamObject && !MethodParameterPojoExtractor.isSimpleType(paramClass) && !AbstractRequestService.isRequestTypeToIgnore(paramClass)) {
-				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
-					optionalDelegatingMethodParameterCustomizer
-							.ifPresent(customizer -> customizer.customize(p, methodParameter));
-					explodedParameters.add(methodParameter);
-				});
+			else if (defaultFlatParamObject) {
+				boolean isSimpleType = MethodParameterPojoExtractor.isSimpleType(paramClass);
+				List<Annotation> annotations = Arrays.stream(p.getParameterAnnotations())
+						.filter(annotation -> Arrays.asList(RequestBody.class, RequestPart.class).contains(annotation.getClass()))
+						.toList();
+				boolean hasAnnotation = !annotations.isEmpty();
+				boolean shouldFlat = !isSimpleType && !hasAnnotation;
+				if (shouldFlat && !AbstractRequestService.isRequestTypeToIgnore(paramClass)) {
+					MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
+						optionalDelegatingMethodParameterCustomizer
+								.ifPresent(customizer -> customizer.customize(p, methodParameter));
+						explodedParameters.add(methodParameter);
+					});
+				}
+				else {
+					String name = pNames != null ? pNames[i] : p.getParameterName();
+					explodedParameters.add(new DelegatingMethodParameter(p, name, null, false, false));
+				}
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
