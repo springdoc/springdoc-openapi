@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2023 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -166,6 +166,11 @@ public class SpringDocConfigProperties {
 	 * Allow for pre-loading OpenAPI
 	 */
 	private boolean preLoadingEnabled;
+
+	/**
+	 * locale list to pre-loading
+	 */
+	private List<String> preLoadingLocales;
 
 	/**
 	 * If set to true, exposes the swagger-ui on the actuator management port.
@@ -949,12 +954,25 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
-	 * Sets pre loading enabled.
+	 * locale list to pre-loading.
 	 *
-	 * @param preLoadingEnabled the pre loading enabled
+	 * @return the Locales
+	 */
+	public List<String> getPreLoadingLocales() {
+		return preLoadingLocales;
+	}
+
+	/**
+	 * Sets locale list to pre-loading.
+	 *
+	 * @param preLoadingEnabled the Locales
 	 */
 	public void setPreLoadingEnabled(boolean preLoadingEnabled) {
 		this.preLoadingEnabled = preLoadingEnabled;
+	}
+
+	public void setPreLoadingLocales(List<String> preLoadingLocales) {
+		this.preLoadingLocales = preLoadingLocales;
 	}
 
 	/**

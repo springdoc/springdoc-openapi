@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2023 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -226,8 +226,15 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.springDocProviders = springDocProviders;
 		this.springDocCustomizers = springDocCustomizers;
 		this.springDocConfigProperties = springDocConfigProperties;
-		if (springDocConfigProperties.isPreLoadingEnabled())
-			Executors.newSingleThreadExecutor().execute(this::getOpenApi);
+		if (springDocConfigProperties.isPreLoadingEnabled()) {
+			if (CollectionUtils.isEmpty(springDocConfigProperties.getPreLoadingLocales())) {
+				Executors.newSingleThreadExecutor().execute(this::getOpenApi);
+			} else {
+				for (String locale : springDocConfigProperties.getPreLoadingLocales()) {
+					Executors.newSingleThreadExecutor().execute(() -> this.getOpenApi(Locale.forLanguageTag(locale)));
+				}
+			}
+		}
 	}
 
 	/**
