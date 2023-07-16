@@ -438,7 +438,7 @@ public class SpringDocConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
+	ObjectMapperProvider springdocObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
 		return new ObjectMapperProvider(springDocConfigProperties);
 	}
 
