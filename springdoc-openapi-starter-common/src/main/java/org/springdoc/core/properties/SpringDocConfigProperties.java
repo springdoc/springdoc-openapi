@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2023 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -166,6 +166,11 @@ public class SpringDocConfigProperties {
 	 * Allow for pre-loading OpenAPI
 	 */
 	private boolean preLoadingEnabled;
+
+	/**
+	 * locale list to pre-loading
+	 */
+	private List<String> preLoadingLocales;
 
 	/**
 	 * If set to true, exposes the swagger-ui on the actuator management port.
@@ -949,12 +954,30 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
-	 * Sets pre loading enabled.
+	 * locale list to pre-loading.
 	 *
-	 * @param preLoadingEnabled the pre loading enabled
+	 * @return the Locales
+	 */
+	public List<String> getPreLoadingLocales() {
+		return preLoadingLocales;
+	}
+
+	/**
+	 * Sets locale list to pre-loading.
+	 *
+	 * @param preLoadingEnabled the Locales
 	 */
 	public void setPreLoadingEnabled(boolean preLoadingEnabled) {
 		this.preLoadingEnabled = preLoadingEnabled;
+	}
+
+	/**
+	 * Sets pre loading locales.
+	 *
+	 * @param preLoadingLocales the pre loading locales
+	 */
+	public void setPreLoadingLocales(List<String> preLoadingLocales) {
+		this.preLoadingLocales = preLoadingLocales;
 	}
 
 	/**
@@ -1469,15 +1492,15 @@ public class SpringDocConfigProperties {
 		/**
 		 * Instantiates a new Group config.
 		 *
-		 * @param group the group
-		 * @param pathsToMatch the paths to match
-		 * @param packagesToScan the packages to scan
+		 * @param group             the group
+		 * @param pathsToMatch      the paths to match
+		 * @param packagesToScan    the packages to scan
 		 * @param packagesToExclude the packages to exclude
-		 * @param pathsToExclude the paths to exclude
-		 * @param producesToMatch the produces to match
-		 * @param consumesToMatch the consumes to match
-		 * @param headersToMatch the headers to match
-		 * @param displayName the display name
+		 * @param pathsToExclude    the paths to exclude
+		 * @param producesToMatch   the produces to match
+		 * @param consumesToMatch   the consumes to match
+		 * @param headersToMatch    the headers to match
+		 * @param displayName       the display name
 		 */
 		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan,
 				List<String> packagesToExclude, List<String> pathsToExclude,
@@ -1658,10 +1681,20 @@ public class SpringDocConfigProperties {
 	}
 
 
+	/**
+	 * Is show oauth 2 endpoints boolean.
+	 *
+	 * @return the boolean
+	 */
 	public boolean isShowOauth2Endpoints() {
 		return showOauth2Endpoints;
 	}
 
+	/**
+	 * Sets show oauth 2 endpoints.
+	 *
+	 * @param showOauth2Endpoints the show oauth 2 endpoints
+	 */
 	public void setShowOauth2Endpoints(boolean showOauth2Endpoints) {
 		this.showOauth2Endpoints = showOauth2Endpoints;
 	}

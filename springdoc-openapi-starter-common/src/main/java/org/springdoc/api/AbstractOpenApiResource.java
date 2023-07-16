@@ -226,8 +226,15 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.springDocProviders = springDocProviders;
 		this.springDocCustomizers = springDocCustomizers;
 		this.springDocConfigProperties = springDocConfigProperties;
-		if (springDocConfigProperties.isPreLoadingEnabled())
-			Executors.newSingleThreadExecutor().execute(this::getOpenApi);
+		if (springDocConfigProperties.isPreLoadingEnabled()) {
+			if (CollectionUtils.isEmpty(springDocConfigProperties.getPreLoadingLocales())) {
+				Executors.newSingleThreadExecutor().execute(this::getOpenApi);
+			} else {
+				for (String locale : springDocConfigProperties.getPreLoadingLocales()) {
+					Executors.newSingleThreadExecutor().execute(() -> this.getOpenApi(Locale.forLanguageTag(locale)));
+				}
+			}
+		}
 	}
 
 	/**
