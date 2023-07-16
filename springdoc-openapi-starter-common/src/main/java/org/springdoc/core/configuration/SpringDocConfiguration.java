@@ -435,7 +435,7 @@ public class SpringDocConfiguration {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @return the object mapper provider
 	 */
-	@Bean
+	@Bean(name = "springdocObjectMapperProvider")
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
