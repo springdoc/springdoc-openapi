@@ -971,6 +971,11 @@ public class SpringDocConfigProperties {
 		this.preLoadingEnabled = preLoadingEnabled;
 	}
 
+	/**
+	 * Sets pre loading locales.
+	 *
+	 * @param preLoadingLocales the pre loading locales
+	 */
 	public void setPreLoadingLocales(List<String> preLoadingLocales) {
 		this.preLoadingLocales = preLoadingLocales;
 	}
@@ -1487,15 +1492,15 @@ public class SpringDocConfigProperties {
 		/**
 		 * Instantiates a new Group config.
 		 *
-		 * @param group the group
-		 * @param pathsToMatch the paths to match
-		 * @param packagesToScan the packages to scan
+		 * @param group             the group
+		 * @param pathsToMatch      the paths to match
+		 * @param packagesToScan    the packages to scan
 		 * @param packagesToExclude the packages to exclude
-		 * @param pathsToExclude the paths to exclude
-		 * @param producesToMatch the produces to match
-		 * @param consumesToMatch the consumes to match
-		 * @param headersToMatch the headers to match
-		 * @param displayName the display name
+		 * @param pathsToExclude    the paths to exclude
+		 * @param producesToMatch   the produces to match
+		 * @param consumesToMatch   the consumes to match
+		 * @param headersToMatch    the headers to match
+		 * @param displayName       the display name
 		 */
 		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan,
 				List<String> packagesToExclude, List<String> pathsToExclude,
@@ -1676,10 +1681,20 @@ public class SpringDocConfigProperties {
 	}
 
 
+	/**
+	 * Is show oauth 2 endpoints boolean.
+	 *
+	 * @return the boolean
+	 */
 	public boolean isShowOauth2Endpoints() {
 		return showOauth2Endpoints;
 	}
 
+	/**
+	 * Sets show oauth 2 endpoints.
+	 *
+	 * @param showOauth2Endpoints the show oauth 2 endpoints
+	 */
 	public void setShowOauth2Endpoints(boolean showOauth2Endpoints) {
 		this.showOauth2Endpoints = showOauth2Endpoints;
 	}
