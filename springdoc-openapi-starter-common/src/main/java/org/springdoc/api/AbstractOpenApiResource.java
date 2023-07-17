@@ -97,6 +97,7 @@ import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
+import org.springdoc.core.utils.SpringDocUtils;
 
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.ObjectFactory;
@@ -1269,7 +1270,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				port = actuatorProvider.getApplicationPort();
 				path = actuatorProvider.getContextPath();
 				String mvcServletPath = this.openAPIService.getContext().getBean(Environment.class).getProperty(SPRING_MVC_SERVLET_PATH);
-				if (StringUtils.isNotEmpty(mvcServletPath))
+				if (SpringDocUtils.isValidPath(mvcServletPath))
 					path = path + mvcServletPath;
 			}
 			try {
