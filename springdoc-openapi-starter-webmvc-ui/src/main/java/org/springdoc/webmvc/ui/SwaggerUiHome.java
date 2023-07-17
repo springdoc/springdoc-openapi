@@ -25,7 +25,7 @@
 package org.springdoc.webmvc.ui;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.utils.SpringDocUtils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -57,7 +57,7 @@ public class SwaggerUiHome {
 	@Operation(hidden = true)
 	public String index() {
 		StringBuilder uiRootPath = new StringBuilder();
-		if (StringUtils.isNotBlank(mvcServletPath))
+		if (SpringDocUtils.isValidPath(mvcServletPath))
 			uiRootPath.append(mvcServletPath);
 
 		return REDIRECT_URL_PREFIX + uiRootPath + swaggerUiPath;

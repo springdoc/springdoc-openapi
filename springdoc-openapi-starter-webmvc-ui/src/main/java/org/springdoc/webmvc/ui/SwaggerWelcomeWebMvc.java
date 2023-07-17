@@ -31,6 +31,7 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
+import org.springdoc.core.utils.SpringDocUtils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -99,7 +100,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	@Override
 	protected void calculateUiRootPath(StringBuilder... sbUrls) {
 		StringBuilder sbUrl = new StringBuilder();
-		if (StringUtils.isNotBlank(mvcServletPath))
+		if (SpringDocUtils.isValidPath(mvcServletPath))
 			sbUrl.append(mvcServletPath);
 		calculateUiRootCommon(sbUrl, sbUrls);
 	}
@@ -113,7 +114,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	 */
 	@Override
 	protected String buildUrl(String contextPath, final String docsUrl) {
-		if (StringUtils.isNotBlank(mvcServletPath))
+		if (SpringDocUtils.isValidPath(mvcServletPath))
 			contextPath += mvcServletPath;
 		return super.buildUrl(contextPath, docsUrl);
 	}
