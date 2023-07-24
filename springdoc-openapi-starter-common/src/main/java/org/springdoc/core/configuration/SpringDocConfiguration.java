@@ -26,11 +26,9 @@
 package org.springdoc.core.configuration;
 
 import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -45,14 +43,7 @@ import org.springdoc.core.conditions.CacheOrGroupedOpenApiCondition;
 import org.springdoc.core.conditions.MultipleOpenApiSupportCondition;
 import org.springdoc.core.configurer.SpringdocActuatorBeanFactoryConfigurer;
 import org.springdoc.core.configurer.SpringdocBeanFactoryConfigurer;
-import org.springdoc.core.converters.AdditionalModelsConverter;
-import org.springdoc.core.converters.FileSupportConverter;
-import org.springdoc.core.converters.ModelConverterRegistrar;
-import org.springdoc.core.converters.PolymorphicModelConverter;
-import org.springdoc.core.converters.PropertyCustomizingConverter;
-import org.springdoc.core.converters.ResponseSupportConverter;
-import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
-import org.springdoc.core.converters.WebFluxSupportConverter;
+import org.springdoc.core.converters.*;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DataRestRouterOperationCustomizer;
@@ -119,11 +110,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import static org.springdoc.core.utils.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
-import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.utils.Constants.SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED;
-import static org.springdoc.core.utils.Constants.SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES;
-import static org.springdoc.core.utils.Constants.SPRINGDOC_SHOW_ACTUATOR;
+import static org.springdoc.core.utils.Constants.*;
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 /**
@@ -262,6 +249,30 @@ public class SpringDocConfiguration {
 	PolymorphicModelConverter polymorphicModelConverter(ObjectMapperProvider objectMapperProvider) {
 		return new PolymorphicModelConverter(objectMapperProvider);
 	}
+
+    /**
+     * Same model name converter.
+     *
+     * @param objectMapperProvider the object mapper provider
+	 * @param springDocConfigProperties the spring doc config properties
+     * @return the same model name converter
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(name = SPRINGDOC_SAME_MODEL_NAME_CONVERTER_ENABLED, matchIfMissing = true)
+    @Lazy(false)
+    SameModelNameConverter sameModelNameConverter(ObjectMapperProvider objectMapperProvider, SpringDocConfigProperties springDocConfigProperties) {
+        List<String> packagesToScan = Stream.concat(
+                        Stream.of(springDocConfigProperties.getPackagesToScan()),
+                        springDocConfigProperties.getGroupConfigs() == null
+                                ? Stream.empty()
+                                : springDocConfigProperties.getGroupConfigs().stream()
+                                .map(SpringDocConfigProperties.GroupConfig::getPackagesToScan))
+                .filter(Objects::nonNull)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        return new SameModelNameConverter(objectMapperProvider, packagesToScan);
+    }
 
 	/**
 	 * Open api builder open api builder.

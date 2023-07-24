@@ -98,6 +98,7 @@ public final class Constants {
 	 * The constant SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED.
 	 */
 	public static final String SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED = "springdoc.model-converters.polymorphic-converter.enabled";
+	public static final String SPRINGDOC_SAME_MODEL_NAME_CONVERTER_ENABLED = "springdoc.model-converters.same-model-name-converter.enabled";
 
 	/**
 	 * The constant SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES.

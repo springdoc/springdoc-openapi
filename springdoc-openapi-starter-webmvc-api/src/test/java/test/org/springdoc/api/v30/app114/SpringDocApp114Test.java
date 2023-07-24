@@ -28,12 +28,14 @@ import java.math.BigDecimal;
 
 import javax.money.MonetaryAmount;
 
+import org.springdoc.core.utils.Constants;
 import org.springdoc.core.utils.SpringDocUtils;
+import org.springframework.test.context.TestPropertySource;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
+@TestPropertySource(properties = Constants.SPRINGDOC_SAME_MODEL_NAME_CONVERTER_ENABLED + "=false")
 public class SpringDocApp114Test extends AbstractSpringDocV30Test {
 
 	static {
