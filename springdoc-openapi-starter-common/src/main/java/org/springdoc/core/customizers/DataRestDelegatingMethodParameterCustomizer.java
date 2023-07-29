@@ -35,12 +35,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.ObjectMapperFactory;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.StringToClassMapItem;
 import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.enums.ParameterStyle;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.DependentRequired;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -188,209 +190,366 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				public Schema schema() {
 					return new Schema() {
 
+						private Schema parameterSchema = parameter.schema();
+
 						@Override
 						public Class<? extends Annotation> annotationType() {
-							return parameter.schema().annotationType();
+							return parameterSchema.annotationType();
 						}
 
 						@Override
 						public Class<?> implementation() {
-							return parameter.schema().implementation();
+							return parameterSchema.implementation();
 						}
 
 						@Override
 						public Class<?> not() {
-							return parameter.schema().not();
+							return parameterSchema.not();
 						}
 
 						@Override
 						public Class<?>[] oneOf() {
-							return parameter.schema().oneOf();
+							return parameterSchema.oneOf();
 						}
 
 						@Override
 						public Class<?>[] anyOf() {
-							return parameter.schema().anyOf();
+							return parameterSchema.anyOf();
 						}
 
 						@Override
 						public Class<?>[] allOf() {
-							return parameter.schema().allOf();
+							return parameterSchema.allOf();
 						}
 
 						@Override
 						public String name() {
-							return parameter.schema().name();
+							return parameterSchema.name();
 						}
 
 						@Override
 						public String title() {
-							return parameter.schema().title();
+							return parameterSchema.title();
 						}
 
 						@Override
 						public double multipleOf() {
-							return parameter.schema().multipleOf();
+							return parameterSchema.multipleOf();
 						}
 
 						@Override
 						public String maximum() {
-							return parameter.schema().maximum();
+							return parameterSchema.maximum();
 						}
 
 						@Override
 						public boolean exclusiveMaximum() {
-							return parameter.schema().exclusiveMaximum();
+							return parameterSchema.exclusiveMaximum();
 						}
 
 						@Override
 						public String minimum() {
-							return parameter.schema().minimum();
+							return parameterSchema.minimum();
 						}
 
 						@Override
 						public boolean exclusiveMinimum() {
-							return parameter.schema().exclusiveMaximum();
+							return parameterSchema.exclusiveMaximum();
 						}
 
 						@Override
 						public int maxLength() {
-							return parameter.schema().maxLength();
+							return parameterSchema.maxLength();
 						}
 
 						@Override
 						public int minLength() {
-							return parameter.schema().minLength();
+							return parameterSchema.minLength();
 						}
 
 						@Override
 						public String pattern() {
-							return parameter.schema().pattern();
+							return parameterSchema.pattern();
 						}
 
 						@Override
 						public int maxProperties() {
-							return parameter.schema().maxProperties();
+							return parameterSchema.maxProperties();
 						}
 
 						@Override
 						public int minProperties() {
-							return parameter.schema().minProperties();
+							return parameterSchema.minProperties();
 						}
 
 						@Override
 						public String[] requiredProperties() {
-							return parameter.schema().requiredProperties();
+							return parameterSchema.requiredProperties();
 						}
 
 						@Override
 						public boolean required() {
-							return parameter.schema().required();
+							return parameterSchema.required();
 						}
 
 						@Override
 						public RequiredMode requiredMode() {
-							return parameter.schema().requiredMode();
+							return parameterSchema.requiredMode();
 						}
 
 						@Override
 						public String description() {
-							return parameter.schema().description();
+							return parameterSchema.description();
 						}
 
 						@Override
 						public String format() {
-							return parameter.schema().format();
+							return parameterSchema.format();
 						}
 
 						@Override
 						public String ref() {
-							return parameter.schema().ref();
+							return parameterSchema.ref();
 						}
 
 						@Override
 						public boolean nullable() {
-							return parameter.schema().nullable();
+							return parameterSchema.nullable();
 						}
 
 						@Override
 						public boolean readOnly() {
-							return AccessMode.READ_ONLY.equals(parameter.schema().accessMode());
+							return AccessMode.READ_ONLY.equals(parameterSchema.accessMode());
 						}
 
 						@Override
 						public boolean writeOnly() {
-							return AccessMode.WRITE_ONLY.equals(parameter.schema().accessMode());
+							return AccessMode.WRITE_ONLY.equals(parameterSchema.accessMode());
 						}
 
 						@Override
 						public AccessMode accessMode() {
-							return parameter.schema().accessMode();
+							return parameterSchema.accessMode();
 						}
 
 						@Override
 						public String example() {
-							return parameter.schema().example();
+							return parameterSchema.example();
 						}
 
 						@Override
 						public ExternalDocumentation externalDocs() {
-							return parameter.schema().externalDocs();
+							return parameterSchema.externalDocs();
 						}
 
 						@Override
 						public boolean deprecated() {
-							return parameter.schema().deprecated();
+							return parameterSchema.deprecated();
 						}
 
 						@Override
 						public String type() {
-							return parameter.schema().type();
+							return parameterSchema.type();
 						}
 
 						@Override
 						public String[] allowableValues() {
-							return parameter.schema().allowableValues();
+							return parameterSchema.allowableValues();
 						}
 
 						@Override
 						public String defaultValue() {
-							return getDefaultValue(parameterName, pageableDefault, parameter.schema().defaultValue());
+							return getDefaultValue(parameterName, pageableDefault, parameterSchema.defaultValue());
 						}
 
 						@Override
 						public String discriminatorProperty() {
-							return parameter.schema().discriminatorProperty();
+							return parameterSchema.discriminatorProperty();
 						}
 
 						@Override
 						public DiscriminatorMapping[] discriminatorMapping() {
-							return parameter.schema().discriminatorMapping();
+							return parameterSchema.discriminatorMapping();
 						}
 
 						@Override
 						public boolean hidden() {
-							return parameter.schema().hidden();
+							return parameterSchema.hidden();
 						}
 
 						@Override
 						public boolean enumAsRef() {
-							return parameter.schema().enumAsRef();
+							return parameterSchema.enumAsRef();
 						}
 
 						@Override
 						public Class<?>[] subTypes() {
-							return parameter.schema().subTypes();
+							return parameterSchema.subTypes();
 						}
 
 						@Override
 						public Extension[] extensions() {
-							return parameter.schema().extensions();
+							return parameterSchema.extensions();
+						}
+
+						@Override
+						public Class<?>[] prefixItems() {
+							return parameterSchema.prefixItems();
+						}
+
+						@Override
+						public String[] types() {
+							return parameterSchema.types();
+						}
+
+						@Override
+						public int exclusiveMaximumValue() {
+							return parameterSchema.exclusiveMaximumValue();
+						}
+
+						@Override
+						public int exclusiveMinimumValue() {
+							return parameterSchema.exclusiveMinimumValue();
+						}
+
+						@Override
+						public Class<?> contains() {
+							return parameterSchema.contains();
+						}
+
+						@Override
+						public String $id() {
+							return parameterSchema.$id();
+						}
+
+						@Override
+						public String $schema() {
+							return parameterSchema.$schema();
+						}
+
+						@Override
+						public String $anchor() {
+							return parameterSchema.$anchor();
+						}
+
+						@Override
+						public String $vocabulary() {
+							return parameterSchema.$vocabulary();
+						}
+
+						@Override
+						public String $dynamicAnchor() {
+							return parameterSchema.$dynamicAnchor();
+						}
+
+						@Override
+						public String contentEncoding() {
+							return parameterSchema.contentEncoding();
+						}
+
+						@Override
+						public String contentMediaType() {
+							return parameterSchema.contentMediaType();
+						}
+
+						@Override
+						public Class<?> contentSchema() {
+							return parameterSchema.contentSchema();
+						}
+
+						@Override
+						public Class<?> propertyNames() {
+							return parameterSchema.propertyNames();
+						}
+
+						@Override
+						public int maxContains() {
+							return parameterSchema.maxContains();
+						}
+
+						@Override
+						public int minContains() {
+							return parameterSchema.minContains();
+						}
+
+						@Override
+						public Class<?> additionalItems() {
+							return parameterSchema.additionalItems();
+						}
+
+						@Override
+						public Class<?> unevaluatedItems() {
+							return parameterSchema.unevaluatedItems();
+						}
+
+						@Override
+						public Class<?> _if() {
+							return parameterSchema._if();
+						}
+
+						@Override
+						public Class<?> _else() {
+							return parameterSchema._else();
+						}
+
+						@Override
+						public Class<?> then() {
+							return parameterSchema.then();
+						}
+
+						@Override
+						public String $comment() {
+							return parameterSchema.$comment();
+						}
+
+						@Override
+						public Class<?>[] exampleClasses() {
+							return parameterSchema.exampleClasses();
 						}
 
 						@Override
 						public AdditionalPropertiesValue additionalProperties() {
-							return parameter.schema().additionalProperties();
+							return parameterSchema.additionalProperties();
+						}
+
+						@Override
+						public DependentRequired[] dependentRequiredMap() {
+							return parameterSchema.dependentRequiredMap();
+						}
+
+						@Override
+						public StringToClassMapItem[] dependentSchemas() {
+							return parameterSchema.dependentSchemas();
+						}
+
+						@Override
+						public StringToClassMapItem[] patternProperties() {
+							return parameterSchema.patternProperties();
+						}
+
+						@Override
+						public StringToClassMapItem[] properties() {
+							return parameterSchema.properties();
+						}
+
+						@Override
+						public Class<?> unevaluatedProperties() {
+							return parameterSchema.unevaluatedProperties();
+						}
+
+						@Override
+						public Class<?> additionalPropertiesSchema() {
+							return parameterSchema.additionalPropertiesSchema();
+						}
+
+						@Override
+						public String[] examples() {
+							return parameterSchema.examples();
+						}
+
+						@Override
+						public String _const() {
+							return parameterSchema._const();
 						}
 					};
 				}
@@ -402,6 +561,11 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 						@Override
 						public Class<? extends Annotation> annotationType() {
 							return arraySchema.annotationType();
+						}
+
+						@Override
+						public Schema items() {
+							return arraySchema.items();
 						}
 
 						@Override
@@ -616,8 +780,163 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 								}
 
 								@Override
+								public Class<?>[] prefixItems() {
+									return schema.prefixItems();
+								}
+
+								@Override
+								public String[] types() {
+									return schema.types();
+								}
+
+								@Override
+								public int exclusiveMaximumValue() {
+									return schema.exclusiveMaximumValue();
+								}
+
+								@Override
+								public int exclusiveMinimumValue() {
+									return schema.exclusiveMinimumValue();
+								}
+
+								@Override
+								public Class<?> contains() {
+									return schema.contains();
+								}
+
+								@Override
+								public String $id() {
+									return schema.$id();
+								}
+
+								@Override
+								public String $schema() {
+									return schema.$schema();
+								}
+
+								@Override
+								public String $anchor() {
+									return schema.$anchor();
+								}
+
+								@Override
+								public String $vocabulary() {
+									return schema.$vocabulary();
+								}
+
+								@Override
+								public String $dynamicAnchor() {
+									return schema.$dynamicAnchor();
+								}
+
+								@Override
+								public String contentEncoding() {
+									return schema.contentEncoding();
+								}
+
+								@Override
+								public String contentMediaType() {
+									return schema.contentMediaType();
+								}
+
+								@Override
+								public Class<?> contentSchema() {
+									return schema.contentSchema();
+								}
+
+								@Override
+								public Class<?> propertyNames() {
+									return schema.propertyNames();
+								}
+
+								@Override
+								public int maxContains() {
+									return schema.maxContains();
+								}
+
+								@Override
+								public int minContains() {
+									return schema.minContains();
+								}
+
+								@Override
+								public Class<?> additionalItems() {
+									return schema.additionalItems();
+								}
+
+								@Override
+								public Class<?> unevaluatedItems() {
+									return schema.unevaluatedItems();
+								}
+
+								@Override
+								public Class<?> _if() {
+									return schema._if();
+								}
+
+								@Override
+								public Class<?> _else() {
+									return schema._else();
+								}
+
+								@Override
+								public Class<?> then() {
+									return schema.then();
+								}
+
+								@Override
+								public String $comment() {
+									return schema.$comment();
+								}
+
+								@Override
+								public Class<?>[] exampleClasses() {
+									return schema.exampleClasses();
+								}
+
+								@Override
 								public AdditionalPropertiesValue additionalProperties() {
 									return schema.additionalProperties();
+								}
+
+								@Override
+								public DependentRequired[] dependentRequiredMap() {
+									return schema.dependentRequiredMap();
+								}
+
+								@Override
+								public StringToClassMapItem[] dependentSchemas() {
+									return schema.dependentSchemas();
+								}
+
+								@Override
+								public StringToClassMapItem[] patternProperties() {
+									return schema.patternProperties();
+								}
+
+								@Override
+								public StringToClassMapItem[] properties() {
+									return schema.properties();
+								}
+
+								@Override
+								public Class<?> unevaluatedProperties() {
+									return schema.unevaluatedProperties();
+								}
+
+								@Override
+								public Class<?> additionalPropertiesSchema() {
+									return schema.additionalPropertiesSchema();
+								}
+
+								@Override
+								public String[] examples() {
+									return schema.examples();
+								}
+
+								@Override
+								public String _const() {
+									return schema._const();
 								}
 							};
 						}
@@ -640,6 +959,31 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 						@Override
 						public Extension[] extensions() {
 							return arraySchema.extensions();
+						}
+
+						@Override
+						public Schema contains() {
+							return arraySchema.contains();
+						}
+
+						@Override
+						public int maxContains() {
+							return arraySchema.maxContains();
+						}
+
+						@Override
+						public int minContains() {
+							return arraySchema.minContains();
+						}
+
+						@Override
+						public Schema unevaluatedItems() {
+							return arraySchema.unevaluatedItems();
+						}
+
+						@Override
+						public Schema[] prefixItems() {
+							return arraySchema.prefixItems();
 						}
 					};
 				}

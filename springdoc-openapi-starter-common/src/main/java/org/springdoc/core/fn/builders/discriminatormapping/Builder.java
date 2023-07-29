@@ -26,6 +26,7 @@ package org.springdoc.core.fn.builders.discriminatormapping;
 
 import java.lang.annotation.Annotation;
 
+import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 
 /**
@@ -46,6 +47,10 @@ public class Builder {
 	 */
 	private Class<?> schema = Void.class;
 
+	/**
+	 * The Extensions.
+	 */
+	private Extension[] extensions = {};
 
 	/**
 	 * Instantiates a new Discriminator mapping builder.
@@ -105,6 +110,11 @@ public class Builder {
 			@Override
 			public Class<?> schema() {
 				return schema;
+			}
+
+			@Override
+			public Extension[] extensions() {
+				return extensions;
 			}
 		};
 	}
