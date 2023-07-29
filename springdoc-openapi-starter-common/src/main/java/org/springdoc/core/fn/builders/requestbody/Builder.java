@@ -68,6 +68,8 @@ public class Builder {
 	 */
 	private String ref = "";
 
+	private boolean useParameterTypeSchema = false;
+
 
 	/**
 	 * Instantiates a new Request body builder.
@@ -186,6 +188,11 @@ public class Builder {
 			@Override
 			public String ref() {
 				return ref;
+			}
+
+			@Override
+			public boolean useParameterTypeSchema() {
+				return useParameterTypeSchema;
 			}
 		};
 	}
