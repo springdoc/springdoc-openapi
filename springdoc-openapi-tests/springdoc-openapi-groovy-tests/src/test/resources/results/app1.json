@@ -141,12 +141,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -297,9 +297,6 @@
       "CSTNode": {
         "type": "object",
         "properties": {
-          "description": {
-            "type": "string"
-          },
           "empty": {
             "type": "boolean"
           },
@@ -310,18 +307,21 @@
             "type": "integer",
             "format": "int32"
           },
+          "anExpression": {
+            "type": "boolean"
+          },
           "startLine": {
             "type": "integer",
             "format": "int32"
+          },
+          "rootText": {
+            "type": "string"
           },
           "startColumn": {
             "type": "integer",
             "format": "int32"
           },
-          "anExpression": {
-            "type": "boolean"
-          },
-          "rootText": {
+          "description": {
             "type": "string"
           },
           "meaning": {
@@ -414,8 +414,9 @@
           "void": {
             "type": "boolean"
           },
-          "typeDescription": {
-            "type": "string"
+          "superClassDistance": {
+            "type": "integer",
+            "format": "int32"
           },
           "newMetaMethods": {
             "type": "array",
@@ -426,9 +427,8 @@
           "callSiteLoader": {
             "$ref": "#/components/schemas/CallSiteClassLoader"
           },
-          "superClassDistance": {
-            "type": "integer",
-            "format": "int32"
+          "typeDescription": {
+            "type": "string"
           }
         }
       },
@@ -438,7 +438,14 @@
           "cachedConstructor": {
             "type": "object",
             "properties": {
-              "parameters": {
+              "name": {
+                "type": "string"
+              },
+              "modifiers": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "typeParameters": {
                 "type": "array",
                 "items": {
                   "type": "object",
@@ -446,73 +453,20 @@
                     "name": {
                       "type": "string"
                     },
-                    "modifiers": {
-                      "type": "integer",
-                      "format": "int32"
-                    },
-                    "declaredAnnotations": {
+                    "bounds": {
                       "type": "array",
                       "items": {
-                        "type": "object"
-                      }
-                    },
-                    "synthetic": {
-                      "type": "boolean"
-                    },
-                    "annotations": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    },
-                    "annotatedType": {
-                      "type": "object",
-                      "properties": {
-                        "annotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "declaredAnnotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "type": {
-                          "type": "object",
-                          "properties": {
-                            "typeName": {
-                              "type": "string"
-                            }
+                        "type": "object",
+                        "properties": {
+                          "typeName": {
+                            "type": "string"
                           }
                         }
                       }
                     },
-                    "parameterizedType": {
+                    "genericDeclaration": {
                       "type": "object",
                       "properties": {
-                        "typeName": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "varArgs": {
-                      "type": "boolean"
-                    },
-                    "namePresent": {
-                      "type": "boolean"
-                    },
-                    "declaringExecutable": {
-                      "type": "object",
-                      "properties": {
-                        "declaredAnnotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
                         "name": {
                           "type": "string"
                         },
@@ -520,157 +474,21 @@
                           "type": "integer",
                           "format": "int32"
                         },
-                        "typeParameters": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "genericDeclaration": {
-                                "type": "object"
-                              },
-                              "annotatedBounds": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "annotatedOwnerType": {
-                                      "type": "object",
-                                      "properties": {
-                                        "annotations": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
-                                        },
-                                        "declaredAnnotations": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
-                                        },
-                                        "type": {
-                                          "type": "object",
-                                          "properties": {
-                                            "typeName": {
-                                              "type": "string"
-                                            }
-                                          }
-                                        }
-                                      }
-                                    },
-                                    "annotations": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
-                                    },
-                                    "declaredAnnotations": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
-                                    },
-                                    "type": {
-                                      "type": "object",
-                                      "properties": {
-                                        "typeName": {
-                                          "type": "string"
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "bounds": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "typeName": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              },
-                              "typeName": {
-                                "type": "string"
-                              },
-                              "annotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "declaredAnnotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              }
-                            }
-                          }
-                        },
                         "synthetic": {
                           "type": "boolean"
                         },
-                        "varArgs": {
-                          "type": "boolean"
-                        },
-                        "annotatedParameterTypes": {
+                        "declaredAnnotations": {
                           "type": "array",
                           "items": {
-                            "type": "object",
-                            "properties": {
-                              "annotatedOwnerType": {
-                                "type": "object",
-                                "properties": {
-                                  "annotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
-                                  "declaredAnnotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
-                                  "type": {
-                                    "type": "object",
-                                    "properties": {
-                                      "typeName": {
-                                        "type": "string"
-                                      }
-                                    }
-                                  }
-                                }
-                              },
-                              "annotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "declaredAnnotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "type": {
-                                "type": "object",
-                                "properties": {
-                                  "typeName": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            }
+                            "type": "object"
                           }
+                        },
+                        "accessible": {
+                          "type": "boolean",
+                          "deprecated": true
+                        },
+                        "varArgs": {
+                          "type": "boolean"
                         },
                         "parameterCount": {
                           "type": "integer",
@@ -757,36 +575,11 @@
                             }
                           }
                         },
-                        "annotatedExceptionTypes": {
+                        "annotatedParameterTypes": {
                           "type": "array",
                           "items": {
                             "type": "object",
                             "properties": {
-                              "annotatedOwnerType": {
-                                "type": "object",
-                                "properties": {
-                                  "annotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
-                                  "declaredAnnotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
-                                  "type": {
-                                    "type": "object",
-                                    "properties": {
-                                      "typeName": {
-                                        "type": "string"
-                                      }
-                                    }
-                                  }
-                                }
-                              },
                               "annotations": {
                                 "type": "array",
                                 "items": {
@@ -810,45 +603,6 @@
                             }
                           }
                         },
-                        "annotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "accessible": {
-                          "type": "boolean",
-                          "deprecated": true
-                        }
-                      }
-                    },
-                    "implicit": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              },
-              "declaredAnnotations": {
-                "type": "array",
-                "items": {
-                  "type": "object"
-                }
-              },
-              "name": {
-                "type": "string"
-              },
-              "modifiers": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "typeParameters": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "genericDeclaration": {
-                      "type": "object",
-                      "properties": {
                         "parameters": {
                           "type": "array",
                           "items": {
@@ -861,16 +615,16 @@
                                 "type": "integer",
                                 "format": "int32"
                               },
-                              "declaredAnnotations": {
+                              "synthetic": {
+                                "type": "boolean"
+                              },
+                              "annotations": {
                                 "type": "array",
                                 "items": {
                                   "type": "object"
                                 }
                               },
-                              "synthetic": {
-                                "type": "boolean"
-                              },
-                              "annotations": {
+                              "declaredAnnotations": {
                                 "type": "array",
                                 "items": {
                                   "type": "object"
@@ -918,12 +672,6 @@
                               "declaringExecutable": {
                                 "type": "object",
                                 "properties": {
-                                  "declaredAnnotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
                                   "name": {
                                     "type": "string"
                                   },
@@ -936,6 +684,20 @@
                                     "items": {
                                       "type": "object",
                                       "properties": {
+                                        "name": {
+                                          "type": "string"
+                                        },
+                                        "bounds": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "typeName": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          }
+                                        },
                                         "genericDeclaration": {
                                           "type": "object"
                                         },
@@ -944,31 +706,6 @@
                                           "items": {
                                             "type": "object",
                                             "properties": {
-                                              "annotatedOwnerType": {
-                                                "type": "object",
-                                                "properties": {
-                                                  "annotations": {
-                                                    "type": "array",
-                                                    "items": {
-                                                      "type": "object"
-                                                    }
-                                                  },
-                                                  "declaredAnnotations": {
-                                                    "type": "array",
-                                                    "items": {
-                                                      "type": "object"
-                                                    }
-                                                  },
-                                                  "type": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                      "typeName": {
-                                                        "type": "string"
-                                                      }
-                                                    }
-                                                  }
-                                                }
-                                              },
                                               "annotations": {
                                                 "type": "array",
                                                 "items": {
@@ -988,20 +725,6 @@
                                                     "type": "string"
                                                   }
                                                 }
-                                              }
-                                            }
-                                          }
-                                        },
-                                        "name": {
-                                          "type": "string"
-                                        },
-                                        "bounds": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object",
-                                            "properties": {
-                                              "typeName": {
-                                                "type": "string"
                                               }
                                             }
                                           }
@@ -1027,6 +750,12 @@
                                   "synthetic": {
                                     "type": "boolean"
                                   },
+                                  "declaredAnnotations": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object"
+                                    }
+                                  },
                                   "varArgs": {
                                     "type": "boolean"
                                   },
@@ -1035,31 +764,6 @@
                                     "items": {
                                       "type": "object",
                                       "properties": {
-                                        "annotatedOwnerType": {
-                                          "type": "object",
-                                          "properties": {
-                                            "annotations": {
-                                              "type": "array",
-                                              "items": {
-                                                "type": "object"
-                                              }
-                                            },
-                                            "declaredAnnotations": {
-                                              "type": "array",
-                                              "items": {
-                                                "type": "object"
-                                              }
-                                            },
-                                            "type": {
-                                              "type": "object",
-                                              "properties": {
-                                                "typeName": {
-                                                  "type": "string"
-                                                }
-                                              }
-                                            }
-                                          }
-                                        },
                                         "annotations": {
                                           "type": "array",
                                           "items": {
@@ -1173,31 +877,6 @@
                                     "items": {
                                       "type": "object",
                                       "properties": {
-                                        "annotatedOwnerType": {
-                                          "type": "object",
-                                          "properties": {
-                                            "annotations": {
-                                              "type": "array",
-                                              "items": {
-                                                "type": "object"
-                                              }
-                                            },
-                                            "declaredAnnotations": {
-                                              "type": "array",
-                                              "items": {
-                                                "type": "object"
-                                              }
-                                            },
-                                            "type": {
-                                              "type": "object",
-                                              "properties": {
-                                                "typeName": {
-                                                  "type": "string"
-                                                }
-                                              }
-                                            }
-                                          }
-                                        },
                                         "annotations": {
                                           "type": "array",
                                           "items": {
@@ -1239,197 +918,11 @@
                             }
                           }
                         },
-                        "declaredAnnotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "modifiers": {
-                          "type": "integer",
-                          "format": "int32"
-                        },
-                        "synthetic": {
-                          "type": "boolean"
-                        },
-                        "accessible": {
-                          "type": "boolean",
-                          "deprecated": true
-                        },
-                        "varArgs": {
-                          "type": "boolean"
-                        },
-                        "parameterCount": {
-                          "type": "integer",
-                          "format": "int32"
-                        },
-                        "parameterAnnotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
-                          }
-                        },
-                        "genericParameterTypes": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "typeName": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        },
-                        "genericExceptionTypes": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "typeName": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        },
-                        "annotatedReturnType": {
-                          "type": "object",
-                          "properties": {
-                            "annotations": {
-                              "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
-                            },
-                            "declaredAnnotations": {
-                              "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
-                            },
-                            "type": {
-                              "type": "object",
-                              "properties": {
-                                "typeName": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "annotatedReceiverType": {
-                          "type": "object",
-                          "properties": {
-                            "annotations": {
-                              "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
-                            },
-                            "declaredAnnotations": {
-                              "type": "array",
-                              "items": {
-                                "type": "object"
-                              }
-                            },
-                            "type": {
-                              "type": "object",
-                              "properties": {
-                                "typeName": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "annotatedParameterTypes": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "annotatedOwnerType": {
-                                "type": "object",
-                                "properties": {
-                                  "annotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
-                                  "declaredAnnotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
-                                  "type": {
-                                    "type": "object",
-                                    "properties": {
-                                      "typeName": {
-                                        "type": "string"
-                                      }
-                                    }
-                                  }
-                                }
-                              },
-                              "annotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "declaredAnnotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "type": {
-                                "type": "object",
-                                "properties": {
-                                  "typeName": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        },
                         "annotatedExceptionTypes": {
                           "type": "array",
                           "items": {
                             "type": "object",
                             "properties": {
-                              "annotatedOwnerType": {
-                                "type": "object",
-                                "properties": {
-                                  "annotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
-                                  "declaredAnnotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
-                                  "type": {
-                                    "type": "object",
-                                    "properties": {
-                                      "typeName": {
-                                        "type": "string"
-                                      }
-                                    }
-                                  }
-                                }
-                              },
                               "annotations": {
                                 "type": "array",
                                 "items": {
@@ -1466,31 +959,6 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "annotatedOwnerType": {
-                            "type": "object",
-                            "properties": {
-                              "annotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "declaredAnnotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "type": {
-                                "type": "object",
-                                "properties": {
-                                  "typeName": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            }
-                          },
                           "annotations": {
                             "type": "array",
                             "items": {
@@ -1510,20 +978,6 @@
                                 "type": "string"
                               }
                             }
-                          }
-                        }
-                      }
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "bounds": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "typeName": {
-                            "type": "string"
                           }
                         }
                       }
@@ -1548,6 +1002,12 @@
               },
               "synthetic": {
                 "type": "boolean"
+              },
+              "declaredAnnotations": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
               },
               "accessible": {
                 "type": "boolean",
@@ -1646,31 +1106,6 @@
                 "items": {
                   "type": "object",
                   "properties": {
-                    "annotatedOwnerType": {
-                      "type": "object",
-                      "properties": {
-                        "annotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "declaredAnnotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "type": {
-                          "type": "object",
-                          "properties": {
-                            "typeName": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    },
                     "annotations": {
                       "type": "array",
                       "items": {
@@ -1694,12 +1129,34 @@
                   }
                 }
               },
-              "annotatedExceptionTypes": {
+              "parameters": {
                 "type": "array",
                 "items": {
                   "type": "object",
                   "properties": {
-                    "annotatedOwnerType": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "modifiers": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "synthetic": {
+                      "type": "boolean"
+                    },
+                    "annotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "declaredAnnotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "annotatedType": {
                       "type": "object",
                       "properties": {
                         "annotations": {
@@ -1724,6 +1181,274 @@
                         }
                       }
                     },
+                    "parameterizedType": {
+                      "type": "object",
+                      "properties": {
+                        "typeName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "varArgs": {
+                      "type": "boolean"
+                    },
+                    "namePresent": {
+                      "type": "boolean"
+                    },
+                    "declaringExecutable": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "modifiers": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "typeParameters": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "bounds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "typeName": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
+                              "genericDeclaration": {
+                                "type": "object"
+                              },
+                              "annotatedBounds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "annotations": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object"
+                                      }
+                                    },
+                                    "declaredAnnotations": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object"
+                                      }
+                                    },
+                                    "type": {
+                                      "type": "object",
+                                      "properties": {
+                                        "typeName": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "typeName": {
+                                "type": "string"
+                              },
+                              "annotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "declaredAnnotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "synthetic": {
+                          "type": "boolean"
+                        },
+                        "declaredAnnotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "varArgs": {
+                          "type": "boolean"
+                        },
+                        "annotatedParameterTypes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "annotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "declaredAnnotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "type": {
+                                "type": "object",
+                                "properties": {
+                                  "typeName": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "parameterCount": {
+                          "type": "integer",
+                          "format": "int32"
+                        },
+                        "parameterAnnotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          }
+                        },
+                        "genericParameterTypes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "typeName": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "genericExceptionTypes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "typeName": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "annotatedReturnType": {
+                          "type": "object",
+                          "properties": {
+                            "annotations": {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            },
+                            "declaredAnnotations": {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            },
+                            "type": {
+                              "type": "object",
+                              "properties": {
+                                "typeName": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "annotatedReceiverType": {
+                          "type": "object",
+                          "properties": {
+                            "annotations": {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            },
+                            "declaredAnnotations": {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            },
+                            "type": {
+                              "type": "object",
+                              "properties": {
+                                "typeName": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "annotatedExceptionTypes": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "annotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "declaredAnnotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
+                              "type": {
+                                "type": "object",
+                                "properties": {
+                                  "typeName": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "annotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "accessible": {
+                          "type": "boolean",
+                          "deprecated": true
+                        }
+                      }
+                    },
+                    "implicit": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "annotatedExceptionTypes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
                     "annotations": {
                       "type": "array",
                       "items": {
@@ -1867,6 +1592,199 @@
           "cachedMethod": {
             "type": "object",
             "properties": {
+              "name": {
+                "type": "string"
+              },
+              "modifiers": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "typeParameters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "bounds": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "typeName": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "annotatedBounds": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "annotations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          },
+                          "declaredAnnotations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          },
+                          "type": {
+                            "type": "object",
+                            "properties": {
+                              "typeName": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "typeName": {
+                      "type": "string"
+                    },
+                    "annotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "declaredAnnotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              },
+              "synthetic": {
+                "type": "boolean"
+              },
+              "declaredAnnotations": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "accessible": {
+                "type": "boolean",
+                "deprecated": true
+              },
+              "varArgs": {
+                "type": "boolean"
+              },
+              "parameterCount": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "parameterAnnotations": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "genericParameterTypes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "typeName": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "genericExceptionTypes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "typeName": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "default": {
+                "type": "boolean"
+              },
+              "genericReturnType": {
+                "type": "object",
+                "properties": {
+                  "typeName": {
+                    "type": "string"
+                  }
+                }
+              },
+              "bridge": {
+                "type": "boolean"
+              },
+              "defaultValue": {
+                "type": "object"
+              },
+              "annotatedReturnType": {
+                "type": "object",
+                "properties": {
+                  "annotations": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "declaredAnnotations": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  "type": {
+                    "type": "object",
+                    "properties": {
+                      "typeName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "annotatedParameterTypes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "annotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "declaredAnnotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "type": {
+                      "type": "object",
+                      "properties": {
+                        "typeName": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "parameters": {
                 "type": "array",
                 "items": {
@@ -1879,16 +1797,16 @@
                       "type": "integer",
                       "format": "int32"
                     },
-                    "declaredAnnotations": {
+                    "synthetic": {
+                      "type": "boolean"
+                    },
+                    "annotations": {
                       "type": "array",
                       "items": {
                         "type": "object"
                       }
                     },
-                    "synthetic": {
-                      "type": "boolean"
-                    },
-                    "annotations": {
+                    "declaredAnnotations": {
                       "type": "array",
                       "items": {
                         "type": "object"
@@ -1936,12 +1854,6 @@
                     "declaringExecutable": {
                       "type": "object",
                       "properties": {
-                        "declaredAnnotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
                         "name": {
                           "type": "string"
                         },
@@ -1954,6 +1866,20 @@
                           "items": {
                             "type": "object",
                             "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "bounds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "typeName": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              },
                               "genericDeclaration": {
                                 "type": "object"
                               },
@@ -1962,31 +1888,6 @@
                                 "items": {
                                   "type": "object",
                                   "properties": {
-                                    "annotatedOwnerType": {
-                                      "type": "object",
-                                      "properties": {
-                                        "annotations": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
-                                        },
-                                        "declaredAnnotations": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
-                                        },
-                                        "type": {
-                                          "type": "object",
-                                          "properties": {
-                                            "typeName": {
-                                              "type": "string"
-                                            }
-                                          }
-                                        }
-                                      }
-                                    },
                                     "annotations": {
                                       "type": "array",
                                       "items": {
@@ -2006,20 +1907,6 @@
                                           "type": "string"
                                         }
                                       }
-                                    }
-                                  }
-                                }
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "bounds": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "typeName": {
-                                      "type": "string"
                                     }
                                   }
                                 }
@@ -2045,6 +1932,12 @@
                         "synthetic": {
                           "type": "boolean"
                         },
+                        "declaredAnnotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
                         "varArgs": {
                           "type": "boolean"
                         },
@@ -2053,31 +1946,6 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "annotatedOwnerType": {
-                                "type": "object",
-                                "properties": {
-                                  "annotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
-                                  "declaredAnnotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
-                                  "type": {
-                                    "type": "object",
-                                    "properties": {
-                                      "typeName": {
-                                        "type": "string"
-                                      }
-                                    }
-                                  }
-                                }
-                              },
                               "annotations": {
                                 "type": "array",
                                 "items": {
@@ -2191,31 +2059,6 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "annotatedOwnerType": {
-                                "type": "object",
-                                "properties": {
-                                  "annotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
-                                  "declaredAnnotations": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object"
-                                    }
-                                  },
-                                  "type": {
-                                    "type": "object",
-                                    "properties": {
-                                      "typeName": {
-                                        "type": "string"
-                                      }
-                                    }
-                                  }
-                                }
-                              },
                               "annotations": {
                                 "type": "array",
                                 "items": {
@@ -2257,249 +2100,6 @@
                   }
                 }
               },
-              "declaredAnnotations": {
-                "type": "array",
-                "items": {
-                  "type": "object"
-                }
-              },
-              "name": {
-                "type": "string"
-              },
-              "modifiers": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "typeParameters": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "annotatedBounds": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "annotatedOwnerType": {
-                            "type": "object",
-                            "properties": {
-                              "annotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "declaredAnnotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "type": {
-                                "type": "object",
-                                "properties": {
-                                  "typeName": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "annotations": {
-                            "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
-                          },
-                          "declaredAnnotations": {
-                            "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
-                          },
-                          "type": {
-                            "type": "object",
-                            "properties": {
-                              "typeName": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "bounds": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "typeName": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    },
-                    "typeName": {
-                      "type": "string"
-                    },
-                    "annotations": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    },
-                    "declaredAnnotations": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    }
-                  }
-                }
-              },
-              "synthetic": {
-                "type": "boolean"
-              },
-              "accessible": {
-                "type": "boolean",
-                "deprecated": true
-              },
-              "varArgs": {
-                "type": "boolean"
-              },
-              "parameterCount": {
-                "type": "integer",
-                "format": "int32"
-              },
-              "parameterAnnotations": {
-                "type": "array",
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "type": "object"
-                  }
-                }
-              },
-              "genericParameterTypes": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "typeName": {
-                      "type": "string"
-                    }
-                  }
-                }
-              },
-              "genericExceptionTypes": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "typeName": {
-                      "type": "string"
-                    }
-                  }
-                }
-              },
-              "default": {
-                "type": "boolean"
-              },
-              "genericReturnType": {
-                "type": "object",
-                "properties": {
-                  "typeName": {
-                    "type": "string"
-                  }
-                }
-              },
-              "bridge": {
-                "type": "boolean"
-              },
-              "defaultValue": {
-                "type": "object"
-              },
-              "annotatedReturnType": {
-                "type": "object",
-                "properties": {
-                  "annotations": {
-                    "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
-                  },
-                  "declaredAnnotations": {
-                    "type": "array",
-                    "items": {
-                      "type": "object"
-                    }
-                  },
-                  "type": {
-                    "type": "object",
-                    "properties": {
-                      "typeName": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              },
-              "annotatedParameterTypes": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "annotatedOwnerType": {
-                      "type": "object",
-                      "properties": {
-                        "annotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "declaredAnnotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "type": {
-                          "type": "object",
-                          "properties": {
-                            "typeName": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "annotations": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    },
-                    "declaredAnnotations": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    },
-                    "type": {
-                      "type": "object",
-                      "properties": {
-                        "typeName": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              },
               "annotatedReceiverType": {
                 "type": "object",
                 "properties": {
@@ -2530,31 +2130,6 @@
                 "items": {
                   "type": "object",
                   "properties": {
-                    "annotatedOwnerType": {
-                      "type": "object",
-                      "properties": {
-                        "annotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "declaredAnnotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "type": {
-                          "type": "object",
-                          "properties": {
-                            "typeName": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    },
                     "annotations": {
                       "type": "array",
                       "items": {
@@ -3006,14 +2581,14 @@
           "weakMetaClass": {
             "$ref": "#/components/schemas/MetaClass"
           },
+          "cachedClass": {
+            "$ref": "#/components/schemas/CachedClass"
+          },
           "modifiedExpando": {
             "$ref": "#/components/schemas/ExpandoMetaClass"
           },
           "metaClassForClass": {
             "$ref": "#/components/schemas/MetaClass"
-          },
-          "cachedClass": {
-            "$ref": "#/components/schemas/CachedClass"
           }
         }
       },
@@ -3535,6 +3110,25 @@
               "$ref": "#/components/schemas/Statement"
             }
           },
+          "allInterfaces": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
+          },
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
           "genericsPlaceHolder": {
             "type": "boolean"
           },
@@ -3587,37 +3181,18 @@
           "annotationDefinition": {
             "type": "boolean"
           },
-          "abstractMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
           "outerClass": {
             "$ref": "#/components/schemas/ClassNode"
-          },
-          "allInterfaces": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -3706,12 +3281,6 @@
                     "signerCertPath": {
                       "type": "object",
                       "properties": {
-                        "type": {
-                          "type": "string"
-                        },
-                        "encodings": {
-                          "type": "object"
-                        },
                         "certificates": {
                           "type": "array",
                           "items": {
@@ -3748,12 +3317,18 @@
                             }
                           }
                         },
+                        "type": {
+                          "type": "string"
+                        },
                         "encoded": {
                           "type": "array",
                           "items": {
                             "type": "string",
                             "format": "byte"
                           }
+                        },
+                        "encodings": {
+                          "type": "object"
                         }
                       }
                     },
@@ -3767,12 +3342,6 @@
                         "signerCertPath": {
                           "type": "object",
                           "properties": {
-                            "type": {
-                              "type": "string"
-                            },
-                            "encodings": {
-                              "type": "object"
-                            },
                             "certificates": {
                               "type": "array",
                               "items": {
@@ -3809,12 +3378,18 @@
                                 }
                               }
                             },
+                            "type": {
+                              "type": "string"
+                            },
                             "encoded": {
                               "type": "array",
                               "items": {
                                 "type": "string",
                                 "format": "byte"
                               }
+                            },
+                            "encodings": {
+                              "type": "object"
                             }
                           }
                         }
@@ -4062,6 +3637,12 @@
           "variableScope": {
             "$ref": "#/components/schemas/VariableScope"
           },
+          "exceptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
+          },
           "genericsTypes": {
             "type": "array",
             "items": {
@@ -4120,12 +3701,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -4156,14 +3737,14 @@
           "configuration": {
             "$ref": "#/components/schemas/CompilerConfiguration"
           },
-          "warningCount": {
+          "errorCount": {
             "type": "integer",
             "format": "int32"
           },
           "lastError": {
             "$ref": "#/components/schemas/Message"
           },
-          "errorCount": {
+          "warningCount": {
             "type": "integer",
             "format": "int32"
           }
@@ -4225,8 +3806,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "classInfo": {
-            "$ref": "#/components/schemas/ClassInfo"
+          "groovyObject": {
+            "type": "boolean"
           },
           "upProperties": {
             "type": "array",
@@ -4261,6 +3842,199 @@
                 "readMethod": {
                   "type": "object",
                   "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "modifiers": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "typeParameters": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "bounds": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "typeName": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "annotatedBounds": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "annotations": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object"
+                                  }
+                                },
+                                "declaredAnnotations": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object"
+                                  }
+                                },
+                                "type": {
+                                  "type": "object",
+                                  "properties": {
+                                    "typeName": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "typeName": {
+                            "type": "string"
+                          },
+                          "annotations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          },
+                          "declaredAnnotations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "synthetic": {
+                      "type": "boolean"
+                    },
+                    "declaredAnnotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "accessible": {
+                      "type": "boolean",
+                      "deprecated": true
+                    },
+                    "varArgs": {
+                      "type": "boolean"
+                    },
+                    "parameterCount": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "parameterAnnotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "genericParameterTypes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "typeName": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "genericExceptionTypes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "typeName": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "default": {
+                      "type": "boolean"
+                    },
+                    "genericReturnType": {
+                      "type": "object",
+                      "properties": {
+                        "typeName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "bridge": {
+                      "type": "boolean"
+                    },
+                    "defaultValue": {
+                      "type": "object"
+                    },
+                    "annotatedReturnType": {
+                      "type": "object",
+                      "properties": {
+                        "annotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "declaredAnnotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "type": {
+                          "type": "object",
+                          "properties": {
+                            "typeName": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "annotatedParameterTypes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "annotations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          },
+                          "declaredAnnotations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          },
+                          "type": {
+                            "type": "object",
+                            "properties": {
+                              "typeName": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "parameters": {
                       "type": "array",
                       "items": {
@@ -4273,16 +4047,16 @@
                             "type": "integer",
                             "format": "int32"
                           },
-                          "declaredAnnotations": {
+                          "synthetic": {
+                            "type": "boolean"
+                          },
+                          "annotations": {
                             "type": "array",
                             "items": {
                               "type": "object"
                             }
                           },
-                          "synthetic": {
-                            "type": "boolean"
-                          },
-                          "annotations": {
+                          "declaredAnnotations": {
                             "type": "array",
                             "items": {
                               "type": "object"
@@ -4330,12 +4104,6 @@
                           "declaringExecutable": {
                             "type": "object",
                             "properties": {
-                              "declaredAnnotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
                               "name": {
                                 "type": "string"
                               },
@@ -4348,6 +4116,20 @@
                                 "items": {
                                   "type": "object",
                                   "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "bounds": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "typeName": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      }
+                                    },
                                     "genericDeclaration": {
                                       "type": "object"
                                     },
@@ -4356,31 +4138,6 @@
                                       "items": {
                                         "type": "object",
                                         "properties": {
-                                          "annotatedOwnerType": {
-                                            "type": "object",
-                                            "properties": {
-                                              "annotations": {
-                                                "type": "array",
-                                                "items": {
-                                                  "type": "object"
-                                                }
-                                              },
-                                              "declaredAnnotations": {
-                                                "type": "array",
-                                                "items": {
-                                                  "type": "object"
-                                                }
-                                              },
-                                              "type": {
-                                                "type": "object",
-                                                "properties": {
-                                                  "typeName": {
-                                                    "type": "string"
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          },
                                           "annotations": {
                                             "type": "array",
                                             "items": {
@@ -4400,20 +4157,6 @@
                                                 "type": "string"
                                               }
                                             }
-                                          }
-                                        }
-                                      }
-                                    },
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "bounds": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object",
-                                        "properties": {
-                                          "typeName": {
-                                            "type": "string"
                                           }
                                         }
                                       }
@@ -4439,6 +4182,12 @@
                               "synthetic": {
                                 "type": "boolean"
                               },
+                              "declaredAnnotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
                               "varArgs": {
                                 "type": "boolean"
                               },
@@ -4447,31 +4196,6 @@
                                 "items": {
                                   "type": "object",
                                   "properties": {
-                                    "annotatedOwnerType": {
-                                      "type": "object",
-                                      "properties": {
-                                        "annotations": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
-                                        },
-                                        "declaredAnnotations": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
-                                        },
-                                        "type": {
-                                          "type": "object",
-                                          "properties": {
-                                            "typeName": {
-                                              "type": "string"
-                                            }
-                                          }
-                                        }
-                                      }
-                                    },
                                     "annotations": {
                                       "type": "array",
                                       "items": {
@@ -4585,31 +4309,6 @@
                                 "items": {
                                   "type": "object",
                                   "properties": {
-                                    "annotatedOwnerType": {
-                                      "type": "object",
-                                      "properties": {
-                                        "annotations": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
-                                        },
-                                        "declaredAnnotations": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
-                                        },
-                                        "type": {
-                                          "type": "object",
-                                          "properties": {
-                                            "typeName": {
-                                              "type": "string"
-                                            }
-                                          }
-                                        }
-                                      }
-                                    },
                                     "annotations": {
                                       "type": "array",
                                       "items": {
@@ -4651,249 +4350,6 @@
                         }
                       }
                     },
-                    "declaredAnnotations": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "modifiers": {
-                      "type": "integer",
-                      "format": "int32"
-                    },
-                    "typeParameters": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "annotatedBounds": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "annotatedOwnerType": {
-                                  "type": "object",
-                                  "properties": {
-                                    "annotations": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
-                                    },
-                                    "declaredAnnotations": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
-                                    },
-                                    "type": {
-                                      "type": "object",
-                                      "properties": {
-                                        "typeName": {
-                                          "type": "string"
-                                        }
-                                      }
-                                    }
-                                  }
-                                },
-                                "annotations": {
-                                  "type": "array",
-                                  "items": {
-                                    "type": "object"
-                                  }
-                                },
-                                "declaredAnnotations": {
-                                  "type": "array",
-                                  "items": {
-                                    "type": "object"
-                                  }
-                                },
-                                "type": {
-                                  "type": "object",
-                                  "properties": {
-                                    "typeName": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "bounds": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "typeName": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
-                          "typeName": {
-                            "type": "string"
-                          },
-                          "annotations": {
-                            "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
-                          },
-                          "declaredAnnotations": {
-                            "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "synthetic": {
-                      "type": "boolean"
-                    },
-                    "accessible": {
-                      "type": "boolean",
-                      "deprecated": true
-                    },
-                    "varArgs": {
-                      "type": "boolean"
-                    },
-                    "parameterCount": {
-                      "type": "integer",
-                      "format": "int32"
-                    },
-                    "parameterAnnotations": {
-                      "type": "array",
-                      "items": {
-                        "type": "array",
-                        "items": {
-                          "type": "object"
-                        }
-                      }
-                    },
-                    "genericParameterTypes": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "typeName": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    },
-                    "genericExceptionTypes": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "typeName": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    },
-                    "default": {
-                      "type": "boolean"
-                    },
-                    "genericReturnType": {
-                      "type": "object",
-                      "properties": {
-                        "typeName": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "bridge": {
-                      "type": "boolean"
-                    },
-                    "defaultValue": {
-                      "type": "object"
-                    },
-                    "annotatedReturnType": {
-                      "type": "object",
-                      "properties": {
-                        "annotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "declaredAnnotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "type": {
-                          "type": "object",
-                          "properties": {
-                            "typeName": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "annotatedParameterTypes": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "annotatedOwnerType": {
-                            "type": "object",
-                            "properties": {
-                              "annotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "declaredAnnotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "type": {
-                                "type": "object",
-                                "properties": {
-                                  "typeName": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "annotations": {
-                            "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
-                          },
-                          "declaredAnnotations": {
-                            "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
-                          },
-                          "type": {
-                            "type": "object",
-                            "properties": {
-                              "typeName": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
                     "annotatedReceiverType": {
                       "type": "object",
                       "properties": {
@@ -4924,31 +4380,6 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "annotatedOwnerType": {
-                            "type": "object",
-                            "properties": {
-                              "annotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "declaredAnnotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "type": {
-                                "type": "object",
-                                "properties": {
-                                  "typeName": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            }
-                          },
                           "annotations": {
                             "type": "array",
                             "items": {
@@ -4983,6 +4414,199 @@
                 "writeMethod": {
                   "type": "object",
                   "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "modifiers": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "typeParameters": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "bounds": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "typeName": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "annotatedBounds": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "annotations": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object"
+                                  }
+                                },
+                                "declaredAnnotations": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object"
+                                  }
+                                },
+                                "type": {
+                                  "type": "object",
+                                  "properties": {
+                                    "typeName": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "typeName": {
+                            "type": "string"
+                          },
+                          "annotations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          },
+                          "declaredAnnotations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "synthetic": {
+                      "type": "boolean"
+                    },
+                    "declaredAnnotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "accessible": {
+                      "type": "boolean",
+                      "deprecated": true
+                    },
+                    "varArgs": {
+                      "type": "boolean"
+                    },
+                    "parameterCount": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "parameterAnnotations": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    },
+                    "genericParameterTypes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "typeName": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "genericExceptionTypes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "typeName": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "default": {
+                      "type": "boolean"
+                    },
+                    "genericReturnType": {
+                      "type": "object",
+                      "properties": {
+                        "typeName": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "bridge": {
+                      "type": "boolean"
+                    },
+                    "defaultValue": {
+                      "type": "object"
+                    },
+                    "annotatedReturnType": {
+                      "type": "object",
+                      "properties": {
+                        "annotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "declaredAnnotations": {
+                          "type": "array",
+                          "items": {
+                            "type": "object"
+                          }
+                        },
+                        "type": {
+                          "type": "object",
+                          "properties": {
+                            "typeName": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "annotatedParameterTypes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "annotations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          },
+                          "declaredAnnotations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object"
+                            }
+                          },
+                          "type": {
+                            "type": "object",
+                            "properties": {
+                              "typeName": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "parameters": {
                       "type": "array",
                       "items": {
@@ -4995,16 +4619,16 @@
                             "type": "integer",
                             "format": "int32"
                           },
-                          "declaredAnnotations": {
+                          "synthetic": {
+                            "type": "boolean"
+                          },
+                          "annotations": {
                             "type": "array",
                             "items": {
                               "type": "object"
                             }
                           },
-                          "synthetic": {
-                            "type": "boolean"
-                          },
-                          "annotations": {
+                          "declaredAnnotations": {
                             "type": "array",
                             "items": {
                               "type": "object"
@@ -5052,12 +4676,6 @@
                           "declaringExecutable": {
                             "type": "object",
                             "properties": {
-                              "declaredAnnotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
                               "name": {
                                 "type": "string"
                               },
@@ -5070,6 +4688,20 @@
                                 "items": {
                                   "type": "object",
                                   "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "bounds": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "typeName": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      }
+                                    },
                                     "genericDeclaration": {
                                       "type": "object"
                                     },
@@ -5078,31 +4710,6 @@
                                       "items": {
                                         "type": "object",
                                         "properties": {
-                                          "annotatedOwnerType": {
-                                            "type": "object",
-                                            "properties": {
-                                              "annotations": {
-                                                "type": "array",
-                                                "items": {
-                                                  "type": "object"
-                                                }
-                                              },
-                                              "declaredAnnotations": {
-                                                "type": "array",
-                                                "items": {
-                                                  "type": "object"
-                                                }
-                                              },
-                                              "type": {
-                                                "type": "object",
-                                                "properties": {
-                                                  "typeName": {
-                                                    "type": "string"
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          },
                                           "annotations": {
                                             "type": "array",
                                             "items": {
@@ -5122,20 +4729,6 @@
                                                 "type": "string"
                                               }
                                             }
-                                          }
-                                        }
-                                      }
-                                    },
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "bounds": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object",
-                                        "properties": {
-                                          "typeName": {
-                                            "type": "string"
                                           }
                                         }
                                       }
@@ -5161,6 +4754,12 @@
                               "synthetic": {
                                 "type": "boolean"
                               },
+                              "declaredAnnotations": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object"
+                                }
+                              },
                               "varArgs": {
                                 "type": "boolean"
                               },
@@ -5169,31 +4768,6 @@
                                 "items": {
                                   "type": "object",
                                   "properties": {
-                                    "annotatedOwnerType": {
-                                      "type": "object",
-                                      "properties": {
-                                        "annotations": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
-                                        },
-                                        "declaredAnnotations": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
-                                        },
-                                        "type": {
-                                          "type": "object",
-                                          "properties": {
-                                            "typeName": {
-                                              "type": "string"
-                                            }
-                                          }
-                                        }
-                                      }
-                                    },
                                     "annotations": {
                                       "type": "array",
                                       "items": {
@@ -5307,31 +4881,6 @@
                                 "items": {
                                   "type": "object",
                                   "properties": {
-                                    "annotatedOwnerType": {
-                                      "type": "object",
-                                      "properties": {
-                                        "annotations": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
-                                        },
-                                        "declaredAnnotations": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object"
-                                          }
-                                        },
-                                        "type": {
-                                          "type": "object",
-                                          "properties": {
-                                            "typeName": {
-                                              "type": "string"
-                                            }
-                                          }
-                                        }
-                                      }
-                                    },
                                     "annotations": {
                                       "type": "array",
                                       "items": {
@@ -5373,249 +4922,6 @@
                         }
                       }
                     },
-                    "declaredAnnotations": {
-                      "type": "array",
-                      "items": {
-                        "type": "object"
-                      }
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "modifiers": {
-                      "type": "integer",
-                      "format": "int32"
-                    },
-                    "typeParameters": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "annotatedBounds": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "annotatedOwnerType": {
-                                  "type": "object",
-                                  "properties": {
-                                    "annotations": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
-                                    },
-                                    "declaredAnnotations": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object"
-                                      }
-                                    },
-                                    "type": {
-                                      "type": "object",
-                                      "properties": {
-                                        "typeName": {
-                                          "type": "string"
-                                        }
-                                      }
-                                    }
-                                  }
-                                },
-                                "annotations": {
-                                  "type": "array",
-                                  "items": {
-                                    "type": "object"
-                                  }
-                                },
-                                "declaredAnnotations": {
-                                  "type": "array",
-                                  "items": {
-                                    "type": "object"
-                                  }
-                                },
-                                "type": {
-                                  "type": "object",
-                                  "properties": {
-                                    "typeName": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "bounds": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "typeName": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
-                          "typeName": {
-                            "type": "string"
-                          },
-                          "annotations": {
-                            "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
-                          },
-                          "declaredAnnotations": {
-                            "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "synthetic": {
-                      "type": "boolean"
-                    },
-                    "accessible": {
-                      "type": "boolean",
-                      "deprecated": true
-                    },
-                    "varArgs": {
-                      "type": "boolean"
-                    },
-                    "parameterCount": {
-                      "type": "integer",
-                      "format": "int32"
-                    },
-                    "parameterAnnotations": {
-                      "type": "array",
-                      "items": {
-                        "type": "array",
-                        "items": {
-                          "type": "object"
-                        }
-                      }
-                    },
-                    "genericParameterTypes": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "typeName": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    },
-                    "genericExceptionTypes": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "typeName": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    },
-                    "default": {
-                      "type": "boolean"
-                    },
-                    "genericReturnType": {
-                      "type": "object",
-                      "properties": {
-                        "typeName": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "bridge": {
-                      "type": "boolean"
-                    },
-                    "defaultValue": {
-                      "type": "object"
-                    },
-                    "annotatedReturnType": {
-                      "type": "object",
-                      "properties": {
-                        "annotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "declaredAnnotations": {
-                          "type": "array",
-                          "items": {
-                            "type": "object"
-                          }
-                        },
-                        "type": {
-                          "type": "object",
-                          "properties": {
-                            "typeName": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "annotatedParameterTypes": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "annotatedOwnerType": {
-                            "type": "object",
-                            "properties": {
-                              "annotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "declaredAnnotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "type": {
-                                "type": "object",
-                                "properties": {
-                                  "typeName": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "annotations": {
-                            "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
-                          },
-                          "declaredAnnotations": {
-                            "type": "array",
-                            "items": {
-                              "type": "object"
-                            }
-                          },
-                          "type": {
-                            "type": "object",
-                            "properties": {
-                              "typeName": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
                     "annotatedReceiverType": {
                       "type": "object",
                       "properties": {
@@ -5646,31 +4952,6 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "annotatedOwnerType": {
-                            "type": "object",
-                            "properties": {
-                              "annotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "declaredAnnotations": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object"
-                                }
-                              },
-                              "type": {
-                                "type": "object",
-                                "properties": {
-                                  "typeName": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            }
-                          },
                           "annotations": {
                             "type": "array",
                             "items": {
@@ -5705,8 +4986,8 @@
               }
             }
           },
-          "groovyObject": {
-            "type": "boolean"
+          "classInfo": {
+            "$ref": "#/components/schemas/ClassInfo"
           }
         }
       },
@@ -5735,12 +5016,6 @@
               "type": "object"
             }
           },
-          "annotations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AnnotationNode"
-            }
-          },
           "declaringClass": {
             "$ref": "#/components/schemas/ClassNode"
           },
@@ -5753,12 +5028,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -5870,12 +5145,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -5924,6 +5199,12 @@
           },
           "lowerBound": {
             "$ref": "#/components/schemas/ClassNode"
+          },
+          "upperBounds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
           },
           "placeholder": {
             "type": "boolean"
@@ -6397,12 +5678,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -6461,6 +5742,12 @@
           },
           "syntheticPublic": {
             "type": "boolean"
+          },
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
           },
           "methods": {
             "type": "array",
@@ -6600,6 +5887,25 @@
               "$ref": "#/components/schemas/Statement"
             }
           },
+          "allInterfaces": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
+          },
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
           "genericsPlaceHolder": {
             "type": "boolean"
           },
@@ -6633,6 +5939,12 @@
           "derivedFromGroovyObject": {
             "type": "boolean"
           },
+          "unresolvedInterfaces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
+          },
           "nameWithoutPackage": {
             "type": "string"
           },
@@ -6646,34 +5958,15 @@
           "annotationDefinition": {
             "type": "boolean"
           },
-          "abstractMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "allInterfaces": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -6726,14 +6019,14 @@
       "MetaClassRegistry": {
         "type": "object",
         "properties": {
+          "metaClassCreationHandler": {
+            "$ref": "#/components/schemas/MetaClassCreationHandle"
+          },
           "metaClassRegistryChangeEventListeners": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MetaClassRegistryChangeEventListener"
             }
-          },
-          "metaClassCreationHandler": {
-            "$ref": "#/components/schemas/MetaClassCreationHandle"
           },
           "metaClassCreationHandle": {
             "$ref": "#/components/schemas/MetaClassCreationHandle"
@@ -6881,6 +6174,12 @@
           "variableScope": {
             "$ref": "#/components/schemas/VariableScope"
           },
+          "exceptions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
+          },
           "genericsTypes": {
             "type": "array",
             "items": {
@@ -6939,12 +6238,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -7003,6 +6302,12 @@
           },
           "syntheticPublic": {
             "type": "boolean"
+          },
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
           },
           "methods": {
             "type": "array",
@@ -7130,6 +6435,25 @@
               "$ref": "#/components/schemas/Statement"
             }
           },
+          "allInterfaces": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
+          },
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
           "genericsPlaceHolder": {
             "type": "boolean"
           },
@@ -7163,6 +6487,12 @@
           "derivedFromGroovyObject": {
             "type": "boolean"
           },
+          "unresolvedInterfaces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
+          },
           "nameWithoutPackage": {
             "type": "string"
           },
@@ -7176,37 +6506,18 @@
           "annotationDefinition": {
             "type": "boolean"
           },
-          "abstractMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
           "outerClass": {
             "$ref": "#/components/schemas/ClassNode"
-          },
-          "allInterfaces": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -7286,9 +6597,6 @@
           "description": {
             "type": "string"
           },
-          "context": {
-            "$ref": "#/components/schemas/SourceUnit"
-          },
           "importsResolved": {
             "type": "boolean",
             "writeOnly": true
@@ -7299,14 +6607,17 @@
           "statementBlock": {
             "$ref": "#/components/schemas/BlockStatement"
           },
-          "packageName": {
-            "type": "string"
-          },
           "empty": {
             "type": "boolean"
           },
+          "packageName": {
+            "type": "string"
+          },
           "package": {
             "$ref": "#/components/schemas/PackageNode"
+          },
+          "context": {
+            "$ref": "#/components/schemas/SourceUnit"
           },
           "scriptBaseClassFromConfig": {
             "$ref": "#/components/schemas/ClassNode"
@@ -7374,12 +6685,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -7460,12 +6771,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -7548,9 +6859,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "type": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
           "name": {
             "type": "string"
           },
@@ -7560,20 +6868,23 @@
           "public": {
             "type": "boolean"
           },
+          "type": {
+            "$ref": "#/components/schemas/ClassNode"
+          },
           "private": {
             "type": "boolean"
-          },
-          "getterNameOrDefault": {
-            "type": "string"
           },
           "setterNameOrDefault": {
             "type": "string"
           },
-          "dynamicTyped": {
-            "type": "boolean"
+          "getterNameOrDefault": {
+            "type": "string"
           },
           "initialExpression": {
             "$ref": "#/components/schemas/Expression"
+          },
+          "dynamicTyped": {
+            "type": "boolean"
           },
           "inStaticContext": {
             "type": "boolean"
@@ -7588,12 +6899,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -7612,12 +6923,12 @@
       "ReaderSource": {
         "type": "object",
         "properties": {
+          "reader": {
+            "type": "object"
+          },
           "uri": {
             "type": "string",
             "format": "uri"
-          },
-          "reader": {
-            "type": "object"
           }
         }
       },
@@ -7667,12 +6978,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -7700,9 +7011,6 @@
           "anExpression": {
             "type": "boolean"
           },
-          "description": {
-            "type": "string"
-          },
           "type": {
             "type": "integer",
             "format": "int32"
@@ -7711,11 +7019,14 @@
             "type": "integer",
             "format": "int32"
           },
+          "rootText": {
+            "type": "string"
+          },
           "startColumn": {
             "type": "integer",
             "format": "int32"
           },
-          "rootText": {
+          "description": {
             "type": "string"
           },
           "meaning": {
@@ -7840,14 +7151,14 @@
           "rootText": {
             "type": "string"
           },
-          "description": {
-            "type": "string"
-          },
           "empty": {
             "type": "boolean"
           },
           "anExpression": {
             "type": "boolean"
+          },
+          "description": {
+            "type": "string"
           }
         }
       },
@@ -7864,11 +7175,11 @@
           "type": {
             "$ref": "#/components/schemas/ClassNode"
           },
-          "dynamicTyped": {
-            "type": "boolean"
-          },
           "initialExpression": {
             "$ref": "#/components/schemas/Expression"
+          },
+          "dynamicTyped": {
+            "type": "boolean"
           },
           "inStaticContext": {
             "type": "boolean"
