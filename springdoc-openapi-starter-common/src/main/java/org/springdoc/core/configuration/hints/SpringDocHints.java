@@ -79,6 +79,7 @@ import org.springdoc.core.properties.SpringDocConfigProperties.ModelConverters;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
+import org.springframework.core.MethodParameter;
 
 /**
  * The type Spring doc hints.
@@ -187,7 +188,8 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 		hints.reflection().registerType(org.springdoc.core.utils.Constants.class, hint -> hint.withMembers(MemberCategory.DECLARED_FIELDS));
 		hints.resources().registerPattern(SpringDocUIConfiguration.SPRINGDOC_CONFIG_PROPERTIES)
 				.registerResourceBundle("sun.util.resources.LocaleNames");
+		hints.reflection().registerField(FieldUtils.getDeclaredField(MethodParameter.class, "containingClass", true));
+		hints.reflection().registerField(FieldUtils.getDeclaredField(MethodParameter.class, "containingClass", true));
 	}
 
 }
-
