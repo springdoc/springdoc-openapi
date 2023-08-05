@@ -243,7 +243,7 @@ public final class Constants {
 	/**
 	 * The constant GROUP_NAME_NOT_NULL.
 	 */
-	public static final String GROUP_NAME_NOT_NULL = "Group name can not be null";
+	public static final String GROUP_NAME_NOT_NULL_OR_EMPTY = "Group name can not be null or empty";
 
 	/**
 	 * The constant GET_METHOD.
