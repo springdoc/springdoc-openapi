@@ -17,27 +17,6 @@
     }
   ],
   "paths": {
-    "/": {
-      "get": {
-        "tags": [
-          "Demo"
-        ],
-        "summary": "This API will return a random greeting.",
-        "operationId": "sayHello",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Greeting"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/test": {
       "get": {
         "tags": [
@@ -45,8 +24,8 @@
         ],
         "operationId": "sayHello2",
         "responses": {
-          "400": {
-            "description": "invalid input, object invalid",
+          "201": {
+            "description": "item created",
             "content": {
               "*/*": {
                 "schema": {
@@ -55,8 +34,8 @@
               }
             }
           },
-          "201": {
-            "description": "item created",
+          "400": {
+            "description": "invalid input, object invalid",
             "content": {
               "*/*": {
                 "schema": {
@@ -69,6 +48,27 @@
             "description": "an existing item already exists",
             "content": {
               "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Greeting"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "Demo"
+        ],
+        "summary": "This API will return a random greeting.",
+        "operationId": "sayHello_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Greeting"
                 }

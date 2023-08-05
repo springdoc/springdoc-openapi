@@ -11,29 +11,35 @@
     }
   ],
   "paths": {
-    "/test/{path}": {
-      "get": {
+    "/": {
+      "post": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "get",
-        "parameters": [
-          {
-            "name": "path",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "operationId": "hello_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object"
+                }
+              }
             }
-          }
-        ],
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object"
+                  }
                 }
               }
             }
@@ -65,37 +71,6 @@
             "schema": {
               "type": "string",
               "example": "something"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/test1": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "operationId": "test1",
-        "parameters": [
-          {
-            "name": "test_header",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "rherherherherh"
             }
           }
         ],
@@ -152,35 +127,60 @@
         }
       }
     },
-    "/": {
-      "post": {
+    "/test1": {
+      "get": {
         "tags": [
           "hello-controller"
         ],
-        "operationId": "hello",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "additionalProperties": {
-                  "type": "object"
-                }
-              }
+        "operationId": "test1",
+        "parameters": [
+          {
+            "name": "test_header",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "rherherherherh"
             }
-          },
-          "required": true
-        },
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "object"
-                  }
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/{path}": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }

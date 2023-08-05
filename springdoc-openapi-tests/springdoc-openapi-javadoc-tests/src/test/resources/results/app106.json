@@ -24,7 +24,7 @@
         ],
         "summary": "find-articles",
         "description": "Find articles response entity.",
-        "operationId": "findArticles",
+        "operationId": "findArticles_1",
         "parameters": [
           {
             "name": "If-Modified-Since",

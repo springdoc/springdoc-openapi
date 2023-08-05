@@ -16,7 +16,7 @@
         "tags": [
           "specific-controller"
         ],
-        "operationId": "get",
+        "operationId": "get_1",
         "parameters": [
           {
             "name": "param",

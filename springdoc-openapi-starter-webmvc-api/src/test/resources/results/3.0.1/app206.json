@@ -16,7 +16,7 @@
         "tags": [
           "required-mode-controller"
         ],
-        "operationId": "index",
+        "operationId": "index_1",
         "parameters": [
           {
             "name": "id",

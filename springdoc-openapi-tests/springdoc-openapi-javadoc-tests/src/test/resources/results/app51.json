@@ -24,7 +24,7 @@
         ],
         "summary": "Hello response entity.",
         "description": "Hello response entity.",
-        "operationId": "hello",
+        "operationId": "hello_1",
         "requestBody": {
           "description": "the map",
           "content": {
@@ -49,39 +49,6 @@
                   "additionalProperties": {
                     "type": "object"
                   }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/test/{path}": {
-      "get": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "Get string.",
-        "description": "Get string.",
-        "operationId": "get",
-        "parameters": [
-          {
-            "name": "path",
-            "in": "path",
-            "description": "the path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "the string",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
                 }
               }
             }
@@ -190,6 +157,39 @@
             "schema": {
               "type": "string",
               "example": "rherherherherh"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the string",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/{path}": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Get string.",
+        "description": "Get string.",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "description": "the path",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
         ],
