@@ -16,7 +16,7 @@
         "tags": [
           "post-controller"
         ],
-        "operationId": "getAll",
+        "operationId": "getAll_1",
         "parameters": [
           {
             "name": "pageable",

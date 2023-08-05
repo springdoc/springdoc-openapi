@@ -11,42 +11,6 @@
     }
   ],
   "paths": {
-    "/": {
-      "post": {
-        "tags": [
-          "hello-controller"
-        ],
-        "summary": "This is a test message",
-        "operationId": "test",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "required": [
-                  "intValue",
-                  "strValue"
-                ],
-                "type": "object",
-                "properties": {
-                  "strValue": {
-                    "type": "string"
-                  },
-                  "intValue": {
-                    "type": "integer",
-                    "format": "int32"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/add": {
       "post": {
         "tags": [
@@ -102,6 +66,42 @@
                   },
                   "type": {
                     "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "This is a test message",
+        "operationId": "test_1",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "intValue",
+                  "strValue"
+                ],
+                "type": "object",
+                "properties": {
+                  "strValue": {
+                    "type": "string"
+                  },
+                  "intValue": {
+                    "type": "integer",
+                    "format": "int32"
                   }
                 }
               }

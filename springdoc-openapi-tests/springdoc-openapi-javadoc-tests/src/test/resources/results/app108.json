@@ -24,7 +24,7 @@
         ],
         "summary": "Update action result.",
         "description": "Update action result.",
-        "operationId": "update",
+        "operationId": "update_1",
         "parameters": [
           {
             "name": "toto",

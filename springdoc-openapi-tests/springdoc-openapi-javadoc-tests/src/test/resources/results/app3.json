@@ -24,7 +24,7 @@
         ],
         "summary": "Echo playing card.",
         "description": "Echo playing card.",
-        "operationId": "echo",
+        "operationId": "echo_1",
         "parameters": [
           {
             "name": "toto",

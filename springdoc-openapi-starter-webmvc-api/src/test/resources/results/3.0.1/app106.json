@@ -17,7 +17,7 @@
           "hello-controller"
         ],
         "summary": "find-articles",
-        "operationId": "findArticles",
+        "operationId": "findArticles_1",
         "parameters": [
           {
             "name": "If-Modified-Since",
