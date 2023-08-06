@@ -2,7 +2,7 @@
 	<parent>
 		<artifactId>springdoc-openapi-tests</artifactId>
 		<groupId>org.springdoc</groupId>
-		<version>2.1.1-SNAPSHOT</version>
+		<version>2.2.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>springdoc-openapi-kotlin-tests</artifactId>
