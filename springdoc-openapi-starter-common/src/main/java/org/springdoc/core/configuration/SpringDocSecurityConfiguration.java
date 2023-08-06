@@ -41,6 +41,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.configuration.hints.SpringDocSecurityHints;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 
@@ -52,6 +53,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -79,6 +81,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 @ConditionalOnClass(SecurityFilterChain.class)
 @ConditionalOnWebApplication
 @ConditionalOnBean(SpringDocConfiguration.class)
+@ImportRuntimeHints(SpringDocSecurityHints.class)
 public class SpringDocSecurityConfiguration {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpringDocSecurityConfiguration.class);
