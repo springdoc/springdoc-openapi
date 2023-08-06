@@ -40,6 +40,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -88,6 +91,7 @@ import static org.springdoc.core.utils.SpringDocAnnotationsUtils.mergeSchema;
 
 /**
  * The type Generic response builder.
+ *
  * @author bnasslahsen
  */
 public class GenericResponseService {
@@ -126,24 +130,30 @@ public class GenericResponseService {
 	/**
 	 * The Controller advice infos.
 	 */
-	private final List<ControllerAdviceInfo> controllerAdviceInfos = new ArrayList<>();
+	private final List<ControllerAdviceInfo> controllerAdviceInfos = new CopyOnWriteArrayList<>();
 
 	/**
 	 * The Controller infos.
 	 */
-	private final List<ControllerAdviceInfo> localExceptionHandlers = new ArrayList<>();
+	private final List<ControllerAdviceInfo> localExceptionHandlers = new CopyOnWriteArrayList<>();
+
+	/**
+	 * The Reentrant lock.
+	 */
+	private final Lock reentrantLock = new ReentrantLock();
 
 	/**
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericResponseService.class);
+
 	/**
 	 * Instantiates a new Generic response builder.
 	 *
-	 * @param operationService the operation builder
-	 * @param returnTypeParsers the return type parsers
+	 * @param operationService          the operation builder
+	 * @param returnTypeParsers         the return type parsers
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param propertyResolverUtils the property resolver utils
+	 * @param propertyResolverUtils     the property resolver utils
 	 */
 	public GenericResponseService(OperationService operationService, List<ReturnTypeParser> returnTypeParsers,
 			SpringDocConfigProperties springDocConfigProperties,
@@ -158,11 +168,11 @@ public class GenericResponseService {
 	/**
 	 * Build content from doc.
 	 *
-	 * @param components the components
-	 * @param apiResponsesOp the api responses op
-	 * @param methodAttributes the method attributes
+	 * @param components             the components
+	 * @param apiResponsesOp         the api responses op
+	 * @param methodAttributes       the method attributes
 	 * @param apiResponseAnnotations the api response annotations
-	 * @param apiResponse the api response
+	 * @param apiResponse            the api response
 	 */
 	public static void buildContentFromDoc(Components components, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes,
@@ -199,7 +209,7 @@ public class GenericResponseService {
 	/**
 	 * Sets description.
 	 *
-	 * @param httpCode the http code
+	 * @param httpCode    the http code
 	 * @param apiResponse the api response
 	 */
 	public static void setDescription(String httpCode, ApiResponse apiResponse) {
@@ -224,9 +234,9 @@ public class GenericResponseService {
 	/**
 	 * Build api responses.
 	 *
-	 * @param components the components
-	 * @param handlerMethod the handler method
-	 * @param operation the operation
+	 * @param components       the components
+	 * @param handlerMethod    the handler method
+	 * @param operation        the operation
 	 * @param methodAttributes the method attributes
 	 * @return the api responses
 	 */
@@ -252,7 +262,7 @@ public class GenericResponseService {
 	 * Filters the generic API responses by the declared exceptions.
 	 * If Javadoc comment found for the declaration than it overrides the default description.
 	 *
-	 * @param handlerMethod the method which can have exception declarations
+	 * @param handlerMethod      the method which can have exception declarations
 	 * @param genericMapResponse the default generic API responses
 	 * @return the filtered and enriched responses
 	 */
@@ -281,9 +291,9 @@ public class GenericResponseService {
 	/**
 	 * Build generic response.
 	 *
-	 * @param components the components
+	 * @param components           the components
 	 * @param findControllerAdvice the find controller advice
-	 * @param locale the locale
+	 * @param locale               the locale
 	 */
 	public void buildGenericResponse(Components components, Map<String, Object> findControllerAdvice, Locale locale) {
 		// ControllerAdvice
@@ -323,13 +333,11 @@ public class GenericResponseService {
 					apiResponses.forEach(controllerAdviceInfoApiResponseMap::put);
 				}
 			}
-			synchronized (this) {
-				if (AnnotatedElementUtils.hasAnnotation(objClz, ControllerAdvice.class)) {
-					controllerAdviceInfos.add(controllerAdviceInfo);
-				}
-				else {
-					localExceptionHandlers.add(controllerAdviceInfo);
-				}
+			if (AnnotatedElementUtils.hasAnnotation(objClz, ControllerAdvice.class)) {
+				controllerAdviceInfos.add(controllerAdviceInfo);
+			}
+			else {
+				localExceptionHandlers.add(controllerAdviceInfo);
 			}
 		}
 	}
@@ -349,9 +357,9 @@ public class GenericResponseService {
 	/**
 	 * Compute response from doc map.
 	 *
-	 * @param components the components
-	 * @param methodParameter the method parameter
-	 * @param apiResponsesOp the api responses op
+	 * @param components       the components
+	 * @param methodParameter  the method parameter
+	 * @param apiResponsesOp   the api responses op
 	 * @param methodAttributes the method attributes
 	 * @return the map
 	 */
@@ -385,9 +393,9 @@ public class GenericResponseService {
 	/**
 	 * Build generic api responses.
 	 *
-	 * @param components the components
-	 * @param methodParameter the method parameter
-	 * @param apiResponsesOp the api responses op
+	 * @param components       the components
+	 * @param methodParameter  the method parameter
+	 * @param apiResponsesOp   the api responses op
 	 * @param methodAttributes the method attributes
 	 */
 	private void buildGenericApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
@@ -415,9 +423,9 @@ public class GenericResponseService {
 	/**
 	 * Build api responses.
 	 *
-	 * @param components the components
-	 * @param methodParameter the method parameter
-	 * @param apiResponsesOp the api responses op
+	 * @param components       the components
+	 * @param methodParameter  the method parameter
+	 * @param apiResponsesOp   the api responses op
 	 * @param methodAttributes the method attributes
 	 */
 	private void buildApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
@@ -482,10 +490,10 @@ public class GenericResponseService {
 	/**
 	 * Build content content.
 	 *
-	 * @param components the components
+	 * @param components      the components
 	 * @param methodParameter the method parameter
-	 * @param methodProduces the method produces
-	 * @param jsonView the json view
+	 * @param methodProduces  the method produces
+	 * @param jsonView        the json view
 	 * @return the content
 	 */
 	private Content buildContent(Components components, MethodParameter methodParameter, String[] methodProduces, JsonView jsonView) {
@@ -496,11 +504,11 @@ public class GenericResponseService {
 	/**
 	 * Build content content.
 	 *
-	 * @param components the components
-	 * @param annotations the annotations
+	 * @param components     the components
+	 * @param annotations    the annotations
 	 * @param methodProduces the method produces
-	 * @param jsonView the json view
-	 * @param returnType the return type
+	 * @param jsonView       the json view
+	 * @param returnType     the return type
 	 * @return the content
 	 */
 	public Content buildContent(Components components, Annotation[] annotations, String[] methodProduces, JsonView jsonView, Type returnType) {
@@ -542,9 +550,9 @@ public class GenericResponseService {
 	/**
 	 * Calculate schema schema.
 	 *
-	 * @param components the components
-	 * @param returnType the return type
-	 * @param jsonView the json view
+	 * @param components  the components
+	 * @param returnType  the return type
+	 * @param jsonView    the json view
 	 * @param annotations the annotations
 	 * @return the schema
 	 */
@@ -558,8 +566,8 @@ public class GenericResponseService {
 	 * Sets content.
 	 *
 	 * @param methodProduces the method produces
-	 * @param content the content
-	 * @param mediaType the media type
+	 * @param content        the content
+	 * @param mediaType      the media type
 	 */
 	private void setContent(String[] methodProduces, Content content,
 			io.swagger.v3.oas.models.media.MediaType mediaType) {
@@ -569,13 +577,13 @@ public class GenericResponseService {
 	/**
 	 * Build api responses.
 	 *
-	 * @param components the components
-	 * @param methodParameter the method parameter
-	 * @param apiResponsesOp the api responses op
+	 * @param components       the components
+	 * @param methodParameter  the method parameter
+	 * @param apiResponsesOp   the api responses op
 	 * @param methodAttributes the method attributes
-	 * @param httpCode the http code
-	 * @param apiResponse the api response
-	 * @param isGeneric the is generic
+	 * @param httpCode         the http code
+	 * @param apiResponse      the api response
+	 * @param isGeneric        the is generic
 	 */
 	private void buildApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes, String httpCode, ApiResponse apiResponse, boolean isGeneric) {
@@ -630,8 +638,8 @@ public class GenericResponseService {
 	/**
 	 * Evaluate response status string.
 	 *
-	 * @param method the method
-	 * @param beanType the bean type
+	 * @param method    the method
+	 * @param beanType  the bean type
 	 * @param isGeneric the is generic
 	 * @return the string
 	 */
@@ -671,49 +679,55 @@ public class GenericResponseService {
 	 * @param beanType the bean type
 	 * @return the generic map response
 	 */
-	private synchronized Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
-		List<ControllerAdviceInfo> controllerAdviceInfosInThisBean = localExceptionHandlers.stream()
-				.filter(controllerInfo -> {
-					Class<?> objClz = controllerInfo.getControllerAdvice().getClass();
-					if (org.springframework.aop.support.AopUtils.isAopProxy(controllerInfo.getControllerAdvice()))
-						objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerInfo.getControllerAdvice());
-					return beanType.equals(objClz);
-				})
-				.collect(Collectors.toList());
-
-		Map<String, ApiResponse> genericApiResponseMap = controllerAdviceInfosInThisBean.stream()
-				.map(ControllerAdviceInfo::getApiResponseMap)
-				.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
-
-		List<ControllerAdviceInfo> controllerAdviceInfosNotInThisBean = controllerAdviceInfos.stream()
-				.filter(controllerAdviceInfo ->
-						new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
-				.filter(controllerAdviceInfo -> !beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
-				.toList();
-
-		for (ControllerAdviceInfo controllerAdviceInfo : controllerAdviceInfosNotInThisBean) {
-			controllerAdviceInfo.getApiResponseMap().forEach((key, apiResponse) -> {
-				if (!genericApiResponseMap.containsKey(key))
-					genericApiResponseMap.put(key, apiResponse);
-			});
-		}
-
-		LinkedHashMap<String, ApiResponse> genericApiResponsesClone;
+	private Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
+		reentrantLock.lock();
 		try {
-			ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
-			genericApiResponsesClone = objectMapper.readValue(objectMapper.writeValueAsString(genericApiResponseMap), ApiResponses.class);
-			return genericApiResponsesClone;
+			List<ControllerAdviceInfo> controllerAdviceInfosInThisBean = localExceptionHandlers.stream()
+					.filter(controllerInfo -> {
+						Class<?> objClz = controllerInfo.getControllerAdvice().getClass();
+						if (org.springframework.aop.support.AopUtils.isAopProxy(controllerInfo.getControllerAdvice()))
+							objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerInfo.getControllerAdvice());
+						return beanType.equals(objClz);
+					})
+					.collect(Collectors.toList());
+
+			Map<String, ApiResponse> genericApiResponseMap = controllerAdviceInfosInThisBean.stream()
+					.map(ControllerAdviceInfo::getApiResponseMap)
+					.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
+
+			List<ControllerAdviceInfo> controllerAdviceInfosNotInThisBean = controllerAdviceInfos.stream()
+					.filter(controllerAdviceInfo ->
+							new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
+					.filter(controllerAdviceInfo -> !beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
+					.toList();
+
+			for (ControllerAdviceInfo controllerAdviceInfo : controllerAdviceInfosNotInThisBean) {
+				controllerAdviceInfo.getApiResponseMap().forEach((key, apiResponse) -> {
+					if (!genericApiResponseMap.containsKey(key))
+						genericApiResponseMap.put(key, apiResponse);
+				});
+			}
+
+			LinkedHashMap<String, ApiResponse> genericApiResponsesClone;
+			try {
+				ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
+				genericApiResponsesClone = objectMapper.readValue(objectMapper.writeValueAsString(genericApiResponseMap), ApiResponses.class);
+				return genericApiResponsesClone;
+			}
+			catch (JsonProcessingException e) {
+				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+				return genericApiResponseMap;
+			}
 		}
-		catch (JsonProcessingException e) {
-			LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
-			return genericApiResponseMap;
+		finally {
+			reentrantLock.unlock();
 		}
 	}
 
 	/**
 	 * Is valid http code boolean.
 	 *
-	 * @param httpCode the http code
+	 * @param httpCode        the http code
 	 * @param methodParameter the method parameter
 	 * @return the boolean
 	 */
@@ -742,7 +756,7 @@ public class GenericResponseService {
 	/**
 	 * Is http code present boolean.
 	 *
-	 * @param httpCode the http code
+	 * @param httpCode    the http code
 	 * @param responseSet the response set
 	 * @return the boolean
 	 */
