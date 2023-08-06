@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.querydsl.core.types.Predicate;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.Components;
@@ -63,6 +64,7 @@ import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
+import org.springdoc.core.customizers.QuerydslPredicateOperationCustomizer;
 import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
@@ -110,6 +112,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -616,5 +619,30 @@ public class SpringDocConfiguration {
 				 routerOperationCustomizers,
 				 dataRestRouterOperationCustomizers,
 				 methodFilters, globalOpenApiCustomizers, globalOperationCustomizers, globalOpenApiMethodFilters);
+	}
+
+	/**
+	 * The type Querydsl provider.
+	 * @author bnasslashen
+	 */
+	@ConditionalOnClass(value = QuerydslBindingsFactory.class)
+	static class QuerydslProvider {
+
+		/**
+		 * Query dsl querydsl predicate operation customizer querydsl predicate operation customizer.
+		 *
+		 * @param querydslBindingsFactory the querydsl bindings factory
+		 * @return the querydsl predicate operation customizer
+		 */
+		@Bean
+		@ConditionalOnMissingBean
+		@Lazy(false)
+		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
+			if (querydslBindingsFactory.isPresent()) {
+				getConfig().addRequestWrapperToIgnore(Predicate.class);
+				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get());
+			}
+			return null;
+		}
 	}
 }
