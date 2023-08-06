@@ -86,8 +86,8 @@ import org.springframework.aot.hint.RuntimeHintsRegistrar;
  */
 public class SpringDocHints implements RuntimeHintsRegistrar {
 
-	//swagger-models
-	static Class[] swaggerModels = {
+	static Class[] typesToRegister = {
+			//swagger-models
 			io.swagger.v3.oas.models.security.SecurityScheme.Type.class,
 			io.swagger.v3.oas.models.security.SecurityScheme.In.class,
 			io.swagger.v3.oas.models.media.Encoding.class,
@@ -159,6 +159,12 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 			DateSchemaMixin.class,
 			ExampleMixin.class,
 			MediaTypeMixin.class,
+			//springdoc classes
+			org.springdoc.core.annotations.ParameterObject.class,
+			org.springdoc.core.converters.models.Pageable.class,
+			org.springdoc.core.extractor.DelegatingMethodParameter.class,
+			// spring
+			org.springframework.core.MethodParameter.class
 	};
 
 	@Override
@@ -174,7 +180,7 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 				.registerType(java.lang.module.Configuration.class, MemberCategory.INVOKE_DECLARED_METHODS)
 				.registerType(java.lang.module.ResolvedModule.class, MemberCategory.INVOKE_DECLARED_METHODS);
 		//swagger-models
-		Arrays.stream(swaggerModels).forEach(aClass ->
+		Arrays.stream(typesToRegister).forEach(aClass ->
 				hints.reflection().registerType(aClass,
 						hint -> hint.withMembers(
 								MemberCategory.DECLARED_FIELDS,
