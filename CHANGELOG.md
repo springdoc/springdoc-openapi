@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2023-08-06
+
+### Added
+
+- #2189 - Add support for swagger-ui.url property 
+- #2200 - Support schema.requiredMode() on ParameterObject
+- #2309 - Added function to preload by specifying locale 
+- #2332 - Group name cannot be null or empty
+- #2281 - Initial Virtual thread support
+
+### Changed
+
+- Upgrade spring-boot to 3.1.2
+- Upgrade swagger-core to 2.2.15
+- Upgrade swagger-ui to 5.2.0
+
+### Fixed
+
+- #2199 - Fix Schema get condition of ArraySchema. 
+- #2194 - Fix Swagger UI with provided spec 
+- #2213 - Using both generated and configured specs stoped working in 1.6.5 
+- #2222 - String Index Out of Bounce Exception Fix when deployed on Azure
+- #2243, #2235 - Fix StringIndexOutOfBoundsException when path is same webjar 
+- #2291 - Fix default-flat-param-object doesn't work when using http body 
+- #2310 - Change bean name of objectMapperProvider 
+- #2207 - swagger-initializer.js is sent endcoded in the JVM's default charset
+-  #2271, #2280 - Fix loop when response inherits generic class fixes
+- #2312 - Spec for @ParameterObject disappears if building native-images
+- #2326 - @QuerydslPredicate(root = X.class) annotation at Controller Method level not getting documented in Spring Boot 3
+
 ## [2.1.0] - 2023-04-01
 
 ### Added
