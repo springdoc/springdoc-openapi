@@ -27,7 +27,6 @@ import org.springdoc.core.configuration.oauth2.SpringDocOAuth2AuthorizationServe
 import org.springdoc.core.configuration.oauth2.SpringDocOAuth2Token;
 import org.springdoc.core.configuration.oauth2.SpringDocOAuth2TokenIntrospection;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
-import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

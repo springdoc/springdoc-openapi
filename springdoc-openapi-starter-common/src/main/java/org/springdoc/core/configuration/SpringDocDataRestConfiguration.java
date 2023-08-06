@@ -27,10 +27,8 @@ package org.springdoc.core.configuration;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.querydsl.core.types.Predicate;
 import org.springdoc.core.configuration.hints.SpringDocDataRestHints;
 import org.springdoc.core.converters.models.DefaultPageable;
-import org.springdoc.core.customizers.QuerydslPredicateOperationCustomizer;
 import org.springdoc.core.data.DataRestOperationService;
 import org.springdoc.core.data.DataRestRequestService;
 import org.springdoc.core.data.DataRestResponseService;
@@ -63,7 +61,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.context.PersistentEntities;
-import org.springframework.data.querydsl.binding.QuerydslBindingsFactory;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.mapping.ResourceMappings;
