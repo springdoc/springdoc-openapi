@@ -77,12 +77,18 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	private final QuerydslBindingsFactory querydslBindingsFactory;
 
 	/**
+	 * OpenAPI v3.1
+	 */
+	private final boolean openapi31;
+
+	/**
 	 * Instantiates a new Querydsl predicate operation customizer.
 	 *
 	 * @param querydslBindingsFactory the querydsl bindings factory
 	 */
-	public QuerydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory) {
+	public QuerydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory, boolean openapi31) {
 		this.querydslBindingsFactory = querydslBindingsFactory;
+		this.openapi31 = openapi31;
 	}
 
 	@Override
@@ -286,7 +292,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 				schema = primitiveType.createProperty();
 			}
 			else {
-				ResolvedSchema resolvedSchema = ModelConverters.getInstance()
+				ResolvedSchema resolvedSchema = ModelConverters.getInstance(this.openapi31)
 						.resolveAsResolvedSchema(
 								new io.swagger.v3.core.converter.AnnotatedType(type).resolveAsRef(true));
 				// could not resolve the schema or this schema references other schema
