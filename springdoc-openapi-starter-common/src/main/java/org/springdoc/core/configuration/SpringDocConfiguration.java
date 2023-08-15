@@ -74,6 +74,7 @@ import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.properties.SpringDocConfigProperties;
+import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.JavadocProvider;
@@ -297,8 +298,9 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@Lazy(false)
-	ModelConverterRegistrar modelConverterRegistrar(Optional<List<ModelConverter>> modelConverters) {
-		return new ModelConverterRegistrar(modelConverters.orElse(Collections.emptyList()));
+	ModelConverterRegistrar modelConverterRegistrar(Optional<List<ModelConverter>> modelConverters, SpringDocConfigProperties springDocConfigProperties) {
+		boolean openapi31 = OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion();
+		return new ModelConverterRegistrar(modelConverters.orElse(Collections.emptyList()), openapi31);
 	}
 
 	/**
@@ -637,10 +639,11 @@ public class SpringDocConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
+		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory, SpringDocConfigProperties springDocConfigProperties) {
 			if (querydslBindingsFactory.isPresent()) {
 				getConfig().addRequestWrapperToIgnore(Predicate.class);
-				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get());
+				boolean openapi31 = OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion();
+				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get(), openapi31);
 			}
 			return null;
 		}
