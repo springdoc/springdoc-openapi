@@ -161,7 +161,7 @@ public class DataRestRequestService {
 			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder, parameterDoc);
 			if (isParamToIgnore(methodParameter)) {
 				if (PersistentEntityResource.class.equals(methodParameter.getParameterType())) {
-					Schema<?> schema = SpringDocAnnotationsUtils.resolveSchemaFromType(domainType, openAPI.getComponents(), null, methodParameter.getParameterAnnotations());
+					Schema<?> schema = SpringDocAnnotationsUtils.resolveSchemaFromType(domainType, openAPI.getComponents(), null, methodParameter.getParameterAnnotations(), openAPI.getSpecVersion());
 					parameterInfo.setParameterModel(new Parameter().schema(schema));
 				}
 				else if (methodParameter.getParameterAnnotation(BackendId.class) != null) {

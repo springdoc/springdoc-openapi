@@ -36,7 +36,6 @@ import org.springdoc.core.data.DataRestRouterOperationService;
 import org.springdoc.core.data.DataRestTagsService;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
-import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.providers.DataRestHalProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringRepositoryRestResourceProvider;
@@ -233,9 +232,8 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		SpringDocDataRestUtils springDocDataRestUtils(LinkRelationProvider linkRelationProvider, RepositoryRestConfiguration repositoryRestConfiguration, SpringDocConfigProperties springDocConfigProperties) {
-			boolean openapi31 = OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion();
-			return new SpringDocDataRestUtils(linkRelationProvider, repositoryRestConfiguration, openapi31);
+		SpringDocDataRestUtils springDocDataRestUtils(LinkRelationProvider linkRelationProvider, RepositoryRestConfiguration repositoryRestConfiguration) {
+			return new SpringDocDataRestUtils(linkRelationProvider, repositoryRestConfiguration);
 		}
 	}
 
