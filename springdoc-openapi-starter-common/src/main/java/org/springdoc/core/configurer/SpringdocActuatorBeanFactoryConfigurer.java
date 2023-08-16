@@ -43,6 +43,7 @@ import static org.springdoc.core.utils.Constants.ALL_PATTERN;
 import static org.springdoc.core.utils.Constants.DEFAULT_GROUP_NAME;
 import static org.springdoc.core.utils.Constants.HEALTH_PATTERN;
 import static org.springdoc.core.utils.Constants.MANAGEMENT_ENDPOINTS_WEB;
+import static org.springdoc.core.utils.Constants.SPRINGDOC_PREFIX;
 
 /**
  * The type Springdoc bean factory configurer.
@@ -56,28 +57,24 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 	private final List<GroupedOpenApi> groupedOpenApis;
 
 	/**
-	 * The Spring doc config properties.
-	 */
-	private final SpringDocConfigProperties springDocConfigProperties;
-
-	/**
 	 * Instantiates a new Springdoc actuator bean factory configurer.
 	 *
 	 * @param groupedOpenApis           the grouped open apis
-	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public SpringdocActuatorBeanFactoryConfigurer(List<GroupedOpenApi> groupedOpenApis, SpringDocConfigProperties springDocConfigProperties) {
+	public SpringdocActuatorBeanFactoryConfigurer(List<GroupedOpenApi> groupedOpenApis) {
 		this.groupedOpenApis = groupedOpenApis;
-		this.springDocConfigProperties=springDocConfigProperties;
 	}
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		final BindResult<WebEndpointProperties> result = Binder.get(environment)
 				.bind(MANAGEMENT_ENDPOINTS_WEB, WebEndpointProperties.class);
-		if (result.isBound()) {
+		final BindResult<SpringDocConfigProperties> springDocConfigPropertiesBindResult = Binder.get(environment)
+				.bind(SPRINGDOC_PREFIX, SpringDocConfigProperties.class);
+		
+		if (result.isBound() && springDocConfigPropertiesBindResult.isBound()) {
 			WebEndpointProperties webEndpointProperties = result.get();
-
+			SpringDocConfigProperties springDocConfigProperties = springDocConfigPropertiesBindResult.get();
 			List<GroupedOpenApi> newGroups = new ArrayList<>();
 
 			ActuatorOpenApiCustomizer actuatorOpenApiCustomizer = new ActuatorOpenApiCustomizer(webEndpointProperties);
