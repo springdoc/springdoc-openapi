@@ -88,6 +88,12 @@ public class SpringDocDataRestUtils {
 	private final LinkRelationProvider linkRelationProvider;
 
 	/**
+	 * OpenAPI v3.1
+	 */
+	private final boolean openapi31;
+
+
+	/**
 	 * The Entity ino map.
 	 */
 	private final HashMap<String, EntityInfo> entityInoMap = new HashMap();
@@ -103,9 +109,10 @@ public class SpringDocDataRestUtils {
 	 * @param linkRelationProvider the link relation provider
 	 * @param repositoryRestConfiguration the repository rest configuration
 	 */
-	public SpringDocDataRestUtils(LinkRelationProvider linkRelationProvider, RepositoryRestConfiguration repositoryRestConfiguration) {
+	public SpringDocDataRestUtils(LinkRelationProvider linkRelationProvider, RepositoryRestConfiguration repositoryRestConfiguration, boolean openapi31) {
 		this.linkRelationProvider = linkRelationProvider;
 		this.repositoryRestConfiguration = repositoryRestConfiguration;
+		this.openapi31 = openapi31;
 	}
 
 	/**
@@ -205,7 +212,7 @@ public class SpringDocDataRestUtils {
 		schema.set$ref(newKey);
 		//create new schema
 		Class schemaImplementation = entityInoMap.get(className).getDomainType();
-		ResolvedSchema resolvedSchema = ModelConverters.getInstance().readAllAsResolvedSchema(new AnnotatedType().type(schemaImplementation));
+		ResolvedSchema resolvedSchema = ModelConverters.getInstance(openapi31).readAllAsResolvedSchema(new AnnotatedType().type(schemaImplementation));
 		Map<String, Schema> schemaMap;
 		if (resolvedSchema != null) {
 			schemaMap = resolvedSchema.referencedSchemas;
@@ -302,7 +309,7 @@ public class SpringDocDataRestUtils {
 	private Schema createNewResponseSchema(String className, Components components) {
 		Class schemaImplementation = entityInoMap.get(className).getDomainType();
 		Schema schemaObject = new Schema();
-		ResolvedSchema resolvedSchema = ModelConverters.getInstance().readAllAsResolvedSchema(new AnnotatedType().type(schemaImplementation));
+		ResolvedSchema resolvedSchema = ModelConverters.getInstance(openapi31).readAllAsResolvedSchema(new AnnotatedType().type(schemaImplementation));
 		Map<String, Schema> schemaMap;
 		if (resolvedSchema != null) {
 			schemaMap = resolvedSchema.referencedSchemas;
