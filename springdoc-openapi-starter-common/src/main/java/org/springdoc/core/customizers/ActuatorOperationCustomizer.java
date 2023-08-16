@@ -38,6 +38,7 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.properties.SpringDocConfigProperties;
 
 import org.springframework.boot.actuate.endpoint.OperationType;
 import org.springframework.boot.actuate.endpoint.annotation.AbstractDiscoveredOperation;
@@ -74,6 +75,21 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	 */
 	private static final Pattern pattern = Pattern.compile(".*'([^']*)'.*");
 
+	/**
+	 * The Spring doc config properties.
+	 */
+	private final SpringDocConfigProperties springDocConfigProperties;
+
+
+	/**
+	 * Instantiates a new Actuator operation customizer.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 */
+	public ActuatorOperationCustomizer(SpringDocConfigProperties springDocConfigProperties) {
+		this.springDocConfigProperties = springDocConfigProperties;
+	}
+
 	@Override
 	public Operation customize(Operation operation, HandlerMethod handlerMethod) {
 		if (operation.getTags() != null && operation.getTags().contains(getTag().getName())) {
@@ -90,7 +106,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 							for (OperationParameter operationParameter : operationMethod.getParameters()) {
 								Field parameterField = FieldUtils.getDeclaredField(operationParameter.getClass(), PARAMETER, true);
 								Parameter parameter = (Parameter) parameterField.get(operationParameter);
-								Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null);
+								Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null, springDocConfigProperties.isOpenapi31());
 								if (parameter.getAnnotation(Selector.class) == null) {
 									operation.setRequestBody(new RequestBody()
 											.content(new Content().addMediaType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE, new MediaType().schema(schema))));

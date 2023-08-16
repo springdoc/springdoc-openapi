@@ -30,6 +30,7 @@ import java.util.List;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springdoc.core.properties.SpringDocConfigProperties;
 
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
@@ -55,12 +56,19 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 	private final List<GroupedOpenApi> groupedOpenApis;
 
 	/**
+	 * The Spring doc config properties.
+	 */
+	private final SpringDocConfigProperties springDocConfigProperties;
+
+	/**
 	 * Instantiates a new Springdoc actuator bean factory configurer.
 	 *
-	 * @param groupedOpenApis the grouped open apis
+	 * @param groupedOpenApis           the grouped open apis
+	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public SpringdocActuatorBeanFactoryConfigurer(List<GroupedOpenApi> groupedOpenApis) {
+	public SpringdocActuatorBeanFactoryConfigurer(List<GroupedOpenApi> groupedOpenApis, SpringDocConfigProperties springDocConfigProperties) {
 		this.groupedOpenApis = groupedOpenApis;
+		this.springDocConfigProperties=springDocConfigProperties;
 	}
 
 	@Override
@@ -74,7 +82,7 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 
 			ActuatorOpenApiCustomizer actuatorOpenApiCustomizer = new ActuatorOpenApiCustomizer(webEndpointProperties);
 			beanFactory.registerSingleton("actuatorOpenApiCustomizer", actuatorOpenApiCustomizer);
-			ActuatorOperationCustomizer actuatorCustomizer = new ActuatorOperationCustomizer();
+			ActuatorOperationCustomizer actuatorCustomizer = new ActuatorOperationCustomizer(springDocConfigProperties);
 			beanFactory.registerSingleton("actuatorCustomizer", actuatorCustomizer);
 
 			GroupedOpenApi actuatorGroup = GroupedOpenApi.builder().group(ACTUATOR_DEFAULT_GROUP)

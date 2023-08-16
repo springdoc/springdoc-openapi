@@ -47,6 +47,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.properties.SpringDocConfigProperties;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
@@ -77,12 +78,20 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	private final QuerydslBindingsFactory querydslBindingsFactory;
 
 	/**
+	 * The Spring doc config properties.
+	 */
+	private final SpringDocConfigProperties springDocConfigProperties;
+
+	/**
 	 * Instantiates a new Querydsl predicate operation customizer.
 	 *
-	 * @param querydslBindingsFactory the querydsl bindings factory
+	 * @param querydslBindingsFactory   the querydsl bindings factory
+	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public QuerydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory) {
+	public QuerydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory, SpringDocConfigProperties springDocConfigProperties) {
 		this.querydslBindingsFactory = querydslBindingsFactory;
+		this.springDocConfigProperties= springDocConfigProperties;
+		
 	}
 
 	@Override
@@ -286,7 +295,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 				schema = primitiveType.createProperty();
 			}
 			else {
-				ResolvedSchema resolvedSchema = ModelConverters.getInstance()
+				ResolvedSchema resolvedSchema = ModelConverters.getInstance(springDocConfigProperties.isOpenapi31())
 						.resolveAsResolvedSchema(
 								new io.swagger.v3.core.converter.AnnotatedType(type).resolveAsRef(true));
 				// could not resolve the schema or this schema references other schema

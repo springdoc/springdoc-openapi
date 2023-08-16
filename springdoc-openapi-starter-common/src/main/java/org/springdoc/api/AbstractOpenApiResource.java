@@ -68,6 +68,7 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.SpecVersion;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -340,8 +341,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
 				Map<String, Object> findControllerAdvice = openAPIService.getControllerAdviceMap();
-				if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion())
+				if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion()){
 					openAPI.openapi(OpenApiVersion.OPENAPI_3_1.getVersion());
+					openAPI.specVersion(SpecVersion.V31);
+				}
 				if (springDocConfigProperties.isDefaultOverrideWithGenericResponse()) {
 					if (!CollectionUtils.isEmpty(mappingsMap))
 						findControllerAdvice.putAll(mappingsMap);

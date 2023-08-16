@@ -292,13 +292,14 @@ public class SpringDocConfiguration {
 	/**
 	 * Model converter registrar model converter registrar.
 	 *
-	 * @param modelConverters the model converters
+	 * @param modelConverters           the model converters
+	 * @param springDocConfigProperties the spring doc config properties
 	 * @return the model converter registrar
 	 */
 	@Bean
 	@Lazy(false)
-	ModelConverterRegistrar modelConverterRegistrar(Optional<List<ModelConverter>> modelConverters) {
-		return new ModelConverterRegistrar(modelConverters.orElse(Collections.emptyList()));
+	ModelConverterRegistrar modelConverterRegistrar(Optional<List<ModelConverter>> modelConverters, SpringDocConfigProperties springDocConfigProperties) {
+		return new ModelConverterRegistrar(modelConverters.orElse(Collections.emptyList()), springDocConfigProperties);
 	}
 
 	/**
@@ -456,27 +457,29 @@ public class SpringDocConfiguration {
 		/**
 		 * Springdoc bean factory post processor 3 bean factory post processor.
 		 *
-		 * @param groupedOpenApis the grouped open apis
+		 * @param groupedOpenApis           the grouped open apis
+		 * @param springDocConfigProperties the spring doc config properties
 		 * @return the bean factory post processor
 		 */
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 		@Conditional(MultipleOpenApiSupportCondition.class)
-		static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor3(List<GroupedOpenApi> groupedOpenApis) {
-			return new SpringdocActuatorBeanFactoryConfigurer(groupedOpenApis);
+		static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor3(List<GroupedOpenApi> groupedOpenApis, SpringDocConfigProperties springDocConfigProperties) {
+			return new SpringdocActuatorBeanFactoryConfigurer(groupedOpenApis, springDocConfigProperties);
 		}
 
 		/**
 		 * Actuator customizer operation customizer.
 		 *
+		 * @param springDocConfigProperties the spring doc config properties
 		 * @return the operation customizer
 		 */
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.SAME)
-		GlobalOperationCustomizer actuatorCustomizer() {
-			return new ActuatorOperationCustomizer();
+		GlobalOperationCustomizer actuatorCustomizer(SpringDocConfigProperties springDocConfigProperties) {
+			return new ActuatorOperationCustomizer(springDocConfigProperties);
 		}
 
 		/**
@@ -631,16 +634,18 @@ public class SpringDocConfiguration {
 		/**
 		 * Query dsl querydsl predicate operation customizer querydsl predicate operation customizer.
 		 *
-		 * @param querydslBindingsFactory the querydsl bindings factory
+		 * @param querydslBindingsFactory   the querydsl bindings factory
+		 * @param springDocConfigProperties the spring doc config properties
 		 * @return the querydsl predicate operation customizer
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
+		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory,
+				SpringDocConfigProperties springDocConfigProperties) {
 			if (querydslBindingsFactory.isPresent()) {
 				getConfig().addRequestWrapperToIgnore(Predicate.class);
-				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get());
+				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get(), springDocConfigProperties);
 			}
 			return null;
 		}

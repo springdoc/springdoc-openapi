@@ -59,7 +59,7 @@ public class OpenApiHateoasLinksCustomizer extends SpecFilter implements GlobalO
 
 	@Override
 	public void customise(OpenAPI openApi) {
-		ResolvedSchema resolvedLinkSchema = ModelConverters.getInstance()
+		ResolvedSchema resolvedLinkSchema = ModelConverters.getInstance(springDocConfigProperties.isOpenapi31())
 				.resolveAsResolvedSchema(new AnnotatedType(Link.class));
 		openApi
 				.schema("Link", resolvedLinkSchema.schema)

@@ -27,7 +27,9 @@ package org.springdoc.core.properties;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.v3.oas.models.SpecVersion;
 import org.springdoc.core.configuration.SpringDocConfiguration;
+import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.utils.Constants;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -1697,5 +1699,27 @@ public class SpringDocConfigProperties {
 	 */
 	public void setShowOauth2Endpoints(boolean showOauth2Endpoints) {
 		this.showOauth2Endpoints = showOauth2Endpoints;
+	}
+
+	/**
+	 * Gets spec version.
+	 *
+	 * @return the spec version
+	 */
+	public SpecVersion getSpecVersion() {
+		if (apiDocs.getVersion() == OpenApiVersion.OPENAPI_3_1)
+			return SpecVersion.V31;
+		return SpecVersion.V30;
+	}
+
+	/**
+	 * Is openapi 31 boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isOpenapi31() {
+		if (apiDocs.getVersion() == OpenApiVersion.OPENAPI_3_1)
+			return true;
+		return false;
 	}
 }

@@ -238,7 +238,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		OpenAPI calculatedOpenAPI = null;
 
 		if (openAPI == null) {
-			calculatedOpenAPI = new OpenAPI();
+			calculatedOpenAPI = new OpenAPI(springDocConfigProperties.getSpecVersion());
 			calculatedOpenAPI.setComponents(new Components());
 			calculatedOpenAPI.setPaths(new Paths());
 		}
@@ -546,11 +546,11 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef, Locale locale) {
 		// info
-		AnnotationsUtils.getInfo(apiDef.info()).map(info -> resolveProperties(info, locale)).ifPresent(openAPI::setInfo);
+		AnnotationsUtils.getInfo(apiDef.info(), propertyResolverUtils.isOpenapi31()).map(info -> resolveProperties(info, locale)).ifPresent(openAPI::setInfo);
 		// OpenApiDefinition security requirements
 		securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
 		// OpenApiDefinition external docs
-		AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs()).ifPresent(openAPI::setExternalDocs);
+		AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs(), propertyResolverUtils.isOpenapi31()).ifPresent(openAPI::setExternalDocs);
 		// OpenApiDefinition tags
 		AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
 		// OpenApiDefinition servers
@@ -562,7 +562,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		);
 		// OpenApiDefinition extensions
 		if (apiDef.extensions().length > 0) {
-			openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
+			openAPI.setExtensions(AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), apiDef.extensions()));
 		}
 	}
 
