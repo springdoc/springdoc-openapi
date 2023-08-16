@@ -293,7 +293,7 @@ public class GenericParameterService {
 			parameter.setAllowReserved(parameterDoc.allowReserved());
 
 		if (parameterDoc.content().length > 0) {
-			Optional<Content> optionalContent = AnnotationsUtils.getContent(parameterDoc.content(), null, null, null, components, jsonView);
+			Optional<Content> optionalContent = AnnotationsUtils.getContent(parameterDoc.content(), null, null, null, components, jsonView, propertyResolverUtils.isOpenapi31());
 			optionalContent.ifPresent(parameter::setContent);
 		}
 		else
@@ -321,7 +321,7 @@ public class GenericParameterService {
 		else {
 			Schema schema = null;
 			try {
-				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null, false, parameterDoc.schema().implementation(), components, jsonView).orElse(null);
+				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null, false, parameterDoc.schema().implementation(), components, jsonView, propertyResolverUtils.isOpenapi31()).orElse(null);
 				// Cast default value
 				if (schema != null && schema.getDefault() != null) {
 					PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
@@ -336,7 +336,7 @@ public class GenericParameterService {
 				LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
 			}
 			if (schema == null && parameterDoc.array() != null) {
-				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), parameterDoc.array(), true, parameterDoc.array().schema().implementation(), components, jsonView).orElse(null);
+				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), parameterDoc.array(), true, parameterDoc.array().schema().implementation(), components, jsonView, propertyResolverUtils.isOpenapi31()).orElse(null);
 				// default value not set by swagger-core for array !
 				if (schema != null) {
 					Object defaultValue = SpringDocAnnotationsUtils.resolveDefaultValue(parameterDoc.array().arraySchema().defaultValue(), objectMapperProvider.jsonMapper());
@@ -371,7 +371,7 @@ public class GenericParameterService {
 						type = springConvertedType;
 				}
 			}
-			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations());
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations(), propertyResolverUtils.getSpecVersion());
 		}
 		else
 			schemaN = parameterInfo.getParameterModel().getSchema();
@@ -464,7 +464,7 @@ public class GenericParameterService {
 	 */
 	private void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
 		if (parameterDoc.extensions().length > 0) {
-			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
+			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), parameterDoc.extensions());
 			extensionMap.forEach(parameter::addExtension);
 		}
 	}
@@ -753,5 +753,14 @@ public class GenericParameterService {
 			paramJavadocDescription = fieldJavadoc;
 		}
 		return paramJavadocDescription;
+	}
+
+	/**
+	 * Is openapi 31 boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isOpenapi31() {
+		return propertyResolverUtils.isOpenapi31();
 	}
 }

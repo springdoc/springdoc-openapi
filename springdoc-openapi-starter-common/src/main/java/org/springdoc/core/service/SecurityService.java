@@ -258,7 +258,7 @@ public class SecurityService {
 			securitySchemeObject.setName(securityScheme.paramName());
 
 		if (securityScheme.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(securityScheme.extensions());
+			Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), securityScheme.extensions());
 			extensions.forEach(securitySchemeObject::addExtension);
 		}
 
@@ -295,7 +295,7 @@ public class SecurityService {
 
 		OAuthFlows oAuthFlowsObject = new OAuthFlows();
 		if (oAuthFlows.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlows.extensions());
+			Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), oAuthFlows.extensions());
 			extensions.forEach(oAuthFlowsObject::addExtension);
 		}
 		getOAuthFlow(oAuthFlows.authorizationCode(), locale).ifPresent(oAuthFlowsObject::setAuthorizationCode);
@@ -327,7 +327,7 @@ public class SecurityService {
 			oAuthFlowObject.setTokenUrl(propertyResolverUtils.resolve(oAuthFlow.tokenUrl(), locale));
 
 		if (oAuthFlow.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(oAuthFlow.extensions());
+			Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), oAuthFlow.extensions());
 			extensions.forEach(oAuthFlowObject::addExtension);
 		}
 		getScopes(oAuthFlow.scopes()).ifPresent(oAuthFlowObject::setScopes);

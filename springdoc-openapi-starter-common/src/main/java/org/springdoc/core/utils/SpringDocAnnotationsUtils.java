@@ -46,6 +46,7 @@ import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.SpecVersion;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.Content;
@@ -89,14 +90,15 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * Resolve schema from type schema.
 	 *
 	 * @param schemaImplementation the schema implementation
-	 * @param components the components
-	 * @param jsonView the json view
-	 * @param annotations the annotations
+	 * @param components           the components
+	 * @param jsonView             the json view
+	 * @param annotations          the annotations
+	 * @param specVersion          the spec version
 	 * @return the schema
 	 */
 	public static Schema resolveSchemaFromType(Class<?> schemaImplementation, Components components,
-			JsonView jsonView, Annotation[] annotations) {
-		Schema schemaObject = extractSchema(components, schemaImplementation, jsonView, annotations);
+			JsonView jsonView, Annotation[] annotations, SpecVersion specVersion) {
+		Schema schemaObject = extractSchema(components, schemaImplementation, jsonView, annotations, specVersion);
 		if (schemaObject != null && StringUtils.isBlank(schemaObject.get$ref())
 				&& StringUtils.isBlank(schemaObject.getType()) && !(schemaObject instanceof ComposedSchema)) {
 			// default to string
@@ -108,17 +110,19 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Extract schema schema.
 	 *
-	 * @param components the components
-	 * @param returnType the return type
-	 * @param jsonView the json view
+	 * @param components  the components
+	 * @param returnType  the return type
+	 * @param jsonView    the json view
 	 * @param annotations the annotations
+	 * @param specVersion the spec version
 	 * @return the schema
 	 */
-	public static Schema extractSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations) {
+	public static Schema extractSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations, SpecVersion specVersion) {
 		Schema schemaN = null;
 		ResolvedSchema resolvedSchema;
+		boolean openapi31 = SpecVersion.V31 == specVersion;
 		try {
-			resolvedSchema = ModelConverters.getInstance()
+			resolvedSchema = ModelConverters.getInstance(openapi31)
 					.resolveAsResolvedSchema(
 							new AnnotatedType(returnType).resolveAsRef(true).jsonViewAnnotation(jsonView).ctxAnnotations(annotations));
 		}
@@ -160,16 +164,17 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * Gets content.
 	 *
 	 * @param annotationContents the annotation contents
-	 * @param classTypes the class types
-	 * @param methodTypes the method types
-	 * @param schema the schema
-	 * @param components the components
+	 * @param classTypes         the class types
+	 * @param methodTypes        the method types
+	 * @param schema             the schema
+	 * @param components         the components
 	 * @param jsonViewAnnotation the json view annotation
+	 * @param openapi31          the openapi 31
 	 * @return the content
 	 */
 	public static Optional<Content> getContent(io.swagger.v3.oas.annotations.media.Content[] annotationContents,
 			String[] classTypes, String[] methodTypes, Schema schema, Components components,
-			JsonView jsonViewAnnotation) {
+			JsonView jsonViewAnnotation, boolean openapi31) {
 		if (ArrayUtils.isEmpty(annotationContents)) {
 			return Optional.empty();
 		}
@@ -177,12 +182,12 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		Content content = new Content();
 
 		for (io.swagger.v3.oas.annotations.media.Content annotationContent : annotationContents) {
-			MediaType mediaType = getMediaType(schema, components, jsonViewAnnotation, annotationContent);
+			MediaType mediaType = getMediaType(schema, components, jsonViewAnnotation, annotationContent, openapi31);
 			ExampleObject[] examples = annotationContent.examples();
 			setExamples(mediaType, examples);
-			addExtension(annotationContent, mediaType);
+			addExtension(annotationContent, mediaType, openapi31);
 			io.swagger.v3.oas.annotations.media.Encoding[] encodings = annotationContent.encoding();
-			addEncodingToMediaType(jsonViewAnnotation, mediaType, encodings);
+			addEncodingToMediaType(jsonViewAnnotation, mediaType, encodings, openapi31);
 			if (StringUtils.isNotBlank(annotationContent.mediaType())) {
 				content.addMediaType(annotationContent.mediaType(), mediaType);
 			}
@@ -287,13 +292,14 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * Add encoding to media type.
 	 *
 	 * @param jsonViewAnnotation the json view annotation
-	 * @param mediaType the media type
-	 * @param encodings the encodings
+	 * @param mediaType          the media type
+	 * @param encodings          the encodings
+	 * @param openapi31          the openapi 31
 	 */
 	private static void addEncodingToMediaType(JsonView jsonViewAnnotation, MediaType mediaType,
-			io.swagger.v3.oas.annotations.media.Encoding[] encodings) {
+			io.swagger.v3.oas.annotations.media.Encoding[] encodings, boolean openapi31) {
 		for (io.swagger.v3.oas.annotations.media.Encoding encoding : encodings) {
-			addEncodingToMediaType(mediaType, encoding, jsonViewAnnotation);
+			addEncodingToMediaType(mediaType, encoding, jsonViewAnnotation, openapi31);
 		}
 	}
 
@@ -301,12 +307,13 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * Add extension.
 	 *
 	 * @param annotationContent the annotation content
-	 * @param mediaType the media type
+	 * @param mediaType         the media type
+	 * @param openapi31         the openapi 31
 	 */
 	private static void addExtension(io.swagger.v3.oas.annotations.media.Content annotationContent,
-			MediaType mediaType) {
+			MediaType mediaType, boolean openapi31) {
 		if (annotationContent.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(annotationContent.extensions());
+			Map<String, Object> extensions = AnnotationsUtils.getExtensions(openapi31, annotationContent.extensions());
 			extensions.forEach(mediaType::addExtension);
 		}
 	}
@@ -337,19 +344,20 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	/**
 	 * Gets media type.
 	 *
-	 * @param schema the schema
-	 * @param components the components
+	 * @param schema             the schema
+	 * @param components         the components
 	 * @param jsonViewAnnotation the json view annotation
-	 * @param annotationContent the annotation content
+	 * @param annotationContent  the annotation content
+	 * @param openapi31          the openapi 31
 	 * @return the media type
 	 */
 	private static MediaType getMediaType(Schema schema, Components components, JsonView jsonViewAnnotation,
-			io.swagger.v3.oas.annotations.media.Content annotationContent) {
+			io.swagger.v3.oas.annotations.media.Content annotationContent, boolean openapi31) {
 		MediaType mediaType = new MediaType();
 		if (!annotationContent.schema().hidden()) {
 			if (components != null) {
 				try {
-					getSchema(annotationContent, components, jsonViewAnnotation).ifPresent(mediaType::setSchema);
+					getSchema(annotationContent, components, jsonViewAnnotation, openapi31).ifPresent(mediaType::setSchema);
 					if (annotationContent.schemaProperties().length > 0) {
 						if (mediaType.getSchema() == null) {
 							mediaType.schema(new Schema<Object>().type("object"));
@@ -358,7 +366,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 						for (SchemaProperty sp : annotationContent.schemaProperties()) {
 							Class<?> schemaImplementation = sp.schema().implementation();
 							boolean isArray = isArray(annotationContent);
-							getSchema(sp.schema(), sp.array(), isArray, schemaImplementation, components, jsonViewAnnotation)
+							getSchema(sp.schema(), sp.array(), isArray, schemaImplementation, components, jsonViewAnnotation, openapi31)
 									.ifPresent(s -> {
 										if ("array".equals(oSchema.getType())) {
 											oSchema.getItems().addProperty(sp.name(), s);
@@ -375,7 +383,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 									mediaType.getSchema() != null &&
 									!Boolean.TRUE.equals(mediaType.getSchema().getAdditionalProperties()) &&
 									!Boolean.FALSE.equals(mediaType.getSchema().getAdditionalProperties())) {
-						getSchemaFromAnnotation(annotationContent.additionalPropertiesSchema(), components, jsonViewAnnotation)
+						getSchemaFromAnnotation(annotationContent.additionalPropertiesSchema(), components, jsonViewAnnotation, openapi31)
 								.ifPresent(s -> {
 											if ("array".equals(mediaType.getSchema().getType())) {
 												mediaType.getSchema().getItems().additionalProperties(s);

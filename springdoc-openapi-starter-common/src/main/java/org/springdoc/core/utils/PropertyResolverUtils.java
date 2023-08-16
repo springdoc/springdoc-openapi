@@ -26,6 +26,7 @@ package org.springdoc.core.utils;
 
 import java.util.Locale;
 
+import io.swagger.v3.oas.models.SpecVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -117,5 +118,23 @@ public class PropertyResolverUtils {
 	 */
 	public SpringDocConfigProperties getSpringDocConfigProperties() {
 		return springDocConfigProperties;
+	}
+
+	/**
+	 * Gets spec version.
+	 *
+	 * @return the spec version
+	 */
+	public SpecVersion getSpecVersion() {
+		return springDocConfigProperties.getSpecVersion();
+	}
+
+	/**
+	 * Is openapi 31 boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isOpenapi31() {
+		return springDocConfigProperties.isOpenapi31();
 	}
 }

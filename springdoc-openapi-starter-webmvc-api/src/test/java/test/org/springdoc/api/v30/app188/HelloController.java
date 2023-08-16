@@ -32,6 +32,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.SpecVersion;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import org.springdoc.core.customizers.OperationCustomizer;
@@ -67,7 +68,7 @@ public class HelloController {
 				api.getComponents(),
 				ErrorResponse.class,
 				null,
-				null
+				null, SpecVersion.V30
 		);
 
 		ApiResponse errorApiResponse = new ApiResponse().content(new Content().addMediaType(

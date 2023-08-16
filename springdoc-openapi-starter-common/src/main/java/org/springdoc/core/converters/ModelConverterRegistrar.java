@@ -33,6 +33,7 @@ import io.swagger.v3.core.converter.ModelConverters;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.properties.SpringDocConfigProperties;
 
 /**
  * Wrapper for model converters to only register converters once
@@ -43,7 +44,7 @@ public class ModelConverterRegistrar {
 	/**
 	 * The constant modelConvertersInstance.
 	 */
-	private static final ModelConverters modelConvertersInstance = ModelConverters.getInstance();
+	private final ModelConverters modelConvertersInstance;
 
 	/**
 	 * The constant LOGGER.
@@ -53,9 +54,11 @@ public class ModelConverterRegistrar {
 	/**
 	 * Instantiates a new Model converter registrar.
 	 *
-	 * @param modelConverters spring registered model converter beans which have to be                        registered in {@link ModelConverters} instance
+	 * @param modelConverters           spring registered model converter beans which have to be registered in {@link ModelConverters} instance
+	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public ModelConverterRegistrar(List<ModelConverter> modelConverters) {
+	public ModelConverterRegistrar(List<ModelConverter> modelConverters, SpringDocConfigProperties springDocConfigProperties) {
+		modelConvertersInstance = ModelConverters.getInstance(springDocConfigProperties.isOpenapi31());
 		for (ModelConverter modelConverter : modelConverters) {
 			Optional<ModelConverter> registeredConverterOptional = getRegisteredConverterSameAs(modelConverter);
 			registeredConverterOptional.ifPresent(modelConvertersInstance::removeConverter);
