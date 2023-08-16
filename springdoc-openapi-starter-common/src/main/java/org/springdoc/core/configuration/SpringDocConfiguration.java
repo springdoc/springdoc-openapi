@@ -458,15 +458,14 @@ public class SpringDocConfiguration {
 		 * Springdoc bean factory post processor 3 bean factory post processor.
 		 *
 		 * @param groupedOpenApis           the grouped open apis
-		 * @param springDocConfigProperties the spring doc config properties
 		 * @return the bean factory post processor
 		 */
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 		@Conditional(MultipleOpenApiSupportCondition.class)
-		static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor3(List<GroupedOpenApi> groupedOpenApis, SpringDocConfigProperties springDocConfigProperties) {
-			return new SpringdocActuatorBeanFactoryConfigurer(groupedOpenApis, springDocConfigProperties);
+		static BeanFactoryPostProcessor springdocBeanFactoryPostProcessor3(List<GroupedOpenApi> groupedOpenApis) {
+			return new SpringdocActuatorBeanFactoryConfigurer(groupedOpenApis);
 		}
 
 		/**
