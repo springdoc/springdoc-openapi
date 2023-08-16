@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.SpecVersion;
 import io.swagger.v3.oas.models.headers.Header;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Content;
@@ -83,33 +84,35 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	@Override
 	public void customise(OpenAPI openAPI) {
 		FilterChainProxy filterChainProxy = applicationContext.getBean(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, FilterChainProxy.class);
+		boolean openapi31 = SpecVersion.V31 == openAPI.getSpecVersion();
 		for (SecurityFilterChain filterChain : filterChainProxy.getFilterChains()) {
-			getNimbusJwkSetEndpoint(openAPI, filterChain);
-			getOAuth2AuthorizationServerMetadataEndpoint(openAPI, filterChain);
-			getOAuth2TokenEndpoint(openAPI, filterChain);
-			getOAuth2AuthorizationEndpoint(openAPI, filterChain);
-			getOAuth2TokenIntrospectionEndpointFilter(openAPI, filterChain);
-			getOAuth2TokenRevocationEndpointFilter(openAPI, filterChain);
-			getOidcProviderConfigurationEndpoint(openAPI, filterChain);
+			getNimbusJwkSetEndpoint(openAPI, filterChain, openapi31);
+			getOAuth2AuthorizationServerMetadataEndpoint(openAPI, filterChain, openapi31);
+			getOAuth2TokenEndpoint(openAPI, filterChain, openapi31);
+			getOAuth2AuthorizationEndpoint(openAPI, filterChain, openapi31);
+			getOAuth2TokenIntrospectionEndpointFilter(openAPI, filterChain, openapi31);
+			getOAuth2TokenRevocationEndpointFilter(openAPI, filterChain, openapi31);
+			getOidcProviderConfigurationEndpoint(openAPI, filterChain, openapi31);
 			getOidcUserInfoEndpoint(openAPI, filterChain);
-			getOidcClientRegistrationEndpoint(openAPI, filterChain);
+			getOidcClientRegistrationEndpoint(openAPI, filterChain, openapi31);
 		}
 	}
 
 	/**
 	 * Gets o auth 2 token revocation endpoint filter.
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI             the open api
 	 * @param securityFilterChain the security filter chain
+	 * @param openapi31           the openapi 31
 	 */
-	private void getOAuth2TokenRevocationEndpointFilter(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
+	private void getOAuth2TokenRevocationEndpointFilter(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {	
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(OAuth2TokenRevocationEndpointFilter.class).findEndpoint(securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
 			apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), new ApiResponse().description(HttpStatus.OK.getReasonPhrase()));
 			buildApiResponsesOnInternalServerError(apiResponses);
-			buildApiResponsesOnBadRequest(apiResponses, openAPI);
+			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
 
 			Operation operation = buildOperation(apiResponses);
 			Schema<?> schema = new ObjectSchema()
@@ -126,17 +129,18 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	/**
 	 * Gets o auth 2 token introspection endpoint filter.
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI             the open api
 	 * @param securityFilterChain the security filter chain
+	 * @param openapi31           the openapi 31
 	 */
-	private void getOAuth2TokenIntrospectionEndpointFilter(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
+	private void getOAuth2TokenIntrospectionEndpointFilter(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(OAuth2TokenIntrospectionEndpointFilter.class).findEndpoint(securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
-			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2TokenIntrospection.class, openAPI.getComponents(), null));
+			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2TokenIntrospection.class, openAPI.getComponents(), null, openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
-			buildApiResponsesOnBadRequest(apiResponses, openAPI);
+			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
 
 			Operation operation = buildOperation(apiResponses);
 			Schema<?> requestSchema = new ObjectSchema()
@@ -154,15 +158,16 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	/**
 	 * Gets o auth 2 authorization server metadata endpoint.
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI             the open api
 	 * @param securityFilterChain the security filter chain
+	 * @param openapi31           the openapi 31
 	 */
-	private void getOAuth2AuthorizationServerMetadataEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
+	private void getOAuth2AuthorizationServerMetadataEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(OAuth2AuthorizationServerMetadataEndpointFilter.class).findEndpoint(securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
-			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2AuthorizationServerMetadata.class, openAPI.getComponents(), null));
+			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2AuthorizationServerMetadata.class, openAPI.getComponents(), null, openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			Operation operation = buildOperation(apiResponses);
 			buildPath(oAuth2EndpointFilter, "requestMatcher", openAPI, operation, HttpMethod.GET);
@@ -172,10 +177,11 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	/**
 	 * Gets nimbus jwk set endpoint.
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI             the open api
 	 * @param securityFilterChain the security filter chain
+	 * @param openapi31           the openapi 31
 	 */
-	private void getNimbusJwkSetEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
+	private void getNimbusJwkSetEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(NimbusJwkSetEndpointFilter.class).findEndpoint(securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
@@ -188,7 +194,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 					new MediaType().schema(schema)));
 			apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), response);
 			buildApiResponsesOnInternalServerError(apiResponses);
-			buildApiResponsesOnBadRequest(apiResponses, openAPI);
+			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
 
 			Operation operation = buildOperation(apiResponses);
 			operation.responses(apiResponses);
@@ -199,19 +205,20 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	/**
 	 * Gets o auth 2 token endpoint.
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI             the open api
 	 * @param securityFilterChain the security filter chain
+	 * @param openapi31           the openapi 31
 	 */
-	private void getOAuth2TokenEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
+	private void getOAuth2TokenEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(OAuth2TokenEndpointFilter.class).findEndpoint(securityFilterChain);
 
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
-			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2Token.class, openAPI.getComponents(), null));
+			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2Token.class, openAPI.getComponents(), null, openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
-			buildApiResponsesOnBadRequest(apiResponses, openAPI);
-			buildOAuth2Error(openAPI, apiResponses, HttpStatus.UNAUTHORIZED);
+			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
+			buildOAuth2Error(openAPI, apiResponses, HttpStatus.UNAUTHORIZED, openapi31);
 			Operation operation = buildOperation(apiResponses);
 
 			Schema<?> requestSchema = new ObjectSchema()
@@ -242,10 +249,11 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	/**
 	 * Gets o auth 2 authorization endpoint.
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI             the open api
 	 * @param securityFilterChain the security filter chain
+	 * @param openapi31           the openapi 31
 	 */
-	private void getOAuth2AuthorizationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
+	private void getOAuth2AuthorizationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(OAuth2AuthorizationEndpointFilter.class).findEndpoint(securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
@@ -256,7 +264,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 					new MediaType()));
 			apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), response);
 			buildApiResponsesOnInternalServerError(apiResponses);
-			buildApiResponsesOnBadRequest(apiResponses, openAPI);
+			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
 			apiResponses.addApiResponse(String.valueOf(HttpStatus.MOVED_TEMPORARILY.value()),
 					new ApiResponse().description(HttpStatus.MOVED_TEMPORARILY.getReasonPhrase())
 							.addHeaderObject("Location", new Header().schema(new StringSchema())));
@@ -270,16 +278,17 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	/**
 	 * Gets OpenID Provider endpoint filter
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI             the open api
 	 * @param securityFilterChain the security filter chain
+	 * @param openapi31           the openapi 31
 	 */
-	private void getOidcProviderConfigurationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
+	private void getOidcProviderConfigurationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(OidcProviderConfigurationEndpointFilter.class).findEndpoint(securityFilterChain);
 
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
-			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOidcProviderConfiguration.class, openAPI.getComponents(), null));
+			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOidcProviderConfiguration.class, openAPI.getComponents(), null, openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			Operation operation = buildOperation(apiResponses);
 			buildPath(oAuth2EndpointFilter, "requestMatcher", openAPI, operation, HttpMethod.GET);
@@ -309,24 +318,25 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	/**
 	 * Gets OpenID Client Registration endpoint filter
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI             the open api
 	 * @param securityFilterChain the security filter chain
+	 * @param openapi31           the openapi 31
 	 */
-	private void getOidcClientRegistrationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
+	private void getOidcClientRegistrationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(OidcClientRegistrationEndpointFilter.class).findEndpoint(securityFilterChain);
 
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
-			buildApiResponsesOnCreated(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOidcClientRegistrationResponse.class, openAPI.getComponents(), null));
+			buildApiResponsesOnCreated(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOidcClientRegistrationResponse.class, openAPI.getComponents(), null,openapi31 ));
 			buildApiResponsesOnInternalServerError(apiResponses);
-			buildApiResponsesOnBadRequest(apiResponses, openAPI);
-			buildOAuth2Error(openAPI, apiResponses, HttpStatus.UNAUTHORIZED);
-			buildOAuth2Error(openAPI, apiResponses, HttpStatus.FORBIDDEN);
+			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
+			buildOAuth2Error(openAPI, apiResponses, HttpStatus.UNAUTHORIZED, openapi31);
+			buildOAuth2Error(openAPI, apiResponses, HttpStatus.FORBIDDEN, openapi31);
 			Operation operation = buildOperation(apiResponses);
 
 			// OidcClientRegistration
-			Schema schema = AnnotationsUtils.resolveSchemaFromType(SpringDocOidcClientRegistrationRequest.class, openAPI.getComponents(), null);
+			Schema schema = AnnotationsUtils.resolveSchemaFromType(SpringDocOidcClientRegistrationRequest.class, openAPI.getComponents(), null, openapi31);
 
 			String mediaType = APPLICATION_JSON_VALUE;
 			RequestBody requestBody = new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(schema)));
@@ -395,23 +405,25 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * Build api responses on bad request.
 	 *
 	 * @param apiResponses the api responses
-	 * @param openAPI the open api
+	 * @param openAPI      the open api
+	 * @param openapi31    the openapi 31
 	 * @return the api responses
 	 */
-	private ApiResponses buildApiResponsesOnBadRequest(ApiResponses apiResponses, OpenAPI openAPI) {
-		buildOAuth2Error(openAPI, apiResponses, HttpStatus.BAD_REQUEST);
+	private ApiResponses buildApiResponsesOnBadRequest(ApiResponses apiResponses, OpenAPI openAPI, boolean openapi31) {
+		buildOAuth2Error(openAPI, apiResponses, HttpStatus.BAD_REQUEST, openapi31);
 		return apiResponses;
 	}
 
 	/**
 	 * Build o auth 2 error.
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI      the open api
 	 * @param apiResponses the api responses
-	 * @param httpStatus the http status
+	 * @param httpStatus   the http status
+	 * @param openapi31    the openapi 31
 	 */
-	private static void buildOAuth2Error(OpenAPI openAPI, ApiResponses apiResponses, HttpStatus httpStatus) {
-		Schema oAuth2ErrorSchema = AnnotationsUtils.resolveSchemaFromType(OAuth2Error.class, openAPI.getComponents(), null);
+	private static void buildOAuth2Error(OpenAPI openAPI, ApiResponses apiResponses, HttpStatus httpStatus, boolean openapi31) {
+		Schema oAuth2ErrorSchema = AnnotationsUtils.resolveSchemaFromType(OAuth2Error.class, openAPI.getComponents(), null, openapi31);
 		apiResponses.addApiResponse(String.valueOf(httpStatus.value()), new ApiResponse().description(httpStatus.getReasonPhrase()).content(new Content().addMediaType(
 				APPLICATION_JSON_VALUE,
 				new MediaType().schema(oAuth2ErrorSchema))));

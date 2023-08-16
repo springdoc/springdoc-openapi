@@ -173,15 +173,16 @@ public class GenericResponseService {
 	 * @param methodAttributes       the method attributes
 	 * @param apiResponseAnnotations the api response annotations
 	 * @param apiResponse            the api response
+	 * @param openapi31              the openapi 31
 	 */
 	public static void buildContentFromDoc(Components components, ApiResponses apiResponsesOp,
 			MethodAttributes methodAttributes,
 			io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations,
-			ApiResponse apiResponse) {
+			ApiResponse apiResponse, boolean openapi31) {
 
 		io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
 		Optional<Content> optionalContent = getContent(contentdoc, new String[0],
-				methodAttributes.getMethodProduces(), null, components, methodAttributes.getJsonViewAnnotation());
+				methodAttributes.getMethodProduces(), null, components, methodAttributes.getJsonViewAnnotation(), openapi31);
 		if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
 			// Merge with the existing content
 			Content existingContent = apiResponsesOp.get(apiResponseAnnotations.responseCode()).getContent();
@@ -253,7 +254,7 @@ public class GenericResponseService {
 			apiResponsesFromDoc.forEach(apiResponses::addApiResponse);
 		// for each one build ApiResponse and add it to existing responses
 		// Fill api Responses
-		computeResponseFromDoc(components, handlerMethod.getReturnType(), apiResponses, methodAttributes);
+		computeResponseFromDoc(components, handlerMethod.getReturnType(), apiResponses, methodAttributes, springDocConfigProperties.isOpenapi31());
 		buildApiResponses(components, handlerMethod.getReturnType(), apiResponses, methodAttributes);
 		return apiResponses;
 	}
@@ -328,7 +329,7 @@ public class GenericResponseService {
 						JavadocProvider javadocProvider = operationService.getJavadocProvider();
 						methodAttributes.setJavadocReturn(javadocProvider.getMethodJavadocReturn(methodParameter.getMethod()));
 					}
-					Map<String, ApiResponse> apiResponses = computeResponseFromDoc(components, methodParameter, apiResponsesOp, methodAttributes);
+					Map<String, ApiResponse> apiResponses = computeResponseFromDoc(components, methodParameter, apiResponsesOp, methodAttributes, springDocConfigProperties.isOpenapi31());
 					buildGenericApiResponses(components, methodParameter, apiResponsesOp, methodAttributes);
 					apiResponses.forEach(controllerAdviceInfoApiResponseMap::put);
 				}
@@ -361,10 +362,11 @@ public class GenericResponseService {
 	 * @param methodParameter  the method parameter
 	 * @param apiResponsesOp   the api responses op
 	 * @param methodAttributes the method attributes
+	 * @param openapi31        the openapi 31
 	 * @return the map
 	 */
 	private Map<String, ApiResponse> computeResponseFromDoc(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
-			MethodAttributes methodAttributes) {
+			MethodAttributes methodAttributes, boolean openapi31) {
 		// Parsing documentation, if present
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray = getApiResponses(Objects.requireNonNull(methodParameter.getMethod()));
 		if (!responsesArray.isEmpty()) {
@@ -378,11 +380,11 @@ public class GenericResponseService {
 					continue;
 				}
 				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotations.description(), methodAttributes.getLocale()));
-				buildContentFromDoc(components, apiResponsesOp, methodAttributes, apiResponseAnnotations, apiResponse);
-				Map<String, Object> extensions = AnnotationsUtils.getExtensions(apiResponseAnnotations.extensions());
+				buildContentFromDoc(components, apiResponsesOp, methodAttributes, apiResponseAnnotations, apiResponse, openapi31);
+				Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), apiResponseAnnotations.extensions());
 				if (!CollectionUtils.isEmpty(extensions))
 					apiResponse.extensions(extensions);
-				AnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), methodAttributes.getJsonViewAnnotation())
+				AnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), methodAttributes.getJsonViewAnnotation(), openapi31)
 						.ifPresent(apiResponse::headers);
 				apiResponsesOp.addApiResponse(httpCode, apiResponse);
 			}
@@ -558,7 +560,7 @@ public class GenericResponseService {
 	 */
 	private Schema<?> calculateSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations) {
 		if (!isVoid(returnType) && !SpringDocAnnotationsUtils.isAnnotationToIgnore(returnType))
-			return extractSchema(components, returnType, jsonView, annotations);
+			return extractSchema(components, returnType, jsonView, annotations, propertyResolverUtils.getSpecVersion());
 		return null;
 	}
 

@@ -138,7 +138,7 @@ public class OperationService {
 		buildTags(apiOperation, operation);
 
 		if (operation.getExternalDocs() == null)  // if not set in root annotation
-			AnnotationsUtils.getExternalDocumentation(apiOperation.externalDocs())
+			AnnotationsUtils.getExternalDocumentation(apiOperation.externalDocs(), propertyResolverUtils.isOpenapi31())
 					.ifPresent(operation::setExternalDocs);
 
 		// servers
@@ -274,7 +274,7 @@ public class OperationService {
 	 */
 	private void buildExtensions(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation) {
 		if (apiOperation.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(apiOperation.extensions());
+			Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), apiOperation.extensions());
 			extensions.forEach(operation::addExtension);
 		}
 	}
@@ -402,7 +402,7 @@ public class OperationService {
 
 			buildResponseContent(methodAttributes, components, classProduces, methodProduces, apiResponsesOp, response, apiResponseObject);
 
-			AnnotationsUtils.getHeaders(response.headers(), null).ifPresent(apiResponseObject::headers);
+			AnnotationsUtils.getHeaders(response.headers(), null, propertyResolverUtils.isOpenapi31()).ifPresent(apiResponseObject::headers);
 			// Make schema as string if empty
 			calculateHeader(apiResponseObject);
 			if (isResponseObject(apiResponseObject)) {
@@ -434,10 +434,10 @@ public class OperationService {
 		if (apiResponsesOp == null)
 			SpringDocAnnotationsUtils.getContent(response.content(),
 							classProduces == null ? new String[0] : classProduces,
-							methodProduces == null ? new String[0] : methodProduces, null, components, null)
+							methodProduces == null ? new String[0] : methodProduces, null, components, null, propertyResolverUtils.isOpenapi31())
 					.ifPresent(apiResponseObject::content);
 		else
-			GenericResponseService.buildContentFromDoc(components, apiResponsesOp, methodAttributes, response, apiResponseObject);
+			GenericResponseService.buildContentFromDoc(components, apiResponsesOp, methodAttributes, response, apiResponseObject, propertyResolverUtils.isOpenapi31());
 	}
 
 	/**
@@ -458,7 +458,7 @@ public class OperationService {
 	 * @param apiResponseObject the api response object
 	 */
 	private void setLinks(io.swagger.v3.oas.annotations.responses.ApiResponse response, ApiResponse apiResponseObject) {
-		Map<String, Link> links = AnnotationsUtils.getLinks(response.links());
+		Map<String, Link> links = AnnotationsUtils.getLinks(response.links(), propertyResolverUtils.isOpenapi31());
 		if (links.size() > 0) {
 			apiResponseObject.setLinks(links);
 		}
@@ -495,7 +495,7 @@ public class OperationService {
 			for (Map.Entry<String, Header> entry : headers.entrySet()) {
 				Header header = entry.getValue();
 				if (header.getSchema() == null) {
-					Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(String.class, null, null);
+					Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(String.class, null, null, propertyResolverUtils.isOpenapi31());
 					header.setSchema(schema);
 					entry.setValue(header);
 				}
@@ -530,7 +530,7 @@ public class OperationService {
 	private void setExtensions(io.swagger.v3.oas.annotations.responses.ApiResponse response,
 			ApiResponse apiResponseObject) {
 		if (response.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(response.extensions());
+			Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), response.extensions());
 			extensions.forEach(apiResponseObject::addExtension);
 		}
 	}
