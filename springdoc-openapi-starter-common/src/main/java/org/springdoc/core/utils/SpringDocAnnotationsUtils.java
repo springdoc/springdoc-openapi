@@ -85,6 +85,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		ANNOTATIONS_TO_IGNORE.add(RequestAttribute.class);
 	}
 
+	private static boolean OPENAPI31 = false;
+
 	/**
 	 * Resolve schema from type schema.
 	 *
@@ -118,7 +120,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		Schema schemaN = null;
 		ResolvedSchema resolvedSchema;
 		try {
-			resolvedSchema = ModelConverters.getInstance()
+			resolvedSchema = ModelConverters.getInstance(OPENAPI31)
 					.resolveAsResolvedSchema(
 							new AnnotatedType(returnType).resolveAsRef(true).jsonViewAnnotation(jsonView).ctxAnnotations(annotations));
 		}
@@ -281,6 +283,15 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 		List classesToIgnore = Arrays.asList(classes);
 		if (ANNOTATIONS_TO_IGNORE.containsAll(classesToIgnore))
 			ANNOTATIONS_TO_IGNORE.removeAll(Arrays.asList(classes));
+	}
+
+	/**
+	 * set openapi31
+	 *
+	 * @param openapi31
+	 */
+	public static void setOpenapi31(boolean openapi31) {
+		OPENAPI31 = openapi31;
 	}
 
 	/**

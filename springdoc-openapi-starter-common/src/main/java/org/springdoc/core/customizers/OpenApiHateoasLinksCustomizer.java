@@ -34,6 +34,7 @@ import io.swagger.v3.oas.models.media.MapSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.properties.SpringDocConfigProperties;
+import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 
 import org.springframework.hateoas.Link;
 
@@ -59,7 +60,8 @@ public class OpenApiHateoasLinksCustomizer extends SpecFilter implements GlobalO
 
 	@Override
 	public void customise(OpenAPI openApi) {
-		ResolvedSchema resolvedLinkSchema = ModelConverters.getInstance()
+		boolean openapi31 = OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion();
+		ResolvedSchema resolvedLinkSchema = ModelConverters.getInstance(openapi31)
 				.resolveAsResolvedSchema(new AnnotatedType(Link.class));
 		openApi
 				.schema("Link", resolvedLinkSchema.schema)
