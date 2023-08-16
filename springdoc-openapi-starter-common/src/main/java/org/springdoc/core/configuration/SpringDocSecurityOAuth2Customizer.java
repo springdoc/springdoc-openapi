@@ -26,6 +26,9 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.configuration.oauth2.SpringDocOAuth2AuthorizationServerMetadata;
 import org.springdoc.core.configuration.oauth2.SpringDocOAuth2Token;
 import org.springdoc.core.configuration.oauth2.SpringDocOAuth2TokenIntrospection;
+import org.springdoc.core.configuration.oauth2.SpringDocOidcClientRegistrationRequest;
+import org.springdoc.core.configuration.oauth2.SpringDocOidcClientRegistrationResponse;
+import org.springdoc.core.configuration.oauth2.SpringDocOidcProviderConfiguration;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 
 import org.springframework.beans.BeansException;
@@ -36,6 +39,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.security.oauth2.server.authorization.oidc.web.OidcClientRegistrationEndpointFilter;
+import org.springframework.security.oauth2.server.authorization.oidc.web.OidcProviderConfigurationEndpointFilter;
+import org.springframework.security.oauth2.server.authorization.oidc.web.OidcUserInfoEndpointFilter;
 import org.springframework.security.oauth2.server.authorization.web.NimbusJwkSetEndpointFilter;
 import org.springframework.security.oauth2.server.authorization.web.OAuth2AuthorizationEndpointFilter;
 import org.springframework.security.oauth2.server.authorization.web.OAuth2AuthorizationServerMetadataEndpointFilter;
@@ -84,6 +90,9 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			getOAuth2AuthorizationEndpoint(openAPI, filterChain);
 			getOAuth2TokenIntrospectionEndpointFilter(openAPI, filterChain);
 			getOAuth2TokenRevocationEndpointFilter(openAPI, filterChain);
+			getOidcProviderConfigurationEndpoint(openAPI, filterChain);
+			getOidcUserInfoEndpoint(openAPI, filterChain);
+			getOidcClientRegistrationEndpoint(openAPI, filterChain);
 		}
 	}
 
@@ -259,6 +268,76 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	}
 
 	/**
+	 * Gets OpenID Provider endpoint filter
+	 *
+	 * @param openAPI the open api
+	 * @param securityFilterChain the security filter chain
+	 */
+	private void getOidcProviderConfigurationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
+		Object oAuth2EndpointFilter =
+				new SpringDocSecurityOAuth2EndpointUtils(OidcProviderConfigurationEndpointFilter.class).findEndpoint(securityFilterChain);
+
+		if (oAuth2EndpointFilter != null) {
+			ApiResponses apiResponses = new ApiResponses();
+			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOidcProviderConfiguration.class, openAPI.getComponents(), null));
+			buildApiResponsesOnInternalServerError(apiResponses);
+			Operation operation = buildOperation(apiResponses);
+			buildPath(oAuth2EndpointFilter, "requestMatcher", openAPI, operation, HttpMethod.GET);
+		}
+	}
+
+	/**
+	 * Gets OpenID UserInfo endpoint filter
+	 *
+	 * @param openAPI the open api
+	 * @param securityFilterChain the security filter chain
+	 */
+	private void getOidcUserInfoEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
+		Object oAuth2EndpointFilter =
+				new SpringDocSecurityOAuth2EndpointUtils(OidcUserInfoEndpointFilter.class).findEndpoint(securityFilterChain);
+
+		if (oAuth2EndpointFilter != null) {
+			ApiResponses apiResponses = new ApiResponses();
+			Schema<?> schema = new ObjectSchema().additionalProperties(new StringSchema());
+			buildApiResponsesOnSuccess(apiResponses, schema);
+			buildApiResponsesOnInternalServerError(apiResponses);
+			Operation operation = buildOperation(apiResponses);
+			buildPath(oAuth2EndpointFilter, "userInfoEndpointMatcher", openAPI, operation, HttpMethod.GET);
+		}
+	}
+
+	/**
+	 * Gets OpenID Client Registration endpoint filter
+	 *
+	 * @param openAPI the open api
+	 * @param securityFilterChain the security filter chain
+	 */
+	private void getOidcClientRegistrationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
+		Object oAuth2EndpointFilter =
+				new SpringDocSecurityOAuth2EndpointUtils(OidcClientRegistrationEndpointFilter.class).findEndpoint(securityFilterChain);
+
+		if (oAuth2EndpointFilter != null) {
+			ApiResponses apiResponses = new ApiResponses();
+			buildApiResponsesOnCreated(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOidcClientRegistrationResponse.class, openAPI.getComponents(), null));
+			buildApiResponsesOnInternalServerError(apiResponses);
+			buildApiResponsesOnBadRequest(apiResponses, openAPI);
+			buildOAuth2Error(openAPI, apiResponses, HttpStatus.UNAUTHORIZED);
+			buildOAuth2Error(openAPI, apiResponses, HttpStatus.FORBIDDEN);
+			Operation operation = buildOperation(apiResponses);
+
+			// OidcClientRegistration
+			Schema schema = AnnotationsUtils.resolveSchemaFromType(SpringDocOidcClientRegistrationRequest.class, openAPI.getComponents(), null);
+
+			String mediaType = APPLICATION_JSON_VALUE;
+			RequestBody requestBody = new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(schema)));
+			operation.setRequestBody(requestBody);
+			operation.addParametersItem(new HeaderParameter().name("Authorization"));
+
+			buildPath(oAuth2EndpointFilter, "clientRegistrationEndpointMatcher", openAPI, operation, HttpMethod.POST);
+		}
+	}
+
+	/**
 	 * Build operation operation.
 	 *
 	 * @param apiResponses the api responses
@@ -283,6 +362,21 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 				APPLICATION_JSON_VALUE,
 				new MediaType().schema(schema)));
 		apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), response);
+		return apiResponses;
+	}
+
+	/**
+	 * Build api responses api responses on created.
+	 *
+	 * @param apiResponses the api responses
+	 * @param schema the schema
+	 * @return the api responses
+	 */
+	private ApiResponses buildApiResponsesOnCreated(ApiResponses apiResponses, Schema schema) {
+		ApiResponse response = new ApiResponse().description(HttpStatus.CREATED.getReasonPhrase()).content(new Content().addMediaType(
+				APPLICATION_JSON_VALUE,
+				new MediaType().schema(schema)));
+		apiResponses.addApiResponse(String.valueOf(HttpStatus.CREATED.value()), response);
 		return apiResponses;
 	}
 
@@ -337,21 +431,22 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			Field tokenEndpointMatcherField = FieldUtils.getDeclaredField(oAuth2EndpointFilter.getClass(), authorizationEndpointMatcher, true);
 			RequestMatcher endpointMatcher = (RequestMatcher) tokenEndpointMatcherField.get(oAuth2EndpointFilter);
 			String path = null;
-			if (endpointMatcher instanceof AntPathRequestMatcher)
-				path = ((AntPathRequestMatcher) endpointMatcher).getPattern();
-			else if (endpointMatcher instanceof OrRequestMatcher) {
-				OrRequestMatcher endpointMatchers = (OrRequestMatcher) endpointMatcher;
+			if (endpointMatcher instanceof AntPathRequestMatcher antPathRequestMatcher)
+				path = antPathRequestMatcher.getPattern();
+			else if (endpointMatcher instanceof OrRequestMatcher endpointMatchers) {
 				Field requestMatchersField = FieldUtils.getDeclaredField(OrRequestMatcher.class, "requestMatchers", true);
 				Iterable<RequestMatcher> requestMatchers = (Iterable<RequestMatcher>) requestMatchersField.get(endpointMatchers);
 				for (RequestMatcher requestMatcher : requestMatchers) {
-					if (requestMatcher instanceof OrRequestMatcher) {
-						OrRequestMatcher orRequestMatcher = (OrRequestMatcher) requestMatcher;
+					if (requestMatcher instanceof OrRequestMatcher orRequestMatcher) {
 						requestMatchersField = FieldUtils.getDeclaredField(OrRequestMatcher.class, "requestMatchers", true);
 						requestMatchers = (Iterable<RequestMatcher>) requestMatchersField.get(orRequestMatcher);
 						for (RequestMatcher matcher : requestMatchers) {
-							if (matcher instanceof AntPathRequestMatcher)
-								path = ((AntPathRequestMatcher) matcher).getPattern();
+							if (matcher instanceof AntPathRequestMatcher antPathRequestMatcher)
+								path = antPathRequestMatcher.getPattern();
 						}
+					}
+					else if (requestMatcher instanceof AntPathRequestMatcher antPathRequestMatcher) {
+						path = antPathRequestMatcher.getPattern();
 					}
 				}
 			}
