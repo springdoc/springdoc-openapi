@@ -1,5 +1,6 @@
 package org.springdoc.ui;
 
+import java.io.File;
 import java.util.Objects;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +29,7 @@ class AbstractSwaggerResourceResolverTest {
 		String path = "swagger-ui/swagger-initializer.js";
 
 		String actual = abstractSwaggerResourceResolver.findWebJarResourcePath(path);
-		assertEquals("swagger-ui/4.18.2/swagger-initializer.js", actual);
+		assertEquals("swagger-ui" + File.separator + "4.18.2" + File.separator + "swagger-initializer.js", actual);
 	}
 
 	@Test
