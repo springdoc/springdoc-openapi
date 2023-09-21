@@ -24,11 +24,11 @@
 
 package org.springdoc.core.customizers;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -76,15 +76,19 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 				Class<?> cls = javaType.getRawClass();
 				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
 				List<Field> fields = FieldUtils.getAllFieldsList(cls);
-				if (!CollectionUtils.isEmpty(fields)) {
+				List<PropertyDescriptor> clsProperties = new ArrayList<>();
+				try {
+					clsProperties = Arrays.asList(Introspector.getBeanInfo(cls).getPropertyDescriptors());
+				} catch (IntrospectionException ignored) {}
+				if (!CollectionUtils.isEmpty(fields) || !CollectionUtils.isEmpty(clsProperties)) {
 					if (!type.isSchemaProperty()) {
 						Schema existingSchema = context.resolve(type);
-						setJavadocDescription(cls, fields, existingSchema);
+						setJavadocDescription(cls, fields, clsProperties, existingSchema);
 					}
 					else if (resolvedSchema != null && resolvedSchema.get$ref() != null && resolvedSchema.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
 						String schemaName = resolvedSchema.get$ref().substring(21);
 						Schema existingSchema = context.getDefinedModels().get(schemaName);
-						setJavadocDescription(cls, fields, existingSchema);
+						setJavadocDescription(cls, fields, clsProperties, existingSchema);
 					}
 				}
 				return resolvedSchema;
@@ -96,10 +100,12 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 	/**
 	 * Sets javadoc description.
 	 *
+	 * @param cls the cls
 	 * @param fields the fields
+	 * @param clsProperties the bean properties of cls
 	 * @param existingSchema the existing schema
 	 */
-	private void setJavadocDescription(Class<?> cls, List<Field> fields, Schema existingSchema) {
+	private void setJavadocDescription(Class<?> cls, List<Field> fields, List<PropertyDescriptor> clsProperties, Schema existingSchema) {
 		if (existingSchema != null) {
 			if (StringUtils.isBlank(existingSchema.getDescription())) {
 				existingSchema.setDescription(javadocProvider.getClassJavadoc(cls));
@@ -124,6 +130,14 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 								if (StringUtils.isNotBlank(fieldJavadoc))
 									stringSchemaEntry.getValue().setDescription(fieldJavadoc);
 							});
+							if (StringUtils.isBlank(stringSchemaEntry.getValue().getDescription())) {
+								Optional<PropertyDescriptor> optionalPd = clsProperties.stream().filter(pd -> pd.getName().equals(stringSchemaEntry.getKey())).findAny();
+								optionalPd.ifPresent(pd1 -> {
+									String fieldJavadoc = javadocProvider.getMethodJavadocDescription(pd1.getReadMethod());
+									if (StringUtils.isNotBlank(fieldJavadoc))
+										stringSchemaEntry.getValue().setDescription(fieldJavadoc);
+								});
+							}
 						});
 			}
 		}
