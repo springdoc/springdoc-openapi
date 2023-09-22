@@ -73,7 +73,8 @@
             "type": "string",
             "example": "USD"
           }
-        }
+        },
+        "description": ""
       }
     }
   }
