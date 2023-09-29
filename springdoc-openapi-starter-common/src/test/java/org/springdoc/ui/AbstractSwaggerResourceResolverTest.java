@@ -1,50 +1,51 @@
 package org.springdoc.ui;
 
+import java.nio.file.Path;
 import java.util.Objects;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 class AbstractSwaggerResourceResolverTest {
-	private SwaggerUiConfigProperties swaggerUiConfigProperties;
+  private SwaggerUiConfigProperties swaggerUiConfigProperties;
 
-	private AbstractSwaggerResourceResolver abstractSwaggerResourceResolver;
+  private AbstractSwaggerResourceResolver abstractSwaggerResourceResolver;
 
-	private final String VERSION = "4.18.2";
+  private final String VERSION = "4.18.2";
 
-	@BeforeEach
-	public void setup(){
-		swaggerUiConfigProperties = new SwaggerUiConfigProperties();
-		swaggerUiConfigProperties.setVersion(VERSION);
-		abstractSwaggerResourceResolver = new AbstractSwaggerResourceResolver(swaggerUiConfigProperties);
-	}
+  @BeforeEach
+  public void setup() {
+    swaggerUiConfigProperties = new SwaggerUiConfigProperties();
+    swaggerUiConfigProperties.setVersion(VERSION);
+    abstractSwaggerResourceResolver =
+        new AbstractSwaggerResourceResolver(swaggerUiConfigProperties);
+  }
 
-	@Test
-	void findWebJarResourcePath() {
-		String path = "swagger-ui/swagger-initializer.js";
+  @Test
+  void findWebJarResourcePath() {
+    final String path = "swagger-ui/swagger-initializer.js";
 
-		String actual = abstractSwaggerResourceResolver.findWebJarResourcePath(path);
-		assertEquals("swagger-ui/4.18.2/swagger-initializer.js", actual);
-	}
+    final String actual = abstractSwaggerResourceResolver.findWebJarResourcePath(path);
+    final Path actuaPath = Path.of(actual, "");
+    final Path expected = Path.of("swagger-ui/4.18.2/swagger-initializer.js", "");
+    Assertions.assertEquals(expected, actuaPath);
+  }
 
-	@Test
-	void returNullWhenPathIsSameAsWebjar() {
-		String path = "swagger-ui";
+  @Test
+  void returNullWhenPathIsSameAsWebjar() {
+    final String path = "swagger-ui";
 
-		String actual = abstractSwaggerResourceResolver.findWebJarResourcePath(path);
-		assertTrue(Objects.isNull(actual));
-	}
+    final String actual = abstractSwaggerResourceResolver.findWebJarResourcePath(path);
+    Assertions.assertTrue(Objects.isNull(actual));
+  }
 
-	@Test
-	void returNullWhenVersionIsNull() {
-		String path = "swagger-ui/swagger-initializer.js";
-		swaggerUiConfigProperties.setVersion(null);
+  @Test
+  void returNullWhenVersionIsNull() {
+    final String path = "swagger-ui/swagger-initializer.js";
+    swaggerUiConfigProperties.setVersion(null);
 
-		String actual = abstractSwaggerResourceResolver.findWebJarResourcePath(path);
-		assertTrue(Objects.isNull(actual));
-	}
+    final String actual = abstractSwaggerResourceResolver.findWebJarResourcePath(path);
+    Assertions.assertTrue(Objects.isNull(actual));
+  }
 }
