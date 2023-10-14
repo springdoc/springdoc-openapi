@@ -365,7 +365,13 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 						Schema oSchema = mediaType.getSchema();
 						for (SchemaProperty sp : annotationContent.schemaProperties()) {
 							Class<?> schemaImplementation = sp.schema().implementation();
-							boolean isArray = isArray(annotationContent);
+							boolean isArray = false;
+							if (schemaImplementation == Void.class) {
+								schemaImplementation = sp.array().schema().implementation();
+								if (schemaImplementation != Void.class) {
+									isArray = true;
+								}
+							}
 							getSchema(sp.schema(), sp.array(), isArray, schemaImplementation, components, jsonViewAnnotation, openapi31)
 									.ifPresent(s -> {
 										if ("array".equals(oSchema.getType())) {
