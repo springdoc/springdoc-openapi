@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2023 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -124,30 +124,15 @@ public class DelegatingMethodParameter extends MethodParameter {
 			MethodParameter p = parameters[i];
 			Class<?> paramClass = AdditionalModelsConverter.getParameterObjectReplacement(p.getParameterType());
 
-			if (!MethodParameterPojoExtractor.isSimpleType(paramClass) && (p.hasParameterAnnotation(ParameterObject.class) || AnnotatedElementUtils.isAnnotated(paramClass, ParameterObject.class))) {
+			boolean hasFlatAnnotation = p.hasParameterAnnotation(ParameterObject.class) || AnnotatedElementUtils.isAnnotated(paramClass, ParameterObject.class);
+			boolean hasNotFlatAnnotation = Arrays.stream(p.getParameterAnnotations())
+					.anyMatch(annotation -> Arrays.asList(RequestBody.class, RequestPart.class).contains(annotation.annotationType()));
+			if (!MethodParameterPojoExtractor.isSimpleType(paramClass)
+				&& (hasFlatAnnotation || (defaultFlatParamObject && !hasNotFlatAnnotation && !AbstractRequestService.isRequestTypeToIgnore(paramClass)))) {
 				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
 					optionalDelegatingMethodParameterCustomizer.ifPresent(customizer -> customizer.customize(p, methodParameter));
 					explodedParameters.add(methodParameter);
 				});
-			}
-			else if (defaultFlatParamObject) {
-				boolean isSimpleType = MethodParameterPojoExtractor.isSimpleType(paramClass);
-				List<Annotation> annotations = Arrays.stream(p.getParameterAnnotations())
-						.filter(annotation -> Arrays.asList(RequestBody.class, RequestPart.class).contains(annotation.annotationType()))
-						.toList();
-				boolean hasAnnotation = !annotations.isEmpty();
-				boolean shouldFlat = !isSimpleType && !hasAnnotation;
-				if (shouldFlat && !AbstractRequestService.isRequestTypeToIgnore(paramClass)) {
-					MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
-						optionalDelegatingMethodParameterCustomizer
-								.ifPresent(customizer -> customizer.customize(p, methodParameter));
-						explodedParameters.add(methodParameter);
-					});
-				}
-				else {
-					String name = pNames != null ? pNames[i] : p.getParameterName();
-					explodedParameters.add(new DelegatingMethodParameter(p, name, null, false, false));
-				}
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
