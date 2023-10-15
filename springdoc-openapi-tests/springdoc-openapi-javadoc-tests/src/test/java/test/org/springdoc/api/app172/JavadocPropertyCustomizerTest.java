@@ -128,7 +128,7 @@ class JavadocPropertyCustomizerTest {
 					.addProperty("name", new StringSchema().name("name"));
 
 			List<PropertyDescriptor> propertyDescriptors = Arrays.asList(Introspector.getBeanInfo(cls).getPropertyDescriptors());
-			javadocPropertyCustomizer.setJavadocDescription(cls, fields, propertyDescriptors, existingSchema);
+			javadocPropertyCustomizer.setJavadocDescription(cls, fields, propertyDescriptors, existingSchema,false);
 
 			assertEquals("Record Object", existingSchema.getDescription());
 			Map<String, Schema> properties = existingSchema.getProperties();

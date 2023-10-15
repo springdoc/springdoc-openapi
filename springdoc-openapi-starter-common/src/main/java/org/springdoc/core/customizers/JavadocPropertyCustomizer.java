@@ -28,13 +28,23 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.SimpleMixInResolver;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
+import io.swagger.v3.core.converter.ModelConverterContextImpl;
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -48,6 +58,7 @@ import org.springframework.util.CollectionUtils;
 
 /**
  * The type Javadoc property customizer.
+ *
  * @author bnasslahsen
  */
 public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
@@ -55,10 +66,11 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 		implements ModelConverter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DelegatingMethodParameter.class);
+
 	/**
 	 * Instantiates a new Javadoc property customizer.
 	 *
-	 * @param javadocProvider the javadoc provider
+	 * @param javadocProvider      the javadoc provider
 	 * @param objectMapperProvider the object mapper provider
 	 */
 	public JavadocPropertyCustomizer {
@@ -67,9 +79,9 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 	/**
 	 * Resolve schema.
 	 *
-	 * @param type the type
+	 * @param type    the type
 	 * @param context the context
-	 * @param chain the chain
+	 * @param chain   the chain
 	 * @return the schema
 	 */
 	@Override
@@ -83,18 +95,30 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 				List<PropertyDescriptor> clsProperties = new ArrayList<>();
 				try {
 					clsProperties = Arrays.asList(Introspector.getBeanInfo(cls).getPropertyDescriptors());
-				} catch (IntrospectionException ignored) {
+				}
+				catch (IntrospectionException ignored) {
 					LOGGER.warn(ignored.getMessage());
 				}
 				if (!CollectionUtils.isEmpty(fields) || !CollectionUtils.isEmpty(clsProperties)) {
 					if (!type.isSchemaProperty()) {
 						Schema existingSchema = context.resolve(type);
-						setJavadocDescription(cls, fields, clsProperties, existingSchema);
+						setJavadocDescription(cls, fields, clsProperties, existingSchema, false);
 					}
 					else if (resolvedSchema != null && resolvedSchema.get$ref() != null && resolvedSchema.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
 						String schemaName = resolvedSchema.get$ref().substring(21);
 						Schema existingSchema = context.getDefinedModels().get(schemaName);
-						setJavadocDescription(cls, fields, clsProperties, existingSchema);
+						setJavadocDescription(cls, fields, clsProperties, existingSchema, false);
+					}
+					else {
+						try {
+							Field processedTypesField = FieldUtils.getDeclaredField(ModelConverterContextImpl.class, "processedTypes", true);
+							Set<AnnotatedType> processedType = (Set<AnnotatedType>) processedTypesField.get(context);
+							if(processedType.contains(type))
+								setJavadocDescription(cls, fields, clsProperties, resolvedSchema, true);
+						}
+						catch (IllegalAccessException e) {
+							LOGGER.warn(e.getMessage());
+						}
 					}
 				}
 				return resolvedSchema;
@@ -106,14 +130,15 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 	/**
 	 * Sets javadoc description.
 	 *
-	 * @param cls the cls
-	 * @param fields the fields
-	 * @param clsProperties the bean properties of cls
-	 * @param existingSchema the existing schema
+	 * @param cls             the cls
+	 * @param fields          the fields
+	 * @param clsProperties   the bean properties of cls
+	 * @param existingSchema  the existing schema
+	 * @param isProcessedType the is processed type
 	 */
-	public void setJavadocDescription(Class<?> cls, List<Field> fields, List<PropertyDescriptor> clsProperties, Schema existingSchema) {
+	public void setJavadocDescription(Class<?> cls, List<Field> fields, List<PropertyDescriptor> clsProperties, Schema existingSchema, boolean isProcessedType) {
 		if (existingSchema != null) {
-			if (StringUtils.isBlank(existingSchema.getDescription())) {
+			if (StringUtils.isBlank(existingSchema.getDescription()) && !isProcessedType) {
 				String classJavadoc = javadocProvider.getClassJavadoc(cls);
 				if (StringUtils.isNotBlank(classJavadoc)) {
 					existingSchema.setDescription(classJavadoc);

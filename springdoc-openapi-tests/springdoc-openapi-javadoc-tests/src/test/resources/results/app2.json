@@ -1156,10 +1156,12 @@
         "properties": {
           "id": {
             "type": "integer",
+            "description": "The Id.",
             "format": "int64"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The Name."
           }
         }
       },
@@ -1214,10 +1216,12 @@
         "properties": {
           "id": {
             "type": "integer",
+            "description": "The Id.",
             "format": "int64"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "The Name."
           }
         }
       },
