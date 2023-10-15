@@ -102,7 +102,10 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 	private void setJavadocDescription(Class<?> cls, List<Field> fields, Schema existingSchema) {
 		if (existingSchema != null) {
 			if (StringUtils.isBlank(existingSchema.getDescription())) {
-				existingSchema.setDescription(javadocProvider.getClassJavadoc(cls));
+				String classJavadoc = javadocProvider.getClassJavadoc(cls);
+				if (StringUtils.isNotBlank(classJavadoc)) {
+					existingSchema.setDescription(classJavadoc);
+				}
 			}
 			Map<String, Schema> properties = existingSchema.getProperties();
 			if (!CollectionUtils.isEmpty(properties)) {
