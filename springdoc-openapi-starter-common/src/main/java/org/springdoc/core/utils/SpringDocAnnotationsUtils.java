@@ -354,57 +354,62 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	private static MediaType getMediaType(Schema schema, Components components, JsonView jsonViewAnnotation,
 			io.swagger.v3.oas.annotations.media.Content annotationContent, boolean openapi31) {
 		MediaType mediaType = new MediaType();
-		if (!annotationContent.schema().hidden()) {
-			if (components != null) {
-				try {
-					getSchema(annotationContent, components, jsonViewAnnotation, openapi31).ifPresent(mediaType::setSchema);
-					if (annotationContent.schemaProperties().length > 0) {
-						if (mediaType.getSchema() == null) {
-							mediaType.schema(new Schema<Object>().type("object"));
-						}
-						Schema oSchema = mediaType.getSchema();
-						for (SchemaProperty sp : annotationContent.schemaProperties()) {
-							Class<?> schemaImplementation = sp.schema().implementation();
-							boolean isArray = isArray(annotationContent);
-							getSchema(sp.schema(), sp.array(), isArray, schemaImplementation, components, jsonViewAnnotation, openapi31)
-									.ifPresent(s -> {
-										if ("array".equals(oSchema.getType())) {
-											oSchema.getItems().addProperty(sp.name(), s);
-										}
-										else {
-											oSchema.addProperty(sp.name(), s);
-										}
-									});
-
+		if (annotationContent.schema().hidden()) {
+			return mediaType;
+		}
+		if (components == null) {
+			mediaType.setSchema(schema);
+			return mediaType;
+		}
+		try {
+			getSchema(annotationContent, components, jsonViewAnnotation, openapi31).ifPresent(mediaType::setSchema);
+			if (annotationContent.schemaProperties().length > 0) {
+				if (mediaType.getSchema() == null) {
+					mediaType.schema(new Schema<Object>().type("object"));
+				}
+				Schema oSchema = mediaType.getSchema();
+				for (SchemaProperty sp : annotationContent.schemaProperties()) {
+					Class<?> schemaImplementation = sp.schema().implementation();
+					boolean isArray = false;
+					if (schemaImplementation == Void.class) {
+						schemaImplementation = sp.array().schema().implementation();
+						if (schemaImplementation != Void.class) {
+							isArray = true;
 						}
 					}
-					if (
-							hasSchemaAnnotation(annotationContent.additionalPropertiesSchema()) &&
-									mediaType.getSchema() != null &&
-									!Boolean.TRUE.equals(mediaType.getSchema().getAdditionalProperties()) &&
-									!Boolean.FALSE.equals(mediaType.getSchema().getAdditionalProperties())) {
-						getSchemaFromAnnotation(annotationContent.additionalPropertiesSchema(), components, jsonViewAnnotation, openapi31)
-								.ifPresent(s -> {
-											if ("array".equals(mediaType.getSchema().getType())) {
-												mediaType.getSchema().getItems().additionalProperties(s);
-											}
-											else {
-												mediaType.getSchema().additionalProperties(s);
-											}
-										}
-								);
-					}
-				}
-				catch (Exception e) {
-					if (isArray(annotationContent))
-						mediaType.setSchema(new ArraySchema().items(new StringSchema()));
-					else
-						mediaType.setSchema(new StringSchema());
+					getSchema(sp.schema(), sp.array(), isArray, schemaImplementation, components, jsonViewAnnotation, openapi31)
+							.ifPresent(s -> {
+								if ("array".equals(oSchema.getType())) {
+									oSchema.getItems().addProperty(sp.name(), s);
+								}
+								else {
+									oSchema.addProperty(sp.name(), s);
+								}
+							});
 				}
 			}
-			else {
-				mediaType.setSchema(schema);
+			if (
+					hasSchemaAnnotation(annotationContent.additionalPropertiesSchema()) &&
+							mediaType.getSchema() != null &&
+							!Boolean.TRUE.equals(mediaType.getSchema().getAdditionalProperties()) &&
+							!Boolean.FALSE.equals(mediaType.getSchema().getAdditionalProperties())) {
+				getSchemaFromAnnotation(annotationContent.additionalPropertiesSchema(), components, jsonViewAnnotation, openapi31)
+						.ifPresent(s -> {
+									if ("array".equals(mediaType.getSchema().getType())) {
+										mediaType.getSchema().getItems().additionalProperties(s);
+									}
+									else {
+										mediaType.getSchema().additionalProperties(s);
+									}
+								}
+						);
 			}
+		}
+		catch (Exception e) {
+			if (isArray(annotationContent))
+				mediaType.setSchema(new ArraySchema().items(new StringSchema()));
+			else
+				mediaType.setSchema(new StringSchema());
 		}
 		return mediaType;
 	}
