@@ -1,6 +1,7 @@
 package org.springdoc.ui;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 
@@ -30,46 +31,18 @@ public class AbstractSwaggerResourceResolver {
 	/**
 	 * Find web jar resource path string.
 	 *
-	 * @param path the path
+	 * @param pathStr the path
 	 * @return the string
 	 */
 	@Nullable
-	protected String findWebJarResourcePath(String path) {
-		String webjar = webjar(path);
-		if (webjar.length() > 0 && !path.equals(webjar)) {
-			String version = swaggerUiConfigProperties.getVersion();
-			if (version != null) {
-				String partialPath = path(webjar, path);
-				return webjar + File.separator + version + File.separator + partialPath;
-			}
-		}
-		return null;
+	protected String findWebJarResourcePath(String pathStr) {
+		Path path = Paths.get(pathStr);
+		if (path.getNameCount() < 2) return null;
+		String version = swaggerUiConfigProperties.getVersion();
+		if (version == null) return null;
+		Path first = path.getName(0);
+		Path rest = path.subpath(1, path.getNameCount());
+		return first.resolve(version).resolve(rest).toString();
 	}
-
-	/**
-	 * Webjar string.
-	 *
-	 * @param path the path
-	 * @return the string
-	 */
-	private String webjar(String path) {
-		int startOffset = (path.startsWith("/") ? 1 : 0);
-		int endOffset = path.indexOf('/', 1);
-		return endOffset != -1 ? path.substring(startOffset, endOffset) : path;
-	}
-
-
-	/**
-	 * Path string.
-	 *
-	 * @param webjar the webjar
-	 * @param path the path
-	 * @return the string
-	 */
-	private String path(String webjar, String path) {
-		if (path.startsWith(webjar) && path.length() > webjar.length()) {
-			path = path.substring(webjar.length() + 1);
-		}
-		return path;
-	}
+	
 }
