@@ -49,6 +49,11 @@ public class Builder {
 	private final Schema additionalPropertiesSchema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
+	 * The Additional properties array schema.
+	 */
+	private final ArraySchema additionalPropertiesArraySchema = org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().build();
+
+	/**
 	 * The schema properties defined for schema provided in @Schema
 	 */
 	private final SchemaProperty[] schemaProperties = {};
@@ -251,6 +256,11 @@ public class Builder {
 			@Override
 			public Schema additionalPropertiesSchema() {
 				return additionalPropertiesSchema;
+			}
+
+			@Override
+			public ArraySchema additionalPropertiesArraySchema() {
+				return additionalPropertiesArraySchema;
 			}
 
 			@Override
