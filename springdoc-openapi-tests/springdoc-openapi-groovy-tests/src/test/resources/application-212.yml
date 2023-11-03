@@ -1,0 +1,20 @@
+springdoc:
+  api-docs:
+    specification-string-properties: true
+  specification-strings:
+    info:
+      title: Api info title
+      description: Api info description
+      version: Api info version
+    components:
+      schemas:
+        PersonDTO:
+          description: Description for PersonDTO component
+          properties:
+            name:
+              description: Description for 'name' property
+              example: Example value for 'name' property
+    paths:
+      persons:
+        description: Description of operationId 'persons'
+        summary: Summary of operationId 'persons'
