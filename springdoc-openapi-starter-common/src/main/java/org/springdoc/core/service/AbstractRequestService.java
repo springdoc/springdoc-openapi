@@ -190,8 +190,8 @@ public abstract class AbstractRequestService {
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
 	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
-			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+									 OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
+									 SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
@@ -273,7 +273,7 @@ public abstract class AbstractRequestService {
 	 * @return the operation
 	 */
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
-			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
+						   Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
 		// Documentation
 		String operationId = operationService.getOperationId(handlerMethod.getMethod().getName(),
 				operation.getOperationId(), openAPI);
@@ -376,51 +376,107 @@ public abstract class AbstractRequestService {
 	}
 
 	/**
-	 * Gets parameter linked hash map.
+	 * Retrieves a LinkedHashMap of parameters based on the provided inputs.
 	 *
-	 * @param components the components
-	 * @param methodAttributes the method attributes
-	 * @param operationParameters the operation parameters
-	 * @param parametersDocMap the parameters doc map
-	 * @return the parameter linked hash map
+	 * @param components         The components object.
+	 * @param methodAttributes   The method attributes.
+	 * @param operationParameters The list of operation parameters.
+	 * @param parametersDocMap   The map of parameter documentation.
+	 * @return LinkedHashMap of ParameterId and Parameter.
 	 */
-	private LinkedHashMap<ParameterId, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
-		LinkedHashMap<ParameterId, Parameter> map = operationParameters.stream().collect(Collectors.toMap(ParameterId::new, parameter -> parameter, (u, v) -> {
-			throw new IllegalStateException(String.format("Duplicate key %s", u));
-		}, LinkedHashMap::new));
-
-		for (Map.Entry<ParameterId, io.swagger.v3.oas.annotations.Parameter> entry : parametersDocMap.entrySet()) {
-			ParameterId parameterId = entry.getKey();
-			if (parameterId != null && !map.containsKey(parameterId) && !entry.getValue().hidden()) {
-				Parameter parameter = parameterBuilder.buildParameterFromDoc(entry.getValue(), components, methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
-				//proceed with the merge if possible
-				if (map.containsKey(parameterId)) {
-					GenericParameterService.mergeParameter(map.get(parameterId), parameter);
-					map.put(parameterId, parameter);
-				}
-				else {
-					long mumParamsWithName = map.keySet().stream().filter(parameterId1 -> parameterId.getpName().equals(parameterId1.getpName())).count();
-					long mumParamsDocWithName = parametersDocMap.keySet().stream().filter(parameterId1 -> parameterId.getpName().equals(parameterId1.getpName())).count();
-					if (mumParamsWithName == 1 && mumParamsDocWithName == 1) {
-						Optional<ParameterId> parameterIdWithSameNameOptional = map.keySet().stream().filter(parameterId1 -> parameterId.getpName().equals(parameterId1.getpName())).findAny();
-						parameterIdWithSameNameOptional.ifPresent(parameterIdWithSameName -> {
-							GenericParameterService.mergeParameter(map.get(parameterIdWithSameName), parameter);
-							map.put(parameterIdWithSameName, parameter);
-						});
-					}
-					else
-						map.put(parameterId, parameter);
-				}
-			}
-		}
-
-		getHeaders(methodAttributes, map);
-		map.forEach((parameterId, parameter) -> {
-			if (StringUtils.isBlank(parameter.getIn()) && StringUtils.isBlank(parameter.get$ref()))
-				parameter.setIn(ParameterIn.QUERY.toString());
-		});
-		return map;
+	private LinkedHashMap<ParameterId, Parameter> getParameterLinkedHashMap(
+			Components components,
+			MethodAttributes methodAttributes,
+			List<Parameter> operationParameters,
+			Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> parametersDocMap
+	) {
+		LinkedHashMap<ParameterId, Parameter> parameterMap = buildParameterMap(operationParameters, parametersDocMap, components, methodAttributes);
+		updateParameterMap(methodAttributes, parameterMap);
+		return parameterMap;
 	}
+
+	/**
+	 * Constructs a LinkedHashMap of parameters from the operation parameters and their documentation.
+	 *
+	 * @param operationParameters The list of operation parameters.
+	 * @param parametersDocMap   The map of parameter documentation.
+	 * @param components         The components object.
+	 * @param methodAttributes   The method attributes.
+	 * @return LinkedHashMap of ParameterId and Parameter.
+	 */
+	private LinkedHashMap<ParameterId, Parameter> buildParameterMap(
+			List<Parameter> operationParameters,
+			Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> parametersDocMap,
+			Components components,
+			MethodAttributes methodAttributes
+	) {
+		LinkedHashMap<ParameterId, Parameter> parameterMap = operationParameters.stream()
+				.collect(Collectors.toMap(
+						ParameterId::new,
+						parameter -> parameter,
+						(u, v) -> {
+							throw new IllegalStateException(String.format("Duplicate key %s", u));
+						},
+						LinkedHashMap::new
+				));
+
+		parametersDocMap.forEach((parameterId, parameterDoc) -> {
+			if (shouldMergeParameter(parameterId, parameterMap, parameterDoc)) {
+				Parameter parameter = buildParameterFromDoc(components, methodAttributes, parameterDoc);
+				parameterMap.put(parameterId, parameter);
+			}
+		});
+
+		return parameterMap;
+	}
+
+	/**
+	 * Checks if a parameter should be merged into the parameter map.
+	 *
+	 * @param parameterId   The parameter ID.
+	 * @param parameterMap  The parameter map.
+	 * @param parameterDoc  The parameter documentation.
+	 * @return True if the parameter should be merged, otherwise False.
+	 */
+	private boolean shouldMergeParameter(ParameterId parameterId, LinkedHashMap<ParameterId, Parameter> parameterMap, io.swagger.v3.oas.annotations.Parameter parameterDoc) {
+		return parameterId != null && !parameterMap.containsKey(parameterId) && !parameterDoc.hidden();
+	}
+
+	/**
+	 * Builds a Parameter object from the provided documentation.
+	 *
+	 * @param components     The components object.
+	 * @param methodAttributes The method attributes.
+	 * @param parameterDoc   The parameter documentation.
+	 * @return Parameter object constructed from documentation.
+	 */
+	private Parameter buildParameterFromDoc(
+			Components components,
+			MethodAttributes methodAttributes,
+			io.swagger.v3.oas.annotations.Parameter parameterDoc
+	) {
+		return parameterBuilder.buildParameterFromDoc(
+				parameterDoc,
+				components,
+				methodAttributes.getJsonViewAnnotation(),
+				methodAttributes.getLocale()
+		);
+	}
+
+	/**
+	 * Updates the parameter map based on certain conditions.
+	 *
+	 * @param methodAttributes  The method attributes.
+	 * @param parameterMap      The parameter map to be updated.
+	 */
+	private void updateParameterMap(MethodAttributes methodAttributes, LinkedHashMap<ParameterId, Parameter> parameterMap) {
+		parameterMap.forEach((parameterId, parameter) -> {
+			if (StringUtils.isBlank(parameter.getIn()) && StringUtils.isBlank(parameter.get$ref())) {
+				parameter.setIn(ParameterIn.QUERY.toString());
+			}
+		});
+	}
+
 
 	/**
 	 * Customise parameter parameter.
@@ -504,7 +560,7 @@ public abstract class AbstractRequestService {
 	 * @return the parameter
 	 */
 	public Parameter buildParams(ParameterInfo parameterInfo, Components components,
-			RequestMethod requestMethod, JsonView jsonView, String openApiVersion) {
+								 RequestMethod requestMethod, JsonView jsonView, String openApiVersion) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		if (parameterInfo.getParamType() != null) {
 			if (!ValueConstants.DEFAULT_NONE.equals(parameterInfo.getDefaultValue()))
