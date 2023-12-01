@@ -1,7 +1,6 @@
 package org.springdoc.core.configuration;
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
-import com.fasterxml.jackson.module.kotlin.KotlinModule.Builder;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -31,6 +30,8 @@ class SpringDocJacksonKotlinModuleConfiguration {
 	 */
 	public SpringDocJacksonKotlinModuleConfiguration(ObjectMapperProvider objectMapperProvider) {
 		objectMapperProvider.jsonMapper()
-				.registerModule(new Builder().build());
+				.registerModule(new KotlinModule.Builder().build())
+				.registerModule(new SpringDocRequiredModule());
+
 	}
 }
