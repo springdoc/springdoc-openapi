@@ -10,7 +10,7 @@ public class StudentV2 {
 	/**
 	 * The Name.
 	 */
-	@JsonProperty("name")
+	@JsonProperty("bb")
 	private String name;
 
 	/**

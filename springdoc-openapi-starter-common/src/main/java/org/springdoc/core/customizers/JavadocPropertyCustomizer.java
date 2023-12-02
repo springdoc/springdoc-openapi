@@ -33,18 +33,17 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.SimpleMixInResolver;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.converter.ModelConverterContextImpl;
 import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -158,7 +157,7 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 				properties.entrySet().stream()
 						.filter(stringSchemaEntry -> StringUtils.isBlank(stringSchemaEntry.getValue().getDescription()))
 						.forEach(stringSchemaEntry -> {
-							Optional<Field> optionalField = fields.stream().filter(field1 -> field1.getName().equals(stringSchemaEntry.getKey())).findAny();
+							Optional<Field> optionalField = fields.stream().filter(field1 -> findFields(stringSchemaEntry, field1)).findAny();
 							optionalField.ifPresent(field -> {
 								String fieldJavadoc = javadocProvider.getFieldJavadoc(field);
 								if (StringUtils.isNotBlank(fieldJavadoc))
@@ -174,6 +173,29 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 							}
 						});
 			}
+		}
+	}
+
+	/**
+	 * Find fields boolean.
+	 *
+	 * @param stringSchemaEntry the string schema entry
+	 * @param field             the field
+	 * @return the boolean
+	 */
+	private static boolean findFields(Entry<String, Schema> stringSchemaEntry, Field field) {
+		if (field.getName().equals(stringSchemaEntry.getKey())){
+			return true;
+		}
+		else {
+			JsonProperty jsonPropertyAnnotation = field.getAnnotation(JsonProperty.class);
+			if (jsonPropertyAnnotation != null) {
+				String jsonPropertyName = jsonPropertyAnnotation.value();
+				if (jsonPropertyName.equals(stringSchemaEntry.getKey())){
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

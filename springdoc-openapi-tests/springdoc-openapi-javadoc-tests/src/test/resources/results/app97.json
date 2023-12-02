@@ -132,7 +132,7 @@
       "StudentV2": {
         "type": "object",
         "properties": {
-          "name": {
+          "bb": {
             "type": "string",
             "description": "The Name."
           }
