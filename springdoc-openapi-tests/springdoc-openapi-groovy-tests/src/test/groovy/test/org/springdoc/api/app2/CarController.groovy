@@ -20,6 +20,7 @@
 
 package test.org.springdoc.api.app2
 
+import org.springdoc.core.annotations.ParameterObject
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -35,8 +36,12 @@ class CarController {
 	}
 
 	@GetMapping(path = '/cars')
-	List<test.org.springdoc.api.app2.Car> getCars() {
+	List<test.org.springdoc.api.app1.Car> getCars(@ParameterObject CarsFilter filter) {
 		return carService.getCars()
+	}
+
+	static class CarsFilter {
+		String name;
 	}
 
 	@GetMapping(path = 'cars/{carId}')

@@ -17,6 +17,16 @@
           "car-controller"
         ],
         "operationId": "getCars",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -141,12 +151,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -307,22 +317,22 @@
             "type": "integer",
             "format": "int32"
           },
-          "anExpression": {
-            "type": "boolean"
+          "description": {
+            "type": "string"
           },
           "startLine": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startColumn": {
             "type": "integer",
             "format": "int32"
           },
           "rootText": {
             "type": "string"
           },
-          "startColumn": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "description": {
-            "type": "string"
+          "anExpression": {
+            "type": "boolean"
           },
           "meaning": {
             "type": "integer",
@@ -414,9 +424,8 @@
           "void": {
             "type": "boolean"
           },
-          "superClassDistance": {
-            "type": "integer",
-            "format": "int32"
+          "typeDescription": {
+            "type": "string"
           },
           "newMetaMethods": {
             "type": "array",
@@ -427,8 +436,9 @@
           "callSiteLoader": {
             "$ref": "#/components/schemas/CallSiteClassLoader"
           },
-          "typeDescription": {
-            "type": "string"
+          "superClassDistance": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -2581,14 +2591,14 @@
           "weakMetaClass": {
             "$ref": "#/components/schemas/MetaClass"
           },
-          "cachedClass": {
-            "$ref": "#/components/schemas/CachedClass"
-          },
           "modifiedExpando": {
             "$ref": "#/components/schemas/ExpandoMetaClass"
           },
           "metaClassForClass": {
             "$ref": "#/components/schemas/MetaClass"
+          },
+          "cachedClass": {
+            "$ref": "#/components/schemas/CachedClass"
           }
         }
       },
@@ -3104,30 +3114,8 @@
           "text": {
             "type": "string"
           },
-          "objectInitializerStatements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Statement"
-            }
-          },
-          "allInterfaces": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "abstractMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
+          "outerClass": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "genericsPlaceHolder": {
             "type": "boolean"
@@ -3181,18 +3169,40 @@
           "annotationDefinition": {
             "type": "boolean"
           },
-          "outerClass": {
-            "$ref": "#/components/schemas/ClassNode"
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "allInterfaces": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
+          },
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "objectInitializerStatements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Statement"
+            }
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -3701,12 +3711,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -3737,14 +3747,14 @@
           "configuration": {
             "$ref": "#/components/schemas/CompilerConfiguration"
           },
-          "errorCount": {
+          "warningCount": {
             "type": "integer",
             "format": "int32"
           },
           "lastError": {
             "$ref": "#/components/schemas/Message"
           },
-          "warningCount": {
+          "errorCount": {
             "type": "integer",
             "format": "int32"
           }
@@ -5028,12 +5038,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -5145,12 +5155,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -5678,12 +5688,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -5836,11 +5846,11 @@
           "anonymous": {
             "type": "boolean"
           },
-          "outerMostClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
           "variableScope": {
             "$ref": "#/components/schemas/VariableScope"
+          },
+          "outerMostClass": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "interface": {
             "type": "boolean"
@@ -5880,31 +5890,6 @@
           },
           "text": {
             "type": "string"
-          },
-          "objectInitializerStatements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Statement"
-            }
-          },
-          "allInterfaces": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "abstractMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
           },
           "genericsPlaceHolder": {
             "type": "boolean"
@@ -5958,15 +5943,40 @@
           "annotationDefinition": {
             "type": "boolean"
           },
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "allInterfaces": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
+          },
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "objectInitializerStatements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Statement"
+            }
+          },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -6019,6 +6029,9 @@
       "MetaClassRegistry": {
         "type": "object",
         "properties": {
+          "metaClassCreationHandle": {
+            "$ref": "#/components/schemas/MetaClassCreationHandle"
+          },
           "metaClassCreationHandler": {
             "$ref": "#/components/schemas/MetaClassCreationHandle"
           },
@@ -6027,9 +6040,6 @@
             "items": {
               "$ref": "#/components/schemas/MetaClassRegistryChangeEventListener"
             }
-          },
-          "metaClassCreationHandle": {
-            "$ref": "#/components/schemas/MetaClassCreationHandle"
           }
         }
       },
@@ -6238,12 +6248,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -6429,30 +6439,8 @@
           "text": {
             "type": "string"
           },
-          "objectInitializerStatements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Statement"
-            }
-          },
-          "allInterfaces": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "abstractMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
+          "outerClass": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "genericsPlaceHolder": {
             "type": "boolean"
@@ -6506,18 +6494,40 @@
           "annotationDefinition": {
             "type": "boolean"
           },
-          "outerClass": {
-            "$ref": "#/components/schemas/ClassNode"
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "allInterfaces": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
+          },
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "objectInitializerStatements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Statement"
+            }
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -6619,10 +6629,10 @@
           "context": {
             "$ref": "#/components/schemas/SourceUnit"
           },
-          "scriptBaseClassFromConfig": {
+          "scriptClassDummy": {
             "$ref": "#/components/schemas/ClassNode"
           },
-          "scriptClassDummy": {
+          "scriptBaseClassFromConfig": {
             "$ref": "#/components/schemas/ClassNode"
           },
           "text": {
@@ -6685,12 +6695,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -6771,12 +6781,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -6874,17 +6884,11 @@
           "private": {
             "type": "boolean"
           },
-          "setterNameOrDefault": {
-            "type": "string"
-          },
-          "getterNameOrDefault": {
-            "type": "string"
+          "dynamicTyped": {
+            "type": "boolean"
           },
           "initialExpression": {
             "$ref": "#/components/schemas/Expression"
-          },
-          "dynamicTyped": {
-            "type": "boolean"
           },
           "inStaticContext": {
             "type": "boolean"
@@ -6896,15 +6900,21 @@
           "originType": {
             "$ref": "#/components/schemas/ClassNode"
           },
+          "getterNameOrDefault": {
+            "type": "string"
+          },
+          "setterNameOrDefault": {
+            "type": "string"
+          },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -6978,12 +6988,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
-          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -7015,18 +7025,18 @@
             "type": "integer",
             "format": "int32"
           },
+          "description": {
+            "type": "string"
+          },
           "startLine": {
             "type": "integer",
             "format": "int32"
-          },
-          "rootText": {
-            "type": "string"
           },
           "startColumn": {
             "type": "integer",
             "format": "int32"
           },
-          "description": {
+          "rootText": {
             "type": "string"
           },
           "meaning": {
@@ -7154,11 +7164,11 @@
           "empty": {
             "type": "boolean"
           },
-          "anExpression": {
-            "type": "boolean"
-          },
           "description": {
             "type": "string"
+          },
+          "anExpression": {
+            "type": "boolean"
           }
         }
       },
@@ -7175,11 +7185,11 @@
           "type": {
             "$ref": "#/components/schemas/ClassNode"
           },
-          "initialExpression": {
-            "$ref": "#/components/schemas/Expression"
-          },
           "dynamicTyped": {
             "type": "boolean"
+          },
+          "initialExpression": {
+            "$ref": "#/components/schemas/Expression"
           },
           "inStaticContext": {
             "type": "boolean"
