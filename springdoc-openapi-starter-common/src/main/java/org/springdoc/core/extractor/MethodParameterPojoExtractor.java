@@ -93,6 +93,7 @@ public class MethodParameterPojoExtractor {
 		SIMPLE_TYPE_PREDICATES.add(Class::isEnum);
 		SIMPLE_TYPE_PREDICATES.add(Class::isArray);
 		SIMPLE_TYPE_PREDICATES.add(MethodParameterPojoExtractor::isSwaggerPrimitiveType);
+		SIMPLE_TYPE_PREDICATES.add(aClass -> aClass.getName().startsWith("org.codehaus.groovy.reflection"));
 	}
 
 	/**
