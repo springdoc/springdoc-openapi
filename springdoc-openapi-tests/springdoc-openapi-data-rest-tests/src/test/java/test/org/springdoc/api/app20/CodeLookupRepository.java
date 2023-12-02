@@ -4,7 +4,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
 
 @NoRepositoryBean
-public interface CodeLookupRepository<EntityT, KeyT> {
+public interface CodeLookupRepository<EntityT,  KeyT extends String> {
 	EntityT findOneByCode(@Param("code") KeyT code);
 
 	Long countByCode(KeyT code);

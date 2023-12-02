@@ -117,7 +117,7 @@
             "name": "code",
             "in": "query",
             "schema": {
-              "type": "object"
+              "type": "string"
             }
           }
         ],
@@ -150,7 +150,7 @@
             "name": "code",
             "in": "query",
             "schema": {
-              "type": "object"
+              "type": "string"
             }
           }
         ],
