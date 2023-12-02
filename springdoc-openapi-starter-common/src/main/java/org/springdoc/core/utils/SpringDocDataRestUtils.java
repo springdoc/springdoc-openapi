@@ -59,6 +59,7 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.mapping.ResourceMappings;
 import org.springframework.data.rest.core.mapping.ResourceMetadata;
 import org.springframework.data.rest.webmvc.RestMediaTypes;
+import org.springframework.data.util.TypeInformation;
 import org.springframework.hateoas.server.LinkRelationProvider;
 import org.springframework.util.CollectionUtils;
 
@@ -118,22 +119,21 @@ public class SpringDocDataRestUtils {
 	 */
 	public void customise(OpenAPI openAPI, ResourceMappings mappings, PersistentEntities persistentEntities) {
 
-		persistentEntities.getManagedTypes().stream().forEach(typeInformation ->
-				{
-					Class domainType = typeInformation.getType();
-					ResourceMetadata resourceMetadata = mappings.getMetadataFor(domainType);
-					final PersistentEntity<?, ?> entity = persistentEntities.getRequiredPersistentEntity(domainType);
-					EntityInfo entityInfo = new EntityInfo();
-					entityInfo.setDomainType(domainType);
-					List<String> ignoredFields = getIgnoredFields(resourceMetadata, entity);
-					if (!repositoryRestConfiguration.isIdExposedFor(entity.getType()))
-						entityInfo.setIgnoredFields(ignoredFields);
-					List<String> associationsFields = getAssociationsFields(resourceMetadata, entity);
-					entityInfo.setAssociationsFields(associationsFields);
-					entityInoMap.put(domainType.getSimpleName(), entityInfo);
-				}
-		);
-
+		for (PersistentEntity<?, ? extends PersistentProperty<?>> persistentEntity : persistentEntities) {
+			TypeInformation<?> typeInformation = persistentEntity.getTypeInformation();
+			Class domainType = typeInformation.getType();
+			ResourceMetadata resourceMetadata = mappings.getMetadataFor(domainType);
+			final PersistentEntity<?, ?> entity = persistentEntities.getRequiredPersistentEntity(domainType);
+			EntityInfo entityInfo = new EntityInfo();
+			entityInfo.setDomainType(domainType);
+			List<String> ignoredFields = getIgnoredFields(resourceMetadata, entity);
+			if (!repositoryRestConfiguration.isIdExposedFor(entity.getType()))
+				entityInfo.setIgnoredFields(ignoredFields);
+			List<String> associationsFields = getAssociationsFields(resourceMetadata, entity);
+			entityInfo.setAssociationsFields(associationsFields);
+			entityInoMap.put(domainType.getSimpleName(), entityInfo);
+		}
+		
 		openAPI.getPaths().entrySet().stream()
 				.forEach(stringPathItemEntry -> {
 					PathItem pathItem = stringPathItemEntry.getValue();
