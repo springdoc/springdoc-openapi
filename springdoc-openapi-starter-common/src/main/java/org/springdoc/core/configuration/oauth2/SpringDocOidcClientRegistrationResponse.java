@@ -1,6 +1,5 @@
 package org.springdoc.core.configuration.oauth2;
 
-import java.time.Instant;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
