@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2023-12-03
+
+### Added
+
+- #2340 - Add support OIDC with Spring Authorization Server
+- #2345 - Support Schema added in OpenAPI Specification v3.1 
+- #2387 - Support get javadoc description from getter method 
+- #2404 - Update condition to register links schema customizer
+- #2359 - Update condition to register links schema customizer
+- #2348 - Enhance resource path processing
+- #2438, #2315 - Support for @JsonProperty with Javadoc Change in springdoc-openapi
+
+### Changed
+
+- Upgrade spring-boot to 3.2.0
+- Upgrade swagger-core to 2.2.19
+- Upgrade swagger-ui to 5.10.3
+
+### Fixed
+
+- #2366 - Fix the failed test due to hardcoded file separators
+- #2370, #2371 - No empty description for polymorphic subtypes 
+- #2373 - SchemaProperty.array Schema is ignored in /api-docs or api-docs.yaml 
+- #2366 - Refactoring AbstractSwaggerResourceResolver.findWebJarResourcePath
+- #2320 - javadoc for class attribute ignored when in EntityModel.
+- #2347 - Not working if a property of entity contains generic parameters.
+- #2399 - SpringdocRouteBuilder.onError is overriding last route defined. 
+- #2426 -  StackOverflowError when using @ParameterObject on groovy class.
+
 ## [2.2.0] - 2023-08-06
 
 ### Added
