@@ -50,11 +50,6 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	private final String swaggerPath;
 
 	/**
-	 * The Web jars prefix url.
-	 */
-	private final String webJarsPrefixUrl;
-
-	/**
 	 * The Swagger index transformer.
 	 */
 	private final SwaggerIndexTransformer swaggerIndexTransformer;
@@ -83,7 +78,6 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 			SwaggerIndexTransformer swaggerIndexTransformer,
 			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
 		this.swaggerPath = swaggerUiConfigParameters.getPath();
-		this.webJarsPrefixUrl = springDocConfigProperties.getWebjars().getPrefix();
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
 		this.actuatorProvider = actuatorProvider;
 		this.swaggerResourceResolver = swaggerResourceResolver;
@@ -96,7 +90,7 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
 		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
 			uiRootPath.append(actuatorProvider.get().getBasePath());
-		registry.addResourceHandler(uiRootPath + webJarsPrefixUrl + ALL_PATTERN)
+		registry.addResourceHandler(uiRootPath + ALL_PATTERN)
 				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
 				.resourceChain(false)
 				.addResolver(swaggerResourceResolver)
