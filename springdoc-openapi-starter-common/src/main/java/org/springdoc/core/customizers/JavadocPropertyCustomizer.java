@@ -166,9 +166,11 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 							if (StringUtils.isBlank(stringSchemaEntry.getValue().getDescription())) {
 								Optional<PropertyDescriptor> optionalPd = clsProperties.stream().filter(pd -> pd.getName().equals(stringSchemaEntry.getKey())).findAny();
 								optionalPd.ifPresent(pd1 -> {
-									String fieldJavadoc = javadocProvider.getMethodJavadocDescription(pd1.getReadMethod());
-									if (StringUtils.isNotBlank(fieldJavadoc))
-										stringSchemaEntry.getValue().setDescription(fieldJavadoc);
+									if(pd1.getReadMethod() != null) {
+										String fieldJavadoc = javadocProvider.getMethodJavadocDescription(pd1.getReadMethod());
+										if (StringUtils.isNotBlank(fieldJavadoc))
+											stringSchemaEntry.getValue().setDescription(fieldJavadoc);
+									}
 								});
 							}
 						});
