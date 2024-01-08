@@ -3,6 +3,7 @@
 ######################
 /target/www/**
 /src/test/javascript/coverage/
+/**/RecordObject__Javadoc.json
 
 ######################
 # Node
