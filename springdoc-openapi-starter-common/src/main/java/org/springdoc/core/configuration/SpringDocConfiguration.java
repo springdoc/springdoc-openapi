@@ -343,8 +343,8 @@ public class SpringDocConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	RequestBodyService requestBodyBuilder(GenericParameterService parameterBuilder) {
-		return new RequestBodyService(parameterBuilder);
+	RequestBodyService requestBodyBuilder(GenericParameterService parameterBuilder, PropertyResolverUtils propertyResolverUtils) {
+		return new RequestBodyService(parameterBuilder, propertyResolverUtils);
 	}
 
 	/**
