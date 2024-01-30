@@ -44,7 +44,7 @@ This project is sponsored by
         - [Demo Spring Boot 1 Web MVC with OpenAPI 3.](#demo-spring-boot-1-web-mvc-with-openapi-3)
         - [Demo Spring Boot 2 WebFlux with Functional endpoints OpenAPI 3.](#demo-spring-boot-2-webflux-with-functional-endpoints-openapi-3)
         - [Demo Spring Boot 2 and Spring Hateoas with OpenAPI 3.](#demo-spring-boot-2-and-spring-hateoas-with-openapi-3)
-    - [Integration of the library in a Spring Boot 3.x project without the swagger-ui:](#integration-of-the-library-in-a-spring-boot-2xx-project-without-the-swagger-ui)
+    - [Integration of the library in a Spring Boot 3.x project without the swagger-ui:](#integration-of-the-library-in-a-spring-boot-3x-project-without-the-swagger-ui)
     - [Error Handling for REST using @ControllerAdvice](#error-handling-for-rest-using-controlleradvice)
     - [Adding API Information and Security documentation](#adding-api-information-and-security-documentation)
     - [spring-webflux support with Annotated Controllers](#spring-webflux-support-with-annotated-controllers)
