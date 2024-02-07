@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import static org.springdoc.core.utils.Constants.MVC_SERVLET_PATH;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_PATH;
-import static org.springdoc.core.utils.Constants.SWAGGGER_CONFIG_FILE;
+import static org.springdoc.core.utils.Constants.SWAGGER_CONFIG_FILE;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -57,7 +57,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	/**
 	 * The Mvc servlet path.
 	 */
-// To keep compatiblity with spring-boot 1 - WebMvcProperties changed package from srping 4 to spring 5
+// To keep compatiblity with spring-boot 1 - WebMvcProperties changed package from spring 4 to spring 5
 	@Value(MVC_SERVLET_PATH)
 	private String mvcServletPath;
 
@@ -142,7 +142,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	 */
 	@Override
 	protected String buildSwaggerConfigUrl() {
-		return apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+		return apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE;
 	}
 
 }
