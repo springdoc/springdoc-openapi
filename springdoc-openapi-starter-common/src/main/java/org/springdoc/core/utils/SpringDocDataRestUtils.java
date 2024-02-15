@@ -55,6 +55,7 @@ import org.springframework.data.mapping.PersistentEntity;
 import org.springframework.data.mapping.PersistentProperty;
 import org.springframework.data.mapping.SimpleAssociationHandler;
 import org.springframework.data.mapping.context.PersistentEntities;
+import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.mapping.ResourceMappings;
 import org.springframework.data.rest.core.mapping.ResourceMetadata;
@@ -133,7 +134,7 @@ public class SpringDocDataRestUtils {
 			entityInfo.setAssociationsFields(associationsFields);
 			entityInoMap.put(domainType.getSimpleName(), entityInfo);
 		}
-		
+
 		openAPI.getPaths().entrySet().stream()
 				.forEach(stringPathItemEntry -> {
 					PathItem pathItem = stringPathItemEntry.getValue();
@@ -417,9 +418,11 @@ public class SpringDocDataRestUtils {
 		List<String> associationsFields = new ArrayList<>();
 		entity.doWithAssociations((SimpleAssociationHandler) association -> {
 			PersistentProperty<?> property = association.getInverse();
-			String filedName = resourceMetadata.getMappingFor(property).getRel().value();
-			associationsFields.add(filedName);
-		});
+			if (isAssociationExported(property)) {
+				String filedName = resourceMetadata.getMappingFor(property).getRel().value();
+				associationsFields.add(filedName);
+			}
+        });
 		return associationsFields;
 	}
 
@@ -438,11 +441,29 @@ public class SpringDocDataRestUtils {
 			ignoredFields.add(idField);
 			entity.doWithAssociations((SimpleAssociationHandler) association -> {
 				PersistentProperty<?> property = association.getInverse();
-				String filedName = resourceMetadata.getMappingFor(property).getRel().value();
-				ignoredFields.add(filedName);
-			});
+				if (isAssociationExported(property)) {
+					String filedName = resourceMetadata.getMappingFor(property).getRel().value();
+					ignoredFields.add(filedName);
+				}
+            });
 		}
 		return ignoredFields;
+	}
+
+	/**
+	 * Indicates if an association is exported. If not, it should be included in response schema.
+	 *
+	 * @param associationProperty the property to check
+	 * @return true if a field is not exported
+	 */
+	private boolean isAssociationExported(PersistentProperty<?> associationProperty) {
+		try {
+			RestResource restResource = associationProperty.getRequiredAnnotation(RestResource.class);
+			return restResource.exported();
+		} catch (IllegalStateException e) {
+			//if annotation missing, association is exported by default
+			return true;
+		}
 	}
 
 	/**
