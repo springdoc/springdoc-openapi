@@ -25,6 +25,8 @@
 package org.springdoc.core.configuration;
 
 import org.springdoc.core.customizers.SpecificationStringPropertiesCustomizer;
+import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -32,6 +34,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.PropertyResolver;
+
+import java.util.List;
 
 /**
  * The type Spring doc specification string properties configuration.
@@ -46,6 +50,7 @@ public class SpringDocSpecificationStringPropertiesConfiguration {
 
     /**
      * Springdoc customizer that takes care of the specification string properties customization.
+     * Will be applied to general openapi schema.
      *
      * @return the springdoc customizer
      */
@@ -56,6 +61,43 @@ public class SpringDocSpecificationStringPropertiesConfiguration {
             PropertyResolver propertyResolverUtils
     ) {
         return new SpecificationStringPropertiesCustomizer(propertyResolverUtils);
+    }
+
+    /**
+     * Bean post processor that applies the specification string properties customization to
+     * grouped openapi schemas by using group name as a prefix for properties.
+     *
+     * @return the bean post processor
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    @Lazy(false)
+    SpecificationStringPropertiesCustomizerBeanPostProcessor specificationStringPropertiesCustomizerBeanPostProcessor(
+            PropertyResolver propertyResolverUtils
+    ) {
+        return new SpecificationStringPropertiesCustomizerBeanPostProcessor(propertyResolverUtils);
+    }
+
+
+    private static class SpecificationStringPropertiesCustomizerBeanPostProcessor implements BeanPostProcessor {
+
+        private final PropertyResolver propertyResolverUtils;
+
+        public SpecificationStringPropertiesCustomizerBeanPostProcessor(
+                PropertyResolver propertyResolverUtils
+        ) {
+            this.propertyResolverUtils = propertyResolverUtils;
+        }
+
+        @Override
+        public Object postProcessAfterInitialization(Object bean, String beanName) {
+            if (bean instanceof GroupedOpenApi groupedOpenApi) {
+                groupedOpenApi.addAllOpenApiCustomizer(List.of(new SpecificationStringPropertiesCustomizer(
+                        propertyResolverUtils, groupedOpenApi.getGroup()
+                )));
+            }
+            return bean;
+        }
     }
 
 }

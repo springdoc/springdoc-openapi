@@ -63,6 +63,14 @@ import java.util.function.Consumer;
  *     <li>springdoc.specification-strings.paths.{operationId}.description - to set description of {operationId}</li>
  *     <li>springdoc.specification-strings.paths.{operationId}.summary - to set summary of {operationId}</li>
  * </ul>
+ * <p>
+ * Support for groped openapi customization is similar to the above, but with a group name prefix.
+ * E.g.
+ * <ul>
+ *     <li>springdoc.specification-strings.{group-name}.info.title - to set title of api-info</li>
+ *     <li>springdoc.specification-strings.{group-name}.components.User.description - to set description of User model</li>
+ *     <li>springdoc.specification-strings.{group-name}.paths.{operationId}.description - to set description of {operationId}</li>
+ * </ul>
  *
  * @author Anton Tkachenko tkachenkoas@gmail.com
  */
@@ -71,9 +79,16 @@ public class SpecificationStringPropertiesCustomizer implements GlobalOpenApiCus
     private static final String SPECIFICATION_STRINGS_PREFIX = "springdoc.specification-strings.";
 
     private final PropertyResolver propertyResolver;
+    private final String propertyPrefix;
 
     public SpecificationStringPropertiesCustomizer(PropertyResolver resolverUtils) {
         this.propertyResolver = resolverUtils;
+        this.propertyPrefix = SPECIFICATION_STRINGS_PREFIX;
+    }
+
+    public SpecificationStringPropertiesCustomizer(PropertyResolver propertyResolver, String groupName) {
+        this.propertyResolver = propertyResolver;
+        this.propertyPrefix = SPECIFICATION_STRINGS_PREFIX + groupName + ".";
     }
 
     @Override
@@ -140,7 +155,7 @@ public class SpecificationStringPropertiesCustomizer implements GlobalOpenApiCus
     private void resolveString(
             Consumer<String> setter, String node
     ) {
-        String nodeWithPrefix = SPECIFICATION_STRINGS_PREFIX + node;
+        String nodeWithPrefix = propertyPrefix + node;
         String value = propertyResolver.getProperty(nodeWithPrefix);
         if (StringUtils.isNotBlank(value)) {
             setter.accept(value);
