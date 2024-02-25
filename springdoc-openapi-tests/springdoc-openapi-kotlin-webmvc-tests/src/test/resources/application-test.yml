@@ -1,0 +1,9 @@
+spring:
+  main:
+    banner-mode: "off"
+    lazy-initialization: true
+logging:
+  level:
+    root: ERROR
+  pattern:
+    console: '%m%n'
