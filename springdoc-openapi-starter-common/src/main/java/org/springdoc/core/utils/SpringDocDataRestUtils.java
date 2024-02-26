@@ -56,6 +56,7 @@ import org.springframework.data.mapping.PersistentProperty;
 import org.springframework.data.mapping.SimpleAssociationHandler;
 import org.springframework.data.mapping.context.PersistentEntities;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.data.rest.core.mapping.ResourceMapping;
 import org.springframework.data.rest.core.mapping.ResourceMappings;
 import org.springframework.data.rest.core.mapping.ResourceMetadata;
 import org.springframework.data.rest.webmvc.RestMediaTypes;
@@ -417,8 +418,11 @@ public class SpringDocDataRestUtils {
 		List<String> associationsFields = new ArrayList<>();
 		entity.doWithAssociations((SimpleAssociationHandler) association -> {
 			PersistentProperty<?> property = association.getInverse();
-			String filedName = resourceMetadata.getMappingFor(property).getRel().value();
-			associationsFields.add(filedName);
+			ResourceMapping mapping = resourceMetadata.getMappingFor(property);
+			if (mapping.isExported()) {
+				String filedName = mapping.getRel().value();
+				associationsFields.add(filedName);
+			}
 		});
 		return associationsFields;
 	}
@@ -438,8 +442,11 @@ public class SpringDocDataRestUtils {
 			ignoredFields.add(idField);
 			entity.doWithAssociations((SimpleAssociationHandler) association -> {
 				PersistentProperty<?> property = association.getInverse();
-				String filedName = resourceMetadata.getMappingFor(property).getRel().value();
-				ignoredFields.add(filedName);
+				ResourceMapping mapping = resourceMetadata.getMappingFor(property);
+				if (mapping.isExported()) {
+					String filedName = mapping.getRel().value();
+					ignoredFields.add(filedName);
+				}
 			});
 		}
 		return ignoredFields;
