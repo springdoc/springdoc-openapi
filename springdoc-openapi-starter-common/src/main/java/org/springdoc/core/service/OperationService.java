@@ -153,7 +153,8 @@ public class OperationService {
 		}
 
 		// RequestBody in Operation
-		requestBodyService.buildRequestBodyFromDoc(apiOperation.requestBody(), operation.getRequestBody(), methodAttributes, components).ifPresent(operation::setRequestBody);
+		requestBodyService.buildRequestBodyFromDoc(apiOperation.requestBody(), operation.getRequestBody(), methodAttributes, components, locale)
+			.ifPresent(operation::setRequestBody);
 
 		// build response
 		buildResponse(components, apiOperation, operation, methodAttributes);
