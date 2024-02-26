@@ -55,14 +55,14 @@ public final class Constants {
 	public static final String API_DOCS_URL = "${springdoc.api-docs.path:#{T(org.springdoc.core.utils.Constants).DEFAULT_API_DOCS_URL}}";
 
 	/**
-	 * The constant SWAGGGER_CONFIG_FILE.
+	 * The constant SWAGGER_CONFIG_FILE.
 	 */
-	public static final String SWAGGGER_CONFIG_FILE = "swagger-config";
+	public static final String SWAGGER_CONFIG_FILE = "swagger-config";
 
 	/**
 	 * The constant SWAGGER_CONFIG_URL.
 	 */
-	public static final String SWAGGER_CONFIG_URL = API_DOCS_URL + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+	public static final String SWAGGER_CONFIG_URL = API_DOCS_URL + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE;
 
 	/**
 	 * The constant YAML.
