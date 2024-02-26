@@ -25,6 +25,7 @@
 package org.springdoc.core.service;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -39,6 +40,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.models.ParameterInfo;
 import org.springdoc.core.models.RequestBodyInfo;
+import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
 import org.springframework.core.MethodParameter;
@@ -59,13 +61,20 @@ public class RequestBodyService {
 	private final GenericParameterService parameterBuilder;
 
 	/**
+	 * The Property resolver utils.
+	 */
+	private final PropertyResolverUtils propertyResolverUtils;
+
+	/**
 	 * Instantiates a new Request body builder.
 	 *
 	 * @param parameterBuilder the parameter builder
+	 * @param propertyResolverUtils the property resolver utils
 	 */
-	public RequestBodyService(GenericParameterService parameterBuilder) {
+	public RequestBodyService(GenericParameterService parameterBuilder, PropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.parameterBuilder = parameterBuilder;
+		this.propertyResolverUtils = propertyResolverUtils;
 	}
 
 	/**
@@ -76,11 +85,12 @@ public class RequestBodyService {
 	 * @param methodAttributes the method attributes
 	 * @param components the components
 	 * @param jsonViewAnnotation the json view annotation
+	 * @param locale the locale
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes,
-			Components components, JsonView jsonViewAnnotation) {
+			Components components, JsonView jsonViewAnnotation, Locale locale) {
 		String[] classConsumes = methodAttributes.getClassConsumes();
 		String[] methodConsumes = methodAttributes.getMethodConsumes();
 
@@ -95,7 +105,7 @@ public class RequestBodyService {
 		}
 
 		if (StringUtils.isNotBlank(requestBody.description())) {
-			requestBodyObject.setDescription(requestBody.description());
+			requestBodyObject.setDescription(propertyResolverUtils.resolve(requestBody.description(), locale));
 			isEmpty = false;
 		}
 
@@ -191,8 +201,7 @@ public class RequestBodyService {
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
 			MethodAttributes methodAttributes, Components components) {
-		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes,
-				components, null);
+		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes, components, null, null);
 	}
 
 	/**
@@ -202,12 +211,13 @@ public class RequestBodyService {
 	 * @param methodAttributes the method attributes
 	 * @param components the components
 	 * @param jsonViewAnnotation the json view annotation
+	 * @param locale the locale
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
-			MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation) {
+			MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, Locale locale) {
 		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes,
-				components, jsonViewAnnotation);
+				components, jsonViewAnnotation, locale);
 	}
 
 	/**
@@ -221,9 +231,8 @@ public class RequestBodyService {
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes,
-			Components components) {
-		return this.buildRequestBodyFromDoc(requestBody, requestBodyOp, methodAttributes,
-				components, null);
+			Components components, Locale locale) {
+		return this.buildRequestBodyFromDoc(requestBody, requestBodyOp, methodAttributes, components, null, locale);
 	}
 
 	/**
