@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.api.app212;
+package test.org.springdoc.api.v30.app212;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

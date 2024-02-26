@@ -16,14 +16,16 @@
  *
  */
 
-package test.org.springdoc.api.app212;
+package test.org.springdoc.api.v30.app212;
 
 import org.junit.jupiter.api.Test;
+import org.springdoc.core.customizers.SpecPropertiesCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
-import test.org.springdoc.api.AbstractSpringDocTest;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,10 +34,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * The type Spring doc app 192 test.
  * <p>
- * A test for {@link org.springdoc.core.customizers.SpecificationStringPropertiesCustomizer}
+ * A test for {@link SpecPropertiesCustomizer}
  */
 @ActiveProfiles("212")
-public class SpringDocApp212Test extends AbstractSpringDocTest {
+public class SpringDocApp212Test extends AbstractSpringDocV30Test {
 
     /**
      * The type Spring doc test app.
@@ -47,7 +49,7 @@ public class SpringDocApp212Test extends AbstractSpringDocTest {
         GroupedOpenApi apiGroupBeanName() {
             return GroupedOpenApi.builder()
                     .group("apiGroupName")
-                    .packagesToScan("test.org.springdoc.api.app212")
+                    .packagesToScan("test.org.springdoc.api.v30.app212")
                     .build();
         }
     }
@@ -57,7 +59,7 @@ public class SpringDocApp212Test extends AbstractSpringDocTest {
         String result = mockMvc.perform(get("/v3/api-docs/apiGroupName"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
-        String expected = getContent("results/app212-grouped.json");
+        String expected = getContent("results/3.0.1/app212-grouped.json");
         assertEquals(expected, result, true);
     }
 

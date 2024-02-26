@@ -1,7 +1,5 @@
 springdoc:
-  api-docs:
-    specification-string-properties: true
-  specification-strings:
+  spec-properties:
     info:
       title: Api info title
       description: Api info description

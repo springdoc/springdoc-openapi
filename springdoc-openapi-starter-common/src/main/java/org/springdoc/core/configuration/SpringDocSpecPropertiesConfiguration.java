@@ -24,29 +24,32 @@
 
 package org.springdoc.core.configuration;
 
-import org.springdoc.core.customizers.SpecificationStringPropertiesCustomizer;
+import java.util.List;
+
+import org.springdoc.core.conditions.SpecPropertiesCondition;
+import org.springdoc.core.customizers.SpecPropertiesCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
+
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.PropertyResolver;
-
-import java.util.List;
 
 /**
  * The type Spring doc specification string properties configuration.
  *
  * @author Anton Tkachenko tkachenkoas@gmail.com
+ * @author bnasslahsen
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(name = "springdoc.api-docs.specification-string-properties")
+@Conditional(SpecPropertiesCondition.class)
 @ConditionalOnBean(SpringDocConfiguration.class)
-public class SpringDocSpecificationStringPropertiesConfiguration {
+public class SpringDocSpecPropertiesConfiguration {
 
     /**
      * Springdoc customizer that takes care of the specification string properties customization.
@@ -57,10 +60,10 @@ public class SpringDocSpecificationStringPropertiesConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @Lazy(false)
-    SpecificationStringPropertiesCustomizer specificationStringPropertiesCustomizer(
+	SpecPropertiesCustomizer specificationStringPropertiesCustomizer(
             PropertyResolver propertyResolverUtils
     ) {
-        return new SpecificationStringPropertiesCustomizer(propertyResolverUtils);
+        return new SpecPropertiesCustomizer(propertyResolverUtils);
     }
 
     /**
@@ -79,7 +82,10 @@ public class SpringDocSpecificationStringPropertiesConfiguration {
     }
 
 
-    private static class SpecificationStringPropertiesCustomizerBeanPostProcessor implements BeanPostProcessor {
+	/**
+	 * The type Specification string properties customizer bean post processor.
+	 */
+	private static class SpecificationStringPropertiesCustomizerBeanPostProcessor implements BeanPostProcessor {
 
         private final PropertyResolver propertyResolverUtils;
 
@@ -92,12 +98,13 @@ public class SpringDocSpecificationStringPropertiesConfiguration {
         @Override
         public Object postProcessAfterInitialization(Object bean, String beanName) {
             if (bean instanceof GroupedOpenApi groupedOpenApi) {
-                groupedOpenApi.addAllOpenApiCustomizer(List.of(new SpecificationStringPropertiesCustomizer(
+                groupedOpenApi.addAllOpenApiCustomizer(List.of(new SpecPropertiesCustomizer(
                         propertyResolverUtils, groupedOpenApi.getGroup()
                 )));
             }
             return bean;
         }
     }
+	
 
 }
