@@ -36,59 +36,78 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import static org.springdoc.core.utils.Constants.SPRINGDOC_SPEC_PROPERTIES_PREFIX;
+
 /**
  * Allows externalizing strings in generated openapi schema via properties that follow
  * conventional naming similar or identical to <a href="https://swagger.io/docs/specification/basic-structure/">openapi schema</a>
  * <p>
  * To set value of a string in schema, define an application property that matches the target node
- * with springdoc.specification-strings prefix.
+ * with springdoc.spec-properties prefix.
  * <p>
  * Sample supported properties for api-info customization:
  * <ul>
- *     <li>springdoc.specification-strings.info.title - to set title of api-info</li>
- *     <li>springdoc.specification-strings.info.description - to set description of api-info</li>
- *     <li>springdoc.specification-strings.info.version - to set version of api-info</li>
- *     <li>springdoc.specification-strings.info.termsOfService - to set terms of service of api-info</li>
+ *     <li>springdoc.spec-properties.info.title - to set title of api-info</li>
+ *     <li>springdoc.spec-properties.info.description - to set description of api-info</li>
+ *     <li>springdoc.spec-properties.info.version - to set version of api-info</li>
+ *     <li>springdoc.spec-properties.info.termsOfService - to set terms of service of api-info</li>
  * </ul>
  * <p>
  * Sample supported properties for components customization:
  * <ul>
- *     <li>springdoc.specification-strings.components.User.description - to set description of User model</li>
- *     <li>springdoc.specification-strings.components.User.properties.name.description - to set description of 'name' property</li>
- *     <li>springdoc.specification-strings.components.User.properties.name.example - to set example of 'name' property</li>
+ *     <li>springdoc.spec-properties.components.User.description - to set description of User model</li>
+ *     <li>springdoc.spec-properties.components.User.properties.name.description - to set description of 'name' property</li>
+ *     <li>springdoc.spec-properties.components.User.properties.name.example - to set example of 'name' property</li>
  * </ul>
  * <p>
  * Sample supported properties for paths/operationIds customization:
  * <ul>
- *     <li>springdoc.specification-strings.paths.{operationId}.description - to set description of {operationId}</li>
- *     <li>springdoc.specification-strings.paths.{operationId}.summary - to set summary of {operationId}</li>
+ *     <li>springdoc.spec-properties.paths.{operationId}.description - to set description of {operationId}</li>
+ *     <li>springdoc.spec-properties.paths.{operationId}.summary - to set summary of {operationId}</li>
  * </ul>
  * <p>
  * Support for groped openapi customization is similar to the above, but with a group name prefix.
  * E.g.
  * <ul>
- *     <li>springdoc.specification-strings.{group-name}.info.title - to set title of api-info</li>
- *     <li>springdoc.specification-strings.{group-name}.components.User.description - to set description of User model</li>
- *     <li>springdoc.specification-strings.{group-name}.paths.{operationId}.description - to set description of {operationId}</li>
+ *     <li>springdoc.spec-properties.{group-name}.info.title - to set title of api-info</li>
+ *     <li>springdoc.spec-properties.{group-name}.components.User.description - to set description of User model</li>
+ *     <li>springdoc.spec-properties.{group-name}.paths.{operationId}.description - to set description of {operationId}</li>
  * </ul>
  *
  * @author Anton Tkachenko tkachenkoas@gmail.com
+ * @author bnasslahsen
  */
-public class SpecificationStringPropertiesCustomizer implements GlobalOpenApiCustomizer {
+public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 
-    private static final String SPECIFICATION_STRINGS_PREFIX = "springdoc.specification-strings.";
+	/**
+	 * The Property resolver.
+	 */
+	private final PropertyResolver propertyResolver;
 
-    private final PropertyResolver propertyResolver;
-    private final String propertyPrefix;
+	/**
+	 * The Property prefix.
+	 */
+	private final String propertyPrefix;
 
-    public SpecificationStringPropertiesCustomizer(PropertyResolver resolverUtils) {
+	/**
+	 * Instantiates a new Spec properties customizer.
+	 *
+	 * @param resolverUtils the resolver utils
+	 */
+	public SpecPropertiesCustomizer(PropertyResolver resolverUtils) {
         this.propertyResolver = resolverUtils;
-        this.propertyPrefix = SPECIFICATION_STRINGS_PREFIX;
+        this.propertyPrefix = SPRINGDOC_SPEC_PROPERTIES_PREFIX;
     }
 
-    public SpecificationStringPropertiesCustomizer(PropertyResolver propertyResolver, String groupName) {
+	/**
+	 * Instantiates a new Spec properties customizer.
+	 *
+	 * @param propertyResolver the property resolver
+	 * @param groupName        the group name
+	 */
+	public SpecPropertiesCustomizer(PropertyResolver propertyResolver, String groupName) {
         this.propertyResolver = propertyResolver;
-        this.propertyPrefix = SPECIFICATION_STRINGS_PREFIX + groupName + ".";
+        this.propertyPrefix = SPRINGDOC_SPEC_PROPERTIES_PREFIX + groupName + ".";
     }
 
     @Override
@@ -98,7 +117,12 @@ public class SpecificationStringPropertiesCustomizer implements GlobalOpenApiCus
         setPathsProperties(openApi);
     }
 
-    private void setOperationInfoProperties(OpenAPI openApi) {
+	/**
+	 * Sets operation info properties.
+	 *
+	 * @param openApi the open api
+	 */
+	private void setOperationInfoProperties(OpenAPI openApi) {
         if (openApi.getInfo() == null) {
             openApi.setInfo(new Info());
         }
@@ -109,7 +133,12 @@ public class SpecificationStringPropertiesCustomizer implements GlobalOpenApiCus
         resolveString(info::setTermsOfService, "info.termsOfService");
     }
 
-    private void setPathsProperties(OpenAPI openApi) {
+	/**
+	 * Sets paths properties.
+	 *
+	 * @param openApi the open api
+	 */
+	private void setPathsProperties(OpenAPI openApi) {
         Paths paths = openApi.getPaths();
         if (CollectionUtils.isEmpty(paths.values())) {
             return;
@@ -126,7 +155,12 @@ public class SpecificationStringPropertiesCustomizer implements GlobalOpenApiCus
         }
     }
 
-    private void setComponentsProperties(OpenAPI openApi) {
+	/**
+	 * Sets components properties.
+	 *
+	 * @param openApi the open api
+	 */
+	private void setComponentsProperties(OpenAPI openApi) {
         Components components = openApi.getComponents();
         if (components == null || CollectionUtils.isEmpty(components.getSchemas())) {
             return;
@@ -152,7 +186,13 @@ public class SpecificationStringPropertiesCustomizer implements GlobalOpenApiCus
         }
     }
 
-    private void resolveString(
+	/**
+	 * Resolve string.
+	 *
+	 * @param setter the setter
+	 * @param node   the node
+	 */
+	private void resolveString(
             Consumer<String> setter, String node
     ) {
         String nodeWithPrefix = propertyPrefix + node;
