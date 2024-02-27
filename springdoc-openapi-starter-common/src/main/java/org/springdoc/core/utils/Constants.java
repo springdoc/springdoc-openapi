@@ -403,7 +403,7 @@ public final class Constants {
 	/**
 	 * The constant SPRINGDOC_SORT_CONVERTER_ENABLED.
 	 */
-	public static final String SPRINGDOC_SORT_CONVERTER_ENABLED = "springdoc.model-converters.sort-converter.enabled";
+	public static final String SPRINGDOC_SORT_CONVERTER_ENABLED = "springdoc.sort-converter.enabled";
 
 	/**
 	 * The constant SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED.
