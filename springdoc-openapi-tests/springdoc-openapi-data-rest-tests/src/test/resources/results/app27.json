@@ -58,11 +58,12 @@
       "Pageable": {
         "type": "object",
         "properties": {
-          "paged": {
-            "type": "boolean"
+          "offset": {
+            "type": "integer",
+            "format": "int64"
           },
-          "unpaged": {
-            "type": "boolean"
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
           },
           "pageNumber": {
             "type": "integer",
@@ -72,25 +73,30 @@
             "type": "integer",
             "format": "int32"
           },
-          "offset": {
-            "type": "integer",
-            "format": "int64"
+          "paged": {
+            "type": "boolean"
           },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
+          "unpaged": {
+            "type": "boolean"
           }
         }
       },
       "SortObject": {
         "type": "object",
         "properties": {
-          "sorted": {
+          "direction": {
+            "type": "string"
+          },
+          "nullHandling": {
+            "type": "string"
+          },
+          "ascending": {
             "type": "boolean"
           },
-          "unsorted": {
-            "type": "boolean"
+          "property": {
+            "type": "string"
           },
-          "empty": {
+          "ignoreCase": {
             "type": "boolean"
           }
         }
