@@ -63,7 +63,16 @@
             "format": "int64"
           },
           "sort": {
-            "$ref": "#/components/schemas/SortObject"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SortObject"
+            }
+          },
+          "paged": {
+            "type": "boolean"
+          },
+          "unpaged": {
+            "type": "boolean"
           },
           "pageNumber": {
             "type": "integer",
@@ -72,12 +81,6 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "paged": {
-            "type": "boolean"
-          },
-          "unpaged": {
-            "type": "boolean"
           }
         }
       },
