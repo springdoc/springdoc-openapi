@@ -1,0 +1,26 @@
+api:
+  base-request-mapping: ""
+  info:
+    title: MKMTestWS (Test Microservice API)
+    version: "1.0"
+    description: "This API exposes endpoints for testing anything"
+    termsOfService: "https://www.test.ca/terms"
+  server:
+    description: "API Server"
+    url: "http://localhost:8080"
+  tag:
+    name: "Test Rest API"
+    description: "Test Rest API"
+  extensions:
+    name: 'x-amazon-apigateway-integration'
+    properties:
+      type: "http_proxy"
+      connectionId: "1rqafw"
+      uri: "http://my-vpc/nlb-link"
+      passthroughBehavior: "when_no_match"
+      connectionType: "VPC_LINK"
+springdoc:
+  api-docs:
+    resolve-extensions-properties: true
+  cache:
+    disabled: true

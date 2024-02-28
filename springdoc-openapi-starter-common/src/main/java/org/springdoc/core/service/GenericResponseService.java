@@ -65,7 +65,6 @@ import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.JavadocProvider;
-import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
@@ -254,7 +253,7 @@ public class GenericResponseService {
 			apiResponsesFromDoc.forEach(apiResponses::addApiResponse);
 		// for each one build ApiResponse and add it to existing responses
 		// Fill api Responses
-		computeResponseFromDoc(components, handlerMethod.getReturnType(), apiResponses, methodAttributes, springDocConfigProperties.isOpenapi31());
+		computeResponseFromDoc(components, handlerMethod.getReturnType(), apiResponses, methodAttributes, springDocConfigProperties.isOpenapi31(),methodAttributes.getLocale() );
 		buildApiResponses(components, handlerMethod.getReturnType(), apiResponses, methodAttributes);
 		return apiResponses;
 	}
@@ -329,7 +328,7 @@ public class GenericResponseService {
 						JavadocProvider javadocProvider = operationService.getJavadocProvider();
 						methodAttributes.setJavadocReturn(javadocProvider.getMethodJavadocReturn(methodParameter.getMethod()));
 					}
-					Map<String, ApiResponse> apiResponses = computeResponseFromDoc(components, methodParameter, apiResponsesOp, methodAttributes, springDocConfigProperties.isOpenapi31());
+					Map<String, ApiResponse> apiResponses = computeResponseFromDoc(components, methodParameter, apiResponsesOp, methodAttributes, springDocConfigProperties.isOpenapi31(), locale);
 					buildGenericApiResponses(components, methodParameter, apiResponsesOp, methodAttributes);
 					apiResponses.forEach(controllerAdviceInfoApiResponseMap::put);
 				}
@@ -363,10 +362,11 @@ public class GenericResponseService {
 	 * @param apiResponsesOp   the api responses op
 	 * @param methodAttributes the method attributes
 	 * @param openapi31        the openapi 31
+	 * @param locale           the locale
 	 * @return the map
 	 */
 	private Map<String, ApiResponse> computeResponseFromDoc(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
-			MethodAttributes methodAttributes, boolean openapi31) {
+			MethodAttributes methodAttributes, boolean openapi31, Locale locale) {
 		// Parsing documentation, if present
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray = getApiResponses(Objects.requireNonNull(methodParameter.getMethod()));
 		if (!responsesArray.isEmpty()) {
@@ -382,8 +382,15 @@ public class GenericResponseService {
 				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotations.description(), methodAttributes.getLocale()));
 				buildContentFromDoc(components, apiResponsesOp, methodAttributes, apiResponseAnnotations, apiResponse, openapi31);
 				Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), apiResponseAnnotations.extensions());
-				if (!CollectionUtils.isEmpty(extensions))
-					apiResponse.extensions(extensions);
+				if (!CollectionUtils.isEmpty(extensions)){
+					if (propertyResolverUtils.isResolveExtensionsProperties()) {
+						Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
+						extensionsResolved.forEach(apiResponse::addExtension);
+					}
+					else {
+						apiResponse.extensions(extensions);
+					}
+				}
 				AnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), methodAttributes.getJsonViewAnnotation(), openapi31)
 						.ifPresent(apiResponse::headers);
 				apiResponsesOp.addApiResponse(httpCode, apiResponse);

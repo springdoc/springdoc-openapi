@@ -24,7 +24,9 @@
 
 package org.springdoc.core.utils;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import io.swagger.v3.oas.models.SpecVersion;
 import org.slf4j.Logger;
@@ -34,9 +36,11 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.util.CollectionUtils;
 
 /**
  * The type Property resolver utils.
+ *
  * @author bnasslahsen
  */
 public class PropertyResolverUtils {
@@ -64,8 +68,8 @@ public class PropertyResolverUtils {
 	/**
 	 * Instantiates a new Property resolver utils.
 	 *
-	 * @param factory the factory
-	 * @param messageSource the message source
+	 * @param factory                   the factory
+	 * @param messageSource             the message source
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
 	public PropertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource, SpringDocConfigProperties springDocConfigProperties) {
@@ -78,7 +82,7 @@ public class PropertyResolverUtils {
 	 * Resolve string.
 	 *
 	 * @param parameterProperty the parameter property
-	 * @param locale the locale
+	 * @param locale            the locale
 	 * @return the string
 	 */
 	public String resolve(String parameterProperty, Locale locale) {
@@ -136,5 +140,43 @@ public class PropertyResolverUtils {
 	 */
 	public boolean isOpenapi31() {
 		return springDocConfigProperties.isOpenapi31();
+	}
+
+	/**
+	 * Is resolve extensions properties boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isResolveExtensionsProperties() {
+		return springDocConfigProperties.getApiDocs().isResolveExtensionsProperties();
+	}
+	/**
+	 * Resolve extensions map.
+	 *
+	 * @param locale     the locale
+	 * @param extensions the extensions
+	 * @return the map
+	 */
+	public Map<String, Object> resolveExtensions(Locale locale, Map<String, Object> extensions) {
+		if (!CollectionUtils.isEmpty(extensions)) {
+			Map<String, Object> extensionsResolved = new HashMap<>();
+			extensions.forEach((key, value) -> {
+				String keyResolved = resolve(key, locale);
+				if (value instanceof HashMap<?, ?>) {
+					Map<String, Object> valueResolved = new HashMap<>();
+					((HashMap<?, ?>) value).forEach((key1, value1) -> {
+						String key1Resolved = resolve(key1.toString(), locale);
+						String value1Resolved = resolve(value1.toString(), locale);
+						valueResolved.put(key1Resolved, value1Resolved);
+					});
+					extensionsResolved.put(keyResolved, valueResolved);
+				}
+				else
+					extensionsResolved.put(keyResolved, value);
+			});
+			return extensionsResolved;
+		}
+		else
+			return extensions;
 	}
 }

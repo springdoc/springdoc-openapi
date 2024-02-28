@@ -24,17 +24,22 @@
 
 package org.springdoc.core.customizers;
 
-import io.swagger.v3.oas.models.*;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.media.Schema;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.env.PropertyResolver;
-import org.springframework.util.CollectionUtils;
-
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.Schema;
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.core.env.PropertyResolver;
+import org.springframework.util.CollectionUtils;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SPEC_PROPERTIES_PREFIX;
 
