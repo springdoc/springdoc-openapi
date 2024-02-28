@@ -712,7 +712,7 @@ public class GenericResponseService {
 
 			LinkedHashMap<String, ApiResponse> genericApiResponsesClone;
 			try {
-				ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
+				ObjectMapper objectMapper = new ObjectMapper();
 				genericApiResponsesClone = objectMapper.readValue(objectMapper.writeValueAsString(genericApiResponseMap), ApiResponses.class);
 				return genericApiResponsesClone;
 			}

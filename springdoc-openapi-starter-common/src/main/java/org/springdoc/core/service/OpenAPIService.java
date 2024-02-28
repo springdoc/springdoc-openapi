@@ -244,14 +244,12 @@ public class OpenAPIService implements ApplicationContextAware {
 		}
 		else {
 			try {
-				ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
+				ObjectMapper objectMapper = new ObjectMapper();
 				calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class);
-				objectMapper.setSerializationInclusion(Include.ALWAYS);
-				Map extensionsClone = objectMapper.readValue(objectMapper.writeValueAsString(openAPI.getExtensions()), Map.class);
-				calculatedOpenAPI.extensions(extensionsClone);
 			}
 			catch (JsonProcessingException e) {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+				calculatedOpenAPI = openAPI;
 			}
 		}
 
