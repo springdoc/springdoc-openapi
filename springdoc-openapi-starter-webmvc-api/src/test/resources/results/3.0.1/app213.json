@@ -1,0 +1,79 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "MKMTestWS (Test Microservice API)",
+    "description": "This API exposes endpoints for testing anything",
+    "termsOfService": "https://www.test.ca/terms",
+    "version": "1.0",
+    "x-x-amazon-apigateway-integration": {
+      "passthroughBehavior": "when_no_match",
+      "connectionId": "1rqafw",
+      "type": "http_proxy",
+      "httpMethod": "GET",
+      "uri": "http://my-vpc/nlb-link/testcontroller/getTest",
+      "connectionType": "VPC_LINK"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "API Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Test Rest API",
+      "description": "Test Rest API"
+    }
+  ],
+  "paths": {
+    "/testcontroller/": {
+      "post": {
+        "tags": [
+          "Test Rest API"
+        ],
+        "summary": "Get Test",
+        "description": "Get Test",
+        "operationId": "queryMyDto",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          }
+        },
+        "x-x-amazon-apigateway-integration": {
+          "passthroughBehavior": "when_no_match",
+          "connectionId": "1rqafw",
+          "type": "http_proxy",
+          "httpMethod": "GET",
+          "uri": "http://my-vpc/nlb-link/testcontroller/getTest",
+          "connectionType": "VPC_LINK"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PersonDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

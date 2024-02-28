@@ -1235,6 +1235,11 @@ public class SpringDocConfigProperties {
 		private boolean resolveSchemaProperties;
 
 		/**
+		 * The Resolve extensions properties.
+		 */
+		private boolean resolveExtensionsProperties;
+
+		/**
 		 * The Groups.
 		 */
 		private Groups groups = new Groups();
@@ -1369,6 +1374,24 @@ public class SpringDocConfigProperties {
 			public String getVersion() {
 				return version;
 			}
+		}
+
+		/**
+		 * Is resolve extensions properties boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isResolveExtensionsProperties() {
+			return resolveExtensionsProperties;
+		}
+
+		/**
+		 * Sets resolve extensions properties.
+		 *
+		 * @param resolveExtensionsProperties the resolve extensions properties
+		 */
+		public void setResolveExtensionsProperties(boolean resolveExtensionsProperties) {
+			this.resolveExtensionsProperties = resolveExtensionsProperties;
 		}
 	}
 
@@ -1722,4 +1745,6 @@ public class SpringDocConfigProperties {
 			return true;
 		return false;
 	}
+	
+	
 }

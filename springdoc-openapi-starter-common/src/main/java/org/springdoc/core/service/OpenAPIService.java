@@ -42,7 +42,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.jackson.TypeNameResolver;
@@ -71,7 +70,6 @@ import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.JavadocProvider;
-import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.PropertyResolverUtils;
 
 import org.springframework.beans.BeansException;
@@ -97,6 +95,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 /**
  * The type Open api builder.
+ *
  * @author bnasslahsen
  */
 public class OpenAPIService implements ApplicationContextAware {
@@ -179,13 +178,13 @@ public class OpenAPIService implements ApplicationContextAware {
 	/**
 	 * Instantiates a new Open api builder.
 	 *
-	 * @param openAPI the open api
-	 * @param securityParser the security parser
+	 * @param openAPI                   the open api
+	 * @param securityParser            the security parser
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param propertyResolverUtils the property resolver utils
+	 * @param propertyResolverUtils     the property resolver utils
 	 * @param openApiBuilderCustomizers the open api builder customisers
-	 * @param serverBaseUrlCustomizers the server base url customizers
-	 * @param javadocProvider the javadoc provider
+	 * @param serverBaseUrlCustomizers  the server base url customizers
+	 * @param javadocProvider           the javadoc provider
 	 */
 	public OpenAPIService(Optional<OpenAPI> openAPI, SecurityService securityParser,
 			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
@@ -230,6 +229,7 @@ public class OpenAPIService implements ApplicationContextAware {
 
 	/**
 	 * Build.
+	 *
 	 * @param locale the locale
 	 * @return the open api
 	 */
@@ -317,9 +317,9 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Build tags operation.
 	 *
 	 * @param handlerMethod the handler method
-	 * @param operation the operation
-	 * @param openAPI the open api
-	 * @param locale the locale
+	 * @param operation     the operation
+	 * @param openAPI       the open api
+	 * @param locale        the locale
 	 * @return the operation
 	 */
 	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI, Locale locale) {
@@ -394,10 +394,10 @@ public class OpenAPIService implements ApplicationContextAware {
 	/**
 	 * Build tags from method.
 	 *
-	 * @param method the method
-	 * @param tags the tags
+	 * @param method  the method
+	 * @param tags    the tags
 	 * @param tagsStr the tags str
-	 * @param locale the locale
+	 * @param locale  the locale
 	 */
 	private void buildTagsFromMethod(Method method, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr, Locale locale) {
 		// method tags
@@ -417,8 +417,8 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Add tags.
 	 *
 	 * @param sourceTags the source tags
-	 * @param tags the tags
-	 * @param locale the locale
+	 * @param tags       the tags
+	 * @param locale     the locale
 	 */
 	private void addTags(List<Tag> sourceTags, Set<io.swagger.v3.oas.models.tags.Tag> tags, Locale locale) {
 		Optional<Set<io.swagger.v3.oas.models.tags.Tag>> optionalTagSet = AnnotationsUtils
@@ -437,9 +437,9 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Build tags from class.
 	 *
 	 * @param beanType the bean type
-	 * @param tags the tags
-	 * @param tagsStr the tags str
-	 * @param locale the locale
+	 * @param tags     the tags
+	 * @param tagsStr  the tags str
+	 * @param locale   the locale
 	 */
 	public void buildTagsFromClass(Class<?> beanType, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr, Locale locale) {
 		List<Tag> allTags = new ArrayList<>();
@@ -473,7 +473,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		if (!CollectionUtils.isEmpty(properties)) {
 			LinkedHashMap<String, Schema> resolvedSchemas = properties.entrySet().stream().map(es -> {
 				es.setValue(resolveProperties(es.getValue(), locale));
-				if(es.getValue() instanceof ArraySchema arraySchema){
+				if (es.getValue() instanceof ArraySchema arraySchema) {
 					resolveProperties(arraySchema.getItems(), locale);
 				}
 				return es;
@@ -539,8 +539,8 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Build open api with open api definition.
 	 *
 	 * @param openAPI the open api
-	 * @param apiDef the api def
-	 * @param locale the locale
+	 * @param apiDef  the api def
+	 * @param locale  the locale
 	 */
 	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef, Locale locale) {
 		// info
@@ -568,7 +568,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Resolve properties info.
 	 *
 	 * @param servers the servers
-	 * @param locale the locale
+	 * @param locale  the locale
 	 * @return the servers
 	 */
 	private List<Server> resolveProperties(List<Server> servers, Locale locale) {
@@ -584,7 +584,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	/**
 	 * Resolve properties info.
 	 *
-	 * @param info the info
+	 * @param info   the info
 	 * @param locale the locale
 	 * @return the info
 	 */
@@ -606,16 +606,24 @@ public class OpenAPIService implements ApplicationContextAware {
 			resolveProperty(contact::getEmail, contact::email, propertyResolverUtils, locale);
 			resolveProperty(contact::getUrl, contact::url, propertyResolverUtils, locale);
 		}
+
+		if(propertyResolverUtils.isResolveExtensionsProperties()){
+			Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, info.getExtensions());
+			info.setExtensions(extensionsResolved);			
+		}
+		
 		return info;
 	}
+
+
 
 	/**
 	 * Resolve property.
 	 *
-	 * @param getProperty the get property
-	 * @param setProperty the set property
+	 * @param getProperty           the get property
+	 * @param setProperty           the set property
 	 * @param propertyResolverUtils the property resolver utils
-	 * @param locale the locale
+	 * @param locale                the locale
 	 */
 	private void resolveProperty(Supplier<String> getProperty, Consumer<String> setProperty,
 			PropertyResolverUtils propertyResolverUtils, Locale locale) {
@@ -629,7 +637,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Calculate security schemes.
 	 *
 	 * @param components the components
-	 * @param locale the locale
+	 * @param locale     the locale
 	 */
 	private void calculateSecuritySchemes(Components components, Locale locale) {
 		// Look for SecurityScheme in a spring managed bean
@@ -664,8 +672,8 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Add security scheme.
 	 *
 	 * @param apiSecurityScheme the api security scheme
-	 * @param components the components
-	 * @param locale the locale
+	 * @param components        the components
+	 * @param locale            the locale
 	 */
 	private void addSecurityScheme(Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme,
 			Components components, Locale locale) {
@@ -689,7 +697,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	/**
 	 * Gets api def class.
 	 *
-	 * @param scanner the scanner
+	 * @param scanner        the scanner
 	 * @param packagesToScan the packages to scan
 	 * @return the api def class
 	 */
@@ -723,7 +731,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	/**
 	 * Gets security schemes classes.
 	 *
-	 * @param scanner the scanner
+	 * @param scanner        the scanner
 	 * @param packagesToScan the packages to scan
 	 * @return the security schemes classes
 	 */
@@ -752,7 +760,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Add tag.
 	 *
 	 * @param handlerMethods the handler methods
-	 * @param tag the tag
+	 * @param tag            the tag
 	 */
 	public void addTag(Set<HandlerMethod> handlerMethods, io.swagger.v3.oas.models.tags.Tag tag) {
 		handlerMethods.forEach(handlerMethod -> springdocTags.put(handlerMethod, tag));
@@ -802,7 +810,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Sets cached open api.
 	 *
 	 * @param cachedOpenAPI the cached open api
-	 * @param locale associated the the cache entry
+	 * @param locale        associated the the cache entry
 	 */
 	public void setCachedOpenAPI(OpenAPI cachedOpenAPI, Locale locale) {
 		this.cachedOpenAPI.put(locale.toLanguageTag(), cachedOpenAPI);

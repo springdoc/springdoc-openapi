@@ -38,8 +38,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static org.springdoc.core.utils.Constants.SWAGGER_UI_PATH;
 import static org.springdoc.core.utils.Constants.SWAGGER_CONFIG_FILE;
+import static org.springdoc.core.utils.Constants.SWAGGER_UI_PATH;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
