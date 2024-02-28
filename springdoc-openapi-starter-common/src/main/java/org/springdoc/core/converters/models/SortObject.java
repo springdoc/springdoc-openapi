@@ -24,11 +24,14 @@
 package org.springdoc.core.converters.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The type Sort response.
  * @author bnasslahsen
  */
+@ArraySchema(arraySchema = @Schema(implementation = SortObject.class))
 public class SortObject {
 
 	/**
