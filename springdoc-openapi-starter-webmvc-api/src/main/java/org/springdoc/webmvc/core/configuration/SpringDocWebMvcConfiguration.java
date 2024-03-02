@@ -105,7 +105,7 @@ public class SpringDocWebMvcConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
+	@ConditionalOnExpression("(${springdoc.use-management-port:false} == false ) and ${springdoc.enable-default-api-docs:true}")
 	@Lazy(false)
 	OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
@@ -233,7 +233,7 @@ public class SpringDocWebMvcConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean(MultipleOpenApiSupportConfiguration.class)
-		@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
+		@ConditionalOnExpression("${springdoc.use-management-port:false} and ${springdoc.enable-default-api-docs:true}")
 		@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 		@Lazy(false)
 		OpenApiActuatorResource openApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,

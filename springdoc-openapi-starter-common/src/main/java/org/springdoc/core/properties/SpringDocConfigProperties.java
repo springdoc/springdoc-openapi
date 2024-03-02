@@ -233,6 +233,11 @@ public class SpringDocConfigProperties {
 	private boolean enableDataRest = true;
 
 	/**
+	 * The Enable default api docs.
+	 */
+	private boolean enableDefaultApiDocs = true;
+
+	/**
 	 * convert query param to form data when consumes is multipart/form-data
 	 */
 	private boolean defaultSupportFormData;
@@ -1762,6 +1767,22 @@ public class SpringDocConfigProperties {
 			return true;
 		return false;
 	}
-	
-	
+
+	/**
+	 * Is enable default api docs boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isEnableDefaultApiDocs() {
+		return enableDefaultApiDocs;
+	}
+
+	/**
+	 * Sets enable default api docs.
+	 *
+	 * @param enableDefaultApiDocs the enable default api docs
+	 */
+	public void setEnableDefaultApiDocs(boolean enableDefaultApiDocs) {
+		this.enableDefaultApiDocs = enableDefaultApiDocs;
+	}
 }

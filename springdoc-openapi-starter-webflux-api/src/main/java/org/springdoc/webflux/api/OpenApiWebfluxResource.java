@@ -43,6 +43,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +52,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springdoc.core.utils.Constants.API_DOCS_URL;
 import static org.springdoc.core.utils.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_URL_YAML;
+import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLE_DEFAULT_API_DOCS;
 
 /**
  * The type Open api resource.
@@ -58,6 +60,7 @@ import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_URL_YAML;
  * @author bnasslahsen
  */
 @RestController
+@ConditionalOnProperty(name = SPRINGDOC_ENABLE_DEFAULT_API_DOCS, havingValue = "true", matchIfMissing = true)
 public class OpenApiWebfluxResource extends OpenApiResource {
 
 

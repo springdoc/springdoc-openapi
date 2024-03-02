@@ -370,6 +370,12 @@ public final class Constants {
 	 */
 	public static final String SPRINGDOC_USE_MANAGEMENT_PORT = "springdoc.use-management-port";
 
+
+	/**
+	 * The constant SPRINGDOC_ENABLE_DEFAULT_API_DOCS.
+	 */
+	public static final String SPRINGDOC_ENABLE_DEFAULT_API_DOCS = "springdoc.enable-default-api-docs";
+
 	/**
 	 * The constant SPRINGDOC_USE_ROOT_PATH.
 	 */
