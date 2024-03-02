@@ -25,7 +25,10 @@
 package org.springdoc.core.properties;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import io.swagger.v3.oas.models.SpecVersion;
 import org.springdoc.core.configuration.SpringDocConfiguration;
@@ -112,7 +115,7 @@ public class SpringDocConfigProperties {
 	/**
 	 * The Group configs.
 	 */
-	private List<GroupConfig> groupConfigs = new ArrayList<>();
+	private Set<GroupConfig> groupConfigs = new HashSet<>();
 
 	/**
 	 * The Auto tag classes.
@@ -781,12 +784,13 @@ public class SpringDocConfigProperties {
 		return cache.isDisabled();
 	}
 
+
 	/**
 	 * Gets group configs.
 	 *
 	 * @return the group configs
 	 */
-	public List<GroupConfig> getGroupConfigs() {
+	public Set<GroupConfig> getGroupConfigs() {
 		return groupConfigs;
 	}
 
@@ -795,7 +799,7 @@ public class SpringDocConfigProperties {
 	 *
 	 * @param groupConfigs the group configs
 	 */
-	public void setGroupConfigs(List<GroupConfig> groupConfigs) {
+	public void setGroupConfigs(Set<GroupConfig> groupConfigs) {
 		this.groupConfigs = groupConfigs;
 	}
 
@@ -1702,6 +1706,19 @@ public class SpringDocConfigProperties {
 		 */
 		public void setDisplayName(String displayName) {
 			this.displayName = displayName;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			GroupConfig that = (GroupConfig) o;
+			return Objects.equals(group, that.group);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(group);
 		}
 	}
 
