@@ -96,7 +96,7 @@ public class SpringDocWebFluxConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
+	@ConditionalOnExpression("(${springdoc.use-management-port:false} == false ) and ${springdoc.enable-default-api-docs:true}")
 	@Lazy(false)
 	OpenApiWebfluxResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
@@ -205,7 +205,7 @@ public class SpringDocWebFluxConfiguration {
 		 */
 		@Bean
 		@ConditionalOnMissingBean(MultipleOpenApiSupportConfiguration.class)
-		@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
+		@ConditionalOnExpression("${springdoc.use-management-port:false} and ${springdoc.enable-default-api-docs:true}")
 		@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 		@Lazy(false)
 		OpenApiActuatorResource actuatorOpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
