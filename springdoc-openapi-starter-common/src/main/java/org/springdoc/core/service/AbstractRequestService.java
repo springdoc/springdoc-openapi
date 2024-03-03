@@ -61,7 +61,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
@@ -77,7 +76,6 @@ import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpMethod;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -93,11 +91,13 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.containsDeprecatedAnnotation;
+import static org.springdoc.core.service.GenericParameterService.isFile;
 import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
 
 /**
  * The type Abstract request builder.
+ *
  * @author bnasslahsen
  */
 public abstract class AbstractRequestService {
@@ -183,10 +183,10 @@ public abstract class AbstractRequestService {
 	/**
 	 * Instantiates a new Abstract request builder.
 	 *
-	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyService the request body builder
-	 * @param operationService the operation builder
-	 * @param parameterCustomizers the parameter customizers
+	 * @param parameterBuilder                      the parameter builder
+	 * @param requestBodyService                    the request body builder
+	 * @param operationService                      the operation builder
+	 * @param parameterCustomizers                  the parameter customizers
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
 	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
@@ -237,7 +237,7 @@ public abstract class AbstractRequestService {
 	 * Gets headers.
 	 *
 	 * @param methodAttributes the method attributes
-	 * @param map the map
+	 * @param map              the map
 	 * @return the headers
 	 */
 	@SuppressWarnings("unchecked")
@@ -265,11 +265,11 @@ public abstract class AbstractRequestService {
 	/**
 	 * Build operation.
 	 *
-	 * @param handlerMethod the handler method
-	 * @param requestMethod the request method
-	 * @param operation the operation
+	 * @param handlerMethod    the handler method
+	 * @param requestMethod    the request method
+	 * @param operation        the operation
 	 * @param methodAttributes the method attributes
-	 * @param openAPI the open api
+	 * @param openAPI          the open api
 	 * @return the operation
 	 */
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
@@ -378,10 +378,10 @@ public abstract class AbstractRequestService {
 	/**
 	 * Gets parameter linked hash map.
 	 *
-	 * @param components the components
-	 * @param methodAttributes the method attributes
+	 * @param components          the components
+	 * @param methodAttributes    the method attributes
 	 * @param operationParameters the operation parameters
-	 * @param parametersDocMap the parameters doc map
+	 * @param parametersDocMap    the parameters doc map
 	 * @return the parameter linked hash map
 	 */
 	private LinkedHashMap<ParameterId, Parameter> getParameterLinkedHashMap(Components components, MethodAttributes methodAttributes, List<Parameter> operationParameters, Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> parametersDocMap) {
@@ -425,8 +425,8 @@ public abstract class AbstractRequestService {
 	/**
 	 * Customise parameter parameter.
 	 *
-	 * @param parameter the parameter
-	 * @param parameterInfo the parameter info
+	 * @param parameter           the parameter
+	 * @param parameterInfo       the parameter info
 	 * @param operationParameters the operation parameters
 	 */
 	protected void customiseParameter(Parameter parameter, ParameterInfo parameterInfo, List<Parameter> operationParameters) {
@@ -472,9 +472,9 @@ public abstract class AbstractRequestService {
 	/**
 	 * Sets params.
 	 *
-	 * @param operation the operation
+	 * @param operation           the operation
 	 * @param operationParameters the operation parameters
-	 * @param requestBodyInfo the request body info
+	 * @param requestBodyInfo     the request body info
 	 */
 	private void setParams(Operation operation, List<Parameter> operationParameters, RequestBodyInfo requestBodyInfo) {
 		if (!CollectionUtils.isEmpty(operationParameters))
@@ -496,10 +496,10 @@ public abstract class AbstractRequestService {
 	/**
 	 * Build params parameter.
 	 *
-	 * @param parameterInfo the parameter info
-	 * @param components the components
-	 * @param requestMethod the request method
-	 * @param jsonView the json view
+	 * @param parameterInfo  the parameter info
+	 * @param components     the components
+	 * @param requestMethod  the request method
+	 * @param jsonView       the json view
 	 * @param openApiVersion the open api version
 	 * @return the parameter
 	 */
@@ -526,8 +526,8 @@ public abstract class AbstractRequestService {
 	 * Build param parameter.
 	 *
 	 * @param parameterInfo the parameter info
-	 * @param components the components
-	 * @param jsonView the json view
+	 * @param components    the components
+	 * @param jsonView      the json view
 	 * @return the parameter
 	 */
 	public Parameter buildParam(ParameterInfo parameterInfo, Components components, JsonView jsonView) {
@@ -573,7 +573,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * Apply bean validator annotations.
 	 *
-	 * @param parameter the parameter
+	 * @param parameter   the parameter
 	 * @param annotations the annotations
 	 */
 	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
@@ -592,7 +592,7 @@ public abstract class AbstractRequestService {
 	 *
 	 * @param requestBody the request body
 	 * @param annotations the annotations
-	 * @param isOptional the is optional
+	 * @param isOptional  the is optional
 	 */
 	public void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
 		Map<String, Annotation> annos = new HashMap<>();
@@ -615,9 +615,27 @@ public abstract class AbstractRequestService {
 	}
 
 	/**
+	 * Gets request body builder.
+	 *
+	 * @return the request body builder
+	 */
+	public RequestBodyService getRequestBodyBuilder() {
+		return requestBodyService;
+	}
+
+	/**
+	 * Is default flat param object boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isDefaultFlatParamObject() {
+		return defaultFlatParamObject;
+	}
+	
+	/**
 	 * Calculate size.
 	 *
-	 * @param annos the annos
+	 * @param annos  the annos
 	 * @param schema the schema
 	 */
 	private void calculateSize(Map<String, Annotation> annos, Schema<?> schema) {
@@ -632,15 +650,6 @@ public abstract class AbstractRequestService {
 				schema.setMaxLength(size.max());
 			}
 		}
-	}
-
-	/**
-	 * Gets request body builder.
-	 *
-	 * @return the request body builder
-	 */
-	public RequestBodyService getRequestBodyBuilder() {
-		return requestBodyService;
 	}
 
 	/**
@@ -673,7 +682,7 @@ public abstract class AbstractRequestService {
 	/**
 	 * Apply validations to schema.
 	 *
-	 * @param annos the annos
+	 * @param annos  the annos
 	 * @param schema the schema
 	 */
 	private void applyValidationsToSchema(Map<String, Annotation> annos, Schema<?> schema) {
@@ -713,31 +722,65 @@ public abstract class AbstractRequestService {
 	/**
 	 * Is RequestBody param boolean.
 	 *
-	 * @param requestMethod the request method
-	 * @param parameterInfo the parameter info
+	 * @param requestMethod  the request method
+	 * @param parameterInfo  the parameter info
 	 * @param openApiVersion the open api version
 	 * @return the boolean
 	 */
 	private boolean isRequestBodyParam(RequestMethod requestMethod, ParameterInfo parameterInfo, String openApiVersion) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
-		Boolean isBodyAllowed = !RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openApiVersion);
+		boolean isBodyAllowed = !RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openApiVersion);
 
 		return (isBodyAllowed && (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getIn() == null) && !delegatingMethodParameter.isParameterObject())
 				&&
 				((methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
 						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
-						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class) != null
 						|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null)
-						|| (!ClassUtils.isPrimitiveOrWrapper(methodParameter.getParameterType()) && (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()))));
+						|| checkOperationRequestBody(methodParameter)
+						|| checkFile(methodParameter)
+
+				);
 	}
 
 	/**
-	 * Is default flat param object boolean.
+	 * Check file boolean.
 	 *
+	 * @param methodParameter the method parameter
 	 * @return the boolean
 	 */
-	public boolean isDefaultFlatParamObject() {
-		return defaultFlatParamObject;
+	private boolean checkFile(MethodParameter methodParameter) {
+		if (methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class) != null)
+			return true;
+		else if (methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestParam.class) != null) {
+			return isFile(methodParameter.getParameterType());
+		}
+		return false;
+	}
+
+	/**
+	 * Check operation request body boolean.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the boolean
+	 */
+	private boolean checkOperationRequestBody(MethodParameter methodParameter) {
+		if (AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.Operation.class) != null) {
+			io.swagger.v3.oas.annotations.Operation operation = AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.Operation.class);
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody = operation.requestBody();
+			if (StringUtils.isNotBlank(requestBody.description()))
+				return true;
+			else if (StringUtils.isNotBlank(requestBody.ref()))
+				return true;
+			else if (requestBody.required())
+				return true;
+			else if (requestBody.useParameterTypeSchema())
+				return true;
+			else if (requestBody.content().length > 0)
+				return true;
+			else
+				return requestBody.extensions().length > 0;
+		}
+		return false;
 	}
 }
