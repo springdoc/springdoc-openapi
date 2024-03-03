@@ -285,6 +285,7 @@ public class RouterFunctionData {
 			case "PATCH" -> requestMethod = RequestMethod.PATCH;
 			case "HEAD" -> requestMethod = RequestMethod.HEAD;
 			case "OPTIONS" -> requestMethod = RequestMethod.OPTIONS;
+			case "TRACE" -> requestMethod = RequestMethod.TRACE;
 			default ->
 					throw new IllegalStateException("Unexpected value: " + httpMethod.name());
 		}
