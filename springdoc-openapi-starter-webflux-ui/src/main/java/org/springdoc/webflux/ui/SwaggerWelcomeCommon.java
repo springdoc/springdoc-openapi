@@ -49,11 +49,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * The Web jars prefix url.
 	 */
 	protected String webJarsPrefixUrl;
-
-	/**
-	 * The Oauth prefix.
-	 */
-	protected UriComponentsBuilder oauthPrefix;
+	
 
 	/**
 	 * Instantiates a new Abstract swagger welcome.
