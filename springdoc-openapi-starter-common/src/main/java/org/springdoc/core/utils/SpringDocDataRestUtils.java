@@ -281,7 +281,7 @@ public class SpringDocDataRestUtils {
 	 */
 	private void updateResponseSchemaEmbedded(Components components, EntityInfo entityInfo, Entry<String, Schema> entry, boolean openapi31) {
 		String entityClassName = linkRelationProvider.getCollectionResourceRelFor(entityInfo.getDomainType()).value();
-		ArraySchema arraySchema = (ArraySchema) ((ObjectSchema) entry.getValue()).getProperties().get(entityClassName);
+		ArraySchema arraySchema = (ArraySchema) entry.getValue().getProperties().get(entityClassName);
 		if (arraySchema != null) {
 			Schema itemsSchema = arraySchema.getItems();
 			Set<String> entitiesNames = entityInoMap.keySet();
