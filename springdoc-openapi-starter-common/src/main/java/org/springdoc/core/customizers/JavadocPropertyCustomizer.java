@@ -185,17 +185,20 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 	 * @param field             the field
 	 * @return the boolean
 	 */
-	private static boolean findFields(Entry<String, Schema> stringSchemaEntry, Field field) {
-		if (field.getName().equals(stringSchemaEntry.getKey())){
+	private boolean findFields(Entry<String, Schema> stringSchemaEntry, Field field) {
+		if (field.getName().equals(stringSchemaEntry.getKey())) {
 			return true;
 		}
 		else {
 			JsonProperty jsonPropertyAnnotation = field.getAnnotation(JsonProperty.class);
 			if (jsonPropertyAnnotation != null) {
 				String jsonPropertyName = jsonPropertyAnnotation.value();
-				if (jsonPropertyName.equals(stringSchemaEntry.getKey())){
+				if (jsonPropertyName.equals(stringSchemaEntry.getKey())) {
 					return true;
 				}
+			}
+			else if (field.getName().equalsIgnoreCase(stringSchemaEntry.getKey().replaceAll("_", ""))) {
+				return true;
 			}
 			return false;
 		}
