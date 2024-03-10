@@ -60,11 +60,11 @@
             "type": "string",
             "description": "The Email."
           },
-          "firstName": {
+          "first_name": {
             "type": "string",
             "description": "The First name."
           },
-          "lastName": {
+          "last_name": {
             "type": "string",
             "description": "The Last name."
           }

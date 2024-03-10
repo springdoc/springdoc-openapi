@@ -18,9 +18,13 @@
 
 package test.org.springdoc.api.app13;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 /**
  * The type Person dto.
  */
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PersonDTO {
 	/**
 	 * The Email.
