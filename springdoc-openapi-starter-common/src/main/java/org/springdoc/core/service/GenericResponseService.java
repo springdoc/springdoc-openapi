@@ -61,6 +61,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.models.ControllerAdviceInfo;
+import org.springdoc.core.models.MethodAdviceInfo;
 import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -242,7 +243,7 @@ public class GenericResponseService {
 	 */
 	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
 			MethodAttributes methodAttributes) {
-		Map<String, ApiResponse> genericMapResponse = getGenericMapResponse(handlerMethod.getBeanType());
+		Map<String, ApiResponse> genericMapResponse = getGenericMapResponse(handlerMethod);
 		if (springDocConfigProperties.isOverrideWithGenericResponse()) {
 			genericMapResponse = filterAndEnrichGenericMapResponseByDeclarations(handlerMethod, genericMapResponse);
 		}
@@ -316,8 +317,13 @@ public class GenericResponseService {
 					String[] methodProduces = { springDocConfigProperties.getDefaultProducesMediaType() };
 					if (reqMappingMethod != null)
 						methodProduces = reqMappingMethod.produces();
-					Map<String, ApiResponse> controllerAdviceInfoApiResponseMap = controllerAdviceInfo.getApiResponseMap();
 					MethodParameter methodParameter = new MethodParameter(method, -1);
+					MethodAdviceInfo methodAdviceInfo = new MethodAdviceInfo(method);
+					controllerAdviceInfo.addMethodAdviceInfos(methodAdviceInfo);
+					// get exceptions lists
+					Set<Class<?>> exceptions = getExceptionsFromExceptionHandler(methodParameter);
+					methodAdviceInfo.setExceptions(exceptions);
+					Map<String, ApiResponse> controllerAdviceInfoApiResponseMap = controllerAdviceInfo.getApiResponseMap();
 					ApiResponses apiResponsesOp = new ApiResponses();
 					MethodAttributes methodAttributes = new MethodAttributes(methodProduces, springDocConfigProperties.getDefaultConsumesMediaType(),
 							springDocConfigProperties.getDefaultProducesMediaType(), controllerAdviceInfoApiResponseMap, locale);
@@ -328,9 +334,9 @@ public class GenericResponseService {
 						JavadocProvider javadocProvider = operationService.getJavadocProvider();
 						methodAttributes.setJavadocReturn(javadocProvider.getMethodJavadocReturn(methodParameter.getMethod()));
 					}
-					Map<String, ApiResponse> apiResponses = computeResponseFromDoc(components, methodParameter, apiResponsesOp, methodAttributes, springDocConfigProperties.isOpenapi31(), locale);
+					computeResponseFromDoc(components, methodParameter, apiResponsesOp, methodAttributes, springDocConfigProperties.isOpenapi31(), locale);
 					buildGenericApiResponses(components, methodParameter, apiResponsesOp, methodAttributes);
-					apiResponses.forEach(controllerAdviceInfoApiResponseMap::put);
+					methodAdviceInfo.setApiResponses(apiResponsesOp);
 				}
 			}
 			if (AnnotatedElementUtils.hasAnnotation(objClz, ControllerAdvice.class)) {
@@ -382,7 +388,7 @@ public class GenericResponseService {
 				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotations.description(), methodAttributes.getLocale()));
 				buildContentFromDoc(components, apiResponsesOp, methodAttributes, apiResponseAnnotations, apiResponse, openapi31);
 				Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), apiResponseAnnotations.extensions());
-				if (!CollectionUtils.isEmpty(extensions)){
+				if (!CollectionUtils.isEmpty(extensions)) {
 					if (propertyResolverUtils.isResolveExtensionsProperties()) {
 						Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
 						extensionsResolved.forEach(apiResponse::addExtension);
@@ -627,18 +633,7 @@ public class GenericResponseService {
 				&& methodParameter.getExecutable().isAnnotationPresent(ExceptionHandler.class)) {
 			// ExceptionHandler's exception class resolution is non-trivial
 			// more info on its javadoc
-			ExceptionHandler exceptionHandler = methodParameter.getExecutable().getAnnotation(ExceptionHandler.class);
-			Set<Class<?>> exceptions = new HashSet<>();
-			if (exceptionHandler.value().length == 0) {
-				for (Parameter parameter : methodParameter.getExecutable().getParameters()) {
-					if (Throwable.class.isAssignableFrom(parameter.getType())) {
-						exceptions.add(parameter.getType());
-					}
-				}
-			}
-			else {
-				exceptions.addAll(asList(exceptionHandler.value()));
-			}
+			Set<Class<?>> exceptions = getExceptionsFromExceptionHandler(methodParameter);
 			apiResponse.addExtension(EXTENSION_EXCEPTION_CLASSES, exceptions);
 		}
 		apiResponsesOp.addApiResponse(httpCode, apiResponse);
@@ -685,12 +680,13 @@ public class GenericResponseService {
 	/**
 	 * Gets generic map response.
 	 *
-	 * @param beanType the bean type
+	 * @param handlerMethod the handler method
 	 * @return the generic map response
 	 */
-	private Map<String, ApiResponse> getGenericMapResponse(Class<?> beanType) {
+	private Map<String, ApiResponse> getGenericMapResponse(HandlerMethod handlerMethod) {
 		reentrantLock.lock();
 		try {
+			Class<?> beanType = handlerMethod.getBeanType();
 			List<ControllerAdviceInfo> controllerAdviceInfosInThisBean = localExceptionHandlers.stream()
 					.filter(controllerInfo -> {
 						Class<?> objClz = controllerInfo.getControllerAdvice().getClass();
@@ -698,7 +694,7 @@ public class GenericResponseService {
 							objClz = org.springframework.aop.support.AopUtils.getTargetClass(controllerInfo.getControllerAdvice());
 						return beanType.equals(objClz);
 					})
-					.collect(Collectors.toList());
+					.toList();
 
 			Map<String, ApiResponse> genericApiResponseMap = controllerAdviceInfosInThisBean.stream()
 					.map(ControllerAdviceInfo::getApiResponseMap)
@@ -710,11 +706,32 @@ public class GenericResponseService {
 					.filter(controllerAdviceInfo -> !beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
 					.toList();
 
+			Class<?>[] methodExceptions = handlerMethod.getMethod().getExceptionTypes();
+
 			for (ControllerAdviceInfo controllerAdviceInfo : controllerAdviceInfosNotInThisBean) {
-				controllerAdviceInfo.getApiResponseMap().forEach((key, apiResponse) -> {
-					if (!genericApiResponseMap.containsKey(key))
-						genericApiResponseMap.put(key, apiResponse);
-				});
+				List<MethodAdviceInfo> methodAdviceInfos = controllerAdviceInfo.getMethodAdviceInfos();
+				for (MethodAdviceInfo methodAdviceInfo : methodAdviceInfos) {
+					Set<Class<?>> exceptions = methodAdviceInfo.getExceptions();
+					boolean addToGenericMap = false;
+
+					for (Class<?> exception : exceptions) {
+						if (isGlobalException(exception) ||
+								Arrays.stream(methodExceptions).anyMatch(methodException ->
+										methodException.isAssignableFrom(exception) ||
+												exception.isAssignableFrom(methodException))) {
+
+							addToGenericMap = true;
+							break;
+						}
+					}
+
+					if (addToGenericMap || exceptions.isEmpty()) {
+						methodAdviceInfo.getApiResponses().forEach((key, apiResponse) -> {
+							if (!genericApiResponseMap.containsKey(key))
+								genericApiResponseMap.put(key, apiResponse);
+						});
+					}
+				}
 			}
 
 			LinkedHashMap<String, ApiResponse> genericApiResponsesClone;
@@ -732,7 +749,7 @@ public class GenericResponseService {
 			reentrantLock.unlock();
 		}
 	}
-
+	
 	/**
 	 * Is valid http code boolean.
 	 *
@@ -773,4 +790,40 @@ public class GenericResponseService {
 		return !responseSet.isEmpty() && responseSet.stream().anyMatch(apiResponseAnnotations -> httpCode.equals(apiResponseAnnotations.responseCode()));
 	}
 
+	/**
+	 * Gets exceptions from exception handler.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the exceptions from exception handler
+	 */
+	private Set<Class<?>> getExceptionsFromExceptionHandler(MethodParameter methodParameter) {
+		ExceptionHandler exceptionHandler = methodParameter.getExecutable().getAnnotation(ExceptionHandler.class);
+		Set<Class<?>> exceptions = new HashSet<>();
+		if (exceptionHandler != null) {
+			if (exceptionHandler.value().length == 0) {
+				for (Parameter parameter : methodParameter.getExecutable().getParameters()) {
+					if (Throwable.class.isAssignableFrom(parameter.getType())) {
+						exceptions.add(parameter.getType());
+					}
+				}
+			}
+			else {
+				exceptions.addAll(asList(exceptionHandler.value()));
+			}
+		}
+		return exceptions;
+	}
+
+
+	/**
+	 * Is unchecked exception boolean.
+	 *
+	 * @param exceptionClass the exception class
+	 * @return the boolean
+	 */
+	private boolean isGlobalException(Class<?> exceptionClass) {
+		return RuntimeException.class.isAssignableFrom(exceptionClass)
+				|| exceptionClass.isAssignableFrom(Exception.class)
+				|| Error.class.isAssignableFrom(exceptionClass);
+	}
 }

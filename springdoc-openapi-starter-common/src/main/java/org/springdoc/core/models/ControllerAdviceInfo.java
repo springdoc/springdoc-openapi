@@ -23,13 +23,18 @@
  */
 package org.springdoc.core.models;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.swagger.v3.oas.models.responses.ApiResponse;
 
+import org.springframework.util.CollectionUtils;
+
 /**
  * The type Controller advice info.
+ *
  * @author bnasslahsen
  */
 public class ControllerAdviceInfo {
@@ -40,9 +45,9 @@ public class ControllerAdviceInfo {
 	private final Object controllerAdvice;
 
 	/**
-	 * The Api response map.
+	 * The Method advice infos.
 	 */
-	private final Map<String, ApiResponse> apiResponseMap = new LinkedHashMap<>();
+	private List<MethodAdviceInfo> methodAdviceInfos = new ArrayList<>();
 
 	/**
 	 * Instantiates a new Controller advice info.
@@ -68,6 +73,19 @@ public class ControllerAdviceInfo {
 	 * @return the api response map
 	 */
 	public Map<String, ApiResponse> getApiResponseMap() {
+		Map<String, ApiResponse> apiResponseMap = new LinkedHashMap<>();
+		for (MethodAdviceInfo methodAdviceInfo : methodAdviceInfos) {
+			if (!CollectionUtils.isEmpty(methodAdviceInfo.getApiResponses()))
+				apiResponseMap.putAll(methodAdviceInfo.getApiResponses());
+		}
 		return apiResponseMap;
+	}
+
+	public List<MethodAdviceInfo> getMethodAdviceInfos() {
+		return methodAdviceInfos;
+	}
+
+	public void addMethodAdviceInfos(MethodAdviceInfo methodAdviceInfo) {
+		this.methodAdviceInfos.add(methodAdviceInfo);
 	}
 }

@@ -2,6 +2,7 @@ package test.org.springdoc.api.v30.app202;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class ExampleController {
 	@GetMapping("/")
-	public void index() {
+	public void index() throws HttpRequestMethodNotSupportedException {
 		throw new IllegalArgumentException();
 	}
 

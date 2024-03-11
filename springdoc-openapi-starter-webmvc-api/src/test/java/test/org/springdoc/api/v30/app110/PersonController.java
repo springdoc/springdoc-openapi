@@ -34,6 +34,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,7 +47,7 @@ public class PersonController {
 	private final Random ran = new Random();
 
 	@RequestMapping(path = "/person", method = RequestMethod.POST)
-	public Person person(@Valid @RequestBody Person person) {
+	public Person person(@Valid @RequestBody Person person) throws HttpMediaTypeNotSupportedException {
 
 		int nxt = ran.nextInt(10);
 		if (nxt >= 5) {
@@ -58,7 +59,7 @@ public class PersonController {
 	@RequestMapping(path = "/personByLastName", method = RequestMethod.GET)
 	public List<Person> findByLastName(@RequestParam(name = "lastName", required = true) @NotNull
 	@NotBlank
-	@Size(max = 10) String lastName) {
+	@Size(max = 10) String lastName) throws HttpMediaTypeNotSupportedException {
 		List<Person> hardCoded = new ArrayList<>();
 		Person person = new Person();
 		person.setAge(20);

@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.examples.Example;
 import org.springdoc.core.customizers.OperationCustomizer;
+import test.org.springdoc.api.v30.app199.CustomExceptionHandler.MyInternalException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -50,13 +51,13 @@ public class HelloController {
 		value = "/first",
 		produces = APPLICATION_JSON_VALUE
 	)
-	public void first() {}
+	public void first() throws MyInternalException {}
 
 	@GetMapping(
 		value = "/second",
 		produces = APPLICATION_JSON_VALUE
 	)
-	public void second() {}
+	public void second() throws MyInternalException {}
 
 	@Bean
 	public OperationCustomizer operationCustomizer()
