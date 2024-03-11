@@ -772,7 +772,7 @@ public class GenericResponseService {
 					if (isHttpCodePresent(httpCode, responseSet))
 						result = true;
 				}
-				else if (httpCode.equals(evaluateResponseStatus(method, method.getClass(), false)))
+				if (httpCode.equals(evaluateResponseStatus(method, method.getClass(), false)))
 					result = true;
 			}
 		}
