@@ -23,7 +23,6 @@ import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 /**
  * <p>

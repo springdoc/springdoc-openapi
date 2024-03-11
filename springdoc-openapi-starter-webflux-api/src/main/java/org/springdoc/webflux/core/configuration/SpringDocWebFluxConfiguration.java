@@ -68,7 +68,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 
 /**
  * The type Spring doc web flux configuration.
