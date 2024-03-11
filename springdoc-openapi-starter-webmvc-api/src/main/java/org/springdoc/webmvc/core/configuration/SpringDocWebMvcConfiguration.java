@@ -72,7 +72,6 @@ import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
-import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_MANAGEMENT_PORT;
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 /**
