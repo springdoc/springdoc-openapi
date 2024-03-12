@@ -67,6 +67,11 @@ import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomizer, ApplicationContextAware {
 
 	/**
+	 * The constant REQUEST_MATCHER.
+	 */
+	private static final String REQUEST_MATCHER = "requestMatcher";
+
+	/**
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpringDocSecurityOAuth2Customizer.class);
@@ -170,7 +175,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2AuthorizationServerMetadata.class, openAPI.getComponents(), null, openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			Operation operation = buildOperation(apiResponses);
-			buildPath(oAuth2EndpointFilter, "requestMatcher", openAPI, operation, HttpMethod.GET);
+			buildPath(oAuth2EndpointFilter, REQUEST_MATCHER, openAPI, operation, HttpMethod.GET);
 		}
 	}
 
@@ -198,7 +203,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 
 			Operation operation = buildOperation(apiResponses);
 			operation.responses(apiResponses);
-			buildPath(oAuth2EndpointFilter, "requestMatcher", openAPI, operation, HttpMethod.GET);
+			buildPath(oAuth2EndpointFilter, REQUEST_MATCHER, openAPI, operation, HttpMethod.GET);
 		}
 	}
 
@@ -291,7 +296,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOidcProviderConfiguration.class, openAPI.getComponents(), null, openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			Operation operation = buildOperation(apiResponses);
-			buildPath(oAuth2EndpointFilter, "requestMatcher", openAPI, operation, HttpMethod.GET);
+			buildPath(oAuth2EndpointFilter, REQUEST_MATCHER, openAPI, operation, HttpMethod.GET);
 		}
 	}
 

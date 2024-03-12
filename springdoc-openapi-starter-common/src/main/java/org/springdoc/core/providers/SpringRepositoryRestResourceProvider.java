@@ -349,17 +349,18 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	private void findSearchResourceMappings(OpenAPI openAPI, List<RouterOperation> routerOperationList, List<HandlerMapping> handlerMappingList,
 			DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata) {
 		for (HandlerMapping handlerMapping : handlerMappingList) {
-			if (handlerMapping instanceof RepositoryRestHandlerMapping) {
-				RepositoryRestHandlerMapping repositoryRestHandlerMapping = (RepositoryRestHandlerMapping) handlerMapping;
+			if (handlerMapping instanceof RepositoryRestHandlerMapping repositoryRestHandlerMapping) {
 				Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
 				Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
 						.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SERACH_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
 								.getValue().getBeanType().getName()))
 						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 				ResourceMetadata metadata = associations.getMetadataFor(dataRestRepository.getDomainType());
-				SearchResourceMappings searchResourceMappings = metadata.getSearchResourceMappings();
-				if (searchResourceMappings.isExported()) {
-					findSearchControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI, searchResourceMappings);
+				if(metadata!=null && metadata.isExported()) {
+					SearchResourceMappings searchResourceMappings = metadata.getSearchResourceMappings();
+					if (searchResourceMappings.isExported()) {
+						findSearchControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI, searchResourceMappings);
+					}
 				}
 			}
 		}

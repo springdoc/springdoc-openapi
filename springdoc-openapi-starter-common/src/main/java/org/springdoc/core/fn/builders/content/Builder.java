@@ -97,7 +97,7 @@ public class Builder {
 	/**
 	 * The Content schem.
 	 */
-	private Schema contentSchem = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+	private Schema contentSchema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * The Property names.
@@ -285,7 +285,7 @@ public class Builder {
 
 			@Override
 			public Schema contentSchema() {
-				return contentSchem;
+				return contentSchema;
 			}
 
 			@Override
