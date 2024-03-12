@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -36,6 +38,7 @@ import io.swagger.v3.oas.models.parameters.RequestBody;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.SpringDocConfigProperties;
 
 import org.springframework.boot.actuate.endpoint.OperationType;
 import org.springframework.boot.actuate.endpoint.annotation.AbstractDiscoveredOperation;
@@ -72,6 +75,21 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	 */
 	private static final Pattern pattern = Pattern.compile(".*'([^']*)'.*");
 
+	/**
+	 * The Spring doc config properties.
+	 */
+	private final SpringDocConfigProperties springDocConfigProperties;
+
+
+	/**
+	 * Instantiates a new Actuator operation customizer.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 */
+	public ActuatorOperationCustomizer(SpringDocConfigProperties springDocConfigProperties) {
+		this.springDocConfigProperties = springDocConfigProperties;
+	}
+
 	@Override
 	public Operation customize(Operation operation, HandlerMethod handlerMethod) {
 		if (operation.getTags() != null && operation.getTags().contains(getTag().getName())) {
@@ -88,7 +106,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 							for (OperationParameter operationParameter : operationMethod.getParameters()) {
 								Field parameterField = FieldUtils.getDeclaredField(operationParameter.getClass(), PARAMETER, true);
 								Parameter parameter = (Parameter) parameterField.get(operationParameter);
-								Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null);
+								Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), null, null, springDocConfigProperties.isOpenapi31());
 								if (parameter.getAnnotation(Selector.class) == null) {
 									operation.setRequestBody(new RequestBody()
 											.content(new Content().addMediaType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE, new MediaType().schema(schema))));
@@ -108,10 +126,8 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 			while (matcher.find()) {
 				operationId = matcher.group(1);
 			}
-
 			if (operation.getSummary() == null && !summary.contains("$"))
 				operation.setSummary(summary);
-
 			operation.setOperationId(operationId);
 		}
 		return operation;

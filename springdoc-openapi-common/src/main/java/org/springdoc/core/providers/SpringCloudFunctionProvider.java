@@ -208,7 +208,7 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	 */
 	private void buildRequest(OpenAPI openAPI, String name, FunctionInvocationWrapper function, RequestMethod requestMethod, RouterOperation routerOperation) {
 		Type paramType = function.getInputType();
-		Schema<?> schema = SpringDocAnnotationsUtils.extractSchema(openAPI.getComponents(), paramType, null, null);
+		Schema<?> schema = SpringDocAnnotationsUtils.extractSchema(openAPI.getComponents(), paramType, null, null, openAPI.getSpecVersion());
 		if (GET.equals(requestMethod)) {
 			Parameter parameter = new PathParameter().name(name).schema(schema);
 			routerOperation.getOperationModel().addParametersItem(parameter);

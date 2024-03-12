@@ -649,12 +649,10 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 *
 	 * @param predicate the predicate
 	 * @param responseProvider the response provider
-	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public SpringdocRouteBuilder onError(Predicate<Throwable> predicate, BiFunction<Throwable, ServerRequest, ServerResponse> responseProvider, Consumer<Builder> operationsConsumer) {
-		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.onError(predicate, responseProvider).withAttribute(OPERATION_ATTRIBUTE, builder);
+	public SpringdocRouteBuilder onError(Predicate<Throwable> predicate, BiFunction<Throwable, ServerRequest, ServerResponse> responseProvider) {
+		this.delegate.onError(predicate, responseProvider);
 		return this;
 	}
 
@@ -665,12 +663,10 @@ public class SpringdocRouteBuilder extends AbstractSpringdocRouteBuilder {
 	 * @param <T>    the type parameter
 	 * @param exceptionType the exception type
 	 * @param responseProvider the response provider
-	 * @param operationsConsumer the operations consumer
 	 * @return the springdoc route builder
 	 */
-	public <T extends Throwable> SpringdocRouteBuilder onError(Class<T> exceptionType, BiFunction<Throwable, ServerRequest, ServerResponse> responseProvider, Consumer<Builder> operationsConsumer) {
-		Builder builder = getOperationBuilder(operationsConsumer);
-		this.delegate.onError(exceptionType, responseProvider).withAttribute(OPERATION_ATTRIBUTE, builder);
+	public <T extends Throwable> SpringdocRouteBuilder onError(Class<T> exceptionType, BiFunction<Throwable, ServerRequest, ServerResponse> responseProvider) {
+		this.delegate.onError(exceptionType, responseProvider);
 		return this;
 	}
 

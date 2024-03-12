@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -23,6 +25,7 @@
 package org.springdoc.core;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -53,14 +56,22 @@ public class RequestBodyService {
 	private final GenericParameterService parameterBuilder;
 
 	/**
+	 * The Property resolver utils.
+	 */
+	private final PropertyResolverUtils propertyResolverUtils;
+
+	/**
 	 * Instantiates a new Request body builder.
 	 *
 	 * @param parameterBuilder the parameter builder
+	 * @param propertyResolverUtils the property resolver utils
 	 */
-	public RequestBodyService(GenericParameterService parameterBuilder) {
+	public RequestBodyService(GenericParameterService parameterBuilder, PropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.parameterBuilder = parameterBuilder;
+		this.propertyResolverUtils = propertyResolverUtils;
 	}
+
 
 	/**
 	 * Build request body from doc optional.
@@ -70,11 +81,12 @@ public class RequestBodyService {
 	 * @param methodAttributes the method attributes
 	 * @param components the components
 	 * @param jsonViewAnnotation the json view annotation
+	 * @param locale the locale
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes,
-			Components components, JsonView jsonViewAnnotation) {
+			Components components, JsonView jsonViewAnnotation, Locale locale) {
 		String[] classConsumes = methodAttributes.getClassConsumes();
 		String[] methodConsumes = methodAttributes.getMethodConsumes();
 
@@ -89,7 +101,7 @@ public class RequestBodyService {
 		}
 
 		if (StringUtils.isNotBlank(requestBody.description())) {
-			requestBodyObject.setDescription(requestBody.description());
+			requestBodyObject.setDescription(propertyResolverUtils.resolve(requestBody.description(), locale));
 			isEmpty = false;
 		}
 
@@ -98,7 +110,7 @@ public class RequestBodyService {
 			isEmpty = false;
 		}
 		if (requestBody.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(requestBody.extensions());
+			Map<String, Object> extensions = AnnotationsUtils.getExtensions(parameterBuilder.isOpenapi31(), requestBody.extensions());
 			extensions.forEach(requestBodyObject::addExtension);
 			isEmpty = false;
 		}
@@ -129,7 +141,7 @@ public class RequestBodyService {
 	private void buildResquestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, String[] classConsumes, String[] methodConsumes, RequestBody requestBodyObject) {
 		Optional<Content> optionalContent = SpringDocAnnotationsUtils
 				.getContent(requestBody.content(), getConsumes(classConsumes),
-						getConsumes(methodConsumes), null, components, jsonViewAnnotation);
+						getConsumes(methodConsumes), null, components, jsonViewAnnotation, parameterBuilder.isOpenapi31());
 		if (requestBodyOp == null) {
 			if (optionalContent.isPresent()) {
 				Content content = optionalContent.get();
@@ -185,8 +197,7 @@ public class RequestBodyService {
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
 			MethodAttributes methodAttributes, Components components) {
-		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes,
-				components, null);
+		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes, components, null, null);
 	}
 
 	/**
@@ -196,12 +207,13 @@ public class RequestBodyService {
 	 * @param methodAttributes the method attributes
 	 * @param components the components
 	 * @param jsonViewAnnotation the json view annotation
+	 * @param locale the locale
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
-			MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation) {
+			MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, Locale locale) {
 		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes,
-				components, jsonViewAnnotation);
+				components, jsonViewAnnotation, locale);
 	}
 
 	/**
@@ -215,9 +227,8 @@ public class RequestBodyService {
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(
 			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes,
-			Components components) {
-		return this.buildRequestBodyFromDoc(requestBody, requestBodyOp, methodAttributes,
-				components, null);
+			Components components, Locale locale) {
+		return this.buildRequestBodyFromDoc(requestBody, requestBodyOp, methodAttributes, components, null, locale);
 	}
 
 	/**

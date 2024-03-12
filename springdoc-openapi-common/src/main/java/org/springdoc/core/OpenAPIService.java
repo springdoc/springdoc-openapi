@@ -37,7 +37,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.jackson.TypeNameResolver;
@@ -61,7 +60,6 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.providers.JavadocProvider;
-import org.springdoc.core.providers.ObjectMapperProvider;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -242,20 +240,18 @@ public class OpenAPIService implements ApplicationContextAware {
 		Optional<OpenAPIDefinition> apiDef = getOpenAPIDefinition();
 		OpenAPI calculatedOpenAPI = null;
 		if (openAPI == null) {
-			calculatedOpenAPI = new OpenAPI();
+			calculatedOpenAPI = new OpenAPI(springDocConfigProperties.getSpecVersion());
 			calculatedOpenAPI.setComponents(new Components());
 			calculatedOpenAPI.setPaths(new Paths());
 		}
 		else {
 			try {
-				ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
+				ObjectMapper objectMapper = new ObjectMapper();
 				calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class);
-				objectMapper.setSerializationInclusion(Include.ALWAYS);
-				Map extensionsClone = objectMapper.readValue(objectMapper.writeValueAsString(openAPI.getExtensions()), Map.class);
-				calculatedOpenAPI.extensions(extensionsClone);
 			}
 			catch (JsonProcessingException e) {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+				calculatedOpenAPI = openAPI;
 			}
 		}
 
@@ -504,11 +500,11 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	private void buildOpenAPIWithOpenAPIDefinition(OpenAPI openAPI, OpenAPIDefinition apiDef, Locale locale) {
 		// info
-		AnnotationsUtils.getInfo(apiDef.info()).map(info -> propertyResolverUtils.resolveProperties(info, locale)).ifPresent(openAPI::setInfo);
+		AnnotationsUtils.getInfo(apiDef.info(), propertyResolverUtils.isOpenapi31()).map(info -> propertyResolverUtils.resolveProperties(info, locale)).ifPresent(openAPI::setInfo);
 		// OpenApiDefinition security requirements
 		securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
 		// OpenApiDefinition external docs
-		AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs()).ifPresent(openAPI::setExternalDocs);
+		AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs(), propertyResolverUtils.isOpenapi31()).ifPresent(openAPI::setExternalDocs);
 		// OpenApiDefinition tags
 		AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
 		// OpenApiDefinition servers
@@ -520,7 +516,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		);
 		// OpenApiDefinition extensions
 		if (apiDef.extensions().length > 0) {
-			openAPI.setExtensions(AnnotationsUtils.getExtensions(apiDef.extensions()));
+			openAPI.setExtensions(AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), apiDef.extensions()));
 		}
 	}
 

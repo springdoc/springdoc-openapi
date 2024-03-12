@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2023 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -46,6 +48,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.enums.ParameterStyle;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.examples.Example;
 import io.swagger.v3.oas.models.media.ArraySchema;
@@ -78,7 +81,6 @@ import static org.springdoc.core.Constants.DOT;
 
 /**
  * The type Generic parameter builder.
- *
  * @author bnasslahsen, coutin
  */
 @SuppressWarnings("rawtypes")
@@ -136,8 +138,7 @@ public class GenericParameterService {
 	private final Optional<JavadocProvider> javadocProviderOptional;
 
 	/**
-	 * Instantiates a new Generic parameter service.
-	 *
+	 * Instantiates a new Generic parameter builder.
 	 * @param propertyResolverUtils the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
 	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
@@ -284,14 +285,14 @@ public class GenericParameterService {
 			parameter.setAllowReserved(parameterDoc.allowReserved());
 
 		if (parameterDoc.content().length > 0) {
-			Optional<Content> optionalContent = AnnotationsUtils.getContent(parameterDoc.content(), null, null, null, components, jsonView);
+			Optional<Content> optionalContent = AnnotationsUtils.getContent(parameterDoc.content(), null, null, null, components, jsonView, propertyResolverUtils.isOpenapi31());
 			optionalContent.ifPresent(parameter::setContent);
 		}
 		else
 			setSchema(parameterDoc, components, jsonView, parameter);
 
 		setExamples(parameterDoc, parameter);
-		setExtensions(parameterDoc, parameter);
+		setExtensions(parameterDoc, parameter, locale);
 		setParameterStyle(parameter, parameterDoc);
 		setParameterExplode(parameter, parameterDoc);
 
@@ -312,7 +313,7 @@ public class GenericParameterService {
 		else {
 			Schema schema = null;
 			try {
-				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null, false, parameterDoc.schema().implementation(), components, jsonView).orElse(null);
+				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null, false, parameterDoc.schema().implementation(), components, jsonView, propertyResolverUtils.isOpenapi31()).orElse(null);
 				// Cast default value
 				if (schema != null && schema.getDefault() != null) {
 					PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
@@ -326,8 +327,8 @@ public class GenericParameterService {
 			catch (Exception e) {
 				LOGGER.warn(Constants.GRACEFUL_EXCEPTION_OCCURRED, e);
 			}
-			if (schema == null) {
-				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), parameterDoc.array(), true, parameterDoc.array().schema().implementation(), components, jsonView).orElse(null);
+			if (schema == null && parameterDoc.array() != null) {
+				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), parameterDoc.array(), true, parameterDoc.array().schema().implementation(), components, jsonView, propertyResolverUtils.isOpenapi31()).orElse(null);
 				// default value not set by swagger-core for array !
 				if (schema != null) {
 					Object defaultValue = SpringDocAnnotationsUtils.resolveDefaultValue(parameterDoc.array().arraySchema().defaultValue(), objectMapperProvider.jsonMapper());
@@ -354,15 +355,15 @@ public class GenericParameterService {
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
 			Type type = ReturnTypeParser.getType(methodParameter);
-			if (type instanceof Class && optionalWebConversionServiceProvider.isPresent()) {
+			if (type instanceof Class && !((Class<?>) type).isEnum() && optionalWebConversionServiceProvider.isPresent()) {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
 				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null) {
 					Class<?> springConvertedType = webConversionServiceProvider.getSpringConvertedType(methodParameter.getParameterType());
-					if (!(String.class.equals(springConvertedType) && ((Class<?>) type).isEnum()) && requestBodyInfo==null)
+					if (!(String.class.equals(springConvertedType) && ((Class<?>) type).isEnum()) && requestBodyInfo == null)
 						type = springConvertedType;
 				}
 			}
-			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations());
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations(), propertyResolverUtils.getSpecVersion());
 		}
 		else
 			schemaN = parameterInfo.getParameterModel().getSchema();
@@ -451,12 +452,19 @@ public class GenericParameterService {
 	 * Sets extensions.
 	 *
 	 * @param parameterDoc the parameter doc
-	 * @param parameter the parameter
+	 * @param parameter    the parameter
+	 * @param locale       the locale
 	 */
-	private void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
+	private void setExtensions(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter, Locale locale)  {
 		if (parameterDoc.extensions().length > 0) {
-			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(parameterDoc.extensions());
-			extensionMap.forEach(parameter::addExtension);
+			Map<String, Object> extensionMap = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), parameterDoc.extensions());
+			if (propertyResolverUtils.isResolveExtensionsProperties()) {
+				Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensionMap);
+				extensionsResolved.forEach(parameter::addExtension);
+			}
+			else {
+				extensionMap.forEach(parameter::addExtension);
+			}
 		}
 	}
 
@@ -573,7 +581,6 @@ public class GenericParameterService {
 	/**
 	 * Resolve the given annotation-specified value,
 	 * potentially containing placeholders and expressions.
-	 *
 	 * @param value the value
 	 * @return the object
 	 */
@@ -619,7 +626,9 @@ public class GenericParameterService {
 
 			@Override
 			public boolean required() {
-				return schema.required();
+				return schema.requiredMode().equals(RequiredMode.AUTO) ?
+						schema.required() :
+						schema.requiredMode().equals(RequiredMode.REQUIRED);
 			}
 
 			@Override
@@ -742,7 +751,15 @@ public class GenericParameterService {
 		if (StringUtils.isNotBlank(fieldJavadoc)) {
 			paramJavadocDescription = fieldJavadoc;
 		}
-
 		return paramJavadocDescription;
+	}
+
+	/**
+	 * Is openapi 31 boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isOpenapi31() {
+		return propertyResolverUtils.isOpenapi31();
 	}
 }

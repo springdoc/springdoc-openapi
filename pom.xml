@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springdoc</groupId>
 	<artifactId>springdoc-openapi</artifactId>
-	<version>1.7.0</version>
+	<version>1.8.0</version>
 	<packaging>pom</packaging>
 	<name>Spring openapi documentation</name>
 	<description>Spring openapi documentation</description>
@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.10</version>
+		<version>2.7.18</version>
 	</parent>
 
 	<licenses>
@@ -26,8 +26,7 @@
 			<name>Badr NASS LAHSEN</name>
 			<email>support@springdoc.org</email>
 			<organization>springdoc</organization>
-			<organizationUrl>https://springdoc.github.io/springdoc-openapi/
-			</organizationUrl>
+			<organizationUrl>https://springdoc.org/</organizationUrl>
 		</developer>
 	</developers>
 
@@ -36,7 +35,7 @@
 		<connection>scm:git:git@github.com:springdoc/springdoc-openapi.git</connection>
 		<developerConnection>scm:git:git@github.com:springdoc/springdoc-openapi.git
 		</developerConnection>
-		<tag>v1.7.0</tag>
+		<tag>v1.8.0</tag>
 	</scm>
 	<distributionManagement>
 		<snapshotRepository>
@@ -67,8 +66,8 @@
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
-		<swagger-api.version>2.2.9</swagger-api.version>
-		<swagger-ui.version>4.18.2</swagger-ui.version>
+		<swagger-api.version>2.2.20</swagger-api.version>
+		<swagger-ui.version>5.11.8</swagger-ui.version>
 		<spring-security-oauth2.version>2.5.2.RELEASE</spring-security-oauth2.version>
 		<gmavenplus-plugin.version>1.8.1</gmavenplus-plugin.version>
 		<jaxb-impl.version>2.1</jaxb-impl.version>
@@ -78,6 +77,7 @@
 		<spring-cloud-function.version>3.2.4</spring-cloud-function.version>
 		<dependency-check.version>8.2.1</dependency-check.version>
 		<spring-security-oauth2-authorization-server.version>0.4.1</spring-security-oauth2-authorization-server.version>
+		<tomcat.embed.version>9.0.86</tomcat.embed.version>
 	</properties>
 
 	<dependencyManagement>
@@ -192,6 +192,11 @@
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-javadoc</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tomcat.embed</groupId>
+				<artifactId>tomcat-embed-core</artifactId>
+				<version>${tomcat.embed.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

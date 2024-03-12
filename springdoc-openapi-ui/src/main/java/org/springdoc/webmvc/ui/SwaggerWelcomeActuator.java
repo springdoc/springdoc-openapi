@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_ACTUATOR_URL;
 import static org.springdoc.core.Constants.DEFAULT_SWAGGER_UI_ACTUATOR_PATH;
-import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
+import static org.springdoc.core.Constants.SWAGGER_CONFIG_FILE;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -52,7 +52,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	/**
 	 * The constant SWAGGER_CONFIG_ACTUATOR_URL.
 	 */
-	private static final String SWAGGER_CONFIG_ACTUATOR_URL = DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+	private static final String SWAGGER_CONFIG_ACTUATOR_URL = DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE;
 
 	/**
 	 * The Web endpoint properties.
@@ -119,7 +119,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	protected String buildSwaggerConfigUrl() {
 		return contextPath + webEndpointProperties.getBasePath()
 				+ DEFAULT_PATH_SEPARATOR + DEFAULT_SWAGGER_UI_ACTUATOR_PATH
-				+ DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+				+ DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE;
 	}
 
 }

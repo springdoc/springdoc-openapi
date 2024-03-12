@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
 
-import static org.springdoc.core.Constants.GROUP_NAME_NOT_NULL;
+import static org.springdoc.core.Constants.GROUP_NAME_NOT_NULL_OR_EMPTY;
 
 /**
  * Please refer to the swagger
@@ -722,7 +722,7 @@ public abstract class AbstractSwaggerUiConfigProperties {
 		 * @param displayName the display name
 		 */
 		public SwaggerUrl(String group, String url, String displayName) {
-			Objects.requireNonNull(group, GROUP_NAME_NOT_NULL);
+			Objects.requireNonNull(group, GROUP_NAME_NOT_NULL_OR_EMPTY);
 			this.url = url;
 			this.name = group;
 			this.displayName = StringUtils.defaultIfEmpty(displayName, this.name);

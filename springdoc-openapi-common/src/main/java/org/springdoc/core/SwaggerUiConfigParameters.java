@@ -23,10 +23,12 @@
 package org.springdoc.core;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -255,7 +257,9 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 * @return the config parameters
 	 */
 	public Map<String, Object> getConfigParameters() {
-		final Map<String, Object> params = new TreeMap<>();
+		final TreeMap<String, Object> treeMap = new TreeMap<>();
+		SortedMap<String, Object> params = Collections.synchronizedSortedMap(treeMap);
+		
 		// empty-string prevents swagger-ui default validation
 		params.put(VALIDATOR_URL_PROPERTY, validatorUrl != null ? validatorUrl : "");
 		SpringDocPropertiesUtils.put(CONFIG_URL_PROPERTY, configUrl, params);

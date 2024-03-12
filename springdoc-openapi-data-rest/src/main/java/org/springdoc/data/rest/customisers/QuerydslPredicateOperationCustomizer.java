@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -45,6 +47,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.customizers.GlobalOperationCustomizer;
 
 import org.springframework.core.MethodParameter;
@@ -76,12 +79,20 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	private final QuerydslBindingsFactory querydslBindingsFactory;
 
 	/**
+	 * The Spring doc config properties.
+	 */
+	private final SpringDocConfigProperties springDocConfigProperties;
+
+	/**
 	 * Instantiates a new Querydsl predicate operation customizer.
 	 *
-	 * @param querydslBindingsFactory the querydsl bindings factory
+	 * @param querydslBindingsFactory   the querydsl bindings factory
+	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public QuerydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory) {
+	public QuerydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory, SpringDocConfigProperties springDocConfigProperties) {
 		this.querydslBindingsFactory = querydslBindingsFactory;
+		this.springDocConfigProperties= springDocConfigProperties;
+
 	}
 
 	@Override
@@ -139,8 +150,8 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	/**
 	 * Gets field value of boolean.
 	 *
-	 * @param instance the instance
-	 * @param fieldName the field name
+	 * @param instance the instance  
+	 * @param fieldName the field name  
 	 * @return the field value of boolean
 	 */
 	private boolean getFieldValueOfBoolean(QuerydslBindings instance, String fieldName) {
@@ -158,7 +169,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	/**
 	 * Extract qdsl bindings querydsl bindings.
 	 *
-	 * @param predicate the predicate
+	 * @param predicate the predicate  
 	 * @return the querydsl bindings
 	 */
 	private QuerydslBindings extractQdslBindings(QuerydslPredicate predicate) {
@@ -177,9 +188,9 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	/**
 	 * Gets field values.
 	 *
-	 * @param instance the instance
-	 * @param fieldName the field name
-	 * @param alternativeFieldName the alternative field name
+	 * @param instance the instance  
+	 * @param fieldName the field name  
+	 * @param alternativeFieldName the alternative field name  
 	 * @return the field values
 	 */
 	private Set<String> getFieldValues(QuerydslBindings instance, String fieldName, String alternativeFieldName) {
@@ -199,8 +210,8 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	/**
 	 * Gets path spec.
 	 *
-	 * @param instance the instance
-	 * @param fieldName the field name
+	 * @param instance the instance  
+	 * @param fieldName the field name  
 	 * @return the path spec
 	 */
 	private Map<String, Object> getPathSpec(QuerydslBindings instance, String fieldName) {
@@ -217,7 +228,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	/**
 	 * Gets path from path spec.
 	 *
-	 * @param instance the instance
+	 * @param instance the instance  
 	 * @return the path from path spec
 	 */
 	private Optional<Path<?>> getPathFromPathSpec(Object instance) {
@@ -236,8 +247,8 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 
 	/***
 	 * Tries to figure out the Type of the field. It first checks the Qdsl pathSpecMap before checking the root class. Defaults to String.class
-	 * @param fieldName The name of the field used as reference to get the type
-	 * @param pathSpecMap The Qdsl path specifications as defined in the resolved bindings
+	 * @param fieldName The name of the field used as reference to get the type  
+	 * @param pathSpecMap The Qdsl path specifications as defined in the resolved bindings  
 	 * @param root The root type where the paths are gotten
 	 * @return The type of the field. Returns
 	 */
@@ -263,12 +274,12 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 
 	/***
 	 * Constructs the parameter
-	 * @param type The type of the parameter
-	 * @param name The name of the parameter
+	 * @param type The type of the parameter  
+	 * @param name The name of the parameter  
 	 * @return The swagger parameter
 	 */
-	private io.swagger.v3.oas.models.parameters.Parameter buildParam(Type type, String name) {
-		io.swagger.v3.oas.models.parameters.Parameter parameter = new io.swagger.v3.oas.models.parameters.Parameter();
+	private Parameter buildParam(Type type, String name) {
+		Parameter parameter = new Parameter();
 
 		if (StringUtils.isBlank(parameter.getName())) {
 			parameter.setName(name);
@@ -285,7 +296,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 				schema = primitiveType.createProperty();
 			}
 			else {
-				ResolvedSchema resolvedSchema = ModelConverters.getInstance()
+				ResolvedSchema resolvedSchema = ModelConverters.getInstance(springDocConfigProperties.isOpenapi31())
 						.resolveAsResolvedSchema(
 								new io.swagger.v3.core.converter.AnnotatedType(type).resolveAsRef(true));
 				// could not resolve the schema or this schema references other schema

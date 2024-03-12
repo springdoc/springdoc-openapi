@@ -34,9 +34,10 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.customizers.RouterOperationCustomizer;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import static org.springdoc.core.Constants.GROUP_NAME_NOT_NULL;
+import static org.springdoc.core.Constants.GROUP_NAME_NOT_NULL_OR_EMPTY;
 
 /**
  * The type Grouped open api.
@@ -115,7 +116,8 @@ public class GroupedOpenApi {
 	 * @param builder the builder
 	 */
 	private GroupedOpenApi(Builder builder) {
-		this.group = Objects.requireNonNull(builder.group, GROUP_NAME_NOT_NULL);
+		Assert.isTrue(StringUtils.isNotBlank(builder.group), GROUP_NAME_NOT_NULL_OR_EMPTY);
+		this.group =builder.group;
 		this.pathsToMatch = builder.pathsToMatch;
 		this.packagesToScan = builder.packagesToScan;
 		this.producesToMatch = builder.producesToMatch;

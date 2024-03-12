@@ -46,6 +46,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonView;
@@ -65,6 +67,7 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.SpecVersion;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -83,6 +86,7 @@ import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.SpringDocConfigProperties.GroupConfig;
 import org.springdoc.core.SpringDocProviders;
+import org.springdoc.core.SpringDocUtils;
 import org.springdoc.core.annotations.RouterOperations;
 import org.springdoc.core.customizers.DataRestRouterOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiLocaleCustomizer;
@@ -198,6 +202,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected final SpringDocCustomizers springDocCustomizers;
 
 	/**
+	 * The Reentrant lock.
+	 */
+	private final Lock reentrantLock = new ReentrantLock();
+
+	/**
 	 * Instantiates a new Abstract open api resource.
 	 *
 	 * @param groupName the group name
@@ -224,9 +233,15 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		this.springDocProviders = springDocProviders;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.springDocCustomizers=springDocCustomizers;
-		if (springDocConfigProperties.isPreLoadingEnabled())
-			Executors.newSingleThreadExecutor().execute(this::getOpenApi);
-	}
+		if (springDocConfigProperties.isPreLoadingEnabled()) {
+			if (CollectionUtils.isEmpty(springDocConfigProperties.getPreLoadingLocales())) {
+				Executors.newSingleThreadExecutor().execute(this::getOpenApi);
+			} else {
+				for (String locale : springDocConfigProperties.getPreLoadingLocales()) {
+					Executors.newSingleThreadExecutor().execute(() -> this.getOpenApi(Locale.forLanguageTag(locale)));
+				}
+			}
+		}	}
 
 	/**
 	 * Add rest controllers.
@@ -308,72 +323,80 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param locale the locale
 	 * @return the open api
 	 */
-	protected synchronized OpenAPI getOpenApi(Locale locale) {
-		final OpenAPI openAPI;
-		final Locale finalLocale = locale == null ? Locale.getDefault() : locale;
-		if (openAPIService.getCachedOpenAPI(finalLocale) == null || springDocConfigProperties.isCacheDisabled()) {
-			Instant start = Instant.now();
-			openAPI = openAPIService.build(finalLocale);
-			Map<String, Object> mappingsMap = openAPIService.getMappingsMap().entrySet().stream()
-					.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
-							Hidden.class) == null))
-					.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getClass()))
-					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+	protected OpenAPI getOpenApi(Locale locale) {
+		this.reentrantLock.lock();
+		try {
+			final OpenAPI openAPI;
+			final Locale finalLocale = locale == null ? Locale.getDefault() : locale;
+			if (openAPIService.getCachedOpenAPI(finalLocale) == null || springDocConfigProperties.isCacheDisabled()) {
+				Instant start = Instant.now();
+				openAPI = openAPIService.build(finalLocale);
+				Map<String, Object> mappingsMap = openAPIService.getMappingsMap().entrySet().stream()
+						.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
+								Hidden.class) == null))
+						.filter(controller -> !AbstractOpenApiResource.isHiddenRestControllers(controller.getValue().getClass()))
+						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
-			Map<String, Object> findControllerAdvice = openAPIService.getControllerAdviceMap();
-			if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion())
-				openAPI.openapi(OpenApiVersion.OPENAPI_3_1.getVersion());
-			if (springDocConfigProperties.isDefaultOverrideWithGenericResponse()) {
-				if (!CollectionUtils.isEmpty(mappingsMap))
-					findControllerAdvice.putAll(mappingsMap);
-				responseBuilder.buildGenericResponse(openAPI.getComponents(), findControllerAdvice, finalLocale);
+				Map<String, Object> findControllerAdvice = openAPIService.getControllerAdviceMap();
+				if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion()){
+					openAPI.openapi(OpenApiVersion.OPENAPI_3_1.getVersion());
+					openAPI.specVersion(SpecVersion.V31);
+				}
+				if (springDocConfigProperties.isDefaultOverrideWithGenericResponse()) {
+					if (!CollectionUtils.isEmpty(mappingsMap))
+						findControllerAdvice.putAll(mappingsMap);
+					responseBuilder.buildGenericResponse(openAPI.getComponents(), findControllerAdvice, finalLocale);
+				}
+				getPaths(mappingsMap, finalLocale, openAPI);
+
+				Optional<CloudFunctionProvider> cloudFunctionProviderOptional = springDocProviders.getSpringCloudFunctionProvider();
+				cloudFunctionProviderOptional.ifPresent(cloudFunctionProvider -> {
+							List<RouterOperation> routerOperationList = cloudFunctionProvider.getRouterOperations(openAPI);
+							if (!CollectionUtils.isEmpty(routerOperationList))
+								this.calculatePath(routerOperationList, locale, openAPI);
+						}
+				);
+				if (!CollectionUtils.isEmpty(openAPI.getServers()))
+					openAPIService.setServersPresent(true);
+				else
+					openAPIService.setServersPresent(false);
+				openAPIService.updateServers(openAPI);
+
+				if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
+					this.removeBrokenReferenceDefinitions(openAPI);
+
+				// run the optional customisers
+				List<Server> servers = openAPI.getServers();
+				List<Server> serversCopy = null;
+				try {
+					serversCopy = springDocProviders.jsonMapper()
+							.readValue(springDocProviders.jsonMapper().writeValueAsString(servers), new TypeReference<List<Server>>() {});
+				}
+				catch (JsonProcessingException e) {
+					LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+				}
+
+				openAPIService.getContext().getBeansOfType(OpenApiLocaleCustomizer.class).values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openAPI, finalLocale));
+				springDocCustomizers.getOpenApiCustomizers().ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openAPI)));
+				if (!CollectionUtils.isEmpty(openAPI.getServers()) && !openAPI.getServers().equals(serversCopy))
+					openAPIService.setServersPresent(true);
+
+				openAPIService.setCachedOpenAPI(openAPI, finalLocale);
+
+				LOGGER.info("Init duration for springdoc-openapi is: {} ms",
+						Duration.between(start, Instant.now()).toMillis());
 			}
-			getPaths(mappingsMap, finalLocale, openAPI);
-
-			Optional<CloudFunctionProvider> cloudFunctionProviderOptional = springDocProviders.getSpringCloudFunctionProvider();
-			cloudFunctionProviderOptional.ifPresent(cloudFunctionProvider -> {
-						List<RouterOperation> routerOperationList = cloudFunctionProvider.getRouterOperations(openAPI);
-						if (!CollectionUtils.isEmpty(routerOperationList))
-							this.calculatePath(routerOperationList, locale, openAPI);
-					}
-			);
-			if (!CollectionUtils.isEmpty(openAPI.getServers()))
-				openAPIService.setServersPresent(true);
-			else
-				openAPIService.setServersPresent(false);
-			openAPIService.updateServers(openAPI);
-
-			if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
-				this.removeBrokenReferenceDefinitions(openAPI);
-
-			// run the optional customisers
-			List<Server> servers = openAPI.getServers();
-			List<Server> serversCopy = null;
-			try {
-				serversCopy = springDocProviders.jsonMapper()
-						.readValue(springDocProviders.jsonMapper().writeValueAsString(servers), new TypeReference<List<Server>>() {});
-			}
-			catch (JsonProcessingException e) {
-				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
+			else {
+				LOGGER.debug("Fetching openApi document from cache");
+				openAPI = openAPIService.getCachedOpenAPI(finalLocale);
+				openAPIService.updateServers(openAPI);
 			}
 
-			openAPIService.getContext().getBeansOfType(OpenApiLocaleCustomizer.class).values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openAPI, finalLocale));
-			springDocCustomizers.getOpenApiCustomizers().ifPresent(apiCustomisers -> apiCustomisers.forEach(openApiCustomiser -> openApiCustomiser.customise(openAPI)));
-			if (!CollectionUtils.isEmpty(openAPI.getServers()) && !openAPI.getServers().equals(serversCopy))
-				openAPIService.setServersPresent(true);
-
-			openAPIService.setCachedOpenAPI(openAPI, finalLocale);
-
-			LOGGER.info("Init duration for springdoc-openapi is: {} ms",
-					Duration.between(start, Instant.now()).toMillis());
+			return openAPI;
 		}
-		else {
-			LOGGER.debug("Fetching openApi document from cache");
-			openAPI = openAPIService.getCachedOpenAPI(finalLocale);
-			openAPIService.updateServers(openAPI);
+		finally {
+			this.reentrantLock.unlock();
 		}
-
-		return openAPI;
 	}
 
 	/**
@@ -466,7 +489,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// RequestBody in Operation
 			requestBuilder.getRequestBodyBuilder()
 					.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes, components,
-							methodAttributes.getJsonViewAnnotationForRequestBody())
+							methodAttributes.getJsonViewAnnotationForRequestBody(), locale)
 					.ifPresent(operation::setRequestBody);
 			// requests
 			operation = requestBuilder.build(handlerMethod, requestMethod, operation, methodAttributes, openAPI);
@@ -1246,7 +1269,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				port = actuatorProvider.getApplicationPort();
 				path = actuatorProvider.getContextPath();
 				String mvcServletPath = this.openAPIService.getContext().getBean(Environment.class).getProperty(SPRING_MVC_SERVLET_PATH);
-				if (StringUtils.isNotEmpty(mvcServletPath))
+				if (SpringDocUtils.isValidPath(mvcServletPath))
 					path = path + mvcServletPath;
 			}
 			try {

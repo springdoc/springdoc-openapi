@@ -1,3 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 org.springdoc.core.SpringDocConfiguration,\
+org.springdoc.core.SpringDocSpecPropertiesConfiguration,\
 org.springdoc.core.SpringDocConfigProperties

@@ -26,6 +26,7 @@ import java.lang.annotation.Annotation;
 import java.util.function.Predicate;
 
 import io.swagger.v3.oas.models.media.Schema;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.ConverterUtils;
@@ -367,6 +368,18 @@ public class SpringDocUtils {
 	public SpringDocUtils removeJavaTypeToIgnore(Class<?> clazz) {
 		ConverterUtils.removeJavaTypeToIgnore(clazz);
 		return this;
+	}
+
+	/**
+	 * Is valid path boolean.
+	 *
+	 * @param path the path
+	 * @return the boolean
+	 */
+	public static boolean isValidPath(String path) {
+		if (StringUtils.isNotBlank(path) && !path.equals("/"))
+			return true;
+		return false;
 	}
 }
 

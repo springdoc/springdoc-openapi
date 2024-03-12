@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -27,6 +29,7 @@ import java.lang.annotation.Annotation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.DependentSchema;
 import io.swagger.v3.oas.annotations.media.Encoding;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,58 +38,106 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Content builder.
+ *
  * @author bnasslahsen
  */
 public class Builder {
 
 	/**
 	 * The schema properties defined for schema provided in @Schema
-	 *
 	 */
 	private final Schema additionalPropertiesSchema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
+	 * The Additional properties array schema.
+	 */
+	private final ArraySchema additionalPropertiesArraySchema = org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().build();
+
+	/**
 	 * The schema properties defined for schema provided in @Schema
-	 *
 	 */
 	private final SchemaProperty[] schemaProperties = {};
 
 	/**
 	 * The media type that this object applies to.
-	 *
 	 */
 	private String mediaType = "";
 
 	/**
 	 * An array of examples used to show the use of the associated schema.
-	 *
 	 */
 	private ExampleObject[] examples = {};
 
 	/**
 	 * The schema defining the type used for the content.
-	 *
 	 */
 	private Schema schema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * The schema of the array that defines the type used for the content.
-	 *
 	 */
 	private ArraySchema array = org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().build();
 
 	/**
 	 * An array of encodings
 	 * The key, being the property name, MUST exist in the schema as a property.
-	 *
 	 */
 	private Encoding[] encodings = {};
 
 	/**
 	 * The list of optional extensions
-	 *
 	 */
 	private Extension[] extensions = {};
+
+	/**
+	 * The Dependent schemas.
+	 */
+	private DependentSchema[] dependentSchemas = {};
+
+	/**
+	 * The Content schem.
+	 */
+	private Schema contentSchem = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+
+	/**
+	 * The Property names.
+	 */
+	private Schema propertyNames = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+
+	/**
+	 * The If.
+	 */
+	private Schema _if = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+
+	/**
+	 * The Then.
+	 */
+	private Schema _then = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+
+	/**
+	 * The Else.
+	 */
+	private Schema _else = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+
+	/**
+	 * The Not.
+	 */
+	private Schema not = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+
+	/**
+	 * The One of.
+	 */
+	private Schema[] oneOf = {};
+
+	/**
+	 * The Any of.
+	 */
+	private Schema[] anyOf = {};
+
+	/**
+	 * The All of.
+	 */
+	private Schema[] allOf ={};
 
 	/**
 	 * Instantiates a new Content builder.
@@ -208,6 +259,11 @@ public class Builder {
 			}
 
 			@Override
+			public ArraySchema additionalPropertiesArraySchema() {
+				return additionalPropertiesArraySchema;
+			}
+
+			@Override
 			public ArraySchema array() {
 				return array;
 			}
@@ -220,6 +276,56 @@ public class Builder {
 			@Override
 			public Extension[] extensions() {
 				return extensions;
+			}
+
+			@Override
+			public DependentSchema[] dependentSchemas() {
+				return new DependentSchema[0];
+			}
+
+			@Override
+			public Schema contentSchema() {
+				return contentSchem;
+			}
+
+			@Override
+			public Schema propertyNames() {
+				return propertyNames;
+			}
+
+			@Override
+			public Schema _if() {
+				return _if;
+			}
+
+			@Override
+			public Schema _then() {
+				return _then;
+			}
+
+			@Override
+			public Schema _else() {
+				return _else;
+			}
+
+			@Override
+			public Schema not() {
+				return not;
+			}
+
+			@Override
+			public Schema[] oneOf() {
+				return oneOf;
+			}
+
+			@Override
+			public Schema[] anyOf() {
+				return anyOf;
+			}
+
+			@Override
+			public Schema[] allOf() {
+				return allOf;
 			}
 		};
 	}

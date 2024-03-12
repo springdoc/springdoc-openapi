@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2023 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -22,10 +24,13 @@
 
 package org.springdoc.core;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
-import org.springdoc.core.SpringDocConfigProperties.ModelConverters.SortConverter;
+import io.swagger.v3.oas.models.SpecVersion;
+import org.springdoc.core.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -105,7 +110,7 @@ public class SpringDocConfigProperties {
 	/**
 	 * The Group configs.
 	 */
-	private List<GroupConfig> groupConfigs = new ArrayList<>();
+	private Set<GroupConfig> groupConfigs = new HashSet<>();
 
 	/**
 	 * The Auto tag classes.
@@ -163,6 +168,11 @@ public class SpringDocConfigProperties {
 	private boolean preLoadingEnabled;
 
 	/**
+	 * locale list to pre-loading
+	 */
+	private List<String> preLoadingLocales;
+
+	/**
 	 * If set to true, exposes the swagger-ui on the actuator management port.
 	 */
 	private boolean useManagementPort;
@@ -175,7 +185,7 @@ public class SpringDocConfigProperties {
 	/**
 	 * The Show spring cloud functions.
 	 */
-	private boolean showSpringCloudFunctions;
+	private boolean showSpringCloudFunctions = true;
 
 	/**
 	 * The param default flatten
@@ -183,14 +193,49 @@ public class SpringDocConfigProperties {
 	private boolean defaultFlatParamObject;
 
 	/**
+	 * The model Converters
+	 */
+	private ModelConverters modelConverters = new ModelConverters();
+
+	/**
+	 * The Enable groovy.
+	 */
+	private boolean enableGroovy = true;
+
+	/**
+	 * The Enable javadoc.
+	 */
+	private boolean enableJavadoc = true;
+
+	/**
+	 * The Enable spring security.
+	 */
+	private boolean enableSpringSecurity = true;
+
+	/**
+	 * The Enable kotlin.
+	 */
+	private boolean enableKotlin = true;
+
+	/**
+	 * The Enable hateoas.
+	 */
+	private boolean enableHateoas = true;
+
+	/**
+	 * The Enable hateoas.
+	 */
+	private boolean enableDataRest = true;
+
+	/**
 	 * convert query param to form data when consumes is multipart/form-data
 	 */
 	private boolean defaultSupportFormData;
 
 	/**
-	 * The model Converters
+	 * The Show oauth 2 endpoint.
 	 */
-	private ModelConverters modelConverters = new ModelConverters();
+	private boolean showOauth2Endpoints;
 
 	/**
 	 * The Sort converter.
@@ -203,17 +248,21 @@ public class SpringDocConfigProperties {
 	private boolean nullableRequestParameterEnabled;
 
 	/**
-	 * The Show oauth2 endpoints.
-	 */
-	private boolean showOauth2Endpoints;
-
-	/**
 	 * Gets override with generic response.
 	 *
 	 * @return the override with generic response
 	 */
 	public Boolean getOverrideWithGenericResponse() {
 		return overrideWithGenericResponse;
+	}
+
+	/**
+	 * Sets override with generic response.
+	 *
+	 * @param overrideWithGenericResponse the override with generic response
+	 */
+	public void setOverrideWithGenericResponse(Boolean overrideWithGenericResponse) {
+		this.overrideWithGenericResponse = overrideWithGenericResponse;
 	}
 
 	/**
@@ -253,6 +302,24 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
+	 * Is default flat param object boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isDefaultFlatParamObject() {
+		return defaultFlatParamObject;
+	}
+
+	/**
+	 * Sets default flat param object.
+	 *
+	 * @param defaultFlatParamObject the default flat param object
+	 */
+	public void setDefaultFlatParamObject(boolean defaultFlatParamObject) {
+		this.defaultFlatParamObject = defaultFlatParamObject;
+	}
+
+	/**
 	 * Gets sort converter.
 	 *
 	 * @return the sort converter
@@ -271,6 +338,114 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
+	 * Is enable data rest boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isEnableDataRest() {
+		return enableDataRest;
+	}
+
+	/**
+	 * Sets enable data rest.
+	 *
+	 * @param enableDataRest the enable data rest
+	 */
+	public void setEnableDataRest(boolean enableDataRest) {
+		this.enableDataRest = enableDataRest;
+	}
+
+	/**
+	 * Is enable hateoas boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isEnableHateoas() {
+		return enableHateoas;
+	}
+
+	/**
+	 * Sets enable hateoas.
+	 *
+	 * @param enableHateoas the enable hateoas
+	 */
+	public void setEnableHateoas(boolean enableHateoas) {
+		this.enableHateoas = enableHateoas;
+	}
+
+	/**
+	 * Is enable kotlin boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isEnableKotlin() {
+		return enableKotlin;
+	}
+
+	/**
+	 * Sets enable kotlin.
+	 *
+	 * @param enableKotlin the enable kotlin
+	 */
+	public void setEnableKotlin(boolean enableKotlin) {
+		this.enableKotlin = enableKotlin;
+	}
+
+	/**
+	 * Is enable spring security boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isEnableSpringSecurity() {
+		return enableSpringSecurity;
+	}
+
+	/**
+	 * Sets enable spring security.
+	 *
+	 * @param enableSpringSecurity the enable spring security
+	 */
+	public void setEnableSpringSecurity(boolean enableSpringSecurity) {
+		this.enableSpringSecurity = enableSpringSecurity;
+	}
+
+	/**
+	 * Is enable javadoc boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isEnableJavadoc() {
+		return enableJavadoc;
+	}
+
+	/**
+	 * Sets enable javadoc.
+	 *
+	 * @param enableJavadoc the enable javadoc
+	 */
+	public void setEnableJavadoc(boolean enableJavadoc) {
+		this.enableJavadoc = enableJavadoc;
+	}
+
+	/**
+	 * Is enable groovy boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isEnableGroovy() {
+		return enableGroovy;
+	}
+
+	/**
+	 * Sets enable groovy.
+	 *
+	 * @param enableGroovy the enable groovy
+	 */
+	public void setEnableGroovy(boolean enableGroovy) {
+		this.enableGroovy = enableGroovy;
+	}
+
+	/**
 	 * Is show spring cloud functions boolean.
 	 *
 	 * @return the boolean
@@ -286,24 +461,6 @@ public class SpringDocConfigProperties {
 	 */
 	public void setShowSpringCloudFunctions(boolean showSpringCloudFunctions) {
 		this.showSpringCloudFunctions = showSpringCloudFunctions;
-	}
-
-	/**
-	 * Is default flat param object
-	 *
-	 * @return the boolean
-	 */
-	public boolean isDefaultFlatParamObject() {
-		return defaultFlatParamObject;
-	}
-
-	/**
-	 * Sets default flat param object.
-	 *
-	 * @param defaultFlatParamObject the default flat param object
-	 */
-	public void setDefaultFlatParamObject(boolean defaultFlatParamObject) {
-		this.defaultFlatParamObject = defaultFlatParamObject;
 	}
 
 	/**
@@ -627,7 +784,7 @@ public class SpringDocConfigProperties {
 	 *
 	 * @return the group configs
 	 */
-	public List<GroupConfig> getGroupConfigs() {
+	public Set<GroupConfig> getGroupConfigs() {
 		return groupConfigs;
 	}
 
@@ -636,7 +793,7 @@ public class SpringDocConfigProperties {
 	 *
 	 * @param groupConfigs the group configs
 	 */
-	public void setGroupConfigs(List<GroupConfig> groupConfigs) {
+	public void setGroupConfigs(Set<GroupConfig> groupConfigs) {
 		this.groupConfigs = groupConfigs;
 	}
 
@@ -699,7 +856,7 @@ public class SpringDocConfigProperties {
 	 *
 	 * @param overrideWithGenericResponse the override with generic response
 	 */
-	public void setOverrideWithGenericResponse(Boolean overrideWithGenericResponse) {
+	public void setOverrideWithGenericResponse(boolean overrideWithGenericResponse) {
 		this.overrideWithGenericResponse = overrideWithGenericResponse;
 	}
 
@@ -797,12 +954,30 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
-	 * Sets pre loading enabled.
+	 * locale list to pre-loading.
 	 *
-	 * @param preLoadingEnabled the pre loading enabled
+	 * @return the Locales
+	 */
+	public List<String> getPreLoadingLocales() {
+		return preLoadingLocales;
+	}
+
+	/**
+	 * Sets locale list to pre-loading.
+	 *
+	 * @param preLoadingEnabled the Locales
 	 */
 	public void setPreLoadingEnabled(boolean preLoadingEnabled) {
 		this.preLoadingEnabled = preLoadingEnabled;
+	}
+
+	/**
+	 * Sets pre loading locales.
+	 *
+	 * @param preLoadingLocales the pre loading locales
+	 */
+	public void setPreLoadingLocales(List<String> preLoadingLocales) {
+		this.preLoadingLocales = preLoadingLocales;
 	}
 
 	/**
@@ -880,37 +1055,6 @@ public class SpringDocConfigProperties {
 		 */
 		public void setPolymorphicConverter(PolymorphicConverter polymorphicConverter) {
 			this.polymorphicConverter = polymorphicConverter;
-		}
-
-		/**
-		 * The type Sort converter.
-		 *
-		 * @author daniel -shuy
-		 */
-		public static class SortConverter {
-
-			/**
-			 * The Enabled.
-			 */
-			private boolean enabled;
-
-			/**
-			 * Is enabled boolean.
-			 *
-			 * @return the boolean
-			 */
-			public boolean isEnabled() {
-				return enabled;
-			}
-
-			/**
-			 * Sets enabled.
-			 *
-			 * @param enabled the enabled
-			 */
-			public void setEnabled(boolean enabled) {
-				this.enabled = enabled;
-			}
 		}
 
 		/**
@@ -1007,6 +1151,37 @@ public class SpringDocConfigProperties {
 	}
 
 	/**
+	 * The type Sort converter.
+	 *
+	 * @author daniel -shuy
+	 */
+	public static class SortConverter {
+
+		/**
+		 * The Enabled.
+		 */
+		private boolean enabled;
+
+		/**
+		 * Is enabled boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isEnabled() {
+			return enabled;
+		}
+
+		/**
+		 * Sets enabled.
+		 *
+		 * @param enabled the enabled
+		 */
+		public void setEnabled(boolean enabled) {
+			this.enabled = enabled;
+		}
+	}
+
+	/**
 	 * The type Webjars.
 	 *
 	 * @author bnasslahsen
@@ -1056,6 +1231,11 @@ public class SpringDocConfigProperties {
 		 * The Resolve schema properties.
 		 */
 		private boolean resolveSchemaProperties;
+
+		/**
+		 * The Resolve extensions properties.
+		 */
+		private boolean resolveExtensionsProperties;
 
 		/**
 		 * The Groups.
@@ -1193,8 +1373,20 @@ public class SpringDocConfigProperties {
 				return version;
 			}
 		}
-	}
 
+		public boolean isResolveExtensionsProperties() {
+			return resolveExtensionsProperties;
+		}
+
+		/**
+		 * Sets resolve extensions properties.
+		 *
+		 * @param resolveExtensionsProperties the resolve extensions properties
+		 */
+		public void setResolveExtensionsProperties(boolean resolveExtensionsProperties) {
+			this.resolveExtensionsProperties = resolveExtensionsProperties;
+		}
+	}
 
 	/**
 	 * The type Groups.
@@ -1318,15 +1510,15 @@ public class SpringDocConfigProperties {
 		/**
 		 * Instantiates a new Group config.
 		 *
-		 * @param group the group
-		 * @param pathsToMatch the paths to match
-		 * @param packagesToScan the packages to scan
+		 * @param group             the group
+		 * @param pathsToMatch      the paths to match
+		 * @param packagesToScan    the packages to scan
 		 * @param packagesToExclude the packages to exclude
-		 * @param pathsToExclude the paths to exclude
-		 * @param producesToMatch the produces to match
-		 * @param consumesToMatch the consumes to match
-		 * @param headersToMatch the headers to match
-		 * @param displayName the display name
+		 * @param pathsToExclude    the paths to exclude
+		 * @param producesToMatch   the produces to match
+		 * @param consumesToMatch   the consumes to match
+		 * @param headersToMatch    the headers to match
+		 * @param displayName       the display name
 		 */
 		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan,
 				List<String> packagesToExclude, List<String> pathsToExclude,
@@ -1504,13 +1696,59 @@ public class SpringDocConfigProperties {
 		public void setDisplayName(String displayName) {
 			this.displayName = displayName;
 		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			GroupConfig that = (GroupConfig) o;
+			return Objects.equals(group, that.group);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(group);
+		}
 	}
 
+
+	/**
+	 * Is show oauth 2 endpoints boolean.
+	 *
+	 * @return the boolean
+	 */
 	public boolean isShowOauth2Endpoints() {
 		return showOauth2Endpoints;
 	}
 
-	public void setShowOauth2Endpoints(boolean showOauth2Endpoint) {
-		this.showOauth2Endpoints = showOauth2Endpoint;
+	/**
+	 * Sets show oauth 2 endpoints.
+	 *
+	 * @param showOauth2Endpoints the show oauth 2 endpoints
+	 */
+	public void setShowOauth2Endpoints(boolean showOauth2Endpoints) {
+		this.showOauth2Endpoints = showOauth2Endpoints;
+	}
+
+	/**
+	 * Gets spec version.
+	 *
+	 * @return the spec version
+	 */
+	public SpecVersion getSpecVersion() {
+		if (apiDocs.getVersion() == OpenApiVersion.OPENAPI_3_1)
+			return SpecVersion.V31;
+		return SpecVersion.V30;
+	}
+
+	/**
+	 * Is openapi 31 boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isOpenapi31() {
+		if (apiDocs.getVersion() == OpenApiVersion.OPENAPI_3_1)
+			return true;
+		return false;
 	}
 }

@@ -79,7 +79,7 @@ If you have performed a checkout of this repository already, use "`File`" -> "`O
 Alternatively, you can let IntellIJ IDEA checkout the code for you.
 Use "`File`" ->
 "`New`" -> "`Project from Version Control`" and
-`https://github.com/springdoc/springdoc-openapi.git` for the URL.
+`https://github.com/springdoc/springdoc-openapi-v1.git` for the URL.
 Once the checkout has completed, a pop-up will suggest to open the project.
 
 ==== Install the Spring Formatter plugin
@@ -132,5 +132,5 @@ If you get `Filename too long`
 errors, set the `core.longPaths=true` git option:
 
 ```
-git clone -c core.longPaths=true https://github.com/springdoc/springdoc-openapi
+git clone -c core.longPaths=true https://github.com/springdoc/springdoc-openapi-v1
 ```

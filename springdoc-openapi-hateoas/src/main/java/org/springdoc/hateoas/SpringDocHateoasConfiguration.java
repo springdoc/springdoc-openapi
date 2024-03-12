@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import org.springdoc.core.Constants;
 import org.springdoc.core.SpringDocConfigProperties;
 import org.springdoc.core.SpringDocConfiguration;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
@@ -95,11 +96,11 @@ public class SpringDocHateoasConfiguration {
 	 * @param halProvider the hal provider
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param objectMapperProvider the object mapper provider
-	 * @return the open api customiser
+	 * @return the open api customizer
 	 * @see org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider) org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)org.springframework.hateoas.mediatype.hal.Jackson2HalModule.HalLinkListSerializer#serialize(Links, JsonGenerator, SerializerProvider)
 	 */
 	@Bean(LINKS_SCHEMA_CUSTOMISER)
-	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean(name = Constants.LINKS_SCHEMA_CUSTOMISER)
 	@Lazy(false)
 	GlobalOpenApiCustomizer linksSchemaCustomiser(HateoasHalProvider halProvider, SpringDocConfigProperties springDocConfigProperties, ObjectMapperProvider objectMapperProvider) {
 		if (!halProvider.isHalEnabled()) {

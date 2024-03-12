@@ -1,0 +1,53 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ApiGroupName info title",
+    "description": "ApiGroupName info description",
+    "version": "ApiGroupName info version"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/persons": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Summary of operationId 'persons' in ApiGroupName",
+        "description": "Description of operationId 'persons' in ApiGroupName",
+        "operationId": "persons",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PersonDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Description for 'name' property in ApiGroupName",
+            "example": "Example value for 'name' property in ApiGroupName"
+          }
+        },
+        "description": "Description for PersonDTO component in ApiGroupName"
+      }
+    }
+  }
+}

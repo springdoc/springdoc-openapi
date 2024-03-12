@@ -20,8 +20,11 @@
  *
  */
 
-package org.springdoc.openapi.javadoc;
+package test.org.springdoc.api.app172;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -49,6 +52,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
+import org.springdoc.openapi.javadoc.JavadocPropertyCustomizer;
+import org.springdoc.openapi.javadoc.SpringDocJavadocProvider;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -75,17 +80,17 @@ class JavadocPropertyCustomizerTest {
 
 
 	/**
-	 * Tests for {@link JavadocPropertyCustomizer#setJavadocDescription(Class, List, Schema)}.
+	 * Tests for {@link JavadocPropertyCustomizer#setJavadocDescription(Class, List, List, Schema)}.
 	 */
 	@Nested
 	class setJavadocDescription {
 		@Test
 		@EnabledForJreRange(min = JRE.JAVA_17)
-		void ifRecordObjectShouldGetField() throws IOException, ClassNotFoundException {
+		void ifRecordObjectShouldGetField() throws IOException, ClassNotFoundException, IntrospectionException {
 			File recordObject = new File(tempDir, "RecordObject.java");
 			try (PrintWriter writer = new PrintWriter(new FileWriter(recordObject))) {
 				writer.println("/**");
-				writer.println(" * Reord Object");
+				writer.println(" * Record Object");
 				writer.println(" *");
 				writer.println(" * @param id the id");
 				writer.println(" * @param name the name");
@@ -122,7 +127,8 @@ class JavadocPropertyCustomizerTest {
 					.addProperty("id", new StringSchema().name("id"))
 					.addProperty("name", new StringSchema().name("name"));
 
-			javadocPropertyCustomizer.setJavadocDescription(cls, fields, existingSchema);
+			List<PropertyDescriptor> propertyDescriptors = Arrays.asList(Introspector.getBeanInfo(cls).getPropertyDescriptors());
+			javadocPropertyCustomizer.setJavadocDescription(cls, fields, propertyDescriptors, existingSchema,false);
 
 			assertEquals("Record Object", existingSchema.getDescription());
 			Map<String, Schema> properties = existingSchema.getProperties();

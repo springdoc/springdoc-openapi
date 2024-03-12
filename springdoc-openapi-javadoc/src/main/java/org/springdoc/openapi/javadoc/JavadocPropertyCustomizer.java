@@ -22,21 +22,31 @@
 
 package org.springdoc.openapi.javadoc;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
+import io.swagger.v3.core.converter.ModelConverterContextImpl;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
@@ -47,6 +57,11 @@ import org.springframework.util.CollectionUtils;
  * @author bnasslahsen
  */
 public class JavadocPropertyCustomizer implements ModelConverter {
+
+	/**
+	 * The constant LOGGER.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(JavadocPropertyCustomizer.class);
 
 	/**
 	 * The Javadoc provider.
@@ -85,15 +100,32 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 				Class<?> cls = javaType.getRawClass();
 				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
 				List<Field> fields = FieldUtils.getAllFieldsList(cls);
-				if (!CollectionUtils.isEmpty(fields)) {
+				List<PropertyDescriptor> clsProperties = new ArrayList<>();
+				try {
+					clsProperties = Arrays.asList(Introspector.getBeanInfo(cls).getPropertyDescriptors());
+				} catch (IntrospectionException ignored) {
+					LOGGER.warn(ignored.getMessage());
+				}
+				if (!CollectionUtils.isEmpty(fields) || !CollectionUtils.isEmpty(clsProperties)) {
 					if (!type.isSchemaProperty()) {
 						Schema existingSchema = context.resolve(type);
-						setJavadocDescription(cls, fields, existingSchema);
+						setJavadocDescription(cls, fields, clsProperties, existingSchema, false);
 					}
 					else if (resolvedSchema != null && resolvedSchema.get$ref() != null && resolvedSchema.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
 						String schemaName = resolvedSchema.get$ref().substring(21);
 						Schema existingSchema = context.getDefinedModels().get(schemaName);
-						setJavadocDescription(cls, fields, existingSchema);
+						setJavadocDescription(cls, fields, clsProperties, existingSchema, false);
+					}
+					else {
+						try {
+							Field processedTypesField = FieldUtils.getDeclaredField(ModelConverterContextImpl.class, "processedTypes", true);
+							Set<AnnotatedType> processedType = (Set<AnnotatedType>) processedTypesField.get(context);
+							if(processedType.contains(type))
+								setJavadocDescription(cls, fields, clsProperties, resolvedSchema, true);
+						}
+						catch (IllegalAccessException e) {
+							LOGGER.warn(e.getMessage());
+						}
 					}
 				}
 				return resolvedSchema;
@@ -105,18 +137,23 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 	/**
 	 * Sets javadoc description.
 	 *
-	 * @param cls the cls
-	 * @param fields the fields
-	 * @param existingSchema the existing schema
+	 * @param cls             the cls
+	 * @param fields          the fields
+	 * @param clsProperties   the bean properties of cls
+	 * @param existingSchema  the existing schema
+	 * @param isProcessedType the is processed type
 	 */
-	void setJavadocDescription(Class<?> cls, List<Field> fields, Schema existingSchema) {
+	public void setJavadocDescription(Class<?> cls, List<Field> fields, List<PropertyDescriptor> clsProperties, Schema existingSchema, boolean isProcessedType) {
 		if (existingSchema != null) {
-			if (StringUtils.isBlank(existingSchema.getDescription())) {
-				existingSchema.setDescription(javadocProvider.getClassJavadoc(cls));
+			if (StringUtils.isBlank(existingSchema.getDescription()) && !isProcessedType) {
+				String classJavadoc = javadocProvider.getClassJavadoc(cls);
+				if (StringUtils.isNotBlank(classJavadoc)) {
+					existingSchema.setDescription(classJavadoc);
+				}
 			}
 			Map<String, Schema> properties = existingSchema.getProperties();
 			if (!CollectionUtils.isEmpty(properties)) {
-				if (cls.getSuperclass() != null && "java.lang.Record".equals(cls.getSuperclass().getName())) {
+				if (cls.getSuperclass() != null  && "java.lang.Record".equals(cls.getSuperclass().getName())) {
 					Map<String, String> recordParamMap = javadocProvider.getRecordClassParamJavadoc(cls);
 					properties.entrySet().stream()
 							.filter(stringSchemaEntry -> StringUtils.isBlank(stringSchemaEntry.getValue().getDescription()))
@@ -125,21 +162,53 @@ public class JavadocPropertyCustomizer implements ModelConverter {
 									stringSchemaEntry.getValue().setDescription(recordParamMap.get(stringSchemaEntry.getKey()));
 							});
 				}
-
 				properties.entrySet().stream()
 						.filter(stringSchemaEntry -> StringUtils.isBlank(stringSchemaEntry.getValue().getDescription()))
 						.forEach(stringSchemaEntry -> {
-							Optional<Field> optionalField = fields.stream().filter(field1 -> field1.getName().equals(stringSchemaEntry.getKey())).findAny();
+							Optional<Field> optionalField = fields.stream().filter(field1 -> findFields(stringSchemaEntry, field1)).findAny();
 							optionalField.ifPresent(field -> {
 								String fieldJavadoc = javadocProvider.getFieldJavadoc(field);
 								if (StringUtils.isNotBlank(fieldJavadoc))
 									stringSchemaEntry.getValue().setDescription(fieldJavadoc);
 							});
+							if (StringUtils.isBlank(stringSchemaEntry.getValue().getDescription())) {
+								Optional<PropertyDescriptor> optionalPd = clsProperties.stream().filter(pd -> pd.getName().equals(stringSchemaEntry.getKey())).findAny();
+								optionalPd.ifPresent(pd1 -> {
+									if(pd1.getReadMethod() != null) {
+										String fieldJavadoc = javadocProvider.getMethodJavadocDescription(pd1.getReadMethod());
+										if (StringUtils.isNotBlank(fieldJavadoc))
+											stringSchemaEntry.getValue().setDescription(fieldJavadoc);
+									}
+								});
+							}
 						});
 			}
-			fields.stream().filter(f -> f.isAnnotationPresent(JsonUnwrapped.class))
-					.forEach(f -> setJavadocDescription(f.getType(), FieldUtils.getAllFieldsList(f.getType()), existingSchema));
+		}
+	}
 
+	/**
+	 * Find fields boolean.
+	 *
+	 * @param stringSchemaEntry the string schema entry
+	 * @param field             the field
+	 * @return the boolean
+	 */
+	private boolean findFields(Entry<String, Schema> stringSchemaEntry, Field field) {
+		if (field.getName().equals(stringSchemaEntry.getKey())) {
+			return true;
+		}
+		else {
+			JsonProperty jsonPropertyAnnotation = field.getAnnotation(JsonProperty.class);
+			if (jsonPropertyAnnotation != null) {
+				String jsonPropertyName = jsonPropertyAnnotation.value();
+				if (jsonPropertyName.equals(stringSchemaEntry.getKey())) {
+					return true;
+				}
+			}
+			else if (field.getName().equalsIgnoreCase(stringSchemaEntry.getKey().replaceAll("_", ""))) {
+				return true;
+			}
+			return false;
 		}
 	}
 }

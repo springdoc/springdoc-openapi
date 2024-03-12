@@ -11,6 +11,39 @@
     }
   ],
   "paths": {
+    "/cars": {
+      "get": {
+        "tags": [
+          "car-controller"
+        ],
+        "operationId": "getCars",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Car"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/cars/{carId}": {
       "get": {
         "tags": [
@@ -35,29 +68,6 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/Car"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/cars": {
-      "get": {
-        "tags": [
-          "car-controller"
-        ],
-        "operationId": "getCars",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Car"
-                  }
                 }
               }
             }

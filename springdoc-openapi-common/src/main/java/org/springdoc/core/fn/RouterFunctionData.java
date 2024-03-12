@@ -296,6 +296,9 @@ public class RouterFunctionData {
 			case OPTIONS:
 				requestMethod = RequestMethod.OPTIONS;
 				break;
+			case TRACE:
+				requestMethod = RequestMethod.TRACE;
+				break;
 			default:
 				// Do nothing here
 				break;

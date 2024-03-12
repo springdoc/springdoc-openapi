@@ -242,16 +242,18 @@ public class SpringDocDataRestConfiguration {
 		/**
 		 * Query dsl querydsl predicate operation customizer querydsl predicate operation customizer.
 		 *
-		 * @param querydslBindingsFactory the querydsl bindings factory
+		 * @param querydslBindingsFactory   the querydsl bindings factory
+		 * @param springDocConfigProperties the spring doc config properties
 		 * @return the querydsl predicate operation customizer
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory) {
+		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory,
+				SpringDocConfigProperties springDocConfigProperties) {
 			if (querydslBindingsFactory.isPresent()) {
 				getConfig().addRequestWrapperToIgnore(Predicate.class);
-				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get());
+				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get(), springDocConfigProperties);
 			}
 			return null;
 		}

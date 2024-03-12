@@ -1,6 +1,6 @@
 ![Octocat](https://springdoc.org/img/banner-logo.svg)
-[![Build Status](http://129.159.254.115:8686/buildStatus/icon?job=springdoc-openapi-IC)](http://129.159.254.115:8686/view/springdoc-openapi/job/springdoc-openapi-IC/)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=springdoc_springdoc-openapi&metric=alert_status)](https://sonarcloud.io/dashboard?id=springdoc_springdoc-openapi)
+[![Build Status](https://ci-cd.springdoc.org:8443/buildStatus/icon?job=springdoc-openapi-IC)](https://ci-cd.springdoc.org:8443/view/springdoc-openapi/job/springdoc-openapi-IC/)
+[![Quality Gate Status](https://sonar.springdoc.org/api/project_badges/measure?project=springdoc-openapi&metric=alert_status&token=sqb_b0202ce5e7c6d83a91e0bcb04d1cf24419585e34)](https://sonar.springdoc.org/dashboard?id=springdoc-openapi)
 [![Known Vulnerabilities](https://snyk.io/test/github/springdoc/springdoc-openapi.git/badge.svg)](https://snyk.io/test/github/springdoc/springdoc-openapi.git)
 [![Stack Exchange questions](https://img.shields.io/stackexchange/stackoverflow/t/springdoc)](https://stackoverflow.com/questions/tagged/springdoc?tab=Votes)
 
@@ -17,9 +17,6 @@ This project is sponsored by
     <img src="https://springdoc.org/img/mercedes-benz.png" height="10%" width="10%" />
 </a>
 &nbsp;&nbsp;
-<a href="https://www.dm-jobs.com/dmTECH/?locale=de_DE&wt_mc=.display.github.sponsoring.logo" target="_blank">
-     <img src="https://springdoc.org/img/dmTECH_Logo.jpg" height="10%" width="10%" />
-</a>
 <a href="https://www.contrastsecurity.com/" target="_blank">
    <img src="https://springdoc.org/img/contrastsecurity.svg" height="10%" width="30%" />
 </a>
@@ -111,7 +108,7 @@ springdoc.swagger-ui.path=/swagger-ui.html
 
 ## Spring-boot with OpenAPI Demo applications.
 
-### [Source Code for Demo Applications](https://github.com/springdoc/springdoc-openapi-demos.git).
+### [Source Code for Demo Applications](https://github.com/springdoc/springdoc-openapi-v1-demos.git).
 
 ### [Demo Spring Boot 2 Web MVC with OpenAPI 3](http://158.101.191.70:8081/).
 
@@ -202,12 +199,12 @@ The artifacts can be viewed accessed at the following locations:
 
 Releases:
 
-* [https://s01.oss.sonatype.org/content/groups/public/org/springdoc/](https://s01.oss.sonatype.org/content/groups/public/org/springdoc/)
+* [https://nexus.springdoc.org/repository/maven-releases/org/springdoc/](https://nexus.springdoc.org/content/groups/public/org/springdoc/)
   .
 
 Snapshots:
 
-* [https://s01.oss.sonatype.org/content/repositories/snapshots/org/springdoc/](https://s01.oss.sonatype.org/content/repositories/snapshots/org/springdoc/)
+* [https://nexus.springdoc.orgg/repository/maven-snapshots/org/springdoc/](https://nexus.springdoc.org/content/repositories/snapshots/org/springdoc/)
   .
 
 # Acknowledgements
@@ -215,9 +212,9 @@ Snapshots:
 ## Contributors
 
 springdoc-openapi is relevant and updated regularly due to the valuable contributions from
-its [contributors](https://github.com/springdoc/springdoc-openapi/graphs/contributors).
+its [contributors](https://github.com/springdoc/springdoc-openapi-v1/graphs/contributors).
 
-<a href="https://github.com/springdoc/springdoc-openapi/graphs/contributors">
+<a href="https://github.com/springdoc/springdoc-openapi-v1/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=springdoc/springdoc-openapi" width="50%"/>
 </a>
 

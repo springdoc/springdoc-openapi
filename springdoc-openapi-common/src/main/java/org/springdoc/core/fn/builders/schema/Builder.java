@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -25,7 +27,9 @@ package org.springdoc.core.fn.builders.schema;
 import java.lang.annotation.Annotation;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.StringToClassMapItem;
 import io.swagger.v3.oas.annotations.extensions.Extension;
+import io.swagger.v3.oas.annotations.media.DependentRequired;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
@@ -35,214 +39,175 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Schema builder.
+ *
  * @author bnasslahsen
  */
 public class Builder {
 	/**
 	 * Provides a java class as implementation for this schema.  When provided, additional information in the Schema annotation (except for type information) will augment the java class after introspection.
-	 *
 	 */
 	private Class<?> implementation = Void.class;
 
 	/**
 	 * Provides a java class to be used to disallow matching properties.
-	 *
 	 */
 	private Class<?> not = Void.class;
 
 	/**
 	 * Provides an array of java class implementations which can be used to describe multiple acceptable schemas.  If more than one match the derived schemas, a validation error will occur.
-	 *
 	 */
 	private Class<?>[] oneOf = {};
 
 	/**
 	 * Provides an array of java class implementations which can be used to describe multiple acceptable schemas.  If any match, the schema will be considered valid.
-	 *
 	 */
 	private Class<?>[] anyOf = {};
 
 	/**
 	 * Provides an array of java class implementations which can be used to describe multiple acceptable schemas.  If all match, the schema will be considered valid
-	 *
 	 */
 	private Class<?>[] allOf = {};
 
 	/**
 	 * The name of the schema or property.
-	 *
 	 */
 	private String name = "";
 
 	/**
 	 * A title to explain the purpose of the schema.
-	 *
 	 */
 	private String title = "";
 
 	/**
 	 * Constrains a value such that when divided by the multipleOf, the remainder must be an integer.  Ignored if the value is 0.
-	 *
 	 */
 	private double multipleOf = 0;
 
 	/**
 	 * Sets the maximum numeric value for a property.  Ignored if the value is an empty string.
-	 *
 	 */
 	private String maximum = "";
 
 	/**
 	 * if true, makes the maximum value exclusive, or a less-than criteria.
-	 *
 	 */
 	private boolean exclusiveMaximum;
 
 	/**
 	 * Sets the minimum numeric value for a property.  Ignored if the value is an empty string or not a number.
-	 *
 	 */
 	private String minimum = "";
 
 	/**
 	 * If true, makes the minimum value exclusive, or a greater-than criteria.
-	 *
 	 */
 	private boolean exclusiveMinimum;
 
 	/**
 	 * Sets the maximum length of a string value.  Ignored if the value is negative.
-	 *
 	 */
 	private int maxLength = Integer.MAX_VALUE;
 
 	/**
 	 * Sets the minimum length of a string value.  Ignored if the value is negative.
-	 *
 	 */
 	private int minLength = 0;
 
 	/**
 	 * A pattern that the value must satisfy. Ignored if the value is an empty string.
-	 *
 	 */
 	private String pattern = "";
 
 	/**
 	 * Constrains the number of arbitrary properties when additionalProperties is defined.  Ignored if value is 0.
-	 *
 	 */
 	private int maxProperties = 0;
 
 	/**
 	 * Constrains the number of arbitrary properties when additionalProperties is defined.  Ignored if value is 0.
-	 *
 	 */
 	private int minProperties = 0;
 
 	/**
 	 * Allows multiple properties in an object to be marked as required.
-	 *
 	 */
 	private String[] requiredProperties = {};
 
 	/**
 	 * Mandates that the annotated item is required or not.
-	 *
 	 */
 	private boolean required;
 
 	/**
 	 * A description of the schema.
-	 *
 	 */
 	private String description = "";
 
 	/**
 	 * Provides an optional override for the format.  If a consumer is unaware of the meaning of the format, they shall fall back to using the basic type without format.  For example, if \&quot;type: integer, format: int128\&quot; were used to designate a very large integer, most consumers will not understand how to handle it, and fall back to simply \&quot;type: integer\&quot;
-	 *
 	 */
 	private String format = "";
 
 	/**
 	 * References a schema definition in an external OpenAPI document.
-	 *
 	 */
 	private String ref = "";
 
 	/**
 	 * If true, designates a value as possibly null.
-	 *
 	 */
 	private boolean nullable;
 
 	/**
-	 * The Required mode.
-	 */
-	private RequiredMode requiredMode = Schema.RequiredMode.AUTO;
-
-	/**
 	 * Allows to specify the access mode (AccessMode.READ_ONLY, READ_WRITE)
-	 *
 	 * AccessMode.READ_ONLY: value will not be written to during a request but may be returned during a response.
 	 * AccessMode.WRITE_ONLY: value will only be written to during a request but not returned during a response.
 	 * AccessMode.READ_WRITE: value will be written to during a request and returned during a response.
-	 *
-	 *
 	 */
 	private AccessMode accessMode = io.swagger.v3.oas.annotations.media.Schema.AccessMode.AUTO;
 
 	/**
 	 * Provides an example of the schema.  When associated with a specific media type, the example string shall be parsed by the consumer to be treated as an object or an array.
-	 *
 	 */
 	private String example = "";
 
 	/**
 	 * Additional external documentation for this schema.
-	 *
 	 */
 	private ExternalDocumentation externalDocs = org.springdoc.core.fn.builders.externaldocumentation.Builder.externalDocumentationBuilder().build();
 
 	/**
 	 * Specifies that a schema is deprecated and should be transitioned out of usage.
-	 *
 	 */
 	private boolean deprecated;
 
 	/**
 	 * Provides an override for the basic type of the schema.  Must be a valid type per the OpenAPI Specification.
-	 *
 	 */
 	private String type = "";
 
 	/**
 	 * Provides a list of allowable values.  This field map to the enum property in the OAS schema.
-	 *
 	 */
 	private String[] allowableValues = {};
 
 	/**
 	 * Provides a default value.
-	 *
 	 */
 	private String defaultValue = "";
 
 	/**
 	 * Provides a discriminator property value.
-	 *
 	 */
 	private String discriminatorProperty = "";
 
 	/**
 	 * Provides discriminator mapping values.
-	 *
 	 */
 	private DiscriminatorMapping[] discriminatorMapping = {};
 
 	/**
 	 * Allows schema to be marked as hidden.
-	 *
 	 */
 	private boolean hidden;
 
@@ -250,7 +215,6 @@ public class Builder {
 	 * Allows enums to be resolved as a reference to a scheme added to components section.
 	 *
 	 * @since swagger -core 2.1.0
-	 * @return whether or not this must be resolved as a reference
 	 */
 	private boolean enumAsRef;
 
@@ -261,20 +225,176 @@ public class Builder {
 
 	/**
 	 * The list of optional extensions
-	 *
-	 * @return an optional array of extensions
 	 */
 	private Extension[] extensions = {};
 
 	/**
 	 * Allows to specify the additionalProperties value
-	 *
 	 * AdditionalPropertiesValue.TRUE: set to TRUE
 	 * AdditionalPropertiesValue.FALSE: set to FALSE
 	 * AdditionalPropertiesValue.USE_ADDITIONAL_PROPERTIES_ANNOTATION: resolve from @Content.additionalPropertiesSchema
-	 *
 	 */
 	private AdditionalPropertiesValue additionalProperties = AdditionalPropertiesValue.USE_ADDITIONAL_PROPERTIES_ANNOTATION;
+
+	/**
+	 * The Required mode.
+	 */
+	private RequiredMode requiredMode = Schema.RequiredMode.AUTO;
+
+	/**
+	 * The Prefix items.
+	 */
+	private Class<?>[] prefixItems = {};
+
+	/**
+	 * The Types.
+	 */
+	private String[] types ={};
+
+	/**
+	 * The Exclusive maximum value.
+	 */
+	private int exclusiveMaximumValue = 0;
+
+	/**
+	 * The Exclusive minimum value.
+	 */
+	private int exclusiveMinimumValue = 0;
+
+	/**
+	 * The Contains.
+	 */
+	private Class<?> contains = Void.class;
+
+	/**
+	 * The Id.
+	 */
+	private String $id = "";
+
+	/**
+	 * The Schema.
+	 */
+	private String $schema = "";
+
+	/**
+	 * The Anchor.
+	 */
+	private String $anchor = "";
+
+	/**
+	 * The Vocabulary.
+	 */
+	private String $vocabulary = "";
+
+	/**
+	 * The Dynamic anchor.
+	 */
+	private String $dynamicAnchor = "";
+
+	/**
+	 * The Content encoding.
+	 */
+	private String contentEncoding = "";
+
+	/**
+	 * The Content media type.
+	 */
+	private String contentMediaType = "";
+
+	/**
+	 * The Content schema.
+	 */
+	private Class<?> contentSchema = Void.class;
+
+	/**
+	 * The Property names.
+	 */
+	private Class<?> propertyNames = Void.class;
+
+	/**
+	 * The Max contains.
+	 */
+	private int maxContains = Integer.MAX_VALUE;
+
+	/**
+	 * The Min contains.
+	 */
+	private int minContains = 0;
+
+	/**
+	 * The Additional items.
+	 */
+	private Class<?> additionalItems = Void.class;
+
+	/**
+	 * The Unevaluated items.
+	 */
+	private Class<?> unevaluatedItems = Void.class;
+
+	/**
+	 * The If.
+	 */
+	private Class<?> _if = Void.class;
+
+	/**
+	 * The Else.
+	 */
+	private Class<?> _else = Void.class;
+
+	/**
+	 * The Then.
+	 */
+	private Class<?> then = Void.class;
+
+	/**
+	 * The Comment.
+	 */
+	private String $comment = "";
+
+	/**
+	 * The Example classes.
+	 */
+	private Class<?>[] exampleClasses = {};
+
+	/**
+	 * The Dependent required map.
+	 */
+	private DependentRequired[] dependentRequiredMap = {};
+
+	/**
+	 * The Dependent schemas.
+	 */
+	private StringToClassMapItem[] dependentSchemas = {};
+
+	/**
+	 * The Pattern properties.
+	 */
+	private StringToClassMapItem[] patternProperties = {};
+
+	/**
+	 * The Properties.
+	 */
+	private StringToClassMapItem[] properties= {};
+
+	/**
+	 * The Unevaluated properties.
+	 */
+	private Class<?> unevaluatedProperties = Void.class;
+
+	/**
+	 * The Additional properties schema.
+	 */
+	private Class<?> additionalPropertiesSchema = Void.class;
+
+	/**
+	 * The Examples.
+	 */
+	private String[] examples = {};
+
+	/**
+	 * The Const.
+	 */
+	private String _const = "";
 
 	/**
 	 * Instantiates a new Schema builder.
@@ -917,8 +1037,163 @@ public class Builder {
 			}
 
 			@Override
+			public Class<?>[] prefixItems() {
+				return prefixItems;
+			}
+
+			@Override
+			public String[] types() {
+				return types;
+			}
+
+			@Override
+			public int exclusiveMaximumValue() {
+				return exclusiveMaximumValue;
+			}
+
+			@Override
+			public int exclusiveMinimumValue() {
+				return exclusiveMinimumValue;
+			}
+
+			@Override
+			public Class<?> contains() {
+				return contains;
+			}
+
+			@Override
+			public String $id() {
+				return $id;
+			}
+
+			@Override
+			public String $schema() {
+				return $schema;
+			}
+
+			@Override
+			public String $anchor() {
+				return $anchor;
+			}
+
+			@Override
+			public String $vocabulary() {
+				return $vocabulary;
+			}
+
+			@Override
+			public String $dynamicAnchor() {
+				return $dynamicAnchor;
+			}
+
+			@Override
+			public String contentEncoding() {
+				return contentEncoding;
+			}
+
+			@Override
+			public String contentMediaType() {
+				return contentMediaType;
+			}
+
+			@Override
+			public Class<?> contentSchema() {
+				return contentSchema;
+			}
+
+			@Override
+			public Class<?> propertyNames() {
+				return propertyNames;
+			}
+
+			@Override
+			public int maxContains() {
+				return maxContains;
+			}
+
+			@Override
+			public int minContains() {
+				return minContains;
+			}
+
+			@Override
+			public Class<?> additionalItems() {
+				return additionalItems;
+			}
+
+			@Override
+			public Class<?> unevaluatedItems() {
+				return unevaluatedItems;
+			}
+
+			@Override
+			public Class<?> _if() {
+				return _if;
+			}
+
+			@Override
+			public Class<?> _else() {
+				return _else;
+			}
+
+			@Override
+			public Class<?> then() {
+				return then;
+			}
+
+			@Override
+			public String $comment() {
+				return $comment;
+			}
+
+			@Override
+			public Class<?>[] exampleClasses() {
+				return exampleClasses;
+			}
+
+			@Override
 			public AdditionalPropertiesValue additionalProperties() {
 				return additionalProperties;
+			}
+
+			@Override
+			public DependentRequired[] dependentRequiredMap() {
+				return dependentRequiredMap;
+			}
+
+			@Override
+			public StringToClassMapItem[] dependentSchemas() {
+				return dependentSchemas;
+			}
+
+			@Override
+			public StringToClassMapItem[] patternProperties() {
+				return patternProperties;
+			}
+
+			@Override
+			public StringToClassMapItem[] properties() {
+				return properties;
+			}
+
+			@Override
+			public Class<?> unevaluatedProperties() {
+				return unevaluatedProperties;
+			}
+
+			@Override
+			public Class<?> additionalPropertiesSchema() {
+				return additionalPropertiesSchema;
+			}
+
+			@Override
+			public String[] examples() {
+				return examples;
+			}
+
+			@Override
+			public String _const() {
+				return _const;
 			}
 		};
 	}

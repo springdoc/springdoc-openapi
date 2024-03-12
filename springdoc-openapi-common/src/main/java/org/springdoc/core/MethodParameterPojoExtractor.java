@@ -51,6 +51,7 @@ import java.util.stream.Stream;
 
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.core.converters.ConverterUtils;
 
 import org.springframework.core.MethodParameter;
 
@@ -91,6 +92,9 @@ class MethodParameterPojoExtractor {
 		SIMPLE_TYPE_PREDICATES.add(Class::isEnum);
 		SIMPLE_TYPE_PREDICATES.add(Class::isArray);
 		SIMPLE_TYPE_PREDICATES.add(MethodParameterPojoExtractor::isSwaggerPrimitiveType);
+		SIMPLE_TYPE_PREDICATES.add(aClass -> aClass.getName().startsWith("org.codehaus.groovy.reflection"));
+		SIMPLE_TYPE_PREDICATES.add(aClass -> aClass.getName().startsWith("groovy.lang"));
+		SIMPLE_TYPE_PREDICATES.add(aClass -> aClass.getName().startsWith("java.lang.ref"));
 	}
 
 	/**
@@ -134,7 +138,7 @@ class MethodParameterPojoExtractor {
 	private static Stream<MethodParameter> fromGetterOfField(Class<?> paramClass, Field field, String fieldNamePrefix) {
 		Class<?> type = extractType(paramClass, field);
 
-		if (Objects.isNull(type))
+		if (Objects.isNull(type) || ConverterUtils.isJavaTypeToIgnore(type))
 			return Stream.empty();
 
 		if (isSimpleType(type))

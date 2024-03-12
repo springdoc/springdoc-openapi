@@ -54,14 +54,14 @@ public final class Constants {
 	public static final String API_DOCS_URL = "${springdoc.api-docs.path:#{T(org.springdoc.core.Constants).DEFAULT_API_DOCS_URL}}";
 
 	/**
-	 * The constant SWAGGGER_CONFIG_FILE.
+	 * The constant SWAGGER_CONFIG_FILE.
 	 */
-	public static final String SWAGGGER_CONFIG_FILE = "swagger-config";
+	public static final String SWAGGER_CONFIG_FILE = "swagger-config";
 
 	/**
 	 * The constant SWAGGER_CONFIG_URL.
 	 */
-	public static final String SWAGGER_CONFIG_URL = API_DOCS_URL + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+	public static final String SWAGGER_CONFIG_URL = API_DOCS_URL + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE;
 
 	/**
 	 * The constant YAML.
@@ -242,7 +242,7 @@ public final class Constants {
 	/**
 	 * The constant GROUP_NAME_NOT_NULL.
 	 */
-	public static final String GROUP_NAME_NOT_NULL = "Group name can not be null";
+	public static final String GROUP_NAME_NOT_NULL_OR_EMPTY = "Group name can not be null or empty";
 
 	/**
 	 * The constant GET_METHOD.
@@ -397,12 +397,27 @@ public final class Constants {
 	/**
 	 * The constant SPRINGDOC_SORT_CONVERTER_ENABLED.
 	 */
-	public static final String SPRINGDOC_SORT_CONVERTER_ENABLED = "springdoc.model-converters.sort-converter.enabled";
+	public static final String SPRINGDOC_SORT_CONVERTER_ENABLED = "springdoc.sort-converter.enabled";
 
 	/**
 	 * The constant SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED.
 	 */
 	public static final String SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED = "springdoc.nullable-request-parameter-enabled";
+
+	/**
+	 * The constant SPRINGDOC_SPECIFICATION_STRING_PROPERTIES.
+	 */
+	public static final String SPRINGDOC_SPECIFICATION_STRING_PROPERTIES = "springdoc.api-docs.specification-string-properties";
+
+	/**
+	 * The constant SPRINGDOC_SPEC_PROPERTIES_PREFIX.
+	 */
+	public static final String SPRINGDOC_SPEC_PROPERTIES_PREFIX = "springdoc.spec-properties.";
+
+	/**
+	 * The constant SPRINGDOC_ENABLE_DEFAULT_API_DOCS.
+	 */
+	public static final String SPRINGDOC_ENABLE_DEFAULT_API_DOCS = "springdoc.enable-default-api-docs";
 
 	/**
 	 * Instantiates a new Constants.

@@ -49,11 +49,6 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	protected String webJarsPrefixUrl;
 
 	/**
-	 * The Oauth prefix.
-	 */
-	protected UriComponentsBuilder oauthPrefix;
-
-	/**
 	 * Instantiates a new Abstract swagger welcome.
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties

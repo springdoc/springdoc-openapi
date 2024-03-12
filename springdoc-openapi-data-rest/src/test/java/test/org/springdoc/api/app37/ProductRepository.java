@@ -4,6 +4,7 @@ package test.org.springdoc.api.app37;
  * @author bnasslahsen
  */
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 			in = ParameterIn.QUERY,
 			required = true
 	)
-	@Param("price")String price);
+	@Param("price") BigDecimal price);
 
 	/**
 	 * 根据商品名称查询商品信息

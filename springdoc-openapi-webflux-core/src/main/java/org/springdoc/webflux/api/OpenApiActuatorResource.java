@@ -38,6 +38,7 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +47,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.springdoc.core.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.Constants.DEFAULT_API_DOCS_ACTUATOR_URL;
 import static org.springdoc.core.Constants.DEFAULT_YAML_API_DOCS_ACTUATOR_PATH;
+import static org.springdoc.core.Constants.SPRINGDOC_ENABLE_DEFAULT_API_DOCS;
 import static org.springdoc.core.Constants.YAML;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
@@ -55,6 +57,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  * @author bnasslashen
  */
 @RestControllerEndpoint(id = DEFAULT_API_DOCS_ACTUATOR_URL)
+@ConditionalOnProperty(name = SPRINGDOC_ENABLE_DEFAULT_API_DOCS, havingValue = "true", matchIfMissing = true)
 public class OpenApiActuatorResource extends OpenApiResource {
 
 	/**

@@ -60,7 +60,6 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.customizers.ParameterCustomizer;
@@ -70,7 +69,6 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpMethod;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -87,6 +85,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.Constants.OPENAPI_STRING_TYPE;
+import static org.springdoc.core.GenericParameterService.isFile;
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.containsDeprecatedAnnotation;
 
 /**
@@ -586,6 +585,24 @@ public abstract class AbstractRequestService {
 	}
 
 	/**
+	 * Gets request body builder.
+	 *
+	 * @return the request body builder
+	 */
+	public RequestBodyService getRequestBodyBuilder() {
+		return requestBodyService;
+	}
+
+	/**
+	 * Is default flat param object boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isDefaultFlatParamObject() {
+		return defaultFlatParamObject;
+	}
+	
+	/**
 	 * Calculate size.
 	 *
 	 * @param annos the annos
@@ -603,15 +620,6 @@ public abstract class AbstractRequestService {
 				schema.setMaxLength(size.max());
 			}
 		}
-	}
-
-	/**
-	 * Gets request body builder.
-	 *
-	 * @return the request body builder
-	 */
-	public RequestBodyService getRequestBodyBuilder() {
-		return requestBodyService;
 	}
 
 	/**
@@ -688,17 +696,57 @@ public abstract class AbstractRequestService {
 	private boolean isRequestBodyParam(RequestMethod requestMethod, ParameterInfo parameterInfo, String openApiVersion) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
-		Boolean isBodyAllowed = !RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openApiVersion);
+		boolean isBodyAllowed = !RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openApiVersion);
 
-		return (isBodyAllowed && (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getIn() == null) && !delegatingMethodParameter.isParameterObject()) && ((methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null || methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null || methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class) != null || AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null) || (!ClassUtils.isPrimitiveOrWrapper(methodParameter.getParameterType()) && (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()))));
+		return (isBodyAllowed && (parameterInfo.getParameterModel() == null 
+				|| parameterInfo.getParameterModel().getIn() == null) && !delegatingMethodParameter.isParameterObject()) && ((methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null 
+				|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null 
+				|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null)
+				|| checkOperationRequestBody(methodParameter)
+				|| checkFile(methodParameter));
 	}
 
 	/**
-	 * Is default flat param object boolean.
+	 * Check file boolean.
 	 *
+	 * @param methodParameter the method parameter
 	 * @return the boolean
 	 */
-	public boolean isDefaultFlatParamObject() {
-		return defaultFlatParamObject;
+	private boolean checkFile(MethodParameter methodParameter) {
+		if (methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class) != null)
+			return true;
+		else if (methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestParam.class) != null) {
+			return isFile(methodParameter.getParameterType());
+		}
+		return false;
 	}
+
+	/**
+	 * Check operation request body boolean.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the boolean
+	 */
+	private boolean checkOperationRequestBody(MethodParameter methodParameter) {
+		if (AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.Operation.class) != null) {
+			io.swagger.v3.oas.annotations.Operation operation = AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.Operation.class);
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody = operation.requestBody();
+			if (StringUtils.isNotBlank(requestBody.description()))
+				return true;
+			else if (StringUtils.isNotBlank(requestBody.ref()))
+				return true;
+			else if (requestBody.required())
+				return true;
+			else if (requestBody.useParameterTypeSchema())
+				return true;
+			else if (requestBody.content().length > 0)
+				return true;
+			else
+				return requestBody.extensions().length > 0;
+		}
+		return false;
+	}
+
+	
+	
 }

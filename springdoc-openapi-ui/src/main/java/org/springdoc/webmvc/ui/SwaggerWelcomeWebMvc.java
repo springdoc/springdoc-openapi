@@ -25,8 +25,8 @@ package org.springdoc.webmvc.ui;
 import javax.servlet.http.HttpServletRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
-import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.SpringDocConfigProperties;
+import org.springdoc.core.SpringDocUtils;
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
@@ -37,8 +37,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import static org.springdoc.core.Constants.MVC_SERVLET_PATH;
+import static org.springdoc.core.Constants.SWAGGER_CONFIG_FILE;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
-import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -98,7 +98,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	@Override
 	protected void calculateUiRootPath(StringBuilder... sbUrls) {
 		StringBuilder sbUrl = new StringBuilder();
-		if (StringUtils.isNotBlank(mvcServletPath))
+		if (SpringDocUtils.isValidPath(mvcServletPath))
 			sbUrl.append(mvcServletPath);
 		calculateUiRootCommon(sbUrl, sbUrls);
 	}
@@ -112,7 +112,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	 */
 	@Override
 	protected String buildUrl(String contextPath, final String docsUrl) {
-		if (StringUtils.isNotBlank(mvcServletPath))
+		if (SpringDocUtils.isValidPath(mvcServletPath))
 			contextPath += mvcServletPath;
 		return super.buildUrl(contextPath, docsUrl);
 	}
@@ -141,7 +141,7 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	 */
 	@Override
 	protected String buildSwaggerConfigUrl() {
-		return apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+		return apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE;
 	}
 
 }

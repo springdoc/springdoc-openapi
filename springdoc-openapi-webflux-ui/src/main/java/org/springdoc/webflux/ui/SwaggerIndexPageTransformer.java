@@ -22,6 +22,8 @@
 
 package org.springdoc.webflux.ui;
 
+import java.nio.charset.StandardCharsets;
+
 import org.springdoc.core.SwaggerUiConfigParameters;
 import org.springdoc.core.SwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiOAuthProperties;
@@ -73,7 +75,7 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 			boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/" + SWAGGER_INITIALIZER_JS, resource.getURL().toString());
 			if (isIndexFound) {
 				String html = defaultTransformations(resource.getInputStream());
-				return Mono.just(new TransformedResource(resource, html.getBytes()));
+				return Mono.just(new TransformedResource(resource, html.getBytes(StandardCharsets.UTF_8)));
 			}
 			else {
 				return Mono.just(resource);

@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -49,6 +51,7 @@ import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.converters.SortOpenAPIConverter;
 import org.springdoc.core.converters.WebFluxSupportConverter;
+import org.springdoc.core.converters.models.SortObject;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
@@ -284,13 +287,14 @@ public class SpringDocConfiguration {
 	/**
 	 * Model converter registrar model converter registrar.
 	 *
-	 * @param modelConverters the model converters
+	 * @param modelConverters           the model converters
+	 * @param springDocConfigProperties the spring doc config properties
 	 * @return the model converter registrar
 	 */
 	@Bean
 	@Lazy(false)
-	ModelConverterRegistrar modelConverterRegistrar(Optional<List<ModelConverter>> modelConverters) {
-		return new ModelConverterRegistrar(modelConverters.orElse(Collections.emptyList()));
+	ModelConverterRegistrar modelConverterRegistrar(Optional<List<ModelConverter>> modelConverters, SpringDocConfigProperties springDocConfigProperties) {
+		return new ModelConverterRegistrar(modelConverters.orElse(Collections.emptyList()), springDocConfigProperties);
 	}
 
 	/**
@@ -334,8 +338,8 @@ public class SpringDocConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	RequestBodyService requestBodyBuilder(GenericParameterService parameterBuilder) {
-		return new RequestBodyService(parameterBuilder);
+	RequestBodyService requestBodyBuilder(GenericParameterService parameterBuilder, PropertyResolverUtils propertyResolverUtils) {
+		return new RequestBodyService(parameterBuilder, propertyResolverUtils);
 	}
 
 	/**
@@ -433,7 +437,7 @@ public class SpringDocConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	ObjectMapperProvider springDocObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
+	ObjectMapperProvider springdocObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
 		return new ObjectMapperProvider(springDocConfigProperties);
 	}
 
@@ -448,7 +452,7 @@ public class SpringDocConfiguration {
 		/**
 		 * Springdoc bean factory post processor 3 bean factory post processor.
 		 *
-		 * @param groupedOpenApis the grouped open apis
+		 * @param groupedOpenApis           the grouped open apis
 		 * @return the bean factory post processor
 		 */
 		@Bean
@@ -462,13 +466,14 @@ public class SpringDocConfiguration {
 		/**
 		 * Actuator customizer operation customizer.
 		 *
+		 * @param springDocConfigProperties the spring doc config properties
 		 * @return the operation customizer
 		 */
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.SAME)
-		GlobalOperationCustomizer actuatorCustomizer() {
-			return new ActuatorOperationCustomizer();
+		GlobalOperationCustomizer actuatorCustomizer(SpringDocConfigProperties springDocConfigProperties) {
+			return new ActuatorOperationCustomizer(springDocConfigProperties);
 		}
 
 		/**
@@ -480,7 +485,7 @@ public class SpringDocConfiguration {
 		@Bean
 		@Lazy(false)
 		@ConditionalOnManagementPort(ManagementPortType.SAME)
-		GlobalOpenApiCustomizer actuatorOpenApiCustomiser(WebEndpointProperties webEndpointProperties) {
+		GlobalOpenApiCustomizer actuatorOpenApiCustomizer(WebEndpointProperties webEndpointProperties) {
 			return new ActuatorOpenApiCustomizer(webEndpointProperties);
 		}
 
@@ -620,6 +625,7 @@ public class SpringDocConfiguration {
 		@Lazy(false)
 		SortOpenAPIConverter sortOpenAPIConverter(ObjectMapperProvider objectMapperProvider) {
 			getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Sort.class, org.springdoc.core.converters.models.Sort.class);
+			getConfig().replaceWithClass(org.springframework.data.domain.Sort.class, SortObject.class);
 			return new SortOpenAPIConverter(objectMapperProvider);
 		}
 

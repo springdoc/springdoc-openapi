@@ -48,6 +48,8 @@ import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 
 /**
  * The type Delegating method parameter.
@@ -119,16 +121,13 @@ public class DelegatingMethodParameter extends MethodParameter {
 			MethodParameter p = parameters[i];
 			Class<?> paramClass = AdditionalModelsConverter.getParameterObjectReplacement(p.getParameterType());
 
-			if (!MethodParameterPojoExtractor.isSimpleType(paramClass) && (p.hasParameterAnnotation(ParameterObject.class) || AnnotatedElementUtils.isAnnotated(paramClass, ParameterObject.class))) {
+			boolean hasFlatAnnotation = p.hasParameterAnnotation(ParameterObject.class) || AnnotatedElementUtils.isAnnotated(paramClass, ParameterObject.class);
+			boolean hasNotFlatAnnotation = Arrays.stream(p.getParameterAnnotations())
+					.anyMatch(annotation -> Arrays.asList(RequestBody.class, RequestPart.class).contains(annotation.annotationType()));
+			if (!MethodParameterPojoExtractor.isSimpleType(paramClass)
+					&& (hasFlatAnnotation || (defaultFlatParamObject && !hasNotFlatAnnotation && !AbstractRequestService.isRequestTypeToIgnore(paramClass)))) {
 				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
 					optionalDelegatingMethodParameterCustomizer.ifPresent(customizer -> customizer.customize(p, methodParameter));
-					explodedParameters.add(methodParameter);
-				});
-			}
-			else if (defaultFlatParamObject && !MethodParameterPojoExtractor.isSimpleType(paramClass) && !AbstractRequestService.isRequestTypeToIgnore(paramClass)) {
-				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
-					optionalDelegatingMethodParameterCustomizer
-							.ifPresent(customizer -> customizer.customize(p, methodParameter));
 					explodedParameters.add(methodParameter);
 				});
 			}

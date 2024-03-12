@@ -58,6 +58,16 @@
       "Pageable": {
         "type": "object",
         "properties": {
+          "offset": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SortObject"
+            }
+          },
           "paged": {
             "type": "boolean"
           },
@@ -71,26 +81,25 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
-          },
-          "offset": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "sort": {
-            "$ref": "#/components/schemas/SortObject"
           }
         }
       },
       "SortObject": {
         "type": "object",
         "properties": {
-          "sorted": {
+          "direction": {
+            "type": "string"
+          },
+          "nullHandling": {
+            "type": "string"
+          },
+          "ascending": {
             "type": "boolean"
           },
-          "unsorted": {
-            "type": "boolean"
+          "property": {
+            "type": "string"
           },
-          "empty": {
+          "ignoreCase": {
             "type": "boolean"
           }
         }

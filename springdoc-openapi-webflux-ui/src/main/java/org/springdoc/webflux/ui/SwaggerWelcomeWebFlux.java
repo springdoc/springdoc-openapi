@@ -36,8 +36,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static org.springdoc.core.Constants.SWAGGER_CONFIG_FILE;
 import static org.springdoc.core.Constants.SWAGGER_UI_PATH;
-import static org.springdoc.core.Constants.SWAGGGER_CONFIG_FILE;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
@@ -106,8 +106,8 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	@Override
 	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
 		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
-			this.oauthPrefix = uriComponentsBuilder.path(contextPath).path(swaggerUiConfigParameters.getUiRootPath()).path(webJarsPrefixUrl);
-			swaggerUiConfigParameters.setOauth2RedirectUrl(this.oauthPrefix.path(getOauth2RedirectUrl()).build().toString());
+			UriComponentsBuilder oauthPrefix = uriComponentsBuilder.path(contextPath).path(swaggerUiConfigParameters.getUiRootPath()).path(webJarsPrefixUrl);
+			swaggerUiConfigParameters.setOauth2RedirectUrl(oauthPrefix.path(getOauth2RedirectUrl()).build().toString());
 		}
 	}
 
@@ -135,7 +135,7 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 */
 	@Override
 	protected String buildSwaggerConfigUrl() {
-		return this.apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGGER_CONFIG_FILE;
+		return this.apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE;
 	}
 
 }

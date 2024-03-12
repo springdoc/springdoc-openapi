@@ -39,6 +39,7 @@ import static org.springdoc.core.Constants.ALL_PATTERN;
 import static org.springdoc.core.Constants.DEFAULT_GROUP_NAME;
 import static org.springdoc.core.Constants.HEALTH_PATTERN;
 import static org.springdoc.core.Constants.MANAGEMENT_ENDPOINTS_WEB;
+import static org.springdoc.core.Constants.SPRINGDOC_PREFIX;
 
 /**
  * The type Springdoc bean factory configurer.
@@ -54,7 +55,7 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 	/**
 	 * Instantiates a new Springdoc actuator bean factory configurer.
 	 *
-	 * @param groupedOpenApis the grouped open apis
+	 * @param groupedOpenApis           the grouped open apis
 	 */
 	public SpringdocActuatorBeanFactoryConfigurer(List<GroupedOpenApi> groupedOpenApis) {
 		this.groupedOpenApis = groupedOpenApis;
@@ -64,14 +65,17 @@ public class SpringdocActuatorBeanFactoryConfigurer extends SpringdocBeanFactory
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		final BindResult<WebEndpointProperties> result = Binder.get(environment)
 				.bind(MANAGEMENT_ENDPOINTS_WEB, WebEndpointProperties.class);
-		if (result.isBound()) {
+		final BindResult<SpringDocConfigProperties> springDocConfigPropertiesBindResult = Binder.get(environment)
+				.bind(SPRINGDOC_PREFIX, SpringDocConfigProperties.class);
+		
+		if (result.isBound() && springDocConfigPropertiesBindResult.isBound()) {
 			WebEndpointProperties webEndpointProperties = result.get();
-
+			SpringDocConfigProperties springDocConfigProperties = springDocConfigPropertiesBindResult.get();
 			List<GroupedOpenApi> newGroups = new ArrayList<>();
 
 			ActuatorOpenApiCustomizer actuatorOpenApiCustomiser = new ActuatorOpenApiCustomizer(webEndpointProperties);
 			beanFactory.registerSingleton("actuatorOpenApiCustomiser", actuatorOpenApiCustomiser);
-			ActuatorOperationCustomizer actuatorCustomizer = new ActuatorOperationCustomizer();
+			ActuatorOperationCustomizer actuatorCustomizer = new ActuatorOperationCustomizer(springDocConfigProperties);
 			beanFactory.registerSingleton("actuatorCustomizer", actuatorCustomizer);
 
 			GroupedOpenApi actuatorGroup = GroupedOpenApi.builder().group(ACTUATOR_DEFAULT_GROUP)

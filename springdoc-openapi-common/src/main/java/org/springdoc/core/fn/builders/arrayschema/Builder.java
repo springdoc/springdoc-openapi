@@ -2,19 +2,21 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  *
+ *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *
+ *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  * limitations under the License.
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
  *
@@ -31,46 +33,66 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Array schema builder.
+ *
  * @author bnasslahsen
  */
 public class Builder {
 	/**
 	 * The schema of the items in the array
-	 *
 	 */
 	private Schema schema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * Allows to define the properties to be resolved into properties of the schema of type `array` (not the ones of the
 	 * `items` of such schema which are defined in schema}.
-	 *
 	 */
 	private Schema arraySchema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * sets the maximum number of items in an array.  Ignored if value is Integer.MIN_VALUE.
-	 *
 	 */
 	private int maxItems = Integer.MIN_VALUE;
 
 	/**
 	 * sets the minimum number of items in an array.  Ignored if value is Integer.MAX_VALUE.
-	 *
 	 */
 	private int minItems = Integer.MAX_VALUE;
 
 	/**
 	 * determines whether an array of items will be unique
-	 *
 	 */
 	private boolean uniqueItems;
 
 	/**
 	 * The list of optional extensions
-	 *
 	 */
 	private Extension[] extensions = {};
 
+
+	/**
+	 * The Contains.
+	 */
+	private Schema contains = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+
+	/**
+	 * The Max contain.
+	 */
+	private int maxContains= 0;
+
+	/**
+	 * The Min contains.
+	 */
+	private int minContains= 0;
+
+	/**
+	 * The Unevaluated items.
+	 */
+	private Schema unevaluatedItems= org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+
+	/**
+	 * The Prefix items.
+	 */
+	private Schema[] prefixItems = {};
 
 	/**
 	 * Instantiates a new Array schema builder.
@@ -166,6 +188,11 @@ public class Builder {
 			}
 
 			@Override
+			public Schema items() {
+				return null;
+			}
+
+			@Override
 			public Schema schema() {
 				return schema;
 			}
@@ -193,6 +220,31 @@ public class Builder {
 			@Override
 			public Extension[] extensions() {
 				return extensions;
+			}
+
+			@Override
+			public Schema contains() {
+				return contains;
+			}
+
+			@Override
+			public int maxContains() {
+				return maxContains;
+			}
+
+			@Override
+			public int minContains() {
+				return minContains;
+			}
+
+			@Override
+			public Schema unevaluatedItems() {
+				return unevaluatedItems;
+			}
+
+			@Override
+			public Schema[] prefixItems() {
+				return prefixItems;
 			}
 		};
 	}
