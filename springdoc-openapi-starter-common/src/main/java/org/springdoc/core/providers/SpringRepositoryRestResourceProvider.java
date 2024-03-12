@@ -223,7 +223,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 			final JacksonMetadata jackson = new JacksonMetadata(mapper, domainType);
 			boolean hiddenRepository = (AnnotationUtils.findAnnotation(repository, Hidden.class) != null);
 			if (!hiddenRepository) {
-				if (resourceMetadata.isExported()) {
+				if (resourceMetadata!=null && resourceMetadata.isExported()) {
 					for (HandlerMapping handlerMapping : handlerMappingList) {
 						if (handlerMapping instanceof RepositoryRestHandlerMapping) {
 							RepositoryRestHandlerMapping repositoryRestHandlerMapping = (RepositoryRestHandlerMapping) handlerMapping;

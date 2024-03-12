@@ -85,6 +85,11 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_SPEC_PROPERTIES_PREFI
 public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 
 	/**
+	 * The constant DESCRIPTION.
+	 */
+	private static final String DESCRIPTION = ".description";
+
+	/**
 	 * The Property resolver.
 	 */
 	private final PropertyResolver propertyResolver;
@@ -100,9 +105,9 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 	 * @param resolverUtils the resolver utils
 	 */
 	public SpecPropertiesCustomizer(PropertyResolver resolverUtils) {
-        this.propertyResolver = resolverUtils;
-        this.propertyPrefix = SPRINGDOC_SPEC_PROPERTIES_PREFIX;
-    }
+		this.propertyResolver = resolverUtils;
+		this.propertyPrefix = SPRINGDOC_SPEC_PROPERTIES_PREFIX;
+	}
 
 	/**
 	 * Instantiates a new Spec properties customizer.
@@ -111,16 +116,16 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 	 * @param groupName        the group name
 	 */
 	public SpecPropertiesCustomizer(PropertyResolver propertyResolver, String groupName) {
-        this.propertyResolver = propertyResolver;
-        this.propertyPrefix = SPRINGDOC_SPEC_PROPERTIES_PREFIX + groupName + ".";
-    }
+		this.propertyResolver = propertyResolver;
+		this.propertyPrefix = SPRINGDOC_SPEC_PROPERTIES_PREFIX + groupName + ".";
+	}
 
-    @Override
-    public void customise(OpenAPI openApi) {
-        setOperationInfoProperties(openApi);
-        setComponentsProperties(openApi);
-        setPathsProperties(openApi);
-    }
+	@Override
+	public void customise(OpenAPI openApi) {
+		setOperationInfoProperties(openApi);
+		setComponentsProperties(openApi);
+		setPathsProperties(openApi);
+	}
 
 	/**
 	 * Sets operation info properties.
@@ -128,15 +133,15 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 	 * @param openApi the open api
 	 */
 	private void setOperationInfoProperties(OpenAPI openApi) {
-        if (openApi.getInfo() == null) {
-            openApi.setInfo(new Info());
-        }
-        Info info = openApi.getInfo();
-        resolveString(info::setTitle, "info.title");
-        resolveString(info::setDescription, "info.description");
-        resolveString(info::setVersion, "info.version");
-        resolveString(info::setTermsOfService, "info.termsOfService");
-    }
+		if (openApi.getInfo() == null) {
+			openApi.setInfo(new Info());
+		}
+		Info info = openApi.getInfo();
+		resolveString(info::setTitle, "info.title");
+		resolveString(info::setDescription, "info.description");
+		resolveString(info::setVersion, "info.version");
+		resolveString(info::setTermsOfService, "info.termsOfService");
+	}
 
 	/**
 	 * Sets paths properties.
@@ -144,21 +149,21 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 	 * @param openApi the open api
 	 */
 	private void setPathsProperties(OpenAPI openApi) {
-        Paths paths = openApi.getPaths();
-        if (CollectionUtils.isEmpty(paths.values())) {
-            return;
-        }
-        for (PathItem pathItem : paths.values()) {
-            List<Operation> operations = pathItem.readOperations();
-            for (Operation operation : operations) {
-                String operationId = operation.getOperationId();
-                String operationNode = MessageFormat.format("paths.{0}", operationId);
-                resolveString(operation::setDescription, operationNode + ".description");
+		Paths paths = openApi.getPaths();
+		if (CollectionUtils.isEmpty(paths.values())) {
+			return;
+		}
+		for (PathItem pathItem : paths.values()) {
+			List<Operation> operations = pathItem.readOperations();
+			for (Operation operation : operations) {
+				String operationId = operation.getOperationId();
+				String operationNode = MessageFormat.format("paths.{0}", operationId);
+				resolveString(operation::setDescription, operationNode + DESCRIPTION);
 
-                resolveString(operation::setSummary, operationNode + ".summary");
-            }
-        }
-    }
+				resolveString(operation::setSummary, operationNode + ".summary");
+			}
+		}
+	}
 
 	/**
 	 * Sets components properties.
@@ -166,30 +171,30 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 	 * @param openApi the open api
 	 */
 	private void setComponentsProperties(OpenAPI openApi) {
-        Components components = openApi.getComponents();
-        if (components == null || CollectionUtils.isEmpty(components.getSchemas())) {
-            return;
-        }
+		Components components = openApi.getComponents();
+		if (components == null || CollectionUtils.isEmpty(components.getSchemas())) {
+			return;
+		}
 
-        for (Schema componentSchema : components.getSchemas().values()) {
-            // set component description
-            String schemaPropertyPrefix = MessageFormat.format("components.schemas.{0}", componentSchema.getName());
-            resolveString(componentSchema::setDescription, schemaPropertyPrefix + ".description");
-            Map<String, Schema> properties = componentSchema.getProperties();
+		for (Schema componentSchema : components.getSchemas().values()) {
+			// set component description
+			String schemaPropertyPrefix = MessageFormat.format("components.schemas.{0}", componentSchema.getName());
+			resolveString(componentSchema::setDescription, schemaPropertyPrefix + ".description");
+			Map<String, Schema> properties = componentSchema.getProperties();
 
-            if (CollectionUtils.isEmpty(properties)) {
-                continue;
-            }
+			if (CollectionUtils.isEmpty(properties)) {
+				continue;
+			}
 
-            for (Schema propSchema : properties.values()) {
-                String propertyNode = MessageFormat.format("components.schemas.{0}.properties.{1}",
-                        componentSchema.getName(), propSchema.getName());
+			for (Schema propSchema : properties.values()) {
+				String propertyNode = MessageFormat.format("components.schemas.{0}.properties.{1}",
+						componentSchema.getName(), propSchema.getName());
 
-                resolveString(propSchema::setDescription, propertyNode + ".description");
-                resolveString(propSchema::setExample, propertyNode + ".example");
-            }
-        }
-    }
+				resolveString(propSchema::setDescription, propertyNode + ".description");
+				resolveString(propSchema::setExample, propertyNode + ".example");
+			}
+		}
+	}
 
 	/**
 	 * Resolve string.
@@ -198,13 +203,13 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 	 * @param node   the node
 	 */
 	private void resolveString(
-            Consumer<String> setter, String node
-    ) {
-        String nodeWithPrefix = propertyPrefix + node;
-        String value = propertyResolver.getProperty(nodeWithPrefix);
-        if (StringUtils.isNotBlank(value)) {
-            setter.accept(value);
-        }
-    }
+			Consumer<String> setter, String node
+	) {
+		String nodeWithPrefix = propertyPrefix + node;
+		String value = propertyResolver.getProperty(nodeWithPrefix);
+		if (StringUtils.isNotBlank(value)) {
+			setter.accept(value);
+		}
+	}
 
 }
