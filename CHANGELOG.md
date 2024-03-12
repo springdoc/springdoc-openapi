@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2023-03-12
+
+### Added
+
+- #2443 - Respect schema annotations when using spring mvc with kotlin
+- #2492, #2488 - Support dynamic evaluation of description field in the RequestBody
+- #2510 - Option to disable root api-docs path when using groups
+
+### Changed
+
+- Upgrade spring-boot to 3.2.3
+- Upgrade swagger-core to 2.2.20
+- Upgrade swagger-ui to 5.11.8
+
+### Fixed
+
+- #2453 - Fix CODE_OF_CONDUCT.md links
+- #2454 - Fix typo in SwaggerWelcomeWebMvc
+- #2507 - Fix typo in Constants
+- #2472 - Update JavadocPropertyCustomizer.java
+- #2495 - Fix broken links in README and CONTRIBUTING
+- #2501 - bug fix when "exported" is set to false in RestResource annotation
+- #2447 - Serialization to openapi of org.springframework.data.domain.Sort is not done correctly
+- #2449 - Extensions in subobjects of OpenAPI no longer work
+- #2461 - Springdoc OpenApi Annotations @ExtensionProperty Not Evaluating Properties from application.yml
+- #2469 - Pom contains invalid organizationUrl
+- #2518 - Duplicate GroupConfigs in SpringDocConfigProperties
+- #2506 - Springdoc breaks (Unexpected value: TRACE) when a spring-cloud-starter-gateway-mvc universal gateway is configured.
+- #2519 - Request parameter parsing error after using @NotBlank from type interface field
+- #2516 - Spring Data REST fails when setting version to openapi_3_1
+- #2509 - ArrayIndexOutOfBoundsException in SwaggerUiConfigParameters
+- #2484 - JavaDoc integration not working with SnakeCaseStrategy property naming
+- #2483 - Controller advice documents ApiResponse on every operation, even if the operation does not annotate the exception to be thrown
+- #2477 - buildApiResponses ignores produced ContentType in case of many @Operation 
+
 ## [2.3.0] - 2023-12-03
 
 ### Added
