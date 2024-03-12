@@ -767,19 +767,21 @@ public abstract class AbstractRequestService {
 	private boolean checkOperationRequestBody(MethodParameter methodParameter) {
 		if (AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.Operation.class) != null) {
 			io.swagger.v3.oas.annotations.Operation operation = AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.Operation.class);
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody = operation.requestBody();
-			if (StringUtils.isNotBlank(requestBody.description()))
-				return true;
-			else if (StringUtils.isNotBlank(requestBody.ref()))
-				return true;
-			else if (requestBody.required())
-				return true;
-			else if (requestBody.useParameterTypeSchema())
-				return true;
-			else if (requestBody.content().length > 0)
-				return true;
-			else
-				return requestBody.extensions().length > 0;
+			if(operation!=null){
+				io.swagger.v3.oas.annotations.parameters.RequestBody requestBody = operation.requestBody();
+				if (StringUtils.isNotBlank(requestBody.description()))
+					return true;
+				else if (StringUtils.isNotBlank(requestBody.ref()))
+					return true;
+				else if (requestBody.required())
+					return true;
+				else if (requestBody.useParameterTypeSchema())
+					return true;
+				else if (requestBody.content().length > 0)
+					return true;
+				else
+					return requestBody.extensions().length > 0;
+			}
 		}
 		return false;
 	}

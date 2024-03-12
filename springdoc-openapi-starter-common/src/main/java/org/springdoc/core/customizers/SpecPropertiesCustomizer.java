@@ -179,7 +179,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 		for (Schema componentSchema : components.getSchemas().values()) {
 			// set component description
 			String schemaPropertyPrefix = MessageFormat.format("components.schemas.{0}", componentSchema.getName());
-			resolveString(componentSchema::setDescription, schemaPropertyPrefix + ".description");
+			resolveString(componentSchema::setDescription, schemaPropertyPrefix + DESCRIPTION);
 			Map<String, Schema> properties = componentSchema.getProperties();
 
 			if (CollectionUtils.isEmpty(properties)) {
@@ -190,7 +190,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 				String propertyNode = MessageFormat.format("components.schemas.{0}.properties.{1}",
 						componentSchema.getName(), propSchema.getName());
 
-				resolveString(propSchema::setDescription, propertyNode + ".description");
+				resolveString(propSchema::setDescription, propertyNode + DESCRIPTION);
 				resolveString(propSchema::setExample, propertyNode + ".example");
 			}
 		}
