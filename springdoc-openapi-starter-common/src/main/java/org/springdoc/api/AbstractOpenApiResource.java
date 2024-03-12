@@ -689,7 +689,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		boolean withRouterOperation = routerFunctionVisitor.getRouterFunctionDatas().stream()
 				.anyMatch(routerFunctionData -> routerFunctionData.getAttributes().containsKey(OPERATION_ATTRIBUTE));
 		if (withRouterOperation) {
-			List<RouterOperation> operationList = routerFunctionVisitor.getRouterFunctionDatas().stream().map(RouterOperation::new).toList();
+			List<RouterOperation> operationList = routerFunctionVisitor.getRouterFunctionDatas().stream().map(RouterOperation::new).collect(Collectors.toList());
 			calculatePath(operationList, locale, openAPI);
 		}
 		else {
@@ -704,9 +704,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			else
 				routerOperationList.addAll(Arrays.asList(routerOperations.value()));
 			if (routerOperationList.size() == 1)
-				calculatePath(routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).toList(), locale, openAPI);
+				calculatePath(routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()), locale, openAPI);
 			else {
-				List<RouterOperation> operationList = routerOperationList.stream().map(RouterOperation::new).toList();
+				List<RouterOperation> operationList = routerOperationList.stream().map(RouterOperation::new).collect(Collectors.toList());
 				mergeRouters(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
 				calculatePath(operationList, locale, openAPI);
 			}
