@@ -1247,7 +1247,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 						}
 						return p + ',' + direction.name();
 					})
-					.collect(Collectors.toList());
+					.toList();
 		}
 	}
 }

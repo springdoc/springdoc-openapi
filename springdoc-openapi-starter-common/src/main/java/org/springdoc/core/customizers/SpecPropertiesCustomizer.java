@@ -85,6 +85,11 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_SPEC_PROPERTIES_PREFI
 public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 
 	/**
+	 * The constant DESCRIPTION.
+	 */
+	private static final String DESCRIPTION = ".description";
+
+	/**
 	 * The Property resolver.
 	 */
 	private final PropertyResolver propertyResolver;
@@ -153,7 +158,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
             for (Operation operation : operations) {
                 String operationId = operation.getOperationId();
                 String operationNode = MessageFormat.format("paths.{0}", operationId);
-                resolveString(operation::setDescription, operationNode + ".description");
+                resolveString(operation::setDescription, operationNode + DESCRIPTION);
 
                 resolveString(operation::setSummary, operationNode + ".summary");
             }

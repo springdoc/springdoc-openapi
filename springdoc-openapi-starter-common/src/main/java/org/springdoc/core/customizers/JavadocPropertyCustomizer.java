@@ -67,15 +67,6 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 	private static final Logger LOGGER = LoggerFactory.getLogger(DelegatingMethodParameter.class);
 
 	/**
-	 * Instantiates a new Javadoc property customizer.
-	 *
-	 * @param javadocProvider      the javadoc provider
-	 * @param objectMapperProvider the object mapper provider
-	 */
-	public JavadocPropertyCustomizer {
-	}
-
-	/**
 	 * Resolve schema.
 	 *
 	 * @param type    the type
@@ -197,7 +188,7 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 					return true;
 				}
 			}
-			else if (field.getName().equalsIgnoreCase(stringSchemaEntry.getKey().replaceAll("_", ""))) {
+			else if (field.getName().equalsIgnoreCase(stringSchemaEntry.getKey().replace("_", ""))) {
 				return true;
 			}
 			return false;
