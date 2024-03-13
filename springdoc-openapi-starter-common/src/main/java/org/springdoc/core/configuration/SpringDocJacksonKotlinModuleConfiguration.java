@@ -34,7 +34,7 @@ class SpringDocJacksonKotlinModuleConfiguration {
 
 	@Bean
 	@Primary
-	ObjectMapperProvider objectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
+	ObjectMapperProvider springdocKotlinObjectMapperProvider(SpringDocConfigProperties springDocConfigProperties) {
 		ObjectMapperProvider mapperProvider =  new ObjectMapperProvider(springDocConfigProperties);
 		mapperProvider.jsonMapper().registerModule(new KotlinModule.Builder().build());
 		return mapperProvider;
