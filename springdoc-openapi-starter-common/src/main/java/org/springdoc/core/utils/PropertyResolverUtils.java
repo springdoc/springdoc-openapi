@@ -24,11 +24,13 @@
 
 package org.springdoc.core.utils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 import io.swagger.v3.oas.models.SpecVersion;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -97,6 +99,9 @@ public class PropertyResolverUtils {
 				}
 			if (parameterProperty.equals(result))
 				try {
+                    if (springDocConfigProperties.isTrimKotlinIndent()) {
+                        parameterProperty = trimIndent(parameterProperty);
+                    }
 					result = factory.resolveEmbeddedValue(parameterProperty);
 				}
 				catch (IllegalArgumentException ex) {
@@ -105,6 +110,44 @@ public class PropertyResolverUtils {
 		}
 		return result;
 	}
+
+	/**
+	 * Returns a string where all leading indentation has been removed from each line.
+	 * It detects the smallest common indentation of all the lines in the input string,
+	 * and removes it.
+	 *
+	 * @param text The original string with possible leading indentation.
+	 * @return The string with leading indentation removed from each line.
+	 */
+    private String trimIndent(String text) {
+		if (text == null) {
+			return null;
+		}
+		final String newLine = "\n";
+		String[] lines = text.split(newLine);
+		int minIndent = resolveMinIndent(lines);
+        return Arrays.stream(lines)
+            .map(line -> line.substring(Math.min(line.length(), minIndent)))
+            .reduce((a, b) -> a + newLine + b)
+            .orElse(StringUtils.EMPTY);
+    }
+
+	private int resolveMinIndent(String[] lines) {
+		return Arrays.stream(lines)
+			.filter(line -> !line.trim().isEmpty())
+			.mapToInt(this::countLeadingSpaces)
+			.min()
+			.orElse(0);
+	}
+
+	private int countLeadingSpaces(String line) {
+        int count = 0;
+        for (char ch : line.toCharArray()) {
+            if (ch != ' ') break;
+            count++;
+        }
+        return count;
+    }
 
 	/**
 	 * Gets factory.
