@@ -1,0 +1,60 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/foo/remove-kotlin-indent": {
+      "get": {
+        "tags": [
+          "example-controller"
+        ],
+        "summary": "foo api",
+        "description": "\nthis api is foo\n\n#### Custom exception case\n| Http Status | Error Code  | Error Message | Error Data | Remark   |\n|-------------|-------------|--------------|------------|-----------|\n| 403         | NO_PERMISSION       |This request is only available to administrators.  |            |           |\n| 400         | STORE_NOT_FOUND       |Store not found.   |            |           |\n",
+        "operationId": "readFoo",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FooResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FooResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "writeOnly": true
+          }
+        }
+      }
+    }
+  }
+}
