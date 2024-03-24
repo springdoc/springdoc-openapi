@@ -41,7 +41,6 @@ This project is sponsored by
         - [Source Code for Demo Applications.](#source-code-for-demo-applications)
         - [Demo Spring Boot 2 Web MVC with OpenAPI 3.](#demo-spring-boot-2-web-mvc-with-openapi-3)
         - [Demo Spring Boot 2 WebFlux with OpenAPI 3.](#demo-spring-boot-2-webflux-with-openapi-3)
-        - [Demo Spring Boot 1 Web MVC with OpenAPI 3.](#demo-spring-boot-1-web-mvc-with-openapi-3)
         - [Demo Spring Boot 2 WebFlux with Functional endpoints OpenAPI 3.](#demo-spring-boot-2-webflux-with-functional-endpoints-openapi-3)
         - [Demo Spring Boot 2 and Spring Hateoas with OpenAPI 3.](#demo-spring-boot-2-and-spring-hateoas-with-openapi-3)
     - [Integration of the library in a Spring Boot 3.x project without the swagger-ui:](#integration-of-the-library-in-a-spring-boot-3x-project-without-the-swagger-ui)
@@ -79,8 +78,7 @@ The following video introduces the Library:
 
 For *spring-boot v3* support, make sure you use [springdoc-openapi v2](https://springdoc.org/)
 
-This is a community-based project, not maintained by the Spring Framework Contributors (
-Pivotal)
+This is a community-based project, not maintained by the Spring Framework Contributors (Pivotal)
 
 # **Getting Started**
 
@@ -96,7 +94,7 @@ Pivotal)
     * `port`: The server port
     * `context-path`: The context path of the application
 * Documentation can be available in yaml format as well, on the following path:
-  /v3/api-docs.yaml
+  `/v3/api-docs.yaml`
 * Add the `springdoc-openapi-ui` library to the list of your project dependencies (No
   additional configuration is needed):
 
@@ -184,15 +182,15 @@ and `@SecurityScheme` annotations within a Spring managed bean.
 
 * Documentation can be available in yaml format as well, on the following path :
   /v3/api-docs.yaml
-* Add the library to the list of your project dependencies ( No additional configuration
+* Add the library to the list of your project dependencies (No additional configuration
   is needed)
 
 ```xml
    <dependency>
-	<groupId>org.springdoc</groupId>
-	<artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
-	<version>last-release-version</version>
-</dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+      <version>last-release-version</version>
+   </dependency>
 ```
 
 * This step is optional: For custom path of the swagger documentation in HTML format, add
