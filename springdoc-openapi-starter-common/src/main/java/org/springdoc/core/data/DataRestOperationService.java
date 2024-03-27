@@ -110,7 +110,7 @@ public class DataRestOperationService {
 	}
 
 	/**
-	 * Build operation operation.
+	 * Build operation.
 	 *
 	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
@@ -141,7 +141,7 @@ public class DataRestOperationService {
 	}
 
 	/**
-	 * Build entity operation operation.
+	 * Build entity operation.
 	 *
 	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
@@ -168,7 +168,7 @@ public class DataRestOperationService {
 	}
 
 	/**
-	 * Build search operation operation.
+	 * Build search operation.
 	 *
 	 * @param handlerMethod the handler method
 	 * @param dataRestRepository the repository data rest
@@ -292,7 +292,7 @@ public class DataRestOperationService {
 	}
 
 	/**
-	 * Init operation operation.
+	 * Init operation.
 	 *
 	 * @param handlerMethod the handler method
 	 * @param domainType the domain type

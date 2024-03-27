@@ -59,7 +59,7 @@ public class Builder {
 	}
 
 	/**
-	 * An extension property extension property builder.
+	 * An extension property builder.
 	 *
 	 * @return the extension property builder
 	 */
