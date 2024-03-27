@@ -352,7 +352,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 			if (handlerMapping instanceof RepositoryRestHandlerMapping repositoryRestHandlerMapping) {
 				Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
 				Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
-						.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SERACH_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
+						.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SEARCH_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
 								.getValue().getBeanType().getName()))
 						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 				ResourceMetadata metadata = associations.getMetadataFor(dataRestRepository.getDomainType());
