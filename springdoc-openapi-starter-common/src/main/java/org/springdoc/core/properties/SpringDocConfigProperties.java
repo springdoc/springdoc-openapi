@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.SpecVersion;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
@@ -260,6 +261,29 @@ public class SpringDocConfigProperties {
 	 * The trim kotlin indent.
 	 */
 	private boolean trimKotlinIndent;
+
+	/**
+	 * The Open api.
+	 */
+	private OpenAPI OpenApi;
+
+	/**
+	 * Gets open api.
+	 *
+	 * @return the open api
+	 */
+	public OpenAPI getOpenApi() {
+		return OpenApi;
+	}
+
+	/**
+	 * Sets open api.
+	 *
+	 * @param openApi the open api
+	 */
+	public void setOpenApi(OpenAPI openApi) {
+		this.OpenApi = openApi;
+	}
 
 	/**
 	 * Gets trim kotlin indent.
@@ -1540,6 +1564,12 @@ public class SpringDocConfigProperties {
 		private String displayName;
 
 		/**
+		 * The Open api.
+		 */
+		private OpenAPI openApi;
+
+		
+		/**
 		 * Instantiates a new Group config.
 		 */
 		public GroupConfig() {
@@ -1733,6 +1763,24 @@ public class SpringDocConfigProperties {
 		 */
 		public void setDisplayName(String displayName) {
 			this.displayName = displayName;
+		}
+
+		/**
+		 * Gets open api.
+		 *
+		 * @return the open api
+		 */
+		public OpenAPI getOpenApi() {
+			return openApi;
+		}
+
+		/**
+		 * Sets open api.
+		 *
+		 * @param openApi the open api
+		 */
+		public void setOpenApi(OpenAPI openApi) {
+			this.openApi = openApi;
 		}
 
 		@Override
