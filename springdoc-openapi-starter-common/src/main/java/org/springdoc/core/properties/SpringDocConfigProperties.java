@@ -30,6 +30,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import io.swagger.v3.oas.models.SpecVersion;
+import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.utils.Constants;
@@ -1540,6 +1541,11 @@ public class SpringDocConfigProperties {
 		private String displayName;
 
 		/**
+		 * The object provides metadata about the API
+		 */
+		private Info apiInfo;
+
+		/**
 		 * Instantiates a new Group config.
 		 */
 		public GroupConfig() {
@@ -1733,6 +1739,22 @@ public class SpringDocConfigProperties {
 		 */
 		public void setDisplayName(String displayName) {
 			this.displayName = displayName;
+		}
+
+		/**
+		 * Gets api info
+		 * @return the api info
+		 */
+		public Info getApiInfo() {
+			return apiInfo;
+		}
+
+		/**
+		 * Sets api info
+		 * @param apiInfo the api info
+		 */
+		public void setApiInfo(Info apiInfo) {
+			this.apiInfo = apiInfo;
 		}
 
 		@Override
