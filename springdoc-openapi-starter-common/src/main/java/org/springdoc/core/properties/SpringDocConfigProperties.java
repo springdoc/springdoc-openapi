@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.SpecVersion;
-import io.swagger.v3.oas.models.info.Info;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.utils.Constants;
@@ -261,6 +261,29 @@ public class SpringDocConfigProperties {
 	 * The trim kotlin indent.
 	 */
 	private boolean trimKotlinIndent;
+
+	/**
+	 * The Open api.
+	 */
+	private OpenAPI OpenApi;
+
+	/**
+	 * Gets open api.
+	 *
+	 * @return the open api
+	 */
+	public OpenAPI getOpenApi() {
+		return OpenApi;
+	}
+
+	/**
+	 * Sets open api.
+	 *
+	 * @param openApi the open api
+	 */
+	public void setOpenApi(OpenAPI openApi) {
+		this.OpenApi = openApi;
+	}
 
 	/**
 	 * Gets trim kotlin indent.
@@ -1541,10 +1564,11 @@ public class SpringDocConfigProperties {
 		private String displayName;
 
 		/**
-		 * The object provides metadata about the API
+		 * The Open api.
 		 */
-		private Info apiInfo;
+		private OpenAPI openApi;
 
+		
 		/**
 		 * Instantiates a new Group config.
 		 */
@@ -1742,19 +1766,21 @@ public class SpringDocConfigProperties {
 		}
 
 		/**
-		 * Gets api info
-		 * @return the api info
+		 * Gets open api.
+		 *
+		 * @return the open api
 		 */
-		public Info getApiInfo() {
-			return apiInfo;
+		public OpenAPI getOpenApi() {
+			return openApi;
 		}
 
 		/**
-		 * Sets api info
-		 * @param apiInfo the api info
+		 * Sets open api.
+		 *
+		 * @param openApi the open api
 		 */
-		public void setApiInfo(Info apiInfo) {
-			this.apiInfo = apiInfo;
+		public void setOpenApi(OpenAPI openApi) {
+			this.openApi = openApi;
 		}
 
 		@Override
