@@ -92,7 +92,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	/**
 	 * The constant REPOSITORY_SEARCH_CONTROLLER.
 	 */
-	private static final String REPOSITORY_SERACH_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositorySearchController";
+	private static final String REPOSITORY_SEARCH_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositorySearchController";
 
 	/**
 	 * The constant REPOSITORY_PROPERTY_CONTROLLER.
