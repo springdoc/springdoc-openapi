@@ -62,10 +62,8 @@
   "components": {
     "schemas": {
       "FeedResponse": {
-        "type": "object",
         "properties": {
           "_links": {
-            "type": "object",
             "properties": {
               "next": {
                 "$ref": "#/components/schemas/Link"
