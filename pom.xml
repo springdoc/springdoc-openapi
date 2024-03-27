@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.3</version>
+		<version>3.2.4</version>
 	</parent>
 
 	<licenses>
@@ -60,8 +60,8 @@
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
-		<swagger-api.version>2.2.20</swagger-api.version>
-		<swagger-ui.version>5.11.8</swagger-ui.version>
+		<swagger-api.version>2.2.21</swagger-api.version>
+		<swagger-ui.version>5.12.2</swagger-ui.version>
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<jaxb-impl.version>2.1</jaxb-impl.version>
 		<javax.jws-api.version>1.1</javax.jws-api.version>

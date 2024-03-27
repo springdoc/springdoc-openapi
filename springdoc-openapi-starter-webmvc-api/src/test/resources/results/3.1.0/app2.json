@@ -1127,6 +1127,17 @@
           "photoUrls"
         ]
       },
+      "Tag": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "Order": {
         "properties": {
           "complete": {
