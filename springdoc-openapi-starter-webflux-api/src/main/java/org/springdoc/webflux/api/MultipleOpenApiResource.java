@@ -140,6 +140,9 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude(), item.getProducesToMatch(), item.getConsumesToMatch(), item.getHeadersToMatch(), item.getDisplayName());
 							springDocConfigProperties.addGroupConfig(groupConfig);
 							return buildWebFluxOpenApiResource(item);
+						},
+						(existingValue, newValue) -> {
+							return existingValue; // choice to keep the existing value
 						}
 				));
 	}

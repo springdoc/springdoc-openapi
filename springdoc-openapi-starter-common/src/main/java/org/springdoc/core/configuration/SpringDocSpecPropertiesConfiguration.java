@@ -25,19 +25,19 @@
 package org.springdoc.core.configuration;
 
 import java.util.List;
+import java.util.Set;
 
-import org.springdoc.core.conditions.SpecPropertiesCondition;
 import org.springdoc.core.customizers.SpecPropertiesCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springdoc.core.properties.SpringDocConfigProperties;
+import org.springdoc.core.properties.SpringDocConfigProperties.GroupConfig;
 
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.env.PropertyResolver;
 
 /**
  * The type Spring doc specification string properties configuration.
@@ -47,7 +47,6 @@ import org.springframework.core.env.PropertyResolver;
  */
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
-@Conditional(SpecPropertiesCondition.class)
 @ConditionalOnBean(SpringDocConfiguration.class)
 public class SpringDocSpecPropertiesConfiguration {
 
@@ -61,9 +60,9 @@ public class SpringDocSpecPropertiesConfiguration {
     @ConditionalOnMissingBean
     @Lazy(false)
 	SpecPropertiesCustomizer specificationStringPropertiesCustomizer(
-            PropertyResolver propertyResolverUtils
+            SpringDocConfigProperties springDocConfigProperties
     ) {
-        return new SpecPropertiesCustomizer(propertyResolverUtils);
+        return new SpecPropertiesCustomizer(springDocConfigProperties);
     }
 
     /**
@@ -76,9 +75,9 @@ public class SpringDocSpecPropertiesConfiguration {
     @ConditionalOnMissingBean
     @Lazy(false)
     SpecificationStringPropertiesCustomizerBeanPostProcessor specificationStringPropertiesCustomizerBeanPostProcessor(
-            PropertyResolver propertyResolverUtils
+			SpringDocConfigProperties springDocConfigProperties
     ) {
-        return new SpecificationStringPropertiesCustomizerBeanPostProcessor(propertyResolverUtils);
+        return new SpecificationStringPropertiesCustomizerBeanPostProcessor(springDocConfigProperties);
     }
 
 
@@ -87,20 +86,25 @@ public class SpringDocSpecPropertiesConfiguration {
 	 */
 	private static class SpecificationStringPropertiesCustomizerBeanPostProcessor implements BeanPostProcessor {
 
-        private final PropertyResolver propertyResolverUtils;
+        private final SpringDocConfigProperties springDocConfigProperties;
 
         public SpecificationStringPropertiesCustomizerBeanPostProcessor(
-                PropertyResolver propertyResolverUtils
+				SpringDocConfigProperties springDocConfigProperties
         ) {
-            this.propertyResolverUtils = propertyResolverUtils;
+            this.springDocConfigProperties = springDocConfigProperties;
         }
 
         @Override
         public Object postProcessAfterInitialization(Object bean, String beanName) {
             if (bean instanceof GroupedOpenApi groupedOpenApi) {
-                groupedOpenApi.addAllOpenApiCustomizer(List.of(new SpecPropertiesCustomizer(
-                        propertyResolverUtils, groupedOpenApi.getGroup()
-                )));
+               Set<GroupConfig> groupConfigs = springDocConfigProperties.getGroupConfigs();
+				for (GroupConfig groupConfig : groupConfigs) {
+					if(groupConfig.getGroup().equals(groupedOpenApi.getGroup())) {
+						groupedOpenApi.addAllOpenApiCustomizer(List.of(new SpecPropertiesCustomizer(
+								groupConfig.getOpenApi()
+						)));
+					}
+				}
             }
             return bean;
         }
