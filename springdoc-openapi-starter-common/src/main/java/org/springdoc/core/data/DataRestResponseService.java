@@ -189,7 +189,7 @@ public class DataRestResponseService {
 	}
 
 	/**
-	 * Find search return type type.
+	 * Find search return type.
 	 *
 	 * @param methodResourceMapping the method resource mapping
 	 * @param domainType the domain type

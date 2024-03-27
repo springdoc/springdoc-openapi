@@ -353,7 +353,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	}
 
 	/**
-	 * Build operation operation.
+	 * Build operation.
 	 *
 	 * @param apiResponses the api responses
 	 * @return the operation

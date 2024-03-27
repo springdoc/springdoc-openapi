@@ -85,7 +85,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 	}
 
 	/**
-	 * Compose polymorphic schema schema.
+	 * Compose polymorphic schema.
 	 *
 	 * @param type the type
 	 * @param schema the schema

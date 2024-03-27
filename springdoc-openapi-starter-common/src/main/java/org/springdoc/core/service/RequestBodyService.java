@@ -269,7 +269,7 @@ public class RequestBodyService {
 	}
 
 	/**
-	 * Build request body request body.
+	 * Build request body.
 	 *
 	 * @param requestBody the request body
 	 * @param components the components
