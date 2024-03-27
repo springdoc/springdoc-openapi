@@ -609,9 +609,9 @@ public class OpenAPIService implements ApplicationContextAware {
 
 		if(propertyResolverUtils.isResolveExtensionsProperties()){
 			Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, info.getExtensions());
-			info.setExtensions(extensionsResolved);			
+			info.setExtensions(extensionsResolved);
 		}
-		
+
 		return info;
 	}
 
