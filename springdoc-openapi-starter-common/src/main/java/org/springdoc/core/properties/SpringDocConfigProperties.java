@@ -257,6 +257,29 @@ public class SpringDocConfigProperties {
 	private boolean nullableRequestParameterEnabled;
 
 	/**
+	 * The trim kotlin indent.
+	 */
+	private boolean trimKotlinIndent;
+
+	/**
+	 * Gets trim kotlin indent.
+	 *
+	 * @return the trim kotlin indent.
+	 */
+	public boolean isTrimKotlinIndent() {
+		return trimKotlinIndent;
+	}
+
+	/**
+	 * Sets trim kotlin indent
+	 *
+	 * @param trimKotlinIndent the trim kotlin indent.
+	 */
+	public void setTrimKotlinIndent(boolean trimKotlinIndent) {
+		this.trimKotlinIndent = trimKotlinIndent;
+	}
+
+	/**
 	 * Gets override with generic response.
 	 *
 	 * @return the override with generic response
