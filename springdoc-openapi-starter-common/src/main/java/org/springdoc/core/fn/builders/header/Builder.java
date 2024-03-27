@@ -26,50 +26,75 @@ package org.springdoc.core.fn.builders.header;
 
 import java.lang.annotation.Annotation;
 
+import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The type Header builder.
+ *
  * @author bnasslahsen
  */
 public class Builder {
 
 	/**
 	 * Required: The name of the header. The name is only used as the key to store this header in a map.
-	 *
 	 */
 	private String name;
 
 	/**
 	 * Additional description data to provide on the purpose of the header
-	 *
 	 */
 	private String description = "";
 
 	/**
 	 * The schema defining the type used for the header. Ignored if the properties content or array are specified.
-	 *
 	 */
 	private Schema schema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * Determines whether this header is mandatory. The property may be included and its default value is false.
-	 *
 	 */
 	private boolean required;
 
 	/**
 	 * Specifies that a header is deprecated and should be transitioned out of usage.
-	 *
 	 */
 	private boolean deprecated;
 
 	/**
 	 * A reference to a header defined in components headers.
+	 *
 	 * @since swagger -core 2.0.3
 	 */
 	private String ref = "";
+
+	/**
+	 * The Explode.
+	 */
+	private Explode explode = Explode.DEFAULT;
+
+	/**
+	 * The Hidden.
+	 */
+	private boolean hidden;
+
+	/**
+	 * The Example.
+	 */
+	private String example = "";
+
+	/**
+	 * The Examples.
+	 */
+	private ExampleObject[] examples = {};
+
+	/**
+	 * Array array schema.
+	 */
+	private ArraySchema array = org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().build();
 
 	/**
 	 * Instantiates a new Header builder.
@@ -153,6 +178,50 @@ public class Builder {
 	}
 
 	/**
+	 * Explode builder.
+	 *
+	 * @param val the val
+	 * @return the builder
+	 */
+	public Builder explode(Explode val) {
+		explode = val;
+		return this;
+	}
+
+	/**
+	 * Hidden builder.
+	 *
+	 * @param val the val
+	 * @return the builder
+	 */
+	public Builder hidden(boolean val) {
+		hidden = val;
+		return this;
+	}
+
+	/**
+	 * Example builder.
+	 *
+	 * @param val the val
+	 * @return the builder
+	 */
+	public Builder example(String val) {
+		example = val;
+		return this;
+	}
+
+	/**
+	 * Examples builder.
+	 *
+	 * @param val the val
+	 * @return the builder
+	 */
+	public Builder examples(ExampleObject[] val) {
+		examples = val;
+		return this;
+	}
+	
+	/**
 	 * Build header.
 	 *
 	 * @return the header
@@ -193,6 +262,31 @@ public class Builder {
 			@Override
 			public String ref() {
 				return ref;
+			}
+
+			@Override
+			public Explode explode() {
+				return explode;
+			}
+
+			@Override
+			public boolean hidden() {
+				return hidden;
+			}
+
+			@Override
+			public String example() {
+				return example;
+			}
+
+			@Override
+			public ExampleObject[] examples() {
+				return examples;
+			}
+
+			@Override
+			public ArraySchema array() {
+				return array;
 			}
 		};
 	}
