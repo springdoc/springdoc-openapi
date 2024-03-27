@@ -1,0 +1,56 @@
+springdoc:
+  group-configs:
+    - group: demo
+      display-name: Example Interfaces
+      packages-to-scan:
+        - test.org.springdoc.api.v30.app217
+      open-api:
+        info:
+          title: Example Interfaces
+          description: List of Example Interfaces
+          version: v1.0
+          termsOfService: http://localhost:8080/
+          license:
+            name: Apache 2.0
+        components:
+          schemas:
+            PersonDTO:
+              description: Description for PersonDTO component
+              properties:
+                name:
+                  description: Description for 'name' property
+                  example: Example value for 'name' property
+    - group: user
+      display-name: User Interfaces
+      packages-to-scan:
+        - test.org.springdoc.api.v30.app217
+      open-api:
+        info:
+          title: User Interfaces
+          description: List of User Interfaces
+          version: v1.0
+          termsOfService: http://localhost:8080/
+          license:
+            name: Apache 2.0
+        components:
+          schemas:
+            PersonDTO:
+              description: Description for PersonDTO component
+              properties:
+                name:
+                  description: Description for 'name' property
+                  example: Example value for 'name' property
+  open-api: 
+    info:
+      title: Api info title
+      description: Api info description
+      version: Api info version
+    components:
+      schemas:
+        PersonDTO:
+          description: Description for PersonDTO component
+          properties:
+            name:
+              description: Description for 'name' property
+              example: Example value for 'name' property
+  

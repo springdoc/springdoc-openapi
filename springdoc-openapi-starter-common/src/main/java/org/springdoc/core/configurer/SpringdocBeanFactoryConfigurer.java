@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.customizers.SpecPropertiesCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.service.OpenAPIService;
@@ -47,6 +48,7 @@ import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROT
 
 /**
  * The type Springdoc bean factory configurer.
+ *
  * @author bnasslahsen
  */
 public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFactoryPostProcessor {
@@ -99,8 +101,8 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 							builder.packagesToExclude(elt.getPackagesToExclude().toArray(new String[0]));
 						if (StringUtils.isNotEmpty(elt.getDisplayName()))
 							builder.displayName(elt.getDisplayName());
-						if (Optional.ofNullable(elt.getApiInfo()).isPresent()) {
-							builder.addOpenApiCustomizer(openApi -> openApi.info(elt.getApiInfo()));
+						if (Optional.ofNullable(elt.getOpenApi()).isPresent()) {
+							builder.addOpenApiCustomizer(new SpecPropertiesCustomizer(elt.getOpenApi()));
 						}
 						return builder.group(elt.getGroup()).build();
 					})
