@@ -799,7 +799,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	/**
 	 * Gets cached open api.
 	 *
-	 * @param locale associated the the cache entry
+	 * @param locale associated the cache entry
 	 * @return the cached open api
 	 */
 	public OpenAPI getCachedOpenAPI(Locale locale) {
@@ -810,7 +810,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * Sets cached open api.
 	 *
 	 * @param cachedOpenAPI the cached open api
-	 * @param locale        associated the the cache entry
+	 * @param locale        associated the cache entry
 	 */
 	public void setCachedOpenAPI(OpenAPI cachedOpenAPI, Locale locale) {
 		this.cachedOpenAPI.put(locale.toLanguageTag(), cachedOpenAPI);

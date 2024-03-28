@@ -613,7 +613,7 @@ public class OperationService {
 	}
 
 	/**
-	 * Merge operation operation.
+	 * Merge operation.
 	 *
 	 * @param operation      the operation
 	 * @param operationModel the operation model
