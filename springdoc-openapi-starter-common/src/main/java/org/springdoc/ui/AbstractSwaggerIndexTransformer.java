@@ -108,7 +108,7 @@ public class AbstractSwaggerIndexTransformer {
 	}
 
 	/**
-	 * Read fully as string string.
+	 * Read fully as string.
 	 *
 	 * @param inputStream the input stream
 	 * @return the string

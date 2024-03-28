@@ -227,7 +227,7 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	}
 
 	/**
-	 * Build router operation router operation.
+	 * Build router operation.
 	 *
 	 * @param name the name
 	 * @param type the type

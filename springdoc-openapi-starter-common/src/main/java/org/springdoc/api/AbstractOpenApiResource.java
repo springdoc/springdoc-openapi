@@ -644,7 +644,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	}
 
 	/**
-	 * Customize data rest router operation router operation.
+	 * Customize data rest router operation.
 	 *
 	 * @param routerOperation the router operation
 	 * @return the router operation
@@ -869,7 +869,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	}
 
 	/**
-	 * Customise operation operation.
+	 * Customise operation.
 	 *
 	 * @param operation the operation
 	 * @param handlerMethod the handler method
@@ -1103,7 +1103,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	}
 
 	/**
-	 * Build path item path item.
+	 * Build path item.
 	 *
 	 * @param requestMethod the request method
 	 * @param operation the operation

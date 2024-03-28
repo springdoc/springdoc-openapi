@@ -348,7 +348,7 @@ public class SpringDocConfiguration {
 	}
 
 	/**
-	 * Security parser security parser.
+	 * Security parser.
 	 *
 	 * @param propertyResolverUtils the property resolver utils
 	 * @return the security parser
