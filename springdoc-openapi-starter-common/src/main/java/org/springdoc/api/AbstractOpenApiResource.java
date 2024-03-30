@@ -562,7 +562,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					if (StringUtils.isNotBlank(routerOperation.getBeanMethod())) {
 						try {
 							if (ArrayUtils.isEmpty(routerOperation.getParameterTypes())) {
-								Method[] declaredMethods = AopUtils.getTargetClass(handlerBean).getDeclaredMethods();
+								Method[] declaredMethods = org.springframework.util.ReflectionUtils.getAllDeclaredMethods(AopUtils.getTargetClass(handlerBean));
 								Optional<Method> methodOptional = Arrays.stream(declaredMethods)
 										.filter(method -> routerOperation.getBeanMethod().equals(method.getName()) && method.getParameters().length == 0)
 										.findAny();
