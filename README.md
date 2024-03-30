@@ -116,15 +116,19 @@ springdoc.swagger-ui.path=/swagger-ui.html
 
 ## Spring-boot with OpenAPI Demo applications.
 
-### [Source Code for Demo Applications](https://github.com/springdoc/springdoc-openapi-demos/tree/2.x).
+### [Source Code for Demo Applications](https://github.com/springdoc/springdoc-openapi-demos/tree/master).
 
-### [Demo Spring Boot 2 Web MVC with OpenAPI 3](http://144.24.171.248:8081/).
+## [Demo Spring Boot 3 Web MVC with OpenAPI 3](https://demos.springdoc.org/demo-spring-boot-3-webmvc).
 
-### [Demo Spring Boot 2 WebFlux with OpenAPI 3](http://144.24.171.248:8082/).
+## [Demo Spring Boot 3 WebFlux with OpenAPI 3](https://demos.springdoc.org/demo-spring-boot-3-webflux/swagger-ui.html).
 
-### [Demo Spring Boot 2 WebFlux with Functional endpoints OpenAPI 3](http://144.24.171.248:8084/).
+## [Demo Spring Boot 3 WebFlux with Functional endpoints OpenAPI 3](https://demos.springdoc.org/demo-spring-boot-3-webflux-functional/swagger-ui.html).
 
-### [Demo Spring Boot 2 and Spring Hateoas with OpenAPI 3](http://144.24.171.248:8085/).
+## [Demo Spring Boot 3 and Spring Cloud Function Web MVC](https://demos.springdoc.org/spring-cloud-function-webmvc).
+
+## [Demo Spring Boot 3 and Spring Cloud Function WebFlux](http://158.101.191.70:8085/swagger-ui.html).
+
+## [Demo Spring Boot 3 and Spring Cloud Gateway](https://demos.springdoc.org/demo-microservices/swagger-ui.html).
 
 ![Branching](https://springdoc.org/img/pets.png)
 
