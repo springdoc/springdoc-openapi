@@ -18,15 +18,33 @@
 
 package test.org.springdoc.api.v30.app212;
 
+import test.org.springdoc.api.v30.app217.PersonDTO;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloController {
 
-    @GetMapping(value = "/persons")
-    public PersonDTO persons() {
-        return new PersonDTO("John");
-    }
+	@GetMapping(value = "/persons1")
+	public PersonDTO persons1() {
+		return new PersonDTO("John");
+	}
+	
+	@GetMapping(value = "/persons2")
+	public PersonDTO persons2() {
+		return new PersonDTO("John");
+	}
+
+	@GetMapping(value = "/persons3")
+	public PersonDTO persons3() {
+		return new PersonDTO("John");
+	}
+
+	@PostMapping(value = "/persons3")
+	public PersonDTO persons33() {
+		return new PersonDTO("John");
+	}
 
 }

@@ -13,13 +13,18 @@ springdoc:
               description: Description for 'name' property
               example: Example value for 'name' property
     paths:
-      /persons:
+      /persons3:
+        post:
+          tags:
+            - hello
+          summary: Summary of Post operationId 'persons'
+          description: Description of Post operationId 'persons'
         get:
           tags:
-            - hello-controller
-          operationId: persons
-          summary: Summary of operationId 'persons'
-          description: Description of operationId 'persons'
+            - hello
+          summary: Summary of Get operationId 'persons'
+          description: Description of Get operationId 'persons'
+          
   group-configs:
       - group: apiGroupName
         open-api:
@@ -39,9 +44,6 @@ springdoc:
           paths:
             /persons:
               get:
-                tags:
-                  - hello-controller
-                operationId: persons
                 summary: Summary of operationId 'persons' in ApiGroupName
                 description: Description of operationId 'persons' in ApiGroupName
 

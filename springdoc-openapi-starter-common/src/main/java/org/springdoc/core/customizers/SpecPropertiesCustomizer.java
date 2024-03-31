@@ -33,6 +33,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
@@ -84,12 +85,25 @@ import org.springframework.util.CollectionUtils;
  */
 public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 
+	/**
+	 * The Open api properties.
+	 */
 	private final OpenAPI openApiProperties;
 
+	/**
+	 * Instantiates a new Spec properties customizer.
+	 *
+	 * @param springDocConfigProperties the spring doc config properties
+	 */
 	public SpecPropertiesCustomizer(SpringDocConfigProperties springDocConfigProperties) {
 		this.openApiProperties = springDocConfigProperties.getOpenApi();
 	}
 
+	/**
+	 * Instantiates a new Spec properties customizer.
+	 *
+	 * @param openApiProperties the open api properties
+	 */
 	public SpecPropertiesCustomizer(OpenAPI openApiProperties) {
 		this.openApiProperties = openApiProperties;
 	}
@@ -99,6 +113,12 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 		customizeOpenApi(openApi, openApiProperties);
 	}
 
+	/**
+	 * Customize open api.
+	 *
+	 * @param openApi           the open api
+	 * @param openApiProperties the open api properties
+	 */
 	private void customizeOpenApi(OpenAPI openApi, OpenAPI openApiProperties) {
 		if (openApiProperties != null) {
 			Info infoProperties = openApiProperties.getInfo();
@@ -108,12 +128,19 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 			Components componentsProperties = openApiProperties.getComponents();
 			if (componentsProperties != null)
 				customizeComponents(openApi, componentsProperties);
+			
 			Paths pathsProperties = openApiProperties.getPaths();
 			if (pathsProperties != null)
 				customizePaths(openApi, pathsProperties);
 		}
 	}
 
+	/**
+	 * Customize paths.
+	 *
+	 * @param openApi         the open api
+	 * @param pathsProperties the paths properties
+	 */
 	private void customizePaths(OpenAPI openApi, Paths pathsProperties) {
 		Paths paths = openApi.getPaths();
 		if (paths == null) {
@@ -126,20 +153,30 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 				}
 				PathItem pathItemProperties = pathsProperties.get(path);
 				if (pathItemProperties != null) {
-					resolveString(pathItem::setDescription, pathItemProperties::getDescription);
-					resolveString(pathItem::setSummary, pathItemProperties::getSummary);
-					List<Operation> operations = pathItem.readOperations();
-					List<Operation> operationsProperties = pathItemProperties.readOperations();
-					for (int i = 0; i < operations.size(); i++) {
-						Operation operation = operations.get(i);
-						Operation operationProperties = operationsProperties.get(i);
-						resolveString(operation::setDescription, operationProperties::getDescription);
-						resolveString(operation::setSummary, operationProperties::getSummary);
-					}
+					resolveString(pathItem::description, pathItemProperties::getDescription);
+					resolveString(pathItem::summary, pathItemProperties::getSummary);
+
+					Map<HttpMethod, Operation>  operationMap = pathItem.readOperationsMap();
+					Map<HttpMethod, Operation>  operationMapProperties = pathItemProperties.readOperationsMap();
+
+					operationMapProperties.forEach((httpMethod, operationProperties) -> {
+						Operation operationToCustomize = operationMap.get(httpMethod);
+						if (operationToCustomize != null) {
+							resolveString(operationToCustomize::description, operationProperties::getDescription);
+							resolveString(operationToCustomize::summary, operationProperties::getSummary);
+							resolveSet(operationToCustomize::tags, operationProperties::getTags);
+						}
+					});
 				}});
 		}
 	}
-	
+
+	/**
+	 * Customize components.
+	 *
+	 * @param openApi              the open api
+	 * @param componentsProperties the components properties
+	 */
 	private void customizeComponents(OpenAPI openApi, Components componentsProperties) {
 		Components components = openApi.getComponents();
 		if (components == null || CollectionUtils.isEmpty(components.getSchemas())) {
@@ -158,8 +195,9 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 					properties.forEach((propKey, propSchema) -> {
 						Schema propSchemaProperties = (Schema) schemaProperties.getProperties().get(propKey);
 						if (propSchemaProperties != null) {
-							resolveString(propSchema::setDescription, propSchemaProperties::getDescription);
-							resolveString(propSchema::setExample, propSchemaProperties::getExample);
+							resolveString(propSchema::description, propSchemaProperties::getDescription);
+							resolveString(propSchema::title, propSchemaProperties::getTitle);
+							resolveString(propSchema::example, propSchemaProperties::getExample);
 						}
 					});
 				}
@@ -167,6 +205,12 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 		}
 	}
 
+	/**
+	 * Customize info.
+	 *
+	 * @param openApi        the open api
+	 * @param infoProperties the info properties
+	 */
 	private void customizeInfo(OpenAPI openApi, Info infoProperties) {
 		Info info = openApi.getInfo();
 		if (info != null) {
@@ -174,28 +218,29 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 			resolveString(info::description, infoProperties::getDescription);
 			resolveString(info::version, infoProperties::getVersion);
 			resolveString(info::termsOfService, infoProperties::getTermsOfService);
+			resolveString(info::summary, infoProperties::getSummary);
+
+			License license = info.getLicense();
+			License licenseProperties = infoProperties.getLicense();
+			if (license != null) {
+				resolveString(license::name, licenseProperties::getName);
+				resolveString(license::url, licenseProperties::getUrl);
+			}
+			else
+				info.license(licenseProperties);
+
+			Contact contact = info.getContact();
+			Contact contactProperties = infoProperties.getContact();
+			if (contact != null) {
+				resolveString(contact::name, contactProperties::getName);
+				resolveString(contact::email, contactProperties::getEmail);
+				resolveString(contact::url, contactProperties::getUrl);
+			}
+			else
+				info.contact(contactProperties);
 		}
 		else
 			openApi.info(infoProperties);
-
-		License license = info.getLicense();
-		License licenseProperties = infoProperties.getLicense();
-		if (license != null) {
-			resolveString(license::name, licenseProperties::getName);
-			resolveString(license::url, licenseProperties::getUrl);
-		}
-		else
-			info.license(licenseProperties);
-
-		Contact contact = info.getContact();
-		Contact contactProperties = infoProperties.getContact();
-		if (contact != null) {
-			resolveString(contact::name, contactProperties::getName);
-			resolveString(contact::email, contactProperties::getEmail);
-			resolveString(contact::url, contactProperties::getUrl);
-		}
-		else
-			info.contact(contactProperties);
 	}
 
 
@@ -211,5 +256,19 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 			setter.accept(value);
 		}
 	}
+
+	/**
+	 * Resolve set.
+	 *
+	 * @param setter the setter
+	 * @param getter the getter
+	 */
+	private void resolveSet(Consumer<List> setter, Supplier<List> getter) {
+		List value =  getter.get();
+		if (!CollectionUtils.isEmpty(value)) {
+			setter.accept(value);
+		}
+	}
+
 
 }

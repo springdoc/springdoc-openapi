@@ -12,14 +12,74 @@
     }
   ],
   "paths": {
-    "/persons": {
+    "/persons3": {
+      "get": {
+        "tags": [
+          "hello"
+        ],
+        "summary": "Summary of Get operationId 'persons'",
+        "description": "Description of Get operationId 'persons'",
+        "operationId": "persons3",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "hello"
+        ],
+        "summary": "Summary of Post operationId 'persons'",
+        "description": "Description of Post operationId 'persons'",
+        "operationId": "persons33",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons2": {
       "get": {
         "tags": [
           "hello-controller"
         ],
-        "summary": "Summary of operationId 'persons' in ApiGroupName",
-        "description": "Description of operationId 'persons' in ApiGroupName",
-        "operationId": "persons",
+        "operationId": "persons2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/persons1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "persons1",
         "responses": {
           "200": {
             "description": "OK",
