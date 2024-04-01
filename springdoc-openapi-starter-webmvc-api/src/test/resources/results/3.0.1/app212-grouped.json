@@ -59,6 +59,8 @@
         "tags": [
           "hello-controller"
         ],
+        "summary": "Summary of operationId 'persons' in ApiGroupName",
+        "description": "Description of operationId 'persons' in ApiGroupName",
         "operationId": "persons2",
         "responses": {
           "200": {

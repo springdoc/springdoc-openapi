@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2024-04-01
+
+### Added
+
+- #2318 - Add Info to GroupedOpenAPI properties
+- #2554 - Remove duplicate words from comments
+- #2418 - Improve support for externalizing strings in generated openapi
+- #2535 - Add 'springdoc.trim-kotlin-indent' property to handle Kotlin multiline string indentation
+### Changed
+
+- Upgrade spring-boot to 3.2.4
+- Upgrade swagger-core to 2.2.21
+- Upgrade swagger-ui to 5.13.0
+
+### Fixed
+- #2525 - Inherited Methods Not Included in Swagger Documentation with @RouterOperation in Spring Boot WebFlux Application
+- #2526 - SpringDoc bean naming conflict error with GraphQL Spring boot starter
+- #2540 - Fix typo in SpringRepositoryRestResourceProvider.java
+- #2549 - Fix README.md
+
 ## [2.4.0] - 2024-03-12
 
 ### Added

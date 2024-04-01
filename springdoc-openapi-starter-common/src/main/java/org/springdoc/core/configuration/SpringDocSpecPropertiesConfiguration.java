@@ -27,6 +27,7 @@ package org.springdoc.core.configuration;
 import java.util.List;
 import java.util.Set;
 
+import org.springdoc.core.conditions.SpecPropertiesCondition;
 import org.springdoc.core.customizers.SpecPropertiesCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -36,6 +37,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
@@ -48,6 +50,7 @@ import org.springframework.context.annotation.Lazy;
 @Lazy(false)
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(SpringDocConfiguration.class)
+@Conditional(SpecPropertiesCondition.class)
 public class SpringDocSpecPropertiesConfiguration {
 
     /**
