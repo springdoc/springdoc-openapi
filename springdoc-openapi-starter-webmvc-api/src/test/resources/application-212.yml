@@ -42,7 +42,7 @@ springdoc:
                     example: Example value for 'name' property in ApiGroupName
           
           paths:
-            /persons:
+            /persons2:
               get:
                 summary: Summary of operationId 'persons' in ApiGroupName
                 description: Description of operationId 'persons' in ApiGroupName
