@@ -1,0 +1,48 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Sample"
+        ],
+        "summary": "Summary",
+        "description": "This is description.",
+        "operationId": "get",
+        "responses": {
+          "201": {
+            "description": "201 (Created)",
+            "headers": {
+              "Location": {
+                "description": "Sample endpoint",
+                "style": "simple",
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              }
+            },
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}
