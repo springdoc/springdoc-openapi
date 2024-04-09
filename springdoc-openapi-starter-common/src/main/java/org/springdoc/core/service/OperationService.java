@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -412,7 +412,7 @@ public class OperationService {
 
 			buildResponseContent(methodAttributes, components, classProduces, methodProduces, apiResponsesOp, response, apiResponseObject);
 
-			AnnotationsUtils.getHeaders(response.headers(), null, propertyResolverUtils.isOpenapi31()).ifPresent(apiResponseObject::headers);
+			AnnotationsUtils.getHeaders(response.headers(), components, null, propertyResolverUtils.isOpenapi31()).ifPresent(apiResponseObject::headers);
 			// Make schema as string if empty
 			calculateHeader(apiResponseObject);
 			if (isResponseObject(apiResponseObject)) {
