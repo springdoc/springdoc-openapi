@@ -397,7 +397,7 @@ public class GenericResponseService {
 						apiResponse.extensions(extensions);
 					}
 				}
-				AnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), methodAttributes.getJsonViewAnnotation(), openapi31)
+				AnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), components, methodAttributes.getJsonViewAnnotation(), openapi31)
 						.ifPresent(apiResponse::headers);
 				apiResponsesOp.addApiResponse(httpCode, apiResponse);
 			}
