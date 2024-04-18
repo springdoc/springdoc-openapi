@@ -66,6 +66,7 @@ import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
@@ -736,7 +737,7 @@ public class GenericResponseService {
 
 			LinkedHashMap<String, ApiResponse> genericApiResponsesClone;
 			try {
-				ObjectMapper objectMapper = new ObjectMapper();
+				ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
 				genericApiResponsesClone = objectMapper.readValue(objectMapper.writeValueAsString(genericApiResponseMap), ApiResponses.class);
 				return genericApiResponsesClone;
 			}
