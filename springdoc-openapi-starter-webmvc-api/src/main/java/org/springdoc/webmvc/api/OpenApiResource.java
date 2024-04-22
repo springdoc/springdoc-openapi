@@ -55,6 +55,8 @@ import org.springdoc.core.service.OperationService;
 
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -244,7 +246,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	protected void calculateServerUrl(HttpServletRequest request, String apiDocsUrl, Locale locale) {
 		super.initOpenAPIBuilder(locale);
 		String calculatedUrl = getServerUrl(request, apiDocsUrl);
-		openAPIService.setServerBaseUrl(calculatedUrl);
+		ServletServerHttpRequest serverRequest = new ServletServerHttpRequest(request);
+		openAPIService.setServerBaseUrl(calculatedUrl, HttpHeaders.readOnlyHttpHeaders(serverRequest.getHeaders()));
 	}
 
 	/**

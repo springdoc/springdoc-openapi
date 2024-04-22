@@ -41,6 +41,7 @@ import reactor.core.publisher.Mono;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -131,7 +132,7 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale) {
 		super.initOpenAPIBuilder(locale);
 		URI uri = getActuatorURI(serverHttpRequest.getURI().getScheme(), serverHttpRequest.getURI().getHost());
-		openAPIService.setServerBaseUrl(uri.toString());
+		openAPIService.setServerBaseUrl(uri.toString(), HttpHeaders.readOnlyHttpHeaders(serverHttpRequest.getHeaders()));
 	}
 
 	@Override

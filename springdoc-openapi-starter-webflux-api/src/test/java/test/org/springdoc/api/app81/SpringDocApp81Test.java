@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
@@ -67,6 +68,7 @@ public class SpringDocApp81Test extends AbstractCommonTest {
 		shuffleSpringHandlerMethods();
 
 		ServerHttpRequest request = mock(ServerHttpRequest.class);
+		when(request.getHeaders()).thenReturn(new HttpHeaders());
 		when(request.getURI()).thenReturn(URI.create("http://localhost"));
 
 		String expected = getContent("results/app81.json");

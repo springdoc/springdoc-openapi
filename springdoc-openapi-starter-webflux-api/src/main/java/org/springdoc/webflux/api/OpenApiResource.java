@@ -51,6 +51,7 @@ import org.springdoc.webflux.core.visitor.RouterFunctionVisitor;
 import reactor.core.publisher.Mono;
 
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -229,7 +230,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale) {
 		initOpenAPIBuilder(locale);
 		String serverUrl = getServerUrl(serverHttpRequest, apiDocsUrl);
-		openAPIService.setServerBaseUrl(serverUrl);
+		openAPIService.setServerBaseUrl(serverUrl, HttpHeaders.readOnlyHttpHeaders(serverHttpRequest.getHeaders()));
 	}
 
 	/**
