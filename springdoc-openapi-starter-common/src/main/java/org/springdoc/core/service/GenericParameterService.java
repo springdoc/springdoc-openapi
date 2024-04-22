@@ -33,7 +33,7 @@ import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -440,7 +440,7 @@ public class GenericParameterService {
 	 * @param parameter the parameter
 	 */
 	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
-		Map<String, Example> exampleMap = new HashMap<>();
+		Map<String, Example> exampleMap = new LinkedHashMap<>();
 		if (parameterDoc.examples().length == 1 && StringUtils.isBlank(parameterDoc.examples()[0].name())) {
 			Optional<Example> exampleOptional = AnnotationsUtils.getExample(parameterDoc.examples()[0]);
 			exampleOptional.ifPresent(parameter::setExample);

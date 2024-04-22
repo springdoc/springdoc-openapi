@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -577,7 +576,7 @@ public abstract class AbstractRequestService {
 	 * @param annotations the annotations
 	 */
 	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
-		Map<String, Annotation> annos = new HashMap<>();
+		Map<String, Annotation> annos = new LinkedHashMap<>();
 		if (annotations != null)
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
 		boolean annotationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
@@ -595,7 +594,7 @@ public abstract class AbstractRequestService {
 	 * @param isOptional  the is optional
 	 */
 	public void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
-		Map<String, Annotation> annos = new HashMap<>();
+		Map<String, Annotation> annos = new LinkedHashMap<>();
 		boolean requestBodyRequired = false;
 		if (!CollectionUtils.isEmpty(annotations)) {
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));

@@ -24,8 +24,8 @@
 
 package org.springdoc.core.converters;
 
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -48,17 +48,17 @@ public class AdditionalModelsConverter implements ModelConverter {
 	/**
 	 * The constant modelToClassMap.
 	 */
-	private static final Map<Class, Class> modelToClassMap = new HashMap<>();
+	private static final Map<Class, Class> modelToClassMap = new LinkedHashMap<>();
 
 	/**
 	 * The constant modelToSchemaMap.
 	 */
-	private static final Map<Class, Schema> modelToSchemaMap = new HashMap<>();
+	private static final Map<Class, Schema> modelToSchemaMap = new LinkedHashMap<>();
 
 	/**
 	 * The constant paramObjectReplacementMap.
 	 */
-	private static final Map<Class, Class> paramObjectReplacementMap = new HashMap<>();
+	private static final Map<Class, Class> paramObjectReplacementMap = new LinkedHashMap<>();
 
 	/**
 	 * The constant LOGGER.

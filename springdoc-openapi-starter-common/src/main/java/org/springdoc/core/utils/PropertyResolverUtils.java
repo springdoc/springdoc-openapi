@@ -25,7 +25,7 @@
 package org.springdoc.core.utils;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -202,12 +202,12 @@ public class PropertyResolverUtils {
 	 */
 	public Map<String, Object> resolveExtensions(Locale locale, Map<String, Object> extensions) {
 		if (!CollectionUtils.isEmpty(extensions)) {
-			Map<String, Object> extensionsResolved = new HashMap<>();
+			Map<String, Object> extensionsResolved = new LinkedHashMap<>();
 			extensions.forEach((key, value) -> {
 				String keyResolved = resolve(key, locale);
-				if (value instanceof HashMap<?, ?>) {
-					Map<String, Object> valueResolved = new HashMap<>();
-					((HashMap<?, ?>) value).forEach((key1, value1) -> {
+				if (value instanceof Map<?,?>) {
+					Map<String, Object> valueResolved = new LinkedHashMap<>();
+					((Map<?, ?>) value).forEach((key1, value1) -> {
 						String key1Resolved = resolve(key1.toString(), locale);
 						String value1Resolved = resolve(value1.toString(), locale);
 						valueResolved.put(key1Resolved, value1Resolved);

@@ -24,7 +24,7 @@
 
 package org.springdoc.webflux.core.providers;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -78,7 +78,7 @@ public class ActuatorWebFluxProvider extends ActuatorProvider {
 	}
 
 	public Map<RequestMappingInfo, HandlerMethod> getMethods() {
-		Map<RequestMappingInfo, HandlerMethod> mappingInfoHandlerMethodMap = new HashMap<>();
+		Map<RequestMappingInfo, HandlerMethod> mappingInfoHandlerMethodMap = new LinkedHashMap<>();
 
 		if (webFluxEndpointHandlerMapping == null)
 			webFluxEndpointHandlerMapping = managementApplicationContext.getBean(WebFluxEndpointHandlerMapping.class);

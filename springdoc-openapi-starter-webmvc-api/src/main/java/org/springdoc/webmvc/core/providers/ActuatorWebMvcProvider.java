@@ -24,7 +24,7 @@
 
 package org.springdoc.webmvc.core.providers;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -81,7 +81,7 @@ public class ActuatorWebMvcProvider extends ActuatorProvider {
 
 	@Override
 	public Map<RequestMappingInfo, HandlerMethod> getMethods() {
-		Map<RequestMappingInfo, HandlerMethod> mappingInfoHandlerMethodMap = new HashMap<>();
+		Map<RequestMappingInfo, HandlerMethod> mappingInfoHandlerMethodMap = new LinkedHashMap<>();
 
 		if (webMvcEndpointHandlerMapping == null)
 			webMvcEndpointHandlerMapping = managementApplicationContext.getBean(WebMvcEndpointHandlerMapping.class);

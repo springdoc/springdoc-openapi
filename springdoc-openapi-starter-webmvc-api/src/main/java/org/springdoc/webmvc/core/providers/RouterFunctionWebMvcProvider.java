@@ -25,7 +25,7 @@
 package org.springdoc.webmvc.core.providers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -66,7 +66,7 @@ public class RouterFunctionWebMvcProvider implements RouterFunctionProvider, App
 		Map<String, RouterFunction> routerBeans = applicationContext.getBeansOfType(RouterFunction.class);
 		if (CollectionUtils.isEmpty(routerBeans))
 			return Optional.empty();
-		Map<String, AbstractRouterFunctionVisitor> routerFunctionVisitorMap = new HashMap<>();
+		Map<String, AbstractRouterFunctionVisitor> routerFunctionVisitorMap = new LinkedHashMap<>();
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
 			RouterFunction routerFunction = entry.getValue();
 			RouterFunctionVisitor routerFunctionVisitor = new RouterFunctionVisitor();

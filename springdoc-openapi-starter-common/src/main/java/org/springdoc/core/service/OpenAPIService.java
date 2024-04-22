@@ -28,7 +28,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -118,12 +117,12 @@ public class OpenAPIService implements ApplicationContextAware {
 	/**
 	 * The Mappings map.
 	 */
-	private final Map<String, Object> mappingsMap = new HashMap<>();
+	private final Map<String, Object> mappingsMap = new LinkedHashMap<>();
 
 	/**
 	 * The Springdoc tags.
 	 */
-	private final Map<HandlerMethod, io.swagger.v3.oas.models.tags.Tag> springdocTags = new HashMap<>();
+	private final Map<HandlerMethod, io.swagger.v3.oas.models.tags.Tag> springdocTags = new LinkedHashMap<>();
 
 	/**
 	 * The Open api builder customisers.
@@ -143,7 +142,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	/**
 	 * The Cached open api map.
 	 */
-	private final Map<String, OpenAPI> cachedOpenAPI = new HashMap<>();
+	private final Map<String, OpenAPI> cachedOpenAPI = new LinkedHashMap<>();
 
 	/**
 	 * The Property resolver utils.
@@ -680,7 +679,7 @@ public class OpenAPIService implements ApplicationContextAware {
 		for (io.swagger.v3.oas.annotations.security.SecurityScheme securitySchemeAnnotation : apiSecurityScheme) {
 			Optional<SecuritySchemePair> securityScheme = securityParser.getSecurityScheme(securitySchemeAnnotation, locale);
 			if (securityScheme.isPresent()) {
-				Map<String, SecurityScheme> securitySchemeMap = new HashMap<>();
+				Map<String, SecurityScheme> securitySchemeMap = new LinkedHashMap<>();
 				if (StringUtils.isNotBlank(securityScheme.get().key())) {
 					securitySchemeMap.put(securityScheme.get().key(), securityScheme.get().securityScheme());
 					if (!CollectionUtils.isEmpty(components.getSecuritySchemes())) {

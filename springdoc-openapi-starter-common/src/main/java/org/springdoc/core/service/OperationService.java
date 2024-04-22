@@ -26,7 +26,6 @@ package org.springdoc.core.service;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -197,7 +196,7 @@ public class OperationService {
 
 		boolean doBreak = false;
 		for (io.swagger.v3.oas.annotations.callbacks.Callback methodCallback : apiCallbacks) {
-			Map<String, Callback> callbackMap = new HashMap<>();
+			Map<String, Callback> callbackMap = new LinkedHashMap<>();
 			if (methodCallback == null) {
 				callbacks.putAll(callbackMap);
 				doBreak = true;

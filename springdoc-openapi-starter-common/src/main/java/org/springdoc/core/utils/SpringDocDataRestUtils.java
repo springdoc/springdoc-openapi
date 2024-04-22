@@ -25,8 +25,8 @@
 package org.springdoc.core.utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -92,7 +92,7 @@ public class SpringDocDataRestUtils {
 	/**
 	 * The Entity ino map.
 	 */
-	private final HashMap<String, EntityInfo> entityInoMap = new HashMap();
+	private final Map<String, EntityInfo> entityInoMap = new LinkedHashMap<>();
 
 	/**
 	 * The Repository rest configuration.
