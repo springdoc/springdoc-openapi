@@ -25,7 +25,7 @@
 package org.springdoc.core.data;
 
 import java.lang.reflect.Method;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import io.swagger.v3.oas.models.Operation;
@@ -102,8 +102,8 @@ public class DataRestTagsService {
 		}
 		else {
 			Class<?> domainType = dataRestRepository.getDomainType();
-			Set<Tag> tags = new HashSet<>();
-			Set<String> tagsStr = new HashSet<>();
+			Set<Tag> tags = new LinkedHashSet<>();
+			Set<String> tagsStr = new LinkedHashSet<>();
 			Class<?> repositoryType = dataRestRepository.getRepositoryType();
 			openAPIService.buildTagsFromClass(repositoryType, tags, tagsStr, dataRestRepository.getLocale());
 			if (!CollectionUtils.isEmpty(tagsStr))

@@ -27,7 +27,7 @@ package org.springdoc.core.service;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -141,7 +141,7 @@ public class SecurityService {
 	public Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForMethod(Method method, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags) {
 		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity = AnnotatedElementUtils.findMergedAnnotation(method, io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 		if (methodSecurity != null)
-			allSecurityTags = addSecurityRequirements(allSecurityTags, new HashSet<>(Arrays.asList(methodSecurity.value())));
+			allSecurityTags = addSecurityRequirements(allSecurityTags, new LinkedHashSet<>(Arrays.asList(methodSecurity.value())));
 		if (CollectionUtils.isEmpty(allSecurityTags)) {
 			// handlerMethod SecurityRequirement
 			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsMethodList = AnnotatedElementUtils.findMergedRepeatableAnnotations(method,
@@ -162,7 +162,7 @@ public class SecurityService {
 		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = null;
 		io.swagger.v3.oas.annotations.security.SecurityRequirements classSecurity = AnnotatedElementUtils.findMergedAnnotation(beanType, io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 		if (classSecurity != null)
-			allSecurityTags = new HashSet<>(Arrays.asList(classSecurity.value()));
+			allSecurityTags = new LinkedHashSet<>(Arrays.asList(classSecurity.value()));
 		if (CollectionUtils.isEmpty(allSecurityTags)) {
 			// class SecurityRequirement
 			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList = AnnotatedElementUtils.findMergedRepeatableAnnotations(
@@ -183,7 +183,7 @@ public class SecurityService {
 	 */
 	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> addSecurityRequirements(Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList) {
 		if (allSecurityTags == null)
-			allSecurityTags = new HashSet<>();
+			allSecurityTags = new LinkedHashSet<>();
 		allSecurityTags.addAll(securityRequirementsClassList);
 		return allSecurityTags;
 	}

@@ -25,8 +25,8 @@
 package org.springdoc.webflux.api;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -151,7 +151,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			Optional<ActuatorProvider> actuatorProviderOptional = springDocProviders.getActuatorProvider();
 			if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
 				Map<RequestMappingInfo, HandlerMethod> actuatorMap = actuatorProviderOptional.get().getMethods();
-				this.openAPIService.addTag(new HashSet<>(actuatorMap.values()), getTag());
+				this.openAPIService.addTag(new LinkedHashSet<>(actuatorMap.values()), getTag());
 				map.putAll(actuatorMap);
 			}
 			calculatePath(restControllers, map, locale, openAPI);

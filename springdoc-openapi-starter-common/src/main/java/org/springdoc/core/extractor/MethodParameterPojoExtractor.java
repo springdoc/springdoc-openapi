@@ -36,7 +36,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -72,7 +72,7 @@ public class MethodParameterPojoExtractor {
 	/**
 	 * The constant SIMPLE_TYPES.
 	 */
-	private static final Set<Class<?>> SIMPLE_TYPES = new HashSet<>();
+	private static final Set<Class<?>> SIMPLE_TYPES = new LinkedHashSet<>();
 
 	static {
 		SIMPLE_TYPES.add(CharSequence.class);

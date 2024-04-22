@@ -24,7 +24,7 @@
 
 package org.springdoc.core.properties;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -115,7 +115,7 @@ public class SpringDocConfigProperties {
 	/**
 	 * The Group configs.
 	 */
-	private Set<GroupConfig> groupConfigs = new HashSet<>();
+	private Set<GroupConfig> groupConfigs = new LinkedHashSet<>();
 
 	/**
 	 * The Auto tag classes.

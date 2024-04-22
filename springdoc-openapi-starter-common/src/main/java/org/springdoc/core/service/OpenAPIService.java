@@ -28,8 +28,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -323,8 +323,8 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	public Operation buildTags(HandlerMethod handlerMethod, Operation operation, OpenAPI openAPI, Locale locale) {
 
-		Set<io.swagger.v3.oas.models.tags.Tag> tags = new HashSet<>();
-		Set<String> tagsStr = new HashSet<>();
+		Set<io.swagger.v3.oas.models.tags.Tag> tags = new LinkedHashSet<>();
+		Set<String> tagsStr = new LinkedHashSet<>();
 
 		buildTagsFromMethod(handlerMethod.getMethod(), tags, tagsStr, locale);
 		buildTagsFromClass(handlerMethod.getBeanType(), tags, tagsStr, locale);
@@ -346,7 +346,7 @@ public class OpenAPIService implements ApplicationContextAware {
 			if (CollectionUtils.isEmpty(operation.getTags()))
 				operation.setTags(new ArrayList<>(tagsStr));
 			else {
-				Set<String> operationTagsSet = new HashSet<>(operation.getTags());
+				Set<String> operationTagsSet = new LinkedHashSet<>(operation.getTags());
 				operationTagsSet.addAll(tagsStr);
 				operation.getTags().clear();
 				operation.getTags().addAll(operationTagsSet);
@@ -736,7 +736,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	private Set<io.swagger.v3.oas.annotations.security.SecurityScheme> getSecuritySchemesClasses(
 			ClassPathScanningCandidateComponentProvider scanner, List<String> packagesToScan) {
-		Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = new HashSet<>();
+		Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = new LinkedHashSet<>();
 		for (String pack : packagesToScan) {
 			for (BeanDefinition bd : scanner.findCandidateComponents(pack)) {
 				try {

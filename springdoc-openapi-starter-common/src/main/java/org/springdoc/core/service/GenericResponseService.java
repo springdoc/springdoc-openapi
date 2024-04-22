@@ -32,8 +32,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -768,7 +768,7 @@ public class GenericResponseService {
 				final io.swagger.v3.oas.annotations.Operation apiOperation = AnnotatedElementUtils.findMergedAnnotation(method,
 						io.swagger.v3.oas.annotations.Operation.class);
 				if (apiOperation != null) {
-					responseSet = new HashSet<>(Arrays.asList(apiOperation.responses()));
+					responseSet = new LinkedHashSet<>(Arrays.asList(apiOperation.responses()));
 					if (isHttpCodePresent(httpCode, responseSet))
 						result = true;
 				}
@@ -798,7 +798,7 @@ public class GenericResponseService {
 	 */
 	private Set<Class<?>> getExceptionsFromExceptionHandler(MethodParameter methodParameter) {
 		ExceptionHandler exceptionHandler = methodParameter.getExecutable().getAnnotation(ExceptionHandler.class);
-		Set<Class<?>> exceptions = new HashSet<>();
+		Set<Class<?>> exceptions = new LinkedHashSet<>();
 		if (exceptionHandler != null) {
 			if (exceptionHandler.value().length == 0) {
 				for (Parameter parameter : methodParameter.getExecutable().getParameters()) {

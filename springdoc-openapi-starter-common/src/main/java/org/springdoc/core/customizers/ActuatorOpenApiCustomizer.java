@@ -25,7 +25,7 @@
 package org.springdoc.core.customizers;
 
 import java.util.Comparator;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -100,7 +100,7 @@ public class ActuatorOpenApiCustomizer implements GlobalOpenApiCustomizer {
 	}
 
 	private void handleActuatorOperationIdUniqueness(OpenAPI openApi) {
-		Set<String> usedOperationIds = new HashSet<>();
+		Set<String> usedOperationIds = new LinkedHashSet<>();
 		actuatorPathEntryStream(openApi, null)
 				.sorted(Comparator.comparing(Entry::getKey))
 				.forEachOrdered(stringPathItemEntry -> {

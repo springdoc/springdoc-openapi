@@ -36,9 +36,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -269,7 +269,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param classes the classes
 	 */
 	public static void addHiddenRestControllers(String... classes) {
-		Set<Class<?>> hiddenClasses = new HashSet<>();
+		Set<Class<?>> hiddenClasses = new LinkedHashSet<>();
 		for (String aClass : classes) {
 			try {
 				hiddenClasses.add(Class.forName(aClass));
@@ -865,7 +865,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected Set<RequestMethod> getDefaultAllowedHttpMethods() {
 		RequestMethod[] allowedRequestMethods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD };
-		return new HashSet<>(Arrays.asList(allowedRequestMethods));
+		return new LinkedHashSet<>(Arrays.asList(allowedRequestMethods));
 	}
 
 	/**

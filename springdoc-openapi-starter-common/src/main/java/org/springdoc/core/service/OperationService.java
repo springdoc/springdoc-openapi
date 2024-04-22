@@ -26,8 +26,8 @@ package org.springdoc.core.service;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -356,7 +356,7 @@ public class OperationService {
 	 * @return the set
 	 */
 	private Set<String> extractOperationIdFromPathItem(PathItem path) {
-		Set<String> ids = new HashSet<>();
+		Set<String> ids = new LinkedHashSet<>();
 		if (path.getGet() != null && StringUtils.isNotBlank(path.getGet().getOperationId())) {
 			ids.add(path.getGet().getOperationId());
 		}
