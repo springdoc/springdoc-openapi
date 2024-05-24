@@ -25,6 +25,8 @@
 package org.springdoc.core.models;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -32,11 +34,13 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import org.jetbrains.annotations.Nullable;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -275,27 +279,37 @@ public class MethodAttributes {
 	 * @param headers the headers
 	 */
 	private void fillMethods(String[] produces, String[] consumes, String[] headers) {
-		if (ArrayUtils.isEmpty(methodProduces)) {
-			if (ArrayUtils.isNotEmpty(produces))
-				methodProduces = produces;
-			else if (ArrayUtils.isNotEmpty(classProduces))
-				methodProduces = classProduces;
-			else
-				methodProduces = new String[] { defaultProducesMediaType };
-		}
+        if (ArrayUtils.isNotEmpty(produces)) {
+            methodProduces = mergeArrays(methodProduces, produces);
+        } else if (ArrayUtils.isNotEmpty(classProduces)) {
+            methodProduces = mergeArrays(methodProduces, classProduces);
+        } else if (ArrayUtils.isEmpty(methodProduces)) {
+            methodProduces = new String[] {defaultProducesMediaType};
+        }
 
-		if (ArrayUtils.isEmpty(methodConsumes)) {
-			if (ArrayUtils.isNotEmpty(consumes))
-				methodConsumes = consumes;
-			else if (ArrayUtils.isNotEmpty(classConsumes))
-				methodConsumes = classConsumes;
-			else
-				methodConsumes = new String[] { defaultConsumesMediaType };
-		}
+        if (ArrayUtils.isNotEmpty(consumes)) {
+            methodConsumes = mergeArrays(methodConsumes, consumes);
+        } else if (ArrayUtils.isNotEmpty(classConsumes)) {
+            methodConsumes = mergeArrays(methodConsumes, classConsumes);
+        } else if (ArrayUtils.isEmpty(methodConsumes)) {
+            methodConsumes = new String[] {defaultConsumesMediaType};
+        }
 
-		if (CollectionUtils.isEmpty(this.headers))
-			setHeaders(headers);
+        setHeaders(headers);
 	}
+
+    /**
+	 * Merge string arrays into one array with unique values
+	 *
+	 * @param array1 the array1
+	 * @param array2 the array2
+	 * @return the string [ ]
+	 */
+    private String[] mergeArrays(@Nullable String[] array1, String[] array2) {
+        Set<String> uniqueValues = array1 == null ? new HashSet<>() : Arrays.stream(array1).collect(Collectors.toSet());
+        uniqueValues.addAll(Arrays.asList(array2));
+        return uniqueValues.toArray(new String[0]);
+    }
 
 	/**
 	 * Is method overloaded boolean.
