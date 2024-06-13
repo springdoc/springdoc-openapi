@@ -1,0 +1,213 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/paged-model-simple": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "pagedModelSimple",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/paged-model-raw": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "pagedModelRaw",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/paged-model-complex": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "pagedModelComplex",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelDummyListString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/page-simple": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "pageSimple",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/page-raw": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "pageRaw",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/page-complex": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "pageComplex",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagedModelDummyListString"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PageMetadata": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "PagedModelString": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "PagedModel": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "DummyListString": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PagedModelDummyListString": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DummyListString"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMetadata"
+          }
+        }
+      }
+    }
+  }
+}
