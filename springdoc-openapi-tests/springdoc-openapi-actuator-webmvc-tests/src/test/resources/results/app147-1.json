@@ -297,6 +297,68 @@
         }
       }
     },
+    "/application/sbom": {
+      "get": {
+        "operationId": "sbom",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Actuator web endpoint 'sbom'",
+        "tags": [
+          "Actuator"
+        ]
+      }
+    },
+    "/application/sbom/{id}": {
+      "get": {
+        "operationId": "sbom-id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            },
+            "description": "OK"
+          }
+        },
+        "summary": "Actuator web endpoint 'sbom-id'",
+        "tags": [
+          "Actuator"
+        ]
+      }
+    },
     "/application/mappings": {
       "get": {
         "tags": [
