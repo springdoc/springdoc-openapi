@@ -7,6 +7,7 @@ org.springdoc.core.configuration.SpringDocFunctionCatalogConfiguration
 org.springdoc.core.configuration.SpringDocHateoasConfiguration
 org.springdoc.core.configuration.SpringDocPageableConfiguration
 org.springdoc.core.configuration.SpringDocSortConfiguration
+org.springdoc.core.configuration.SpringDocPageConfiguration
 org.springdoc.core.configuration.SpringDocSpecPropertiesConfiguration
 org.springdoc.core.configuration.SpringDocDataRestConfiguration
 org.springdoc.core.configuration.SpringDocKotlinConfiguration
