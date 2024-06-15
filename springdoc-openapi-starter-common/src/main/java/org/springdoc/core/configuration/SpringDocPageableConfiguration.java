@@ -43,6 +43,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.data.web.config.SpringDataWebSettings;
 
@@ -85,15 +86,16 @@ public class SpringDocPageableConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnBean(SpringDataWebSettings.class)
+	@ConditionalOnClass({ PagedModel.class, SpringDataWebSettings.class })
 	@Lazy(false)
-	PageOpenAPIConverter pageOpenAPIConverter(SpringDataWebSettings settings,
+	PageOpenAPIConverter pageOpenAPIConverter(Optional<SpringDataWebSettings> settings,
 			ObjectMapperProvider objectMapperProvider) {
-		return new PageOpenAPIConverter(
-				settings.pageSerializationMode() == EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO,
-				objectMapperProvider);
+		boolean replacePageWithPagedModel = settings.map(SpringDataWebSettings::pageSerializationMode)
+			.map(EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO::equals)
+			.orElse(false);
+		return new PageOpenAPIConverter(replacePageWithPagedModel, objectMapperProvider);
 	}
-	
+
 	/**
 	 * Delegating method parameter customizer delegating method parameter customizer.
 	 *
