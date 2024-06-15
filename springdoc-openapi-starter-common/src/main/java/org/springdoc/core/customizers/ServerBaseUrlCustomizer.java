@@ -24,6 +24,8 @@
 
 package org.springdoc.core.customizers;
 
+import org.springframework.http.HttpRequest;
+
 /**
  * The interface Server Base URL customiser.
  * @author skylar -stark
@@ -35,7 +37,8 @@ public interface ServerBaseUrlCustomizer {
 	 * Customise.
 	 *
 	 * @param serverBaseUrl the serverBaseUrl.
+	 * @param request the request.
 	 * @return the customised serverBaseUrl
 	 */
-	String customize(String serverBaseUrl);
+	String customize(String serverBaseUrl, HttpRequest request);
 }
