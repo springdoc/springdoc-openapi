@@ -22,38 +22,35 @@
 
 package test.org.springdoc.api.app10;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Optional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.SimpleMixInResolver;
-import com.fasterxml.jackson.databind.type.ClassKey;
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import io.swagger.v3.core.converter.ModelConverter;
+import io.swagger.v3.core.converter.ModelConverters;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springdoc.core.providers.ObjectMapperProvider;
+import org.springdoc.core.converters.PageOpenAPIConverter;
+import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.utils.Constants;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import test.org.springdoc.api.AbstractSpringDocTest;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SpringDocApp10NotSpecifiedTest extends AbstractSpringDocTest {
 
-	private final Map<ClassKey, Class<?>> springMixins = new HashMap<>();
 
-	@Autowired
-	ObjectMapperProvider objectMapperProvider;
+	@BeforeAll
+	public static void init() {
+		Optional<ModelConverter> pageOpenAPIConverter =
+				ModelConverters.getInstance().getConverters()
+						.stream().filter(modelConverter -> modelConverter instanceof PageOpenAPIConverter).findAny();
+		pageOpenAPIConverter.ifPresent(ModelConverters.getInstance()::removeConverter);
+	}
 	
 	@Override
 	@Test
@@ -69,29 +66,4 @@ public class SpringDocApp10NotSpecifiedTest extends AbstractSpringDocTest {
 
 	}
 
-	@BeforeEach
-	void init() throws IllegalAccessException {
-		Field convertersField2 = FieldUtils.getDeclaredField(ObjectMapper.class, "_mixIns", true);
-		SimpleMixInResolver _mixIns = (SimpleMixInResolver) convertersField2.get(objectMapperProvider.jsonMapper());
-		Field convertersField3 = FieldUtils.getDeclaredField(SimpleMixInResolver.class, "_localMixIns", true);
-		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) convertersField3.get(_mixIns);
-		Iterator<Entry<ClassKey, Class<?>>> it = _localMixIns.entrySet().iterator();
-		while (it.hasNext()) {
-			Entry<ClassKey, Class<?>> entry = it.next();
-			if (entry.getKey().toString().startsWith("org.springframework")) {
-				springMixins.put(entry.getKey(), entry.getValue());
-				it.remove();
-			}
-		}
-
-	}
-
-	@AfterEach
-	void clean() throws IllegalAccessException {
-		Field convertersField2 = FieldUtils.getDeclaredField(ObjectMapper.class, "_mixIns", true);
-		SimpleMixInResolver _mixIns = (SimpleMixInResolver) convertersField2.get(objectMapperProvider.jsonMapper());
-		Field convertersField3 = FieldUtils.getDeclaredField(SimpleMixInResolver.class, "_localMixIns", true);
-		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) convertersField3.get(_mixIns);
-		_localMixIns.putAll(springMixins);
-	}
 }
