@@ -26,6 +26,7 @@ package org.springdoc.core.configuration;
 
 import java.util.Optional;
 
+import org.springdoc.core.converters.PageOpenAPIConverter;
 import org.springdoc.core.converters.PageableOpenAPIConverter;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
@@ -42,6 +43,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.data.web.config.SpringDataWebSettings;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_PAGEABLE_CONVERTER_ENABLED;
@@ -75,6 +78,22 @@ public class SpringDocPageableConfiguration {
 		return new PageableOpenAPIConverter(objectMapperProvider);
 	}
 
+	/**
+	 * Page open api converter.
+	 * @param objectMapperProvider the object mapper provider
+	 * @return the page open api converter
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnBean(SpringDataWebSettings.class)
+	@Lazy(false)
+	PageOpenAPIConverter pageOpenAPIConverter(SpringDataWebSettings settings,
+			ObjectMapperProvider objectMapperProvider) {
+		return new PageOpenAPIConverter(
+				settings.pageSerializationMode() == EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO,
+				objectMapperProvider);
+	}
+	
 	/**
 	 * Delegating method parameter customizer delegating method parameter customizer.
 	 *
