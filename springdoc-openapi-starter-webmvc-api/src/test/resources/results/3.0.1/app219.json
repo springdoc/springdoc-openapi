@@ -1,0 +1,76 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/testpost": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "testpost",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TestObject"
+              }
+            },
+            "application/json;charset=UTF-8": {
+              "schema": {
+                "$ref": "#/components/schemas/TestObject"
+              }
+            },
+            "application/json; charset=UTF-8": {
+              "schema": {
+                "$ref": "#/components/schemas/TestObject"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestObject"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TestObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TestObject": {
+        "type": "object",
+        "properties": {
+          "stringValue": {
+            "type": "string"
+          },
+          "localDateTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
