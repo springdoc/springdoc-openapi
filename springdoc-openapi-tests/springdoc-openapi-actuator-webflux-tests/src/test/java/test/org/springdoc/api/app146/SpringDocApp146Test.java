@@ -24,10 +24,7 @@ import test.org.springdoc.api.AbstractSpringDocActuatorTest;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.reactive.server.EntityExchangeResult;
-
-import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
-
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties = { "management.endpoints.web.exposure.include=*",
@@ -40,31 +37,16 @@ public class SpringDocApp146Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	public void testApp() throws Exception {
-		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.ACTUATOR_DEFAULT_GROUP)
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$.openapi").isEqualTo("3.0.1")
-				.returnResult();
-		String result = new String(getResult.getResponseBody());
-		String expected = getContent("results/app146-1.json");
-		assertEquals(expected, result, true);
+		super.testApp("146-1", Constants.ACTUATOR_DEFAULT_GROUP);
 	}
 
 	@Test
 	public void testApp1() throws Exception {
-		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.DEFAULT_GROUP_NAME)
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$.openapi").isEqualTo("3.0.1")
-				.returnResult();
-		String result = new String(getResult.getResponseBody());
-		String expected = getContent("results/app146-2.json");
-		assertEquals(expected, result, true);
+		super.testApp("146-2", Constants.DEFAULT_GROUP_NAME);
 	}
 
 	@SpringBootApplication
+	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app146" })
 	static class SpringDocTestApp {}
 
 }

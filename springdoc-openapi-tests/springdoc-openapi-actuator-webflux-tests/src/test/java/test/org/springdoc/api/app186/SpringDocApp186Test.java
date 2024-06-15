@@ -59,21 +59,21 @@ public class SpringDocApp186Test extends AbstractCommonTest {
 	}
 
 	@Test
-	public void testGroupActuatorAsCodeCheckBackwardsCompatibility() throws Exception {
+	public void testGroupActuatorAsCodeCheckBackwardsCompatibility() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-code-check-backwards-compatibility").exchange()
 				.expectStatus().isOk()
 				.expectBody().json(getContent("results/app186.json"), true);
 	}
 
 	@Test
-	public void testGroupActuatorAsCode() throws Exception {
+	public void testGroupActuatorAsCode() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-code").exchange()
 				.expectStatus().isOk()
 				.expectBody().json(getContent("results/app186.json"), true);
 	}
 
 	@Test
-	public void testGroupActuatorAsProperties() throws Exception {
+	public void testGroupActuatorAsProperties() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-properties").exchange()
 				.expectStatus().isOk()
 				.expectBody().json(getContent("results/app186.json"), true);

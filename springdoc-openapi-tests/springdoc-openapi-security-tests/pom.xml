@@ -32,16 +32,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.xml</groupId>
-			<artifactId>jaxb-impl</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.jws</groupId>
-			<artifactId>javax.jws-api</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
 			<scope>test</scope>

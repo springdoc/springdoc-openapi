@@ -24,8 +24,6 @@ import org.springdoc.core.utils.Constants;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.cloud.function.context.test.FunctionalSpringBootTest;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
-import org.springframework.web.reactive.function.server.HandlerFunction;
-import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
@@ -34,13 +32,11 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 @AutoConfigureWebTestClient(timeout = "3600000")
 public abstract class AbstractSpringDocFunctionTest extends AbstractCommonTest {
 
-	public static final HandlerFunction<ServerResponse> HANDLER_FUNCTION = request -> ServerResponse.ok().build();
-
 	protected String groupName = "";
 
 
 	@Test
-	public void testApp() throws Exception {
+	public void testApp() {
 		String result = null;
 		try {
 			EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange()

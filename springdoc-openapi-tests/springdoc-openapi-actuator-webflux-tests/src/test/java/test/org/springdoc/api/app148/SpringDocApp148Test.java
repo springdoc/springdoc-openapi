@@ -46,18 +46,12 @@ public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	public void testApp() throws Exception {
-		String result = webClient.get().uri("/test/application/openapi/users").retrieve()
-				.bodyToMono(String.class).block();
-		String expected = getContent("results/app148-1.json");
-		assertEquals(expected, result, true);
+		super.testWithWebClient("148-1","/test/application/openapi/users");
 	}
 
 	@Test
 	public void testApp2() throws Exception {
-		String result = webClient.get().uri("/test/application/openapi/x-actuator").retrieve()
-				.bodyToMono(String.class).block();
-		String expected = getContent("results/app148-2.json");
-		assertEquals(expected, result, true);
+		super.testWithWebClient("148-2","/test/application/openapi/x-actuator");
 	}
 
 	@Test

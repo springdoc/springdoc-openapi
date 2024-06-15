@@ -7,12 +7,16 @@ import java.nio.file.Paths;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.utils.Constants;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @AutoConfigureWebTestClient(timeout = "3600000")
 @ActiveProfiles("test")
@@ -32,6 +36,21 @@ public abstract class AbstractCommonTest {
 		}
 		catch (Exception e) {
 			throw new RuntimeException("Failed to read file: " + fileName, e);
+		}
+	}
+
+	protected void testApp(String testId, String groupName) throws Exception{
+		String result = null;
+		try {
+			EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL  + "/" + groupName).exchange()
+					.expectStatus().isOk().expectBody().returnResult();
+			result = new String(getResult.getResponseBody());
+			String expected = getContent("results/app" + testId + ".json");
+			assertEquals(expected, result, true);
+		}
+		catch (AssertionError e) {
+			LOGGER.error(result);
+			throw e;
 		}
 	}
 }

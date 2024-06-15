@@ -30,7 +30,6 @@ import org.springframework.web.client.HttpStatusCodeException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
@@ -48,16 +47,12 @@ public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	public void testApp() throws Exception {
-		String result = actuatorRestTemplate.getForObject("/test/application/openapi/users", String.class);
-		String expected = getContent("results/app148-1.json");
-		assertEquals(expected, result, true);
+		super.testWithRestTemplate("148-1","/test/application/openapi/users");
 	}
 
 	@Test
 	public void testApp2() throws Exception {
-		String result = actuatorRestTemplate.getForObject("/test/application/openapi/x-actuator", String.class);
-		String expected = getContent("results/app148-2.json");
-		assertEquals(expected, result, true);
+		super.testWithRestTemplate("148-2","/test/application/openapi/x-actuator");
 	}
 
 	@Test

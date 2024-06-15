@@ -18,41 +18,20 @@
 
 package test.org.springdoc.api;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
-import org.springdoc.core.utils.Constants;
 
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.test.web.reactive.server.EntityExchangeResult;
-import org.springframework.web.reactive.function.server.HandlerFunction;
-import org.springframework.web.reactive.function.server.ServerResponse;
-
-import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @WebFluxTest
 public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
-	public static final HandlerFunction<ServerResponse> HANDLER_FUNCTION = request -> ServerResponse.ok().build();
-
-	protected String groupName = "";
-
-
 	@Test
 	public void testApp() throws Exception {
-		String result = null;
-		try {
-			EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange()
-					.expectStatus().isOk().expectBody().returnResult();
-
-			result = new String(getResult.getResponseBody());
-			String className = getClass().getSimpleName();
-			String testNumber = className.replaceAll("[^0-9]", "");
-			String expected = getContent("results/app" + testNumber + ".json");
-			assertEquals(expected, result, true);
-		}
-		catch (AssertionError e) {
-			LOGGER.error(result);
-			throw e;
-		}
+		String className = getClass().getSimpleName();
+		String testId = className.replaceAll("[^0-9]", "");
+		testApp(testId, StringUtils.EMPTY);
 	}
+
 }

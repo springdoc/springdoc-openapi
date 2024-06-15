@@ -40,28 +40,13 @@ public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	public void testApp() throws Exception {
-		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.ACTUATOR_DEFAULT_GROUP)
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$.openapi").isEqualTo("3.0.1")
-				.returnResult();
-		String result = new String(getResult.getResponseBody());
-		String expected = getContent("results/app147-1.json");
-		assertEquals(expected, result, true);
+		super.testApp("147-1", Constants.ACTUATOR_DEFAULT_GROUP);
 	}
 
 	@Test
 	public void testApp1() throws Exception {
-		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/users")
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$.openapi").isEqualTo("3.0.1")
-				.returnResult();
-		String result = new String(getResult.getResponseBody());
-		String expected = getContent("results/app147-2.json");
-		assertEquals(expected, result, true);
+		super.testApp("147-2", Constants.ACTUATOR_DEFAULT_GROUP);
+
 	}
 
 	@Test

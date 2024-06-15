@@ -35,14 +35,9 @@ import org.springframework.test.context.TestPropertySource;
 })
 public class SpringDocApp76Test extends AbstractSpringDocTest {
 
-	public SpringDocApp76Test() {
-		this.groupName = "/actuator";
-	}
-
-
 	@Test
 	public void testApp() throws Exception {
-		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange().expectStatus().isOk().expectBody()
+		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/actuator").exchange().expectStatus().isOk().expectBody()
 				.jsonPath("$.openapi").isEqualTo("3.0.1")
 				.jsonPath("$.paths./actuator/health.get.operationId").exists();
 	}
