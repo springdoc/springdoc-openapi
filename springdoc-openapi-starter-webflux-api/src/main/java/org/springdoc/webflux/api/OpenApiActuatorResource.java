@@ -131,7 +131,7 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale) {
 		super.initOpenAPIBuilder(locale);
 		URI uri = getActuatorURI(serverHttpRequest.getURI().getScheme(), serverHttpRequest.getURI().getHost());
-		openAPIService.setServerBaseUrl(uri.toString());
+		openAPIService.setServerBaseUrl(uri.toString(), serverHttpRequest);
 	}
 
 	@Override
