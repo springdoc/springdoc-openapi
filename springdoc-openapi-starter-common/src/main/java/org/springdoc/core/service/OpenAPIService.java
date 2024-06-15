@@ -81,6 +81,7 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -490,12 +491,12 @@ public class OpenAPIService implements ApplicationContextAware {
 	 *
 	 * @param serverBaseUrl the server base url
 	 */
-	public void setServerBaseUrl(String serverBaseUrl) {
+	public void setServerBaseUrl(String serverBaseUrl, HttpRequest httpRequest) {
 		String customServerBaseUrl = serverBaseUrl;
 
 		if (serverBaseUrlCustomizers.isPresent()) {
 			for (ServerBaseUrlCustomizer customizer : serverBaseUrlCustomizers.get()) {
-				customServerBaseUrl = customizer.customize(customServerBaseUrl);
+				customServerBaseUrl = customizer.customize(customServerBaseUrl, httpRequest);
 			}
 		}
 

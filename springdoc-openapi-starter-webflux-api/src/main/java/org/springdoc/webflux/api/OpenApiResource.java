@@ -229,7 +229,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	protected void calculateServerUrl(ServerHttpRequest serverHttpRequest, String apiDocsUrl, Locale locale) {
 		initOpenAPIBuilder(locale);
 		String serverUrl = getServerUrl(serverHttpRequest, apiDocsUrl);
-		openAPIService.setServerBaseUrl(serverUrl);
+		openAPIService.setServerBaseUrl(serverUrl, serverHttpRequest);
 	}
 
 	/**
