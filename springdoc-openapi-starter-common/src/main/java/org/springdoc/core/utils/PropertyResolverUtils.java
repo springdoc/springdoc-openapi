@@ -143,7 +143,7 @@ public class PropertyResolverUtils {
 	private int countLeadingSpaces(String line) {
         int count = 0;
         for (char ch : line.toCharArray()) {
-            if (ch != ' ') break;
+            if (ch != ' ' && ch != '\t') break;
             count++;
         }
         return count;
