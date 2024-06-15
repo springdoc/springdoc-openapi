@@ -62,6 +62,7 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.mock.http.client.MockClientHttpRequest;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -190,7 +191,7 @@ class AbstractOpenApiResourceTest {
 		doCallRealMethod().when(openAPIService).updateServers(any());
 		when(openAPIService.getCachedOpenAPI(any())).thenCallRealMethod();
 		doAnswer(new CallsRealMethods()).when(openAPIService).setServersPresent(true);
-		doAnswer(new CallsRealMethods()).when(openAPIService).setServerBaseUrl(any());
+		doAnswer(new CallsRealMethods()).when(openAPIService).setServerBaseUrl(any(), any());
 		doAnswer(new CallsRealMethods()).when(openAPIService).setCachedOpenAPI(any(), any());
 
 		String customUrl = "https://custom.com";
@@ -212,7 +213,7 @@ class AbstractOpenApiResourceTest {
 		Thread.sleep(1_000);
 
 		// emulate generating base url
-		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.setServerBaseUrl(generatedUrl, new MockClientHttpRequest());
 		openAPIService.updateServers(openAPI);
 		Locale locale = Locale.US;
 		OpenAPI after = resource.getOpenApi(locale);
@@ -224,7 +225,7 @@ class AbstractOpenApiResourceTest {
 	void serverBaseUrlCustomisersTest() throws InterruptedException {
 		doCallRealMethod().when(openAPIService).updateServers(any());
 		when(openAPIService.getCachedOpenAPI(any())).thenCallRealMethod();
-		doAnswer(new CallsRealMethods()).when(openAPIService).setServerBaseUrl(any());
+		doAnswer(new CallsRealMethods()).when(openAPIService).setServerBaseUrl(any(), any());
 		doAnswer(new CallsRealMethods()).when(openAPIService).setCachedOpenAPI(any(), any());
 
 		SpringDocConfigProperties properties = new SpringDocConfigProperties();
@@ -247,37 +248,37 @@ class AbstractOpenApiResourceTest {
 
 		// Test that setting generated URL works fine with no customizers present
 		String generatedUrl = "https://generated-url.com/context-path";
-		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.setServerBaseUrl(generatedUrl, new MockClientHttpRequest());
 		openAPIService.updateServers(openAPI);
 		OpenAPI after = resource.getOpenApi(locale);
 		assertThat(after.getServers().get(0).getUrl(), is(generatedUrl));
 
 		// Test that adding a serverBaseUrlCustomizer has the desired effect
-		ServerBaseUrlCustomizer serverBaseUrlCustomizer = serverBaseUrl -> serverBaseUrl.replace("/context-path", "");
+		ServerBaseUrlCustomizer serverBaseUrlCustomizer = (serverBaseUrl, request) -> serverBaseUrl.replace("/context-path", "");
 		List<ServerBaseUrlCustomizer> serverBaseUrlCustomizerList = new ArrayList<>();
 		serverBaseUrlCustomizerList.add(serverBaseUrlCustomizer);
 
 		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomizers", Optional.of(serverBaseUrlCustomizerList));
-		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.setServerBaseUrl(generatedUrl, new MockClientHttpRequest());
 		openAPIService.updateServers(openAPI);
 		after = resource.getOpenApi(locale);
 		assertThat(after.getServers().get(0).getUrl(), is("https://generated-url.com"));
 
 		// Test that serverBaseUrlCustomisers are performed in order
 		generatedUrl = "https://generated-url.com/context-path/second-path";
-		ServerBaseUrlCustomizer serverBaseUrlCustomiser2 = serverBaseUrl -> serverBaseUrl.replace("/context-path/second-path", "");
+		ServerBaseUrlCustomizer serverBaseUrlCustomiser2 = (serverBaseUrl, request) -> serverBaseUrl.replace("/context-path/second-path", "");
 		serverBaseUrlCustomizerList.add(serverBaseUrlCustomiser2);
 
-		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.setServerBaseUrl(generatedUrl, new MockClientHttpRequest());
 		openAPIService.updateServers(openAPI);
 		after = resource.getOpenApi(locale);
 		assertThat(after.getServers().get(0).getUrl(), is("https://generated-url.com/second-path"));
 
 		// Test that all serverBaseUrlCustomisers in the List are performed
-		ServerBaseUrlCustomizer serverBaseUrlCustomiser3 = serverBaseUrl -> serverBaseUrl.replace("/second-path", "");
+		ServerBaseUrlCustomizer serverBaseUrlCustomiser3 = (serverBaseUrl, request) -> serverBaseUrl.replace("/second-path", "");
 		serverBaseUrlCustomizerList.add(serverBaseUrlCustomiser3);
 
-		openAPIService.setServerBaseUrl(generatedUrl);
+		openAPIService.setServerBaseUrl(generatedUrl, new MockClientHttpRequest());
 		openAPIService.updateServers(openAPI);
 		after = resource.getOpenApi(locale);
 		assertThat(after.getServers().get(0).getUrl(), is("https://generated-url.com"));
