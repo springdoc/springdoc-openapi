@@ -55,6 +55,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.util.ReflectionUtils;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
@@ -110,7 +111,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @param securityFilterChain the security filter chain
 	 * @param openapi31           the openapi 31
 	 */
-	private void getOAuth2TokenRevocationEndpointFilter(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {	
+	private void getOAuth2TokenRevocationEndpointFilter(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
 		Object oAuth2EndpointFilter =
 				new SpringDocSecurityOAuth2EndpointUtils(OAuth2TokenRevocationEndpointFilter.class).findEndpoint(securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
@@ -168,14 +169,20 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @param openapi31           the openapi 31
 	 */
 	private void getOAuth2AuthorizationServerMetadataEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
+		Class<OAuth2AuthorizationServerMetadataEndpointFilter>authorizationServerMetadataEndpointClass = OAuth2AuthorizationServerMetadataEndpointFilter.class;
 		Object oAuth2EndpointFilter =
-				new SpringDocSecurityOAuth2EndpointUtils(OAuth2AuthorizationServerMetadataEndpointFilter.class).findEndpoint(securityFilterChain);
+				new SpringDocSecurityOAuth2EndpointUtils(authorizationServerMetadataEndpointClass).findEndpoint(securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
 			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2AuthorizationServerMetadata.class, openAPI.getComponents(), null, openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			Operation operation = buildOperation(apiResponses);
-			buildPath(oAuth2EndpointFilter, REQUEST_MATCHER, openAPI, operation, HttpMethod.GET);
+			Field field = ReflectionUtils.findField(authorizationServerMetadataEndpointClass, "DEFAULT_OAUTH2_AUTHORIZATION_SERVER_METADATA_ENDPOINT_URI");
+			if (field != null) {
+				ReflectionUtils.makeAccessible(field);
+				String defaultOauth2MetadataUri = (String) ReflectionUtils.getField(field, null);
+				openAPI.getPaths().addPathItem(defaultOauth2MetadataUri , new PathItem().get(operation));
+			}
 		}
 	}
 
@@ -288,15 +295,22 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @param openapi31           the openapi 31
 	 */
 	private void getOidcProviderConfigurationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
+		Class<OidcProviderConfigurationEndpointFilter> oidcProviderConfigurationEndpointFilterClass = OidcProviderConfigurationEndpointFilter.class;
 		Object oAuth2EndpointFilter =
-				new SpringDocSecurityOAuth2EndpointUtils(OidcProviderConfigurationEndpointFilter.class).findEndpoint(securityFilterChain);
+				new SpringDocSecurityOAuth2EndpointUtils(oidcProviderConfigurationEndpointFilterClass).findEndpoint(securityFilterChain);
 
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
 			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOidcProviderConfiguration.class, openAPI.getComponents(), null, openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			Operation operation = buildOperation(apiResponses);
-			buildPath(oAuth2EndpointFilter, REQUEST_MATCHER, openAPI, operation, HttpMethod.GET);
+
+			Field field = ReflectionUtils.findField(oidcProviderConfigurationEndpointFilterClass, "DEFAULT_OIDC_PROVIDER_CONFIGURATION_ENDPOINT_URI");
+			if (field != null) {
+				ReflectionUtils.makeAccessible(field);
+				String defaultOidcConfigUri = (String) ReflectionUtils.getField(field, null);
+				openAPI.getPaths().addPathItem(defaultOidcConfigUri , new PathItem().get(operation));
+			}
 		}
 	}
 

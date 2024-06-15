@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.4</version>
+		<version>3.3.0</version>
 	</parent>
 
 	<licenses>
@@ -60,15 +60,13 @@
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
-		<swagger-api.version>2.2.21</swagger-api.version>
-		<swagger-ui.version>5.13.0</swagger-ui.version>
+		<swagger-api.version>2.2.22</swagger-api.version>
+		<swagger-ui.version>5.17.14</swagger-ui.version>
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
-		<jaxb-impl.version>2.1</jaxb-impl.version>
-		<javax.jws-api.version>1.1</javax.jws-api.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
-		<spring-cloud-function.version>4.0.0</spring-cloud-function.version>
-		<spring-security-oauth2-authorization-server.version>1.0.1</spring-security-oauth2-authorization-server.version>
+		<spring-cloud-function.version>4.1.2</spring-cloud-function.version>
+		<spring-security-oauth2-authorization-server.version>1.3.0</spring-security-oauth2-authorization-server.version>
 	</properties>
 
 	<dependencyManagement>

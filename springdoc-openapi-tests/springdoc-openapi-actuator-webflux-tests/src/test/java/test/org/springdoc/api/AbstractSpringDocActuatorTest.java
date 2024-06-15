@@ -25,10 +25,14 @@
 package test.org.springdoc.api;
 
 import jakarta.annotation.PostConstruct;
+import org.springdoc.core.utils.Constants;
 
 import org.springframework.boot.test.web.server.LocalManagementPort;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @TestPropertySource(properties = { "management.endpoints.enabled-by-default=true" })
 public abstract class AbstractSpringDocActuatorTest extends AbstractCommonTest {
@@ -42,5 +46,19 @@ public abstract class AbstractSpringDocActuatorTest extends AbstractCommonTest {
 	void init() {
 		webClient = WebClient.builder().baseUrl("http://localhost:" + this.managementPort)
 				.build();
+	}
+
+	protected void testWithWebClient(String testId, String uri) throws Exception{
+		String result = null;
+		try {
+			result = webClient.get().uri(uri).retrieve()
+					.bodyToMono(String.class).block();
+			String expected = getContent("results/app"+testId+".json");
+			assertEquals(expected, result, true);
+		}
+		catch (AssertionError e) {
+			LOGGER.error(result);
+			throw e;
+		}
 	}
 }

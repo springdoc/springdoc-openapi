@@ -23,11 +23,8 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "byte"
-                  }
+                  "type": "string",
+                  "format": "byte"
                 }
               }
             }

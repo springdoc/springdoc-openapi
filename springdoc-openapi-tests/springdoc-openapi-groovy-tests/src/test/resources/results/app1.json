@@ -151,12 +151,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -424,8 +424,9 @@
           "void": {
             "type": "boolean"
           },
-          "typeDescription": {
-            "type": "string"
+          "superClassDistance": {
+            "type": "integer",
+            "format": "int32"
           },
           "newMetaMethods": {
             "type": "array",
@@ -436,9 +437,8 @@
           "callSiteLoader": {
             "$ref": "#/components/schemas/CallSiteClassLoader"
           },
-          "superClassDistance": {
-            "type": "integer",
-            "format": "int32"
+          "typeDescription": {
+            "type": "string"
           }
         }
       },
@@ -460,20 +460,6 @@
                 "items": {
                   "type": "object",
                   "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "bounds": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "typeName": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    },
                     "genericDeclaration": {
                       "type": "object",
                       "properties": {
@@ -694,20 +680,6 @@
                                     "items": {
                                       "type": "object",
                                       "properties": {
-                                        "name": {
-                                          "type": "string"
-                                        },
-                                        "bounds": {
-                                          "type": "array",
-                                          "items": {
-                                            "type": "object",
-                                            "properties": {
-                                              "typeName": {
-                                                "type": "string"
-                                              }
-                                            }
-                                          }
-                                        },
                                         "genericDeclaration": {
                                           "type": "object"
                                         },
@@ -735,6 +707,20 @@
                                                     "type": "string"
                                                   }
                                                 }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "name": {
+                                          "type": "string"
+                                        },
+                                        "bounds": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "typeName": {
+                                                "type": "string"
                                               }
                                             }
                                           }
@@ -992,6 +978,20 @@
                         }
                       }
                     },
+                    "name": {
+                      "type": "string"
+                    },
+                    "bounds": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "typeName": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
                     "typeName": {
                       "type": "string"
                     },
@@ -1220,20 +1220,6 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "name": {
-                                "type": "string"
-                              },
-                              "bounds": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "typeName": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              },
                               "genericDeclaration": {
                                 "type": "object"
                               },
@@ -1261,6 +1247,20 @@
                                           "type": "string"
                                         }
                                       }
+                                    }
+                                  }
+                                }
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "bounds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "typeName": {
+                                      "type": "string"
                                     }
                                   }
                                 }
@@ -1614,20 +1614,6 @@
                 "items": {
                   "type": "object",
                   "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "bounds": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "typeName": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    },
                     "annotatedBounds": {
                       "type": "array",
                       "items": {
@@ -1652,6 +1638,20 @@
                                 "type": "string"
                               }
                             }
+                          }
+                        }
+                      }
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "bounds": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "typeName": {
+                            "type": "string"
                           }
                         }
                       }
@@ -1876,20 +1876,6 @@
                           "items": {
                             "type": "object",
                             "properties": {
-                              "name": {
-                                "type": "string"
-                              },
-                              "bounds": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "typeName": {
-                                      "type": "string"
-                                    }
-                                  }
-                                }
-                              },
                               "genericDeclaration": {
                                 "type": "object"
                               },
@@ -1917,6 +1903,20 @@
                                           "type": "string"
                                         }
                                       }
+                                    }
+                                  }
+                                }
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "bounds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "typeName": {
+                                      "type": "string"
                                     }
                                   }
                                 }
@@ -3114,19 +3114,32 @@
           "text": {
             "type": "string"
           },
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "allInterfaces": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
+          },
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
           "outerClass": {
             "$ref": "#/components/schemas/ClassNode"
           },
-          "genericsPlaceHolder": {
+          "redirectNode": {
             "type": "boolean"
           },
-          "unresolvedSuperClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "plainNodeReference": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "redirectNode": {
+          "genericsPlaceHolder": {
             "type": "boolean"
           },
           "primaryClassNode": {
@@ -3150,6 +3163,9 @@
           "derivedFromGroovyObject": {
             "type": "boolean"
           },
+          "unresolvedSuperClass": {
+            "$ref": "#/components/schemas/ClassNode"
+          },
           "unresolvedInterfaces": {
             "type": "array",
             "items": {
@@ -3169,24 +3185,8 @@
           "annotationDefinition": {
             "type": "boolean"
           },
-          "abstractMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "allInterfaces": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
+          "plainNodeReference": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "objectInitializerStatements": {
             "type": "array",
@@ -3197,12 +3197,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -3256,21 +3256,15 @@
                       "type": "string"
                     },
                     "encoded": {
-                      "type": "array",
-                      "items": {
-                        "type": "string",
-                        "format": "byte"
-                      }
+                      "type": "string",
+                      "format": "byte"
                     },
                     "publicKey": {
                       "type": "object",
                       "properties": {
                         "encoded": {
-                          "type": "array",
-                          "items": {
-                            "type": "string",
-                            "format": "byte"
-                          }
+                          "type": "string",
+                          "format": "byte"
                         },
                         "format": {
                           "type": "string"
@@ -3291,6 +3285,12 @@
                     "signerCertPath": {
                       "type": "object",
                       "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "encodings": {
+                          "type": "object"
+                        },
                         "certificates": {
                           "type": "array",
                           "items": {
@@ -3300,21 +3300,15 @@
                                 "type": "string"
                               },
                               "encoded": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string",
-                                  "format": "byte"
-                                }
+                                "type": "string",
+                                "format": "byte"
                               },
                               "publicKey": {
                                 "type": "object",
                                 "properties": {
                                   "encoded": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "string",
-                                      "format": "byte"
-                                    }
+                                    "type": "string",
+                                    "format": "byte"
                                   },
                                   "format": {
                                     "type": "string"
@@ -3327,18 +3321,9 @@
                             }
                           }
                         },
-                        "type": {
-                          "type": "string"
-                        },
                         "encoded": {
-                          "type": "array",
-                          "items": {
-                            "type": "string",
-                            "format": "byte"
-                          }
-                        },
-                        "encodings": {
-                          "type": "object"
+                          "type": "string",
+                          "format": "byte"
                         }
                       }
                     },
@@ -3352,6 +3337,12 @@
                         "signerCertPath": {
                           "type": "object",
                           "properties": {
+                            "type": {
+                              "type": "string"
+                            },
+                            "encodings": {
+                              "type": "object"
+                            },
                             "certificates": {
                               "type": "array",
                               "items": {
@@ -3361,21 +3352,15 @@
                                     "type": "string"
                                   },
                                   "encoded": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "string",
-                                      "format": "byte"
-                                    }
+                                    "type": "string",
+                                    "format": "byte"
                                   },
                                   "publicKey": {
                                     "type": "object",
                                     "properties": {
                                       "encoded": {
-                                        "type": "array",
-                                        "items": {
-                                          "type": "string",
-                                          "format": "byte"
-                                        }
+                                        "type": "string",
+                                        "format": "byte"
                                       },
                                       "format": {
                                         "type": "string"
@@ -3388,18 +3373,9 @@
                                 }
                               }
                             },
-                            "type": {
-                              "type": "string"
-                            },
                             "encoded": {
-                              "type": "array",
-                              "items": {
-                                "type": "string",
-                                "format": "byte"
-                              }
-                            },
-                            "encodings": {
-                              "type": "object"
+                              "type": "string",
+                              "format": "byte"
                             }
                           }
                         }
@@ -3689,10 +3665,6 @@
           "text": {
             "type": "string"
           },
-          "annotationDefault": {
-            "type": "boolean",
-            "writeOnly": true
-          },
           "voidMethod": {
             "type": "boolean"
           },
@@ -3708,15 +3680,19 @@
           "staticConstructor": {
             "type": "boolean"
           },
+          "annotationDefault": {
+            "type": "boolean",
+            "writeOnly": true
+          },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -3747,16 +3723,16 @@
           "configuration": {
             "$ref": "#/components/schemas/CompilerConfiguration"
           },
+          "errorCount": {
+            "type": "integer",
+            "format": "int32"
+          },
           "warningCount": {
             "type": "integer",
             "format": "int32"
           },
           "lastError": {
             "$ref": "#/components/schemas/Message"
-          },
-          "errorCount": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },
@@ -3816,6 +3792,9 @@
             "type": "integer",
             "format": "int32"
           },
+          "classInfo": {
+            "$ref": "#/components/schemas/ClassInfo"
+          },
           "groovyObject": {
             "type": "boolean"
           },
@@ -3864,20 +3843,6 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "name": {
-                            "type": "string"
-                          },
-                          "bounds": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "typeName": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "annotatedBounds": {
                             "type": "array",
                             "items": {
@@ -3902,6 +3867,20 @@
                                       "type": "string"
                                     }
                                   }
+                                }
+                              }
+                            }
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "bounds": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "typeName": {
+                                  "type": "string"
                                 }
                               }
                             }
@@ -4126,20 +4105,6 @@
                                 "items": {
                                   "type": "object",
                                   "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "bounds": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object",
-                                        "properties": {
-                                          "typeName": {
-                                            "type": "string"
-                                          }
-                                        }
-                                      }
-                                    },
                                     "genericDeclaration": {
                                       "type": "object"
                                     },
@@ -4167,6 +4132,20 @@
                                                 "type": "string"
                                               }
                                             }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "bounds": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "typeName": {
+                                            "type": "string"
                                           }
                                         }
                                       }
@@ -4436,20 +4415,6 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "name": {
-                            "type": "string"
-                          },
-                          "bounds": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "typeName": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          },
                           "annotatedBounds": {
                             "type": "array",
                             "items": {
@@ -4474,6 +4439,20 @@
                                       "type": "string"
                                     }
                                   }
+                                }
+                              }
+                            }
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "bounds": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "typeName": {
+                                  "type": "string"
                                 }
                               }
                             }
@@ -4698,20 +4677,6 @@
                                 "items": {
                                   "type": "object",
                                   "properties": {
-                                    "name": {
-                                      "type": "string"
-                                    },
-                                    "bounds": {
-                                      "type": "array",
-                                      "items": {
-                                        "type": "object",
-                                        "properties": {
-                                          "typeName": {
-                                            "type": "string"
-                                          }
-                                        }
-                                      }
-                                    },
                                     "genericDeclaration": {
                                       "type": "object"
                                     },
@@ -4739,6 +4704,20 @@
                                                 "type": "string"
                                               }
                                             }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "bounds": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "typeName": {
+                                            "type": "string"
                                           }
                                         }
                                       }
@@ -4995,9 +4974,6 @@
                 }
               }
             }
-          },
-          "classInfo": {
-            "$ref": "#/components/schemas/ClassInfo"
           }
         }
       },
@@ -5038,12 +5014,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -5155,12 +5131,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -5688,12 +5664,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -5891,16 +5867,29 @@
           "text": {
             "type": "string"
           },
-          "genericsPlaceHolder": {
-            "type": "boolean"
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
           },
-          "unresolvedSuperClass": {
-            "$ref": "#/components/schemas/ClassNode"
+          "allInterfaces": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
           },
-          "plainNodeReference": {
-            "$ref": "#/components/schemas/ClassNode"
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
           },
           "redirectNode": {
+            "type": "boolean"
+          },
+          "genericsPlaceHolder": {
             "type": "boolean"
           },
           "primaryClassNode": {
@@ -5924,6 +5913,9 @@
           "derivedFromGroovyObject": {
             "type": "boolean"
           },
+          "unresolvedSuperClass": {
+            "$ref": "#/components/schemas/ClassNode"
+          },
           "unresolvedInterfaces": {
             "type": "array",
             "items": {
@@ -5943,24 +5935,8 @@
           "annotationDefinition": {
             "type": "boolean"
           },
-          "abstractMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "allInterfaces": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
+          "plainNodeReference": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "objectInitializerStatements": {
             "type": "array",
@@ -5971,12 +5947,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -6226,10 +6202,6 @@
           "text": {
             "type": "string"
           },
-          "annotationDefault": {
-            "type": "boolean",
-            "writeOnly": true
-          },
           "voidMethod": {
             "type": "boolean"
           },
@@ -6245,15 +6217,19 @@
           "staticConstructor": {
             "type": "boolean"
           },
+          "annotationDefault": {
+            "type": "boolean",
+            "writeOnly": true
+          },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
+          },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
           },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -6439,19 +6415,32 @@
           "text": {
             "type": "string"
           },
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
+          "allInterfaces": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClassNode"
+            }
+          },
+          "abstractMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
+          },
           "outerClass": {
             "$ref": "#/components/schemas/ClassNode"
           },
-          "genericsPlaceHolder": {
+          "redirectNode": {
             "type": "boolean"
           },
-          "unresolvedSuperClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "plainNodeReference": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "redirectNode": {
+          "genericsPlaceHolder": {
             "type": "boolean"
           },
           "primaryClassNode": {
@@ -6475,6 +6464,9 @@
           "derivedFromGroovyObject": {
             "type": "boolean"
           },
+          "unresolvedSuperClass": {
+            "$ref": "#/components/schemas/ClassNode"
+          },
           "unresolvedInterfaces": {
             "type": "array",
             "items": {
@@ -6494,24 +6486,8 @@
           "annotationDefinition": {
             "type": "boolean"
           },
-          "abstractMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
-          },
-          "allInterfaces": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ClassNode"
-            }
-          },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
+          "plainNodeReference": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "objectInitializerStatements": {
             "type": "array",
@@ -6522,12 +6498,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -6617,11 +6593,11 @@
           "statementBlock": {
             "$ref": "#/components/schemas/BlockStatement"
           },
-          "empty": {
-            "type": "boolean"
-          },
           "packageName": {
             "type": "string"
+          },
+          "empty": {
+            "type": "boolean"
           },
           "package": {
             "$ref": "#/components/schemas/PackageNode"
@@ -6695,12 +6671,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "sourcePosition": {
             "$ref": "#/components/schemas/ASTNode"
@@ -6781,12 +6757,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -6869,6 +6845,9 @@
             "type": "integer",
             "format": "int32"
           },
+          "type": {
+            "$ref": "#/components/schemas/ClassNode"
+          },
           "name": {
             "type": "string"
           },
@@ -6878,13 +6857,7 @@
           "public": {
             "type": "boolean"
           },
-          "type": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
           "private": {
-            "type": "boolean"
-          },
-          "dynamicTyped": {
             "type": "boolean"
           },
           "initialExpression": {
@@ -6900,6 +6873,9 @@
           "originType": {
             "$ref": "#/components/schemas/ClassNode"
           },
+          "dynamicTyped": {
+            "type": "boolean"
+          },
           "getterNameOrDefault": {
             "type": "string"
           },
@@ -6909,12 +6885,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -6933,12 +6909,12 @@
       "ReaderSource": {
         "type": "object",
         "properties": {
-          "reader": {
-            "type": "object"
-          },
           "uri": {
             "type": "string",
             "format": "uri"
+          },
+          "reader": {
+            "type": "object"
           }
         }
       },
@@ -6988,12 +6964,12 @@
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
           },
+          "groovydoc": {
+            "$ref": "#/components/schemas/Groovydoc"
+          },
           "hasNoRealSourcePosition": {
             "type": "boolean",
             "writeOnly": true
-          },
-          "groovydoc": {
-            "$ref": "#/components/schemas/Groovydoc"
           },
           "text": {
             "type": "string"
@@ -7185,9 +7161,6 @@
           "type": {
             "$ref": "#/components/schemas/ClassNode"
           },
-          "dynamicTyped": {
-            "type": "boolean"
-          },
           "initialExpression": {
             "$ref": "#/components/schemas/Expression"
           },
@@ -7199,6 +7172,9 @@
           },
           "originType": {
             "$ref": "#/components/schemas/ClassNode"
+          },
+          "dynamicTyped": {
+            "type": "boolean"
           }
         }
       },

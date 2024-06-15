@@ -25,6 +25,8 @@
 package test.org.springdoc.api;
 
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.server.LocalManagementPort;
@@ -32,8 +34,12 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestTemplate;
 
+import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
+
 @TestPropertySource(properties = { "management.endpoints.enabled-by-default=true" })
 public abstract class AbstractSpringDocActuatorTest extends AbstractCommonTest {
+
+	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommonTest.class);
 
 	protected RestTemplate actuatorRestTemplate;
 
@@ -48,4 +54,18 @@ public abstract class AbstractSpringDocActuatorTest extends AbstractCommonTest {
 		actuatorRestTemplate = restTemplateBuilder
 				.rootUri("http://localhost:" + this.managementPort).build();
 	}
+
+	protected void testWithRestTemplate(String testId, String uri) throws Exception {
+		String result = null;
+		try {
+			result = actuatorRestTemplate.getForObject(uri, String.class);
+			String expected = getContent("results/app" + testId + ".json");
+			assertEquals(expected, result, true);
+		}
+		catch (AssertionError e) {
+			LOGGER.error(result);
+			throw e;
+		}
+	}
+
 }
