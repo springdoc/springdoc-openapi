@@ -304,9 +304,9 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	private void put(String urls, Set<SwaggerUrl> swaggerUrls, Map<String, Object> params) {
 		Comparator<SwaggerUrl> swaggerUrlComparator;
 		if (groupsOrder.isAscending())
-			swaggerUrlComparator = Comparator.comparing(SwaggerUrl::getName);
+			swaggerUrlComparator = Comparator.comparing(SwaggerUrl::getDisplayName);
 		else
-			swaggerUrlComparator = (h1, h2) -> h2.getName().compareTo(h1.getName());
+			swaggerUrlComparator = (h1, h2) -> h2.getDisplayName().compareTo(h1.getDisplayName());
 
 		swaggerUrls = swaggerUrls.stream().sorted(swaggerUrlComparator).filter(elt -> StringUtils.isNotEmpty(elt.getUrl())).collect(Collectors.toCollection(LinkedHashSet::new));
 		if (!CollectionUtils.isEmpty(swaggerUrls)) {

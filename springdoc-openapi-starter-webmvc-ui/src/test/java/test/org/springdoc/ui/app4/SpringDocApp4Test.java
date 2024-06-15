@@ -37,10 +37,10 @@ public class SpringDocApp4Test extends AbstractSpringDocTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("configUrl", equalTo("/v3/api-docs/swagger-config")))
 				.andExpect(jsonPath("url").doesNotExist())
-				.andExpect(jsonPath("urls[0].url", equalTo("/v3/api-docs/stores")))
-				.andExpect(jsonPath("urls[0].name", equalTo("stores")))
-				.andExpect(jsonPath("urls[1].url", equalTo("/v3/api-docs/pets")))
-				.andExpect(jsonPath("urls[1].name", equalTo("The pets")))
+				.andExpect(jsonPath("urls[1].url", equalTo("/v3/api-docs/stores")))
+				.andExpect(jsonPath("urls[1].name", equalTo("stores")))
+				.andExpect(jsonPath("urls[0].url", equalTo("/v3/api-docs/pets")))
+				.andExpect(jsonPath("urls[0].name", equalTo("zpets")))
 				.andExpect(jsonPath("$['urls.primaryName']", equalTo("pets")));
 	}
 }

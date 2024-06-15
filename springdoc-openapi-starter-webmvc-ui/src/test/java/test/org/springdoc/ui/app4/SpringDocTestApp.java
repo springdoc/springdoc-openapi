@@ -47,7 +47,7 @@ public class SpringDocTestApp {
 		String[] paths = { "/pet/**" };
 		return GroupedOpenApi.builder()
 				.group("pets")
-				.displayName("The pets")
+				.displayName("zpets")
 				.pathsToMatch(paths)
 				.build();
 	}
