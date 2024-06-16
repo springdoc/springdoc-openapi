@@ -25,9 +25,11 @@
 package org.springdoc.core.converters;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -61,10 +63,12 @@ public class PolymorphicModelConverter implements ModelConverter {
 
 	private static Schema<?> getResolvedSchema(JavaType javaType, Schema<?> resolvedSchema) {
 		if (resolvedSchema instanceof ObjectSchema && resolvedSchema.getProperties() != null) {
-			if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getName()))
+			if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getName())){
 				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getName());
-			else if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getSimpleName()))
+			}
+			else if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getSimpleName())){
 				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getSimpleName());
+			}
 		}
 		return resolvedSchema;
 	}
@@ -94,13 +98,8 @@ public class PolymorphicModelConverter implements ModelConverter {
 	 */
 	private Schema composePolymorphicSchema(AnnotatedType type, Schema schema, Collection<Schema> schemas) {
 		String ref = schema.get$ref();
-		List<Schema> composedSchemas = schemas.stream()
-				.filter(ComposedSchema.class::isInstance)
-				.map(ComposedSchema.class::cast)
-				.filter(s -> s.getAllOf() != null)
-				.filter(s -> s.getAllOf().stream().anyMatch(s2 -> ref.equals(s2.get$ref())))
-				.map(s -> new Schema().$ref(AnnotationsUtils.COMPONENTS_REF + s.getName()))
-				.toList();
+		List<Schema> composedSchemas = findComposedSchemas(ref, schemas);
+
 		if (composedSchemas.isEmpty()) return schema;
 
 		ComposedSchema result = new ComposedSchema();
@@ -109,6 +108,31 @@ public class PolymorphicModelConverter implements ModelConverter {
 		return result;
 	}
 
+	/**
+	 * Find composed schemas recursively.
+	 *
+	 * @param ref the reference of the schema
+	 * @param schemas the collection of schemas to search in
+	 * @return the list of composed schemas
+	 */
+	private List<Schema> findComposedSchemas(String ref, Collection<Schema> schemas) {
+		List<Schema> composedSchemas = schemas.stream()
+				.filter(ComposedSchema.class::isInstance)
+				.map(ComposedSchema.class::cast)
+				.filter(s -> s.getAllOf() != null)
+				.filter(s -> s.getAllOf().stream().anyMatch(s2 -> ref.equals(s2.get$ref())))
+				.map(s -> new Schema().$ref(AnnotationsUtils.COMPONENTS_REF + s.getName()))
+				.collect(Collectors.toList());
+
+		List<Schema> resultSchemas = new ArrayList<>(composedSchemas);
+
+		for (Schema childSchema : composedSchemas) {
+			String childSchemaRef = childSchema.get$ref();
+			resultSchemas.addAll(findComposedSchemas(childSchemaRef, schemas));
+		}
+
+		return resultSchemas;
+	}
 	/**
 	 * Is concrete class boolean.
 	 *
