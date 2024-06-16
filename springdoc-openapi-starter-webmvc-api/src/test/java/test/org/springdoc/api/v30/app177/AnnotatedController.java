@@ -26,6 +26,8 @@ package test.org.springdoc.api.v30.app177;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.models.GroupedOpenApi;
@@ -65,27 +67,23 @@ public class AnnotatedController {
 	}
 
 	@Bean
-	public GroupedOpenApi group1OpenApi() {
-		return GroupedOpenApi.builder()
+	public List<GroupedOpenApi> apis() {
+		GroupedOpenApi group1OpenApi = GroupedOpenApi.builder()
 				.group("annotatedGroup1")
 				.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group1.class))
 				.build();
-	}
 
-	@Bean
-	public GroupedOpenApi group2OpenApi() {
-		return GroupedOpenApi.builder()
+		GroupedOpenApi group2OpenApi = GroupedOpenApi.builder()
 				.group("annotatedGroup2")
 				.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group2.class))
 				.build();
-	}
 
-	@Bean
-	public GroupedOpenApi group3OpenApi() {
-		return GroupedOpenApi.builder()
+		GroupedOpenApi group3OpenApi = GroupedOpenApi.builder()
 				.group("annotatedCombinedGroup")
 				.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group1.class) || method.isAnnotationPresent(Group2.class))
 				.build();
+
+		return Arrays.asList(group1OpenApi, group2OpenApi, group3OpenApi);
 	}
 
 	@Bean
