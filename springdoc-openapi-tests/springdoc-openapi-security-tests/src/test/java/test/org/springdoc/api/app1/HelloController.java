@@ -20,6 +20,8 @@ package test.org.springdoc.api.app1;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,4 +40,11 @@ public class HelloController {
 		return "OK";
 	}
 
+	@PostMapping(value = "/persons-with-oauth2-user")
+	public String personsWithUser(@RequestBody() Person person,
+			@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient,
+			@AuthenticationPrincipal User user) {
+		return "OK";
+	}
+	
 }

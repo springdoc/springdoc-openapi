@@ -58,6 +58,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -169,6 +170,9 @@ public class SpringDocSecurityConfiguration {
 		}
 	}
 
+	/**
+	 * The type Spring doc security o auth 2 configuration.
+	 */
 	@Lazy(false)
 	@Configuration(proxyBeanMethods = false)
 	@ConditionalOnClass(OAuth2AuthorizationService.class)
@@ -185,5 +189,20 @@ public class SpringDocSecurityConfiguration {
 		GlobalOpenApiCustomizer springDocSecurityOAuth2Customizer() {
 			return new SpringDocSecurityOAuth2Customizer();
 		}
+	}
+
+	/**
+	 * The type Spring doc security o auth 2 client configuration.
+	 */
+	@Lazy(false)
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnClass(RegisteredOAuth2AuthorizedClient.class)
+	class SpringDocSecurityOAuth2ClientConfiguration {
+
+		static {
+			getConfig()
+					.addAnnotationsToIgnore(RegisteredOAuth2AuthorizedClient.class);
+		}
+		
 	}
 }

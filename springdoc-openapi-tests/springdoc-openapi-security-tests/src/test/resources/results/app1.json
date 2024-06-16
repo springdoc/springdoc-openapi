@@ -74,6 +74,36 @@
           }
         }
       }
+    },
+    "/persons-with-oauth2-user": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "personsWithUser_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Person"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
