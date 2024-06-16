@@ -88,6 +88,7 @@ public class MethodParameterPojoExtractor {
 		SIMPLE_TYPES.add(Iterable.class);
 		SIMPLE_TYPES.add(Duration.class);
 		SIMPLE_TYPES.add(LocalTime.class);
+		SIMPLE_TYPES.add(Class.class);
 
 		SIMPLE_TYPE_PREDICATES.add(Class::isPrimitive);
 		SIMPLE_TYPE_PREDICATES.add(Class::isEnum);
