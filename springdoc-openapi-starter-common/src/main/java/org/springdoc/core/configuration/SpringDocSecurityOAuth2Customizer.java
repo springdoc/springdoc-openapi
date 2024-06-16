@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
@@ -18,9 +20,14 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.HeaderParameter;
 import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.parameters.PathParameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.security.SecurityScheme.In;
+import io.swagger.v3.oas.models.security.SecurityScheme.Type;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -182,6 +189,10 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 				ReflectionUtils.makeAccessible(field);
 				String defaultOauth2MetadataUri = (String) ReflectionUtils.getField(field, null);
 				openAPI.getPaths().addPathItem(defaultOauth2MetadataUri , new PathItem().get(operation));
+				operation = buildOperation(apiResponses);
+				operation.addParametersItem(new PathParameter().name("subpath").schema(new StringSchema()));
+				operation.summary("Valid when multiple issuers are allowed");
+				openAPI.getPaths().addPathItem(defaultOauth2MetadataUri+"/{subpath}" , new PathItem().get(operation));
 			}
 		}
 	}
@@ -252,7 +263,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			String mediaType = org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 			RequestBody requestBody = new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(requestSchema)));
 			operation.setRequestBody(requestBody);
-			operation.addParametersItem(new HeaderParameter().name("Authorization"));
+			operation.addParametersItem(new HeaderParameter().name("Authorization").schema(new StringSchema()));
 
 			buildPath(oAuth2EndpointFilter, "tokenEndpointMatcher", openAPI, operation, HttpMethod.POST);
 		}
@@ -310,6 +321,10 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 				ReflectionUtils.makeAccessible(field);
 				String defaultOidcConfigUri = (String) ReflectionUtils.getField(field, null);
 				openAPI.getPaths().addPathItem(defaultOidcConfigUri , new PathItem().get(operation));
+				operation = buildOperation(apiResponses);
+				operation.addParametersItem(new PathParameter().name("subpath").schema(new StringSchema()));
+				operation.summary("Valid when multiple issuers are allowed");
+				openAPI.getPaths().addPathItem("/{subpath}"+defaultOidcConfigUri , new PathItem().get(operation));
 			}
 		}
 	}
@@ -360,7 +375,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			String mediaType = APPLICATION_JSON_VALUE;
 			RequestBody requestBody = new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(schema)));
 			operation.setRequestBody(requestBody);
-			operation.addParametersItem(new HeaderParameter().name("Authorization"));
+			operation.addParametersItem(new HeaderParameter().name("Authorization").schema(new StringSchema()));
 
 			buildPath(oAuth2EndpointFilter, "clientRegistrationEndpointMatcher", openAPI, operation, HttpMethod.POST);
 		}

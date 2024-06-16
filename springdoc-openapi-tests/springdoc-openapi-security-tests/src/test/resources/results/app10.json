@@ -56,6 +56,9 @@
               }
             }
           },
+          "500": {
+            "description": "Internal Server Error"
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -65,9 +68,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -94,6 +94,39 @@
         }
       }
     },
+    "/.well-known/oauth-authorization-server/{subpath}": {
+      "get": {
+        "tags": [
+          "authorization-server-endpoints"
+        ],
+        "summary": "Valid when multiple issuers are allowed",
+        "parameters": [
+          {
+            "name": "subpath",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2AuthorizationServerMetadata"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/oauth2/token": {
       "post": {
         "tags": [
@@ -101,8 +134,11 @@
         ],
         "parameters": [
           {
+            "name": "Authorization",
             "in": "header",
-            "name": "Authorization"
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -165,6 +201,9 @@
               }
             }
           },
+          "500": {
+            "description": "Internal Server Error"
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -184,9 +223,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -215,15 +251,8 @@
               "text/html": {}
             }
           },
-          "302": {
-            "description": "Moved Temporarily",
-            "headers": {
-              "Location": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+          "500": {
+            "description": "Internal Server Error"
           },
           "400": {
             "description": "Bad Request",
@@ -235,8 +264,15 @@
               }
             }
           },
-          "500": {
-            "description": "Internal Server Error"
+          "302": {
+            "description": "Moved Temporarily",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -280,6 +316,9 @@
               }
             }
           },
+          "500": {
+            "description": "Internal Server Error"
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -289,9 +328,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -322,6 +358,9 @@
           "200": {
             "description": "OK"
           },
+          "500": {
+            "description": "Internal Server Error"
+          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -331,9 +370,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -358,9 +394,6 @@
       "OAuth2AuthorizationServerMetadata": {
         "type": "object",
         "properties": {
-          "issuer": {
-            "type": "string"
-          },
           "token_endpoint_auth_methods_supported": {
             "type": "array",
             "items": {
@@ -397,16 +430,19 @@
               "type": "string"
             }
           },
+          "introspection_endpoint": {
+            "type": "string"
+          },
+          "revocation_endpoint": {
+            "type": "string"
+          },
           "grant_types_supported": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "revocation_endpoint": {
-            "type": "string"
-          },
-          "introspection_endpoint": {
+          "issuer": {
             "type": "string"
           },
           "jwks_uri": {
@@ -424,13 +460,13 @@
             "type": "integer",
             "format": "int64"
           },
+          "token_type": {
+            "type": "string"
+          },
           "access_token": {
             "type": "string"
           },
           "refresh_token": {
-            "type": "string"
-          },
-          "token_type": {
             "type": "string"
           }
         }
@@ -438,26 +474,21 @@
       "OAuth2TokenIntrospection": {
         "type": "object",
         "properties": {
-          "nbf": {
-            "type": "integer",
-            "format": "int64"
-          },
           "scope": {
             "type": "string"
           },
           "jti": {
             "type": "string"
           },
-          "client_id": {
-            "type": "string"
+          "exp": {
+            "type": "integer",
+            "format": "int64"
           },
-          "username": {
-            "type": "string"
+          "nbf": {
+            "type": "integer",
+            "format": "int64"
           },
-          "active": {
-            "type": "boolean"
-          },
-          "iss": {
+          "token_type": {
             "type": "string"
           },
           "aud": {
@@ -466,19 +497,24 @@
               "type": "string"
             }
           },
-          "token_type": {
+          "client_id": {
             "type": "string"
           },
-          "exp": {
+          "username": {
+            "type": "string"
+          },
+          "iss": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "iat": {
             "type": "integer",
             "format": "int64"
           },
           "sub": {
             "type": "string"
-          },
-          "iat": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       }
