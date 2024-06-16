@@ -24,15 +24,16 @@ package test.org.springdoc.api.app10;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import test.org.springdoc.api.AbstractSpringDocTest;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SpringDocApp10ViaDtoTest extends AbstractSpringDocTest {
 

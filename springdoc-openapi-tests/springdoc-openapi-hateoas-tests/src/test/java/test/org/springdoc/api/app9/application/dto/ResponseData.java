@@ -1,12 +1,12 @@
 package test.org.springdoc.api.app9.application.dto;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-
-import java.time.LocalDate;
-import java.util.UUID;
 
 @Builder
 public record ResponseData(

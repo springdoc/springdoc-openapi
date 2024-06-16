@@ -20,13 +20,11 @@ package test.org.springdoc.api.v30.app217;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.customizers.SpecPropertiesCustomizer;
-import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.hamcrest.Matchers.is;
