@@ -60,9 +60,9 @@ import org.springdoc.core.service.OperationService;
 
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.mock.http.client.MockClientHttpRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.mock.http.client.MockClientHttpRequest;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;

@@ -27,7 +27,6 @@ package test.org.springdoc.api.app186;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
-import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.utils.Constants;

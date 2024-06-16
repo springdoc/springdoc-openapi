@@ -29,7 +29,6 @@ import io.swagger.v3.core.converter.ModelConverters;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.converters.PageOpenAPIConverter;
-import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.AbstractSpringDocTest;
 

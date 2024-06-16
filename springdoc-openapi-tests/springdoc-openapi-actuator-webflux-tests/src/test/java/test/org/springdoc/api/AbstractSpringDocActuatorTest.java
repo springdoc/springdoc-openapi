@@ -25,11 +25,9 @@
 package test.org.springdoc.api;
 
 import jakarta.annotation.PostConstruct;
-import org.springdoc.core.utils.Constants;
 
 import org.springframework.boot.test.web.server.LocalManagementPort;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
