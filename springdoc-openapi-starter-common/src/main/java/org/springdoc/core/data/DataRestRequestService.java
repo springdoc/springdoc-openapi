@@ -175,7 +175,7 @@ public class DataRestRequestService {
 					parameterInfo.setParameterModel(parameter);
 				}
 				if (!ArrayUtils.isEmpty(methodParameter.getParameterAnnotations()))
-					parameter = requestBuilder.buildParams(parameterInfo, openAPI.getComponents(), requestMethod, null,
+					parameter = requestBuilder.buildParams(parameterInfo, openAPI.getComponents(), requestMethod, methodAttributes,
 							openAPI.getOpenapi());
 				addParameters(openAPI, requestMethod, methodAttributes, operation, methodParameter, parameterInfo, parameter);
 			}

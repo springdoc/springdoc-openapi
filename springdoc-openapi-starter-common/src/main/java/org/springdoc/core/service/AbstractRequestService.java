@@ -25,6 +25,7 @@
 package org.springdoc.core.service;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -88,12 +89,14 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.containsDeprecatedAnnotation;
 import static org.springdoc.core.service.GenericParameterService.isFile;
 import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 /**
  * The type Abstract request builder.
@@ -323,7 +326,7 @@ public abstract class AbstractRequestService {
 			}
 
 			if (!isParamToIgnore(methodParameter)) {
-				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes.getJsonViewAnnotation(), openAPI.getOpenapi());
+				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes, openAPI.getOpenapi());
 				// Merge with the operation parameters
 				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
 				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
@@ -353,7 +356,7 @@ public abstract class AbstractRequestService {
 		// support form-data
 		if (defaultSupportFormData && requestBody != null
 				&& requestBody.getContent() != null
-				&& requestBody.getContent().containsKey(org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)) {
+				&& requestBody.getContent().containsKey(MULTIPART_FORM_DATA_VALUE)) {
 			Iterator<Entry<ParameterId, Parameter>> it = map.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<ParameterId, Parameter> entry = it.next();
@@ -496,28 +499,28 @@ public abstract class AbstractRequestService {
 	/**
 	 * Build params parameter.
 	 *
-	 * @param parameterInfo  the parameter info
-	 * @param components     the components
-	 * @param requestMethod  the request method
-	 * @param jsonView       the json view
-	 * @param openApiVersion the open api version
+	 * @param parameterInfo    the parameter info
+	 * @param components       the components
+	 * @param requestMethod    the request method
+	 * @param methodAttributes the method attributes
+	 * @param openApiVersion   the open api version
 	 * @return the parameter
 	 */
 	public Parameter buildParams(ParameterInfo parameterInfo, Components components,
-			RequestMethod requestMethod, JsonView jsonView, String openApiVersion) {
+			RequestMethod requestMethod, MethodAttributes methodAttributes, String openApiVersion) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		if (parameterInfo.getParamType() != null) {
 			if (!ValueConstants.DEFAULT_NONE.equals(parameterInfo.getDefaultValue()))
 				parameterInfo.setRequired(false);
 			else
 				parameterInfo.setDefaultValue(null);
-			return this.buildParam(parameterInfo, components, jsonView);
+			return this.buildParam(parameterInfo, components, methodAttributes.getJsonViewAnnotation());
 		}
 		// By default
-		if (!isRequestBodyParam(requestMethod, parameterInfo, openApiVersion)) {
+		if (!isRequestBodyParam(requestMethod, parameterInfo, openApiVersion, methodAttributes)) {
 			parameterInfo.setRequired(!((DelegatingMethodParameter) methodParameter).isNotRequired() && !methodParameter.isOptional());
 			parameterInfo.setDefaultValue(null);
-			return this.buildParam(parameterInfo, components, jsonView);
+			return this.buildParam(parameterInfo, components, methodAttributes.getJsonViewAnnotation());
 		}
 		return null;
 	}
@@ -631,7 +634,7 @@ public abstract class AbstractRequestService {
 	public boolean isDefaultFlatParamObject() {
 		return defaultFlatParamObject;
 	}
-	
+
 	/**
 	 * Calculate size.
 	 *
@@ -722,12 +725,13 @@ public abstract class AbstractRequestService {
 	/**
 	 * Is RequestBody param boolean.
 	 *
-	 * @param requestMethod  the request method
-	 * @param parameterInfo  the parameter info
-	 * @param openApiVersion the open api version
+	 * @param requestMethod    the request method
+	 * @param parameterInfo    the parameter info
+	 * @param openApiVersion   the open api version
+	 * @param methodAttributes the method attributes
 	 * @return the boolean
 	 */
-	private boolean isRequestBodyParam(RequestMethod requestMethod, ParameterInfo parameterInfo, String openApiVersion) {
+	private boolean isRequestBodyParam(RequestMethod requestMethod, ParameterInfo parameterInfo, String openApiVersion, MethodAttributes methodAttributes) {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		DelegatingMethodParameter delegatingMethodParameter = (DelegatingMethodParameter) methodParameter;
 		boolean isBodyAllowed = !RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openApiVersion);
@@ -739,8 +743,7 @@ public abstract class AbstractRequestService {
 						|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null)
 						|| checkOperationRequestBody(methodParameter)
 						|| checkFile(methodParameter)
-
-				);
+						|| Arrays.asList(methodAttributes.getMethodConsumes()).contains(MULTIPART_FORM_DATA_VALUE));
 	}
 
 	/**
@@ -767,7 +770,7 @@ public abstract class AbstractRequestService {
 	private boolean checkOperationRequestBody(MethodParameter methodParameter) {
 		if (AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.Operation.class) != null) {
 			io.swagger.v3.oas.annotations.Operation operation = AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.Operation.class);
-			if(operation!=null){
+			if (operation != null) {
 				io.swagger.v3.oas.annotations.parameters.RequestBody requestBody = operation.requestBody();
 				if (StringUtils.isNotBlank(requestBody.description()))
 					return true;
