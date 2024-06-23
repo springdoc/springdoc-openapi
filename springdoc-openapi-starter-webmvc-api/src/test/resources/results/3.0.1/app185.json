@@ -109,6 +109,7 @@
             "type": "string"
           }
         },
+        "description": "This is a Pet",
         "discriminator": {
           "propertyName": "type"
         }
