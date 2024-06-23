@@ -92,9 +92,13 @@ class SpringDocKotlinConfiguration() {
 					// parameter is not required if a default value is provided in @RequestParam
 					else if (requestParam != null && requestParam.defaultValue != ValueConstants.DEFAULT_NONE)
 						parameterModel.required = false
-					else
+					else{
+						val isJavaNullableAnnotationPresent = methodParameter.parameterAnnotations.any {
+							it.annotationClass.qualifiedName == "jakarta.annotation.Nullable"
+						}
 						parameterModel.required =
-							kParameter.type.isMarkedNullable == false
+							kParameter.type.isMarkedNullable == false && !isJavaNullableAnnotationPresent
+					}
 				}
 			}
 			return@ParameterCustomizer parameterModel
