@@ -26,12 +26,14 @@ package test.org.springdoc.api.v30.app185;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
 		@JsonSubTypes.Type(Dog.class),
 		@JsonSubTypes.Type(Cat.class)
 })
+@Schema(description = "This is a Pet")
 public class Pet {
 
 	public final String name;
