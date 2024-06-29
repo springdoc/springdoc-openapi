@@ -122,7 +122,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 				.filter(s -> s.getAllOf() != null)
 				.filter(s -> s.getAllOf().stream().anyMatch(s2 -> ref.equals(s2.get$ref())))
 				.map(s -> new Schema().$ref(AnnotationsUtils.COMPONENTS_REF + s.getName()))
-				.collect(Collectors.toList());
+				.toList();
 
 		List<Schema> resultSchemas = new ArrayList<>(composedSchemas);
 

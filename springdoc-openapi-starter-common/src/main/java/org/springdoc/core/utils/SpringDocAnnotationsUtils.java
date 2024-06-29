@@ -31,9 +31,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -65,6 +67,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 
 /**
  * The type Spring doc annotations utils.
+ *
  * @author bnasslahsen
  */
 @SuppressWarnings({ "rawtypes" })
@@ -142,9 +145,20 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 					for (Map.Entry<String, Schema> entry : schemaMap.entrySet()) {
 						// If we've seen this schema before but find later it should be polymorphic,
 						// replace the existing schema with this richer version.
+						Schema existingSchema = componentSchemas.get(entry.getKey());
 						if (!componentSchemas.containsKey(entry.getKey()) ||
-								(!entry.getValue().getClass().equals(componentSchemas.get(entry.getKey()).getClass()) && entry.getValue().getAllOf() != null)) {
+								(!entry.getValue().getClass().equals(existingSchema.getClass()) && entry.getValue().getAllOf() != null)) {
 							componentSchemas.put(entry.getKey(), entry.getValue());
+						}
+						else if (componentSchemas.containsKey(entry.getKey()) && schemaMap.containsKey(entry.getKey())) {
+							// Check to merge polymorphic types
+							Set<Schema> existingAllOf = new LinkedHashSet<>();
+							if(existingSchema.getAllOf() != null)
+								existingAllOf.addAll(existingSchema.getAllOf());
+							if (schemaMap.get(entry.getKey()).getAllOf() != null){
+								existingAllOf.addAll(schemaMap.get(entry.getKey()).getAllOf());
+								existingSchema.setAllOf(new ArrayList<>(existingAllOf));
+							}
 						}
 					}
 				components.setSchemas(componentSchemas);
@@ -207,8 +221,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * Merge schema.
 	 *
 	 * @param existingContent the existing content
-	 * @param schemaN the schema n
-	 * @param mediaTypeStr the media type str
+	 * @param schemaN         the schema n
+	 * @param mediaTypeStr    the media type str
 	 */
 	public static void mergeSchema(Content existingContent, Schema<?> schemaN, String mediaTypeStr) {
 		if (existingContent.containsKey(mediaTypeStr)) {
@@ -322,7 +336,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * Sets examples.
 	 *
 	 * @param mediaType the media type
-	 * @param examples the examples
+	 * @param examples  the examples
 	 */
 	private static void setExamples(MediaType mediaType, ExampleObject[] examples) {
 		if (examples.length == 1 && StringUtils.isBlank(examples[0].name())) {
@@ -436,7 +450,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * Resolve default value object.
 	 *
 	 * @param defaultValueStr the default value str
-	 * @param objectMapper the object mapper
+	 * @param objectMapper    the object mapper
 	 * @return the object
 	 */
 	public static Object resolveDefaultValue(String defaultValueStr, ObjectMapper objectMapper) {
