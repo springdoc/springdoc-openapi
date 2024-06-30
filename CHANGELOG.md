@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2024-06-30
+
+### Added
+
+- #2561 - NPE occurs when outputting an OpenAPI document since 2.5.0
+- #2579 - Add support for leading tab characters with trim-kotlin-indent. 
+- #2589 - Pass HttpRequest to ServerBaseUrlCustomizer 
+- #2596, #2600 - consumes and produces calculation. Fixes 
+- #2625, #2626 - Replace Page schema with PagedModel when pageSerializationMode is set to VIA_DTO
+- #2627 - Ensure compatibility with previous version of spring data
+- #2576 - GroupedApi orders by displayName instead of name. 
+- #2584 - Dynamically define ApiGroups does not work. 
+- #2595 - Spring security support of @RegisteredOAuth2AuthorizedClient
+
+### Changed
+- Upgrade spring-boot to 3.3.0
+- Upgrade swagger-core to 2.2.22
+- Upgrade swagger-ui to 5.17.14
+- Upgrade spring-cloud-function to 4.1.2
+- Upgrade spring-security-oauth2-authorization-server to 1.3.0
+
+### Fixed
+- #2577 - Fix missing exception response types in OpenAPI spec
+- #2591 - When an entity class contains fields of Class<?> type, an infinite loop.
+- #2603 - PolymorphicModelConverter only handles direct subtypes and misses indirect. 
+- #2606 - Spring Authorization Server Metadata Endpoint not compatible.
+- #2621 - Content-type for POST endpoints with multipart/form-data does not work since v2.4.0.
+- #2622 - Kotlin enums are always marked as required if used in Java controllers.
+- #2601 - Multiple Superclasses Are Not Mapped To Multiple allOf If Used In Different Services.
+- #2597 - Polymorphic fields on polymorphic parents don't get correct oneOf docs generated.
+
 ## [2.5.0] - 2024-04-01
 
 ### Added
