@@ -193,12 +193,12 @@
         "requestBody": {
           "description": "Pet object that needs to be added to the store",
           "content": {
-            "application/json": {
+            "application/xml": {
               "schema": {
                 "$ref": "#/components/schemas/Pet"
               }
             },
-            "application/xml": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Pet"
               }
@@ -246,12 +246,12 @@
         "requestBody": {
           "description": "Pet object that needs to be added to the store",
           "content": {
-            "application/json": {
+            "application/xml": {
               "schema": {
                 "$ref": "#/components/schemas/Pet"
               }
             },
-            "application/xml": {
+            "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Pet"
               }
@@ -1163,7 +1163,8 @@
             "type": "string",
             "description": "The Name."
           }
-        }
+        },
+        "description": "The type Category."
       },
       "Pet": {
         "required": [
@@ -1223,7 +1224,8 @@
             "type": "string",
             "description": "The Name."
           }
-        }
+        },
+        "description": "The type Tag."
       },
       "Order": {
         "type": "object",
