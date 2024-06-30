@@ -27,9 +27,9 @@ package org.springdoc.core.converters;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -43,6 +43,7 @@ import org.springdoc.core.providers.ObjectMapperProvider;
 
 /**
  * The type Polymorphic model converter.
+ *
  * @author bnasslahsen
  */
 public class PolymorphicModelConverter implements ModelConverter {
@@ -53,6 +54,17 @@ public class PolymorphicModelConverter implements ModelConverter {
 	private final ObjectMapperProvider springDocObjectMapper;
 
 	/**
+	 * The constant PARENT_TYPES_TO_IGNORE.
+	 */
+	private static final List<String> PARENT_TYPES_TO_IGNORE = Collections.synchronizedList(new ArrayList<>());
+
+	static {
+		PARENT_TYPES_TO_IGNORE.add("JsonSchema");
+		PARENT_TYPES_TO_IGNORE.add("Pageable");
+		PARENT_TYPES_TO_IGNORE.add("EntityModel");
+	}
+
+	/**
 	 * Instantiates a new Polymorphic model converter.
 	 *
 	 * @param springDocObjectMapper the spring doc object mapper
@@ -61,12 +73,21 @@ public class PolymorphicModelConverter implements ModelConverter {
 		this.springDocObjectMapper = springDocObjectMapper;
 	}
 
-	private static Schema<?> getResolvedSchema(JavaType javaType, Schema<?> resolvedSchema) {
+	/**
+	 * Add parent type.
+	 *
+	 * @param parentTypes the parent types
+	 */
+	public static void addParentType(String... parentTypes) {
+		PARENT_TYPES_TO_IGNORE.addAll(List.of(parentTypes));
+	}
+
+	private Schema<?> getResolvedSchema(JavaType javaType, Schema<?> resolvedSchema) {
 		if (resolvedSchema instanceof ObjectSchema && resolvedSchema.getProperties() != null) {
-			if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getName())){
+			if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getName())) {
 				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getName());
 			}
-			else if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getSimpleName())){
+			else if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getSimpleName())) {
 				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getSimpleName());
 			}
 		}
@@ -78,6 +99,9 @@ public class PolymorphicModelConverter implements ModelConverter {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null) {
 			if (chain.hasNext()) {
+				if (!type.isResolveAsRef() && type.getParent() != null
+						&& PARENT_TYPES_TO_IGNORE.stream().noneMatch(ignore -> type.getParent().getName().startsWith(ignore)))
+					type.resolveAsRef(true);
 				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
 				resolvedSchema = getResolvedSchema(javaType, resolvedSchema);
 				if (resolvedSchema == null || resolvedSchema.get$ref() == null)
@@ -91,8 +115,8 @@ public class PolymorphicModelConverter implements ModelConverter {
 	/**
 	 * Compose polymorphic schema.
 	 *
-	 * @param type the type
-	 * @param schema the schema
+	 * @param type    the type
+	 * @param schema  the schema
 	 * @param schemas the schemas
 	 * @return the schema
 	 */
@@ -111,7 +135,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 	/**
 	 * Find composed schemas recursively.
 	 *
-	 * @param ref the reference of the schema
+	 * @param ref     the reference of the schema
 	 * @param schemas the collection of schemas to search in
 	 * @return the list of composed schemas
 	 */
@@ -133,6 +157,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 
 		return resultSchemas;
 	}
+
 	/**
 	 * Is concrete class boolean.
 	 *

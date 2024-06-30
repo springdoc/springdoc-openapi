@@ -32,6 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.ConverterUtils;
+import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.service.AbstractRequestService;
@@ -387,6 +388,17 @@ public class SpringDocUtils {
 		if (StringUtils.isNotBlank(path) && !path.equals("/"))
 			return true;
 		return false;
+	}
+
+	/**
+	 * Add parent type spring doc utils.
+	 *
+	 * @param parentTypes the parent types
+	 * @return the spring doc utils
+	 */
+	public SpringDocUtils addParentType(String ...parentTypes) {
+		PolymorphicModelConverter.addParentType(parentTypes);
+		return this;
 	}
 }
 
