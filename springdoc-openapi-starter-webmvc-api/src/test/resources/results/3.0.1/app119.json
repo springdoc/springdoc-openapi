@@ -41,6 +41,11 @@
                     "$ref": "#/components/schemas/JsonRequest"
                   }
                 }
+              },
+              "encoding": {
+                "params": {
+                  "contentType": "application/json"
+                }
               }
             }
           }
