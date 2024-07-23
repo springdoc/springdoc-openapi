@@ -646,4 +646,12 @@ public class OperationService {
 	public JavadocProvider getJavadocProvider() {
 		return parameterBuilder.getJavadocProvider();
 	}
+
+	/**
+	 * Gets propertyResolverUtils
+	 * @return propertyResolverUtils
+	 */
+	public PropertyResolverUtils getPropertyResolverUtils(){
+		return parameterBuilder.getPropertyResolverUtils();
+	}
 }

@@ -99,9 +99,6 @@ public class PropertyResolverUtils {
 				}
 			if (parameterProperty.equals(result))
 				try {
-                    if (springDocConfigProperties.isTrimKotlinIndent()) {
-                        parameterProperty = trimIndent(parameterProperty);
-                    }
 					result = factory.resolveEmbeddedValue(parameterProperty);
 				}
 				catch (IllegalArgumentException ex) {
@@ -119,18 +116,23 @@ public class PropertyResolverUtils {
 	 * @param text The original string with possible leading indentation.
 	 * @return The string with leading indentation removed from each line.
 	 */
-    private String trimIndent(String text) {
-		if (text == null) {
-			return null;
+	public String trimIndent(String text) {
+		try {
+			if (text == null) {
+				return null;
+			}
+			final String newLine = "\n";
+			String[] lines = text.split(newLine);
+			int minIndent = resolveMinIndent(lines);
+			return Arrays.stream(lines)
+				.map(line -> line.substring(Math.min(line.length(), minIndent)))
+				.reduce((a, b) -> a + newLine + b)
+				.orElse(StringUtils.EMPTY);
+		} catch (Exception ex){
+			LOGGER.warn(ex.getMessage());
+			return text;
 		}
-		final String newLine = "\n";
-		String[] lines = text.split(newLine);
-		int minIndent = resolveMinIndent(lines);
-        return Arrays.stream(lines)
-            .map(line -> line.substring(Math.min(line.length(), minIndent)))
-            .reduce((a, b) -> a + newLine + b)
-            .orElse(StringUtils.EMPTY);
-    }
+	}
 
 	private int resolveMinIndent(String[] lines) {
 		return Arrays.stream(lines)
