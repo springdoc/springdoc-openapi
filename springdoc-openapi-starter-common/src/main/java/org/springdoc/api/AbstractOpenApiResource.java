@@ -406,11 +406,19 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
+	/**
+	 * Indents are removed for properties that are mainly used as “explanations” using Open API.
+	 * @param openAPI the open api
+	 */
 	private void trimIndent(OpenAPI openAPI) {
 		trimComponents(openAPI);
 		trimPaths(openAPI);
 	}
 
+	/**
+	 * Trim the indent for descriptions in the 'components' of open api.
+	 * @param openAPI the open api
+	 */
 	private void trimComponents(OpenAPI openAPI) {
 		final PropertyResolverUtils propertyResolverUtils = operationParser.getPropertyResolverUtils();
 		if (openAPI.getComponents() == null || openAPI.getComponents().getSchemas() == null) {
@@ -429,6 +437,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
+	/**
+	 * Trim the indent for descriptions in the 'paths' of open api.
+	 * @param openAPI the open api
+	 */
 	private void trimPaths(OpenAPI openAPI) {
 		final PropertyResolverUtils propertyResolverUtils = operationParser.getPropertyResolverUtils();
 		if (openAPI.getPaths() == null) {
@@ -447,6 +459,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 	}
 
+	/**
+	 * Trim the indent for 'operation'
+	 * @param operation the operation
+	 */
 	private void trimIndentOperation(Operation operation) {
 		final PropertyResolverUtils propertyResolverUtils = operationParser.getPropertyResolverUtils();
 		if (operation == null) {
