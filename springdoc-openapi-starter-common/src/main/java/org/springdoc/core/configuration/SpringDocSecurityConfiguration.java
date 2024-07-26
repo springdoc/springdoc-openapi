@@ -110,7 +110,7 @@ public class SpringDocSecurityConfiguration {
 		@Bean
 		@ConditionalOnProperty(SPRINGDOC_SHOW_LOGIN_ENDPOINT)
 		@Lazy(false)
-		OpenApiCustomizer springSecurityLoginEndpointCustomiser(ApplicationContext applicationContext) {
+		OpenApiCustomizer springSecurityLoginEndpointCustomizer(ApplicationContext applicationContext) {
 			FilterChainProxy filterChainProxy = applicationContext.getBean(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, FilterChainProxy.class);
 			return openAPI -> {
 				for (SecurityFilterChain filterChain : filterChainProxy.getFilterChains()) {
@@ -203,6 +203,6 @@ public class SpringDocSecurityConfiguration {
 			getConfig()
 					.addAnnotationsToIgnore(RegisteredOAuth2AuthorizedClient.class);
 		}
-		
+
 	}
 }
