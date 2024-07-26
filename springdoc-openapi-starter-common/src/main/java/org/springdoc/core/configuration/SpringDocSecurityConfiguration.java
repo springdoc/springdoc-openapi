@@ -147,7 +147,7 @@ public class SpringDocSecurityConfiguration {
 						operation.requestBody(requestBody);
 						ApiResponses apiResponses = new ApiResponses();
 						apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), new ApiResponse().description(HttpStatus.OK.getReasonPhrase()));
-						apiResponses.addApiResponse(String.valueOf(HttpStatus.UNAUTHORIZED.value()), new ApiResponse().description(HttpStatus.FORBIDDEN.getReasonPhrase()));
+						apiResponses.addApiResponse(String.valueOf(HttpStatus.UNAUTHORIZED.value()), new ApiResponse().description(HttpStatus.UNAUTHORIZED.getReasonPhrase()));
 						operation.responses(apiResponses);
 						operation.addTagsItem("login-endpoint");
 						PathItem pathItem = new PathItem().post(operation);
