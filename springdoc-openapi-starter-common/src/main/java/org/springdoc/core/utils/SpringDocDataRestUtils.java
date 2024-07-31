@@ -161,7 +161,7 @@ public class SpringDocDataRestUtils {
 			apiResponse.getContent().values().forEach(mediaType -> {
 				Schema schema = mediaType.getSchema();
 				if (schema.get$ref() != null && !schema.get$ref().endsWith(RESPONSE)) {
-					String key = schema.get$ref().substring(21);
+					String key = schema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
 					Set<String> entitiesNames = entityInoMap.keySet();
 					entitiesNames.forEach(entityName -> {
 						if (key.endsWith(entityName))
@@ -184,7 +184,7 @@ public class SpringDocDataRestUtils {
 			requestBody.getContent().values().forEach(mediaType -> {
 				Schema schema = mediaType.getSchema();
 				if (schema.get$ref() != null && !schema.get$ref().endsWith(REQUEST_BODY)) {
-					String key = schema.get$ref().substring(21);
+					String key = schema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
 					if (entityInoMap.containsKey(key))
 						updateRequestBodySchema(key, schema, openAPI.getComponents(), openapi31);
 				}
@@ -285,7 +285,7 @@ public class SpringDocDataRestUtils {
 			Schema itemsSchema = arraySchema.getItems();
 			Set<String> entitiesNames = entityInoMap.keySet();
 			if (itemsSchema.get$ref() != null && !itemsSchema.get$ref().endsWith(RESPONSE)) {
-				String key = itemsSchema.get$ref().substring(21);
+				String key = itemsSchema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
 				if (entitiesNames.contains(key)) {
 					String newKey = itemsSchema.get$ref() + RESPONSE;
 					createNewResponseSchema(key, components, openapi31);
@@ -380,7 +380,7 @@ public class SpringDocDataRestUtils {
 		if (!CollectionUtils.isEmpty(allSchemas))
 			for (Schema allSchema : allSchemas) {
 				if (allSchema.get$ref() != null) {
-					String allKey = allSchema.get$ref().substring(21);
+					String allKey = allSchema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
 					updateSingleKey(suffix, components, allSchema, allKey, openapi31);
 				}
 			}

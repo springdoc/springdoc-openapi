@@ -407,7 +407,7 @@ public class GenericParameterService {
 		if (schemaN != null && StringUtils.isEmpty(schemaN.getDescription()) && parameterInfo.getParameterModel() != null) {
 			String description = parameterInfo.getParameterModel().getDescription();
 			if (schemaN.get$ref() != null && schemaN.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
-				String key = schemaN.get$ref().substring(21);
+				String key = schemaN.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
 				Schema existingSchema = components.getSchemas().get(key);
 				if (!StringUtils.isEmpty(description))
 					existingSchema.setDescription(description);

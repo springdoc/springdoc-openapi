@@ -24,6 +24,7 @@
 
 package org.springdoc.core.customizers;
 
+import io.swagger.v3.oas.models.Components;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -95,7 +96,7 @@ public record JavadocPropertyCustomizer(JavadocProvider javadocProvider,
 						setJavadocDescription(cls, fields, clsProperties, existingSchema, false);
 					}
 					else if (resolvedSchema != null && resolvedSchema.get$ref() != null && resolvedSchema.get$ref().contains(AnnotationsUtils.COMPONENTS_REF)) {
-						String schemaName = resolvedSchema.get$ref().substring(21);
+						String schemaName = resolvedSchema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
 						Schema existingSchema = context.getDefinedModels().get(schemaName);
 						setJavadocDescription(cls, fields, clsProperties, existingSchema, false);
 					}
