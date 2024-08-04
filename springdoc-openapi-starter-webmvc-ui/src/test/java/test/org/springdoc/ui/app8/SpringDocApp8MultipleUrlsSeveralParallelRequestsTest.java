@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * The test to make sure no race condition issues are present when several parallel requests
+ * The test to make sure no exceptions are thrown when several parallel requests
  * are sent to get Swagger config.
  *
  * @author Dmitry Lebedko (lebedko.dmitrii@gmail.com)
@@ -54,7 +54,7 @@ public class SpringDocApp8MultipleUrlsSeveralParallelRequestsTest extends Abstra
 
 	/**
 	 * Sends {@link SpringDocApp8MultipleUrlsSeveralParallelRequestsTest#PARALLEL_REQUEST_NUMBER} requests
-	 * simultaneously to make sure no race condition issues are present.
+	 * simultaneously to make sure no exceptions are thrown when getting Swagger config.
 	 */
 	@Test
 	public void swagger_config_for_multiple_groups_and_many_parallel_requests() {
