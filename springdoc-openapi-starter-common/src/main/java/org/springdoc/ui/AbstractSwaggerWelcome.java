@@ -33,6 +33,8 @@ import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Objects;
+
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
@@ -134,12 +136,17 @@ public abstract class AbstractSwaggerWelcome {
 			else
 				swaggerUiConfigParameters.addUrl(apiDocsUrl);
 			if (!CollectionUtils.isEmpty(swaggerUiConfig.getUrls())) {
-				swaggerUiConfig.cloneUrls().forEach(swaggerUrl -> {
-					swaggerUiConfigParameters.getUrls().remove(swaggerUrl);
-					if (!swaggerUiConfigParameters.isValidUrl(swaggerUrl.getUrl()))
-						swaggerUrl.setUrl(buildUrlWithContextPath(swaggerUrl.getUrl()));
-					swaggerUiConfigParameters.getUrls().add(swaggerUrl);
-				});
+				swaggerUiConfig.cloneUrls()
+						.stream()
+						.filter(swaggerUrl -> !swaggerUiConfigParameters.isValidUrl(swaggerUrl.getUrl()))
+						.forEach(swaggerUrl -> {
+							final var url = buildUrlWithContextPath(swaggerUrl.getUrl());
+							if (!Objects.equals(url, swaggerUrl.getUrl())) {
+								swaggerUiConfigParameters.getUrls().remove(swaggerUrl);
+								swaggerUrl.setUrl(url);
+								swaggerUiConfigParameters.getUrls().add(swaggerUrl);
+							}
+						});
 			}
 		}
 		calculateOauth2RedirectUrl(uriComponentsBuilder);
