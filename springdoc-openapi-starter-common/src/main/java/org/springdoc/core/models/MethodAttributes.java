@@ -305,7 +305,7 @@ public class MethodAttributes {
 	 * @param array2 the array2
 	 * @return the string [ ]
 	 */
-    public String[] mergeArrays(@Nullable String[] array1, String[] array2) {
+    private String[] mergeArrays(@Nullable String[] array1, String[] array2) {
 		Set<String> uniqueValues = array1 == null ? new LinkedHashSet<>() : Arrays.stream(array1).collect(Collectors.toCollection(LinkedHashSet::new));
 		uniqueValues.addAll(Arrays.asList(array2));
 		return uniqueValues.toArray(new String[0]);
