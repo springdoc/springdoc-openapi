@@ -41,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Dmitry Lebedko (lebedko.dmitrii@gmail.com)
  */
 @TestPropertySource(properties = {
+		"spring.mvc.servlet.path=/servlet-path",
 		"springdoc.swagger-ui.urls[0].name=first-user-list",
 		"springdoc.swagger-ui.urls[0].url=/api-docs.yaml",
 		"springdoc.swagger-ui.urls[1].name=second-user-list",
@@ -63,14 +64,14 @@ public class SpringDocApp8MultipleUrlsSeveralParallelRequestsTest extends Abstra
 						try {
 							mockMvc.perform(get("/v3/api-docs/swagger-config"))
 									.andExpect(status().isOk())
-									.andExpect(jsonPath("configUrl", equalTo("/v3/api-docs/swagger-config")))
+									.andExpect(jsonPath("configUrl", equalTo("/servlet-path/v3/api-docs/swagger-config")))
 										.andExpect(jsonPath("url").doesNotExist())
 									.andExpect(jsonPath("urls.length()", equalTo(3)))
-									.andExpect(jsonPath("urls[0].url", equalTo("/api-docs.yaml")))
+									.andExpect(jsonPath("urls[0].url", equalTo("/servlet-path/api-docs.yaml")))
 									.andExpect(jsonPath("urls[0].name", equalTo("first-user-list")))
-									.andExpect(jsonPath("urls[1].url", equalTo("/api-docs.yaml")))
+									.andExpect(jsonPath("urls[1].url", equalTo("/servlet-path/api-docs.yaml")))
 									.andExpect(jsonPath("urls[1].name", equalTo("second-user-list")))
-									.andExpect(jsonPath("urls[2].url", equalTo("/api-docs.yaml")))
+									.andExpect(jsonPath("urls[2].url", equalTo("/servlet-path/api-docs.yaml")))
 									.andExpect(jsonPath("urls[2].name", equalTo("third-user-list")));
 						} catch (Exception e) {
 							throw new RuntimeException(e);
