@@ -142,9 +142,10 @@ public abstract class AbstractSwaggerWelcome {
 						.forEach(swaggerUrl -> {
 							final var url = buildUrlWithContextPath(swaggerUrl.getUrl());
 							if (!Objects.equals(url, swaggerUrl.getUrl())) {
-								swaggerUiConfigParameters.getUrls().remove(swaggerUrl);
-								swaggerUrl.setUrl(url);
-								swaggerUiConfigParameters.getUrls().add(swaggerUrl);
+								swaggerUiConfigParameters.getUrls()
+										.stream()
+										.filter(swaggerUrl::equals)
+										.forEach(subUrl -> subUrl.setUrl(url));
 							}
 						});
 			}
