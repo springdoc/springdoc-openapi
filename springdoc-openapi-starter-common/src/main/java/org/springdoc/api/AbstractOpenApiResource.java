@@ -69,6 +69,7 @@ import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.SpecVersion;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -100,6 +101,7 @@ import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
+import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocUtils;
 
 import org.springframework.aop.support.AopUtils;
@@ -352,6 +354,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				}
 				getPaths(mappingsMap, finalLocale, openAPI);
 
+				if (springDocConfigProperties.isTrimKotlinIndent())
+					this.trimIndent(openAPI);
+
 				Optional<CloudFunctionProvider> cloudFunctionProviderOptional = springDocProviders.getSpringCloudFunctionProvider();
 				cloudFunctionProviderOptional.ifPresent(cloudFunctionProvider -> {
 							List<RouterOperation> routerOperationList = cloudFunctionProvider.getRouterOperations(openAPI);
@@ -384,7 +389,6 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				if (!CollectionUtils.isEmpty(openAPI.getServers()) && !openAPI.getServers().equals(serversCopy))
 					openAPIService.setServersPresent(true);
 
-
 				openAPIService.setCachedOpenAPI(openAPI, finalLocale);
 
 				LOGGER.info("Init duration for springdoc-openapi is: {} ms",
@@ -396,10 +400,76 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				openAPIService.updateServers(openAPI);
 			}
 			openAPIService.updateServers(openAPI);
-			return openAPI;		}
-		finally {
+			return openAPI;
+		} finally {
 			this.reentrantLock.unlock();
 		}
+	}
+
+	/**
+	 * Indents are removed for properties that are mainly used as “explanations” using Open API.
+	 * @param openAPI the open api
+	 */
+	private void trimIndent(OpenAPI openAPI) {
+		trimComponents(openAPI);
+		trimPaths(openAPI);
+	}
+
+	/**
+	 * Trim the indent for descriptions in the 'components' of open api.
+	 * @param openAPI the open api
+	 */
+	private void trimComponents(OpenAPI openAPI) {
+		final PropertyResolverUtils propertyResolverUtils = operationParser.getPropertyResolverUtils();
+		if (openAPI.getComponents() == null || openAPI.getComponents().getSchemas() == null) {
+			return;
+		}
+		for (Schema<?> schema : openAPI.getComponents().getSchemas().values()) {
+			schema.description(propertyResolverUtils.trimIndent(schema.getDescription()));
+			if (schema.getProperties() == null) {
+				continue;
+			}
+			for (Object prop : schema.getProperties().values()) {
+				if (prop instanceof Schema<?> schemaProp) {
+					schemaProp.setDescription(propertyResolverUtils.trimIndent(schemaProp.getDescription()));
+				}
+			}
+		}
+	}
+
+	/**
+	 * Trim the indent for descriptions in the 'paths' of open api.
+	 * @param openAPI the open api
+	 */
+	private void trimPaths(OpenAPI openAPI) {
+		final PropertyResolverUtils propertyResolverUtils = operationParser.getPropertyResolverUtils();
+		if (openAPI.getPaths() == null) {
+			return;
+		}
+		for (PathItem value : openAPI.getPaths().values()) {
+			value.setDescription(propertyResolverUtils.trimIndent(value.getDescription()));
+			trimIndentOperation(value.getGet());
+			trimIndentOperation(value.getPut());
+			trimIndentOperation(value.getPost());
+			trimIndentOperation(value.getDelete());
+			trimIndentOperation(value.getOptions());
+			trimIndentOperation(value.getHead());
+			trimIndentOperation(value.getPatch());
+			trimIndentOperation(value.getTrace());
+		}
+	}
+
+	/**
+	 * Trim the indent for 'operation'
+	 * @param operation the operation
+	 */
+	private void trimIndentOperation(Operation operation) {
+		final PropertyResolverUtils propertyResolverUtils = operationParser.getPropertyResolverUtils();
+		if (operation == null) {
+			return;
+		}
+		operation.setSummary(propertyResolverUtils.trimIndent(operation.getSummary()));
+		operation.setDescription(propertyResolverUtils.trimIndent(operation.getDescription()));
 	}
 
 	/**
