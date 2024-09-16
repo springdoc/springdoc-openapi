@@ -84,8 +84,8 @@
           "200": {
             "description": "OK"
           },
-          "403": {
-            "description": "Forbidden"
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
