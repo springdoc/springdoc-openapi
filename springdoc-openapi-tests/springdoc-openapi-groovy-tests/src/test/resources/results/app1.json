@@ -1512,10 +1512,10 @@
             "type": "integer",
             "format": "int32"
           },
-          "static": {
+          "final": {
             "type": "boolean"
           },
-          "final": {
+          "static": {
             "type": "boolean"
           },
           "cachedField": {
@@ -2184,10 +2184,10 @@
           "descriptor": {
             "type": "string"
           },
-          "static": {
+          "synthetic": {
             "type": "boolean"
           },
-          "synthetic": {
+          "static": {
             "type": "boolean"
           },
           "declaringClass": {
@@ -3139,13 +3139,13 @@
               "$ref": "#/components/schemas/ClassNode"
             }
           },
-          "abstractMethods": {
+          "allDeclaredMethods": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MethodNode"
             }
           },
-          "allDeclaredMethods": {
+          "abstractMethods": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MethodNode"
@@ -3153,9 +3153,6 @@
           },
           "genericsPlaceHolder": {
             "type": "boolean"
-          },
-          "plainNodeReference": {
-            "$ref": "#/components/schemas/ClassNode"
           },
           "primaryClassNode": {
             "type": "boolean"
@@ -3180,6 +3177,9 @@
           },
           "annotationDefinition": {
             "type": "boolean"
+          },
+          "plainNodeReference": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "objectInitializerStatements": {
             "type": "array",
@@ -3274,9 +3274,6 @@
                     "publicKey": {
                       "type": "object",
                       "properties": {
-                        "params": {
-                          "type": "object"
-                        },
                         "encoded": {
                           "type": "string",
                           "format": "byte"
@@ -3318,9 +3315,6 @@
                               "publicKey": {
                                 "type": "object",
                                 "properties": {
-                                  "params": {
-                                    "type": "object"
-                                  },
                                   "encoded": {
                                     "type": "string",
                                     "format": "byte"
@@ -3373,9 +3367,6 @@
                                   "publicKey": {
                                     "type": "object",
                                     "properties": {
-                                      "params": {
-                                        "type": "object"
-                                      },
                                       "encoded": {
                                         "type": "string",
                                         "format": "byte"
@@ -3662,6 +3653,9 @@
           "constructor": {
             "type": "boolean"
           },
+          "final": {
+            "type": "boolean"
+          },
           "static": {
             "type": "boolean"
           },
@@ -3680,9 +3674,6 @@
           "private": {
             "type": "boolean"
           },
-          "final": {
-            "type": "boolean"
-          },
           "text": {
             "type": "string"
           },
@@ -3695,15 +3686,15 @@
           "scriptBody": {
             "type": "boolean"
           },
-          "annotationDefault": {
-            "type": "boolean",
-            "writeOnly": true
-          },
           "firstStatement": {
             "$ref": "#/components/schemas/Statement"
           },
           "staticConstructor": {
             "type": "boolean"
+          },
+          "annotationDefault": {
+            "type": "boolean",
+            "writeOnly": true
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
@@ -3744,12 +3735,12 @@
           "configuration": {
             "$ref": "#/components/schemas/CompilerConfiguration"
           },
+          "lastError": {
+            "$ref": "#/components/schemas/Message"
+          },
           "errorCount": {
             "type": "integer",
             "format": "int32"
-          },
-          "lastError": {
-            "$ref": "#/components/schemas/Message"
           },
           "warningCount": {
             "type": "integer",
@@ -5121,6 +5112,9 @@
           "enum": {
             "type": "boolean"
           },
+          "final": {
+            "type": "boolean"
+          },
           "static": {
             "type": "boolean"
           },
@@ -5134,9 +5128,6 @@
             "type": "boolean"
           },
           "private": {
-            "type": "boolean"
-          },
-          "final": {
             "type": "boolean"
           },
           "initialExpression": {
@@ -5904,13 +5895,13 @@
               "$ref": "#/components/schemas/ClassNode"
             }
           },
-          "abstractMethods": {
+          "allDeclaredMethods": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MethodNode"
             }
           },
-          "allDeclaredMethods": {
+          "abstractMethods": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MethodNode"
@@ -5918,9 +5909,6 @@
           },
           "genericsPlaceHolder": {
             "type": "boolean"
-          },
-          "plainNodeReference": {
-            "$ref": "#/components/schemas/ClassNode"
           },
           "primaryClassNode": {
             "type": "boolean"
@@ -5945,6 +5933,9 @@
           },
           "annotationDefinition": {
             "type": "boolean"
+          },
+          "plainNodeReference": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "objectInitializerStatements": {
             "type": "array",
@@ -6205,6 +6196,9 @@
           "constructor": {
             "type": "boolean"
           },
+          "final": {
+            "type": "boolean"
+          },
           "static": {
             "type": "boolean"
           },
@@ -6223,9 +6217,6 @@
           "private": {
             "type": "boolean"
           },
-          "final": {
-            "type": "boolean"
-          },
           "text": {
             "type": "string"
           },
@@ -6238,15 +6229,15 @@
           "scriptBody": {
             "type": "boolean"
           },
-          "annotationDefault": {
-            "type": "boolean",
-            "writeOnly": true
-          },
           "firstStatement": {
             "$ref": "#/components/schemas/Statement"
           },
           "staticConstructor": {
             "type": "boolean"
+          },
+          "annotationDefault": {
+            "type": "boolean",
+            "writeOnly": true
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
@@ -6455,13 +6446,13 @@
               "$ref": "#/components/schemas/ClassNode"
             }
           },
-          "abstractMethods": {
+          "allDeclaredMethods": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MethodNode"
             }
           },
-          "allDeclaredMethods": {
+          "abstractMethods": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MethodNode"
@@ -6469,9 +6460,6 @@
           },
           "genericsPlaceHolder": {
             "type": "boolean"
-          },
-          "plainNodeReference": {
-            "$ref": "#/components/schemas/ClassNode"
           },
           "primaryClassNode": {
             "type": "boolean"
@@ -6496,6 +6484,9 @@
           },
           "annotationDefinition": {
             "type": "boolean"
+          },
+          "plainNodeReference": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "objectInitializerStatements": {
             "type": "array",
@@ -7232,17 +7223,17 @@
           "root": {
             "type": "boolean"
           },
-          "referencedClassVariablesIterator": {
-            "type": "object"
-          },
-          "referencedLocalVariablesIterator": {
+          "declaredVariablesIterator": {
             "type": "object"
           },
           "referencedLocalVariablesCount": {
             "type": "integer",
             "format": "int32"
           },
-          "declaredVariablesIterator": {
+          "referencedLocalVariablesIterator": {
+            "type": "object"
+          },
+          "referencedClassVariablesIterator": {
             "type": "object"
           }
         }
