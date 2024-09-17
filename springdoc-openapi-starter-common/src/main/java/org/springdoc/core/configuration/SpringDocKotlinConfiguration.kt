@@ -44,7 +44,6 @@ class SpringDocKotlinConfiguration() {
 	init {
 		SpringDocUtils.getConfig()
 			.addRequestWrapperToIgnore(Continuation::class.java)
-			.replaceWithSchema(ByteArray::class.java, ByteArraySchema())
 			.addDeprecatedType(Deprecated::class.java)
 	}
 

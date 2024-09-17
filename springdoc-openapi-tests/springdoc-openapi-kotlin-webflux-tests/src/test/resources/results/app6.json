@@ -42,6 +42,7 @@
         "properties": {
           "data": {
             "type": "string",
+            "description":"Some description about a byte array.",
             "format": "byte"
           }
         }
