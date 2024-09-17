@@ -26,8 +26,8 @@ package org.springdoc.core.models;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -306,10 +306,10 @@ public class MethodAttributes {
 	 * @return the string [ ]
 	 */
     private String[] mergeArrays(@Nullable String[] array1, String[] array2) {
-        Set<String> uniqueValues = array1 == null ? new HashSet<>() : Arrays.stream(array1).collect(Collectors.toSet());
-        uniqueValues.addAll(Arrays.asList(array2));
-        return uniqueValues.toArray(new String[0]);
-    }
+		Set<String> uniqueValues = array1 == null ? new LinkedHashSet<>() : Arrays.stream(array1).collect(Collectors.toCollection(LinkedHashSet::new));
+		uniqueValues.addAll(Arrays.asList(array2));
+		return uniqueValues.toArray(new String[0]);
+	}
 
 	/**
 	 * Is method overloaded boolean.
