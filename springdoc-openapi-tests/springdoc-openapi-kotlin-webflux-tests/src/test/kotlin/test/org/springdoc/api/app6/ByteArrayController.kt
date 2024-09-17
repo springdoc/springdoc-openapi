@@ -18,11 +18,15 @@
 
 package test.org.springdoc.api.app6
 
+import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-data class Foo(val data: ByteArray)
+data class Foo(
+	@Schema(description = "Some description about a byte array.")
+	val data: ByteArray
+)
 
 @RestController
 @RequestMapping("/bytearray")
