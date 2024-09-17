@@ -317,14 +317,15 @@
             "type": "integer",
             "format": "int32"
           },
-          "description": {
-            "type": "string"
-          },
           "startLine": {
             "type": "integer",
             "format": "int32"
           },
           "startColumn": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "meaning": {
             "type": "integer",
             "format": "int32"
           },
@@ -334,9 +335,8 @@
           "anExpression": {
             "type": "boolean"
           },
-          "meaning": {
-            "type": "integer",
-            "format": "int32"
+          "description": {
+            "type": "string"
           }
         }
       },
@@ -428,6 +428,9 @@
             "type": "integer",
             "format": "int32"
           },
+          "typeDescription": {
+            "type": "string"
+          },
           "newMetaMethods": {
             "type": "array",
             "items": {
@@ -436,9 +439,6 @@
           },
           "callSiteLoader": {
             "$ref": "#/components/schemas/CallSiteClassLoader"
-          },
-          "typeDescription": {
-            "type": "string"
           }
         }
       },
@@ -2348,6 +2348,9 @@
                       "type": "string"
                     }
                   },
+                  "nativeAccessEnabled": {
+                    "type": "boolean"
+                  },
                   "layer": {
                     "type": "object"
                   }
@@ -2501,6 +2504,9 @@
                   "type": "string"
                 }
               },
+              "nativeAccessEnabled": {
+                "type": "boolean"
+              },
               "layer": {
                 "type": "object"
               }
@@ -2591,14 +2597,14 @@
           "weakMetaClass": {
             "$ref": "#/components/schemas/MetaClass"
           },
+          "cachedClass": {
+            "$ref": "#/components/schemas/CachedClass"
+          },
           "modifiedExpando": {
             "$ref": "#/components/schemas/ExpandoMetaClass"
           },
           "metaClassForClass": {
             "$ref": "#/components/schemas/MetaClass"
-          },
-          "cachedClass": {
-            "$ref": "#/components/schemas/CachedClass"
           }
         }
       },
@@ -2727,6 +2733,9 @@
                       "type": "string"
                     }
                   },
+                  "nativeAccessEnabled": {
+                    "type": "boolean"
+                  },
                   "layer": {
                     "type": "object"
                   }
@@ -2879,6 +2888,9 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "nativeAccessEnabled": {
+                "type": "boolean"
               },
               "layer": {
                 "type": "object"
@@ -3114,11 +3126,11 @@
           "text": {
             "type": "string"
           },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
+          "redirectNode": {
+            "type": "boolean"
+          },
+          "outerClass": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "allInterfaces": {
             "uniqueItems": true,
@@ -3133,14 +3145,17 @@
               "$ref": "#/components/schemas/MethodNode"
             }
           },
-          "outerClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "redirectNode": {
-            "type": "boolean"
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
           },
           "genericsPlaceHolder": {
             "type": "boolean"
+          },
+          "plainNodeReference": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "primaryClassNode": {
             "type": "boolean"
@@ -3160,6 +3175,18 @@
               "$ref": "#/components/schemas/ClassNode"
             }
           },
+          "nameWithoutPackage": {
+            "type": "string"
+          },
+          "annotationDefinition": {
+            "type": "boolean"
+          },
+          "objectInitializerStatements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Statement"
+            }
+          },
           "derivedFromGroovyObject": {
             "type": "boolean"
           },
@@ -3172,26 +3199,11 @@
               "$ref": "#/components/schemas/ClassNode"
             }
           },
-          "nameWithoutPackage": {
-            "type": "string"
-          },
           "recordComponentNodes": {
             "type": "array",
             "deprecated": true,
             "items": {
               "$ref": "#/components/schemas/RecordComponentNode"
-            }
-          },
-          "annotationDefinition": {
-            "type": "boolean"
-          },
-          "plainNodeReference": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "objectInitializerStatements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Statement"
             }
           },
           "instance": {
@@ -3262,6 +3274,9 @@
                     "publicKey": {
                       "type": "object",
                       "properties": {
+                        "params": {
+                          "type": "object"
+                        },
                         "encoded": {
                           "type": "string",
                           "format": "byte"
@@ -3285,9 +3300,6 @@
                     "signerCertPath": {
                       "type": "object",
                       "properties": {
-                        "type": {
-                          "type": "string"
-                        },
                         "encodings": {
                           "type": "object"
                         },
@@ -3306,6 +3318,9 @@
                               "publicKey": {
                                 "type": "object",
                                 "properties": {
+                                  "params": {
+                                    "type": "object"
+                                  },
                                   "encoded": {
                                     "type": "string",
                                     "format": "byte"
@@ -3320,6 +3335,9 @@
                               }
                             }
                           }
+                        },
+                        "type": {
+                          "type": "string"
                         },
                         "encoded": {
                           "type": "string",
@@ -3337,9 +3355,6 @@
                         "signerCertPath": {
                           "type": "object",
                           "properties": {
-                            "type": {
-                              "type": "string"
-                            },
                             "encodings": {
                               "type": "object"
                             },
@@ -3358,6 +3373,9 @@
                                   "publicKey": {
                                     "type": "object",
                                     "properties": {
+                                      "params": {
+                                        "type": "object"
+                                      },
                                       "encoded": {
                                         "type": "string",
                                         "format": "byte"
@@ -3372,6 +3390,9 @@
                                   }
                                 }
                               }
+                            },
+                            "type": {
+                              "type": "string"
                             },
                             "encoded": {
                               "type": "string",
@@ -3528,11 +3549,10 @@
           "bytecodePostprocessor": {
             "$ref": "#/components/schemas/BytecodeProcessor"
           },
-          "targetDirectorySafe": {
-            "type": "string",
-            "writeOnly": true
+          "indyEnabled": {
+            "type": "boolean"
           },
-          "targetBytecodeIfValid": {
+          "targetDirectorySafe": {
             "type": "string",
             "writeOnly": true
           },
@@ -3547,11 +3567,12 @@
             "type": "integer",
             "format": "int32"
           },
-          "indyEnabled": {
-            "type": "boolean"
-          },
           "groovydocEnabled": {
             "type": "boolean"
+          },
+          "targetBytecodeIfValid": {
+            "type": "string",
+            "writeOnly": true
           },
           "runtimeGroovydocEnabled": {
             "type": "boolean"
@@ -3653,13 +3674,13 @@
           "default": {
             "type": "boolean"
           },
-          "final": {
-            "type": "boolean"
-          },
           "abstract": {
             "type": "boolean"
           },
           "private": {
+            "type": "boolean"
+          },
+          "final": {
             "type": "boolean"
           },
           "text": {
@@ -3671,18 +3692,18 @@
           "packageScope": {
             "type": "boolean"
           },
-          "firstStatement": {
-            "$ref": "#/components/schemas/Statement"
-          },
           "scriptBody": {
-            "type": "boolean"
-          },
-          "staticConstructor": {
             "type": "boolean"
           },
           "annotationDefault": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "firstStatement": {
+            "$ref": "#/components/schemas/Statement"
+          },
+          "staticConstructor": {
+            "type": "boolean"
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
@@ -3727,12 +3748,12 @@
             "type": "integer",
             "format": "int32"
           },
+          "lastError": {
+            "$ref": "#/components/schemas/Message"
+          },
           "warningCount": {
             "type": "integer",
             "format": "int32"
-          },
-          "lastError": {
-            "$ref": "#/components/schemas/Message"
           }
         }
       },
@@ -3792,11 +3813,11 @@
             "type": "integer",
             "format": "int32"
           },
-          "classInfo": {
-            "$ref": "#/components/schemas/ClassInfo"
-          },
           "groovyObject": {
             "type": "boolean"
+          },
+          "classInfo": {
+            "$ref": "#/components/schemas/ClassInfo"
           },
           "upProperties": {
             "type": "array",
@@ -5109,13 +5130,13 @@
           "protected": {
             "type": "boolean"
           },
-          "final": {
-            "type": "boolean"
-          },
           "volatile": {
             "type": "boolean"
           },
           "private": {
+            "type": "boolean"
+          },
+          "final": {
             "type": "boolean"
           },
           "initialExpression": {
@@ -5344,6 +5365,9 @@
                       "type": "string"
                     }
                   },
+                  "nativeAccessEnabled": {
+                    "type": "boolean"
+                  },
                   "layer": {
                     "type": "object"
                   }
@@ -5496,6 +5520,9 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "nativeAccessEnabled": {
+                "type": "boolean"
               },
               "layer": {
                 "type": "object"
@@ -5822,11 +5849,11 @@
           "anonymous": {
             "type": "boolean"
           },
-          "variableScope": {
-            "$ref": "#/components/schemas/VariableScope"
-          },
           "outerMostClass": {
             "$ref": "#/components/schemas/ClassNode"
+          },
+          "variableScope": {
+            "$ref": "#/components/schemas/VariableScope"
           },
           "interface": {
             "type": "boolean"
@@ -5867,11 +5894,8 @@
           "text": {
             "type": "string"
           },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
+          "redirectNode": {
+            "type": "boolean"
           },
           "allInterfaces": {
             "uniqueItems": true,
@@ -5886,11 +5910,17 @@
               "$ref": "#/components/schemas/MethodNode"
             }
           },
-          "redirectNode": {
-            "type": "boolean"
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
           },
           "genericsPlaceHolder": {
             "type": "boolean"
+          },
+          "plainNodeReference": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "primaryClassNode": {
             "type": "boolean"
@@ -5910,6 +5940,18 @@
               "$ref": "#/components/schemas/ClassNode"
             }
           },
+          "nameWithoutPackage": {
+            "type": "string"
+          },
+          "annotationDefinition": {
+            "type": "boolean"
+          },
+          "objectInitializerStatements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Statement"
+            }
+          },
           "derivedFromGroovyObject": {
             "type": "boolean"
           },
@@ -5922,26 +5964,11 @@
               "$ref": "#/components/schemas/ClassNode"
             }
           },
-          "nameWithoutPackage": {
-            "type": "string"
-          },
           "recordComponentNodes": {
             "type": "array",
             "deprecated": true,
             "items": {
               "$ref": "#/components/schemas/RecordComponentNode"
-            }
-          },
-          "annotationDefinition": {
-            "type": "boolean"
-          },
-          "plainNodeReference": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "objectInitializerStatements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Statement"
             }
           },
           "instance": {
@@ -6005,10 +6032,10 @@
       "MetaClassRegistry": {
         "type": "object",
         "properties": {
-          "metaClassCreationHandle": {
+          "metaClassCreationHandler": {
             "$ref": "#/components/schemas/MetaClassCreationHandle"
           },
-          "metaClassCreationHandler": {
+          "metaClassCreationHandle": {
             "$ref": "#/components/schemas/MetaClassCreationHandle"
           },
           "metaClassRegistryChangeEventListeners": {
@@ -6190,13 +6217,13 @@
           "default": {
             "type": "boolean"
           },
-          "final": {
-            "type": "boolean"
-          },
           "abstract": {
             "type": "boolean"
           },
           "private": {
+            "type": "boolean"
+          },
+          "final": {
             "type": "boolean"
           },
           "text": {
@@ -6208,18 +6235,18 @@
           "packageScope": {
             "type": "boolean"
           },
-          "firstStatement": {
-            "$ref": "#/components/schemas/Statement"
-          },
           "scriptBody": {
-            "type": "boolean"
-          },
-          "staticConstructor": {
             "type": "boolean"
           },
           "annotationDefault": {
             "type": "boolean",
             "writeOnly": true
+          },
+          "firstStatement": {
+            "$ref": "#/components/schemas/Statement"
+          },
+          "staticConstructor": {
+            "type": "boolean"
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
@@ -6415,11 +6442,11 @@
           "text": {
             "type": "string"
           },
-          "allDeclaredMethods": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MethodNode"
-            }
+          "redirectNode": {
+            "type": "boolean"
+          },
+          "outerClass": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "allInterfaces": {
             "uniqueItems": true,
@@ -6434,14 +6461,17 @@
               "$ref": "#/components/schemas/MethodNode"
             }
           },
-          "outerClass": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "redirectNode": {
-            "type": "boolean"
+          "allDeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodNode"
+            }
           },
           "genericsPlaceHolder": {
             "type": "boolean"
+          },
+          "plainNodeReference": {
+            "$ref": "#/components/schemas/ClassNode"
           },
           "primaryClassNode": {
             "type": "boolean"
@@ -6461,6 +6491,18 @@
               "$ref": "#/components/schemas/ClassNode"
             }
           },
+          "nameWithoutPackage": {
+            "type": "string"
+          },
+          "annotationDefinition": {
+            "type": "boolean"
+          },
+          "objectInitializerStatements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Statement"
+            }
+          },
           "derivedFromGroovyObject": {
             "type": "boolean"
           },
@@ -6473,26 +6515,11 @@
               "$ref": "#/components/schemas/ClassNode"
             }
           },
-          "nameWithoutPackage": {
-            "type": "string"
-          },
           "recordComponentNodes": {
             "type": "array",
             "deprecated": true,
             "items": {
               "$ref": "#/components/schemas/RecordComponentNode"
-            }
-          },
-          "annotationDefinition": {
-            "type": "boolean"
-          },
-          "plainNodeReference": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "objectInitializerStatements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Statement"
             }
           },
           "instance": {
@@ -6860,6 +6887,18 @@
           "private": {
             "type": "boolean"
           },
+          "dynamicTyped": {
+            "type": "boolean"
+          },
+          "originType": {
+            "$ref": "#/components/schemas/ClassNode"
+          },
+          "getterNameOrDefault": {
+            "type": "string"
+          },
+          "setterNameOrDefault": {
+            "type": "string"
+          },
           "initialExpression": {
             "$ref": "#/components/schemas/Expression"
           },
@@ -6869,18 +6908,6 @@
           "closureSharedVariable": {
             "type": "boolean",
             "deprecated": true
-          },
-          "originType": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "dynamicTyped": {
-            "type": "boolean"
-          },
-          "getterNameOrDefault": {
-            "type": "string"
-          },
-          "setterNameOrDefault": {
-            "type": "string"
           },
           "instance": {
             "$ref": "#/components/schemas/AnnotatedNode"
@@ -7001,9 +7028,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "description": {
-            "type": "string"
-          },
           "startLine": {
             "type": "integer",
             "format": "int32"
@@ -7012,12 +7036,15 @@
             "type": "integer",
             "format": "int32"
           },
-          "rootText": {
-            "type": "string"
-          },
           "meaning": {
             "type": "integer",
             "format": "int32"
+          },
+          "rootText": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
           }
         }
       },
@@ -7140,11 +7167,11 @@
           "empty": {
             "type": "boolean"
           },
-          "description": {
-            "type": "string"
-          },
           "anExpression": {
             "type": "boolean"
+          },
+          "description": {
+            "type": "string"
           }
         }
       },
@@ -7161,6 +7188,12 @@
           "type": {
             "$ref": "#/components/schemas/ClassNode"
           },
+          "dynamicTyped": {
+            "type": "boolean"
+          },
+          "originType": {
+            "$ref": "#/components/schemas/ClassNode"
+          },
           "initialExpression": {
             "$ref": "#/components/schemas/Expression"
           },
@@ -7168,12 +7201,6 @@
             "type": "boolean"
           },
           "closureSharedVariable": {
-            "type": "boolean"
-          },
-          "originType": {
-            "$ref": "#/components/schemas/ClassNode"
-          },
-          "dynamicTyped": {
             "type": "boolean"
           }
         }
@@ -7205,17 +7232,17 @@
           "root": {
             "type": "boolean"
           },
-          "referencedLocalVariablesCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "declaredVariablesIterator": {
+          "referencedClassVariablesIterator": {
             "type": "object"
           },
           "referencedLocalVariablesIterator": {
             "type": "object"
           },
-          "referencedClassVariablesIterator": {
+          "referencedLocalVariablesCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "declaredVariablesIterator": {
             "type": "object"
           }
         }
