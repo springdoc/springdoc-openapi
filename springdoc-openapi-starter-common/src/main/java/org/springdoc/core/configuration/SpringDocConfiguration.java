@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -429,7 +429,7 @@ public class SpringDocConfiguration {
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider,
 			Optional<SpringWebProvider> springWebProvider, Optional<WebConversionServiceProvider> webConversionServiceProvider,
 			ObjectMapperProvider objectMapperProvider) {
-		objectMapperProvider.jsonMapper().registerModule(new SpringDocRequiredModule());
+		objectMapperProvider.jsonMapper().registerModules(new SpringDocRequiredModule(), new SpringDocSealedClassModule());
 		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider, webConversionServiceProvider, objectMapperProvider);
 	}
 
