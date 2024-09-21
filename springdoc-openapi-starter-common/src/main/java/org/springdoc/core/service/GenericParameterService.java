@@ -113,7 +113,7 @@ public class GenericParameterService {
 	/**
 	 * The Optional delegating method parameter customizer.
 	 */
-	private final Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer;
+	private final Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers;
 
 	/**
 	 * The Web conversion service.
@@ -148,15 +148,15 @@ public class GenericParameterService {
 	/**
 	 * Instantiates a new Generic parameter builder.
 	 * @param propertyResolverUtils the property resolver utils
-	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
+	 * @param optionalDelegatingMethodParameterCustomizers the optional list delegating method parameter customizer
 	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
 	 * @param objectMapperProvider the object mapper provider
 	 * @param javadocProviderOptional the javadoc provider
 	 */
-	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
+	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers,
 			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, Optional<JavadocProvider> javadocProviderOptional) {
 		this.propertyResolverUtils = propertyResolverUtils;
-		this.optionalDelegatingMethodParameterCustomizer = optionalDelegatingMethodParameterCustomizer;
+		this.optionalDelegatingMethodParameterCustomizers = optionalDelegatingMethodParameterCustomizers;
 		this.optionalWebConversionServiceProvider = optionalWebConversionServiceProvider;
 		this.configurableBeanFactory = propertyResolverUtils.getFactory();
 		this.expressionContext = (configurableBeanFactory != null ? new BeanExpressionContext(configurableBeanFactory, new RequestScope()) : null);
@@ -543,12 +543,12 @@ public class GenericParameterService {
 	}
 
 	/**
-	 * Gets delegating method parameter customizer.
+	 * Gets optional delegating method parameter customizers.
 	 *
-	 * @return the delegating method parameter customizer
+	 * @return the optional delegating method parameter customizers
 	 */
-	public Optional<DelegatingMethodParameterCustomizer> getDelegatingMethodParameterCustomizer() {
-		return optionalDelegatingMethodParameterCustomizer;
+	public Optional<List<DelegatingMethodParameterCustomizer>> getOptionalDelegatingMethodParameterCustomizers() {
+		return optionalDelegatingMethodParameterCustomizers;
 	}
 
 	/**

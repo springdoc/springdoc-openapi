@@ -63,6 +63,7 @@ import org.springdoc.core.customizers.GlobalOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.ParameterObjectNamingStrategyCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springdoc.core.customizers.QuerydslPredicateOperationCustomizer;
 import org.springdoc.core.customizers.RouterOperationCustomizer;
@@ -375,7 +376,7 @@ public class SpringDocConfiguration {
 	 * Parameter builder generic parameter builder.
 	 *
 	 * @param propertyResolverUtils the property resolver utils
-	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
+	 * @param optionalDelegatingMethodParameterCustomizers the optional list delegating method parameter customizer
 	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
 	 * @param objectMapperProvider the object mapper provider
 	 * @param javadocProvider the javadoc provider
@@ -385,9 +386,9 @@ public class SpringDocConfiguration {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils,
-			Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer,
+			Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers,
 			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, Optional<JavadocProvider> javadocProvider) {
-		return new GenericParameterService(propertyResolverUtils, optionalDelegatingMethodParameterCustomizer,
+		return new GenericParameterService(propertyResolverUtils, optionalDelegatingMethodParameterCustomizers,
 				optionalWebConversionServiceProvider, objectMapperProvider, javadocProvider);
 	}
 
@@ -648,5 +649,17 @@ public class SpringDocConfiguration {
 			}
 			return null;
 		}
+	}
+
+	/**
+	 * Parameter object naming strategy customizer delegating method parameter customizer.
+	 *
+	 * @return the delegating method parameter customizer
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	ParameterObjectNamingStrategyCustomizer parameterObjectNamingStrategyCustomizer() {
+		return new ParameterObjectNamingStrategyCustomizer();
 	}
 }
