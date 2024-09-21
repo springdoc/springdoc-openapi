@@ -236,6 +236,7 @@
             "required": false,
             "explode": false,
             "schema": {
+              "type": "array",
               "items": {}
             }
           }
@@ -453,6 +454,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/PersonDTO"
                   }
