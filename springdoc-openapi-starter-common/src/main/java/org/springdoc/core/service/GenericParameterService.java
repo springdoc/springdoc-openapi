@@ -321,7 +321,9 @@ public class GenericParameterService {
 		else {
 			Schema schema = null;
 			try {
-				schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null, false, parameterDoc.schema().implementation(), components, jsonView, propertyResolverUtils.isOpenapi31()).orElse(null);
+				if(StringUtils.isNotEmpty(parameterDoc.schema().type()) || !Void.class.equals(parameterDoc.schema().implementation())){
+					schema = AnnotationsUtils.getSchema(parameterDoc.schema(), null, false, parameterDoc.schema().implementation(), components, jsonView, propertyResolverUtils.isOpenapi31()).orElse(null);
+				}
 				// Cast default value
 				if (schema != null && schema.getDefault() != null) {
 					PrimitiveType primitiveType = PrimitiveType.fromTypeAndFormat(schema.getType(), schema.getFormat());
