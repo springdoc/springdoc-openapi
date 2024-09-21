@@ -24,6 +24,7 @@
 
 package org.springdoc.core.converters;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,6 +32,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -39,6 +41,7 @@ import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springdoc.core.providers.ObjectMapperProvider;
 
 /**
@@ -98,6 +101,11 @@ public class PolymorphicModelConverter implements ModelConverter {
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null) {
+			for (Field field : FieldUtils.getAllFields(javaType.getRawClass())) {
+				if (field.isAnnotationPresent(JsonUnwrapped.class)) {
+					PARENT_TYPES_TO_IGNORE.add(javaType.getRawClass().getSimpleName());
+				}
+			}
 			if (chain.hasNext()) {
 				if (!type.isResolveAsRef() && type.getParent() != null
 						&& PARENT_TYPES_TO_IGNORE.stream().noneMatch(ignore -> type.getParent().getName().startsWith(ignore)))
