@@ -113,12 +113,12 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 *
 	 * @param pNames the p names
 	 * @param parameters the parameters
-	 * @param optionalDelegatingMethodParameterCustomizer the optional delegating method parameter customizer
+	 * @param optionalDelegatingMethodParameterCustomizers the optional list delegating method parameter customizer
 	 * @param defaultFlatParamObject the default flat param object
 	 * @return the method parameter [ ]
 	 */
 	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters,
-			Optional<DelegatingMethodParameterCustomizer> optionalDelegatingMethodParameterCustomizer, boolean defaultFlatParamObject) {
+			Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers, boolean defaultFlatParamObject) {
 		List<MethodParameter> explodedParameters = new ArrayList<>();
 		for (int i = 0; i < parameters.length; ++i) {
 			MethodParameter p = parameters[i];
@@ -130,7 +130,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 			if (!MethodParameterPojoExtractor.isSimpleType(paramClass)
 				&& (hasFlatAnnotation || (defaultFlatParamObject && !hasNotFlatAnnotation && !AbstractRequestService.isRequestTypeToIgnore(paramClass)))) {
 				MethodParameterPojoExtractor.extractFrom(paramClass).forEach(methodParameter -> {
-					optionalDelegatingMethodParameterCustomizer.ifPresent(customizer -> customizer.customize(p, methodParameter));
+					optionalDelegatingMethodParameterCustomizers.ifPresent(delegatingMethodParameterCustomizers -> delegatingMethodParameterCustomizers.forEach(customizer -> customizer.customize(p, methodParameter)));
 					explodedParameters.add(methodParameter);
 				});
 			}
