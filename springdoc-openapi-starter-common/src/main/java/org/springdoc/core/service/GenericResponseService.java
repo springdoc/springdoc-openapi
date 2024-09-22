@@ -181,6 +181,7 @@ public class GenericResponseService {
 			io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations,
 			ApiResponse apiResponse, boolean openapi31) {
 
+		methodAttributes.setUseReturnTypeSchema(apiResponseAnnotations.useReturnTypeSchema());
 		io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
 		Optional<Content> optionalContent = getContent(contentdoc, new String[0],
 				methodAttributes.getMethodProduces(), null, components, methodAttributes.getJsonViewAnnotation(), openapi31);
@@ -620,8 +621,8 @@ public class GenericResponseService {
 					setDescription(httpCode, apiResponse);
 			}
 		}
-		if (apiResponse.getContent() != null
-				&& ((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc())) {
+		if (apiResponse.getContent() != null && (methodAttributes.isUseReturnTypeSchema() ||
+			 ((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc()))) {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
 			Type type = ReturnTypeParser.getType(methodParameter);

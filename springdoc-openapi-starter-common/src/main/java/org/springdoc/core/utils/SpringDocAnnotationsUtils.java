@@ -34,6 +34,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 
@@ -45,6 +46,7 @@ import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.media.Encoding;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.models.Components;
@@ -142,7 +144,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 					componentSchemas.putAll(schemaMap);
 				}
 				else
-					for (Map.Entry<String, Schema> entry : schemaMap.entrySet()) {
+					for (Entry<String, Schema> entry : schemaMap.entrySet()) {
 						// If we've seen this schema before but find later it should be polymorphic,
 						// replace the existing schema with this richer version.
 						Schema existingSchema = componentSchemas.get(entry.getKey());
@@ -200,7 +202,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			ExampleObject[] examples = annotationContent.examples();
 			setExamples(mediaType, examples);
 			addExtension(annotationContent, mediaType, openapi31);
-			io.swagger.v3.oas.annotations.media.Encoding[] encodings = annotationContent.encoding();
+			Encoding[] encodings = annotationContent.encoding();
 			addEncodingToMediaType(jsonViewAnnotation, mediaType, encodings, openapi31);
 			if (StringUtils.isNotBlank(annotationContent.mediaType())) {
 				content.addMediaType(annotationContent.mediaType(), mediaType);
@@ -230,8 +232,11 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 			if (!schemaN.equals(mediaType.getSchema())) {
 				// Merge the two schemas for the same mediaType
 				Schema firstSchema = mediaType.getSchema();
-				ComposedSchema schemaObject;
-				if (firstSchema instanceof ComposedSchema) {
+				Schema<?> schemaObject = null;
+				if (firstSchema == null) {
+					schemaObject = schemaN;
+				}
+				else if (firstSchema instanceof ComposedSchema) {
 					schemaObject = (ComposedSchema) firstSchema;
 					List<Schema> listOneOf = schemaObject.getOneOf();
 					if (!CollectionUtils.isEmpty(listOneOf) && !listOneOf.contains(schemaN))
@@ -311,8 +316,8 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 	 * @param openapi31          the openapi 31
 	 */
 	private static void addEncodingToMediaType(JsonView jsonViewAnnotation, MediaType mediaType,
-			io.swagger.v3.oas.annotations.media.Encoding[] encodings, boolean openapi31) {
-		for (io.swagger.v3.oas.annotations.media.Encoding encoding : encodings) {
+			Encoding[] encodings, boolean openapi31) {
+		for (Encoding encoding : encodings) {
 			addEncodingToMediaType(mediaType, encoding, jsonViewAnnotation, openapi31);
 		}
 	}
