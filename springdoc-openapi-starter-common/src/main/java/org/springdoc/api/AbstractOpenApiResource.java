@@ -60,6 +60,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
 import io.swagger.v3.core.filter.SpecFilter;
 import io.swagger.v3.core.util.ReflectionUtils;
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Webhook;
+import io.swagger.v3.oas.annotations.Webhooks;
 import io.swagger.v3.oas.annotations.callbacks.Callback;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
@@ -213,14 +215,14 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * Instantiates a new Abstract open api resource.
 	 *
-	 * @param groupName the group name
+	 * @param groupName                   the group name
 	 * @param openAPIBuilderObjectFactory the open api builder object factory
-	 * @param requestBuilder the request builder
-	 * @param responseBuilder the response builder
-	 * @param operationParser the operation parser
-	 * @param springDocConfigProperties the spring doc config properties
-	 * @param springDocProviders the spring doc providers
-	 * @param springDocCustomizers the spring doc customizers
+	 * @param requestBuilder              the request builder
+	 * @param responseBuilder             the response builder
+	 * @param operationParser             the operation parser
+	 * @param springDocConfigProperties   the spring doc config properties
+	 * @param springDocProviders          the spring doc providers
+	 * @param springDocCustomizers        the spring doc customizers
 	 */
 	protected AbstractOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
 			AbstractRequestService requestBuilder,
@@ -239,7 +241,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		if (springDocConfigProperties.isPreLoadingEnabled()) {
 			if (CollectionUtils.isEmpty(springDocConfigProperties.getPreLoadingLocales())) {
 				Executors.newSingleThreadExecutor().execute(this::getOpenApi);
-			} else {
+			}
+			else {
 				for (String locale : springDocConfigProperties.getPreLoadingLocales()) {
 					Executors.newSingleThreadExecutor().execute(() -> this.getOpenApi(Locale.forLanguageTag(locale)));
 				}
@@ -343,9 +346,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
 
 				Map<String, Object> findControllerAdvice = openAPIService.getControllerAdviceMap();
-				if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion()){
+				if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion()) {
 					openAPI.openapi(OpenApiVersion.OPENAPI_3_1.getVersion());
 					openAPI.specVersion(SpecVersion.V31);
+					calculateWebhooks(openAPI, locale);
 				}
 				if (springDocConfigProperties.isDefaultOverrideWithGenericResponse()) {
 					if (!CollectionUtils.isEmpty(mappingsMap))
@@ -373,7 +377,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				if (springDocConfigProperties.isRemoveBrokenReferenceDefinitions())
 					this.removeBrokenReferenceDefinitions(openAPI);
 
-				// run the optional customisers
+				// run the optional customizers
 				List<Server> servers = openAPI.getServers();
 				List<Server> serversCopy = null;
 				try {
@@ -401,13 +405,15 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			}
 			openAPIService.updateServers(openAPI);
 			return openAPI;
-		} finally {
+		}
+		finally {
 			this.reentrantLock.unlock();
 		}
 	}
 
 	/**
 	 * Indents are removed for properties that are mainly used as “explanations” using Open API.
+	 *
 	 * @param openAPI the open api
 	 */
 	private void trimIndent(OpenAPI openAPI) {
@@ -417,6 +423,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	/**
 	 * Trim the indent for descriptions in the 'components' of open api.
+	 *
 	 * @param openAPI the open api
 	 */
 	private void trimComponents(OpenAPI openAPI) {
@@ -439,6 +446,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	/**
 	 * Trim the indent for descriptions in the 'paths' of open api.
+	 *
 	 * @param openAPI the open api
 	 */
 	private void trimPaths(OpenAPI openAPI) {
@@ -461,6 +469,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 
 	/**
 	 * Trim the indent for 'operation'
+	 *
 	 * @param operation the operation
 	 */
 	private void trimIndentOperation(Operation operation) {
@@ -476,18 +485,39 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Gets paths.
 	 *
 	 * @param findRestControllers the find rest controllers
-	 * @param locale the locale
-	 * @param openAPI the open api
+	 * @param locale              the locale
+	 * @param openAPI             the open api
 	 */
 	protected abstract void getPaths(Map<String, Object> findRestControllers, Locale locale, OpenAPI openAPI);
+
+
+	/**
+	 * Calculate webhooks.
+	 *
+	 * @param calculatedOpenAPI the calculated open api
+	 * @param locale            the locale
+	 */
+	protected void calculateWebhooks(OpenAPI calculatedOpenAPI, Locale locale) {
+		Webhooks[] webhooksAttr = openAPIService.getWebhooks();
+		var webhooks = Arrays.stream(webhooksAttr).map(Webhooks::value).flatMap(Arrays::stream).toArray(Webhook[]::new);
+		Arrays.stream(webhooks).forEach(webhook -> {
+			io.swagger.v3.oas.annotations.Operation apiOperation = webhook.operation();
+			Operation operation = new Operation();
+			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(),
+					springDocConfigProperties.getDefaultProducesMediaType(), locale);
+			operationParser.parse(apiOperation, operation, calculatedOpenAPI, methodAttributes);
+			PathItem pathItem = new PathItem().post(operation);
+			calculatedOpenAPI.addWebhooks(webhook.name(), pathItem);
+		});
+	}
 
 	/**
 	 * Calculate path.
 	 *
-	 * @param handlerMethod the handler method
+	 * @param handlerMethod   the handler method
 	 * @param routerOperation the router operation
-	 * @param locale the locale
-	 * @param openAPI the open api
+	 * @param locale          the locale
+	 * @param openAPI         the open api
 	 */
 	protected void calculatePath(HandlerMethod handlerMethod, RouterOperation routerOperation, Locale locale, OpenAPI openAPI) {
 		routerOperation = customizeRouterOperation(routerOperation, handlerMethod);
@@ -602,10 +632,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * Build callbacks.
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI          the open api
 	 * @param methodAttributes the method attributes
-	 * @param operation the operation
-	 * @param apiCallbacks the api callbacks
+	 * @param operation        the operation
+	 * @param apiCallbacks     the api callbacks
 	 */
 	private void buildCallbacks(OpenAPI openAPI, MethodAttributes methodAttributes, Operation operation, Set<Callback> apiCallbacks) {
 		if (!CollectionUtils.isEmpty(apiCallbacks))
@@ -617,8 +647,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Calculate path.
 	 *
 	 * @param routerOperationList the router operation list
-	 * @param locale the locale
-	 * @param openAPI the open api
+	 * @param locale              the locale
+	 * @param openAPI             the open api
 	 */
 	protected void calculatePath(List<RouterOperation> routerOperationList, Locale locale, OpenAPI openAPI) {
 		ApplicationContext applicationContext = openAPIService.getContext();
@@ -667,7 +697,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Calculate path.
 	 *
 	 * @param routerOperation the router operation
-	 * @param locale the locale
+	 * @param locale          the locale
 	 */
 	protected void calculatePath(RouterOperation routerOperation, Locale locale, OpenAPI openAPI) {
 		routerOperation = customizeDataRestRouterOperation(routerOperation);
@@ -733,13 +763,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * Calculate path.
 	 *
-	 * @param handlerMethod the handler method
-	 * @param operationPath the operation path
+	 * @param handlerMethod  the handler method
+	 * @param operationPath  the operation path
 	 * @param requestMethods the request methods
-	 * @param consumes the consumes
-	 * @param produces the produces
-	 * @param headers the headers
-	 * @param locale the locale
+	 * @param consumes       the consumes
+	 * @param produces       the produces
+	 * @param headers        the headers
+	 * @param locale         the locale
 	 */
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
 			Set<RequestMethod> requestMethods, String[] consumes, String[] produces, String[] headers, String[] params, Locale locale, OpenAPI openAPI) {
@@ -749,10 +779,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * Gets router function paths.
 	 *
-	 * @param beanName the bean name
+	 * @param beanName              the bean name
 	 * @param routerFunctionVisitor the router function visitor
-	 * @param locale the locale
-	 * @param openAPI the open api
+	 * @param locale                the locale
+	 * @param openAPI               the open api
 	 */
 	protected void getRouterFunctionPaths(String beanName, AbstractRouterFunctionVisitor routerFunctionVisitor,
 			Locale locale, OpenAPI openAPI) {
@@ -788,9 +818,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 *
 	 * @param handlerMethod the handler method
 	 * @param operationPath the operation path
-	 * @param produces the produces
-	 * @param consumes the consumes
-	 * @param headers the headers
+	 * @param produces      the produces
+	 * @param consumes      the consumes
+	 * @param headers       the headers
 	 * @return the boolean
 	 */
 	protected boolean isFilterCondition(HandlerMethod handlerMethod, String operationPath, String[] produces, String[] consumes, String[] headers) {
@@ -816,7 +846,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Is condition to match boolean.
 	 *
 	 * @param existingConditions the existing conditions
-	 * @param conditionType the condition type
+	 * @param conditionType      the condition type
 	 * @return the boolean
 	 */
 	protected boolean isConditionToMatch(String[] existingConditions, ConditionType conditionType) {
@@ -915,8 +945,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Is rest controller boolean.
 	 *
 	 * @param restControllers the rest controllers
-	 * @param handlerMethod the handler method
-	 * @param operationPath the operation path
+	 * @param handlerMethod   the handler method
+	 * @param operationPath   the operation path
 	 * @return the boolean
 	 */
 	protected boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod,
@@ -941,7 +971,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * Customise operation.
 	 *
-	 * @param operation the operation
+	 * @param operation     the operation
 	 * @param handlerMethod the handler method
 	 * @return the operation
 	 */
@@ -959,7 +989,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Customise router operation
 	 *
 	 * @param routerOperation the router operation
-	 * @param handlerMethod the handler method
+	 * @param handlerMethod   the handler method
 	 * @return the router operation
 	 */
 	protected RouterOperation customizeRouterOperation(RouterOperation routerOperation, HandlerMethod handlerMethod) {
@@ -1064,9 +1094,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * Calculate json view.
 	 *
-	 * @param apiOperation the api operation
+	 * @param apiOperation     the api operation
 	 * @param methodAttributes the method attributes
-	 * @param method the method
+	 * @param method           the method
 	 */
 	private void calculateJsonView(io.swagger.v3.oas.annotations.Operation apiOperation,
 			MethodAttributes methodAttributes, Method method) {
@@ -1123,8 +1153,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * Fill parameters list.
 	 *
-	 * @param operation the operation
-	 * @param queryParams the query params
+	 * @param operation        the operation
+	 * @param queryParams      the query params
 	 * @param methodAttributes the method attributes
 	 */
 	private void fillParametersList(Operation operation, Map<String, String> queryParams, MethodAttributes methodAttributes) {
@@ -1157,7 +1187,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Fill router operation.
 	 *
 	 * @param routerFunctionData the router function data
-	 * @param routerOperation the router operation
+	 * @param routerOperation    the router operation
 	 */
 	private void fillRouterOperation(RouterFunctionData routerFunctionData, RouterOperation routerOperation) {
 		if (ArrayUtils.isEmpty(routerOperation.getConsumes()))
@@ -1176,9 +1206,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Build path item.
 	 *
 	 * @param requestMethod the request method
-	 * @param operation the operation
+	 * @param operation     the operation
 	 * @param operationPath the operation path
-	 * @param paths the paths
+	 * @param paths         the paths
 	 * @return the path item
 	 */
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
@@ -1191,7 +1221,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				if (ParameterIn.PATH.toString().equals(parameter.getIn())) {
 					// check it's present in the path
 					String name = parameter.getName();
-					if(!StringUtils.containsAny(operationPath, "{" + name + "}", "{*" + name + "}"))
+					if (!StringUtils.containsAny(operationPath, "{" + name + "}", "{*" + name + "}"))
 						paramIt.remove();
 				}
 			}
@@ -1236,7 +1266,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * Gets existing operation.
 	 *
-	 * @param operationMap the operation map
+	 * @param operationMap  the operation map
 	 * @param requestMethod the request method
 	 * @return the existing operation
 	 */
@@ -1277,7 +1307,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	/**
 	 * Gets operation.
 	 *
-	 * @param routerOperation the router operation
+	 * @param routerOperation   the router operation
 	 * @param existingOperation the existing operation
 	 * @return the operation
 	 */
@@ -1336,7 +1366,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Gets actuator uri.
 	 *
 	 * @param scheme the scheme
-	 * @param host the host
+	 * @param host   the host
 	 * @return the actuator uri
 	 */
 	protected URI getActuatorURI(String scheme, String host) {
@@ -1405,7 +1435,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Gets conditions to match.
 	 *
 	 * @param conditionType the condition type
-	 * @param groupConfigs the group configs
+	 * @param groupConfigs  the group configs
 	 * @return the conditions to match
 	 */
 	private List<String> getConditionsToMatch(ConditionType conditionType, GroupConfig... groupConfigs) {
@@ -1433,9 +1463,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * Is filter condition boolean.
 	 *
 	 * @param operationPath the operation path
-	 * @param produces the produces
-	 * @param consumes the consumes
-	 * @param headers the headers
+	 * @param produces      the produces
+	 * @param consumes      the consumes
+	 * @param headers       the headers
 	 * @return the boolean
 	 */
 	private boolean isFilterCondition(String operationPath, String[] produces, String[] consumes, String[] headers) {
