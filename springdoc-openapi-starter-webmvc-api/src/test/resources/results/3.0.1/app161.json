@@ -85,7 +85,7 @@
           "hello-controller"
         ],
         "summary": "This is a test message",
-        "operationId": "test_1",
+        "operationId": "test",
         "requestBody": {
           "content": {
             "multipart/form-data": {

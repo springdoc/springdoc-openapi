@@ -17,7 +17,7 @@
           "child-property-entity-controller"
         ],
         "description": "get-childproperty",
-        "operationId": "getCollectionResource-childproperty-get_1",
+        "operationId": "getCollectionResource-childproperty-get",
         "parameters": [
           {
             "name": "page",
@@ -83,7 +83,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "listAllFormsOfMetadata_1",
+        "operationId": "listAllFormsOfMetadata",
         "responses": {
           "200": {
             "description": "OK",
@@ -103,7 +103,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_1",
+        "operationId": "descriptor",
         "responses": {
           "200": {
             "description": "OK",
@@ -133,7 +133,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_2",
+        "operationId": "descriptor_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -164,7 +164,7 @@
           "property-entity-controller"
         ],
         "description": "get-property",
-        "operationId": "getCollectionResource-property-get_1",
+        "operationId": "getCollectionResource-property-get",
         "parameters": [
           {
             "name": "page",
@@ -320,7 +320,7 @@
           }
         }
       },
-      "EntityModelProperty": {
+      "EntityModelChildProperty": {
         "type": "object",
         "properties": {
           "id": {
@@ -329,9 +329,6 @@
           },
           "name": {
             "type": "string"
-          },
-          "myChildPropertyName": {
-            "$ref": "#/components/schemas/ChildProperty"
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -359,16 +356,16 @@
           }
         }
       },
-      "PagedModelEntityModelProperty": {
+      "PagedModelEntityModelChildProperty": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "properties": {
+              "childProperties": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelProperty"
+                  "$ref": "#/components/schemas/EntityModelChildProperty"
                 }
               }
             }
@@ -381,7 +378,7 @@
           }
         }
       },
-      "EntityModelChildProperty": {
+      "EntityModelProperty": {
         "type": "object",
         "properties": {
           "id": {
@@ -391,21 +388,24 @@
           "name": {
             "type": "string"
           },
+          "myChildPropertyName": {
+            "$ref": "#/components/schemas/ChildProperty"
+          },
           "_links": {
             "$ref": "#/components/schemas/Links"
           }
         }
       },
-      "PagedModelEntityModelChildProperty": {
+      "PagedModelEntityModelProperty": {
         "type": "object",
         "properties": {
           "_embedded": {
             "type": "object",
             "properties": {
-              "childProperties": {
+              "properties": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/EntityModelChildProperty"
+                  "$ref": "#/components/schemas/EntityModelProperty"
                 }
               }
             }

@@ -24,7 +24,7 @@
         ],
         "summary": "This API will return a random greeting.",
         "description": "Say hello response entity.",
-        "operationId": "sayHello_1",
+        "operationId": "sayHello",
         "responses": {
           "200": {
             "description": "the response entity",

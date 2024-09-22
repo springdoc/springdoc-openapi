@@ -33,7 +33,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "process_3",
+        "operationId": "process_2",
         "responses": {
           "200": {
             "description": "OK"
@@ -44,7 +44,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "process_2",
+        "operationId": "process_1",
         "responses": {
           "200": {
             "description": "OK"
@@ -55,7 +55,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "process_5",
+        "operationId": "process_3",
         "responses": {
           "200": {
             "description": "OK"
@@ -77,7 +77,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "process_1",
+        "operationId": "process_5",
         "responses": {
           "200": {
             "description": "OK"

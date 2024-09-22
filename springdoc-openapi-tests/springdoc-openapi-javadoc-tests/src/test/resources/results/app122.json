@@ -18,7 +18,7 @@
         ],
         "summary": "create",
         "description": "Create response entity.",
-        "operationId": "create_1",
+        "operationId": "create",
         "requestBody": {
           "description": "the payload",
           "content": {

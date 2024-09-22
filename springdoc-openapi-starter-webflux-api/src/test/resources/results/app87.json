@@ -16,7 +16,7 @@
         "tags": [
           "book-repository"
         ],
-        "operationId": "findAll_1",
+        "operationId": "findAll",
         "responses": {
           "200": {
             "description": "OK",

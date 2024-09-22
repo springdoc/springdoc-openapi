@@ -16,7 +16,7 @@
         "tags": [
           "company-controller"
         ],
-        "operationId": "create_1",
+        "operationId": "create",
         "requestBody": {
           "description": "Details of the Item to be created",
           "content": {

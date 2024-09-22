@@ -693,7 +693,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			if (apiOperation != null)
 				openAPI = operationParser.parse(apiOperation, operation, openAPI, methodAttributes);
 
-			String operationId = operationParser.getOperationId(operation.getOperationId(), openAPI);
+			String operationId = operation.getOperationId();
 			operation.setOperationId(operationId);
 
 			fillParametersList(operation, queryParams, methodAttributes);

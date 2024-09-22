@@ -23,7 +23,7 @@
         ],
         "summary": "getCollectionResource-account-get",
         "description": "get-account",
-        "operationId": "getCollectionResource-account-get_1",
+        "operationId": "getCollectionResource-account-get",
         "responses": {
           "200": {
             "description": "OK",
@@ -310,7 +310,7 @@
         ],
         "summary": "followPropertyReference-account-get",
         "description": "get-customer-by-account-Id",
-        "operationId": "followPropertyReference-account-get_1",
+        "operationId": "followPropertyReference-account-get",
         "parameters": [
           {
             "name": "id",
@@ -512,7 +512,7 @@
         ],
         "summary": "followPropertyReference-account-get",
         "description": "get-customer-by-account-Id",
-        "operationId": "followPropertyReference-account-get",
+        "operationId": "followPropertyReference-account-get_1",
         "parameters": [
           {
             "name": "id",
@@ -599,7 +599,7 @@
         ],
         "summary": "getCollectionResource-customer-get",
         "description": "get-customer",
-        "operationId": "getCollectionResource-customer-get_1",
+        "operationId": "getCollectionResource-customer-get",
         "responses": {
           "200": {
             "description": "OK",
@@ -863,7 +863,7 @@
           "profile-controller"
         ],
         "summary": "listAllFormsOfMetadata",
-        "operationId": "listAllFormsOfMetadata_1",
+        "operationId": "listAllFormsOfMetadata",
         "responses": {
           "200": {
             "description": "OK",
@@ -884,7 +884,7 @@
           "profile-controller"
         ],
         "summary": "descriptor",
-        "operationId": "descriptor_1_1_1",
+        "operationId": "descriptor",
         "responses": {
           "200": {
             "description": "OK",
@@ -915,7 +915,7 @@
           "profile-controller"
         ],
         "summary": "descriptor",
-        "operationId": "descriptor_1_1_2",
+        "operationId": "descriptor_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -1038,6 +1038,37 @@
           }
         }
       },
+      "EntityModelAccount": {
+        "type": "object",
+        "properties": {
+          "expiryDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelAccount": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "accounts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EntityModelAccount"
+                }
+              }
+            }
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
       "EntityModelCustomer": {
         "type": "object",
         "properties": {
@@ -1046,6 +1077,25 @@
           },
           "lastname": {
             "type": "string"
+          },
+          "_links": {
+            "$ref": "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelObject": {
+        "type": "object",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "objects": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
           },
           "_links": {
             "$ref": "#/components/schemas/Links"
@@ -1111,56 +1161,6 @@
           },
           "page": {
             "$ref": "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "EntityModelAccount": {
-        "type": "object",
-        "properties": {
-          "expiryDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelEntityModelAccount": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "accounts": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EntityModelAccount"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
-          }
-        }
-      },
-      "CollectionModelObject": {
-        "type": "object",
-        "properties": {
-          "_embedded": {
-            "type": "object",
-            "properties": {
-              "objects": {
-                "type": "array",
-                "items": {
-                  "type": "object"
-                }
-              }
-            }
-          },
-          "_links": {
-            "$ref": "#/components/schemas/Links"
           }
         }
       },

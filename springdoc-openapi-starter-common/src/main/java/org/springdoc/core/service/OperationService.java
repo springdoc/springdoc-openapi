@@ -132,7 +132,7 @@ public class OperationService {
 			operation.setDescription(propertyResolverUtils.resolve(apiOperation.description(), locale));
 
 		if (StringUtils.isNotBlank(apiOperation.operationId()))
-			operation.setOperationId(getOperationId(apiOperation.operationId(), openAPI));
+			operation.setOperationId(apiOperation.operationId());
 
 		if (apiOperation.deprecated())
 			operation.setDeprecated(apiOperation.deprecated());
@@ -304,82 +304,6 @@ public class OperationService {
 					.toList();
 			tags.forEach(operation::addTagsItem);
 		}
-	}
-
-	/**
-	 * Gets operation id.
-	 *
-	 * @param operationId the operation id
-	 * @param openAPI     the open api
-	 * @return the operation id
-	 */
-	public String getOperationId(String operationId, OpenAPI openAPI) {
-		boolean operationIdUsed = existOperationId(operationId, openAPI);
-		String operationIdToFind = null;
-		int counter = 0;
-		while (operationIdUsed) {
-			operationIdToFind = String.format("%s_%d", operationId, ++counter);
-			operationIdUsed = existOperationId(operationIdToFind, openAPI);
-		}
-		if (operationIdToFind != null) {
-			operationId = operationIdToFind;
-		}
-		return operationId;
-	}
-
-	/**
-	 * Exist operation id boolean.
-	 *
-	 * @param operationId the operation id
-	 * @param openAPI     the open api
-	 * @return the boolean
-	 */
-	private boolean existOperationId(String operationId, OpenAPI openAPI) {
-		if (openAPI == null) {
-			return false;
-		}
-		if (openAPI.getPaths() == null || openAPI.getPaths().isEmpty()) {
-			return false;
-		}
-		for (PathItem path : openAPI.getPaths().values()) {
-			Set<String> pathOperationIds = extractOperationIdFromPathItem(path);
-			if (pathOperationIds.contains(operationId)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Extract operation id from path item set.
-	 *
-	 * @param path the path
-	 * @return the set
-	 */
-	private Set<String> extractOperationIdFromPathItem(PathItem path) {
-		Set<String> ids = new HashSet<>();
-		if (path.getGet() != null && StringUtils.isNotBlank(path.getGet().getOperationId())) {
-			ids.add(path.getGet().getOperationId());
-		}
-		if (path.getPost() != null && StringUtils.isNotBlank(path.getPost().getOperationId())) {
-			ids.add(path.getPost().getOperationId());
-		}
-		if (path.getPut() != null && StringUtils.isNotBlank(path.getPut().getOperationId())) {
-			ids.add(path.getPut().getOperationId());
-		}
-		if (path.getDelete() != null && StringUtils.isNotBlank(path.getDelete().getOperationId())) {
-			ids.add(path.getDelete().getOperationId());
-		}
-		if (path.getOptions() != null && StringUtils.isNotBlank(path.getOptions().getOperationId())) {
-			ids.add(path.getOptions().getOperationId());
-		}
-		if (path.getHead() != null && StringUtils.isNotBlank(path.getHead().getOperationId())) {
-			ids.add(path.getHead().getOperationId());
-		}
-		if (path.getPatch() != null && StringUtils.isNotBlank(path.getPatch().getOperationId())) {
-			ids.add(path.getPatch().getOperationId());
-		}
-		return ids;
 	}
 
 	/**
@@ -595,21 +519,6 @@ public class OperationService {
 			return Optional.empty();
 		}
 		return Optional.of(list);
-	}
-
-	/**
-	 * Gets operation id.
-	 *
-	 * @param operationId    the operation id
-	 * @param oldOperationId the old operation id
-	 * @param openAPI        the open api
-	 * @return the operation id
-	 */
-	public String getOperationId(String operationId, String oldOperationId, OpenAPI openAPI) {
-		if (StringUtils.isNotBlank(oldOperationId))
-			return this.getOperationId(oldOperationId, openAPI);
-		else
-			return this.getOperationId(operationId, openAPI);
 	}
 
 	/**

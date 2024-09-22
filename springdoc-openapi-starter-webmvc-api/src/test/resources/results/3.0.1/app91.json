@@ -63,7 +63,7 @@
           "Demo"
         ],
         "summary": "This API will return a random greeting.",
-        "operationId": "sayHello_1",
+        "operationId": "sayHello",
         "responses": {
           "200": {
             "description": "OK",

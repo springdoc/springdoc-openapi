@@ -17,7 +17,7 @@
           "person-entity-controller"
         ],
         "description": "get-person",
-        "operationId": "getCollectionResource-person-get_1",
+        "operationId": "getCollectionResource-person-get",
         "parameters": [
           {
             "name": "page",
@@ -103,7 +103,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_1",
+        "operationId": "descriptor",
         "responses": {
           "200": {
             "description": "OK",

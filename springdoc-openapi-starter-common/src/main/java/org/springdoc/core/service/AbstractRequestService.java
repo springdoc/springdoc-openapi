@@ -278,8 +278,7 @@ public abstract class AbstractRequestService {
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
 		// Documentation
-		String operationId = operationService.getOperationId(handlerMethod.getMethod().getName(),
-				operation.getOperationId(), openAPI);
+		String operationId = operation.getOperationId()!=null ? operation.getOperationId() : handlerMethod.getMethod().getName();
 		operation.setOperationId(operationId);
 		// requests
 		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());

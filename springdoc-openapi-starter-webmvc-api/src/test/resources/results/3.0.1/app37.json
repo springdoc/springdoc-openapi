@@ -16,17 +16,17 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "petsPost_1",
+        "operationId": "petsPost",
         "requestBody": {
           "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Pet"
-              }
-            },
             "text/plain": {
               "schema": {
                 "type": "string"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Pet"
               }
             }
           }
@@ -43,9 +43,14 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "process_1_1",
+        "operationId": "process",
         "requestBody": {
           "content": {
+            "application/x.c+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Car"
+              }
+            },
             "application/x.b+json": {
               "schema": {
                 "$ref": "#/components/schemas/Bar"
@@ -55,11 +60,6 @@
               "schema": {
                 "$ref": "#/components/schemas/Foo"
               }
-            },
-            "application/x.c+json": {
-              "schema": {
-                "$ref": "#/components/schemas/Car"
-              }
             }
           }
         },
@@ -67,6 +67,11 @@
           "200": {
             "description": "OK",
             "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                }
+              },
               "text/plain": {
                 "schema": {
                   "oneOf": [
@@ -77,11 +82,6 @@
                       "$ref": "#/components/schemas/Bar"
                     }
                   ]
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Car"
                 }
               }
             }
@@ -100,6 +100,14 @@
           }
         }
       },
+      "Car": {
+        "type": "object",
+        "properties": {
+          "car": {
+            "type": "string"
+          }
+        }
+      },
       "Bar": {
         "type": "object",
         "properties": {
@@ -112,14 +120,6 @@
         "type": "object",
         "properties": {
           "foo": {
-            "type": "string"
-          }
-        }
-      },
-      "Car": {
-        "type": "object",
-        "properties": {
-          "car": {
             "type": "string"
           }
         }

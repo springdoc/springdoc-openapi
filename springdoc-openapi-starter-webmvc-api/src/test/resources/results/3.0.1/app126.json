@@ -18,7 +18,7 @@
         ],
         "summary": "getAllCurrencies",
         "description": "Get all currencies",
-        "operationId": "getAllCurrencies_1",
+        "operationId": "getAllCurrencies",
         "responses": {
           "401": {
             "$ref": "#/components/responses/http401NoToken"
@@ -62,15 +62,15 @@
               "type": "object"
             }
           },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
           "title": {
             "type": "string"
           },
           "detail": {
             "type": "string"
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       }

@@ -17,7 +17,7 @@
           "hello-controller"
         ],
         "description": "a",
-        "operationId": "b_1",
+        "operationId": "b",
         "responses": {
           "200": {
             "description": "OK",

@@ -46,7 +46,7 @@
         "tags": [
           "basic-controller"
         ],
-        "operationId": "get1_1_1",
+        "operationId": "get1",
         "parameters": [
           {
             "name": "foo",
@@ -96,4 +96,3 @@
   },
   "components": {}
 }
-  

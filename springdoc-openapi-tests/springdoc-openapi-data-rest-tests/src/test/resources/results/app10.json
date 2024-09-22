@@ -17,7 +17,7 @@
           "account-entity-controller"
         ],
         "description": "get-account",
-        "operationId": "getCollectionResource-account-get_1",
+        "operationId": "getCollectionResource-account-get",
         "responses": {
           "200": {
             "description": "OK",
@@ -262,7 +262,7 @@
           "account-property-reference-controller"
         ],
         "description": "get-customer-by-account-Id",
-        "operationId": "followPropertyReference-account-get_1",
+        "operationId": "followPropertyReference-account-get",
         "parameters": [
           {
             "name": "id",
@@ -440,7 +440,7 @@
           "account-property-reference-controller"
         ],
         "description": "get-customer-by-account-Id",
-        "operationId": "followPropertyReference-account-get",
+        "operationId": "followPropertyReference-account-get_1",
         "parameters": [
           {
             "name": "id",
@@ -515,7 +515,7 @@
           "customer-entity-controller"
         ],
         "description": "get-customer",
-        "operationId": "getCollectionResource-customer-get_1",
+        "operationId": "getCollectionResource-customer-get",
         "responses": {
           "200": {
             "description": "OK",
@@ -611,7 +611,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "listAllFormsOfMetadata_1",
+        "operationId": "listAllFormsOfMetadata",
         "responses": {
           "200": {
             "description": "OK",
@@ -631,7 +631,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_1_1_1",
+        "operationId": "descriptor",
         "responses": {
           "200": {
             "description": "OK",
