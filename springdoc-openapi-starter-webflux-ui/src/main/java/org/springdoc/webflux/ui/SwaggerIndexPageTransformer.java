@@ -69,8 +69,7 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 
 	@Override
 	public Mono<Resource> transform(ServerWebExchange serverWebExchange, Resource resource, ResourceTransformerChain resourceTransformerChain) {
-		if (swaggerUiConfigParameters.getConfigUrl() == null)
-			swaggerWelcomeCommon.buildFromCurrentContextPath(serverWebExchange.getRequest());
+		swaggerWelcomeCommon.buildFromCurrentContextPath(serverWebExchange.getRequest());
 
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		try {

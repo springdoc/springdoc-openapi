@@ -18,6 +18,7 @@
 
 package test.org.springdoc.ui.app1;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
 import test.org.springdoc.ui.AbstractSpringDocTest;
@@ -45,7 +46,7 @@ public class SpringDocAppRedirectWithPrefixTest extends AbstractSpringDocTest {
 				.andExpect(jsonPath("validatorUrl", equalTo("")))
 				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/documentation/swagger-ui/oauth2-redirect.html")));
 
-		super.checkJS("results/app1-prefix", "/documentation" + Constants.SWAGGER_INITIALIZER_URL);
+		super.checkJS("results/app1-prefix", "/documentation" + Constants.SWAGGER_INITIALIZER_URL, StringUtils.EMPTY);
 	}
 
 	@SpringBootApplication
