@@ -18,6 +18,7 @@
 
 package test.org.springdoc.ui;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.utils.Constants;
 
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,22 +34,28 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	public static String className;
 
-	protected void checkJS(String fileName, String uri) throws Exception {
-		MvcResult mvcResult = mockMvc.perform(get(uri)).andExpect(status().isOk()).andReturn();
+	protected void checkJS(String fileName, String uri, String contextPath) throws Exception {
+		MvcResult mvcResult = mockMvc.perform(get(contextPath+uri).contextPath(contextPath)).andExpect(status().isOk()).andReturn();
 		String transformedIndex = mvcResult.getResponse().getContentAsString();
 		assertTrue(transformedIndex.contains("window.ui"));
 		assertEquals("no-store", mvcResult.getResponse().getHeader("Cache-Control"));
 		assertEquals(this.getContent(fileName), transformedIndex.replace("\r", ""));
 	}
 
-	protected void chekJS(String fileName) throws Exception {
-		checkJS(fileName, Constants.SWAGGER_INITIALIZER_URL);
+	protected void chekJS(String fileName,String contextPath) throws Exception {
+		checkJS(fileName, Constants.SWAGGER_INITIALIZER_URL,contextPath);
+	}
+
+	protected void chekJS(String contextPath) throws Exception {
+		className = getClass().getSimpleName();
+		String testNumber = className.replaceAll("[^0-9]", "");
+		checkJS("results/app" + testNumber, Constants.SWAGGER_INITIALIZER_URL,contextPath);
 	}
 
 	protected void chekJS() throws Exception {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
-		checkJS("results/app" + testNumber, Constants.SWAGGER_INITIALIZER_URL);
+		checkJS("results/app" + testNumber, Constants.SWAGGER_INITIALIZER_URL, StringUtils.EMPTY);
 	}
 
 	protected void checkJSResult(String fileName, String htmlResult) throws Exception {

@@ -69,8 +69,7 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 	@Override
 	public Resource transform(HttpServletRequest request, Resource resource,
 			ResourceTransformerChain transformerChain) throws IOException {
-		if (swaggerUiConfigParameters.getConfigUrl() == null)
-			swaggerWelcomeCommon.buildFromCurrentContextPath(request);
+		swaggerWelcomeCommon.buildFromCurrentContextPath(request);
 
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/" + SWAGGER_INITIALIZER_JS, resource.getURL().toString());
