@@ -129,6 +129,11 @@ public class MethodAttributes {
 	private String javadocReturn;
 
 	/**
+	 * The Use return type schema.
+	 */
+	private boolean useReturnTypeSchema;
+	
+	/**
 	 * Instantiates a new Method attributes.
 	 * @param methodProducesNew the method produces new
 	 * @param defaultConsumesMediaType the default consumes media type
@@ -492,5 +497,23 @@ public class MethodAttributes {
 	 */
 	public Locale getLocale() {
 		return locale;
+	}
+
+	/**
+	 * Is use return type schema boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isUseReturnTypeSchema() {
+		return useReturnTypeSchema;
+	}
+
+	/**
+	 * Sets use return type schema.
+	 *
+	 * @param useReturnTypeSchema the use return type schema
+	 */
+	public void setUseReturnTypeSchema(boolean useReturnTypeSchema) {
+		this.useReturnTypeSchema = useReturnTypeSchema;
 	}
 }
