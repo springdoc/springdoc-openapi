@@ -16,7 +16,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "hello_1",
+        "operationId": "hello",
         "requestBody": {
           "content": {
             "application/json": {

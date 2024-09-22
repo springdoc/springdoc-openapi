@@ -95,7 +95,7 @@
         ],
         "summary": "test",
         "description": "Test.",
-        "operationId": "test_1",
+        "operationId": "test",
         "requestBody": {
           "content": {
             "multipart/form-data": {

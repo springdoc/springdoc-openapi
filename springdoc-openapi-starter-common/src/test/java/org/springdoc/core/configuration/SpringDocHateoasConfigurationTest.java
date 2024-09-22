@@ -32,8 +32,8 @@ class SpringDocHateoasConfigurationTest {
                 ))
                 .run(context -> {
                     assertThat(context).getBeanNames(GlobalOpenApiCustomizer.class)
-                        .hasSize(1)
-                        .containsExactly(LINKS_SCHEMA_CUSTOMISER);
+                        .hasSize(2)
+						.contains(LINKS_SCHEMA_CUSTOMISER);
                     assertThat(context.getBean(LINKS_SCHEMA_CUSTOMISER)).isExactlyInstanceOf(OpenApiHateoasLinksCustomizer.class);
                 });
     }

@@ -11,19 +11,9 @@
     }
   ],
   "paths": {
-    "/hello": {
-      "get": {
-        "operationId": "hello",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/echo": {
       "post": {
-        "operationId": "echo_1_1",
+        "operationId": "echo",
         "requestBody": {
           "content": {
             "text/plain": {
@@ -57,9 +47,19 @@
         }
       }
     },
+    "/hello": {
+      "get": {
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/quotes": {
       "get": {
-        "operationId": "fetchQuotes_1_1",
+        "operationId": "fetchQuotes",
         "parameters": [
           {
             "name": "size",

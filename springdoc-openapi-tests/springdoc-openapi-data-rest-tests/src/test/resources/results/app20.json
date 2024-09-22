@@ -16,7 +16,7 @@
           "bank-entity-controller"
         ],
         "description": "get-bank",
-        "operationId": "getCollectionResource-bank-get_1",
+        "operationId": "getCollectionResource-bank-get",
         "parameters": [
           {
             "name": "page",
@@ -329,7 +329,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "listAllFormsOfMetadata_1",
+        "operationId": "listAllFormsOfMetadata",
         "responses": {
           "200": {
             "description": "OK",
@@ -349,7 +349,7 @@
         "tags": [
           "profile-controller"
         ],
-        "operationId": "descriptor_1_1_1",
+        "operationId": "descriptor",
         "responses": {
           "200": {
             "description": "OK",

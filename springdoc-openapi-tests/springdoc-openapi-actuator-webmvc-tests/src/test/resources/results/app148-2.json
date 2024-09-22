@@ -66,7 +66,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'loggers-name'",
-        "operationId": "loggers-name_2",
+        "operationId": "loggers-name_1",
         "parameters": [
           {
             "name": "name",
@@ -357,68 +357,6 @@
             }
           }
         }
-      }
-    },
-    "/application/sbom": {
-      "get": {
-        "operationId": "sbom",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "application/vnd.spring-boot.actuator.v2+json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "application/vnd.spring-boot.actuator.v3+json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "summary": "Actuator web endpoint 'sbom'",
-        "tags": [
-          "Actuator"
-        ]
-      }
-    },
-    "/application/sbom/{id}": {
-      "get": {
-        "operationId": "sbom-id",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "summary": "Actuator web endpoint 'sbom-id'",
-        "tags": [
-          "Actuator"
-        ]
       }
     },
     "/application/mappings": {
@@ -776,7 +714,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches'",
-        "operationId": "caches_2",
+        "operationId": "caches_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -836,7 +774,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches-cache'",
-        "operationId": "caches-cache_2",
+        "operationId": "caches-cache_1",
         "parameters": [
           {
             "name": "cache",

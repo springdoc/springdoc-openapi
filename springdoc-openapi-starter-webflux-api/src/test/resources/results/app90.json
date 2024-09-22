@@ -47,12 +47,12 @@
         "tags": [
           "book"
         ],
-        "operationId": "findAll_1_1",
+        "operationId": "findAll",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -60,7 +60,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -120,7 +120,7 @@
         "tags": [
           "book"
         ],
-        "operationId": "findAll",
+        "operationId": "findAll_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -184,12 +184,12 @@
         "tags": [
           "book"
         ],
-        "operationId": "findAll_1",
+        "operationId": "findAll_2",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -197,7 +197,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -215,12 +215,12 @@
         "tags": [
           "book"
         ],
-        "operationId": "findAll_3_1",
+        "operationId": "findAll_3",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -228,7 +228,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -381,7 +381,7 @@
           "positions"
         ],
         "description": "Get all positions",
-        "operationId": "findAll_2",
+        "operationId": "findAll_4",
         "responses": {
           "200": {
             "description": "OK",
@@ -435,7 +435,7 @@
         "tags": [
           "quotes"
         ],
-        "operationId": "echo_1_1",
+        "operationId": "echo",
         "requestBody": {
           "content": {
             "text/plain": {
@@ -487,7 +487,7 @@
         "tags": [
           "quotes"
         ],
-        "operationId": "fetchQuotes_1_1",
+        "operationId": "fetchQuotes",
         "parameters": [
           {
             "name": "size",

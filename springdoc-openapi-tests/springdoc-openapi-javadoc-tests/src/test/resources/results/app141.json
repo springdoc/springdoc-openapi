@@ -29,7 +29,7 @@
           "200": {
             "description": "the list",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -37,7 +37,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -73,7 +73,7 @@
           "200": {
             "description": "the list",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -81,7 +81,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -101,12 +101,12 @@
         ],
         "summary": "Find all list.",
         "description": "Find all list.",
-        "operationId": "findAll_1_1",
+        "operationId": "findAll_1",
         "responses": {
           "200": {
             "description": "the list",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -114,7 +114,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -178,12 +178,12 @@
         ],
         "summary": "Find all list.",
         "description": "Find all list.",
-        "operationId": "findAll_1_2",
+        "operationId": "findAll_2",
         "responses": {
           "200": {
             "description": "the list",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -191,7 +191,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -255,12 +255,12 @@
         ],
         "summary": "Find all list.",
         "description": "Find all list.",
-        "operationId": "findAll_1_3",
+        "operationId": "findAll_3",
         "responses": {
           "200": {
             "description": "the list",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -268,7 +268,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -332,12 +332,12 @@
         ],
         "summary": "Find all list.",
         "description": "Find all list.",
-        "operationId": "findAll_1_4",
+        "operationId": "findAll_4",
         "responses": {
           "200": {
             "description": "the list",
             "content": {
-              "application/xml": {
+              "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -345,7 +345,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/xml": {
                 "schema": {
                   "type": "array",
                   "items": {

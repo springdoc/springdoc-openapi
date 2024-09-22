@@ -24,7 +24,7 @@
         ],
         "summary": "Get t client model.",
         "description": "Get t client model.",
-        "operationId": "get_1",
+        "operationId": "get",
         "parameters": [
           {
             "name": "param",

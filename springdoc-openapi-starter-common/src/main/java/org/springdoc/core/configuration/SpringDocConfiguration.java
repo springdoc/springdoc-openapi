@@ -63,6 +63,7 @@ import org.springdoc.core.customizers.GlobalOperationCustomizer;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.OperationIdCustomizer;
 import org.springdoc.core.customizers.ParameterObjectNamingStrategyCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springdoc.core.customizers.QuerydslPredicateOperationCustomizer;
@@ -661,5 +662,17 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	ParameterObjectNamingStrategyCustomizer parameterObjectNamingStrategyCustomizer() {
 		return new ParameterObjectNamingStrategyCustomizer();
+	}
+
+	/**
+	 * Global open api customizer global open api customizer.
+	 *
+	 * @return the global open api customizer
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
+	GlobalOpenApiCustomizer globalOpenApiCustomizer() {
+		return new OperationIdCustomizer();
 	}
 }

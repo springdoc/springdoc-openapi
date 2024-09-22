@@ -24,7 +24,7 @@
         ],
         "summary": "Hello response entity.",
         "description": "Hello response entity.",
-        "operationId": "hello_1",
+        "operationId": "hello",
         "requestBody": {
           "description": "the map",
           "content": {

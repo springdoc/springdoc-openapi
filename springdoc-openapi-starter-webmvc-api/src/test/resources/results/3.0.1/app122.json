@@ -17,7 +17,7 @@
           "example"
         ],
         "summary": "create",
-        "operationId": "create_1",
+        "operationId": "create",
         "requestBody": {
           "content": {
             "application/json": {

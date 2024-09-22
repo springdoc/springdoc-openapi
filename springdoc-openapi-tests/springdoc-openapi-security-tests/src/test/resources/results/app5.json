@@ -16,7 +16,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "doGet_1",
+        "operationId": "doGet",
         "responses": {
           "200": {
             "description": "OK"
@@ -27,7 +27,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "doPost_1",
+        "operationId": "doPost",
         "responses": {
           "200": {
             "description": "OK",
@@ -56,4 +56,3 @@
     }
   }
 }
- 

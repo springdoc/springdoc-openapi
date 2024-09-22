@@ -24,7 +24,7 @@
         ],
         "summary": "Process car.",
         "description": "Process car.",
-        "operationId": "process_1_1",
+        "operationId": "process",
         "requestBody": {
           "description": "the c",
           "content": {
