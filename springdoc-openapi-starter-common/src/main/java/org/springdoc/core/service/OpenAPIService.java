@@ -48,6 +48,7 @@ import io.swagger.v3.core.jackson.TypeNameResolver;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Webhooks;
 import io.swagger.v3.oas.annotations.security.SecuritySchemes;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
@@ -537,6 +538,64 @@ public class OpenAPIService implements ApplicationContextAware {
 	}
 
 	/**
+	 * Get webhooks webhooks [ ].
+	 *
+	 * @return the webhooks [ ]
+	 */
+	public Webhooks[] getWebhooks() {
+		// List to collect all Webhooks annotations
+		List<Webhooks> allWebhooks = new ArrayList<>();
+
+		// Get beans with @Webhooks annotation managed by Spring
+		Map<String, Object> beansWithWebhooksAnnotation = context.getBeansWithAnnotation(Webhooks.class);
+
+		// Process Spring-managed beans
+		if (!beansWithWebhooksAnnotation.isEmpty()) {
+			beansWithWebhooksAnnotation.values().forEach(controller -> {
+				// Get the @Webhooks annotation(s) from each bean
+				Webhooks[] webhooksAnnotations = controller.getClass().getAnnotationsByType(Webhooks.class);
+				allWebhooks.addAll(Arrays.asList(webhooksAnnotations));
+			});
+		}
+
+		// If no beans with @Webhooks annotation found, perform classpath scanning
+		if (allWebhooks.isEmpty()) {
+			ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
+			scanner.addIncludeFilter(new AnnotationTypeFilter(Webhooks.class));
+
+			// Scan base packages if available
+			if (AutoConfigurationPackages.has(context)) {
+				List<String> packagesToScan = AutoConfigurationPackages.get(context);
+
+				for (String basePackage : packagesToScan) {
+					// Perform the scan and get candidate components
+					Set<BeanDefinition> components = scanner.findCandidateComponents(basePackage);
+
+					// Loop through the components
+					for (BeanDefinition beanDefinition : components) {
+						try {
+							// Get the class name and load the class
+							String className = beanDefinition.getBeanClassName();
+							Class<?> clazz = Class.forName(className);
+
+							// Get @Webhooks annotation from the class
+							Webhooks[] webhooksAnnotations = clazz.getAnnotationsByType(Webhooks.class);
+							allWebhooks.addAll(Arrays.asList(webhooksAnnotations));
+
+						} catch (ClassNotFoundException e) {
+							// Log the error if the class is not found
+							LOGGER.error("Class not found in classpath: {}", e.getMessage());
+						}
+					}
+				}
+			}
+		}
+
+		// Convert the list of Webhooks annotations to an array and return
+		return allWebhooks.toArray(new Webhooks[0]);
+	}
+	
+	/**
 	 * Build open api with open api definition.
 	 *
 	 * @param openAPI the open api
@@ -608,14 +667,13 @@ public class OpenAPIService implements ApplicationContextAware {
 			resolveProperty(contact::getUrl, contact::url, propertyResolverUtils, locale);
 		}
 
-		if(propertyResolverUtils.isResolveExtensionsProperties()){
+		if (propertyResolverUtils.isResolveExtensionsProperties()) {
 			Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, info.getExtensions());
 			info.setExtensions(extensionsResolved);
 		}
 
 		return info;
 	}
-
 
 
 	/**
