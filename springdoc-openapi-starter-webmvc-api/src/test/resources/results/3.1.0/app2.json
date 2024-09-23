@@ -61,8 +61,8 @@
               }
             }
           },
-          "200": {
-            "description": "successful operation",
+          "404": {
+            "description": "User not found",
             "content": {
               "application/xml": {
                 "schema": {
@@ -76,8 +76,8 @@
               }
             }
           },
-          "404": {
-            "description": "User not found",
+          "200": {
+            "description": "successful operation",
             "content": {
               "application/xml": {
                 "schema": {
@@ -464,8 +464,8 @@
               }
             }
           },
-          "404": {
-            "description": "Pet not found",
+          "200": {
+            "description": "successful operation",
             "content": {
               "application/xml": {
                 "schema": {
@@ -479,8 +479,8 @@
               }
             }
           },
-          "200": {
-            "description": "successful operation",
+          "404": {
+            "description": "Pet not found",
             "content": {
               "application/xml": {
                 "schema": {
@@ -809,8 +809,8 @@
               }
             }
           },
-          "200": {
-            "description": "successful operation",
+          "404": {
+            "description": "Order not found",
             "content": {
               "application/xml": {
                 "schema": {
@@ -824,8 +824,8 @@
               }
             }
           },
-          "404": {
-            "description": "Order not found",
+          "200": {
+            "description": "successful operation",
             "content": {
               "application/xml": {
                 "schema": {
@@ -1051,6 +1051,7 @@
   "components": {
     "schemas": {
       "User": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "integer",
@@ -1082,6 +1083,7 @@
         }
       },
       "Category": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "integer",
@@ -1093,6 +1095,7 @@
         }
       },
       "Pet": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "integer",
@@ -1133,6 +1136,7 @@
         ]
       },
       "Tag": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "integer",
@@ -1144,6 +1148,7 @@
         }
       },
       "Order": {
+        "type": "object",
         "properties": {
           "complete": {
             "type": "boolean"
@@ -1171,6 +1176,7 @@
         }
       },
       "ModelApiResponse": {
+        "type": "object",
         "properties": {
           "code": {
             "type": "integer",

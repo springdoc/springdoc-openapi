@@ -35,6 +35,7 @@
   "components": {
     "schemas": {
       "ExamplesResponse": {
+        "type": "object",
         "properties": {
           "name": {
             "type": "string",
@@ -46,7 +47,7 @@
           "subject": {
             "type": "string",
             "description": "subject",
-            "example":"Hello",
+            "example": "Hello",
             "examples": [
               "Hello",
               "World"
