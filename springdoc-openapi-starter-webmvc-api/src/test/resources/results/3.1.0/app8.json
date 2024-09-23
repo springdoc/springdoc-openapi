@@ -35,6 +35,7 @@
   "components": {
     "schemas": {
       "ExamplesResponse": {
+        "type": "object",
         "properties": {
           "self": {
             "$ref": "#/components/schemas/UserInfo",
@@ -58,6 +59,7 @@
         ]
       },
       "FooBar": {
+        "type": "object",
         "deprecated": true,
         "description": "the foo bar",
         "properties": {
@@ -76,6 +78,7 @@
         ]
       },
       "UserInfo": {
+        "type": "object",
         "description": "user info",
         "properties": {
           "name": {

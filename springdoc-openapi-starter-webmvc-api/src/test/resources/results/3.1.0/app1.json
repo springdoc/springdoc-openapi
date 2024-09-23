@@ -517,6 +517,7 @@
   "components": {
     "schemas": {
       "ErrorMessage": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"
@@ -527,6 +528,7 @@
         }
       },
       "PersonDTO": {
+        "type": "object",
         "properties": {
           "email": {
             "type": "string"
@@ -540,6 +542,7 @@
         }
       },
       "ItemLightDTO": {
+        "type": "object",
         "properties": {
           "description": {
             "type": "string"
@@ -556,6 +559,7 @@
         }
       },
       "InventoryItem": {
+        "type": "object",
         "properties": {
           "id": {
             "type": "string",
@@ -582,6 +586,7 @@
         ]
       },
       "Manufacturer": {
+        "type": "object",
         "properties": {
           "name": {
             "type": "string",
@@ -601,6 +606,7 @@
         ]
       },
       "ItemDTO": {
+        "type": "object",
         "properties": {
           "itemID": {
             "type": "string"

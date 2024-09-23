@@ -45,6 +45,7 @@
   "components": {
     "schemas": {
       "DummyData": {
+        "type": "object",
         "properties": {
           "trackerId": {
             "type": "string"

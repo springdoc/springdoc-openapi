@@ -45,6 +45,7 @@
   "components": {
     "schemas": {
       "test.org.springdoc.api.v31.app4.TrackerData": {
+        "type": "object",
         "properties": {
           "trackerId": {
             "type": "string",
