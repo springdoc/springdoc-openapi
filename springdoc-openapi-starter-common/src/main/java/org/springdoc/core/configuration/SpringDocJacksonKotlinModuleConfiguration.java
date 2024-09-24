@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Primary;
 @ConditionalOnExpression("${springdoc.api-docs.enabled:true} and ${springdoc.enable-kotlin:true}")
 @ConditionalOnWebApplication
 @ConditionalOnBean(SpringDocConfiguration.class)
-class SpringDocJacksonKotlinModuleConfiguration {
+public class SpringDocJacksonKotlinModuleConfiguration {
 
 	/**
 	 * Instantiates a new objectMapperProvider with a kotlin module.
