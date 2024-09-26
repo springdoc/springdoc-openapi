@@ -53,10 +53,6 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
  * The type Swagger ui config parameters.
  * @author bnasslahsen
  */
-@Lazy(false)
-@Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
-@ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties {
 
 	/**
@@ -149,6 +145,20 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 */
 	private String uiRootPath;
 
+	/**
+	 * The Context path.
+	 */
+	private String contextPath;
+
+	/**
+	 * The Context path.
+	 */
+	private String apiDocsUrl;
+
+	/**
+	 * The Path prefix.
+	 */
+	private String pathPrefix;
 
 	/**
 	 * Instantiates a new Swagger ui config parameters.
@@ -157,8 +167,8 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 */
 	public SwaggerUiConfigParameters(SwaggerUiConfigProperties swaggerUiConfig) {
 		this.swaggerUiConfig = swaggerUiConfig;
-		this.path = StringUtils.defaultIfBlank(swaggerUiConfig.getPath(), Constants.DEFAULT_SWAGGER_UI_PATH);
-		this.oauth2RedirectUrl = StringUtils.defaultIfBlank(swaggerUiConfig.getOauth2RedirectUrl(), SWAGGER_UI_OAUTH_REDIRECT_URL);
+		this.path = swaggerUiConfig.getPath();
+		this.oauth2RedirectUrl = swaggerUiConfig.getOauth2RedirectUrl();
 		this.layout = swaggerUiConfig.getLayout();
 		this.configUrl = swaggerUiConfig.getConfigUrl();
 		this.validatorUrl = swaggerUiConfig.getValidatorUrl();
@@ -324,5 +334,59 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		if (!CollectionUtils.isEmpty(swaggerUiConfig.getUrls()))
 			return swaggerUiConfig.getUrls().stream().anyMatch(swaggerUrl -> name.equals(swaggerUrl.getName()) && StringUtils.isNotBlank(swaggerUrl.getUrl()));
 		return false;
+	}
+
+	/**
+	 * Gets context path.
+	 *
+	 * @return the context path
+	 */
+	public String getContextPath() {
+		return contextPath;
+	}
+
+	/**
+	 * Sets context path.
+	 *
+	 * @param contextPath the context path
+	 */
+	public void setContextPath(String contextPath) {
+		this.contextPath = contextPath;
+	}
+
+	/**
+	 * Gets api docs url.
+	 *
+	 * @return the api docs url
+	 */
+	public String getApiDocsUrl() {
+		return apiDocsUrl;
+	}
+
+	/**
+	 * Sets api docs url.
+	 *
+	 * @param apiDocsUrl the api docs url
+	 */
+	public void setApiDocsUrl(String apiDocsUrl) {
+		this.apiDocsUrl = apiDocsUrl;
+	}
+
+	/**
+	 * Gets path prefix.
+	 *
+	 * @return the path prefix
+	 */
+	public String getPathPrefix() {
+		return pathPrefix;
+	}
+
+	/**
+	 * Sets path prefix.
+	 *
+	 * @param pathPrefix the path prefix
+	 */
+	public void setPathPrefix(String pathPrefix) {
+		this.pathPrefix = pathPrefix;
 	}
 }

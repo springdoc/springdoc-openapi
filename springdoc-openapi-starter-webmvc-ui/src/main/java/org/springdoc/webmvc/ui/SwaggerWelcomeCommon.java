@@ -47,11 +47,9 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * Instantiates a new Abstract swagger welcome.
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
-	public SwaggerWelcomeCommon(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,
-			SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
+	public SwaggerWelcomeCommon(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
+		super(swaggerUiConfig, springDocConfigProperties);
 	}
 
 	/**
@@ -61,9 +59,10 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @return the response entity
 	 */
 	protected ResponseEntity<Void> redirectToUi(HttpServletRequest request) {
-		buildFromCurrentContextPath(request);
-		String sbUrl = contextPath + swaggerUiConfigParameters.getUiRootPath() + getSwaggerUiUrl();
-		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
+		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
+		buildFromCurrentContextPath(swaggerUiConfigParameters, request);
+		String sbUrl = swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getUiRootPath() + getSwaggerUiUrl();
+		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(swaggerUiConfigParameters, sbUrl);
 
 		// forward all queryParams from original request
 		request.getParameterMap().forEach(uriBuilder::queryParam);
@@ -80,12 +79,13 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @return the map
 	 */
 	protected Map<String, Object> openapiJson(HttpServletRequest request) {
-		buildFromCurrentContextPath(request);
+		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
+		buildFromCurrentContextPath(swaggerUiConfigParameters, request);
 		return swaggerUiConfigParameters.getConfigParameters();
 	}
 
 	@Override
-	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
+	protected void calculateOauth2RedirectUrl(SwaggerUiConfigParameters swaggerUiConfigParameters, UriComponentsBuilder uriComponentsBuilder) {
 		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl()))
 			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder
 					.path(swaggerUiConfigParameters.getUiRootPath())
@@ -97,9 +97,10 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 *
 	 * @param request the request
 	 */
-	void buildFromCurrentContextPath(HttpServletRequest request) {
-		super.init();
-		contextPath = request.getContextPath();
-		buildConfigUrl(ServletUriComponentsBuilder.fromCurrentContextPath());
+	void  buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, HttpServletRequest request) {
+		super.init(swaggerUiConfigParameters);
+		swaggerUiConfigParameters.setContextPath(request.getContextPath());
+		buildConfigUrl(swaggerUiConfigParameters, ServletUriComponentsBuilder.fromCurrentContextPath());
 	}
+	
 }

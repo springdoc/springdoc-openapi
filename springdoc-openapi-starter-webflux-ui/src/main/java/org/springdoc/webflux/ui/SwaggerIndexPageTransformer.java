@@ -57,25 +57,25 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 	 * Instantiates a new Swagger index transformer.
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
-	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param swaggerWelcomeCommon the swagger welcome common
 	 * @param objectMapperProvider the object mapper provider
 	 */
-	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,
-			SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerWelcomeCommon swaggerWelcomeCommon, ObjectMapperProvider objectMapperProvider) {
-		super(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, objectMapperProvider);
+	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, 
+			SwaggerWelcomeCommon swaggerWelcomeCommon, ObjectMapperProvider objectMapperProvider) {
+		super(swaggerUiConfig, swaggerUiOAuthProperties, objectMapperProvider);
 		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 
 	@Override
 	public Mono<Resource> transform(ServerWebExchange serverWebExchange, Resource resource, ResourceTransformerChain resourceTransformerChain) {
-		swaggerWelcomeCommon.buildFromCurrentContextPath(serverWebExchange.getRequest());
-
+		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
+		swaggerWelcomeCommon.buildFromCurrentContextPath(swaggerUiConfigParameters, serverWebExchange.getRequest());
+		
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		try {
 			boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/" + SWAGGER_INITIALIZER_JS, resource.getURL().toString());
 			if (isIndexFound) {
-				String html = defaultTransformations(resource.getInputStream());
+				String html = defaultTransformations(swaggerUiConfigParameters, resource.getInputStream());
 				return Mono.just(new TransformedResource(resource, html.getBytes(StandardCharsets.UTF_8)));
 			}
 			else {

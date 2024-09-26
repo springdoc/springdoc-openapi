@@ -27,7 +27,7 @@ package org.springdoc.webmvc.ui;
 import java.util.List;
 import java.util.Optional;
 
-import org.springdoc.core.properties.SwaggerUiConfigParameters;
+import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
 
 import org.springframework.format.FormatterRegistry;
@@ -62,11 +62,6 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 
 	/**
-	 * The Swagger path.
-	 */
-	private final String swaggerPath;
-
-	/**
 	 * The Swagger index transformer.
 	 */
 	private final SwaggerIndexTransformer swaggerIndexTransformer;
@@ -76,6 +71,10 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	 */
 	private final Optional<ActuatorProvider> actuatorProvider;
 
+	/**
+	 * The Swagger ui config properties.
+	 */
+	private final SwaggerUiConfigProperties swaggerUiConfigProperties;
 
 	/**
 	 * The Swagger resource resolver.
@@ -85,23 +84,24 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	/**
 	 * Instantiates a new Swagger web mvc configurer.
 	 *
-	 * @param swaggerUiConfigParameters the swagger ui calculated config
+	 * @param swaggerUiConfigProperties the swagger ui calculated config
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 * @param actuatorProvider the actuator provider
 	 * @param swaggerResourceResolver the swagger resource resolver
 	 */
-	public SwaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters,
+	public SwaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
 			SwaggerIndexTransformer swaggerIndexTransformer,
 			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
-		this.swaggerPath = swaggerUiConfigParameters.getPath();
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
 		this.actuatorProvider = actuatorProvider;
 		this.swaggerResourceResolver = swaggerResourceResolver;
+		this.swaggerUiConfigProperties = swaggerUiConfigProperties;
 	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		StringBuilder uiRootPath = new StringBuilder();
+		String swaggerPath = swaggerUiConfigProperties.getPath();
 		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
 			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
 		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())

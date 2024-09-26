@@ -62,11 +62,6 @@ public class AbstractSwaggerIndexTransformer {
 	protected SwaggerUiOAuthProperties swaggerUiOAuthProperties;
 
 	/**
-	 * The Swagger ui config parameters.
-	 */
-	protected SwaggerUiConfigParameters swaggerUiConfigParameters;
-
-	/**
 	 * The Object mapper.
 	 */
 	protected ObjectMapper objectMapper;
@@ -81,13 +76,11 @@ public class AbstractSwaggerIndexTransformer {
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
-	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param objectMapperProvider the object mapper provider
 	 */
-	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapperProvider objectMapperProvider) {
+	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapperProvider objectMapperProvider) {
 		this.swaggerUiConfig = swaggerUiConfig;
 		this.swaggerUiOAuthProperties = swaggerUiOAuthProperties;
-		this.swaggerUiConfigParameters = swaggerUiConfigParameters;
 		this.objectMapper = objectMapperProvider.jsonMapper();
 	}
 
@@ -148,11 +141,12 @@ public class AbstractSwaggerIndexTransformer {
 	/**
 	 * Default transformations string.
 	 *
-	 * @param inputStream the input stream
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
+	 * @param inputStream               the input stream
 	 * @return the string
 	 * @throws IOException the io exception
 	 */
-	protected String defaultTransformations(InputStream inputStream) throws IOException {
+	protected String defaultTransformations(SwaggerUiConfigParameters swaggerUiConfigParameters, InputStream inputStream) throws IOException {
 		String html = readFullyAsString(inputStream);
 		if (!CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters()))
 			html = addInitOauth(html);
@@ -170,7 +164,7 @@ public class AbstractSwaggerIndexTransformer {
 			html = addSyntaxHighlight(html);
 
 		if (swaggerUiConfig.getQueryConfigEnabled() == null || !swaggerUiConfig.getQueryConfigEnabled())
-			html = addParameters(html);
+			html = addParameters(html, swaggerUiConfigParameters);
 		else
 			html = addParameter(html, QUERY_CONFIG_ENABLED_PROPERTY, swaggerUiConfig.getQueryConfigEnabled().toString());
 
@@ -191,7 +185,7 @@ public class AbstractSwaggerIndexTransformer {
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	protected String addParameters(String html) throws JsonProcessingException {
+	protected String addParameters(String html, SwaggerUiConfigParameters swaggerUiConfigParameters) throws JsonProcessingException {
 		String layout = swaggerUiConfigParameters.getLayout() != null ? swaggerUiConfigParameters.getLayout() : "StandaloneLayout";
 		StringBuilder stringBuilder = new StringBuilder("layout: \"" + layout + "\" ,\n");
 

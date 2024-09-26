@@ -55,10 +55,9 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * Instantiates a new Abstract swagger welcome.
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
-	public SwaggerWelcomeCommon(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
+	public SwaggerWelcomeCommon(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
+		super(swaggerUiConfig, springDocConfigProperties);
 		this.webJarsPrefixUrl = springDocConfigProperties.getWebjars().getPrefix();
 	}
 
@@ -70,9 +69,10 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @return the mono
 	 */
 	protected Mono<Void> redirectToUi(ServerHttpRequest request, ServerHttpResponse response) {
-		this.buildFromCurrentContextPath(request);
-		String sbUrl = this.buildUrl(contextPath, swaggerUiConfigParameters.getUiRootPath() + springDocConfigProperties.getWebjars().getPrefix() + getSwaggerUiUrl());
-		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(sbUrl);
+		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
+		this.buildFromCurrentContextPath(swaggerUiConfigParameters, request);
+		String sbUrl = this.buildUrl(swaggerUiConfigParameters.getContextPath(), swaggerUiConfigParameters.getUiRootPath() + springDocConfigProperties.getWebjars().getPrefix() + getSwaggerUiUrl());
+		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(swaggerUiConfigParameters, sbUrl);
 		response.setStatusCode(HttpStatus.FOUND);
 		response.getHeaders().setLocation(URI.create(uriBuilder.build().encode().toString()));
 		return response.setComplete();
@@ -85,7 +85,8 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @return the swagger ui config
 	 */
 	protected Map<String, Object> getSwaggerUiConfig(ServerHttpRequest request) {
-		this.buildFromCurrentContextPath(request);
+		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
+		this.buildFromCurrentContextPath(swaggerUiConfigParameters, request);
 		return swaggerUiConfigParameters.getConfigParameters();
 	}
 
@@ -95,13 +96,13 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @param request the request
 	 * @return the string
 	 */
-	void buildFromCurrentContextPath(ServerHttpRequest request) {
-		super.init();
-		contextPath = request.getPath().contextPath().value();
+	void buildFromCurrentContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, ServerHttpRequest request) {
+		super.init(swaggerUiConfigParameters);
+		swaggerUiConfigParameters.setContextPath(request.getPath().contextPath().value());
 		String url = UriComponentsBuilder.fromHttpRequest(request).toUriString();
 		if (!AntPathMatcher.DEFAULT_PATH_SEPARATOR.equals(request.getPath().toString()))
 			url = url.replace(request.getPath().toString(), "");
-		buildConfigUrl(UriComponentsBuilder.fromUriString(url));
+		buildConfigUrl(swaggerUiConfigParameters, UriComponentsBuilder.fromUriString(url));
 	}
 
 }

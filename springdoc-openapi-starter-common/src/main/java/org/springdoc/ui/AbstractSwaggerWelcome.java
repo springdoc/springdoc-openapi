@@ -58,44 +58,22 @@ public abstract class AbstractSwaggerWelcome {
 	protected final SpringDocConfigProperties springDocConfigProperties;
 
 	/**
-	 * The Swagger ui calculated config.
-	 */
-	protected final SwaggerUiConfigParameters swaggerUiConfigParameters;
-
-	/**
-	 * The Swagger config url.
-	 */
-	protected String swaggerConfigUrl;
-
-	/**
-	 * The Api docs url.
-	 */
-	protected String apiDocsUrl;
-
-	/**
-	 * The Context path.
-	 */
-	protected String contextPath;
-
-	/**
 	 * Instantiates a new Abstract swagger welcome.
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
-	public AbstractSwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters) {
+	public AbstractSwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
 		this.swaggerUiConfig = swaggerUiConfig;
 		this.springDocConfigProperties = springDocConfigProperties;
-		this.swaggerUiConfigParameters = swaggerUiConfigParameters;
 	}
 
 	/**
 	 * Init.
 	 */
-	protected void init() {
+	protected void init(SwaggerUiConfigParameters swaggerUiConfigParameters) {
 		springDocConfigProperties.getGroupConfigs().forEach(groupConfig -> swaggerUiConfigParameters.addGroup(groupConfig.getGroup(), groupConfig.getDisplayName()));
-		calculateUiRootPath();
+		calculateUiRootPath(swaggerUiConfigParameters);
 	}
 
 	/**
@@ -117,30 +95,30 @@ public abstract class AbstractSwaggerWelcome {
 	/**
 	 * Build config url.
 	 *
-	 * @param uriComponentsBuilder the uri components builder
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
+	 * @param uriComponentsBuilder      the uri components builder
 	 */
-	protected void buildConfigUrl(UriComponentsBuilder uriComponentsBuilder) {
+	protected void buildConfigUrl(SwaggerUiConfigParameters swaggerUiConfigParameters, UriComponentsBuilder uriComponentsBuilder) {
 		if (StringUtils.isEmpty(swaggerUiConfig.getConfigUrl())) {
-			apiDocsUrl = buildApiDocUrl();
-			swaggerConfigUrl = buildSwaggerConfigUrl();
-			swaggerUiConfigParameters.setConfigUrl(swaggerConfigUrl);
+			buildApiDocUrl(swaggerUiConfigParameters);
+			buildSwaggerConfigUrl(swaggerUiConfigParameters);
 			if (CollectionUtils.isEmpty(swaggerUiConfigParameters.getUrls())) {
 				String swaggerUiUrl = swaggerUiConfig.getUrl();
 				if (StringUtils.isEmpty(swaggerUiUrl))
-					swaggerUiConfigParameters.setUrl(apiDocsUrl);
+					swaggerUiConfigParameters.setUrl(swaggerUiConfigParameters.getApiDocsUrl());
 				else if (swaggerUiConfigParameters.isValidUrl(swaggerUiUrl))
 					swaggerUiConfigParameters.setUrl(swaggerUiUrl);
 				else
-					swaggerUiConfigParameters.setUrl(buildUrlWithContextPath(swaggerUiUrl));
+					swaggerUiConfigParameters.setUrl(buildUrlWithContextPath(swaggerUiConfigParameters, swaggerUiUrl));
 			}
 			else
-				swaggerUiConfigParameters.addUrl(apiDocsUrl);
+				swaggerUiConfigParameters.addUrl(swaggerUiConfigParameters.getApiDocsUrl());
 			if (!CollectionUtils.isEmpty(swaggerUiConfig.getUrls())) {
 				swaggerUiConfig.cloneUrls()
 						.stream()
 						.filter(swaggerUrl -> !swaggerUiConfigParameters.isValidUrl(swaggerUrl.getUrl()))
 						.forEach(swaggerUrl -> {
-							final var url = buildUrlWithContextPath(swaggerUrl.getUrl());
+							final var url = buildUrlWithContextPath(swaggerUiConfigParameters, swaggerUrl.getUrl());
 							if (!Objects.equals(url, swaggerUrl.getUrl())) {
 								swaggerUiConfigParameters.getUrls()
 										.stream()
@@ -150,24 +128,26 @@ public abstract class AbstractSwaggerWelcome {
 						});
 			}
 		}
-		calculateOauth2RedirectUrl(uriComponentsBuilder);
+		calculateOauth2RedirectUrl(swaggerUiConfigParameters, uriComponentsBuilder);
 	}
 
 	/**
 	 * Build swagger ui url string.
 	 *
-	 * @param swaggerUiUrl the swagger ui url
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
+	 * @param swaggerUiUrl              the swagger ui url
 	 * @return the string
 	 */
-	protected abstract String buildUrlWithContextPath(String swaggerUiUrl);
+	protected abstract String buildUrlWithContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, String swaggerUiUrl);
 
 	/**
 	 * Gets uri components builder.
 	 *
-	 * @param sbUrl the sb url
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
+	 * @param sbUrl                     the sb url
 	 * @return the uri components builder
 	 */
-	protected UriComponentsBuilder getUriComponentsBuilder(String sbUrl) {
+	protected UriComponentsBuilder getUriComponentsBuilder(SwaggerUiConfigParameters swaggerUiConfigParameters, String sbUrl) {
 		UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(sbUrl);
 		if ((swaggerUiConfig.getQueryConfigEnabled() != null && swaggerUiConfig.getQueryConfigEnabled())) {
 			swaggerUiConfigParameters.getConfigParameters().entrySet().stream()
@@ -185,24 +165,27 @@ public abstract class AbstractSwaggerWelcome {
 	/**
 	 * Calculate oauth 2 redirect url.
 	 *
-	 * @param uriComponentsBuilder the uri components builder
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
+	 * @param uriComponentsBuilder      the uri components builder
 	 */
-	protected abstract void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder);
+	protected abstract void calculateOauth2RedirectUrl(SwaggerUiConfigParameters swaggerUiConfigParameters, UriComponentsBuilder uriComponentsBuilder);
 
 	/**
 	 * Calculate ui root path.
 	 *
-	 * @param sbUrls the sb urls
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
+	 * @param sbUrls                    the sb urls
 	 */
-	protected abstract void calculateUiRootPath(StringBuilder... sbUrls);
+	protected abstract void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters,StringBuilder... sbUrls);
 
 	/**
 	 * Calculate ui root common.
 	 *
-	 * @param sbUrl the sb url
-	 * @param sbUrls the sb urls
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
+	 * @param sbUrl                     the sb url
+	 * @param sbUrls                    the sb urls
 	 */
-	protected void calculateUiRootCommon(StringBuilder sbUrl, StringBuilder[] sbUrls) {
+	protected void calculateUiRootCommon(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder sbUrl, StringBuilder[] sbUrls) {
 		if (ArrayUtils.isNotEmpty(sbUrls))
 			sbUrl = sbUrls[0];
 		String swaggerPath = swaggerUiConfigParameters.getPath();
@@ -214,16 +197,16 @@ public abstract class AbstractSwaggerWelcome {
 	/**
 	 * Build api doc url string.
 	 *
-	 * @return the string
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
-	protected abstract String buildApiDocUrl();
+	protected abstract void buildApiDocUrl(SwaggerUiConfigParameters swaggerUiConfigParameters);
 
 	/**
 	 * Build swagger config url string.
 	 *
-	 * @return the string
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
-	protected abstract String buildSwaggerConfigUrl();
+	protected abstract void buildSwaggerConfigUrl(SwaggerUiConfigParameters swaggerUiConfigParameters);
 
 	/**
 	 * Gets oauth2 redirect url.
