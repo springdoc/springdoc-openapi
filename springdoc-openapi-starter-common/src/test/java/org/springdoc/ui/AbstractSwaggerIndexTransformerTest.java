@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.properties.SwaggerUiOAuthProperties;
@@ -24,9 +26,7 @@ public class AbstractSwaggerIndexTransformerTest {
     private SwaggerUiConfigProperties swaggerUiConfig;
     @Mock
     private SwaggerUiOAuthProperties swaggerUiOAuthProperties;
-    @Mock
-    private SwaggerUiConfigParameters swaggerUiConfigParameters;
-    @Mock
+
     private ObjectMapperProvider objectMapperProvider;
 
     private AbstractSwaggerIndexTransformer underTest;
@@ -57,13 +57,13 @@ public class AbstractSwaggerIndexTransformerTest {
     public void setup(){
         swaggerUiConfig = new SwaggerUiConfigProperties();
         swaggerUiConfig.setUrl(apiDocUrl);
-        underTest = new AbstractSwaggerIndexTransformer(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, objectMapperProvider);
-
+		objectMapperProvider = new ObjectMapperProvider(new SpringDocConfigProperties());
+        underTest = new AbstractSwaggerIndexTransformer(swaggerUiConfig, swaggerUiOAuthProperties, objectMapperProvider);
     }
 
     @Test
     void setApiDocUrlCorrectly() throws IOException {
-        var html = underTest.defaultTransformations(is);
+        var html = underTest.defaultTransformations(new SwaggerUiConfigParameters(swaggerUiConfig), is);
         assertThat(html, containsString(apiDocUrl));
     }
 }

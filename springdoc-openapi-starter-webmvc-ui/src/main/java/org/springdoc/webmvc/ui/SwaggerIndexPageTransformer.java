@@ -56,26 +56,26 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 	 * Instantiates a new Swagger index transformer.
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
-	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param swaggerWelcomeCommon the swagger welcome common
 	 * @param objectMapperProvider the object mapper provider
 	 */
 	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,
-			SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerWelcomeCommon swaggerWelcomeCommon, ObjectMapperProvider objectMapperProvider) {
-		super(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, objectMapperProvider);
+			SwaggerWelcomeCommon swaggerWelcomeCommon, ObjectMapperProvider objectMapperProvider) {
+		super(swaggerUiConfig, swaggerUiOAuthProperties, objectMapperProvider);
 		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 
 	@Override
 	public Resource transform(HttpServletRequest request, Resource resource,
 			ResourceTransformerChain transformerChain) throws IOException {
-		swaggerWelcomeCommon.buildFromCurrentContextPath(request);
-
+		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
+		swaggerWelcomeCommon.buildFromCurrentContextPath(swaggerUiConfigParameters, request);
+		
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/" + SWAGGER_INITIALIZER_JS, resource.getURL().toString());
 
 		if (isIndexFound) {
-			String html = defaultTransformations(resource.getInputStream());
+			String html = defaultTransformations(swaggerUiConfigParameters, resource.getInputStream());
 			return new TransformedResource(resource, html.getBytes(StandardCharsets.UTF_8));
 		}
 		else

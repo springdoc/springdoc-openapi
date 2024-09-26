@@ -71,7 +71,6 @@ public class SwaggerConfig {
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param springWebProvider the spring web provider
 	 * @return the swagger welcome web mvc
 	 */
@@ -79,8 +78,8 @@ public class SwaggerConfig {
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(name = SPRINGDOC_USE_MANAGEMENT_PORT, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
-	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, SpringWebProvider springWebProvider) {
-		return new SwaggerWelcomeWebMvc(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters, springWebProvider);
+	SwaggerWelcomeWebMvc swaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SpringWebProvider springWebProvider) {
+		return new SwaggerWelcomeWebMvc(swaggerUiConfig, springDocConfigProperties, springWebProvider);
 	}
 
 	/**
@@ -127,7 +126,6 @@ public class SwaggerConfig {
 	 *
 	 * @param swaggerUiConfig the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
-	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @param swaggerWelcomeCommon the swagger welcome common
 	 * @param objectMapperProvider the object mapper provider
 	 * @return the swagger index transformer
@@ -135,15 +133,15 @@ public class SwaggerConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,
-			SwaggerUiConfigParameters swaggerUiConfigParameters, SwaggerWelcomeCommon swaggerWelcomeCommon, ObjectMapperProvider objectMapperProvider) {
-		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties, swaggerUiConfigParameters, swaggerWelcomeCommon, objectMapperProvider);
+	SwaggerIndexTransformer indexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, 
+			SwaggerWelcomeCommon swaggerWelcomeCommon, ObjectMapperProvider objectMapperProvider) {
+		return new SwaggerIndexPageTransformer(swaggerUiConfig, swaggerUiOAuthProperties, swaggerWelcomeCommon, objectMapperProvider);
 	}
 
 	/**
 	 * Swagger web mvc configurer swagger web mvc configurer.
 	 *
-	 * @param swaggerUiConfigParameters the swagger ui calculated config
+	 * @param swaggerUiConfigProperties the swagger ui calculated config
 	 * @param swaggerIndexTransformer the swagger index transformer
 	 * @param actuatorProvider the actuator provider
 	 * @param swaggerResourceResolver the swagger resource resolver
@@ -152,24 +150,11 @@ public class SwaggerConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters,
+	SwaggerWebMvcConfigurer swaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
 			SwaggerIndexTransformer swaggerIndexTransformer, Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
-		return new SwaggerWebMvcConfigurer(swaggerUiConfigParameters, swaggerIndexTransformer, actuatorProvider, swaggerResourceResolver);
+		return new SwaggerWebMvcConfigurer(swaggerUiConfigProperties, swaggerIndexTransformer, actuatorProvider, swaggerResourceResolver);
 	}
-
-	/**
-	 * Swagger ui config parameters swagger ui config parameters.
-	 *
-	 * @param swaggerUiConfig the swagger ui config
-	 * @return the swagger ui config parameters
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Lazy(false)
-	SwaggerUiConfigParameters swaggerUiConfigParameters(SwaggerUiConfigProperties swaggerUiConfig) {
-		return new SwaggerUiConfigParameters(swaggerUiConfig);
-	}
-
+	
 	/**
 	 * Swagger resource resolver swagger resource resolver.
 	 *
@@ -196,15 +181,14 @@ public class SwaggerConfig {
 		 *
 		 * @param swaggerUiConfig the swagger ui config
 		 * @param springDocConfigProperties the spring doc config properties
-		 * @param swaggerUiConfigParameters the swagger ui config parameters
 		 * @param webEndpointProperties the web endpoint properties
 		 * @return the swagger welcome actuator
 		 */
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		SwaggerWelcomeActuator swaggerActuatorWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, WebEndpointProperties webEndpointProperties) {
-			return new SwaggerWelcomeActuator(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters, webEndpointProperties);
+		SwaggerWelcomeActuator swaggerActuatorWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,  WebEndpointProperties webEndpointProperties) {
+			return new SwaggerWelcomeActuator(swaggerUiConfig, springDocConfigProperties, webEndpointProperties);
 		}
 	}
 }

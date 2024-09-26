@@ -31,8 +31,10 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.utils.Constants;
 
 import static org.springdoc.core.utils.Constants.GROUP_NAME_NOT_NULL_OR_EMPTY;
+import static org.springdoc.core.utils.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
 
 /**
  * Please refer to the swagger
@@ -45,7 +47,7 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	/**
 	 * The path for the Swagger UI pages to load. Will redirect to the springdoc.webjars.prefix property.
 	 */
-	protected String path;
+	protected String path = Constants.DEFAULT_SWAGGER_UI_PATH;
 
 	/**
 	 * The name of a component available via the plugin system to use as the top-level layout for Swagger UI.
@@ -138,7 +140,7 @@ public abstract class AbstractSwaggerUiConfigProperties {
 	/**
 	 * OAuth redirect URL.
 	 */
-	protected String oauth2RedirectUrl;
+	protected String oauth2RedirectUrl = SWAGGER_UI_OAUTH_REDIRECT_URL;
 
 	/**
 	 * The Url.

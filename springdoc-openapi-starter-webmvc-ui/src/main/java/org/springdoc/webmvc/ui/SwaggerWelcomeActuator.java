@@ -60,12 +60,11 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	/**
 	 * Instantiates a new Swagger welcome.
 	 * @param swaggerUiConfig the swagger ui config
-	 * @param springDocConfigProperties the spring doc config properties
-	 * @param swaggerUiConfigParameters the swagger ui config parameters
+	 * @param springDocConfigProperties the swagger ui config parameters
 	 * @param webEndpointProperties the web endpoint properties
 	 */
-	public SwaggerWelcomeActuator(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, WebEndpointProperties webEndpointProperties) {
-		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
+	public SwaggerWelcomeActuator(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,WebEndpointProperties webEndpointProperties) {
+		super(swaggerUiConfig, springDocConfigProperties);
 		this.webEndpointProperties = webEndpointProperties;
 	}
 
@@ -97,27 +96,27 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	}
 
 	@Override
-	protected void calculateUiRootPath(StringBuilder... sbUrls) {
+	protected void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls) {
 		StringBuilder sbUrl = new StringBuilder();
 		sbUrl.append(webEndpointProperties.getBasePath());
-		calculateUiRootCommon(sbUrl, sbUrls);
+		calculateUiRootCommon(swaggerUiConfigParameters, sbUrl, sbUrls);
 	}
 
 	@Override
-	protected String buildApiDocUrl() {
-		return buildUrl(contextPath + webEndpointProperties.getBasePath(), DEFAULT_API_DOCS_ACTUATOR_URL);
+	protected void buildApiDocUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
+		swaggerUiConfigParameters.setApiDocsUrl(buildUrl(swaggerUiConfigParameters.getContextPath() + webEndpointProperties.getBasePath(), DEFAULT_API_DOCS_ACTUATOR_URL));
 	}
 
 	@Override
-	protected String buildUrlWithContextPath(String swaggerUiUrl) {
-		return buildUrl(contextPath + webEndpointProperties.getBasePath(), swaggerUiUrl);
+	protected String buildUrlWithContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, String swaggerUiUrl) {
+		return buildUrl(swaggerUiConfigParameters.getContextPath() + webEndpointProperties.getBasePath(), swaggerUiUrl);
 	}
 
 	@Override
-	protected String buildSwaggerConfigUrl() {
-		return contextPath + webEndpointProperties.getBasePath()
+	protected void buildSwaggerConfigUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
+		swaggerUiConfigParameters.setConfigUrl(swaggerUiConfigParameters.getContextPath() + webEndpointProperties.getBasePath()
 				+ DEFAULT_PATH_SEPARATOR + DEFAULT_SWAGGER_UI_ACTUATOR_PATH
-				+ DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE;
+				+ DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);
 	}
 
 }

@@ -18,6 +18,9 @@
 
 package test.org.springdoc.ui.app32;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.IntStream;
+
 import org.junit.jupiter.api.Test;
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
@@ -80,6 +83,46 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 				.isEqualTo("/path/prefix/v3/api-docs/swagger-config");
 	}
 
+	@Test
+	public void shouldReturnCorrectInitializerJSWhenChangingForwardedPrefixHeader() throws Exception {
+		var tasks = IntStream.range(0, 100).mapToObj(i -> CompletableFuture.runAsync(() -> {
+			try {
+				webTestClient.get().uri("/webjars/swagger-ui/swagger-initializer.js")
+						.header("X-Forwarded-Prefix", "/path/prefix" + i)
+						.exchange()
+						.expectStatus().isOk()
+						.expectBody(String.class)
+						.consumeWith(response ->
+								assertThat(response.getResponseBody())
+										.contains("\"configUrl\" : \"/path/prefix" + i + "/v3/api-docs/swagger-config\",")
+						);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		})).toArray(CompletableFuture<?>[]::new);
+
+		CompletableFuture.allOf(tasks).join();
+	}
+
+	@Test
+	public void shouldCalculateUrlsBehindProxyWhenChangingForwardedPrefixHeader() {
+		var tasks = IntStream.range(0, 100).mapToObj(i -> CompletableFuture.runAsync(() -> {
+			try {
+				webTestClient.get().uri("/v3/api-docs/swagger-config")
+						.header("X-Forwarded-Prefix", "/path/prefix" + i)
+						.exchange()
+						.expectStatus().isOk().expectBody()
+						.jsonPath("$.url").isEqualTo("/path/prefix" + i + "/v3/api-docs")
+						.jsonPath("$.configUrl").isEqualTo("/path/prefix" + i + "/v3/api-docs/swagger-config");
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		})).toArray(CompletableFuture<?>[]::new);
+
+		CompletableFuture.allOf(tasks).join();
+	}
+
+	
 	@SpringBootApplication
 	static class SpringDocTestApp {}
 }
