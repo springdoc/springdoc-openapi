@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@
 package org.springdoc.core.service;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -89,7 +88,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.containsDeprecatedAnnotation;
@@ -453,6 +451,8 @@ public abstract class AbstractRequestService {
 			return true;
 		if (isRequiredAnnotation(parameter))
 			return false;
+		if (isRequestBodyWithMapType(parameter))
+			return false;
 		return isRequestTypeToIgnore(parameter.getParameterType());
 	}
 
@@ -469,6 +469,21 @@ public abstract class AbstractRequestService {
 		return (requestParam != null && requestParam.required())
 				|| (pathVariable != null && pathVariable.required())
 				|| (requestBody != null && requestBody.required());
+	}
+
+	/**
+	 * Is request body with map type
+	 *
+	 * @param parameter the parameter
+	 * @return the boolean
+	 */
+	private boolean isRequestBodyWithMapType(MethodParameter parameter) {
+		org.springframework.web.bind.annotation.RequestBody requestBody = parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class);
+		if (requestBody == null) {
+			return false;
+		}
+		Class<?> parameterType = parameter.getParameterType();
+		return parameterType == java.util.Map.class;
 	}
 
 	/**
