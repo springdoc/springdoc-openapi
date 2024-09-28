@@ -483,7 +483,7 @@ public abstract class AbstractRequestService {
 			return false;
 		}
 		Class<?> parameterType = parameter.getParameterType();
-		return parameterType == java.util.Map.class;
+		return Map.class.isAssignableFrom(parameterType);
 	}
 
 	/**
