@@ -20,6 +20,7 @@ package test.org.springdoc.api.v30.app227;
 
 
 import test.org.springdoc.api.v30.app227.model.Item;
+import test.org.springdoc.api.v30.app227.wrapper.NoGenericWrapper;
 import test.org.springdoc.api.v30.app227.wrapper.ResponseEntityWrapper;
 
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,11 @@ public class HelloController {
 	@GetMapping("/persons")
 	public ResponseEntityWrapper<String> persons() {
 		return new ResponseEntityWrapper<>(Item.fromPayload("1", "OK", "String"), HttpStatus.OK);
+	}
+
+	@GetMapping("/persons2")
+	public NoGenericWrapper persons2() {
+		return new NoGenericWrapper(Item.fromPayload("1", "OK", "String"), HttpStatus.OK);
 	}
 
 }

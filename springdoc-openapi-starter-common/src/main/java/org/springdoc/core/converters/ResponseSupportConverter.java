@@ -34,6 +34,7 @@ import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.providers.ObjectMapperProvider;
+import org.springframework.http.ResponseEntity;
 
 import static org.springdoc.core.converters.ConverterUtils.isFluxTypeWrapper;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeToIgnore;
@@ -65,12 +66,7 @@ public class ResponseSupportConverter implements ModelConverter {
 		if (javaType != null) {
 			Class<?> cls = javaType.getRawClass();
 			if (isResponseTypeWrapper(cls) && !isFluxTypeWrapper(cls)) {
-				JavaType innerType = javaType.getBindings().getBoundType(0);
-				if(javaType.getSuperClass() !=null 
-						&& javaType.getSuperClass().hasGenericTypes()
-						&& isResponseTypeWrapper(javaType.getSuperClass().getRawClass())
-						&& !Object.class.equals(javaType.getSuperClass().getBindings().getBoundType(0).getRawClass()))
-					innerType = javaType.getSuperClass().getBindings().getBoundType(0);
+				JavaType innerType = findResponseEntity(javaType).containedType(0);
 				if (innerType == null)
 					return new StringSchema();
 				return context.resolve(new AnnotatedType(innerType)
@@ -83,4 +79,13 @@ public class ResponseSupportConverter implements ModelConverter {
 		}
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
 	}
+
+	private JavaType findResponseEntity(JavaType javaType){
+		if(ResponseEntity.class.isAssignableFrom(javaType.getRawClass())){
+			while (ResponseEntity.class != javaType.getRawClass())
+				javaType = javaType.getSuperClass();
+		}
+		return javaType;
+	}
+
 }
