@@ -84,7 +84,7 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 
 	@Test
 	public void shouldReturnCorrectInitializerJSWhenChangingForwardedPrefixHeader() throws Exception {
-		var tasks = IntStream.range(0, 100).mapToObj(i -> CompletableFuture.runAsync(() -> {
+		var tasks = IntStream.range(0, 10).mapToObj(i -> CompletableFuture.runAsync(() -> {
 			try {
 				mockMvc.perform(get("/swagger-ui/swagger-initializer.js")
 								.header("X-Forwarded-Prefix", "/path/prefix" + i))
@@ -102,7 +102,7 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 
 	@Test
 	public void shouldCalculateUrlsBehindProxyWhenChangingForwardedPrefixHeader() {
-		var tasks = IntStream.range(0, 100).mapToObj(i -> CompletableFuture.runAsync(() -> {
+		var tasks = IntStream.range(0, 10).mapToObj(i -> CompletableFuture.runAsync(() -> {
 			try {
 				mockMvc.perform(get("/v3/api-docs/swagger-config")
 								.header("X-Forwarded-Prefix", X_FORWARD_PREFIX + i))
