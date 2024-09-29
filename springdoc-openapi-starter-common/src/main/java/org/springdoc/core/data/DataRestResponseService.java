@@ -39,10 +39,10 @@ import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.springdoc.core.models.MethodAttributes;
-import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.utils.SpringDocDataRestUtils;
 
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.rest.core.mapping.MethodResourceMapping;
@@ -197,7 +197,7 @@ public class DataRestResponseService {
 	 */
 	private Type findSearchReturnType(MethodResourceMapping methodResourceMapping, Class<?> domainType) {
 		Type returnType;
-		Type returnRepoType = ReturnTypeParser.resolveType(methodResourceMapping.getMethod().getGenericReturnType(), methodResourceMapping.getMethod().getDeclaringClass());
+		Type returnRepoType = GenericTypeResolver.resolveType(methodResourceMapping.getMethod().getGenericReturnType(), methodResourceMapping.getMethod().getDeclaringClass());
 		if (methodResourceMapping.isPagingResource()) {
 			returnType = resolveGenericType(PagedModel.class, EntityModel.class, domainType);
 		}
@@ -224,7 +224,7 @@ public class DataRestResponseService {
 	 * @return the type
 	 */
 	private Type getType(MethodParameter methodParameterReturn, RequestMethod requestMethod, DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata) {
-		Type returnType = ReturnTypeParser.resolveType(methodParameterReturn.getGenericParameterType(), methodParameterReturn.getContainingClass());
+		Type returnType = GenericTypeResolver.resolveType(methodParameterReturn.getGenericParameterType(), methodParameterReturn.getContainingClass());
 		Class returnedEntityType = dataRestRepository.getReturnType();
 
 		if (returnType instanceof ParameterizedType) {
@@ -240,7 +240,7 @@ public class DataRestResponseService {
 				}
 			}
 			else if ((CollectionModel.class.equals(parameterizedType.getRawType())
-					&& Object.class.equals(parameterizedType.getActualTypeArguments()[0]))) {
+					&& parameterizedType.getActualTypeArguments()[0]!=null)) {
 				return getTypeForCollectionModel(returnedEntityType, resourceMetadata.isPagingResource());
 			}
 		}

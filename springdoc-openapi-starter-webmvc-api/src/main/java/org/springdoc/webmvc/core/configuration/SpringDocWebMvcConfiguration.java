@@ -31,7 +31,6 @@ import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
-import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.SpringDocProviders;
@@ -150,7 +149,6 @@ public class SpringDocWebMvcConfiguration {
 	 * Response builder generic response builder.
 	 *
 	 * @param operationService the operation builder
-	 * @param returnTypeParsers the return type parsers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param propertyResolverUtils the property resolver utils
 	 * @return the generic response builder
@@ -158,8 +156,8 @@ public class SpringDocWebMvcConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	GenericResponseService responseBuilder(OperationService operationService, List<ReturnTypeParser> returnTypeParsers, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
-		return new GenericResponseService(operationService, returnTypeParsers, springDocConfigProperties, propertyResolverUtils);
+	GenericResponseService responseBuilder(OperationService operationService, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
+		return new GenericResponseService(operationService, springDocConfigProperties, propertyResolverUtils);
 	}
 
 	/**

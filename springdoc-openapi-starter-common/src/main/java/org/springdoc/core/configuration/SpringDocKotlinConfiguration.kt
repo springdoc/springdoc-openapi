@@ -2,7 +2,6 @@ package org.springdoc.core.configuration
 
 import io.swagger.v3.oas.annotations.Parameter
 import org.springdoc.core.customizers.ParameterCustomizer
-import org.springdoc.core.parsers.KotlinCoroutinesReturnTypeParser
 import org.springdoc.core.utils.Constants
 import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
@@ -44,18 +43,6 @@ class SpringDocKotlinConfiguration() {
 		SpringDocUtils.getConfig()
 			.addRequestWrapperToIgnore(Continuation::class.java)
 			.addDeprecatedType(Deprecated::class.java)
-	}
-
-	/**
-	 * Kotlin coroutines return type parser kotlin coroutines return type parser.
-	 *
-	 * @return the kotlin coroutines return type parser
-	 */
-	@Bean
-	@Lazy(false)
-	@ConditionalOnMissingBean
-	fun kotlinCoroutinesReturnTypeParser(): KotlinCoroutinesReturnTypeParser {
-		return KotlinCoroutinesReturnTypeParser()
 	}
 
 	/**

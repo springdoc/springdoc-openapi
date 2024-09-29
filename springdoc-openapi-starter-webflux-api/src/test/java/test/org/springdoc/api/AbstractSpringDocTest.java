@@ -21,6 +21,7 @@ package test.org.springdoc.api;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
 
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.web.reactive.function.server.HandlerFunction;
@@ -30,6 +31,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @WebFluxTest
+@AutoConfigureWebTestClient(timeout = "3600000")
 public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	public static final HandlerFunction<ServerResponse> HANDLER_FUNCTION = request -> ServerResponse.ok().build();

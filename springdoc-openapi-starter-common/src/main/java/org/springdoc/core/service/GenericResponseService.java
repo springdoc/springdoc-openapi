@@ -63,13 +63,16 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.models.ControllerAdviceInfo;
 import org.springdoc.core.models.MethodAdviceInfo;
 import org.springdoc.core.models.MethodAttributes;
-import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -95,7 +98,7 @@ import static org.springdoc.core.utils.SpringDocAnnotationsUtils.mergeSchema;
  *
  * @author bnasslahsen
  */
-public class GenericResponseService {
+public class GenericResponseService implements ApplicationContextAware {
 
 	/**
 	 * This extension name is used to temporary store
@@ -112,11 +115,6 @@ public class GenericResponseService {
 	 * The Operation builder.
 	 */
 	private final OperationService operationService;
-
-	/**
-	 * The Return type parsers.
-	 */
-	private final List<ReturnTypeParser> returnTypeParsers;
 
 	/**
 	 * The Spring doc config properties.
@@ -144,6 +142,11 @@ public class GenericResponseService {
 	private final Lock reentrantLock = new ReentrantLock();
 
 	/**
+	 * The Context.
+	 */
+	private ApplicationContext applicationContext;
+	
+	/**
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericResponseService.class);
@@ -152,16 +155,14 @@ public class GenericResponseService {
 	 * Instantiates a new Generic response builder.
 	 *
 	 * @param operationService          the operation builder
-	 * @param returnTypeParsers         the return type parsers
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param propertyResolverUtils     the property resolver utils
 	 */
-	public GenericResponseService(OperationService operationService, List<ReturnTypeParser> returnTypeParsers,
+	public GenericResponseService(OperationService operationService,
 			SpringDocConfigProperties springDocConfigProperties,
 			PropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.operationService = operationService;
-		this.returnTypeParsers = returnTypeParsers;
 		this.springDocConfigProperties = springDocConfigProperties;
 		this.propertyResolverUtils = propertyResolverUtils;
 	}
@@ -514,7 +515,7 @@ public class GenericResponseService {
 	 * @return the content
 	 */
 	private Content buildContent(Components components, MethodParameter methodParameter, String[] methodProduces, JsonView jsonView) {
-		Type returnType = getReturnType(methodParameter);
+		Type returnType = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
 		return buildContent(components, methodParameter.getParameterAnnotations(), methodProduces, jsonView, returnType);
 	}
 
@@ -543,25 +544,6 @@ public class GenericResponseService {
 			}
 		}
 		return content;
-	}
-
-	/**
-	 * Gets return type.
-	 *
-	 * @param methodParameter the method parameter
-	 * @return the return type
-	 */
-	private Type getReturnType(MethodParameter methodParameter) {
-		Type returnType = Object.class;
-		for (ReturnTypeParser returnTypeParser : returnTypeParsers) {
-			if (returnType.getTypeName().equals(Object.class.getTypeName())) {
-				returnType = returnTypeParser.getReturnType(methodParameter);
-			}
-			else
-				break;
-		}
-
-		return returnType;
 	}
 
 	/**
@@ -625,7 +607,7 @@ public class GenericResponseService {
 			 ((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc()))) {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
-			Type type = ReturnTypeParser.getType(methodParameter);
+			Type type = GenericTypeResolver.resolveType( methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
 			Schema<?> schemaN = calculateSchema(components, type,
 					methodAttributes.getJsonViewAnnotation(), methodParameter.getParameterAnnotations());
 			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getMethodProduces()))
@@ -679,6 +661,13 @@ public class GenericResponseService {
 		return result;
 	}
 
+	
+	private ControllerAdviceBean getControllerAdviceBean(List<ControllerAdviceBean> controllerAdviceBeans, Object controllerAdvice) {
+		return controllerAdviceBeans.stream()
+				.filter(controllerAdviceBean -> controllerAdviceBean.getBeanType().getName().equals(controllerAdvice.getClass().getName()))
+				.findFirst()
+				.orElse(null);
+	}
 	/**
 	 * Gets generic map response.
 	 *
@@ -702,9 +691,12 @@ public class GenericResponseService {
 					.map(ControllerAdviceInfo::getApiResponseMap)
 					.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
 
+			List<ControllerAdviceBean> controllerAdviceBeans = ControllerAdviceBean.findAnnotatedBeans(applicationContext);
+			
 			List<ControllerAdviceInfo> controllerAdviceInfosNotInThisBean = controllerAdviceInfos.stream()
-					.filter(controllerAdviceInfo ->
-							new ControllerAdviceBean(controllerAdviceInfo.getControllerAdvice()).isApplicableToBeanType(beanType))
+					.filter(controllerAdviceInfo -> 
+							getControllerAdviceBean(controllerAdviceBeans, controllerAdviceInfo.getControllerAdvice())
+							.isApplicableToBeanType(beanType))
 					.filter(controllerAdviceInfo -> !beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
 					.toList();
 
@@ -827,5 +819,10 @@ public class GenericResponseService {
 		return RuntimeException.class.isAssignableFrom(exceptionClass)
 				|| exceptionClass.isAssignableFrom(Exception.class)
 				|| Error.class.isAssignableFrom(exceptionClass);
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 }
