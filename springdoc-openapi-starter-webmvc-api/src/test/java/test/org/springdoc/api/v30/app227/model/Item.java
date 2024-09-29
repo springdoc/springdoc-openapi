@@ -1,4 +1,4 @@
-package test.org.springdoc.api.app227.model;
+package test.org.springdoc.api.v30.app227.model;
 
 /**
  * Base item
