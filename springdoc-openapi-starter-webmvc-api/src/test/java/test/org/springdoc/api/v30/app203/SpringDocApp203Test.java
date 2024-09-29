@@ -41,9 +41,9 @@ public class SpringDocApp203Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication
 	@Import({
-			OrderDemo.Customizer3.class,
-			OrderDemo.Customizer2.class,
 			OrderDemo.Customizer1.class,
+			OrderDemo.Customizer2.class,
+			OrderDemo.Customizer3.class,
 	})
 	static class SpringDocTestApp {}
 

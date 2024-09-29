@@ -478,10 +478,16 @@ public abstract class AbstractRequestService {
 	 * @return the boolean
 	 */
 	private boolean isRequestBodyWithMapType(MethodParameter parameter) {
+		// Exclude parameters from the Actuator package
+		if (parameter.getContainingClass().getPackageName().startsWith("org.springframework.boot.actuate")) {
+			return false;
+		}
+		// Check for @RequestBody annotation
 		org.springframework.web.bind.annotation.RequestBody requestBody = parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class);
 		if (requestBody == null) {
 			return false;
 		}
+		// Check if the parameter type is assignable to Map
 		Class<?> parameterType = parameter.getParameterType();
 		return Map.class.isAssignableFrom(parameterType);
 	}

@@ -26,7 +26,6 @@ package test.org.springdoc.api.app186;
 
 
 import org.junit.jupiter.api.Test;
-import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.utils.Constants;
@@ -83,12 +82,10 @@ public class SpringDocApp186Test extends AbstractCommonTest {
 	static class SpringDocTestApp {
 
 		@Bean
-		public GroupedOpenApi asCodeCheckBackwardsCompatibility(ActuatorOpenApiCustomizer actuatorOpenApiCustomiser,
-				OperationCustomizer actuatorCustomizer, WebEndpointProperties endpointProperties) {
+		public GroupedOpenApi asCodeCheckBackwardsCompatibility(OperationCustomizer actuatorCustomizer, WebEndpointProperties endpointProperties) {
 			return GroupedOpenApi.builder()
 					.group("group-actuator-as-code-check-backwards-compatibility")
 					.pathsToMatch(endpointProperties.getBasePath() + ALL_PATTERN)
-					.addOpenApiCustomizer(actuatorOpenApiCustomiser)
 					.addOperationCustomizer(actuatorCustomizer)
 					.build();
 		}

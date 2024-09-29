@@ -65,6 +65,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -206,7 +207,7 @@ class AbstractOpenApiResourceTest {
 				requestBuilder,
 				responseBuilder,
 				operationParser,
-				properties, springDocProviders, new SpringDocCustomizers(Optional.of(singletonList(openApiCustomizer)),Optional.empty(),Optional.empty(),Optional.empty())
+				properties, springDocProviders, new SpringDocCustomizers(Optional.of(singleton(openApiCustomizer)),Optional.empty(),Optional.empty(),Optional.empty())
 		);
 
 		// wait for executor to be done

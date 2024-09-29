@@ -1,10 +1,10 @@
 package org.springdoc.core.model;
 
-import org.junit.jupiter.api.Test;
-import org.springdoc.core.models.MethodAttributes;
-
 import java.lang.reflect.Method;
 import java.util.Locale;
+
+import org.junit.jupiter.api.Test;
+import org.springdoc.core.models.MethodAttributes;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 

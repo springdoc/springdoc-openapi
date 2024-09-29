@@ -27,7 +27,6 @@ import java.util.Optional;
 
 import org.springdoc.core.configuration.SpringDocDataRestConfiguration;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
-import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
 import test.org.springdoc.api.AbstractSpringDocTest;
