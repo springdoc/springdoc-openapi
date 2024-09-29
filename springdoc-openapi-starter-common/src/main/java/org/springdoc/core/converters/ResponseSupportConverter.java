@@ -80,6 +80,12 @@ public class ResponseSupportConverter implements ModelConverter {
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
 	}
 
+	/**
+	 * Find response entity java type.
+	 *
+	 * @param javaType the java type
+	 * @return the java type
+	 */
 	private JavaType findResponseEntity(JavaType javaType){
 		if(ResponseEntity.class.isAssignableFrom(javaType.getRawClass())){
 			while (ResponseEntity.class != javaType.getRawClass())
