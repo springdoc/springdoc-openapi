@@ -103,6 +103,15 @@ public class ConverterUtils {
 	}
 
 	/**
+	 * Is exact class
+	 * @param rawClass the raw class
+	 * true if the class is in the list of classes to ignore
+	 */
+	public static boolean isExactClass(Class<?> rawClass) {
+		return RESULT_WRAPPERS_TO_IGNORE.stream().anyMatch(clazz -> clazz == rawClass);
+	}
+
+	/**
 	 * Is response type to ignore boolean.
 	 *
 	 * @param rawClass the raw class
