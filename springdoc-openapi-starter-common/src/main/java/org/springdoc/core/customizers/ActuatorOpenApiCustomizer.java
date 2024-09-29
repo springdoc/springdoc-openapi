@@ -38,9 +38,10 @@ import io.swagger.v3.oas.models.Paths;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 
 /**
- * The type Actuator open api customiser.
+ * The type Actuator open api customizer.
  * @author bnasslahsen
- * @Deprecated as not anymore required, use your own {@link org.springdoc.core.customizers.GlobalOpenApiCustomizer} instead
+ * @deprecated  as not anymore required, use your own {@link org.springdoc.core.customizers.GlobalOpenApiCustomizer} instead
+ * @since 2.7.0
  */
 public class ActuatorOpenApiCustomizer implements GlobalOpenApiCustomizer {
 
