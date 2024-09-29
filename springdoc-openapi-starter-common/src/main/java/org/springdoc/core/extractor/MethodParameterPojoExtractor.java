@@ -52,8 +52,8 @@ import java.util.stream.Stream;
 
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.Parameter;
-import org.springdoc.core.parsers.ReturnTypeParser;
 
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 
 import static org.springdoc.core.utils.Constants.DOT;
@@ -158,7 +158,7 @@ public class MethodParameterPojoExtractor {
 	private static Class<?> extractType(Class<?> paramClass, Field field) {
 		Class<?> type = field.getType();
 		if (field.getGenericType() instanceof TypeVariable<?>) {
-			Type fieldType = ReturnTypeParser.resolveType(field.getGenericType(), paramClass);
+			Type fieldType = GenericTypeResolver.resolveType(field.getGenericType(), paramClass);
 
 			if (fieldType instanceof Class<?>)
 				type = (Class<?>) fieldType;

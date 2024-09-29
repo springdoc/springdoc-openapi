@@ -30,7 +30,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = { "springdoc.show-login-endpoint=true", "springdoc.enable-spring-security=false" })
 public class SpringDocApp9Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.configuration,test.org.springdoc.api.app9" })
+	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.configuration","test.org.springdoc.api.app9" })
 	static class SpringDocTestApp {
 		@Bean
 		public OpenAPI customOpenAPI() {

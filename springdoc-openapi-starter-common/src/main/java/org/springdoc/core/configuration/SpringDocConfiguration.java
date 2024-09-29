@@ -74,7 +74,6 @@ import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.models.GroupedOpenApi;
-import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
 import org.springdoc.core.providers.CloudFunctionProvider;
@@ -361,18 +360,7 @@ public class SpringDocConfiguration {
 	SecurityService securityParser(PropertyResolverUtils propertyResolverUtils) {
 		return new SecurityService(propertyResolverUtils);
 	}
-
-	/**
-	 * Generic return type parser return type parser.
-	 *
-	 * @return the return type parser
-	 */
-	@Bean
-	@Lazy(false)
-	ReturnTypeParser genericReturnTypeParser() {
-		return new ReturnTypeParser() {};
-	}
-
+	
 	/**
 	 * Parameter builder generic parameter builder.
 	 *
