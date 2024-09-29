@@ -20,6 +20,8 @@ package test.org.springdoc.api.app227;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import test.org.springdoc.api.AbstractSpringDocTest;
 
@@ -40,4 +42,6 @@ public class SpringDocApp227Test extends AbstractSpringDocTest {
 				.andExpect(content().json(getContent("results/app227.json"), true));
 	}
 
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 }
