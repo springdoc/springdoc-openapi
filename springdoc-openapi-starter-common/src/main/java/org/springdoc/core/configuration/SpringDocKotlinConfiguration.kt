@@ -1,7 +1,6 @@
 package org.springdoc.core.configuration
 
 import io.swagger.v3.oas.annotations.Parameter
-import io.swagger.v3.oas.models.media.ByteArraySchema
 import org.springdoc.core.customizers.ParameterCustomizer
 import org.springdoc.core.parsers.KotlinCoroutinesReturnTypeParser
 import org.springdoc.core.utils.Constants

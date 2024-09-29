@@ -29,7 +29,6 @@ import java.util.Optional;
 import org.springdoc.core.converters.PageOpenAPIConverter;
 import org.springdoc.core.converters.PageableOpenAPIConverter;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
-import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.SpringDataWebPropertiesProvider;

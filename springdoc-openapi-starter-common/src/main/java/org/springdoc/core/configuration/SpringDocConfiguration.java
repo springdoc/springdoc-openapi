@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.querydsl.core.types.Predicate;
@@ -54,7 +55,6 @@ import org.springdoc.core.converters.PropertyCustomizingConverter;
 import org.springdoc.core.converters.ResponseSupportConverter;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
 import org.springdoc.core.converters.WebFluxSupportConverter;
-import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.ActuatorOperationCustomizer;
 import org.springdoc.core.customizers.DataRestRouterOperationCustomizer;
 import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
@@ -483,19 +483,6 @@ public class SpringDocConfiguration {
 			return new ActuatorOperationCustomizer(springDocConfigProperties);
 		}
 
-		/**
-		 * Actuator customizer OpenAPI customiser.
-		 *
-		 * @param webEndpointProperties the web endpoint properties
-		 * @return the OpenAPI customiser
-		 */
-		@Bean
-		@Lazy(false)
-		@ConditionalOnManagementPort(ManagementPortType.SAME)
-		GlobalOpenApiCustomizer actuatorOpenApiCustomizer(WebEndpointProperties webEndpointProperties) {
-			return new ActuatorOpenApiCustomizer(webEndpointProperties);
-		}
-
 	}
 
 	/**
@@ -612,12 +599,13 @@ public class SpringDocConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	public SpringDocCustomizers springDocCustomizers(Optional<List<OpenApiCustomizer>> openApiCustomizers,
-			Optional<List<OperationCustomizer>> operationCustomizers,
-			Optional<List<RouterOperationCustomizer>> routerOperationCustomizers,
-			Optional<List<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
-			Optional<List<OpenApiMethodFilter>> methodFilters, Optional<List<GlobalOpenApiCustomizer>> globalOpenApiCustomizers, Optional<List<GlobalOperationCustomizer>> globalOperationCustomizers,
-			Optional<List<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters){
+	public SpringDocCustomizers springDocCustomizers(Optional<Set<OpenApiCustomizer>> openApiCustomizers,
+			Optional<Set<OperationCustomizer>> operationCustomizers,
+			Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers,
+			Optional<Set<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
+			Optional<Set<OpenApiMethodFilter>> methodFilters, Optional<Set<GlobalOpenApiCustomizer>> globalOpenApiCustomizers, 
+			Optional<Set<GlobalOperationCustomizer>> globalOperationCustomizers,
+			Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters){
 		return new SpringDocCustomizers(openApiCustomizers,
 				operationCustomizers,
 				 routerOperationCustomizers,

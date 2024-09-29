@@ -24,6 +24,8 @@
 
 package org.springdoc.ui;
 
+import java.util.Objects;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
@@ -32,8 +34,6 @@ import org.springdoc.core.properties.SwaggerUiConfigProperties;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.Objects;
 
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_URL;
