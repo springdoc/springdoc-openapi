@@ -30,6 +30,26 @@
           }
         }
       }
+    },
+    "/persons2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "persons2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemString"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
