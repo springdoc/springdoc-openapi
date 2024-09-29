@@ -77,11 +77,16 @@ public class ResponseSupportConverter implements ModelConverter {
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
 	}
 
+	/**
+	 * Resolve inner type java type.
+	 *
+	 * @param javaType the java type
+	 * @return the java type
+	 */
 	private JavaType resolveInnerType(JavaType javaType) {
-		while(!isExactClass(javaType.getRawClass())) {
+		if(!isExactClass(javaType.getRawClass())) {
 			javaType = javaType.getSuperClass();
 		}
-
 		return javaType.getBindings().getBoundType(0);
 	}
 
