@@ -35,6 +35,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import io.swagger.v3.oas.annotations.media.Schema.AdditionalPropertiesValue;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import io.swagger.v3.oas.annotations.media.Schema.SchemaResolution;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
@@ -227,6 +228,11 @@ public class Builder {
 	 * The list of optional extensions
 	 */
 	private Extension[] extensions = {};
+
+	/**
+	 * The Schema resolution.
+	 */
+	private SchemaResolution schemaResolution;
 
 	/**
 	 * Allows to specify the additionalProperties value
@@ -819,6 +825,17 @@ public class Builder {
 	}
 
 	/**
+	 * Schema resolution builder.
+	 *
+	 * @param schemaResolution the schema resolution
+	 * @return the builder
+	 */
+	public Builder schemaResolution(SchemaResolution schemaResolution) {
+		this.schemaResolution = schemaResolution;
+		return this;
+	}
+	
+	/**
 	 * Additional properties builder.
 	 *
 	 * @param additionalProperties the additional properties
@@ -1194,6 +1211,11 @@ public class Builder {
 			@Override
 			public String _const() {
 				return _const;
+			}
+
+			@Override
+			public SchemaResolution schemaResolution() {
+				return schemaResolution;
 			}
 		};
 	}
