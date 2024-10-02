@@ -105,19 +105,16 @@
             "format": "int32"
           },
           "sort": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SortObject"
-            }
-          },
-          "first": {
-            "type": "boolean"
+            "$ref": "#/components/schemas/SortObject"
           },
           "last": {
             "type": "boolean"
           },
           "pageable": {
             "$ref": "#/components/schemas/PageableObject"
+          },
+          "first": {
+            "type": "boolean"
           },
           "numberOfElements": {
             "type": "integer",
@@ -136,16 +133,7 @@
             "format": "int64"
           },
           "sort": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SortObject"
-            }
-          },
-          "paged": {
-            "type": "boolean"
-          },
-          "unpaged": {
-            "type": "boolean"
+            "$ref": "#/components/schemas/SortObject"
           },
           "pageNumber": {
             "type": "integer",
@@ -154,25 +142,25 @@
           "pageSize": {
             "type": "integer",
             "format": "int32"
+          },
+          "paged": {
+            "type": "boolean"
+          },
+          "unpaged": {
+            "type": "boolean"
           }
         }
       },
       "SortObject": {
         "type": "object",
         "properties": {
-          "direction": {
-            "type": "string"
-          },
-          "nullHandling": {
-            "type": "string"
-          },
-          "ascending": {
+          "empty": {
             "type": "boolean"
           },
-          "property": {
-            "type": "string"
+          "sorted": {
+            "type": "boolean"
           },
-          "ignoreCase": {
+          "unsorted": {
             "type": "boolean"
           }
         }

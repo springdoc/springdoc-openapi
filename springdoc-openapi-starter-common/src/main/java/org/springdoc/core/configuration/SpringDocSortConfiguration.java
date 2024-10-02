@@ -27,7 +27,6 @@ package org.springdoc.core.configuration;
 import java.util.Optional;
 
 import org.springdoc.core.converters.SortOpenAPIConverter;
-import org.springdoc.core.converters.models.SortObject;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
@@ -71,7 +70,6 @@ public class SpringDocSortConfiguration {
 	@Lazy(false)
 	SortOpenAPIConverter sortOpenAPIConverter(ObjectMapperProvider objectMapperProvider) {
 		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Sort.class, org.springdoc.core.converters.models.Sort.class);
-		getConfig().replaceWithClass(org.springframework.data.domain.Sort.class, SortObject.class);
 		return new SortOpenAPIConverter(objectMapperProvider);
 	}
 
