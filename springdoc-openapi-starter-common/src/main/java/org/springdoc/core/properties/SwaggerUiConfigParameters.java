@@ -284,7 +284,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put("tagsSorter", tagsSorter, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(SwaggerUiConfigParameters.LAYOUT_PROPERTY, layout, params);
 		if (supportedSubmitMethods != null)
-			org.springdoc.core.utils.SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
+			org.springdoc.core.utils.SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(OAUTH2_REDIRECT_URL_PROPERTY, oauth2RedirectUrl, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(URL_PROPERTY, url, params);
 		put(URLS_PROPERTY, urls, params);
