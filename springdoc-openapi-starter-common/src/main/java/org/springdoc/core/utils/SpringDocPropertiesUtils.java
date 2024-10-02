@@ -45,9 +45,7 @@ public interface SpringDocPropertiesUtils {
 	 * @param params the params
 	 */
 	static void put(String name, List<String> value, Map<String, Object> params) {
-		if (!CollectionUtils.isEmpty(value)) {
 			params.put(name, value);
-		}
 	}
 
 	/**
