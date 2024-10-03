@@ -109,7 +109,7 @@ Maven
 
 Gradle
 ```groovy
-implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:latest")
+implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
 ```
 
 * This step is optional: For custom path of the swagger documentation in HTML format, add
@@ -161,7 +161,7 @@ Maven
 
 Gradle
 ```groovy
-implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:latest")
+implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
 ```
 
 * This step is optional: For custom path of the OpenAPI documentation in Json format, add
@@ -212,7 +212,7 @@ Maven
 
 Gradle
 ```groovy
-implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:latest")
+implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
 ```
 
 * This step is optional: For custom path of the swagger documentation in HTML format, add
