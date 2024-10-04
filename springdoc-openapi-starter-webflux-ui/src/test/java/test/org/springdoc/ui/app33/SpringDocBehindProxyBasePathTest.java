@@ -16,7 +16,7 @@
  *
  */
 
-package test.org.springdoc.ui.app32;
+package test.org.springdoc.ui.app33;
 
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Test;
@@ -37,8 +37,8 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { //"spring.webflux.base-path=/test",
-				"server.forward-headers-strategy=native",
+		properties = { "spring.webflux.base-path=/test",
+				"server.forward-headers-strategy=framework",
 				"server.port=9318",
 				"springdoc.swagger-ui.path=/documentation/swagger-ui.html",
 				"springdoc.api-docs.path=/documentation/v3/api-docs",
@@ -47,7 +47,8 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 @Import(SpringDocConfig.class)
 public class SpringDocBehindProxyBasePathTest extends AbstractCommonTest {
 
-	private static final String X_FORWARD_PREFIX = "/path/prefix";
+	public static final String WEBFLUX_BASE_PATH = "/test";
+	public static final String X_FORWARD_PREFIX = "/path/prefix";
 
 	@LocalServerPort
 	private int port;
@@ -62,21 +63,22 @@ public class SpringDocBehindProxyBasePathTest extends AbstractCommonTest {
 
 	@Test
 	public void testIndex() throws Exception {
-		HttpStatusCode httpStatusMono = webClient.get().uri("/documentation/swagger-ui.html")
+		HttpStatusCode httpStatusMono = webClient.get().uri(WEBFLUX_BASE_PATH+"/documentation/swagger-ui.html")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 
-		httpStatusMono = webClient.get().uri("/documentation/webjars-pref/swagger-ui/index.html")
+		httpStatusMono = webClient.get().uri(WEBFLUX_BASE_PATH+"/documentation/webjars-pref/swagger-ui/index.html")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.OK);
 
-		String contentAsString = webClient.get().uri("/documentation/v3/api-docs/swagger-config")
+		String contentAsString = webClient.get().uri(WEBFLUX_BASE_PATH+"/documentation/v3/api-docs/swagger-config")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.retrieve()
 				.bodyToMono(String.class).block();
-		String expected = getContent("results/app32-1.json");
+		
+		String expected = getContent("results/app33.json");
 		assertEquals(expected, contentAsString, true);
 	}
 	
