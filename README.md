@@ -98,12 +98,18 @@ This is a community-based project, not maintained by the Spring Framework Contri
 * Add the `springdoc-openapi-ui` library to the list of your project dependencies (No
   additional configuration is needed):
 
+Maven
 ```xml
    <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
       <version>last-release-version</version>
    </dependency>
+```
+
+Gradle
+```groovy
+implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
 ```
 
 * This step is optional: For custom path of the swagger documentation in HTML format, add
@@ -144,12 +150,18 @@ springdoc.swagger-ui.path=/swagger-ui.html
 * Add the library to the list of your project dependencies. (No additional configuration
   is needed)
 
+Maven
 ```xml
    <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
       <version>last-release-version</version>
    </dependency>
+```
+
+Gradle
+```groovy
+implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
 ```
 
 * This step is optional: For custom path of the OpenAPI documentation in Json format, add
@@ -189,12 +201,18 @@ and `@SecurityScheme` annotations within a Spring managed bean.
 * Add the library to the list of your project dependencies (No additional configuration
   is needed)
 
+Maven
 ```xml
    <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
       <version>last-release-version</version>
    </dependency>
+```
+
+Gradle
+```groovy
+implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:latest'
 ```
 
 * This step is optional: For custom path of the swagger documentation in HTML format, add
