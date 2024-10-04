@@ -17,46 +17,6 @@
     }
   ],
   "paths": {
-    "/class-hierarchy/abstract-parent": {
-      "post": {
-        "tags": [
-          "controller"
-        ],
-        "summary": "Abstract parent response.",
-        "description": "Abstract parent response.",
-        "operationId": "abstractParent",
-        "requestBody": {
-          "description": "the payload",
-          "content": {
-            "application/json": {
-              "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ChildOfAbstract1"
-                  },
-                  {
-                    "$ref": "#/components/schemas/ChildOfAbstract2"
-                  }
-                ]
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "the response",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Response"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/class-hierarchy/concrete-parent": {
       "post": {
         "tags": [
@@ -99,74 +59,50 @@
           }
         }
       }
+    },
+    "/class-hierarchy/abstract-parent": {
+      "post": {
+        "tags": [
+          "controller"
+        ],
+        "summary": "Abstract parent response.",
+        "description": "Abstract parent response.",
+        "operationId": "abstractParent",
+        "requestBody": {
+          "description": "the payload",
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ChildOfAbstract1"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ChildOfAbstract2"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "the response",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "AbstractParent": {
-        "required": [
-          "type"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "type": {
-            "type": "string"
-          }
-        },
-        "discriminator": {
-          "propertyName": "type"
-        }
-      },
-      "ChildOfAbstract1": {
-        "type": "object",
-        "description": "The type Child of abstract 1.",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AbstractParent"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "abstrachChild1Param": {
-                "type": "string",
-                "description": "The Abstrach child 1 param."
-              },
-              "id": {
-                "type": "integer",
-                "description": "The Id.",
-                "format": "int32"
-              }
-            }
-          }
-        ]
-      },
-      "ChildOfAbstract2": {
-        "type": "object",
-        "description": "The type Child of abstract 2.",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/AbstractParent"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "abstractChild2Param": {
-                "type": "string",
-                "description": "The Abstract child 2 param."
-              },
-              "id": {
-                "type": "integer",
-                "description": "The Id.",
-                "format": "int32"
-              }
-            }
-          }
-        ]
-      },
       "ChildOfConcrete1": {
         "type": "object",
         "description": "The type Child of concrete 1.",
@@ -177,14 +113,14 @@
           {
             "type": "object",
             "properties": {
-              "concreteChild1Param": {
-                "type": "string",
-                "description": "The Concrete child 1 param."
-              },
               "id": {
                 "type": "integer",
                 "description": "The Id.",
                 "format": "int32"
+              },
+              "concreteChild1Param": {
+                "type": "string",
+                "description": "The Concrete child 1 param."
               }
             }
           }
@@ -200,14 +136,14 @@
           {
             "type": "object",
             "properties": {
-              "concreteChild2Param": {
-                "type": "string",
-                "description": "The Concrete child 2 param."
-              },
               "id": {
                 "type": "integer",
                 "description": "The Id.",
                 "format": "int32"
+              },
+              "concreteChild2Param": {
+                "type": "string",
+                "description": "The Concrete child 2 param."
               }
             }
           }
@@ -232,6 +168,72 @@
         "discriminator": {
           "propertyName": "type"
         }
+      },
+      "AbstractParent": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The Id.",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "description": "The type Abstract parent.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "ChildOfAbstract1": {
+        "type": "object",
+        "description": "The type Child of abstract 1.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AbstractParent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "The Id.",
+                "format": "int32"
+              },
+              "abstrachChild1Param": {
+                "type": "string",
+                "description": "The Abstrach child 1 param."
+              }
+            }
+          }
+        ]
+      },
+      "ChildOfAbstract2": {
+        "type": "object",
+        "description": "The type Child of abstract 2.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AbstractParent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "The Id.",
+                "format": "int32"
+              },
+              "abstractChild2Param": {
+                "type": "string",
+                "description": "The Abstract child 2 param."
+              }
+            }
+          }
+        ]
       },
       "Response": {
         "type": "object",

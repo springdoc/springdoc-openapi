@@ -38,6 +38,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 /**
  * The type Spring doc security configuration.
@@ -73,6 +75,7 @@ public class SpringDocJavadocConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
+	@Order(Ordered.HIGHEST_PRECEDENCE)
 	JavadocPropertyCustomizer javadocPropertyCustomizer(JavadocProvider javadocProvider, ObjectMapperProvider objectMapperProvider) {
 		return new JavadocPropertyCustomizer(javadocProvider, objectMapperProvider);
 	}
