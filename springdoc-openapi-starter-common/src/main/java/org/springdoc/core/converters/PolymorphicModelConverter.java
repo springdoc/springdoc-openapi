@@ -38,6 +38,7 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.media.ComposedSchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
@@ -112,8 +113,16 @@ public class PolymorphicModelConverter implements ModelConverter {
 					type.resolveAsRef(true);
 				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
 				resolvedSchema = getResolvedSchema(javaType, resolvedSchema);
-				if (resolvedSchema == null || resolvedSchema.get$ref() == null)
+				if (resolvedSchema == null || resolvedSchema.get$ref() == null) {
 					return resolvedSchema;
+				}
+				if(resolvedSchema.get$ref().contains(Components.COMPONENTS_SCHEMAS_REF)) {
+					String schemaName = resolvedSchema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
+					Schema existingSchema = context.getDefinedModels().get(schemaName);
+					if (existingSchema != null && existingSchema.getOneOf() != null) {
+						return resolvedSchema;
+					}
+				}
 				return composePolymorphicSchema(type, resolvedSchema, context.getDefinedModels().values());
 			}
 		}
