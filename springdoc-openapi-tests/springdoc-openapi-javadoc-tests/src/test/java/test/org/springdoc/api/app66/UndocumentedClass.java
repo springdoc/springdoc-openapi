@@ -24,6 +24,6 @@ import io.swagger.v3.oas.annotations.Hidden;
  * The type Undocumented class.
  */
 @Hidden
-public class UndocumentedClass {
+class UndocumentedClass {
 
 }

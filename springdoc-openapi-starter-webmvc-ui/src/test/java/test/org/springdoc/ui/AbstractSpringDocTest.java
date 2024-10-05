@@ -58,7 +58,7 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 		checkJS("results/app" + testNumber, Constants.SWAGGER_INITIALIZER_URL, StringUtils.EMPTY);
 	}
 
-	protected void checkJSResult(String fileName, String htmlResult) throws Exception {
+	protected void checkJSResult(String fileName, String htmlResult) {
 		assertTrue(htmlResult.contains("window.ui"));
 		assertEquals(this.getContent(fileName), htmlResult.replace("\r", ""));
 	}

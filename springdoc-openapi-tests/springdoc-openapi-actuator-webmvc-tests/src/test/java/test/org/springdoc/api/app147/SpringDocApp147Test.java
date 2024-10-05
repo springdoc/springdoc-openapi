@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright 2019-2022 the original author or authors.
+ *  * Copyright 2019-2024 the original author or authors.
  *  *
  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 
 	@Test
-	public void testApp() throws Exception {
+	void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.ACTUATOR_DEFAULT_GROUP))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -51,7 +51,7 @@ public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 	}
 
 	@Test
-	public void testApp1() throws Exception {
+	void testApp1() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/users"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -59,7 +59,7 @@ public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 	}
 
 	@Test
-	public void testApp2() throws Exception {
+	void testApp2() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.DEFAULT_GROUP_NAME))
 				.andExpect(status().isNotFound());
 	}

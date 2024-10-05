@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping({ "/{country_code}/persons/", "/persons" })
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Delete.

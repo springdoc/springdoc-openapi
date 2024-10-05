@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  *
  * @param <T>  the type parameter
  */
-public class AbstractParameterObject<T extends Enum<T>> {
+class AbstractParameterObject<T extends Enum<T>> {
 
 	/**
 	 * The Primitive base field.

@@ -9,7 +9,7 @@ import org.springframework.test.context.TestPropertySource;
  * The type Spring doc app 160 test.
  */
 @TestPropertySource(properties = "springdoc.api-docs.resolve-schema-properties=true")
-public class SpringDocApp160Test extends AbstractSpringDocTest {
+class SpringDocApp160Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

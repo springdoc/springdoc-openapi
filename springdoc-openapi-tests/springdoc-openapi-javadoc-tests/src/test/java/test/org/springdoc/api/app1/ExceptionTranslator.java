@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * The type Exception translator.
  */
 @ControllerAdvice
-public class ExceptionTranslator {
+class ExceptionTranslator {
 
 	/**
 	 * The constant LOGGER.

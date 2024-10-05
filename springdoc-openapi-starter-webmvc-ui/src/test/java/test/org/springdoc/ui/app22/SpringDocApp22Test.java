@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp22Test extends AbstractSpringDocTest {
 
 	@Test
-	public void test_apidocs_disabled() throws Exception {
+	void test_apidocs_disabled() throws Exception {
 		mockMvc.perform(get("/api-docs/swagger-config"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("url", equalTo("/api-docs/xxx/v1/openapi.yml")))

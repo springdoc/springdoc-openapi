@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@
 package org.springdoc.core.configuration;
 
 
-import java.lang.reflect.Field;
 import java.util.Optional;
 
 import io.swagger.v3.oas.models.Operation;
@@ -62,7 +61,6 @@ import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2Aut
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
@@ -133,9 +131,8 @@ public class SpringDocSecurityConfiguration {
 						String mediaType = org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 						if (optionalDefaultLoginPageGeneratingFilter.isPresent()) {
 							DefaultLoginPageGeneratingFilter defaultLoginPageGeneratingFilter = optionalDefaultLoginPageGeneratingFilter.get();
-							Field formLoginEnabledField = FieldUtils.getDeclaredField(DefaultLoginPageGeneratingFilter.class, "formLoginEnabled", true);
 							try {
-								boolean formLoginEnabled = (boolean) formLoginEnabledField.get(defaultLoginPageGeneratingFilter);
+								boolean formLoginEnabled = (boolean) FieldUtils.readDeclaredField(defaultLoginPageGeneratingFilter, "formLoginEnabled", true);
 								if (formLoginEnabled)
 									mediaType = org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 							}
@@ -152,14 +149,11 @@ public class SpringDocSecurityConfiguration {
 						operation.addTagsItem("login-endpoint");
 						PathItem pathItem = new PathItem().post(operation);
 						try {
-							Field requestMatcherField = AbstractAuthenticationProcessingFilter.class.getDeclaredField("requiresAuthenticationRequestMatcher");
-							requestMatcherField.setAccessible(true);
-							AntPathRequestMatcher requestMatcher = (AntPathRequestMatcher) requestMatcherField.get(usernamePasswordAuthenticationFilter);
+							AntPathRequestMatcher requestMatcher = (AntPathRequestMatcher)FieldUtils.readField(usernamePasswordAuthenticationFilter, "requiresAuthenticationRequestMatcher", true);
 							String loginPath = requestMatcher.getPattern();
-							requestMatcherField.setAccessible(false);
 							openAPI.getPaths().addPathItem(loginPath, pathItem);
 						}
-						catch (NoSuchFieldException | IllegalAccessException |
+						catch (IllegalAccessException |
 							   ClassCastException ignored) {
 							// Exception escaped
 							LOGGER.trace(ignored.getMessage());

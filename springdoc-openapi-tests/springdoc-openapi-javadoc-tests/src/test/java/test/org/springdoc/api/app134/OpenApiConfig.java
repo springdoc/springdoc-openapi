@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * The type Open api config.
  */
 @Configuration
-public class OpenApiConfig {
+class OpenApiConfig {
 
 	/**
 	 * Group v 1 open api grouped open api.

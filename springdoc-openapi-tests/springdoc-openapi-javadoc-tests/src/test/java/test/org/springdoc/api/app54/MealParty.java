@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 /**
  * The type Meal party.
  */
-public class MealParty {
+class MealParty {
 	/**
 	 * The Name.
 	 */

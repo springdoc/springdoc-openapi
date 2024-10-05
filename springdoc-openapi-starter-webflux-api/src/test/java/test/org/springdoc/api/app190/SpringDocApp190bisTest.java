@@ -36,7 +36,7 @@ public class SpringDocApp190bisTest extends AbstractCommonTest {
 	static class SpringDocTestApp {}
 
 	@Test
-	public void test_enable_default_api_docs() throws Exception {
+	void test_enable_default_api_docs() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
 				.expectStatus().isOk();
 	}

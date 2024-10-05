@@ -37,7 +37,7 @@ public abstract class AbstractSpringDocFunctionTest extends AbstractCommonTest {
 
 
 	@Test
-	public void testApp() {
+	void testApp() {
 		String result = null;
 		try {
 			EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange()

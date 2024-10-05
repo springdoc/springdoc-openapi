@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * The type Spring doc app 41 test.
  */
 @TestPropertySource(properties = "springdoc.cache.disabled=true")
-public class SpringDocApp41Test extends AbstractSpringDocTest {
+class SpringDocApp41Test extends AbstractSpringDocTest {
 
 	/**
 	 * Test app.
@@ -48,7 +48,7 @@ public class SpringDocApp41Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		String className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())

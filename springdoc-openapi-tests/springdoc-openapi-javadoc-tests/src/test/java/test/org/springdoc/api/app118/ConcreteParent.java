@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 		@Type(ChildOfConcrete1.class),
 		@Type(ChildOfConcrete2.class)
 })
-public class ConcreteParent {
+class ConcreteParent {
 	/**
 	 * The Id.
 	 */

@@ -28,7 +28,7 @@ import org.springframework.test.context.TestPropertySource;
 public class SpringDocApp21Test extends AbstractSpringDocTest {
 
 	@Test
-	public void testUseRootPath() {
+	void testUseRootPath() {
 		webTestClient.get().uri("/").exchange()
 				.expectStatus().is3xxRedirection();
 		webTestClient.get().uri("/swagger-ui.html").exchange()

@@ -32,7 +32,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
  * The type Spring doc app 89 test.
  */
 @TestPropertySource(properties = "springdoc.model-and-view-allowed=true")
-public class SpringDocApp89Test extends AbstractSpringDocTest {
+class SpringDocApp89Test extends AbstractSpringDocTest {
 
 	static {
 		getConfig().replaceWithSchema(ModelAndView.class, new ObjectSchema());

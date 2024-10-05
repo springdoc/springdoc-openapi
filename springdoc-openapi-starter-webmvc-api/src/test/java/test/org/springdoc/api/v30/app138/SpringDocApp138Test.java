@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ public class SpringDocApp138Test extends AbstractSpringDocV30Test {
 	}
 
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		MvcResult mockMvcResult = mockMvc.perform(MockMvcRequestBuilders.get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();

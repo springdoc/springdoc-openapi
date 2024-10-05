@@ -37,10 +37,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(properties = { "management.endpoints.enabled-by-default=true", "springdoc.show-actuator=true" })
 public class SpringDocApp68Test extends AbstractSpringDocTest {
 
-	public static String className;
 
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/stores"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -48,7 +47,7 @@ public class SpringDocApp68Test extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void testApp2() throws Exception {
+	void testApp2() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/users"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -56,7 +55,7 @@ public class SpringDocApp68Test extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void testApp3() throws Exception {
+	void testApp3() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/pets"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -64,7 +63,7 @@ public class SpringDocApp68Test extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void testApp4() throws Exception {
+	void testApp4() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/groups test"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -72,7 +71,7 @@ public class SpringDocApp68Test extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void testActuator() throws Exception {
+	void testActuator() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(jsonPath("$.paths./actuator/health.get.summary", Matchers.is("Actuator web endpoint 'health'")))
@@ -80,7 +79,7 @@ public class SpringDocApp68Test extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void testActuatorDescription() throws Exception {
+	void testActuatorDescription() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(jsonPath("$.tags", hasSize(4)))
@@ -91,7 +90,7 @@ public class SpringDocApp68Test extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void testApp5() throws Exception {
+	void testApp5() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/user"))
 				.andExpect(status().isNotFound());
 	}

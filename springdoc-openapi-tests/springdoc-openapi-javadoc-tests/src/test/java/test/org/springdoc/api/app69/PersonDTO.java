@@ -21,7 +21,7 @@ package test.org.springdoc.api.app69;
 /**
  * The type Person dto.
  */
-public class PersonDTO {
+class PersonDTO {
 	/**
 	 * The Email.
 	 */

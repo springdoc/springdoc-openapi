@@ -47,13 +47,13 @@ class SpringDocApp16Test extends AbstractSpringDocActuatorTest {
 	}
 
 	@Test
-	public void testIndexActuator() {
+	void testIndexActuator() {
 		String contentAsString = actuatorRestTemplate.getForObject("/test/application/swagger-ui", String.class);
 		assertTrue(contentAsString.contains("Swagger UI"));
 	}
 
 	@Test
-	public void testIndexSwaggerConfig() throws Exception {
+	void testIndexSwaggerConfig() throws Exception {
 		String contentAsString = actuatorRestTemplate.getForObject("/test/application/swagger-ui/swagger-config", String.class);
 		String expected = getContent("results/app16-1.json");
 		assertEquals(expected, contentAsString, true);

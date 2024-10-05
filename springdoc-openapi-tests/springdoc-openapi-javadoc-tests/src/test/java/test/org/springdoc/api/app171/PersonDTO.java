@@ -21,7 +21,7 @@ package test.org.springdoc.api.app171;
 /**
  * Simulate a dynamically generated class that implements the PersonProjection interface.
  */
-public class PersonDTO implements PersonProjection {
+class PersonDTO implements PersonProjection {
 	private String email;
 
 	private String firstName;

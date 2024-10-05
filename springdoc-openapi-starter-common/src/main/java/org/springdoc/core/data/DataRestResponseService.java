@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -227,14 +227,12 @@ public class DataRestResponseService {
 		Type returnType = GenericTypeResolver.resolveType(methodParameterReturn.getGenericParameterType(), methodParameterReturn.getContainingClass());
 		Class returnedEntityType = dataRestRepository.getReturnType();
 
-		if (returnType instanceof ParameterizedType) {
-			ParameterizedType parameterizedType = (ParameterizedType) returnType;
+		if (returnType instanceof ParameterizedType parameterizedType) {
 			if ((ResponseEntity.class.equals(parameterizedType.getRawType()))) {
 				return getTypeForResponseEntity(requestMethod, dataRestRepository, returnedEntityType, parameterizedType);
 			}
 			else if ((HttpEntity.class.equals(parameterizedType.getRawType())
-					&& parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType)) {
-				ParameterizedType wildcardTypeUpperBound = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
+					&& parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType wildcardTypeUpperBound)) {
 				if (RepresentationModel.class.equals(wildcardTypeUpperBound.getRawType())) {
 					return resolveGenericType(HttpEntity.class, RepresentationModel.class, returnedEntityType);
 				}
@@ -294,8 +292,7 @@ public class DataRestResponseService {
 	 */
 	private Type getTypeForWildcardType(RequestMethod requestMethod, DataRestRepository dataRestRepository, Class returnedEntityType, ParameterizedType parameterizedType) {
 		WildcardType wildcardType = (WildcardType) parameterizedType.getActualTypeArguments()[0];
-		if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType) {
-			ParameterizedType wildcardTypeUpperBound = (ParameterizedType) wildcardType.getUpperBounds()[0];
+		if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType wildcardTypeUpperBound) {
 			if (RepresentationModel.class.equals(wildcardTypeUpperBound.getRawType())) {
 				Class<?> type = findType(requestMethod, dataRestRepository);
 				if (MapModel.class.equals(type))

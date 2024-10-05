@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * The type Tag.
  */
-public class Tag {
+class Tag {
 
 	/**
 	 * The Id.

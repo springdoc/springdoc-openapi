@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * The type User.
  */
-public class User {
+class User {
 	/**
 	 * The Some text.
 	 */

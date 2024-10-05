@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@
 
 package org.springdoc.core.converters;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,8 +74,7 @@ public class ModelConverterRegistrar {
 	@SuppressWarnings("unchecked")
 	private Optional<ModelConverter> getRegisteredConverterSameAs(ModelConverter modelConverter) {
 		try {
-			Field convertersField = FieldUtils.getDeclaredField(ModelConverters.class, "converters", true);
-			List<ModelConverter> modelConverters = (List<ModelConverter>) convertersField.get(modelConvertersInstance);
+			List<ModelConverter> modelConverters = (List<ModelConverter>) FieldUtils.readDeclaredField(modelConvertersInstance, "converters", true);
 			return modelConverters.stream()
 					.filter(registeredModelConverter -> isSameConverter(registeredModelConverter, modelConverter))
 					.findFirst();

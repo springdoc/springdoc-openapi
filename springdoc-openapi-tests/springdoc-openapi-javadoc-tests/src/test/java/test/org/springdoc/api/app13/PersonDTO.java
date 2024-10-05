@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  * The type Person dto.
  */
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class PersonDTO {
+class PersonDTO {
 	/**
 	 * The Email.
 	 */

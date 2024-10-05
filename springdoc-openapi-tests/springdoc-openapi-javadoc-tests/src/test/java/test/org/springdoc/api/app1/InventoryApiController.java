@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-07-08T09:37:36.546Z[GMT]")
 @RestController
-public class InventoryApiController implements InventoryApi {
+class InventoryApiController implements InventoryApi {
 
 
 	/**

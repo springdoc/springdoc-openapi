@@ -9,7 +9,7 @@ import org.springframework.test.context.TestPropertySource;
  * The type Spring doc app 173 test.
  */
 @TestPropertySource(properties = "example.description=The example object")
-public class SpringDocApp173Test extends AbstractSpringDocTest {
+class SpringDocApp173Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

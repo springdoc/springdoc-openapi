@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * The type Open api resource bean configuration components security schemes test.
  */
 @TestPropertySource(properties = "springdoc.api-docs.path=/api-docs")
-public class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest extends AbstractSpringDocTest {
+class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest extends AbstractSpringDocTest {
 
 	/**
 	 * Given: Bean configuration with security scheme http basic (shouldDefineComponentsSecuritySchemesForHttpBasic)
@@ -53,7 +53,7 @@ public class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest exten
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc
 				.perform(get("/api-docs"))
 				.andExpect(status().isOk())
@@ -70,7 +70,7 @@ public class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest exten
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void shouldDefineComponentsSecuritySchemesForApiKey() throws Exception {
+	void shouldDefineComponentsSecuritySchemesForApiKey() throws Exception {
 		mockMvc
 				.perform(get("/api-docs"))
 				.andExpect(status().isOk())
@@ -87,7 +87,7 @@ public class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest exten
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void shouldDefineComponentsSecuritySchemesForOAuth2() throws Exception {
+	void shouldDefineComponentsSecuritySchemesForOAuth2() throws Exception {
 		mockMvc
 				.perform(get("/api-docs"))
 				.andExpect(status().isOk())

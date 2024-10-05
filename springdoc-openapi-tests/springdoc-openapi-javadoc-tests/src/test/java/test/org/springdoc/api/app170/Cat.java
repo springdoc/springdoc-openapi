@@ -4,7 +4,7 @@ package test.org.springdoc.api.app170;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema
-public class Cat implements Animal {
+class Cat implements Animal {
 
 	private Integer speed;
 

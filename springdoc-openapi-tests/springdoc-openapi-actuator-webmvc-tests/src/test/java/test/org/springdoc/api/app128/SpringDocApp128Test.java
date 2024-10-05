@@ -51,7 +51,7 @@ public class SpringDocApp128Test extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(jsonPath("$.paths./actuator/tenant/customer/{id}.get.operationId", containsString("getTenantById")))

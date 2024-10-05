@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @param <T>  the type parameter
  */
-public class OperationResponse<T> {
+class OperationResponse<T> {
 
 	/**
 	 * The Operation result.

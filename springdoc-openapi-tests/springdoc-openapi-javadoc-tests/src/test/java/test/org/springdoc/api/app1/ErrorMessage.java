@@ -21,7 +21,7 @@ package test.org.springdoc.api.app1;
 /**
  * The type Error message.
  */
-public class ErrorMessage {
+class ErrorMessage {
 
 	/**
 	 * The Id.

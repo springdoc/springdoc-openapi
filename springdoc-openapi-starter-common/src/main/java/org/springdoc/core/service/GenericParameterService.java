@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -532,7 +532,7 @@ public class GenericParameterService {
 	 * @return the boolean
 	 */
 	public boolean isFile(MethodParameter methodParameter) {
-		if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
+		if (methodParameter.getGenericParameterType() instanceof ParameterizedType ) {
 			ParameterizedType parameterizedType = (ParameterizedType) methodParameter.getGenericParameterType();
 			return isFile(parameterizedType);
 		}
@@ -562,8 +562,7 @@ public class GenericParameterService {
 		Class fileClass = ResolvableType.forType(type).getRawClass();
 		if (fileClass != null && isFile(fileClass))
 			return true;
-		else if (type instanceof WildcardType) {
-			WildcardType wildcardType = (WildcardType) type;
+		else if (type instanceof WildcardType wildcardType) {
 			Type[] upperBounds = wildcardType.getUpperBounds();
 			return MultipartFile.class.getName().equals(upperBounds[0].getTypeName());
 		}

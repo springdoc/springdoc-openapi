@@ -21,7 +21,7 @@ package test.org.springdoc.api.app26;
 /**
  * The type Foo.
  */
-public class Foo {
+class Foo {
 
 	/**
 	 * The Foo.

@@ -23,7 +23,7 @@ public class FooResourceAssembler
 						linkTo(methodOn(FooController.class).getFoo(UUID.fromString(foo.getFoo()))).withSelfRel());
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		}
 	}

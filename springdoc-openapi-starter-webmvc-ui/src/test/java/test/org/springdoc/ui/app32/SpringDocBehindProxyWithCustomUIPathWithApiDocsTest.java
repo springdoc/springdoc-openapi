@@ -41,14 +41,14 @@ public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends Abstrac
 	private static final String X_FORWARD_PREFIX = "/path/prefix";
 
 	@Test
-	public void shouldServeOpenapiJsonUnderCustomPath() throws Exception {
+	void shouldServeOpenapiJsonUnderCustomPath() throws Exception {
 		mockMvc.perform(get("/bar/openapi/v3")
 						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
 				.andExpect(status().isOk());
 	}
 
 	@Test
-	public void shouldReturnCorrectInitializerJS() throws Exception {
+	void shouldReturnCorrectInitializerJS() throws Exception {
 		mockMvc.perform(get("/foo/documentation/swagger-ui/swagger-initializer.js")
 						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
 				.andExpect(status().isOk())
@@ -58,7 +58,7 @@ public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends Abstrac
 	}
 
 	@Test
-	public void shouldCalculateUrlsBehindProxy() throws Exception {
+	void shouldCalculateUrlsBehindProxy() throws Exception {
 		mockMvc.perform(get("/bar/openapi/v3/swagger-config")
 						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
 				.andExpect(status().isOk())

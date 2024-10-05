@@ -40,7 +40,7 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 
 	@Test
-	public void testApp() throws Exception {
+	void testApp() throws Exception {
 		String result = null;
 		try {
 			EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange()

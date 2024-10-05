@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("${openapi.openAPIPetstore.base-path:/}")
-public class StoreApiController implements StoreApi {
+class StoreApiController implements StoreApi {
 
 	/**
 	 * The Delegate.

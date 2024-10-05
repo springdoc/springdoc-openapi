@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Hello controller 2.
  */
 @RestController
-public class HelloController2 {
+class HelloController2 {
 
 	/**
 	 * Test.

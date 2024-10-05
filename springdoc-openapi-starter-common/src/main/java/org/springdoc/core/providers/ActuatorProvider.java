@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -96,7 +96,7 @@ public abstract class ActuatorProvider implements ApplicationListener<WebServerI
 	 * @param serverProperties the server properties
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public ActuatorProvider(Optional<ManagementServerProperties> managementServerProperties,
+	protected ActuatorProvider(Optional<ManagementServerProperties> managementServerProperties,
 			Optional<WebEndpointProperties> webEndpointProperties,
 			ServerProperties serverProperties,
 			SpringDocConfigProperties springDocConfigProperties) {

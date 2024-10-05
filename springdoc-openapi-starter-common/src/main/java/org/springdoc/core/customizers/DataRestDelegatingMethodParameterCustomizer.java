@@ -2,7 +2,7 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *
  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  * you may not use this file except in compliance with the License.
@@ -50,7 +50,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.extractor.DelegatingMethodParameter;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
 
@@ -103,9 +102,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				(Pageable.class.isAssignableFrom(parameterType) || Sort.class.isAssignableFrom(parameterType))
 						&& (isSpringDataWebPropertiesPresent() || isRepositoryRestConfigurationPresent())
 		)) {
-			Field field = FieldUtils.getDeclaredField(DelegatingMethodParameter.class, "additionalParameterAnnotations", true);
 			try {
-				Annotation[] parameterAnnotations = (Annotation[]) field.get(methodParameter);
+				Annotation[] parameterAnnotations = (Annotation[]) FieldUtils.readDeclaredField(methodParameter, "additionalParameterAnnotations", true);
 				if (ArrayUtils.isNotEmpty(parameterAnnotations))
 					for (int i = 0; i < parameterAnnotations.length; i++) {
 						if (Parameter.class.equals(parameterAnnotations[i].annotationType())) {
@@ -133,8 +131,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		Field field;
 		Parameter parameterNew;
 		try {
-			field = methodParameter.getContainingClass().getDeclaredField(parameterName);
-			Parameter parameter = field.getAnnotation(Parameter.class);
+			Parameter parameter = methodParameter.getContainingClass().getDeclaredField(parameterName).getAnnotation(Parameter.class);
 			parameterNew = new Parameter() {
 				@Override
 				public Class<? extends Annotation> annotationType() {
@@ -1071,8 +1068,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 				else
 					name = originalName;
 				break;
-			case "direction":
-			case "caseSensitive":
+			case "direction", "caseSensitive":
 				name = originalName;
 				break;
 			default:

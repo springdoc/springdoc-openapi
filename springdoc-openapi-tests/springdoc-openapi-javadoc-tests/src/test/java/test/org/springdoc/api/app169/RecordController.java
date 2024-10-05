@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("record")
-public class RecordController {
+class RecordController {
 	@GetMapping
 	public SimpleOuterClass index(@ParameterObject SimpleOuterClass filter) {
 		return null;

@@ -36,7 +36,7 @@ public class SpringDocApp5Test extends AbstractSpringDocTest {
 	public static final String CONTEXT_PATH = "/context-path";
 
 	@Test
-	public void oauth2_redirect_url_calculated_with_context_path() throws Exception {
+	void oauth2_redirect_url_calculated_with_context_path() throws Exception {
 		mockMvc.perform(get(CONTEXT_PATH+"/v3/api-docs/swagger-config").contextPath("/context-path"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/context-path/swagger-ui/oauth2-redirect.html")));

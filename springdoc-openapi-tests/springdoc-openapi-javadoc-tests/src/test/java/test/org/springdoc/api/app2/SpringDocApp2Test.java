@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * The type Spring doc app 2 test.
  */
-public class SpringDocApp2Test extends AbstractSpringDocTest {
+class SpringDocApp2Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

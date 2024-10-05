@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ public class GroupAutoConfigurationTest {
 			.withUserConfiguration(TestApp.class);
 
 	@Test
-	public void group_configuration_loaded() {
+	void group_configuration_loaded() {
 		contextRunner
 				.run(context -> assertThat(context)
 						.hasNotFailed()

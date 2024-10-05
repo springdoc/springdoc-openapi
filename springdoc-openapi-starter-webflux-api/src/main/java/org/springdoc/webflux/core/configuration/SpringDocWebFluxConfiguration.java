@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -109,7 +109,6 @@ public class SpringDocWebFluxConfiguration {
 	 *
 	 * @param parameterBuilder the parameter builder
 	 * @param requestBodyService the request body builder
-	 * @param operationService the operation builder
 	 * @param parameterCustomizers the parameter customizers
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 * @return the request builder
@@ -118,11 +117,10 @@ public class SpringDocWebFluxConfiguration {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	RequestService requestBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			OperationService operationService,
 			Optional<List<ParameterCustomizer>> parameterCustomizers,
 			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
-		return new RequestService(parameterBuilder, requestBodyService,
-				operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
+		return new RequestService(parameterBuilder, requestBodyService, 
+				parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 
 	/**

@@ -30,7 +30,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Tests Spring meta-annotations as method parameters
  */
-public class SpringDocApp131Test extends AbstractSpringDocTest {
+class SpringDocApp131Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

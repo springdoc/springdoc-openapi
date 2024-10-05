@@ -46,7 +46,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
  */
 @RestController
 @Tag(name = "items")
-public class ItemController {
+class ItemController {
 
 	/**
 	 * Show items list.

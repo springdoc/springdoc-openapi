@@ -3,7 +3,7 @@ package test.org.springdoc.api.app103;
 /**
  * The type Example body.
  */
-public class ExampleBody {
+class ExampleBody {
 	/**
 	 * The String param.
 	 */

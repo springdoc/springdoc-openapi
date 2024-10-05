@@ -27,7 +27,7 @@ import org.springframework.test.context.TestPropertySource;
  * The type Spring doc app 21 test.
  */
 @TestPropertySource(properties = "springdoc.oAuthFlow.authorizationUrl=http://personstore.swagger.io/oauth/dialog")
-public class SpringDocApp21Test extends AbstractSpringDocTest {
+class SpringDocApp21Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

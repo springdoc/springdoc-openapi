@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointPr
  * @deprecated  as not anymore required, use your own {@link org.springdoc.core.customizers.GlobalOpenApiCustomizer} instead
  * @since 2.7.0
  */
+@Deprecated(since = "2.7.0")
 public class ActuatorOpenApiCustomizer implements GlobalOpenApiCustomizer {
 
 
@@ -73,7 +74,7 @@ public class ActuatorOpenApiCustomizer implements GlobalOpenApiCustomizer {
 		Set<String> usedOperationIds = new HashSet<>();
 		actuatorPathEntryStream(openApi, null)
 				.sorted(Comparator.comparing(Entry::getKey))
-				.forEachOrdered(stringPathItemEntry -> {
+				.forEachOrdered(stringPathItemEntry -> 
 					stringPathItemEntry.getValue().readOperations().forEach(operation -> {
 						String initialOperationId = operation.getOperationId();
 						String uniqueOperationId = operation.getOperationId();
@@ -82,8 +83,8 @@ public class ActuatorOpenApiCustomizer implements GlobalOpenApiCustomizer {
 							uniqueOperationId = initialOperationId + "_" + ++counter;
 						}
 						operation.setOperationId(uniqueOperationId);
-					});
-				});
+					})
+				);
 	}
 
 	@Override

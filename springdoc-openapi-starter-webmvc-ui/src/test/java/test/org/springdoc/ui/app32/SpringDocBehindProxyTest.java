@@ -42,13 +42,13 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	private static final String X_FORWARD_PREFIX = "/path/prefix";
 
 	@Test
-	public void shouldServeSwaggerUIAtDefaultPath() throws Exception {
+	void shouldServeSwaggerUIAtDefaultPath() throws Exception {
 		mockMvc.perform(get("/swagger-ui/index.html"))
 				.andExpect(status().isOk());
 	}
 
 	@Test
-	public void shouldReturnCorrectInitializerJS() throws Exception {
+	void shouldReturnCorrectInitializerJS() throws Exception {
 		mockMvc.perform(get("/swagger-ui/swagger-initializer.js")
 						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
 				.andExpect(status().isOk())
@@ -58,7 +58,7 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void shouldCalculateOauthRedirectBehindProxy() throws Exception {
+	void shouldCalculateOauthRedirectBehindProxy() throws Exception {
 		mockMvc.perform(get("/v3/api-docs/swagger-config")
 						.header("X-Forwarded-Proto", "https")
 						.header("X-Forwarded-Host", "proxy-host")
@@ -70,7 +70,7 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void shouldCalculateUrlsBehindProxy() throws Exception {
+	void shouldCalculateUrlsBehindProxy() throws Exception {
 		mockMvc.perform(get("/v3/api-docs/swagger-config")
 						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
 				.andExpect(status().isOk())
@@ -83,7 +83,7 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void shouldReturnCorrectInitializerJSWhenChangingForwardedPrefixHeader() throws Exception {
+	void shouldReturnCorrectInitializerJSWhenChangingForwardedPrefixHeader() throws Exception {
 		var tasks = IntStream.range(0, 10).mapToObj(i -> CompletableFuture.runAsync(() -> {
 			try {
 				mockMvc.perform(get("/swagger-ui/swagger-initializer.js")
@@ -101,7 +101,7 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void shouldCalculateUrlsBehindProxyWhenChangingForwardedPrefixHeader() {
+	void shouldCalculateUrlsBehindProxyWhenChangingForwardedPrefixHeader() {
 		var tasks = IntStream.range(0, 10).mapToObj(i -> CompletableFuture.runAsync(() -> {
 			try {
 				mockMvc.perform(get("/v3/api-docs/swagger-config")

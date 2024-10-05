@@ -60,7 +60,7 @@ import static org.springframework.web.servlet.function.ServerResponse.ok;
  * The type Hello application.
  */
 @Configuration
-public class HelloApplication {
+class HelloApplication {
 
 	/**
 	 * Filter server response.

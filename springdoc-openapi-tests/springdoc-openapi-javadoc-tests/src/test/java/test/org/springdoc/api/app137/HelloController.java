@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @SecurityRequirement(name = "security_auth")
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Test.

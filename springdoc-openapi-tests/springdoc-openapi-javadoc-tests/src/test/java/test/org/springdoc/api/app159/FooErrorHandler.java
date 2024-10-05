@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * The type Foo error handler.
  */
 @ControllerAdvice(assignableTypes = HelloController.class)
-public class FooErrorHandler {
+class FooErrorHandler {
 
 	/**
 	 * Store assignment publishing error response entity.

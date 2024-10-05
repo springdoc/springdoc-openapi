@@ -16,12 +16,4 @@ public class GetNameHandler extends BaseHandler{
                 .bodyValue("Name API is called");
     }
 
-    // Since handle function is present in the BaseHandler class so it is not able to detect but it should
-
-    // Uncommenting below code will work as expected since now explicitly handle is declared here
-
-//    @Override
-//    public Mono<ServerResponse> handle(ServerRequest serverRequest) {
-//        return super.handle(serverRequest);
-//    }
 }

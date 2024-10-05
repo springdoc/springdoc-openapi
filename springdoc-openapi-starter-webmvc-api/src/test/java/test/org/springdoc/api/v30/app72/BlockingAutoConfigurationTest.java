@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -35,13 +35,13 @@ import org.springframework.context.annotation.Bean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BlockingAutoConfigurationTest {
+class BlockingAutoConfigurationTest {
 
 	private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
 			.withUserConfiguration(TestApp.class);
 
 	@Test
-	public void configurations_successfully_loaded() {
+	void configurations_successfully_loaded() {
 		contextRunner
 				.withPropertyValues("springdoc.show-actuator=true")
 				.run(context -> assertThat(context)
@@ -53,7 +53,7 @@ public class BlockingAutoConfigurationTest {
 	}
 
 	@Test
-	public void configurations_not_loaded_when_application_is_not_web() {
+	void configurations_not_loaded_when_application_is_not_web() {
 		new ApplicationContextRunner()
 				.withUserConfiguration(TestApp.class)
 				.run(context -> assertThat(context)
@@ -65,7 +65,7 @@ public class BlockingAutoConfigurationTest {
 	}
 
 	@Test
-	public void actuator_configuration_not_loaded_when_not_enabled_explicitly() {
+	void actuator_configuration_not_loaded_when_not_enabled_explicitly() {
 		contextRunner
 				.run(context -> assertThat(context)
 						.hasNotFailed()
@@ -76,7 +76,7 @@ public class BlockingAutoConfigurationTest {
 	}
 
 	@Test
-	public void configurations_not_loaded_when_disabled() {
+	void configurations_not_loaded_when_disabled() {
 		contextRunner
 				.withPropertyValues("springdoc.api-docs.enabled=false")
 				.run(context -> assertThat(context)
@@ -88,7 +88,7 @@ public class BlockingAutoConfigurationTest {
 	}
 
 	@Test
-	public void configurations_not_loaded_when_mvc_is_not_on_class_path() {
+	void configurations_not_loaded_when_mvc_is_not_on_class_path() {
 		contextRunner
 				.withClassLoader(new FilteredClassLoader("org.springframework.web.context.support.GenericWebApplicationContext"))
 				.run(context -> assertThat(context)

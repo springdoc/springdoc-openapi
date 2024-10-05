@@ -8,7 +8,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 /**
  * The type Order state mapper.
  */
-public class OrderStateMapper extends PropertyEditorSupport {
+class OrderStateMapper extends PropertyEditorSupport {
 
 	/**
 	 * Sets as text.

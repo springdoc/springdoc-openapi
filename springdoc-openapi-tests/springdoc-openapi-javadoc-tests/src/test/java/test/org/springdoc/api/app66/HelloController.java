@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Tag(name = "Health", description = "Health check / ping API")
 @RestController
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Ping response entity.

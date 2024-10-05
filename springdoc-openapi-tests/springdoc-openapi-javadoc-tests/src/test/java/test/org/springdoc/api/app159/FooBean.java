@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 /**
  * The type Foo bean.
  */
-public class FooBean {
+class FooBean {
 	/**
 	 * The Message.
 	 */

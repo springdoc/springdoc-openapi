@@ -48,7 +48,7 @@ public class SpringDocApp203Test extends AbstractSpringDocV30Test {
 	static class SpringDocTestApp {}
 
 	@Test
-	public void testApp1() throws Exception {
+	void testApp1() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/mygroup"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))

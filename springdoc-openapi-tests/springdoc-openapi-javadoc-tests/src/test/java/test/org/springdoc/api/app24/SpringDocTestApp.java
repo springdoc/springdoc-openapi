@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Bean;
  * The type Spring doc test app.
  */
 @SpringBootApplication
-public class SpringDocTestApp {
+class SpringDocTestApp {
 
 	/**
 	 * The entry point of application.

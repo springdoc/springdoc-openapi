@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("class-hierarchy")
-public class Controller {
+class Controller {
 	/**
 	 * Abstract parent response.
 	 *

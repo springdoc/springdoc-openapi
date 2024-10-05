@@ -29,7 +29,7 @@ import org.springframework.web.server.ResponseStatusException;
 /**
  * The type Api util.
  */
-public class ApiUtil {
+class ApiUtil {
 
 	/**
 	 * Sets example response.

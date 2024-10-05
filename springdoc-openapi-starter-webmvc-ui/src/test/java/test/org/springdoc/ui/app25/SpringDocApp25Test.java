@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp25Test extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithConfiguredParams() throws Exception {
+	void shouldRedirectWithConfiguredParams() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
 				.andExpect(header().string("Location", "/swagger-ui/index.html"));

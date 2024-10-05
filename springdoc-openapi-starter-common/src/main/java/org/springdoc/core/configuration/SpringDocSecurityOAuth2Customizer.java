@@ -282,8 +282,8 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), response);
 			buildApiResponsesOnInternalServerError(apiResponses);
 			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
-			apiResponses.addApiResponse(String.valueOf(HttpStatus.MOVED_TEMPORARILY.value()),
-					new ApiResponse().description(HttpStatus.MOVED_TEMPORARILY.getReasonPhrase())
+			apiResponses.addApiResponse(String.valueOf(HttpStatus.FOUND.value()),
+					new ApiResponse().description(HttpStatus.FOUND.getReasonPhrase())
 							.addHeaderObject("Location", new Header().schema(new StringSchema())));
 			Operation operation = buildOperation(apiResponses);
 			Schema<?> schema = new ObjectSchema().additionalProperties(new StringSchema());
@@ -468,18 +468,15 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 */
 	private void buildPath(Object oAuth2EndpointFilter, String authorizationEndpointMatcher, OpenAPI openAPI, Operation operation, HttpMethod requestMethod) {
 		try {
-			Field tokenEndpointMatcherField = FieldUtils.getDeclaredField(oAuth2EndpointFilter.getClass(), authorizationEndpointMatcher, true);
-			RequestMatcher endpointMatcher = (RequestMatcher) tokenEndpointMatcherField.get(oAuth2EndpointFilter);
+			RequestMatcher endpointMatcher = (RequestMatcher) FieldUtils.readDeclaredField(oAuth2EndpointFilter, authorizationEndpointMatcher, true);
 			String path = null;
 			if (endpointMatcher instanceof AntPathRequestMatcher antPathRequestMatcher)
 				path = antPathRequestMatcher.getPattern();
 			else if (endpointMatcher instanceof OrRequestMatcher endpointMatchers) {
-				Field requestMatchersField = FieldUtils.getDeclaredField(OrRequestMatcher.class, "requestMatchers", true);
-				Iterable<RequestMatcher> requestMatchers = (Iterable<RequestMatcher>) requestMatchersField.get(endpointMatchers);
+				Iterable<RequestMatcher> requestMatchers = (Iterable<RequestMatcher>) FieldUtils.readDeclaredField(endpointMatchers, "requestMatchers", true);
 				for (RequestMatcher requestMatcher : requestMatchers) {
 					if (requestMatcher instanceof OrRequestMatcher orRequestMatcher) {
-						requestMatchersField = FieldUtils.getDeclaredField(OrRequestMatcher.class, "requestMatchers", true);
-						requestMatchers = (Iterable<RequestMatcher>) requestMatchersField.get(orRequestMatcher);
+						requestMatchers = (Iterable<RequestMatcher>) FieldUtils.readDeclaredField(orRequestMatcher, "requestMatchers", true);
 						for (RequestMatcher matcher : requestMatchers) {
 							if (matcher instanceof AntPathRequestMatcher antPathRequestMatcher)
 								path = antPathRequestMatcher.getPattern();

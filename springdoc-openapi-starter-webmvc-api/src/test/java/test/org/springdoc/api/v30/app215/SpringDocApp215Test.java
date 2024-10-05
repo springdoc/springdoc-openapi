@@ -38,7 +38,7 @@ public class SpringDocApp215Test extends AbstractCommonTest {
 	static class SpringDocTestApp {}
 
 	@Test
-	public void test_disable_default_api_docs() throws Exception {
+	void test_disable_default_api_docs() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isNotFound());
 	}
 }

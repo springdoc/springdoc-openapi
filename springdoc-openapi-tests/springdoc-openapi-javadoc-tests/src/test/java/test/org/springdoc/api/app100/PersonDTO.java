@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * The type Person dto.
  */
 @Schema
-public class PersonDTO {
+class PersonDTO {
 	/**
 	 * The Email.
 	 */

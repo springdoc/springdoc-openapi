@@ -33,7 +33,7 @@ import org.springframework.http.MediaType;
  * The type Spring doc test app.
  */
 @SpringBootApplication
-public class SpringDocTestApp {
+class SpringDocTestApp {
 
 	/**
 	 * The entry point of application.

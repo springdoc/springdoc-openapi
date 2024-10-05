@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The type Rest controller error.
  */
-public class RestControllerError {
+class RestControllerError {
 
 	/**
 	 * The Id.

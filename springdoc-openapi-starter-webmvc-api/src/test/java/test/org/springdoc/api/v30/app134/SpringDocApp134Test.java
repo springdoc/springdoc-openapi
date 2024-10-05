@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp134Test extends AbstractSpringDocV30Test {
 
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v1-group"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -50,7 +50,7 @@ public class SpringDocApp134Test extends AbstractSpringDocV30Test {
 	}
 
 	@Test
-	public void testApp2() throws Exception {
+	void testApp2() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v2-group"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -58,7 +58,7 @@ public class SpringDocApp134Test extends AbstractSpringDocV30Test {
 	}
 
 	@Test
-	public void testApp3() throws Exception {
+	void testApp3() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v1-headers-group"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -66,7 +66,7 @@ public class SpringDocApp134Test extends AbstractSpringDocV30Test {
 	}
 
 	@Test
-	public void testApp4() throws Exception {
+	void testApp4() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v1-v2-headers-group"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -74,7 +74,7 @@ public class SpringDocApp134Test extends AbstractSpringDocV30Test {
 	}
 
 	@Test
-	public void testApp5() throws Exception {
+	void testApp5() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v2-consumes-group"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))

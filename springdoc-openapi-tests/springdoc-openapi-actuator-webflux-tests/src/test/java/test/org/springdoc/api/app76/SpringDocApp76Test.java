@@ -36,7 +36,7 @@ import org.springframework.test.context.TestPropertySource;
 public class SpringDocApp76Test extends AbstractSpringDocTest {
 
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/actuator").exchange().expectStatus().isOk().expectBody()
 				.jsonPath("$.openapi").isEqualTo("3.0.1")
 				.jsonPath("$.paths./actuator/health.get.operationId").exists();

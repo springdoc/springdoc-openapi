@@ -35,10 +35,6 @@ public class Bank implements EntityDefinition {
 		return this.code;
 	}
 
-	private void setCode(String code) {
-		this.code = code;
-	}
-
 	public String getName() {
 		return this.name;
 	}

@@ -29,7 +29,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-11-30T09:49:26.034469-01:00[Atlantic/Azores]")
 
 
-public class User {
+class User {
 
 	/**
 	 * The Id.

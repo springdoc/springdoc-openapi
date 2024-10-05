@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -79,7 +79,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param springDocProviders the spring doc providers
 	 * @param springDocCustomizers the spring doc customizers
 	 */
-	public OpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
+	protected OpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			SpringDocConfigProperties springDocConfigProperties,
 			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {

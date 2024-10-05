@@ -39,13 +39,13 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	private static final String X_FORWARD_PREFIX = "/path/prefix";
 
 	@Test
-	public void shouldServeSwaggerUIAtDefaultPath() {
+	void shouldServeSwaggerUIAtDefaultPath() {
 		webTestClient.get().uri("/webjars/swagger-ui/index.html").exchange()
 				.expectStatus().isOk();
 	}
 
 	@Test
-	public void shouldReturnCorrectInitializerJS() throws Exception {
+	void shouldReturnCorrectInitializerJS() throws Exception {
 		webTestClient
 				.get().uri("/webjars/swagger-ui/swagger-initializer.js")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
@@ -59,7 +59,7 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void shouldCalculateOauthRedirectBehindProxy() throws Exception {
+	void shouldCalculateOauthRedirectBehindProxy() throws Exception {
 		webTestClient
 				.get().uri("/v3/api-docs/swagger-config")
 				.header("X-Forwarded-Proto", "https")
@@ -71,7 +71,7 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void shouldCalculateUrlsBehindProxy() throws Exception {
+	void shouldCalculateUrlsBehindProxy() throws Exception {
 		webTestClient
 				.get().uri("/v3/api-docs/swagger-config")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
@@ -84,7 +84,7 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void shouldReturnCorrectInitializerJSWhenChangingForwardedPrefixHeader() throws Exception {
+	void shouldReturnCorrectInitializerJSWhenChangingForwardedPrefixHeader() throws Exception {
 		var tasks = IntStream.range(0, 10).mapToObj(i -> CompletableFuture.runAsync(() -> {
 			try {
 				webTestClient.get().uri("/webjars/swagger-ui/swagger-initializer.js")
@@ -105,7 +105,7 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void shouldCalculateUrlsBehindProxyWhenChangingForwardedPrefixHeader() {
+	void shouldCalculateUrlsBehindProxyWhenChangingForwardedPrefixHeader() {
 		var tasks = IntStream.range(0, 10).mapToObj(i -> CompletableFuture.runAsync(() -> {
 			try {
 				webTestClient.get().uri("/v3/api-docs/swagger-config")

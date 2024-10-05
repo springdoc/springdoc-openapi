@@ -1,6 +1,6 @@
 package test.org.springdoc.api.app166;
 
-public class MyData {
+class MyData {
 
 	/**
 	 * Returns the first name

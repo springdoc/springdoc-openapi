@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp3Test extends AbstractSpringDocTest {
 
 	@Test
-	public void app_loads_ok() throws Exception {
+	void app_loads_ok() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.forwardedUrl("index.html"));
@@ -46,7 +46,7 @@ public class SpringDocApp3Test extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void swagger_config_for_no_groups() throws Exception {
+	void swagger_config_for_no_groups() throws Exception {
 		mockMvc.perform(get("/v3/api-docs/swagger-config"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("configUrl", equalTo("/v3/api-docs/swagger-config")))

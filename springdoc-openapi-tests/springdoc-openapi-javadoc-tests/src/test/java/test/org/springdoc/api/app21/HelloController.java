@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityScheme(name = "personstore_auth", type = SecuritySchemeType.OAUTH2, flows = @OAuthFlows(implicit = @OAuthFlow(authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}", scopes = {
 		@OAuthScope(name = "write:persons", description = "modify persons in your account"),
 		@OAuthScope(name = "read:persons", description = "read your persons") })))
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Persons.

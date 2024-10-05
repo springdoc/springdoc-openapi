@@ -36,18 +36,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 
 	@Test
-	public void testApp() throws Exception {
+	void testApp() throws Exception {
 		super.testApp("147-1", Constants.ACTUATOR_DEFAULT_GROUP);
 	}
 
 	@Test
-	public void testApp1() throws Exception {
+	void testApp1() throws Exception {
 		super.testApp("147-2", Constants.ACTUATOR_DEFAULT_GROUP);
 
 	}
 
 	@Test
-	public void testApp2() throws Exception {
+	void testApp2() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.DEFAULT_GROUP_NAME)
 				.exchange()
 				.expectStatus().isNotFound();

@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -24,12 +24,10 @@
 
 package test.org.springdoc.api.app9;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.SimpleMixInResolver;
 import com.fasterxml.jackson.databind.type.ClassKey;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -53,10 +51,8 @@ public class SpringDocApp9Test extends AbstractSpringDocTest {
 
 	@BeforeEach
 	void init() throws IllegalAccessException {
-		Field convertersField2 = FieldUtils.getDeclaredField(ObjectMapper.class, "_mixIns", true);
-		SimpleMixInResolver _mixIns = (SimpleMixInResolver) convertersField2.get(objectMapperProvider.jsonMapper());
-		Field convertersField3 = FieldUtils.getDeclaredField(SimpleMixInResolver.class, "_localMixIns", true);
-		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) convertersField3.get(_mixIns);
+		SimpleMixInResolver _mixIns = (SimpleMixInResolver) FieldUtils.readDeclaredField(objectMapperProvider.jsonMapper(), "_mixIns", true);
+		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) FieldUtils.readDeclaredField(_mixIns, "_localMixIns", true);
 		Iterator<Map.Entry<ClassKey, Class<?>>> it = _localMixIns.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<ClassKey, Class<?>> entry = it.next();
@@ -70,10 +66,8 @@ public class SpringDocApp9Test extends AbstractSpringDocTest {
 
 	@AfterEach
 	void clean() throws IllegalAccessException {
-		Field convertersField2 = FieldUtils.getDeclaredField(ObjectMapper.class, "_mixIns", true);
-		SimpleMixInResolver _mixIns = (SimpleMixInResolver) convertersField2.get(objectMapperProvider.jsonMapper());
-		Field convertersField3 = FieldUtils.getDeclaredField(SimpleMixInResolver.class, "_localMixIns", true);
-		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) convertersField3.get(_mixIns);
+		SimpleMixInResolver _mixIns = (SimpleMixInResolver) FieldUtils.readDeclaredField(objectMapperProvider.jsonMapper(), "_mixIns", true);
+		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) FieldUtils.readDeclaredField(_mixIns, "_localMixIns", true);
 		_localMixIns.putAll(springMixins);
 	}
 

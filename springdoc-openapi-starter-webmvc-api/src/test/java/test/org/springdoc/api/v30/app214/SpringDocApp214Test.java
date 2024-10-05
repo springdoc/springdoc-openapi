@@ -54,7 +54,7 @@ public class SpringDocApp214Test extends AbstractCommonTest {
 	static class SpringDocTestApp {}
 
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		assertEquals(4, springDocConfigProperties.getGroupConfigs().stream().map(GroupConfig::getGroup).toList().size());
 	}
 

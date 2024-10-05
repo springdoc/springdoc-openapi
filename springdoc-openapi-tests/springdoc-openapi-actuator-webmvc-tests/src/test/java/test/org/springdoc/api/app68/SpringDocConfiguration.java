@@ -34,16 +34,16 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.utils.Constants;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
 
-@SpringBootApplication
-public class SpringDocTestApp {
-	public static void main(String[] args) {
-		SpringApplication.run(SpringDocTestApp.class, args);
-	}
+@Configuration
+public class SpringDocConfiguration {
+
+	@SpringBootApplication
+	static class SpringDocTestApp {}
 
 	@Bean
 	public GroupedOpenApi storeOpenApi() {

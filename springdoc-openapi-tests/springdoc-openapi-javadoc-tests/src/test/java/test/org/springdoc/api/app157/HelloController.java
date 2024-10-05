@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  * ({@code ResponseEntity}).
  */
 @RestController
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Gets foo.

@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -155,11 +155,8 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	 */
 	private boolean getFieldValueOfBoolean(QuerydslBindings instance, String fieldName) {
 		try {
-			Field field = FieldUtils.getDeclaredField(instance.getClass(), fieldName, true);
-			if (field != null)
-				return (boolean) field.get(instance);
-		}
-		catch (IllegalAccessException e) {
+			return (boolean) FieldUtils.readDeclaredField(instance, fieldName, true);
+		} catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());
 		}
 		return false;
@@ -215,8 +212,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	 */
 	private Map<String, Object> getPathSpec(QuerydslBindings instance, String fieldName) {
 		try {
-			Field field = FieldUtils.getDeclaredField(instance.getClass(), fieldName, true);
-			return (Map<String, Object>) field.get(instance);
+			return (Map<String, Object>) FieldUtils.readDeclaredField(instance, fieldName, true);
 		}
 		catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());
@@ -235,8 +231,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 			if (instance == null) {
 				return Optional.empty();
 			}
-			Field field = FieldUtils.getDeclaredField(instance.getClass(), "path", true);
-			return (Optional<Path<?>>) field.get(instance);
+			return (Optional<Path<?>>) FieldUtils.readDeclaredField(instance, "path", true);
 		}
 		catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());

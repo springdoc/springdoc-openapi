@@ -3,14 +3,11 @@ package test.org.springdoc.api.app163.rest.dto;
 /**
  * This is the {@code AnnotationOverrideForJavadocRestDto2} class javadoc.
  */
-public class AnnotationOverrideForJavadocRestDto2 {
+class AnnotationOverrideForJavadocRestDto2 {
 	/**
 	 * This is the private {@code #guid3} field's javadoc.
 	 */
 	private String guid3;
-
-	public AnnotationOverrideForJavadocRestDto2() {
-	}
 
 	public String getGuid3() {
 		return guid3;

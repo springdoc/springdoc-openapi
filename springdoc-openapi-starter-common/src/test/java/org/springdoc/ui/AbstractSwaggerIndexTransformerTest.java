@@ -20,7 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
 @ExtendWith(MockitoExtension.class)
-public class AbstractSwaggerIndexTransformerTest {
+class AbstractSwaggerIndexTransformerTest {
 
     private SwaggerUiConfigProperties swaggerUiConfig;
     @Mock

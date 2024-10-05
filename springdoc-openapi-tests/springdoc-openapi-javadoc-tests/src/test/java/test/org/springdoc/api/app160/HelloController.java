@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Hello controller.
  */
 @RestController
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Do something interesting error response.
@@ -77,13 +77,13 @@ public class HelloController {
 	 */
 	@PropertySource("classpath:swagger-message-160.properties")
 	@Configuration
-	public class SwaggerMessage {}
+	class SwaggerMessage {}
 
 	/**
 	 * The type Error response.
 	 */
 	@Schema(description = "${ErrorResponse}")
-	public class ErrorResponse {
+	class ErrorResponse {
 
 		/**
 		 * The Error code.

@@ -38,13 +38,13 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 public class SpringDocApp144Test extends AbstractSpringDocActuatorTest {
 
 	@Test
-	public void testApp() {
+	void testApp() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
 				.expectStatus().isNotFound();
 	}
 
 	@Test
-	public void testApp1() throws Exception {
+	void testApp1() throws Exception {
 		String result = webClient.get().uri("/application/openapi").retrieve()
 				.bodyToMono(String.class)
 				.block();

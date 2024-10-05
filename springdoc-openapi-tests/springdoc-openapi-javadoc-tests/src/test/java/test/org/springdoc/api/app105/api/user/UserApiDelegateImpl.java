@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
  * The type User api delegate.
  */
 @Service
-public class UserApiDelegateImpl implements UserApiDelegate {
+class UserApiDelegateImpl implements UserApiDelegate {
 
 
 }

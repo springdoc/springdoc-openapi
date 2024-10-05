@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp21Test extends AbstractSpringDocTest {
 
 	@Test
-	public void testAddSwaggerUiVersionToPath() throws Exception {
+	void testAddSwaggerUiVersionToPath() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
 				.andExpect(header().string("Location", "/swagger-ui/index.html"));
@@ -41,7 +41,7 @@ public class SpringDocApp21Test extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void shouldRedirectWithPrefix() throws Exception {
+	void shouldRedirectWithPrefix() throws Exception {
 		mockMvc.perform(get("/rest/v3/api-docs/swagger-config"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("validatorUrl", equalTo("")))

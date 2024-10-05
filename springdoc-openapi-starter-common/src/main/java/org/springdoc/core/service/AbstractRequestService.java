@@ -157,11 +157,6 @@ public abstract class AbstractRequestService {
 	private final RequestBodyService requestBodyService;
 
 	/**
-	 * The Operation builder.
-	 */
-	private final OperationService operationService;
-
-	/**
 	 * The Local spring doc parameter name discoverer.
 	 */
 	private final SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
@@ -181,22 +176,21 @@ public abstract class AbstractRequestService {
 	 */
 	private boolean defaultSupportFormData;
 
+
 	/**
 	 * Instantiates a new Abstract request builder.
 	 *
 	 * @param parameterBuilder                      the parameter builder
 	 * @param requestBodyService                    the request body builder
-	 * @param operationService                      the operation builder
 	 * @param parameterCustomizers                  the parameter customizers
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
 	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
+		    Optional<List<ParameterCustomizer>> parameterCustomizers,
 			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
-		this.operationService = operationService;
 		parameterCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
 		this.parameterCustomizers = parameterCustomizers;
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
@@ -653,6 +647,15 @@ public abstract class AbstractRequestService {
 	 */
 	public boolean isDefaultFlatParamObject() {
 		return defaultFlatParamObject;
+	}
+
+	/**
+	 * Gets parameter builder.
+	 *
+	 * @return the parameter builder
+	 */
+	public GenericParameterService getParameterBuilder() {
+		return parameterBuilder;
 	}
 
 	/**
