@@ -140,9 +140,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 							springDocConfigProperties.addGroupConfig(groupConfig);
 							return buildWebMvcOpenApiResource(item);
 						},
-						(existingValue, newValue) -> {
-							return existingValue; // choice to keep the existing value
-						}
+						(existingValue, newValue) -> existingValue // choice to keep the existing value
 				));
 	}
 
