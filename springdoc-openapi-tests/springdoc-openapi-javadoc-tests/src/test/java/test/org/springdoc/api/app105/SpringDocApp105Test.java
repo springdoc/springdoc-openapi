@@ -52,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 		"springdoc.group-configs[3].paths-to-exclude=/v1/users",
 		"springdoc.group-configs[3].packages-to-scan=test.org.springdoc.api.app105.api.user,test.org.springdoc.api.app105.api.store",
 })
-public class SpringDocApp105Test extends AbstractSpringDocTest {
+class SpringDocApp105Test extends AbstractSpringDocTest {
 
 	/**
 	 * The constant className.
@@ -65,7 +65,7 @@ public class SpringDocApp105Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/stores"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -78,7 +78,7 @@ public class SpringDocApp105Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp2() throws Exception {
+	void testApp2() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/users"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -91,7 +91,7 @@ public class SpringDocApp105Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp3() throws Exception {
+	void testApp3() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/pets"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -104,7 +104,7 @@ public class SpringDocApp105Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp4() throws Exception {
+	void testApp4() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/groups test"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))

@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * The type Spring doc app 8 test.
  */
-public class SpringDocApp8Test extends AbstractSpringDocTest {
+class SpringDocApp8Test extends AbstractSpringDocTest {
 
 	/**
 	 * Test app.
@@ -39,7 +39,7 @@ public class SpringDocApp8Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc.perform(get("/myapp" + Constants.DEFAULT_API_DOCS_URL).contextPath("/myapp"))
 				.andExpect(status().isOk());
 	}

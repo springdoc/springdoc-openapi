@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -120,8 +120,7 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 			if (!AopUtils.isAopProxy(formattingConversionService)){
 				try {
 					converters = convertersField.get(formattingConversionService);
-					convertersField = FieldUtils.getDeclaredField(converters.getClass(), CONVERTERS, true);
-					Map<ConvertiblePair, Object> springConverters = (Map) convertersField.get(converters);
+					Map<ConvertiblePair, Object> springConverters = (Map<ConvertiblePair, Object>) FieldUtils.readDeclaredField(converters, CONVERTERS, true);
 					Optional<ConvertiblePair> convertiblePairOptional = springConverters.keySet().stream().filter(convertiblePair -> convertiblePair.getTargetType().equals(clazz)).findAny();
 					if (convertiblePairOptional.isPresent()) {
 						ConvertiblePair convertiblePair = convertiblePairOptional.get();
@@ -147,7 +146,7 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 		try {
 			return ClassUtils.resolveClassName(target, null).isAssignableFrom(type);
 		}
-		catch (Throwable ex) {
+		catch (Exception ex) {
 			return false;
 		}
 	}

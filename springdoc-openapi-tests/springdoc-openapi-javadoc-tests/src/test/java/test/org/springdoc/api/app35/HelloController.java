@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 @RequestMapping("/api/v1/poc/")
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Testme response entity.

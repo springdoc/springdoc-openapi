@@ -3,7 +3,7 @@ package test.org.springdoc.api.app155;
 /**
  * The type Concrete int parameter object.
  */
-public class ConcreteIntParameterObject extends AbstractIntParameterObject<Integer> {
+class ConcreteIntParameterObject extends AbstractIntParameterObject<Integer> {
 
 	/**
 	 * The Primitive concrete field.

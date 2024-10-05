@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class SpringDocApp5Test extends AbstractSpringDocV31Test {
 
 	@Test
-	public void testAddRouterOperationCustomizerBean() throws Exception {
+	void testAddRouterOperationCustomizerBean() throws Exception {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult =

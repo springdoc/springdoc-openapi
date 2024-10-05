@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * The type Spring doc app 27 test.
  */
-public class SpringDocApp27Test extends AbstractSpringDocTest {
+class SpringDocApp27Test extends AbstractSpringDocTest {
 
 	/**
 	 * Test app.
@@ -41,7 +41,7 @@ public class SpringDocApp27Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andExpect(jsonPath("$.paths./test.get.responses.500.content.['*/*'].schema.oneOf").isArray()).andExpect(jsonPath("$.paths./test.get.responses.500.content.['*/*'].schema.oneOf[*].$ref", containsInAnyOrder("#/components/schemas/Bar",
 						"#/components/schemas/Foo")));

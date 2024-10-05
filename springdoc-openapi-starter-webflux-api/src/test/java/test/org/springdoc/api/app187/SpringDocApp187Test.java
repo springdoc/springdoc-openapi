@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 class SpringDocApp187Test extends AbstractSpringDocTest {
 
 	@Test
-	public void testAddRouterOperationCustomizerBean() {
+	void testAddRouterOperationCustomizerBean() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
 				.expectStatus().isOk()
 				.expectBody().json(getContent("results/app187.json"), true);

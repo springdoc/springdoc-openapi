@@ -45,7 +45,7 @@ import static org.springframework.http.ResponseEntity.ok;
 //    @ApiResponse(responseCode = "401", description = "Invalid authentication.", content = {@Content(schema = @Schema(implementation = Problem.class), mediaType = APPLICATION_PROBLEM_JSON_VALUE)}),
 //    @ApiResponse(responseCode = "401", description = "Invalid authentication.",content = {@Content(schema = @Schema(implementation = Problem.class), mediaType = APPLICATION_PROBLEM_JSON_VALUE)}),
 //    @ApiResponse(responseCode = "403", description = "Missing authorities.",content = {@Content(schema = @Schema(implementation = Problem.class), mediaType = APPLICATION_PROBLEM_JSON_VALUE)}) })
-public class HelloController<T> {
+class HelloController<T> {
 
 	/**
 	 * The constant CURRENCIES.

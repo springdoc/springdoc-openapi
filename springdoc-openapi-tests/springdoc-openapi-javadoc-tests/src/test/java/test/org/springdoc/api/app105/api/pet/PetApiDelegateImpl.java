@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
  * The type Pet api delegate.
  */
 @Service
-public class PetApiDelegateImpl implements PetApiDelegate {
+class PetApiDelegateImpl implements PetApiDelegate {
 
 
 }

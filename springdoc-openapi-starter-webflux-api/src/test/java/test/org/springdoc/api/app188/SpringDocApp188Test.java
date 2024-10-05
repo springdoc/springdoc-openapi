@@ -13,7 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 class SpringDocApp188Test extends AbstractSpringDocTest {
 
 	@Test
-	public void testApp1() {
+	void testApp1() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL +"/mygroup").exchange()
 				.expectStatus().isOk()
 				.expectBody().json(getContent("results/app188.json"), true);

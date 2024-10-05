@@ -3,7 +3,7 @@ package test.org.springdoc.api.app155;
 /**
  * The type Concrete parameter object.
  */
-public class ConcreteParameterObject extends AbstractParameterObject<ConcreteEnum> {
+class ConcreteParameterObject extends AbstractParameterObject<ConcreteEnum> {
 
 	/**
 	 * The Primitive concrete field.

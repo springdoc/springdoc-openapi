@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -237,7 +237,7 @@ public class SpringDocAnnotationsUtils extends AnnotationsUtils {
 					schemaObject = schemaN;
 				}
 				else if (firstSchema instanceof ComposedSchema) {
-					schemaObject = (ComposedSchema) firstSchema;
+					schemaObject = firstSchema;
 					List<Schema> listOneOf = schemaObject.getOneOf();
 					if (!CollectionUtils.isEmpty(listOneOf) && !listOneOf.contains(schemaN))
 						schemaObject.addOneOfItem(schemaN);

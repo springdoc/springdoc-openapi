@@ -1,6 +1,6 @@
 package test.org.springdoc.api.app166;
 
-public class SimpleOuterClass {
+class SimpleOuterClass {
 
 	/**
 	 * Returns the name of the outer class

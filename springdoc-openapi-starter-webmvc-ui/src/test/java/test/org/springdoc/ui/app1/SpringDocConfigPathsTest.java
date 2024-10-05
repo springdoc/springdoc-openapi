@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocConfigPathsTest extends AbstractSpringDocTest {
 
 	@Test
-	public void should_display_swaggerui_page() throws Exception {
+	void should_display_swaggerui_page() throws Exception {
 		mockMvc.perform(get("/context-path/servlet-path/test/swagger.html").contextPath("/context-path").servletPath("/servlet-path"))
 				.andExpect(status().isFound());
 		mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/index.html").contextPath("/context-path").servletPath("/servlet-path"))

@@ -45,7 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 @Tag(name = "The sample resource")
-public class HelloController {
+class HelloController {
 
 	// -----------------------------------------------------------------------------------------------------------------
 

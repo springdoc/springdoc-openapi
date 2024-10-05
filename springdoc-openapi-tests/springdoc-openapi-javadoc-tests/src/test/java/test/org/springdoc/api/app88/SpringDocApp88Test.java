@@ -27,7 +27,7 @@ import org.springframework.test.context.TestPropertySource;
  * The type Spring doc app 88 test.
  */
 @TestPropertySource(properties = "springdoc.auto-tag-classes=false")
-public class SpringDocApp88Test extends AbstractSpringDocTest {
+class SpringDocApp88Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

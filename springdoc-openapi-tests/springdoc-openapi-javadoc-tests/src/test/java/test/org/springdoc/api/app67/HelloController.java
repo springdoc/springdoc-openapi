@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/demo",
 		produces = MediaType.TEXT_PLAIN_VALUE)
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Operation 1 string.

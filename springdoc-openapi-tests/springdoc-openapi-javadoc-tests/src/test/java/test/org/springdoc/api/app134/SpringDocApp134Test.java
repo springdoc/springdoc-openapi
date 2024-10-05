@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Tests Spring meta-annotations as method parameters
  */
-public class SpringDocApp134Test extends AbstractSpringDocTest {
+class SpringDocApp134Test extends AbstractSpringDocTest {
 
 	/**
 	 * Test app.
@@ -46,7 +46,7 @@ public class SpringDocApp134Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v1-group"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -59,7 +59,7 @@ public class SpringDocApp134Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp2() throws Exception {
+	void testApp2() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v2-group"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -72,7 +72,7 @@ public class SpringDocApp134Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp3() throws Exception {
+	void testApp3() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v1-headers-group"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -85,7 +85,7 @@ public class SpringDocApp134Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp4() throws Exception {
+	void testApp4() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v1-v2-headers-group"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -98,7 +98,7 @@ public class SpringDocApp134Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp5() throws Exception {
+	void testApp5() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v2-consumes-group"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))

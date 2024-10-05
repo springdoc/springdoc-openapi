@@ -12,7 +12,7 @@ import org.springframework.test.context.TestPropertySource;
  * The type Spring doc app 162 test.
  */
 @TestPropertySource(properties = "springdoc.override-with-generic-response=true")
-public class SpringDocApp162Test extends AbstractSpringDocTest {
+class SpringDocApp162Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

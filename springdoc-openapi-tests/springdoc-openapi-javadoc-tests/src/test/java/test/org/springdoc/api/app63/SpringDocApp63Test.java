@@ -30,7 +30,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {
 		"springdoc.packagesToScan=hell,hello1, hello.me",
 		"springdoc.packagesToExclude=test.org.springdoc.api.app63.65" })
-public class SpringDocApp63Test extends AbstractSpringDocTest {
+class SpringDocApp63Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

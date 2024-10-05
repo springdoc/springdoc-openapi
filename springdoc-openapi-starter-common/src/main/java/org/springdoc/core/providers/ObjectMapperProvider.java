@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -83,9 +83,9 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 		OpenApiVersion openApiVersion = springDocConfigProperties.getApiDocs().getVersion();
 		ObjectMapper objectMapper;
 		if (openApiVersion == OpenApiVersion.OPENAPI_3_1)
-			objectMapper = ObjectMapperProvider.createJson31();
+			objectMapper = ObjectMapperFactory.createJson31();
 		else
-			objectMapper = ObjectMapperProvider.createJson();
+			objectMapper = ObjectMapperFactory.createJson();
 
 		if (springDocConfigProperties.isWriterWithOrderByKeys())
 			sortOutput(objectMapper, springDocConfigProperties);

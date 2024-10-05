@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	@Override
 	public Operation customize(Operation operation, HandlerMethod handlerMethod) {
 		if (operationHasValidTag(operation)) {
-			Field operationField = getField(handlerMethod.getBean().getClass(), OPERATION);
+			Field operationField = FieldUtils.getDeclaredField(handlerMethod.getBean().getClass(), OPERATION,true);
 			if (operationField != null) {
 				processOperationField(handlerMethod, operation, operationField);
 			}
@@ -111,18 +111,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	private boolean operationHasValidTag(Operation operation) {
 		return operation.getTags() != null && operation.getTags().contains(getTag().getName());
 	}
-
-	/**
-	 * Gets field.
-	 *
-	 * @param clazz     the clazz
-	 * @param fieldName the field name
-	 * @return the field
-	 */
-	private Field getField(Class<?> clazz, String fieldName) {
-		return FieldUtils.getDeclaredField(clazz, fieldName, true);
-	}
-
+	
 	/**
 	 * Process operation field.
 	 *
@@ -133,7 +122,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	private void processOperationField(HandlerMethod handlerMethod, Operation operation, Field operationField) {
 		try {
 			Object actuatorOperation = operationField.get(handlerMethod.getBean());
-			Field actuatorOperationField = getField(actuatorOperation.getClass(), OPERATION);
+			Field actuatorOperationField = FieldUtils.getDeclaredField(actuatorOperation.getClass(), OPERATION, true);
 			if (actuatorOperationField != null) {
 				AbstractDiscoveredOperation discoveredOperation =
 						(AbstractDiscoveredOperation) actuatorOperationField.get(actuatorOperation);
@@ -184,6 +173,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	private void addParameters(OperationMethod operationMethod, Operation operation, ParameterIn parameterIn) {
 		for (OperationParameter operationParameter : operationMethod.getParameters()) {
 			Parameter parameter = getParameterFromField(operationParameter);
+			if(parameter == null) continue;
 			Schema<?> schema = resolveSchema(parameter);
 			if (parameter.getAnnotation(Selector.class) != null) {
 				operation.addParametersItem(new io.swagger.v3.oas.models.parameters.PathParameter()
@@ -209,6 +199,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	private void addWriteParameters(OperationMethod operationMethod, Operation operation) {
 		for (OperationParameter operationParameter : operationMethod.getParameters()) {
 			Parameter parameter = getParameterFromField(operationParameter);
+			if(parameter == null) continue;
 			Schema<?> schema = resolveSchema(parameter);
 			if (parameter.getAnnotation(Selector.class) != null) {
 				operation.addParametersItem(new io.swagger.v3.oas.models.parameters.PathParameter()
@@ -232,8 +223,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationCustomizer {
 	 */
 	private Parameter getParameterFromField(OperationParameter operationParameter) {
 		try {
-			Field parameterField = getField(operationParameter.getClass(), PARAMETER);
-			return (Parameter) parameterField.get(operationParameter);
+			return (Parameter) FieldUtils.readDeclaredField(operationParameter, PARAMETER, true);
 		}
 		catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());

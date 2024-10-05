@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -64,11 +64,6 @@ public class SpringDocProviders {
 	private final Optional<SpringWebProvider> springWebProvider;
 
 	/**
-	 * The Web conversion service.
-	 */
-	private final Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider;
-
-	/**
 	 * The Object mapper provider.
 	 */
 	private final ObjectMapperProvider objectMapperProvider;
@@ -81,13 +76,11 @@ public class SpringDocProviders {
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 * @param routerFunctionProvider the router function provider
 	 * @param springWebProvider the spring web provider
-	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
 	 * @param objectMapperProvider the object mapper provider
 	 */
 	public SpringDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider,
 			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider,
 			Optional<RouterFunctionProvider> routerFunctionProvider, Optional<SpringWebProvider> springWebProvider,
-			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider,
 			ObjectMapperProvider objectMapperProvider) {
 		this.actuatorProvider = actuatorProvider;
 		this.springCloudFunctionProvider = springCloudFunctionProvider;
@@ -95,7 +88,6 @@ public class SpringDocProviders {
 		this.repositoryRestResourceProvider = repositoryRestResourceProvider;
 		this.routerFunctionProvider = routerFunctionProvider;
 		this.springWebProvider = springWebProvider;
-		this.optionalWebConversionServiceProvider = optionalWebConversionServiceProvider;
 		this.objectMapperProvider = objectMapperProvider;
 	}
 

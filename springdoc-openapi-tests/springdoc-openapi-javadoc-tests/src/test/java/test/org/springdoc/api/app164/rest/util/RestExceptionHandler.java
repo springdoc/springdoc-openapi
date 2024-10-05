@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * This javadoc description is ignored by the REST documentation.
  */
 @RestControllerAdvice
-public class RestExceptionHandler {
+class RestExceptionHandler {
 	/**
 	 * REST exception handler for {@code NoResultException}.
 	 *

@@ -27,7 +27,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * The type Spring doc app 98 test.
  */
-public class SpringDocApp98Test extends AbstractSpringDocTest {
+class SpringDocApp98Test extends AbstractSpringDocTest {
 
 	static {
 		SpringDocUtils.getConfig().addAnnotationsToIgnore(IgnoredAnnotationParameter.class);

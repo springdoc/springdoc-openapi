@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * The type Common foo error handler.
  */
-public class CommonFooErrorHandler {
+class CommonFooErrorHandler {
 
 	/**
 	 * On exception error dto.

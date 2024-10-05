@@ -3,7 +3,7 @@ package test.org.springdoc.api.app127;
 /**
  * The type Concrete object a.
  */
-public class ConcreteObjectA extends AbstractObject {
+class ConcreteObjectA extends AbstractObject {
 
 	/**
 	 * The Description.

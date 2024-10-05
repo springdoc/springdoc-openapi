@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ public class CacheAutoConfigurationTest1 {
 			.withUserConfiguration(TestApp.class);
 
 	@Test
-	public void cache_configuration_loaded_when_not_disabled_explicitly() {
+	void cache_configuration_loaded_when_not_disabled_explicitly() {
 		contextRunner
 				.run(context -> assertThat(context)
 						.hasNotFailed()
@@ -48,7 +48,7 @@ public class CacheAutoConfigurationTest1 {
 	}
 
 	@Test
-	public void cache_configuration_loaded_when_disabled_explicitly() {
+	void cache_configuration_loaded_when_disabled_explicitly() {
 		contextRunner
 				.withPropertyValues("springdoc.cache.disabled=false")
 				.run(context -> assertThat(context)
@@ -60,7 +60,7 @@ public class CacheAutoConfigurationTest1 {
 	}
 
 	@Test
-	public void cache_configurations_successfully_disabled() {
+	void cache_configurations_successfully_disabled() {
 		contextRunner
 				.withPropertyValues("springdoc.cache.disabled=true")
 				.run(context -> assertThat(context)
@@ -72,7 +72,7 @@ public class CacheAutoConfigurationTest1 {
 	}
 
 	@Test
-	public void group_configuration_loaded() {
+	void group_configuration_loaded() {
 		contextRunner
 				.withPropertyValues("springdoc.group-configs[0].group=stores", "springdoc.group-configs[0].paths-to-match=/store/**")
 				.run(context -> assertThat(context)

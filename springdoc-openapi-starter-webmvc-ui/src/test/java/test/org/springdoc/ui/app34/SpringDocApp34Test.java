@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp34Test extends AbstractSpringDocTest {
 
 	@Test
-	public void test() throws Exception {
+	void test() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
 				.andExpect(header().string("Location", "/swagger-ui/index.html"));

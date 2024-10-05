@@ -31,7 +31,7 @@ import org.springframework.test.context.TestPropertySource;
 public class SpringDocApp7Test extends AbstractSpringDocTest {
 
 	@Test
-	public void transformed_index_with_oauth() throws Exception {
+	void transformed_index_with_oauth() throws Exception {
 		super.chekJS();
 	}
 

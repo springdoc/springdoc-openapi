@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ public class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest exten
 	 * Then: Return security definitions http basic
 	 */
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc
 				.perform(get("/api-docs"))
 				.andExpect(status().isOk())
@@ -71,7 +71,7 @@ public class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest exten
 	 * Then: Return security definitions with API key
 	 */
 	@Test
-	public void shouldDefineComponentsSecuritySchemesForApiKey() throws Exception {
+	void shouldDefineComponentsSecuritySchemesForApiKey() throws Exception {
 		mockMvc
 				.perform(get("/api-docs"))
 				.andExpect(status().isOk())
@@ -87,7 +87,7 @@ public class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest exten
 	 * Then: Return security definitions with OAuth
 	 */
 	@Test
-	public void shouldDefineComponentsSecuritySchemesForOAuth2() throws Exception {
+	void shouldDefineComponentsSecuritySchemesForOAuth2() throws Exception {
 		mockMvc
 				.perform(get("/api-docs"))
 				.andExpect(status().isOk())

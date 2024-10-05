@@ -26,7 +26,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringDocOauthPathsTest extends AbstractSpringDocTest {
 
 	@Test
-	public void oauth2_redirect_url_calculated() throws Exception {
+	void oauth2_redirect_url_calculated() throws Exception {
 		webTestClient.get().uri("/v3/api-docs/swagger-config").exchange()
 				.expectStatus().isOk().expectBody()
 				.jsonPath("$.oauth2RedirectUrl").isEqualTo("/webjars/swagger-ui/oauth2-redirect.html");

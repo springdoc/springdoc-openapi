@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Test controller.
  */
 @RestController
-public class TestController {
+class TestController {
 
 	/**
 	 * Gets test.

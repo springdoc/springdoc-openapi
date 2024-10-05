@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 		name = "Greeting",
 		title = "Greeting",
 		description = "An object containing a greeting message")
-public class Greeting {
+class Greeting {
 
 
 	/**

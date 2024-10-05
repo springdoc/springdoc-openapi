@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Hello controller.
  */
 @RestController("/api")
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Tweets.

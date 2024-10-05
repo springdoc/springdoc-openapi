@@ -33,7 +33,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  * The type Rest response entity exception handler.
  */
 @ControllerAdvice
-public class RestResponseEntityExceptionHandler
+class RestResponseEntityExceptionHandler
 		extends ResponseEntityExceptionHandler {
 	/**
 	 * Bad request response entity.

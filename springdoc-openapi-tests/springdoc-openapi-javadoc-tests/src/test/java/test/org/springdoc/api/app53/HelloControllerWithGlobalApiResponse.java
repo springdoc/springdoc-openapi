@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(path = "/global")
-public class HelloControllerWithGlobalApiResponse {
+class HelloControllerWithGlobalApiResponse {
 
 	/**
 	 * List with no api response list.

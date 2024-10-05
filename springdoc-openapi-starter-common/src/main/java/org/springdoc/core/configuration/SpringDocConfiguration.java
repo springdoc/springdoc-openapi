@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -408,7 +408,6 @@ public class SpringDocConfiguration {
 	 * @param repositoryRestResourceProvider the repository rest resource provider
 	 * @param routerFunctionProvider the router function provider
 	 * @param springWebProvider the spring web provider
-	 * @param webConversionServiceProvider the web conversion service provider
 	 * @param objectMapperProvider the object mapper provider
 	 * @return the spring doc providers
 	 */
@@ -417,10 +416,10 @@ public class SpringDocConfiguration {
 	@Lazy(false)
 	SpringDocProviders springDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
 			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider,
-			Optional<SpringWebProvider> springWebProvider, Optional<WebConversionServiceProvider> webConversionServiceProvider,
+			Optional<SpringWebProvider> springWebProvider,
 			ObjectMapperProvider objectMapperProvider) {
 		objectMapperProvider.jsonMapper().registerModule(new SpringDocRequiredModule());
-		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider, webConversionServiceProvider, objectMapperProvider);
+		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider, objectMapperProvider);
 	}
 
 	/**

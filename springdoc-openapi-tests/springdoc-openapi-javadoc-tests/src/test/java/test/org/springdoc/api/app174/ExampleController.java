@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The Example Controller
  */
 @RestController
-public class ExampleController {
+class ExampleController {
 
 	@PostMapping
 	public Test post(){

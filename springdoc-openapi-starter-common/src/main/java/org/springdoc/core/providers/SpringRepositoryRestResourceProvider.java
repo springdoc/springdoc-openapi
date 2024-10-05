@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -225,8 +225,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 			if (!hiddenRepository) {
 				if (resourceMetadata!=null && resourceMetadata.isExported()) {
 					for (HandlerMapping handlerMapping : handlerMappingList) {
-						if (handlerMapping instanceof RepositoryRestHandlerMapping) {
-							RepositoryRestHandlerMapping repositoryRestHandlerMapping = (RepositoryRestHandlerMapping) handlerMapping;
+						if (handlerMapping instanceof RepositoryRestHandlerMapping repositoryRestHandlerMapping) {
 							Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
 							// Entity controllers lookup first
 							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
@@ -253,8 +252,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 								}
 							});
 						}
-						else if (handlerMapping instanceof BasePathAwareHandlerMapping) {
-							BasePathAwareHandlerMapping beanBasePathAwareHandlerMapping = (BasePathAwareHandlerMapping) handlerMapping;
+						else if (handlerMapping instanceof BasePathAwareHandlerMapping beanBasePathAwareHandlerMapping) {
 							Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = beanBasePathAwareHandlerMapping.getHandlerMethods();
 							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
 									.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SCHEMA_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry

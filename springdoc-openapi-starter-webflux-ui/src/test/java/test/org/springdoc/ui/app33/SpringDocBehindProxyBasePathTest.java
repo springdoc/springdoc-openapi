@@ -62,7 +62,7 @@ public class SpringDocBehindProxyBasePathTest extends AbstractCommonTest {
 	}
 
 	@Test
-	public void testIndex() throws Exception {
+	void testIndex() throws Exception {
 		HttpStatusCode httpStatusMono = webClient.get().uri(WEBFLUX_BASE_PATH+"/documentation/swagger-ui.html")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();

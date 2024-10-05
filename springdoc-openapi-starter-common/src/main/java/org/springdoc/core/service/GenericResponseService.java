@@ -653,8 +653,8 @@ public class GenericResponseService implements ApplicationContextAware {
 		boolean result = false;
 		if (Void.TYPE.equals(returnType) || Void.class.equals(returnType))
 			result = true;
-		else if (returnType instanceof ParameterizedType) {
-			Type[] types = ((ParameterizedType) returnType).getActualTypeArguments();
+		else if (returnType instanceof ParameterizedType parameterizedType) {
+			Type[] types = parameterizedType.getActualTypeArguments();
 			if (types != null && isResponseTypeWrapper(ResolvableType.forType(returnType).getRawClass()))
 				result = isVoid(types[0]);
 		}
@@ -664,7 +664,7 @@ public class GenericResponseService implements ApplicationContextAware {
 	
 	private ControllerAdviceBean getControllerAdviceBean(List<ControllerAdviceBean> controllerAdviceBeans, Object controllerAdvice) {
 		return controllerAdviceBeans.stream()
-				.filter(controllerAdviceBean -> controllerAdviceBean.getBeanType().getName().equals(controllerAdvice.getClass().getName()))
+				.filter(controllerAdviceBean -> (controllerAdviceBean.getBeanType()!=null && controllerAdviceBean.getBeanType().isAssignableFrom(controllerAdvice.getClass())))
 				.findFirst()
 				.orElse(null);
 	}

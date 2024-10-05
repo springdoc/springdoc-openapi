@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("description-in-requestbody-is-null")
-public class DescriptionFieldInRequestBodyIsNullController {
+class DescriptionFieldInRequestBodyIsNullController {
 
 	/**
 	 * Person person.

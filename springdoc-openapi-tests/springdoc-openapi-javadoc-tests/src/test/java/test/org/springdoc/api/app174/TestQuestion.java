@@ -7,7 +7,7 @@ import java.util.List;
  *
  * @author bnasslahsen  test question
  */
-public class TestQuestion extends Question {
+class TestQuestion extends Question {
 	/**
 	 * list of variants
 	 */

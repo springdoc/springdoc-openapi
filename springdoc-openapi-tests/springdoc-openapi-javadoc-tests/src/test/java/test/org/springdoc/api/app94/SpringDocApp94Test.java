@@ -35,7 +35,6 @@ import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
 import org.springdoc.webmvc.api.OpenApiWebMvcResource;
 import test.org.springdoc.api.AbstractSpringDocTest;
-import test.org.springdoc.api.app91.Greeting;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
@@ -59,7 +58,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * The type Spring doc app 94 test.
  */
 @TestPropertySource(properties = "springdoc.default-produces-media-type=application/json")
-public class SpringDocApp94Test extends AbstractSpringDocTest {
+class SpringDocApp94Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

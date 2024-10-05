@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * the type is enclosed in an ignored wrapper.  We test this by setting up a model converter which
  * adds "stringy" to the "required" property of a schema's parent, when the sub schema is a String.
  */
-public class SpringDocApp157Test extends AbstractSpringDocTest {
+class SpringDocApp157Test extends AbstractSpringDocTest {
 
 	/**
 	 * The Converters.
@@ -71,7 +71,7 @@ public class SpringDocApp157Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))

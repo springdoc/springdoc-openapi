@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Hello controller.
  */
 @RestController
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Gets entity b.
@@ -25,7 +25,7 @@ public class HelloController {
 	/**
 	 * The type Entity b.
 	 */
-	public class EntityB {
+	class EntityB {
 
 		/**
 		 * The Field b.
@@ -46,7 +46,7 @@ public class HelloController {
 	/**
 	 * The type Entity a.
 	 */
-	public class EntityA {
+	class EntityA {
 		/**
 		 * The Field a.
 		 */

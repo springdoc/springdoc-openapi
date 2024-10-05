@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * The type Spring doc app 42 test.
  */
-public class SpringDocApp42Test extends AbstractSpringDocTest {
+class SpringDocApp42Test extends AbstractSpringDocTest {
 
 
 	/**

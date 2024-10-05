@@ -37,7 +37,7 @@ import static org.springframework.web.servlet.function.ServerResponse.ok;
  * The type Hello application.
  */
 @Configuration
-public class HelloApplication {
+class HelloApplication {
 
 	/**
 	 * Routes router function.

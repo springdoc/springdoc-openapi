@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericParameterService;
-import org.springdoc.core.service.OperationService;
 import org.springdoc.core.service.RequestBodyService;
 
 import org.springframework.http.codec.multipart.FilePart;
@@ -60,13 +59,12 @@ public class RequestService extends AbstractRequestService {
 	 *
 	 * @param parameterBuilder the parameter builder
 	 * @param requestBodyService the request body builder
-	 * @param operationService the operation builder
 	 * @param parameterCustomizers the parameter customizers
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
 	public RequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
+			Optional<List<ParameterCustomizer>> parameterCustomizers,
 			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
-		super(parameterBuilder, requestBodyService, operationService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
+		super(parameterBuilder, requestBodyService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 }

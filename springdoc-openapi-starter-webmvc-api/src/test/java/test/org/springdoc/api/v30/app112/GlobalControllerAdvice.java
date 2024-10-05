@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -60,10 +60,7 @@ public class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 	@ExceptionHandler(Throwable.class)
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	public ResponseEntity<Problem> problem(final Throwable e) {
-		String message = e.getMessage();
-		//might actually prefer to use a geeric mesasge
-
-		message = "Problem occured";
+		String message = "Problem occured";
 		UUID uuid = UUID.randomUUID();
 		String logRef = uuid.toString();
 		logger.error("logRef=" + logRef, message, e);

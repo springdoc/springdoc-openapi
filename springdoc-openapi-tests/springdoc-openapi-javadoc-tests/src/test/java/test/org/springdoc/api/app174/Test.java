@@ -9,7 +9,7 @@ import java.util.List;
  * @author bnasslahsen
  */
 
-public class Test implements Serializable {
+class Test implements Serializable {
 
 	private static final long serialVersionUID = 1L;  // Recommended for Serializable classes
 

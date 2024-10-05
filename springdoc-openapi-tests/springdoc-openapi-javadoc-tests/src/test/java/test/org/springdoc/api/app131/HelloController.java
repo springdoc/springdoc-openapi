@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @param <DataRequest>  the type parameter
  */
 @RestController
-public class HelloController<DataRequest> {
+class HelloController<DataRequest> {
 
 
 	/**

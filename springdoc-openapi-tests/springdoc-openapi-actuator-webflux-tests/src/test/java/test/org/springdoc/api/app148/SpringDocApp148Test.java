@@ -44,17 +44,17 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 
 	@Test
-	public void testApp() throws Exception {
+	void testApp() throws Exception {
 		super.testWithWebClient("148-1","/test/application/openapi/users");
 	}
 
 	@Test
-	public void testApp2() throws Exception {
+	void testApp2() throws Exception {
 		super.testWithWebClient("148-2","/test/application/openapi/x-actuator");
 	}
 
 	@Test
-	public void testApp3() throws Exception {
+	void testApp3() throws Exception {
 		try {
 			webClient.get().uri("/test/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME).retrieve()
 					.bodyToMono(String.class).block();

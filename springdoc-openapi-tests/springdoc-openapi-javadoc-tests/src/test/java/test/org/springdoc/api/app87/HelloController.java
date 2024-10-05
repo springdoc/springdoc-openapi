@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Hello controller.
  */
 @RestController("cookie")
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Put item response entity.

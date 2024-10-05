@@ -59,7 +59,7 @@ public class SpringDocApp8MultipleUrlsSeveralParallelRequestsTest extends Abstra
 	 * simultaneously to make sure no exceptions are thrown when getting Swagger config.
 	 */
 	@Test
-	public void swagger_config_for_multiple_groups_and_many_parallel_requests() {
+	void swagger_config_for_multiple_groups_and_many_parallel_requests() {
 		assertDoesNotThrow(() -> {
 			allOf(Stream.generate(() -> runAsync(() -> {
 						try {

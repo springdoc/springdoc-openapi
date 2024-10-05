@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @param <T>  the type parameter
  */
 @RestController
-public class HelloController<T> {
+class HelloController<T> {
 
 	/**
 	 * Bad.

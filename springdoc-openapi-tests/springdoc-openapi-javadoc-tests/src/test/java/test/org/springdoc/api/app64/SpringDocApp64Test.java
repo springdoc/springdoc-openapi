@@ -27,7 +27,7 @@ import org.springframework.test.context.TestPropertySource;
  * The type Spring doc app 64 test.
  */
 @TestPropertySource(properties = "springdoc.paths-to-match=/v1, /api/**")
-public class SpringDocApp64Test extends AbstractSpringDocTest {
+class SpringDocApp64Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

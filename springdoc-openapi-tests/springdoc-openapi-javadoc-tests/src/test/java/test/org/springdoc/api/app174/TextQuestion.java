@@ -5,7 +5,7 @@ package test.org.springdoc.api.app174;
  *
  * @author bnasslahsen
  */
-public class TextQuestion extends Question {
+class TextQuestion extends Question {
 	private final String answer;
 
 	public TextQuestion(String question, String type, String answer) {

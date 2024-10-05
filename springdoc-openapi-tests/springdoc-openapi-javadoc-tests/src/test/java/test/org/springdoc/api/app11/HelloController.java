@@ -35,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
  * The type Hello controller.
  */
 @RestController
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Upload documents response entity.

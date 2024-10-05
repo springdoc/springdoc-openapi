@@ -33,7 +33,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 public class SpringDocApp1RedirectWithConfigTest extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithConfiguredParams() {
+	void shouldRedirectWithConfiguredParams() {
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/swagger-ui.html").exchange()
 				.expectStatus().isFound();
 

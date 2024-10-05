@@ -3,7 +3,7 @@ package test.org.springdoc.api.app159;
 /**
  * The type Views.
  */
-public class Views {
+class Views {
 	/**
 	 * The type View 1.
 	 */

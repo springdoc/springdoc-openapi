@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * The type Dog.
  */
 @Schema(name = "Dog")
-public class Dog {
+class Dog {
 
 	/**
 	 * The Display name.

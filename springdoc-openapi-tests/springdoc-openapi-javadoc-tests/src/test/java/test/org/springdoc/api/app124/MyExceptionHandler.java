@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * The type My exception handler.
  */
 @RestControllerAdvice
-public class MyExceptionHandler {
+class MyExceptionHandler {
 
 	/**
 	 * Gateway object.

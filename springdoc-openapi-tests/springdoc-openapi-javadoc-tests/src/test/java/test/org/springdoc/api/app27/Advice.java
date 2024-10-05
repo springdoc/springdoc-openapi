@@ -30,7 +30,7 @@ import org.springframework.web.context.request.WebRequest;
  * The type Advice.
  */
 @RestControllerAdvice
-public class Advice {
+class Advice {
 
 	/**
 	 * Handle exception foo.

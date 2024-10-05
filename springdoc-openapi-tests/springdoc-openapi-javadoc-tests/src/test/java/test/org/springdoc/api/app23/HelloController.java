@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @SecurityScheme(type = SecuritySchemeType.APIKEY, in = SecuritySchemeIn.HEADER, name = "Authorization", paramName = "JWT", description = "A core-auth Bearer token")
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Persons.

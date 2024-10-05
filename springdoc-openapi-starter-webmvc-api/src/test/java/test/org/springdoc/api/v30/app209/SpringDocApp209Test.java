@@ -96,7 +96,7 @@ public class SpringDocApp209Test extends AbstractCommonTest {
 	}
 
 	@Test
-	public void shouldOnlyByCalledOnce() throws Exception {
+	void shouldOnlyByCalledOnce() throws Exception {
 	//	assertEquals(1, openAPIService.getNumberOfTimesCalculatePathWasCalled());
 
 		className = getClass().getSimpleName();

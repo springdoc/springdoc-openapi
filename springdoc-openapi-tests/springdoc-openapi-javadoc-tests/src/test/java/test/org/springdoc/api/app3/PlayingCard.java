@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * The type Playing card.
  */
-public class PlayingCard {
+class PlayingCard {
 	/**
 	 * The Suit.
 	 */

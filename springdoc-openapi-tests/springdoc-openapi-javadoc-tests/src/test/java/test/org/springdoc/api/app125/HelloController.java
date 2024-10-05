@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author bnasslahsen
  */
 @RestController
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Gets all pets.

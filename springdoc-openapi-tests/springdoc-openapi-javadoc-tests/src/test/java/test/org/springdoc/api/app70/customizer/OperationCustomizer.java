@@ -27,7 +27,7 @@ import org.springframework.web.method.HandlerMethod;
  * The type Operation customizer.
  */
 @Component
-public class OperationCustomizer implements org.springdoc.core.customizers.OperationCustomizer {
+class OperationCustomizer implements org.springdoc.core.customizers.OperationCustomizer {
 	/**
 	 * Customize operation.
 	 *

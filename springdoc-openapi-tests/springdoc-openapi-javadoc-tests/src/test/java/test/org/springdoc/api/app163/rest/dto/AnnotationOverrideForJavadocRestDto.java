@@ -24,9 +24,6 @@ public class AnnotationOverrideForJavadocRestDto {
 	 */
 	private AnnotationOverrideForJavadocStaticInnerRestDto inner;
 
-	public AnnotationOverrideForJavadocRestDto() {
-	}
-
 	public String getGuid() {
 		return guid;
 	}
@@ -51,9 +48,6 @@ public class AnnotationOverrideForJavadocRestDto {
 		 * This is the private {@code #content} field's javadoc.
 		 */
 		private String content;
-
-		public AnnotationOverrideForJavadocStaticInnerRestDto() {
-		}
 
 		public String getContent() {
 			return content;

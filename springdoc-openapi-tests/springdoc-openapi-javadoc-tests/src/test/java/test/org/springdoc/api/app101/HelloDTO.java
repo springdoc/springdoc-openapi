@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * The type Hello dto.
  */
 @Schema(description = "${test.app101.schema.hello.description}")
-public class HelloDTO {
+class HelloDTO {
 
 	/**
 	 * The Id.

@@ -6,4 +6,4 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Specific controller.
  */
 @RestController
-public class SpecificController extends BaseController<SpecificClientModel> {}
+class SpecificController extends BaseController<SpecificClientModel> {}

@@ -35,7 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Azige
  */
 @Controller
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Hello string.

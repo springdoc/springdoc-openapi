@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocRedirectFilterTest extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithConfigUrlIgnoringQueryParams() throws Exception {
+	void shouldRedirectWithConfigUrlIgnoringQueryParams() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
 				.andExpect(header().string("Location", "/swagger-ui/index.html"));
