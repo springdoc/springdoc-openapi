@@ -23,7 +23,6 @@
 package org.springdoc.core.customizers;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -128,7 +127,6 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 */
 	private Optional<Annotation> getNewParameterAnnotationForField(MethodParameter methodParameter, PageableDefault pageableDefault, SortDefault sortDefault) {
 		String parameterName = methodParameter.getParameterName();
-		Field field;
 		Parameter parameterNew;
 		try {
 			Parameter parameter = methodParameter.getContainingClass().getDeclaredField(parameterName).getAnnotation(Parameter.class);
