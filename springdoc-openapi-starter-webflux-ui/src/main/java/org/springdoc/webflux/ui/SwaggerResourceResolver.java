@@ -1,58 +1,47 @@
 package org.springdoc.webflux.ui;
 
-import java.util.List;
-
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
-import org.springdoc.ui.AbstractSwaggerResourceResolver;
-import reactor.core.publisher.Mono;
 
-import org.springframework.core.io.Resource;
-import org.springframework.web.reactive.resource.ResourceResolver;
-import org.springframework.web.reactive.resource.ResourceResolverChain;
-import org.springframework.web.server.ServerWebExchange;
+import org.springframework.lang.Nullable;
+import org.springframework.web.reactive.resource.LiteWebJarsResourceResolver;
+
+import static org.springdoc.ui.SwaggerResourceResolverUtils.findSwaggerResourcePath;
 
 /**
- * The type Web jars version resource resolver.
+ * The type Swagger resource resolver.
  *
  * @author bnasslahsen
  */
-public class SwaggerResourceResolver extends AbstractSwaggerResourceResolver implements ResourceResolver {
+public class SwaggerResourceResolver extends LiteWebJarsResourceResolver {
 
 
+	/**
+	 * The Swagger ui config properties.
+	 */
+	private final SwaggerUiConfigProperties swaggerUiConfigProperties;
+	
 	/**
 	 * Instantiates a new Web jars version resource resolver.
 	 *
 	 * @param swaggerUiConfigProperties the swagger ui config properties
 	 */
 	public SwaggerResourceResolver(SwaggerUiConfigProperties swaggerUiConfigProperties) {
-		super(swaggerUiConfigProperties);
+		this.swaggerUiConfigProperties = swaggerUiConfigProperties;
 	}
 
-	@Override
-	public Mono<Resource> resolveResource(ServerWebExchange exchange, String requestPath, List<? extends Resource> locations, ResourceResolverChain chain) {
-		return chain.resolveResource(exchange, requestPath, locations)
-				.switchIfEmpty(Mono.defer(() -> {
-					String webJarsResourcePath = findWebJarResourcePath(requestPath);
-					if (webJarsResourcePath != null) {
-						return chain.resolveResource(exchange, webJarsResourcePath, locations);
-					}
-					else {
-						return Mono.empty();
-					}
-				}));
-	}
 
+	/**
+	 * Find web jar resource path string.
+	 *
+	 * @param pathStr the path
+	 * @return the string
+	 */
+	@Nullable
 	@Override
-	public Mono<String> resolveUrlPath(String resourceUrlPath, List<? extends Resource> locations, ResourceResolverChain chain) {
-		return chain.resolveUrlPath(resourceUrlPath, locations)
-				.switchIfEmpty(Mono.defer(() -> {
-					String webJarResourcePath = findWebJarResourcePath(resourceUrlPath);
-					if (webJarResourcePath != null) {
-						return chain.resolveUrlPath(webJarResourcePath, locations);
-					}
-					else {
-						return Mono.empty();
-					}
-				}));
+	protected String findWebJarResourcePath(String pathStr) {
+		String resourcePath = super.findWebJarResourcePath(pathStr);
+		if(resourcePath == null)
+			return findSwaggerResourcePath(pathStr, swaggerUiConfigProperties.getVersion());
+		return resourcePath;
 	}
 }
