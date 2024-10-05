@@ -96,7 +96,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springDocProviders the spring doc providers
 	 */
-	public OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
+	protected OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
 			GenericResponseService responseBuilder, OperationService operationParser,
 			SpringDocConfigProperties springDocConfigProperties,
 			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers ) {
