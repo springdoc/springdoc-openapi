@@ -6,8 +6,7 @@
 
 IMPORTANT: ``springdoc-openapi v1.8.0`` is the latest Open Source release supporting Spring Boot 2.x and 1.x. 
 
-An extended support for [*springdoc-openapi v1*](https://springdoc.org/v1) 
-project is now available for organizations that need support beyond 2023. 
+An extended support for [*springdoc-openapi v1*](https://springdoc.org/v1) project is now available for organizations that need support beyond 2023. 
 
 For more details, feel free to reach out: [sales@springdoc.org](mailto:sales@springdoc.org)
 
