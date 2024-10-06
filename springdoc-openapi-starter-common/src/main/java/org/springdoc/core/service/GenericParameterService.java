@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.service;
@@ -89,6 +91,7 @@ import static org.springdoc.core.utils.Constants.DOT;
 
 /**
  * The type Generic parameter builder.
+ *
  * @author bnasslahsen, coutin
  */
 @SuppressWarnings("rawtypes")
@@ -147,11 +150,12 @@ public class GenericParameterService {
 
 	/**
 	 * Instantiates a new Generic parameter builder.
-	 * @param propertyResolverUtils the property resolver utils
+	 *
+	 * @param propertyResolverUtils                        the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizers the optional list delegating method parameter customizer
-	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
-	 * @param objectMapperProvider the object mapper provider
-	 * @param javadocProviderOptional the javadoc provider
+	 * @param optionalWebConversionServiceProvider         the optional web conversion service provider
+	 * @param objectMapperProvider                         the object mapper provider
+	 * @param javadocProviderOptional                      the javadoc provider
 	 */
 	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers,
 			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, Optional<JavadocProvider> javadocProviderOptional) {
@@ -187,7 +191,7 @@ public class GenericParameterService {
 	 * Merge parameter parameter.
 	 *
 	 * @param existingParamDoc the existing param doc
-	 * @param paramCalcul the param calcul
+	 * @param paramCalcul      the param calcul
 	 * @return the parameter
 	 */
 	public static Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
@@ -214,7 +218,7 @@ public class GenericParameterService {
 	 * Merge parameter.
 	 *
 	 * @param paramCalcul the param calcul
-	 * @param paramDoc the param doc
+	 * @param paramDoc    the param doc
 	 */
 	public static void mergeParameter(Parameter paramCalcul, Parameter paramDoc) {
 		if (StringUtils.isBlank(paramDoc.getDescription()))
@@ -261,9 +265,9 @@ public class GenericParameterService {
 	 * Build parameter from doc parameter.
 	 *
 	 * @param parameterDoc the parameter doc
-	 * @param components the components
-	 * @param jsonView the json view
-	 * @param locale the locale
+	 * @param components   the components
+	 * @param jsonView     the json view
+	 * @param locale       the locale
 	 * @return the parameter
 	 */
 	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
@@ -311,9 +315,9 @@ public class GenericParameterService {
 	 * Sets schema.
 	 *
 	 * @param parameterDoc the parameter doc
-	 * @param components the components
-	 * @param jsonView the json view
-	 * @param parameter the parameter
+	 * @param components   the components
+	 * @param jsonView     the json view
+	 * @param parameter    the parameter
 	 */
 	private void setSchema(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonView, Parameter parameter) {
 		if (StringUtils.isNotBlank(parameterDoc.ref()))
@@ -352,10 +356,10 @@ public class GenericParameterService {
 	/**
 	 * Calculate schema schema.
 	 *
-	 * @param components the components
-	 * @param parameterInfo the parameter info
+	 * @param components      the components
+	 * @param parameterInfo   the parameter info
 	 * @param requestBodyInfo the request body info
-	 * @param jsonView the json view
+	 * @param jsonView        the json view
 	 * @return the schema
 	 */
 	Schema calculateSchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, JsonView jsonView) {
@@ -398,11 +402,11 @@ public class GenericParameterService {
 	/**
 	 * Calculate request body schema schema.
 	 *
-	 * @param components the components
-	 * @param parameterInfo the parameter info
+	 * @param components      the components
+	 * @param parameterInfo   the parameter info
 	 * @param requestBodyInfo the request body info
-	 * @param schemaN the schema n
-	 * @param paramName the param name
+	 * @param schemaN         the schema n
+	 * @param paramName       the param name
 	 * @return the schema
 	 */
 	private Schema calculateRequestBodySchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, Schema schemaN, String paramName) {
@@ -439,7 +443,7 @@ public class GenericParameterService {
 	 * Sets examples.
 	 *
 	 * @param parameterDoc the parameter doc
-	 * @param parameter the parameter
+	 * @param parameter    the parameter
 	 */
 	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
 		Map<String, Example> exampleMap = new HashMap<>();
@@ -482,7 +486,7 @@ public class GenericParameterService {
 	 * Sets parameter explode.
 	 *
 	 * @param parameter the parameter
-	 * @param p the p
+	 * @param p         the p
 	 */
 	private void setParameterExplode(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
 		if (isExplodable(p)) {
@@ -499,7 +503,7 @@ public class GenericParameterService {
 	 * Sets parameter style.
 	 *
 	 * @param parameter the parameter
-	 * @param p the p
+	 * @param p         the p
 	 */
 	private void setParameterStyle(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
 		if (StringUtils.isNotBlank(p.style().toString())) {
@@ -590,6 +594,7 @@ public class GenericParameterService {
 	/**
 	 * Resolve the given annotation-specified value,
 	 * potentially containing placeholders and expressions.
+	 *
 	 * @param value the value
 	 * @return the object
 	 */

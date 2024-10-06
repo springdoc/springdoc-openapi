@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.webflux.ui;
@@ -59,6 +61,7 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_USE_ROOT_PATH;
 
 /**
  * The type Swagger config.
+ *
  * @author bnasslahsen
  */
 @Lazy(false)
@@ -71,9 +74,9 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	/**
 	 * Swagger welcome swagger welcome web flux.
 	 *
-	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiConfig           the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param springWebProvider the spring web provider
+	 * @param springWebProvider         the spring web provider
 	 * @return the swagger welcome web flux
 	 */
 	@Bean
@@ -117,9 +120,9 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	 *
 	 * @param swaggerUiConfigProperties the swagger ui calculated config
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param swaggerIndexTransformer the swagger index transformer
-	 * @param actuatorProvider the actuator provider
-	 * @param swaggerResourceResolver the swagger resource resolver
+	 * @param swaggerIndexTransformer   the swagger index transformer
+	 * @param actuatorProvider          the actuator provider
+	 * @param swaggerResourceResolver   the swagger resource resolver
 	 * @return the swagger web flux configurer
 	 */
 	@Bean
@@ -134,10 +137,10 @@ public class SwaggerConfig implements WebFluxConfigurer {
 	/**
 	 * Index page transformer swagger index transformer.
 	 *
-	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiConfig          the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
-	 * @param swaggerWelcomeCommon the swagger welcome common
-	 * @param objectMapperProvider the object mapper provider
+	 * @param swaggerWelcomeCommon     the swagger welcome common
+	 * @param objectMapperProvider     the object mapper provider
 	 * @return the swagger index transformer
 	 */
 	@Bean
@@ -182,6 +185,7 @@ public class SwaggerConfig implements WebFluxConfigurer {
 
 	/**
 	 * The type Swagger actuator welcome configuration.
+	 *
 	 * @author bnasslashen
 	 */
 	@ConditionalOnProperty(SPRINGDOC_USE_MANAGEMENT_PORT)
@@ -192,9 +196,9 @@ public class SwaggerConfig implements WebFluxConfigurer {
 		/**
 		 * Swagger actuator welcome swagger welcome actuator.
 		 *
-		 * @param swaggerUiConfig the swagger ui config
-		 * @param springDocConfigProperties the spring doc config properties
-		 * @param webEndpointProperties the web endpoint properties
+		 * @param swaggerUiConfig            the swagger ui config
+		 * @param springDocConfigProperties  the spring doc config properties
+		 * @param webEndpointProperties      the web endpoint properties
 		 * @param managementServerProperties the management server properties
 		 * @return the swagger welcome actuator
 		 */

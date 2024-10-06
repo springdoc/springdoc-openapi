@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.fn.builders.encoding;
@@ -33,6 +35,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Encoding builder.
+ *
  * @author bnasslahsen
  */
 public class Builder {
@@ -41,45 +44,38 @@ public class Builder {
 	 * The name of this encoding object instance.
 	 * This property is a key in encoding map of MediaType object and
 	 * MUST exist in a schema as a property.
-	 *
 	 */
 	private String name = "";
 
 	/**
 	 * The Content-Type for encoding a specific property.
-	 *
 	 */
 	private String contentType = "";
 
 	/**
 	 * Describes how a specific property value will be serialized depending on its type
-	 *
 	 */
 	private String style = "";
 
 	/**
 	 * When this is true, property values of type array or object generate separate parameters for each value of the array,
 	 * or key-value-pair of the map.
-	 *
 	 */
 	private boolean explode;
 
 	/**
 	 * Determines whether the parameter value SHOULD allow reserved characters,
 	 * as defined by RFC3986 to be included without percent-encoding.
-	 *
 	 */
 	private boolean allowReserved;
 
 	/**
 	 * An array of header objects
-	 *
 	 */
 	private Header[] headers = {};
 
 	/**
 	 * The list of optional extensions
-	 *
 	 */
 	private Extension[] extensions = {};
 

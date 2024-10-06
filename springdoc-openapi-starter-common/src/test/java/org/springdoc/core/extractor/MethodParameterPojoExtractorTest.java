@@ -42,6 +42,9 @@ class MethodParameterPojoExtractorTest {
 	 */
 	@Nested
 	class extractFrom {
+		/**
+		 * If record object should get field.
+		 */
 		@Test
 		void ifRecordObjectShouldGetField() {
 			Stream<MethodParameter> actual = MethodParameterPojoExtractor.extractFrom(RecordObject.class);
@@ -51,6 +54,9 @@ class MethodParameterPojoExtractorTest {
 					.containsOnlyOnce("email", "firstName", "lastName");
 		}
 
+		/**
+		 * If class object should get method.
+		 */
 		@Test
 		void ifClassObjectShouldGetMethod() {
 			Stream<MethodParameter> actual = MethodParameterPojoExtractor.extractFrom(ClassObject.class);
@@ -60,29 +66,66 @@ class MethodParameterPojoExtractorTest {
 					.containsOnlyOnce("getEmail", "getFirstName", "getLastName");
 		}
 
+		/**
+		 * The type Record object.
+		 */
 		public record RecordObject(String email, String firstName, String lastName) {}
 
+		/**
+		 * The type Class object.
+		 */
 		public class ClassObject {
+			/**
+			 * The Email.
+			 */
 			private String email;
 
+			/**
+			 * The First name.
+			 */
 			private String firstName;
 
+			/**
+			 * The Last name.
+			 */
 			private String lastName;
 
+			/**
+			 * Instantiates a new Class object.
+			 *
+			 * @param email     the email
+			 * @param firstName the first name
+			 * @param lastName  the last name
+			 */
 			public ClassObject(String email, String firstName, String lastName) {
 				this.email = email;
 				this.firstName = firstName;
 				this.lastName = lastName;
 			}
 
+			/**
+			 * Gets email.
+			 *
+			 * @return the email
+			 */
 			public String getEmail() {
 				return email;
 			}
 
+			/**
+			 * Gets first name.
+			 *
+			 * @return the first name
+			 */
 			public String getFirstName() {
 				return firstName;
 			}
 
+			/**
+			 * Gets last name.
+			 *
+			 * @return the last name
+			 */
 			public String getLastName() {
 				return lastName;
 			}

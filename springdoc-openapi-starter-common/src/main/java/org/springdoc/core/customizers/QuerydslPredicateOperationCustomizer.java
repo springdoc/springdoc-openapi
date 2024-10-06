@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.customizers;
@@ -62,6 +64,7 @@ import org.springframework.web.method.HandlerMethod;
 
 /**
  * The type Querydsl predicate operation customizer.
+ *
  * @author Gibah Joseph Email: gibahjoe@gmail.com Mar, 2020
  */
 @SuppressWarnings("unchecked")
@@ -149,8 +152,8 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	/**
 	 * Gets field value of boolean.
 	 *
-	 * @param instance the instance  
-	 * @param fieldName the field name  
+	 * @param instance  the instance
+	 * @param fieldName the field name
 	 * @return the field value of boolean
 	 */
 	private boolean getFieldValueOfBoolean(QuerydslBindings instance, String fieldName) {
@@ -165,7 +168,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	/**
 	 * Extract qdsl bindings querydsl bindings.
 	 *
-	 * @param predicate the predicate  
+	 * @param predicate the predicate
 	 * @return the querydsl bindings
 	 */
 	private QuerydslBindings extractQdslBindings(QuerydslPredicate predicate) {
@@ -184,9 +187,9 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	/**
 	 * Gets field values.
 	 *
-	 * @param instance the instance  
-	 * @param fieldName the field name  
-	 * @param alternativeFieldName the alternative field name  
+	 * @param instance             the instance
+	 * @param fieldName            the field name
+	 * @param alternativeFieldName the alternative field name
 	 * @return the field values
 	 */
 	private Set<String> getFieldValues(QuerydslBindings instance, String fieldName, String alternativeFieldName) {
@@ -206,8 +209,8 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	/**
 	 * Gets path spec.
 	 *
-	 * @param instance the instance  
-	 * @param fieldName the field name  
+	 * @param instance  the instance
+	 * @param fieldName the field name
 	 * @return the path spec
 	 */
 	private Map<String, Object> getPathSpec(QuerydslBindings instance, String fieldName) {
@@ -223,7 +226,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	/**
 	 * Gets path from path spec.
 	 *
-	 * @param instance the instance  
+	 * @param instance the instance
 	 * @return the path from path spec
 	 */
 	private Optional<Path<?>> getPathFromPathSpec(Object instance) {
@@ -241,9 +244,9 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 
 	/***
 	 * Tries to figure out the Type of the field. It first checks the Qdsl pathSpecMap before checking the root class. Defaults to String.class
-	 * @param fieldName The name of the field used as reference to get the type  
-	 * @param pathSpecMap The Qdsl path specifications as defined in the resolved bindings  
-	 * @param root The root type where the paths are gotten
+	 * @param fieldName The name of the field used as reference to get the type   
+	 * @param pathSpecMap The Qdsl path specifications as defined in the resolved bindings   
+	 * @param root The root type where the paths are gotten 
 	 * @return The type of the field. Returns
 	 */
 	private Type getFieldType(String fieldName, Map<String, Object> pathSpecMap, Class<?> root) {
@@ -268,8 +271,8 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 
 	/***
 	 * Constructs the parameter
-	 * @param type The type of the parameter  
-	 * @param name The name of the parameter  
+	 * @param type The type of the parameter   
+	 * @param name The name of the parameter   
 	 * @return The swagger parameter
 	 */
 	private Parameter buildParam(Type type, String name) {

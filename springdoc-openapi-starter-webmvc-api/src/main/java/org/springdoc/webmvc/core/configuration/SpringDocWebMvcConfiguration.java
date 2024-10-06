@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.webmvc.core.configuration;
@@ -75,6 +77,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 /**
  * The type Spring doc web mvc configuration.
+ *
  * @author bnasslahsen
  */
 @Lazy(false)
@@ -93,12 +96,12 @@ public class SpringDocWebMvcConfiguration {
 	 * Open api resource open api resource.
 	 *
 	 * @param openAPIBuilderObjectFactory the open api builder object factory
-	 * @param requestBuilder the request builder
-	 * @param responseBuilder the response builder
-	 * @param operationParser the operation parser
-	 * @param springDocConfigProperties the spring doc config properties
-	 * @param springDocProviders the spring doc providers
-	 * @param springDocCustomizers the spring doc customizers
+	 * @param requestBuilder              the request builder
+	 * @param responseBuilder             the response builder
+	 * @param operationParser             the operation parser
+	 * @param springDocConfigProperties   the spring doc config properties
+	 * @param springDocProviders          the spring doc providers
+	 * @param springDocCustomizers        the spring doc customizers
 	 * @return the open api resource
 	 */
 	@Bean
@@ -116,9 +119,9 @@ public class SpringDocWebMvcConfiguration {
 	/**
 	 * Request builder request builder.
 	 *
-	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyService the request body builder
-	 * @param parameterCustomizers the parameter customizers
+	 * @param parameterBuilder                      the parameter builder
+	 * @param requestBodyService                    the request body builder
+	 * @param parameterCustomizers                  the parameter customizers
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 * @return the request builder
 	 */
@@ -147,9 +150,9 @@ public class SpringDocWebMvcConfiguration {
 	/**
 	 * Response builder generic response builder.
 	 *
-	 * @param operationService the operation builder
+	 * @param operationService          the operation builder
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param propertyResolverUtils the property resolver utils
+	 * @param propertyResolverUtils     the property resolver utils
 	 * @return the generic response builder
 	 */
 	@Bean
@@ -161,6 +164,7 @@ public class SpringDocWebMvcConfiguration {
 
 	/**
 	 * The type Spring doc web mvc router configuration.
+	 *
 	 * @author bnasslahsen
 	 */
 	@ConditionalOnClass(RouterFunction.class)
@@ -181,6 +185,7 @@ public class SpringDocWebMvcConfiguration {
 
 	/**
 	 * The type Spring doc web mvc actuator configuration.
+	 *
 	 * @author bnasslashen
 	 */
 	@ConditionalOnClass(WebMvcEndpointHandlerMapping.class)
@@ -189,11 +194,11 @@ public class SpringDocWebMvcConfiguration {
 		/**
 		 * Actuator provider actuator provider.
 		 *
-		 * @param serverProperties the server properties
-		 * @param springDocConfigProperties the spring doc config properties
-		 * @param managementServerProperties the management server properties
-		 * @param webEndpointProperties the web endpoint properties
-		 * @param webMvcEndpointHandlerMapping the web mvc endpoint handler mapping
+		 * @param serverProperties                 the server properties
+		 * @param springDocConfigProperties        the spring doc config properties
+		 * @param managementServerProperties       the management server properties
+		 * @param webEndpointProperties            the web endpoint properties
+		 * @param webMvcEndpointHandlerMapping     the web mvc endpoint handler mapping
 		 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
 		 * @return the actuator provider
 		 */
@@ -219,12 +224,12 @@ public class SpringDocWebMvcConfiguration {
 		 * Open api actuator resource open api actuator resource.
 		 *
 		 * @param openAPIBuilderObjectFactory the open api builder object factory
-		 * @param requestBuilder the request builder
-		 * @param responseBuilder the response builder
-		 * @param operationParser the operation parser
-		 * @param springDocConfigProperties the spring doc config properties
-		 * @param springDocProviders the spring doc providers
-		 * @param springDocCustomizers the spring doc customizers
+		 * @param requestBuilder              the request builder
+		 * @param responseBuilder             the response builder
+		 * @param operationParser             the operation parser
+		 * @param springDocConfigProperties   the spring doc config properties
+		 * @param springDocProviders          the spring doc providers
+		 * @param springDocCustomizers        the spring doc customizers
 		 * @return the open api actuator resource
 		 */
 		@Bean

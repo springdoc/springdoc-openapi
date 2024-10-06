@@ -2,22 +2,26 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
+ *  *  *  *  *
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.customizers;
@@ -84,7 +88,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	/**
 	 * Instantiates a new Data rest delegating method parameter customizer.
 	 *
-	 * @param optionalSpringDataWebPropertiesProvider the optional spring data web properties provider
+	 * @param optionalSpringDataWebPropertiesProvider     the optional spring data web properties provider
 	 * @param optionalRepositoryRestConfigurationProvider the optional repository rest configuration provider
 	 */
 	public DataRestDelegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfigurationProvider) {
@@ -123,6 +127,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 *
 	 * @param methodParameter the method parameter
 	 * @param pageableDefault the pageable default
+	 * @param sortDefault     the sort default
 	 * @return the new parameter annotation for field
 	 */
 	private Optional<Annotation> getNewParameterAnnotationForField(MethodParameter methodParameter, PageableDefault pageableDefault, SortDefault sortDefault) {
@@ -1034,7 +1039,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 * Gets name.
 	 *
 	 * @param parameterName the parameter name
-	 * @param originalName the original name
+	 * @param originalName  the original name
 	 * @return the name
 	 */
 	private String getName(String parameterName, String originalName) {
@@ -1079,7 +1084,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	/**
 	 * Gets description.
 	 *
-	 * @param parameterName the parameter name
+	 * @param parameterName       the parameter name
 	 * @param originalDescription the original description
 	 * @return the description
 	 */
@@ -1093,8 +1098,8 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	/**
 	 * Gets default value.
 	 *
-	 * @param parameterName the parameter name
-	 * @param pageableDefault the pageable default
+	 * @param parameterName    the parameter name
+	 * @param pageableDefault  the pageable default
 	 * @param defaultSchemaVal the default schema val
 	 * @return the default value
 	 */
@@ -1143,9 +1148,9 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	/**
 	 * Gets default value.
 	 *
-	 * @param parameterName the parameter name
-	 * @param pageableDefault the pageable default
-	 * @param sortDefault the sort default
+	 * @param parameterName    the parameter name
+	 * @param pageableDefault  the pageable default
+	 * @param sortDefault      the sort default
 	 * @param defaultSchemaVal the default schema val
 	 * @return the default value
 	 */
@@ -1170,7 +1175,7 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 	 * Gets default sort.
 	 *
 	 * @param pageableDefault the pageable default
-	 * @param sortDefault the sort default
+	 * @param sortDefault     the sort default
 	 * @return the default sort
 	 */
 	private DefaultSort getDefaultSort(PageableDefault pageableDefault, SortDefault sortDefault) {
@@ -1225,23 +1230,52 @@ public class DataRestDelegatingMethodParameterCustomizer implements DelegatingMe
 		return optionalRepositoryRestConfigurationProvider.isPresent() && optionalRepositoryRestConfigurationProvider.get().isRepositoryRestConfigurationPresent();
 	}
 
+	/**
+	 * The type Default sort.
+	 */
 	private static class DefaultSort {
 
+		/**
+		 * The constant DIRECTION_GROUP.
+		 */
 		private static final String DIRECTION_GROUP = Arrays.stream(Sort.Direction.values()).map(Enum::name).collect(Collectors.joining("|"));
 
+		/**
+		 * The constant DIRECTED_REGEXP.
+		 */
 		private static final String DIRECTED_REGEXP = "\\w+(\\.\\w+)*,\\s*(" + DIRECTION_GROUP + ')';
 
+		/**
+		 * The constant DIRECTED_PATTERN.
+		 */
 		private static final Pattern DIRECTED_PATTERN = Pattern.compile(DIRECTED_REGEXP, Pattern.CASE_INSENSITIVE);
 
+		/**
+		 * The Direction.
+		 */
 		private final Sort.Direction direction;
 
+		/**
+		 * The Properties.
+		 */
 		private final String[] properties;
 
+		/**
+		 * Instantiates a new Default sort.
+		 *
+		 * @param direction  the direction
+		 * @param properties the properties
+		 */
 		DefaultSort(Sort.Direction direction, String... properties) {
 			this.direction = direction;
 			this.properties = properties;
 		}
 
+		/**
+		 * Gets effective properties.
+		 *
+		 * @return the effective properties
+		 */
 		List<String> getEffectiveProperties() {
 			return Arrays.stream(properties)
 					.map(p -> {

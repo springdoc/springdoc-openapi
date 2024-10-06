@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.service;
@@ -51,6 +53,7 @@ import static org.springdoc.core.utils.SpringDocAnnotationsUtils.mergeSchema;
 
 /**
  * The type Request body builder.
+ *
  * @author bnasslahsen
  */
 public class RequestBodyService {
@@ -68,7 +71,7 @@ public class RequestBodyService {
 	/**
 	 * Instantiates a new Request body builder.
 	 *
-	 * @param parameterBuilder the parameter builder
+	 * @param parameterBuilder      the parameter builder
 	 * @param propertyResolverUtils the property resolver utils
 	 */
 	public RequestBodyService(GenericParameterService parameterBuilder, PropertyResolverUtils propertyResolverUtils) {
@@ -80,12 +83,12 @@ public class RequestBodyService {
 	/**
 	 * Build request body from doc optional.
 	 *
-	 * @param requestBody the request body
-	 * @param requestBodyOp the request body op
-	 * @param methodAttributes the method attributes
-	 * @param components the components
+	 * @param requestBody        the request body
+	 * @param requestBodyOp      the request body op
+	 * @param methodAttributes   the method attributes
+	 * @param components         the components
 	 * @param jsonViewAnnotation the json view annotation
-	 * @param locale the locale
+	 * @param locale             the locale
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(
@@ -133,14 +136,14 @@ public class RequestBodyService {
 	/**
 	 * Build resquest body content.
 	 *
-	 * @param requestBody the request body
-	 * @param requestBodyOp the request body op
-	 * @param methodAttributes the method attributes
-	 * @param components the components
+	 * @param requestBody        the request body
+	 * @param requestBodyOp      the request body op
+	 * @param methodAttributes   the method attributes
+	 * @param components         the components
 	 * @param jsonViewAnnotation the json view annotation
-	 * @param classConsumes the class consumes
-	 * @param methodConsumes the method consumes
-	 * @param requestBodyObject the request body object
+	 * @param classConsumes      the class consumes
+	 * @param methodConsumes     the method consumes
+	 * @param requestBodyObject  the request body object
 	 */
 	private void buildResquestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, String[] classConsumes, String[] methodConsumes, RequestBody requestBodyObject) {
 		Optional<Content> optionalContent = SpringDocAnnotationsUtils
@@ -194,9 +197,9 @@ public class RequestBodyService {
 	/**
 	 * Build request body from doc optional.
 	 *
-	 * @param requestBody the request body
+	 * @param requestBody      the request body
 	 * @param methodAttributes the method attributes
-	 * @param components the components
+	 * @param components       the components
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
@@ -207,11 +210,11 @@ public class RequestBodyService {
 	/**
 	 * Build request body from doc optional.
 	 *
-	 * @param requestBody the request body
-	 * @param methodAttributes the method attributes
-	 * @param components the components
+	 * @param requestBody        the request body
+	 * @param methodAttributes   the method attributes
+	 * @param components         the components
 	 * @param jsonViewAnnotation the json view annotation
-	 * @param locale the locale
+	 * @param locale             the locale
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
@@ -223,10 +226,11 @@ public class RequestBodyService {
 	/**
 	 * Build request body from doc optional.
 	 *
-	 * @param requestBody the request body
-	 * @param requestBodyOp the request body op
+	 * @param requestBody      the request body
+	 * @param requestBodyOp    the request body op
 	 * @param methodAttributes the method attributes
-	 * @param components the components
+	 * @param components       the components
+	 * @param locale           the locale
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(
@@ -238,10 +242,10 @@ public class RequestBodyService {
 	/**
 	 * Calculate request body info.
 	 *
-	 * @param components the components
+	 * @param components       the components
 	 * @param methodAttributes the method attributes
-	 * @param parameterInfo the parameter info
-	 * @param requestBodyInfo the request body info
+	 * @param parameterInfo    the parameter info
+	 * @param requestBodyInfo  the request body info
 	 */
 	public void calculateRequestBodyInfo(Components components, MethodAttributes methodAttributes,
 			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
@@ -271,11 +275,11 @@ public class RequestBodyService {
 	/**
 	 * Build request body.
 	 *
-	 * @param requestBody the request body
-	 * @param components the components
+	 * @param requestBody      the request body
+	 * @param components       the components
 	 * @param methodAttributes the method attributes
-	 * @param parameterInfo the parameter info
-	 * @param requestBodyInfo the request body info
+	 * @param parameterInfo    the parameter info
+	 * @param requestBodyInfo  the request body info
 	 * @return the request body
 	 */
 	private RequestBody buildRequestBody(RequestBody requestBody, Components components,
@@ -311,9 +315,9 @@ public class RequestBodyService {
 	/**
 	 * Merge content.
 	 *
-	 * @param requestBody the request body
+	 * @param requestBody      the request body
 	 * @param methodAttributes the method attributes
-	 * @param schema the schema
+	 * @param schema           the schema
 	 */
 	private void mergeContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
 		Content content = requestBody.getContent();
@@ -323,9 +327,9 @@ public class RequestBodyService {
 	/**
 	 * Build content.
 	 *
-	 * @param requestBody the request body
+	 * @param requestBody      the request body
 	 * @param methodAttributes the method attributes
-	 * @param schema the schema
+	 * @param schema           the schema
 	 */
 	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema) {
 		Content content = new Content();
@@ -335,10 +339,10 @@ public class RequestBodyService {
 	/**
 	 * Build content.
 	 *
-	 * @param requestBody the request body
+	 * @param requestBody      the request body
 	 * @param methodAttributes the method attributes
-	 * @param schema the schema
-	 * @param content the content
+	 * @param schema           the schema
+	 * @param content          the content
 	 */
 	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content) {
 		for (String value : methodAttributes.getMethodConsumes()) {

@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.webmvc.ui;
@@ -50,6 +52,9 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 @ControllerEndpoint(id = DEFAULT_SWAGGER_UI_ACTUATOR_PATH)
 public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 
+	/**
+	 * The constant SWAGGER_CONFIG_ACTUATOR_URL.
+	 */
 	private static final String SWAGGER_CONFIG_ACTUATOR_URL = DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE;
 
 	/**
@@ -59,9 +64,10 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 
 	/**
 	 * Instantiates a new Swagger welcome.
-	 * @param swaggerUiConfig the swagger ui config
+	 *
+	 * @param swaggerUiConfig           the swagger ui config
 	 * @param springDocConfigProperties the swagger ui config parameters
-	 * @param webEndpointProperties the web endpoint properties
+	 * @param webEndpointProperties     the web endpoint properties
 	 */
 	public SwaggerWelcomeActuator(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,WebEndpointProperties webEndpointProperties) {
 		super(swaggerUiConfig, springDocConfigProperties);

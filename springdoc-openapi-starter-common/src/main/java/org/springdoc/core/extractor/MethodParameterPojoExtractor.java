@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 package org.springdoc.core.extractor;
 
@@ -60,6 +62,7 @@ import static org.springdoc.core.utils.Constants.DOT;
 
 /**
  * The type Method parameter pojo extractor.
+ *
  * @author bnasslahsen
  */
 public class MethodParameterPojoExtractor {
@@ -116,7 +119,7 @@ public class MethodParameterPojoExtractor {
 	/**
 	 * Extract from stream.
 	 *
-	 * @param clazz the clazz
+	 * @param clazz           the clazz
 	 * @param fieldNamePrefix the field name prefix
 	 * @return the stream
 	 */
@@ -130,8 +133,8 @@ public class MethodParameterPojoExtractor {
 	/**
 	 * From getter of field stream.
 	 *
-	 * @param paramClass the param class
-	 * @param field the field
+	 * @param paramClass      the param class
+	 * @param field           the field
 	 * @param fieldNamePrefix the field name prefix
 	 * @return the stream
 	 */
@@ -151,8 +154,9 @@ public class MethodParameterPojoExtractor {
 
 	/**
 	 * Extract the type
-	 * @param paramClass
-	 * @param field
+	 *
+	 * @param paramClass the param class
+	 * @param field      the field
 	 * @return The revoled type or null if it was not a reifiable type
 	 */
 	private static Class<?> extractType(Class<?> paramClass, Field field) {
@@ -172,8 +176,8 @@ public class MethodParameterPojoExtractor {
 	/**
 	 * From simple class stream.
 	 *
-	 * @param paramClass the param class
-	 * @param field the field
+	 * @param paramClass      the param class
+	 * @param field           the field
 	 * @param fieldNamePrefix the field name prefix
 	 * @return the stream
 	 */

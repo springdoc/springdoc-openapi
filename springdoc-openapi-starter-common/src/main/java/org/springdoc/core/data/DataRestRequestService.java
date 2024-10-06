@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.data;
@@ -65,6 +67,7 @@ import org.springframework.web.method.HandlerMethod;
 
 /**
  * The type Data rest request builder.
+ *
  * @author bnasslahsen
  */
 public class DataRestRequestService {
@@ -98,10 +101,10 @@ public class DataRestRequestService {
 	 * Instantiates a new Data rest request builder.
 	 *
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
-	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyService the request body builder
-	 * @param requestBuilder the request builder
-	 * @param springDocDataRestUtils the spring doc data rest utils
+	 * @param parameterBuilder                      the parameter builder
+	 * @param requestBodyService                    the request body builder
+	 * @param requestBuilder                        the request builder
+	 * @param springDocDataRestUtils                the spring doc data rest utils
 	 */
 	public DataRestRequestService(SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
 			RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
@@ -115,12 +118,12 @@ public class DataRestRequestService {
 	/**
 	 * Build parameters.
 	 *
-	 * @param openAPI the open api
-	 * @param handlerMethod the handler method
-	 * @param requestMethod the request method
-	 * @param methodAttributes the method attributes
-	 * @param operation the operation
-	 * @param resourceMetadata the resource metadata
+	 * @param openAPI            the open api
+	 * @param handlerMethod      the handler method
+	 * @param requestMethod      the request method
+	 * @param methodAttributes   the method attributes
+	 * @param operation          the operation
+	 * @param resourceMetadata   the resource metadata
 	 * @param dataRestRepository the data rest repository
 	 */
 	public void buildParameters(OpenAPI openAPI, HandlerMethod handlerMethod, RequestMethod requestMethod, MethodAttributes methodAttributes,
@@ -141,12 +144,12 @@ public class DataRestRequestService {
 	/**
 	 * Build common parameters.
 	 *
-	 * @param openAPI the open api
-	 * @param requestMethod the request method
-	 * @param methodAttributes the method attributes
-	 * @param operation the operation
-	 * @param pNames the p names
-	 * @param parameters the parameters
+	 * @param openAPI            the open api
+	 * @param requestMethod      the request method
+	 * @param methodAttributes   the method attributes
+	 * @param operation          the operation
+	 * @param pNames             the p names
+	 * @param parameters         the parameters
 	 * @param dataRestRepository the data rest repository
 	 */
 	public void buildCommonParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation, String[] pNames, MethodParameter[] parameters,
@@ -185,10 +188,10 @@ public class DataRestRequestService {
 	/**
 	 * Build parameter from doc parameter.
 	 *
-	 * @param parameterDoc the parameter doc
-	 * @param components the components
+	 * @param parameterDoc       the parameter doc
+	 * @param components         the components
 	 * @param jsonViewAnnotation the json view annotation
-	 * @param locale the locale
+	 * @param locale             the locale
 	 * @return the parameter
 	 */
 	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonViewAnnotation, Locale locale) {
@@ -210,13 +213,13 @@ public class DataRestRequestService {
 	/**
 	 * Add parameters.
 	 *
-	 * @param openAPI the open api
-	 * @param requestMethod the request method
+	 * @param openAPI          the open api
+	 * @param requestMethod    the request method
 	 * @param methodAttributes the method attributes
-	 * @param operation the operation
-	 * @param methodParameter the method parameter
-	 * @param parameterInfo the parameter info
-	 * @param parameter the parameter
+	 * @param operation        the operation
+	 * @param methodParameter  the method parameter
+	 * @param parameterInfo    the parameter info
+	 * @param parameter        the parameter
 	 */
 	private void addParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation,
 			MethodParameter methodParameter, ParameterInfo parameterInfo, Parameter parameter) {
