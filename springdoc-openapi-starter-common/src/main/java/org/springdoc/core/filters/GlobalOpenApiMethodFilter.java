@@ -32,7 +32,7 @@ package org.springdoc.core.filters;
  * and groups.
  *
  * @author michael.clarke
- * @see OpenApiMethodFilterfilter methods in default OpenAPI description but      not groups
+ * @see OpenApiMethodFilter methods in default OpenAPI description but      not groups
  */
 @FunctionalInterface
 public interface GlobalOpenApiMethodFilter extends OpenApiMethodFilter {

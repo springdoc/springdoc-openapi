@@ -33,7 +33,7 @@ import io.swagger.v3.oas.models.OpenAPI;
  * Open api on default OpenAPI description but not on groups
  *
  * @author bnasslahsen
- * @see GlobalOpenApiCustomizercustomize default OpenAPI description and      groups
+ * @see GlobalOpenApiCustomizer default OpenAPI description and      groups
  */
 @FunctionalInterface
 public interface OpenApiCustomizer {
