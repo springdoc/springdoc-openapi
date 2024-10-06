@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.service;
@@ -52,6 +54,7 @@ import org.springframework.web.method.HandlerMethod;
 
 /**
  * The type Security parser.
+ *
  * @author bnasslahsen
  */
 public class SecurityService {
@@ -134,7 +137,7 @@ public class SecurityService {
 	/**
 	 * Gets security requirements for method.
 	 *
-	 * @param method the method
+	 * @param method          the method
 	 * @param allSecurityTags the all security tags
 	 * @return the security requirements for method
 	 */
@@ -177,7 +180,7 @@ public class SecurityService {
 	/**
 	 * Add security requirements set.
 	 *
-	 * @param allSecurityTags the all security tags
+	 * @param allSecurityTags               the all security tags
 	 * @param securityRequirementsClassList the security requirements class list
 	 * @return the set
 	 */
@@ -218,10 +221,10 @@ public class SecurityService {
 	 * Gets security scheme.
 	 *
 	 * @param securityScheme the security scheme
-	 * @param locale the locale
+	 * @param locale         the locale
 	 * @return the security scheme
 	 */
-	 Optional<SecuritySchemePair> getSecurityScheme(
+	Optional<SecuritySchemePair> getSecurityScheme(
 			io.swagger.v3.oas.annotations.security.SecurityScheme securityScheme, Locale locale) {
 		if (securityScheme == null)
 			return Optional.empty();
@@ -278,7 +281,7 @@ public class SecurityService {
 	 * Build security requirement.
 	 *
 	 * @param securityRequirements the security requirements
-	 * @param operation the operation
+	 * @param operation            the operation
 	 */
 	public void buildSecurityRequirement(
 			io.swagger.v3.oas.annotations.security.SecurityRequirement[] securityRequirements, Operation operation) {
@@ -292,7 +295,7 @@ public class SecurityService {
 	 * Gets o auth flows.
 	 *
 	 * @param oAuthFlows the o auth flows
-	 * @param locale the locale
+	 * @param locale     the locale
 	 * @return the o auth flows
 	 */
 	private Optional<OAuthFlows> getOAuthFlows(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows, Locale locale) {
@@ -321,7 +324,7 @@ public class SecurityService {
 	 * Gets o auth flow.
 	 *
 	 * @param oAuthFlow the o auth flow
-	 * @param locale the locale
+	 * @param locale    the locale
 	 * @return the o auth flow
 	 */
 	private Optional<OAuthFlow> getOAuthFlow(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow, Locale locale) {

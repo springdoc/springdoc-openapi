@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.utils;
@@ -65,6 +67,7 @@ import org.springframework.util.CollectionUtils;
 
 /**
  * The class Spring doc data rest utils.
+ *
  * @author bnasslashen
  */
 public class SpringDocDataRestUtils {
@@ -102,7 +105,7 @@ public class SpringDocDataRestUtils {
 	/**
 	 * Instantiates a new Spring doc data rest utils.
 	 *
-	 * @param linkRelationProvider the link relation provider
+	 * @param linkRelationProvider        the link relation provider
 	 * @param repositoryRestConfiguration the repository rest configuration
 	 */
 	public SpringDocDataRestUtils(LinkRelationProvider linkRelationProvider, RepositoryRestConfiguration repositoryRestConfiguration) {
@@ -113,8 +116,8 @@ public class SpringDocDataRestUtils {
 	/**
 	 * Customise.
 	 *
-	 * @param openAPI the open api
-	 * @param mappings the mappings
+	 * @param openAPI            the open api
+	 * @param mappings           the mappings
 	 * @param persistentEntities the persistent entities
 	 */
 	public void customise(OpenAPI openAPI, ResourceMappings mappings, PersistentEntities persistentEntities) {
@@ -227,6 +230,13 @@ public class SpringDocDataRestUtils {
 		}
 	}
 
+	/**
+	 * Update request body schema properties.
+	 *
+	 * @param key              the key
+	 * @param referencedSchema the referenced schema
+	 * @param properties       the properties
+	 */
 	private void updateRequestBodySchemaProperties(String key, Schema referencedSchema, Map properties) {
 		if (!CollectionUtils.isEmpty(referencedSchema.getProperties())) {
 			Iterator<Entry<String, Schema>> it = properties.entrySet().iterator();
@@ -409,7 +419,7 @@ public class SpringDocDataRestUtils {
 	 * Gets associations fields.
 	 *
 	 * @param resourceMetadata the resource metadata
-	 * @param entity the entity
+	 * @param entity           the entity
 	 * @return the associations fields
 	 */
 	private List<String> getAssociationsFields(ResourceMetadata
@@ -430,7 +440,7 @@ public class SpringDocDataRestUtils {
 	 * Gets ignored fields.
 	 *
 	 * @param resourceMetadata the resource metadata
-	 * @param entity the entity
+	 * @param entity           the entity
 	 * @return the ignored fields
 	 */
 	private List<String> getIgnoredFields(ResourceMetadata

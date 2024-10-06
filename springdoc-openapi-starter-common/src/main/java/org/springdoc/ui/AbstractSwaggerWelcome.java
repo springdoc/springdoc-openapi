@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.ui;
@@ -60,7 +62,7 @@ public abstract class AbstractSwaggerWelcome {
 	/**
 	 * Instantiates a new Abstract swagger welcome.
 	 *
-	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiConfig           the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
 	protected AbstractSwaggerWelcome(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
@@ -70,6 +72,8 @@ public abstract class AbstractSwaggerWelcome {
 
 	/**
 	 * Init.
+	 *
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 */
 	protected void init(SwaggerUiConfigParameters swaggerUiConfigParameters) {
 		springDocConfigProperties.getGroupConfigs().forEach(groupConfig -> swaggerUiConfigParameters.addGroup(groupConfig.getGroup(), groupConfig.getDisplayName()));
@@ -80,7 +84,7 @@ public abstract class AbstractSwaggerWelcome {
 	 * Build url string.
 	 *
 	 * @param contextPath the context path
-	 * @param docsUrl the docs url
+	 * @param docsUrl     the docs url
 	 * @return the string
 	 */
 	protected String buildUrl(String contextPath, String docsUrl) {

@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.webflux.ui;
@@ -40,6 +42,7 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Swagger web flux configurer.
+ *
  * @author bnasslahsen
  */
 public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
@@ -68,15 +71,15 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	 * The Spring doc config properties.
 	 */
 	private final SpringDocConfigProperties springDocConfigProperties;
-	
+
 	/**
 	 * Instantiates a new Swagger web flux configurer.
 	 *
 	 * @param swaggerUiConfigProperties the swagger ui calculated config
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param swaggerIndexTransformer the swagger index transformer
-	 * @param actuatorProvider the actuator provider
-	 * @param swaggerResourceResolver the swagger resource resolver
+	 * @param swaggerIndexTransformer   the swagger index transformer
+	 * @param actuatorProvider          the actuator provider
+	 * @param swaggerResourceResolver   the swagger resource resolver
 	 */
 	public SwaggerWebFluxConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
 			SpringDocConfigProperties springDocConfigProperties,

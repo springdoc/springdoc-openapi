@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 
@@ -132,6 +134,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 /**
  * The type Spring doc configuration.
+ *
  * @author bnasslahsen
  */
 @Lazy(false)
@@ -270,13 +273,13 @@ public class SpringDocConfiguration {
 	/**
 	 * Open api builder open api builder.
 	 *
-	 * @param openAPI the open api
-	 * @param securityParser the security parser
+	 * @param openAPI                   the open api
+	 * @param securityParser            the security parser
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param propertyResolverUtils the property resolver utils
+	 * @param propertyResolverUtils     the property resolver utils
 	 * @param openApiBuilderCustomisers the open api builder customisers
-	 * @param serverBaseUrlCustomisers the server base url customisers
-	 * @param javadocProvider the javadoc provider
+	 * @param serverBaseUrlCustomisers  the server base url customisers
+	 * @param javadocProvider           the javadoc provider
 	 * @return the open api builder
 	 */
 	@Bean
@@ -306,9 +309,9 @@ public class SpringDocConfiguration {
 	/**
 	 * Operation builder operation service.
 	 *
-	 * @param parameterBuilder the parameter builder
-	 * @param requestBodyService the request body service
-	 * @param securityParser the security parser
+	 * @param parameterBuilder      the parameter builder
+	 * @param requestBodyService    the request body service
+	 * @param securityParser        the security parser
 	 * @param propertyResolverUtils the property resolver utils
 	 * @return the operation service
 	 */
@@ -324,8 +327,8 @@ public class SpringDocConfiguration {
 	/**
 	 * Property resolver utils property resolver utils.
 	 *
-	 * @param factory the factory
-	 * @param messageSource the message source
+	 * @param factory                   the factory
+	 * @param messageSource             the message source
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @return the property resolver utils
 	 */
@@ -338,7 +341,8 @@ public class SpringDocConfiguration {
 	/**
 	 * Request body builder request body builder.
 	 *
-	 * @param parameterBuilder the parameter builder
+	 * @param parameterBuilder      the parameter builder
+	 * @param propertyResolverUtils the property resolver utils
 	 * @return the request body builder
 	 */
 	@Bean
@@ -360,15 +364,15 @@ public class SpringDocConfiguration {
 	SecurityService securityParser(PropertyResolverUtils propertyResolverUtils) {
 		return new SecurityService(propertyResolverUtils);
 	}
-	
+
 	/**
 	 * Parameter builder generic parameter builder.
 	 *
-	 * @param propertyResolverUtils the property resolver utils
+	 * @param propertyResolverUtils                        the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizers the optional list delegating method parameter customizer
-	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
-	 * @param objectMapperProvider the object mapper provider
-	 * @param javadocProvider the javadoc provider
+	 * @param optionalWebConversionServiceProvider         the optional web conversion service provider
+	 * @param objectMapperProvider                         the object mapper provider
+	 * @param javadocProvider                              the javadoc provider
 	 * @return the generic parameter builder
 	 */
 	@Bean
@@ -402,13 +406,13 @@ public class SpringDocConfiguration {
 	/**
 	 * Spring doc providers spring doc providers.
 	 *
-	 * @param actuatorProvider the actuator provider
-	 * @param springCloudFunctionProvider the spring cloud function provider
-	 * @param springSecurityOAuth2Provider the spring security o auth 2 provider
+	 * @param actuatorProvider               the actuator provider
+	 * @param springCloudFunctionProvider    the spring cloud function provider
+	 * @param springSecurityOAuth2Provider   the spring security o auth 2 provider
 	 * @param repositoryRestResourceProvider the repository rest resource provider
-	 * @param routerFunctionProvider the router function provider
-	 * @param springWebProvider the spring web provider
-	 * @param objectMapperProvider the object mapper provider
+	 * @param routerFunctionProvider         the router function provider
+	 * @param springWebProvider              the spring web provider
+	 * @param objectMapperProvider           the object mapper provider
 	 * @return the spring doc providers
 	 */
 	@Bean
@@ -437,6 +441,7 @@ public class SpringDocConfiguration {
 
 	/**
 	 * The type Spring doc web mvc actuator configuration.
+	 *
 	 * @author bnasslashen
 	 */
 	@ConditionalOnClass(WebEndpointProperties.class)
@@ -446,7 +451,7 @@ public class SpringDocConfiguration {
 		/**
 		 * Springdoc bean factory post processor 3 bean factory post processor.
 		 *
-		 * @param groupedOpenApis           the grouped open apis
+		 * @param groupedOpenApis the grouped open apis
 		 * @return the bean factory post processor
 		 */
 		@Bean
@@ -474,6 +479,7 @@ public class SpringDocConfiguration {
 
 	/**
 	 * The type Web conversion service configuration.
+	 *
 	 * @author bnasslashen
 	 */
 	@ConditionalOnClass(WebConversionService.class)
@@ -552,6 +558,7 @@ public class SpringDocConfiguration {
 
 	/**
 	 * The type Open api resource advice.
+	 *
 	 * @author bnasslashen
 	 */
 	@RestControllerAdvice
@@ -573,14 +580,14 @@ public class SpringDocConfiguration {
 	/**
 	 * Spring doc customizers spring doc customizers.
 	 *
-	 * @param openApiCustomizers the open api customizers
-	 * @param operationCustomizers the operation customizers
-	 * @param routerOperationCustomizers the router operation customizers
+	 * @param openApiCustomizers                 the open api customizers
+	 * @param operationCustomizers               the operation customizers
+	 * @param routerOperationCustomizers         the router operation customizers
 	 * @param dataRestRouterOperationCustomizers the data rest router operation customizers
-	 * @param methodFilters the method filters
-	 * @param globalOpenApiCustomizers the global open api customizers
-	 * @param globalOperationCustomizers the global operation customizers
-	 * @param globalOpenApiMethodFilters the global open api method filters
+	 * @param methodFilters                      the method filters
+	 * @param globalOpenApiCustomizers           the global open api customizers
+	 * @param globalOperationCustomizers         the global operation customizers
+	 * @param globalOpenApiMethodFilters         the global open api method filters
 	 * @return the spring doc customizers
 	 */
 	@Bean
@@ -602,6 +609,7 @@ public class SpringDocConfiguration {
 
 	/**
 	 * The type Querydsl provider.
+	 *
 	 * @author bnasslashen
 	 */
 	@ConditionalOnClass(value = QuerydslBindingsFactory.class)

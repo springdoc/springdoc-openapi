@@ -1,3 +1,29 @@
+/*
+ *
+ *  *
+ *  *  *
+ *  *  *  *
+ *  *  *  *  *
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
+ *  *  *  *  *
+ *  *  *  *
+ *  *  *
+ *  *
+ *  
+ */
+
 package org.springdoc.core.configuration;
 
 import java.lang.reflect.Field;
@@ -326,7 +352,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	/**
 	 * Gets OpenID UserInfo endpoint filter
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI             the open api
 	 * @param securityFilterChain the security filter chain
 	 */
 	private void getOidcUserInfoEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
@@ -392,7 +418,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * Build api responses api responses on success.
 	 *
 	 * @param apiResponses the api responses
-	 * @param schema the schema
+	 * @param schema       the schema
 	 * @return the api responses
 	 */
 	private ApiResponses buildApiResponsesOnSuccess(ApiResponses apiResponses, Schema schema) {
@@ -407,7 +433,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * Build api responses api responses on created.
 	 *
 	 * @param apiResponses the api responses
-	 * @param schema the schema
+	 * @param schema       the schema
 	 * @return the api responses
 	 */
 	private ApiResponses buildApiResponsesOnCreated(ApiResponses apiResponses, Schema schema) {
@@ -460,11 +486,11 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	/**
 	 * Build path.
 	 *
-	 * @param oAuth2EndpointFilter the o auth 2 endpoint filter
+	 * @param oAuth2EndpointFilter         the o auth 2 endpoint filter
 	 * @param authorizationEndpointMatcher the authorization endpoint matcher
-	 * @param openAPI the open api
-	 * @param operation the operation
-	 * @param requestMethod the request method
+	 * @param openAPI                      the open api
+	 * @param operation                    the operation
+	 * @param requestMethod                the request method
 	 */
 	private void buildPath(Object oAuth2EndpointFilter, String authorizationEndpointMatcher, OpenAPI openAPI, Operation operation, HttpMethod requestMethod) {
 		try {

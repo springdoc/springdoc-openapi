@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.fn;
@@ -40,6 +42,7 @@ import static org.springdoc.core.utils.Constants.OPERATION_ATTRIBUTE;
 
 /**
  * The type Router operation.
+ *
  * @author bnasslahsen
  */
 public class RouterOperation implements Comparable<RouterOperation> {
@@ -132,7 +135,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	 * Instantiates a new Router operation.
 	 *
 	 * @param routerOperationAnnotation the router operation annotation
-	 * @param routerFunctionData the router function data
+	 * @param routerFunctionData        the router function data
 	 */
 	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperationAnnotation, RouterFunctionData routerFunctionData) {
 		this.path = StringUtils.isBlank(routerOperationAnnotation.path()) ? routerFunctionData.getPath() : routerOperationAnnotation.path();
@@ -151,11 +154,12 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	/**
 	 * Instantiates a new Router operation.
 	 *
-	 * @param path the path
-	 * @param methods the methods
+	 * @param path     the path
+	 * @param methods  the methods
 	 * @param consumes the consumes
 	 * @param produces the produces
-	 * @param headers the headers
+	 * @param headers  the headers
+	 * @param params   the params
 	 */
 	public RouterOperation(String path, RequestMethod[] methods, String[] consumes, String[] produces, String[] headers, String[] params) {
 		this.path = path;
@@ -195,7 +199,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	 * Instantiates a new Router operation.
 	 *
 	 * @param routerOperation the router operation
-	 * @param requestMethod the request method
+	 * @param requestMethod   the request method
 	 */
 	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperation, RequestMethod requestMethod) {
 		this(routerOperation);
@@ -394,7 +398,7 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	/**
 	 * Sets params.
 	 *
-	 * @param params
+	 * @param params the params
 	 */
 	public void setParams(String[] params) {
 		this.params = params;

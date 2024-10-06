@@ -2,22 +2,26 @@
  *
  *  *
  *  *  *
- *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *
- *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
+ *  *  *  *  *
  *  *  *  *
- *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *
- *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  * See the License for the specific language governing permissions and
- *  *  *  * limitations under the License.
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.converters;
@@ -44,6 +48,9 @@ import org.springframework.data.web.PagedModel;
  */
 public class PageOpenAPIConverter implements ModelConverter {
 
+	/**
+	 * The constant PAGE_TO_REPLACE.
+	 */
 	private static final String PAGE_TO_REPLACE = "org.springframework.data.domain.Page";
 
 	/**
@@ -55,6 +62,7 @@ public class PageOpenAPIConverter implements ModelConverter {
 	 * The Spring doc object mapper.
 	 */
 	private final ObjectMapperProvider springDocObjectMapper;
+
 	/**
 	 * Flag to replace Page with PagedModel or not.
 	 */
@@ -62,8 +70,9 @@ public class PageOpenAPIConverter implements ModelConverter {
 
 	/**
 	 * Instantiates a new Page open api converter.
+	 *
 	 * @param replacePageWithPagedModel flag to replace Page with PagedModel or not
-	 * @param springDocObjectMapper the spring doc object mapper
+	 * @param springDocObjectMapper     the spring doc object mapper
 	 */
 	public PageOpenAPIConverter(boolean replacePageWithPagedModel, ObjectMapperProvider springDocObjectMapper) {
 		this.replacePageWithPagedModel = replacePageWithPagedModel;
@@ -92,6 +101,12 @@ public class PageOpenAPIConverter implements ModelConverter {
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;
 	}
 
+	/**
+	 * Resolve paged model type annotated type.
+	 *
+	 * @param type the type
+	 * @return the annotated type
+	 */
 	private AnnotatedType resolvePagedModelType(AnnotatedType type) {
 		Type pageType = type.getType();
 		if (pageType instanceof ParameterizedType) {
