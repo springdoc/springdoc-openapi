@@ -94,6 +94,7 @@ import static org.springdoc.core.utils.Constants.DEFAULT_DESCRIPTION;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.extractSchema;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.getContent;
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.mergeSchema;
+import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 
 /**
  * The type Generic response builder.
@@ -518,7 +519,7 @@ public class GenericResponseService implements ApplicationContextAware {
 	 */
 	private Content buildContent(Components components, MethodParameter methodParameter, String[] methodProduces, JsonView jsonView) {
 		Type returnType = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
-		return buildContent(components, methodParameter.getParameterAnnotations(), methodProduces, jsonView, returnType);
+		return buildContent(components, getParameterAnnotations(methodParameter), methodProduces, jsonView, returnType);
 	}
 
 	/**
@@ -611,7 +612,7 @@ public class GenericResponseService implements ApplicationContextAware {
 			Content existingContent = apiResponse.getContent();
 			Type type = GenericTypeResolver.resolveType( methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
 			Schema<?> schemaN = calculateSchema(components, type,
-					methodAttributes.getJsonViewAnnotation(), methodParameter.getParameterAnnotations());
+					methodAttributes.getJsonViewAnnotation(), getParameterAnnotations(methodParameter));
 			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getMethodProduces()))
 				Arrays.stream(methodAttributes.getMethodProduces()).forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));
 		}

@@ -63,9 +63,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
@@ -98,6 +96,7 @@ import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.c
 import static org.springdoc.core.service.GenericParameterService.isFile;
 import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
+import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 /**
@@ -325,7 +324,7 @@ public abstract class AbstractRequestService {
 				// Merge with the operation parameters
 				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
 
-				List<Annotation> parameterAnnotations = getParameterAnnotations(methodParameter);
+				List<Annotation> parameterAnnotations = List.of(getParameterAnnotations(methodParameter));
 
 				if (isValidParameter(parameter)) {
 					// Add param javadoc
@@ -373,35 +372,6 @@ public abstract class AbstractRequestService {
 		}
 		setParams(operation, new ArrayList<>(map.values()), requestBodyInfo);
 		return operation;
-	}
-
-	/**
-	 * Gets parameter annotations.
-	 *
-	 * @param methodParameter the method parameter
-	 * @return the parameter annotations
-	 */
-	@NotNull
-	private static List<Annotation> getParameterAnnotations(MethodParameter methodParameter) {
-		// Initialize the list for parameter annotations
-		List<Annotation> parameterAnnotations = new ArrayList<>();
-		// Add the parameter annotations (direct annotations)
-		if (ArrayUtils.isNotEmpty(methodParameter.getParameterAnnotations())) {
-			parameterAnnotations.addAll(Arrays.asList(methodParameter.getParameterAnnotations()));
-		}
-		// Separate list to store meta-annotations
-		List<Annotation> metaAnnotationsList = new ArrayList<>();
-		// Iterate over the direct annotations and collect meta-annotations
-		for (Annotation parameterAnnotation : parameterAnnotations) {
-			Annotation[] metaAnnotations = parameterAnnotation.annotationType().getAnnotations();
-
-			if (ArrayUtils.isNotEmpty(metaAnnotations)) {
-				metaAnnotationsList.addAll(Arrays.asList(metaAnnotations));
-			}
-		}
-		// Add all the collected meta-annotations to the main list
-		parameterAnnotations.addAll(metaAnnotationsList);
-		return parameterAnnotations;
 	}
 
 	/**
