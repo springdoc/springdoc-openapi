@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.service;
@@ -63,7 +63,9 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
@@ -188,7 +190,7 @@ public abstract class AbstractRequestService {
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
 	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-		    Optional<List<ParameterCustomizer>> parameterCustomizers,
+			Optional<List<ParameterCustomizer>> parameterCustomizers,
 			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super();
 		this.parameterBuilder = parameterBuilder;
@@ -272,7 +274,7 @@ public abstract class AbstractRequestService {
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
 		// Documentation
-		String operationId = operation.getOperationId()!=null ? operation.getOperationId() : handlerMethod.getMethod().getName();
+		String operationId = operation.getOperationId() != null ? operation.getOperationId() : handlerMethod.getMethod().getName();
 		operation.setOperationId(operationId);
 		// requests
 		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
@@ -322,7 +324,9 @@ public abstract class AbstractRequestService {
 				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes, openAPI.getOpenapi());
 				// Merge with the operation parameters
 				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
-				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
+
+				List<Annotation> parameterAnnotations = getParameterAnnotations(methodParameter);
+
 				if (isValidParameter(parameter)) {
 					// Add param javadoc
 					if (StringUtils.isBlank(parameter.getDescription()) && javadocProvider != null) {
@@ -369,6 +373,35 @@ public abstract class AbstractRequestService {
 		}
 		setParams(operation, new ArrayList<>(map.values()), requestBodyInfo);
 		return operation;
+	}
+
+	/**
+	 * Gets parameter annotations.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the parameter annotations
+	 */
+	@NotNull
+	private static List<Annotation> getParameterAnnotations(MethodParameter methodParameter) {
+		// Initialize the list for parameter annotations
+		List<Annotation> parameterAnnotations = new ArrayList<>();
+		// Add the parameter annotations (direct annotations)
+		if (ArrayUtils.isNotEmpty(methodParameter.getParameterAnnotations())) {
+			parameterAnnotations.addAll(Arrays.asList(methodParameter.getParameterAnnotations()));
+		}
+		// Separate list to store meta-annotations
+		List<Annotation> metaAnnotationsList = new ArrayList<>();
+		// Iterate over the direct annotations and collect meta-annotations
+		for (Annotation parameterAnnotation : parameterAnnotations) {
+			Annotation[] metaAnnotations = parameterAnnotation.annotationType().getAnnotations();
+
+			if (ArrayUtils.isNotEmpty(metaAnnotations)) {
+				metaAnnotationsList.addAll(Arrays.asList(metaAnnotations));
+			}
+		}
+		// Add all the collected meta-annotations to the main list
+		parameterAnnotations.addAll(metaAnnotationsList);
+		return parameterAnnotations;
 	}
 
 	/**
