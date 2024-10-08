@@ -88,6 +88,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import static org.springdoc.core.utils.Constants.DOT;
+import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 
 /**
  * The type Generic parameter builder.
@@ -377,7 +378,7 @@ public class GenericParameterService {
 						type = springConvertedType;
 				}
 			}
-			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations(), propertyResolverUtils.getSpecVersion());
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, getParameterAnnotations(methodParameter), propertyResolverUtils.getSpecVersion());
 		}
 		else
 			schemaN = parameterInfo.getParameterModel().getSchema();

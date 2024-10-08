@@ -65,6 +65,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 
+import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
+
 /**
  * The type Data rest request builder.
  *
@@ -164,7 +166,7 @@ public class DataRestRequestService {
 			ParameterInfo parameterInfo = new ParameterInfo(pName, methodParameter, parameterBuilder, parameterDoc);
 			if (isParamToIgnore(methodParameter)) {
 				if (PersistentEntityResource.class.equals(methodParameter.getParameterType())) {
-					Schema<?> schema = SpringDocAnnotationsUtils.resolveSchemaFromType(domainType, openAPI.getComponents(), null, methodParameter.getParameterAnnotations(), openAPI.getSpecVersion());
+					Schema<?> schema = SpringDocAnnotationsUtils.resolveSchemaFromType(domainType, openAPI.getComponents(), null, getParameterAnnotations(methodParameter), openAPI.getSpecVersion());
 					parameterInfo.setParameterModel(new Parameter().schema(schema));
 				}
 				else if (methodParameter.getParameterAnnotation(BackendId.class) != null) {
@@ -223,7 +225,7 @@ public class DataRestRequestService {
 	 */
 	private void addParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation,
 			MethodParameter methodParameter, ParameterInfo parameterInfo, Parameter parameter) {
-		List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
+		List<Annotation> parameterAnnotations = Arrays.asList(getParameterAnnotations(methodParameter));
 		if (requestBuilder.isValidParameter(parameter)) {
 			requestBuilder.applyBeanValidatorAnnotations(parameter, parameterAnnotations);
 			operation.addParametersItem(parameter);

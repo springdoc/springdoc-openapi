@@ -27,10 +27,14 @@
 package org.springdoc.core.utils;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 import io.swagger.v3.oas.models.media.Schema;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.converters.AdditionalModelsConverter;
 import org.springdoc.core.converters.ConverterUtils;
@@ -40,6 +44,8 @@ import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.GenericResponseService;
+
+import org.springframework.core.MethodParameter;
 
 /**
  * The type Spring doc utils.
@@ -401,6 +407,40 @@ public class SpringDocUtils {
 	public SpringDocUtils addParentType(String ...parentTypes) {
 		PolymorphicModelConverter.addParentType(parentTypes);
 		return this;
+	}
+
+	/**
+	 * Gets parameter annotations.
+	 *
+	 * @param methodParameter the method parameter
+	 * @return the parameter annotations
+	 */
+	@NotNull
+	public static Annotation[] getParameterAnnotations(MethodParameter methodParameter) {
+		// Get the parameter annotations directly as an array
+		Annotation[] annotations = methodParameter.getParameterAnnotations();
+		// Return early if no annotations are found, avoiding unnecessary processing
+		if (ArrayUtils.isEmpty(annotations)) {
+			return new Annotation[0];
+		}
+		// Create a list that can contain both parameter and meta-annotations
+		List<Annotation> resultAnnotations = new ArrayList<>(annotations.length);
+
+		// Add all direct annotations
+		resultAnnotations.addAll(List.of(annotations));
+
+		// Process each direct annotation to collect its meta-annotations
+		for (Annotation annotation : annotations) {
+			// Fetch meta-annotations
+			Annotation[] metaAnnotations = annotation.annotationType().getAnnotations();
+
+			// Only add meta-annotations if they exist
+			if (ArrayUtils.isNotEmpty(metaAnnotations)) {
+				resultAnnotations.addAll(List.of(metaAnnotations));
+			}
+		}
+		// Convert the list to an array and return
+		return resultAnnotations.toArray(new Annotation[0]);
 	}
 }
 
