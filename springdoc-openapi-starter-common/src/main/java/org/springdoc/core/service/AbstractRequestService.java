@@ -766,14 +766,24 @@ public abstract class AbstractRequestService {
 
 		return (isBodyAllowed && (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getIn() == null) && !delegatingMethodParameter.isParameterObject())
 				&&
-				((methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
-						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
-						|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null)
+				(checkRequestBodyAnnotation(methodParameter)
 						|| checkOperationRequestBody(methodParameter)
 						|| checkFile(methodParameter)
 						|| Arrays.asList(methodAttributes.getMethodConsumes()).contains(MULTIPART_FORM_DATA_VALUE));
 	}
 
+	/**
+ 	 * Checks whether Swagger's or Spring's RequestBody annotation is present on a parameter or method
+   	 *
+	 * @param methodParameter the method parameter
+	 * @return the boolean
+ 	 */
+	private boolean checkRequestBodyAnnotation(MethodParameter methodParamater) {
+		return methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
+				|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getParameter()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
+				|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
+	}
+	
 	/**
 	 * Check file boolean.
 	 *
