@@ -49,6 +49,7 @@ import org.springdoc.webmvc.api.OpenApiWebMvcResource;
 import org.springdoc.webmvc.core.providers.ActuatorWebMvcProvider;
 import org.springdoc.webmvc.core.providers.RouterFunctionWebMvcProvider;
 import org.springdoc.webmvc.core.providers.SpringWebMvcProvider;
+import org.springdoc.webmvc.core.providers.SpringWebMvcWithParamsConditionProvider;
 import org.springdoc.webmvc.core.service.RequestService;
 
 import org.springframework.beans.factory.ObjectFactory;
@@ -73,6 +74,7 @@ import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
+import static org.springdoc.core.utils.Constants.SPRINGDOC_PATHS_WITH_PARAMS_CONDITIONS;
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 /**
@@ -142,9 +144,24 @@ public class SpringDocWebMvcConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_PATHS_WITH_PARAMS_CONDITIONS, havingValue = "false", matchIfMissing = true)
 	@Lazy(false)
 	SpringWebProvider springWebProvider() {
 		return new SpringWebMvcProvider();
+	}
+
+	/**
+	 * Spring web provider.
+	 * ActivePatterns will be specifically classified according to the params condition.
+	 *
+	 * @return the spring web provider according to the params condition.
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = SPRINGDOC_PATHS_WITH_PARAMS_CONDITIONS, havingValue = "true")
+	@Lazy(false)
+	SpringWebProvider springWebMvcWithParamsConditionProvider() {
+		return new SpringWebMvcWithParamsConditionProvider();
 	}
 
 	/**
