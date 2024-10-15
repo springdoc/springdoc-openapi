@@ -783,8 +783,8 @@ public abstract class AbstractRequestService {
 	 * @return the boolean
  	 */
 	private boolean checkRequestBodyAnnotation(MethodParameter methodParameter) {
-		return methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
-				|| methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
+		return methodParameter.hasParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class)
+				|| methodParameter.hasParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class)
 				|| AnnotatedElementUtils.isAnnotated(Objects.requireNonNull(methodParameter.getParameter()), io.swagger.v3.oas.annotations.parameters.RequestBody.class)
 				|| AnnotatedElementUtils.isAnnotated(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 	}
