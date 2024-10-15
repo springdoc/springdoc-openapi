@@ -618,16 +618,20 @@ public abstract class AbstractRequestService {
 	 */
 	public void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
 		Map<String, Annotation> annos = new HashMap<>();
-		boolean requestBodyRequired = false;
+		boolean springRequestBodyRequired = false;
+		boolean swaggerRequestBodyRequired = false;
 		if (!CollectionUtils.isEmpty(annotations)) {
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
-			requestBodyRequired = annotations.stream()
+			springRequestBodyRequired = annotations.stream()
 					.filter(annotation -> org.springframework.web.bind.annotation.RequestBody.class.equals(annotation.annotationType()))
 					.anyMatch(annotation -> ((org.springframework.web.bind.annotation.RequestBody) annotation).required());
+			swaggerRequestBodyRequired = annotations.stream()
+					.filter(annotation -> io.swagger.v3.oas.annotations.parameters.RequestBody.class.equals(annotation.annotationType()))
+					.anyMatch(annotation -> ((io.swagger.v3.oas.annotations.parameters.RequestBody) annotation).required());
 		}
 		boolean validationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
 
-		if (validationExists || (!isOptional && requestBodyRequired))
+		if (validationExists || (!isOptional && (springRequestBodyRequired || swaggerRequestBodyRequired)))
 			requestBody.setRequired(true);
 		Content content = requestBody.getContent();
 		for (MediaType mediaType : content.values()) {
@@ -781,8 +785,8 @@ public abstract class AbstractRequestService {
 	private boolean checkRequestBodyAnnotation(MethodParameter methodParameter) {
 		return methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
 				|| methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
-				|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getParameter()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
-				|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null;
+				|| AnnotatedElementUtils.isAnnotated(Objects.requireNonNull(methodParameter.getParameter()), io.swagger.v3.oas.annotations.parameters.RequestBody.class)
+				|| AnnotatedElementUtils.isAnnotated(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 	}
 	
 	/**
