@@ -415,6 +415,11 @@ public final class Constants {
 	public static final String SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED = "springdoc.nullable-request-parameter-enabled";
 
 	/**
+	 * The constant SPRINGDOC_PATHS_WITH_PARAMS_CONDITIONS.
+	 */
+	public static final String SPRINGDOC_PATHS_WITH_PARAMS_CONDITIONS = "springdoc.paths-with-params-condition";
+
+	/**
 	 * Instantiates a new Constants.
 	 */
 	private Constants() {
