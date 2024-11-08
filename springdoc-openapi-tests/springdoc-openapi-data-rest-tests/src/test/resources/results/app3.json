@@ -11,6 +11,39 @@
     }
   ],
   "paths": {
+    "/demo/operation5": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "operation5",
+        "parameters": [
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/demo/operation4": {
       "get": {
         "tags": [
