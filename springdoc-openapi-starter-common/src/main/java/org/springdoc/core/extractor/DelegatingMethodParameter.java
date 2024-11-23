@@ -89,6 +89,11 @@ public class DelegatingMethodParameter extends MethodParameter {
 	private final boolean isParameterObject;
 
 	/**
+	 * The Method annotations.
+	 */
+	private final Annotation[] methodAnnotations;
+
+	/**
 	 * The Is not required.
 	 */
 	private boolean isNotRequired;
@@ -99,16 +104,18 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * @param delegate                       the delegate
 	 * @param parameterName                  the parameter name
 	 * @param additionalParameterAnnotations the additional parameter annotations
+	 * @param methodAnnotations              the method annotations
 	 * @param isParameterObject              the is parameter object
 	 * @param isNotRequired                  the is required
 	 */
-	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, boolean isParameterObject, boolean isNotRequired) {
+	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, Annotation[] methodAnnotations, boolean isParameterObject, boolean isNotRequired) {
 		super(delegate);
 		this.delegate = delegate;
 		this.additionalParameterAnnotations = additionalParameterAnnotations;
 		this.parameterName = parameterName;
 		this.isParameterObject = isParameterObject;
 		this.isNotRequired = isNotRequired;
+		this.methodAnnotations =methodAnnotations;
 	}
 
 	/**
@@ -139,7 +146,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
-				explodedParameters.add(new DelegatingMethodParameter(p, name, null, false, false));
+				explodedParameters.add(new DelegatingMethodParameter(p, name, null, null, false, false));
 			}
 		}
 		return explodedParameters.toArray(new MethodParameter[0]);
@@ -171,7 +178,8 @@ public class DelegatingMethodParameter extends MethodParameter {
 	@Override
 	@NonNull
 	public Annotation[] getParameterAnnotations() {
-		return ArrayUtils.addAll(delegate.getParameterAnnotations(), additionalParameterAnnotations);
+		Annotation[] methodAnnotations = ArrayUtils.addAll(delegate.getParameterAnnotations(), this.methodAnnotations);
+		return ArrayUtils.addAll(methodAnnotations, additionalParameterAnnotations);
 	}
 
 	@Override
