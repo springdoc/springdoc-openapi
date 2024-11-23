@@ -103,7 +103,7 @@
           {
             "name": "nested.param1",
             "in": "query",
-            "description": "The Param 1.",
+            "description": "nested string parameter",
             "required": false,
             "schema": {
               "type": "string"
@@ -112,7 +112,7 @@
           {
             "name": "nested.param2",
             "in": "query",
-            "description": "The Param 2.",
+            "description": "nested BigInteger parameter",
             "required": false,
             "schema": {
               "type": "integer"

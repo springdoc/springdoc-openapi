@@ -192,7 +192,7 @@ public class MethodParameterPojoExtractor {
 						.map(RecordComponent::getAccessor)
 						.map(method -> new MethodParameter(method, -1))
 						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, true, isNotRequired));
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), true, isNotRequired));
 
 			}
 			else
@@ -202,7 +202,7 @@ public class MethodParameterPojoExtractor {
 						.filter(Objects::nonNull)
 						.map(method -> new MethodParameter(method, -1))
 						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, true, isNotRequired));
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), true, isNotRequired));
 		}
 		catch (IntrospectionException e) {
 			return Stream.of();
