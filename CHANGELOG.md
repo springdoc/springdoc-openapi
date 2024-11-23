@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] - 2024-23-11
+
+### Added
+- #2777 - Add SortAsQueryParam annotation 
+
+### Changed
+- Upgrade spring-boot to 3.4.0
+- Upgrade swagger-core to 2.2.26
+- Upgrade swagger-ui to 5.18.2
+- Upgrade spring-security-oauth2-authorization-server to 1.4.0
+
 ## [2.7.0-RC1] - 2024-11-06
 
 ### Added
