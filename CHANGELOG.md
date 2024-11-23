@@ -12,7 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Upgrade spring-boot to 3.4.0
-- Upgrade swagger-core to 2.2.26
 - Upgrade swagger-ui to 5.18.2
 - Upgrade spring-security-oauth2-authorization-server to 1.4.0
 
