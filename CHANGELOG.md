@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.7.0] - 2024-23-11
 
 ### Added
-- #2777 - Add SortAsQueryParam annotation 
+- #2777 - Add SortAsQueryParam annotation
+- #2786 - No static resource swagger-ui/index.html error after migration to 2.7.0-RC1 
 
 ### Changed
 - Upgrade spring-boot to 3.4.0
