@@ -423,14 +423,6 @@ public final class Constants {
 	 */
 	public static final String SPRINGDOC_SWAGGER_UI_OAUTH_PROXY_ENABLED = SPRINGDOC_SWAGGER_UI_OAUTH_PROXY_PREFIX + ".enabled";
 	/**
-	 * The constant SPRINGDOC_SWAGGER_UI_OAUTH_PROXY_PREFIX.
-	 */
-	public static final String SPRINGDOC_SWAGGER_UI_OAUTH_PROXY_PREFIX = "springdoc.swagger-ui.oauth-proxy";
-	/**
-	 * The constant SPRINGDOC_SWAGGER_UI_OAUTH_PROXY_ENABLED.
-	 */
-	public static final String SPRINGDOC_SWAGGER_UI_OAUTH_PROXY_ENABLED = SPRINGDOC_SWAGGER_UI_OAUTH_PROXY_PREFIX + ".enabled";
-	/**
 	 * Instantiates a new Constants.
 	 */
 	private Constants() {
