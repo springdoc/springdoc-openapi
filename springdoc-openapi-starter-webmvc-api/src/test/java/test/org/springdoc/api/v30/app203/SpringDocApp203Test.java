@@ -41,14 +41,14 @@ public class SpringDocApp203Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication
 	@Import({
-			OrderDemo.Customizer3.class,
-			OrderDemo.Customizer2.class,
 			OrderDemo.Customizer1.class,
+			OrderDemo.Customizer2.class,
+			OrderDemo.Customizer3.class,
 	})
 	static class SpringDocTestApp {}
 
 	@Test
-	public void testApp1() throws Exception {
+	void testApp1() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/mygroup"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))

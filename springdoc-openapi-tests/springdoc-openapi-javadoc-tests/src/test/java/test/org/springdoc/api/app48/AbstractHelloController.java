@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @ApiResponses({
 		@ApiResponse(responseCode = "411")
 })
-public class AbstractHelloController {
+class AbstractHelloController {
 
 	/**
 	 * Gets documents.

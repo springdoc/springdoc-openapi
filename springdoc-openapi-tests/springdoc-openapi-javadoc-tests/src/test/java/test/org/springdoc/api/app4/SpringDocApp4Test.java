@@ -29,7 +29,7 @@ import org.springframework.test.context.TestPropertySource;
  * The type Spring doc app 4 test.
  */
 @TestPropertySource(properties = "springdoc.use-fqn=true")
-public class SpringDocApp4Test extends AbstractSpringDocTest {
+class SpringDocApp4Test extends AbstractSpringDocTest {
 
 	/**
 	 * Restore.

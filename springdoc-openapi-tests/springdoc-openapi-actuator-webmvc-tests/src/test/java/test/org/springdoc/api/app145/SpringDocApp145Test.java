@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright 2019-2022 the original author or authors.
+ *  * Copyright 2019-2024 the original author or authors.
  *  *
  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  * you may not use this file except in compliance with the License.
@@ -47,13 +47,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 
 	@Test
-	public void testApp() throws Exception {
+	void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/users"))
 				.andExpect(status().isNotFound());
 	}
 
 	@Test
-	public void testApp1() throws Exception {
+	void testApp1() throws Exception {
 		try {
 			actuatorRestTemplate.getForObject("/application/openapi", String.class);
 			fail();
@@ -67,14 +67,14 @@ public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 	}
 
 	@Test
-	public void testApp2() throws Exception {
+	void testApp2() throws Exception {
 		String result = actuatorRestTemplate.getForObject("/application/openapi/users", String.class);
 		String expected = getContent("results/app145.json");
 		assertEquals(expected, result, true);
 	}
 
 	@Test
-	public void testApp3() throws Exception {
+	void testApp3() throws Exception {
 		try {
 			actuatorRestTemplate.getForObject("/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME, String.class);
 			fail();

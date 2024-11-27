@@ -15,7 +15,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 		"This is the description being overwritten")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "id", "name" })
-public class Organization {
+class Organization {
 
 	/**
 	 * The Id.

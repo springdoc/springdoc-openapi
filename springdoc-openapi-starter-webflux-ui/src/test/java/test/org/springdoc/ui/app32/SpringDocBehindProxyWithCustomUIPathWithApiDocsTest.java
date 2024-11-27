@@ -38,7 +38,7 @@ public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends Abstrac
 	private static final String X_FORWARD_PREFIX = "/path/prefix";
 
 	@Test
-	public void shouldRedirectSwaggerUIFromCustomPath() {
+	void shouldRedirectSwaggerUIFromCustomPath() {
 		webTestClient
 				.get().uri("/foo/documentation/swagger.html")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
@@ -48,7 +48,7 @@ public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends Abstrac
 	}
 
 	@Test
-	public void shouldReturnCorrectInitializerJS() {
+	void shouldReturnCorrectInitializerJS() {
 		webTestClient
 				.get().uri("/foo/documentation/webjars/swagger-ui/swagger-initializer.js")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
@@ -62,7 +62,7 @@ public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends Abstrac
 	}
 
 	@Test
-	public void shouldCalculateUrlsBehindProxy() {
+	void shouldCalculateUrlsBehindProxy() {
 		webTestClient
 				.get().uri("/bar/openapi/v3/swagger-config")
 				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)

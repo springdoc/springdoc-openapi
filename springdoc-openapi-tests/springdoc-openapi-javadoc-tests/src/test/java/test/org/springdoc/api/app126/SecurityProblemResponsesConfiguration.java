@@ -19,7 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
  * Configuration class defining standard OpenAPI Specification for operations
  */
 @Configuration
-public class SecurityProblemResponsesConfiguration {
+class SecurityProblemResponsesConfiguration {
 
 	/**
 	 * The constant HTTP_401_NO_TOKEN.

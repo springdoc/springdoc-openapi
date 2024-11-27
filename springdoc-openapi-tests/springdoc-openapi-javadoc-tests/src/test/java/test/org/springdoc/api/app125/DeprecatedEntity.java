@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * The type Deprecated entity.
  * @author bnasslahsen
  */
-public class DeprecatedEntity {
+class DeprecatedEntity {
 	/**
 	 * The My non deprecated field.
 	 */

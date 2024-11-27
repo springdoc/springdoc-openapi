@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/javadoc-only")
-public class JavadocOnlyRestController {
+class JavadocOnlyRestController {
 	/**
 	 * This is the create method's javadoc.
 	 * The method's signature: {@code #create(JavadocOnlyRestDto)}

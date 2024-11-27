@@ -33,7 +33,7 @@ public class GroupAutoConfigurationTest {
 			.withUserConfiguration(TestApp.class);
 
 	@Test
-	public void group_configuration_loaded() {
+	void group_configuration_loaded() {
 		contextRunner
 				.run(context -> assertThat(context)
 						.hasNotFailed()

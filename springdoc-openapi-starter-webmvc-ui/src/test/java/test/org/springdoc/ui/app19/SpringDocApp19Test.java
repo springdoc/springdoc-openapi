@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp19Test extends AbstractSpringDocTest {
 
 	@Test
-	public void testUseRootPath() throws Exception {
+	void testUseRootPath() throws Exception {
 		mockMvc.perform(get("/"))
 				.andExpect(status().is3xxRedirection());
 		mockMvc.perform(get("/swagger-ui.html"))

@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * The type Group auto configuration test.
  */
-public class GroupAutoConfigurationTest {
+class GroupAutoConfigurationTest {
 
 	/**
 	 * The Context runner.
@@ -42,7 +42,7 @@ public class GroupAutoConfigurationTest {
 	 * Group configuration loaded.
 	 */
 	@Test
-	public void group_configuration_loaded() {
+	void group_configuration_loaded() {
 		contextRunner
 				.run(context -> assertThat(context)
 						.hasNotFailed()

@@ -1,6 +1,6 @@
 package test.org.springdoc.api.app166;
 
-public class SimpleGeneric<T> {
+class SimpleGeneric<T> {
 
 	/**
 	 * Returns name

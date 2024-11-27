@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/")
-public class BasicController {
+class BasicController {
 
 	@GetMapping("/test1")
 	@Operation(summary = "get1", description = "Provides an animal.")

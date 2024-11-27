@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.webflux.api;
@@ -101,14 +103,14 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	/**
 	 * Instantiates a new Multiple open api resource.
 	 *
-	 * @param groupedOpenApis the grouped open apis
-	 * @param defaultOpenAPIBuilder the default open api builder
-	 * @param requestBuilder the request builder
-	 * @param responseBuilder the response builder
-	 * @param operationParser the operation parser
+	 * @param groupedOpenApis           the grouped open apis
+	 * @param defaultOpenAPIBuilder     the default open api builder
+	 * @param requestBuilder            the request builder
+	 * @param responseBuilder           the response builder
+	 * @param operationParser           the operation parser
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param springDocProviders the spring doc providers
-	 * @param springDocCustomizers the spring doc customizers
+	 * @param springDocProviders        the spring doc providers
+	 * @param springDocCustomizers      the spring doc customizers
 	 */
 	protected MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
 			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
@@ -141,9 +143,7 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 							springDocConfigProperties.addGroupConfig(groupConfig);
 							return buildWebFluxOpenApiResource(item);
 						},
-						(existingValue, newValue) -> {
-							return existingValue; // choice to keep the existing value
-						}
+						(existingValue, newValue) ->  existingValue // choice to keep the existing value
 				));
 	}
 

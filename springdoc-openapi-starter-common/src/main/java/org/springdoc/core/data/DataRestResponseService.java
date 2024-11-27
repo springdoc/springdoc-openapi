@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.data;
@@ -39,10 +41,10 @@ import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.springdoc.core.models.MethodAttributes;
-import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.utils.SpringDocDataRestUtils;
 
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.data.rest.core.mapping.MethodResourceMapping;
@@ -62,6 +64,7 @@ import org.springframework.web.method.HandlerMethod;
 
 /**
  * The type Data rest response builder.
+ *
  * @author bnasslahsen
  */
 public class DataRestResponseService {
@@ -94,14 +97,15 @@ public class DataRestResponseService {
 
 	/**
 	 * Build search response.
-	 * @param operation the operation
-	 * @param handlerMethod the handler method
-	 * @param openAPI the open api
+	 *
+	 * @param operation             the operation
+	 * @param handlerMethod         the handler method
+	 * @param openAPI               the open api
 	 * @param methodResourceMapping the method resource mapping
-	 * @param domainType the domain type
-	 * @param methodAttributes the method attributes
-	 * @param resourceMetadata the resource metadata
-	 * @param dataRestRepository the data rest repository
+	 * @param domainType            the domain type
+	 * @param methodAttributes      the method attributes
+	 * @param resourceMetadata      the resource metadata
+	 * @param dataRestRepository    the data rest repository
 	 */
 	public void buildSearchResponse(Operation operation, HandlerMethod handlerMethod, OpenAPI openAPI,
 			MethodResourceMapping methodResourceMapping, Class<?> domainType, MethodAttributes methodAttributes, ResourceMetadata resourceMetadata,
@@ -130,14 +134,15 @@ public class DataRestResponseService {
 
 	/**
 	 * Build entity response.
-	 * @param operation the operation
-	 * @param handlerMethod the handler method
-	 * @param openAPI the open api
-	 * @param requestMethod the request method
-	 * @param operationPath the operation path
-	 * @param methodAttributes the method attributes
+	 *
+	 * @param operation          the operation
+	 * @param handlerMethod      the handler method
+	 * @param openAPI            the open api
+	 * @param requestMethod      the request method
+	 * @param operationPath      the operation path
+	 * @param methodAttributes   the method attributes
 	 * @param dataRestRepository the data rest repository
-	 * @param resourceMetadata the resource metadata
+	 * @param resourceMetadata   the resource metadata
 	 */
 	public void buildEntityResponse(Operation operation, HandlerMethod handlerMethod, OpenAPI openAPI, RequestMethod requestMethod,
 			String operationPath, MethodAttributes methodAttributes, DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata) {
@@ -157,8 +162,8 @@ public class DataRestResponseService {
 	 *
 	 * @param requestMethod the request method
 	 * @param operationPath the operation path
-	 * @param apiResponses the api responses
-	 * @param apiResponse the api response
+	 * @param apiResponses  the api responses
+	 * @param apiResponse   the api response
 	 */
 	private void addResponse(RequestMethod requestMethod, String operationPath, ApiResponses apiResponses, ApiResponse apiResponse) {
 		switch (requestMethod) {
@@ -192,12 +197,12 @@ public class DataRestResponseService {
 	 * Find search return type.
 	 *
 	 * @param methodResourceMapping the method resource mapping
-	 * @param domainType the domain type
+	 * @param domainType            the domain type
 	 * @return the type
 	 */
 	private Type findSearchReturnType(MethodResourceMapping methodResourceMapping, Class<?> domainType) {
 		Type returnType;
-		Type returnRepoType = ReturnTypeParser.resolveType(methodResourceMapping.getMethod().getGenericReturnType(), methodResourceMapping.getMethod().getDeclaringClass());
+		Type returnRepoType = GenericTypeResolver.resolveType(methodResourceMapping.getMethod().getGenericReturnType(), methodResourceMapping.getMethod().getDeclaringClass());
 		if (methodResourceMapping.isPagingResource()) {
 			returnType = resolveGenericType(PagedModel.class, EntityModel.class, domainType);
 		}
@@ -218,29 +223,27 @@ public class DataRestResponseService {
 	 * Gets type.
 	 *
 	 * @param methodParameterReturn the method parameter return
-	 * @param requestMethod the request method
-	 * @param dataRestRepository the data rest repository
-	 * @param resourceMetadata the resource metadata
+	 * @param requestMethod         the request method
+	 * @param dataRestRepository    the data rest repository
+	 * @param resourceMetadata      the resource metadata
 	 * @return the type
 	 */
 	private Type getType(MethodParameter methodParameterReturn, RequestMethod requestMethod, DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata) {
-		Type returnType = ReturnTypeParser.resolveType(methodParameterReturn.getGenericParameterType(), methodParameterReturn.getContainingClass());
+		Type returnType = GenericTypeResolver.resolveType(methodParameterReturn.getGenericParameterType(), methodParameterReturn.getContainingClass());
 		Class returnedEntityType = dataRestRepository.getReturnType();
 
-		if (returnType instanceof ParameterizedType) {
-			ParameterizedType parameterizedType = (ParameterizedType) returnType;
+		if (returnType instanceof ParameterizedType parameterizedType) {
 			if ((ResponseEntity.class.equals(parameterizedType.getRawType()))) {
 				return getTypeForResponseEntity(requestMethod, dataRestRepository, returnedEntityType, parameterizedType);
 			}
 			else if ((HttpEntity.class.equals(parameterizedType.getRawType())
-					&& parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType)) {
-				ParameterizedType wildcardTypeUpperBound = (ParameterizedType) parameterizedType.getActualTypeArguments()[0];
+					&& parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType wildcardTypeUpperBound)) {
 				if (RepresentationModel.class.equals(wildcardTypeUpperBound.getRawType())) {
 					return resolveGenericType(HttpEntity.class, RepresentationModel.class, returnedEntityType);
 				}
 			}
 			else if ((CollectionModel.class.equals(parameterizedType.getRawType())
-					&& Object.class.equals(parameterizedType.getActualTypeArguments()[0]))) {
+					&& parameterizedType.getActualTypeArguments()[0]!=null)) {
 				return getTypeForCollectionModel(returnedEntityType, resourceMetadata.isPagingResource());
 			}
 		}
@@ -250,10 +253,10 @@ public class DataRestResponseService {
 	/**
 	 * Gets type for response entity.
 	 *
-	 * @param requestMethod the request method
+	 * @param requestMethod      the request method
 	 * @param dataRestRepository the data rest repository
 	 * @param returnedEntityType the returned entity type
-	 * @param parameterizedType the parameterized type
+	 * @param parameterizedType  the parameterized type
 	 * @return the type for response entity
 	 */
 	private Type getTypeForResponseEntity(RequestMethod requestMethod, DataRestRepository dataRestRepository, Class returnedEntityType, ParameterizedType parameterizedType) {
@@ -273,7 +276,7 @@ public class DataRestResponseService {
 	 * Gets type for collection model.
 	 *
 	 * @param returnedEntityType the returned entity type
-	 * @param pagingResource the paging resource
+	 * @param pagingResource     the paging resource
 	 * @return the type for collection model
 	 */
 	private Type getTypeForCollectionModel(Class returnedEntityType, boolean pagingResource) {
@@ -286,16 +289,15 @@ public class DataRestResponseService {
 	/**
 	 * Gets type for wildcard type.
 	 *
-	 * @param requestMethod the request method
+	 * @param requestMethod      the request method
 	 * @param dataRestRepository the data rest repository
 	 * @param returnedEntityType the returned entity type
-	 * @param parameterizedType the parameterized type
+	 * @param parameterizedType  the parameterized type
 	 * @return the type for wildcard type
 	 */
 	private Type getTypeForWildcardType(RequestMethod requestMethod, DataRestRepository dataRestRepository, Class returnedEntityType, ParameterizedType parameterizedType) {
 		WildcardType wildcardType = (WildcardType) parameterizedType.getActualTypeArguments()[0];
-		if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType) {
-			ParameterizedType wildcardTypeUpperBound = (ParameterizedType) wildcardType.getUpperBounds()[0];
+		if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType wildcardTypeUpperBound) {
 			if (RepresentationModel.class.equals(wildcardTypeUpperBound.getRawType())) {
 				Class<?> type = findType(requestMethod, dataRestRepository);
 				if (MapModel.class.equals(type))
@@ -310,10 +312,10 @@ public class DataRestResponseService {
 	/**
 	 * Gets type.
 	 *
-	 * @param requestMethod the request method
+	 * @param requestMethod      the request method
 	 * @param dataRestRepository the data rest repository
 	 * @param returnedEntityType the returned entity type
-	 * @param parameterizedType the parameterized type
+	 * @param parameterizedType  the parameterized type
 	 * @return the type
 	 */
 	private Type getTypeForParameterizedType(RequestMethod requestMethod, DataRestRepository dataRestRepository, Class returnedEntityType, ParameterizedType parameterizedType) {
@@ -335,7 +337,7 @@ public class DataRestResponseService {
 	/**
 	 * Find type class.
 	 *
-	 * @param requestMethod the request method
+	 * @param requestMethod      the request method
 	 * @param dataRestRepository the data rest repository
 	 * @return the class
 	 */
@@ -358,8 +360,8 @@ public class DataRestResponseService {
 	/**
 	 * Resolve generic type type.
 	 *
-	 * @param container the container
-	 * @param generic the generic
+	 * @param container  the container
+	 * @param generic    the generic
 	 * @param domainType the domain type
 	 * @return the type
 	 */
@@ -372,7 +374,7 @@ public class DataRestResponseService {
 	 * Add response 200.
 	 *
 	 * @param apiResponses the api responses
-	 * @param apiResponse the api response
+	 * @param apiResponse  the api response
 	 */
 	private void addResponse200(ApiResponses apiResponses, ApiResponse apiResponse) {
 		apiResponses.put(String.valueOf(HttpStatus.OK.value()), apiResponse.description(HttpStatus.OK.getReasonPhrase()));
@@ -398,6 +400,7 @@ public class DataRestResponseService {
 
 	/**
 	 * The type Map model.
+	 *
 	 * @author bnasslashen
 	 */
 	private static class MapModel extends RepresentationModel<MapModel> {
@@ -410,7 +413,7 @@ public class DataRestResponseService {
 		 * Instantiates a new Map model.
 		 *
 		 * @param content the content
-		 * @param links the links
+		 * @param links   the links
 		 */
 		public MapModel(Map content, Link... links) {
 			super(Arrays.asList(links));

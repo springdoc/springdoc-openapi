@@ -38,7 +38,7 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
  * The type Hello controller.
  */
 @RestController
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Test.

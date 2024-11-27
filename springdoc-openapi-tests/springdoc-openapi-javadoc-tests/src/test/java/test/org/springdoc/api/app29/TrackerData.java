@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * The type Tracker data.
  */
 @Schema(name = "TrackerData")
-public class TrackerData {
+class TrackerData {
 
 	/**
 	 * The Tracker id.

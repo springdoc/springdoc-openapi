@@ -33,7 +33,7 @@ import org.springframework.test.context.TestPropertySource;
  * The type Spring doc app 1 test.
  */
 @TestPropertySource(properties = "springdoc.default-produces-media-type=application/json")
-public class SpringDocApp1Test extends AbstractSpringDocTest {
+class SpringDocApp1Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springdoc</groupId>
 	<artifactId>springdoc-openapi</artifactId>
-	<version>2.6.1-SNAPSHOT</version>
+	<version>2.7.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Spring openapi documentation</name>
 	<description>Spring openapi documentation</description>
@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.0</version>
+		<version>3.4.0</version>
 	</parent>
 
 	<licenses>
@@ -60,13 +60,13 @@
 		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
-		<swagger-api.version>2.2.24</swagger-api.version>
-		<swagger-ui.version>5.17.14</swagger-ui.version>
+		<swagger-api.version>2.2.25</swagger-api.version>
+		<swagger-ui.version>5.18.2</swagger-ui.version>
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
-		<spring-cloud-function.version>4.1.2</spring-cloud-function.version>
-		<spring-security-oauth2-authorization-server.version>1.3.0</spring-security-oauth2-authorization-server.version>
+		<spring-cloud-function.version>4.2.0-M1</spring-cloud-function.version>
+		<spring-security-oauth2-authorization-server.version>1.4.0</spring-security-oauth2-authorization-server.version>
 	</properties>
 
 	<dependencyManagement>
@@ -317,6 +317,14 @@
 			<url>https://repo.spring.io/snapshot</url>
 			<snapshots>
 				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 	</repositories>

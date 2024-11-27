@@ -5,7 +5,7 @@ package test.org.springdoc.api.app108;
  *
  * @param <T>  the type parameter
  */
-public class ActionResult<T> {
+class ActionResult<T> {
 
 	/**
 	 * The Value.

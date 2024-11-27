@@ -18,8 +18,10 @@
 
 package test.org.springdoc.api.configuration;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,9 +29,13 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 class SecurityConfiguration {
+
 	@Bean
+	@ConditionalOnMissingBean
+	@Lazy(false)
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeRequests((requests) -> requests.requestMatchers("/").permitAll());
+		http.securityMatcher("/**")
+				.authorizeHttpRequests((requests) -> requests.requestMatchers("/**").permitAll());
 		return http.build();
 	}
 

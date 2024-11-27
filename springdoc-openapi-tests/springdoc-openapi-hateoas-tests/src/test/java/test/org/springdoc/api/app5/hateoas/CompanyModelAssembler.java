@@ -21,10 +21,9 @@ public class CompanyModelAssembler extends RepresentationModelAssemblerSupport<C
 	@Override
 	@NonNull
 	public CompanyDto toModel(@NonNull final Company company) {
-		final CompanyDto dto = CompanyDto.builder()
+		return CompanyDto.builder()
 				.id(company.getId())
 				.name(company.getName())
 				.build();
-		return dto;
 	}
 }

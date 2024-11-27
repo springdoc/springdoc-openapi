@@ -28,7 +28,7 @@ import org.springframework.test.context.TestPropertySource;
 public class SpringDocApp5Test extends AbstractSpringDocTest {
 
 	@Test
-	public void transformed_index_with_oauth() {
+	void transformed_index_with_oauth() {
 		super.checkJS("index5");
 	}
 

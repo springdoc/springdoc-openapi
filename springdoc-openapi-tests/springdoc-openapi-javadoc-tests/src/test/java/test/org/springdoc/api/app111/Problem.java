@@ -3,7 +3,7 @@ package test.org.springdoc.api.app111;
 /**
  * The type Problem.
  */
-public class Problem {
+class Problem {
 
 	/**
 	 * The Log ref.

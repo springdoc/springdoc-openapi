@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.fn.builders.parameter;
@@ -39,102 +41,87 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Parameter builder.
+ *
  * @author bnasslahsen
  */
 public class Builder {
 	/**
 	 * The name of the parameter.
-	 *
 	 */
 	private String name = "";
 
 	/**
 	 * The location of the parameter.  Possible values are "query", "header", "path" or "cookie".  Ignored when empty string.
-	 *
 	 */
 	private ParameterIn in = ParameterIn.DEFAULT;
 
 	/**
 	 * Additional description data to provide on the purpose of the parameter
-	 *
 	 */
 	private String description = "";
 
 	/**
 	 * Determines whether this parameter is mandatory. If the parameter location is "path", this property is required and its value must be true. Otherwise, the property may be included and its default value is false.
-	 *
 	 */
 	private boolean required;
 
 	/**
 	 * Specifies that a parameter is deprecated and should be transitioned out of usage.
-	 *
 	 */
 	private boolean deprecated;
 
 	/**
 	 * When true, allows sending an empty value.  If false, the parameter will be considered \&quot;null\&quot; if no value is present.  This may create validation errors when the parameter is required.
-	 *
 	 */
 	private boolean allowEmptyValue;
 
 	/**
 	 * Describes how the parameter value will be serialized depending on the type of the parameter value. Default values (based on value of in): for query - form; for path - simple; for header - simple; for cookie - form.  Ignored if the properties content or array are specified.
-	 *
 	 */
 	private ParameterStyle style = ParameterStyle.DEFAULT;
 
 	/**
 	 * When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map. For other types of parameters this property has no effect. When style is form, the default value is true. For all other styles, the default value is false.  Ignored if the properties content or array are specified.
-	 *
 	 */
 	private Explode explode = Explode.DEFAULT;
 
 	/**
 	 * Determines whether the parameter value should allow reserved characters, as defined by RFC3986. This property only applies to parameters with an in value of query. The default value is false.  Ignored if the properties content or array are specified.
-	 *
 	 */
 	private boolean allowReserved;
 
 	/**
 	 * The schema defining the type used for the parameter.  Ignored if the properties content or array are specified.
-	 *
 	 */
 	private Schema schema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * The schema of the array that defines this parameter.  Ignored if the property content is specified.
-	 *
 	 */
 	private ArraySchema array = org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().build();
 
 	/**
 	 * The representation of this parameter, for different media types.
-	 *
 	 */
 	private Content[] content = {};
 
 	/**
 	 * Allows this parameter to be marked as hidden
-	 *
 	 */
 	private boolean hidden;
 
 	/**
 	 * An array of examples  of the schema used to show the use of the associated schema.
-	 *
 	 */
 	private ExampleObject[] examples = {};
 
 	/**
 	 * Provides an example of the schema.  When associated with a specific media type, the example string shall be parsed by the consumer to be treated as an object or an array.  Ignored if the properties examples, content or array are specified.
-	 *
 	 */
 	private String example = "";
 
 	/**
 	 * The list of optional extensions
-	 *
 	 */
 	private Extension[] extensions = {};
 

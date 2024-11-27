@@ -21,7 +21,7 @@ package test.org.springdoc.api.app149;
 /**
  * The type Hello message.
  */
-public class HelloMessage {
+class HelloMessage {
 	/**
 	 * The Text.
 	 */

@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.data;
@@ -59,6 +61,7 @@ import org.springframework.web.method.HandlerMethod;
 
 /**
  * The type Data rest operation builder.
+ *
  * @author bnasslahsen
  */
 public class DataRestOperationService {
@@ -96,10 +99,10 @@ public class DataRestOperationService {
 	/**
 	 * Instantiates a new Data rest operation builder.
 	 *
-	 * @param dataRestRequestService the data rest request builder
-	 * @param tagsBuilder the tags builder
+	 * @param dataRestRequestService  the data rest request builder
+	 * @param tagsBuilder             the tags builder
 	 * @param dataRestResponseService the data rest response builder
-	 * @param operationService the operation service
+	 * @param operationService        the operation service
 	 */
 	public DataRestOperationService(DataRestRequestService dataRestRequestService, DataRestTagsService tagsBuilder,
 			DataRestResponseService dataRestResponseService, OperationService operationService) {
@@ -112,15 +115,15 @@ public class DataRestOperationService {
 	/**
 	 * Build operation.
 	 *
-	 * @param handlerMethod the handler method
-	 * @param dataRestRepository the repository data rest
-	 * @param openAPI the open api
-	 * @param requestMethod the request method
-	 * @param operationPath the operation path
-	 * @param methodAttributes the method attributes
-	 * @param resourceMetadata the resource metadata
+	 * @param handlerMethod         the handler method
+	 * @param dataRestRepository    the repository data rest
+	 * @param openAPI               the open api
+	 * @param requestMethod         the request method
+	 * @param operationPath         the operation path
+	 * @param methodAttributes      the method attributes
+	 * @param resourceMetadata      the resource metadata
 	 * @param methodResourceMapping the method resource mapping
-	 * @param controllerType the controller type
+	 * @param controllerType        the controller type
 	 * @return the operation
 	 */
 	public Operation buildOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
@@ -143,13 +146,13 @@ public class DataRestOperationService {
 	/**
 	 * Build entity operation.
 	 *
-	 * @param handlerMethod the handler method
+	 * @param handlerMethod      the handler method
 	 * @param dataRestRepository the repository data rest
-	 * @param openAPI the open api
-	 * @param requestMethod the request method
-	 * @param operationPath the operation path
-	 * @param methodAttributes the method attributes
-	 * @param resourceMetadata the resource metadata
+	 * @param openAPI            the open api
+	 * @param requestMethod      the request method
+	 * @param operationPath      the operation path
+	 * @param methodAttributes   the method attributes
+	 * @param resourceMetadata   the resource metadata
 	 * @return the operation
 	 */
 	private Operation buildEntityOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
@@ -170,13 +173,13 @@ public class DataRestOperationService {
 	/**
 	 * Build search operation.
 	 *
-	 * @param handlerMethod the handler method
-	 * @param dataRestRepository the repository data rest
-	 * @param openAPI the open api
-	 * @param requestMethod the request method
-	 * @param methodAttributes the method attributes
+	 * @param handlerMethod         the handler method
+	 * @param dataRestRepository    the repository data rest
+	 * @param openAPI               the open api
+	 * @param requestMethod         the request method
+	 * @param methodAttributes      the method attributes
 	 * @param methodResourceMapping the method resource mapping
-	 * @param resourceMetadata the resource metadata
+	 * @param resourceMetadata      the resource metadata
 	 * @return the operation
 	 */
 	private Operation buildSearchOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
@@ -235,8 +238,8 @@ public class DataRestOperationService {
 	/**
 	 * Gets parameter type.
 	 *
-	 * @param pName the p name
-	 * @param method the method
+	 * @param pName       the p name
+	 * @param method      the method
 	 * @param description the description
 	 * @return the parameter type
 	 */
@@ -268,10 +271,10 @@ public class DataRestOperationService {
 	/**
 	 * Update parameter from annotations parameter.
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI          the open api
 	 * @param methodAttributes the method attributes
-	 * @param method the method
-	 * @param pName the p name
+	 * @param method           the method
+	 * @param pName            the p name
 	 * @return the parameter
 	 */
 	private Parameter getParameterFromAnnotations(OpenAPI openAPI, MethodAttributes methodAttributes, Method method, String pName) {
@@ -295,7 +298,7 @@ public class DataRestOperationService {
 	 * Init operation.
 	 *
 	 * @param handlerMethod the handler method
-	 * @param domainType the domain type
+	 * @param domainType    the domain type
 	 * @param requestMethod the request method
 	 * @return the operation
 	 */
@@ -313,9 +316,10 @@ public class DataRestOperationService {
 
 	/**
 	 * Add operation description.
-	 * @param operation the operation
-	 * @param requestMethod the request method
-	 * @param entity the entity
+	 *
+	 * @param operation          the operation
+	 * @param requestMethod      the request method
+	 * @param entity             the entity
 	 * @param dataRestRepository the data rest repository
 	 */
 	private void addOperationDescription(Operation operation, RequestMethod requestMethod, String entity, DataRestRepository dataRestRepository) {
@@ -343,8 +347,8 @@ public class DataRestOperationService {
 	/**
 	 * Create description.
 	 *
-	 * @param action the action
-	 * @param entity the entity
+	 * @param action             the action
+	 * @param entity             the entity
 	 * @param dataRestRepository the data rest repository
 	 * @return the string
 	 */

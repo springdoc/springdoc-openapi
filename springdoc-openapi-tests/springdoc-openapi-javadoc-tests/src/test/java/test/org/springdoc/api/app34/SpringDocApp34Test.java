@@ -25,7 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * The type Spring doc app 34 test.
  */
-public class SpringDocApp34Test extends AbstractSpringDocTest {
+class SpringDocApp34Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

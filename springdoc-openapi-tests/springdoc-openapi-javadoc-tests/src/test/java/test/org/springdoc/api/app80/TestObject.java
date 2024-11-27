@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 /**
  * The type Test object.
  */
-public class TestObject {
+class TestObject {
 	/**
 	 * The String value.
 	 */

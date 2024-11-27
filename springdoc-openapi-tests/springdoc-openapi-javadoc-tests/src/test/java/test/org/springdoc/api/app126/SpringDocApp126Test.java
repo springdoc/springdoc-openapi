@@ -39,7 +39,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * Tests Spring meta-annotations as method parameters
  */
-public class SpringDocApp126Test extends AbstractSpringDocTest {
+class SpringDocApp126Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

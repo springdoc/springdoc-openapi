@@ -3,32 +3,35 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.models;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.OpenApiCustomizer;
@@ -43,6 +46,7 @@ import static org.springdoc.core.utils.Constants.GROUP_NAME_NOT_NULL_OR_EMPTY;
 
 /**
  * The type Grouped open api.
+ *
  * @author bnasslahsen
  */
 public class GroupedOpenApi {
@@ -95,22 +99,22 @@ public class GroupedOpenApi {
 	/**
 	 * The Open api customisers.
 	 */
-	private List<OpenApiCustomizer> openApiCustomizers;
+	private Set<OpenApiCustomizer> openApiCustomizers;
 
 	/**
 	 * The Operation customizers.
 	 */
-	private List<OperationCustomizer> operationCustomizers;
+	private Set<OperationCustomizer> operationCustomizers;
 
 	/**
 	 * The Router Operation customizers.
 	 */
-	private List<RouterOperationCustomizer> routerOperationCustomizers;
+	private Set<RouterOperationCustomizer> routerOperationCustomizers;
 
 	/**
 	 * The method filters to use.
 	 */
-	private List<OpenApiMethodFilter> openApiMethodFilters;
+	private Set<OpenApiMethodFilter> openApiMethodFilters;
 
 	/**
 	 * Instantiates a new Grouped open api.
@@ -231,7 +235,7 @@ public class GroupedOpenApi {
 	 *
 	 * @return the open api customisers
 	 */
-	public List<OpenApiCustomizer> getOpenApiCustomizers() {
+	public Set<OpenApiCustomizer> getOpenApiCustomizers() {
 		return openApiCustomizers;
 	}
 
@@ -240,7 +244,7 @@ public class GroupedOpenApi {
 	 *
 	 * @return the operation customizers
 	 */
-	public List<OperationCustomizer> getOperationCustomizers() {
+	public Set<OperationCustomizer> getOperationCustomizers() {
 		return operationCustomizers;
 	}
 
@@ -249,7 +253,7 @@ public class GroupedOpenApi {
 	 *
 	 * @return the open api method filters
 	 */
-	public List<OpenApiMethodFilter> getOpenApiMethodFilters() {
+	public Set<OpenApiMethodFilter> getOpenApiMethodFilters() {
 		return openApiMethodFilters;
 	}
 
@@ -258,7 +262,7 @@ public class GroupedOpenApi {
 	 *
 	 * @return the router operation customizers
 	 */
-	public List<RouterOperationCustomizer> getRouterOperationCustomizers() {
+	public Set<RouterOperationCustomizer> getRouterOperationCustomizers() {
 		return routerOperationCustomizers;
 	}
 
@@ -278,7 +282,7 @@ public class GroupedOpenApi {
 	 * @return the grouped open api
 	 */
 	public GroupedOpenApi addAllOpenApiCustomizer(Collection<? extends OpenApiCustomizer> openApiCustomizerCollection) {
-		List<OpenApiCustomizer> result = new ArrayList<>();
+		Set<OpenApiCustomizer> result = new LinkedHashSet<>();
 		result.addAll(openApiCustomizerCollection);
 		result.addAll(openApiCustomizers);
 		openApiCustomizers = result;
@@ -292,7 +296,7 @@ public class GroupedOpenApi {
 	 * @return the grouped open api
 	 */
 	public GroupedOpenApi addAllOperationCustomizer(Collection<? extends OperationCustomizer> operationCustomizerCollection) {
-		List<OperationCustomizer> result = new ArrayList<>();
+		Set<OperationCustomizer> result = new LinkedHashSet<>();
 		result.addAll(operationCustomizerCollection);
 		result.addAll(operationCustomizers);
 		operationCustomizers = result;
@@ -306,7 +310,7 @@ public class GroupedOpenApi {
 	 * @return the grouped open api
 	 */
 	public GroupedOpenApi addAllOpenApiMethodFilter(Collection<? extends OpenApiMethodFilter> openApiMethodFilterCollection) {
-		List<OpenApiMethodFilter> result = new ArrayList<>();
+		Set<OpenApiMethodFilter> result = new LinkedHashSet<>();
 		result.addAll(openApiMethodFilterCollection);
 		result.addAll(openApiMethodFilters);
 		openApiMethodFilters = result;
@@ -315,28 +319,29 @@ public class GroupedOpenApi {
 
 	/**
 	 * The type Builder.
+	 *
 	 * @author bnasslahsen
 	 */
 	public static class Builder {
 		/**
 		 * The Open api customisers.
 		 */
-		private final List<OpenApiCustomizer> openApiCustomizers = new ArrayList<>();
+		private final Set<OpenApiCustomizer> openApiCustomizers = new LinkedHashSet<>();
 
 		/**
 		 * The Operation customizers.
 		 */
-		private final List<OperationCustomizer> operationCustomizers = new ArrayList<>();
+		private final Set<OperationCustomizer> operationCustomizers = new LinkedHashSet<>();
 
 		/**
 		 * The Router Operation customizers.
 		 */
-		private final List<RouterOperationCustomizer> routerOperationCustomizers = new ArrayList<>();
+		private final Set<RouterOperationCustomizer> routerOperationCustomizers = new LinkedHashSet<>();
 
 		/**
 		 * The methods filters to apply.
 		 */
-		private final List<OpenApiMethodFilter> methodFilters = new ArrayList<>();
+		private final Set<OpenApiMethodFilter> methodFilters = new LinkedHashSet<>();
 
 		/**
 		 * The Group.

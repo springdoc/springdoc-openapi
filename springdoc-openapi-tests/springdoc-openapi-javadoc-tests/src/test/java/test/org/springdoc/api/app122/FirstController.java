@@ -32,6 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "example")
-public class FirstController extends BaseController<CustomerDto> {
+class FirstController extends BaseController<CustomerDto> {
 
 }

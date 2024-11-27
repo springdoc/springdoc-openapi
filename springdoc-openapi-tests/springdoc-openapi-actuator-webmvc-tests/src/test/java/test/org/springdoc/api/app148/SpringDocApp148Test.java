@@ -1,6 +1,6 @@
 /*
  *
- *  * Copyright 2019-2022 the original author or authors.
+ *  * Copyright 2019-2024 the original author or authors.
  *  *
  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  * you may not use this file except in compliance with the License.
@@ -46,17 +46,17 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 
 	@Test
-	public void testApp() throws Exception {
+	void testApp() throws Exception {
 		super.testWithRestTemplate("148-1","/test/application/openapi/users");
 	}
 
 	@Test
-	public void testApp2() throws Exception {
+	void testApp2() throws Exception {
 		super.testWithRestTemplate("148-2","/test/application/openapi/x-actuator");
 	}
 
 	@Test
-	public void testApp3() throws Exception {
+	void testApp3() throws Exception {
 		try {
 			actuatorRestTemplate.getForObject("/test/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME, String.class);
 			fail();

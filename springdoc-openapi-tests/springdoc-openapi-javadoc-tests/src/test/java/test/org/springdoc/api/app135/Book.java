@@ -23,7 +23,7 @@ package test.org.springdoc.api.app135;
 /**
  * The type Book.
  */
-public class Book {
+class Book {
 
 	/**
 	 * The Id.

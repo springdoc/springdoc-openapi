@@ -36,12 +36,12 @@ import org.springframework.context.annotation.ComponentScan;
 public class SpringDocApp146Test extends AbstractSpringDocActuatorTest {
 
 	@Test
-	public void testApp() throws Exception {
+	void testApp() throws Exception {
 		super.testApp("146-1", Constants.ACTUATOR_DEFAULT_GROUP);
 	}
 
 	@Test
-	public void testApp1() throws Exception {
+	void testApp1() throws Exception {
 		super.testApp("146-2", Constants.DEFAULT_GROUP_NAME);
 	}
 

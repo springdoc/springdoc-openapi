@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @Controller
 @Tag(name = "health")
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Ping endpoint used for health checks.

@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 )
 @RestController
 @RequestMapping("/annotation-override")
-public class AnnotationOverrideForJavadocRestController {
+class AnnotationOverrideForJavadocRestController {
 	/**
 	 * This is the update method's javadoc.
 	 * The method's signature: {@code #update(String, AnnotationOverrideForJavadocRestDto)}

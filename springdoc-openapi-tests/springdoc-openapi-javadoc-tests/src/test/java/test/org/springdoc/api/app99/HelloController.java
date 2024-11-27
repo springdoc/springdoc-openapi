@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/persons")
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Persons.

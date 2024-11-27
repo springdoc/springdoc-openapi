@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.fn.builders.link;
@@ -34,54 +36,47 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * The type Link builder.
+ *
  * @author bnasslahsen
  */
 public class Builder {
 	/**
 	 * The name of this link.
-	 *
 	 */
 	private String name = "";
 
 	/**
 	 * A relative or absolute reference to an OAS operation. This field is mutually exclusive of the operationId field, and must point to an Operation Object. Relative operationRef values may be used to locate an existing Operation Object in the OpenAPI definition.  Ignored if the operationId property is specified.
-	 *
 	 */
 	private String operationRef = "";
 
 	/**
 	 * The name of an existing, resolvable OAS operation, as defined with a unique operationId. This field is mutually exclusive of the operationRef field.
-	 *
 	 */
 	private String operationId = "";
 
 	/**
 	 * Array of parameters to pass to an operation as specified with operationId or identified via operationRef.
-	 *
 	 */
 	private LinkParameter[] parameters = {};
 
 	/**
 	 * A description of the link. CommonMark syntax may be used for rich text representation.
-	 *
 	 */
 	private String description = "";
 
 	/**
 	 * A literal value or {expression} to use as a request body when calling the target operation.
-	 *
 	 */
 	private String requestBody = "";
 
 	/**
 	 * An alternative server to service this operation.
-	 *
 	 */
 	private Server server = org.springdoc.core.fn.builders.server.Builder.serverBuilder().build();
 
 	/**
 	 * The list of optional extensions
-	 *
 	 */
 	private Extension[] extensions = {};
 

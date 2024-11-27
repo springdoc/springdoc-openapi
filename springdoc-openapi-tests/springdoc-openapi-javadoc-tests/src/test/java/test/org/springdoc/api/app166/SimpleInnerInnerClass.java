@@ -1,6 +1,6 @@
 package test.org.springdoc.api.app166;
 
-public class SimpleInnerInnerClass {
+class SimpleInnerInnerClass {
 	/**
 	 * Returns the name of the inner inner class
 	 */

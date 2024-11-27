@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -55,14 +55,14 @@ class SpringDocApp14Test extends AbstractSpringDocActuatorTest {
 	}
 
 	@Test
-	public void testIndexActuator() {
+	void testIndexActuator() {
 		HttpStatusCode httpStatusMono = webClient.get().uri("/application/swagger-ui")
 				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 	}
 
 	@Test
-	public void testIndexSwaggerConfig() throws Exception {
+	void testIndexSwaggerConfig() throws Exception {
 		String contentAsString = webClient.get().uri("/application/swagger-ui/swagger-config").retrieve()
 				.bodyToMono(String.class).block();
 		String expected = getContent("results/app14-1.json");

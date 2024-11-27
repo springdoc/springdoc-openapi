@@ -25,7 +25,7 @@ import jakarta.xml.bind.annotation.XmlTransient;
  */
 @jakarta.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-07-08T09:37:36.546Z[GMT]")
 @jakarta.xml.bind.annotation.XmlRootElement
-public class ApiResponseMessage {
+class ApiResponseMessage {
 	/**
 	 * The constant ERROR.
 	 */

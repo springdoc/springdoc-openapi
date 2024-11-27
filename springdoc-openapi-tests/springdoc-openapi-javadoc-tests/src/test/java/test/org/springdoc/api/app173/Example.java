@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * The Example object
  */
 @Schema
-public class Example {
+class Example {
 
 	private String name;
 

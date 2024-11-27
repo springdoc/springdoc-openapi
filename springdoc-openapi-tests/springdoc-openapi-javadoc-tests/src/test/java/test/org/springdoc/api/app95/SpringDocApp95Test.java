@@ -28,7 +28,7 @@ import org.springframework.test.context.ActiveProfiles;
  * The type Spring doc app 95 test.
  */
 @ActiveProfiles("95")
-public class SpringDocApp95Test extends AbstractSpringDocTest {
+class SpringDocApp95Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

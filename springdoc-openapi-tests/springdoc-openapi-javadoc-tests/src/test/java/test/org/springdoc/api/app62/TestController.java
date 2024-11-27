@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @BaseController
 @Tag(name = "Test Controller")
-public class TestController {
+class TestController {
 
 	/**
 	 * Test string.

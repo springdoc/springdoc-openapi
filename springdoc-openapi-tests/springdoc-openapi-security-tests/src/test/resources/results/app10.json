@@ -265,7 +265,7 @@
             }
           },
           "302": {
-            "description": "Moved Temporarily",
+            "description": "Found",
             "headers": {
               "Location": {
                 "schema": {
@@ -394,17 +394,35 @@
       "OAuth2AuthorizationServerMetadata": {
         "type": "object",
         "properties": {
-          "token_endpoint_auth_methods_supported": {
+          "response_types_supported": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "revocation_endpoint_auth_methods_supported": {
+          "grant_types_supported": {
             "type": "array",
             "items": {
               "type": "string"
             }
+          },
+          "revocation_endpoint": {
+            "type": "string"
+          },
+          "introspection_endpoint": {
+            "type": "string"
+          },
+          "authorization_endpoint": {
+            "type": "string"
+          },
+          "jwks_uri": {
+            "type": "string"
+          },
+          "token_endpoint": {
+            "type": "string"
+          },
+          "issuer": {
+            "type": "string"
           },
           "introspection_endpoint_auth_methods_supported": {
             "type": "array",
@@ -418,35 +436,17 @@
               "type": "string"
             }
           },
-          "authorization_endpoint": {
-            "type": "string"
-          },
-          "token_endpoint": {
-            "type": "string"
-          },
-          "response_types_supported": {
+          "token_endpoint_auth_methods_supported": {
             "type": "array",
             "items": {
               "type": "string"
             }
           },
-          "introspection_endpoint": {
-            "type": "string"
-          },
-          "revocation_endpoint": {
-            "type": "string"
-          },
-          "grant_types_supported": {
+          "revocation_endpoint_auth_methods_supported": {
             "type": "array",
             "items": {
               "type": "string"
             }
-          },
-          "issuer": {
-            "type": "string"
-          },
-          "jwks_uri": {
-            "type": "string"
           }
         }
       },
@@ -454,6 +454,9 @@
         "type": "object",
         "properties": {
           "scope": {
+            "type": "string"
+          },
+          "refresh_token": {
             "type": "string"
           },
           "expires_in": {
@@ -465,26 +468,19 @@
           },
           "access_token": {
             "type": "string"
-          },
-          "refresh_token": {
-            "type": "string"
           }
         }
       },
       "OAuth2TokenIntrospection": {
         "type": "object",
         "properties": {
-          "scope": {
-            "type": "string"
-          },
           "jti": {
             "type": "string"
           },
-          "exp": {
-            "type": "integer",
-            "format": "int64"
+          "scope": {
+            "type": "string"
           },
-          "nbf": {
+          "iat": {
             "type": "integer",
             "format": "int64"
           },
@@ -500,21 +496,25 @@
           "client_id": {
             "type": "string"
           },
-          "username": {
-            "type": "string"
+          "exp": {
+            "type": "integer",
+            "format": "int64"
           },
           "iss": {
             "type": "string"
           },
-          "active": {
-            "type": "boolean"
-          },
-          "iat": {
-            "type": "integer",
-            "format": "int64"
+          "username": {
+            "type": "string"
           },
           "sub": {
             "type": "string"
+          },
+          "nbf": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "active": {
+            "type": "boolean"
           }
         }
       }

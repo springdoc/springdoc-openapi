@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * The type Spring doc app 81 test.
  */
-public class SpringDocApp81Test extends AbstractSpringDocTest {
+class SpringDocApp81Test extends AbstractSpringDocTest {
 
 	/**
 	 * Test app.
@@ -42,7 +42,7 @@ public class SpringDocApp81Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(jsonPath("$.paths./api.get.tags[0]", containsString("hello-controller")))

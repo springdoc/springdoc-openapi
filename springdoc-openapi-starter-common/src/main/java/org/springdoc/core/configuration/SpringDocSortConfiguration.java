@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.configuration;
@@ -27,9 +29,7 @@ package org.springdoc.core.configuration;
 import java.util.Optional;
 
 import org.springdoc.core.converters.SortOpenAPIConverter;
-import org.springdoc.core.converters.models.SortObject;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
-import org.springdoc.core.customizers.DelegatingMethodParameterCustomizer;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
@@ -50,6 +50,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
 /**
  * The type Spring doc pageable configuration.
+ *
  * @author bnasslahsen
  */
 @Lazy(false)
@@ -72,7 +73,6 @@ public class SpringDocSortConfiguration {
 	@Lazy(false)
 	SortOpenAPIConverter sortOpenAPIConverter(ObjectMapperProvider objectMapperProvider) {
 		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Sort.class, org.springdoc.core.converters.models.Sort.class);
-		getConfig().replaceWithClass(org.springframework.data.domain.Sort.class, SortObject.class);
 		return new SortOpenAPIConverter(objectMapperProvider);
 	}
 
@@ -80,7 +80,7 @@ public class SpringDocSortConfiguration {
 	 * Delegating method parameter customizer delegating method parameter customizer.
 	 *
 	 * @param optionalSpringDataWebPropertiesProvider the optional spring data web properties
-	 * @param optionalRepositoryRestConfiguration the optional repository rest configuration
+	 * @param optionalRepositoryRestConfiguration     the optional repository rest configuration
 	 * @return the delegating method parameter customizer
 	 */
 	@Bean

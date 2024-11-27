@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Tests Spring meta-annotations as method parameters
  */
-public class SpringDocApp127Test extends AbstractSpringDocTest {
+class SpringDocApp127Test extends AbstractSpringDocTest {
 
 	/**
 	 * Test app.
@@ -45,7 +45,7 @@ public class SpringDocApp127Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + ".yaml")).andExpect(status().isOk()).andReturn();

@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * The type Spring doc app 16 test.
  */
 @TestPropertySource(properties = "springdoc.api-docs.enabled=false")
-public class SpringDocApp16Test extends AbstractSpringDocTest {
+class SpringDocApp16Test extends AbstractSpringDocTest {
 
 	/**
 	 * Test app.
@@ -40,7 +40,7 @@ public class SpringDocApp16Test extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
 				.andExpect(status().isNotFound());
 	}

@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 		name = "ApiError",
 		title = "ApiError",
 		description = "A consistent response object for sending errors over the wire.")
-public class ApiError {
+class ApiError {
 
 	/**
 	 * The Status.

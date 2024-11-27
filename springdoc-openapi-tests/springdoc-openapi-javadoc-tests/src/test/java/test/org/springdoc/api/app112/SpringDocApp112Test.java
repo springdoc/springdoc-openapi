@@ -16,7 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {
 		"application-description=description",
 		"application-version=v1" })
-public class SpringDocApp112Test extends AbstractSpringDocTest {
+class SpringDocApp112Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * The type Umbrella.
  */
-public class Umbrella {
+class Umbrella {
 
 	/**
 	 * The Object.

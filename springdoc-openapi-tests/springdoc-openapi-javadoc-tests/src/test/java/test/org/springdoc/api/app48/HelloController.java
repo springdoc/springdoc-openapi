@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @ApiResponses({
 		@ApiResponse(responseCode = "401")
 })
-public class HelloController extends AbstractHelloController {
+class HelloController extends AbstractHelloController {
 
 	/**
 	 * Gets documents.

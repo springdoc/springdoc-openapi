@@ -49,7 +49,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
  */
 @RestController
 @Tag(name = "people")
-public class PeopleRestService {
+class PeopleRestService {
 	/**
 	 * The People.
 	 */

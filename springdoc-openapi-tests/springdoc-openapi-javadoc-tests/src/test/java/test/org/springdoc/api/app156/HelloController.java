@@ -13,7 +13,7 @@ import static io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY;
  * The type Hello controller.
  */
 @RestController
-public class HelloController {
+class HelloController {
 	/**
 	 * Hello string.
 	 *

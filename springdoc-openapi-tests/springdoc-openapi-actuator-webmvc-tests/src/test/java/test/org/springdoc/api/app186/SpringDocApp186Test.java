@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@
 package test.org.springdoc.api.app186;
 
 import org.junit.jupiter.api.Test;
-import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.utils.Constants;
@@ -52,7 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp186Test extends AbstractSpringDocTest {
 
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(status().isOk())
@@ -60,7 +59,7 @@ public class SpringDocApp186Test extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void testGroupActuatorAsCodeCheckBackwardsCompatibility() throws Exception {
+	void testGroupActuatorAsCodeCheckBackwardsCompatibility() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-code-check-backwards-compatibility"))
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(status().isOk())
@@ -68,7 +67,7 @@ public class SpringDocApp186Test extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void testGroupActuatorAsCode() throws Exception {
+	void testGroupActuatorAsCode() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-code"))
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(status().isOk())
@@ -76,7 +75,7 @@ public class SpringDocApp186Test extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void testGroupActuatorAsProperties() throws Exception {
+	void testGroupActuatorAsProperties() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-properties"))
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
 				.andExpect(status().isOk())
@@ -87,12 +86,10 @@ public class SpringDocApp186Test extends AbstractSpringDocTest {
 	static class SpringDocTestApp {
 
 		@Bean
-		public GroupedOpenApi asCodeCheckBackwardsCompatibility(ActuatorOpenApiCustomizer actuatorOpenApiCustomiser,
-				OperationCustomizer actuatorCustomizer, WebEndpointProperties endpointProperties) {
+		public GroupedOpenApi asCodeCheckBackwardsCompatibility(OperationCustomizer actuatorCustomizer, WebEndpointProperties endpointProperties) {
 			return GroupedOpenApi.builder()
 					.group("group-actuator-as-code-check-backwards-compatibility")
 					.pathsToMatch(endpointProperties.getBasePath() + ALL_PATTERN)
-					.addOpenApiCustomizer(actuatorOpenApiCustomiser)
 					.addOperationCustomizer(actuatorCustomizer)
 					.build();
 		}

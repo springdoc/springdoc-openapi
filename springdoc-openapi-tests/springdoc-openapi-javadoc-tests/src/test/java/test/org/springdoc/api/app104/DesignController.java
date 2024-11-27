@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Tag(name = "design")
 @Controller
 @RequestMapping("/design")
-public class DesignController extends CrudController<Design> {
+class DesignController extends CrudController<Design> {
 
 
 }

@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocOauthServletPathsTest extends AbstractSpringDocTest {
 
 	@Test
-	public void should_display_oauth2_redirect_page() throws Exception {
+	void should_display_oauth2_redirect_page() throws Exception {
 		mockMvc.perform(get("/context-path/servlet-path/test/swagger.html").servletPath("/servlet-path").contextPath("/context-path")).andExpect(status().is3xxRedirection()).andReturn();
 
 		mockMvc.perform(get("/context-path/servlet-path/test/swagger-ui/oauth2-redirect.html").servletPath("/servlet-path").contextPath("/context-path")).andExpect(status().isOk()).andReturn();
@@ -50,7 +50,7 @@ public class SpringDocOauthServletPathsTest extends AbstractSpringDocTest {
 	}
 
 	@Test
-	public void oauth2_redirect_url_calculated_with_context_path_and_servlet_path() throws Exception {
+	void oauth2_redirect_url_calculated_with_context_path_and_servlet_path() throws Exception {
 		mockMvc.perform(get("/context-path/servlet-path/v3/api-docs/swagger-config").contextPath("/context-path").servletPath("/servlet-path"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/context-path/servlet-path/test/swagger-ui/oauth2-redirect.html")));

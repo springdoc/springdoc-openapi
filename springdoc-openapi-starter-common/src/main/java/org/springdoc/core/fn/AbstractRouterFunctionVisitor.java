@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.fn;
@@ -39,6 +41,7 @@ import org.springframework.util.CollectionUtils;
 
 /**
  * The type Abstract router function visitor.
+ *
  * @author bnasslahsen
  */
 public class AbstractRouterFunctionVisitor {
@@ -141,7 +144,7 @@ public class AbstractRouterFunctionVisitor {
 	/**
 	 * Header.
 	 *
-	 * @param name the name
+	 * @param name  the name
 	 * @param value the value
 	 */
 	public void header(String name, String value) {
@@ -165,7 +168,7 @@ public class AbstractRouterFunctionVisitor {
 	/**
 	 * Query param.
 	 *
-	 * @param name the name
+	 * @param name  the name
 	 * @param value the value
 	 */
 	public void queryParam(String name, String value) {
@@ -187,7 +190,7 @@ public class AbstractRouterFunctionVisitor {
 	/**
 	 * Param.
 	 *
-	 * @param name the name
+	 * @param name  the name
 	 * @param value the value
 	 */
 	public void param(String name, String value) {
@@ -287,9 +290,9 @@ public class AbstractRouterFunctionVisitor {
 	/**
 	 * Calculate header.
 	 *
-	 * @param value the value
+	 * @param value   the value
 	 * @param headers the headers
-	 * @param header the header
+	 * @param header  the header
 	 */
 	private void calculateHeader(String value, List<String> headers, String header) {
 		if (value.contains(",")) {
@@ -326,8 +329,8 @@ public class AbstractRouterFunctionVisitor {
 	/**
 	 * Add header.
 	 *
-	 * @param mediaType the media type
-	 * @param header the header
+	 * @param mediaType          the media type
+	 * @param header             the header
 	 * @param routerFunctionData the router function data
 	 */
 	private void addHeader(String mediaType, String header, RouterFunctionData routerFunctionData) {

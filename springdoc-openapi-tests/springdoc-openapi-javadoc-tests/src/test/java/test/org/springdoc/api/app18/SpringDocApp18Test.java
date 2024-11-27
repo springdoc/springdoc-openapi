@@ -27,7 +27,7 @@ import org.springframework.test.context.TestPropertySource;
  * The type Spring doc app 18 test.
  */
 @TestPropertySource(properties = "springdoc.pre-loading-enabled=true")
-public class SpringDocApp18Test extends AbstractSpringDocTest {
+class SpringDocApp18Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

@@ -3,7 +3,7 @@ package test.org.springdoc.api.app157;
 /**
  * A class with a String in it
  */
-public class Foo {
+class Foo {
 	/**
 	 * The Child.
 	 */

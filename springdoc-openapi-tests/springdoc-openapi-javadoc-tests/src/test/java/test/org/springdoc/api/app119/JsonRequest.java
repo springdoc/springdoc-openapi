@@ -3,7 +3,7 @@ package test.org.springdoc.api.app119;
 /**
  * The type Json request.
  */
-public class JsonRequest {
+class JsonRequest {
 
 	/**
 	 * The Name.

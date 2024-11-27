@@ -31,7 +31,7 @@ public class SpringOauth2Test {
 			.withUserConfiguration(TestApp.class);
 
 	@Test
-	public void configurations_successfully_loaded() {
+	void configurations_successfully_loaded() {
 		contextRunner
 				.run(context -> assertThat(context)
 						.hasNotFailed()

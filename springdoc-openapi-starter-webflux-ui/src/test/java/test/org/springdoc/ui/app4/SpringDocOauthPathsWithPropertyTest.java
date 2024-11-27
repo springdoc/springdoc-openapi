@@ -30,7 +30,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 public class SpringDocOauthPathsWithPropertyTest extends AbstractSpringDocTest {
 
 	@Test
-	public void oauth2_redirect_url_calculated() throws Exception {
+	void oauth2_redirect_url_calculated() throws Exception {
 		webTestClient.get().uri("/v3/api-docs/swagger-config").exchange()
 				.expectStatus().isOk().expectBody()
 				.jsonPath("oauth2RedirectUrl", equalTo("http://localhost:8080/toto/test/swagger-ui/oauth2-redirect.html"));

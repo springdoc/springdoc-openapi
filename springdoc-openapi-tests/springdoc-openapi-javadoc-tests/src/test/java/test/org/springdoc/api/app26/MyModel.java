@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * The type My model.
  */
-public class MyModel {
+class MyModel {
 
 	/**
 	 * The Thing.

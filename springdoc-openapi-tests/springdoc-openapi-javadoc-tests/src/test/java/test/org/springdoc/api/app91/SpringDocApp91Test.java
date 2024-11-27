@@ -28,7 +28,7 @@ import org.springframework.test.context.TestPropertySource;
  * The type Spring doc app 91 test.
  */
 @TestPropertySource(properties = "springdoc.override-with-generic-response=false")
-public class SpringDocApp91Test extends AbstractSpringDocTest {
+class SpringDocApp91Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * The type Global controller advice.
  */
 @ControllerAdvice(basePackages = "test.org.springdoc.api.appzzz")
-public class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
+class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 {
 	/**
 	 * Note use base class if you wish to leverage its handling.
@@ -45,10 +45,7 @@ public class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 	@ExceptionHandler(Throwable.class)
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	public ResponseEntity<Problem> problem(final Throwable e) {
-		String message = e.getMessage();
-		//might actually prefer to use a geeric mesasge
-
-		message = "Problem occured";
+		String message = "Problem occured";
 		UUID uuid = UUID.randomUUID();
 		String logRef = uuid.toString();
 		logger.error("logRef=" + logRef, message, e);

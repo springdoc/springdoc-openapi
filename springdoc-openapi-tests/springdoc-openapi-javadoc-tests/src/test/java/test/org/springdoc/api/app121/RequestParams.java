@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 /**
  * The type Request params.
  */
-public class RequestParams {
+class RequestParams {
 
 	/**
 	 * The String param.

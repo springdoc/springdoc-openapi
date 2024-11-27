@@ -16,7 +16,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "test_5",
+        "operationId": "test",
         "responses": {
           "200": {
             "description": "OK",
@@ -34,7 +34,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "test_4",
+        "operationId": "test_2",
         "responses": {
           "200": {
             "description": "OK",
@@ -52,7 +52,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "test",
+        "operationId": "test_1",
         "responses": {
           "200": {
             "description": "OK",
@@ -70,7 +70,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "test_1",
+        "operationId": "test_3",
         "responses": {
           "200": {
             "description": "OK",
@@ -106,7 +106,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "test_2",
+        "operationId": "test_5",
         "responses": {
           "200": {
             "description": "OK",
@@ -124,7 +124,7 @@
         "tags": [
           "hello-controller"
         ],
-        "operationId": "test_3",
+        "operationId": "test_4",
         "responses": {
           "200": {
             "description": "OK",

@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.OK;
  * The Example Controller
  */
 @RestController
-public class ExampleController {
+class ExampleController {
 
 	@PostMapping("/example")
 	@Operation(summary = "insert example", description = "Allows to insert an example")

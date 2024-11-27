@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public abstract class AbstractSpringDocV31Test extends AbstractCommonTest {
 	public static String className;
 
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())

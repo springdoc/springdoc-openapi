@@ -23,7 +23,7 @@ import test.org.springdoc.api.AbstractSpringDocTest;
 /**
  * The type Spring doc app 50 test.
  */
-public class SpringDocApp50Test extends AbstractSpringDocTest {
+class SpringDocApp50Test extends AbstractSpringDocTest {
 
 
 }

@@ -3,7 +3,7 @@ package test.org.springdoc.api.app158;
 /**
  * The type Error dto.
  */
-public class ErrorDTO {
+class ErrorDTO {
 	/**
 	 * The Message.
 	 */

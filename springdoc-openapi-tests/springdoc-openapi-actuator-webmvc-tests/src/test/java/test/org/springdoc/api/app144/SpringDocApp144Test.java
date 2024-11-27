@@ -40,13 +40,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp144Test extends AbstractSpringDocActuatorTest {
 
 	@Test
-	public void testApp() throws Exception {
+	void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
 				.andExpect(status().isNotFound());
 	}
 
 	@Test
-	public void testApp1() throws Exception {
+	void testApp1() throws Exception {
 		String result = actuatorRestTemplate.getForObject("/application/openapi", String.class);
 		String expected = getContent("results/app144.json");
 		assertEquals(expected, result, true);

@@ -21,7 +21,7 @@ package test.org.springdoc.api.app27;
 /**
  * The type My exception.
  */
-public class MyException extends RuntimeException {
+class MyException extends RuntimeException {
 
 	/**
 	 * The constant serialVersionUID.

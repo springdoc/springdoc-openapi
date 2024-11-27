@@ -29,7 +29,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = {
 		"springdoc.packagesToScan=test.org.springdoc.api.app86",
 		"springdoc.packagesToExclude=test.org.springdoc.api.app86.test" })
-public class SpringDocApp86Test extends AbstractSpringDocTest {
+class SpringDocApp86Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

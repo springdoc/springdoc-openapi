@@ -36,7 +36,7 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 	public static String className;
 
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())

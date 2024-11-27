@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Hidden
-public class DefaultHealthCheckApi {
+class DefaultHealthCheckApi {
 
 	/**
 	 * Test date echo string.

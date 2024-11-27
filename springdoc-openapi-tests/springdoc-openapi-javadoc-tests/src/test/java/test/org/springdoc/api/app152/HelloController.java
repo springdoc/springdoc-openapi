@@ -13,7 +13,7 @@ import org.springframework.web.util.pattern.PathPatternParser;
  */
 @RestController
 @RequestMapping("/api")
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Hello world string.
@@ -29,7 +29,7 @@ public class HelloController {
 	 * The type Web config.
 	 */
 	@Configuration
-	public class WebConfig implements WebMvcConfigurer {
+	class WebConfig implements WebMvcConfigurer {
 
 		/**
 		 * Configure path match.

@@ -32,7 +32,7 @@ import org.springframework.web.context.request.async.DeferredResult;
  */
 @RestController
 @RequestMapping(path = "/api", headers = { "userId", "registrationId" })
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Update deferred result.

@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.service;
@@ -66,7 +68,6 @@ import org.springdoc.core.extractor.DelegatingMethodParameter;
 import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.models.ParameterInfo;
 import org.springdoc.core.models.RequestBodyInfo;
-import org.springdoc.core.parsers.ReturnTypeParser;
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.WebConversionServiceProvider;
@@ -77,6 +78,7 @@ import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.BeanExpressionResolver;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -86,9 +88,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import static org.springdoc.core.utils.Constants.DOT;
+import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 
 /**
  * The type Generic parameter builder.
+ *
  * @author bnasslahsen, coutin
  */
 @SuppressWarnings("rawtypes")
@@ -147,11 +151,12 @@ public class GenericParameterService {
 
 	/**
 	 * Instantiates a new Generic parameter builder.
-	 * @param propertyResolverUtils the property resolver utils
+	 *
+	 * @param propertyResolverUtils                        the property resolver utils
 	 * @param optionalDelegatingMethodParameterCustomizers the optional list delegating method parameter customizer
-	 * @param optionalWebConversionServiceProvider the optional web conversion service provider
-	 * @param objectMapperProvider the object mapper provider
-	 * @param javadocProviderOptional the javadoc provider
+	 * @param optionalWebConversionServiceProvider         the optional web conversion service provider
+	 * @param objectMapperProvider                         the object mapper provider
+	 * @param javadocProviderOptional                      the javadoc provider
 	 */
 	public GenericParameterService(PropertyResolverUtils propertyResolverUtils, Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers,
 			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, Optional<JavadocProvider> javadocProviderOptional) {
@@ -187,7 +192,7 @@ public class GenericParameterService {
 	 * Merge parameter parameter.
 	 *
 	 * @param existingParamDoc the existing param doc
-	 * @param paramCalcul the param calcul
+	 * @param paramCalcul      the param calcul
 	 * @return the parameter
 	 */
 	public static Parameter mergeParameter(List<Parameter> existingParamDoc, Parameter paramCalcul) {
@@ -214,7 +219,7 @@ public class GenericParameterService {
 	 * Merge parameter.
 	 *
 	 * @param paramCalcul the param calcul
-	 * @param paramDoc the param doc
+	 * @param paramDoc    the param doc
 	 */
 	public static void mergeParameter(Parameter paramCalcul, Parameter paramDoc) {
 		if (StringUtils.isBlank(paramDoc.getDescription()))
@@ -261,9 +266,9 @@ public class GenericParameterService {
 	 * Build parameter from doc parameter.
 	 *
 	 * @param parameterDoc the parameter doc
-	 * @param components the components
-	 * @param jsonView the json view
-	 * @param locale the locale
+	 * @param components   the components
+	 * @param jsonView     the json view
+	 * @param locale       the locale
 	 * @return the parameter
 	 */
 	public Parameter buildParameterFromDoc(io.swagger.v3.oas.annotations.Parameter parameterDoc,
@@ -311,9 +316,9 @@ public class GenericParameterService {
 	 * Sets schema.
 	 *
 	 * @param parameterDoc the parameter doc
-	 * @param components the components
-	 * @param jsonView the json view
-	 * @param parameter the parameter
+	 * @param components   the components
+	 * @param jsonView     the json view
+	 * @param parameter    the parameter
 	 */
 	private void setSchema(io.swagger.v3.oas.annotations.Parameter parameterDoc, Components components, JsonView jsonView, Parameter parameter) {
 		if (StringUtils.isNotBlank(parameterDoc.ref()))
@@ -352,10 +357,10 @@ public class GenericParameterService {
 	/**
 	 * Calculate schema schema.
 	 *
-	 * @param components the components
-	 * @param parameterInfo the parameter info
+	 * @param components      the components
+	 * @param parameterInfo   the parameter info
 	 * @param requestBodyInfo the request body info
-	 * @param jsonView the json view
+	 * @param jsonView        the json view
 	 * @return the schema
 	 */
 	Schema calculateSchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, JsonView jsonView) {
@@ -364,7 +369,7 @@ public class GenericParameterService {
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 
 		if (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getSchema() == null) {
-			Type type = ReturnTypeParser.getType(methodParameter);
+			Type type = GenericTypeResolver.resolveType( methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
 			if (type instanceof Class && !((Class<?>) type).isEnum() && optionalWebConversionServiceProvider.isPresent()) {
 				WebConversionServiceProvider webConversionServiceProvider = optionalWebConversionServiceProvider.get();
 				if (!MethodParameterPojoExtractor.isSwaggerPrimitiveType((Class) type) && methodParameter.getParameterType().getAnnotation(io.swagger.v3.oas.annotations.media.Schema.class) == null) {
@@ -373,7 +378,7 @@ public class GenericParameterService {
 						type = springConvertedType;
 				}
 			}
-			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, methodParameter.getParameterAnnotations(), propertyResolverUtils.getSpecVersion());
+			schemaN = SpringDocAnnotationsUtils.extractSchema(components, type, jsonView, getParameterAnnotations(methodParameter), propertyResolverUtils.getSpecVersion());
 		}
 		else
 			schemaN = parameterInfo.getParameterModel().getSchema();
@@ -398,11 +403,11 @@ public class GenericParameterService {
 	/**
 	 * Calculate request body schema schema.
 	 *
-	 * @param components the components
-	 * @param parameterInfo the parameter info
+	 * @param components      the components
+	 * @param parameterInfo   the parameter info
 	 * @param requestBodyInfo the request body info
-	 * @param schemaN the schema n
-	 * @param paramName the param name
+	 * @param schemaN         the schema n
+	 * @param paramName       the param name
 	 * @return the schema
 	 */
 	private Schema calculateRequestBodySchema(Components components, ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo, Schema schemaN, String paramName) {
@@ -439,7 +444,7 @@ public class GenericParameterService {
 	 * Sets examples.
 	 *
 	 * @param parameterDoc the parameter doc
-	 * @param parameter the parameter
+	 * @param parameter    the parameter
 	 */
 	private void setExamples(io.swagger.v3.oas.annotations.Parameter parameterDoc, Parameter parameter) {
 		Map<String, Example> exampleMap = new HashMap<>();
@@ -482,7 +487,7 @@ public class GenericParameterService {
 	 * Sets parameter explode.
 	 *
 	 * @param parameter the parameter
-	 * @param p the p
+	 * @param p         the p
 	 */
 	private void setParameterExplode(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
 		if (isExplodable(p)) {
@@ -499,7 +504,7 @@ public class GenericParameterService {
 	 * Sets parameter style.
 	 *
 	 * @param parameter the parameter
-	 * @param p the p
+	 * @param p         the p
 	 */
 	private void setParameterStyle(Parameter parameter, io.swagger.v3.oas.annotations.Parameter p) {
 		if (StringUtils.isNotBlank(p.style().toString())) {
@@ -532,7 +537,7 @@ public class GenericParameterService {
 	 * @return the boolean
 	 */
 	public boolean isFile(MethodParameter methodParameter) {
-		if (methodParameter.getGenericParameterType() instanceof ParameterizedType) {
+		if (methodParameter.getGenericParameterType() instanceof ParameterizedType ) {
 			ParameterizedType parameterizedType = (ParameterizedType) methodParameter.getGenericParameterType();
 			return isFile(parameterizedType);
 		}
@@ -562,8 +567,7 @@ public class GenericParameterService {
 		Class fileClass = ResolvableType.forType(type).getRawClass();
 		if (fileClass != null && isFile(fileClass))
 			return true;
-		else if (type instanceof WildcardType) {
-			WildcardType wildcardType = (WildcardType) type;
+		else if (type instanceof WildcardType wildcardType) {
 			Type[] upperBounds = wildcardType.getUpperBounds();
 			return MultipartFile.class.getName().equals(upperBounds[0].getTypeName());
 		}
@@ -591,6 +595,7 @@ public class GenericParameterService {
 	/**
 	 * Resolve the given annotation-specified value,
 	 * potentially containing placeholders and expressions.
+	 *
 	 * @param value the value
 	 * @return the object
 	 */

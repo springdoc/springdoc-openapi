@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Hello controller.
  */
 @RestController
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Test.
@@ -51,7 +51,7 @@ public class HelloController {
 	/**
 	 * The type Body.
 	 */
-	public class Body {
+	class Body {
 		/**
 		 * The Field.
 		 */

@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Header v 1 student v 1.

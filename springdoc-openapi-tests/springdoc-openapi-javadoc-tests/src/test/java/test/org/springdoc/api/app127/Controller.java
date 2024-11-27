@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Controller.
  */
 @RestController
-public class Controller {
+class Controller {
 
 	/**
 	 * Bug umbrella.

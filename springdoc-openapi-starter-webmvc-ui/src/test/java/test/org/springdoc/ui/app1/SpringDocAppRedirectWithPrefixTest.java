@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocAppRedirectWithPrefixTest extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithPrefix() throws Exception {
+	void shouldRedirectWithPrefix() throws Exception {
 
 		mockMvc.perform(get("/documentation/v3/api-docs/swagger-config"))
 				.andExpect(status().isOk())

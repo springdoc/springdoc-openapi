@@ -28,7 +28,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		String className = getClass().getSimpleName();
 		String testId = className.replaceAll("[^0-9]", "");
 		testApp(testId, StringUtils.EMPTY);

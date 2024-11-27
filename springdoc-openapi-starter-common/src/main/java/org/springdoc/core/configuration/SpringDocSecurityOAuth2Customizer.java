@@ -1,11 +1,35 @@
+/*
+ *
+ *  *
+ *  *  *
+ *  *  *  *
+ *  *  *  *  *
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
+ *  *  *  *  *
+ *  *  *  *
+ *  *  *
+ *  *
+ *  
+ */
+
 package org.springdoc.core.configuration;
 
 import java.lang.reflect.Field;
 
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
@@ -24,10 +48,6 @@ import io.swagger.v3.oas.models.parameters.PathParameter;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.security.SecurityScheme.In;
-import io.swagger.v3.oas.models.security.SecurityScheme.Type;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -288,8 +308,8 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), response);
 			buildApiResponsesOnInternalServerError(apiResponses);
 			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
-			apiResponses.addApiResponse(String.valueOf(HttpStatus.MOVED_TEMPORARILY.value()),
-					new ApiResponse().description(HttpStatus.MOVED_TEMPORARILY.getReasonPhrase())
+			apiResponses.addApiResponse(String.valueOf(HttpStatus.FOUND.value()),
+					new ApiResponse().description(HttpStatus.FOUND.getReasonPhrase())
 							.addHeaderObject("Location", new Header().schema(new StringSchema())));
 			Operation operation = buildOperation(apiResponses);
 			Schema<?> schema = new ObjectSchema().additionalProperties(new StringSchema());
@@ -332,7 +352,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	/**
 	 * Gets OpenID UserInfo endpoint filter
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI             the open api
 	 * @param securityFilterChain the security filter chain
 	 */
 	private void getOidcUserInfoEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
@@ -398,7 +418,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * Build api responses api responses on success.
 	 *
 	 * @param apiResponses the api responses
-	 * @param schema the schema
+	 * @param schema       the schema
 	 * @return the api responses
 	 */
 	private ApiResponses buildApiResponsesOnSuccess(ApiResponses apiResponses, Schema schema) {
@@ -413,7 +433,7 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * Build api responses api responses on created.
 	 *
 	 * @param apiResponses the api responses
-	 * @param schema the schema
+	 * @param schema       the schema
 	 * @return the api responses
 	 */
 	private ApiResponses buildApiResponsesOnCreated(ApiResponses apiResponses, Schema schema) {
@@ -466,26 +486,23 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	/**
 	 * Build path.
 	 *
-	 * @param oAuth2EndpointFilter the o auth 2 endpoint filter
+	 * @param oAuth2EndpointFilter         the o auth 2 endpoint filter
 	 * @param authorizationEndpointMatcher the authorization endpoint matcher
-	 * @param openAPI the open api
-	 * @param operation the operation
-	 * @param requestMethod the request method
+	 * @param openAPI                      the open api
+	 * @param operation                    the operation
+	 * @param requestMethod                the request method
 	 */
 	private void buildPath(Object oAuth2EndpointFilter, String authorizationEndpointMatcher, OpenAPI openAPI, Operation operation, HttpMethod requestMethod) {
 		try {
-			Field tokenEndpointMatcherField = FieldUtils.getDeclaredField(oAuth2EndpointFilter.getClass(), authorizationEndpointMatcher, true);
-			RequestMatcher endpointMatcher = (RequestMatcher) tokenEndpointMatcherField.get(oAuth2EndpointFilter);
+			RequestMatcher endpointMatcher = (RequestMatcher) FieldUtils.readDeclaredField(oAuth2EndpointFilter, authorizationEndpointMatcher, true);
 			String path = null;
 			if (endpointMatcher instanceof AntPathRequestMatcher antPathRequestMatcher)
 				path = antPathRequestMatcher.getPattern();
 			else if (endpointMatcher instanceof OrRequestMatcher endpointMatchers) {
-				Field requestMatchersField = FieldUtils.getDeclaredField(OrRequestMatcher.class, "requestMatchers", true);
-				Iterable<RequestMatcher> requestMatchers = (Iterable<RequestMatcher>) requestMatchersField.get(endpointMatchers);
+				Iterable<RequestMatcher> requestMatchers = (Iterable<RequestMatcher>) FieldUtils.readDeclaredField(endpointMatchers, "requestMatchers", true);
 				for (RequestMatcher requestMatcher : requestMatchers) {
 					if (requestMatcher instanceof OrRequestMatcher orRequestMatcher) {
-						requestMatchersField = FieldUtils.getDeclaredField(OrRequestMatcher.class, "requestMatchers", true);
-						requestMatchers = (Iterable<RequestMatcher>) requestMatchersField.get(orRequestMatcher);
+						requestMatchers = (Iterable<RequestMatcher>) FieldUtils.readDeclaredField(orRequestMatcher, "requestMatchers", true);
 						for (RequestMatcher matcher : requestMatchers) {
 							if (matcher instanceof AntPathRequestMatcher antPathRequestMatcher)
 								path = antPathRequestMatcher.getPattern();

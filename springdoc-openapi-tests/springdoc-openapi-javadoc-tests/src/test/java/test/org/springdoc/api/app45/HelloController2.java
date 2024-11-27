@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SecurityRequirement(name = "bearer")
 @RestController
 @RequestMapping(value = "/v1/people2")
-public class HelloController2 {
+class HelloController2 {
 
 
 	/**

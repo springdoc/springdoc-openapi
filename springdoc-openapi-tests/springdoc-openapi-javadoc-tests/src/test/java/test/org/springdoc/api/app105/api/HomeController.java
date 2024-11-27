@@ -30,7 +30,7 @@ import static org.springframework.web.servlet.view.UrlBasedViewResolver.REDIRECT
  * Home redirection to swagger api documentation
  */
 @Controller
-public class HomeController {
+class HomeController {
 
 	/**
 	 * The Swagger ui path.

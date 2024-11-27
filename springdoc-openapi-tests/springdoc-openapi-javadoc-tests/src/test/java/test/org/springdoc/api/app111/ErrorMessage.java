@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * The type Error message.
  */
-public class ErrorMessage {
+class ErrorMessage {
 
 	/**
 	 * The Errors.

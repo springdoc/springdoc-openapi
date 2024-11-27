@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.webmvc.ui;
@@ -27,7 +29,7 @@ package org.springdoc.webmvc.ui;
 import java.util.List;
 import java.util.Optional;
 
-import org.springdoc.core.properties.SwaggerUiConfigParameters;
+import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
 
 import org.springframework.format.FormatterRegistry;
@@ -57,14 +59,10 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Swagger web mvc configurer.
+ *
  * @author bnasslahsen
  */
 public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
-
-	/**
-	 * The Swagger path.
-	 */
-	private final String swaggerPath;
 
 	/**
 	 * The Swagger index transformer.
@@ -76,6 +74,10 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	 */
 	private final Optional<ActuatorProvider> actuatorProvider;
 
+	/**
+	 * The Swagger ui config properties.
+	 */
+	private final SwaggerUiConfigProperties swaggerUiConfigProperties;
 
 	/**
 	 * The Swagger resource resolver.
@@ -85,23 +87,24 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	/**
 	 * Instantiates a new Swagger web mvc configurer.
 	 *
-	 * @param swaggerUiConfigParameters the swagger ui calculated config
-	 * @param swaggerIndexTransformer the swagger index transformer
-	 * @param actuatorProvider the actuator provider
-	 * @param swaggerResourceResolver the swagger resource resolver
+	 * @param swaggerUiConfigProperties the swagger ui calculated config
+	 * @param swaggerIndexTransformer   the swagger index transformer
+	 * @param actuatorProvider          the actuator provider
+	 * @param swaggerResourceResolver   the swagger resource resolver
 	 */
-	public SwaggerWebMvcConfigurer(SwaggerUiConfigParameters swaggerUiConfigParameters,
+	public SwaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
 			SwaggerIndexTransformer swaggerIndexTransformer,
 			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
-		this.swaggerPath = swaggerUiConfigParameters.getPath();
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
 		this.actuatorProvider = actuatorProvider;
 		this.swaggerResourceResolver = swaggerResourceResolver;
+		this.swaggerUiConfigProperties = swaggerUiConfigProperties;
 	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		StringBuilder uiRootPath = new StringBuilder();
+		String swaggerPath = swaggerUiConfigProperties.getPath();
 		if (swaggerPath.contains(DEFAULT_PATH_SEPARATOR))
 			uiRootPath.append(swaggerPath, 0, swaggerPath.lastIndexOf(DEFAULT_PATH_SEPARATOR));
 		if (actuatorProvider.isPresent() && actuatorProvider.get().isUseManagementPort())
