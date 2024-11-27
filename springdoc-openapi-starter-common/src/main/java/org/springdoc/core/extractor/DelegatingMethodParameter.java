@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2023 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 package org.springdoc.core.extractor;
 
@@ -56,6 +58,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 
 /**
  * The type Delegating method parameter.
+ *
  * @author zarebski.m
  */
 public class DelegatingMethodParameter extends MethodParameter {
@@ -86,6 +89,11 @@ public class DelegatingMethodParameter extends MethodParameter {
 	private final boolean isParameterObject;
 
 	/**
+	 * The Method annotations.
+	 */
+	private final Annotation[] methodAnnotations;
+
+	/**
 	 * The Is not required.
 	 */
 	private boolean isNotRequired;
@@ -93,28 +101,30 @@ public class DelegatingMethodParameter extends MethodParameter {
 	/**
 	 * Instantiates a new Delegating method parameter.
 	 *
-	 * @param delegate the delegate
-	 * @param parameterName the parameter name
+	 * @param delegate                       the delegate
+	 * @param parameterName                  the parameter name
 	 * @param additionalParameterAnnotations the additional parameter annotations
-	 * @param isParameterObject the is parameter object
-	 * @param isNotRequired the is required
+	 * @param methodAnnotations              the method annotations
+	 * @param isParameterObject              the is parameter object
+	 * @param isNotRequired                  the is required
 	 */
-	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, boolean isParameterObject, boolean isNotRequired) {
+	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, Annotation[] methodAnnotations, boolean isParameterObject, boolean isNotRequired) {
 		super(delegate);
 		this.delegate = delegate;
 		this.additionalParameterAnnotations = additionalParameterAnnotations;
 		this.parameterName = parameterName;
 		this.isParameterObject = isParameterObject;
 		this.isNotRequired = isNotRequired;
+		this.methodAnnotations =methodAnnotations;
 	}
 
 	/**
 	 * Customize method parameter [ ].
 	 *
-	 * @param pNames the p names
-	 * @param parameters the parameters
+	 * @param pNames                                       the p names
+	 * @param parameters                                   the parameters
 	 * @param optionalDelegatingMethodParameterCustomizers the optional list delegating method parameter customizer
-	 * @param defaultFlatParamObject the default flat param object
+	 * @param defaultFlatParamObject                       the default flat param object
 	 * @return the method parameter [ ]
 	 */
 	public static MethodParameter[] customize(String[] pNames, MethodParameter[] parameters,
@@ -136,7 +146,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
-				explodedParameters.add(new DelegatingMethodParameter(p, name, null, false, false));
+				explodedParameters.add(new DelegatingMethodParameter(p, name, null, null, false, false));
 			}
 		}
 		return explodedParameters.toArray(new MethodParameter[0]);
@@ -145,10 +155,11 @@ public class DelegatingMethodParameter extends MethodParameter {
 	/**
 	 * Return a variant of this {@code MethodParameter} which refers to the
 	 * given containing class.
+	 *
 	 * @param methodParameter the method parameter
 	 * @param containingClass a specific containing class (potentially a subclass of the declaring class, e.g. substituting a type variable) A copy of spring withContainingClass, to keep compatibility with older spring versions
 	 * @return the method parameter
-	 * @see #getParameterType() #getParameterType()
+	 * @see #getParameterType() #getParameterType()#getParameterType()
 	 */
 	public static MethodParameter changeContainingClass(MethodParameter methodParameter, @Nullable Class<?> containingClass) {
 		MethodParameter result = methodParameter.clone();
@@ -167,7 +178,8 @@ public class DelegatingMethodParameter extends MethodParameter {
 	@Override
 	@NonNull
 	public Annotation[] getParameterAnnotations() {
-		return ArrayUtils.addAll(delegate.getParameterAnnotations(), additionalParameterAnnotations);
+		Annotation[] methodAnnotations = ArrayUtils.addAll(delegate.getParameterAnnotations(), this.methodAnnotations);
+		return ArrayUtils.addAll(methodAnnotations, additionalParameterAnnotations);
 	}
 
 	@Override

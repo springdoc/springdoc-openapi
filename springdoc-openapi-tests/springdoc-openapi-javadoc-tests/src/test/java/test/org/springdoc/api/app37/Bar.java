@@ -21,7 +21,7 @@ package test.org.springdoc.api.app37;
 /**
  * The type Bar.
  */
-public class Bar {
+class Bar {
 	/**
 	 * The Bar.
 	 */

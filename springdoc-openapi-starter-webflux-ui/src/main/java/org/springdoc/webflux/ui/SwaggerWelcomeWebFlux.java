@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.webflux.ui;
@@ -44,11 +46,11 @@ import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Swagger welcome.
+ *
  * @author bnasslahsen
  */
 @Controller
 public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
-
 
 	/**
 	 * The Spring web provider.
@@ -56,21 +58,14 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	private final SpringWebProvider springWebProvider;
 
 	/**
-	 * The Path prefix.
-	 */
-	private String pathPrefix;
-
-	/**
 	 * Instantiates a new Swagger welcome web flux.
 	 *
-	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiConfig           the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
-	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param springWebProvider the spring web provider
+	 * @param springWebProvider         the spring web provider
 	 */
-	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties,
-			SwaggerUiConfigParameters swaggerUiConfigParameters, SpringWebProvider springWebProvider) {
-		super(swaggerUiConfig, springDocConfigProperties, swaggerUiConfigParameters);
+	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SpringWebProvider springWebProvider) {
+		super(swaggerUiConfig, springDocConfigProperties);
 		this.springWebProvider = springWebProvider;
 	}
 
@@ -89,55 +84,35 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 		return super.redirectToUi(request, response);
 	}
 
-	/**
-	 * Calculate ui root path.
-	 *
-	 * @param sbUrls the sb urls
-	 */
 	@Override
-	protected void calculateUiRootPath(StringBuilder... sbUrls) {
+	protected void calculateUiRootPath(SwaggerUiConfigParameters swaggerUiConfigParameters, StringBuilder... sbUrls) {
 		StringBuilder sbUrl = new StringBuilder();
-		calculateUiRootCommon(sbUrl, sbUrls);
+		calculateUiRootCommon(swaggerUiConfigParameters,sbUrl, sbUrls);
 	}
 
-	/**
-	 * Calculate oauth 2 redirect url.
-	 *
-	 * @param uriComponentsBuilder the uri components builder
-	 */
 	@Override
-	protected void calculateOauth2RedirectUrl(UriComponentsBuilder uriComponentsBuilder) {
+	protected void calculateOauth2RedirectUrl(SwaggerUiConfigParameters swaggerUiConfigParameters, UriComponentsBuilder uriComponentsBuilder) {
 		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
-			UriComponentsBuilder oauthPrefix = uriComponentsBuilder.path(contextPath).path(swaggerUiConfigParameters.getUiRootPath()).path(webJarsPrefixUrl);
+			UriComponentsBuilder oauthPrefix = uriComponentsBuilder.path(swaggerUiConfigParameters.getContextPath()).path(swaggerUiConfigParameters.getUiRootPath()).path(webJarsPrefixUrl);
 			swaggerUiConfigParameters.setOauth2RedirectUrl(oauthPrefix.path(getOauth2RedirectUrl()).build().toString());
 		}
 	}
 
-	/**
-	 * Build api doc url string.
-	 *
-	 * @return the string
-	 */
 	@Override
-	protected String buildApiDocUrl() {
-		return buildUrlWithContextPath(springDocConfigProperties.getApiDocs().getPath());
+	protected void buildApiDocUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
+		swaggerUiConfigParameters.setApiDocsUrl(buildUrlWithContextPath(swaggerUiConfigParameters, springDocConfigProperties.getApiDocs().getPath()));
 	}
 
 	@Override
-	protected String buildUrlWithContextPath(String swaggerUiUrl) {
-		if (this.pathPrefix == null)
-			this.pathPrefix = springWebProvider.findPathPrefix(springDocConfigProperties);
-		return buildUrl(this.contextPath + this.pathPrefix, swaggerUiUrl);
+	protected String buildUrlWithContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, String swaggerUiUrl) {
+		if (swaggerUiConfigParameters.getPathPrefix() == null)
+			swaggerUiConfigParameters.setPathPrefix(springWebProvider.findPathPrefix(springDocConfigProperties));
+		return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(), swaggerUiUrl);
 	}
 
-	/**
-	 * Build swagger config url string.
-	 *
-	 * @return the string
-	 */
 	@Override
-	protected String buildSwaggerConfigUrl() {
-		return this.apiDocsUrl + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE;
+	protected void buildSwaggerConfigUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
+		swaggerUiConfigParameters.setConfigUrl(swaggerUiConfigParameters.getApiDocsUrl()+ DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);
 	}
 
 }

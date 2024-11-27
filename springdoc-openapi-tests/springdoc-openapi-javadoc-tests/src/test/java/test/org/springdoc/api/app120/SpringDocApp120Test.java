@@ -25,7 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Tests Spring meta-annotations as method parameters
  */
-public class SpringDocApp120Test extends AbstractSpringDocTest {
+class SpringDocApp120Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

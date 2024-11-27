@@ -25,9 +25,6 @@ public class AnotherPerson {
 	@Hidden
 	private String name;
 
-	public AnotherPerson() {
-	}
-
 	public String getName() {
 		return name;
 	}

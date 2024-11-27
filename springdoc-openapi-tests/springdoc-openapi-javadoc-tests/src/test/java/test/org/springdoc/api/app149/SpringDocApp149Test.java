@@ -27,7 +27,7 @@ import org.springframework.test.context.TestPropertySource;
  * The type Spring doc app 149 test.
  */
 @TestPropertySource(properties = "springdoc.model-and-view-allowed=true")
-public class SpringDocApp149Test extends AbstractSpringDocTest {
+class SpringDocApp149Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

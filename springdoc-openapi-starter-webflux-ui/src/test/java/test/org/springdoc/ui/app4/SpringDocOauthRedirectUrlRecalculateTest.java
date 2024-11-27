@@ -28,7 +28,7 @@ import org.springframework.test.context.TestPropertySource;
 public class SpringDocOauthRedirectUrlRecalculateTest extends AbstractSpringDocTest {
 
 	@Test
-	public void oauth2_redirect_url_recalculation() throws Exception {
+	void oauth2_redirect_url_recalculation() throws Exception {
 
 		webTestClient.get().uri("/v3/api-docs/swagger-config")
 				.header("X-Forwarded-Proto", "https")

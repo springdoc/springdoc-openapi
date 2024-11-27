@@ -30,7 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
  * The type Hello controller.
  */
 @RestController
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Gets address.

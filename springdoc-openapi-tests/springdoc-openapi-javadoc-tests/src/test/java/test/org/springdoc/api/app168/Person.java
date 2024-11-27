@@ -3,7 +3,7 @@ package test.org.springdoc.api.app168;
 /**
  * The type Person.
  */
-public class Person {
+class Person {
 	/**
 	 * The Id.
 	 */

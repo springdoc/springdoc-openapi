@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The type Student v 3.
  */
-public class StudentV3 {
+class StudentV3 {
 
 	/**
 	 * The Name.

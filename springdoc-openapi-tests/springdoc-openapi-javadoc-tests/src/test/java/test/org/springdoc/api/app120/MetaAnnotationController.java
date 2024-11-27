@@ -45,7 +45,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
  * The type Meta annotation controller.
  */
 @RestController
-public class MetaAnnotationController {
+class MetaAnnotationController {
 
 	/**
 	 * Simple test string.

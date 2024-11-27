@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
  * The type Store api delegate.
  */
 @Service
-public class StoreApiDelegateImpl implements StoreApiDelegate {
+class StoreApiDelegateImpl implements StoreApiDelegate {
 
 
 }

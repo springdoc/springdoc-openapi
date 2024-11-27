@@ -5,10 +5,65 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] - 2024-23-11
+
+### Added
+- #2777 - Add SortAsQueryParam annotation
+- #2786 - No static resource swagger-ui/index.html error after migration to 2.7.0-RC1 
+
+### Changed
+- Upgrade spring-boot to 3.4.0
+- Upgrade swagger-ui to 5.18.2
+- Upgrade spring-security-oauth2-authorization-server to 1.4.0
+
+## [2.7.0-RC1] - 2024-11-06
+
+### Added
+- #2649 - Add Encoding to multiple files and JSON payloads request test case
+- #2653 - Trim indent apply schema description
+- #2664 - Refactor Replace hardcoded schema prefix length 
+- #2509, #2668 - Replace swagger urls in org.springdoc.core.properties.AbstractSwaggerUiConfigProperties#urls only if url is changed
+- #2727 - Display nullable request body with map type
+- #2746 - Readme.md add gradle import
+- #2760 - Added support for RequestBody as a meta-annotation 
+- #2703 - Display nullable request body with map type
+- #2657 - Add support for OAS v3.1 webhooks
+
+### Changed
+- Upgrade spring-boot to 3.4.0-RC1
+- Upgrade swagger-core to 2.2.25
+- Upgrade swagger-ui to 5.18.1
+- Upgrade spring-cloud-function to 4.2.0-M1
+- Upgrade spring-security-oauth2-authorization-server to 1.4.0-M2
+
+### Fixed
+- #2752 - Swagger doesn't work after custom annotation replacing request parameters
+- #2747 - Move to webjars-locator-lite, in preparation for spring-boot 3.4 GA
+- #2705 - @Schema oneOf config is ignored when generate the api-docs
+- #2744 - SpringDocUI doest add Javadoc into swagger from abstract class 
+- #2708 - Spring Boot (Webflux) - Swagger UI - redirect URI does not include Gateway Prefix
+- #2725 - Serialization to openapi of org.springframework.data.domain.Sort is wrong for Spring Boot >2.x
+- #2740 - Swagger-ui ignores property springdoc.swagger-ui.supported-submit-methods
+- #2733 - Bad schema return type when created a generic wrapper class for response entity
+- #2687 - Failed to load api definition after spring boot 3.4.0-M2
+- #2642 - Calling Swagger UI via different context paths fails
+- #2709 - Annotation @Hidden on rest controller class level doesn't work due to spring default proxying mechanism CGLIB
+- #2642 - Calling Swagger UI via different context paths fails
+- #2663 - Content definition in @ApiResponse remove schema generated based on the returned value
+- #2646 - The operationId is unnecessarily deduplicated for a requestBody with multiple content types
+- #2643 - UpperSnakeCaseStrategy is not working with spring boot and ParameterObject
+- #2640 - @JsonUnwrapped is ignored when PolymorphicConverter is enabled
+- #2638 - Boolean Parameter with @Schema Annotation Changes Type to string in OpenAPI Documentation
+- #2659 - Fix typo in SpringSecurityLoginEndpointCustomizer method name
+- #2660 - Update Response Code 
+- #2442, #2669 - Fix SpringDocApp193Test for Java 21 and above 
+- #2671 - Ensure default media type order is preserved using LinkedHashSet in mergeArrays
+- #2711 - Missing descriptions on Kotlin ByteArray fields
+- #2733 - Bad schema return type when created a generic wrapper class for response entity 
+
 ## [2.6.0] - 2024-06-30
 
 ### Added
-
 - #2561 - NPE occurs when outputting an OpenAPI document since 2.5.0
 - #2579 - Add support for leading tab characters with trim-kotlin-indent. 
 - #2589 - Pass HttpRequest to ServerBaseUrlCustomizer 
@@ -39,13 +94,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.5.0] - 2024-04-01
 
 ### Added
-
 - #2318 - Add Info to GroupedOpenAPI properties
 - #2554 - Remove duplicate words from comments
 - #2418 - Improve support for externalizing strings in generated openapi
 - #2535 - Add 'springdoc.trim-kotlin-indent' property to handle Kotlin multiline string indentation
-### Changed
 
+### Changed
 - Upgrade spring-boot to 3.2.4
 - Upgrade swagger-core to 2.2.21
 - Upgrade swagger-ui to 5.13.0
@@ -59,19 +113,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.4.0] - 2024-03-12
 
 ### Added
-
 - #2443 - Respect schema annotations when using spring mvc with kotlin
 - #2492, #2488 - Support dynamic evaluation of description field in the RequestBody
 - #2510 - Option to disable root api-docs path when using groups
 
 ### Changed
-
 - Upgrade spring-boot to 3.2.3
 - Upgrade swagger-core to 2.2.20
 - Upgrade swagger-ui to 5.11.8
 
 ### Fixed
-
 - #2453 - Fix CODE_OF_CONDUCT.md links
 - #2454 - Fix typo in SwaggerWelcomeWebMvc
 - #2507 - Fix typo in Constants
@@ -94,7 +145,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.3.0] - 2023-12-03
 
 ### Added
-
 - #2340 - Add support OIDC with Spring Authorization Server
 - #2345 - Support Schema added in OpenAPI Specification v3.1 
 - #2387 - Support get javadoc description from getter method 
@@ -104,7 +154,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - #2438, #2315 - Support for @JsonProperty with Javadoc Change in springdoc-openapi
 
 ### Changed
-
 - Upgrade spring-boot to 3.2.0
 - Upgrade swagger-core to 2.2.19
 - Upgrade swagger-ui to 5.10.3
@@ -123,7 +172,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.2.0] - 2023-08-06
 
 ### Added
-
 - #2189 - Add support for swagger-ui.url property 
 - #2200 - Support schema.requiredMode() on ParameterObject
 - #2309 - Added function to preload by specifying locale 

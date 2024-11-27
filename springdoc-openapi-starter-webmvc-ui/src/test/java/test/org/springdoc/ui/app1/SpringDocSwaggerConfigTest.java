@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocSwaggerConfigTest extends AbstractSpringDocActuatorTest {
 
 	@Test
-	public void testIndexSwaggerConfig() throws Exception {
+	void testIndexSwaggerConfig() throws Exception {
 		mockMvc.perform(get("/demo/api/v3/api-docs/swagger-config").contextPath("/demo/api"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("validatorUrl", equalTo("")))

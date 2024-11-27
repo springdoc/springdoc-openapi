@@ -35,7 +35,7 @@ import org.springframework.web.context.request.WebRequest;
  * The type Exception translator.
  */
 @RestControllerAdvice
-public class ExceptionTranslator {
+class ExceptionTranslator {
 
 	/**
 	 * The Error attributes.

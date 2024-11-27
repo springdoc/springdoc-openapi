@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The type Specific client model.
  */
-public class SpecificClientModel extends BaseClientModel {
+class SpecificClientModel extends BaseClientModel {
 	/**
 	 * The Name.
 	 */

@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @ResponseBody
 @RequestMapping("${openapi.openAPIPetstore.base-path:/}")
-public class UserApiController implements UserApi {
+class UserApiController implements UserApi {
 
 	/**
 	 * The Delegate.

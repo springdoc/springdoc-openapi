@@ -21,7 +21,7 @@ package test.org.springdoc.api.app42;
 /**
  * The type Tweet id.
  */
-public class TweetId {
+class TweetId {
 	/**
 	 * The Value.
 	 */

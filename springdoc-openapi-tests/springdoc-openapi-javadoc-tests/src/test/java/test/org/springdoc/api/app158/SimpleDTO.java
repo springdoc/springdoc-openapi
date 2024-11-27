@@ -3,7 +3,7 @@ package test.org.springdoc.api.app158;
 /**
  * The type Simple dto.
  */
-public class SimpleDTO {
+class SimpleDTO {
 
 	/**
 	 * The Payload.

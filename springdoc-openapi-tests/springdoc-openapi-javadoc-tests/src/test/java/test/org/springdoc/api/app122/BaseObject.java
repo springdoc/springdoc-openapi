@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The type Base object.
  */
-public class BaseObject {
+class BaseObject {
 
 	/**
 	 * The Base str.

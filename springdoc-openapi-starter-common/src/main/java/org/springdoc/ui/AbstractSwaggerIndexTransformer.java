@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.ui;
@@ -47,6 +49,7 @@ import static org.springdoc.core.properties.SwaggerUiConfigParameters.QUERY_CONF
 
 /**
  * The type Abstract swagger index transformer.
+ *
  * @author bnasslahsen
  */
 public class AbstractSwaggerIndexTransformer {
@@ -62,11 +65,6 @@ public class AbstractSwaggerIndexTransformer {
 	protected SwaggerUiOAuthProperties swaggerUiOAuthProperties;
 
 	/**
-	 * The Swagger ui config parameters.
-	 */
-	protected SwaggerUiConfigParameters swaggerUiConfigParameters;
-
-	/**
 	 * The Object mapper.
 	 */
 	protected ObjectMapper objectMapper;
@@ -79,15 +77,13 @@ public class AbstractSwaggerIndexTransformer {
 	/**
 	 * Instantiates a new Abstract swagger index transformer.
 	 *
-	 * @param swaggerUiConfig the swagger ui config
+	 * @param swaggerUiConfig          the swagger ui config
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
-	 * @param swaggerUiConfigParameters the swagger ui config parameters
-	 * @param objectMapperProvider the object mapper provider
+	 * @param objectMapperProvider     the object mapper provider
 	 */
-	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, SwaggerUiConfigParameters swaggerUiConfigParameters, ObjectMapperProvider objectMapperProvider) {
+	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapperProvider objectMapperProvider) {
 		this.swaggerUiConfig = swaggerUiConfig;
 		this.swaggerUiOAuthProperties = swaggerUiOAuthProperties;
-		this.swaggerUiConfigParameters = swaggerUiConfigParameters;
 		this.objectMapper = objectMapperProvider.jsonMapper();
 	}
 
@@ -138,7 +134,7 @@ public class AbstractSwaggerIndexTransformer {
 	/**
 	 * Setting the url configured with swagger ui properties
 	 *
-	 * @param html
+	 * @param html the html
 	 * @return modifed html
 	 */
 	protected String setConfiguredApiDocsUrl(String html){
@@ -148,11 +144,12 @@ public class AbstractSwaggerIndexTransformer {
 	/**
 	 * Default transformations string.
 	 *
-	 * @param inputStream the input stream
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
+	 * @param inputStream               the input stream
 	 * @return the string
 	 * @throws IOException the io exception
 	 */
-	protected String defaultTransformations(InputStream inputStream) throws IOException {
+	protected String defaultTransformations(SwaggerUiConfigParameters swaggerUiConfigParameters, InputStream inputStream) throws IOException {
 		String html = readFullyAsString(inputStream);
 		if (!CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters()))
 			html = addInitOauth(html);
@@ -170,7 +167,7 @@ public class AbstractSwaggerIndexTransformer {
 			html = addSyntaxHighlight(html);
 
 		if (swaggerUiConfig.getQueryConfigEnabled() == null || !swaggerUiConfig.getQueryConfigEnabled())
-			html = addParameters(html);
+			html = addParameters(html, swaggerUiConfigParameters);
 		else
 			html = addParameter(html, QUERY_CONFIG_ENABLED_PROPERTY, swaggerUiConfig.getQueryConfigEnabled().toString());
 
@@ -187,11 +184,12 @@ public class AbstractSwaggerIndexTransformer {
 	/**
 	 * Add parameters string.
 	 *
-	 * @param html the html
+	 * @param html                      the html
+	 * @param swaggerUiConfigParameters the swagger ui config parameters
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	protected String addParameters(String html) throws JsonProcessingException {
+	protected String addParameters(String html, SwaggerUiConfigParameters swaggerUiConfigParameters) throws JsonProcessingException {
 		String layout = swaggerUiConfigParameters.getLayout() != null ? swaggerUiConfigParameters.getLayout() : "StandaloneLayout";
 		StringBuilder stringBuilder = new StringBuilder("layout: \"" + layout + "\" ,\n");
 
@@ -214,6 +212,14 @@ public class AbstractSwaggerIndexTransformer {
 		return html;
 	}
 
+	/**
+	 * Add parameter string.
+	 *
+	 * @param html  the html
+	 * @param key   the key
+	 * @param value the value
+	 * @return the string
+	 */
 	private String addParameter(String html, String key, String value) {
 		StringBuilder stringBuilder = new StringBuilder("window.ui = SwaggerUIBundle({\n");
 		stringBuilder.append(key + ": \"" + value + "\",");

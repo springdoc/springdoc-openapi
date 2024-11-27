@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
  * The type Parameter customizer.
  */
 @Component
-public class ParameterCustomizer implements org.springdoc.core.customizers.ParameterCustomizer {
+class ParameterCustomizer implements org.springdoc.core.customizers.ParameterCustomizer {
 	/**
 	 * Customize parameter.
 	 *

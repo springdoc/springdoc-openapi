@@ -27,7 +27,7 @@ import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 /**
  * The type Spring doc app 35 test.
  */
-public class SpringDocApp35Test extends AbstractSpringDocTest {
+class SpringDocApp35Test extends AbstractSpringDocTest {
 
 	static {
 		getConfig().addRestControllers(HelloController.class);

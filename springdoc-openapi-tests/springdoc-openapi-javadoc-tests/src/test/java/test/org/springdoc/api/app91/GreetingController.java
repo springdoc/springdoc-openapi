@@ -17,7 +17,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  */
 @RestController
 @Tag(name = "Demo", description = "The Demo API")
-public class GreetingController {
+class GreetingController {
 
 	/**
 	 * Say hello response entity.

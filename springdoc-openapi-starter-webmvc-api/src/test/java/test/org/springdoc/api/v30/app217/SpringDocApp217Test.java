@@ -43,7 +43,7 @@ public class SpringDocApp217Test extends AbstractSpringDocV30Test {
 	
 	
 	@Test
-	public void testApp1() throws Exception {
+	void testApp1() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/demo"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))
@@ -51,7 +51,7 @@ public class SpringDocApp217Test extends AbstractSpringDocV30Test {
 	}
 
 	@Test
-	public void testApp2() throws Exception {
+	void testApp2() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/user"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.openapi", is("3.0.1")))

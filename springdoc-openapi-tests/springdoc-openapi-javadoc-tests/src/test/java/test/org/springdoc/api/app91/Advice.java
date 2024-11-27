@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * The type Advice.
  */
 @RestControllerAdvice
-public class Advice {
+class Advice {
 
 	/**
 	 * Bad request response entity.

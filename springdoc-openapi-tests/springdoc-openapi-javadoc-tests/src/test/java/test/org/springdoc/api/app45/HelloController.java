@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "People", description = "Use this resource to serve all requests and initiate all operations related to people")
 @RestController
 @RequestMapping(value = "/v1/people")
-public class HelloController {
+class HelloController {
 
 
 	/**

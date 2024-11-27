@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
  * The type Book repository.
  */
 @Component
-public class BookRepository {
+class BookRepository {
 
 	/**
 	 * Find by author list.

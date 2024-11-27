@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The type Category.
  */
-public class Category {
+class Category {
 
 	/**
 	 * The Id.

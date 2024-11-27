@@ -42,7 +42,7 @@ import org.springframework.test.context.TestPropertySource;
 		"springdoc.openapidefinition.info.contact.email=My contact email",
 		"springdoc.openapidefinition.info.contact.url=My contact url"
 })
-public class SpringDocApp15Test extends AbstractSpringDocTest {
+class SpringDocApp15Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

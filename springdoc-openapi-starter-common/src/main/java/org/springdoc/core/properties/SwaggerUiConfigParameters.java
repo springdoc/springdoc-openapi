@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.properties;
@@ -36,27 +38,16 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springdoc.core.configuration.SpringDocConfiguration;
-import org.springdoc.core.utils.Constants;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.util.CollectionUtils;
 
-import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
-import static org.springdoc.core.utils.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
 /**
  * The type Swagger ui config parameters.
+ *
  * @author bnasslahsen
  */
-@Lazy(false)
-@Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(name = SPRINGDOC_SWAGGER_UI_ENABLED, matchIfMissing = true)
-@ConditionalOnBean(SpringDocConfiguration.class)
 public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties {
 
 	/**
@@ -149,6 +140,20 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 */
 	private String uiRootPath;
 
+	/**
+	 * The Context path.
+	 */
+	private String contextPath;
+
+	/**
+	 * The Context path.
+	 */
+	private String apiDocsUrl;
+
+	/**
+	 * The Path prefix.
+	 */
+	private String pathPrefix;
 
 	/**
 	 * Instantiates a new Swagger ui config parameters.
@@ -157,8 +162,8 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 */
 	public SwaggerUiConfigParameters(SwaggerUiConfigProperties swaggerUiConfig) {
 		this.swaggerUiConfig = swaggerUiConfig;
-		this.path = StringUtils.defaultIfBlank(swaggerUiConfig.getPath(), Constants.DEFAULT_SWAGGER_UI_PATH);
-		this.oauth2RedirectUrl = StringUtils.defaultIfBlank(swaggerUiConfig.getOauth2RedirectUrl(), SWAGGER_UI_OAUTH_REDIRECT_URL);
+		this.path = swaggerUiConfig.getPath();
+		this.oauth2RedirectUrl = swaggerUiConfig.getOauth2RedirectUrl();
 		this.layout = swaggerUiConfig.getLayout();
 		this.configUrl = swaggerUiConfig.getConfigUrl();
 		this.validatorUrl = swaggerUiConfig.getValidatorUrl();
@@ -189,7 +194,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	/**
 	 * Add group.
 	 *
-	 * @param group the group
+	 * @param group       the group
 	 * @param displayName the display name
 	 */
 	public void addGroup(String group, String displayName) {
@@ -282,7 +287,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put("tagsSorter", tagsSorter, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(SwaggerUiConfigParameters.LAYOUT_PROPERTY, layout, params);
 		if (supportedSubmitMethods != null)
-			org.springdoc.core.utils.SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods.toString(), params);
+			org.springdoc.core.utils.SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(OAUTH2_REDIRECT_URL_PROPERTY, oauth2RedirectUrl, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(URL_PROPERTY, url, params);
 		put(URLS_PROPERTY, urls, params);
@@ -297,9 +302,9 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	/**
 	 * Put.
 	 *
-	 * @param urls the urls
+	 * @param urls        the urls
 	 * @param swaggerUrls the swagger urls
-	 * @param params the params
+	 * @param params      the params
 	 */
 	private void put(String urls, Set<SwaggerUrl> swaggerUrls, Map<String, Object> params) {
 		Comparator<SwaggerUrl> swaggerUrlComparator;
@@ -324,5 +329,59 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		if (!CollectionUtils.isEmpty(swaggerUiConfig.getUrls()))
 			return swaggerUiConfig.getUrls().stream().anyMatch(swaggerUrl -> name.equals(swaggerUrl.getName()) && StringUtils.isNotBlank(swaggerUrl.getUrl()));
 		return false;
+	}
+
+	/**
+	 * Gets context path.
+	 *
+	 * @return the context path
+	 */
+	public String getContextPath() {
+		return contextPath;
+	}
+
+	/**
+	 * Sets context path.
+	 *
+	 * @param contextPath the context path
+	 */
+	public void setContextPath(String contextPath) {
+		this.contextPath = contextPath;
+	}
+
+	/**
+	 * Gets api docs url.
+	 *
+	 * @return the api docs url
+	 */
+	public String getApiDocsUrl() {
+		return apiDocsUrl;
+	}
+
+	/**
+	 * Sets api docs url.
+	 *
+	 * @param apiDocsUrl the api docs url
+	 */
+	public void setApiDocsUrl(String apiDocsUrl) {
+		this.apiDocsUrl = apiDocsUrl;
+	}
+
+	/**
+	 * Gets path prefix.
+	 *
+	 * @return the path prefix
+	 */
+	public String getPathPrefix() {
+		return pathPrefix;
+	}
+
+	/**
+	 * Sets path prefix.
+	 *
+	 * @param pathPrefix the path prefix
+	 */
+	public void setPathPrefix(String pathPrefix) {
+		this.pathPrefix = pathPrefix;
 	}
 }

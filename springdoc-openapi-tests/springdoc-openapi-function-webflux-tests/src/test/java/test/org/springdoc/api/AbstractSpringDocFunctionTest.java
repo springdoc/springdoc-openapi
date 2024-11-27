@@ -18,6 +18,7 @@
 
 package test.org.springdoc.api;
 
+import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
 
@@ -36,7 +37,7 @@ public abstract class AbstractSpringDocFunctionTest extends AbstractCommonTest {
 
 
 	@Test
-	public void testApp() {
+	void testApp() {
 		String result = null;
 		try {
 			EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange()
@@ -51,6 +52,10 @@ public abstract class AbstractSpringDocFunctionTest extends AbstractCommonTest {
 		catch (AssertionError e) {
 			LOGGER.error(result);
 			throw e;
+		}
+		catch (JSONException e) {
+			LOGGER.error(result);
+			throw new RuntimeException(e);
 		}
 	}
 }

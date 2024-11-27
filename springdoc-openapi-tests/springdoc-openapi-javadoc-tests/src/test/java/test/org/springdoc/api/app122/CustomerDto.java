@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The type Customer dto.
  */
-public class CustomerDto extends BaseObject {
+class CustomerDto extends BaseObject {
 
 	/**
 	 * The Customer name.

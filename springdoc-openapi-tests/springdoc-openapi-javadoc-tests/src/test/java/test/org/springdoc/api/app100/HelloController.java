@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tags(value = @Tag(name = "hello-ap1"))
-public class HelloController {
+class HelloController {
 
 	/**
 	 * Gets all pets.

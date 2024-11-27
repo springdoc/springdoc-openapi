@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.fn.builders.operation;
@@ -40,6 +42,7 @@ import org.springdoc.core.fn.RouterOperation;
 
 /**
  * The type Operation builder.
+ *
  * @author bnasslahsen
  */
 public class Builder {
@@ -62,91 +65,76 @@ public class Builder {
 
 	/**
 	 * The HTTP method for this operation.
-	 *
 	 */
 	private String method = "";
 
 	/**
 	 * Tags can be used for logical grouping of operations by resources or any other qualifier.
-	 *
 	 */
 	private String[] tags = {};
 
 	/**
 	 * Provides a brief description of this operation. Should be 120 characters or less for proper visibility in Swagger-UI.
-	 *
 	 */
 	private String summary = "";
 
 	/**
 	 * A verbose description of the operation.
-	 *
 	 */
 	private String description = "";
 
 	/**
 	 * Request body associated to the operation.
-	 *
 	 */
 	private RequestBody requestBody = org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder().build();
 
 	/**
 	 * Additional external documentation for this operation.
-	 *
 	 */
 	private ExternalDocumentation externalDocs = org.springdoc.core.fn.builders.externaldocumentation.Builder.externalDocumentationBuilder().build();
 
 	/**
 	 * The operationId is used by third-party tools to uniquely identify this operation.
-	 *
 	 */
 	private String operationId = "";
 
 	/**
 	 * An optional array of parameters which will be added to any automatically detected parameters in the method itself.
-	 *
 	 */
 	private Parameter[] parameters = {};
 
 	/**
 	 * The list of possible responses as they are returned from executing this operation.
-	 *
 	 */
 	private ApiResponse[] responses = {};
 
 	/**
 	 * Allows an operation to be marked as deprecated.  Alternatively use the @Deprecated annotation
-	 *
 	 */
 	private boolean deprecated;
 
 	/**
 	 * A declaration of which security mechanisms can be used for this operation.
-	 *
 	 */
 	private SecurityRequirement[] security = {};
 
 	/**
 	 * An alternative server array to service this operation.
-	 *
 	 */
 	private Server[] servers = {};
 
 	/**
 	 * The list of optional extensions
-	 *
 	 */
 	private Extension[] extensions = {};
 
 	/**
 	 * Allows this operation to be marked as hidden
-	 *
 	 */
 	private boolean hidden;
 
 	/**
 	 * Ignores JsonView annotations while resolving operations and types.
-	 *
 	 */
 	private boolean ignoreJsonView;
 

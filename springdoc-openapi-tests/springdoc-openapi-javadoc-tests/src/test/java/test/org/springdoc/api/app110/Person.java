@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 /**
  * The type Person.
  */
-public class Person {
+class Person {
 	/**
 	 * The Id.
 	 */

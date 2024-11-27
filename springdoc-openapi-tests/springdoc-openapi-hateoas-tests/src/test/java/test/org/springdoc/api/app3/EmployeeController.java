@@ -31,12 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 class EmployeeController {
 
-	private final EmployeeRepository repository;
-
-	EmployeeController(EmployeeRepository repository) {
-		this.repository = repository;
-	}
-
 	/**
 	 * Look up a single {@link Employee} and transform it into a REST resource. Then return it through Spring Web's
 	 * {@link ResponseEntity} fluent API.

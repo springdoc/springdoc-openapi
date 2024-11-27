@@ -37,7 +37,7 @@ import org.springframework.test.context.TestPropertySource;
  * Tests Spring meta-annotations as method parameters
  */
 @TestPropertySource(properties = "springdoc.model-converters.deprecating-converter.enabled=false")
-public class SpringDocApp125Test extends AbstractSpringDocTest {
+class SpringDocApp125Test extends AbstractSpringDocTest {
 
 	static {
 		Optional<ModelConverter> deprecatingConverterOptional =

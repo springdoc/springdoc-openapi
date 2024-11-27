@@ -21,7 +21,7 @@ package test.org.springdoc.api.app37;
 /**
  * The type Pet.
  */
-public class Pet {
+class Pet {
 	/**
 	 * The Pet.
 	 */

@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @param <D>  the type parameter
  */
-public class Wrapper<D> {
+class Wrapper<D> {
 
 
 	/**

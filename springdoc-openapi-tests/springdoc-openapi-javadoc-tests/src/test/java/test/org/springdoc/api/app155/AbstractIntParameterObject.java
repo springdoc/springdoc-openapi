@@ -5,7 +5,7 @@ package test.org.springdoc.api.app155;
  *
  * @param <T>  the type parameter
  */
-public class AbstractIntParameterObject<T extends Integer> {
+class AbstractIntParameterObject<T extends Integer> {
 
 	/**
 	 * The Primitive base field.

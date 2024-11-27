@@ -39,7 +39,7 @@ public class SpringDocApp10ViaDtoTest extends AbstractSpringDocTest {
 
 	@Override
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.openapi", is("3.0.1")))

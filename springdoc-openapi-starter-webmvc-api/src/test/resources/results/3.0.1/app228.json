@@ -1,0 +1,105 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/swaggerTest": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "swaggerTest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Child1": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Parent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "childProperty1": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Child2": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Parent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "childProperty2": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "MyRequest": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "$ref": "#/components/schemas/Parent"
+          }
+        }
+      },
+      "Parent": {
+        "type": "object",
+        "properties": {
+          "parentProperty": {
+            "type": "string"
+          }
+        },
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Child1"
+          },
+          {
+            "$ref": "#/components/schemas/Child2"
+          }
+        ]
+      }
+    }
+  }
+}

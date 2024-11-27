@@ -32,7 +32,7 @@ import org.springframework.test.context.TestPropertySource;
  * Tests Spring meta-annotations as method parameters
  */
 @TestPropertySource(properties = "springdoc.writer-with-order-by-keys=true")
-public class SpringDocApp138Test extends AbstractSpringDocTest {
+class SpringDocApp138Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

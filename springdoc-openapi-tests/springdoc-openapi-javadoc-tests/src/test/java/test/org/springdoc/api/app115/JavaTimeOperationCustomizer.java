@@ -16,7 +16,7 @@ import org.springframework.web.method.HandlerMethod;
  * The type Java time operation customizer.
  */
 @Component
-public class JavaTimeOperationCustomizer implements OperationCustomizer {
+class JavaTimeOperationCustomizer implements OperationCustomizer {
 	/**
 	 * Customize operation.
 	 *

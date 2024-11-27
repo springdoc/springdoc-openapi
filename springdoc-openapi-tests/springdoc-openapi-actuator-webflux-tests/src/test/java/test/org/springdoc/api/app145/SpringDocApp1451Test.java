@@ -44,7 +44,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 public class SpringDocApp1451Test extends AbstractSpringDocActuatorTest {
 
 	@Test
-	public void testApp() {
+	void testApp() {
 		try {
 			webClient.get().uri("/application/openapi").retrieve()
 					.bodyToMono(String.class).block();
@@ -59,7 +59,7 @@ public class SpringDocApp1451Test extends AbstractSpringDocActuatorTest {
 	}
 
 	@Test
-	public void testApp2() throws Exception {
+	void testApp2() throws Exception {
 		try {
 			String result = webClient.get().uri("/application/openapi/users").retrieve()
 					.bodyToMono(String.class).block();

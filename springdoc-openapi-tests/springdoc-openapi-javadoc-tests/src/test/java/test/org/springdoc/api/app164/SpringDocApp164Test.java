@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * The type Spring doc app 164 test.
  */
-public class SpringDocApp164Test extends AbstractSpringDocTest {
+class SpringDocApp164Test extends AbstractSpringDocTest {
 
 	/**
 	 * The type Spring doc test app.

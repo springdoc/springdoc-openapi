@@ -34,14 +34,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp10Test extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldDisplaySwaggerUiPage() throws Exception {
+	void shouldDisplaySwaggerUiPage() throws Exception {
 		MvcResult mvcResult = mockMvc.perform(get("/swagger-ui/index.html")).andExpect(status().isOk()).andReturn();
 		String contentAsString = mvcResult.getResponse().getContentAsString();
 		assertTrue(contentAsString.contains("Swagger UI"));
 	}
 
 	@Test
-	public void originalIndex() throws Exception {
+	void originalIndex() throws Exception {
 		super.chekJS();
 	}
 

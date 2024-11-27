@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * The type Actual returned entity.
  */
-public class ActualReturnedEntity {
+class ActualReturnedEntity {
 
 	/**
 	 * The Result.

@@ -31,7 +31,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
  */
 @RestControllerAdvice
 @Hidden
-public class MyExceptionHandler extends ResponseEntityExceptionHandler {
+class MyExceptionHandler extends ResponseEntityExceptionHandler {
 	/**
 	 * Bad object.
 	 *

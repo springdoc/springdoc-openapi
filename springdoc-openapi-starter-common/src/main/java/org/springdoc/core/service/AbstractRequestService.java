@@ -3,19 +3,21 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
@@ -25,7 +27,6 @@
 package org.springdoc.core.service;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -89,13 +90,13 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.containsDeprecatedAnnotation;
 import static org.springdoc.core.service.GenericParameterService.isFile;
 import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
+import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 /**
@@ -159,11 +160,6 @@ public abstract class AbstractRequestService {
 	private final RequestBodyService requestBodyService;
 
 	/**
-	 * The Operation builder.
-	 */
-	private final OperationService operationService;
-
-	/**
 	 * The Local spring doc parameter name discoverer.
 	 */
 	private final SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer;
@@ -183,22 +179,21 @@ public abstract class AbstractRequestService {
 	 */
 	private boolean defaultSupportFormData;
 
+
 	/**
 	 * Instantiates a new Abstract request builder.
 	 *
 	 * @param parameterBuilder                      the parameter builder
 	 * @param requestBodyService                    the request body builder
-	 * @param operationService                      the operation builder
 	 * @param parameterCustomizers                  the parameter customizers
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
 	protected AbstractRequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			OperationService operationService, Optional<List<ParameterCustomizer>> parameterCustomizers,
+			Optional<List<ParameterCustomizer>> parameterCustomizers,
 			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
-		this.operationService = operationService;
 		parameterCustomizers.ifPresent(customizers -> customizers.removeIf(Objects::isNull));
 		this.parameterCustomizers = parameterCustomizers;
 		this.localSpringDocParameterNameDiscoverer = localSpringDocParameterNameDiscoverer;
@@ -278,7 +273,7 @@ public abstract class AbstractRequestService {
 	public Operation build(HandlerMethod handlerMethod, RequestMethod requestMethod,
 			Operation operation, MethodAttributes methodAttributes, OpenAPI openAPI) {
 		// Documentation
-		String operationId = operation.getOperationId()!=null ? operation.getOperationId() : handlerMethod.getMethod().getName();
+		String operationId = operation.getOperationId() != null ? operation.getOperationId() : handlerMethod.getMethod().getName();
 		operation.setOperationId(operationId);
 		// requests
 		String[] pNames = this.localSpringDocParameterNameDiscoverer.getParameterNames(handlerMethod.getMethod());
@@ -328,7 +323,9 @@ public abstract class AbstractRequestService {
 				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes, openAPI.getOpenapi());
 				// Merge with the operation parameters
 				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
-				List<Annotation> parameterAnnotations = Arrays.asList(methodParameter.getParameterAnnotations());
+
+				List<Annotation> parameterAnnotations = List.of(getParameterAnnotations(methodParameter));
+
 				if (isValidParameter(parameter)) {
 					// Add param javadoc
 					if (StringUtils.isBlank(parameter.getDescription()) && javadocProvider != null) {
@@ -453,6 +450,8 @@ public abstract class AbstractRequestService {
 			return true;
 		if (isRequiredAnnotation(parameter))
 			return false;
+		if (isRequestBodyWithMapType(parameter))
+			return false;
 		return isRequestTypeToIgnore(parameter.getParameterType());
 	}
 
@@ -469,6 +468,27 @@ public abstract class AbstractRequestService {
 		return (requestParam != null && requestParam.required())
 				|| (pathVariable != null && pathVariable.required())
 				|| (requestBody != null && requestBody.required());
+	}
+
+	/**
+	 * Is request body with map type
+	 *
+	 * @param parameter the parameter
+	 * @return the boolean
+	 */
+	private boolean isRequestBodyWithMapType(MethodParameter parameter) {
+		// Exclude parameters from the Actuator package
+		if (parameter.getContainingClass().getPackageName().startsWith("org.springframework.boot.actuate")) {
+			return false;
+		}
+		// Check for @RequestBody annotation
+		org.springframework.web.bind.annotation.RequestBody requestBody = parameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class);
+		if (requestBody == null) {
+			return false;
+		}
+		// Check if the parameter type is assignable to Map
+		Class<?> parameterType = parameter.getParameterType();
+		return Map.class.isAssignableFrom(parameterType);
 	}
 
 	/**
@@ -598,16 +618,20 @@ public abstract class AbstractRequestService {
 	 */
 	public void applyBeanValidatorAnnotations(final RequestBody requestBody, final List<Annotation> annotations, boolean isOptional) {
 		Map<String, Annotation> annos = new HashMap<>();
-		boolean requestBodyRequired = false;
+		boolean springRequestBodyRequired = false;
+		boolean swaggerRequestBodyRequired = false;
 		if (!CollectionUtils.isEmpty(annotations)) {
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
-			requestBodyRequired = annotations.stream()
+			springRequestBodyRequired = annotations.stream()
 					.filter(annotation -> org.springframework.web.bind.annotation.RequestBody.class.equals(annotation.annotationType()))
 					.anyMatch(annotation -> ((org.springframework.web.bind.annotation.RequestBody) annotation).required());
+			swaggerRequestBodyRequired = annotations.stream()
+					.filter(annotation -> io.swagger.v3.oas.annotations.parameters.RequestBody.class.equals(annotation.annotationType()))
+					.anyMatch(annotation -> ((io.swagger.v3.oas.annotations.parameters.RequestBody) annotation).required());
 		}
 		boolean validationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
 
-		if (validationExists || (!isOptional && requestBodyRequired))
+		if (validationExists || (!isOptional && (springRequestBodyRequired || swaggerRequestBodyRequired)))
 			requestBody.setRequired(true);
 		Content content = requestBody.getContent();
 		for (MediaType mediaType : content.values()) {
@@ -632,6 +656,15 @@ public abstract class AbstractRequestService {
 	 */
 	public boolean isDefaultFlatParamObject() {
 		return defaultFlatParamObject;
+	}
+
+	/**
+	 * Gets parameter builder.
+	 *
+	 * @return the parameter builder
+	 */
+	public GenericParameterService getParameterBuilder() {
+		return parameterBuilder;
 	}
 
 	/**
@@ -737,14 +770,25 @@ public abstract class AbstractRequestService {
 
 		return (isBodyAllowed && (parameterInfo.getParameterModel() == null || parameterInfo.getParameterModel().getIn() == null) && !delegatingMethodParameter.isParameterObject())
 				&&
-				((methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null
-						|| methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class) != null
-						|| AnnotatedElementUtils.findMergedAnnotation(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class) != null)
+				(checkRequestBodyAnnotation(methodParameter)
 						|| checkOperationRequestBody(methodParameter)
 						|| checkFile(methodParameter)
 						|| Arrays.asList(methodAttributes.getMethodConsumes()).contains(MULTIPART_FORM_DATA_VALUE));
 	}
 
+	/**
+ 	 * Checks whether Swagger's or Spring's RequestBody annotation is present on a parameter or method
+   	 *
+	 * @param methodParameter the method parameter
+	 * @return the boolean
+ 	 */
+	private boolean checkRequestBodyAnnotation(MethodParameter methodParameter) {
+		return methodParameter.hasParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class)
+				|| methodParameter.hasParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class)
+				|| AnnotatedElementUtils.isAnnotated(Objects.requireNonNull(methodParameter.getParameter()), io.swagger.v3.oas.annotations.parameters.RequestBody.class)
+				|| AnnotatedElementUtils.isAnnotated(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+	}
+	
 	/**
 	 * Check file boolean.
 	 *

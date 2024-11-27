@@ -11,7 +11,7 @@ import org.springframework.lang.Nullable;
 /**
  * The type Request params.
  */
-public class RequestParams {
+class RequestParams {
 
 	/**
 	 * The String param.

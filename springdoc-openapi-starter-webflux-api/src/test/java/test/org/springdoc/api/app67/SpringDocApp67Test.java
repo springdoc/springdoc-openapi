@@ -28,7 +28,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class SpringDocApp67Test extends AbstractSpringDocTest {
 
 	@Test
-	public void testApp() throws Exception {
+	 void testApp()  {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange().expectStatus().isOk().expectBody()
 				.jsonPath("$.openapi").isEqualTo("3.0.1")
 				.jsonPath("$.paths./api.get.tags[0]").isEqualTo("hello-controller")

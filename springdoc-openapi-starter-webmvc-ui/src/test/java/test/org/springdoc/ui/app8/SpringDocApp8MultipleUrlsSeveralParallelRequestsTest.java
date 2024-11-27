@@ -18,13 +18,14 @@
 
 package test.org.springdoc.ui.app8;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.test.context.TestPropertySource;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
+
+import org.junit.jupiter.api.Test;
+import test.org.springdoc.ui.AbstractSpringDocTest;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.TestPropertySource;
 
 import static java.util.concurrent.CompletableFuture.allOf;
 import static java.util.concurrent.CompletableFuture.runAsync;
@@ -58,7 +59,7 @@ public class SpringDocApp8MultipleUrlsSeveralParallelRequestsTest extends Abstra
 	 * simultaneously to make sure no exceptions are thrown when getting Swagger config.
 	 */
 	@Test
-	public void swagger_config_for_multiple_groups_and_many_parallel_requests() {
+	void swagger_config_for_multiple_groups_and_many_parallel_requests() {
 		assertDoesNotThrow(() -> {
 			allOf(Stream.generate(() -> runAsync(() -> {
 						try {

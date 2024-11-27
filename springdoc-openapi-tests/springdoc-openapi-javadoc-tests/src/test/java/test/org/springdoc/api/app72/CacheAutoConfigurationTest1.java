@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * The type Cache auto configuration test 1.
  */
-public class CacheAutoConfigurationTest1 {
+class CacheAutoConfigurationTest1 {
 
 	/**
 	 * The Context runner.
@@ -40,7 +40,7 @@ public class CacheAutoConfigurationTest1 {
 	 * Cache configuration loaded when not disabled explicitly.
 	 */
 	@Test
-	public void cache_configuration_loaded_when_not_disabled_explicitly() {
+	void cache_configuration_loaded_when_not_disabled_explicitly() {
 		contextRunner
 				.run(context -> assertThat(context)
 						.hasNotFailed()
@@ -54,7 +54,7 @@ public class CacheAutoConfigurationTest1 {
 	 * Cache configuration loaded when disabled explicitly.
 	 */
 	@Test
-	public void cache_configuration_loaded_when_disabled_explicitly() {
+	void cache_configuration_loaded_when_disabled_explicitly() {
 		contextRunner
 				.withPropertyValues("springdoc.cache.disabled=false")
 				.run(context -> assertThat(context)
@@ -69,7 +69,7 @@ public class CacheAutoConfigurationTest1 {
 	 * Cache configurations successfully disabled.
 	 */
 	@Test
-	public void cache_configurations_successfully_disabled() {
+	void cache_configurations_successfully_disabled() {
 		contextRunner
 				.withPropertyValues("springdoc.cache.disabled=true")
 				.run(context -> assertThat(context)
@@ -84,7 +84,7 @@ public class CacheAutoConfigurationTest1 {
 	 * Group configuration loaded.
 	 */
 	@Test
-	public void group_configuration_loaded() {
+	void group_configuration_loaded() {
 		contextRunner
 				.withPropertyValues("springdoc.group-configs[0].group=stores", "springdoc.group-configs[0].paths-to-match=/store/**")
 				.run(context -> assertThat(context)

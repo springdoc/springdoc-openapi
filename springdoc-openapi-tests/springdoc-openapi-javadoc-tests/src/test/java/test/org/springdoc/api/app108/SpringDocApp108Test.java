@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * The type Spring doc app 108 test.
  */
-public class SpringDocApp108Test extends AbstractSpringDocTest {
+class SpringDocApp108Test extends AbstractSpringDocTest {
 	/**
 	 * The type Spring doc test app.
 	 */

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 /**
  * The type Inherited request params.
  */
-public class InheritedRequestParams extends RequestParams {
+class InheritedRequestParams extends RequestParams {
 	/**
 	 * The Child param.
 	 */

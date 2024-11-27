@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocApp26Test extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithBaseLayout() throws Exception {
+	void shouldRedirectWithBaseLayout() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
 				.andExpect(status().isFound())
 				.andExpect(header().string("Location", "/swagger-ui/index.html"));

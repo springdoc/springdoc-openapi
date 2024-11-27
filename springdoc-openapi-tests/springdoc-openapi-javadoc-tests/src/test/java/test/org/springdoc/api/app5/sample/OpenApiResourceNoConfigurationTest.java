@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * The type Open api resource no configuration test.
  */
 @TestPropertySource(properties = "springdoc.api-docs.path=/api-docs")
-public class OpenApiResourceNoConfigurationTest extends AbstractSpringDocTest {
+class OpenApiResourceNoConfigurationTest extends AbstractSpringDocTest {
 
 	/**
 	 * givenNoConfiguration_whenGetApiJson_returnsDefaultEmptyDocs - should return
@@ -41,7 +41,7 @@ public class OpenApiResourceNoConfigurationTest extends AbstractSpringDocTest {
 	 * @throws Exception the exception
 	 */
 	@Test
-	public void testApp() throws Exception {
+	protected void testApp() throws Exception {
 		mockMvc
 				.perform(get("/api-docs"))
 				.andExpect(status().isOk())

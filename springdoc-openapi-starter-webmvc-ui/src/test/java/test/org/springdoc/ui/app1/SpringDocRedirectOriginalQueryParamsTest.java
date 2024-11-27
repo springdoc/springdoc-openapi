@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SpringDocRedirectOriginalQueryParamsTest extends AbstractSpringDocTest {
 
 	@Test
-	public void shouldRedirectWithOriginalQueryParams() throws Exception {
+	void shouldRedirectWithOriginalQueryParams() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html").queryParam("paramA", "123").queryParam("paramB", "e n c o d e d ! % &"))
 				.andExpect(status().isFound())
 				.andExpect(header().string("Location",
@@ -38,7 +38,7 @@ public class SpringDocRedirectOriginalQueryParamsTest extends AbstractSpringDocT
 	}
 
 	@Test
-	public void shouldRedirectWithOriginalQueryParamsHavingMultipleValues() throws Exception {
+	void shouldRedirectWithOriginalQueryParamsHavingMultipleValues() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html").queryParam("paramA", "1", "2", "3"))
 				.andExpect(status().isFound())
 				.andExpect(header().string("Location",

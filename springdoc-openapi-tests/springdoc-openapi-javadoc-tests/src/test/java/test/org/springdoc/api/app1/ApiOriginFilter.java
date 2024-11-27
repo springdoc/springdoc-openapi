@@ -30,7 +30,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * The type Api origin filter.
  */
-public class ApiOriginFilter implements jakarta.servlet.Filter {
+class ApiOriginFilter implements jakarta.servlet.Filter {
 	/**
 	 * Do filter.
 	 *

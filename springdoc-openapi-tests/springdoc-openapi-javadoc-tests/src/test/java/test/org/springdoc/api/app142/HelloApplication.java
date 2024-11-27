@@ -47,7 +47,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.function.HandlerFunction;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
@@ -58,19 +57,8 @@ import static org.springframework.web.servlet.function.ServerResponse.ok;
  * The type Hello application.
  */
 @Configuration
-public class HelloApplication {
+class HelloApplication {
 
-	/**
-	 * Filter server response.
-	 *
-	 * @param serverRequest the server request
-	 * @param handlerFunction the handler function
-	 * @return the server response
-	 * @throws Exception the exception
-	 */
-	private static ServerResponse filter(ServerRequest serverRequest, HandlerFunction<ServerResponse> handlerFunction) throws Exception {
-		return handlerFunction.handle(serverRequest);
-	}
 
 	/**
 	 * Routes router function.

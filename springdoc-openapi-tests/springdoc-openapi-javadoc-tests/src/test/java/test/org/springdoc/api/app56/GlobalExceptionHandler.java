@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * The type Global exception handler.
  */
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+class GlobalExceptionHandler {
 	/**
 	 * Handle unhandled error error dto.
 	 *

@@ -13,7 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 class SpringDocApp188Test extends AbstractSpringDocTest {
 
 	@Test
-	public void testApp1() {
+	void testApp1() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL +"/mygroup").exchange()
 				.expectStatus().isOk()
 				.expectBody().json(getContent("results/app188.json"), true);
@@ -21,9 +21,9 @@ class SpringDocApp188Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
 	@Import({
-			OrderDemo.Customizer3.class,
-			OrderDemo.Customizer2.class,
 			OrderDemo.Customizer1.class,
+			OrderDemo.Customizer2.class,
+			OrderDemo.Customizer3.class,
 	})
 	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.app188" })
 	static class SpringDocTestApp {}

@@ -3,7 +3,7 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
+ *  *  *  *  * Copyright 2019-2024 the original author or authors.
  *  *  *  *  *
  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ package test.org.springdoc.api.app186;
 
 
 import org.junit.jupiter.api.Test;
-import org.springdoc.core.customizers.ActuatorOpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.utils.Constants;
@@ -51,28 +50,28 @@ import static org.springdoc.core.utils.Constants.ALL_PATTERN;
 public class SpringDocApp186Test extends AbstractCommonTest {
 
 	@Test
-	public void testApp() throws Exception {
+	void testApp() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
 				.expectStatus().isOk()
 				.expectBody().json(getContent("results/app186.json"), true);
 	}
 
 	@Test
-	public void testGroupActuatorAsCodeCheckBackwardsCompatibility() {
+	void testGroupActuatorAsCodeCheckBackwardsCompatibility() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-code-check-backwards-compatibility").exchange()
 				.expectStatus().isOk()
 				.expectBody().json(getContent("results/app186.json"), true);
 	}
 
 	@Test
-	public void testGroupActuatorAsCode() {
+	void testGroupActuatorAsCode() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-code").exchange()
 				.expectStatus().isOk()
 				.expectBody().json(getContent("results/app186.json"), true);
 	}
 
 	@Test
-	public void testGroupActuatorAsProperties() {
+	void testGroupActuatorAsProperties() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/group-actuator-as-properties").exchange()
 				.expectStatus().isOk()
 				.expectBody().json(getContent("results/app186.json"), true);
@@ -83,12 +82,10 @@ public class SpringDocApp186Test extends AbstractCommonTest {
 	static class SpringDocTestApp {
 
 		@Bean
-		public GroupedOpenApi asCodeCheckBackwardsCompatibility(ActuatorOpenApiCustomizer actuatorOpenApiCustomiser,
-				OperationCustomizer actuatorCustomizer, WebEndpointProperties endpointProperties) {
+		public GroupedOpenApi asCodeCheckBackwardsCompatibility(OperationCustomizer actuatorCustomizer, WebEndpointProperties endpointProperties) {
 			return GroupedOpenApi.builder()
 					.group("group-actuator-as-code-check-backwards-compatibility")
 					.pathsToMatch(endpointProperties.getBasePath() + ALL_PATTERN)
-					.addOpenApiCustomizer(actuatorOpenApiCustomiser)
 					.addOperationCustomizer(actuatorCustomizer)
 					.build();
 		}

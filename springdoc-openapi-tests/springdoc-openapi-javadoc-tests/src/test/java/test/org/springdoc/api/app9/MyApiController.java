@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type My api controller.
  */
 @RestController
-public class MyApiController implements MyApi {
+class MyApiController implements MyApi {
 	/**
 	 * Get string.
 	 *

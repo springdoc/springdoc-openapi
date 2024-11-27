@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.providers;
@@ -70,6 +72,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
 
 /**
  * The type Spring repository rest resource provider.
+ *
  * @author bnasslahsen
  */
 public class SpringRepositoryRestResourceProvider implements RepositoryRestResourceProvider {
@@ -181,14 +184,14 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	/**
 	 * Instantiates a new Spring repository rest resource provider.
 	 *
-	 * @param mappings the mappings
-	 * @param repositories the repositories
-	 * @param associations the associations
-	 * @param applicationContext the application context
+	 * @param mappings                       the mappings
+	 * @param repositories                   the repositories
+	 * @param associations                   the associations
+	 * @param applicationContext             the application context
 	 * @param dataRestRouterOperationService the data rest router operation builder
-	 * @param persistentEntities the persistent entities
-	 * @param mapper the mapper
-	 * @param springDocDataRestUtils the spring doc data rest utils
+	 * @param persistentEntities             the persistent entities
+	 * @param mapper                         the mapper
+	 * @param springDocDataRestUtils         the spring doc data rest utils
 	 */
 	public SpringRepositoryRestResourceProvider(ResourceMappings mappings, Repositories repositories,
 			Associations associations, ApplicationContext applicationContext, DataRestRouterOperationService dataRestRouterOperationService,
@@ -225,8 +228,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 			if (!hiddenRepository) {
 				if (resourceMetadata!=null && resourceMetadata.isExported()) {
 					for (HandlerMapping handlerMapping : handlerMappingList) {
-						if (handlerMapping instanceof RepositoryRestHandlerMapping) {
-							RepositoryRestHandlerMapping repositoryRestHandlerMapping = (RepositoryRestHandlerMapping) handlerMapping;
+						if (handlerMapping instanceof RepositoryRestHandlerMapping repositoryRestHandlerMapping) {
 							Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
 							// Entity controllers lookup first
 							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
@@ -253,8 +255,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 								}
 							});
 						}
-						else if (handlerMapping instanceof BasePathAwareHandlerMapping) {
-							BasePathAwareHandlerMapping beanBasePathAwareHandlerMapping = (BasePathAwareHandlerMapping) handlerMapping;
+						else if (handlerMapping instanceof BasePathAwareHandlerMapping beanBasePathAwareHandlerMapping) {
 							Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = beanBasePathAwareHandlerMapping.getHandlerMethods();
 							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
 									.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SCHEMA_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
@@ -340,11 +341,11 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	/**
 	 * Find search resource mappings.
 	 *
-	 * @param openAPI the open api
+	 * @param openAPI             the open api
 	 * @param routerOperationList the router operation list
-	 * @param handlerMappingList the handler mapping list
-	 * @param dataRestRepository the repository data rest
-	 * @param resourceMetadata the resource metadata
+	 * @param handlerMappingList  the handler mapping list
+	 * @param dataRestRepository  the repository data rest
+	 * @param resourceMetadata    the resource metadata
 	 */
 	private void findSearchResourceMappings(OpenAPI openAPI, List<RouterOperation> routerOperationList, List<HandlerMapping> handlerMappingList,
 			DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata) {
@@ -369,11 +370,11 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	/**
 	 * Find search controllers list.
 	 *
-	 * @param routerOperationList the router operation list
-	 * @param handlerMethodMap the handler method map
-	 * @param resourceMetadata the resource metadata
-	 * @param dataRestRepository the repository data rest
-	 * @param openAPI the open api
+	 * @param routerOperationList    the router operation list
+	 * @param handlerMethodMap       the handler method map
+	 * @param resourceMetadata       the resource metadata
+	 * @param dataRestRepository     the repository data rest
+	 * @param openAPI                the open api
 	 * @param searchResourceMappings the search resource mappings
 	 * @return the list
 	 */
@@ -391,10 +392,10 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * Find controllers list.
 	 *
 	 * @param routerOperationList the router operation list
-	 * @param handlerMethodMap the handler method map
-	 * @param resourceMetadata the resource metadata
-	 * @param dataRestRepository the repository data rest
-	 * @param openAPI the open api
+	 * @param handlerMethodMap    the handler method map
+	 * @param resourceMetadata    the resource metadata
+	 * @param dataRestRepository  the repository data rest
+	 * @param openAPI             the open api
 	 * @return the list
 	 */
 	private List<RouterOperation> findControllers(List<RouterOperation> routerOperationList,

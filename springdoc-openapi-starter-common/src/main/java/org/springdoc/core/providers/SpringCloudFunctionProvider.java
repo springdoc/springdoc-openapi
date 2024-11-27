@@ -3,23 +3,25 @@
  *  *
  *  *  *
  *  *  *  *
- *  *  *  *  * Copyright 2019-2022 the original author or authors.
  *  *  *  *  *
- *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
- *  *  *  *  * you may not use this file except in compliance with the License.
- *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  *
+ *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  *  *  *  *  * you may not use this file except in compliance with the License.
+ *  *  *  *  *  * You may obtain a copy of the License at
+ *  *  *  *  *  *
+ *  *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
+ *  *  *  *  *  *
+ *  *  *  *  *  * Unless required by applicable law or agreed to in writing, software
+ *  *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *  *  *  *  * See the License for the specific language governing permissions and
+ *  *  *  *  *  * limitations under the License.
  *  *  *  *  *
- *  *  *  *  *      https://www.apache.org/licenses/LICENSE-2.0
- *  *  *  *  *
- *  *  *  *  * Unless required by applicable law or agreed to in writing, software
- *  *  *  *  * distributed under the License is distributed on an "AS IS" BASIS,
- *  *  *  *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *  *  *  * See the License for the specific language governing permissions and
- *  *  *  *  * limitations under the License.
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 
 package org.springdoc.core.providers;
@@ -66,6 +68,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * The type Spring cloud function provider.
+ *
  * @author bnasslahsen
  */
 public class SpringCloudFunctionProvider implements CloudFunctionProvider, ApplicationContextAware {
@@ -113,7 +116,8 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 
 	/**
 	 * Instantiates a new Spring cloud function provider.
-	 * @param functionCatalogOptional the function catalog
+	 *
+	 * @param functionCatalogOptional   the function catalog
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
 	public SpringCloudFunctionProvider(Optional<FunctionCatalog> functionCatalogOptional, SpringDocConfigProperties springDocConfigProperties) {
@@ -183,10 +187,10 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	/**
 	 * Gets router operation common.
 	 *
-	 * @param name the name
-	 * @param requestMethod the request method
+	 * @param name            the name
+	 * @param requestMethod   the request method
 	 * @param routerOperation the router operation
-	 * @param apiResponses the api responses
+	 * @param apiResponses    the api responses
 	 */
 	private void getRouterOperationsCommon(String name, RequestMethod requestMethod, RouterOperation routerOperation, ApiResponses apiResponses) {
 		routerOperation.getOperationModel().responses(apiResponses);
@@ -202,10 +206,10 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	/**
 	 * Build request.
 	 *
-	 * @param openAPI the open api
-	 * @param name the name
-	 * @param function the function
-	 * @param requestMethod the request method
+	 * @param openAPI         the open api
+	 * @param name            the name
+	 * @param function        the function
+	 * @param requestMethod   the request method
 	 * @param routerOperation the router operation
 	 */
 	private void buildRequest(OpenAPI openAPI, String name, FunctionInvocationWrapper function, RequestMethod requestMethod, RouterOperation routerOperation) {
@@ -229,9 +233,9 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	/**
 	 * Build router operation.
 	 *
-	 * @param name the name
-	 * @param type the type
-	 * @param requestMethod the request method
+	 * @param name                the name
+	 * @param type                the type
+	 * @param requestMethod       the request method
 	 * @param routerOperationList the router operation list
 	 * @return the router operation
 	 */
@@ -250,9 +254,9 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	/**
 	 * Build responses api responses.
 	 *
-	 * @param openAPI the open api
-	 * @param function the function
-	 * @param mediaTypes the media types
+	 * @param openAPI                the open api
+	 * @param function               the function
+	 * @param mediaTypes             the media types
 	 * @param genericResponseService the generic response service
 	 * @return the api responses
 	 */
@@ -270,7 +274,7 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	/**
 	 * Gets router function paths.
 	 *
-	 * @param beanName the bean name
+	 * @param beanName      the bean name
 	 * @param requestMethod the request method
 	 * @return the router function paths
 	 */
@@ -302,7 +306,7 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	/**
 	 * Fill router operation.
 	 *
-	 * @param routerOperation the router operation
+	 * @param routerOperation     the router operation
 	 * @param userRouterOperation the user router operation
 	 */
 	private void mergeRouterOperation(RouterOperation routerOperation, RouterOperation userRouterOperation) {

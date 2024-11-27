@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Validated
-public class PersonController2 {
+class PersonController2 {
 	/**
 	 * The Ran.
 	 */

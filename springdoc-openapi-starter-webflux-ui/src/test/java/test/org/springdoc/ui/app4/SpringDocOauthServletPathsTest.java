@@ -30,13 +30,13 @@ import org.springframework.test.context.TestPropertySource;
 public class SpringDocOauthServletPathsTest extends AbstractSpringDocTest {
 
 	@Test
-	public void should_display_oauth2_redirect_page() throws Exception {
+	void should_display_oauth2_redirect_page() throws Exception {
 		webTestClient.get().uri("/test/webjars/swagger-ui/oauth2-redirect.html").exchange()
 				.expectStatus().isOk();
 	}
 
 	@Test
-	public void oauth2_redirect_url_calculated_with_context_path_and_servlet_path() throws Exception {
+	void oauth2_redirect_url_calculated_with_context_path_and_servlet_path() throws Exception {
 		webTestClient.get().uri("/v3/api-docs/swagger-config").exchange()
 				.expectStatus().isOk();
 	}

@@ -24,7 +24,7 @@ import java.io.Serializable;
  * The type Item light dto.
  * @author bnasslahsen
  */
-public class ItemLightDTO implements Serializable {
+class ItemLightDTO implements Serializable {
 
 	/**
 	 * serialVersionUID of type long

@@ -1,0 +1,122 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "example-controller",
+      "description": "The Example Controller"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "example-controller"
+        ],
+        "operationId": "post",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Test"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Question": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "description": "The type Question.",
+        "discriminator": {
+          "propertyName": "type"
+        }
+      },
+      "Test": {
+        "type": "object",
+        "properties": {
+          "questions": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/TestQuestion"
+                },
+                {
+                  "$ref": "#/components/schemas/TextQuestion"
+                }
+              ]
+            }
+          }
+        },
+        "description": "The type Test."
+      },
+      "TestQuestion": {
+        "type": "object",
+        "description": "The type Test question.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Question"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "variants": {
+                "type": "array",
+                "description": "list of variants",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "answer": {
+                "type": "integer",
+                "description": "correct answer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "TextQuestion": {
+        "type": "object",
+        "description": "The type Text question.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Question"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -27,7 +27,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'loggers-name'",
-        "operationId": "loggers-name",
+        "operationId": "loggerLevels",
         "parameters": [
           {
             "name": "name",
@@ -58,6 +58,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -66,7 +69,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'loggers-name'",
-        "operationId": "loggers-name_2",
+        "operationId": "configureLogLevel",
         "parameters": [
           {
             "name": "name",
@@ -96,15 +99,11 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -164,7 +163,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'threaddump'",
-        "operationId": "threaddump",
+        "operationId": "threadDump",
         "responses": {
           "200": {
             "description": "OK",
@@ -200,7 +199,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'scheduledtasks'",
-        "operationId": "scheduledtasks",
+        "operationId": "scheduledTasks",
         "responses": {
           "200": {
             "description": "OK",
@@ -231,7 +230,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'sbom'",
-        "operationId": "sbom",
+        "operationId": "sboms",
         "responses": {
           "200": {
             "description": "OK",
@@ -262,7 +261,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'sbom-id'",
-        "operationId": "sbom-id",
+        "operationId": "sbom",
         "parameters": [
           {
             "name": "id",
@@ -283,6 +282,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -293,7 +295,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'metrics'",
-        "operationId": "metrics",
+        "operationId": "listNames",
         "responses": {
           "200": {
             "description": "OK",
@@ -324,12 +326,19 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'metrics-requiredMetricName'",
-        "operationId": "metrics-requiredMetricName",
+        "operationId": "metric",
         "parameters": [
           {
             "name": "requiredMetricName",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tag",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -355,70 +364,11 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
-      }
-    },
-    "/actuator/sbom": {
-      "get": {
-        "operationId": "sbom",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "application/vnd.spring-boot.actuator.v2+json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "application/vnd.spring-boot.actuator.v3+json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "summary": "Actuator web endpoint 'sbom'",
-        "tags": [
-          "Actuator"
-        ]
-      }
-    },
-    "/actuator/sbom/{id}": {
-      "get": {
-        "operationId": "sbom-id",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            },
-            "description": "OK"
-          }
-        },
-        "summary": "Actuator web endpoint 'sbom-id'",
-        "tags": [
-          "Actuator"
-        ]
       }
     },
     "/actuator/mappings": {
@@ -520,7 +470,16 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'heapdump'",
-        "operationId": "heapdump",
+        "operationId": "heapDump",
+        "parameters": [
+          {
+            "name": "live",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -566,44 +525,22 @@
         }
       }
     },
-    "/actuator/health/**": {
-      "get": {
-        "tags": [
-          "Actuator"
-        ],
-        "summary": "Actuator web endpoint 'health-path'",
-        "operationId": "health-path",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/vnd.spring-boot.actuator.v3+json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "application/vnd.spring-boot.actuator.v2+json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/actuator/env": {
       "get": {
         "tags": [
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'env'",
-        "operationId": "env",
+        "operationId": "environment",
+        "parameters": [
+          {
+            "name": "pattern",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -634,7 +571,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'env-toMatch'",
-        "operationId": "env-toMatch",
+        "operationId": "environmentEntry",
         "parameters": [
           {
             "name": "toMatch",
@@ -665,6 +602,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -675,7 +615,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'configprops'",
-        "operationId": "configprops",
+        "operationId": "configurationProperties",
         "responses": {
           "200": {
             "description": "OK",
@@ -706,7 +646,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'configprops-prefix'",
-        "operationId": "configprops-prefix",
+        "operationId": "configurationPropertiesWithPrefix",
         "parameters": [
           {
             "name": "prefix",
@@ -737,6 +677,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -807,17 +750,10 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches'",
-        "operationId": "caches_2",
+        "operationId": "clearCaches",
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -828,12 +764,19 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches-cache'",
-        "operationId": "caches-cache",
+        "operationId": "cache",
         "parameters": [
           {
             "name": "cache",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cacheManager",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -859,6 +802,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -867,7 +813,7 @@
           "Actuator"
         ],
         "summary": "Actuator web endpoint 'caches-cache'",
-        "operationId": "caches-cache_2",
+        "operationId": "clearCache",
         "parameters": [
           {
             "name": "cache",
@@ -876,28 +822,21 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "cacheManager",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/vnd.spring-boot.actuator.v3+json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "application/vnd.spring-boot.actuator.v2+json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
