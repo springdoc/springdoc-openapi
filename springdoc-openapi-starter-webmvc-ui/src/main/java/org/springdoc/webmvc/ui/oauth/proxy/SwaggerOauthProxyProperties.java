@@ -26,17 +26,20 @@ package org.springdoc.webmvc.ui.oauth.proxy;
 import org.springdoc.core.utils.Constants;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
+import java.io.Serializable;
 import java.net.URI;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 
+@Validated
 @ConfigurationProperties(prefix = Constants.SPRINGDOC_SWAGGER_UI_OAUTH_PROXY_PREFIX)
-@ConditionalOnProperty(name = SPRINGDOC_ENABLED, matchIfMissing = true)
-public class SwaggerOauthProxyProperties {
-
-  public static final String DEFAULT_PATH = "/forward-creds";
+public class SwaggerOauthProxyProperties implements Validator {
 
   private boolean enabled;
-  private URI path = URI.create(DEFAULT_PATH);
+  private URI path;
   private URI oauthTokenUri;
 
   public boolean isEnabled() {
@@ -61,5 +64,22 @@ public class SwaggerOauthProxyProperties {
 
   public void setOauthTokenUri(URI oauthTokenUri) {
     this.oauthTokenUri = oauthTokenUri;
+  }
+
+  @Override
+  public boolean supports(Class<?> clazz) {
+    return SwaggerOauthProxyProperties.class.isAssignableFrom(clazz);
+  }
+
+  @Override
+  public void validate(Object target, Errors errors) {
+    if (enabled) {
+      if (path == null) {
+        errors.rejectValue("path", "field.required");
+      }
+      if (oauthTokenUri == null) {
+        errors.rejectValue("oauthTokenUri", "field.required");
+      }
+    }
   }
 }
