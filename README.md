@@ -29,6 +29,10 @@ This project is sponsored by
 <a href="https://www.contrastsecurity.com/" target="_blank">
    <img src="https://springdoc.org/img/contrastsecurity.svg" height="10%" width="30%" />
 </a>
+
+ <a href="https://www.lvm.de/" target="_blank">
+   <img src="https://springdoc.org/img/LVM_Versicherung_2010_logo.svg.png" height="10%" width="30%" />
+  </a>
 </p>
 
 # Table of Contents
