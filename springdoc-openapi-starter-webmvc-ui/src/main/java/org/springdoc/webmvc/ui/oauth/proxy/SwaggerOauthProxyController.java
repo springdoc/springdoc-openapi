@@ -26,6 +26,7 @@ package org.springdoc.webmvc.ui.oauth.proxy;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.server.ResponseStatusException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -41,7 +43,7 @@ import java.util.Base64;
 public class SwaggerOauthProxyController {
 
   private final String GRANT_TYPE_KEY = "grant_type";
-  private final String CLIENT_CREDENTIALS_KEY = "client_credentials";
+  private final String CLIENT_CREDENTIALS_VALUE = "client_credentials";
   private final String CLIENT_ID_KEY = "client_id";
   private final String CLIENT_SECRET_KEY = "client_secret";
   private final String AUTHENTICATION_SCHEME_BASIC = "Basic";
@@ -65,7 +67,7 @@ public class SwaggerOauthProxyController {
       String[] clientDetails = credentials.split(":", 2);
 
       MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-      body.add(GRANT_TYPE_KEY, CLIENT_CREDENTIALS_KEY);
+      body.add(GRANT_TYPE_KEY, CLIENT_CREDENTIALS_VALUE);
       body.add(CLIENT_ID_KEY, clientDetails[0]);
       body.add(CLIENT_SECRET_KEY, clientDetails[1]);
 
@@ -78,7 +80,7 @@ public class SwaggerOauthProxyController {
       return response.getBody();
 
     } else {
-      throw new RuntimeException("Authorization header missing or not using Basic Auth");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authorization header missing or not using Basic Auth");
     }
   }
 }
