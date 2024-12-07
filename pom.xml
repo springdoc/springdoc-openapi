@@ -65,7 +65,7 @@
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
-		<spring-cloud-function.version>4.2.0-M1</spring-cloud-function.version>
+		<spring-cloud-function.version>4.2.0</spring-cloud-function.version>
 		<spring-security-oauth2-authorization-server.version>1.4.0</spring-security-oauth2-authorization-server.version>
 	</properties>
 
