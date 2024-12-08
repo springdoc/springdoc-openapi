@@ -94,6 +94,11 @@ public class DelegatingMethodParameter extends MethodParameter {
 	private final Annotation[] methodAnnotations;
 
 	/**
+	 * The annotations to mask from the list of annotations on this method parameter.
+	 */
+	private final Annotation[] maskedAnnotations;
+
+	/**
 	 * The Is not required.
 	 */
 	private boolean isNotRequired;
@@ -105,17 +110,19 @@ public class DelegatingMethodParameter extends MethodParameter {
 	 * @param parameterName                  the parameter name
 	 * @param additionalParameterAnnotations the additional parameter annotations
 	 * @param methodAnnotations              the method annotations
+	 * @param maskedAnnotations              any annotations that should not be included in the final list of annotations
 	 * @param isParameterObject              the is parameter object
 	 * @param isNotRequired                  the is required
 	 */
-	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, Annotation[] methodAnnotations, boolean isParameterObject, boolean isNotRequired) {
+	DelegatingMethodParameter(MethodParameter delegate, String parameterName, Annotation[] additionalParameterAnnotations, Annotation[] methodAnnotations, Annotation[] maskedAnnotations, boolean isParameterObject, boolean isNotRequired) {
 		super(delegate);
 		this.delegate = delegate;
 		this.additionalParameterAnnotations = additionalParameterAnnotations;
 		this.parameterName = parameterName;
 		this.isParameterObject = isParameterObject;
 		this.isNotRequired = isNotRequired;
-		this.methodAnnotations =methodAnnotations;
+		this.methodAnnotations = methodAnnotations;
+		this.maskedAnnotations = maskedAnnotations;
 	}
 
 	/**
@@ -146,7 +153,7 @@ public class DelegatingMethodParameter extends MethodParameter {
 			}
 			else {
 				String name = pNames != null ? pNames[i] : p.getParameterName();
-				explodedParameters.add(new DelegatingMethodParameter(p, name, null, null, false, false));
+				explodedParameters.add(new DelegatingMethodParameter(p, name, null, null, null, false, false));
 			}
 		}
 		return explodedParameters.toArray(new MethodParameter[0]);
@@ -179,7 +186,15 @@ public class DelegatingMethodParameter extends MethodParameter {
 	@NonNull
 	public Annotation[] getParameterAnnotations() {
 		Annotation[] methodAnnotations = ArrayUtils.addAll(delegate.getParameterAnnotations(), this.methodAnnotations);
-		return ArrayUtils.addAll(methodAnnotations, additionalParameterAnnotations);
+		methodAnnotations = ArrayUtils.addAll(methodAnnotations, additionalParameterAnnotations);
+		if (maskedAnnotations == null) {
+			return methodAnnotations;
+		} else {
+			List<Annotation> maskedAnnotationList = List.of(maskedAnnotations);
+			return Arrays.stream(methodAnnotations)
+					.filter(annotation -> !maskedAnnotationList.contains(annotation))
+					.toArray(Annotation[]::new);
+		}
 	}
 
 	@Override

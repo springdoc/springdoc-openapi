@@ -1,0 +1,117 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/renamed-parent": {
+      "get": {
+        "tags": [
+          "parameter-controller"
+        ],
+        "operationId": "nestedParameterObjectWithRenamedParentField",
+        "parameters": [
+          {
+            "name": "schemaRenamed.parameterField",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parameterRenamed.parameterField",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "originalNameNestedParameterObject.parameterField",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/optional-parent": {
+      "get": {
+        "tags": [
+          "parameter-controller"
+        ],
+        "operationId": "nestedParameterObjectWithOptionalParentField",
+        "parameters": [
+          {
+            "name": "schemaNotRequiredNestedParameterObject.requiredParameterField",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "parameterNotRequiredNestedParameterObject.requiredParameterField",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requiredNestedParameterObject.requiredParameterField",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/hidden-parent": {
+      "get": {
+        "tags": [
+          "parameter-controller"
+        ],
+        "operationId": "nestedParameterObjectWithHiddenParentField",
+        "parameters": [
+          {
+            "name": "visibleNestedParameterObject.parameterField",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}
