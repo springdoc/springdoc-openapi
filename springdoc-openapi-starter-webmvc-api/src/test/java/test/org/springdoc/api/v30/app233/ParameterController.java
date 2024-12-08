@@ -23,7 +23,7 @@
  *  *
  *  
  */
-package test.org.springdoc.api.v30.app234;
+package test.org.springdoc.api.v30.app233;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;

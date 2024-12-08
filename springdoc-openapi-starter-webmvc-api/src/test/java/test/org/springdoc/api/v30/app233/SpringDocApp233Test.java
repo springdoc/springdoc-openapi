@@ -24,7 +24,7 @@
  *  
  */
 
-package test.org.springdoc.api.v30.app234;
+package test.org.springdoc.api.v30.app233;
 
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
@@ -33,7 +33,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author bnasslahsen
  */
-public class SpringDocApp234Test extends AbstractSpringDocV30Test {
+public class SpringDocApp233Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {
