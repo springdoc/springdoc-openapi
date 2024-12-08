@@ -72,7 +72,7 @@ public class OperationIdCustomizer implements GlobalOpenApiCustomizer {
 			String originalOperationId = operation.getOperationId();
 
 			// Check if operationId already exists
-			if (operationIdCount.containsKey(originalOperationId)) {
+			if ( originalOperationId!=null && operationIdCount.containsKey(originalOperationId)) {
 				// Get the count for the current operationId and increment
 				int count = operationIdCount.get(originalOperationId);
 				count++;
