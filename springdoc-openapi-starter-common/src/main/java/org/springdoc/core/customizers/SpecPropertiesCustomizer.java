@@ -41,6 +41,11 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.security.OAuthFlows;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.security.SecurityScheme.In;
+import io.swagger.v3.oas.models.security.SecurityScheme.Type;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 
@@ -134,6 +139,31 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 			Paths pathsProperties = openApiProperties.getPaths();
 			if (pathsProperties != null)
 				customizePaths(openApi, pathsProperties);
+
+			List<SecurityRequirement> securityRequirementsProperties = openApiProperties.getSecurity();
+			if (!CollectionUtils.isEmpty(securityRequirementsProperties)) {
+				customizeSecurity(openApi, securityRequirementsProperties);
+			}
+		}
+	}
+
+	/**
+	 * Customize security.
+	 *
+	 * @param openApi              the open api
+	 * @param securityRequirementsProperties the security requirements
+	 */
+	private void customizeSecurity(OpenAPI openApi, List<SecurityRequirement> securityRequirementsProperties) {
+		List<SecurityRequirement> securityRequirements = openApi.getSecurity();
+		if (CollectionUtils.isEmpty(securityRequirements)) {
+			openApi.setSecurity(securityRequirementsProperties);
+		}
+		else {
+			securityRequirementsProperties.forEach(securityRequirement -> {
+				if (!securityRequirements.contains(securityRequirement)) {
+					securityRequirements.add(securityRequirement);
+				}
+			});
 		}
 	}
 
@@ -204,6 +234,28 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 					});
 				}
 			});
+
+
+			Map<String, SecurityScheme> securitySchemeMap = components.getSecuritySchemes();
+			if (CollectionUtils.isEmpty(securitySchemeMap)) {
+				components.setSecuritySchemes(componentsProperties.getSecuritySchemes());
+			}
+			else {
+				securitySchemeMap.forEach((key, securityScheme) -> {
+					SecurityScheme securitySchemeToCustomize = components.getSecuritySchemes().get(key);
+					if (securitySchemeToCustomize != null) {
+						resolveString(securitySchemeToCustomize::description, securityScheme::getDescription);
+						resolveString(securitySchemeToCustomize::name, securityScheme::getName);
+						resolveType(securitySchemeToCustomize::type, securityScheme::getType);
+						resolveIn(securitySchemeToCustomize::in, securityScheme::getIn);
+						resolveString(securitySchemeToCustomize::scheme, securityScheme::getScheme);
+						resolveString(securitySchemeToCustomize::bearerFormat, securityScheme::getBearerFormat);
+						resolveString(securitySchemeToCustomize::openIdConnectUrl, securityScheme::getOpenIdConnectUrl);
+						resolveOAuthFlows(securitySchemeToCustomize::flows, securityScheme::getFlows);
+						resolveString(securitySchemeToCustomize::$ref, securityScheme::get$ref);
+					}
+				});
+			}
 		}
 	}
 
@@ -259,6 +311,46 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 		}
 	}
 
+	/**
+	 * Resolve type.
+	 *
+	 * @param setter the setter
+	 * @param getter the getter
+	 */
+	private void resolveType(Consumer<Type> setter, Supplier<Object> getter) {
+		Type value = (Type) getter.get();
+		if (value!=null) {
+			setter.accept(value);
+		}
+	}
+
+	/**
+	 * Resolve in.
+	 *
+	 * @param setter the setter
+	 * @param getter the getter
+	 */
+	private void resolveIn(Consumer<In> setter, Supplier<Object> getter) {
+		In value = (In) getter.get();
+		if (value!=null) {
+			setter.accept(value);
+		}
+	}
+
+	/**
+	 * Resolve o auth flows.
+	 *
+	 * @param setter the setter
+	 * @param getter the getter
+	 */
+	private void resolveOAuthFlows(Consumer<OAuthFlows> setter, Supplier<Object> getter) {
+		OAuthFlows value = (OAuthFlows) getter.get();
+		if (value!=null) {
+			setter.accept(value);
+		}
+	}
+
+	
 	/**
 	 * Resolve set.
 	 *

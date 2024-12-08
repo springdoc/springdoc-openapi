@@ -4,7 +4,14 @@ springdoc:
       title: Api info title
       description: Api info description
       version: Api info version
+    security:
+      - basicScheme: [ ]
     components:
+      securitySchemes:
+        basicScheme:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
       schemas:
         PersonDTO:
           description: Description for PersonDTO component

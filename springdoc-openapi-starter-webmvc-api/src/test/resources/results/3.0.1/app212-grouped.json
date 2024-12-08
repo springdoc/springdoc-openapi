@@ -11,6 +11,11 @@
       "description": "Generated server url"
     }
   ],
+  "security": [
+    {
+      "basicScheme": []
+    }
+  ],
   "paths": {
     "/persons3": {
       "get": {
@@ -109,6 +114,13 @@
           }
         },
         "description": "Description for PersonDTO component in ApiGroupName"
+      }
+    },
+    "securitySchemes": {
+      "basicScheme": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
