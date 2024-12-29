@@ -38,6 +38,7 @@ import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServe
 import org.springframework.boot.actuate.endpoint.web.reactive.ControllerEndpointHandlerMapping;
 import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
 
@@ -47,18 +48,9 @@ import org.springframework.web.reactive.result.method.RequestMappingInfo;
  *
  * @author bnasslahsen
  */
-public class ActuatorWebFluxProvider extends ActuatorProvider {
+public class ActuatorWebFluxProvider extends ActuatorProvider implements ApplicationContextAware {
 
-	/**
-	 * The Web flux endpoint handler mapping.
-	 */
-	private WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping;
-
-	/**
-	 * The Controller endpoint handler mapping.
-	 */
-	private ControllerEndpointHandlerMapping controllerEndpointHandlerMapping;
-
+	
 	/**
 	 * Instantiates a new Actuator web flux provider.
 	 *
@@ -66,27 +58,23 @@ public class ActuatorWebFluxProvider extends ActuatorProvider {
 	 * @param springDocConfigProperties        the spring doc config properties
 	 * @param managementServerProperties       the management server properties
 	 * @param webEndpointProperties            the web endpoint properties
-	 * @param webFluxEndpointHandlerMapping    the web flux endpoint handler mapping
-	 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
 	 */
 	public ActuatorWebFluxProvider(ServerProperties serverProperties,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ManagementServerProperties> managementServerProperties,
-			Optional<WebEndpointProperties> webEndpointProperties,
-			Optional<WebFluxEndpointHandlerMapping> webFluxEndpointHandlerMapping,
-			Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping) {
+			Optional<WebEndpointProperties> webEndpointProperties) {
 		super(managementServerProperties, webEndpointProperties, serverProperties, springDocConfigProperties);
-		webFluxEndpointHandlerMapping.ifPresent(webFluxEndpointHandlerMapping1 -> this.webFluxEndpointHandlerMapping = webFluxEndpointHandlerMapping1);
-		controllerEndpointHandlerMapping.ifPresent(controllerEndpointHandlerMapping1 -> this.controllerEndpointHandlerMapping = controllerEndpointHandlerMapping1);
 	}
-
+	
 	public Map<RequestMappingInfo, HandlerMethod> getMethods() {
 		Map<RequestMappingInfo, HandlerMethod> mappingInfoHandlerMethodMap = new HashMap<>();
 
+		WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping = applicationContext.getBeansOfType(WebFluxEndpointHandlerMapping.class).values().stream().findFirst().orElse(null);
 		if (webFluxEndpointHandlerMapping == null)
 			webFluxEndpointHandlerMapping = managementApplicationContext.getBean(WebFluxEndpointHandlerMapping.class);
 		mappingInfoHandlerMethodMap.putAll(webFluxEndpointHandlerMapping.getHandlerMethods());
 
+		ControllerEndpointHandlerMapping controllerEndpointHandlerMapping = applicationContext.getBeansOfType(ControllerEndpointHandlerMapping.class).values().stream().findFirst().orElse(null);
 		if (controllerEndpointHandlerMapping == null)
 			controllerEndpointHandlerMapping = managementApplicationContext.getBean(ControllerEndpointHandlerMapping.class);
 		mappingInfoHandlerMethodMap.putAll(controllerEndpointHandlerMapping.getHandlerMethods());

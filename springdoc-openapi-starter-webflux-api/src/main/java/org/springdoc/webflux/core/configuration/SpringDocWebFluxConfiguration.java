@@ -55,7 +55,6 @@ import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointPr
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
-import org.springframework.boot.actuate.endpoint.web.reactive.ControllerEndpointHandlerMapping;
 import org.springframework.boot.actuate.endpoint.web.reactive.WebFluxEndpointHandlerMapping;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -167,8 +166,6 @@ public class SpringDocWebFluxConfiguration {
 		 * @param springDocConfigProperties        the spring doc config properties
 		 * @param managementServerProperties       the management server properties
 		 * @param webEndpointProperties            the web endpoint properties
-		 * @param webFluxEndpointHandlerMapping    the web flux endpoint handler mapping
-		 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
 		 * @return the actuator provider
 		 */
 		@Bean
@@ -178,15 +175,11 @@ public class SpringDocWebFluxConfiguration {
 		ActuatorProvider actuatorProvider(ServerProperties serverProperties,
 				SpringDocConfigProperties springDocConfigProperties,
 				Optional<ManagementServerProperties> managementServerProperties,
-				Optional<WebEndpointProperties> webEndpointProperties,
-				Optional<WebFluxEndpointHandlerMapping> webFluxEndpointHandlerMapping,
-				Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping) {
+				Optional<WebEndpointProperties> webEndpointProperties) {
 			return new ActuatorWebFluxProvider(serverProperties,
 					springDocConfigProperties,
 					managementServerProperties,
-					webEndpointProperties,
-					webFluxEndpointHandlerMapping,
-					controllerEndpointHandlerMapping);
+					webEndpointProperties);
 		}
 
 		/**
