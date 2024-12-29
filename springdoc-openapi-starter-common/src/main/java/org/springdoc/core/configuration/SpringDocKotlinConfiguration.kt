@@ -27,7 +27,9 @@
 package org.springdoc.core.configuration
 
 import io.swagger.v3.oas.annotations.Parameter
+import org.springdoc.core.customizers.KotlinDeprecatedPropertyCustomizer
 import org.springdoc.core.customizers.ParameterCustomizer
+import org.springdoc.core.providers.ObjectMapperProvider
 import org.springdoc.core.utils.Constants
 import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
@@ -125,4 +127,10 @@ class SpringDocKotlinConfiguration() {
 		return kotlinFunction.parameters[parameterIndex + 1]
 	}
 
+	@Bean
+	@Lazy(false)
+	@ConditionalOnMissingBean
+	fun kotlinDeprecatedPropertyCustomizer(objectMapperProvider: ObjectMapperProvider): KotlinDeprecatedPropertyCustomizer {
+		return KotlinDeprecatedPropertyCustomizer(objectMapperProvider)
+	}
 }
