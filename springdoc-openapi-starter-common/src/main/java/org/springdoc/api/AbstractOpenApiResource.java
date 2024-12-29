@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.api;
@@ -635,19 +635,18 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// allow for customisation
 			operation = customizeOperation(operation, handlerMethod);
 
-			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
-
-			if (!StringUtils.contains(operationPath, "**")) {
-				if(StringUtils.contains(operationPath,"*")){
-					Matcher matcher = pathPattern.matcher(operationPath);
-					while (matcher.find()) {
-						String pathParam = matcher.group(1);
-						String newPathParam = pathParam.replace("*", "");
-						operationPath = operationPath.replace("{" + pathParam + "}", "{" + newPathParam + "}");
-					}
+			if (StringUtils.contains(operationPath, "*")) {
+				Matcher matcher = pathPattern.matcher(operationPath);
+				while (matcher.find()) {
+					String pathParam = matcher.group(1);
+					String newPathParam = pathParam.replace("*", "");
+					operationPath = operationPath.replace("{" + pathParam + "}", "{" + newPathParam + "}");
 				}
-				paths.addPathItem(operationPath, pathItemObject);
 			}
+			
+			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
+			if (!StringUtils.contains(operationPath, "**"))
+				paths.addPathItem(operationPath, pathItemObject);
 		}
 	}
 
