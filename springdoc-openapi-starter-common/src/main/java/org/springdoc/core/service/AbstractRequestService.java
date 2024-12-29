@@ -434,8 +434,12 @@ public abstract class AbstractRequestService {
 			int index = operationParameters.indexOf(parameter);
 			for (ParameterCustomizer parameterCustomizer : parameterCustomizerList)
 				parameter = parameterCustomizer.customize(parameter, parameterInfo.getMethodParameter());
-			if (index != -1)
-				operationParameters.set(index, parameter);
+			if (index != -1) {
+				if (parameter == null)
+					operationParameters.remove(index);
+				else
+					operationParameters.set(index, parameter);
+			}
 		}
 	}
 
@@ -780,18 +784,18 @@ public abstract class AbstractRequestService {
 	}
 
 	/**
- 	 * Checks whether Swagger's or Spring's RequestBody annotation is present on a parameter or method
-   	 *
+	 * Checks whether Swagger's or Spring's RequestBody annotation is present on a parameter or method
+	 *
 	 * @param methodParameter the method parameter
 	 * @return the boolean
- 	 */
+	 */
 	private boolean checkRequestBodyAnnotation(MethodParameter methodParameter) {
 		return methodParameter.hasParameterAnnotation(org.springframework.web.bind.annotation.RequestBody.class)
 				|| methodParameter.hasParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class)
 				|| AnnotatedElementUtils.isAnnotated(Objects.requireNonNull(methodParameter.getParameter()), io.swagger.v3.oas.annotations.parameters.RequestBody.class)
 				|| AnnotatedElementUtils.isAnnotated(Objects.requireNonNull(methodParameter.getMethod()), io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 	}
-	
+
 	/**
 	 * Check file boolean.
 	 *
