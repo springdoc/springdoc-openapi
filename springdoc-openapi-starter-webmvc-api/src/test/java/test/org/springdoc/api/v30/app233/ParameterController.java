@@ -27,6 +27,7 @@ package test.org.springdoc.api.v30.app233;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springdoc.core.annotations.ParameterObject;
 
@@ -72,15 +73,24 @@ public class ParameterController {
 	}
 
 	public record ParameterObjectWithOptionalField(
-			@Schema(requiredMode = Schema.RequiredMode.NOT_REQUIRED) NestedRequiredParameterObject schemaNotRequiredNestedParameterObject,
-			@Parameter NestedRequiredParameterObject parameterNotRequiredNestedParameterObject,
-			@Parameter(required = true) NestedRequiredParameterObject requiredNestedParameterObject
+			NestedRequiredParameterObject schemaNotRequiredNestedParameterObject,
+			NestedNonNullParameterObject nestedNonNullParameterObject,
+			NestedNotBlankParameterObject nestedNotBlankParameterObject
 	) {
 
 	}
 
 	public record NestedRequiredParameterObject(
-			@Schema(requiredMode = Schema.RequiredMode.REQUIRED) @NotNull String requiredParameterField) {
+			@Schema(requiredMode = Schema.RequiredMode.REQUIRED) String requiredParameterField) {
 	}
+
+	public record NestedNonNullParameterObject(
+			@NotNull String requiredParameterField) {
+	}
+
+	public record NestedNotBlankParameterObject(
+			@NotBlank String requiredParameterField) {
+	}
+
 
 }
