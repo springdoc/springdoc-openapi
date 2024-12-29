@@ -56,7 +56,6 @@ import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointPr
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
-import org.springframework.boot.actuate.endpoint.web.servlet.ControllerEndpointHandlerMapping;
 import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -198,8 +197,6 @@ public class SpringDocWebMvcConfiguration {
 		 * @param springDocConfigProperties        the spring doc config properties
 		 * @param managementServerProperties       the management server properties
 		 * @param webEndpointProperties            the web endpoint properties
-		 * @param webMvcEndpointHandlerMapping     the web mvc endpoint handler mapping
-		 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
 		 * @return the actuator provider
 		 */
 		@Bean
@@ -209,15 +206,11 @@ public class SpringDocWebMvcConfiguration {
 		ActuatorProvider actuatorProvider(ServerProperties serverProperties,
 				SpringDocConfigProperties springDocConfigProperties,
 				Optional<ManagementServerProperties> managementServerProperties,
-				Optional<WebEndpointProperties> webEndpointProperties,
-				Optional<WebMvcEndpointHandlerMapping> webMvcEndpointHandlerMapping,
-				Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping) {
+				Optional<WebEndpointProperties> webEndpointProperties) {
 			return new ActuatorWebMvcProvider(serverProperties,
 					springDocConfigProperties,
 					managementServerProperties,
-					webEndpointProperties,
-					webMvcEndpointHandlerMapping,
-					controllerEndpointHandlerMapping);
+					webEndpointProperties);
 		}
 
 		/**

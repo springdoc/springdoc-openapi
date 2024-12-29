@@ -35,6 +35,7 @@ import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.utils.Constants;
 
+import org.springframework.beans.BeansException;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -42,6 +43,7 @@ import org.springframework.boot.web.context.WebServerApplicationContext;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.method.HandlerMethod;
@@ -54,7 +56,7 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
  *
  * @author bnasslahsen
  */
-public abstract class ActuatorProvider implements ApplicationListener<WebServerInitializedEvent> {
+public abstract class ActuatorProvider implements ApplicationListener<WebServerInitializedEvent>, ApplicationContextAware {
 
 	/**
 	 * The Management server properties.
@@ -91,6 +93,11 @@ public abstract class ActuatorProvider implements ApplicationListener<WebServerI
 	 */
 	protected ApplicationContext managementApplicationContext;
 
+	/**
+	 * The Application context.
+	 */
+	protected ApplicationContext applicationContext;
+	
 	/**
 	 * Instantiates a new Actuator provider.
 	 *
@@ -213,4 +220,8 @@ public abstract class ActuatorProvider implements ApplicationListener<WebServerI
 	 */
 	public abstract Map getMethods();
 
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 }

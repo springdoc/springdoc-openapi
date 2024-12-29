@@ -52,44 +52,30 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 public class ActuatorWebMvcProvider extends ActuatorProvider {
 
 	/**
-	 * The Web mvc endpoint handler mapping.
-	 */
-	private WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping;
-
-	/**
-	 * The Controller endpoint handler mapping.
-	 */
-	private ControllerEndpointHandlerMapping controllerEndpointHandlerMapping;
-
-	/**
 	 * Instantiates a new Actuator web mvc provider.
 	 *
-	 * @param serverProperties                 the server properties
-	 * @param springDocConfigProperties        the spring doc config properties
-	 * @param managementServerProperties       the management server properties
-	 * @param webEndpointProperties            the web endpoint properties
-	 * @param webMvcEndpointHandlerMapping     the web mvc endpoint handler mapping
-	 * @param controllerEndpointHandlerMapping the controller endpoint handler mapping
+	 * @param serverProperties           the server properties
+	 * @param springDocConfigProperties  the spring doc config properties
+	 * @param managementServerProperties the management server properties
+	 * @param webEndpointProperties      the web endpoint properties
 	 */
 	public ActuatorWebMvcProvider(ServerProperties serverProperties,
 			SpringDocConfigProperties springDocConfigProperties,
 			Optional<ManagementServerProperties> managementServerProperties,
-			Optional<WebEndpointProperties> webEndpointProperties,
-			Optional<WebMvcEndpointHandlerMapping> webMvcEndpointHandlerMapping,
-			Optional<ControllerEndpointHandlerMapping> controllerEndpointHandlerMapping) {
+			Optional<WebEndpointProperties> webEndpointProperties) {
 		super(managementServerProperties, webEndpointProperties, serverProperties, springDocConfigProperties);
-		webMvcEndpointHandlerMapping.ifPresent(webMvcEndpointHandlerMapping1 -> this.webMvcEndpointHandlerMapping = webMvcEndpointHandlerMapping1);
-		controllerEndpointHandlerMapping.ifPresent(controllerEndpointHandlerMapping1 -> this.controllerEndpointHandlerMapping = controllerEndpointHandlerMapping1);
 	}
 
 	@Override
 	public Map<RequestMappingInfo, HandlerMethod> getMethods() {
 		Map<RequestMappingInfo, HandlerMethod> mappingInfoHandlerMethodMap = new HashMap<>();
 
+		WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping = applicationContext.getBeansOfType(WebMvcEndpointHandlerMapping.class).values().stream().findFirst().orElse(null);
 		if (webMvcEndpointHandlerMapping == null)
 			webMvcEndpointHandlerMapping = managementApplicationContext.getBean(WebMvcEndpointHandlerMapping.class);
 		mappingInfoHandlerMethodMap.putAll(webMvcEndpointHandlerMapping.getHandlerMethods());
 
+		ControllerEndpointHandlerMapping controllerEndpointHandlerMapping = applicationContext.getBeansOfType(ControllerEndpointHandlerMapping.class).values().stream().findFirst().orElse(null);
 		if (controllerEndpointHandlerMapping == null)
 			controllerEndpointHandlerMapping = managementApplicationContext.getBean(ControllerEndpointHandlerMapping.class);
 		mappingInfoHandlerMethodMap.putAll(controllerEndpointHandlerMapping.getHandlerMethods());
