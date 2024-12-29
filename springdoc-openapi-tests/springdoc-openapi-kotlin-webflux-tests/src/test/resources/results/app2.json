@@ -11,6 +11,40 @@
     }
   ],
   "paths": {
+    "/status/{token}/activate": {
+      "post": {
+        "tags": [
+          "system-status-controller"
+        ],
+        "operationId": "activateUser",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {}
+          }
+        }
+      }
+    },
     "/status": {
       "get": {
         "tags": [
