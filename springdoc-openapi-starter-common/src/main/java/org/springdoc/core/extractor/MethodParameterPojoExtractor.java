@@ -159,11 +159,12 @@ public class MethodParameterPojoExtractor {
 				return Stream.empty();
 			}
 			String prefix = fieldNamePrefix + resolveName(parameter, schema).orElse(field.getName()) + DOT;
-			boolean notNullAnnotationsPresent = AbstractRequestService.hasNotNullAnnotation(Arrays.stream(field.getDeclaredAnnotations())
+			Set<String> annotationSimpleNames = Arrays.stream(field.getDeclaredAnnotations())
 					.map(Annotation::annotationType)
 					.map(Class::getSimpleName)
-					.collect(Collectors.toSet()));
-			return extractFrom(type, prefix, parentRequired && resolveRequired(schema, parameter, !notNullAnnotationsPresent));
+					.collect(Collectors.toSet());
+			boolean notNullAnnotationsPresent = AbstractRequestService.hasNotNullAnnotation(annotationSimpleNames);
+			return extractFrom(type, prefix,  resolveRequired(schema, parameter, !notNullAnnotationsPresent));
 		}
 	}
 
@@ -270,10 +271,12 @@ public class MethodParameterPojoExtractor {
 				return Stream.empty();
 			}
 
-			boolean isNotRequired = !(isParentRequired && resolveRequired(schema, parameter, !AbstractRequestService.hasNotNullAnnotation(Arrays.stream(fieldAnnotations)
+			Set<String> annotationSimpleNames = Arrays.stream(field.getDeclaredAnnotations())
 					.map(Annotation::annotationType)
 					.map(Class::getSimpleName)
-					.collect(Collectors.toSet()))));
+					.collect(Collectors.toSet());
+							
+			boolean isNotRequired = !resolveRequired(schema, parameter, !AbstractRequestService.hasNotNullAnnotation(annotationSimpleNames));
 			Annotation[] notNullFieldAnnotations = Arrays.stream(fieldAnnotations)
 					.filter(annotation -> AbstractRequestService.hasNotNullAnnotation(List.of(annotation.annotationType().getSimpleName())))
 					.toArray(Annotation[]::new);

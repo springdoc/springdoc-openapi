@@ -60,21 +60,21 @@
           {
             "name": "schemaNotRequiredNestedParameterObject.requiredParameterField",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "parameterNotRequiredNestedParameterObject.requiredParameterField",
+            "name": "nestedNonNullParameterObject.requiredParameterField",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "requiredNestedParameterObject.requiredParameterField",
+            "name": "nestedNotBlankParameterObject.requiredParameterField",
             "in": "query",
             "required": true,
             "schema": {
