@@ -46,7 +46,9 @@ import org.springdoc.core.data.DataRestRouterOperationService;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.utils.SpringDocDataRestUtils;
 
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.data.mapping.PersistentEntity;
@@ -75,7 +77,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
  *
  * @author bnasslahsen
  */
-public class SpringRepositoryRestResourceProvider implements RepositoryRestResourceProvider {
+public class SpringRepositoryRestResourceProvider implements RepositoryRestResourceProvider, ApplicationContextAware {
 
 	/**
 	 * The constant SPRING_DATA_REST_PACKAGE.
@@ -137,29 +139,9 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	}
 
 	/**
-	 * The Mappings.
-	 */
-	private final ResourceMappings mappings;
-
-	/**
-	 * The Repositories.
-	 */
-	private final Repositories repositories;
-
-	/**
-	 * The Associations.
-	 */
-	private final Associations associations;
-
-	/**
 	 * The Data rest router operation builder.
 	 */
 	private final DataRestRouterOperationService dataRestRouterOperationService;
-
-	/**
-	 * The Persistent entities.
-	 */
-	private final PersistentEntities persistentEntities;
 
 	/**
 	 * The Mapper.
@@ -169,7 +151,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	/**
 	 * The Application context.
 	 */
-	private final ApplicationContext applicationContext;
+	private ApplicationContext applicationContext;
 
 	/**
 	 * The Spring doc data rest utils.
@@ -184,24 +166,13 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	/**
 	 * Instantiates a new Spring repository rest resource provider.
 	 *
-	 * @param mappings                       the mappings
-	 * @param repositories                   the repositories
-	 * @param associations                   the associations
-	 * @param applicationContext             the application context
 	 * @param dataRestRouterOperationService the data rest router operation builder
-	 * @param persistentEntities             the persistent entities
 	 * @param mapper                         the mapper
 	 * @param springDocDataRestUtils         the spring doc data rest utils
 	 */
-	public SpringRepositoryRestResourceProvider(ResourceMappings mappings, Repositories repositories,
-			Associations associations, ApplicationContext applicationContext, DataRestRouterOperationService dataRestRouterOperationService,
-			PersistentEntities persistentEntities, ObjectMapper mapper, SpringDocDataRestUtils springDocDataRestUtils) {
-		this.mappings = mappings;
-		this.repositories = repositories;
-		this.associations = associations;
-		this.applicationContext = applicationContext;
+	public SpringRepositoryRestResourceProvider(DataRestRouterOperationService dataRestRouterOperationService, 
+			ObjectMapper mapper, SpringDocDataRestUtils springDocDataRestUtils) {
 		this.dataRestRouterOperationService = dataRestRouterOperationService;
-		this.persistentEntities = persistentEntities;
 		this.mapper = mapper;
 		this.springDocDataRestUtils = springDocDataRestUtils;
 	}
@@ -217,6 +188,10 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	public List<RouterOperation> getRouterOperations(OpenAPI openAPI, Locale locale) {
 		List<RouterOperation> routerOperationList = new ArrayList<>();
 		handlerMappingList = getHandlerMappingList();
+		Associations associations = applicationContext.getBean(Associations.class);
+		ResourceMappings mappings = applicationContext.getBean(ResourceMappings.class);
+		PersistentEntities persistentEntities = applicationContext.getBean(PersistentEntities.class);
+		Repositories repositories = applicationContext.getBean(Repositories.class);
 		for (Class<?> domainType : repositories) {
 			Class<?> repository = repositories.getRequiredRepositoryInformation(domainType).getRepositoryInterface();
 			DataRestRepository dataRestRepository = new DataRestRepository(domainType, repository, locale);
@@ -274,7 +249,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 					}
 				}
 				// search
-				findSearchResourceMappings(openAPI, routerOperationList, handlerMappingList, dataRestRepository, resourceMetadata);
+				findSearchResourceMappings(openAPI, routerOperationList, handlerMappingList, dataRestRepository, resourceMetadata, associations);
 			}
 		}
 		return routerOperationList;
@@ -312,6 +287,8 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 */
 	@Override
 	public void customize(OpenAPI openAPI) {
+		ResourceMappings mappings = applicationContext.getBean(ResourceMappings.class);
+		PersistentEntities persistentEntities = applicationContext.getBean(PersistentEntities.class);
 		springDocDataRestUtils.customise(openAPI, mappings, persistentEntities);
 	}
 
@@ -346,9 +323,10 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param handlerMappingList  the handler mapping list
 	 * @param dataRestRepository  the repository data rest
 	 * @param resourceMetadata    the resource metadata
+	 * @param associations        the associations
 	 */
 	private void findSearchResourceMappings(OpenAPI openAPI, List<RouterOperation> routerOperationList, List<HandlerMapping> handlerMappingList,
-			DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata) {
+			DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata, Associations associations) {
 		for (HandlerMapping handlerMapping : handlerMappingList) {
 			if (handlerMapping instanceof RepositoryRestHandlerMapping repositoryRestHandlerMapping) {
 				Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
@@ -406,4 +384,8 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 		return routerOperationList;
 	}
 
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
+	}
 }
