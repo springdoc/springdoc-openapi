@@ -584,9 +584,6 @@ public abstract class AbstractRequestService {
 		if (parameter.getRequired() == null)
 			parameter.setRequired(parameterInfo.isRequired());
 
-		if (Boolean.TRUE.equals(parameter.getRequired()) && parameterInfo.getMethodParameter() instanceof DelegatingMethodParameter delegatingMethodParameter && delegatingMethodParameter.isNotRequired())
-			parameter.setRequired(false);
-
 		if (containsDeprecatedAnnotation(parameterInfo.getMethodParameter().getParameterAnnotations()))
 			parameter.setDeprecated(true);
 
@@ -619,7 +616,7 @@ public abstract class AbstractRequestService {
 		Map<String, Annotation> annos = new HashMap<>();
 		if (annotations != null)
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
-		boolean annotationExists = hasNotNullAnnotation(annos.keySet());
+		boolean annotationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
 		if (annotationExists)
 			parameter.setRequired(true);
 		Schema<?> schema = parameter.getSchema();
@@ -646,7 +643,7 @@ public abstract class AbstractRequestService {
 					.filter(annotation -> io.swagger.v3.oas.annotations.parameters.RequestBody.class.equals(annotation.annotationType()))
 					.anyMatch(annotation -> ((io.swagger.v3.oas.annotations.parameters.RequestBody) annotation).required());
 		}
-		boolean validationExists = hasNotNullAnnotation(annos.keySet());
+		boolean validationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
 
 		if (validationExists || (!isOptional && (springRequestBodyRequired || swaggerRequestBodyRequired)))
 			requestBody.setRequired(true);
@@ -843,14 +840,5 @@ public abstract class AbstractRequestService {
 		}
 		return false;
 	}
-
-	/**
-	 * Check if the parameter has any of the annotations that make it non-optional
-	 *
-	 * @param annotationSimpleNames the annotation simple class named, e.g. NotNull
-	 * @return whether any of the known NotNull annotations are present
-	 */
-	public static boolean hasNotNullAnnotation(Collection<String> annotationSimpleNames) {
-		return Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annotationSimpleNames::contains);
-	}
+	
 }

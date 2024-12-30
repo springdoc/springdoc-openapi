@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 package org.springdoc.core.extractor;
 
@@ -50,13 +50,10 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Schema;
-import org.springdoc.core.service.AbstractRequestService;
 
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
@@ -66,7 +63,7 @@ import static org.springdoc.core.utils.Constants.DOT;
 /**
  * The type Method parameter pojo extractor.
  *
- * @author bnasslahsen, michael.clarke
+ * @author bnasslahsen
  */
 public class MethodParameterPojoExtractor {
 
@@ -116,7 +113,7 @@ public class MethodParameterPojoExtractor {
 	 * @return the stream
 	 */
 	static Stream<MethodParameter> extractFrom(Class<?> clazz) {
-		return extractFrom(clazz, "", true);
+		return extractFrom(clazz, "");
 	}
 
 	/**
@@ -124,13 +121,12 @@ public class MethodParameterPojoExtractor {
 	 *
 	 * @param clazz           the clazz
 	 * @param fieldNamePrefix the field name prefix
-	 * @param parentRequired  whether the field that hold the class currently being inspected was required or optional
 	 * @return the stream
 	 */
-	private static Stream<MethodParameter> extractFrom(Class<?> clazz, String fieldNamePrefix, boolean parentRequired) {
+	private static Stream<MethodParameter> extractFrom(Class<?> clazz, String fieldNamePrefix) {
 		return allFieldsOf(clazz).stream()
 				.filter(field -> !field.getType().equals(clazz))
-				.flatMap(f -> fromGetterOfField(clazz, f, fieldNamePrefix, parentRequired))
+				.flatMap(f -> fromGetterOfField(clazz, f, fieldNamePrefix))
 				.filter(Objects::nonNull);
 	}
 
@@ -140,96 +136,20 @@ public class MethodParameterPojoExtractor {
 	 * @param paramClass      the param class
 	 * @param field           the field
 	 * @param fieldNamePrefix the field name prefix
-	 * @param parentRequired  whether the field that holds the class currently being examined was required or optional
 	 * @return the stream
 	 */
-	private static Stream<MethodParameter> fromGetterOfField(Class<?> paramClass, Field field, String fieldNamePrefix, boolean parentRequired) {
+	private static Stream<MethodParameter> fromGetterOfField(Class<?> paramClass, Field field, String fieldNamePrefix) {
 		Class<?> type = extractType(paramClass, field);
 
 		if (Objects.isNull(type))
 			return Stream.empty();
 
 		if (isSimpleType(type))
-			return fromSimpleClass(paramClass, field, fieldNamePrefix, parentRequired);
+			return fromSimpleClass(paramClass, field, fieldNamePrefix);
 		else {
-			Parameter parameter = field.getAnnotation(Parameter.class);
-			Schema schema = field.getAnnotation(Schema.class);
-			boolean visible = resolveVisible(parameter, schema);
-			if (!visible) {
-				return Stream.empty();
-			}
-			String prefix = fieldNamePrefix + resolveName(parameter, schema).orElse(field.getName()) + DOT;
-			Set<String> annotationSimpleNames = Arrays.stream(field.getDeclaredAnnotations())
-					.map(Annotation::annotationType)
-					.map(Class::getSimpleName)
-					.collect(Collectors.toSet());
-			boolean notNullAnnotationsPresent = AbstractRequestService.hasNotNullAnnotation(annotationSimpleNames);
-			return extractFrom(type, prefix,  resolveRequired(schema, parameter, !notNullAnnotationsPresent));
+			String prefix = fieldNamePrefix + field.getName() + DOT;
+			return extractFrom(type, prefix);
 		}
-	}
-
-	private static Optional<String> resolveName(Parameter parameter, Schema schema) {
-		if (parameter != null) {
-			return resolveNameFromParameter(parameter);
-		}
-		if (schema != null) {
-			return resolveNameFromSchema(schema);
-		}
-		return Optional.empty();
-	}
-
-	private static Optional<String> resolveNameFromParameter(Parameter parameter) {
-		if (parameter.name().isEmpty()) {
-			return Optional.empty();
-		}
-		return Optional.of(parameter.name());
-	}
-
-	private static Optional<String> resolveNameFromSchema(Schema schema) {
-		if (schema.name().isEmpty()) {
-			return Optional.empty();
-		}
-		return Optional.of(schema.name());
-	}
-
-	private static boolean resolveVisible(Parameter parameter, Schema schema) {
-		if (parameter != null) {
-			return !parameter.hidden();
-		}
-		if (schema != null) {
-			return !schema.hidden();
-		}
-		return true;
-	}
-
-	private static boolean resolveRequired(Schema schema, Parameter parameter, boolean nullable) {
-		if (parameter != null) {
-			return resolveRequiredFromParameter(parameter, nullable);
-		}
-		if (schema != null) {
-			return resolveRequiredFromSchema(schema, nullable);
-		}
-		return !nullable;
-	}
-
-	private static boolean resolveRequiredFromParameter(Parameter parameter, boolean nullable) {
-		if (parameter.required()) {
-			return true;
-		}
-		return !nullable;
-	}
-
-	private static boolean resolveRequiredFromSchema(Schema schema, boolean nullable) {
-		if (schema.required()) {
-			return true;
-		}
-		else if (schema.requiredMode() == Schema.RequiredMode.REQUIRED) {
-			return true;
-		}
-		else if (schema.requiredMode() == Schema.RequiredMode.NOT_REQUIRED) {
-			return false;
-		}
-		return !nullable;
 	}
 
 	/**
@@ -261,32 +181,18 @@ public class MethodParameterPojoExtractor {
 	 * @param fieldNamePrefix the field name prefix
 	 * @return the stream
 	 */
-	private static Stream<MethodParameter> fromSimpleClass(Class<?> paramClass, Field field, String fieldNamePrefix, boolean isParentRequired) {
+	private static Stream<MethodParameter> fromSimpleClass(Class<?> paramClass, Field field, String fieldNamePrefix) {
 		Annotation[] fieldAnnotations = field.getDeclaredAnnotations();
 		try {
 			Parameter parameter = field.getAnnotation(Parameter.class);
-			Schema schema = field.getAnnotation(Schema.class);
-			boolean visible = resolveVisible(parameter, schema);
-			if (!visible) {
-				return Stream.empty();
-			}
-
-			Set<String> annotationSimpleNames = Arrays.stream(field.getDeclaredAnnotations())
-					.map(Annotation::annotationType)
-					.map(Class::getSimpleName)
-					.collect(Collectors.toSet());
-							
-			boolean isNotRequired = !resolveRequired(schema, parameter, !AbstractRequestService.hasNotNullAnnotation(annotationSimpleNames));
-			Annotation[] notNullFieldAnnotations = Arrays.stream(fieldAnnotations)
-					.filter(annotation -> AbstractRequestService.hasNotNullAnnotation(List.of(annotation.annotationType().getSimpleName())))
-					.toArray(Annotation[]::new);
+			boolean isNotRequired = parameter == null || !parameter.required();
 			if (paramClass.getSuperclass() != null && paramClass.isRecord()) {
 				return Stream.of(paramClass.getRecordComponents())
 						.filter(d -> d.getName().equals(field.getName()))
 						.map(RecordComponent::getAccessor)
 						.map(method -> new MethodParameter(method, -1))
 						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), notNullFieldAnnotations, true, isNotRequired));
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), true, isNotRequired));
 
 			}
 			else
@@ -296,7 +202,7 @@ public class MethodParameterPojoExtractor {
 						.filter(Objects::nonNull)
 						.map(method -> new MethodParameter(method, -1))
 						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), notNullFieldAnnotations, true, isNotRequired));
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), true, isNotRequired));
 		}
 		catch (IntrospectionException e) {
 			return Stream.of();
