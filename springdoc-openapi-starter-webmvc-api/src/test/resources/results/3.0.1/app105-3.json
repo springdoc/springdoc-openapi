@@ -160,8 +160,8 @@
               }
             }
           },
-          "404": {
-            "description": "Pet not found",
+          "200": {
+            "description": "successful operation",
             "content": {
               "application/xml": {
                 "schema": {
@@ -175,8 +175,8 @@
               }
             }
           },
-          "200": {
-            "description": "successful operation",
+          "404": {
+            "description": "Pet not found",
             "content": {
               "application/xml": {
                 "schema": {
@@ -213,26 +213,27 @@
               "type": "integer",
               "format": "int64"
             }
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "description": "Updated name of the pet",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "Updated status of the pet",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Updated name of the pet"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "Updated status of the pet"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "400": {
             "description": "Bad Request",

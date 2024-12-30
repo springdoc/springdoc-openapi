@@ -226,7 +226,7 @@ public class DataRestRequestService {
 	private void addParameters(OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes, Operation operation,
 			MethodParameter methodParameter, ParameterInfo parameterInfo, Parameter parameter) {
 		List<Annotation> parameterAnnotations = Arrays.asList(getParameterAnnotations(methodParameter));
-		if (requestBuilder.isValidParameter(parameter)) {
+		if (requestBuilder.isValidParameter(parameter,methodAttributes)) {
 			requestBuilder.applyBeanValidatorAnnotations(parameter, parameterAnnotations);
 			operation.addParametersItem(parameter);
 		}

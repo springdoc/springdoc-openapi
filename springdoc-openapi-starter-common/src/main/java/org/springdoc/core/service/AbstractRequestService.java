@@ -26,9 +26,15 @@
 
 package org.springdoc.core.service;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.security.Principal;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -37,22 +43,23 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.PrimitiveType;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.Content;
-import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
@@ -78,6 +85,8 @@ import org.springdoc.core.utils.SpringDocAnnotationsUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.HttpMethod;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -85,6 +94,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ValueConstants;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -97,6 +107,7 @@ import static org.springdoc.core.service.GenericParameterService.isFile;
 import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
 import static org.springdoc.core.utils.SpringDocUtils.getParameterAnnotations;
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 /**
@@ -130,18 +141,18 @@ public abstract class AbstractRequestService {
 	static {
 		PARAM_TYPES_TO_IGNORE.add(WebRequest.class);
 		PARAM_TYPES_TO_IGNORE.add(NativeWebRequest.class);
-		PARAM_TYPES_TO_IGNORE.add(java.security.Principal.class);
+		PARAM_TYPES_TO_IGNORE.add(Principal.class);
 		PARAM_TYPES_TO_IGNORE.add(HttpMethod.class);
-		PARAM_TYPES_TO_IGNORE.add(java.util.Locale.class);
-		PARAM_TYPES_TO_IGNORE.add(java.util.TimeZone.class);
-		PARAM_TYPES_TO_IGNORE.add(java.io.InputStream.class);
-		PARAM_TYPES_TO_IGNORE.add(java.time.ZoneId.class);
-		PARAM_TYPES_TO_IGNORE.add(java.io.Reader.class);
-		PARAM_TYPES_TO_IGNORE.add(java.io.OutputStream.class);
-		PARAM_TYPES_TO_IGNORE.add(java.io.Writer.class);
-		PARAM_TYPES_TO_IGNORE.add(java.util.Map.class);
-		PARAM_TYPES_TO_IGNORE.add(org.springframework.ui.Model.class);
-		PARAM_TYPES_TO_IGNORE.add(org.springframework.ui.ModelMap.class);
+		PARAM_TYPES_TO_IGNORE.add(Locale.class);
+		PARAM_TYPES_TO_IGNORE.add(TimeZone.class);
+		PARAM_TYPES_TO_IGNORE.add(InputStream.class);
+		PARAM_TYPES_TO_IGNORE.add(ZoneId.class);
+		PARAM_TYPES_TO_IGNORE.add(Reader.class);
+		PARAM_TYPES_TO_IGNORE.add(OutputStream.class);
+		PARAM_TYPES_TO_IGNORE.add(Writer.class);
+		PARAM_TYPES_TO_IGNORE.add(Map.class);
+		PARAM_TYPES_TO_IGNORE.add(Model.class);
+		PARAM_TYPES_TO_IGNORE.add(ModelMap.class);
 		PARAM_TYPES_TO_IGNORE.add(Errors.class);
 		PARAM_TYPES_TO_IGNORE.add(BindingResult.class);
 		PARAM_TYPES_TO_IGNORE.add(SessionStatus.class);
@@ -240,7 +251,7 @@ public abstract class AbstractRequestService {
 	 */
 	@SuppressWarnings("unchecked")
 	public static Collection<Parameter> getHeaders(MethodAttributes methodAttributes, Map<ParameterId, Parameter> map) {
-		for (Map.Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
+		for (Entry<String, String> entry : methodAttributes.getHeaders().entrySet()) {
 			StringSchema schema = new StringSchema();
 			if (StringUtils.isNotEmpty(entry.getValue()))
 				schema.addEnumItem(entry.getValue());
@@ -291,7 +302,7 @@ public abstract class AbstractRequestService {
 
 		for (MethodParameter methodParameter : parameters) {
 			// check if query param
-			Parameter parameter;
+			Parameter parameter = null;
 			io.swagger.v3.oas.annotations.Parameter parameterDoc = AnnotatedElementUtils.findMergedAnnotation(
 					AnnotatedElementUtils.forAnnotations(methodParameter.getParameterAnnotations()),
 					io.swagger.v3.oas.annotations.Parameter.class);
@@ -321,12 +332,10 @@ public abstract class AbstractRequestService {
 
 			if (!isParamToIgnore(methodParameter)) {
 				parameter = buildParams(parameterInfo, components, requestMethod, methodAttributes, openAPI.getOpenapi());
-				// Merge with the operation parameters
-				parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
-
 				List<Annotation> parameterAnnotations = List.of(getParameterAnnotations(methodParameter));
-
-				if (isValidParameter(parameter)) {
+				if (isValidParameter(parameter,methodAttributes)) {
+					// Merge with the operation parameters
+					parameter = GenericParameterService.mergeParameter(operationParameters, parameter);
 					// Add param javadoc
 					if (StringUtils.isBlank(parameter.getDescription()) && javadocProvider != null) {
 						String paramJavadocDescription = parameterBuilder.getParamJavadoc(javadocProvider, methodParameter);
@@ -359,7 +368,7 @@ public abstract class AbstractRequestService {
 				Parameter parameter = entry.getValue();
 				if (!ParameterIn.PATH.toString().equals(parameter.getIn()) && !ParameterIn.HEADER.toString().equals(parameter.getIn())
 						&& !ParameterIn.COOKIE.toString().equals(parameter.getIn())) {
-					io.swagger.v3.oas.models.media.Schema<?> itemSchema = new io.swagger.v3.oas.models.media.Schema<>();
+					Schema<?> itemSchema = new Schema<>();
 					itemSchema.setName(entry.getKey().getpName());
 					itemSchema.setDescription(parameter.getDescription());
 					itemSchema.setDeprecated(parameter.getDeprecated());
@@ -388,7 +397,7 @@ public abstract class AbstractRequestService {
 			throw new IllegalStateException(String.format("Duplicate key %s", u));
 		}, LinkedHashMap::new));
 
-		for (Map.Entry<ParameterId, io.swagger.v3.oas.annotations.Parameter> entry : parametersDocMap.entrySet()) {
+		for (Entry<ParameterId, io.swagger.v3.oas.annotations.Parameter> entry : parametersDocMap.entrySet()) {
 			ParameterId parameterId = entry.getKey();
 			if (parameterId != null && !map.containsKey(parameterId) && !entry.getValue().hidden()) {
 				Parameter parameter = parameterBuilder.buildParameterFromDoc(entry.getValue(), components, methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
@@ -512,11 +521,12 @@ public abstract class AbstractRequestService {
 	/**
 	 * Is valid parameter boolean.
 	 *
-	 * @param parameter the parameter
+	 * @param parameter        the parameter
+	 * @param methodAttributes the method attributes
 	 * @return the boolean
 	 */
-	public boolean isValidParameter(Parameter parameter) {
-		return parameter != null && (parameter.getName() != null || parameter.get$ref() != null);
+	public boolean isValidParameter(Parameter parameter, MethodAttributes methodAttributes ) {
+		return parameter != null && (parameter.getName() != null || parameter.get$ref() != null) && !(Arrays.asList(methodAttributes.getMethodConsumes()).contains(APPLICATION_FORM_URLENCODED_VALUE) && ParameterIn.QUERY.toString().equals(parameter.getIn()));
 	}
 
 	/**
@@ -640,11 +650,6 @@ public abstract class AbstractRequestService {
 
 		if (validationExists || (!isOptional && (springRequestBodyRequired || swaggerRequestBodyRequired)))
 			requestBody.setRequired(true);
-		Content content = requestBody.getContent();
-		for (MediaType mediaType : content.values()) {
-			Schema<?> schema = mediaType.getSchema();
-			applyValidationsToSchema(annos, schema);
-		}
 	}
 
 	/**
@@ -703,10 +708,10 @@ public abstract class AbstractRequestService {
 	private Map<ParameterId, io.swagger.v3.oas.annotations.Parameter> getApiParameters(Method method) {
 		Class<?> declaringClass = method.getDeclaringClass();
 
-		Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDoc = AnnotatedElementUtils.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.Parameters.class);
+		Set<Parameters> apiParametersDoc = AnnotatedElementUtils.findAllMergedAnnotations(method, Parameters.class);
 		LinkedHashMap<ParameterId, io.swagger.v3.oas.annotations.Parameter> apiParametersMap = apiParametersDoc.stream().flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(ParameterId::new, x -> x, (e1, e2) -> e2, LinkedHashMap::new));
 
-		Set<io.swagger.v3.oas.annotations.Parameters> apiParametersDocDeclaringClass = AnnotatedElementUtils.findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.Parameters.class);
+		Set<Parameters> apiParametersDocDeclaringClass = AnnotatedElementUtils.findAllMergedAnnotations(declaringClass, Parameters.class);
 		LinkedHashMap<ParameterId, io.swagger.v3.oas.annotations.Parameter> apiParametersDocDeclaringClassMap = apiParametersDocDeclaringClass.stream().flatMap(x -> Stream.of(x.value())).collect(Collectors.toMap(ParameterId::new, x -> x, (e1, e2) -> e2, LinkedHashMap::new));
 		apiParametersMap.putAll(apiParametersDocDeclaringClassMap);
 
@@ -803,9 +808,9 @@ public abstract class AbstractRequestService {
 	 * @return the boolean
 	 */
 	private boolean checkFile(MethodParameter methodParameter) {
-		if (methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestPart.class) != null)
+		if (methodParameter.getParameterAnnotation(RequestPart.class) != null)
 			return true;
-		else if (methodParameter.getParameterAnnotation(org.springframework.web.bind.annotation.RequestParam.class) != null) {
+		else if (methodParameter.getParameterAnnotation(RequestParam.class) != null) {
 			return isFile(methodParameter.getParameterType());
 		}
 		return false;
