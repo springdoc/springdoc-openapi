@@ -81,26 +81,31 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "firstName",
-            "in": "query",
-            "description": "First Name",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "lastName",
-            "in": "query",
-            "description": "Last Name",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "required": [
+                  "firstName",
+                  "lastName"
+                ],
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "description": "First Name"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "description": "Last Name"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "500": {
             "description": "Internal Server Error",
