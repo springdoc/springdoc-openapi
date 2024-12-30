@@ -55,21 +55,16 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mapping.context.PersistentEntities;
-import org.springframework.data.repository.support.Repositories;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
-import org.springframework.data.rest.core.mapping.ResourceMappings;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestHandlerMapping;
 import org.springframework.data.rest.webmvc.RootResourceInformation;
-import org.springframework.data.rest.webmvc.mapping.Associations;
 import org.springframework.data.rest.webmvc.support.DefaultedPageable;
 import org.springframework.data.rest.webmvc.support.ETag;
 import org.springframework.hateoas.server.LinkRelationProvider;
@@ -125,12 +120,7 @@ public class SpringDocDataRestConfiguration {
 		/**
 		 * Spring repository rest resource provider spring repository rest resource provider.
 		 *
-		 * @param mappings                       the mappings
-		 * @param repositories                   the repositories
-		 * @param associations                   the associations
-		 * @param applicationContext             the application context
 		 * @param dataRestRouterOperationService the data rest router operation service
-		 * @param persistentEntities             the persistent entities
 		 * @param mapper                         the mapper
 		 * @param springDocDataRestUtils         the spring doc data rest utils
 		 * @return the spring repository rest resource provider
@@ -138,12 +128,11 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		SpringRepositoryRestResourceProvider springRepositoryRestResourceProvider(ResourceMappings mappings,
-				Repositories repositories, Associations associations, ApplicationContext applicationContext,
-				DataRestRouterOperationService dataRestRouterOperationService, PersistentEntities persistentEntities,
-				ObjectMapper mapper, SpringDocDataRestUtils springDocDataRestUtils) {
-			return new SpringRepositoryRestResourceProvider(mappings, repositories, associations, applicationContext,
-					dataRestRouterOperationService, persistentEntities, mapper, springDocDataRestUtils);
+		SpringRepositoryRestResourceProvider springRepositoryRestResourceProvider(DataRestRouterOperationService dataRestRouterOperationService, 
+				ObjectMapper mapper, 
+				SpringDocDataRestUtils springDocDataRestUtils) {
+			return new SpringRepositoryRestResourceProvider(
+					dataRestRouterOperationService, mapper, springDocDataRestUtils);
 		}
 
 		/**
