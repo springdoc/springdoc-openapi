@@ -510,6 +510,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected void calculateWebhooks(OpenAPI calculatedOpenAPI, Locale locale) {
 		Webhooks[] webhooksAttr = openAPIService.getWebhooks();
+		if(ArrayUtils.isEmpty(webhooksAttr))
+			return;
 		var webhooks = Arrays.stream(webhooksAttr).map(Webhooks::value).flatMap(Arrays::stream).toArray(Webhook[]::new);
 		Arrays.stream(webhooks).forEach(webhook -> {
 			io.swagger.v3.oas.annotations.Operation apiOperation = webhook.operation();

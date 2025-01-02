@@ -8,10 +8,12 @@ import java.nio.file.Paths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@TestPropertySource(properties =  "springdoc.api-docs.version=openapi_3_0" )
 public abstract class AbstractCommonTest {
 
 	@Autowired

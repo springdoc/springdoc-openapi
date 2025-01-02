@@ -1304,7 +1304,7 @@ public class SpringDocConfigProperties {
 		/**
 		 * The OpenAPI version.
 		 */
-		private OpenApiVersion version;
+		private OpenApiVersion version = OpenApiVersion.OPENAPI_3_1;
 
 		/**
 		 * Gets path.

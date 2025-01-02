@@ -20,7 +20,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @AutoConfigureWebTestClient(timeout = "3600000")
 @ActiveProfiles("test")
-@TestPropertySource(properties = { "management.endpoints.enabled-by-default=false" })
+@TestPropertySource(properties = { "management.endpoints.enabled-by-default=false" ,  "springdoc.api-docs.version=openapi_3_0" })
 public abstract class AbstractCommonTest {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractCommonTest.class);

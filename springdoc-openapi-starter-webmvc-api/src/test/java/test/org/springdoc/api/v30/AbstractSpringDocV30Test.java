@@ -29,6 +29,7 @@ import org.springdoc.core.utils.Constants;
 import test.org.springdoc.api.AbstractCommonTest;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.is;
@@ -38,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@TestPropertySource(properties = { "springdoc.api-docs.version=openapi_3_0" })
 public abstract class AbstractSpringDocV30Test extends AbstractCommonTest {
 
 	public static String className;
