@@ -227,7 +227,7 @@ public class DataRestRequestService {
 			MethodParameter methodParameter, ParameterInfo parameterInfo, Parameter parameter) {
 		List<Annotation> parameterAnnotations = Arrays.asList(getParameterAnnotations(methodParameter));
 		if (requestBuilder.isValidParameter(parameter,methodAttributes)) {
-			requestBuilder.applyBeanValidatorAnnotations(parameter, parameterAnnotations);
+			requestBuilder.applyBeanValidatorAnnotations(parameter, parameterAnnotations, parameterInfo.isParameterObject());
 			operation.addParametersItem(parameter);
 		}
 		else if (!RequestMethod.GET.equals(requestMethod)) {

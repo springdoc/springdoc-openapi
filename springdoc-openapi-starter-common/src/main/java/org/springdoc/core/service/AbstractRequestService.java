@@ -343,7 +343,7 @@ public abstract class AbstractRequestService {
 							parameter.setDescription(paramJavadocDescription);
 						}
 					}
-					applyBeanValidatorAnnotations(parameter, parameterAnnotations);
+					applyBeanValidatorAnnotations(parameter, parameterAnnotations, parameterInfo.isParameterObject());
 				}
 				else if (!RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openAPI.getOpenapi())) {
 					if (operation.getRequestBody() != null)
@@ -609,15 +609,16 @@ public abstract class AbstractRequestService {
 	/**
 	 * Apply bean validator annotations.
 	 *
-	 * @param parameter   the parameter
-	 * @param annotations the annotations
+	 * @param parameter         the parameter
+	 * @param annotations       the annotations
+	 * @param isParameterObject the is parameter object
 	 */
-	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
+	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations, final boolean isParameterObject) {
 		Map<String, Annotation> annos = new HashMap<>();
 		if (annotations != null)
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
-		boolean annotationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
-		if (annotationExists)
+		boolean annotationExists = hasNotNullAnnotation(annos.keySet());
+		if (annotationExists && !isParameterObject)
 			parameter.setRequired(true);
 		Schema<?> schema = parameter.getSchema();
 		applyValidationsToSchema(annos, schema);
@@ -643,7 +644,7 @@ public abstract class AbstractRequestService {
 					.filter(annotation -> io.swagger.v3.oas.annotations.parameters.RequestBody.class.equals(annotation.annotationType()))
 					.anyMatch(annotation -> ((io.swagger.v3.oas.annotations.parameters.RequestBody) annotation).required());
 		}
-		boolean validationExists = Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annos::containsKey);
+		boolean validationExists = hasNotNullAnnotation(annos.keySet());
 
 		if (validationExists || (!isOptional && (springRequestBodyRequired || swaggerRequestBodyRequired)))
 			requestBody.setRequired(true);
@@ -840,5 +841,15 @@ public abstract class AbstractRequestService {
 		}
 		return false;
 	}
+
+    /**
+     * Check if the parameter has any of the annotations that make it non-optional
+     *
+     * @param annotationSimpleNames the annotation simple class named, e.g. NotNull
+     * @return whether any of the known NotNull annotations are present
+     */
+    public static boolean hasNotNullAnnotation(Collection<String> annotationSimpleNames) {
+        return Arrays.stream(ANNOTATIONS_FOR_REQUIRED).anyMatch(annotationSimpleNames::contains);
+    }
 	
 }
