@@ -134,7 +134,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 		if(resolvedSchema.get$ref().contains(Components.COMPONENTS_SCHEMAS_REF)) {
 			String schemaName = resolvedSchema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
 			Schema existingSchema = context.getDefinedModels().get(schemaName);
-			if (existingSchema != null && existingSchema.getOneOf() != null) {
+			if (existingSchema != null && (existingSchema.getOneOf() != null || existingSchema.getAllOf() != null || existingSchema.getAnyOf() != null)) {
 				return resolvedSchema;
 			}
 		}
