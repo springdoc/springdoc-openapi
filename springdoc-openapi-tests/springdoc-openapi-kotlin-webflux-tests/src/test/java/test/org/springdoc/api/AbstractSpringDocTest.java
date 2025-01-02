@@ -31,6 +31,7 @@ import org.springdoc.core.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -38,6 +39,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @WebFluxTest
 @ActiveProfiles("test")
+@TestPropertySource(properties =  "springdoc.api-docs.version=openapi_3_0" )
 public abstract class AbstractSpringDocTest {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractSpringDocTest.class);
