@@ -38,6 +38,7 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -56,11 +57,11 @@ import java.util.stream.Stream;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springdoc.core.service.AbstractRequestService;
 
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 
+import static org.springdoc.core.service.AbstractRequestService.hasNotNullAnnotation;
 import static org.springdoc.core.utils.Constants.DOT;
 
 /**
@@ -159,11 +160,8 @@ public class MethodParameterPojoExtractor {
 				return Stream.empty();
 			}
 			String prefix = fieldNamePrefix + resolveName(parameter, schema).orElse(field.getName()) + DOT;
-			boolean notNullAnnotationsPresent = AbstractRequestService.hasNotNullAnnotation(Arrays.stream(field.getDeclaredAnnotations())
-					.map(Annotation::annotationType)
-					.map(Class::getSimpleName)
-					.collect(Collectors.toSet()));
-			return extractFrom(type, prefix, parentRequired && resolveRequired(schema, parameter, !notNullAnnotationsPresent));
+			boolean isNullable = isNullable(field.getDeclaredAnnotations());
+			return extractFrom(type, prefix, parentRequired && resolveRequired(schema, parameter, isNullable));
 		}
 	}
 
@@ -265,28 +263,15 @@ public class MethodParameterPojoExtractor {
 		try {
 			Parameter parameter = field.getAnnotation(Parameter.class);
 			Schema schema = field.getAnnotation(Schema.class);
-			boolean visible = resolveVisible(parameter, schema);
-			if (!visible) {
-				return Stream.empty();
-			}
-
-			boolean forcedRequired = resolveRequired(schema, parameter, true);
-
-			boolean isNotRequired = !((isParentRequired || forcedRequired) && resolveRequired(schema, parameter, !AbstractRequestService.hasNotNullAnnotation(Arrays.stream(fieldAnnotations)
-					.map(Annotation::annotationType)
-					.map(Class::getSimpleName)
-					.collect(Collectors.toSet()))));
-			Annotation[] notNullFieldAnnotations = Arrays.stream(fieldAnnotations)
-					.filter(annotation -> AbstractRequestService.hasNotNullAnnotation(List.of(annotation.annotationType().getSimpleName())))
-					.toArray(Annotation[]::new);
+			boolean isNullable = isNullable(fieldAnnotations);
+			boolean isNotRequired = !(isParentRequired  && resolveRequired(schema, parameter, isNullable));
 			if (paramClass.getSuperclass() != null && paramClass.isRecord()) {
 				return Stream.of(paramClass.getRecordComponents())
 						.filter(d -> d.getName().equals(field.getName()))
 						.map(RecordComponent::getAccessor)
 						.map(method -> new MethodParameter(method, -1))
 						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), notNullFieldAnnotations, true, isNotRequired));
-
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), true, isNotRequired));
 			}
 			else
 				return Stream.of(Introspector.getBeanInfo(paramClass).getPropertyDescriptors())
@@ -295,7 +280,7 @@ public class MethodParameterPojoExtractor {
 						.filter(Objects::nonNull)
 						.map(method -> new MethodParameter(method, -1))
 						.map(methodParameter -> DelegatingMethodParameter.changeContainingClass(methodParameter, paramClass))
-						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), notNullFieldAnnotations, true, isNotRequired));
+						.map(param -> new DelegatingMethodParameter(param, fieldNamePrefix + field.getName(), fieldAnnotations, param.getMethodAnnotations(), true, isNotRequired));
 		}
 		catch (IntrospectionException e) {
 			return Stream.of();
@@ -366,4 +351,17 @@ public class MethodParameterPojoExtractor {
 		SIMPLE_TYPES.removeAll(Arrays.asList(classes));
 	}
 
+	/**
+	 * Is nullable boolean.
+	 *
+	 * @param fieldAnnotations the field annotations
+	 * @return the boolean
+	 */
+	private static boolean isNullable(Annotation[] fieldAnnotations) {
+		Collection<String> annotationSimpleNames = Arrays.stream(fieldAnnotations)
+				.map(Annotation::annotationType)
+				.map(Class::getSimpleName)
+				.collect(Collectors.toSet());
+		return !hasNotNullAnnotation(annotationSimpleNames);
+	}
 }

@@ -343,7 +343,7 @@ public abstract class AbstractRequestService {
 							parameter.setDescription(paramJavadocDescription);
 						}
 					}
-					applyBeanValidatorAnnotations(parameter, parameterAnnotations);
+					applyBeanValidatorAnnotations(parameter, parameterAnnotations, parameterInfo.isParameterObject());
 				}
 				else if (!RequestMethod.GET.equals(requestMethod) || OpenApiVersion.OPENAPI_3_1.getVersion().equals(openAPI.getOpenapi())) {
 					if (operation.getRequestBody() != null)
@@ -584,9 +584,6 @@ public abstract class AbstractRequestService {
 		if (parameter.getRequired() == null)
 			parameter.setRequired(parameterInfo.isRequired());
 
-		if (Boolean.TRUE.equals(parameter.getRequired()) && parameterInfo.getMethodParameter() instanceof DelegatingMethodParameter delegatingMethodParameter && delegatingMethodParameter.isNotRequired())
-			parameter.setRequired(false);
-
 		if (containsDeprecatedAnnotation(parameterInfo.getMethodParameter().getParameterAnnotations()))
 			parameter.setDeprecated(true);
 
@@ -612,15 +609,16 @@ public abstract class AbstractRequestService {
 	/**
 	 * Apply bean validator annotations.
 	 *
-	 * @param parameter   the parameter
-	 * @param annotations the annotations
+	 * @param parameter         the parameter
+	 * @param annotations       the annotations
+	 * @param isParameterObject the is parameter object
 	 */
-	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations) {
+	public void applyBeanValidatorAnnotations(final Parameter parameter, final List<Annotation> annotations, final boolean isParameterObject) {
 		Map<String, Annotation> annos = new HashMap<>();
 		if (annotations != null)
 			annotations.forEach(annotation -> annos.put(annotation.annotationType().getSimpleName(), annotation));
 		boolean annotationExists = hasNotNullAnnotation(annos.keySet());
-		if (annotationExists)
+		if (annotationExists && !isParameterObject)
 			parameter.setRequired(true);
 		Schema<?> schema = parameter.getSchema();
 		applyValidationsToSchema(annos, schema);

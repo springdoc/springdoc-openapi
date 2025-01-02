@@ -31,6 +31,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.extractor.DelegatingMethodParameter;
 import org.springdoc.core.service.GenericParameterService;
 
 import org.springframework.core.MethodParameter;
@@ -336,5 +337,15 @@ public class ParameterInfo {
 	 */
 	public void setParameterId(ParameterId parameterId) {
 		this.parameterId = parameterId;
+	}
+
+	/**
+	 * Is parameter object boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean isParameterObject() {
+		return methodParameter instanceof DelegatingMethodParameter delegatingMethodParameter 
+				&& delegatingMethodParameter.isParameterObject();
 	}
 }
