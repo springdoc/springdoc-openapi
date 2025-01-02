@@ -16,8 +16,7 @@
  *
  */
 
-package test.org.springdoc.api.app13
-
+package test.org.springdoc.api.app14
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,24 +26,22 @@ import org.springframework.web.bind.annotation.RestController
 
 @Schema(description = "Generic description")
 data class KeyValue(
-    val key: String,
-    val value: String,
+	val key: String,
+	val value: String,
 )
 
 @Schema
 data class SomeDTO(
-    @Schema(description = "Description A") val fieldA: KeyValue,
-    @Schema(description = "Description B") val fieldB: KeyValue,
+	@Schema(description = "Description A", allOf = [KeyValue::class]) val field_a: KeyValue,
+	@Schema(description = "Description B", allOf = [KeyValue::class]) val field_b: KeyValue,
 )
-
-
 
 @RestController
 @RequestMapping("/test")
 class TestController {
-    @PostMapping("/test")
-    fun create(@RequestBody some: SomeDTO) {
 
-    }
+	@PostMapping("/test")
+	fun create(@RequestBody some: SomeDTO) {
+
+	}
 }
-
