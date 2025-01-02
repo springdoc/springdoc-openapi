@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *  
+ *
  */
 
 package org.springdoc.core.converters;
@@ -110,32 +110,35 @@ public class PolymorphicModelConverter implements ModelConverter {
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> chain) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
-		if (javaType != null) {
-			for (Field field : FieldUtils.getAllFields(javaType.getRawClass())) {
-				if (field.isAnnotationPresent(JsonUnwrapped.class)) {
-					PARENT_TYPES_TO_IGNORE.add(javaType.getRawClass().getSimpleName());
-				}
-			}
-			if (chain.hasNext()) {
-				if (!type.isResolveAsRef() && type.getParent() != null
-						&& PARENT_TYPES_TO_IGNORE.stream().noneMatch(ignore -> type.getParent().getName().startsWith(ignore)))
-					type.resolveAsRef(true);
-				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
-				resolvedSchema = getResolvedSchema(javaType, resolvedSchema);
-				if (resolvedSchema == null || resolvedSchema.get$ref() == null) {
-					return resolvedSchema;
-				}
-				if(resolvedSchema.get$ref().contains(Components.COMPONENTS_SCHEMAS_REF)) {
-					String schemaName = resolvedSchema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
-					Schema existingSchema = context.getDefinedModels().get(schemaName);
-					if (existingSchema != null && existingSchema.getOneOf() != null) {
-						return resolvedSchema;
-					}
-				}
-				return composePolymorphicSchema(type, resolvedSchema, context.getDefinedModels().values());
+
+		if (javaType == null || !chain.hasNext()) {
+			return null;
+		}
+
+		for (Field field : FieldUtils.getAllFields(javaType.getRawClass())) {
+			if (field.isAnnotationPresent(JsonUnwrapped.class)) {
+				PARENT_TYPES_TO_IGNORE.add(javaType.getRawClass().getSimpleName());
 			}
 		}
-		return null;
+
+		String parentName = type.getParent() == null ? null : type.getParent().getName();
+		if (parentName != null && PARENT_TYPES_TO_IGNORE.stream().noneMatch(parentName::startsWith)){
+			type.resolveAsRef(true);
+		}
+
+		Schema<?> resolvedSchema = getResolvedSchema(javaType, chain.next().resolve(type, context, chain));
+		if (resolvedSchema == null || resolvedSchema.get$ref() == null) {
+			return resolvedSchema;
+		}
+
+		if(resolvedSchema.get$ref().contains(Components.COMPONENTS_SCHEMAS_REF)) {
+			String schemaName = resolvedSchema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
+			Schema existingSchema = context.getDefinedModels().get(schemaName);
+			if (existingSchema != null && existingSchema.getOneOf() != null) {
+				return resolvedSchema;
+			}
+		}
+		return composePolymorphicSchema(type, resolvedSchema, context.getDefinedModels().values());
 	}
 
 	/**
