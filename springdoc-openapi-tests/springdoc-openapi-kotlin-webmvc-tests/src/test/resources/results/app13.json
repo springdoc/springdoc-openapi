@@ -52,14 +52,29 @@
         } ]
       },
       "SomeDTO" : {
-        "required" : [ "fieldA", "fieldB" ],
-        "type" : "object",
-        "properties" : {
-          "fieldA" : {
-            "$ref" : "#/components/schemas/KeyValue"
+        "required": [
+          "fieldA",
+          "fieldB"
+        ],
+        "type": "object",
+        "properties": {
+          "fieldA": {
+            "type": "object",
+            "description": "Description A",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/KeyValue"
+              }
+            ]
           },
-          "fieldB" : {
-            "$ref" : "#/components/schemas/KeyValue"
+          "fieldB": {
+            "type": "object",
+            "description": "Description B",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/KeyValue"
+              }
+            ]
           }
         }
       }

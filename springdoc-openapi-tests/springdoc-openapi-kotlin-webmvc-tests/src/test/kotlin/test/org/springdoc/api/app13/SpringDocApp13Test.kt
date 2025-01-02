@@ -18,10 +18,30 @@
 
 package test.org.springdoc.api.app13
 
+import org.springdoc.core.properties.SpringDocConfigProperties
+import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import test.org.springdoc.api.AbstractKotlinSpringDocMVCTest
 
+
+@SpringBootTest//(classes = [Config::class])
 class SpringDocApp13Test : AbstractKotlinSpringDocMVCTest() {
+
+
+    @Configuration
+    class Config{
+        @Bean
+        fun springDocConfigProperties():SpringDocConfigProperties{
+            val x= SpringDocConfigProperties()
+            x.apiDocs.version = OpenApiVersion.OPENAPI_3_1
+            return x
+        }
+
+    }
+
 
     @SpringBootApplication
     class DemoApplication
