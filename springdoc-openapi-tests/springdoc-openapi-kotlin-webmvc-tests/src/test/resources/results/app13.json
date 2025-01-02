@@ -1,0 +1,71 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "OpenAPI definition",
+    "version" : "v0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/test/test" : {
+      "post" : {
+        "tags" : [ "test-controller" ],
+        "operationId" : "create",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SomeDTO"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "KeyValue" : {
+        "required" : [ "key", "value" ],
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        },
+        "description" : "Generic description"
+      },
+      "SomeDTO" : {
+        "required" : [ "fieldA", "fieldB" ],
+        "type" : "object",
+        "properties" : {
+          "fieldA" : {
+            "type" : "object",
+            "description" : "Description A",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/KeyValue"
+            } ]
+          },
+          "fieldB" : {
+            "type" : "object",
+            "description" : "Description B",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/KeyValue"
+            } ]
+          }
+        }
+      }
+    }
+  }
+}
