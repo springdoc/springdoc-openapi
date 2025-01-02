@@ -16,29 +16,15 @@
  *
  */
 
-package test.org.springdoc.api.app13
+package test.org.springdoc.api.app14
 
-import org.springdoc.core.properties.SpringDocConfigProperties
-import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Configuration
 import test.org.springdoc.api.AbstractKotlinSpringDocMVCTest
 
-
-class SpringDocApp13Test : AbstractKotlinSpringDocMVCTest() {
+class SpringDocApp14Test : AbstractKotlinSpringDocMVCTest() {
 
 	@SpringBootApplication
-	class DemoApplication {
-		@Bean
-		fun springDocConfigProperties():SpringDocConfigProperties{
-			val x= SpringDocConfigProperties()
-			x.apiDocs.version = OpenApiVersion.OPENAPI_3_1
-			return x
-		}		
-	}
-	
+	class DemoApplication
 
 }
