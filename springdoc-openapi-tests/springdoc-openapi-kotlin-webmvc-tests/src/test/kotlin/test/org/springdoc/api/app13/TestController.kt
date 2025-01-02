@@ -19,6 +19,7 @@
 package test.org.springdoc.api.app13
 
 
+import io.swagger.v3.oas.annotations.OpenAPI31
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -36,6 +37,7 @@ data class SomeDTO(
     @Schema(description = "Description A", allOf = [KeyValue::class]) val fieldA: KeyValue,
     @Schema(description = "Description B", allOf = [KeyValue::class]) val fieldB: KeyValue,
 )
+
 
 
 @RestController
