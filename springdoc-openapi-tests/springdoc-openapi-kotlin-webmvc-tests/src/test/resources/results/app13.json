@@ -1,5 +1,5 @@
 {
-  "openapi" : "3.0.1",
+  "openapi" : "3.1.0",
   "info" : {
     "title" : "OpenAPI definition",
     "version" : "v0"
@@ -37,19 +37,14 @@
         "required" : [ "key", "value" ],
         "type" : "object",
         "description" : "Generic description",
-        "allOf" : [ {
-          "$ref" : "#/components/schemas/KeyValue"
-        }, {
-          "type" : "object",
-          "properties" : {
-            "key" : {
-              "type" : "string"
-            },
-            "value" : {
-              "type" : "string"
-            }
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
           }
-        } ]
+        }
       },
       "SomeDTO" : {
         "required": [
@@ -59,22 +54,12 @@
         "type": "object",
         "properties": {
           "fieldA": {
-            "type": "object",
             "description": "Description A",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/KeyValue"
-              }
-            ]
+            "$ref": "#/components/schemas/KeyValue"
           },
           "fieldB": {
-            "type": "object",
             "description": "Description B",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/KeyValue"
-              }
-            ]
+            "$ref": "#/components/schemas/KeyValue"
           }
         }
       }

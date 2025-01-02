@@ -34,8 +34,8 @@ data class KeyValue(
 
 @Schema
 data class SomeDTO(
-    @Schema(description = "Description A", allOf = [KeyValue::class]) val fieldA: KeyValue,
-    @Schema(description = "Description B", allOf = [KeyValue::class]) val fieldB: KeyValue,
+    @Schema(description = "Description A") val fieldA: KeyValue,
+    @Schema(description = "Description B") val fieldB: KeyValue,
 )
 
 
