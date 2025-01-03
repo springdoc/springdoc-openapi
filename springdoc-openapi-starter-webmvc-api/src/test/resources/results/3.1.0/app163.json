@@ -1,0 +1,105 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/{id}": {
+      "put": {
+        "tags": [
+          "commissions-resource"
+        ],
+        "summary": "Update a commission",
+        "description": "updateCommission",
+        "operationId": "updateCommission",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Commission's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A commission to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommissionDto"
+              },
+              "examples": {
+                "requestExample": {
+                  "$ref": "#/components/examples/httpPutCommissionRequestBodyExample"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Commission updated",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommissionDto"
+                },
+                "examples": {
+                  "202": {
+                    "$ref": "#/components/examples/httpPutCommissionResponseBodyExample"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CommissionDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "examples": {
+      "httpPutCommissionRequestBodyExample": {
+        "summary": "HTTP 202 JSON Body request example for updateCommission operation",
+        "value": {
+          "email": "esteban@dugueperoux.com",
+          "firstName": "Esteban",
+          "lastName": "DUGUEPEROUX"
+        }
+      },
+      "httpPutCommissionResponseBodyExample": {
+        "summary": "HTTP 202 JSON Body response example for updateCommission operation",
+        "value": {
+          "email": "esteban@dugueperoux.com",
+          "firstName": "Esteban",
+          "lastName": "DUGUEPEROUX"
+        }
+      }
+    }
+  }
+}

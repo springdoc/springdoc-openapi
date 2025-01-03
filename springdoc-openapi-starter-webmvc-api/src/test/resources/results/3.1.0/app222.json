@@ -1,0 +1,121 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/hello2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "getItems2",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SecondHierarchyUser"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "getItems1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirstHierarchyUser"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CommonImplementor": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SecondHierarchy"
+          },
+          {
+            "$ref": "#/components/schemas/FirstHierarchy"
+          }
+        ]
+      },
+      "SecondHierarchy": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "@type"
+        },
+        "properties": {
+          "@type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "@type"
+        ]
+      },
+      "SecondHierarchyUser": {
+        "type": "object",
+        "properties": {
+          "secondHierarchy": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CommonImplementor"
+              }
+            ]
+          }
+        }
+      },
+      "FirstHierarchy": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "@type"
+        },
+        "properties": {
+          "@type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "@type"
+        ]
+      },
+      "FirstHierarchyUser": {
+        "type": "object",
+        "properties": {
+          "firstHierarchy": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CommonImplementor"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

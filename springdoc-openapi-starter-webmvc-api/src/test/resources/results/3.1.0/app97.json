@@ -1,0 +1,136 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/student/header3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "headerV3",
+        "parameters": [
+          {
+            "name": "X-API-VERSION",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentV3"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/student/header2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "headerV2",
+        "parameters": [
+          {
+            "name": "X-API-VERSION",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentV2"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/student/header1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "headerV1",
+        "parameters": [
+          {
+            "name": "X-API-VERSION",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudentV1"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StudentV3": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "StudentV2": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "StudentV1": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

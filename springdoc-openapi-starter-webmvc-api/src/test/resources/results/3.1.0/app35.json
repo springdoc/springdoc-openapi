@@ -1,0 +1,70 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/v1/poc/test": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Get thing",
+        "operationId": "test",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Authentication Failure"
+          }
+        }
+      }
+    },
+    "/api/v1/poc/testme": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Get thing",
+        "operationId": "testme",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Authentication Failure"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

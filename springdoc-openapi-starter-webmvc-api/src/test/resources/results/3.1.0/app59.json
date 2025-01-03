@@ -1,0 +1,183 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/hello": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "hello",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HelloBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "An unknown error occurred",
+            "content": {
+              "*/*": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "The request is malformed or information is missing.",
+            "content": {
+              "*/*": {
+                "schema": {}
+              }
+            }
+          },
+          "200": {
+            "description": "The server accepted your hello.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello2": {
+      "post": {
+        "tags": [
+          "hello-controller-2"
+        ],
+        "operationId": "hello_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HelloBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "An unknown error occurred",
+            "content": {
+              "*/*": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "The request is malformed or information is missing.",
+            "content": {
+              "*/*": {
+                "schema": {}
+              }
+            }
+          },
+          "200": {
+            "description": "The server accepted your hello.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/example": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test",
+        "responses": {
+          "500": {
+            "description": "An unknown error occurred",
+            "content": {
+              "*/*": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "The request is malformed or information is missing.",
+            "content": {
+              "*/*": {
+                "schema": {}
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/example2": {
+      "get": {
+        "tags": [
+          "hello-controller-2"
+        ],
+        "operationId": "test_1",
+        "responses": {
+          "500": {
+            "description": "An unknown error occurred",
+            "content": {
+              "*/*": {
+                "schema": {}
+              }
+            }
+          },
+          "400": {
+            "description": "The request is malformed or information is missing.",
+            "content": {
+              "*/*": {
+                "schema": {}
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        },
+        "deprecated": true
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HelloBody": {
+        "type": "object",
+        "properties": {
+          "helloValue": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "helloValue"
+        ]
+      }
+    }
+  }
+}

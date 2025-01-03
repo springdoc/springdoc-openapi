@@ -1,0 +1,126 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/swaggerTest": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "swaggerTest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Child1": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Parent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "childProperty1": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Child2": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Parent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "childProperty2": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Child3": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Parent"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "childProperty3": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "MyRequest": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Child1"
+              },
+              {
+                "$ref": "#/components/schemas/Child2"
+              },
+              {
+                "$ref": "#/components/schemas/Child3"
+              },
+              {
+                "$ref": "#/components/schemas/Child1"
+              },
+              {
+                "$ref": "#/components/schemas/Child2"
+              }
+            ]
+          }
+        }
+      },
+      "Parent": {
+        "type": "object",
+        "properties": {
+          "parentProperty": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

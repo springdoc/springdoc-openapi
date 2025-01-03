@@ -1,0 +1,70 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/entity-b": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "getEntityB",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityB"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityB"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EntityA": {
+        "required": [
+          "fieldA"
+        ],
+        "type": "object",
+        "properties": {
+          "fieldA": {
+            "type": "string"
+          }
+        }
+      },
+      "EntityB": {
+        "required": [
+          "entityA",
+          "fieldB"
+        ],
+        "type": "object",
+        "properties": {
+          "fieldB": {
+            "type": "string"
+          },
+          "entityA": {
+            "$ref": "#/components/schemas/EntityA"
+          }
+        }
+      }
+    }
+  }
+}

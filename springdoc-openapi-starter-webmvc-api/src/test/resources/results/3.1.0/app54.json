@@ -1,0 +1,132 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/parties": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "saveMealParty",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MealParty_Public"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MealParty_MealPartyAdmin"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/parties/{id}": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Gets meal party details [Meal party admin restricted]",
+        "operationId": "getMealParty",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the meal party",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MealParty_Public"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/new-parties": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "saveMealNewParty",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MealParty_Public"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MealParty_MealPartyAdmin"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MealParty_Public": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "MealParty_MealPartyAdmin": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

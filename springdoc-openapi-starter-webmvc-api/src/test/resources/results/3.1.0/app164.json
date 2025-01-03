@@ -1,0 +1,62 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/test": {
+      "get": {
+        "tags": [
+          "test-api-controller"
+        ],
+        "operationId": "getInvoices",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SampleResponseClass"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SampleResponseClass": {
+        "type": "object",
+        "properties": {
+          "idAsFirstParameter": {
+            "type": "string"
+          },
+          "nameAsSecondParamater": {
+            "type": "string"
+          },
+          "lastNameAsThirdParameter": {
+            "type": "string"
+          },
+          "booleanValueAsFourthParameter": {
+            "type": "boolean"
+          },
+          "listBlah": {
+            "type": "array",
+            "items": {
+              "description": "${blahDescription.value}"
+            }
+          }
+        }
+      }
+    }
+  }
+}
