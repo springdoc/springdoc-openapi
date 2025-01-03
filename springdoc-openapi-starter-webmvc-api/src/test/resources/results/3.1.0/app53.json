@@ -1,0 +1,234 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/hello5": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Some operation",
+        "operationId": "listWithDefaultResponseStatus",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Some operation",
+        "operationId": "listWithEmptyApiResponse",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Some operation",
+        "operationId": "listWithNoApiResponse",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello4": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Some operation",
+        "operationId": "getDTOWithExplicitResponseStatus",
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelloDTO1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Some operation",
+        "operationId": "listWithExplicitResponseStatus",
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello6": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Some operation",
+        "operationId": "getDTOWithDefaultResponseStatus",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelloDTO1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hello7": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Some operation",
+        "operationId": "getNestedDTOWithDefaultResponseStatus",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HelloDTO1"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/global/hello2": {
+      "get": {
+        "tags": [
+          "hello-controller-with-global-api-response"
+        ],
+        "description": "Some operation",
+        "operationId": "listWithDefaultResponseStatus_1",
+        "responses": {
+          "200": {
+            "description": "Explicit description for this response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/global/hello1": {
+      "get": {
+        "tags": [
+          "hello-controller-with-global-api-response"
+        ],
+        "description": "Some operation",
+        "operationId": "listWithNoApiResponse_1",
+        "responses": {
+          "204": {
+            "description": "Explicit description for this response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HelloDTO1": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

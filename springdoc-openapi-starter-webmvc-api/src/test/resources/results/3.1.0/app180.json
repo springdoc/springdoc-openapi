@@ -1,0 +1,94 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/testWithoutSchema": {
+      "post": {
+        "tags": [
+          "REST Service"
+        ],
+        "summary": "Test Request Body type Schema usage [Error]",
+        "operationId": "withoutSchema",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/testWithSchema": {
+      "post": {
+        "tags": [
+          "REST Service"
+        ],
+        "summary": "Test Request Body type Schema usage [Correct]",
+        "operationId": "withSchema",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body": {
+        "type": "object",
+        "additionalProperties": {
+          "description": "Body",
+          "example": {
+            "key": "value"
+          }
+        },
+        "description": "Body",
+        "example": {
+          "key": "value"
+        }
+      }
+    }
+  }
+}

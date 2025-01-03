@@ -1,0 +1,138 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/test": {
+      "get": {
+        "tags": [
+          "basic-controller"
+        ],
+        "summary": "get",
+        "description": "Provides a list of books.",
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Books"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test1": {
+      "get": {
+        "tags": [
+          "basic-controller"
+        ],
+        "summary": "get1",
+        "description": "Provides an animal.",
+        "operationId": "get1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Cat"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Dog"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Books": {
+        "type": "array",
+        "description": "Represents a list of Books.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Knowledge"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "empty": {
+                "type": "boolean"
+              }
+            }
+          }
+        ]
+      },
+      "Knowledge": {
+        "type": "object",
+        "description": "Represents the knowledge."
+      },
+      "Animal": {
+        "type": "object",
+        "description": "Represents an Animal class."
+      },
+      "Cat": {
+        "type": "object",
+        "description": "Represents a Cat class.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Animal"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "speed": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      },
+      "Dog": {
+        "type": "object",
+        "description": "Represents a Dog class.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Animal"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "age": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

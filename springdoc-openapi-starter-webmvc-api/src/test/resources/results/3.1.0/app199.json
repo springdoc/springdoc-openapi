@@ -1,0 +1,87 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/second": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "second",
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                },
+                "examples": {
+                  "Second case example": {
+                    "value": {
+                      "message": "An ErrorDto sample specific to /second endpoint"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/first": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "first",
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDto"
+                },
+                "examples": {
+                  "First case example": {
+                    "value": {
+                      "message": "An ErrorDto sample specific to /first endpoint"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

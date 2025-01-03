@@ -1,0 +1,53 @@
+{
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Definition Second Tag full",
+      "description": "desc definition"
+    },
+    {
+      "name": "Fifth Tag Full",
+      "description": "desc class",
+      "externalDocs": {
+        "description": "docs desc class"
+      }
+    },
+    {
+      "name": "Definition First Tag"
+    },
+    {
+      "name": "Fourth Tag Full",
+      "description": "desc",
+      "externalDocs": {
+        "description": "docs desc"
+      }
+    }
+  ],
+  "paths": {
+    "/hello": {
+      "get": {
+        "tags": [
+          "Sixth Tag",
+          "Second Tag",
+          "Example Tag",
+          "Third Tag",
+          "Fifth Tag Full",
+          "Fourth Tag Full"
+        ],
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

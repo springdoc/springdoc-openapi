@@ -1,0 +1,109 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/api/sysUser/page/{current}/{size}": {
+      "get": {
+        "tags": [
+          "sys-user-controller"
+        ],
+        "operationId": "findPage",
+        "parameters": [
+          {
+            "name": "current",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "size",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "params",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/SysUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SuperEntityObject"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sysUser/page": {
+      "get": {
+        "tags": [
+          "sys-user-controller"
+        ],
+        "operationId": "findPage_1",
+        "parameters": [
+          {
+            "name": "params",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/SysUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SuperEntityObject"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SysUser": {
+        "type": "object"
+      },
+      "SuperEntityObject": {
+        "type": "object"
+      }
+    }
+  }
+}

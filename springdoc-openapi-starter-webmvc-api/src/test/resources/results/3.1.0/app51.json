@@ -1,0 +1,185 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "hello",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": {}
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test3",
+        "parameters": [
+          {
+            "name": "test_header",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "example": "rherherherherh"
+            }
+          },
+          {
+            "name": "param1",
+            "in": "query",
+            "description": "desc1",
+            "required": true,
+            "schema": {
+              "example": "something"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test2",
+        "parameters": [
+          {
+            "name": "test_header",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "example": "rherherherherh"
+            }
+          },
+          {
+            "name": "param1",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test1": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "test1",
+        "parameters": [
+          {
+            "name": "test_header",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "example": "rherherherherh"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/{path}": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

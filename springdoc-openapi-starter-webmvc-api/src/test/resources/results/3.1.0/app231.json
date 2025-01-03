@@ -1,0 +1,77 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/applications/parameter-object": {
+      "post": {
+        "tags": [
+          "applications-rest-controller"
+        ],
+        "summary": "Parameter object",
+        "operationId": "createWithParameterObject",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Overriding the description in sub class",
+            "required": false,
+            "schema": {
+              "maxLength": 30,
+              "minLength": 1,
+              "type": "string",
+              "description": "Overriding the description in sub class"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Application"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Application": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "serviceName": {
+            "type": "string"
+          },
+          "clusterName": {
+            "type": "string"
+          },
+          "shardName": {
+            "type": "string"
+          },
+          "customTags": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

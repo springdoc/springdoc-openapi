@@ -1,0 +1,57 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/test": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "doSomethingInteresting",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "required": [
+          "errorCode"
+        ],
+        "type": "object",
+        "properties": {
+          "errorMessage": {
+            "type": "string",
+            "description": "tata"
+          },
+          "errorCode": {
+            "type": "integer",
+            "description": "titi",
+            "format": "int32"
+          }
+        },
+        "description": "toto"
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/foo": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "getFoo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Foo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bar": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "getBar",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bar"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Foo": {
+        "type": "object",
+        "properties": {
+          "child": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "stringy"
+        ]
+      },
+      "Bar": {
+        "type": "object",
+        "properties": {
+          "child": {}
+        }
+      }
+    }
+  }
+}

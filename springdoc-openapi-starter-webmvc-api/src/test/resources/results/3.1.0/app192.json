@@ -1,0 +1,244 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/postWithoutAnyResponse": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Adds 200 as api response, because there are nothing defined to get another response",
+        "operationId": "postWithoutAnyResponse",
+        "requestBody": {
+          "description": "test value",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/postWithResponseStatusOnly": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Adds 201 as api response, because it defined by @ResponseStatus",
+        "operationId": "postWithResponseStatusOnly",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/withoutResponseStatus": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Doesn't creates the default 200 Response, because there are explicit declared api responses.This test ensures that the current default handling is not changed, because otherwise very many tests will fail.",
+        "operationId": "withoutResponseStatus",
+        "responses": {
+          "422": {
+            "description": "Test",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Test 2",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/withoutAnyResponseInformation": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Results in the default handling like before",
+        "operationId": "withoutAnyResponseInformation",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/withResponseStatus": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Adds 200 as additional api response, because it defined by @ResponseStatus",
+        "operationId": "withResponseStatus",
+        "responses": {
+          "422": {
+            "description": "Test",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Test 2",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/withResponseStatusOnly": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Adds 200 as api response, because it defined by @ResponseStatus",
+        "operationId": "withResponseStatusOnly",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/overwrite200InOperation": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Overwrites the 200 @ResponseStatus-Information by the explicit declared @ApiResponse",
+        "operationId": "overwrite200InOperation",
+        "responses": {
+          "200": {
+            "description": "Test2"
+          },
+          "422": {
+            "description": "Test",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Test 2",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/overwrite200InDoc": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "Overwrites the 200 @ResponseStatus-Information by the explicit declared @ApiResponse",
+        "operationId": "overwrite200InDoc",
+        "responses": {
+          "422": {
+            "description": "Test",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Test 2",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Test2"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}

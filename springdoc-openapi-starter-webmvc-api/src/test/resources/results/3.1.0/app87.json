@@ -1,0 +1,208 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/{itemId}": {
+      "put": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "putItem",
+        "parameters": [
+          {
+            "name": "cookie",
+            "in": "cookie",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "itemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Item"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Item"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/values/data": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "list",
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "header",
+            "description": "token in header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "access_token",
+            "in": "cookie",
+            "description": "token in cookie",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/duplicate_param": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Duplicate param",
+        "operationId": "duplicateParam",
+        "parameters": [
+          {
+            "name": "sample",
+            "in": "query",
+            "description": "sample query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sample",
+            "in": "header",
+            "description": "sample Header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/duplicate_param3": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Duplicate param",
+        "operationId": "duplicateParam3",
+        "parameters": [
+          {
+            "name": "sample",
+            "in": "header",
+            "description": "sample",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/duplicate_param2": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "summary": "Duplicate param",
+        "operationId": "duplicateParam2",
+        "parameters": [
+          {
+            "name": "sample",
+            "in": "query",
+            "description": "sample",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Item": {
+        "type": "object"
+      }
+    }
+  }
+}

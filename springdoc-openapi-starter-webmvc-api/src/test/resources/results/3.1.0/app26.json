@@ -1,0 +1,88 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/persons": {
+      "post": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "persons",
+        "parameters": [
+          {
+            "name": "myModel",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/MyModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MyModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Bar": {
+        "type": "object",
+        "properties": {
+          "bar": {
+            "type": "string"
+          }
+        }
+      },
+      "Foo": {
+        "type": "object",
+        "properties": {
+          "foo": {
+            "type": "string"
+          }
+        }
+      },
+      "MyModel": {
+        "type": "object",
+        "properties": {
+          "thing": {
+            "type": "object",
+            "description": "Hello",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Foo"
+              },
+              {
+                "$ref": "#/components/schemas/Bar"
+              },
+              {
+                "$ref": "#/components/schemas/Foo"
+              },
+              {
+                "$ref": "#/components/schemas/Bar"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

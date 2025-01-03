@@ -1,0 +1,42 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "description": "a",
+        "operationId": "b",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "b/b": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "a/a": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}
