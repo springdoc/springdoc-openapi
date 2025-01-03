@@ -65,8 +65,10 @@
 		<gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
 		<jjwt.version>0.9.1</jjwt.version>
 		<therapi-runtime-javadoc.version>0.15.0</therapi-runtime-javadoc.version>
-		<spring-cloud-function.version>4.2.1-SNAPSHOT</spring-cloud-function.version>
+		<spring-cloud-function.version>4.2.0</spring-cloud-function.version>
 		<spring-security-oauth2-authorization-server.version>1.4.0</spring-security-oauth2-authorization-server.version>
+		<kotlin.version>2.1.0</kotlin.version>
+		<kotlin.compiler.languageVersion>1.9</kotlin.compiler.languageVersion>
 	</properties>
 
 	<dependencyManagement>
@@ -101,6 +103,11 @@
 				<scope>test</scope>
 			</dependency>
 			<!-- spring Cloud -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-function-core</artifactId>
+				<version>${spring-cloud-function.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-function-web</artifactId>
