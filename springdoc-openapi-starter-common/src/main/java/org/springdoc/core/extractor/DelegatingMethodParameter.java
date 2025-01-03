@@ -4,7 +4,7 @@
  *  *  *
  *  *  *  *
  *  *  *  *  *
- *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  * Copyright 2019-2025 the original author or authors.
  *  *  *  *  *  *
  *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
  *  *  *  *
  *  *  *
  *  *
- *
+ *  
  */
 package org.springdoc.core.extractor;
 
@@ -178,8 +178,8 @@ public class DelegatingMethodParameter extends MethodParameter {
 	@Override
 	@NonNull
 	public Annotation[] getParameterAnnotations() {
-		Annotation[] methodAnnotations = ArrayUtils.addAll(delegate.getParameterAnnotations(), this.methodAnnotations);
-		return ArrayUtils.addAll(methodAnnotations, additionalParameterAnnotations);
+		Annotation[] allMethodAnnotations = ArrayUtils.addAll(delegate.getParameterAnnotations(), this.methodAnnotations);
+		return ArrayUtils.addAll(allMethodAnnotations, additionalParameterAnnotations);
 	}
 
 	@Override

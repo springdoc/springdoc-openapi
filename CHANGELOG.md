@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.1] - 2025-01-03
+
+### Added
+- #2790 - Moving to OpenAPI 3.1 as the default implementation for springdoc-openapi
+- #2817 - Obey annotations when flattening ParameterObject fields 
+- #2826 - Make it possible to mark parameters with @RequestParam annotation to be sent in form instead of query.
+- #2822 - Support returning null in ParameterCustomizer
+- #2830 - Add support for deprecated fields.
+- #2780 - Add Security Schema by AutoConfigure
+
+### Changed
+- Upgrade spring-boot to 3.4.1
+- Upgrade spring-cloud-function to 4.2.0
+- Upgrade swagger-core to 2.2.27
+
+### Fixed
+- #2804 - Stable release 2.7.0 depends on Spring Cloud Milestone 4.2.0-M1
+- #2828 - Required a bean of type 'org.springframework.data.rest.webmvc.mapping.Associations' that could not be found.
+- #2823 - Capturing pattern in identical paths only renders the path element of one method
+- #2817 - Automatically add required if a field is @notNull or @NotBlank.
+- #2814 - An unresolvable circular reference with management.endpoint.gateway.enabled=true.
+- #2798 - Object schema generated for Unit Kotlin type.
+- #2797 - Removing operationId via customizer does not work anymore.
+- #2833 - Resolve infinite recursion and add example test with OpenAPI v3.1
+- #2827 - Ignoring @Parameter(required = false)
+
 ## [2.7.0] - 2024-23-11
 
 ### Added

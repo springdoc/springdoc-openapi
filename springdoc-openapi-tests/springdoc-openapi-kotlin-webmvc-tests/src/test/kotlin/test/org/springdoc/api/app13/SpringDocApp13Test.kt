@@ -18,10 +18,7 @@
 
 package test.org.springdoc.api.app13
 
-import org.springdoc.core.properties.SpringDocConfigProperties
-import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.context.annotation.Bean
 import org.springframework.test.context.TestPropertySource
 import test.org.springdoc.api.AbstractKotlinSpringDocMVCTest
 

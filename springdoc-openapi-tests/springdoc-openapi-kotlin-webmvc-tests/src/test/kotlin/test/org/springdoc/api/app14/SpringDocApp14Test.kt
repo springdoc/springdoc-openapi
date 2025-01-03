@@ -19,7 +19,6 @@
 package test.org.springdoc.api.app14
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.context.annotation.ComponentScan
 import test.org.springdoc.api.AbstractKotlinSpringDocMVCTest
 
 class SpringDocApp14Test : AbstractKotlinSpringDocMVCTest() {
