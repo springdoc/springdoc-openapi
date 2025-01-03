@@ -4,7 +4,7 @@
  *  *  *
  *  *  *  *
  *  *  *  *  *
- *  *  *  *  *  * Copyright 2019-2024 the original author or authors.
+ *  *  *  *  *  * Copyright 2019-2025 the original author or authors.
  *  *  *  *  *  *
  *  *  *  *  *  * Licensed under the Apache License, Version 2.0 (the "License");
  *  *  *  *  *  * you may not use this file except in compliance with the License.
@@ -30,7 +30,6 @@ import io.swagger.v3.oas.annotations.Parameter
 import org.springdoc.core.customizers.KotlinDeprecatedPropertyCustomizer
 import org.springdoc.core.customizers.ParameterCustomizer
 import org.springdoc.core.providers.ObjectMapperProvider
-import org.springdoc.core.service.AbstractRequestService.addRequestWrapperToIgnore
 import org.springdoc.core.utils.Constants
 import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean

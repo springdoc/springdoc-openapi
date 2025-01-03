@@ -3,6 +3,7 @@ package test.org.springdoc.api.v30.app236;
 
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

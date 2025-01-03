@@ -23,8 +23,6 @@ import kotlinx.coroutines.reactor.mono
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import kotlin.reflect.full.findAnnotation
-import kotlin.reflect.full.memberProperties
 
 enum class SystemStatus(val status: String) {
 	OK("OK")
