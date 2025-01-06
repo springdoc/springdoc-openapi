@@ -128,10 +128,15 @@ class SpringDocKotlinConfiguration() {
 		return kotlinFunction.parameters[parameterIndex + 1]
 	}
 
-	@Bean
-	@Lazy(false)
-	@ConditionalOnMissingBean
-	fun kotlinDeprecatedPropertyCustomizer(objectMapperProvider: ObjectMapperProvider): KotlinDeprecatedPropertyCustomizer {
-		return KotlinDeprecatedPropertyCustomizer(objectMapperProvider)
+	@ConditionalOnClass(name = ["kotlin.reflect.full.KClasses"])
+	class KotlinReflectDependingConfiguration {
+
+		@Bean
+		@Lazy(false)
+		@ConditionalOnMissingBean
+		fun kotlinDeprecatedPropertyCustomizer(objectMapperProvider: ObjectMapperProvider): KotlinDeprecatedPropertyCustomizer {
+			return KotlinDeprecatedPropertyCustomizer(objectMapperProvider)
+		}
 	}
+
 }

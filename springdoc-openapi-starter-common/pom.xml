@@ -72,6 +72,11 @@
 			<artifactId>kotlinx-coroutines-reactor</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-reflect</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<!-- Spring Web /Data Rest/Hateoas && For Enhanced Pageable Support-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
